@@ -10,6 +10,7 @@ import {
   OpprettetSak,
   Person
 } from 'declarations/types'
+import { Action } from 'redux'
 
 export interface SakState {
   arbeidsperioder: Arbeidsperioder | undefined
@@ -51,29 +52,10 @@ export const initialSakState: SakState = {
   unit: undefined
 }
 
-const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload = { type: '', payload: undefined }): SakState => {
+const sakReducer = (state: SakState = initialSakState, action: Action | ActionWithPayload = { type: '' }): SakState => {
   switch (action.type) {
-
     case types.APP_CLEAN_DATA:
-      // reset all but stuff that comes from eessi-kodeverk
-      return {
-        ...state,
-        opprettetSak: undefined,
-        arbeidsgivere: [],
-        buctype: undefined,
-        fagsaker: undefined,
-        familierelasjoner: [],
-        institusjonList: undefined,
-        institusjon: undefined,
-        landkode: undefined,
-        person: undefined,
-        personRelatert: undefined,
-        saksId: undefined,
-        sedtype: undefined,
-        sektor: undefined,
-        tema: undefined,
-        unit: undefined
-      }
+      return initialSakState
 
     case types.SAK_FAGSAKER_RESET:
     case types.SAK_FAGSAKER_GET_REQUEST:
@@ -85,7 +67,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_FAGSAKER_GET_SUCCESS:
       return {
         ...state,
-        fagsaker: action.payload
+        fagsaker: (action as ActionWithPayload).payload
       }
 
     case types.SAK_FAGSAKER_GET_FAILURE:
@@ -97,13 +79,13 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_INSTITUSJONER_GET_SUCCESS:
       return {
         ...state,
-        institusjonList: action.payload
+        institusjonList: (action as ActionWithPayload).payload
       }
 
     case types.SAK_LANDKODER_GET_SUCCESS:
       return {
         ...state,
-        landkode: action.payload
+        landkode: (action as ActionWithPayload).payload
       }
 
     case types.SAK_PERSON_GET_FAILURE:
@@ -115,7 +97,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_PERSON_GET_SUCCESS:
       return {
         ...state,
-        person: action.payload
+        person: (action as ActionWithPayload).payload
       }
 
     case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
@@ -127,7 +109,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_PERSON_RELATERT_SEARCH_SUCCESS:
       return {
         ...state,
-        personRelatert: action.payload
+        personRelatert: (action as ActionWithPayload).payload
       }
 
     case types.SAK_PERSON_RESET:
@@ -145,7 +127,7 @@ const sakReducer = (state: SakState = initialSakState, action: ActionWithPayload
     case types.SAK_SEND_SUCCESS:
       return {
         ...state,
-        opprettetSak: action.payload,
+        opprettetSak: (action as ActionWithPayload).payload,
         // do an app reset
         arbeidsgivere: [],
         buctype: undefined,

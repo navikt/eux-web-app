@@ -1,6 +1,6 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
-import { PersonInfo } from 'declarations/sed'
+import { F002Sed } from 'declarations/sed'
 import { mount, ReactWrapper } from 'enzyme'
 import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
@@ -16,7 +16,6 @@ jest.mock('actions/validation', () => ({
 const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
-  highContrast: false,
   validation: {}
 }
 
@@ -44,11 +43,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
     (initialMockProps.updateReplySed as jest.Mock).mockReset()
     stageSelector(defaultSelector, {
       replySed: {
-        barn: [{
-          person
-        } as PersonInfo, {
-
-        }]
+        barn: (getReplySed('F002') as F002Sed)!.barn
       }
     })
     const mockText = 'mockText'

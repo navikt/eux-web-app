@@ -16,13 +16,10 @@ interface FormaalProps {
 }
 
 interface FormaalSelector {
-  highContrast: boolean
-
   validation: Validation
 }
 
 const mapState = (state: State): FormaalSelector => ({
-  highContrast: state.ui.highContrast,
   validation: state.validation.status
 })
 
@@ -32,10 +29,7 @@ const Formaal: React.FC<FormaalProps> = ({
   updateReplySed
 }: FormaalProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  }: any = useSelector<State, FormaalSelector>(mapState)
+  const { validation }: any = useSelector<State, FormaalSelector>(mapState)
   const dispatch = useDispatch()
   const formaal: Array<string> = (replySed as FSed)?.formaal
   const namespace: string = `${parentNamespace}-formål`
@@ -61,8 +55,7 @@ const Formaal: React.FC<FormaalProps> = ({
     <div id={namespace}>
       <Stack
         key={namespace}
-        feil={validation[namespace]?.feilmelding}
-        highContrast={highContrast}
+        error={validation[namespace]?.feilmelding}
         initialValues={formaal}
         itemLabel={t('label:formål')}
         namespace={namespace}

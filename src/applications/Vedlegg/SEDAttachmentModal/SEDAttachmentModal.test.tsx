@@ -1,5 +1,5 @@
 import { mount, ReactWrapper } from 'enzyme'
-import joarkBrowserItems from 'mocks/joark/items'
+import joarkBrowserItems from 'mocks/attachments/items'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentModal, { SEDAttachmentModalProps } from './SEDAttachmentModal'
@@ -24,7 +24,8 @@ describe('components/SEDAttachmentModal', () => {
   let wrapper: ReactWrapper
 
   const initialMockProps: SEDAttachmentModalProps = {
-    highContrast: false,
+    open: true,
+    fnr: '123',
     onFinishedSelection: jest.fn(),
     onModalClose: jest.fn(),
     sedAttachments: joarkBrowserItems,

@@ -31,7 +31,7 @@ export interface PersonSearchProps {
   alertType: string | undefined
   alertTypesWatched: Array<string> | undefined
   className?: string
-  feil: string | undefined
+  error: string | undefined
   id: string
   initialFnr: any
   gettingPerson: boolean
@@ -47,7 +47,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   alertMessage,
   alertType,
   alertTypesWatched = [],
-  feil,
+  error,
   id,
   initialFnr,
   gettingPerson,
@@ -131,11 +131,11 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           label={t('label:søker')}
           value={_fnr || ''}
           onChange={onChange}
-          feil={feil ?? localValidation}
+          error={error ?? localValidation}
         />
         <MyButton onClick={sokEtterPerson} disabled={gettingPerson}>
           {gettingPerson
-            ? <WaitingPanel size='S' message={t('message:loading-searching')} oneLine />
+            ? <WaitingPanel size='xsmall' message={t('message:loading-searching')} oneLine />
             : t('el:button-search')}
         </MyButton>
       </PersonSearchPanel>

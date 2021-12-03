@@ -1,12 +1,11 @@
 import { clientClear, clientError } from 'actions/alert'
 import { closeModal } from 'actions/ui'
-import classNames from 'classnames'
 import Alert from 'components/Alert/Alert'
 import Header from 'components/Header/Header'
 import Modal from 'components/Modal/Modal'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
 import Version from 'components/Version/Version'
-import { AlertStatus, ModalContent } from 'declarations/components'
+import { AlertVariant, ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import NavHighContrast, {
@@ -14,8 +13,7 @@ import NavHighContrast, {
   PileDiv, slideInFromBottom,
   slideInFromLeft,
   slideInFromRight,
-  slideInFromTop,
-  themeKeys
+  slideInFromTop
 } from 'nav-hoykontrast'
 import Error from 'pages/Error'
 import PT from 'prop-types'
@@ -30,8 +28,8 @@ const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
   padding: 0;
-  color: ${({ theme } : any) => theme[themeKeys.MAIN_FONT_COLOR]};
-  background: ${({ theme } : any) => theme[themeKeys.MAIN_BACKGROUND_COLOR]};
+  color: var(--navds-color-text-primary);
+  background: var(--navds-color-background);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -158,16 +156,15 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           // reset the state of your app so the error doesn't happen again
         }}
       >
-        <Header title={title} />
+        <Header title={title} highContrast={highContrast} />
         <Alert
           message={getbannerMessage()}
-          status={bannerStatus as AlertStatus}
+          variant={bannerStatus as AlertVariant}
           error={error}
           onClose={onClear}
         />
         <Modal
           open={!_.isUndefined(modal)}
-          highContrast={highContrast}
           appElementId='main'
           modal={modal}
           onModalClose={handleModalClose}
@@ -175,7 +172,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         <Main
           id='main'
           role='main'
-          className={classNames(className, { highContrast: highContrast })}
+          className={className}
         >
           {children}
         </Main>

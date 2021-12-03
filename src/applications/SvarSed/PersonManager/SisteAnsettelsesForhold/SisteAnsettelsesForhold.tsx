@@ -31,12 +31,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { Add } from '@navikt/ds-icons'
 
-interface SisteAnsettelsesForholdSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): SisteAnsettelsesForholdSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -47,10 +42,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, SisteAnsettelsesForholdSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'sisteAnsettelsesForhold'
   const sisteAnsettelsesForhold: SisteAnsettelsesForhold = _.get(replySed, target)
@@ -237,12 +229,12 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
             <label className='skjemaelement__label'>
               {t('label:utbetaling-type')}
             </label>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? ''}
               data-multiple-line
               data-no-border
               data-test-id={namespace + '-utbetalingType'}
-              feil={getErrorFor(index, 'utbetalingType')}
+              error={getErrorFor(index, 'utbetalingType')}
               key={namespace + '-utbetalingType-' + (index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? '')}
               id={namespace + '-utbetalingType'}
               name={namespace + '-utbetalingType'}
@@ -273,7 +265,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Input
               type='number'
-              feil={getErrorFor(index, 'beloep')}
+              error={getErrorFor(index, 'beloep')}
               namespace={namespace}
               id='beloep'
               key={'beloep-' + (index < 0 ? _newBeloep : utbetaling?.beloep ?? '')}
@@ -289,7 +281,6 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               ariaLabel={t('label:valuta')}
               data-test-id={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
-              highContrast={highContrast}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'
@@ -305,7 +296,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
               <DateInput
-                feil={getErrorFor(index, 'loennTilDato')}
+                error={getErrorFor(index, 'loennTilDato')}
                 namespace={namespace}
                 key={utbetaling?.loennTilDato}
                 id='loennTilDato'
@@ -317,7 +308,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
             {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
               <Input
                 type='number'
-                feil={getErrorFor(index, 'feriedagerTilGode')}
+                error={getErrorFor(index, 'feriedagerTilGode')}
                 namespace={namespace}
                 id='feriedagerTilGode'
                 label={t('label:feriedager-til-gode') + ' *'}
@@ -390,7 +381,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-opphoerRettighet']?.feilmelding}
+              error={validation[namespace + '-opphoerRettighet']?.feilmelding}
               namespace={namespace}
               id='avkall'
               label={t('label:opphoer-rettighet')}
@@ -405,7 +396,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
+              error={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
               namespace={namespace}
               id='opphoerRettighetGrunn'
               label={t('label:opphoer-rettighet-grunn')}
@@ -420,7 +411,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-opphoerYtelse']?.feilmelding}
+              error={validation[namespace + '-opphoerYtelse']?.feilmelding}
               namespace={namespace}
               id='opphoerYtelse'
               label={t('label:opphoer-ytelse')}

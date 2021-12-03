@@ -6,6 +6,7 @@ import { AlertErrorPropType } from 'declarations/components.pt'
 import _ from 'lodash'
 import { Alert } from '@navikt/ds-react'
 import PT from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 export const AlertDiv = styled(Alert)`
@@ -40,8 +41,8 @@ export interface AlertProps {
 }
 
 export const AlertFC: React.FC<AlertProps> = ({
-                                                className, error, message, onClose, variant, style = {}
-                                              }: AlertProps): JSX.Element | null => {
+  className, error, message, onClose, variant, style = {}
+}: AlertProps): JSX.Element | null => {
   let _message: JSX.Element | string | undefined = message
 
   const onCloseIconClicked = (): void => {

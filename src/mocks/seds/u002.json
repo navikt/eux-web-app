@@ -64,7 +64,7 @@
           "bygning": "A",
           "region": "Akershus"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "111111111"
@@ -87,7 +87,7 @@
           "bygning": "A",
           "region": "Akershus"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "222222222"
@@ -110,7 +110,7 @@
           "bygning": "A",
           "region": "Akershus"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "333333333"
@@ -143,7 +143,7 @@
           "bygning": "A",
           "region": "Akershus"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "444444444"

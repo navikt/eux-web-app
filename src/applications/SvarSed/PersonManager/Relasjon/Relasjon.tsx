@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
+import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -29,12 +29,7 @@ import { getIdx } from 'utils/namespace'
 import { validateBarnetilhoerighet, ValidationBarnetilhoerigheterProps } from './validation'
 import { Add } from '@navikt/ds-icons'
 
-interface RelasjonSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): RelasjonSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -46,10 +41,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, RelasjonSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = `${personID}.barnetilhoerigheter`
   const barnetilhoerigheter: Array<Barnetilhoerighet> | undefined = _.get(replySed, target)
@@ -256,11 +248,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <Row>
           <Column flex='3'>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
               data-test-id={namespace + idx + '-relasjonTilPerson'}
-              feil={getErrorFor(index, 'relasjonTilPerson') ? ' ' : undefined}
+              error={getErrorFor(index, 'relasjonTilPerson') ? ' ' : undefined}
               id={namespace + idx + '-relasjonTilPerson'}
               legend={t('label:relasjon-med') + ' *'}
               name={namespace + idx + '-relasjonTilPerson'}
@@ -271,11 +263,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon, index)}
             />
             <VerticalSeparatorDiv size='0.15' />
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
               data-test-id={namespace + idx + '-relasjonTilPerson'}
-              feil={getErrorFor(index, 'relasjonTilPerson')}
+              error={getErrorFor(index, 'relasjonTilPerson')}
               id={namespace + idx + '-relasjonTilPerson'}
               name={namespace + idx + '-relasjonTilPerson'}
               radios={[
@@ -292,13 +284,12 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-relasjonType'}
-              feil={getErrorFor(index, 'relasjonType')}
-              highContrast={highContrast}
+              error={getErrorFor(index, 'relasjonType')}
               id={namespace + idx + '-relasjonType'}
               key={namespace + idx + '-relasjonType' + (index < 0 ? _newRelasjonType : _.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType))}
               label={t('label:type') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(e) => setRelasjonType(e.value, index)}
+              onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               value={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
@@ -307,7 +298,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
-        <Undertittel className='slideInFromLeft'>
+        <Heading size='small' className='slideInFromLeft'>
           {t('label:relasjonens-varighet')}
         </Heading>
         <VerticalSeparatorDiv />
@@ -327,11 +318,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv size='2' />
         <Row>
           <Column flex={2}>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
               data-no-border
               data-test-id={namespace + idx + '-erDeltForeldreansvar'}
-              feil={getErrorFor(index, 'erDeltForeldreansvar')}
+              error={getErrorFor(index, 'erDeltForeldreansvar')}
               id={namespace + idx + '-erDeltForeldreansvar'}
               legend={t('label:delt-foreldreansvar')}
               name={namespace + '-erDeltForeldreansvar'}
@@ -355,11 +346,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             </BodyLong>
           </Column>
           <Column>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIBrukersHushold'}
-              feil={getErrorFor(index, 'borIBrukersHushold')}
+              error={getErrorFor(index, 'borIBrukersHushold')}
               id={namespace + idx + '-borIBrukersHushold'}
               name={namespace + idx + '-borIBrukersHushold'}
               radios={[
@@ -378,11 +369,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             </BodyLong>
           </Column>
           <Column>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIEktefellesHushold'}
-              feil={getErrorFor(index, 'borIEktefellesHushold')}
+              error={getErrorFor(index, 'borIEktefellesHushold')}
               id={namespace + idx + '-borIEktefellesHushold'}
               name={namespace + idx + '-borIEktefellesHushold'}
               radios={[
@@ -401,11 +392,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             </BodyLong>
           </Column>
           <Column>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIAnnenPersonsHushold'}
-              feil={getErrorFor(index, 'borIAnnenPersonsHushold')}
+              error={getErrorFor(index, 'borIAnnenPersonsHushold')}
               id={namespace + idx + '-borIAnnenPersonsHushold'}
               name={namespace + idx + '-borIAnnenPersonsHushold'}
               radios={[
@@ -424,11 +415,11 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             </BodyLong>
           </Column>
           <Column>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon}
               data-no-border
               data-test-id={namespace + idx + '-borPaaInstitusjon'}
-              feil={getErrorFor(index, 'borPaaInstitusjon')}
+              error={getErrorFor(index, 'borPaaInstitusjon')}
               id={namespace + idx + '-borPaaInstitusjon'}
               name={namespace + idx + '-borPaaInstitusjon'}
               radios={[
@@ -462,7 +453,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Undertittel className='slideInFromLeft'>
+      <Heading size='small' className='slideInFromLeft'>
         {t('label:relasjon-til-barn')}
       </Heading>
       <VerticalSeparatorDiv size='2' />

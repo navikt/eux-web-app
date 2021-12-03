@@ -91,8 +91,6 @@ export interface OpprettSakSelector {
   valgtSektor: string | undefined
   valgtTema: string | undefined
   valgtUnit: string | undefined
-
-  highContrast: boolean
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
@@ -132,9 +130,7 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
-  valgtUnit: state.sak.unit,
-
-  highContrast: state.ui.highContrast
+  valgtUnit: state.sak.unit
 })
 
 const OpprettSak: React.FC = (): JSX.Element => {
@@ -170,8 +166,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit,
-    highContrast
+    valgtUnit
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
@@ -305,7 +300,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
             alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
             className='slideInFromLeft'
             data-test-id={namespace + '-fnr'}
-            feil={_validation[namespace + '-fnr']?.feilmelding}
+            error={_validation[namespace + '-fnr']?.feilmelding}
             gettingPerson={gettingPerson}
             id={namespace + '-fnr'}
             initialFnr=''
@@ -333,7 +328,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                 >
                   <Select
                     data-test-id={namespace + '-sektor'}
-                    feil={_validation[namespace + '-sektor']?.feilmelding}
+                    error={_validation[namespace + '-sektor']?.feilmelding}
                     id={namespace + '-sektor'}
                     label={t('label:sektor')}
                     onChange={onSektorChange}
@@ -359,7 +354,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   {visEnheter && (
                     <Select
                       data-test-id={namespace + '-unit'}
-                      feil={_validation[namespace + '-unit']?.feilmelding}
+                      error={_validation[namespace + '-unit']?.feilmelding}
                       id={namespace + '-unit'}
                       label={t('label:enhet')}
                       onChange={onUnitChange}
@@ -387,7 +382,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <Select
                     data-test-id={namespace + '-buctype'}
                     disabled={!isSomething(valgtSektor)}
-                    feil={_validation[namespace + '-buctype']?.feilmelding}
+                    error={_validation[namespace + '-buctype']?.feilmelding}
                     id={namespace + '-buctype'}
                     label={t('label:buc')}
                     onChange={onBuctypeChange}
@@ -413,7 +408,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <Select
                     data-test-id={namespace + '-sedtype'}
                     disabled={!isSomething(valgtBucType) || !isSomething(valgtSektor)}
-                    feil={_validation[namespace + '-sedtype']?.feilmelding}
+                    error={_validation[namespace + '-sedtype']?.feilmelding}
                     id={namespace + '-sedtype'}
                     label={t('label:sed')}
                     onChange={onSedtypeChange}
@@ -468,7 +463,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     data-test-id={namespace + '-institusjon'}
                     key={namespace + '-institusjon-' + valgtInstitusjon}
                     disabled={!isSomething(valgtLandkode)}
-                    feil={_validation[namespace + '-institusjon']?.feilmelding}
+                    error={_validation[namespace + '-institusjon']?.feilmelding}
                     id={namespace + '-institusjon'}
                     label={t('label:mottaker-institusjon')}
                     onChange={onInstitusjonChange}
@@ -547,7 +542,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
               {valgtSektor && (
                 <AlignStartRow>
                   <Column
-                    className={classNames('slideInFromLeft', { feil: !!_validation.tema })}
+                    className={classNames('slideInFromLeft', { error: !!_validation.tema })}
                   >
                     <Select
                       data-test-id={namespace + '-tema'}
@@ -577,7 +572,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                           onClick={onViewFagsakerClick}
                           disabled={gettingFagsaker || !isSomething(valgtTema)}
                         >
-                          {gettingFagsaker && <Loader/>}
+                          {gettingFagsaker && <Loader />}
                           {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
                         </Button>
                       </FlexDiv>
@@ -592,8 +587,8 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     {serverInfo && (
                       <Link
                         href={serverInfo?.gosysURL}
-                        ariaLabel={t('label:lenke-til-gosys')}
-                        target='_blank'
+                        aria-label={t('label:lenke-til-gosys')}
+                        target='_blank' rel='noreferrer'
                       >
                         {t('label:lenke-til-gosys')}
                       </Link>
@@ -631,7 +626,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
               )}
               {visArbeidsgivere && (
                 <Arbeidsgivere
-                  highContrast={highContrast}
                   namespace='arbeidsgivere'
                   searchable
                   fnr={person?.fnr}
@@ -655,7 +649,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   onClick={skjemaSubmit}
 
                 >
-                  {sendingSak && <Loader/>}
+                  {sendingSak && <Loader />}
                   {t('label:opprett-sak-i-rina')}
                 </Button>
               </Row>
@@ -684,7 +678,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
             <Row>
               <Column>
                 <VerticalSeparatorDiv />
-                <AlertStripe type='suksess'>
+                <Alert variant='success'>
                   <FlexDiv>
                     <span>
                       {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer}
@@ -698,7 +692,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                       <Link
                         className='vedlegg__lenke'
                         href={opprettetSak.url}
-                        target='_blank'
+                        target='_blank' rel='noreferrer'
                       >
                         {t('label:gå-til-rina')}
                       </Link>
@@ -713,7 +707,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                       </DOMLink>
                     )}
                   </div>
-                </AlertStripe>
+                </Alert>
               </Column>
             </Row>
           )}

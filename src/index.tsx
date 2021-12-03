@@ -22,8 +22,8 @@ import '@navikt/ds-css'
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store: Store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(thunk)))
 if (!IS_PRODUCTION) {
-  const axe = require('react-axe')
-  axe(React, ReactDOM, 1000)
+  // const axe = require('react-axe')
+  // axe(React, ReactDOM, 1000)
 } else {
   Sentry.init()
   Amplitude.init()

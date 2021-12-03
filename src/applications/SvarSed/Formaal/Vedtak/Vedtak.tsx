@@ -12,7 +12,7 @@ import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
+import { Options, ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { F002Sed, JaNei, Periode, Vedtak, VedtakBarn, VedtakPeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -21,7 +21,6 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { ErrorElement } from 'declarations/app'
 import { Ingress, BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -40,12 +39,7 @@ import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 import { Add } from '@navikt/ds-icons'
 
-export interface MotregningSelector extends FormålManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): MotregningSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): FormålManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -55,10 +49,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
   updateReplySed
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  }: any = useSelector<State, MotregningSelector>(mapState)
+  const { validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'vedtak'
   const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
@@ -377,12 +368,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                   closeMenuOnSelect
                   key={namespace + '-vedtaksperioder-vedtak-' + _newVedtaksperioderVedtak}
                   data-test-id={namespace + '-vedtaksperioder-vedtak'}
-                  feil={getErrorFor(index, 'vedtak')}
-                  highContrast={highContrast}
+                  error={getErrorFor(index, 'vedtak')}
                   id={namespace + '-vedtaksperioder-vedtak'}
                   label={t('label:vedtak-type')}
                   menuPortalTarget={document.body}
-                  onChange={(o: Option) => setVedtaksperioderVedtak(o.value, index)}
+                  onChange={(o: unknown) => setVedtaksperioderVedtak((o as Option).value, index)}
                   options={vedtakTypeOptions}
                   placeholder={t('el:placeholder-select-default')}
                   defaultValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
@@ -395,11 +385,11 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         )}
         <AlignStartRow>
           <Column>
-            <PanelGroup
-              checked={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
+            <RadioPanelGroup
+              defaultValue={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
               data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               data-no-border
-              feil={getErrorFor(index, 'skalYtelseUtbetales')}
+              error={getErrorFor(index, 'skalYtelseUtbetales')}
               id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               legend={t('label:skal-ytelse-utbetales') + ' *'}
               name={namespace + idx + '-borSammen'}
@@ -407,7 +397,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                 { label: t('label:ja'), value: 'ja' },
                 { label: t('label:nei'), value: 'nei' }
               ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVedtaksperioderSkalYtelseUtbetales(e.target.value as JaNei, index, vedtaktype)}
+              onChange={(e: string) => setVedtaksperioderSkalYtelseUtbetales(e as JaNei, index, vedtaktype)}
             />
           </Column>
           <Column>
@@ -440,7 +430,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             checked={vedtak?.gjelderAlleBarn}
             data-no-border
             data-test-id={namespace + '-gjelderAlleBarn'}
-            feil={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
+            error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
             id={namespace + '-gjelderAlleBarn'}
             legend={t('label:vedtak-angående-alle-barn') + ' *'}
             name={namespace + '-gjelderAlleBarn'}
@@ -526,13 +516,12 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         <Column flex='2'>
           <Select
             data-test-id={namespace + '-vedtakstype'}
-            feil={validation[namespace + '-vedtakstype']?.feilmelding}
-            highContrast={highContrast}
+            error={validation[namespace + '-vedtakstype']?.feilmelding}
             key={namespace + '-vedtakstype-' + vedtak?.vedtakstype}
             id={namespace + '-vedtakstype'}
             label={t('label:vedtak-type') + ' *'}
             menuPortalTarget={document.body}
-            onChange={(e: Option) => setVedtakstype(e.value)}
+            onChange={(e: unknown) => setVedtakstype((e as Option).value)}
             options={vedtakTypeOptions}
             placeholder={t('el:placeholder-select-default')}
             defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
@@ -541,7 +530,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         </Column>
         <Column>
           <DateInput
-            feil={validation[namespace + '-vedtaksdato']?.feilmelding}
+            error={validation[namespace + '-vedtaksdato']?.feilmelding}
             namespace={namespace}
             id='vedtaksdato'
             key={namespace + '-vedtaksdato-' + vedtak?.vedtaksdato}
@@ -560,7 +549,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         <Column flex='2'>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-begrunnelse']?.feilmelding}
+              error={validation[namespace + '-begrunnelse']?.feilmelding}
               namespace={namespace}
               id='grunnen'
               label={t('label:begrunnelse')}
@@ -578,7 +567,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         <Column flex='2'>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
               namespace={namespace}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}

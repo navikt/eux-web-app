@@ -4,7 +4,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
 import _ from 'lodash'
-import { Heading,  Radio, RadioGroup, } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -122,7 +122,8 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
                 name={namespace + '-retttilstønad'}
                 value='nei'
                 checked={_rettTilStonad === 'nei'}
-                onClick={() => setRettTilStonad('nei')}>
+                onClick={() => setRettTilStonad('nei')}
+              >
                 {t('label:nei')}
               </Radio>
             </PileDiv>

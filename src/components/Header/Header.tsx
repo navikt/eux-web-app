@@ -1,20 +1,22 @@
 import { toggleHighContrast } from 'actions/ui'
-import {  HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import { Link, Heading } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link as DomLink } from 'react-router-dom'
 import NEESSILogo from 'assets/logos/nEESSI'
 import styled from 'styled-components'
 import PT from 'prop-types'
 import { cleanData } from 'actions/app'
 
-const HeaderContent = styled.header`
-  background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_BACKGROUND_COLOR] : '#99c2e8'};
-  color: ${({ theme }: any) => theme[themeKeys.MAIN_FONT_COLOR]};
+const HeaderContent = styled.header<{highContrast: boolean}>`
+  background-color: ${({ highContrast }) => highContrast
+  ? 'var(--navds-semantic-color-component-background-alternate)'
+  : 'var(--navds-color-blue-20)'};
+  color: var(--navds-color-text-primary);
   display: flex;
   flex-direction: row;
   height: 4rem;
@@ -28,14 +30,14 @@ const Brand = styled.div`
   margin-left: 1rem;
 `
 const Skillelinje = styled.div`
-  border-left: 1px solid ${({ theme }: any) => theme[themeKeys.MAIN_BORDER_COLOR]};
+  border-left: 1px solid var(--navds-color-border);
   display: flex;
   height: 30px;
   margin-left: 1rem;
   margin-right: 1rem;
 `
 const Title = styled.div`
-  color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
+  color: var(--navds-color-text-primary);
   display: flex;
   font-size: 14pt;
   font-weight: bold;
@@ -48,7 +50,7 @@ const SaksbehandlerDiv = styled.div`
   align-items: center;
 `
 const Name = styled.div`
-  color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? theme[themeKeys.MAIN_FONT_COLOR] : '#02329c'};
+  color: var(--navds-color-text-primary);
   font-weight: bold;
   display: flex;
   margin: auto 0;
@@ -60,6 +62,7 @@ export interface HeaderSelector {
 }
 
 export interface HeaderProps {
+  highContrast: boolean;
   title: string
 }
 
@@ -68,6 +71,7 @@ export const mapState = (state: State): HeaderSelector => ({
 })
 
 const Header: React.FC<HeaderProps> = ({
+  highContrast,
   title
 }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
@@ -83,11 +87,11 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <HeaderContent>
+    <HeaderContent highContrast={highContrast}>
       <Brand>
-        <Link to='/' onClick={_cleanData}>
+        <DomLink to='/' onClick={_cleanData}>
           <NEESSILogo />
-        </Link>
+        </DomLink>
         <Skillelinje />
         <Title>
           {t('app:name')}

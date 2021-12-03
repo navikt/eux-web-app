@@ -8,7 +8,6 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
-import { State } from 'declarations/reducers'
 import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -27,7 +26,7 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
 const ModalDiv = styled(NavModal)`
@@ -59,18 +58,7 @@ interface AddPersonModalProps {
   setReplySed: (replySed: ReplySed) => void
 }
 
-interface AddPersonModalSelector {
-  highContrast: boolean
-
-}
-
-const mapState = (state: State): AddPersonModalSelector => ({
-  highContrast: state.ui.highContrast
-})
-
 const AddPersonModal: React.FC<AddPersonModalProps> = ({
-  appElement = document.body,
-  closeButton,
   onModalClose = () => {},
   parentNamespace,
   replySed,
@@ -79,9 +67,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`
   const dispatch = useDispatch()
-  const {
-    highContrast
-  }: any = useSelector<State, AddPersonModalSelector>(mapState)
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
   const [_newPersonName, _setNewPersonName] = useState<string>('')
@@ -94,14 +79,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const ektefelleNr = brukerNr + ((_replySed as F002Sed).ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((_replySed as F002Sed).annenPerson ? 1 : 0)
   const barnNr = annenPersonNr + ((_replySed as F002Sed).barn ? 1 : 0)
-
-  const onCloseButtonClicked = (e: React.MouseEvent): void => {
-    e.preventDefault()
-    e.stopPropagation()
-    onModalClose()
-  }
-
-  NavModal.setAppElement(appElement)
 
   const onRemovePerson = (personID: string) => {
     const newReplySed = _.cloneDeep(_replySed)
@@ -123,9 +100,9 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
     _setNewPersonName(navn.trim())
   }
 
-  const onNewPersonRelationChange = (o: Option) => {
+  const onNewPersonRelationChange = (o: unknown) => {
     _resetValidation(namespace + '-relasjon')
-    _setNewPersonRelation(o.value.trim())
+    _setNewPersonRelation((o as Option).value.trim())
   }
 
   const resetForm = () => {
@@ -328,7 +305,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <AlignStartRow className='slideInFromLeft'>
             <Column>
               <Input
-                feil={_validation[namespace + '-fnr']?.feilmelding}
+                error={_validation[namespace + '-fnr']?.feilmelding}
                 id='fnr'
                 label={t('label:fnr-dnr')}
                 namespace={namespace}
@@ -340,7 +317,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
             </Column>
             <Column>
               <Input
-                feil={_validation[namespace + '-navn']?.feilmelding}
+                error={_validation[namespace + '-navn']?.feilmelding}
                 id='navn'
                 namespace={namespace}
                 label={t('label:navn')}
@@ -355,9 +332,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 aria-label={t('label:familierelasjon')}
                 key={namespace + '-relasjon-' + _newPersonRelation}
                 data-test-id={namespace + '-relasjon'}
-                feil={_validation[namespace + '-relasjon']?.feilmelding}
+                error={_validation[namespace + '-relasjon']?.feilmelding}
                 id={namespace + '-relasjon'}
-                highContrast={highContrast}
                 label={t('label:familierelasjon')}
                 menuPortalTarget={document.body}
                 onChange={onNewPersonRelationChange}
@@ -397,7 +373,8 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
           <HorizontalSeparatorDiv />
           <Button
             variant='secondary'
-            onClick={onModalClose}>
+            onClick={onModalClose}
+          >
             {t('el:button-cancel')}
           </Button>
         </ModalButtons>

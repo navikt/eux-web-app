@@ -22,14 +22,12 @@ interface TemaProps {
 }
 
 interface TemaSelector {
-  highContrast: boolean
   validation: Validation
   gettingFagsaker: boolean
   fagsaker: FagSaker | null | undefined
 }
 
 const mapState = (state: State): TemaSelector => ({
-  highContrast: state.ui.highContrast,
   validation: state.validation.status,
   gettingFagsaker: state.loading.gettingFagsaker,
   fagsaker: state.svarsed.fagsaker
@@ -38,7 +36,6 @@ const mapState = (state: State): TemaSelector => ({
 const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
   const { t } = useTranslation()
   const {
-    highContrast,
     validation,
     gettingFagsaker,
     fagsaker
@@ -79,19 +76,19 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
     setEditMode(false)
   }
 
-  const onTemaChanged = (o: Option) => {
+  const onTemaChanged = (o: unknown) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
-    setTema(o.value)
-    dispatch(getFagsaker(fnr, 'HZ', o.value))
+    setTema((o as Option).value)
+    dispatch(getFagsaker(fnr, 'HZ', (o as Option).value))
   }
 
-  const onSakIDChange = (o: Option): void => {
+  const onSakIDChange = (o: unknown): void => {
     if (validation[namespace + '-fagsak']) {
       dispatch(resetValidation(namespace + '-fagsak'))
     }
-    setFagsak(o.value)
+    setFagsak((o as Option).value)
   }
 
   const onCancelChangesClicked = () => setEditMode(false)
@@ -129,8 +126,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
             : (
               <Select
                 defaultValue={_.find(temaOptions, { value: _tema })}
-                feil={validation[namespace]?.feilmelding}
-                highContrast={highContrast}
+                error={validation[namespace]?.feilmelding}
                 key={namespace + '-' + _tema + '-select'}
                 id={namespace + '-select'}
                 onChange={onTemaChanged}
@@ -159,8 +155,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
                   : (
                     <Select
                       defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
-                      feil={validation[namespace + '-fagsak']?.feilmelding}
-                      highContrast={highContrast}
+                      error={validation[namespace + '-fagsak']?.feilmelding}
                       key={namespace + '-' + _fagsak + '-select'}
                       id={namespace + '-fagsak-select'}
                       onChange={onSakIDChange}

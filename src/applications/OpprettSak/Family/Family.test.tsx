@@ -14,7 +14,6 @@ describe('components/Family/Family', () => {
     familierelasjonKodeverk: familierelasjoner,
     onAbroadPersonAddedFailure: jest.fn(),
     onAbroadPersonAddedSuccess: jest.fn(),
-    onAlertClose: jest.fn(),
     onRelationAdded: jest.fn(),
     onRelationRemoved: jest.fn(),
     onRelationReset: jest.fn(),
@@ -23,7 +22,9 @@ describe('components/Family/Family', () => {
     onTPSPersonAddedSuccess: jest.fn(),
     personRelatert: undefined,
     person: samplePerson,
-    valgteFamilieRelasjoner: undefined
+    valgteFamilieRelasjoner: undefined,
+    abroadPersonFormAlertTypesWatched: [],
+    TPSPersonFormAlertTypesWatched: []
   }
 
   beforeEach(() => {

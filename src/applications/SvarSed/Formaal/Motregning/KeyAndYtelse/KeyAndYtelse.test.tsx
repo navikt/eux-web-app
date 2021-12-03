@@ -5,7 +5,6 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
   let wrapper: ReactWrapper
 
   const initialMockProps: KeyAndYtelseProps = {
-    highContrast: false,
     keyAndYtelses: [{ fullKey: 'barn[0]', ytelseNavn: 'ytelseNavn' }],
     onAdded: jest.fn(),
     onRemoved: jest.fn(),

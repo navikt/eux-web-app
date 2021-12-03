@@ -1,9 +1,8 @@
 import Convert from 'ansi-to-html'
 import classNames from 'classnames'
-import ExpandingPanel from 'components/ExpandingPanel/ExpandingPanel'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { standardLogger } from 'metrics/loggers'
-import { BodyLong } from '@navikt/ds-react'
+import { Accordion, BodyLong } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect } from 'react'
@@ -29,10 +28,7 @@ const Description = styled.div`
   margin: 1rem;
   text-align: center;
 `
-const Panel = styled(ExpandingPanel)`
-  border: 1px solid gray;
-  min-width: 50%;
-`
+
 const Line = styled.div`
   width: 60%;
   margin: 1rem;
@@ -63,19 +59,17 @@ export const Error = ({ error }: ErrorProps) => {
       <Content>
         <Description dangerouslySetInnerHTML={{ __html: description }} />
         {error && (
-          <Panel
-            open
-            data-test-id='p-error__content-error-id'
-            className={classNames('p-error__content-error', 's-border')}
-            heading={t('message:error-header')}
-          >
-            <>
-              <div style={{ whiteSpace: 'break-spaces' }} dangerouslySetInnerHTML={{ __html: msg }} />
-              {stack.items?.map((e: any, i) => (
-                <div key={'' + i}>{e?.beforeParse}</div>
-              ))}
-            </>
-          </Panel>
+          <Accordion>
+            <Accordion.Item defaultOpen>
+              <Accordion.Header>{t('message:error-header')}</Accordion.Header>
+              <Accordion.Content>
+                <div style={{ whiteSpace: 'break-spaces' }} dangerouslySetInnerHTML={{ __html: msg }} />
+                {stack.items?.map((e: any, i) => (
+                  <div key={'' + i}>{e?.beforeParse}</div>
+                ))}
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion>
         )}
         {footer && (
           <>

@@ -12,8 +12,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface StackProps {
-  feil: ErrorElement | undefined
-  highContrast: boolean
+  error: ErrorElement | undefined
   initialValues: any
   itemLabel: string
   namespace: string
@@ -24,8 +23,7 @@ interface StackProps {
 }
 
 const Stack: React.FC<StackProps> = ({
-  feil,
-  highContrast,
+  error,
   initialValues,
   itemLabel,
   namespace,
@@ -129,10 +127,9 @@ const Stack: React.FC<StackProps> = ({
               <Select
                 data-test-id={namespace}
                 id={namespace}
-                highContrast={highContrast}
                 value={_newItem}
                 menuPortalTarget={document.body}
-                onChange={(option: Option) => setNewItem(option)}
+                onChange={(e: unknown) => setNewItem(e as Option)}
                 options={_itemValues}
               />
             </div>
@@ -161,9 +158,9 @@ const Stack: React.FC<StackProps> = ({
             </PileDiv>
           </FlexCenterSpacedDiv>
           )}
-      {feil && (
+      {error && (
         <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-          {feil}
+          {error}
         </div>
       )}
     </>

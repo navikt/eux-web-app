@@ -26,7 +26,7 @@ const ValidationBox = (): JSX.Element => {
           <ErrorSummary
             data-test-id='opprettsak__feiloppsummering'
             heading={t('validation:feiloppsummering')}
-           >
+          >
             {Object.values(validation)
               .filter(v => v !== undefined)
               .filter(v => v?.feilmelding !== 'notnull')
@@ -51,7 +51,7 @@ const ValidationBox = (): JSX.Element => {
               >
                 {item.feilmelding}
               </ErrorSummary.Item>
-            )}
+              )}
           </ErrorSummary>
         </Column>
         <HorizontalSeparatorDiv size='2' />

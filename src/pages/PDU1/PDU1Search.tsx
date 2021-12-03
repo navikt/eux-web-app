@@ -36,7 +36,6 @@ const ContainerDiv = styled(PileCenterDiv)`
 
 export interface PDU1SearchSelector {
   fnrParam: string | undefined
-  highContrast: boolean
   fagsaker: FagSaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
@@ -45,7 +44,6 @@ export interface PDU1SearchSelector {
 
 const mapState = (state: State): PDU1SearchSelector => ({
   fnrParam: state.app.params.fnr,
-  highContrast: state.ui.highContrast,
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
@@ -63,7 +61,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const dispatch = useDispatch()
   const {
     fnrParam,
-    highContrast,
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
@@ -119,12 +116,12 @@ const PDU1Search: React.FC<PDU1Props> = ({
     }
   }
 
-  const onTemaChanged = (o: Option) => {
+  const onTemaChanged = (o: unknown) => {
     if (validation[namespace + '-tema']) {
       dispatch(resetValidation(namespace + '-tema'))
     }
-    setTema(o.value)
-    dispatch(getFagsaker(fnrOrDnr, 'PD', o.value))
+    setTema((o as Option).value)
+    dispatch(getFagsaker(fnrOrDnr, 'PD', (o as Option).value))
   }
 
   const onFagsakerSelected = (f: string) => {
@@ -170,15 +167,14 @@ const PDU1Search: React.FC<PDU1Props> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         style={{ minWidth: '600px' }}
-        className={classNames('slideInFromLeft', { feil: validation[namespace + '-search'] })}
+        className={classNames('slideInFromLeft', { error: validation[namespace + '-search'] })}
       >
         <Column>
           <PileDiv>
             <Input
               label={t('label:fnr-dnr')}
-              feil={validation[namespace + '-search']?.feilmelding}
+              error={validation[namespace + '-search']?.feilmelding}
               id='search'
-              bredde='XL'
               namespace={namespace}
               onContentChange={onFnrDnrChange}
               required
@@ -195,8 +191,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
             <Select
               label={t('label:tema')}
               defaultValue={_.find(temaOptions, { value: tema })}
-              feil={validation[namespace + '-tema']?.feilmelding}
-              highContrast={highContrast}
+              error={validation[namespace + '-tema']?.feilmelding}
               key={namespace + '-tema-' + tema}
               id={namespace + '-tema'}
               menuPortalTarget={document.body}
@@ -246,7 +241,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
             disabled={!tema || !fagsak || creatingPdu1}
             onClick={onCreatePdu1Clicked}
           >
-            {creatingPdu1 && <Loader/>}
+            {creatingPdu1 && <Loader />}
             {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
           </Button>
         </>

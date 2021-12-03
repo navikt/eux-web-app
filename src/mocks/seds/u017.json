@@ -64,7 +64,7 @@
           "bygning": "æøå",
           "region": "æøå"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "ES:3100"
@@ -89,7 +89,7 @@
           "bygning": "æøå",
           "region": "æøå"
         },
-        "identifikator": [
+        "identifikatorer": [
           {
             "type": "organisasjonsnummer",
             "id": "ES:3100"

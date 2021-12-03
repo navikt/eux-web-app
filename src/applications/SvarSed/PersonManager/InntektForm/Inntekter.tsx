@@ -30,7 +30,6 @@ const MyPaddedDiv = styled.div`
 `
 
 const Inntekter: React.FC<any> = ({
-  highContrast,
   inntekter,
   onInntekterChanged,
   parentNamespace,
@@ -187,8 +186,7 @@ const Inntekter: React.FC<any> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + '-type'}
-              feil={validation[namespace + '-type']?.feilmelding}
-              highContrast={highContrast}
+              error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               key={namespace + '-type-' + (index < 0 ? _newInntektType : inntekt?.type ?? '')}
               label={t('label:type') + ' *'}
@@ -202,7 +200,7 @@ const Inntekter: React.FC<any> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor(index, 'beloep')}
+              error={getErrorFor(index, 'beloep')}
               namespace={namespace}
               key={namespace + idx + '-beloep-' + (index < 0 ? _newBeløp : inntekt?.beloep ?? '')}
               id='beloep'
@@ -218,7 +216,6 @@ const Inntekter: React.FC<any> = ({
               ariaLabel={t('label:valuta')}
               data-test-id={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
-              highContrast={highContrast}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'
@@ -250,7 +247,7 @@ const Inntekter: React.FC<any> = ({
             <Column>
               <Input
                 ariaLabel={t('label:informasjon-om-vederlag')}
-                feil={getErrorFor(index, 'informasjonOmVederlag')}
+                error={getErrorFor(index, 'informasjonOmVederlag')}
                 key={namespace + idx + '-informasjonOmVederlag-' + (index < 0 ? _newInformasjonOmVederlag : inntekt?.typeAnnen ?? '')}
                 id='informasjonOmVederlag'
                 label={t('label:informasjon-om-vederlag')}

@@ -1,7 +1,7 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import { mount, ReactWrapper } from 'enzyme'
-import getReplySed from 'mocks/replySed'
+import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
 
 jest.mock('actions/svarsed', () => ({
@@ -15,7 +15,6 @@ jest.mock('actions/validation', () => ({
 const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
-  highContrast: false,
   validation: {}
 }
 

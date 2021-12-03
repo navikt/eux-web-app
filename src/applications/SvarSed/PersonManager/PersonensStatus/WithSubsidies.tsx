@@ -28,12 +28,7 @@ import { getIdx } from 'utils/namespace'
 import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
 import { Add } from '@navikt/ds-icons'
 
-interface WithSubsidiesSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): WithSubsidiesSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -45,10 +40,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, WithSubsidiesSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, target)
@@ -183,13 +175,12 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-pensjontype'}
-              feil={getErrorFor(index, 'pensjontype')}
-              highContrast={highContrast}
+              error={getErrorFor(index, 'pensjontype')}
               id={namespace + idx + '-pensjontype'}
               key={namespace + idx + '-pensjontype-' + (index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
               label={t('label:type-pensjon')}
               menuPortalTarget={document.body}
-              onChange={(o: Option) => setPensjonType(o?.value, index)}
+              onChange={(o: unknown) => setPensjonType((o as Option).value, index)}
               options={selectPensjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               value={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}

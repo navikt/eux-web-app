@@ -1,4 +1,4 @@
-import { Warning, AddCircle } from '@navikt/ds-icons'
+import { Warning, SuccessFilled } from '@navikt/ds-icons'
 import { Dd, Dl, Dt } from 'components/StyledComponents'
 import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
 import Flag, { FlagList } from 'flagg-ikoner'
@@ -126,7 +126,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               <>
                 <VerticalSeparatorDiv size='3' />
                 <FlexDiv>
-                  <AddCircle color='green' width={18} height={18} />
+                  <SuccessFilled color='green' width={18} height={18} />
                   <HorizontalSeparatorDiv size='0.5' />
                   <BodyLong>
                     {t('app:info-confirm-information')}

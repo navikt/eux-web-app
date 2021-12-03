@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { BodyLong, Loader } from '@navikt/ds-react'
 import PT from 'prop-types'
+import React from 'react'
 import styled from 'styled-components'
 
 export const WaitingPanelDiv = styled.div`

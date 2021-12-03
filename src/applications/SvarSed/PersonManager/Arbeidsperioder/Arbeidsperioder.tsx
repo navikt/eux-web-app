@@ -43,7 +43,6 @@ export interface ArbeidsforholdSelector extends PersonManagerFormSelector {
   inntekter: IInntekter | undefined
   gettingInntekter: boolean
   validation: Validation
-  highContrast: boolean
 }
 
 export interface ArbeidsforholdProps {
@@ -59,8 +58,7 @@ const mapState = (state: State): ArbeidsforholdSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
-  validation: state.validation.status,
-  highContrast: state.ui.highContrast
+  validation: state.validation.status
 })
 
 const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
@@ -73,8 +71,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   const {
     arbeidsperioder,
     inntekter,
-    gettingInntekter,
-    highContrast
+    gettingInntekter
   } = useSelector<State, ArbeidsforholdSelector>(mapState)
   const dispatch = useDispatch()
   const includeAddress = true
@@ -283,7 +280,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
           <Input
-            feil={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
+            error={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
             namespace={namespace}
             id='navn'
             key={'navn-' + _newNavn}
@@ -298,7 +295,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
         <Column>
           <IdentifikatorFC
-            highContrast={highContrast}
             identifikatorer={_newIdentifikatorer}
             onIdentifikatorerChanged={onIdentifikatorerChanged}
             namespace={namespace + '-identifikator'}
@@ -355,7 +351,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
           <AlignStartRow className='slideInFromLeft'>
             <Column flex='2'>
               <ArbeidsgiverBox
-                highContrast={highContrast}
                 arbeidsgiver={item.item}
                 editable='no'
                 includeAddress={includeAddress}
@@ -385,7 +380,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
                 editable='only_period'
-                highContrast={highContrast}
                 includeAddress={includeAddress}
                 newArbeidsgiver={false}
                 selected={!_.isNil(item.index) && item.index >= 0}
@@ -405,7 +399,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
               <ArbeidsgiverBox
                 arbeidsgiver={item.item}
                 editable='full'
-                highContrast={highContrast}
                 includeAddress={includeAddress}
                 error={item.duplicate}
                 newArbeidsgiver
@@ -479,7 +472,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       <InntektSearch
         amplitude='svarsed.editor.inntekt.search'
         fnr={fnr!}
-        highContrast={highContrast}
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}
       />

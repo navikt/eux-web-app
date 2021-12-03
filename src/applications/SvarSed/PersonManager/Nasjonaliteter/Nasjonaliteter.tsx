@@ -159,7 +159,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
             <Column>
               <DateInput
                 ariaLabel={t('label:fra-dato')}
-                feil={getErrorFor(index, 'fraDato')}
+                error={getErrorFor(index, 'fraDato')}
                 id='fraDato'
                 key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
                 label=''

@@ -1,5 +1,5 @@
-import { Sight } from '@navikt/ds-icons'
-import { Loader } from '@navikt/ds-react'
+import { Sight, BackFilled } from '@navikt/ds-icons'
+import { Loader, Button, Heading } from '@navikt/ds-react'
 import { clientClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -24,7 +24,7 @@ import Alert from 'components/Alert/Alert'
 
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
-import { AlertstripeDiv, TextAreaDiv } from 'components/StyledComponents'
+import { TextAreaDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
@@ -35,8 +35,6 @@ import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { VenstreChevron } from '@navikt/ds-icons'
-import { Button, Heading } from '@navikt/ds-react'
 import {
   Column,
   FlexCenterSpacedDiv,
@@ -60,7 +58,6 @@ export interface SEDEditSelector {
   alertMessage: JSX.Element | string | undefined
   creatingSvarSed: boolean
   gettingPreviewFile: boolean
-  highContrast: boolean
   previewFile: any,
   replySed: ReplySed | null | undefined
   currentEntry: LocalStorageEntry<ReplySed> | undefined
@@ -82,7 +79,6 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
-  highContrast: state.ui.highContrast,
   previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
   savingSed: state.loading.savingSed,
@@ -104,7 +100,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     alertMessage,
     creatingSvarSed,
     gettingPreviewFile,
-    highContrast,
     previewFile,
     replySed,
     savingSed,
@@ -148,7 +143,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     return newReplySed
   }
 
-  const sendReplySed = (e: React.ChangeEvent<HTMLButtonElement>): void => {
+  const sendReplySed = (e: any): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const valid = performValidation({
@@ -221,7 +216,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     })
   }
 
-  const onPreviewSed = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const onPreviewSed = (e: any) => {
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)
       cleanReplySed(newReplySed)
@@ -267,7 +262,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     <PaddedDiv size='0.5'>
       <Modal
         open={!_.isNil(_modal)}
-        highContrast={highContrast}
         modal={_modal}
         onModalClose={resetPreview}
       />
@@ -276,16 +270,13 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           fnr={fnr!}
           open={_viewSendSedModal}
           goToRinaUrl={replySed?.sakUrl}
-          highContrast={highContrast}
           attachments={_attachments}
           replySed={replySed}
           onModalClose={() => setViewSendSedModal(false)}
         />
       )}
-
       <SaveSEDModal
         open={_viewSaveSedModal}
-        highContrast={highContrast}
         replySed={replySed!}
         storageKey={storageKey}
         onModalClose={() => setViewSaveSedModal(false)}
@@ -296,7 +287,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           size='small'
           onClick={onGoBackClick}
         >
-          <VenstreChevron />
+          <BackFilled />
           <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
         </Button>
@@ -359,7 +350,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           <TextAreaDiv>
             <TextArea
               namespace={namespace}
-              feil={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
               key={namespace + '-' + replySed?.sedType}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
@@ -374,7 +365,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <Attachments
         fnr={fnr}
-        highContrast={highContrast}
         onAttachmentsChanged={(attachments) => setAttachments(attachments)}
       />
       <Button
@@ -387,7 +377,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         <Sight />
         <HorizontalSeparatorDiv size='0.5' />
         {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-        {gettingPreviewFile && <Loader/>}
+        {gettingPreviewFile && <Loader />}
       </Button>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
@@ -407,7 +397,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               : creatingSvarSed
                 ? t('message:loading-oppdatering-svarsed')
                 : t('label:oppdatere-svarsed')}
-            {creatingSvarSed && <Loader/>}
+            {creatingSvarSed && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
@@ -437,7 +427,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             disabled={savingSed}
           >
             {_.isNil(currentEntry) ? t('el:button-save-draft-x', { x: 'svarSED' }) : t('el:button-update-draft-x', { x: 'svarSED' })}
-            {savingSed && <Loader/>}
+            {savingSed && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>

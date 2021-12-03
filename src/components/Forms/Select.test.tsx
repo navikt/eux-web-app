@@ -6,8 +6,7 @@ import React from 'react'
 describe('components/Forms/Select', () => {
   let wrapper: ReactWrapper
   const initialMockProps = {
-    highContrast: false,
-    feil: undefined,
+    error: undefined,
     id: 'test',
     onChange: () => {}
   }

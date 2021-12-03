@@ -2,19 +2,6 @@ import * as types from 'constants/actionTypes'
 import sakReducer, { initialSakState } from './sak'
 
 describe('reducers/sak', () => {
-  it('SAK_ARBEIDSPERIODER_GET_SUCCESS', () => {
-    const payload = 'mockPayload'
-    expect(
-      sakReducer(initialSakState, {
-        type: types.SAK_ARBEIDSPERIODER_GET_SUCCESS,
-        payload: payload
-      })
-    ).toEqual({
-      ...initialSakState,
-      arbeidsgivere: payload
-    })
-  })
-
   it('SAK_FAGSAKER_GET_REQUEST', () => {
     const payload = 'mockPayload'
     expect(
@@ -96,7 +83,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        person: []
+        person: {}
       }, {
         type: types.SAK_PERSON_GET_FAILURE,
         payload: {}
@@ -126,7 +113,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        personRelatert: []
+        personRelatert: {}
       }, {
         type: types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
         payload: {}
@@ -156,7 +143,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        person: []
+        person: {}
       }, {
         type: types.SAK_PERSON_RESET,
         payload: {}
@@ -171,7 +158,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        personRelatert: []
+        personRelatert: {}
       }, {
         type: types.SAK_PERSON_RELATERT_RESET,
         payload: {}
@@ -197,34 +184,21 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_PRELOAD', () => {
-    expect(
-      sakReducer({
-        ...initialSakState
-      }, {
-        type: types.SAK_PRELOAD,
-        payload: { foo: 'bar' }
-      })
-    ).toEqual({
-      ...initialSakState,
-      foo: 'bar'
-    })
-  })
-
   it('APP_CLEAN_DATA', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        kjoenn: [{ term: 'kvinne', kode: 'K' }],
-        person: '123'
+        person: {
+          etternavn: 'etternavn',
+          fornavn: 'fornavn',
+          fdato: 'fdato',
+          fnr: '123'
+        }
       }, {
         type: types.APP_CLEAN_DATA,
         payload: {}
       })
-    ).toEqual({
-      ...initialSakState,
-      kjoenn: [{ term: 'kvinne', kode: 'K' }]
-    })
+    ).toEqual(initialSakState)
   })
 
   it('APP_CLEAN_DATA', () => {
@@ -269,14 +243,42 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        arbeidsgiver: [1]
+        arbeidsgivere: [{
+          fraDato: '1',
+          tilDato: '1',
+          fraInntektsregisteret: 'ja',
+          fraArbeidsgiverregisteret: 'ja',
+          arbeidsgiversOrgnr: '123',
+          arbeidsgiversNavn: 'abc'
+        }]
       }, {
         type: types.SAK_ARBEIDSGIVER_ADD,
-        payload: 2
+        payload: {
+          fraDato: '2',
+          tilDato: '2',
+          fraInntektsregisteret: 'ja',
+          fraArbeidsgiverregisteret: 'ja',
+          arbeidsgiversOrgnr: '456',
+          arbeidsgiversNavn: 'def'
+        }
       })
     ).toEqual({
       ...initialSakState,
-      arbeidsgiver: [1, 2]
+      arbeidsgivere: [{
+        fraDato: '1',
+        tilDato: '1',
+        fraInntektsregisteret: 'ja',
+        fraArbeidsgiverregisteret: 'ja',
+        arbeidsgiversOrgnr: '123',
+        arbeidsgiversNavn: 'abc'
+      }, {
+        fraDato: '2',
+        tilDato: '2',
+        fraInntektsregisteret: 'ja',
+        fraArbeidsgiverregisteret: 'ja',
+        arbeidsgiversOrgnr: '456',
+        arbeidsgiversNavn: 'def'
+      }]
     })
   })
 
@@ -284,14 +286,42 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        arbeidsgiver: [1, 2]
+        arbeidsgivere: [{
+          fraDato: '1',
+          tilDato: '1',
+          fraInntektsregisteret: 'ja',
+          fraArbeidsgiverregisteret: 'ja',
+          arbeidsgiversOrgnr: '123',
+          arbeidsgiversNavn: 'abc'
+        }, {
+          fraDato: '2',
+          tilDato: '2',
+          fraInntektsregisteret: 'ja',
+          fraArbeidsgiverregisteret: 'ja',
+          arbeidsgiversOrgnr: '456',
+          arbeidsgiversNavn: 'def'
+        }]
       }, {
         type: types.SAK_ARBEIDSGIVER_REMOVE,
-        payload: 2
+        payload: {
+          fraDato: '2',
+          tilDato: '2',
+          fraInntektsregisteret: 'ja',
+          fraArbeidsgiverregisteret: 'ja',
+          arbeidsgiversOrgnr: '456',
+          arbeidsgiversNavn: 'def'
+        }
       })
     ).toEqual({
       ...initialSakState,
-      arbeidsgiver: [1]
+      arbeidsgivere: [{
+        fraDato: '1',
+        tilDato: '1',
+        fraInntektsregisteret: 'ja',
+        fraArbeidsgiverregisteret: 'ja',
+        arbeidsgiversOrgnr: '123',
+        arbeidsgiversNavn: 'abc'
+      }]
     })
   })
 
@@ -299,14 +329,14 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: 1 }]
+        familierelasjoner: [{ fnr: '1' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_ADD,
-        payload: { fnr: 2 }
+        payload: { fnr: '2' }
       })
     ).toEqual({
       ...initialSakState,
-      familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
+      familierelasjoner: [{ fnr: '1' }, { fnr: '2' }]
     })
   })
 
@@ -314,14 +344,14 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: 1 }, { fnr: 2 }]
+        familierelasjoner: [{ fnr: '1' }, { fnr: '2' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_REMOVE,
-        payload: { fnr: 2 }
+        payload: { fnr: '2' }
       })
     ).toEqual({
       ...initialSakState,
-      familierelasjoner: [{ fnr: 1 }]
+      familierelasjoner: [{ fnr: '1' }]
     })
   })
 })

@@ -16,7 +16,6 @@ jest.mock('actions/validation', () => ({
 const mockReplySed = getReplySed('F002')
 
 const defaultSelector: FormålManagerFormSelector = {
-  highContrast: false,
   validation: {}
 }
 

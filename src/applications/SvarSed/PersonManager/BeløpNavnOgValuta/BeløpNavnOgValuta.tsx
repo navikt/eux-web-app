@@ -33,12 +33,7 @@ import { getIdx } from 'utils/namespace'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
 import Tooltip from 'rc-tooltip'
 
-interface BeløpNavnOgValutaSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): BeløpNavnOgValutaSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -50,10 +45,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, BeløpNavnOgValutaSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = `${personID}.ytelser`
   const ytelser: Array<Ytelse> = _.get(replySed, target)
@@ -256,8 +248,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + '-ytelseNavn'}
-              feil={getErrorFor(index, 'ytelseNavn')}
-              highContrast={highContrast}
+              error={getErrorFor(index, 'ytelseNavn')}
               id={namespace + '-ytelseNavn'}
               key={namespace + '-ytelseNavn-' + (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn)}
               label={t('label:betegnelse-på-ytelse') + ' *'}
@@ -274,7 +265,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               <Input
                 type='number'
                 min='0'
-                feil={getErrorFor(index, 'antallPersoner')}
+                error={getErrorFor(index, 'antallPersoner')}
                 key={'antall-innvilges-' + (index < 0 ? _newAntallPersoner : ytelse?.antallPersoner)}
                 namespace={namespace}
                 id='antallPersoner'
@@ -289,7 +280,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
           <Column>
             <Input
-              feil={getErrorFor(index, 'beloep')}
+              error={getErrorFor(index, 'beloep')}
               namespace={namespace}
               id='beloep'
               label={personID === 'familie'
@@ -318,7 +309,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               ariaLabel={t('label:valuta')}
               data-test-id={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
-              highContrast={highContrast}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'
@@ -353,7 +343,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
           <Column>
             <Input
-              feil={getErrorFor(index, 'mottakersNavn')}
+              error={getErrorFor(index, 'mottakersNavn')}
               namespace={namespace}
               id='mottakersNavn'
               key={namespace + '-mottakersNavn' + (index < 0 ? _newMottakersNavn : (ytelse?.mottakersNavn ?? ''))}
@@ -372,7 +362,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + '-utbetalingshyppighet'}
               id={namespace + '-utbetalingshyppighet'}
               key={namespace + '-utbetalingshyppighet' + (index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet)}
-              feil={getErrorFor(index, 'utbetalingshyppighet')}
+              error={getErrorFor(index, 'utbetalingshyppighet')}
               name={namespace + '-utbetalingshyppighet'}
               legend={t('label:periode-avgrensing') + ' *'}
               radios={[

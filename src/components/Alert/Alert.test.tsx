@@ -6,7 +6,7 @@ import Alert, { AlertProps } from './Alert'
 describe('components/Alert/Alert', () => {
   let wrapper: ReactWrapper
   const initialMockProps: AlertProps = {
-    status: 'OK',
+    variant: 'success',
     message: 'mockErrorMessage',
     error: undefined,
     onClose: jest.fn()
@@ -42,13 +42,13 @@ describe('components/Alert/Alert', () => {
   })
 
   it('Render: has proper HTML structure as client in WARNING type', () => {
-    wrapper = mount(<Alert {...initialMockProps} status='WARNING' />)
+    wrapper = mount(<Alert {...initialMockProps} variant='warning' />)
     expect(wrapper.render().hasClass('alertstripe--advarsel')).toBeTruthy()
   })
 
   it('Render: has proper HTML structure as client in ERROR type', () => {
-    wrapper = mount(<Alert {...initialMockProps} status='ERROR' />)
-    expect(wrapper.render().hasClass('alertstripe--feil')).toBeTruthy()
+    wrapper = mount(<Alert {...initialMockProps} variant='error' />)
+    expect(wrapper.render().hasClass('alertstripe--error')).toBeTruthy()
   })
 
   it('Render: Pretty prints a error message', () => {
@@ -70,7 +70,7 @@ describe('components/Alert/Alert', () => {
 
   it('Handling: close button clears alert', () => {
     (initialMockProps.onClose as jest.Mock).mockReset()
-    wrapper = mount(<Alert {...initialMockProps} status='ERROR' />)
+    wrapper = mount(<Alert {...initialMockProps} variant='error' />)
     wrapper.find('[data-test-id=\'alert__close-icon\']').hostNodes().simulate('click')
     expect(initialMockProps.onClose).toHaveBeenCalled()
   })

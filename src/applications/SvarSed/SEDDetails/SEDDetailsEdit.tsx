@@ -320,7 +320,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         <AlignStartRow>
           <Column>
             <Input
-              feil={getErrorFor(index, 'saksnummer')}
+              error={getErrorFor(index, 'saksnummer')}
               namespace={namespace}
               key={namespace + '-lokaleSakIder-saksnummer' + (index < 0 ? _newSakseierSaksnummer : lokaleSakId?.saksnummer)}
               id='-saksnummer'
@@ -351,7 +351,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         <AlignStartRow>
           <Column>
             <Input
-              feil={getErrorFor(index, 'institusjonsid')}
+              error={getErrorFor(index, 'institusjonsid')}
               namespace={namespace}
               key={namespace + '-lokaleSakIder-institusjonsid' + lokaleSakId?.institusjonsid}
               id='-institusjonsid'
@@ -362,7 +362,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor(index, 'institusjonsnavn')}
+              error={getErrorFor(index, 'institusjonsnavn')}
               namespace={namespace}
               key={namespace + '-lokaleSakIder-institusjonsnavn' + lokaleSakId?.institusjonsnavn}
               id='-institusjonsnavn'
@@ -397,9 +397,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     <>
       {!isHSed(replySed) && (
         <>
-          <UndertekstBold>
+          <Detail>
             {t('label:periode')}
-          </UndertekstBold>
+          </Detail>
           <VerticalSeparatorDiv size='0.5' />
           {isUSed(replySed) && (
             <>
@@ -446,14 +446,14 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      <UndertekstBold>
+      <Detail>
         {t('label:søker')}
-      </UndertekstBold>
+      </Detail>
       <VerticalSeparatorDiv size='0.5' />
       <AlignStartRow>
         <Column>
           <Input
-            feil={validation[namespace + '-søker-fornavn']?.feilmelding}
+            error={validation[namespace + '-søker-fornavn']?.feilmelding}
             namespace={namespace}
             key={namespace + '-søker-fornavn' + replySed.bruker.personInfo.fornavn}
             id='-søker-fornavn'
@@ -465,7 +465,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
         <HorizontalSeparatorDiv size='0.35' />
         <Column>
           <Input
-            feil={validation[namespace + '-søker-etternavn']?.feilmelding}
+            error={validation[namespace + '-søker-etternavn']?.feilmelding}
             namespace={namespace}
             key={namespace + '-søker-etternavn' + replySed.bruker.personInfo.etternavn}
             id='-søker-etternavn'
@@ -478,9 +478,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       <VerticalSeparatorDiv />
       {isUSed(replySed) && (
         <>
-          <UndertekstBold>
+          <Detail>
             {t('label:motpart-sakseier')}
-          </UndertekstBold>
+          </Detail>
           <VerticalSeparatorDiv size='0.5' />
           {(replySed as USed)?.lokaleSakIder?.map(renderLokaleSakId)}
           <VerticalSeparatorDiv />
@@ -508,14 +508,14 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       )}
       {isF002Sed(replySed) && (
         <>
-          <UndertekstBold>
+          <Detail>
             {t('label:partner')}
-          </UndertekstBold>
+          </Detail>
           <VerticalSeparatorDiv size='0.5' />
           <AlignStartRow>
             <Column>
               <Input
-                feil={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
+                error={validation[namespace + '-ektefelle-fornavn']?.feilmelding}
                 namespace={namespace}
                 key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle?.personInfo?.fornavn ?? ''}
                 id='-ektefelle-fornavn'
@@ -527,7 +527,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             <HorizontalSeparatorDiv size='0.35' />
             <Column>
               <Input
-                feil={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
+                error={validation[namespace + '-ektefelle-etternavn']?.feilmelding}
                 namespace={namespace}
                 key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? ''}
                 id='-ektefelle-etternavn'
@@ -539,29 +539,33 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <div>
-            <HighContrastRadioGroup
+            <RadioGroup
               legend={t('label:type-krav')}
               data-test-id='seddetails-typeKrav'
-              feil={validation['seddetails-typeKrav']?.feilmelding}
+              error={validation['seddetails-typeKrav']?.feilmelding}
               id='seddetails-kravType'
             >
-              <HighContrastRadio
+              <Radio
                 name='seddetails-typeKrav'
                 checked={(replySed as F002Sed).krav?.kravType === 'nytt_krav'}
-                label={t('app:kravType-nytt_krav')}
+                value='nytt_krav'
                 onClick={() => setKravType('nytt_krav')}
-              />
-              <HighContrastRadio
+              >
+                {t('app:kravType-nytt_krav')}
+              </Radio>
+              <Radio
                 checked={(replySed as F002Sed).krav?.kravType === 'endrede_omstendigheter'}
                 name='seddetails-typeKrav'
-                label={t('app:kravType-endrede_omstendigheter')}
+                value='endrede_omstendigheter'
                 onClick={() => setKravType('endrede_omstendigheter')}
-              />
-            </HighContrastRadioGroup>
+              >
+                {t('app:kravType-endrede_omstendigheter')}
+              </Radio>
+            </RadioGroup>
           </div>
           <VerticalSeparatorDiv />
           <DateInput
-            feil={validation[namespace + '-kravMottattDato']?.feilmelding}
+            error={validation[namespace + '-kravMottattDato']?.feilmelding}
             namespace={namespace}
             key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
             id='kravMottattDato'
@@ -571,32 +575,36 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           />
           <VerticalSeparatorDiv />
           <div>
-            <HighContrastRadioGroup
+            <RadioGroup
               legend={t('label:informasjon-om-søknaden')}
               data-test-id='seddetails-informasjon'
-              feil={validation['seddetails-informasjon']
+              error={validation['seddetails-informasjon']
                 ? validation['seddetails-informasjon']!.feilmelding
                 : undefined}
               id='seddetails-informasjon'
             >
-              <HighContrastRadio
+              <Radio
                 name='seddetails-informasjon'
+                value='vi_bekrefter_leverte_opplysninger'
                 checked={(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger'}
-                label={t('app:info-confirm-information')}
                 onClick={() => setInfoType('vi_bekrefter_leverte_opplysninger')}
-              />
-              <HighContrastRadio
+              >
+                {t('app:info-confirm-information')}
+              </Radio>
+              <Radio
                 checked={(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger'}
                 name='seddetails-informasjon'
-                label={t('app:info-point-information')}
+                value='gi_oss_punktvise_opplysninger'
                 onClick={() => setInfoType('gi_oss_punktvise_opplysninger')}
-              />
+              >
+                {t('app:info-point-information')}
+              </Radio>
               {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
                 <div className='slideInFromLeft'>
                   <VerticalSeparatorDiv />
                   <TextAreaDiv>
                     <TextArea
-                      feil={validation['seddetails-opplysninger']?.feilmelding}
+                      error={validation['seddetails-opplysninger']?.feilmelding}
                       id='opplysninger'
                       namespace='seddetails'
                       label={t('label:opplysninger')}
@@ -607,7 +615,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                   </TextAreaDiv>
                 </div>
               )}
-            </HighContrastRadioGroup>
+            </RadioGroup>
           </div>
         </>
       )}

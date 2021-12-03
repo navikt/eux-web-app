@@ -1,9 +1,9 @@
-import { getJoarkItemPreview, listJoarkItems } from 'actions/joark'
-import { JoarkPoster } from 'declarations/joark'
+import { getJoarkItemPreview, listJoarkItems } from 'actions/attachments'
+import { JoarkPoster } from 'declarations/attachments'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
-import mockJoark from 'mocks/joark/joark'
-import mockJoarkProcessed from 'mocks/joark/joarkAsItems'
+import mockJoark from 'mocks/attachments/joark'
+import mockJoarkProcessed from 'mocks/attachments/joarkAsItems'
 import { stageSelector } from 'setupTests'
 import { JoarkBrowser, JoarkBrowserProps, JoarkBrowserSelector } from './JoarkBrowser'
 import TableSorter from 'tabell'
@@ -17,11 +17,10 @@ jest.mock('actions/joark', () => ({
 const files: Array<JoarkPoster> = _.cloneDeep(mockJoark.data.dokumentoversiktBruker.journalposter)
 
 const defaultSelector: JoarkBrowserSelector = {
-  fnr: '123',
   list: files,
-  loadingJoarkList: false,
-  loadingJoarkPreviewFile: false,
-  previewFile: undefined
+  gettingJoarkList: false,
+  gettingJoarkFile: false,
+  previewFileRaw: undefined
 }
 
 describe('components/JoarkBrowser/JoarkBrowser', () => {
@@ -29,7 +28,7 @@ describe('components/JoarkBrowser/JoarkBrowser', () => {
 
   const initialMockProps: JoarkBrowserProps = {
     existingItems: [],
-    highContrast: false,
+    fnr: '123',
     onRowSelectChange: jest.fn(),
     onPreviewFile: jest.fn(),
     onRowViewDelete: jest.fn(),
@@ -65,7 +64,7 @@ describe('components/JoarkBrowser/JoarkBrowser', () => {
   it('UseEffect: list Joark files', () => {
     stageSelector(defaultSelector, { list: undefined })
     wrapper = mount(<JoarkBrowser {...initialMockProps} />)
-    expect(listJoarkItems).toHaveBeenCalledWith(defaultSelector.fnr)
+    expect(listJoarkItems).toHaveBeenCalledWith(initialMockProps.fnr)
   })
 
   it('UseEffect: when new preview file is available, trigger it', () => {

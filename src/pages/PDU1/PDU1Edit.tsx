@@ -1,5 +1,5 @@
-import { Download, Sight } from '@navikt/ds-icons'
-import { Loader } from '@navikt/ds-react'
+import { Download, Sight, BackFilled } from '@navikt/ds-icons'
+import { Loader, Button, Link } from '@navikt/ds-react'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import {
   completePdu1,
@@ -21,8 +21,6 @@ import FileFC from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import { BackFilled } from '@navikt/ds-icons'
-import { Button, Link } from '@navikt/ds-react'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
@@ -42,7 +40,6 @@ import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 export interface PDU1EditSelector {
   completingPdu1: boolean
   gettingPreviewPdu1: boolean
-  highContrast: boolean
   previewPdu1: any,
   replyPdu1: ReplyPdu1 | null | undefined
   savingPdu1: boolean
@@ -62,7 +59,6 @@ const mapState = (state: State): any => ({
   previewPdu1: state.pdu1.previewPdu1,
   replyPdu1: state.pdu1.replyPdu1,
   completePdu1Response: state.pdu1.completePdu1Response,
-  highContrast: state.ui.highContrast,
   validation: state.validation.status,
   view: state.validation.view
 })
@@ -79,7 +75,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     previewPdu1,
     replyPdu1,
     completePdu1Response,
-    highContrast,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
   const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
@@ -90,7 +85,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
-  const completePdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>): void => {
+  const completePdu1Clicked = (e: any): void => {
     if (replyPdu1) {
       const newReplyPdu1: ReplyPdu1 = _.cloneDeep(replyPdu1)
       const valid = performValidation({
@@ -125,7 +120,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     setCompleteModal(false)
   }
 
-  const onPreviewPdu1Clicked = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const onPreviewPdu1Clicked = (e: any) => {
     if (replyPdu1) {
       const newReplyPdu1 = _.cloneDeep(replyPdu1)
       dispatch(getPreviewPdu1(newReplyPdu1))
@@ -217,7 +212,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       />
       <SavePDU1Modal
         open={viewSavePdu1Modal}
-        highContrast={highContrast}
         replyPdu1={replyPdu1!}
         storageKey={storageKey}
         onModalClose={() => setViewSavePdu1Modal(false)}
@@ -251,7 +245,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         <Sight />
         <HorizontalSeparatorDiv size='0.5' />
         {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'PD U1' })}
-        {gettingPreviewPdu1 && <Loader/>}
+        {gettingPreviewPdu1 && <Loader />}
       </Button>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
@@ -267,7 +261,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             {completingPdu1
               ? t('message:loading-opprette-pdu1')
               : t('label:opprett-pdu1')}
-            {completingPdu1 && <Loader/>}
+            {completingPdu1 && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>

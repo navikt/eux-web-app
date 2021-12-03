@@ -1,9 +1,10 @@
-import ExternalLink from 'assets/icons/Logout'
+import { ExternalLink } from '@navikt/ds-icons'
 import * as types from 'constants/actionTypes'
 import i18n from 'i18n'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
-import { FlexDiv, HighContrastLink, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { Link } from '@navikt/ds-react'
 import React from 'react'
 import { Action } from 'redux'
 
@@ -106,13 +107,13 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             <FlexDiv>
               <span>{i18n.t('message:error-svarsed-failure-duplicate')}</span>
               <HorizontalSeparatorDiv size='0.5' />
-              <HighContrastLink target='_blank' href={url}>
+              <Link target='_blank' href={url} rel='noreferrer'>
                 <span>
                   {i18n.t('message:error-svarsed-failure-duplicate-2')}
                 </span>
                 <HorizontalSeparatorDiv size='0.35' />
                 <ExternalLink />
-              </HighContrastLink>
+              </Link>
             </FlexDiv>
           )
         } else {

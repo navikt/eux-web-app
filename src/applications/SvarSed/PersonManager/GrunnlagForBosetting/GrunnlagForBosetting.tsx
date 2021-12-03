@@ -222,7 +222,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <DateInput
-            feil={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
+            error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
             namespace={namespace}
             id='datoFlyttetTilAvsenderlandet'
             key={'' + flyttegrunn?.datoFlyttetTilAvsenderlandet}
@@ -233,7 +233,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         </Column>
         <Column>
           <DateInput
-            feil={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
+            error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
             namespace={namespace}
             id='datoFlyttetTilMottakerlandet'
             key={'' + flyttegrunn?.datoFlyttetTilMottakerlandet}
@@ -249,7 +249,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
         <Column flex='2'>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-personligSituasjon']?.feilmelding}
+              error={validation[namespace + '-personligSituasjon']?.feilmelding}
               namespace={namespace}
               id='personligSituasjon'
               label={t('label:elementter-i-personlig-situasjon')}

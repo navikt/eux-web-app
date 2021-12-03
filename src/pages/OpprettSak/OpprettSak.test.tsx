@@ -1,7 +1,7 @@
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { stageSelector } from 'setupTests'
-import OpprettSak, { OpprettSakProps, OpprettSakSelector } from './OpprettSak'
+import OpprettSak, { OpprettSakSelector } from './OpprettSak'
 
 jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)
@@ -9,9 +9,6 @@ jest.mock('react-router-dom', () => ({
 
 describe('pages/OpprettSak/OpprettSak', () => {
   let wrapper: ReactWrapper
-  const initialMockProps: OpprettSakProps = {
-    history: {}
-  }
 
   const defaultSelector: OpprettSakSelector = {
     alertMessage: undefined,
@@ -30,6 +27,8 @@ describe('pages/OpprettSak/OpprettSak', () => {
 
     sendingSak: false,
     gettingPerson: false,
+    gettingFagsaker: false,
+    gettingArbeidsperioder: false,
 
     arbeidsperioder: undefined,
     valgteArbeidsgivere: [],
@@ -55,7 +54,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<OpprettSak {...initialMockProps} />)
+    wrapper = mount(<OpprettSak />)
   })
 
   afterEach(() => {

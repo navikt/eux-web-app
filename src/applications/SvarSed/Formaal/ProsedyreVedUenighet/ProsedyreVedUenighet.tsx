@@ -12,7 +12,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { BodyLong, Heading,Button } from @navikt/ds-react'
+import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -28,12 +28,7 @@ import { Option } from 'declarations/app.d'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 import { Add } from '@navikt/ds-icons'
 
-export interface ProsedyreVedUenighetSelector extends FormålManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): ProsedyreVedUenighetSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): FormålManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -43,10 +38,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
   updateReplySed
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  }: any = useSelector<State, ProsedyreVedUenighetSelector>(mapState)
+  const { validation }: any = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'uenighet'
   const prosedyreVedUenighet: IProsedyreVedUenighet | undefined = (replySed as F002Sed).uenighet
@@ -203,13 +195,12 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-grunn'}
-              feil={getErrorFor('grunn')}
-              highContrast={highContrast}
+              error={getErrorFor('grunn')}
               id={namespace + idx + '-grunn'}
               key={namespace + idx + '-grunn-' + (grunn === null ? _newGrunn : grunn?.grunn)}
               label={t('label:velg-grunn-til-uenighet')}
               menuPortalTarget={document.body}
-              onChange={(o: Option) => setGrunn(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              onChange={(o: unknown) => setGrunn((o as Option).value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={thisGrunnOptions}
               placeholder={t('el:placeholder-select-default')}
               value={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
@@ -220,13 +211,12 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-person'}
-              feil={getErrorFor('person')}
-              highContrast={highContrast}
+              error={getErrorFor('person')}
               id={namespace + idx + '-person'}
               key={namespace + idx + '-person-' + (grunn === null ? _newPerson : grunn?.person)}
               label={t('label:personen-det-gjelder') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(o: Option) => setPerson(o.value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
+              onChange={(o: unknown) => setPerson((o as Option).value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={personOptions}
               placeholder={t('el:placeholder-select-default')}
               value={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
@@ -305,7 +295,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-ytterligereGrunner']?.feilmelding}
+              error={validation[namespace + '-ytterligereGrunner']?.feilmelding}
               namespace={namespace}
               id='ytterligereGrunner'
               label={t('label:ytterligere-grunner-til-uenighet')}

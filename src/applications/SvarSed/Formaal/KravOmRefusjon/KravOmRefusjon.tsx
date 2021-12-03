@@ -44,7 +44,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-krav']?.feilmelding}
+              error={validation[namespace + '-krav']?.feilmelding}
               key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
               id='krav'
               label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
@@ -64,7 +64,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
             size='small'
             data-test-id={namespace + '-konto-button'}
             data-amplitude='svarsed.editor.seekontoopplysning'
-            onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+            onClick={(e) => {
               buttonLogger(e)
               seeKontoopplysninger()
             }}

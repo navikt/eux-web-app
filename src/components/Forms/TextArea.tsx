@@ -1,12 +1,12 @@
 import classNames from 'classnames'
-import { HighContrastTextArea } from 'nav-hoykontrast'
+import { Textarea } from '@navikt/ds-react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface TextAreaProps {
   className ?: string
   description ?: string
-  feil: string | undefined
+  error: string | undefined
   namespace: string
   id: string
   label: string
@@ -19,7 +19,7 @@ export interface TextAreaProps {
 const TextArea: React.FC<TextAreaProps> = ({
   className,
   description,
-  feil,
+  error,
   namespace,
   id,
   label,
@@ -34,12 +34,12 @@ const TextArea: React.FC<TextAreaProps> = ({
   const { t } = useTranslation()
 
   return (
-    <HighContrastTextArea
+    <Textarea
       aria-label={label}
-      className={classNames(className, { 'skjemaelement__input--harFeil': feil })}
+      className={classNames(className, { 'skjemaelement__input--harFeil': error })}
       data-test-id={namespace + '-' + id}
       description={description}
-      feil={feil}
+      error={error}
       id={namespace + '-' + id}
       label={label}
       maxLength={maxLength}

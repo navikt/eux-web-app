@@ -1,26 +1,13 @@
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
-import UkjentSide, { UkjentSideProps } from './UkjentSide'
+import UkjentSide from './UkjentSide'
 jest.mock('components/TopContainer/TopContainer', () => ({ children }: any) => (<div className='mock-topContainer'>{children}</div>))
 
 describe('pages/OpprettSak/OpprettSak', () => {
   let wrapper: ReactWrapper
-  const initialMockProps: UkjentSideProps = {
-    location: {
-      host: '',
-      hash: '',
-      hostname: '',
-      href: '',
-      origin: '',
-      pathname: '',
-      port: '',
-      protocol: '',
-      search: ''
-    } as Location
-  }
 
   beforeEach(() => {
-    wrapper = mount(<UkjentSide {...initialMockProps} />)
+    wrapper = mount(<UkjentSide />)
   })
 
   afterEach(() => {

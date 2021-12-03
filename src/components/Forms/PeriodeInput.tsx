@@ -1,9 +1,10 @@
+import { Checkbox } from '@navikt/ds-react'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
 import moment, { Moment } from 'moment'
-import { Column, HighContrastCheckbox } from 'nav-hoykontrast'
+import { Column } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -109,7 +110,7 @@ const PeriodeInput = <T extends Periode>({
       <Column>
         <Input
           ariaLabel={label?.startdato ?? t('label:startdato')}
-          feil={error.startdato}
+          error={error.startdato}
           id='startdato'
           key={namespace + '-startdato-' + _periode?.startdato}
           label={showLabel ? label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : '') : ''}
@@ -123,7 +124,7 @@ const PeriodeInput = <T extends Periode>({
       <Column>
         <Input
           ariaLabel={label?.sluttdato || t('label:sluttdato')}
-          feil={error.sluttdato}
+          error={error.sluttdato}
           id='sluttdato'
           key={namespace + '-sluttdato-' + _periode?.sluttdato}
           label={showLabel ? label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '') : ''}
@@ -137,11 +138,11 @@ const PeriodeInput = <T extends Periode>({
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (
-            <HighContrastCheckbox
+            <Checkbox
               checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
-              label={t('label:ukjent')}
-            />
+            > {t('label:ukjent')}
+            </Checkbox>
           )}
         </WrapperDiv>
       )}

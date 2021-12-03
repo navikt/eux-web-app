@@ -37,7 +37,6 @@ export interface KeyAndYtelse {
 }
 
 export interface KeyAndYtelseProps {
-  highContrast: boolean
   keyAndYtelses: Array<KeyAndYtelse>
   onAdded: (barnKey: string, ytelseNavn: string) => void
   onRemoved: (fullKey: string) => void
@@ -49,7 +48,6 @@ export interface KeyAndYtelseProps {
 }
 
 const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
-  highContrast,
   keyAndYtelses,
   onAdded,
   onRemoved,
@@ -154,8 +152,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-key'}
-              feil={getErrorFor('key')}
-              highContrast={highContrast}
+              error={getErrorFor('key')}
               id={namespace + idx + '-key'}
               key={namespace + idx + '-key-' + barnaKey}
               label={t('label:barnets-navn') + ' *'}
@@ -169,7 +166,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor('ytelseNavn')}
+              error={getErrorFor('ytelseNavn')}
               id='ytelseNavn'
               key={namespace + idx + '-ytelseNavn-' + ytelseNavn}
               label={t('label:betegnelse-på-ytelse') + ' *'}

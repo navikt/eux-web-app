@@ -13,13 +13,11 @@ import { useTranslation } from 'react-i18next'
 
 export interface AttachmentsProps {
   fnr: string | undefined
-  highContrast: boolean
   onAttachmentsChanged: (items: JoarkBrowserItems) => void
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
   fnr,
-  highContrast,
   onAttachmentsChanged
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
@@ -55,7 +53,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
         variant='secondary'
         data-amplitude='svarsed.editor.attachments'
         disabled={_.isNil(fnr)}
-        onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+        onClick={(e: any) => {
           buttonLogger(e)
           setAttachmentsTableVisible(!_attachmentsTableVisible)
         }}
@@ -66,7 +64,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
       <SEDAttachmentModal
         open={_attachmentsTableVisible}
         fnr={fnr!}
-        highContrast={highContrast}
         onModalClose={() => setAttachmentsTableVisible(false)}
         onFinishedSelection={onJoarkAttachmentsChanged}
         sedAttachments={_items}
@@ -78,7 +75,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
           <JoarkBrowser
             existingItems={_items}
             fnr={fnr}
-            highContrast={highContrast}
             mode='view'
             onRowViewDelete={onRowViewDelete}
             tableId='vedlegg-view'

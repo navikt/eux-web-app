@@ -22,7 +22,7 @@ const UkjentSide: React.FC = (): JSX.Element => {
           <p>{t('message:error-unknownPage-description')}</p>
           <Link
             href='/'
-            ariaLabel={t('message:error-unknownPage-linkToRoot-ariaLabel')}
+            aria-label={t('message:error-unknownPage-linkToRoot-ariaLabel')}
           >
             {t('message:error-unknownPage-linkToRoot')}
           </Link>

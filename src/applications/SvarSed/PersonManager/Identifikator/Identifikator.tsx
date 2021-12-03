@@ -25,7 +25,6 @@ import { getIdx } from 'utils/namespace'
 import { validateIdentifikator, ValidationIdentifikatorProps } from './validation'
 
 export interface IdentifikatorProps {
-  highContrast: boolean
   identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
   onIdentifikatorerChanged: (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => void
   namespace: string
@@ -35,7 +34,6 @@ export interface IdentifikatorProps {
 }
 
 const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
-  highContrast,
   identifikatorer,
   onIdentifikatorerChanged,
   namespace,
@@ -153,8 +151,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             <Select
               closeMenuOnSelect
               data-test-id={namespace + idx + '-type'}
-              feil={getErrorFor('type')}
-              highContrast={highContrast}
+              error={getErrorFor('type')}
               id={namespace + idx + '-type'}
               key={namespace + idx + '-type-' + _type}
               label={t('label:type') + ' *'}
@@ -168,7 +165,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor('id')}
+              error={getErrorFor('id')}
               id='id'
               key={namespace + idx + '-id-' + (index < 0 ? _newId : identifikator?.id)}
               label={t('label:institusjonens-id') + ' *'}

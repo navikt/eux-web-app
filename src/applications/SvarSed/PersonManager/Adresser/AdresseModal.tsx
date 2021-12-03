@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 export interface AdresseModalProps {
-  highContrast: boolean
   open: boolean
   personName: string
   adresser: Array<IAdresse> | null | undefined
@@ -29,8 +28,7 @@ export type AdresseMap = {[k in AdresseType]?: Array<IAdresse>}
 export type AdresseKey = {[k in AdresseType]?: boolean}
 
 const AdresseModal: React.FC<AdresseModalProps> = ({
-  highContrast, open, personName, adresser, onAcceptAdresser, onRejectAdresser
-
+  open, personName, adresser, onAcceptAdresser, onRejectAdresser
 }: AdresseModalProps) => {
   const { t } = useTranslation()
   const [selectedAdresser, setSelectedAdresser] = useState<{[k in AdresseType]?: Array<IAdresse>}>({})
@@ -115,7 +113,7 @@ const AdresseModal: React.FC<AdresseModalProps> = ({
   return (
     <Modal
       open={open}
-      highContrast={highContrast} modal={{
+      modal={{
         modalTitle: t('label:pdl-adresse-til', { person: personName }),
         modalContent: (
           <div style={{ padding: '1rem' }}>

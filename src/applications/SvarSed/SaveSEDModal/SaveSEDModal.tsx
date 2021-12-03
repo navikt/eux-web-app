@@ -43,7 +43,6 @@ const SectionDiv = styled.div`
 
 interface SaveSEDModalProps {
   open: boolean
-  highContrast: boolean
   onModalClose: () => void
   replySed: ReplySed
   storageKey: string
@@ -51,7 +50,6 @@ interface SaveSEDModalProps {
 
 const SendSEDModal = ({
   open,
-  highContrast,
   onModalClose,
   replySed,
   storageKey
@@ -95,7 +93,6 @@ const SendSEDModal = ({
   return (
     <Modal
       open={open}
-      highContrast={highContrast}
       modal={{
         closeButton: false,
         modalContent: (
@@ -122,10 +119,11 @@ const SendSEDModal = ({
                       <FlexCenterSpacedDiv>
                         <Input
                           data-test-id='savesedmodal-name'
-                          feil={_validation['savesedmodal-name']?.feilmelding}
-                          id='savesedmodal-name'
+                          error={_validation['savesedmodal-name']?.feilmelding}
+                          id='name'
+                          namespace='savesedmodal'
                           label={t('label:navn')}
-                          onChanged={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                          onChanged={setName}
                           placeholder={t('el:placeholder-input-default')}
                           value={_name}
                         />

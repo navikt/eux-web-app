@@ -215,7 +215,8 @@ const Family: React.FC<FamilyProps> = ({
           <VerticalSeparatorDiv />
           <Button
             variant='secondary'
-            onClick={toggleViewTPSRelatedForm}>
+            onClick={toggleViewTPSRelatedForm}
+          >
             {_viewTPSRelatedForm
               ? t('label:skjul-skjema')
               : t('label:vis-skjema')}

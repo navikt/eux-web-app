@@ -10,7 +10,8 @@ jest.mock('react-router-dom', () => ({
 describe('components/Header/Header', () => {
   let wrapper: ReactWrapper
   const initialMockProps: HeaderProps = {
-    className: 'mock-classname'
+    title: 'title',
+    highContrast: false
   }
 
   const defaultSelector: HeaderSelector = {

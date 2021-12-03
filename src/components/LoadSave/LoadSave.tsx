@@ -12,7 +12,7 @@ import { LocalStorageEntry } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Button, Panel, BodyLong, Detail } from '@navikt/ds-react'
+import { Button, Panel, BodyLong, Detail, Loader } from '@navikt/ds-react'
 import {
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
@@ -69,7 +69,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
     dispatch(localStorageActions.removeEntry(namespace, storageKey, entry))
   }
 
-  const onRemoveAll = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const onRemoveAll = (e: any) => {
     buttonLogger(e)
     if (window.confirm(t('label:er-du-sikker'))) {
       dispatch(localStorageActions.removeAll(namespace, storageKey))
@@ -200,7 +200,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
                     data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
                   >
-                    {_sedStatusRequested === savedEntry.id && <Loader/>}
+                    {_sedStatusRequested === savedEntry.id && <Loader />}
                     {_sedStatusRequested === savedEntry.id
                       ? t('message:loading-checking-sed-status')
                       : (hasSentStatus(savedEntry.id)

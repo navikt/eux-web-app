@@ -1,16 +1,18 @@
 
 import classNames from 'classnames'
+import React from 'react'
 import ReactSelect, { Props } from 'react-select'
 
 interface SelectProps extends Props {
   error?: string
   label?: string | undefined
+  style ?: any
   'data-test-id'?: string
 }
 
 const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   return (
-    <div data-test-id={props['data-test-id'] || props.id}>
+    <div data-test-id={props['data-test-id'] || props.id} style={props.style}>
       {props.label && (<label className='skjemaelement__label'>{props.label ?? ''}</label>)}
       <ReactSelect
         inputId={props.id}

@@ -21,9 +21,9 @@ import _ from 'lodash'
 import {
   AlignStartRow,
   Column,
-  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  RadioPanelGroup,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -296,7 +296,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <Input
-              feil={getErrorFor(index, 'institusjon-id')}
+              error={getErrorFor(index, 'institusjon-id')}
               namespace={namespace}
               id='institusjon-id'
               key={'institusjon-id-' + (index < 0 ? _newInstitutionsId : periodeDagpenger?.institusjon.id ?? '')}
@@ -307,7 +307,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <Input
-              feil={getErrorFor(index, 'institusjon-navn')}
+              error={getErrorFor(index, 'institusjon-navn')}
               namespace={namespace}
               id='institusjon-navn'
               key={'institusjon-navn-' + (index < 0 ? _newInstitutionsNavn : periodeDagpenger?.institusjon.navn ?? '')}
@@ -321,12 +321,12 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv />
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={institusjonKjent ? 'ja' : 'nei'}
               data-test-id={namespace + idx + '-idmangler'}
               data-no-border
               id={namespace + idx + '-idmangler'}
-              feil={getErrorFor(index, 'idmangler')}
+              error={getErrorFor(index, 'idmangler')}
               legend={t('label:institusjonens-id-er-kjent') + ' *'}
               name={namespace + idx + '-idmangler'}
               radios={[
@@ -344,7 +344,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
               <Column>
                 <Input
-                  feil={getErrorFor(index, 'institusjon-idmangler-navn')}
+                  error={getErrorFor(index, 'institusjon-idmangler-navn')}
                   namespace={namespace}
                   id='institusjon-idmangler-navn'
                   key={'institusjon-idmangler-navn-' + (index < 0 ? _newNavn : periodeDagpenger?.institusjon.idmangler?.navn ?? '')}

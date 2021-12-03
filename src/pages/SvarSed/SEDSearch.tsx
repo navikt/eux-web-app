@@ -1,5 +1,5 @@
-import { Close, Copy, Edit, Email, Search, Send, Star } from '@navikt/ds-icons'
-import { Loader } from '@navikt/ds-react'
+import { Close, Copy, Edit, Email, Search, Send, Star, ExternalLink } from '@navikt/ds-icons'
+import { Alert, Loader, Button, TextField, Checkbox, Link, Panel, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import { cleanData, copyToClipboard } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -7,7 +7,6 @@ import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import * as svarsedActions from 'actions/svarsed'
 import { getSedStatus, setReplySed } from 'actions/svarsed'
 import { resetAllValidation } from 'actions/validation'
-import { ExternalLink } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -17,7 +16,6 @@ import { ConnectedSed, LocalStorageEntry, Sed } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Alert, Button, TextField, Checkbox, Link, Panel, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -66,7 +64,6 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
-  highContrast: state.ui.highContrast,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
   parentSed: state.svarsed.parentSed,
@@ -214,23 +211,21 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   return (
     <ContainerDiv>
-      <Systemtittel>
+      <Heading size='medium'>
         {t('app:page-title-svarsed-search')}
-      </Systemtittel>
+      </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
-        className={classNames('slideInFromLeft', { feil: _validation.saksnummerOrFnr })}
+        className={classNames('slideInFromLeft', { error: _validation.saksnummerOrFnr })}
       >
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
             <FlexStartDiv>
               <TextField
-                ariaLabel={t('label:saksnummer-eller-fnr')}
-                ariaInvalid={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
-                bredde='XL'
+                aria-label={t('label:saksnummer-eller-fnr')}
                 data-test-id={namespace + '-saksnummerOrFnr'}
-                feil={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+                error={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
                 id={namespace + '-saksnummerOrFnr'}
                 label={t('label:saksnummer-eller-fnr')}
                 onChange={onSaksnummerOrFnrChange}
@@ -243,7 +238,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                 <Button
                   variant='secondary'
                   size='small'
-                  ariaLabel={t('el:button-search')}
+                  aria-label={t('el:button-search')}
                   disabled={queryingSaksnummerOrFnr}
                   onClick={onSaksnummerOrFnrClick}
                 >
@@ -252,7 +247,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   {queryingSaksnummerOrFnr
                     ? t('message:loading-searching')
                     : t('el:button-search')}
-                  {queryingSaksnummerOrFnr && <Loader/>}
+                  {queryingSaksnummerOrFnr && <Loader />}
                 </Button>
               </div>
             </FlexStartDiv>
@@ -267,9 +262,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
       {alertMessage && alertType && [types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE].indexOf(alertType) >= 0 && (
         <>
           <AlertstripeDiv>
-            <AlertStripe type='advarsel'>
+            <Alert variant='warning'>
               {alertMessage}
-            </AlertStripe>
+            </Alert>
           </AlertstripeDiv>
           <VerticalSeparatorDiv />
         </>
@@ -290,11 +285,12 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               </span>
             </div>
             <div>
-              <HighContrastCheckbox
+              <Checkbox
                 checked={_allOpen}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setAllOpen(e.target.checked)}
-                label={t('label:utvid-alle')}
-              />
+              >
+                {t('label:utvid-alle')}
+              </Checkbox>
             </div>
           </FlexEndSpacedDiv>
           <VerticalSeparatorDiv />
@@ -304,7 +300,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               size='small'
               data-amplitude='svarsed.selection.filter.alle'
               className={classNames({ selected: _filter === undefined })}
-              onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+              onClick={(e: any) => {
                 buttonLogger(e)
                 _setFilter(undefined)
               }}
@@ -319,7 +315,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   size='small'
                   data-amplitude='svarsed.selection.filter.fb'
                   className={classNames({ selected: _filter === 'FB_' })}
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e: any) => {
                     buttonLogger(e)
                     _setFilter('FB_')
                   }}
@@ -336,7 +332,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   size='small'
                   data-amplitude='svarsed.selection.filter.ub'
                   className={classNames({ selected: _filter === 'UB_' })}
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e: any) => {
                     buttonLogger(e)
                     _setFilter('UB_')
                   }}
@@ -353,7 +349,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   size='small'
                   data-amplitude='svarsed.selection.filter.h'
                   className={classNames({ selected: _filter === 'H_' })}
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e: any) => {
                     buttonLogger(e)
                     _setFilter('H_')
                   }}
@@ -370,7 +366,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   size='small'
                   data-amplitude='svarsed.selection.filter.s'
                   className={classNames({ selected: _filter === 'S_' })}
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e: any) => {
                     buttonLogger(e)
                     _setFilter('S_')
                   }}
@@ -388,7 +384,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   size='small'
                   data-amplitude='svarsed.selection.filter.la'
                   className={classNames({ selected: _filter === 'LA_' })}
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e: any) => {
                     buttonLogger(e)
                     _setFilter('LA_')
                   }}
@@ -421,7 +417,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           {t('label:saksnummer') + ': ' + sed.sakId}
                         </span>
                         <HorizontalSeparatorDiv />
-                        <Link target='_blank' href={sed.sakUrl}>
+                        <Link target='_blank' href={sed.sakUrl} rel='noreferrer'>
                           <span>
                             {t('label:sak-i-rina')}
                           </span>
@@ -492,7 +488,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           </Heading>
                           <VerticalSeparatorDiv size='0.5' />
                           <FlexDiv>
-                            <Link target='_blank' href={sed.sakUrl}>
+                            <Link target='_blank' href={sed.sakUrl} rel='noreferrer'>
                               <span>
                                 {t('label:rediger-sed-i-rina')}
                               </span>
@@ -514,7 +510,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                 variant='secondary'
                                 size='small'
                                 data-amplitude='svarsed.selection.journalforing'
-                                onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                onClick={(e: any) => {
                                   buttonLogger(e, {
                                     type: connectedSed.sedType
                                   })
@@ -535,7 +531,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                 size='small'
                                 disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
                                 data-amplitude='svarsed.selection.loaddraft'
-                                onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                onClick={(e: any) => {
                                   buttonLogger(e, {
                                     type: connectedSed.svarsedType
                                   })
@@ -549,7 +545,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                   : (hasSentStatus(connectedSed.svarsedId)
                                       ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
                                       : t('label:gå-til-draft'))}
-                                {_sedStatusRequested === connectedSed.svarsedId && <Loader/>}
+                                {_sedStatusRequested === connectedSed.svarsedId && <Loader />}
                               </Button>
                               )
                             : connectedSed.svarsedType
@@ -559,7 +555,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                   disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
                                   data-amplitude='svarsed.selection.replysed'
                                   title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                                  onClick={(e: any) => {
                                     buttonLogger(e, {
                                       type: connectedSed.svarsedType,
                                       parenttype: connectedSed.sedType
@@ -572,7 +568,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                     : t('label:besvar-med', {
                                       sedtype: connectedSed.svarsedType
                                     })}
-                                  {queryingReplySed & <Loader/>}
+                                  {queryingReplySed && <Loader />}
                                 </Button>
                                 )
                               : (<div />)}

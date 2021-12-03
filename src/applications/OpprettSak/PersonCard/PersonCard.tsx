@@ -1,7 +1,7 @@
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import { Delete } from '@navikt/ds-icons'
+import { Delete, Add } from '@navikt/ds-icons'
 import { toUIDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
@@ -12,7 +12,6 @@ import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Add } from '@navikt/ds-icons'
 
 const PersonCardDiv = styled.div`
   display: flex;

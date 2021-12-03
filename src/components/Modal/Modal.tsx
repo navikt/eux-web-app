@@ -50,13 +50,13 @@ export interface ModalProps {
 }
 
 const ModalFC: React.FC<ModalProps> = ({
-                                         appElementId = 'body',
-                                         className,
-                                         icon = undefined,
-                                         onModalClose = () => {},
-                                         open,
-                                         modal
-                                       }: ModalProps): JSX.Element => {
+  appElementId = 'body',
+  className,
+  icon = undefined,
+  onModalClose = () => {},
+  open,
+  modal
+}: ModalProps): JSX.Element => {
   if (typeof (window) !== 'undefined') {
     ReactModal.setAppElement(document.getElementById(appElementId) ?? 'body')
   }
@@ -97,7 +97,7 @@ const ModalFC: React.FC<ModalProps> = ({
                 ? () => {
                   button.onClick!()
                   onModalClose()
-                }
+                  }
                 : onModalClose
 
               return (

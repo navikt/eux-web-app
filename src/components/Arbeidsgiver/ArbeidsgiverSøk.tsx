@@ -6,7 +6,7 @@ import { State } from 'declarations/reducers'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Button, BodyLong } from '@navikt/ds-react'
+import { Button, BodyLong, Loader } from '@navikt/ds-react'
 import { AlignEndRow, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -24,12 +24,10 @@ interface ArbeidsgiverSøkProps {
 }
 
 interface ArbeidsgiverSøkSelector {
-  highContrast: boolean
   gettingArbeidsperioder: boolean
 }
 
 const mapState = (state: State): ArbeidsgiverSøkSelector => ({
-  highContrast: state.ui.highContrast,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder
 })
 
@@ -40,10 +38,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
   fillOutFnr
 }: ArbeidsgiverSøkProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    gettingArbeidsperioder
-  }: ArbeidsgiverSøkSelector = useSelector<State, ArbeidsgiverSøkSelector>(mapState)
+  const { gettingArbeidsperioder }: ArbeidsgiverSøkSelector = useSelector<State, ArbeidsgiverSøkSelector>(mapState)
   const dispatch = useDispatch()
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('2015-01')
@@ -100,7 +95,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
         <Column>
           <Input
             namespace={namespace + '-arbeidssok'}
-            feil={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
+            error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
             id='startdato'
             label={t('label:fra')}
             onChanged={setArbeidssøkStartDato}
@@ -111,7 +106,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
         <Column>
           <Input
             namespace={namespace + '-arbeidssok'}
-            feil={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
+            error={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
             id='sluttdato'
             label={t('label:til')}
             onChanged={setArbeidssøkSluttDato}
@@ -122,12 +117,11 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
         <Column>
           <Select
             data-test-id={namespace + '-arbeidssok-inntektsliste'}
-            feil={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
-            highContrast={highContrast}
+            error={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
             id={namespace + '-arbeidssok-inntektsliste'}
             label={t('label:filter')}
             menuPortalTarget={document.body}
-            onChange={(o: Option) => setArbeidssøkInntektslistetype(o.value)}
+            onChange={(o: unknown) => setArbeidssøkInntektslistetype((o as Option).value)}
             options={inntektslistetypeOptions}
             placeholder={t('el:placeholder-select-default')}
             value={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
@@ -146,7 +140,7 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             {gettingArbeidsperioder
               ? t('message:loading-searching')
               : t('el:button-search-for-x', { x: t('label:arbeidsperioder') })}
-            {gettingArbeidsperioder && <Loader/>}
+            {gettingArbeidsperioder && <Loader />}
           </Button>
         </Column>
       </AlignStartRow>

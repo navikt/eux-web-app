@@ -1,4 +1,4 @@
-import { Add, Edit, Search } from '@navikt/ds-icons'
+import { Add, Edit, Search, CollapseFilled } from '@navikt/ds-icons'
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -16,14 +16,14 @@ import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Heading } from '@navikt/ds-react'
+import { Button, BodyLong, Heading, Loader } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  RadioPanelGroup,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -209,7 +209,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onSearchUser = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const onSearchUser = (e: any) => {
     if (norwegianPin && norwegianPin.identifikator) {
       buttonLogger(e)
       dispatch(searchPerson(norwegianPin.identifikator))
@@ -282,7 +282,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         >
           <Column>
             <Input
-              feil={getErrorFor(index, 'identifikator')}
+              error={getErrorFor(index, 'identifikator')}
               id='identifikator'
               key={namespace + '-pin' + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : pin?.identifikator)}
               label={t('label:utenlandsk-pin')}
@@ -334,7 +334,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <Input
-            feil={validation[namespace + '-fornavn']?.feilmelding}
+            error={validation[namespace + '-fornavn']?.feilmelding}
             id='fornavn'
             key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
             label={t('label:fornavn') + ' *'}
@@ -346,7 +346,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <Input
-            feil={validation[namespace + '-etternavn']?.feilmelding}
+            error={validation[namespace + '-etternavn']?.feilmelding}
             id='etternavn'
             key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
             label={t('label:etternavn') + ' *'}
@@ -358,7 +358,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <DateInput
-            feil={validation[namespace + '-foedselsdato']?.feilmelding}
+            error={validation[namespace + '-foedselsdato']?.feilmelding}
             id='foedselsdato'
             key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
             label={t('label:fødselsdato') + ' *'}
@@ -372,11 +372,11 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <HighContrastRadioPanelGroup
+          <RadioPanelGroup
             checked={personInfo?.kjoenn}
             data-no-border
             data-test-id={namespace + '-kjoenn'}
-            feil={validation[namespace + '-kjoenn']?.feilmelding}
+            error={validation[namespace + '-kjoenn']?.feilmelding}
             id={namespace + '-kjoenn'}
             key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
             legend={t('label:kjønn') + ' *'}
@@ -448,7 +448,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             <>
               <Column>
                 <Input
-                  feil={validation[namespace + '-norskpin-nummer']?.feilmelding}
+                  error={validation[namespace + '-norskpin-nummer']?.feilmelding}
                   id='norskpin-nummer'
                   key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
                   label=''
@@ -470,7 +470,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   {searchingPerson
                     ? t('message:loading-searching')
                     : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                  {searchingPerson && <Loader/>}
+                  {searchingPerson && <Loader />}
                 </Button>
                 <HorizontalSeparatorDiv size='0.35' />
                 <Button
@@ -498,7 +498,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   variant='secondary'
                   size='small'
                   data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
-                  onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                  onClick={(e) => {
                     buttonLogger(e)
                     onFillOutPerson(searchedPerson)
                   }}
@@ -531,7 +531,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow key='showNewForm' className='slideInFromLeft'>
               <Column>
                 <Input
-                  feil={validation[namespace + '-foedested-by']?.feilmelding}
+                  error={validation[namespace + '-foedested-by']?.feilmelding}
                   id='foedested-by'
                   label={t('label:by')}
                   namespace={namespace}
@@ -541,7 +541,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               </Column>
               <Column>
                 <Input
-                  feil={validation[namespace + '-foedested-region']?.feilmelding}
+                  error={validation[namespace + '-foedested-region']?.feilmelding}
                   id='foedested-region'
                   label={t('label:region')}
                   namespace={namespace}
@@ -572,7 +572,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   size='small'
                   onClick={() => setSeeNewFoedstedForm(false)}
                 >
-                  <Chevron type='opp' />
+                  <CollapseFilled />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('label:show-less')}
                 </Button>

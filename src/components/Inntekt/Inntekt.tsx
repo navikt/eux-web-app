@@ -1,17 +1,15 @@
-import ExternalLink from 'assets/icons/Logout'
+import { ExternalLink } from '@navikt/ds-icons'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
-import { BodyLong, Undertittel } from '@navikt/ds-react'
+import { BodyLong, Link, Heading } from '@navikt/ds-react'
 import {
   AlignEndRow,
   AlignStartRow,
   Column,
   FlexDiv,
-  HighContrastLink,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PileDiv,
-  themeKeys,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import Pagination from 'paginering'
@@ -30,7 +28,7 @@ const ArbeidsgiverDiv = styled(FlexDiv)`
  padding: 1rem;
 `
 const LeftBorderFlexDiv = styled(FlexDiv)`
-  border-left: 1px solid ${({ theme }) => theme[themeKeys.MAIN_BORDER_COOLOR]};
+  border-left: 1px solid var(--navds-color-border);
 `
 
 const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
@@ -120,11 +118,11 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
             <VerticalSeparatorDiv size='0.5' />
             <AlignEndRow>
               <Column>
-                <HighContrastLink target='_blank' href={inntekter.uriInntektRegister}>
+                <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
                   {t('label:gå-til-A-inntekt')}
                   <HorizontalSeparatorDiv size='0.35' />
                   <ExternalLink />
-                </HighContrastLink>
+                </Link>
               </Column>
               <Column>
                 <FlexDiv style={{ flexDirection: 'row-reverse' }}>

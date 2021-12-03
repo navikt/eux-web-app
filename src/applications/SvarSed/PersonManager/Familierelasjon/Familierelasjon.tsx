@@ -8,7 +8,7 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
+import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
 import { Kodeverk } from 'declarations/types'
@@ -22,6 +22,7 @@ import {
   Column,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  RadioPanelGroup,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -33,12 +34,10 @@ import { validateFamilierelasjon, ValidationFamilierelasjonProps } from './valid
 
 interface FamilierelasjonSelector extends PersonManagerFormSelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
-  highContrast: boolean
 }
 
 const mapState = (state: State): FamilierelasjonSelector => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
-  highContrast: state.ui.highContrast,
   validation: state.validation.status
 })
 
@@ -52,7 +51,6 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const {
     familierelasjonKodeverk,
-    highContrast,
     validation
   } = useSelector<State, FamilierelasjonSelector>(mapState)
   const dispatch = useDispatch()
@@ -230,13 +228,12 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
           <Column flex='2'>
             <Select
               data-test-id={namespace + idx + '-relasjonType'}
-              feil={getErrorFor(index, 'relasjonType')}
-              highContrast={highContrast}
+              error={getErrorFor(index, 'relasjonType')}
               key={namespace + idx + '-relasjonType-' + (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType)}
               id={namespace + idx + '-relasjonType'}
               label={t('label:type') + ' *'}
               menuPortalTarget={document.body}
-              onChange={(e) => setRelasjonType(e.value as RelasjonType, index)}
+              onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
               options={relasjonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               defaultValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
@@ -271,7 +268,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
               <Column flex='2'>
                 <Input
-                  feil={getErrorFor(index, 'annenRelasjonType')}
+                  error={getErrorFor(index, 'annenRelasjonType')}
                   namespace={namespace + idx}
                   key={namespace + idx + '-annenRelasjonType-' + (index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType)}
                   id='annenRelasjonType'
@@ -287,7 +284,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
               <Column flex='2'>
                 <Input
-                  feil={getErrorFor(index, 'annenRelasjonPersonNavn')}
+                  error={getErrorFor(index, 'annenRelasjonPersonNavn')}
                   namespace={namespace + idx}
                   key={namespace + idx + '-annenRelasjonPersonNavn-' + (index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn)}
                   id='annenRelasjonPersonNavn'
@@ -299,7 +296,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
               </Column>
               <Column>
                 <DateInput
-                  feil={getErrorFor(index, 'annenRelasjonDato')}
+                  error={getErrorFor(index, 'annenRelasjonDato')}
                   namespace={namespace + idx}
                   id='annenRelasjonDato'
                   key={namespace + idx + '-annenRelasjonDato-' + (index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato)}
@@ -319,7 +316,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
                   data-test-id={namespace + idx + '-borSammen'}
                   data-no-border
                   id={namespace + idx + '-borSammen'}
-                  feil={getErrorFor(index, 'borSammen')}
+                  error={getErrorFor(index, 'borSammen')}
                   legend={t('label:bor-sammen') + ' *'}
                   name={namespace + idx + '-borSammen'}
                   radios={[

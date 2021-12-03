@@ -12,12 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 
-interface GrunnTilOpphørSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): GrunnTilOpphørSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -28,10 +23,7 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, GrunnTilOpphørSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'grunntilopphor'
   const grunntilopphor: any = _.get(replySed, target)
@@ -82,12 +74,11 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Select
             data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
-            feil={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
-            highContrast={highContrast}
+            error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
             menuPortalTarget={document.body}
-            onChange={(o: Option) => setTypeGrunnOpphoerAnsatt(o.value)}
+            onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
             placeholder={t('el:placeholder-select-default')}
             value={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
@@ -101,7 +92,7 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <Input
-                feil={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
+                error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
                 namespace={namespace}
                 id='annenGrunnOpphoerAnsatt'
                 label={t('label:annet-opphør') + ' *'}
@@ -114,7 +105,7 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
           <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
               <Input
-                feil={validation[namespace + '-årsakselvstendig']?.feilmelding}
+                error={validation[namespace + '-årsakselvstendig']?.feilmelding}
                 namespace={namespace}
                 id='grunnOpphoerSelvstendig'
                 label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}

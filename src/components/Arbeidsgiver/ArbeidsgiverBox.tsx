@@ -1,7 +1,6 @@
-import { Add, Close, Edit, Office1 } from '@navikt/ds-icons'
+import { Add, Close, Edit, Delete, Office1 } from '@navikt/ds-icons'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
-import Trashcan from 'assets/icons/Trashcan'
 import classNames from 'classnames'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import Input from 'components/Forms/Input'
@@ -48,7 +47,7 @@ const AdresseDiv = styled.div`
 const EditIcon = styled(Edit)`
   cursor: pointer;
 `
-const TrashcanIcon = styled(Trashcan)`
+const TrashcanIcon = styled(Delete)`
   width: 20px;
   cursor: pointer;
 `
@@ -58,7 +57,6 @@ export interface ArbeidsgiverProps {
   arbeidsgiver: PeriodeMedForsikring
   editable?: Editable
   error?: boolean,
-  highContrast: boolean
   includeAddress ?: boolean
   newArbeidsgiver?: boolean
   orphanArbeidsgiver ?: boolean
@@ -76,7 +74,6 @@ const ArbeidsgiverBox = ({
   editable = 'no',
   error = false,
   includeAddress = false,
-  highContrast,
   newArbeidsgiver = false,
   orphanArbeidsgiver = false,
   selected = false,
@@ -244,7 +241,7 @@ const ArbeidsgiverBox = ({
                       <Column>
                         <Input
                           namespace={_namespace}
-                          feil={_validation[_namespace + '-navn']?.feilmelding}
+                          error={_validation[_namespace + '-navn']?.feilmelding}
                           id='navn'
                           label={t('label:navn')}
                           onChanged={onNameChanged}
@@ -295,7 +292,6 @@ const ArbeidsgiverBox = ({
               {_isEditing && editable === 'full'
                 ? (
                   <IdentifikatorFC
-                    highContrast={highContrast}
                     identifikatorer={_arbeidsgiversIdentifikator}
                     onIdentifikatorerChanged={onIdentifikatorerChanged}
                     namespace={_namespace + '-identifikatorer'}
@@ -364,7 +360,7 @@ const ArbeidsgiverBox = ({
               <Checkbox
                 checked={selected}
                 onChange={onSelectCheckboxClicked}
-               >{t('label:velg')}
+              >{t('label:velg')}
               </Checkbox>
             )}
             {_isEditing && (
@@ -407,7 +403,7 @@ const ArbeidsgiverBox = ({
                     }
                   }}
                 >
-                  <Trashcan />
+                  <Delete />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-remove')}
                 </Button>

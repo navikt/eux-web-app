@@ -1,13 +1,11 @@
-import AddCircleFilled from '@navikt/ds-icons'
-import { Heading } from '@navikt/ds-react'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import Kontoopplysning from 'applications/SvarSed/Formaal/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import ProsedyreVedUenighet from 'applications/SvarSed/Formaal/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import Vedtak from 'applications/SvarSed/Formaal/Vedtak/Vedtak'
-import { NextFilled, AddCircleFilled, SuccessFilled } from '@navikt/ds-icons'
-impoty { BodyLong, Heading } from '@navikt/ds-react'
+import { NextFilled, ErrorFilled, SuccessFilled } from '@navikt/ds-icons'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -137,7 +135,6 @@ export interface FormålManagerProps {
 }
 
 export interface FormålManagerFormSelector {
-  highContrast: boolean
   validation: Validation
 }
 
@@ -150,7 +147,6 @@ export interface FormålManagerFormProps {
 }
 
 export const mapState = (state: State): FormålManagerFormSelector => ({
-  highContrast: state.ui.highContrast,
   validation: state.validation.status
 })
 
@@ -230,8 +226,8 @@ const FormålManager: React.FC<FormålManagerProps> = ({
   }
 
   const handleFeilLenkeEvent = (e: any) => {
-    const feil: ErrorElement = e.detail
-    const namespaceBits = feil.skjemaelementId.split('-')
+    const error: ErrorElement = e.detail
+    const namespaceBits = error.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const currentMenu = menuRef.current
@@ -242,7 +238,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
         changeMenu(newMenu)
       }
       setTimeout(() => {
-        const element = document.getElementById(feil.skjemaelementId)
+        const element = document.getElementById(error.skjemaelementId)
         element?.focus()
         element?.closest('.mainright')?.scrollIntoView({
           behavior: 'smooth'
@@ -292,7 +288,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
         {t('label:formålmanager')}
       </Heading>
       <VerticalSeparatorDiv />
-      <WithErrorPanel border className={classNames({ feil: validation[namespace]?.feilmelding })}>
+      <WithErrorPanel border className={classNames({ error: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
           <LeftDiv>
             {menus.map((menu, index) => (
@@ -309,19 +305,19 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                       selected: currentMenu === menu
                     })}
                   >
-                    <NextFilled/>
+                    <NextFilled />
                     <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
                       validation[namespace + '-' + menu]
                         ? (
                           <>
-                            <ErrorFilled  color='red' />
+                            <ErrorFilled color='red' />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
                         : (
                           <>
-                            <GreenCircle height={20} />
+                            <SuccessFilled height={20} />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )

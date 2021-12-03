@@ -126,7 +126,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   return (
     <Container>
       <Row
-        className={classNames(className, 'slideInFromLeft', { feil: !!alertMessage })}
+        className={classNames(className, 'slideInFromLeft', { error: !!alertMessage })}
       >
         <Column>
           <TextField
@@ -153,19 +153,19 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       <Row>
         <Column>
           {person.fnr === _query && (
-              <Alert variant='warning'>
-                {t('message:error-fnr-is-user', { sok: _query })}
-              </Alert>
+            <Alert variant='warning'>
+              {t('message:error-fnr-is-user', { sok: _query })}
+            </Alert>
           )}
           {_tpsperson && (
             <Alert variant='warning'>
-                {t('message:error-relation-already-in-tps')}
-              </Alert>
+              {t('message:error-relation-already-in-tps')}
+            </Alert>
           )}
           {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
             <Alert variant='warning'>
-                {alertMessage}
-              </Alert>
+              {alertMessage}
+            </Alert>
           )}
           {_personRelatert && (
             <MarginDiv>

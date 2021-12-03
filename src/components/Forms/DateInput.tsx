@@ -1,12 +1,12 @@
+import { TextField } from '@navikt/ds-react'
 import { toFinalDateFormat, toUIDateFormat } from 'components/Forms/PeriodeInput'
-import { HighContrastInput } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface DateInputProps {
   ariaLabel ?: string
   className ?: string
-  feil: string | null | undefined
+  error: string | null | undefined
   id: string
   index?: number
   label: string
@@ -20,7 +20,7 @@ export interface DateInputProps {
 const DateInput = ({
   ariaLabel,
   className,
-  feil,
+  error,
   id,
   label,
   namespace,
@@ -39,12 +39,12 @@ const DateInput = ({
   }
 
   return (
-    <HighContrastInput
-      aria-invalid={!!feil}
+    <TextField
+      aria-invalid={!!error}
       aria-label={ariaLabel ?? label}
       className={className}
       data-test-id={namespace + ''}
-      feil={feil}
+      error={error}
       id={namespace + '-' + id}
       label={label ?? t('label:dato')}
       onBlur={() => {

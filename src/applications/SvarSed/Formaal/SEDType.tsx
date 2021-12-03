@@ -26,12 +26,10 @@ interface SEDTypeProps {
 }
 
 interface SEDTypeSelector {
-  highContrast: boolean
   validation: Validation
 }
 
 const mapState = (state: State): SEDTypeSelector => ({
-  highContrast: state.ui.highContrast,
   validation: state.validation.status
 })
 
@@ -40,10 +38,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
   setReplySed
 }: SEDTypeProps) => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  }: any = useSelector<State, SEDTypeSelector>(mapState)
+  const { validation }: any = useSelector<State, SEDTypeSelector>(mapState)
   const dispatch = useDispatch()
   const namespace: string = 'editor-sedtype'
   const [_sedType, setSedType] = useState<string>(() => (replySed as USed).sedType)
@@ -119,11 +114,11 @@ const SEDType: React.FC<SEDTypeProps> = ({
     setEditMode(false)
   }
 
-  const onSedTypeChanged = (o: Option) => {
+  const onSedTypeChanged = (o: unknown) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
-    setSedType(o.value)
+    setSedType((o as Option).value)
   }
 
   const onCancelChangesClicked = () => setEditMode(false)
@@ -151,8 +146,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
                 <>
                   <Select
                     defaultValue={_.find(sedTypeOptions, s => s.value === _sedType)}
-                    feil={validation[namespace]?.feilmelding}
-                    highContrast={highContrast}
+                    error={validation[namespace]?.feilmelding}
                     key={namespace + '-' + _sedType + '-select'}
                     id={namespace + '-select'}
                     onChange={onSedTypeChanged}

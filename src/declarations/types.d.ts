@@ -1,5 +1,5 @@
 import { FeatureToggles } from 'declarations/app'
-import { ErrorElement }  from 'declarations/app.d'
+import { ErrorElement } from 'declarations/app.d'
 
 export interface OldPeriod {
   fom: string

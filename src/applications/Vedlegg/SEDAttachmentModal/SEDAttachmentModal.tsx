@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 export interface SEDAttachmentModalProps {
   open: boolean
   fnr: string
-  highContrast: boolean
   onFinishedSelection: (jbi: JoarkBrowserItems) => void
   onModalClose: () => void
   sedAttachments: JoarkBrowserItems
@@ -17,7 +16,7 @@ export interface SEDAttachmentModalProps {
 }
 
 const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
-  fnr, open, highContrast, onFinishedSelection, onModalClose, sedAttachments, tableId
+  fnr, open, onFinishedSelection, onModalClose, sedAttachments, tableId
 }: SEDAttachmentModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_items, setItems] = useState<JoarkBrowserItems>(sedAttachments)
@@ -38,7 +37,6 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
   return (
     <Modal
       open={open}
-      highContrast={highContrast}
       icon={<Document />}
       modal={{
         closeButton: true,
@@ -70,7 +68,6 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
 }
 
 SEDAttachmentModal.propTypes = {
-  highContrast: PT.bool.isRequired,
   onFinishedSelection: PT.func.isRequired,
   onModalClose: PT.func.isRequired,
   // sedAttachments: JoarkBrowserItemsFileType.isRequired,

@@ -32,7 +32,6 @@ const MyPaddedDiv = styled.div`
 `
 
 export interface InntektOgTimerProps {
-  highContrast: boolean
   inntektOgTimer: Array<InntektOgTime> | undefined
   onInntektOgTimeChanged: (inntektOgTimer: Array<InntektOgTime>, whatChanged: string) => void
   parentNamespace: string
@@ -41,7 +40,6 @@ export interface InntektOgTimerProps {
 }
 
 const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
-  highContrast,
   inntektOgTimer,
   onInntektOgTimeChanged,
   parentNamespace,
@@ -49,9 +47,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   validation
 }: InntektOgTimerProps): JSX.Element => {
   const { t } = useTranslation()
-
   const dispatch = useDispatch()
-
   const namespace = `${parentNamespace}-inntektOgTimer`
 
   const [_newArbeidstimer, _setNewArbeidstimer] = useState<string | undefined>(undefined)
@@ -201,7 +197,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
           />
           <Column>
             <Input
-              feil={getErrorFor('arbeidstimer')}
+              error={getErrorFor('arbeidstimer')}
               namespace={namespace + idx}
               key={namespace + idx + '-arbeidstimer-' + (index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
               id='arbeidstimer'
@@ -215,7 +211,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
         <AlignStartRow>
           <Column>
             <Input
-              feil={getErrorFor('bruttoinntekt')}
+              error={getErrorFor('bruttoinntekt')}
               namespace={namespace + idx}
               key={namespace + idx + '-bruttoinntekt-' + (index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
               id='bruttoinntekt'
@@ -231,7 +227,6 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               ariaLabel={t('label:valuta')}
               data-test-id={namespace + idx + '-valuta'}
               error={getErrorFor('valuta')}
-              highContrast={highContrast}
               id={namespace + idx + '-valuta'}
               label={t('label:valuta') + ' *'}
               locale='nb'

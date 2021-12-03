@@ -1,14 +1,13 @@
 import { Add } from '@navikt/ds-icons'
 import DateInput from 'components/Forms/DateInput'
 import { toUIDateFormat } from 'components/Forms/PeriodeInput'
-import { AlertstripeDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person, Validation } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Alert, Button, Panel, TextField, Select, BodyLong  } from '@navikt/ds-react'
+import { Alert, Button, Panel, TextField, Select, BodyLong } from '@navikt/ds-react'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
@@ -68,9 +67,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   person
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    kjoennList
-  }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
+  const { kjoennList }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, setValidation] = useState<Validation>({})
 
@@ -304,7 +301,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <Column className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
             <Select
               data-test-id='familierelasjoner__select-kjoenn'
-              feil={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
+              error={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
               id='familierelasjoner__select-kjoenn'
               label={t('label:kjønn')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -332,7 +329,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               data-test-id='familierelasjoner__input-fdato'
               key={'familierelasjoner__input-fdato-' + _relation.fdato}
               namespace='familierelasjoner__input'
-              feil={_validation['familierelasjoner__input-fdato']?.feilmelding}
+              error={_validation['familierelasjoner__input-fdato']?.feilmelding}
               label={t('label:fødselsdato')}
               onChanged={(date: string) => {
                 updateRelation('fdato', date)
@@ -348,7 +345,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <Column className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
             <Select
               data-test-id='familierelasjoner__input-familierelasjon'
-              feil={_validation.rolle ? _validation.rolle.feilmelding : undefined}
+              error={_validation.rolle ? _validation.rolle.feilmelding : undefined}
               label={t('label:familierelasjon')}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 updateRelation('rolle', e.currentTarget.value)

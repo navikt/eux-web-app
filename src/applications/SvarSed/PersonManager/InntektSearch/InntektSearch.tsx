@@ -17,7 +17,6 @@ import { validateInntektSearch, ValidationInntektSearchProps } from './validatio
 interface InntektSearchProps {
   amplitude ?: string
   fnr: string
-  highContrast: boolean
   onInntektSearch: (fnr: string, fom: string, tom: string, inntektsliste: string) => void
   gettingInntekter: boolean
 }
@@ -25,7 +24,6 @@ interface InntektSearchProps {
 const InntektSearch = ({
   amplitude,
   fnr,
-  highContrast,
   onInntektSearch,
   gettingInntekter
 }: InntektSearchProps) => {
@@ -86,7 +84,7 @@ const InntektSearch = ({
       <Column>
         <Input
           namespace={namespace}
-          feil={_validation[namespace + '-startdato']?.feilmelding}
+          error={_validation[namespace + '-startdato']?.feilmelding}
           id='startdato'
           label={t('label:fra')}
           onChanged={setSearchPeriodeStartdato}
@@ -97,7 +95,7 @@ const InntektSearch = ({
       <Column>
         <Input
           namespace={namespace}
-          feil={_validation[namespace + '-sluttdato']?.feilmelding}
+          error={_validation[namespace + '-sluttdato']?.feilmelding}
           id='sluttdato'
           label={t('label:til')}
           onChanged={setSearchPeriodeSluttdato}
@@ -108,12 +106,11 @@ const InntektSearch = ({
       <Column>
         <Select
           data-test-id={namespace + '-inntektsliste'}
-          feil={_validation[namespace + '-inntektsliste']?.feilmelding}
-          highContrast={highContrast}
+          error={_validation[namespace + '-inntektsliste']?.feilmelding}
           id={namespace + '-inntektsliste'}
           label={t('label:inntektsfilter')}
           menuPortalTarget={document.body}
-          onChange={(o: Option) => setFilter(o.value)}
+          onChange={(o: unknown) => setFilter((o as Option).value)}
           options={filterOptions}
           placeholder={t('el:placeholder-select-default')}
           value={_.find(filterOptions, b => b.value === _filter)}
@@ -132,7 +129,7 @@ const InntektSearch = ({
           {gettingInntekter
             ? t('message:loading-searching')
             : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
-          {gettingInntekter && <Loader/>}
+          {gettingInntekter && <Loader />}
         </Button>
       </Column>
     </AlignStartRow>

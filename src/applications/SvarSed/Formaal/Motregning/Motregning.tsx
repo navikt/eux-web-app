@@ -51,7 +51,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   seeKontoopplysninger
 }: FormålManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation, highContrast }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
+  const { validation }: FormålManagerFormSelector = useSelector<State, FormålManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
@@ -628,7 +628,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               checked={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
               data-no-border
               data-test-id={namespace + idx + '-barnaEllerFamilie'}
-              feil={getErrorFor('barnaEllerFamilie')}
+              error={getErrorFor('barnaEllerFamilie')}
               id={namespace + idx + '-barnaEllerFamilie'}
               key={namespace + idx + '-barnaEllerFamilie-' + (motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie)}
               legend={t('label:barna-or-familie') + ' *'}
@@ -650,7 +650,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               data-multiple-line
               data-no-border
               data-test-id={namespace + idx + '-svarType'}
-              feil={getErrorFor('svarType')}
+              error={getErrorFor('svarType')}
               id={namespace + idx + '-svarType'}
               key={namespace + idx + '-svarType-' + (motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType)}
               legend={t('label:anmodning-om-motregning')}
@@ -668,7 +668,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         {_barnaEllerFamilie === 'barna' && (
           <>
             <KeyAndYtelseFC
-              highContrast={highContrast}
               onAdded={(barnKey: string, ytelseNavn: string) => onAdded(barnKey, ytelseNavn, motregningKey)}
               onRemoved={(fullKey: string) => onRemoved(fullKey, motregningKey)}
               onKeyChanged={(fullKey: string, barnKey: string) => onKeyChanged(fullKey, barnKey, motregningKey)}
@@ -693,7 +692,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             <AlignStartRow>
               <Column>
                 <Input
-                  feil={getErrorFor('ytelseNavn')}
+                  error={getErrorFor('ytelseNavn')}
                   id='ytelseNavn'
                   key={namespace + idx + '-ytelseNavn-' + (motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
                   label={t('label:betegnelse-på-ytelse') + ' *'}
@@ -714,7 +713,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column>
             <DateInput
-              feil={getErrorFor('vedtaksdato')}
+              error={getErrorFor('vedtaksdato')}
               id='vedtaksdato'
               key={namespace + '-vedtaksdato-' + (motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
               label={t('label:vedtaksdato') + ' *'}
@@ -730,7 +729,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column>
             <Input
-              feil={getErrorFor('beloep')}
+              error={getErrorFor('beloep')}
               id='beloep'
               key={namespace + idx + '-beloep-' + (motregningKey === 'new-motregning' ? _newBeløp : motregning?.beloep)}
               label={t('label:beløp') + ' *'}
@@ -745,7 +744,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               closeMenuOnSelect
               data-test-id={namespace + idx + '-valuta'}
               error={getErrorFor('valuta')}
-              highContrast={highContrast}
               id={namespace + idx + '-valuta'}
               key={namespace + idx + '-valuta-' + (motregningKey === 'new-motregning' ? _newValuta : _currencyData.findByValue(motregning?.valuta)?.valuta ?? '')}
               label={t('label:valuta') + ' *'}
@@ -790,7 +788,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               data-test-id={namespace + idx + '-utbetalingshyppighet'}
               id={namespace + idx + '-utbetalingshyppighet'}
               key={namespace + idx + '-utbetalingshyppighet-' + (motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet)}
-              feil={getErrorFor('utbetalingshyppighet')}
+              error={getErrorFor('utbetalingshyppighet')}
               name={namespace + idx + '-utbetalingshyppighet'}
               legend={t('label:periode-avgrensing') + ' *'}
               radios={[
@@ -806,7 +804,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column flex='2'>
             <Input
-              feil={getErrorFor('mottakersNavn')}
+              error={getErrorFor('mottakersNavn')}
               namespace={namespace + idx}
               id='mottakersNavn'
               key={namespace + idx + '-mottakersnavn-' + (motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}
@@ -823,7 +821,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           <Column flex='2'>
             <TextAreaDiv>
               <TextArea
-                feil={getErrorFor('begrunnelse')}
+                error={getErrorFor('begrunnelse')}
                 namespace={namespace + idx}
                 id='begrunnelse'
                 key={namespace + idx + '-begrunnelse-' + (motregningKey === 'new-motregning' ? _newBegrunnelse : motregning?.begrunnelse)}
@@ -839,7 +837,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
           <Column flex='2'>
             <TextAreaDiv>
               <TextArea
-                feil={getErrorFor('ytterligereInfo')}
+                error={getErrorFor('ytterligereInfo')}
                 namespace={namespace + idx}
                 id='ytterligereInfo'
                 key={namespace + idx + '-ytterligereInfo-' + (motregningKey === 'new-motregning' ? _newYtterligereInfo : motregning?.ytterligereInfo)}
@@ -907,7 +905,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             variant='tertiary'
             size='small'
             data-amplitude='svarsed.editor.seekontoopplysning'
-            onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+            onClick={(e) => {
               buttonLogger(e)
               seeKontoopplysninger()
             }}

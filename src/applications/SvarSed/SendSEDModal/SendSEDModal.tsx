@@ -2,7 +2,7 @@ import { clientClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import { sendSedInRina } from 'actions/svarsed'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
-import GreenCircle from 'assets/icons/GreenCircle'
+import { SuccessFilled } from '@navikt/ds-icons'
 import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
@@ -72,7 +72,6 @@ interface SendSEDSelector {
 interface SendSEDModalProps {
   fnr: string
   goToRinaUrl: string | undefined
-  highContrast: boolean
   attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
   onModalClose: () => void
@@ -92,7 +91,6 @@ const mapState = (state: State): SendSEDSelector => ({
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
   goToRinaUrl,
-  highContrast,
   attachments = [],
   initialSendingAttachments = false,
   onModalClose,
@@ -187,7 +185,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   return (
     <Modal
       open={open}
-      highContrast={highContrast}
       modal={{
         closeButton: false,
         modalContent: (
@@ -199,7 +196,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
                 <AlertstripeDiv>
-                  <Alert status='ERROR' message={alertMessage} onClose={() => dispatch(clientClear())} />
+                  <Alert variant='error' message={alertMessage} onClose={() => dispatch(clientClear())} />
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
                 <FlexCenterSpacedDiv>
@@ -219,7 +216,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               <>
                 <AlertstripeDiv>
                   <Alert
-                    status={alertType === types.SVARSED_SED_SEND_FAILURE ? 'ERROR' : 'OK'}
+                    variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}
                     message={alertMessage}
                     onClose={() => {
                       _setSendButtonClicked(false)
@@ -243,7 +240,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <FlexCenterSpacedDiv>
-                        <GreenCircle />
+                        <SuccessFilled color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-created-updated')}</span>
                       </FlexCenterSpacedDiv>
@@ -253,7 +250,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {_finished && (
                       <FlexCenterSpacedDiv>
-                        <GreenCircle />
+                        <SuccessFilled color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{_finished}</span>
                       </FlexCenterSpacedDiv>
@@ -270,7 +267,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {!_.isNil(sedSendResponse) && (
                       <FlexCenterSpacedDiv>
-                        <GreenCircle />
+                        <SuccessFilled color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-sendt')}</span>
                       </FlexCenterSpacedDiv>
@@ -335,7 +332,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <Button
                         variant='primary'
                         data-amplitude='svarsed.editor.editinrina'
-                        onClick={(e: React.ChangeEvent<HTMLButtonElement>) => {
+                        onClick={(e) => {
                           buttonLogger(e)
                           window.open(goToRinaUrl, 'rina')
                         }}

@@ -1,5 +1,5 @@
-
 import { validatePeriode } from 'components/Forms/validation'
+import { ErrorElement } from 'declarations/app'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -26,7 +26,7 @@ export const validatePeriodeMedForsikring = (
     v[namespace + '-navn'] = {
       skjemaelementId: namespace + '-navn',
       feilmelding: t('validation:noNavn')
-    } as ErrorSummaryItemType
+    } as ErrorElement
     hasErrors = true
   }
   if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikatorer?.[0]?.id)) {

@@ -1,4 +1,4 @@
-import { Add, Child } from '@navikt/ds-icons'
+import { Add, Child, ExpandFilled, ErrorFilled, SuccessFilled, NextFilled } from '@navikt/ds-icons'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
@@ -12,7 +12,6 @@ import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ExpandFilled, ErrorFilled, SuccessFilled, NextFilled } from '@navikt/ds-icons'
 import { ErrorElement } from 'declarations/app.d'
 import { BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
@@ -419,7 +418,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               selected: focusedMenu === personId
             })}
           >
-            {open ? <ExpandFilled/> : <NextFilled/> }
+            {open ? <ExpandFilled /> : <NextFilled />}
             <HorizontalSeparatorDiv size='0.5' />
             {viewValidation && (
               validation[namespace + '-' + personId]
@@ -462,12 +461,14 @@ const PersonManager: React.FC<PersonManagerProps> = ({
                 aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '') })}
                 aria-checked={selected}
                 checked={selected}
-                label=''
+                hideLabel
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   e.stopPropagation()
                   onSelectMenu(personId, e.target.checked)
                 }}
-              />
+              >&nbsp;
+              </MenuCheckbox>
+
             </CheckboxDiv>
           )}
         </MenuDiv>
@@ -512,8 +513,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }
 
   const handleFeilLenke = (e: any) => {
-    const feil: ErrorElement = e.detail
-    const namespaceBits = feil.skjemaelementId.split('-')
+    const error: ErrorElement = e.detail
+    const namespaceBits = error.skjemaelementId.split('-')
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const newOption = namespaceBits[2].split('[')[0]
@@ -522,7 +523,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         changeMenu(newMenu, newOption, 'event')
       }
       setTimeout(() => {
-        const element = document.getElementById(feil.skjemaelementId)
+        const element = document.getElementById(error.skjemaelementId)
         element?.focus()
         element?.closest('.mainright')?.scrollIntoView({
           behavior: 'smooth'
@@ -565,7 +566,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       <VerticalSeparatorDiv />
       <WithErrorPanel
         border
-        className={classNames({ feil: validation[namespace]?.feilmelding })}
+        className={classNames({ error: validation[namespace]?.feilmelding })}
       >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>

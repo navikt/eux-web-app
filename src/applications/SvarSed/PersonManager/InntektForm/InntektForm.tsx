@@ -1,5 +1,3 @@
-import CollapseFilled from '@navikt/ds-icons'
-import ExpandFilled, { Add } from '@navikt/ds-icons'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/PersonManager/InntektForm/Inntekter'
@@ -23,7 +21,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { ExpandFilled, CollapseFilled } from '@navikt/ds-icons'
+import { Add, ExpandFilled, CollapseFilled } from '@navikt/ds-icons'
 import { Button, Ingress, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -45,14 +43,12 @@ import { validateLoennsopplysning, ValidationLoennsopplysningProps } from './val
 interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
   arbeidsperioder: Arbeidsperioder | null | undefined
-  highContrast: boolean
   inntekter: IInntekter | undefined
 }
 
 const mapState = (state: State): InntektFormSelector => ({
   gettingInntekter: state.loading.gettingInntekter,
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
-  highContrast: state.ui.highContrast,
   inntekter: state.inntekt.inntekter,
   validation: state.validation.status
 })
@@ -67,7 +63,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
   const {
     gettingInntekter,
     arbeidsperioder,
-    highContrast,
     inntekter,
     validation
   } = useSelector<State, InntektFormSelector>(mapState)
@@ -251,8 +246,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               <Select
                 closeMenuOnSelect
                 data-test-id={namespace + '-periodetype'}
-                feil={validation[namespace + '-periodetype']?.feilmelding}
-                highContrast={highContrast}
+                error={validation[namespace + '-periodetype']?.feilmelding}
                 id={namespace + '-periodetype'}
                 key={namespace + '-periodetype-' + loennsopplysning?.periodetype}
                 label={t('label:type-periode') + ' *'}
@@ -274,7 +268,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                   onClick={() => toggleVisibility(index)}
                 >
                   <FlexCenterDiv>
-                    {visible ? <CollapseFilled/> : <ExpandFilled/>}
+                    {visible ? <CollapseFilled /> : <ExpandFilled />}
                     <HorizontalSeparatorDiv size='0.35' />
                     {visible ? t('label:show-less') : t('label:show-more')}
                   </FlexCenterDiv>
@@ -295,7 +289,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 <Column>
                   <Inntekter
                     key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
-                    highContrast={highContrast}
                     inntekter={index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? []}
                     onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
                     parentNamespace={namespace + '-inntekter'}
@@ -307,7 +300,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
                 <Column>
                   <Input
-                    feil={getErrorFor(index, 'arbeidsdager')}
+                    error={getErrorFor(index, 'arbeidsdager')}
                     namespace={namespace}
                     id='arbeidsdager'
                     key={'arbeidsdager' + (index < 0 ? _newArbeidsdager : loennsopplysning?.arbeidsdager ?? '')}
@@ -318,7 +311,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 </Column>
                 <Column>
                   <Input
-                    feil={getErrorFor(index, 'arbeidstimer')}
+                    error={getErrorFor(index, 'arbeidstimer')}
                     namespace={namespace}
                     id='arbeidstimer'
                     key={'arbeidstimer' + (index < 0 ? _newArbeidstimer : loennsopplysning?.arbeidstimer ?? '')}
@@ -398,7 +391,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <InntektSearch
         fnr={fnr!}
-        highContrast={highContrast}
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}
       />
@@ -430,7 +422,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             const period: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(a)
             return (
               <ArbeidsgiverBox
-                highContrast={highContrast}
                 arbeidsgiver={period}
                 editable='no'
                 includeAddress={false}

@@ -25,8 +25,4 @@ export interface AlertError {
   uuid ?: string | undefined
 }
 
-export interface IncomeSearch {
-  fraDato: string
-  tilDato: string
-  tema: string
-}
+export type AlertVariant = 'error' | 'warning' | 'info' | 'success'

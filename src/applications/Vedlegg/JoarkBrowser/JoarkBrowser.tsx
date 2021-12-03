@@ -1,5 +1,5 @@
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
-import Trashcan from 'assets/icons/Trashcan'
+import { Delete, Sight } from '@navikt/ds-icons'
 import Modal from 'components/Modal/Modal'
 import {
   JoarkBrowserContext,
@@ -13,8 +13,7 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
-import { Button, Loader, Element } from '@navikt/ds-react'
-import { Sight } from '@navikt/ds-icons'
+import { Button, Loader, Label } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -56,7 +55,6 @@ const mapState = /* istanbul ignore next */ (state: State): JoarkBrowserSelector
 export interface JoarkBrowserProps {
   existingItems: JoarkBrowserItems
   fnr: string | undefined
-  highContrast?: boolean
   onRowSelectChange?: (f: JoarkBrowserItems) => void
   onPreviewFile?: (f: File) => void
   onRowViewDelete?: (f: JoarkBrowserItems) => void
@@ -67,7 +65,6 @@ export interface JoarkBrowserProps {
 export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   existingItems = [],
   fnr,
-  highContrast = false,
   mode,
   onRowSelectChange = () => {},
   onRowViewDelete = () => {},
@@ -135,7 +132,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             className='tablesorter__preview-button'
             onClick={() => onPreviewItem(item as JoarkBrowserItem)}
           >
-            {spinner ? <Loader/> : <Sight/>}
+            {spinner ? <Loader /> : <Sight />}
           </Button>
         )}
 
@@ -149,7 +146,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
               handleDelete(item as JoarkBrowserItem, context?.existingItems)
             }}
           >
-            <Trashcan />
+            <Delete />
           </Button>
         )}
       </ButtonsDiv>
@@ -358,15 +355,14 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     <div data-test-id='joarkBrowser'>
       <Modal
         open={!_.isNil(_modal)}
-        highContrast={highContrast}
         modal={_modal}
         onModalClose={handleModalClose}
       />
       <Table
         <JoarkBrowserItem, JoarkBrowserContext>
+        className='tabell compact'
         id={'joarkbrowser-' + tableId}
         key={_tableKey}
-        highContrast={highContrast}
         items={_items}
         context={context}
         labels={{
@@ -385,7 +381,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
             id: 'tema',
             label: t('label:tema'),
             type: 'string',
-            renderCell: (item: any, value: any) => <Element>{value}</Element>
+            renderCell: (item: any, value: any) => <Label>{value}</Label>
           }, {
             id: 'title',
             label: t('label:tittel'),
@@ -410,7 +406,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
 JoarkBrowser.propTypes = {
   // existingItems: PT.arrayOf(JoarkBrowserItemFileType.isRequired).isRequired,
-  highContrast: PT.bool,
   onRowSelectChange: PT.func,
   onPreviewFile: PT.func,
   onRowViewDelete: PT.func,

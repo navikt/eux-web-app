@@ -4,7 +4,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
-import { AlignStartRow, Column, HighContrastRadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ export interface AdresseFormProps {
   type?: boolean
 }
 
-const HighContrastRadioPanelGroupWithNoErrorVisible = styled(HighContrastRadioPanelGroup)`
+const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
   .typo-feilmelding {
      display: none;
   }
@@ -94,11 +94,11 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       {type && (
         <AlignStartRow>
           <Column flex='4'>
-            <HighContrastRadioPanelGroupWithNoErrorVisible
+            <RadioPanelGroupWithNoErrorVisible
               checked={adresse?.type}
               data-no-border
               data-test-id={namespace + '-type'}
-              feil={validation[namespace + '-type']?.feilmelding}
+              error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               legend={t('label:adresse') + ' *'}
               name={namespace + '-type'}
@@ -110,11 +110,11 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType))}
             />
             <VerticalSeparatorDiv size='0.15' />
-            <HighContrastRadioPanelGroup
+            <RadioPanelGroup
               checked={adresse?.type}
               data-no-border
               data-test-id={namespace + '-type'}
-              feil={validation[namespace + '-type']?.feilmelding}
+              error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               name={namespace + '-type'}
               radios={[
@@ -130,7 +130,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       <AlignStartRow>
         <Column flex='3'>
           <Input
-            feil={validation[namespace + '-gate']?.feilmelding}
+            error={validation[namespace + '-gate']?.feilmelding}
             namespace={namespace}
             id='gate'
             label={t('label:gateadresse')}
@@ -140,7 +140,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         </Column>
         <Column>
           <Input
-            feil={validation[namespace + '-bygning']?.feilmelding}
+            error={validation[namespace + '-bygning']?.feilmelding}
             namespace={namespace}
             id='bygning'
             label={t('label:bygning')}
@@ -153,7 +153,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       <AlignStartRow>
         <Column>
           <Input
-            feil={validation[namespace + '-postnummer']?.feilmelding}
+            error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
             label={t('label:postnummer')}
@@ -163,7 +163,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         </Column>
         <Column flex='3'>
           <Input
-            feil={validation[namespace + '-by']?.feilmelding}
+            error={validation[namespace + '-by']?.feilmelding}
             namespace={namespace}
             id='by'
             label={t('label:by') + ' *'}
@@ -177,7 +177,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       <AlignStartRow>
         <Column flex='1.3'>
           <Input
-            feil={validation[namespace + '-region']?.feilmelding}
+            error={validation[namespace + '-region']?.feilmelding}
             namespace={namespace}
             id='region'
             label={t('label:region')}

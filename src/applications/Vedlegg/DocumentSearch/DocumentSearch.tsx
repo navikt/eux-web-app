@@ -5,7 +5,7 @@ import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { TextField, Select, Button, BodyLong } from '@navikt/ds-react'
+import { TextField, Select, Button, Loader, BodyLong } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +16,7 @@ const Form = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  &.feil {
+  &.error {
     align-items: center !important;
   }
 `
@@ -89,10 +89,10 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
   return (
     <div className={className}>
-      <Form className={classNames({ feil: !!validation.rinadokumentID })}>
+      <Form className={classNames({ error: !!validation.rinadokumentID })}>
         <Rinasaknummer
           data-test-id='dokumentsok__form__input-id'
-          feil={validation.rinasaksnummer}
+          error={validation.rinasaksnummer}
           label={t('label:rina-saksnummer')}
           onChange={onRinaSaksnummerChange}
           value={rinasaksnummer}
@@ -102,7 +102,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onClick={sokEtterDokument}
         >
           {t('el:button-search')}
-          {gettingDokument && <Loader/>}
+          {gettingDokument && <Loader />}
         </Button>
       </Form>
       <VerticalSeparatorDiv />
@@ -110,7 +110,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <Select
           data-test-id='dokumentsok__card-select-id'
           disabled={!_dokument}
-          feil={validation.rinadokumentID}
+          error={validation.rinadokumentID}
           label={t('label:rina-dokument-id')}
           onChange={onRinadokumentIDChange}
           value={rinadokumentID}

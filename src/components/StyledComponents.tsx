@@ -1,29 +1,21 @@
-import Select from 'components/Forms/Select'
 import styled from 'styled-components'
 import {
-  themeKeys,
   animationClose,
   animationOpen,
   fadeIn,
-  fadeOut,
-  HighContrastPanel
+  fadeOut
 } from 'nav-hoykontrast'
+import { Panel } from '@navikt/ds-react'
 
-export const AlignedSelect = styled(Select)`
-  margin-bottom: 3rem;
-  &.feil {
-    margin-bottom: 0rem !important;
-  }
-`
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;
    border-left-style: solid;
    border-image: linear-gradient(
     to bottom,
-     ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 0%,
-     ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 5%,
-     ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 95%,
-     ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 100%
+     var(--navds-color-background) 0%,
+     var(--navds-color-border) 5%,
+     var(--navds-color-border) 95%,
+     var(--navds-color-background) 100%
     ) 1 100%;
    opacity: 0;
    &.fadeIn {
@@ -38,10 +30,10 @@ export const FadingLineSeparator = styled.div`
 export const HorizontalLineSeparator = styled.div`
   height: 1px;
   background: linear-gradient(90deg,
-    ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 0%,
-    ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 5%,
-    ${({ theme }) => theme[themeKeys.MAIN_BORDER_COLOR]} 95%,
-    ${({ theme }) => theme[themeKeys.MAIN_BACKGROUND_COLOR]} 100%
+    var(--navds-color-background) 0%,
+    var(--navds-color-border) 5%,
+    var(--navds-color-border) 95%,
+    var(--navds-color-background) 100%
   );
   width: 100%;
 `
@@ -77,9 +69,9 @@ export const TextAreaDiv = styled.div`
 export const Etikett = styled.div`
   padding: 0.25rem 0.5rem;
   margin-left: -0.15rem;
-  color:  ${({ theme }) => theme[themeKeys.MAIN_FONT_COLOR]} !important;
-  background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
-  border: ${(props: any) => props['data-border'] === true ? '1px solid ' + props.theme[themeKeys.MAIN_BORDER_COLOR] : 'none'};
+  color:var(--navds-color-text-primary) !important;
+  background-color: var(--navds-semantic-color-component-background-alternate);
+  border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-color-border)' : 'none'};
   border-radius: 5px;
   display: inline-block;
 `
@@ -88,17 +80,17 @@ export const FlexEtikett = styled(Etikett)`
   display: flex;
 `
 
-export const WithErrorPanel = styled(HighContrastPanel)`
+export const WithErrorPanel = styled(Panel)`
   padding: 0rem;
   background-color: transparent;
-  &.feil {
-    border-color: ${({ theme }) => theme[themeKeys.MAIN_ERROR_COLOR]};
+  &.error {
+    border-color: var(--navds-color-error-border);
     border-width: 3px;
     .left, .right {
        border: none;
     }
   }
-  &:not(.feil) {
+  &:not(.error) {
     border: none;
   }
 `
@@ -129,7 +121,7 @@ export const Dl = styled.dl`
   flex-wrap: wrap;
   width: 100%;
   .odd {
-    background-color: ${({ theme }) => theme[themeKeys.ALTERNATIVE_BACKGROUND_COLOR]};
+    background-color: var(--navds-semantic-color-component-background-alternate);
   }
 `
 export const RepeatableRow = styled.div`

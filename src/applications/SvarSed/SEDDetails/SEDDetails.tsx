@@ -1,6 +1,4 @@
-import { Edit } from '@navikt/ds-icons'
-import ExternalLink from 'assets/icons/Logout'
-import RemoveCircle from 'assets/icons/RemoveCircle'
+import { Edit, ExternalLink, ErrorFilled } from '@navikt/ds-icons'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { buttonLogger } from 'metrics/loggers'
@@ -27,7 +25,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
   const replySed: ReplySed | null | undefined = useSelector<State, ReplySed | null | undefined>((state: State) => state.svarsed.replySed)
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
-  const toggleEditing = (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const toggleEditing = (e: any) => {
     if (!isEditing) {
       buttonLogger(e)
     }
@@ -45,7 +43,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           <FlexCenterSpacedDiv>
             {t('label:rina-saksnummer') + ':'}
             <HorizontalSeparatorDiv size='0.35' />
-            <Link target='_blank' href={replySed.sakUrl}>
+            <Link target='_blank' href={replySed.sakUrl} rel='noreferrer'>
               <span>
                 {replySed.saksnummer}
               </span>
@@ -64,7 +62,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           }}
           onClick={toggleEditing}
         >
-          {isEditing ? <RemoveCircle /> : <Edit />}
+          {isEditing ? <ErrorFilled /> : <Edit />}
         </Button>
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv />

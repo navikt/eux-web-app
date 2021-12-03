@@ -10,7 +10,9 @@ import {
   SchoolBag,
   ShakeHandsFilled,
   Stroller,
-  Vacation
+  Vacation,
+  CollapseFilled,
+  ExpandFilled
 } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
@@ -47,7 +49,6 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { NextFilled } from '@navikt/ds-icons'
 import { BodyLong, Detail, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -64,12 +65,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getNSIdx } from 'utils/namespace'
 
-interface ForsikringSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): ForsikringSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -84,10 +80,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, ForsikringSelector>(mapState)
+  const { validation }: PersonManagerFormSelector = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
@@ -357,8 +350,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 <Select
                   closeMenuOnSelect
                   data-test-id={namespace + idx + '-type'}
-                  feil={_v[namespace + idx + '-type']?.feilmelding}
-                  highContrast={highContrast}
+                  error={_v[namespace + idx + '-type']?.feilmelding}
                   id={namespace + idx + '-type'}
                   key={namespace + idx + '-type-' + _newType}
                   label={t('label:type')}
@@ -409,7 +401,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                         onClick={() => toggleVisibility(_type, _index)}
                       >
                         <FlexCenterDiv>
-                          {_visible ? <CollapseFilled/> : <ExpandFilled/>}
+                          {_visible ? <CollapseFilled /> : <ExpandFilled />}
                           <HorizontalSeparatorDiv size='0.35' />
                           {_visible ? t('label:show-less') : t('label:show-more')}
                         </FlexCenterDiv>
@@ -442,7 +434,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <Input
-                  feil={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
+                  error={_v[namespace + idx + '-arbeidsgiver-navn']?.feilmelding}
                   namespace={namespace + idx + '-arbeidsgiver'}
                   id='navn'
                   key={namespace + idx + '-arbeidsgiver-navn-' + ((_periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '')}
@@ -456,7 +448,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow>
               <Column>
                 <IdentifikatorFC
-                  highContrast={highContrast}
                   identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
                   onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => setIdentifikatorer(newIdentifikatorer, whatChanged, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-identifikatorer'}
@@ -486,7 +477,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           <>
             {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
             <InntektOgTimerFC
-              highContrast={highContrast}
               validation={validation}
               personName={personName}
               parentNamespace={namespace + idx}
@@ -498,7 +488,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <Input
-                  feil={_v[namespace + idx + '-inntektOgTimerInfo']?.feilmelding}
+                  error={_v[namespace + idx + '-inntektOgTimerInfo']?.feilmelding}
                   namespace={namespace + idx}
                   id='inntektOgTimerInfo'
                   key={namespace + idx + '-inntektOgTimerInfo-' + (_periode as PeriodeMedForsikring).arbeidsgiver?.adresse ?? ''}
@@ -516,7 +506,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <Input
-                  feil={_v[namespace + idx + '-annenTypeForsikringsperiode']?.feilmelding}
+                  error={_v[namespace + idx + '-annenTypeForsikringsperiode']?.feilmelding}
                   namespace={namespace + idx}
                   id='annenTypeForsikringsperiode'
                   key={namespace + idx + '-annenTypeForsikringsperiode-' + ((_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode ?? '')}

@@ -162,9 +162,9 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
         {t('label:periods-in-sender-country')}
       </Heading>
       <VerticalSeparatorDiv size={2} />
-      <UndertekstBold>
+      <Detail>
         {t('label:medlemsperiode')}
-      </UndertekstBold>
+      </Detail>
       <VerticalSeparatorDiv />
       {_.isEmpty(perioderMedTrygd)
         ? (
@@ -194,7 +194,7 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
                 {t('el:button-add-new-x', { x: t('label:trygdeperiode-i-avsenderlandet').toLowerCase() })}
-              </HighContrastFlatknapp>
+              </Button>
             </Column>
           </Row>
           )}

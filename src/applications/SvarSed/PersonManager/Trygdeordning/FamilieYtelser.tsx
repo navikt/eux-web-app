@@ -12,8 +12,8 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { ErrorElement } from 'declarations/app.d'
-import { Button, Ingress, BodyLong, Detail, Heading } from '@navikt/ds-react'
+import { ErrorElement, Option } from 'declarations/app.d'
+import { Button, Ingress, BodyLong, Detail } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -24,17 +24,11 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 import { Add } from '@navikt/ds-icons'
 
-interface FamilieYtelserSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): FamilieYtelserSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -46,10 +40,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, FamilieYtelserSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const perioder: {[k in SedCategory]: Array<Periode | PensjonPeriode>} = {
     perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
@@ -264,12 +255,11 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                 {index < 0 && (
                   <Select
                     data-test-id={namespace + idx + '-category'}
-                    feil={getErrorFor(index, 'category')}
-                    highContrast={highContrast}
+                    error={getErrorFor(index, 'category')}
                     id={namespace + idx + '-category'}
                     key={namespace + idx + '-category-' + _newCategory}
                     menuPortalTarget={document.body}
-                    onChange={(e: any) => setCategory(e.value)}
+                    onChange={(e: unknown) => setCategory((e as Option).value as SedCategory)}
                     options={selectCategoryOptions}
                     placeholder={t('el:placeholder-select-default')}
                     value={getCategoryOption(_newCategory)}
@@ -285,12 +275,11 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                 (
                   <Select
                     data-test-id={namespace + idx + '-pensjonstype'}
-                    feil={getErrorFor(index, 'pensjonstype')}
-                    highContrast={highContrast}
+                    error={getErrorFor(index, 'pensjonstype')}
                     id={namespace + idx + '-pensjonstype'}
                     key={namespace + idx + '-pensjonstype-' + (index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                     menuPortalTarget={document.body}
-                    onChange={(e: any) => setPensjonType(e.value, index)}
+                    onChange={(e: unknown) => setPensjonType((e as Option).value as PensjonsType, index)}
                     options={selectPensjonsTypeOptions}
                     placeholder={t('el:placeholder-select-default')}
                     value={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
@@ -325,9 +314,9 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
     return (
       <>
         <VerticalSeparatorDiv />
-        <UndertekstBold>
+        <Detail>
           {t('el:option-trygdeordning-' + item)}
-        </UndertekstBold>
+        </Detail>
         <VerticalSeparatorDiv />
       </>
     )

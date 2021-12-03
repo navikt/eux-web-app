@@ -6,7 +6,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
+import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Epost, Telefon, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
@@ -33,12 +33,7 @@ import {
   ValidationKontaktsinformasjonTelefonProps
 } from './validation'
 
-interface KontaktinformasjonSelector extends PersonManagerFormSelector {
-  highContrast: boolean
-}
-
-const mapState = (state: State): KontaktinformasjonSelector => ({
-  highContrast: state.ui.highContrast,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -50,10 +45,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    highContrast,
-    validation
-  } = useSelector<State, KontaktinformasjonSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const targetTelefon = `${personID}.telefon`
   const targetEpost = `${personID}.epost`
@@ -232,7 +224,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Input
               ariaLabel={t('label:telefonnummer')}
-              feil={getErrorFor(index, 'telefon', 'nummer')}
+              error={getErrorFor(index, 'telefon', 'nummer')}
               key={namespaceTelefon + idx + '-nummer-' + (index < 0 ? _newNummer : telefon?.nummer)}
               id='nummer'
               label=''
@@ -245,12 +237,11 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Select
               data-test-id={namespaceTelefon + idx + '-type'}
-              feil={getErrorFor(index, 'telefon', 'type')}
-              highContrast={highContrast}
+              error={getErrorFor(index, 'telefon', 'type')}
               id={namespaceTelefon + idx + '-type'}
               key={namespaceTelefon + idx + '-type-' + (index < 0 ? _newType : telefon?.type)}
               menuPortalTarget={document.body}
-              onChange={(e) => onTypeChanged(e.value as TelefonType, index)}
+              onChange={(e: unknown) => onTypeChanged((e as Option).value as TelefonType, index)}
               options={telefonTypeOptions}
               placeholder={t('el:placeholder-select-default')}
               value={getTypeOption(index < 0 ? _newType : telefon?.type)}
@@ -287,7 +278,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           <Column flex='2'>
             <Input
               ariaLabel={t('label:epost')}
-              feil={getErrorFor(index, 'epost', 'adresse')}
+              error={getErrorFor(index, 'epost', 'adresse')}
               namespace={namespaceEpost + idx}
               key={namespaceEpost + idx + '-adresse-' + (index < 0 ? _newAdresse : epost?.adresse)}
               id='adresse'
@@ -325,9 +316,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         <Column>
           {!_.isEmpty(telefoner)
             ? (
-              <UndertekstBold>
+              <Detail>
                 {t('label:telefonnummer') + ' *'}
-              </UndertekstBold>
+              </Detail>
               )
             : (
               <BodyLong>
@@ -337,9 +328,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           {!_.isEmpty(telefoner) && (
-            <UndertekstBold>
+            <Detail>
               {t('label:type') + ' *'}
-            </UndertekstBold>
+            </Detail>
           )}
         </Column>
         <Column />
@@ -371,9 +362,9 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
         <Column>
           {!_.isEmpty(eposter)
             ? (
-              <UndertekstBold>
+              <Detail>
                 {t('label:epost') + ' *'}
-              </UndertekstBold>
+              </Detail>
               )
             : (
               <BodyLong>

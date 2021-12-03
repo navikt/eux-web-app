@@ -7,8 +7,8 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
 import _ from 'lodash'
-import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, RadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -143,7 +143,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              feil={validation[namespace + '-begrunnelse']?.feilmelding}
+              error={validation[namespace + '-begrunnelse']?.feilmelding}
               key={namespace + '-begrunnelse-' + (utbetalingTilInstitusjon?.begrunnelse ?? '')}
               id='begrunnelse'
               label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
@@ -160,7 +160,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <Input
-            feil={validation[namespace + '-id']?.feilmelding}
+            error={validation[namespace + '-id']?.feilmelding}
             key={namespace + '-id-' + (utbetalingTilInstitusjon?.id ?? '')}
             id='id'
             label={t('label:institusjonens-id') + ' *'}
@@ -172,7 +172,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         </Column>
         <Column>
           <Input
-            feil={validation[namespace + '-navn']?.feilmelding}
+            error={validation[namespace + '-navn']?.feilmelding}
             key={namespace + '-navn-' + (utbetalingTilInstitusjon?.navn ?? '')}
             id='navn'
             label={t('label:institusjonens-navn') + ' *'}
@@ -186,21 +186,25 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <HighContrastRadioPanelGroup
-            checked={_kontoType}
+          <RadioGroup
+            defaultValue={_kontoType}
             data-no-border
             data-test-id={namespace + '-kontotype'}
-            feil={validation[namespace + '-kontotype']?.feilmelding}
+            error={validation[namespace + '-kontotype']?.feilmelding}
             id={namespace + '-kontotype'}
             legend={t('label:konto-type') + ' *'}
             name={namespace + '-kontotype'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKontoType(e.target.value as KontoType)}
-            radios={[
-              { label: t('label:ordinær-konto'), value: 'ordinaer' },
-              { label: t('label:sepa-konto'), value: 'sepa' }
-            ]}
-            required
-          />
+            onChange={(e: string) => setKontoType(e as KontoType)}
+          >
+            <Radio
+              value='ordinaer'
+            >{t('label:ordinær-konto')}
+            </Radio>
+            <Radio
+              value='sepa'
+            >{t('label:sepa-konto')}
+            </Radio>
+          </RadioGroup>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
@@ -209,7 +213,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           <AlignStartRow>
             <Column>
               <Input
-                feil={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
+                error={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
                 id='kontoOrdinaer-bankensNavn'
                 key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
                 label={t('label:bankens-navn') + ' *'}
@@ -220,7 +224,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             </Column>
             <Column>
               <Input
-                feil={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
+                error={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
                 id='kontoOrdinaer-kontonummer'
                 key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
                 label={t('label:kontonummer') + ' *'}
@@ -231,7 +235,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             </Column>
             <Column>
               <Input
-                feil={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
+                error={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
                 id='kontoOrdinaer-swift'
                 key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
                 label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '')}
@@ -261,7 +265,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           <AlignStartRow>
             <Column>
               <Input
-                feil={validation[namespace + '-kontoSepa-iban']?.feilmelding}
+                error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
                 key={namespace + '-kontoSepa-iban-' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
                 label={t('label:iban') + ' *'}
@@ -275,7 +279,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
           <AlignStartRow>
             <Column>
               <Input
-                feil={validation[namespace + '-kontoSepa-swift']?.feilmelding}
+                error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 id='kontoSepa-swift'
                 key={namespace + '-kontoSepa-swift-' + (utbetalingTilInstitusjon?.kontoSepa?.swift ?? '')}
                 label={t('label:swift') + (!_.isEmpty(utbetalingTilInstitusjon?.kontoSepa?.iban) ? '' : ' *')}

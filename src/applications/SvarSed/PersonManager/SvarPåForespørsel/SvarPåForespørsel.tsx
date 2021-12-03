@@ -151,12 +151,12 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             {t('label:choose')}
           </label>
 
-          <HighContrastRadioPanelGroup
+          <RadioPanelGroup
             checked={_svar}
             data-multiple-line
             data-no-border
             data-test-id={namespace + '-svar'}
-            feil={validation[namespace + '-svar']?.feilmelding}
+            error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
             name={namespace + '-svar'}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,7 +200,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
-                  feil={validation[namespace + '-dokument']?.feilmelding}
+                  error={validation[namespace + '-dokument']?.feilmelding}
                   namespace={namespace}
                   id='dokument'
                   label={t('label:vi-vedlegger-dokumenter')}
@@ -215,7 +215,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
-                  feil={validation[namespace + '-informasjon']?.feilmelding}
+                  error={validation[namespace + '-informasjon']?.feilmelding}
                   namespace={namespace}
                   id='informasjon'
                   label={t('label:vi-sender-informasjon')}
@@ -230,7 +230,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
-                  feil={validation[namespace + '-sed']?.feilmelding}
+                  error={validation[namespace + '-sed']?.feilmelding}
                   namespace={namespace}
                   id='sed'
                   label={t('label:sed')}
@@ -248,7 +248,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
-                feil={validation[namespace + '-grunn']?.feilmelding}
+                error={validation[namespace + '-grunn']?.feilmelding}
                 namespace={namespace}
                 id='grunn'
                 label={t('label:grunn')}

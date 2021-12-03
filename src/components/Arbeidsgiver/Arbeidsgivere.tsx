@@ -13,7 +13,6 @@ export interface ArbeidsgivereProps {
   arbeidsperioder: Arbeidsperioder | null | undefined
   editable?: Editable
   fnr: string | undefined
-  highContrast: boolean
   namespace: string
   personFnr?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
@@ -27,7 +26,6 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   arbeidsperioder,
   editable = 'no',
   fnr,
-  highContrast,
   namespace,
   personFnr,
   onArbeidsgiverSelect,
@@ -58,7 +56,6 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
             const arbeidsgiverAsPeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(arbeidsgiver)
             return (
               <ArbeidsgiverBox
-                highContrast={highContrast}
                 arbeidsgiver={arbeidsgiverAsPeriodeMedForsikring}
                 editable={editable}
                 selected={selected}

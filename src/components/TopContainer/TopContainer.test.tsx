@@ -10,8 +10,11 @@ jest.mock('react-router-dom', () => ({
 
 const defaultSelector: TopContainerSelector = {
   bannerMessage: undefined,
-  error: undefined,
-  highContrast: false
+  highContrast: false,
+  bannerStatus: undefined,
+  expirationTime: undefined,
+  modal: undefined,
+  error: undefined
 }
 
 jest.mock('actions/alert', () => ({
@@ -26,7 +29,8 @@ jest.mock('actions/ui', () => ({
 describe('components/TopContainer', () => {
   let wrapper: ReactWrapper
   const initialMockProps: TopContainerProps = {
-    header: 'mockHeader'
+    header: 'mockHeader',
+    title: 'title'
   }
 
   beforeEach(() => {
@@ -58,7 +62,7 @@ describe('components/TopContainer', () => {
       </TopContainer>
     )
     const clientAlert = wrapper.find('Alert[type="server"]')
-    expect(clientAlert.render().text()).toEqual('feil' + 'mockMessage|mockParams')
+    expect(clientAlert.render().text()).toEqual('error' + 'mockMessage|mockParams')
 
     clientAlert.find('Icons').simulate('click')
     expect(clientClear).toHaveBeenCalled()

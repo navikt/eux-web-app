@@ -12,7 +12,7 @@ describe('components/PersonSearch/PersonSearch', () => {
     alertTypesWatched: [types.SAK_PERSON_GET_FAILURE],
     className: 'mock-className',
     id: 'id',
-    feil: undefined,
+    error: undefined,
     initialFnr: '12345678901',
     gettingPerson: false,
     onFnrChange: jest.fn(),

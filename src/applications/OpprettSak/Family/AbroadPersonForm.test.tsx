@@ -3,7 +3,6 @@ import React from 'react'
 import { stageSelector } from 'setupTests'
 import AbroadPersonForm, { AbroadPersonFormProps, AbroadPersonFormSelector } from './AbroadPersonForm'
 import { kjoenn } from 'eessi-kodeverk/lib/kjoenn'
-import { landkoder } from 'eessi-kodeverk/lib/landkoder'
 import { familierelasjoner } from 'eessi-kodeverk/lib/familierelasjoner'
 
 jest.mock('react-router-dom', () => ({
@@ -13,20 +12,18 @@ jest.mock('react-router-dom', () => ({
 describe('components/Family/AbroadPersonForm', () => {
   let wrapper: ReactWrapper
   const initialMockProps: AbroadPersonFormProps = {
+    alertMessage: undefined,
+    alertType: undefined,
+    alertTypesWatched: [],
     existingFamilyRelationships: [],
     rolleList: familierelasjoner,
-    onAlertClose: jest.fn(),
     onAbroadPersonAddedFailure: jest.fn(),
     onAbroadPersonAddedSuccess: jest.fn(),
     person: {}
   }
 
   const defaultSelector: AbroadPersonFormSelector = {
-    alertStatus: undefined,
-    alertMessage: undefined,
-    alertType: undefined,
-    kjoennList: kjoenn,
-    landkoderList: landkoder
+    kjoennList: kjoenn
   }
 
   beforeAll(() => {

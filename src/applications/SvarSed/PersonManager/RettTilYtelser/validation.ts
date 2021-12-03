@@ -1,7 +1,7 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { RettTilYtelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { ErrorElement }  from 'declarations/app.d'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 
 export interface ValidationvalidateRettTilYtelseProps {

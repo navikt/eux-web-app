@@ -4,7 +4,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { LinkPanel } from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 
@@ -18,6 +18,7 @@ const mapState = (state: State): ForsideSelector => ({
 
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { featureToggles }: ForsideSelector = useSelector<State, ForsideSelector>(mapState)
   return (
     <TopContainer title={t('app:page-title-forside')}>
@@ -27,31 +28,28 @@ const Forside: React.FC = (): JSX.Element => {
           <LinkPanel
             className='slideInFromLeft'
             href='#'
-            linkCreator={(props: any) => (<Link to='/opprettsak' {...props} />)}
-            tittelProps='undertittel'
+            onClick={() => navigate({ pathname: '/opprettsak', search: window.location.search })}
           >
-            {t('app:page-title-opprettsak')}
+            <LinkPanel.Title>{t('app:page-title-opprettsak')}</LinkPanel.Title>
           </LinkPanel>
           <VerticalSeparatorDiv />
           <LinkPanel
             className='slideInFromLeft'
             href='#'
-            linkCreator={(props: any) => (<Link to='/vedlegg' {...props} />)}
-            style={{ animationDelay: '0.1s' }}
-            tittelProps='undertittel'
+            onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}
+            style={{ animationDelay: '0.05s' }}
           >
-            {t('app:page-title-vedlegg')}
+            <LinkPanel.Title>{t('app:page-title-vedlegg')}</LinkPanel.Title>
           </LinkPanel>
           <>
             <VerticalSeparatorDiv />
             <LinkPanel
               className='slideInFromLeft'
               href='#'
-              linkCreator={(props: any) => (<Link to='/svarsed' {...props} />)}
-              style={{ animationDelay: '0.2s' }}
-              tittelProps='undertittel'
+              onClick={() => navigate({ pathname: '/svarsed', search: window.location.search })}
+              style={{ animationDelay: '0.1s' }}
             >
-              {t('app:page-title-svarsed')}
+              <LinkPanel.Title>{t('app:page-title-svarsed')}</LinkPanel.Title>
             </LinkPanel>
           </>
           {featureToggles?.featurePdu1 && (
@@ -60,11 +58,10 @@ const Forside: React.FC = (): JSX.Element => {
               <LinkPanel
                 className='slideInFromLeft'
                 href='#'
-                linkCreator={(props: any) => (<Link to='/pdu1' {...props} />)}
-                style={{ animationDelay: '0.3s' }}
-                tittelProps='undertittel'
+                onClick={() => navigate({ pathname: '/pdu1', search: window.location.search })}
+                style={{ animationDelay: '0.1.5s' }}
               >
-                {t('app:page-title-pdu1')}
+                <LinkPanel.Title>{t('app:page-title-pdu1')}</LinkPanel.Title>
               </LinkPanel>
             </>
           )}

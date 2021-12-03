@@ -40,7 +40,6 @@ const SectionDiv = styled.div`
 `
 
 interface SavePDU1ModalProps {
-  highContrast: boolean
   onModalClose: () => void
   replyPdu1: ReplyPdu1
   storageKey: string
@@ -49,7 +48,6 @@ interface SavePDU1ModalProps {
 
 const SendPDU1Modal = ({
   open,
-  highContrast,
   onModalClose,
   replyPdu1,
   storageKey
@@ -94,7 +92,6 @@ const SendPDU1Modal = ({
   return (
     <Modal
       open={open}
-      highContrast={highContrast}
       modal={{
         closeButton: false,
         modalContent: (

@@ -1,4 +1,3 @@
-import { Loader } from '@navikt/ds-react'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
 import Input from 'components/Forms/Input'
@@ -8,7 +7,7 @@ import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
 import { Alert, Button, HelpText, Loader, Link } from '@navikt/ds-react'
-import { ErrorElement }  from 'declarations/app.d'
+import { ErrorElement } from 'declarations/app.d'
 import {
   FlexDiv,
   Container,
@@ -126,12 +125,12 @@ const Vedlegg: React.FC = (): JSX.Element => {
     }
   }
 
-  const onjournalpostIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const onjournalpostIDChange = (e: any): void => {
     resetValidation('journalpostID')
     dispatch(vedleggActions.propertySet('journalpostID', e.target.value))
   }
 
-  const onDokumentIDChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const onDokumentIDChange = (e: any): void => {
     resetValidation('dokumentID')
     dispatch(vedleggActions.propertySet('dokumentID', e.target.value))
   }
@@ -144,8 +143,10 @@ const Vedlegg: React.FC = (): JSX.Element => {
           <VerticalSeparatorDiv />
           <div className='noslideInFromLeft'>
             <Input
-              id='vedlegg-journalpostID'
+              id='journalpostID'
               data-test-id='vedlegg-journalpostID'
+              namespace='vedlegg'
+              value={journalpostID}
               label={(
                 <FlexDiv>
                   {t('label:journalpost-id')}
@@ -155,15 +156,17 @@ const Vedlegg: React.FC = (): JSX.Element => {
                   </HelpText>
                 </FlexDiv>
               )}
-              onChange={onjournalpostIDChange}
-              feil={_validation.journalpostID ? _validation.journalpostID.feilmelding : undefined}
+              onChanged={onjournalpostIDChange}
+              error={_validation.journalpostID ? _validation.journalpostID.feilmelding : undefined}
             />
           </div>
           <VerticalSeparatorDiv />
           <div className='noslideInFromLeft' style={{ animationDelay: '0.15s' }}>
             <Input
-              id='vedlegg-dokumentID'
+              id='dokumentID'
+              namespace='vedlegg'
               data-test-id='vedlegg-dokumentID'
+              value={dokumentID}
               label={(
                 <FlexDiv>
                   {t('label:dokument-id')}
@@ -173,8 +176,8 @@ const Vedlegg: React.FC = (): JSX.Element => {
                   </HelpText>
                 </FlexDiv>
               )}
-              onChange={onDokumentIDChange}
-              feil={_validation.dokumentID ? _validation.dokumentID.feilmelding : undefined}
+              onChanged={onDokumentIDChange}
+              error={_validation.dokumentID ? _validation.dokumentID.feilmelding : undefined}
             />
             <VerticalSeparatorDiv />
           </div>
@@ -194,7 +197,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               disabled={sendingVedlegg}
             >
               {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
-              {sendingVedlegg & <Loader/>}
+              {sendingVedlegg && <Loader />}
             </Button>
             {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
               <>

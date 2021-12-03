@@ -2,7 +2,7 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'applications/app.d'
+import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 

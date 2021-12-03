@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { HighContrastLink } from 'nav-hoykontrast'
+import { Link } from '@navikt/ds-react'
 import styled from 'styled-components'
 
 interface LesMerProps {
@@ -21,7 +21,7 @@ const LesMer: React.FC<LesMerProps> = ({ visibleText, invisibleText, moreText, l
     <LesMerDiv>
       {_showInvisible ? invisibleText : visibleText}
       &nbsp;
-      <HighContrastLink
+      <Link
         href='#' onClick={(e: any) => {
           e.stopPropagation()
           e.preventDefault()
@@ -29,7 +29,7 @@ const LesMer: React.FC<LesMerProps> = ({ visibleText, invisibleText, moreText, l
         }}
       >
         {_showInvisible ? lessText : moreText}
-      </HighContrastLink>
+      </Link>
     </LesMerDiv>
   )
 }

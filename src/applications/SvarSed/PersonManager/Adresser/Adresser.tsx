@@ -12,7 +12,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Loader, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -31,13 +31,11 @@ import AdresseForm from './AdresseForm'
 import { validateAdresse, ValidationAddressProps } from './validation'
 
 interface AdresserSelector extends PersonManagerFormSelector {
-  highContrast: boolean
   adresse: Array<IAdresse> | null | undefined
   gettingAdresse: boolean
 }
 
 const mapState = (state: State): AdresserSelector => ({
-  highContrast: state.ui.highContrast,
   validation: state.validation.status,
   adresse: state.adresse.adresse,
   gettingAdresse: state.loading.gettingAdresse
@@ -52,7 +50,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
 }: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
-    highContrast,
     validation,
     adresse,
     gettingAdresse
@@ -183,7 +180,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
                   {gettingAdresse
                     ? t('message:loading-searching')
                     : t('label:søk-pdl-adresse-til', { person: personName })}
-                  {gettingAdresse && <Loader/>}
+                  {gettingAdresse && <Loader />}
                 </Button>
               </Column>
             </AlignStartRow>
@@ -242,7 +239,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       <AdresseModal
-        highContrast={highContrast}
         open={_showModal}
         adresser={adresse}
         personName={personName}
