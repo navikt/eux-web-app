@@ -131,7 +131,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
         <FlexCenterDiv>
           <label
             htmlFor={namespace}
-            className='skjemaelement__label'
+            className='navds-text-field__label navds-label'
             style={{ margin: '0px' }}
           >
             {t('label:svar-sed-type')}:
@@ -175,11 +175,9 @@ const SEDType: React.FC<SEDTypeProps> = ({
             {!editMode && validation[namespace]?.feilmelding && (
               <>
                 <HorizontalSeparatorDiv />
-                <div className='skjemaelement__feilmelding' style={{ marginTop: '0px' }}>
-                  <p className='typo-feilmelding'>
-                    {validation[namespace].feilmelding}
-                  </p>
-                </div>
+                <label className='navds-error-message navds-error-message--medium navds-label' style={{ marginTop: '0px' }}>
+                  {validation[namespace].feilmelding}
+                </label>
               </>
             )}
           </FlexCenterDiv>

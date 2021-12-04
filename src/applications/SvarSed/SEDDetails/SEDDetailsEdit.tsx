@@ -544,20 +544,16 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               data-test-id='seddetails-typeKrav'
               error={validation['seddetails-typeKrav']?.feilmelding}
               id='seddetails-kravType'
+              onChange={(e: string) => setKravType(e)}
+              value={(replySed as F002Sed).krav?.kravType}
             >
               <Radio
-                name='seddetails-typeKrav'
-                checked={(replySed as F002Sed).krav?.kravType === 'nytt_krav'}
                 value='nytt_krav'
-                onClick={() => setKravType('nytt_krav')}
               >
                 {t('app:kravType-nytt_krav')}
               </Radio>
               <Radio
-                checked={(replySed as F002Sed).krav?.kravType === 'endrede_omstendigheter'}
-                name='seddetails-typeKrav'
                 value='endrede_omstendigheter'
-                onClick={() => setKravType('endrede_omstendigheter')}
               >
                 {t('app:kravType-endrede_omstendigheter')}
               </Radio>
@@ -578,24 +574,18 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             <RadioGroup
               legend={t('label:informasjon-om-søknaden')}
               data-test-id='seddetails-informasjon'
-              error={validation['seddetails-informasjon']
-                ? validation['seddetails-informasjon']!.feilmelding
-                : undefined}
+              error={validation['seddetails-informasjon']?.feilmelding}
               id='seddetails-informasjon'
+              value={(replySed as F002Sed).krav?.infoType}
+              onChange={(e: string) => setInfoType(e)}
             >
               <Radio
-                name='seddetails-informasjon'
                 value='vi_bekrefter_leverte_opplysninger'
-                checked={(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger'}
-                onClick={() => setInfoType('vi_bekrefter_leverte_opplysninger')}
               >
                 {t('app:info-confirm-information')}
               </Radio>
               <Radio
-                checked={(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger'}
-                name='seddetails-informasjon'
                 value='gi_oss_punktvise_opplysninger'
-                onClick={() => setInfoType('gi_oss_punktvise_opplysninger')}
               >
                 {t('app:info-point-information')}
               </Radio>

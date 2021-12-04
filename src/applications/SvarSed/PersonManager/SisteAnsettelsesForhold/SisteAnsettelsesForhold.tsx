@@ -23,7 +23,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -226,11 +226,11 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <Column>
-            <label className='skjemaelement__label'>
+            <label className='navds-text-field__label navds-label'>
               {t('label:utbetaling-type')}
             </label>
             <RadioPanelGroup
-              checked={index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? ''}
+              value={index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? ''}
               data-multiple-line
               data-no-border
               data-test-id={namespace + '-utbetalingType'}
@@ -238,22 +238,14 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               key={namespace + '-utbetalingType-' + (index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? '')}
               id={namespace + '-utbetalingType'}
               name={namespace + '-utbetalingType'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingType(e.target.value, index)}
-              radios={[
-                {
-                  label: t('el:option-typebeløp-1'),
-                  value: 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'
-                },
-                {
-                  label: t('el:option-typebeløp-2'),
-                  value: 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'
-                },
-                {
-                  label: t('el:option-typebeløp-3'),
-                  value: 'annet_vederlag_eller_tilsvarende_utbetalinger'
-                }
-              ]}
-            />
+              onChange={(e: string) => setUtbetalingType(e, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>{t('el:option-typebeløp-1')}</RadioPanel>
+                <RadioPanel value='vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'>{t('el:option-typebeløp-2')}</RadioPanel>
+                <RadioPanel value='annet_vederlag_eller_tilsvarende_utbetalinger'>{t('el:option-typebeløp-3')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />

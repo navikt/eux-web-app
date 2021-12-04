@@ -20,7 +20,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -249,19 +249,20 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <Row>
           <Column flex='3'>
             <RadioPanelGroup
-              checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
+              value={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
               data-test-id={namespace + idx + '-relasjonTilPerson'}
               error={getErrorFor(index, 'relasjonTilPerson') ? ' ' : undefined}
               id={namespace + idx + '-relasjonTilPerson'}
               legend={t('label:relasjon-med') + ' *'}
               name={namespace + idx + '-relasjonTilPerson'}
-              radios={[
-                { label: t('label:søker'), value: '01' },
-                { label: t('label:avdød'), value: '02' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon, index)}
-            />
+              onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
             <VerticalSeparatorDiv size='0.15' />
             <RadioPanelGroup
               checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
@@ -270,12 +271,13 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               error={getErrorFor(index, 'relasjonTilPerson')}
               id={namespace + idx + '-relasjonTilPerson'}
               name={namespace + idx + '-relasjonTilPerson'}
-              radios={[
-                { label: t('label:partner'), value: '03' },
-                { label: t('label:annen-person'), value: '04' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRelasjon(e.target.value as BarnRelasjon, index)}
-            />
+              onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </Row>
         <VerticalSeparatorDiv />
@@ -319,19 +321,20 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
         <Row>
           <Column flex={2}>
             <RadioPanelGroup
-              checked={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
+              value={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
               data-no-border
               data-test-id={namespace + idx + '-erDeltForeldreansvar'}
               error={getErrorFor(index, 'erDeltForeldreansvar')}
               id={namespace + idx + '-erDeltForeldreansvar'}
               legend={t('label:delt-foreldreansvar')}
               name={namespace + '-erDeltForeldreansvar'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setErDeltForeldreansvar(e.target.value as JaNei, index)}
-            />
+              onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column />
         </Row>
@@ -347,18 +350,19 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <RadioPanelGroup
-              checked={index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold}
+              value={index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIBrukersHushold'}
               error={getErrorFor(index, 'borIBrukersHushold')}
               id={namespace + idx + '-borIBrukersHushold'}
               name={namespace + idx + '-borIBrukersHushold'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.value as JaNei, index)}
-            />
+              onChange={(e: string) => setQuestion1(e as JaNei, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignCenterRow>
         <VerticalSeparatorDiv size='0.2' />
@@ -370,18 +374,19 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <RadioPanelGroup
-              checked={index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold}
+              value={index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIEktefellesHushold'}
               error={getErrorFor(index, 'borIEktefellesHushold')}
               id={namespace + idx + '-borIEktefellesHushold'}
               name={namespace + idx + '-borIEktefellesHushold'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.value as JaNei, index)}
-            />
+              onChange={(e: string) => setQuestion2(e as JaNei, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignCenterRow>
         <VerticalSeparatorDiv size='0.2' />
@@ -393,18 +398,19 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <RadioPanelGroup
-              checked={index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold}
+              value={index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold}
               data-no-border
               data-test-id={namespace + idx + '-borIAnnenPersonsHushold'}
               error={getErrorFor(index, 'borIAnnenPersonsHushold')}
               id={namespace + idx + '-borIAnnenPersonsHushold'}
               name={namespace + idx + '-borIAnnenPersonsHushold'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.value as JaNei, index)}
-            />
+              onChange={(e: string) => setQuestion3(e as JaNei, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignCenterRow>
         <VerticalSeparatorDiv size='0.2' />
@@ -416,18 +422,19 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <RadioPanelGroup
-              checked={index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon}
+              value={index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon}
               data-no-border
               data-test-id={namespace + idx + '-borPaaInstitusjon'}
               error={getErrorFor(index, 'borPaaInstitusjon')}
               id={namespace + idx + '-borPaaInstitusjon'}
               name={namespace + idx + '-borPaaInstitusjon'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.value as JaNei, index)}
-            />
+              onChange={(e: string) => setQuestion4(e as JaNei, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignCenterRow>
         <VerticalSeparatorDiv />

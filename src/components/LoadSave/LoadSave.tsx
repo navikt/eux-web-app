@@ -3,7 +3,7 @@ import * as localStorageActions from 'actions/localStorage'
 import { getSedStatus } from 'actions/svarsed'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
-import { FlexEtikett } from 'components/StyledComponents'
+import { MyTag } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -147,7 +147,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
             )}
         {entries?.map((savedEntry: LocalStorageEntry<ReplySed | ReplyPdu1>) => (
           <div key={savedEntry.id}>
-            <FlexEtikett>
+            <MyTag variant='info'>
               <PileDiv flex='1'>
                 <FlexCenterSpacedDiv>
                   <FlexBaseSpacedDiv>
@@ -216,7 +216,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
                   />
                 </FlexBaseSpacedDiv>
               </PileDiv>
-            </FlexEtikett>
+            </MyTag>
             <VerticalSeparatorDiv />
           </div>
         ))}

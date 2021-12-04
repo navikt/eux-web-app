@@ -19,9 +19,9 @@ import { standardLogger } from 'metrics/loggers'
 import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
-  Column,
+  Column, FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedDiv,
+  PaddedDiv, RadioPanel,
   RadioPanelGroup,
   Row,
   VerticalSeparatorDiv
@@ -312,19 +312,20 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
               <Column flex='3'>
                 <RadioPanelGroup
-                  checked={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
+                  value={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
                   data-test-id={namespace + idx + '-borSammen'}
                   data-no-border
                   id={namespace + idx + '-borSammen'}
                   error={getErrorFor(index, 'borSammen')}
                   legend={t('label:bor-sammen') + ' *'}
                   name={namespace + idx + '-borSammen'}
-                  radios={[
-                    { label: t('label:ja'), value: 'ja' },
-                    { label: t('label:nei'), value: 'nei' }
-                  ]}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBorSammen(e.target.value as JaNei, index)}
-                />
+                  onChange={(e: string) => setBorSammen(e as JaNei, index)}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                    <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
               </Column>
               <Column />
             </AlignStartRow>

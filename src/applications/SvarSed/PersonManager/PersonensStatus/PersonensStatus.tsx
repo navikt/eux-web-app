@@ -6,7 +6,14 @@ import WithSubsidies from 'applications/SvarSed/PersonManager/PersonensStatus/Wi
 import { PersonManagerFormProps } from 'applications/SvarSed/PersonManager/PersonManager'
 import LesMer from 'components/LesMer/LesMer'
 import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, RadioPanelGroup, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  RadioPanelGroup,
+  PaddedDiv,
+  VerticalSeparatorDiv,
+  FlexRadioPanels, RadioPanel
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -32,39 +39,36 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <RadioPanelGroup
-            checked={_arbeidsforhold}
+            value={_arbeidsforhold}
             data-multiple-line
             data-no-border
             data-test-id={namespace + '-type'}
             id={namespace + '-type'}
             name={namespace + '-type'}
-            radios={[
-              { label: t('el:option-personensstatus-1'), value: 'arbeidsforhold-1' },
-              { label: t('el:option-personensstatus-2'), value: 'arbeidsforhold-2' },
-              {
-                label: (
-                  <LesMer
-                    visibleText={t('el:option-personensstatus-3')}
-                    invisibleText={t('el:option-personensstatus-3-more')}
-                    moreText={t('label:vis-mer')}
-                    lessText={t('label:se-mindre')}
-                  />),
-                value: 'arbeidsforhold-3'
-              },
-              { label: t('el:option-personensstatus-4'), value: 'arbeidsforhold-4' },
-              {
-                label: (
-                  <LesMer
-                    visibleText={t('el:option-personensstatus-5')}
-                    invisibleText={t('el:option-personensstatus-5-more')}
-                    moreText={t('label:vis-mer')}
-                    lessText={t('label:se-mindre')}
-                  />),
-                value: 'arbeidsforhold-5'
-              }
-            ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setArbeidsforhold(e.target.value)}
-          />
+            onChange={setArbeidsforhold}
+          >
+            <FlexRadioPanels>
+              <RadioPanel value='arbeidsforhold-1'>{t('el:option-personensstatus-1')}</RadioPanel>
+              <RadioPanel value='arbeidsforhold-2'>{t('el:option-personensstatus-2')}</RadioPanel>
+              <RadioPanel value='arbeidsforhold-3'>
+                <LesMer
+                  visibleText={t('el:option-personensstatus-3')}
+                  invisibleText={t('el:option-personensstatus-3-more')}
+                  moreText={t('label:vis-mer')}
+                  lessText={t('label:se-mindre')}
+                />
+              </RadioPanel>
+              <RadioPanel value='arbeidsforhold-4'>{t('el:option-personensstatus-4')}</RadioPanel>
+              <RadioPanel value='arbeidsforhold-5'>
+                <LesMer
+                  visibleText={t('el:option-personensstatus-5')}
+                  invisibleText={t('el:option-personensstatus-5-more')}
+                  moreText={t('label:vis-mer')}
+                  lessText={t('label:se-mindre')}
+                />
+              </RadioPanel>
+            </FlexRadioPanels>
+          </RadioPanelGroup>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

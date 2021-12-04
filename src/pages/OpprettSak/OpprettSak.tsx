@@ -663,7 +663,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                         heading={t('validation:feiloppsummering')}
                       >
                         {_.filter(Object.values(_validation), v => v !== undefined).map((a: ErrorElement | undefined) => (
-                          <ErrorSummary.Item href={a?.skjemaelementId}>{a?.feilmelding}</ErrorSummary.Item>
+                          <ErrorSummary.Item key={a?.skjemaelementId} href={a?.skjemaelementId}>{a?.feilmelding}</ErrorSummary.Item>
                         ))}
                       </ErrorSummary>
                     </Column>

@@ -4,7 +4,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
-import { AlignStartRow, Column, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -94,35 +94,38 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       {type && (
         <AlignStartRow>
           <Column flex='4'>
-            <RadioPanelGroupWithNoErrorVisible
-              checked={adresse?.type}
+            <RadioPanelGroup
+              value={adresse?.type}
               data-no-border
               data-test-id={namespace + '-type'}
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               legend={t('label:adresse') + ' *'}
               name={namespace + '-type'}
-              radios={[
-                { label: t('label:bostedsland'), value: 'bosted' },
-                { label: t('label:oppholdsland'), value: 'opphold' }
-              ]}
-              required
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType))}
-            />
+              onChange={(e: string) => setType((e as AdresseType))}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='bosted'>{t('label:bostedsland')}</RadioPanel>
+                <RadioPanel value='opphold'>{t('label:oppholdsland')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
+
             <VerticalSeparatorDiv size='0.15' />
-            <RadioPanelGroup
-              checked={adresse?.type}
+            <RadioPanelGroupWithNoErrorVisible
+              value={adresse?.type}
               data-no-border
               data-test-id={namespace + '-type'}
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               name={namespace + '-type'}
-              radios={[
-                { label: t('label:kontaktadresse'), value: 'kontakt' },
-                { label: t('label:annet'), value: 'annet' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setType((e.target.value as AdresseType))}
-            />
+              onChange={(e: string) => setType((e as AdresseType))}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='kontakt'>{t('label:kontaktadresse')}</RadioPanel>
+                <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroupWithNoErrorVisible>
+
           </Column>
         </AlignStartRow>
       )}

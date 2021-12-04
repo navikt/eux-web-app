@@ -5,7 +5,7 @@ import {
   fadeIn,
   fadeOut
 } from 'nav-hoykontrast'
-import { Panel } from '@navikt/ds-react'
+import { Panel, Tag } from '@navikt/ds-react'
 
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;
@@ -66,7 +66,7 @@ export const TextAreaDiv = styled.div`
     width: 100%;
   }
 `
-export const Etikett = styled.div`
+export const MyTag = styled(Tag)`
   padding: 0.25rem 0.5rem;
   margin-left: -0.15rem;
   color:var(--navds-color-text-primary) !important;
@@ -74,10 +74,6 @@ export const Etikett = styled.div`
   border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-color-border)' : 'none'};
   border-radius: 5px;
   display: inline-block;
-`
-export const FlexEtikett = styled(Etikett)`
-  padding: 0.5rem;
-  display: flex;
 `
 
 export const WithErrorPanel = styled(Panel)`

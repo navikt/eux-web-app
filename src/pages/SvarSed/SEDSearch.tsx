@@ -1,5 +1,5 @@
 import { Close, Copy, Edit, Email, Search, Send, Star, ExternalLink } from '@navikt/ds-icons'
-import { Alert, Loader, Button, TextField, Checkbox, Link, Panel, BodyLong, Detail, Heading } from '@navikt/ds-react'
+import { Alert, Loader, Button, Checkbox, Link, Panel, BodyLong, Detail, Heading, SearchField } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import { cleanData, copyToClipboard } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -8,7 +8,7 @@ import * as svarsedActions from 'actions/svarsed'
 import { getSedStatus, setReplySed } from 'actions/svarsed'
 import { resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
-import { AlertstripeDiv, Etikett, HiddenFormContainer } from 'components/StyledComponents'
+import { AlertstripeDiv, MyTag, HiddenFormContainer } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -21,11 +21,11 @@ import {
   Column,
   FlexDiv,
   FlexEndSpacedDiv,
-  FlexStartDiv,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
   RadioPanelBorder,
+  RadioPanelGroup,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import { validateSEDSearch } from 'pages/SvarSed/mainValidation'
@@ -50,11 +50,16 @@ const FilterDiv = styled(FlexDiv)`
     color: var(--navds-color-action-active) !important;
   }
 `
-
+const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`
+  .navds-radio__input:checked + .navds-radio__label .navds-link,
+  .navds-radio__input:checked + .navds-radio__label .navds-link svg {
+     color: var(--navds-color-text-inverse);
+  }
+`
 const SEDPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
   margin-left: 3rem;
-  &:hover, .skjemaelement__input:hover {
+  &:hover {
     color: var(--navds-color-text-primary) !important;
     background-color: var(--navds-color-hover) !important;
   }
@@ -221,36 +226,29 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
-            <FlexStartDiv>
-              <TextField
-                aria-label={t('label:saksnummer-eller-fnr')}
+            <SearchField
+              label={t('label:saksnummer-eller-fnr')}
+              error={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+            >
+              <SearchField.Input
                 data-test-id={namespace + '-saksnummerOrFnr'}
-                error={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
                 id={namespace + '-saksnummerOrFnr'}
-                label={t('label:saksnummer-eller-fnr')}
                 onChange={onSaksnummerOrFnrChange}
                 placeholder={t('el:placeholder-input-default')}
                 required
                 value={_saksnummerOrFnr}
               />
-              <HorizontalSeparatorDiv />
-              <div className='nolabel'>
-                <Button
-                  variant='secondary'
-                  size='small'
-                  aria-label={t('el:button-search')}
-                  disabled={queryingSaksnummerOrFnr}
-                  onClick={onSaksnummerOrFnrClick}
-                >
-                  <Search />
-                  <HorizontalSeparatorDiv />
-                  {queryingSaksnummerOrFnr
-                    ? t('message:loading-searching')
-                    : t('el:button-search')}
-                  {queryingSaksnummerOrFnr && <Loader />}
-                </Button>
-              </div>
-            </FlexStartDiv>
+              <SearchField.Button
+                disabled={queryingSaksnummerOrFnr}
+                onClick={onSaksnummerOrFnrClick}
+              >
+                <Search />
+                {queryingSaksnummerOrFnr
+                  ? t('message:loading-searching')
+                  : t('el:button-search')}
+                {queryingSaksnummerOrFnr && <Loader />}
+              </SearchField.Button>
+            </SearchField>
             <VerticalSeparatorDiv size='0.5' />
             <BodyLong>
               {_validMessage}
@@ -397,18 +395,22 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
           </FilterDiv>
           <VerticalSeparatorDiv />
-          {filteredSeds.map((sed: Sed) => {
-            const sedId = sed.sakId + '-' + sed.sakType
-            const alone = filteredSeds?.length === 1
-            return (
-              <div key={sedId}>
-                <RadioPanelBorder
-                  ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
-                  ariaChecked={parentSed === sedId}
-                  checked={alone || parentSed === sedId}
-                  className='slideInFromLeft'
-                  label={(
-                    <>
+          <RadioPanelGroup>
+            {filteredSeds.map((sed: Sed) => {
+              const sedId = sed.sakId + '-' + sed.sakType
+              const alone = filteredSeds?.length === 1
+              return (
+                <div key={sedId}>
+                  <RadioPanelBorderWithLinks
+                    ariaLabel={sed.sakType + ' - ' + sed.sakTittel}
+                    ariaChecked={parentSed === sedId}
+                    checked={alone || parentSed === sedId}
+                    className='slideInFromLeft'
+                    name={namespace + '-saksnummerOrFnr-results'}
+                    onChange={onParentSedChange}
+                    value={sedId}
+                  >
+                    <PileDiv>
                       <Heading size='small'>
                         {sed.sakType + ' - ' + sed.sakTittel}
                       </Heading>
@@ -448,139 +450,139 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                         </BodyLong>
                       </FlexDiv>
                       <VerticalSeparatorDiv size='0.3' />
-                      <Etikett>
-                        {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
-                      </Etikett>
-                    </>
-                  )}
-                  name={namespace + '-saksnummerOrFnr-results'}
-                  onChange={onParentSedChange}
-                  value={sedId}
-                />
-                <VerticalSeparatorDiv />
-                {sed.sedListe.map((connectedSed: ConnectedSed) => (
-                  <HiddenFormContainer
-                    aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
-                    className={classNames({
-                      slideOpen: _allOpen === true ? true : (alone || (previousParentSed !== sedId && parentSed === sedId)),
-                      slideClose: _allOpen === true ? false : ((previousParentSed === sedId && parentSed !== sedId)),
-                      closed: _allOpen === true ? false : (!alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId)))
-                    })}
-                    key={sed + '-' + connectedSed.sedId}
-                  >
-                    <SEDPanel border>
-                      <FlexDiv>
-                        <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
-                          {connectedSed.status === 'received' && <Email width='32' height='32' />}
-                          {connectedSed.status === 'sent' && <Send width='32' height='32' />}
-                          {connectedSed.status === 'new' && <Star width='32' height='32' />}
-                          {connectedSed.status === 'active' && <Edit width='32' height='32' />}
-                          {connectedSed.status === 'cancelled' && <Close width='32' height='32' />}
-                          <VerticalSeparatorDiv size='0.35' />
-                          <Detail>
-                            {t('app:status-received-' + connectedSed.status.toLowerCase())}
-                          </Detail>
-                        </PileCenterDiv>
-                        <HorizontalSeparatorDiv />
-                        <PileDiv flex={2}>
-                          <Heading size='small'>
-                            {connectedSed.sedType} - {connectedSed.sedTittel}
-                          </Heading>
-                          <VerticalSeparatorDiv size='0.5' />
-                          <FlexDiv>
-                            <Link target='_blank' href={sed.sakUrl} rel='noreferrer'>
-                              <span>
-                                {t('label:rediger-sed-i-rina')}
-                              </span>
-                              <HorizontalSeparatorDiv size='0.35' />
-                              <ExternalLink />
-                            </Link>
-                          </FlexDiv>
-                          <VerticalSeparatorDiv size='0.35' />
-                          <div>
-                            <Etikett>
-                              {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}
-                            </Etikett>
-                          </div>
-                        </PileDiv>
-                        <PileDiv>
-                          {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres && (
-                            <>
-                              <Button
-                                variant='secondary'
-                                size='small'
-                                data-amplitude='svarsed.selection.journalforing'
-                                onClick={(e: any) => {
-                                  buttonLogger(e, {
-                                    type: connectedSed.sedType
-                                  })
-                                  window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
-                                }}
-                              >
-                                {t('label:journalforing', {
-                                  sedtype: connectedSed.sedType
-                                })}
-                              </Button>
-                              <VerticalSeparatorDiv size='0.5' />
-                            </>
-                          )}
-                          {hasDraft(connectedSed)
-                            ? (
-                              <Button
-                                variant='secondary'
-                                size='small'
-                                disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
-                                data-amplitude='svarsed.selection.loaddraft'
-                                onClick={(e: any) => {
-                                  buttonLogger(e, {
-                                    type: connectedSed.svarsedType
-                                  })
-                                  loadDraft(sed.sakId, connectedSed.svarsedId)
-                                }}
-                              >
-                                <Edit />
+                      <div>
+                        <MyTag variant='info'>
+                          {t('label:siste-oppdatert') + ': ' + sed.sistEndretDato}
+                        </MyTag>
+                      </div>
+                    </PileDiv>
+                  </RadioPanelBorderWithLinks>
+
+                  <VerticalSeparatorDiv />
+                  {sed.sedListe.map((connectedSed: ConnectedSed) => (
+                    <HiddenFormContainer
+                      aria-hidden={!(previousParentSed !== sedId && parentSed === sedId)}
+                      className={classNames({
+                        slideOpen: _allOpen === true ? true : (alone || (previousParentSed !== sedId && parentSed === sedId)),
+                        slideClose: _allOpen === true ? false : ((previousParentSed === sedId && parentSed !== sedId)),
+                        closed: _allOpen === true ? false : (!alone && !((previousParentSed !== sedId && parentSed === sedId) || (previousParentSed === sedId && parentSed !== sedId)))
+                      })}
+                      key={sed + '-' + connectedSed.sedId}
+                    >
+                      <SEDPanel border>
+                        <FlexDiv>
+                          <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
+                            {connectedSed.status === 'received' && <Email width='32' height='32' />}
+                            {connectedSed.status === 'sent' && <Send width='32' height='32' />}
+                            {connectedSed.status === 'new' && <Star width='32' height='32' />}
+                            {connectedSed.status === 'active' && <Edit width='32' height='32' />}
+                            {connectedSed.status === 'cancelled' && <Close width='32' height='32' />}
+                            <VerticalSeparatorDiv size='0.35' />
+                            <Detail>
+                              {t('app:status-received-' + connectedSed.status.toLowerCase())}
+                            </Detail>
+                          </PileCenterDiv>
+                          <HorizontalSeparatorDiv />
+                          <PileDiv flex={2}>
+                            <Heading size='small'>
+                              {connectedSed.sedType} - {connectedSed.sedTittel}
+                            </Heading>
+                            <VerticalSeparatorDiv size='0.5' />
+                            <FlexDiv>
+                              <Link target='_blank' href={sed.sakUrl} rel='noreferrer'>
+                                <span>
+                                  {t('label:rediger-sed-i-rina')}
+                                </span>
                                 <HorizontalSeparatorDiv size='0.35' />
-                                {_sedStatusRequested === connectedSed.svarsedId
-                                  ? t('message:loading-checking-sed-status')
-                                  : (hasSentStatus(connectedSed.svarsedId)
-                                      ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
-                                      : t('label:gå-til-draft'))}
-                                {_sedStatusRequested === connectedSed.svarsedId && <Loader />}
-                              </Button>
-                              )
-                            : connectedSed.svarsedType
-                              ? (
+                                <ExternalLink />
+                              </Link>
+                            </FlexDiv>
+                            <VerticalSeparatorDiv size='0.35' />
+                            <div>
+                              <MyTag variant='info'>
+                                {t('label:siste-oppdatert') + ': ' + connectedSed.sistEndretDato}
+                              </MyTag>
+                            </div>
+                          </PileDiv>
+                          <PileDiv>
+                            {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres && (
+                              <>
                                 <Button
-                                  variant='primary'
-                                  disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                                  data-amplitude='svarsed.selection.replysed'
-                                  title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                                  variant='secondary'
+                                  size='small'
+                                  data-amplitude='svarsed.selection.journalforing'
                                   onClick={(e: any) => {
                                     buttonLogger(e, {
-                                      type: connectedSed.svarsedType,
-                                      parenttype: connectedSed.sedType
+                                      type: connectedSed.sedType
                                     })
-                                    onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
+                                    window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
                                   }}
                                 >
-                                  {queryingReplySed
-                                    ? t('message:loading-replying')
-                                    : t('label:besvar-med', {
-                                      sedtype: connectedSed.svarsedType
-                                    })}
-                                  {queryingReplySed && <Loader />}
+                                  {t('label:journalforing', {
+                                    sedtype: connectedSed.sedType
+                                  })}
+                                </Button>
+                                <VerticalSeparatorDiv size='0.5' />
+                              </>
+                            )}
+                            {hasDraft(connectedSed)
+                              ? (
+                                <Button
+                                  variant='secondary'
+                                  size='small'
+                                  disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
+                                  data-amplitude='svarsed.selection.loaddraft'
+                                  onClick={(e: any) => {
+                                    buttonLogger(e, {
+                                      type: connectedSed.svarsedType
+                                    })
+                                    loadDraft(sed.sakId, connectedSed.svarsedId)
+                                  }}
+                                >
+                                  <Edit />
+                                  <HorizontalSeparatorDiv size='0.35' />
+                                  {_sedStatusRequested === connectedSed.svarsedId
+                                    ? t('message:loading-checking-sed-status')
+                                    : (hasSentStatus(connectedSed.svarsedId)
+                                        ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
+                                        : t('label:gå-til-draft'))}
+                                  {_sedStatusRequested === connectedSed.svarsedId && <Loader />}
                                 </Button>
                                 )
-                              : (<div />)}
-                        </PileDiv>
-                      </FlexDiv>
-                    </SEDPanel>
-                    <VerticalSeparatorDiv />
-                  </HiddenFormContainer>
-                ))}
-              </div>
-            )
-          })}
+                              : connectedSed.svarsedType
+                                ? (
+                                  <Button
+                                    variant='primary'
+                                    disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                                    data-amplitude='svarsed.selection.replysed'
+                                    title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                                    onClick={(e: any) => {
+                                      buttonLogger(e, {
+                                        type: connectedSed.svarsedType,
+                                        parenttype: connectedSed.sedType
+                                      })
+                                      onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
+                                    }}
+                                  >
+                                    {queryingReplySed
+                                      ? t('message:loading-replying')
+                                      : t('label:besvar-med', {
+                                        sedtype: connectedSed.svarsedType
+                                      })}
+                                    {queryingReplySed && <Loader />}
+                                  </Button>
+                                  )
+                                : (<div />)}
+                          </PileDiv>
+                        </FlexDiv>
+                      </SEDPanel>
+                      <VerticalSeparatorDiv />
+                    </HiddenFormContainer>
+                  ))}
+                </div>
+              )
+            })}
+          </RadioPanelGroup>
         </div>
       )}
     </ContainerDiv>

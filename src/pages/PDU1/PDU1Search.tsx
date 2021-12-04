@@ -21,6 +21,7 @@ import {
   PileCenterDiv,
   PileDiv,
   RadioPanelBorder,
+  RadioPanelGroup,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -210,30 +211,22 @@ const PDU1Search: React.FC<PDU1Props> = ({
             {gettingFagsaker && (
               <WaitingPanel />
             )}
-            {fagsaker?.map((f: FagSak) => (
-              <div key={f.saksID}>
-                <AlignStartRow>
-                  <Column>
-                    <RadioPanelBorder
-                      ariaLabel={f.temakode + '-' + f.saksID}
-                      ariaChecked={fagsak === f.saksID}
-                      checked={fagsak === f.saksID}
-                      className='slideInFromLeft'
-                      label={(
-                        <Heading size='small'>
-                          {f.temakode + '-' + f.saksID}
-                        </Heading>
-                    )}
-                      name={namespace + '-fagsaker'}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onFagsakerSelected(e.target.value)}
-                      value={f.saksID}
-                    />
-
-                  </Column>
-                </AlignStartRow>
-                <VerticalSeparatorDiv />
-              </div>
-            ))}
+            <RadioPanelGroup
+              value={fagsak}
+              name={namespace + '-fagsaker'}
+              onChange={(e: string) => onFagsakerSelected(e)}
+            >
+              {fagsaker?.map((f: FagSak) => (
+                <div key={f.saksID}>
+                  <RadioPanelBorder key={f.saksID} value={f.saksID}>
+                    <Heading size='small'>
+                      {f.temakode + '-' + f.saksID}
+                    </Heading>
+                  </RadioPanelBorder>
+                  <VerticalSeparatorDiv />
+                </div>
+              ))}
+            </RadioPanelGroup>
           </div>
           <VerticalSeparatorDiv size='2' />
           <Button

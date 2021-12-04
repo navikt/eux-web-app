@@ -14,7 +14,7 @@ import {
   RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
 } from 'nav-hoykontrast'
 import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
@@ -147,50 +147,45 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <label className='skjemaelement__label'>
+          <label className='navds-text-field__label navds-label'>
             {t('label:choose')}
           </label>
 
           <RadioPanelGroup
-            checked={_svar}
+            value={_svar}
             data-multiple-line
             data-no-border
             data-test-id={namespace + '-svar'}
             error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
             name={namespace + '-svar'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (e.target.value !== _svar) {
-                setSvar(e.target.value as HSvarType)
+            onChange={(e: string) => {
+              if (e !== _svar) {
+                setSvar(e as HSvarType)
               }
             }}
-            radios={[
-              {
-                label: (
-                  <FlexCenterDiv>
-                    <span>{t('el:option-svar-1')}</span>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
-                      <Helptext width='22' />
-                    </Tooltip>
-                  </FlexCenterDiv>
-                ),
-                value: 'positivt' as HSvarType
-              },
-              {
-                label: (
-                  <FlexCenterDiv>
-                    <span>{t('el:option-svar-2')}</span>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
-                      <Helptext width='22' />
-                    </Tooltip>
-                  </FlexCenterDiv>
-                ),
-                value: 'negative' as HSvarType
-              }
-            ]}
-          />
+          >
+            <FlexRadioPanels>
+              <RadioPanel value='positivt'>
+                <FlexCenterDiv>
+                  <span>{t('el:option-svar-1')}</span>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
+                    <Helptext width='22' />
+                  </Tooltip>
+                </FlexCenterDiv>
+              </RadioPanel>
+              <RadioPanel value='negative'>
+                <FlexCenterDiv>
+                  <span>{t('el:option-svar-2')}</span>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
+                    <Helptext width='22' />
+                  </Tooltip>
+                </FlexCenterDiv>
+              </RadioPanel>
+            </FlexRadioPanels>
+          </RadioPanelGroup>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

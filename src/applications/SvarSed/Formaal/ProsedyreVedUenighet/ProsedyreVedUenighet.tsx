@@ -253,11 +253,9 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
           <div id={namespace + '-grunner'}>
             {validation[namespace + '-grunner']?.feilmelding
               ? (
-                <div className='skjemaelement__feilmelding'>
-                  <p className='typo-feilmelding'>
-                    {validation[namespace + '-grunner']?.feilmelding}
-                  </p>
-                </div>
+                <label className='navds-error-message navds-error-message--medium navds-label'>
+                  {validation[namespace + '-grunner']?.feilmelding}
+                </label>
                 )
               : (
                 <BodyLong>

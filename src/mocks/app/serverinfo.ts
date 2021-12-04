@@ -1,7 +1,7 @@
 
 export default () => ({
   namespace: 'MOCK SERVER',
-  cluster: `NodeJS MOCK`,
+  cluster: 'NodeJS MOCK',
   branchName: process.env.BRANCH_NAME || 'unknown',
   longVersionHash: 'MOCK HASH',
   gosysURL: 'https://wasapp-t8.adeo.no/gosys/',

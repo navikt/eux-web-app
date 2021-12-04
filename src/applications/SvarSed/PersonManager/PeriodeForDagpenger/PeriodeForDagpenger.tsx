@@ -20,9 +20,9 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import {
   AlignStartRow,
-  Column,
+  Column, FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedDiv,
+  PaddedDiv, RadioPanel,
   RadioPanelGroup,
   Row,
   VerticalSeparatorDiv
@@ -322,19 +322,20 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <RadioPanelGroup
-              checked={institusjonKjent ? 'ja' : 'nei'}
+              value={institusjonKjent ? 'ja' : 'nei'}
               data-test-id={namespace + idx + '-idmangler'}
               data-no-border
               id={namespace + idx + '-idmangler'}
               error={getErrorFor(index, 'idmangler')}
               legend={t('label:institusjonens-id-er-kjent') + ' *'}
               name={namespace + idx + '-idmangler'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewIdMangler(e.target.value === 'nei', index)}
-            />
+              onChange={(e: string) => setNewIdMangler(e === 'nei', index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column />
         </AlignStartRow>

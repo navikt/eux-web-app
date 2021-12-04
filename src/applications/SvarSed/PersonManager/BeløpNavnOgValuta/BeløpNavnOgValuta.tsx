@@ -24,7 +24,7 @@ import {
   RadioPanelGroup,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -357,7 +357,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
           <Column flex='2'>
             <RadioPanelGroup
-              checked={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
+              value={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
               data-no-border
               data-test-id={namespace + '-utbetalingshyppighet'}
               id={namespace + '-utbetalingshyppighet'}
@@ -365,12 +365,13 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               error={getErrorFor(index, 'utbetalingshyppighet')}
               name={namespace + '-utbetalingshyppighet'}
               legend={t('label:periode-avgrensing') + ' *'}
-              radios={[
-                { label: t('label:månedlig'), value: 'Månedlig' },
-                { label: t('label:årlig'), value: 'Årlig' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet, index)}
-            />
+              onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
+                <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column>
             <AddRemovePanel

@@ -32,7 +32,9 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv,
+  FlexRadioPanels,
+  RadioPanel
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -625,7 +627,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column flex='2'>
             <RadioPanelGroup
-              checked={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
+              value={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
               data-no-border
               data-test-id={namespace + idx + '-barnaEllerFamilie'}
               error={getErrorFor('barnaEllerFamilie')}
@@ -633,12 +635,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               key={namespace + idx + '-barnaEllerFamilie-' + (motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie)}
               legend={t('label:barna-or-familie') + ' *'}
               name={namespace + '-barnaEllerFamilie'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBarnaEllerFamilie(e.target.value as BarnaEllerFamilie, motregningKey)}
-              radios={[
-                { label: t('label:barn'), value: 'barna' },
-                { label: t('label:familien'), value: 'familie' }
-              ]}
-            />
+              onChange={(e: string) => setBarnaEllerFamilie(e as BarnaEllerFamilie, motregningKey)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='barna'>{t('label:barn')}</RadioPanel>
+                <RadioPanel value='familie'>{t('label:familien')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column />
         </AlignStartRow>
@@ -646,7 +649,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column flex='2'>
             <RadioPanelGroup
-              checked={motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType}
+              value={motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType}
               data-multiple-line
               data-no-border
               data-test-id={namespace + idx + '-svarType'}
@@ -655,12 +658,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               key={namespace + idx + '-svarType-' + (motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType)}
               legend={t('label:anmodning-om-motregning')}
               name={namespace + idx + '-svarType'}
-              radios={[
-                { label: t('label:anmodning-om-motregning-barn'), value: 'anmodning_om_motregning_per_barn' },
-                { label: t('label:anmodning-om-motregning-svar-barn'), value: 'svar_på_anmodning_om_motregning_per_barn' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarType(e.target.value as AnmodningSvarType, motregningKey)}
-            />
+              onChange={(e: string) => setSvarType(e as AnmodningSvarType, motregningKey)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning-om-motregning-barn')}</RadioPanel>
+                <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-om-motregning-svar-barn')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column />
         </AlignStartRow>
@@ -678,10 +682,8 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               validation={validation}
             />
             {getErrorFor('ytelseNavn') && (
-              <div className='skjemaelement__feilmelding'>
-                <p className='typo-feilmelding'>
-                  {getErrorFor('ytelseNavn')}
-                </p>
+              <div className='navds-error-message navds-error-message--medium navds-label'>
+                {getErrorFor('ytelseNavn')}
               </div>
             )}
             <VerticalSeparatorDiv size='2' />
@@ -791,12 +793,13 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               error={getErrorFor('utbetalingshyppighet')}
               name={namespace + idx + '-utbetalingshyppighet'}
               legend={t('label:periode-avgrensing') + ' *'}
-              radios={[
-                { label: t('label:månedlig'), value: 'Månedlig' },
-                { label: t('label:årlig'), value: 'Årlig' }
-              ]}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingshyppighet(e.target.value as Utbetalingshyppighet, motregningKey)}
-            />
+              onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, motregningKey)}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
+                <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column />
         </AlignStartRow>

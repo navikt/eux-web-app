@@ -1,7 +1,7 @@
 import { Add } from '@navikt/ds-icons'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
-import { Etikett } from 'components/StyledComponents'
+import { MyTag } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
@@ -85,9 +85,9 @@ const Stack: React.FC<StackProps> = ({
             style={{ animationDelay: i === _newItemIndex ? '0s' : (i * 0.1) + 's' }}
             key={item}
           >
-            <Etikett data-border>
+            <MyTag variant='info' data-border>
               {_.find(options, _f => _f.value === item)?.label}
-            </Etikett>
+            </MyTag>
             <AddRemovePanel
               candidateForDeletion={isInDeletion(item)}
               existingItem

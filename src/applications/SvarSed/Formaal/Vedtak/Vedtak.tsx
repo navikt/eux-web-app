@@ -29,7 +29,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -386,19 +386,20 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
         <AlignStartRow>
           <Column>
             <RadioPanelGroup
-              defaultValue={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
+              value={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
               data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               data-no-border
               error={getErrorFor(index, 'skalYtelseUtbetales')}
               id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               legend={t('label:skal-ytelse-utbetales') + ' *'}
               name={namespace + idx + '-borSammen'}
-              radios={[
-                { label: t('label:ja'), value: 'ja' },
-                { label: t('label:nei'), value: 'nei' }
-              ]}
               onChange={(e: string) => setVedtaksperioderSkalYtelseUtbetales(e as JaNei, index, vedtaktype)}
-            />
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
           <Column>
             <AddRemovePanel
@@ -427,19 +428,20 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       <Row>
         <Column flex='2'>
           <RadioPanelGroup
-            checked={vedtak?.gjelderAlleBarn}
+            value={vedtak?.gjelderAlleBarn}
             data-no-border
             data-test-id={namespace + '-gjelderAlleBarn'}
             error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
             id={namespace + '-gjelderAlleBarn'}
             legend={t('label:vedtak-angående-alle-barn') + ' *'}
             name={namespace + '-gjelderAlleBarn'}
-            radios={[
-              { label: t('label:ja'), value: 'ja' },
-              { label: t('label:nei'), value: 'nei' }
-            ]}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGjelderAlleBarn(e.target.value as JaNei)}
-          />
+            onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
+          >
+            <FlexRadioPanels>
+              <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+              <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+            </FlexRadioPanels>
+          </RadioPanelGroup>
         </Column>
         <Column />
       </Row>

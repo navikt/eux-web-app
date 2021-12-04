@@ -167,12 +167,12 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
         : (
           <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <Column>
-              <label className='skjemaelement__label'>
+              <label className='navds-text-field__label navds-label'>
                 {t('label:startdato') + ' *'}
               </label>
             </Column>
             <Column>
-              <label className='skjemaelement__label'>
+              <label className='navds-text-field__label navds-label'>
                 {t('label:sluttdato')}
               </label>
             </Column>

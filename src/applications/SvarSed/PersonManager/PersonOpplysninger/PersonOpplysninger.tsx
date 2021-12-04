@@ -24,6 +24,8 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   RadioPanelGroup,
+  FlexRadioPanels,
+  RadioPanel,
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
@@ -373,7 +375,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <RadioPanelGroup
-            checked={personInfo?.kjoenn}
+            value={personInfo?.kjoenn}
             data-no-border
             data-test-id={namespace + '-kjoenn'}
             error={validation[namespace + '-kjoenn']?.feilmelding}
@@ -381,13 +383,22 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
             legend={t('label:kjønn') + ' *'}
             name={namespace + '-kjoenn'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onKjoennChange(e.target.value)}
-            radios={[
-              { label: t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne'), value: 'K' },
-              { label: t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann'), value: 'M' },
-              { label: t('label:ukjent'), value: 'U' }
-            ]}
-          />
+            onChange={onKjoennChange}
+          >
+            <FlexRadioPanels>
+              <RadioPanel value='K'>
+                {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+              </RadioPanel>
+              <RadioPanel value='M'>
+                {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+              </RadioPanel>
+              <RadioPanel value='U'>
+                {t('label:ukjent')}
+              </RadioPanel>
+            </FlexRadioPanels>
+
+          </RadioPanelGroup>
+
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
@@ -415,7 +426,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             </Row>
             )}
       <VerticalSeparatorDiv />
-      <label className='skjemaelement__label'>
+      <label className='navds-text-field__label navds-label'>
         {t('label:norsk-fnr')}
       </label>
       <VerticalSeparatorDiv />

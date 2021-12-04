@@ -567,12 +567,12 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               <AlignStartRow>
                 <Column style={{ maxWidth: '40px' }} />
                 <Column>
-                  <label className='skjemaelement__label'>
+                  <label className='navds-text-field__label navds-label'>
                     {t('label:startdato')}
                   </label>
                 </Column>
                 <Column>
-                  <label className='skjemaelement__label'>
+                  <label className='navds-text-field__label navds-label'>
                     {t('label:sluttdato')}
                   </label>
                 </Column>

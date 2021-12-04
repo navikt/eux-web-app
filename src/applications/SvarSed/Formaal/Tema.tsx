@@ -113,7 +113,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
         <FlexBaseDiv id='editor-tema' className={namespace}>
           <label
             htmlFor={namespace}
-            className='skjemaelement__label'
+            className='navds-text-field__label navds-label'
             style={{ margin: '0px' }}
           >
             {t('label:tema')}:
@@ -138,7 +138,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           <HorizontalSeparatorDiv size='0.5' />
           <label
             htmlFor={namespace}
-            className='skjemaelement__label'
+            className='navds-text-field__label navds-label'
             style={{ margin: '0px' }}
           >
             {t('label:fagsak')}:
@@ -189,11 +189,9 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           {!editMode && validation[namespace]?.feilmelding && (
             <>
               <HorizontalSeparatorDiv />
-              <div className='skjemaelement__feilmelding' style={{ marginTop: '0px' }}>
-                <p className='typo-feilmelding'>
-                  {validation[namespace].feilmelding}
-                </p>
-              </div>
+              <label className='navds-error-message navds-error-message--medium navds-label' style={{ marginTop: '0px' }}>
+                {validation[namespace].feilmelding}
+              </label>
             </>
           )}
           <HorizontalSeparatorDiv />
