@@ -33,7 +33,6 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: 'Source Sans Pro', Arial, sans-serif;
 }
 #root {
   min-height: 100vh;

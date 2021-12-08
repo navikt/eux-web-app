@@ -228,7 +228,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 data-test-id={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >

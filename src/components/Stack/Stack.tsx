@@ -104,7 +104,6 @@ const Stack: React.FC<StackProps> = ({
           <div className='slideInFromLeft'>
             <Button
               variant='tertiary'
-              size='small'
               onClick={() => setAddItem(!_addItem)}
             >
               <Add />
@@ -139,7 +138,6 @@ const Stack: React.FC<StackProps> = ({
               <FlexCenterSpacedDiv>
                 <Button
                   variant='secondary'
-                  size='small'
                   onClick={onAdd}
                 >
                   <Add />
@@ -149,7 +147,6 @@ const Stack: React.FC<StackProps> = ({
                 <HorizontalSeparatorDiv size='0.5' />
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={() => setAddItem(!_addItem)}
                 >
                   {t('el:button-cancel')}

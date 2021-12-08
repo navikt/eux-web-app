@@ -264,7 +264,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
               <div className='nolabel'>
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={() => toggleVisibility(index)}
                 >
                   <FlexCenterDiv>
@@ -368,7 +367,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

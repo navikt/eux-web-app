@@ -349,7 +349,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Button
             variant='secondary'
-            size='small'
             onClick={onArbeidsgiverAdd}
           >
             <Add />
@@ -359,7 +358,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           <HorizontalSeparatorDiv size='0.5' />
           <Button
             variant='tertiary'
-            size='small'
             onClick={onCancelArbeidsgiverClicked}
           >
             {t('el:button-cancel')}
@@ -389,7 +387,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Button
             variant='secondary'
-            size='small'
             onClick={onPeriodeAdd}
           >
             <Add />
@@ -399,7 +396,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           <HorizontalSeparatorDiv size='0.5' />
           <Button
             variant='tertiary'
-            size='small'
             onClick={onCancelPeriodeClicked}
           >
             {t('el:button-cancel')}
@@ -546,7 +542,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           <span>{t('label:du-kan')}</span>
           <Button
             variant='tertiary'
-            size='small'
             onClick={() => _setSeeNewArbeidsgiver(true)}
           >
             <Add />
@@ -558,7 +553,6 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
           <span>&nbsp;{t('label:eller')}&nbsp;</span>
           <Button
             variant='tertiary'
-            size='small'
             onClick={() => _setSeeNewPeriode(true)}
           >
             <Add />

@@ -183,7 +183,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <HorizontalSeparatorDiv size='0.5' />
             <Button
               variant='secondary'
-              size='small'
               data-test-id='familierelasjoner__knapp--legg-til'
               disabled={rolleList !== undefined && !rolle}
               onClick={() => _onAddClick(person)}

@@ -203,7 +203,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div />
                   <Button
                     variant='secondary'
-                    size='small'
                     onClick={onModalClose}
                   >
                     {t('label:damn-really')}
@@ -307,7 +306,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <FlexCenterSpacedDiv>
                     <Button
                       variant='secondary'
-                      size='small'
                       onClick={onModalClose}
                     >
                       {t('el:button-close')}

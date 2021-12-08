@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 export interface AdresseFormProps {
+  options?: any,
   adresse: Adresse | null | undefined
   onAdressChanged: (a: Adresse, id: string) => void
   namespace: string
@@ -25,6 +26,7 @@ const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
 `
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
+  options = {},
   adresse,
   onAdressChanged,
   namespace,
@@ -141,16 +143,18 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             value={adresse?.gate}
           />
         </Column>
-        <Column>
-          <Input
-            error={validation[namespace + '-bygning']?.feilmelding}
-            namespace={namespace}
-            id='bygning'
-            label={t('label:bygning')}
-            onChanged={setBygning}
-            value={adresse?.bygning}
-          />
-        </Column>
+          {!options.bygning === false && (
+            <Column>
+              <Input
+              error={validation[namespace + '-bygning']?.feilmelding}
+              namespace={namespace}
+              id='bygning'
+              label={t('label:bygning')}
+              onChanged={setBygning}
+              value={adresse?.bygning}
+            />
+            </Column>
+          )}
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>
@@ -178,8 +182,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>
-        <Column flex='1.3'>
-          <Input
+        {!options.region === false && (
+          <Column flex='1.3'>
+            <Input
             error={validation[namespace + '-region']?.feilmelding}
             namespace={namespace}
             id='region'
@@ -187,9 +192,11 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             onChanged={setRegion}
             value={adresse?.region}
           />
-        </Column>
+          </Column>
+        )}
         <Column flex='1.3'>
-          <CountrySelect
+          <div style={{maxWidth: '400px'}}>
+           <CountrySelect
             closeMenuOnSelect
             key={adresse?.land}
             data-test-id={namespace + '-land'}
@@ -202,6 +209,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             placeholder={t('el:placeholder-select-default')}
             values={adresse?.land}
           />
+          </div>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

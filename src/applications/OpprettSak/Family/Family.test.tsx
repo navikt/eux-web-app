@@ -8,7 +8,7 @@ describe('components/Family/Family', () => {
   let wrapper: ReactWrapper
 
   const initialMockProps: FamilyProps = {
-    alertStatus: undefined,
+    alertVariant: undefined,
     alertMessage: undefined,
     alertType: undefined,
     familierelasjonKodeverk: familierelasjoner,

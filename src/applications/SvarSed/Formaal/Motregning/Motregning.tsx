@@ -891,7 +891,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />
@@ -906,7 +905,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
         <Column>
           <Button
             variant='tertiary'
-            size='small'
             data-amplitude='svarsed.editor.seekontoopplysning'
             onClick={(e) => {
               buttonLogger(e)

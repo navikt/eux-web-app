@@ -54,7 +54,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
         </Heading>
         <Button
           variant='tertiary'
-          size='small'
           data-amplitude='svarsed.sidebar.edit'
           style={{
             marginTop: '-0.5rem',

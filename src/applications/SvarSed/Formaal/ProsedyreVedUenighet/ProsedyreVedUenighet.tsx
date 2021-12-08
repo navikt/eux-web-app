@@ -275,7 +275,6 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

@@ -208,7 +208,6 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

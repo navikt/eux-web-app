@@ -31,6 +31,7 @@ import Adresser from './Adresser/Adresser'
 import Adresse from './Adresser/Adresse'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
+import ForsikringPD from 'applications/PDU1/Forsikring/Forsikring'
 import Forsikring from './Forsikring/Forsikring'
 import GrunnlagForBosetting from './GrunnlagForBosetting/GrunnlagForBosetting'
 import InntektForm from './InntektForm/InntektForm'
@@ -44,6 +45,7 @@ import Relasjon from './Relasjon/Relasjon'
 import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
 import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from './Trygdeordning/Trygdeordning'
+import Person from 'applications/PDU1/Person/Person'
 
 const transitionTime = 0.3
 
@@ -117,7 +119,7 @@ const RightActiveDiv = styled.div`
   border-color: var(--navds-color-border);
   background-color: var(--navds-semantic-color-component-background-alternate);
   border-top-right-radius: var(--navds-border-radius);
-  border-bottom-right-radius: $var(--navds-border-radius);
+  border-bottom-right-radius: var(--navds-border-radius);
   background-color: var(--navds-semantic-color-component-background-alternate);
   height: 100%;
 `
@@ -283,11 +285,11 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
   const forms: Array<Form> = [
     { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
-    { label: t('el:option-personmanager-person'), value: 'person_pd', component: PersonOpplysninger, type: 'PD', options: { utenlandsk: false } },
+    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD'},
     { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
-    { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'PD'], barn: true },
+    { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
     { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
-    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'] },
+    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: {bygning: false, region: false} },
     { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
     { label: t('el:option-personmanager-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F' },
     { label: t('el:option-personmanager-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F' },
@@ -299,17 +301,10 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
     { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
     { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
+    { label: t('el:option-personmanager-forsikring'), value: 'forsikring_pd', component: ForsikringPD, type: 'PD'},
     { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017', 'PD'] },
     { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-    {
-      label: t('el:option-personmanager-forsikring'),
-      value: 'forsikring_pd',
-      component: Forsikring,
-      type: 'PD',
-      options: {
-        include: ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring', 'perioderAnnenForsikring']
-      }
-    },
+
     { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
     { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017', 'PD'] },
     { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
@@ -365,7 +360,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
       if (menu !== 'familie') {
         const p = _.get(replySed, menu)
-        const personName = p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
+        const personName = !_.isEmpty(p.personInfo)
+          ? p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
+          : p.fornavn + ' ' + (p.etternavn ?? '')
         setCurrentMenuLabel(personName)
       } else {
         setCurrentMenuLabel(t('label:hele-familien'))
@@ -401,7 +398,13 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }
 
   const renderMenu = (replySed: ReplySed | ReplyPdu1, personId: string, totalIndex: number) => {
-    const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family
+    const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
+    const personName = personId === 'familie'
+      ? t('label:hele-familien')
+      : personInfo ?
+        personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')
+        : (replySed as ReplyPdu1).bruker.fornavn + ' ' + ((replySed as ReplyPdu1).bruker.etternavn ?? '')
+
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
     const selected: boolean = _.find(selectedMenus, _id => _id === personId) !== undefined
     return (
@@ -437,9 +440,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             )}
             <>
               <MenuLabelText className={classNames({ selected: selected })}>
-                {personId === 'familie'
-                  ? t('label:hele-familien')
-                  : personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')}
+                {personName}
               </MenuLabelText>
               <HorizontalSeparatorDiv size='0.5' />
               {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
@@ -474,7 +475,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         </MenuDiv>
         {open && forms
           .filter(o => {
-            const _type = (replySed as ReplySed).sedType ?? (replySed as ReplyPdu1).type
+            const _type = (replySed as ReplySed).sedType ?? 'PDU1'
             return _.isString(o.type)
               ? _type.startsWith(o.type)
               : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
@@ -579,7 +580,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
               <MarginDiv>
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={onAddNewPerson}
                 >
                   <Add />

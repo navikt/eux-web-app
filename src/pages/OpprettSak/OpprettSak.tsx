@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
-import { AlertStatus } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import {
@@ -52,9 +51,10 @@ import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 import { ErrorElement } from 'declarations/app'
+import { AlertVariant } from 'declarations/components'
 
 export interface OpprettSakSelector {
-  alertStatus: AlertStatus | undefined
+  alertVariant: AlertVariant | undefined
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 
@@ -94,7 +94,7 @@ export interface OpprettSakSelector {
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
-  alertStatus: state.alert.stripeStatus as AlertStatus,
+  alertVariant: state.alert.stripeStatus as AlertVariant,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
 
@@ -135,7 +135,7 @@ const mapState = (state: State): OpprettSakSelector => ({
 
 const OpprettSak: React.FC = (): JSX.Element => {
   const {
-    alertStatus,
+    alertVariant,
     alertMessage,
     alertType,
     gettingFagsaker,
@@ -494,7 +494,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     <VerticalSeparatorDiv />
                     <Panel border>
                       <Family
-                        alertStatus={alertStatus}
+                        alertVariant={alertVariant}
                         alertMessage={alertMessage}
                         alertType={alertType}
                         abroadPersonFormAlertTypesWatched={[

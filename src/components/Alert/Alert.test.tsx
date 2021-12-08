@@ -1,4 +1,4 @@
-import { AlertStatus } from 'declarations/components'
+import { AlertVariant } from 'declarations/components'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import Alert, { AlertProps } from './Alert'
@@ -53,7 +53,7 @@ describe('components/Alert/Alert', () => {
 
   it('Render: Pretty prints a error message', () => {
     const error = {
-      status: 'ERROR' as AlertStatus,
+      status: 'error' as AlertVariant,
       message: 'message',
       error: 'error',
       uuid: 'uuid'

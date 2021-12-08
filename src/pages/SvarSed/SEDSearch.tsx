@@ -295,7 +295,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
           <FilterDiv>
             <Button
               variant='tertiary'
-              size='small'
               data-amplitude='svarsed.selection.filter.alle'
               className={classNames({ selected: _filter === undefined })}
               onClick={(e: any) => {
@@ -310,7 +309,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   data-amplitude='svarsed.selection.filter.fb'
                   className={classNames({ selected: _filter === 'FB_' })}
                   onClick={(e: any) => {
@@ -327,7 +325,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   data-amplitude='svarsed.selection.filter.ub'
                   className={classNames({ selected: _filter === 'UB_' })}
                   onClick={(e: any) => {
@@ -344,7 +341,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   data-amplitude='svarsed.selection.filter.h'
                   className={classNames({ selected: _filter === 'H_' })}
                   onClick={(e: any) => {
@@ -361,7 +357,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   data-amplitude='svarsed.selection.filter.s'
                   className={classNames({ selected: _filter === 'S_' })}
                   onClick={(e: any) => {
@@ -379,7 +374,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   data-amplitude='svarsed.selection.filter.la'
                   className={classNames({ selected: _filter === 'LA_' })}
                   onClick={(e: any) => {
@@ -509,7 +503,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                               <>
                                 <Button
                                   variant='secondary'
-                                  size='small'
                                   data-amplitude='svarsed.selection.journalforing'
                                   onClick={(e: any) => {
                                     buttonLogger(e, {
@@ -529,7 +522,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                               ? (
                                 <Button
                                   variant='secondary'
-                                  size='small'
                                   disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId)}
                                   data-amplitude='svarsed.selection.loaddraft'
                                   onClick={(e: any) => {

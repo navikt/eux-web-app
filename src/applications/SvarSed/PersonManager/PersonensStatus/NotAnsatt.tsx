@@ -196,7 +196,6 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

@@ -500,7 +500,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewPerioderForm(true)}
               >
                 <Add />
@@ -617,7 +616,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewVedtaksperioderForm(true)}
               >
                 <Add />

@@ -252,7 +252,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

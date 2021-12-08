@@ -1,177 +1,88 @@
 import {
   GrunnTilOpphør,
+  JaNei,
   Periode,
-  PeriodeAnnenForsikring,
-  PeriodeMedForsikring,
-  PeriodeUtenForsikring,
-  Person, RettTilYtelse
+  Person
 } from 'declarations/sed'
 
-export interface SimpleInntekt {
-  periode: Periode
-  beloep: string
-  valuta: string
+export interface PeriodeMedAktivitetstype extends Periode {
+  aktivitetstype: string
+}
+
+export interface PeriodeMedType extends Periode {
+  type: string
+}
+
+export interface PeriodeMedBegrunnelse extends Periode {
+  begrunnelse: string
+}
+
+export interface PeriodeMedLoenn extends Periode {
+  loenn: string
+}
+
+export interface Pdu1Person {
+  fnr: string
+  kjoenn: string
+  fornavn: string
+  etternavn: string
+  foedselsdato: string
+  statsborgerskap: string
+  etternavnVedFoedsel: string
+  adresse: Adresse
 }
 
 export interface ReplyPdu1 {
-  bruker: Person
-  type: string
-  fagsaker: string
-  perioderAnsattMedForsikring?: Array<PeriodeMedForsikring> // 2.1.1
-  perioderSelvstendigMedForsikring?: Array<PeriodeMedForsikring> // 2.1.2
-  perioderAnnenForsikring?: Array<PeriodeAnnenForsikring> // 2.1.3
-  // 2.1.4 ?
-  perioderAnsattUtenForsikring?: Array<PeriodeUtenForsikring> // 2.2.1
-  perioderSelvstendigUtenForsikring?: Array<PeriodeUtenForsikring> // 2.2.2
-  inntektAnsettelsesforhold: Array<SimpleInntekt>
-  inntektSelvstendig: Array<SimpleInntekt>
-  grunntilopphor?: GrunnTilOpphør// 3
-  // 4 ?
-  // 5 ?
-  rettTilYtelse?: RettTilYtelse // 6
-  // 7 ?
-  ytterligereInfo?: string
-}
+  saksreferanse: string, // Nav => cover letter,
+  dato: string,          // Nav => cover letter, 7.10
+  bruker: Pdu1Person,    // Person, Adresse => cover letter, section 1
+  nav: {                 // NAV => cover letter, section 7
+    enhetNavn: string,
+    enhetId: string,
+    adresse: Adresse,
+    tlf: string,
+    saksbehandler: {    // cover letter
+      navn: string
+      enhet: string
+    }
+  },
+  perioderAnsattMedForsikring: Array<Periode>, // ForsikringPD => 2.1.1
+  perioderSelvstendigMedForsikring: Array<Periode>,// ForsikringPD 2.1.2
+  perioderAndreForsikringer: Array<PeriodeMedType> // ForsikringPD 2.1.3
+  perioderAnsettSomForsikret: Array<PeriodeMedBegrunnelse> // ForsikringPD 2.1.4?
+  perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // ForsikringPD 2.2.1
+  perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // ForsikringPD 2.2.2
+  perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // ForsikringPD 2.3.1
+  perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // ForsikringPD 2.3.2
+  sisteAnsettelseInfo: GrunnTilOpphør // GrunnTilOpphør => 3
 
-export interface PayloadPdu1 {
-  'fagsaker': string
-  'topmostSubform[0].Page1[0].PIN[0]': string
-  'topmostSubform[0].Page1[0].Sex[0]' : '1' | '2'
-  'topmostSubform[0].Page1[0].Surname[0]' : string
-  'topmostSubform[0].Page1[0].Forenames[0]' : string
-  'topmostSubform[0].Page1[0].Surname_at_birth[0]'? : string
-  'topmostSubform[0].Page1[0].Date_of_birth[0]' : string
-  'topmostSubform[0].Page1[0].Nationality[0]': string
-  'topmostSubform[0].Page1[0].Place_of_birth[0]' : string
-  'topmostSubform[0].Page1[0].Street_N[0]' : string
-  'topmostSubform[0].Page1[0].Town[0]' : string
-  'topmostSubform[0].Page1[0].Post_code[0]': string
-  'topmostSubform[0].Page1[0].Country_code[0]': string
-  'topmostSubform[0].Page1[0].From[0]'?: string
-  'topmostSubform[0].Page1[0].To[0]'?: string
-  'topmostSubform[0].Page1[0].From[1]'?: string
-  'topmostSubform[0].Page1[0].To[1]'?: string
-  'topmostSubform[0].Page1[0].From[2]'?: string
-  'topmostSubform[0].Page1[0].To[2]'?: string
-  'topmostSubform[0].Page1[0].From[3]'?: string
-  'topmostSubform[0].Page1[0].To[3]'?: string
-  'topmostSubform[0].Page1[0].From[4]'?: string
-  'topmostSubform[0].Page1[0].To[4]'?: string
-  'topmostSubform[0].Page1[0].From[5]'?: string
-  'topmostSubform[0].Page1[0].To[5]'?: string
-  'topmostSubform[0].Page1[0].From[6]'?: string
-  'topmostSubform[0].Page1[0].To[6]'?: string
-  'topmostSubform[0].Page1[0].From[7]'?: string
-  'topmostSubform[0].Page1[0].To[7]'?: string
-  'topmostSubform[0].Page1[0].From[8]'?: string
-  'topmostSubform[0].Page1[0].To[8]'?: string
-  'topmostSubform[0].Page1[0].From[9]'?: string
-  'topmostSubform[0].Page1[0].To[9]'?: string
-  'topmostSubform[0].Page1[0].From[10]'?: string
-  'topmostSubform[0].Page1[0].To[10]'?: string
-  'topmostSubform[0].Page1[0].From[11]'?: string
-  'topmostSubform[0].Page1[0].To[11]'?: string
-  'topmostSubform[0].Page1[0].From[12]'?: string
-  'topmostSubform[0].Page1[0].To[12]'?: string
-  'topmostSubform[0].Page1[0].From[13]'?: string
-  'topmostSubform[0].Page1[0].To[13]'?: string
-  'topmostSubform[0].Page2[0].From[0]'?: string
-  'topmostSubform[0].Page2[0].To[0]'?: string
-  'topmostSubform[0].Page2[0].Type[0]'?: string
-  'topmostSubform[0].Page2[0].From[1]'?: string
-  'topmostSubform[0].Page2[0].To[1]'?: string
-  'topmostSubform[0].Page2[0].Type[1]'?: string
-  'topmostSubform[0].Page2[0].From[2]'?: string
-  'topmostSubform[0].Page2[0].To[2]'?: string
-  'topmostSubform[0].Page2[0].Type[2]'?: string
-  'topmostSubform[0].Page2[0].From[3]'?: string
-  'topmostSubform[0].Page2[0].To[3]'?: string
-  'topmostSubform[0].Page2[0].Reason[0]'?: string
-  'topmostSubform[0].Page2[0].From[4]'?: string
-  'topmostSubform[0].Page2[0].To[4]'?: string
-  'topmostSubform[0].Page2[0].Reason[1]'?: string
-  'topmostSubform[0].Page2[0].From[5]'?: string
-  'topmostSubform[0].Page2[0].To[5]'?: string
-  'topmostSubform[0].Page2[0].Reason[2]'?: string
-  'topmostSubform[0].Page2[0].From[6]'?: string
-  'topmostSubform[0].Page2[0].To[6]'?: string
-  'topmostSubform[0].Page2[0].Activity[0]'?: string
-  'topmostSubform[0].Page2[0].From[7]'?: string
-  'topmostSubform[0].Page2[0].To[7]'?: string
-  'topmostSubform[0].Page2[0].Activity[1]'?: string
-  'topmostSubform[0].Page2[0].From[8]'?: string
-  'topmostSubform[0].Page2[0].To[8]'?: string
-  'topmostSubform[0].Page2[0].Activity[2]'?: string
-  'topmostSubform[0].Page2[0].From[9]'?: string
-  'topmostSubform[0].Page2[0].To[9]'?: string
-  'topmostSubform[0].Page2[0].Activity[3]'?: string
-  'topmostSubform[0].Page2[0].From[10]'?: string
-  'topmostSubform[0].Page2[0].To[10]'?: string
-  'topmostSubform[0].Page2[0].Activity[4]'?: string
-  'topmostSubform[0].Page2[0].From[11]'?: string
-  'topmostSubform[0].Page2[0].To[11]'?: string
-  'topmostSubform[0].Page2[0].Activity[5]'?: string
-  'topmostSubform[0].Page2[0].From[12]'?: string
-  'topmostSubform[0].Page2[0].To[12]'?: string
-  'topmostSubform[0].Page2[0].Wage[0]'?: string
-  'topmostSubform[0].Page2[0].From[13]'?: string
-  'topmostSubform[0].Page2[0].To[13]'?: string
-  'topmostSubform[0].Page2[0].Wage[1]'?: string
-  'topmostSubform[0].Page2[0].From[14]'?: string
-  'topmostSubform[0].Page2[0].To[14]'?: string
-  'topmostSubform[0].Page2[0].Wage[2]'?: string
-  'topmostSubform[0].Page2[0].From[15]'?: string
-  'topmostSubform[0].Page2[0].To[15]'?: string
-  'topmostSubform[0].Page2[0].Earnings[0]'?: string
-  'topmostSubform[0].Page2[0].From[16]'?: string
-  'topmostSubform[0].Page2[0].To[16]'?: string
-  'topmostSubform[0].Page2[0].Earnings[1]'?: string
-  'topmostSubform[0].Page2[0].From[17]'?: string
-  'topmostSubform[0].Page2[0].To[17]'?: string
-  'topmostSubform[0].Page2[0].Earnings[2]'?: string
-  'topmostSubform[0].Page2[0].Reason_end_employment[0]'?: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
-  'topmostSubform[0].Page2[0].Other_employment[0]'?: string
-  'topmostSubform[0].Page2[0].Other_self_employment[0]'?: string
-  'topmostSubform[0].Page3[0].CheckBox4\\.1[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].To[0]'?: string
-  'topmostSubform[0].Page3[0].CheckBox4\\.2[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].To[1]'?: string
-  'topmostSubform[0].Page3[0].CheckBox4\\.3[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].For[0]'?: string
-  'topmostSubform[0].Page3[0].To[2]'?: string
-  'topmostSubform[0].Page3[0].CheckBox4\\.4[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].Reason[0]'?: string
-  'topmostSubform[0].Page3[0].CheckBox4\\.5[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].Other_benefits[0]'?: string
-  'topmostSubform[0].Page3[0].From[0]'?: string
-  'topmostSubform[0].Page3[0].To[3]'?: string
-  'topmostSubform[0].Page3[0].From[1]'?: string
-  'topmostSubform[0].Page3[0].To[4]'?: string
-  'topmostSubform[0].Page3[0].From[2]'?: string
-  'topmostSubform[0].Page3[0].To[5]'?: string
-  'topmostSubform[0].Page3[0].Last_employment[0]'?: string
-  'topmostSubform[0].Page3[0].Identification_N[0]'?: string
-  'topmostSubform[0].Page3[0].Name[0]?': string
-  'topmostSubform[0].Page3[0].Street_N[0]'?: string
-  'topmostSubform[0].Page3[0].Town[0]'?: string
-  'topmostSubform[0].Page3[0].Post_code[0]'?: string
-  'topmostSubform[0].Page3[0].Country_code[0]'?: string
-  'topmostSubform[0].Page3[0].CheckBox6\\.1[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].CheckBox6\\.2[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].CheckBox64[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].CheckBox65[0]'?: '1' | undefined
-  'topmostSubform[0].Page3[0].From[3]'?: string
-  'topmostSubform[0].Page3[0].To[6]'?: string
-  'topmostSubform[0].Page3[0].Not_entitled[0]'?: '1' | '2' | undefined
-  'topmostSubform[0].Page4[0].Name[0]'?: string
-  'topmostSubform[0].Page4[0].Street_N[0]'?: string
-  'topmostSubform[0].Page4[0].Town[0]'?: string
-  'topmostSubform[0].Page4[0].Post_code[0]'?: string
-  'topmostSubform[0].Page4[0].Country_code[0]'?: string
-  'topmostSubform[0].Page4[0].Institution_ID[0]'?: string
-  'topmostSubform[0].Page4[0].Office_fax_N[0]'?: string
-  'topmostSubform[0].Page4[0].Office_phone_N[0]'?: string
-  'topmostSubform[0].Page4[0].E-mail[0]'?: string
-  'topmostSubform[0].Page4[0].Date[0]'?: string
-  'topmostSubform[0].Page4[0].Signature[0]'?: string
+  andreMottatteUtbetalinger: {  // UtbetalingerPD => 4
+    utbetalingEtterEndtArbeidsforhold: string // 4.1
+    kompensasjonForEndtArbeidsforhold: string// 4.2
+    kompensasjonForFeriedager: { // 4.3
+      antallDager: string
+      beloep: string
+    }
+    avkallKompensasjonBegrunnelse: string // 4.4.1
+    andreYtelserSomMottaForTiden: string // 4.5
+  }
+  perioderDagpengerMottatt: { // PerioderDagpengerPD => 5
+    perioder: Array<Periode> // 5.1
+    sisteUtbetaler: {
+      sisteNavKontor: string // 5.2
+      navn: string // 5.4
+      id: string  // 5.3
+      adresse: Adresse // 5.5
+    }
+  }
+  rettTilDagpenger: {       // RettTilYtelserPD => 6
+    startdato: string
+    sluttdato: string
+    ihhTilArtikkel64: JaNei
+    ihhTilArtikkel65: JaNei
+  }
+  ikkeRettTilDagpenger: {     // RettTilYtelserPD => 6
+    ihhTilLovgivning: JaNei
+    ikkeSoekt: JaNei
+  }
 }

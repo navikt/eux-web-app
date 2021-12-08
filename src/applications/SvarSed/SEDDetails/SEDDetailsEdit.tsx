@@ -430,7 +430,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                     <Column>
                       <Button
                         variant='tertiary'
-                        size='small'
                         onClick={() => _setSeeNewForm(true)}
                       >
                         <Add />
@@ -493,7 +492,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 <Column>
                   <Button
                     variant='tertiary'
-                    size='small'
                     onClick={() => _setSakseierSeeNewForm(true)}
                   >
                     <Add />

@@ -16,10 +16,8 @@ export interface ModalContent {
 
 export type AllowedLocaleString = 'en' | 'nb'
 
-export type AlertStatus = 'OK' | 'ERROR' | 'WARNING'
-
 export interface AlertError {
-  status?: AlertStatus
+  status?: AlertVariant
   message?: JSX.Element | string
   error?: string | undefined
   uuid ?: string | undefined

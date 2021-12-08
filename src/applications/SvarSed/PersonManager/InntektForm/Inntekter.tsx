@@ -281,7 +281,6 @@ const Inntekter: React.FC<any> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

@@ -83,7 +83,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
       dispatch(getSedStatus((savedEntry.content as ReplySed).saksnummer!, savedEntry.id))
     } else {
       // no need to chevk for status on PDU1 for now
-      buttonLogger(e, { type: (savedEntry.content as ReplyPdu1).type })
+      buttonLogger(e, { type: 'pdu1' })
       const entry: LocalStorageEntry<ReplySed | ReplyPdu1> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
@@ -195,7 +195,6 @@ const LoadSave: React.FC<LoadSaveProps> = ({
                 <FlexBaseSpacedDiv>
                   <Button
                     variant='tertiary'
-                    size='small'
                     disabled={_sedStatusRequested === savedEntry.id || hasSentStatus(savedEntry.id)}
                     data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
@@ -225,7 +224,6 @@ const LoadSave: React.FC<LoadSaveProps> = ({
             <VerticalSeparatorDiv />
             <Button
               variant='tertiary'
-              size='small'
               data-amplitude={namespace + '.sidebar.removeall'}
               onClick={onRemoveAll}
             >

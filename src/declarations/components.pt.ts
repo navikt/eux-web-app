@@ -1,4 +1,4 @@
-import { AlertStatus } from 'declarations/components'
+import { AlertVariant } from 'declarations/components'
 import PT from 'prop-types'
 
 export const ModalButtonPropType = PT.shape({
@@ -17,7 +17,7 @@ export const ModalContentPropType = PT.shape({
 })
 
 export const AlertErrorPropType = PT.shape({
-  status: PT.oneOf<AlertStatus>(['OK', 'ERROR', 'WARNING']).isRequired,
+  variant: PT.oneOf<AlertVariant>(['info', 'success', 'error', 'warning']).isRequired,
   message: PT.string.isRequired,
   error: PT.string.isRequired,
   uuid: PT.string.isRequired

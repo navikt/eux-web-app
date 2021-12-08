@@ -34,7 +34,6 @@ import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { convertToPayloadPdu1 } from 'utils/pdu1'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
@@ -93,7 +92,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-        dispatch(completePdu1(convertToPayloadPdu1(newReplyPdu1)))
+        dispatch(completePdu1(newReplyPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
@@ -219,7 +218,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <FlexCenterSpacedDiv>
         <Button
           variant='secondary'
-          size='small'
           onClick={onGoBackClick}
         >
           <BackFilled />
@@ -237,7 +235,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <Button
         variant='tertiary'
-        size='small'
         disabled={gettingPreviewPdu1}
         data-amplitude='pdu1.editor.preview'
         onClick={onPreviewPdu1Clicked}
@@ -270,7 +267,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         <div>
           <Button
             variant='secondary'
-            size='small'
             data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
             onClick={onSavePdu1Click}
           >

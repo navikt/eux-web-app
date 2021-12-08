@@ -157,7 +157,6 @@ const SEDType: React.FC<SEDTypeProps> = ({
                   <HorizontalSeparatorDiv size='0.5' />
                   <Button
                     variant='tertiary'
-                    size='small'
                     onClick={onSaveChangesClicked}
                   >
                     {t('el:button-save')}
@@ -165,7 +164,6 @@ const SEDType: React.FC<SEDTypeProps> = ({
                   <HorizontalSeparatorDiv size='0.5' />
                   <Button
                     variant='tertiary'
-                    size='small'
                     onClick={onCancelChangesClicked}
                   >
                     {t('el:button-cancel')}
@@ -185,7 +183,6 @@ const SEDType: React.FC<SEDTypeProps> = ({
           {!editMode && (
             <Button
               variant='tertiary'
-              size='small'
               onClick={onEditModeClicked}
             >
               <Edit />

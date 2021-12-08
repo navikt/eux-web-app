@@ -125,7 +125,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         {item.journalpostId && item.dokumentInfoId && (
           <Button
             variant='secondary'
-            size='small'
             data-tip={t('label:preview')}
             disabled={previewing}
             id={'tablesorter__preview-button-' + item.journalpostId + '-' + item.dokumentInfoId}
@@ -139,7 +138,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         {mode === 'view' && item.type === 'joark' && (
           <Button
             variant='secondary'
-            size='small'
             onClick={(e: any) => {
               e.preventDefault()
               e.stopPropagation()

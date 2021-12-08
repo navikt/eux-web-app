@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { PayloadPdu1, ReplyPdu1 } from 'declarations/pd'
+import { ReplyPdu1 } from 'declarations/pd'
 import { FagSaker, UpdateReplyPdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
@@ -60,7 +60,7 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
 }
 
 export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
-  payload: PayloadPdu1
+  payload: ReplyPdu1
 ): ThunkResult<ActionWithPayload<any>> => {
   return call({
     method: 'POST',

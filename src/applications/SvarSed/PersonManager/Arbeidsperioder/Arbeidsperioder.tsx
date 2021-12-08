@@ -317,7 +317,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         <Column>
           <Button
             variant='secondary'
-            size='small'
             onClick={onPeriodeMedForsikringAdd}
           >
             <Add />
@@ -327,7 +326,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
           <HorizontalSeparatorDiv size='0.5' />
           <Button
             variant='tertiary'
-            size='small'
             onClick={onCancelArbeidsgiverClicked}
           >
             {t('el:button-cancel')}
@@ -451,7 +449,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         ? renderNewArbeidsgiver()
         : (
           <Button
-            size='small'
             variant='tertiary'
             onClick={() => _setSeeNewPeriodeMedForsikring(true)}
           >

@@ -171,7 +171,6 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               <HorizontalSeparatorDiv size='0.5' />
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={onSaveChangesClicked}
               >
                 {t('el:button-save')}
@@ -179,7 +178,6 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               <HorizontalSeparatorDiv size='0.5' />
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={onCancelChangesClicked}
               >
                 {t('el:button-cancel')}
@@ -198,7 +196,6 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           {!editMode && (
             <Button
               variant='tertiary'
-              size='small'
               onClick={onEditModeClicked}
             >
               <Edit />

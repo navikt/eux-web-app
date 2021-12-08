@@ -71,7 +71,7 @@ const mapState = (state: State): PersonManagerFormSelector => ({
 
 type Sort = 'time' | 'group'
 
-const Forsikring: React.FC<PersonManagerFormProps> = ({
+const ForsikringPD: React.FC<PersonManagerFormProps> = ({
   options,
   parentNamespace,
   personID,
@@ -627,4 +627,4 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   )
 }
 
-export default Forsikring
+export default ForsikringPD

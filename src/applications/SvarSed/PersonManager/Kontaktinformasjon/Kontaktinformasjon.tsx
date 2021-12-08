@@ -347,7 +347,6 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewTelefonForm(true)}
               >
                 <Add />
@@ -386,7 +385,6 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewEpostForm(true)}
               >
                 <Add />

@@ -216,7 +216,6 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
           <Row className='slideInFromLeft'>
             <Column>
               <Button
-                size='small'
                 variant='tertiary'
                 data-test-id={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}

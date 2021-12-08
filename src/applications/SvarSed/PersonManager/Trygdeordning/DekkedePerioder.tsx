@@ -190,7 +190,6 @@ const DekkedePerioder: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

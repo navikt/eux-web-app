@@ -284,7 +284,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       <FlexCenterSpacedDiv>
         <Button
           variant='secondary'
-          size='small'
           onClick={onGoBackClick}
         >
           <BackFilled />
@@ -369,7 +368,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       />
       <Button
         variant='tertiary'
-        size='small'
         disabled={gettingPreviewFile}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSed}
@@ -421,7 +419,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         <div>
           <Button
             variant='secondary'
-            size='small'
             data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
             onClick={onSaveSedClick}
             disabled={savingSed}

@@ -47,7 +47,6 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 })
 
 const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
-  options,
   parentNamespace,
   personID,
   personName,
@@ -273,7 +272,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     )
     // hide the Norwegian pins. We are doing this to preserve index numbers,
     // so when we are deleting / changing elements, pin array keeps the order
-    if (pin?.land === 'NO' || options.utenlandsk === false) {
+    if (pin?.land === 'NO') {
       return <div />
     }
     return (
@@ -408,23 +407,20 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
-        : options.utenlandsk === false
-          ? <div />
-          : (
-            <Row>
-              <Column>
-                <Button
-                  variant='tertiary'
-                  size='small'
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                </Button>
-              </Column>
-            </Row>
-            )}
+        : (
+          <Row>
+            <Column>
+              <Button
+                variant='tertiary'
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+              </Button>
+            </Column>
+          </Row>
+        )}
       <VerticalSeparatorDiv />
       <label className='navds-text-field__label navds-label'>
         {t('label:norsk-fnr')}
@@ -442,7 +438,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <Button
                   variant='secondary'
-                  size='small'
                   onClick={() => _setSeeNorskPinForm(true)}
                 >
                   <FlexCenterDiv>
@@ -471,7 +466,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <Button
                   variant='secondary'
-                  size='small'
                   disabled={searchingPerson}
                   data-amplitude='svarsed.editor.personopplysning.norskpin.search'
                   onClick={onSearchUser}
@@ -486,7 +480,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 <HorizontalSeparatorDiv size='0.35' />
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={() => _setSeeNorskPinForm(false)}
                 >
                   {t('el:button-cancel')}
@@ -507,7 +500,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 <HorizontalSeparatorDiv />
                 <Button
                   variant='secondary'
-                  size='small'
                   data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
                   onClick={(e) => {
                     buttonLogger(e)
@@ -580,7 +572,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={() => setSeeNewFoedstedForm(false)}
                 >
                   <CollapseFilled />
@@ -596,7 +587,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                size='small'
                 onClick={() => setSeeNewFoedstedForm(true)}
               >
                 <Add />

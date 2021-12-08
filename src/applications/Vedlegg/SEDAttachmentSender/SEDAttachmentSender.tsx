@@ -149,7 +149,6 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
           <HorizontalSeparatorDiv data-sise='0.35' />
           <Button
             variant='secondary'
-            size='small'
             data-test-id='c-sedAttachmentSender__cancel-button-id'
             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.preventDefault()

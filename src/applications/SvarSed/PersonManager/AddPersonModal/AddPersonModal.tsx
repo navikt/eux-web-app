@@ -335,7 +335,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 error={_validation[namespace + '-relasjon']?.feilmelding}
                 id={namespace + '-relasjon'}
                 label={t('label:familierelasjon')}
-                menuPortalTarget={document.body}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
                 placeholder={t('el:placeholder-select-default')}
@@ -348,7 +347,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <div className='nolabel'>
                 <Button
                   variant='secondary'
-                  size='small'
                   onClick={onAdd}
                 >
                   <Add width={20} />

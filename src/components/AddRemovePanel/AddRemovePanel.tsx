@@ -48,7 +48,6 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HorizontalSeparatorDiv size='0.5' />
         <Button
           variant='tertiary'
-          size='small'
           data-test-id={namespace + '-addremove-yes'}
           onClick={onConfirmRemove}
         >
@@ -57,7 +56,6 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HorizontalSeparatorDiv size='0.5' />
         <Button
           variant='tertiary'
-          size='small'
           data-test-id={namespace + '-addremove-no'}
           onClick={onCancelRemove}
         >
@@ -69,7 +67,6 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
       <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
         <Button
           variant='tertiary'
-          size='small'
           data-test-id={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
@@ -82,7 +79,6 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
             <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
-              size='small'
               data-test-id={namespace + '-addremove-cancel'}
               onClick={onCancelNew}
             >

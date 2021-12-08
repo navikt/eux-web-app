@@ -328,7 +328,6 @@ const ArbeidsgiverBox = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   style={{
                     marginTop: '-0.5rem',
                     marginRight: '-0.5rem'
@@ -344,7 +343,6 @@ const ArbeidsgiverBox = ({
               <>
                 <Button
                   variant='tertiary'
-                  size='small'
                   style={{
                     marginTop: '-0.5rem',
                     marginRight: '-0.5rem'
@@ -367,7 +365,6 @@ const ArbeidsgiverBox = ({
               <PileDiv>
                 <Button
                   variant='secondary'
-                  size='small'
                   onClick={onSaveEditButtonClicked}
                 >
                   <Add />
@@ -377,7 +374,6 @@ const ArbeidsgiverBox = ({
                 <VerticalSeparatorDiv size='0.5' />
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={onCancelButtonClicked}
                 >
                   <Close />
@@ -396,7 +392,6 @@ const ArbeidsgiverBox = ({
               <FlexDiv>
                 <Button
                   variant='secondary'
-                  size='small'
                   onClick={() => {
                     if (_.isFunction(onArbeidsgiverDelete)) {
                       onArbeidsgiverDelete(arbeidsgiver, selected)
@@ -410,7 +405,6 @@ const ArbeidsgiverBox = ({
                 <HorizontalSeparatorDiv size='0.5' />
                 <Button
                   variant='tertiary'
-                  size='small'
                   onClick={() => setIsDeleting(!_isDeleting)}
                 >
                   {t('el:button-cancel')}

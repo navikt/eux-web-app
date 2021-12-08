@@ -12,7 +12,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
 
   const defaultSelector: OpprettSakSelector = {
     alertMessage: undefined,
-    alertStatus: undefined,
+    alertVariant: undefined,
     alertType: undefined,
 
     enheter: undefined,

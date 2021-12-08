@@ -53,7 +53,7 @@ const SendPDU1Modal = ({
   storageKey
 }: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_name, setName] = useState<string>(replyPdu1.type + '-' + new Date().getTime())
+  const [_name, setName] = useState<string>('pdu1-' + new Date().getTime())
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)
@@ -136,7 +136,6 @@ const SendPDU1Modal = ({
                     <div>
                       <Button
                         variant='primary'
-                        size='small'
                         onClick={onSave}
                       >
                         {t('el:button-save-draft-x', { x: 'PD U1' })}
@@ -144,7 +143,6 @@ const SendPDU1Modal = ({
                       <HorizontalSeparatorDiv />
                       <Button
                         variant='tertiary'
-                        size='small'
                         onClick={onModalClose}
                       >
                         {t('el:button-cancel')}
@@ -156,7 +154,6 @@ const SendPDU1Modal = ({
                     <div>
                       <Button
                         variant='primary'
-                        size='small'
                         onClick={onModalClose}
                       >
                         {t('el:button-close')}

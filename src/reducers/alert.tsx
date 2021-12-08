@@ -49,7 +49,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All ERROR MESSAGES go here, to banner alert
    */
   if (_.endsWith(action.type, '/ERROR')) {
-    bannerStatus = 'ERROR'
+    bannerStatus = 'error'
     switch (action.type) {
       case types.SERVER_INTERNAL_ERROR:
         bannerMessage = i18n.t('message:error-serverInternalError')
@@ -82,7 +82,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All FAILURE MESSAGES go here, to stripe alert
    */
   if (_.endsWith(action.type, '/FAILURE')) {
-    stripeStatus = 'ERROR'
+    stripeStatus = 'error'
     switch (action.type) {
       case types.SAK_PERSON_GET_FAILURE:
         stripeMessage = i18n.t('message:error-person-notFound')
@@ -164,7 +164,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
-      bannerStatus: 'OK',
+      bannerStatus: 'success',
       bannerMessage: bannerMessage,
       uuid: undefined,
       error: undefined
@@ -175,7 +175,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All OK MESSAGES for stripe go here
    */
 
-  stripeStatus = 'OK'
+  stripeStatus = 'success'
 
   if (action.type === types.SVARSED_REPLYSED_SET) {
     stripeMessage = undefined

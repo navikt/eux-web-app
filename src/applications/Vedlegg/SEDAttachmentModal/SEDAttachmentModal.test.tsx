@@ -52,7 +52,7 @@ describe('components/SEDAttachmentModal', () => {
 
   it('Render: show alert inside modal if there is an error', () => {
     stageSelector(defaultSelector, {
-      stripeStatus: 'ERROR',
+      stripeStatus: 'error',
       stripeMessage: 'something'
     })
     wrapper = mount(<SEDAttachmentModal {...initialMockProps} />)
