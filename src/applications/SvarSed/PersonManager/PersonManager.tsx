@@ -3,6 +3,7 @@ import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
+import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
@@ -292,12 +293,9 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
   const forms: Array<Form> = [
     { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
-    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD' },
     { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
     { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
-    { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
     { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
-    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
     { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
     { label: t('el:option-personmanager-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F' },
     { label: t('el:option-personmanager-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F' },
@@ -309,14 +307,19 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
     { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
     { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
-    { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
-    { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017', 'PD'] },
+    { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
     { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-
     { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017', 'PD'] },
+    { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
     { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H', barn: true }
+    { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H' },
+
+    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD' },
+    { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
+    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
+    { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
+    { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
+
   ]
 
   const getForm = (value: string): JSX.Element | null => {

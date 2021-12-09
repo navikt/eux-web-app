@@ -39,7 +39,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
 
   return (
     <PaddedDiv key={namespace + '-div'}>
-      <Heading size='small'>
+      <Heading size='medium'>
         {t('label:adresse')}
       </Heading>
       <VerticalSeparatorDiv size='2' />

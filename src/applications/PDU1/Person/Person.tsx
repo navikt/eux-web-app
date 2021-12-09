@@ -1,5 +1,5 @@
 import { Add, Search } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Label, Heading, Loader } from '@navikt/ds-react'
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -238,7 +238,6 @@ const Person: React.FC<PersonManagerFormProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop
               onBeginRemove={() => addToDeletion(utenlandskePin)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(utenlandskePin)}
@@ -326,9 +325,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
+        <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
             <Input
               error={validation[namespace + '-etternavnVedFoedsel']?.feilmelding}
@@ -413,8 +410,29 @@ const Person: React.FC<PersonManagerFormProps> = ({
               {t('message:warning-no-utenlandskepin')}
             </BodyLong>
           </PaddedDiv>
-          )
-        : pdu1Person?.utenlandskePin?.map(renderRow)}
+        )
+        : (
+          <>
+          <PaddedHorizontallyDiv>
+            <AlignStartRow>
+              <Column>
+                <Label>
+                  {t('label:utenlandsk-pin')}
+                </Label>
+              </Column>
+              <Column>
+                <Label>
+                {t('label:land')}
+              </Label>
+              </Column>
+              <Column/>
+            </AlignStartRow>
+          </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8'/>
+          {pdu1Person?.utenlandskePin?.map(renderRow)}
+          </>
+        )
+      }
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />

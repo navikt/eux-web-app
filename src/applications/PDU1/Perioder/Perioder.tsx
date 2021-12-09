@@ -71,14 +71,14 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
 
   const periodeOptions: Options = [
-    { label: t('el:option-forsikring-ANSATT-MED-FORSIKRING'), value: 'perioderAnsattMedForsikring' },
-    { label: t('el:option-forsikring-SELVSTENDIG-MED-FORSIKRING'), value: 'perioderSelvstendigMedForsikring' },
-    { label: t('el:option-forsikring-ANDRE-FORSIKRINGER'), value: 'perioderAndreForsikringer' },
-    { label: t('el:option-forsikring-ANSETT-SOM-FORSIKRET'), value: 'perioderAnsettSomForsikret' },
-    { label: t('el:option-forsikring-ANSATT-UTEN-FORSIKRING'), value: 'perioderAnsattUtenForsikring' },
-    { label: t('el:option-forsikring-SELVSTENDIG-UTEN-FORSIKRING'), value: 'perioderSelvstendigUtenForsikring' },
-    { label: t('el:option-forsikring-INNTEKT-ANSETTELSESFORHOLD'), value: 'perioderLoennSomAnsatt' },
-    { label: t('el:option-forsikring-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' },
+    { label: t('el:option-perioder-ANSATT-MED-FORSIKRING'), value: 'perioderAnsattMedForsikring' },
+    { label: t('el:option-perioder-SELVSTENDIG-MED-FORSIKRING'), value: 'perioderSelvstendigMedForsikring' },
+    { label: t('el:option-perioder-ANDRE-FORSIKRINGER'), value: 'perioderAndreForsikringer' },
+    { label: t('el:option-perioder-ANSETT-SOM-FORSIKRET'), value: 'perioderAnsettSomForsikret' },
+    { label: t('el:option-perioder-ANSATT-UTEN-FORSIKRING'), value: 'perioderAnsattUtenForsikring' },
+    { label: t('el:option-perioder-SELVSTENDIG-UTEN-FORSIKRING'), value: 'perioderSelvstendigUtenForsikring' },
+    { label: t('el:option-perioder-INNTEKT-ANSETTELSESFORHOLD'), value: 'perioderLoennSomAnsatt' },
+    { label: t('el:option-perioder-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' },
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
@@ -208,7 +208,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       newPeriodes = newPeriodes.concat(_newPeriode!)
       dispatch(updateReplySed(_newType, newPeriodes))
       standardLogger('pdu1.editor.periode.add', { type: _newType })
-      resetForm()
+      onCancel()
     }
   }
 
@@ -405,59 +405,62 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-        {_.isEmpty(_allPeriods)
-          ? (
-            <PaddedDiv>
-              <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            </PaddedDiv>
-            )
-          : _sort === 'time'
-            ? (
-              <>
-                <AlignStartRow>
-                  <Column style={{ maxWidth: '40px' }} />
-                  <Column>
-                    <label className='navds-text-field__label navds-label'>
-                      {t('label:startdato')}
-                    </label>
-                  </Column>
-                  <Column>
-                    <label className='navds-text-field__label navds-label'>
-                      {t('label:sluttdato')}
-                    </label>
-                  </Column>
-                  <Column flex='2' />
-                </AlignStartRow>
-                {_allPeriods.map(renderRow)}
-              </>
-              )
-            : (
-              <>
-                {periodeOptions.map(o => {
-                  const periods: Array<PDPeriode> | undefined = _.get(replySed, o.value) as Array<PDPeriode> | undefined
-                  if (_.isEmpty(periods)) {
-                    return null
-                  }
-                  return (
-                    <div key={o.value}>
-                      <FlexEndDiv>
-                        {getIcon(o.value, '20')}
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <Detail>
-                          {o.label}
-                        </Detail>
-                      </FlexEndDiv>
-                      <VerticalSeparatorDiv />
-                      {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                      <VerticalSeparatorDiv size='2' />
-                    </div>
-                  )
-                })}
-              </>
-              )}
       </PaddedHorizontallyDiv>
+      {_.isEmpty(_allPeriods)
+        ? (
+          <PaddedDiv>
+            <BodyLong>
+            {t('message:warning-no-periods')}
+          </BodyLong>
+          </PaddedDiv>
+          )
+        : _sort === 'time'
+          ? (
+            <>
+              <PaddedHorizontallyDiv>
+              <AlignStartRow>
+                <Column style={{ maxWidth: '40px' }} />
+                <Column>
+                  <label className='navds-text-field__label navds-label'>
+                    {t('label:startdato')}
+                  </label>
+                </Column>
+                <Column>
+                  <label className='navds-text-field__label navds-label'>
+                    {t('label:sluttdato')}
+                  </label>
+                </Column>
+                <Column flex='2' />
+              </AlignStartRow>
+              </PaddedHorizontallyDiv>
+              <VerticalSeparatorDiv size='0.8'/>
+              {_allPeriods.map(renderRow)}
+            </>
+            )
+          : (
+            <>
+              {periodeOptions.map(o => {
+                const periods: Array<PDPeriode> | undefined = _.get(replySed, o.value) as Array<PDPeriode> | undefined
+                if (_.isEmpty(periods)) {
+                  return null
+                }
+                return (
+                  <div key={o.value}>
+                    <FlexEndDiv>
+                      {getIcon(o.value, '20')}
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <Detail>
+                        {o.label}
+                      </Detail>
+                    </FlexEndDiv>
+                    <VerticalSeparatorDiv />
+                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                    <VerticalSeparatorDiv size='2' />
+                  </div>
+                )
+              })}
+            </>
+            )}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />

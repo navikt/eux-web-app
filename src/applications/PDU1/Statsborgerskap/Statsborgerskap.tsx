@@ -1,5 +1,5 @@
 import { Add } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -12,7 +12,15 @@ import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  PaddedHorizontallyDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -143,13 +151,15 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
-      <Heading size='small'>
-        {t('label:statsborgerskap')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      {_.isEmpty(statsborgerskaper) && (
-        <>
+    <div key={namespace + '-div'}>
+      <PaddedDiv>
+        <Heading size='medium'>
+          {t('label:statsborgerskap')}
+        </Heading>
+      </PaddedDiv>
+      <VerticalSeparatorDiv/>
+      {_.isEmpty(statsborgerskaper) ? (
+        <PaddedDiv>
           <AlignStartRow>
             <Column>
               <BodyLong>
@@ -158,16 +168,30 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-        </>
-      )}
+        </PaddedDiv>
+      ) : (
+        <>
+        <PaddedHorizontallyDiv>
+          <AlignStartRow>
+            <Column>
+              <Label>
+                {t('label:land')}
+              </Label>
+            </Column>
+            </AlignStartRow>
+        </PaddedHorizontallyDiv>
+        <VerticalSeparatorDiv size='0.8'/>
       {statsborgerskaper?.map(renderRow)}
-      <VerticalSeparatorDiv size='2' />
+      </>
+      )}
+      <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <AlignStartRow>
+          <PaddedDiv>
+            <Row>
             <Column>
               <Button
                 variant='tertiary'
@@ -179,9 +203,10 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
               </Button>
 
             </Column>
-          </AlignStartRow>
+          </Row>
+          </PaddedDiv>
           )}
-    </PaddedDiv>
+    </div>
   )
 }
 

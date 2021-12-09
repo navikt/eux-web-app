@@ -3,6 +3,7 @@
   "a-inntekt": "A-Inntekt",
   "adresse": "Adresse",
   "adresser": "Adresser",
+  "aktivitetstype" : "Aktivitets type",
   "all-data-regarding-x-will-be-lost": "Alle data angående {{x}} vil gå tapt",
   "alle" : "Alle",
   "anmodning-grunner" : "Grunner til anmodning om motregning ved for mye utbetalt",
@@ -178,6 +179,7 @@
   "legg-til-fjern-personer": "Legg til/fjern person(er)",
   "legg-til-vedlegg-til-sed" : "Legge til vedlegg til SED",
   "lenke-til-gosys" : "Lenke til Gosys",
+  "loenn": "Lønn",
   "loenn-til-dato": "Lønn til dato",
   "loennsopplysninger" : "Lønnsopplysninger",
 
@@ -263,6 +265,7 @@
   "show-less": "Vis mindre",
   "show-more": "Vis mer",
   "siste-ansettelsesforhold": "Siste ansettelsesforhold",
+  "siste-ansettelse-info": "Siste ansettelse info",
   "siste-lønnsendring" : "Siste lønnsendring",
   "siste-oppdatert": "Siste oppdatert",
   "skal-ytelse-utbetales": "Skal ytelse utbetales?",

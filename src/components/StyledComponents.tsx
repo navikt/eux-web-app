@@ -3,7 +3,7 @@ import {
   animationClose,
   animationOpen,
   fadeIn,
-  fadeOut
+  fadeOut, PaddedHorizontallyDiv
 } from 'nav-hoykontrast'
 import { Panel, Tag } from '@navikt/ds-react'
 
@@ -120,12 +120,16 @@ export const Dl = styled.dl`
     background-color: var(--navds-semantic-color-component-background-alternate);
   }
 `
-export const RepeatableRow = styled.div`
-  padding: 0.5rem 1rem 0.5rem 1rem;
+export const RepeatableRow = styled(PaddedHorizontallyDiv)`
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
   };
   &:hover:not(.new) {
-    background-color: var(--navds-color-gray-10);
+    background-color: var(--navds-color-gray-20);
   }
 `
+
+export const CustomLabel = (props: any) => (<label className='navds-text-field__label navds-label'>{props.children}</label>)
