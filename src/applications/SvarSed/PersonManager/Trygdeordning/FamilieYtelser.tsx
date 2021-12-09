@@ -261,7 +261,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                     menuPortalTarget={document.body}
                     onChange={(e: unknown) => setCategory((e as Option).value as SedCategory)}
                     options={selectCategoryOptions}
-                    placeholder={t('el:placeholder-select-default')}
                     value={getCategoryOption(_newCategory)}
                     defaultValue={getCategoryOption(_newCategory)}
                   />
@@ -281,7 +280,6 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                     menuPortalTarget={document.body}
                     onChange={(e: unknown) => setPensjonType((e as Option).value as PensjonsType, index)}
                     options={selectPensjonsTypeOptions}
-                    placeholder={t('el:placeholder-select-default')}
                     value={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                     defaultValue={getPensjonsTypeOption(index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}
                   />

@@ -374,7 +374,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                   menuPortalTarget={document.body}
                   onChange={(o: unknown) => setVedtaksperioderVedtak((o as Option).value, index)}
                   options={vedtakTypeOptions}
-                  placeholder={t('el:placeholder-select-default')}
                   defaultValue={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
                   value={_.find(vedtakTypeOptions, v => v.value === _newVedtaksperioderVedtak)}
                 />
@@ -524,7 +523,6 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             menuPortalTarget={document.body}
             onChange={(e: unknown) => setVedtakstype((e as Option).value)}
             options={vedtakTypeOptions}
-            placeholder={t('el:placeholder-select-default')}
             defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
             value={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
           />

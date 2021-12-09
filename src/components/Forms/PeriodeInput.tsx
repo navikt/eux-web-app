@@ -113,10 +113,12 @@ const PeriodeInput = <T extends Periode>({
           error={error.startdato}
           id='startdato'
           key={namespace + '-startdato-' + _periode?.startdato}
-          label={showLabel ? label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : '') : ''}
+          label={showLabel
+            ? (label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : '') )
+            + ' (' + t('el:placeholder-date-default') + ')'
+            : ''}
           namespace={namespace}
           onChanged={onStartDatoChanged}
-          placeholder={t('el:placeholder-date-default')}
           required={requiredStartDato}
           value={toUIDateFormat(_periode?.startdato) ?? ''}
         />
@@ -127,10 +129,12 @@ const PeriodeInput = <T extends Periode>({
           error={error.sluttdato}
           id='sluttdato'
           key={namespace + '-sluttdato-' + _periode?.sluttdato}
-          label={showLabel ? label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '') : ''}
+          label={showLabel
+            ? (label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '') )
+              + ' (' + t('el:placeholder-date-default') + ')'
+            : ''}
           namespace={namespace}
           onChanged={onEndDatoChanged}
-          placeholder={t('el:placeholder-date-default')}
           required={requiredSluttDato}
           value={toUIDateFormat(_periode?.sluttdato) ?? ''}
         />

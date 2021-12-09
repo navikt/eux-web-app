@@ -1,38 +1,29 @@
 import { Add } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Statsborgerskap } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
+const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   personName,
@@ -44,44 +35,30 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = `${personID}.personInfo.statsborgerskap`
-  const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
+  const target = `${personID}.statsborgerskap`
+  const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
+  const namespace = `${parentNamespace}-${personID}-statsborgerskap`
 
-  const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
-  const [_newFradato, _setNewFradato] = useState<string>('')
+  const [newStatsborgerskap, setNewStatsborgerskap] = useState<string | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Statsborgerskap>((s: Statsborgerskap): string => s.land)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((s: string): string => s)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
 
-  const onFradatoChanged = (fraDato: string, index: number) => {
+  const onStatsborgerskapSelected = (newStatsborgerskap: string, index: number) => {
     if (index < 0) {
-      _setNewFradato(fraDato.trim())
-      _resetValidation(namespace + '-fraDato')
+      setNewStatsborgerskap(newStatsborgerskap.trim())
+      _resetValidation(namespace + '-statsborgerskap')
     } else {
-      dispatch(updateReplySed(`${target}[${index}].fraDato`, fraDato.trim()))
-      if (validation[namespace + getIdx(index) + '-fraDato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
-      }
-    }
-  }
-
-  const onLandSelected = (land: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(land.trim())
-      _resetValidation(namespace + '-land')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
-      if (validation[namespace + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
+      dispatch(updateReplySed(`${target}[${index}]`, newStatsborgerskap.trim()))
+      if (validation[namespace + getIdx(index) + '-statsborgerskap']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-statsborgerskap'))
       }
     }
   }
 
   const resetForm = () => {
-    _setNewLand(undefined)
-    _setNewFradato('')
+    setNewStatsborgerskap(undefined)
     _resetValidation()
   }
 
@@ -92,38 +69,34 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
 
   const onRemove = (i: number) => {
     const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-    const deletedStatsborgerskaper: Array<Statsborgerskap> = newStatsborgerskaper.splice(i, 1)
+    const deletedStatsborgerskaper: Array<string> = newStatsborgerskaper!.splice(i, 1)
     if (deletedStatsborgerskaper && deletedStatsborgerskaper.length > 0) {
       removeFromDeletion(deletedStatsborgerskaper[0])
     }
     dispatch(updateReplySed(target, newStatsborgerskaper))
-    standardLogger('svarsed.editor.nasjonaliteter.remove')
+    standardLogger('pdu1.editor.statsborgerskap.remove')
   }
 
   const onAdd = () => {
-    const newStatsborgerskap: Statsborgerskap = {
-      land: _newLand || '',
-      fraDato: _newFradato
-    }
     const valid = performValidation({
-      statsborgerskap: newStatsborgerskap,
+      statsborgerskap: newStatsborgerskap!,
       statsborgerskaper: statsborgerskaper,
       namespace: namespace,
       personName: personName
     })
     if (valid) {
-      let newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
+      let newStatsborgerskaper : Array<string> | undefined = _.cloneDeep(statsborgerskaper)
       if (_.isNil(newStatsborgerskaper)) {
         newStatsborgerskaper = []
       }
-      newStatsborgerskaper.push(newStatsborgerskap)
+      newStatsborgerskaper.push(newStatsborgerskap!)
       dispatch(updateReplySed(target, newStatsborgerskaper))
-      standardLogger('svarsed.editor.nasjonaliteter.add')
-      resetForm()
+      standardLogger('pdu1.editor.statsborgerskap.add')
+      onCancel()
     }
   }
 
-  const renderRow = (statsborgerskap: Statsborgerskap | null, index: number) => {
+  const renderRow = (statsborgerskap: string | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(statsborgerskap)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
@@ -134,41 +107,23 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.05) + 's' }}
-        >
+        <AlignStartRow className={classNames('slideInFromLeft')}>
           <Column>
             <CountrySelect
-              ariaLabel={t('label:nasjonalitet')}
+              ariaLabel={t('label:statsborgerskap')}
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-land'}
-              error={getErrorFor(index, 'land')}
+              data-test-id={namespace + idx + '-statsborgerskap'}
+              error={getErrorFor(index, 'statsborgerskap')}
               flagWave
-              key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
-              id={namespace + idx + '-land'}
+              key={namespace + idx + '-statsborgerskap' + (index < 0 ? newStatsborgerskap : statsborgerskap)}
+              id={namespace + idx + '-statsborgerskap'}
               includeList={CountryFilter.STANDARD}
               menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
+              onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
               required
-              values={index < 0 ? _newLand : statsborgerskap?.land}
+              values={(index < 0 ? newStatsborgerskap : statsborgerskap)}
             />
           </Column>
-          {isUSed(replySed!) && (
-            <Column>
-              <DateInput
-                ariaLabel={t('label:fra-dato')}
-                error={getErrorFor(index, 'fraDato')}
-                id='fraDato'
-                key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
-                label=''
-                namespace={namespace + idx}
-                onChanged={(date: string) => onFradatoChanged(date, index)}
-                required
-                value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
-              />
-            </Column>
-          )}
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
@@ -190,35 +145,21 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Heading size='small'>
-        {t('label:nasjonalitet')}
+        {t('label:statsborgerskap')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          {!_.isEmpty(statsborgerskaper)
-            ? (
-              <Detail>
-                {t('label:nasjonalitet') + ' *'}
-              </Detail>
-              )
-            : (
+      {_.isEmpty(statsborgerskaper) && (
+        <>
+          <AlignStartRow>
+            <Column>
               <BodyLong>
                 {t('message:warning-no-satsborgerskap')}
               </BodyLong>
-              )}
-        </Column>
-        {isUSed(replySed!)
-          ? (
-            <Column>
-              <Detail>
-                {t('label:fra-dato')}
-              </Detail>
             </Column>
-            )
-          : <Column />}
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+        </>
+      )}
       {statsborgerskaper?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
@@ -234,7 +175,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               >
                 <Add />
                 <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:statsborgerskap').toLowerCase() })}
               </Button>
 
             </Column>
@@ -244,4 +185,4 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
   )
 }
 
-export default Nasjonaliteter
+export default StatsborgerskapFC

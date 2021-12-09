@@ -82,6 +82,15 @@
   "option-inntekttype-vederlag" : "Vederlag for ferie som ikke er tatt ut",
   "option-inntekttype-annet-vederlag" : "Annet, vederlag",
 
+  "option-perioder-ANSATT-MED-FORSIKRING" : "Forsikret ansettelsesforhold",
+  "option-perioder-SELVSTENDIG-MED-FORSIKRING" : "Forsikret selvstendig næringsdrivende",
+  "option-perioder-ANDRE-FORSIKRINGER" : "Andre forsikringsperioder",
+  "option-perioder-ANSETT-SOM-FORSIKRET" : "Perioder som behandles som forsikringsperioder",
+  "option-perioder-ANSATT-UTEN-FORSIKRING" : "Ansatt uten forsikring",
+  "option-perioder-SELVSTENDIG-UTEN-FORSIKRING" : "Selvstendig næringsdrivende uten forsikring",
+  "option-perioder-INNTEKT-ANSETTELSESFORHOLD" : "Inntekt fra ansettelsesforhold",
+  "option-perioder-INNTEKT-SELVSTENDIG" : "Inntekt fra selvstendig næringsvirksomhet",
+
   "option-periodetype-ansettelsesforhold": "Ansettelsesforhold",
   "option-periodetype-selvstendig-næringsvirksomhet": "Selvstendig næringsvirksomhet",
 
@@ -101,6 +110,7 @@
   "option-personmanager-personopplyninger": "Personopplysninger",
   "option-personmanager-person": "Person",
   "option-personmanager-nasjonaliteter": "Nasjonalitet",
+  "option-personmanager-statsborgerskap": "Statsborgerskap",
   "option-personmanager-adresser": "Adresser",
   "option-personmanager-adresse": "Adresse",
   "option-personmanager-kontakt": "Kontaktinformasjon",
@@ -116,6 +126,7 @@
   "option-personmanager-inntekt": "Inntekt",
   "option-personmanager-retttilytelser": "Rett til ytelser",
   "option-personmanager-forsikring": "Forsikring, alle perioder",
+  "option-personmanager-perioder": "Perioder",
   "option-personmanager-sisteansettelsesforhold": "Siste ansettelsesforhold",
   "option-personmanager-grunntilopphør": "Grunn til opphør",
   "option-personmanager-periodefordagpenger": "Periode for dagpenger",
@@ -153,10 +164,6 @@
   "option-vedtaktype-primaerkompetanseArt68": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
   "option-vedtaktype-sekundaerkompetanseArt68": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
 
-  "placeholder-date-default": "DD.MM.ÅÅÅÅ",
-  "placeholder-input-default": "Skriv inn...",
-  "placeholder-textarea-default": "Skriv inn...",
   "placeholder-select-default": "Velg...",
-  "placeholder-sed": "Skriv inn tekst til SED",
-  "placeholder-swift": "8-11 tegn"
+  "placeholder-date-default": "DD.MM.ÅÅÅÅ"
 }

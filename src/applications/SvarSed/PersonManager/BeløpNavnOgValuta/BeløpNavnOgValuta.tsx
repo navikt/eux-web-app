@@ -255,7 +255,6 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(e: any) => setYtelseNavn(e.value, index)}
               options={ytelseNavnOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(ytelseNavnOptions, b => b.value === (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn))}
               defaultValue={_.find(ytelseNavnOptions, b => b.value === (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn))}
             />

@@ -132,7 +132,6 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           <TextField
             data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
             label={t('label:fnr-dnr')}
-            placeholder={t('label:fnr-dnr')}
             value={_query}
             onChange={updateQuery}
           />

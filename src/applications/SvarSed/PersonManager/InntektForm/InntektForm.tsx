@@ -253,7 +253,6 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
                 menuPortalTarget={document.body}
                 onChange={(e: any) => setPeriodeType(e.value, index)}
                 options={periodeTypeOptions}
-                placeholder={t('el:placeholder-select-default')}
                 value={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
                 defaultValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
               />

@@ -293,7 +293,6 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
               options={relasjonTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
               defaultValue={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
             />

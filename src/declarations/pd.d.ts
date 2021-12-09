@@ -2,7 +2,7 @@ import {
   GrunnTilOpphør,
   JaNei,
   Periode,
-  Person
+  Adresse
 } from 'declarations/sed'
 
 export interface PeriodeMedAktivitetstype extends Periode {
@@ -27,36 +27,41 @@ export interface Pdu1Person {
   fornavn: string
   etternavn: string
   foedselsdato: string
-  statsborgerskap: string
+  statsborgerskap: Array<string>
   etternavnVedFoedsel: string
   adresse: Adresse
+  utenlandskePin: Array<string>
 }
+
+export type PDPeriode = Periode | PeriodeMedType | PeriodeMedBegrunnelse | PeriodeMedAktivitetstype | PeriodeMedLoenn
 
 export interface ReplyPdu1 {
   saksreferanse: string, // Nav => cover letter,
-  dato: string,          // Nav => cover letter, 7.10
-  bruker: Pdu1Person,    // Person, Adresse => cover letter, section 1
-  nav: {                 // NAV => cover letter, section 7
+  dato: string, // Nav => cover letter, 7.10
+  bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
+  nav: { // NAV => cover letter, section 7
     enhetNavn: string,
     enhetId: string,
     adresse: Adresse,
     tlf: string,
-    saksbehandler: {    // cover letter
+    saksbehandler: { // cover letter
       navn: string
       enhet: string
     }
   },
-  perioderAnsattMedForsikring: Array<Periode>, // ForsikringPD => 2.1.1
-  perioderSelvstendigMedForsikring: Array<Periode>,// ForsikringPD 2.1.2
-  perioderAndreForsikringer: Array<PeriodeMedType> // ForsikringPD 2.1.3
-  perioderAnsettSomForsikret: Array<PeriodeMedBegrunnelse> // ForsikringPD 2.1.4?
-  perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // ForsikringPD 2.2.1
-  perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // ForsikringPD 2.2.2
-  perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // ForsikringPD 2.3.1
-  perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // ForsikringPD 2.3.2
+
+  perioderAnsattMedForsikring: Array<Periode>, // Perioder => 2.1.1
+  perioderSelvstendigMedForsikring: Array<Periode>, // Perioder 2.1.2
+  perioderAndreForsikringer: Array<PeriodeMedType> // Perioder 2.1.3
+  perioderAnsettSomForsikret: Array<PeriodeMedBegrunnelse> // Perioder 2.1.4?
+  perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // Perioder 2.2.1
+  perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // Perioder 2.2.2
+  perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // Perioder 2.3.1
+  perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // Perioder 2.3.2
+
   sisteAnsettelseInfo: GrunnTilOpphør // GrunnTilOpphør => 3
 
-  andreMottatteUtbetalinger: {  // UtbetalingerPD => 4
+  andreMottatteUtbetalinger: { // UtbetalingerPD => 4
     utbetalingEtterEndtArbeidsforhold: string // 4.1
     kompensasjonForEndtArbeidsforhold: string// 4.2
     kompensasjonForFeriedager: { // 4.3
@@ -71,17 +76,17 @@ export interface ReplyPdu1 {
     sisteUtbetaler: {
       sisteNavKontor: string // 5.2
       navn: string // 5.4
-      id: string  // 5.3
+      id: string // 5.3
       adresse: Adresse // 5.5
     }
   }
-  rettTilDagpenger: {       // RettTilYtelserPD => 6
+  rettTilDagpenger: { // RettTilYtelserPD => 6
     startdato: string
     sluttdato: string
     ihhTilArtikkel64: JaNei
     ihhTilArtikkel65: JaNei
   }
-  ikkeRettTilDagpenger: {     // RettTilYtelserPD => 6
+  ikkeRettTilDagpenger: { // RettTilYtelserPD => 6
     ihhTilLovgivning: JaNei
     ikkeSoekt: JaNei
   }

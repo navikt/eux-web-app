@@ -337,7 +337,6 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
                 label={t('label:familierelasjon')}
                 onChange={onNewPersonRelationChange}
                 options={relationOptions}
-                placeholder={t('el:placeholder-select-default')}
                 value={_.find(relationOptions, o => o.value === _newPersonRelation)}
                 defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
               />

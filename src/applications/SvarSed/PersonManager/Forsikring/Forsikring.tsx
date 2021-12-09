@@ -357,7 +357,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   menuPortalTarget={document.body}
                   onChange={(type: any) => setType(type.value)}
                   options={periodeOptions}
-                  placeholder={t('el:placeholder-select-default')}
                   value={_.find(periodeOptions, o => o.value === _newType)}
                   defaultValue={_.find(periodeOptions, o => o.value === _newType)}
                 />

@@ -124,7 +124,6 @@ const SendSEDModal = ({
                           namespace='savesedmodal'
                           label={t('label:navn')}
                           onChanged={setName}
-                          placeholder={t('el:placeholder-input-default')}
                           value={_name}
                         />
                       </FlexCenterSpacedDiv>

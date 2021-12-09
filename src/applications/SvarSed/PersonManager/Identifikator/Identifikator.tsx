@@ -158,7 +158,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               menuPortalTarget={document.body}
               onChange={(e: any) => setType(e.value, index)}
               options={allTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(allTypeOptions, b => b.value === _type)}
               defaultValue={_.find(allTypeOptions, b => b.value === _type)}
             />

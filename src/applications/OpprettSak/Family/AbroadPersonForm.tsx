@@ -244,7 +244,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 updateCountry('land', e.value)
                 resetValidation('land')
               }}
-              placeholder={t('el:placeholder-select-default')}
               values={_relation.land}
             />
             <VerticalSeparatorDiv />
@@ -258,7 +257,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               label={t('label:statsborgerskap')}
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}
-              placeholder={t('el:placeholder-select-default')}
               onOptionSelected={(e: Country) => {
                 updateCountry('statsborgerskap', e.value)
                 resetValidation('statsborgerskap')
@@ -330,12 +328,11 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               key={'familierelasjoner__input-fdato-' + _relation.fdato}
               namespace='familierelasjoner__input'
               error={_validation['familierelasjoner__input-fdato']?.feilmelding}
-              label={t('label:fødselsdato')}
+              label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
               onChanged={(date: string) => {
                 updateRelation('fdato', date)
                 resetValidation('fdato')
               }}
-              placeholder={t('el:placeholder-date-default')}
               value={toUIDateFormat(_relation.fdato)}
             />
             <VerticalSeparatorDiv />

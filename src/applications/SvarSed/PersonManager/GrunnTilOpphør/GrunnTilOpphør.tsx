@@ -80,7 +80,6 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
-            placeholder={t('el:placeholder-select-default')}
             value={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
             defaultValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
           />

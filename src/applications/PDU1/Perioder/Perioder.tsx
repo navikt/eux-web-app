@@ -1,0 +1,486 @@
+import { Add, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
+import { BodyLong, Button, Checkbox, Detail, Heading } from '@navikt/ds-react'
+import { resetValidation } from 'actions/validation'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import Input from 'components/Forms/Input'
+import PeriodeInput from 'components/Forms/PeriodeInput'
+import Select from 'components/Forms/Select'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
+import {
+  PDPeriode,
+  PeriodeMedAktivitetstype,
+  PeriodeMedBegrunnelse,
+  PeriodeMedLoenn,
+  PeriodeMedType,
+  ReplyPdu1
+} from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useValidation from 'hooks/useValidation'
+import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
+import moment from 'moment'
+import {
+  AlignStartRow,
+  Column,
+  FlexDiv,
+  FlexEndDiv,
+  HorizontalSeparatorDiv,
+  PaddedDiv, PaddedHorizontallyDiv,
+  Row,
+  VerticalSeparatorDiv
+} from 'nav-hoykontrast'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { getNSIdx } from 'utils/namespace'
+import { validatePDPeriode, ValidationPDPeriodeProps } from './validation'
+
+const mapState = (state: State): PersonManagerFormSelector => ({
+  validation: state.validation.status
+})
+
+type Sort = 'time' | 'group'
+
+const Perioder: React.FC<PersonManagerFormProps> = ({
+  options,
+  parentNamespace,
+  personID,
+  personName,
+  replySed,
+  updateReplySed
+}:PersonManagerFormProps): JSX.Element => {
+  const { t } = useTranslation()
+  const { validation }: PersonManagerFormSelector = useSelector<State, PersonManagerFormSelector>(mapState)
+  const dispatch = useDispatch()
+  const namespace = `${parentNamespace}-${personID}-perioder`
+
+  const getId = (p: PDPeriode | null): string => p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
+
+  const [_newType, _setNewType] = useState<string | undefined>(undefined)
+  const [_allPeriods, _setAllPeriods] = useState<Array<PDPeriode>>([])
+  const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
+
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>(getId)
+  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_sort, _setSort] = useState<Sort>('time')
+  const [_validation, _resetValidation, _performValidation] = useValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
+
+  const periodeOptions: Options = [
+    { label: t('el:option-forsikring-ANSATT-MED-FORSIKRING'), value: 'perioderAnsattMedForsikring' },
+    { label: t('el:option-forsikring-SELVSTENDIG-MED-FORSIKRING'), value: 'perioderSelvstendigMedForsikring' },
+    { label: t('el:option-forsikring-ANDRE-FORSIKRINGER'), value: 'perioderAndreForsikringer' },
+    { label: t('el:option-forsikring-ANSETT-SOM-FORSIKRET'), value: 'perioderAnsettSomForsikret' },
+    { label: t('el:option-forsikring-ANSATT-UTEN-FORSIKRING'), value: 'perioderAnsattUtenForsikring' },
+    { label: t('el:option-forsikring-SELVSTENDIG-UTEN-FORSIKRING'), value: 'perioderSelvstendigUtenForsikring' },
+    { label: t('el:option-forsikring-INNTEKT-ANSETTELSESFORHOLD'), value: 'perioderLoennSomAnsatt' },
+    { label: t('el:option-forsikring-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' },
+  ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
+
+  const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
+
+  useEffect(() => {
+    const periodes: Array<PDPeriode> = [];
+    (replySed as ReplyPdu1)?.perioderAnsattMedForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattMedForsikring' }));
+    (replySed as ReplyPdu1)?.perioderSelvstendigMedForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigMedForsikring' }));
+    (replySed as ReplyPdu1)?.perioderAndreForsikringer?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAndreForsikringer' }));
+    (replySed as ReplyPdu1)?.perioderAnsettSomForsikret?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsettSomForsikret' }));
+    (replySed as ReplyPdu1)?.perioderAnsattUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattUtenForsikring' }));
+    (replySed as ReplyPdu1)?.perioderSelvstendigUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigUtenForsikring' }));
+    (replySed as ReplyPdu1)?.perioderLoennSomAnsatt?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderLoennSomAnsatt' }));
+    (replySed as ReplyPdu1)?.perioderInntektSomSelvstendig?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderInntektSomSelvstendig' }));
+     _setAllPeriods(periodes.sort(periodeSort))
+  }, [replySed])
+
+  const setType = (type: string) => {
+    _setNewType(type)
+    _resetValidation(namespace + '-type')
+  }
+
+  const setPeriodeType = (newType: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        type: newType.trim()
+      } as PeriodeMedType)
+      _resetValidation(namespace + '-type')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].type`, newType.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-type']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-type'))
+      }
+    }
+  }
+
+  const setPeriodeBegrunnelse = (newBegrunnelse: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        begrunnelse: newBegrunnelse.trim()
+      } as PeriodeMedBegrunnelse)
+      _resetValidation(namespace + '-begrunnelse')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].begrunnelse`, newBegrunnelse.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-begrunnelse']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-begrunnelse'))
+      }
+    }
+  }
+
+  const setPeriodeAktivitetstype = (newAktivitetstype: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        aktivitetstype: newAktivitetstype.trim()
+      } as PeriodeMedAktivitetstype)
+      _resetValidation(namespace + '-aktivitetstype')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].aktivitetstype`, newAktivitetstype.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-aktivitetstype']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-aktivitetstype'))
+      }
+    }
+  }
+
+  const setPeriodeLoenn = (newLoenn: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        loenn: newLoenn.trim()
+      } as PeriodeMedLoenn)
+      _resetValidation(namespace + '-loenn')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].loenn`, newLoenn.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-loenn']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-loenn'))
+      }
+    }
+  }
+
+  const setPeriode = (periode: PDPeriode, whatChanged: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode(periode)
+      _resetValidation(namespace + '-' + whatChanged)
+    } else {
+      delete periode.__type
+      delete periode.__index
+      dispatch(updateReplySed(`${type}[${index}]`, periode))
+      if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
+      }
+    }
+  }
+
+  const resetForm = () => {
+    _setNewPeriode(undefined)
+    _resetValidation()
+  }
+
+  const onCancel = () => {
+    _setSeeNewForm(false)
+    resetForm()
+  }
+
+  const onRemove = (periode: PDPeriode) => {
+    removeFromDeletion(periode)
+    const newPeriodes: Array<PDPeriode> = _.get(replySed, periode.__type!) as Array<PDPeriode>
+    newPeriodes.splice(periode.__index!, 1)
+    dispatch(updateReplySed(periode.__type!, newPeriodes))
+    standardLogger('pdu1.editor.periode.remove', { type: periode.__type! })
+  }
+
+  const onAdd = () => {
+    let newPeriodes: Array<PDPeriode> | undefined = _.get(replySed, _newType!)
+    if (_.isNil(newPeriodes)) {
+      newPeriodes = []
+    }
+    const valid: boolean = _performValidation({
+      periode: _newPeriode as PDPeriode,
+      type: _newType,
+      namespace: namespace,
+      personName: personName
+    })
+    if (valid && _newType) {
+      newPeriodes = newPeriodes.concat(_newPeriode!)
+      dispatch(updateReplySed(_newType, newPeriodes))
+      standardLogger('pdu1.editor.periode.add', { type: _newType })
+      resetForm()
+    }
+  }
+
+  const getIcon = (type: string, size: string = '32') => (
+    <>
+      {type === 'perioderAnsattMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Office1 width={size} height={size} /></FlexDiv>)}
+      {type === 'perioderSelvstendigMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Employer width={size} height={size} /></FlexDiv>)}
+      {type === 'perioderAndreForsikringer' && (<PensionBag width={size} height={size} />)}
+      {type === 'perioderAnsettSomForsikret' && ( <FlexDiv><PensionBag width={size} height={size} /><Law width={size} height={size} /></FlexDiv>)}
+      {type === 'perioderAnsattUtenForsikring' && (<Office1 width={size} height={size} />)}
+      {type === 'perioderSelvstendigUtenForsikring' && (<Employer width={size} height={size} />)}
+      {type === 'perioderLoennSomAnsatt' && (<FlexDiv><Money width={size} height={size} /><Office1 width={size} height={size} /></FlexDiv>)}
+      {type === 'perioderInntektSomSelvstendig' && (<FlexDiv><Money width={size} height={size} /><Employer width={size} height={size} /></FlexDiv>)}
+    </>
+  )
+
+  const renderRow = (periode: PDPeriode | null, index: number) => {
+    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
+    const _type: string = index < 0 ? _newType! : periode!.__type!
+    const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
+    // namespace for index < 0: personmanager-bruker-forsikring-arbeidsgiver-adresse-gate
+    // namespace for index >= 0: personmanager-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
+    const idx = getNSIdx(_type, _index)
+
+    const _v: Validation = index < 0 ? _validation : validation
+    // __index is the periode's index order in the replysed; index is the order with sort, thus does not tell the real position in the replysed list
+    const _periode: PDPeriode = (index < 0 ? _newPeriode : periode) ?? {} as PDPeriode
+
+    return (
+      <RepeatableRow
+        className={classNames('slideInFromLeft', { new: index < 0 })}
+        key={getId(periode)}
+      >
+        {index < 0 && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <Select
+                  closeMenuOnSelect
+                  data-test-id={namespace + idx + '-type'}
+                  error={_v[namespace + idx + '-type']?.feilmelding}
+                  id={namespace + idx + '-type'}
+                  key={namespace + idx + '-type-' + _newType}
+                  label={t('label:type')}
+                  menuPortalTarget={document.body}
+                  onChange={(type: any) => setType(type.value)}
+                  options={periodeOptions}
+                  value={_.find(periodeOptions, o => o.value === _newType)}
+                  defaultValue={_.find(periodeOptions, o => o.value === _newType)}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+        {_type && (
+          <AlignStartRow>
+            {index >= 0 && _sort === 'time' && (
+              <Column style={{ maxWidth: '40px' }}>
+                <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
+                  {getIcon(_type, '32')}
+                </div>
+              </Column>
+            )}
+            <PeriodeInput
+              namespace={namespace + idx}
+              error={{
+                startdato: _v[namespace + '-startdato']?.feilmelding,
+                sluttdato: _v[namespace + '-sluttdato']?.feilmelding
+              }}
+              showLabel={index < 0}
+              setPeriode={(p: PDPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
+              value={_periode}
+            />
+            {index >= 0
+              ? (
+                <Column flex='1.5'>
+                  <FlexEndDiv style={{ justifyContent: 'end' }}>
+                    <AddRemovePanel
+                      candidateForDeletion={candidateForDeletion}
+                      existingItem={(index >= 0)}
+                      onBeginRemove={() => addToDeletion(periode)}
+                      onConfirmRemove={() => onRemove(periode!)}
+                      onCancelRemove={() => removeFromDeletion(periode)}
+                      onAddNew={onAdd}
+                      onCancelNew={onCancel}
+                    />
+                  </FlexEndDiv>
+                </Column>
+                )
+              : <Column />}
+          </AlignStartRow>
+        )}
+        <VerticalSeparatorDiv />
+        {_type === 'perioderAndreForsikringer' && (
+          <AlignStartRow>
+            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-type']?.feilmelding}
+                namespace={namespace + idx}
+                id='type'
+                key={namespace + idx + '-type-' + ((_periode as PeriodeMedType)?.type ?? '')}
+                label={t('label:type')}
+                onChanged={(newType: string) => setPeriodeType(newType, _type, _index)}
+                value={(_periode as PeriodeMedType)?.type ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
+        {_type === 'perioderAnsettSomForsikret' && (
+          <AlignStartRow>
+            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-begrunnelse']?.feilmelding}
+                namespace={namespace + idx}
+                id='begrunnelse'
+                key={namespace + idx + '-begrunnelse-' + ((_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? '')}
+                label={t('label:begrunnelse')}
+                onChanged={(newBegrunnelse: string) => setPeriodeBegrunnelse(newBegrunnelse, _type, _index)}
+                value={(_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
+        {_type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
+          <AlignStartRow>
+            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-aktivitetstype']?.feilmelding}
+                namespace={namespace + idx}
+                id='aktivitetstype'
+                key={namespace + idx + '-aktivitetstype-' + ((_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? '')}
+                label={t('label:aktivitetstype')}
+                onChanged={(newAktivitetstype: string) => setPeriodeAktivitetstype(newAktivitetstype, _type, _index)}
+                value={(_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
+        {_type && ['perioderLoennSomAnsatt', 'perioderInntektSomSelvstendig'].indexOf(_type) >= 0 && (
+          <AlignStartRow>
+            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-loenn']?.feilmelding}
+                namespace={namespace + idx}
+                id='loenn'
+                key={namespace + idx + '-loenn-' + ((_periode as PeriodeMedLoenn)?.loenn ?? '')}
+                label={t('label:loenn')}
+                onChanged={(newLoenn: string) => setPeriodeLoenn(newLoenn, _type, _index)}
+                value={(_periode as PeriodeMedLoenn)?.loenn ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
+        {index < 0 && (
+          <FlexEndDiv style={{ justifyContent: 'end' }}>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem={(index >= 0)}
+              marginTop
+              onBeginRemove={() => addToDeletion(periode)}
+              onConfirmRemove={() => onRemove(periode!)}
+              onCancelRemove={() => removeFromDeletion(periode)}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+            />
+          </FlexEndDiv>
+        )}
+        <VerticalSeparatorDiv />
+      </RepeatableRow>
+    )
+  }
+
+  return (
+    <div key={namespace + '-div'}>
+      <VerticalSeparatorDiv />
+      <PaddedHorizontallyDiv>
+        <Heading size='medium'>
+          {t('label:perioder')}
+        </Heading>
+        <VerticalSeparatorDiv size='2' />
+        {!_.isEmpty(_allPeriods) && (
+          <>
+            <Checkbox
+              checked={_sort === 'group'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+            >
+              {t('label:group-by-type')}
+            </Checkbox>
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
+        {_.isEmpty(_allPeriods)
+          ? (
+            <PaddedDiv>
+              <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            </PaddedDiv>
+            )
+          : _sort === 'time'
+            ? (
+              <>
+                <AlignStartRow>
+                  <Column style={{ maxWidth: '40px' }} />
+                  <Column>
+                    <label className='navds-text-field__label navds-label'>
+                      {t('label:startdato')}
+                    </label>
+                  </Column>
+                  <Column>
+                    <label className='navds-text-field__label navds-label'>
+                      {t('label:sluttdato')}
+                    </label>
+                  </Column>
+                  <Column flex='2' />
+                </AlignStartRow>
+                {_allPeriods.map(renderRow)}
+              </>
+              )
+            : (
+              <>
+                {periodeOptions.map(o => {
+                  const periods: Array<PDPeriode> | undefined = _.get(replySed, o.value) as Array<PDPeriode> | undefined
+                  if (_.isEmpty(periods)) {
+                    return null
+                  }
+                  return (
+                    <div key={o.value}>
+                      <FlexEndDiv>
+                        {getIcon(o.value, '20')}
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <Detail>
+                          {o.label}
+                        </Detail>
+                      </FlexEndDiv>
+                      <VerticalSeparatorDiv />
+                      {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                      <VerticalSeparatorDiv size='2' />
+                    </div>
+                  )
+                })}
+              </>
+              )}
+      </PaddedHorizontallyDiv>
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      {_seeNewForm
+        ? renderRow(null, -1)
+        : (
+          <PaddedDiv>
+          <Row>
+            <Column>
+              <Button
+                variant='tertiary'
+                onClick={() => _setSeeNewForm(true)}
+              >
+                <Add />
+                <HorizontalSeparatorDiv size='0.5' />
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Column>
+          </Row>
+          </PaddedDiv>
+          )}
+    </div>
+  )
+}
+
+export default Perioder

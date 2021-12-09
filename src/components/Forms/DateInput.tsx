@@ -12,7 +12,6 @@ export interface DateInputProps {
   label: string
   namespace: string
   onChanged: (dato: string) => void
-  placeholder?: string
   required ?: boolean
   value: string | undefined
 }
@@ -25,7 +24,6 @@ const DateInput = ({
   label,
   namespace,
   onChanged,
-  placeholder,
   required = false,
   value
 }: DateInputProps) => {
@@ -46,7 +44,7 @@ const DateInput = ({
       data-test-id={namespace + ''}
       error={error}
       id={namespace + '-' + id}
-      label={label ?? t('label:dato')}
+      label={(label ?? t('label:dato')) + '(' +   t('el:placeholder-date-default')}
       onBlur={() => {
         if (_dirty) {
           onDatoBlur()
@@ -57,7 +55,6 @@ const DateInput = ({
         _setDato(e.target.value)
         _setDirty(true)
       }}
-      placeholder={placeholder || t('el:placeholder-date-default')}
       required={required}
       value={_dato}
     />

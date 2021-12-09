@@ -86,9 +86,8 @@ const InntektSearch = ({
           namespace={namespace}
           error={_validation[namespace + '-startdato']?.feilmelding}
           id='startdato'
-          label={t('label:fra')}
+          label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
           onChanged={setSearchPeriodeStartdato}
-          placeholder='ÅÅÅÅ-MM'
           value={_searchPeriode.startdato}
         />
       </Column>
@@ -97,9 +96,8 @@ const InntektSearch = ({
           namespace={namespace}
           error={_validation[namespace + '-sluttdato']?.feilmelding}
           id='sluttdato'
-          label={t('label:til')}
+          label={t('label:til') + ' (ÅÅÅÅ-MM)'}
           onChanged={setSearchPeriodeSluttdato}
-          placeholder='ÅÅÅÅ-MM'
           value={_searchPeriode.sluttdato}
         />
       </Column>
@@ -112,7 +110,6 @@ const InntektSearch = ({
           menuPortalTarget={document.body}
           onChange={(o: unknown) => setFilter((o as Option).value)}
           options={filterOptions}
-          placeholder={t('el:placeholder-select-default')}
           value={_.find(filterOptions, b => b.value === _filter)}
           defaultValue={_.find(filterOptions, b => b.value === _filter)}
         />

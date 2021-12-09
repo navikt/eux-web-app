@@ -159,7 +159,6 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
               menuPortalTarget={document.body}
               onChange={(e: any) => setKey(e.value, index)}
               options={allBarnaNameOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
               defaultValue={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
             />

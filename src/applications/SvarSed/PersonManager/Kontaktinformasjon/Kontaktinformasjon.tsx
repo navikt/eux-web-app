@@ -243,7 +243,6 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(e: unknown) => onTypeChanged((e as Option).value as TelefonType, index)}
               options={telefonTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={getTypeOption(index < 0 ? _newType : telefon?.type)}
               defaultValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
             />

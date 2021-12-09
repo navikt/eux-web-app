@@ -304,7 +304,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               label={t('label:land')}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => onUtenlandskLandChange(e.value, index)}
-              placeholder={t('el:placeholder-select-default')}
               values={index < 0 ? _newLand : pin?.land}
             />
           </Column>
@@ -420,7 +419,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               </Button>
             </Column>
           </Row>
-        )}
+          )}
       <VerticalSeparatorDiv />
       <label className='navds-text-field__label navds-label'>
         {t('label:norsk-fnr')}
@@ -561,7 +560,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
-                  placeholder={t('el:placeholder-select-default')}
                   values={personInfo!.pinMangler?.foedested?.land ?? ''}
                 />
               </Column>

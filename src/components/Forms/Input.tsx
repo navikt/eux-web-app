@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { TextField } from '@navikt/ds-react'
 
 export interface InputProps {
@@ -7,12 +6,12 @@ export interface InputProps {
   className ?: string
   error: string | null | undefined
   namespace: string
+  hideLabel?: boolean
   id: string
   label: React.ReactNode
   min ?: string
   onContentChange?: (e: string) => void
   onChanged?: (e: string) => void
-  placeholder?: string
   required ?: boolean
   type?: 'number' | 'text' | 'tel' | 'url' | 'email' | 'password' | undefined
   style ?: any
@@ -22,20 +21,19 @@ const Input: React.FC<InputProps> = ({
   ariaLabel,
   className,
   error,
+  hideLabel = false,
   id,
   label,
   min,
   namespace,
   onContentChange = () => {},
   onChanged = () => {},
-  placeholder,
   required = false,
   type = 'text',
   value
 }: InputProps) => {
   const [_value, _setValue] = useState<string>(value ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
-  const { t } = useTranslation()
 
   return (
     <TextField
@@ -45,6 +43,7 @@ const Input: React.FC<InputProps> = ({
       data-test-id={namespace + '-' + id}
       error={error}
       id={namespace + '-' + id}
+      hideLabel={hideLabel}
       label={label}
       onBlur={() => {
         if (_dirty) {
@@ -57,7 +56,6 @@ const Input: React.FC<InputProps> = ({
         _setValue(e.target.value)
         _setDirty(true)
       }}
-      placeholder={placeholder || t('el:placeholder-input-default')}
       required={required}
       type={type}
       value={_value}

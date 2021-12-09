@@ -121,8 +121,11 @@ export const Dl = styled.dl`
   }
 `
 export const RepeatableRow = styled.div`
+  padding: 0.5rem 1rem 0.5rem 1rem;
   &.new {
-    padding: 0.5rem;
-    background-color: ${({ theme }: any) => theme.type === 'themeHighContrast' ? 'rgba(82, 51, 0, 0.5)' : 'rgba(236, 243, 153, 0.5)'};
+    background-color: rgba(236, 243, 153, 0.5);
+  };
+  &:hover:not(.new) {
+    background-color: var(--navds-color-gray-10);
   }
 `

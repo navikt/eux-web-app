@@ -143,9 +143,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             value={adresse?.gate}
           />
         </Column>
-          {!options.bygning === false && (
-            <Column>
-              <Input
+        {!options.bygning === false && (
+          <Column>
+            <Input
               error={validation[namespace + '-bygning']?.feilmelding}
               namespace={namespace}
               id='bygning'
@@ -153,8 +153,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               onChanged={setBygning}
               value={adresse?.bygning}
             />
-            </Column>
-          )}
+          </Column>
+        )}
       </AlignStartRow>
       <VerticalSeparatorDiv />
       <AlignStartRow>
@@ -185,30 +185,29 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         {!options.region === false && (
           <Column flex='1.3'>
             <Input
-            error={validation[namespace + '-region']?.feilmelding}
-            namespace={namespace}
-            id='region'
-            label={t('label:region')}
-            onChanged={setRegion}
-            value={adresse?.region}
-          />
+              error={validation[namespace + '-region']?.feilmelding}
+              namespace={namespace}
+              id='region'
+              label={t('label:region')}
+              onChanged={setRegion}
+              value={adresse?.region}
+            />
           </Column>
         )}
         <Column flex='1.3'>
-          <div style={{maxWidth: '400px'}}>
-           <CountrySelect
-            closeMenuOnSelect
-            key={adresse?.land}
-            data-test-id={namespace + '-land'}
-            error={validation[namespace + '-land']?.feilmelding}
-            flagWave
-            id={namespace + '-land'}
-            label={t('label:land') + ' *'}
-            menuPortalTarget={document.body}
-            onOptionSelected={(e: Country) => setLand(e.value)}
-            placeholder={t('el:placeholder-select-default')}
-            values={adresse?.land}
-          />
+          <div style={{ maxWidth: '400px' }}>
+            <CountrySelect
+              closeMenuOnSelect
+              key={adresse?.land}
+              data-test-id={namespace + '-land'}
+              error={validation[namespace + '-land']?.feilmelding}
+              flagWave
+              id={namespace + '-land'}
+              label={t('label:land') + ' *'}
+              menuPortalTarget={document.body}
+              onOptionSelected={(e: Country) => setLand(e.value)}
+              values={adresse?.land}
+            />
           </div>
         </Column>
       </AlignStartRow>

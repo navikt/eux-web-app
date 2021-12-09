@@ -1,9 +1,7 @@
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/PersonManager/Forsikring/validation'
-import { validateGrunnTilOpphor } from 'applications/SvarSed/PersonManager/GrunnTilOpphør/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/PersonManager/Nasjonaliteter/validation'
 import { validatePersonOpplysninger } from 'applications/SvarSed/PersonManager/PersonOpplysninger/validation'
-import { validateRettTilYtelse } from 'applications/SvarSed/PersonManager/RettTilYtelser/validation'
 import { ReplyPdu1 } from 'declarations/pd'
 import { Adresse, ForsikringPeriode, PersonInfo, Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
@@ -49,30 +47,16 @@ export const validatePersonManager = (v: Validation, t: TFunction, replyPdu1: Re
     perioderSelvstendigMedForsikring: replyPdu1.perioderSelvstendigMedForsikring,
     perioderAnsattUtenForsikring: replyPdu1.perioderAnsattUtenForsikring,
     perioderSelvstendigUtenForsikring: replyPdu1.perioderSelvstendigUtenForsikring,
-    // perioderSyk: replyPdu1.perioderSyk,
-    // perioderSvangerskapBarn: replyPdu1.perioderSvangerskapBarn,
-    // perioderUtdanning: replyPdu1.perioderUtdanning,
-    // perioderMilitaertjeneste: replyPdu1.perioderMilitaertjeneste,
-    // perioderFrihetsberoevet: replyPdu1.perioderFrihetsberoevet,
-    // perioderFrivilligForsikring: replyPdu1.perioderFrivilligForsikring,
-    // perioderKompensertFerie: replyPdu1.perioderKompensertFerie,
-    perioderAnnenForsikring: replyPdu1.perioderAnnenForsikring
+    perioderAnsettSomForsikret: replyPdu1.perioderAnsettSomForsikret,
+    perioderAnnenForsikring: replyPdu1.perioderAndreForsikringer,
+    perioderLoennSomAnsatt: replyPdu1.perioderLoennSomAnsatt,
+    perioderInntektSomSelvstendig: replyPdu1.perioderInntektSomSelvstendig
   }
   _error = validateAlleForsikringPerioder(v, t, {
     perioder, namespace: `personmanager-${personID}-forsikring`, personName
   })
   hasErrors = hasErrors || _error
 
-  _error = validateGrunnTilOpphor(v, t, {
-    grunntilopphor: replyPdu1.grunntilopphor,
-    namespace: `personmanager-${personID}-grunntilopphør`
-  })
-  hasErrors = hasErrors || _error
-
-  _error = validateRettTilYtelse(v, t, {
-    rettTilTytelse: replyPdu1.rettTilYtelse,
-    namespace: `personmanager-${personID}-retttilytelser`
-  })
   hasErrors = hasErrors || _error
 
   return hasErrors

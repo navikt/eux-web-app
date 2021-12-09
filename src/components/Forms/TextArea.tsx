@@ -1,7 +1,6 @@
 import classNames from 'classnames'
 import { Textarea } from '@navikt/ds-react'
 import React, { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 export interface TextAreaProps {
   className ?: string
@@ -12,7 +11,6 @@ export interface TextAreaProps {
   label: string
   maxLength ?: number
   onChanged: (e: string) => void
-  placeholder?: string
   required?: boolean
   value: string | undefined
 }
@@ -25,13 +23,11 @@ const TextArea: React.FC<TextAreaProps> = ({
   label,
   maxLength = 500,
   onChanged,
-  placeholder,
   required = false,
   value
 }: TextAreaProps) => {
   const [_value, _setValue] = useState<string>(value ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
-  const { t } = useTranslation()
 
   return (
     <Textarea
@@ -53,7 +49,6 @@ const TextArea: React.FC<TextAreaProps> = ({
         _setValue(e.target.value)
         _setDirty(true)
       }}
-      placeholder={placeholder || t('el:placeholder-textarea-default')}
       required={required}
       value={_value}
     />

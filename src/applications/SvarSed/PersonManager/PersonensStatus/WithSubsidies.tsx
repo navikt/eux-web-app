@@ -182,7 +182,6 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(o: unknown) => setPensjonType((o as Option).value, index)}
               options={selectPensjonTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
               defaultValue={getPensjonTypeOption(index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}
             />

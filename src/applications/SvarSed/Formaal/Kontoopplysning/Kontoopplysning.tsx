@@ -237,10 +237,9 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
                 error={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
                 id='kontoOrdinaer-swift'
                 key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
-                label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '')}
+                label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '') + ' (' + t('el:placeholder-swift') + ')'}
                 namespace={namespace}
                 onChanged={setOrdinaerSwift}
-                placeholder={t('el:placeholder-swift')}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
               />
             </Column>

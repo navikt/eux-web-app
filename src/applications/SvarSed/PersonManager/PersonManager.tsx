@@ -1,5 +1,9 @@
-import { Add, Child, ExpandFilled, ErrorFilled, SuccessFilled, NextFilled } from '@navikt/ds-icons'
+import { Add, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
+import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
+import Perioder from 'applications/PDU1/Perioder/Perioder'
+import Person from 'applications/PDU1/Person/Person'
+import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
@@ -7,13 +11,12 @@ import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAns
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
+import { ErrorElement } from 'declarations/app.d'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
-import { BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
@@ -27,11 +30,10 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
 import { isFSed } from 'utils/sed'
-import Adresser from './Adresser/Adresser'
 import Adresse from './Adresser/Adresse'
+import Adresser from './Adresser/Adresser'
 import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
 import Familierelasjon from './Familierelasjon/Familierelasjon'
-import ForsikringPD from 'applications/PDU1/Forsikring/Forsikring'
 import Forsikring from './Forsikring/Forsikring'
 import GrunnlagForBosetting from './GrunnlagForBosetting/GrunnlagForBosetting'
 import InntektForm from './InntektForm/InntektForm'
@@ -45,7 +47,6 @@ import Relasjon from './Relasjon/Relasjon'
 import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
 import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from './Trygdeordning/Trygdeordning'
-import Person from 'applications/PDU1/Person/Person'
 
 const transitionTime = 0.3
 
@@ -261,7 +262,13 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const initialMenuOption = totalPeopleNr === 1 ? 'personopplysninger' : undefined
+  const initialMenuOption = (() => {
+    if (totalPeopleNr !== 1) return undefined
+    const _type = (replySed as ReplySed).sedType ?? 'PDU1'
+    if (_type.startsWith('F')) return 'personopplysninger'
+    if (_type.startsWith('P')) return 'person_pd'
+    return 'person_h'
+  })()
   const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
@@ -285,11 +292,12 @@ const PersonManager: React.FC<PersonManagerProps> = ({
 
   const forms: Array<Form> = [
     { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
-    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD'},
+    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD' },
     { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
     { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
+    { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
     { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
-    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: {bygning: false, region: false} },
+    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
     { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
     { label: t('el:option-personmanager-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F' },
     { label: t('el:option-personmanager-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F' },
@@ -301,7 +309,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
     { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
     { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
-    { label: t('el:option-personmanager-forsikring'), value: 'forsikring_pd', component: ForsikringPD, type: 'PD'},
+    { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
     { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017', 'PD'] },
     { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
 
@@ -401,8 +409,8 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
     const personName = personId === 'familie'
       ? t('label:hele-familien')
-      : personInfo ?
-        personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')
+      : personInfo
+        ? personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')
         : (replySed as ReplyPdu1).bruker.fornavn + ' ' + ((replySed as ReplyPdu1).bruker.etternavn ?? '')
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
@@ -561,10 +569,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
           onModalClose={() => setSeeNewPersonModal(false)}
         />
       )}
-      <Heading size='small'>
-        {t('label:personmanager')}
-      </Heading>
-      <VerticalSeparatorDiv />
       <WithErrorPanel
         border
         className={classNames({ error: validation[namespace]?.feilmelding })}

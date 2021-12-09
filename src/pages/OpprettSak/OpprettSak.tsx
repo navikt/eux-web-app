@@ -448,7 +448,6 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     disabled={_.isEmpty(valgtBucType)}
                     menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
-                    placeholder={t('label:velg')}
                     flagWave
                     value={valgtLandkode}
                   />

@@ -202,7 +202,6 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(o: unknown) => setGrunn((o as Option).value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={thisGrunnOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
               defaultValue={_.find(grunnOptions, b => b.value === (grunn === null ? _newGrunn : grunn?.grunn))}
             />
@@ -218,7 +217,6 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
               menuPortalTarget={document.body}
               onChange={(o: unknown) => setPerson((o as Option).value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={personOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
               defaultValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
             />

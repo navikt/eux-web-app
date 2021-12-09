@@ -234,7 +234,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                 data-test-id={namespace + '-saksnummerOrFnr'}
                 id={namespace + '-saksnummerOrFnr'}
                 onChange={onSaksnummerOrFnrChange}
-                placeholder={t('el:placeholder-input-default')}
                 required
                 value={_saksnummerOrFnr}
               />

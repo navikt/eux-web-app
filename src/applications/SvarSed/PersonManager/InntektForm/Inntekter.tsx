@@ -193,7 +193,6 @@ const Inntekter: React.FC<any> = ({
               menuPortalTarget={document.body}
               onChange={(e: any) => onInntektTypeChanged(e.value, index)}
               options={inntektTypeOptions}
-              placeholder={t('el:placeholder-select-default')}
               value={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
               defaultValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
             />

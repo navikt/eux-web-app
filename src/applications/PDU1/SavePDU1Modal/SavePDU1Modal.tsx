@@ -120,7 +120,6 @@ const SendPDU1Modal = ({
                           id='savepdu1modal-name'
                           label={t('label:navn')}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                          placeholder={t('el:placeholder-input-default')}
                           value={_name}
                         />
                       </FlexCenterSpacedDiv>

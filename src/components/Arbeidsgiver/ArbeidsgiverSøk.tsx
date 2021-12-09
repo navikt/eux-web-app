@@ -97,9 +97,8 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
             id='startdato'
-            label={t('label:fra')}
+            label={t('label:fra') + '(ÅÅÅÅ-MM)'}
             onChanged={setArbeidssøkStartDato}
-            placeholder='ÅÅÅÅ-MM'
             value={_arbeidssøkStartDato}
           />
         </Column>
@@ -108,9 +107,8 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             error={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
             id='sluttdato'
-            label={t('label:til')}
+            label={t('label:til') + '(ÅÅÅÅ-MM)'}
             onChanged={setArbeidssøkSluttDato}
-            placeholder='ÅÅÅÅ-MM'
             value={_arbeidssøkSluttDato}
           />
         </Column>
@@ -123,7 +121,6 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setArbeidssøkInntektslistetype((o as Option).value)}
             options={inntektslistetypeOptions}
-            placeholder={t('el:placeholder-select-default')}
             value={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
             defaultValue={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
           />

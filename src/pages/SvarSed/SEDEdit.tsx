@@ -323,6 +323,10 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       <VerticalSeparatorDiv size='3' />
       {showPersonManager() && (
         <>
+          <Heading size='small'>
+            {t('label:personmanager')}
+          </Heading>
+          <VerticalSeparatorDiv />
           <PersonManager
             viewValidation={view}
             replySed={replySed}
@@ -354,7 +358,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
-              placeholder={t('el:placeholder-sed')}
               value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
             />
           </TextAreaDiv>

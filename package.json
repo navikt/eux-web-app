@@ -51,7 +51,7 @@
     "moment": "^2.29.1",
     "nav-frontend-js-utils": "^1.0.20",
     "nav-frontend-tabell-style": "^2.1.1",
-    "nav-hoykontrast": "^2.0.6",
+    "nav-hoykontrast": "^2.0.7",
     "paginering": "^2.0.0",
     "rc-tooltip": "^5.1.1",
     "react": "^17.0.2",

@@ -168,7 +168,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                       e.stopPropagation()
                     }}
                     href={'data:application/octet-stream;base64,' + encodeURIComponent(completePdu1Response.content.base64)}
-                    download={completePdu1Response.name}
+                    download={completePdu1Response?.name}
                   >
                     <FlexDiv>
                       {t('label:last-ned-pdu1')}
@@ -189,7 +189,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         />
       )}
       <Modal
-        open={previewModal}
+        open={previewModal && !_.isNil(previewPdu1)}
         modal={{
           closeButton: true,
           modalContent: (
@@ -197,7 +197,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
               style={{ cursor: 'pointer' }}
             >
               <FileFC
-                file={previewPdu1}
+                file={previewPdu1 ?? {}}
                 width={600}
                 height={800}
                 tema='simple'
