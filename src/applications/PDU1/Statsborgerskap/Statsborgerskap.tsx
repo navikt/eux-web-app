@@ -157,33 +157,35 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
           {t('label:statsborgerskap')}
         </Heading>
       </PaddedDiv>
-      <VerticalSeparatorDiv/>
-      {_.isEmpty(statsborgerskaper) ? (
-        <PaddedDiv>
-          <AlignStartRow>
-            <Column>
-              <BodyLong>
-                {t('message:warning-no-satsborgerskap')}
-              </BodyLong>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-        </PaddedDiv>
-      ) : (
-        <>
-        <PaddedHorizontallyDiv>
-          <AlignStartRow>
-            <Column>
-              <Label>
-                {t('label:land')}
-              </Label>
-            </Column>
+      <VerticalSeparatorDiv />
+      {_.isEmpty(statsborgerskaper)
+        ? (
+          <PaddedDiv>
+            <AlignStartRow>
+              <Column>
+                <BodyLong>
+                  {t('message:warning-no-satsborgerskap')}
+                </BodyLong>
+              </Column>
             </AlignStartRow>
-        </PaddedHorizontallyDiv>
-        <VerticalSeparatorDiv size='0.8'/>
-      {statsborgerskaper?.map(renderRow)}
-      </>
-      )}
+            <VerticalSeparatorDiv />
+          </PaddedDiv>
+          )
+        : (
+          <>
+            <PaddedHorizontallyDiv>
+              <AlignStartRow>
+                <Column>
+                  <Label>
+                    {t('label:land')}
+                  </Label>
+                </Column>
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8' />
+            {statsborgerskaper?.map(renderRow)}
+          </>
+          )}
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -192,18 +194,18 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
         : (
           <PaddedDiv>
             <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:statsborgerskap').toLowerCase() })}
-              </Button>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-new-x', { x: t('label:statsborgerskap').toLowerCase() })}
+                </Button>
 
-            </Column>
-          </Row>
+              </Column>
+            </Row>
           </PaddedDiv>
           )}
     </div>

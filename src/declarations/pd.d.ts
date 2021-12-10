@@ -58,9 +58,7 @@ export interface ReplyPdu1 {
   perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // Perioder 2.2.2
   perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // Perioder 2.3.1
   perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // Perioder 2.3.2
-
   sisteAnsettelseInfo: GrunnTilOpphør // GrunnTilOpphør => 3
-
   andreMottatteUtbetalinger: { // UtbetalingerPD => 4
     utbetalingEtterEndtArbeidsforhold: string // 4.1
     kompensasjonForEndtArbeidsforhold: string// 4.2
@@ -71,6 +69,7 @@ export interface ReplyPdu1 {
     avkallKompensasjonBegrunnelse: string // 4.4.1
     andreYtelserSomMottaForTiden: string // 4.5
   }
+
   perioderDagpengerMottatt: { // PerioderDagpengerPD => 5
     perioder: Array<Periode> // 5.1
     sisteUtbetaler: {

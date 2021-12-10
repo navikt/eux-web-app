@@ -20,6 +20,12 @@
   "button-send-sed" : "Send SED",
   "button-update-draft-x" : "Oppdattere utkast {{x}}",
 
+  "checkbox-pdu1-4.1": "har mottatt eller har fortsatt ikke mottatt lønn for perioden etter avsluttet arbeidsforhold, inntil",
+  "checkbox-pdu1-4.2": "har mottatt eller har fortsatt ikke mottatt kompensasjon for avsluttet arbeidsforhold eller lignende utbetaling, som beløper seg til",
+  "checkbox-pdu1-4.3": "har mottatt eller har fortsatt ikke mottatt betaling i stedet for feriedager, som beløper seg ",
+  "checkbox-pdu1-4.4": "har gitt avkall på ovennevnte rettigheter i løpet av arbeidskontraktens løpetid",
+  "checkbox-pdu1-4.5": "mottar for tiden",
+
   "option-familierelasjon-bruker": "bruker",
   "option-familierelasjon-ektefelle": "ektefelle",
   "option-familierelasjon-annenPerson" : "annenPerson",
@@ -132,6 +138,7 @@
   "option-personmanager-periodefordagpenger": "Periode for dagpenger",
   "option-personmanager-svarpåforespørsel": "Svar på forespørsel",
   "option-personmanager-sisteansettelseinfo": "Siste ansettelse info",
+  "option-personmanager-utbetaling": "Utbetalinger",
 
   "option-relasjon-1": "Daglig omsorg for barnet",
   "option-relasjon-2": "Barn født i ekteskap",

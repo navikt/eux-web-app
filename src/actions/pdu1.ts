@@ -28,7 +28,8 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
 export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>> = (
 ): ThunkResult<ActionWithPayload<File>> => {
   return call({
-    url: sprintf(urls.PDU1_PREVIEW_URL, {}),
+    method: 'POST',
+    url: urls.PDU1_PREVIEW_URL,
     expectedPayload: mockPreviewPdu1,
     type: {
       request: types.PDU1_PREVIEW_REQUEST,
@@ -39,17 +40,13 @@ export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>>
 }
 
 export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
-  fnr: string, fagsak: string
+  fnr: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
-    url: sprintf(urls.PDU1_CREATE_URL, {
-      fnr: fnr,
-      fagsak: fagsak
-    }),
+    url: sprintf(urls.PDU1_UTKAST_URL, { fnr }),
     expectedPayload: mockCreatePdu1,
     context: {
-      fnr: fnr,
-      fagsak: fagsak
+      fnr: fnr
     },
     type: {
       request: types.PDU1_CREATE_REQUEST,
@@ -64,7 +61,7 @@ export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<any>>> = 
 ): ThunkResult<ActionWithPayload<any>> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.PDU1_COMPLETE_URL, {}),
+    url: urls.PDU1_POST_URL,
     body: payload,
     expectedPayload: mockPreviewPdu1,
     type: {

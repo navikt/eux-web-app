@@ -5,7 +5,6 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import PeriodeInput from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
@@ -50,7 +49,6 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   options,
   parentNamespace,
   personID,
-  personName,
   replySed,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
@@ -78,7 +76,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-perioder-ANSATT-UTEN-FORSIKRING'), value: 'perioderAnsattUtenForsikring' },
     { label: t('el:option-perioder-SELVSTENDIG-UTEN-FORSIKRING'), value: 'perioderSelvstendigUtenForsikring' },
     { label: t('el:option-perioder-INNTEKT-ANSETTELSESFORHOLD'), value: 'perioderLoennSomAnsatt' },
-    { label: t('el:option-perioder-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' },
+    { label: t('el:option-perioder-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
@@ -92,8 +90,8 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     (replySed as ReplyPdu1)?.perioderAnsattUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattUtenForsikring' }));
     (replySed as ReplyPdu1)?.perioderSelvstendigUtenForsikring?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigUtenForsikring' }));
     (replySed as ReplyPdu1)?.perioderLoennSomAnsatt?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderLoennSomAnsatt' }));
-    (replySed as ReplyPdu1)?.perioderInntektSomSelvstendig?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderInntektSomSelvstendig' }));
-     _setAllPeriods(periodes.sort(periodeSort))
+    (replySed as ReplyPdu1)?.perioderInntektSomSelvstendig?.forEach((p, i) => periodes.push({ ...p, __index: i, __type: 'perioderInntektSomSelvstendig' }))
+    _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
   const setType = (type: string) => {
@@ -112,6 +110,36 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       dispatch(updateReplySed(`${type}[${index}].type`, newType.trim()))
       if (validation[namespace + getNSIdx(type, index) + '-type']) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-type'))
+      }
+    }
+  }
+
+  const setPeriodeStartdato = (newStartdato: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        startdato: newStartdato.trim()
+      })
+      _resetValidation(namespace + '-startdato')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].startdato`, newStartdato.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-startdato']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-startdato'))
+      }
+    }
+  }
+
+  const setPeriodeSluttdato = (newSluttdato: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        sluttdato: newSluttdato.trim()
+      } as PDPeriode)
+      _resetValidation(namespace + '-sluttdato')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].sluttdato`, newSluttdato.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-sluttdato']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-sluttdato'))
       }
     }
   }
@@ -161,20 +189,6 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setPeriode = (periode: PDPeriode, whatChanged: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode(periode)
-      _resetValidation(namespace + '-' + whatChanged)
-    } else {
-      delete periode.__type
-      delete periode.__index
-      dispatch(updateReplySed(`${type}[${index}]`, periode))
-      if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
-      }
-    }
-  }
-
   const resetForm = () => {
     _setNewPeriode(undefined)
     _resetValidation()
@@ -201,8 +215,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     const valid: boolean = _performValidation({
       periode: _newPeriode as PDPeriode,
       type: _newType,
-      namespace: namespace,
-      personName: personName
+      namespace: namespace
     })
     if (valid && _newType) {
       newPeriodes = newPeriodes.concat(_newPeriode!)
@@ -217,7 +230,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       {type === 'perioderAnsattMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Office1 width={size} height={size} /></FlexDiv>)}
       {type === 'perioderSelvstendigMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Employer width={size} height={size} /></FlexDiv>)}
       {type === 'perioderAndreForsikringer' && (<PensionBag width={size} height={size} />)}
-      {type === 'perioderAnsettSomForsikret' && ( <FlexDiv><PensionBag width={size} height={size} /><Law width={size} height={size} /></FlexDiv>)}
+      {type === 'perioderAnsettSomForsikret' && (<FlexDiv><PensionBag width={size} height={size} /><Law width={size} height={size} /></FlexDiv>)}
       {type === 'perioderAnsattUtenForsikring' && (<Office1 width={size} height={size} />)}
       {type === 'perioderSelvstendigUtenForsikring' && (<Employer width={size} height={size} />)}
       {type === 'perioderLoennSomAnsatt' && (<FlexDiv><Money width={size} height={size} /><Office1 width={size} height={size} /></FlexDiv>)}
@@ -273,16 +286,32 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 </div>
               </Column>
             )}
-            <PeriodeInput
-              namespace={namespace + idx}
-              error={{
-                startdato: _v[namespace + '-startdato']?.feilmelding,
-                sluttdato: _v[namespace + '-sluttdato']?.feilmelding
-              }}
-              showLabel={index < 0}
-              setPeriode={(p: PDPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
-              value={_periode}
-            />
+            <Column>
+              <Input
+                ariaLabel={t('label:startdato')}
+                error={_v[namespace + '-startdato']?.feilmelding}
+                id='startdato'
+                key={namespace + '-startdato-' + _periode?.startdato}
+                hideLabel={index >= 0}
+                label={t('label:startdato')}
+                namespace={namespace}
+                onChanged={(e: string) => setPeriodeStartdato(e, _type, index)}
+                value={_periode.startdato}
+              />
+            </Column>
+            <Column>
+              <Input
+                ariaLabel={t('label:sluttdato')}
+                error={_v[namespace + '-sluttdato']?.feilmelding}
+                id='sluttdato'
+                key={namespace + '-sluttdato-' + _periode?.sluttdato}
+                hideLabel={index >= 0}
+                label={t('label:sluttdato')}
+                namespace={namespace}
+                onChanged={(e: string) => setPeriodeSluttdato(e, _type, index)}
+                value={_periode.sluttdato}
+              />
+            </Column>
             {index >= 0
               ? (
                 <Column flex='1.5'>
@@ -410,30 +439,30 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         ? (
           <PaddedDiv>
             <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
           </PaddedDiv>
           )
         : _sort === 'time'
           ? (
             <>
               <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }} />
-                <Column>
-                  <label className='navds-text-field__label navds-label'>
-                    {t('label:startdato')}
-                  </label>
-                </Column>
-                <Column>
-                  <label className='navds-text-field__label navds-label'>
-                    {t('label:sluttdato')}
-                  </label>
-                </Column>
-                <Column flex='2' />
-              </AlignStartRow>
+                <AlignStartRow>
+                  <Column style={{ maxWidth: '40px' }} />
+                  <Column>
+                    <label className='navds-text-field__label navds-label'>
+                      {t('label:startdato')}
+                    </label>
+                  </Column>
+                  <Column>
+                    <label className='navds-text-field__label navds-label'>
+                      {t('label:sluttdato')}
+                    </label>
+                  </Column>
+                  <Column flex='2' />
+                </AlignStartRow>
               </PaddedHorizontallyDiv>
-              <VerticalSeparatorDiv size='0.8'/>
+              <VerticalSeparatorDiv size='0.8' />
               {_allPeriods.map(renderRow)}
             </>
             )
@@ -468,18 +497,18 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+            <Row>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                </Button>
+              </Column>
+            </Row>
           </PaddedDiv>
           )}
     </div>

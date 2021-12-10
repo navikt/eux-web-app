@@ -1,4 +1,3 @@
-import { validatePeriode } from 'components/Forms/validation'
 import {
   PDPeriode, PeriodeMedAktivitetstype, PeriodeMedBegrunnelse, PeriodeMedLoenn, PeriodeMedType
 } from 'declarations/pd.d'
@@ -13,20 +12,17 @@ export interface ValidationPDPeriodeProps {
   type: string | undefined
   index?: number
   namespace: string
-  personName: string
 }
 
 export interface ValidatePDPerioderProps {
   perioder: Array<PDPeriode> |undefined
   type: string
   namespace: string
-  personName: string
 }
 
 export interface ValidateAllePDPerioderProps {
   perioder: {[k in string]: Array<PDPeriode> | undefined}
   namespace: string
-  personName: string
 }
 
 export const validatePDPeriode = (
@@ -36,12 +32,11 @@ export const validatePDPeriode = (
     periode,
     type,
     index,
-    namespace,
-    personName
+    namespace
   }: ValidationPDPeriodeProps
 ): boolean => {
   const idx = getIdx(index)
-  let hasErrors
+  let hasErrors = false
 
   if (_.isNil(index) && _.isEmpty(type)) {
     v[namespace + '-type'] = {
@@ -51,12 +46,13 @@ export const validatePDPeriode = (
     hasErrors = true
   }
 
-  const _error: boolean = validatePeriode(v, t, {
-    periode,
-    namespace: namespace + idx,
-    personName
-  })
-  hasErrors = hasErrors || _error
+  if (_.isEmpty(periode.startdato.trim())) {
+    v[namespace + idx + '-startdato'] = {
+      feilmelding: t('validation:noStartDato'),
+      skjemaelementId: namespace + idx + '-startdato'
+    } as ErrorElement
+    hasErrors = true
+  }
 
   if (type === 'perioderAndreForsikringer') {
     if (_.isEmpty((periode as PeriodeMedType)?.type?.trim())) {
@@ -78,7 +74,7 @@ export const validatePDPeriode = (
     }
   }
 
-  if (type === 'perioderAnsattUtenForsikring' || type == 'perioderSelvstendigUtenForsikring') {
+  if (type === 'perioderAnsattUtenForsikring' || type === 'perioderSelvstendigUtenForsikring') {
     if (_.isEmpty((periode as PeriodeMedAktivitetstype)?.aktivitetstype?.trim())) {
       v[namespace + idx + '-aktivitetstype'] = {
         feilmelding: t('validation:noAktivitetstype'),
@@ -88,7 +84,7 @@ export const validatePDPeriode = (
     }
   }
 
-  if (type === 'perioderLoennSomAnsatt' || type == 'perioderInntektSomSelvstendig') {
+  if (type === 'perioderLoennSomAnsatt' || type === 'perioderInntektSomSelvstendig') {
     if (_.isEmpty((periode as PeriodeMedLoenn)?.loenn?.trim())) {
       v[namespace + idx + '-loenn'] = {
         feilmelding: t('validation:noLoenn'),
@@ -120,8 +116,7 @@ export const validatePDPerioder = (
   {
     type,
     perioder,
-    namespace,
-    personName
+    namespace
   }: ValidatePDPerioderProps
 ): boolean => {
   let hasErrors: boolean = false
@@ -130,8 +125,7 @@ export const validatePDPerioder = (
       periode: periode,
       type,
       index,
-      namespace: namespace + '[' + type + ']',
-      personName
+      namespace: namespace + '[' + type + ']'
     })
     hasErrors = hasErrors || _errors
   })
@@ -143,27 +137,26 @@ export const validateAllePDPerioder = (
   t: TFunction,
   {
     perioder,
-    namespace,
-    personName
+    namespace
   } : ValidateAllePDPerioderProps
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  _error = validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: perioder.perioderAnsattMedForsikring, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: perioder.perioderAnsattMedForsikring, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: perioder.perioderSelvstendigMedForsikring, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: perioder.perioderSelvstendigMedForsikring, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderAndreForsikringer', perioder: perioder.perioderAndreForsikringer, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderAndreForsikringer', perioder: perioder.perioderAndreForsikringer, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderAnsettSomForsikret', perioder: perioder.perioderAnsettSomForsikret, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderAnsettSomForsikret', perioder: perioder.perioderAnsettSomForsikret, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderAnsattUtenForsikring', perioder: perioder.perioderAnsattUtenForsikring, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderAnsattUtenForsikring', perioder: perioder.perioderAnsattUtenForsikring, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderSelvstendigUtenForsikring', perioder: perioder.perioderSelvstendigUtenForsikring, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderSelvstendigUtenForsikring', perioder: perioder.perioderSelvstendigUtenForsikring, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderLoennSomAnsatt', perioder: perioder.perioderLoennSomAnsatt, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderLoennSomAnsatt', perioder: perioder.perioderLoennSomAnsatt, namespace })
   hasErrors = hasErrors || _error
-  _error = validatePDPerioder(v, t, { type: 'perioderInntektSomSelvstendig', perioder: perioder.perioderInntektSomSelvstendig, namespace, personName })
+  _error = validatePDPerioder(v, t, { type: 'perioderInntektSomSelvstendig', perioder: perioder.perioderInntektSomSelvstendig, namespace })
   hasErrors = hasErrors || _error
   return hasErrors
 }

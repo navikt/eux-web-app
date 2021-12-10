@@ -137,14 +137,15 @@ const LoadSave: React.FC<LoadSaveProps> = ({
         {entries === null || _.isEmpty(entries)
           ? (
             <BodyLong>
-              {t('label:ingen-lagrede-seds')}
+              {t('label:ingen-lagrede-x', {x: t('label:' + namespace)})}
             </BodyLong>
             )
           : (
             <BodyLong>
-              {t('label:lagrede-seds')}
+              {t('label:lagrede-x', {x: t('label:' + namespace)})}
             </BodyLong>
             )}
+         <VerticalSeparatorDiv/>
         {entries?.map((savedEntry: LocalStorageEntry<ReplySed | ReplyPdu1>) => (
           <div key={savedEntry.id}>
             <MyTag variant='info'>

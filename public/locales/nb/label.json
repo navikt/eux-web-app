@@ -136,7 +136,7 @@
   "informasjon-om-søknaden": "Informasjon om søknaden",
   "informasjon-om-vederlag": "Informasjon om vederlag",
   "ingen-familie-i-tps": "Ingen familierelasjoner funnet i TPS",
-  "ingen-lagrede-seds": "Ingen lagrede SED-er",
+  "ingen-lagrede-x": "Ingen lagrede {{x}}",
   "inntekt": "Inntekt",
   "inntekt-fra-komponent": "Inntekt (fra inntektskomponent)",
   "inntekt-og-time": "Inntekt og time",
@@ -167,7 +167,7 @@
   "krav-om-refusjon-under-artikkel": "Krav om refusjon under artikkel 58 i forordning (EF) nr. 987/2009",
   "kvinne": "Kvinne",
 
-  "lagrede-seds": "Lagrede SED-er",
+  "lagrede-x": "Lagrede {{x}}",
   "lagret-sed-utkast": "Lagret SED utkast med navn {{name}}, dato {{date}}",
   "lagret-pdu1-utkast": "Lagret PD U1 utkast med navn {{name}}, dato {{date}}",
   "land": "Land",
@@ -218,6 +218,7 @@
   "oversikt-brukers-arbeidsperioder": "Oversikt over brukers arbeidsperioder",
 
   "partner": "Ektefelle/partner",
+  "pdu1": "PD U1",
   "pdl-adresse-til": "PDL adresser til {{person}}",
   "periode": "Periode",
   "periode-avgrensing": "Avgrensning av periode",
@@ -257,6 +258,7 @@
   "save-pdu1" : "Lagring PD U1",
   "se-mindre": "Se mindre",
   "sed": "SED",
+  "seds": "SED-er",
   "sed-already-sent": "{{sed}} allerede sendt",
   "sektor" : "Sektor",
   "send-vedlegg" : "Send vedlegg",

@@ -5,6 +5,7 @@ import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
+import UtbetalingFC from 'applications/PDU1/Utbetaling/Utbetaling'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
 import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
@@ -319,6 +320,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
     { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
     { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
+    { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: UtbetalingFC, type: 'PD' }
 
   ]
 

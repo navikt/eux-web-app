@@ -410,29 +410,28 @@ const Person: React.FC<PersonManagerFormProps> = ({
               {t('message:warning-no-utenlandskepin')}
             </BodyLong>
           </PaddedDiv>
-        )
+          )
         : (
           <>
-          <PaddedHorizontallyDiv>
-            <AlignStartRow>
-              <Column>
-                <Label>
-                  {t('label:utenlandsk-pin')}
-                </Label>
-              </Column>
-              <Column>
-                <Label>
-                {t('label:land')}
-              </Label>
-              </Column>
-              <Column/>
-            </AlignStartRow>
-          </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8'/>
-          {pdu1Person?.utenlandskePin?.map(renderRow)}
+            <PaddedHorizontallyDiv>
+              <AlignStartRow>
+                <Column>
+                  <Label>
+                    {t('label:utenlandsk-pin')}
+                  </Label>
+                </Column>
+                <Column>
+                  <Label>
+                    {t('label:land')}
+                  </Label>
+                </Column>
+                <Column />
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8' />
+            {pdu1Person?.utenlandskePin?.map(renderRow)}
           </>
-        )
-      }
+          )}
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />

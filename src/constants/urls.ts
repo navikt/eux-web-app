@@ -47,6 +47,6 @@ export const API_JOARK_GET_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(doku
 export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
 // OTHER
-export const PDU1_CREATE_URL = '/api/pdu1/create/%(fnr)s/%(fagsak)s'
-export const PDU1_COMPLETE_URL = '/api/pdf/generate/json'
-export const PDU1_PREVIEW_URL = '/api/pdu1/preview'
+export const PDU1_POST_URL = '/api/pdf/pdu1' // POST
+export const PDU1_PREVIEW_URL = '/api/pdf/pdu1/xxx' // POST
+export const PDU1_UTKAST_URL = '/api/pdf/pdu1/utkast/%(fnr)s' // GET
