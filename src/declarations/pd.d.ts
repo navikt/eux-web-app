@@ -33,7 +33,7 @@ export interface Pdu1Person {
   utenlandskePin: Array<string>
 }
 
-export interface NavCoverLetter {
+export interface NavInfo {
   enhetNavn: string,
   enhetId: string,
   adresse: Adresse,
@@ -83,7 +83,7 @@ export interface ReplyPdu1 {
   saksreferanse: string, // Nav => cover letter,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
-  nav: NavCoverLetter // NAV => cover letter, section 7
+  nav: NavInfo // NAV => cover letter, section 7
   perioderAnsattMedForsikring: Array<Periode>, // Perioder => 2.1.1
   perioderSelvstendigMedForsikring: Array<Periode>, // Perioder 2.1.2
   perioderAndreForsikringer: Array<PeriodeMedType> // Perioder 2.1.3

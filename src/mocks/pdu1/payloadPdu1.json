@@ -1,141 +1,196 @@
-{ "fagsaker": "123",
-  "topmostSubform[0].Page1[0].PIN[0]": "12345678901",
-  "topmostSubform[0].Page1[0].Sex[0]" : "2",
-  "topmostSubform[0].Page1[0].Surname[0]" : "Simpson",
-  "topmostSubform[0].Page1[0].Forenames[0]" : "Homer",
-  "topmostSubform[0].Page1[0].Surname_at_birth[0]" : "Sampson",
-  "topmostSubform[0].Page1[0].Date_of_birth[0]" : "01-01-1970",
-  "topmostSubform[0].Page1[0].Nationality[0]": "US",
-  "topmostSubform[0].Page1[0].Place_of_birth[0]" : "Springfield",
-  "topmostSubform[0].Page1[0].Street_N[0]" : "Main Avenue 52",
-  "topmostSubform[0].Page1[0].Town[0]" : "Springfield",
-  "topmostSubform[0].Page1[0].Post_code[0]": "0123",
-  "topmostSubform[0].Page1[0].Country_code[0]": "US",
-  "topmostSubform[0].Page1[0].From[0]": "01-01-1970",
-  "topmostSubform[0].Page1[0].To[0]": "31-12-1970",
-  "topmostSubform[0].Page1[0].From[1]": "01-01-1971",
-  "topmostSubform[0].Page1[0].To[1]": "31-12-1971",
-  "topmostSubform[0].Page1[0].From[2]": "01-01-1972",
-  "topmostSubform[0].Page1[0].To[2]": "31-12-1972",
-  "topmostSubform[0].Page1[0].From[3]": "01-01-1973",
-  "topmostSubform[0].Page1[0].To[3]": "31-12-1973",
-  "topmostSubform[0].Page1[0].From[4]": "01-01-1974",
-  "topmostSubform[0].Page1[0].To[4]": "31-12-1974",
-  "topmostSubform[0].Page1[0].From[5]": "01-01-1975",
-  "topmostSubform[0].Page1[0].To[5]": "31-12-1975",
-  "topmostSubform[0].Page1[0].From[6]": "01-01-1976",
-  "topmostSubform[0].Page1[0].To[6]": "31-12-1976",
-  "topmostSubform[0].Page1[0].From[7]": "01-01-1977",
-  "topmostSubform[0].Page1[0].To[7]": "31-12-1977",
-  "topmostSubform[0].Page1[0].From[8]": "01-01-1978",
-  "topmostSubform[0].Page1[0].To[8]": "31-12-1978",
-  "topmostSubform[0].Page1[0].From[9]": "01-01-1979",
-  "topmostSubform[0].Page1[0].To[9]": "31-12-1979",
-  "topmostSubform[0].Page1[0].From[10]": "01-01-1980",
-  "topmostSubform[0].Page1[0].To[10]": "31-12-1980",
-  "topmostSubform[0].Page1[0].From[11]": "01-01-1981",
-  "topmostSubform[0].Page1[0].To[11]": "31-12-1981",
-  "topmostSubform[0].Page1[0].From[12]": "01-01-1982",
-  "topmostSubform[0].Page1[0].To[12]": "31-12-1982",
-  "topmostSubform[0].Page1[0].From[13]": "01-01-1983",
-  "topmostSubform[0].Page1[0].To[13]": "31-12-1983",
-  "topmostSubform[0].Page2[0].From[0]": "01-01-1984",
-  "topmostSubform[0].Page2[0].To[0]": "31-12-1984",
-  "topmostSubform[0].Page2[0].Type[0]": "Type 1",
-  "topmostSubform[0].Page2[0].From[1]": "01-01-1985",
-  "topmostSubform[0].Page2[0].To[1]": "31-12-1985",
-  "topmostSubform[0].Page2[0].Type[1]" : "Type 2",
-  "topmostSubform[0].Page2[0].From[2]": "01-01-1986",
-  "topmostSubform[0].Page2[0].To[2]": "31-12-1986",
-  "topmostSubform[0].Page2[0].Type[2]" : "Type 3",
-  "topmostSubform[0].Page2[0].From[3]": "01-01-1987",
-  "topmostSubform[0].Page2[0].To[3]": "31-12-1987",
-  "topmostSubform[0].Page2[0].Reason[0]" : "Reason 0",
-  "topmostSubform[0].Page2[0].From[4]": "01-01-1988",
-  "topmostSubform[0].Page2[0].To[4]": "31-12-1988",
-  "topmostSubform[0].Page2[0].Reason[1]" : "Reason 1",
-  "topmostSubform[0].Page2[0].From[5]": "01-01-1989",
-  "topmostSubform[0].Page2[0].To[5]": "31-12-1989",
-  "topmostSubform[0].Page2[0].Reason[2]" : "Reason 2",
-  "topmostSubform[0].Page2[0].From[6]": "01-01-1990",
-  "topmostSubform[0].Page2[0].To[6]": "31-12-1990",
-  "topmostSubform[0].Page2[0].Activity[0]" : "Activity 0",
-  "topmostSubform[0].Page2[0].From[7]": "01-01-1991",
-  "topmostSubform[0].Page2[0].To[7]": "31-12-1991",
-  "topmostSubform[0].Page2[0].Activity[1]" : "Activity 1",
-  "topmostSubform[0].Page2[0].From[8]": "01-01-1992",
-  "topmostSubform[0].Page2[0].To[8]": "31-12-1992",
-  "topmostSubform[0].Page2[0].Activity[2]" : "Activity 2",
-  "topmostSubform[0].Page2[0].From[9]": "01-01-1993",
-  "topmostSubform[0].Page2[0].To[9]": "31-12-1993",
-  "topmostSubform[0].Page2[0].Activity[3]": "Activity 3",
-  "topmostSubform[0].Page2[0].From[10]": "01-01-1994",
-  "topmostSubform[0].Page2[0].To[10]": "31-12-1994",
-  "topmostSubform[0].Page2[0].Activity[4]": "Activity 4",
-  "topmostSubform[0].Page2[0].From[11]": "01-01-1995",
-  "topmostSubform[0].Page2[0].To[11]": "31-12-1995",
-  "topmostSubform[0].Page2[0].Activity[5]": "Activity 5",
-  "topmostSubform[0].Page2[0].From[12]": "01-01-1996",
-  "topmostSubform[0].Page2[0].To[12]": "31-12-1996",
-  "topmostSubform[0].Page2[0].Wage[0]": "10000",
-  "topmostSubform[0].Page2[0].From[13]": "01-01-1997",
-  "topmostSubform[0].Page2[0].To[13]": "31-12-1997",
-  "topmostSubform[0].Page2[0].Wage[1]" : "20000",
-  "topmostSubform[0].Page2[0].From[14]" : "01-01-1998",
-  "topmostSubform[0].Page2[0].To[14]" : "31-12-1998",
-  "topmostSubform[0].Page2[0].Wage[2]" : "30000",
-  "topmostSubform[0].Page2[0].From[15]" : "01-01-1999",
-  "topmostSubform[0].Page2[0].To[15]" : "31-12-1999",
-  "topmostSubform[0].Page2[0].Earnings[0]" : "40000",
-  "topmostSubform[0].Page2[0].From[16]" : "01-01-2000",
-  "topmostSubform[0].Page2[0].To[16]" : "31-12-2000",
-  "topmostSubform[0].Page2[0].Earnings[1]" : "50000",
-  "topmostSubform[0].Page2[0].From[17]" : "01-01-2001",
-  "topmostSubform[0].Page2[0].To[17]" : "31-12-2001",
-  "topmostSubform[0].Page2[0].Earnings[2]" : "60000",
-  "topmostSubform[0].Page2[0].Reason_end_employment[0]": "4",
-  "topmostSubform[0].Page2[0].Other_employment[0]": "Other employment",
-  "topmostSubform[0].Page2[0].Other_self_employment[0]" : "Other self employment",
-  "topmostSubform[0].Page3[0].CheckBox4\\.1[0]" : "1",
-  "topmostSubform[0].Page3[0].To[0]": "01-01-2002",
-  "topmostSubform[0].Page3[0].CheckBox4\\.2[0]" : "1",
-  "topmostSubform[0].Page3[0].To[1]" : "31-12-2002",
-  "topmostSubform[0].Page3[0].CheckBox4\\.3[0]" : "1",
-  "topmostSubform[0].Page3[0].For[0]": "123",
-  "topmostSubform[0].Page3[0].To[2]":"01-01-2003",
-  "topmostSubform[0].Page3[0].CheckBox4\\.4[0]" : "1",
-  "topmostSubform[0].Page3[0].Reason[0]": "Reason 4.4.1",
-  "topmostSubform[0].Page3[0].CheckBox4\\.5[0]" : "1",
-  "topmostSubform[0].Page3[0].Other_benefits[0]" : "Other benefits",
-  "topmostSubform[0].Page3[0].From[0]": "01-01-2004",
-  "topmostSubform[0].Page3[0].To[3]": "31-12-2004",
-  "topmostSubform[0].Page3[0].From[1]": "01-01-2005",
-  "topmostSubform[0].Page3[0].To[4]": "31-12-2005",
-  "topmostSubform[0].Page3[0].From[2]": "01-01-2006",
-  "topmostSubform[0].Page3[0].To[5]": "31-12-2006",
-  "topmostSubform[0].Page3[0].Last_employment[0]" : "Last employment",
-  "topmostSubform[0].Page3[0].Identification_N[0]" : "123456789",
-  "topmostSubform[0].Page3[0].Name[0]" : "Name",
-  "topmostSubform[0].Page3[0].Street_N[0]" : "Street name and number",
-  "topmostSubform[0].Page3[0].Town[0]": "Town",
-  "topmostSubform[0].Page3[0].Post_code[0]" : "9876",
-  "topmostSubform[0].Page3[0].Country_code[0]": "SE",
-  "topmostSubform[0].Page3[0].CheckBox6\\.1[0]" : "1",
-  "topmostSubform[0].Page3[0].CheckBox6\\.2[0]" : "1",
-  "topmostSubform[0].Page3[0].CheckBox64[0]" : "1",
-  "topmostSubform[0].Page3[0].CheckBox65[0]" : "1",
-  "topmostSubform[0].Page3[0].From[3]" : "01-01-2007",
-  "topmostSubform[0].Page3[0].To[6]" : "31-12-2007",
-  "topmostSubform[0].Page3[0].Not_entitled[0]" : "2",
-  "topmostSubform[0].Page4[0].Name[0]": "NAV",
-  "topmostSubform[0].Page4[0].Street_N[0]" : "Fyrstikksalèen 1",
-  "topmostSubform[0].Page4[0].Town[0]" : "Oslo",
-  "topmostSubform[0].Page4[0].Post_code[0]": "0001",
-  "topmostSubform[0].Page4[0].Country_code[0]" : "NO",
-  "topmostSubform[0].Page4[0].Institution_ID[0]" : "NAV:AT0001",
-  "topmostSubform[0].Page4[0].Office_fax_N[0]": "123123123",
-  "topmostSubform[0].Page4[0].Office_phone_N[0]" : "123123124",
-  "topmostSubform[0].Page4[0].E-mail[0]": "info@nav.no",
-  "topmostSubform[0].Page4[0].Date[0]": "01-01-2008",
-  "topmostSubform[0].Page4[0].Signature[0]": "Signature"
+{
+  "saksreferanse": "123412341234",
+  "dato": "12. nov 2021",
+  "bruker": {
+    "fnr": "01015000232",
+    "kjoenn": "M",
+    "fornavn": "Per",
+    "etternavn": "Person",
+    "foedselsdato": "11 feb. 2001",
+    "statsborgerskap": ["NO", "SE"],
+    "utenlandskePin": [
+      "SE 680825-1126"
+    ],
+    "etternavnVedFoedsel": "Lilleungen",
+    "adresse": {
+      "gate": "Omvei 1",
+      "postnr": "1234",
+      "poststed": "Poststedet",
+      "land": "NO"
+    }
+  },
+  "nav": {
+    "enhetNavn": "Nav kontoret",
+    "enhetId": "4404",
+    "adresse": {
+      "gate": "Navgata 1",
+      "postnr": "0000",
+      "poststed": "Naveren",
+      "land": "NO"
+    },
+    "tlf": "001 113",
+    "saksbehandler": {
+      "navn": "Thomas",
+      "enhet": "Nav Eessi"
+    }
+  },
+  "perioderAnsattMedForsikring": [
+    {
+      "startdato": "2001-01-01",
+      "sluttdato": "2002-02-02"
+    },
+    {
+      "startdato": "2003-03-03",
+      "sluttdato": "2004-04-04"
+    },
+    {
+      "startdato": "2005-05-05",
+      "sluttdato": "2006-06-06"
+    }
+  ],
+  "perioderSelvstendigMedForsikring": [
+    {
+      "startdato": "2011-01-01",
+      "sluttdato": "2012-02-02"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04"
+    }
+  ],
+  "perioderAnsattUtenForsikring": [
+    {
+      "startdato": "2011-01-01",
+      "sluttdato": "2012-02-02",
+      "aktivitetstype": "aktivitet...1"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "aktivitetstype": "aktivitet...2"
+    }
+  ],
+  "perioderSelvstendigUtenForsikring": [
+    {
+      "startdato": "2011-01-01",
+      "sluttdato": "2012-02-02",
+      "aktivitetstype": "aktivitet...1"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "aktivitetstype": "aktivitet...2"
+    }
+  ],
+  "perioderAndreForsikringer": [
+    {
+      "startdato": "2011-01-01",
+      "sluttdato": "2012-02-02",
+      "type": "sykdom"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "syk"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "frihetsberoevet"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "utdanning"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "militaertjeneste"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "dagpenger"
+    },
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "type": "annet"
+    }
+  ],
+  "perioderAnsettSomForsikret": [
+    {
+      "startdato": "2001-01-01",
+      "sluttdato": "2002-02-02",
+      "begrunnelse": "Sykdom"
+    },
+    {
+      "startdato": "2003-03-03",
+      "sluttdato": "2004-04-04",
+      "begrunnelse": "Under utdanning"
+    }
+  ],
+  "sisteAnsettelseInfo": {
+    "typeGrunnOpphoerAnsatt": "oppsagt_av_arbeidsgiver",
+    "annenGrunnOpphoerAnsatt": "æøå",
+    "annenGrunnOpphoerSelvstendig": "æøå"
+  },
+  "perioderLoennSomAnsatt": [
+    {
+      "startdato": "2010-01-01",
+      "sluttdato": "2020-02-02",
+      "loenn": "30 000 pr mnd"
+    }
+  ],
+  "perioderInntektSomSelvstendig": [
+    {
+      "startdato": "2010-01-01",
+      "sluttdato": "2020-02-02",
+      "inntekt": "lommerusk og vekslepenger"
+    }
+  ],
+  "andreMottatteUtbetalinger": {
+    "utbetalingEtterEndtArbeidsforhold": "100 NOK",
+    "kompensasjonForEndtArbeidsforhold": "100 NOK",
+    "kompensasjonForFeriedager": {
+      "antallDager": "5",
+      "beloep": "100 NOK"
+    },
+    "avkallKompensasjonBegrunnelse": "Hadde glemt det",
+    "andreYtelserSomMottaForTiden": "Lett lufting"
+  },
+  "perioderDagpengerMottatt": {
+    "sisteUtbetaler": {
+      "sisteNavKontor": "Nav Randen",
+      "navn": "Nav kontoret",
+      "id": "NAV08-01",
+      "adresse": {
+        "gate": "Navgata 1",
+        "postnr": "0000",
+        "poststed": "Naveren",
+        "land": "NO"
+      }
+    },
+    "perioder": [
+      {
+        "startdato": "2011-01-01",
+        "sluttdato": "2012-02-02"
+      },
+      {
+        "startdato": "2013-03-03",
+        "sluttdato": "2014-04-04"
+      }
+    ]
+  },
+  "rettTilDagpenger": {
+    "startdato": "2013-03-03",
+    "sluttdato": "2014-04-04",
+    "ihhTilArtikkel64": "ja",
+    "ihhTilArtikkel65": "ja"
+  },
+  "ikkeRettTilDagpenger": {
+    "ihhTilLovgivning": "ja",
+    "ikkeSoekt": "ja"
+  }
 }

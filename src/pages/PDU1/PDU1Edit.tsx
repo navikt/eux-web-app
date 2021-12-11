@@ -1,5 +1,5 @@
-import { Download, Sight, BackFilled } from '@navikt/ds-icons'
-import { Loader, Button, Link } from '@navikt/ds-react'
+import { BackFilled, Download, Sight } from '@navikt/ds-icons'
+import { Button, Link, Loader } from '@navikt/ds-react'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import {
   completePdu1,
@@ -11,14 +11,15 @@ import {
 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
+import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
+import NavInfo from 'applications/PDU1/NavInfo/NavInfo'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
+import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
-import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
-import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
@@ -243,7 +244,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
           { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
           { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
-          { label: t('el:option-personmanager-retttildagpenger'), value: 'retttildagpenger', component: RettTilDagpenger, type: 'PD' }
+          { label: t('el:option-personmanager-retttildagpenger'), value: 'retttildagpenger', component: RettTilDagpenger, type: 'PD' },
+          { label: t('el:option-personmanager-navinfo'), value: 'navinfo', component: NavInfo, type: 'PD' }
         ]}
         replySed={replyPdu1}
         setReplySed={setReplyPdu1}

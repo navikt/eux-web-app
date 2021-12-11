@@ -72,6 +72,8 @@
   "eller": "eller",
   "endre": "Endre",
   "enhet": "Enhet",
+  "enhet-id": "Enhet ID",
+  "enhet-navn": "Enhet navn",
   "epost": "E-postadresse",
   "er-du-sikker": "Er du sikker?",
   "er-opprettet": "er opprettet",
@@ -196,6 +198,7 @@
 
   "nasjonalitet": "Nasjonalitet",
   "nav": "NAV",
+  "nav-info": "NAV info",
   "navn": "Navn",
   "nei" : "Nei",
   "no-grunn": "Ingen grunn",
@@ -256,6 +259,7 @@
   "rina-saksnummer": "RINA saksnummer",
 
   "sak-i-rina" : "Sak i Rina",
+  "saksbehandler" : "Saksbehandler",
   "saksnummer" : "Saksnummer",
   "saksnummer-eller-fnr" : "RINA saksnummer eller f.nr./d.nr. (11 sifre)",
   "save-sed" : "Lagring SED",
