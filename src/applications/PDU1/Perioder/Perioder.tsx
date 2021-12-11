@@ -29,8 +29,8 @@ import {
   FlexDiv,
   FlexEndDiv,
   HorizontalSeparatorDiv,
-  PaddedDiv, PaddedHorizontallyDiv,
-  Row,
+  PaddedDiv,
+  PaddedHorizontallyDiv, Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'

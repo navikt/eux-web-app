@@ -131,6 +131,7 @@
 
   "iban": "IBAN",
   "identifikator": "Identifikator",
+  "identifikasjonsnummer": "Identifikasjonsnummer",
   "ikke-tilgjengelig": "Ikke tilgjengelig",
   "informasjon-om-familieytelser" : "Informasjon om familieytelser",
   "informasjon-om-søknaden": "Informasjon om søknaden",
@@ -193,6 +194,7 @@
   "mottakers-navn": "Mottakers navn",
 
   "nasjonalitet": "Nasjonalitet",
+  "nav": "NAV",
   "navn": "Navn",
   "nei" : "Nei",
   "no-grunn": "Ingen grunn",
@@ -269,6 +271,7 @@
   "siste-ansettelsesforhold": "Siste ansettelsesforhold",
   "siste-ansettelse-info": "Siste ansettelse info",
   "siste-lønnsendring" : "Siste lønnsendring",
+  "siste-nav-kontor": "Siste NAV-kontor",
   "siste-oppdatert": "Siste oppdatert",
   "skal-ytelse-utbetales": "Skal ytelse utbetales?",
   "skjul-skjema": "Skjul skjema",

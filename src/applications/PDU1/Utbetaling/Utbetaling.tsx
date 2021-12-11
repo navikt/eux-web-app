@@ -2,6 +2,7 @@ import { Checkbox, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
+import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -23,7 +24,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
   const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'andreMottatteUtbetalinger'
-  const andreMottatteUtbetalinger: any = _.get(replySed, target)
+  const andreMottatteUtbetalinger: AndreMottatteUtbetalinger = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-andreMottatteUtbetalinger`
 
   const [utbetalingEtterEndtArbeidsforholdCheckbox, setUtbetalingEtterEndtArbeidsforholdCheckbox] = useState<boolean | undefined>(() => !_.isEmpty(andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold))

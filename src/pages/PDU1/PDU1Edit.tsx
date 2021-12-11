@@ -16,7 +16,8 @@ import Person from 'applications/PDU1/Person/Person'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
-import UtbetalingFC from 'applications/PDU1/Utbetaling/Utbetaling'
+import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
+import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
@@ -239,7 +240,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
           { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
-          { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: UtbetalingFC, type: 'PD' }
+          { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
+          { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' }
         ]}
         replySed={replyPdu1}
         setReplySed={setReplySed}

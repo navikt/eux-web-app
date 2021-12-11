@@ -14,7 +14,7 @@ const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const Adresser: React.FC<PersonManagerFormProps> = ({
+const Adresse: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   replySed,
@@ -55,4 +55,4 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
   )
 }
 
-export default Adresser
+export default Adresse
