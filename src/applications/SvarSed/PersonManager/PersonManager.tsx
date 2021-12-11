@@ -1,15 +1,7 @@
 import { Add, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
-import Perioder from 'applications/PDU1/Perioder/Perioder'
-import Person from 'applications/PDU1/Person/Person'
-import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
-import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
-import UtbetalingFC from 'applications/PDU1/Utbetaling/Utbetaling'
 import AddPersonModal from 'applications/SvarSed/PersonManager/AddPersonModal/AddPersonModal'
-import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
-import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
-import SisteAnsettelsesForhold from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
@@ -32,23 +24,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
 import { isFSed } from 'utils/sed'
-import Adresse from './Adresser/Adresse'
-import Adresser from './Adresser/Adresser'
-import BeløpNavnOgValuta from './BeløpNavnOgValuta/BeløpNavnOgValuta'
-import Familierelasjon from './Familierelasjon/Familierelasjon'
-import Forsikring from './Forsikring/Forsikring'
-import GrunnlagForBosetting from './GrunnlagForBosetting/GrunnlagForBosetting'
-import InntektForm from './InntektForm/InntektForm'
-import Kontaktinformasjon from './Kontaktinformasjon/Kontaktinformasjon'
-import Nasjonaliteter from './Nasjonaliteter/Nasjonaliteter'
-import PeriodeForDagpenger from './PeriodeForDagpenger/PeriodeForDagpenger'
-import PersonensStatus from './PersonensStatus/PersonensStatus'
-import PersonOpplysninger from './PersonOpplysninger/PersonOpplysninger'
-import Referanseperiode from './Referanseperiode/Referanseperiode'
-import Relasjon from './Relasjon/Relasjon'
-import RettTilYtelser from './RettTilYtelser/RettTilYtelser'
-import SvarPåForespørsel from './SvarPåForespørsel/SvarPåForespørsel'
-import Trygdeordning from './Trygdeordning/Trygdeordning'
 
 const transitionTime = 0.3
 
@@ -183,6 +158,7 @@ const MenuLabelText = styled(BodyLong)`
 `
 
 export interface PersonManagerProps {
+  forms: Array<Form>
   replySed: ReplySed | ReplyPdu1 | null | undefined
   viewValidation: boolean
   setReplySed: (replySed: ReplySed) => void
@@ -222,6 +198,7 @@ const mapState = (state: State): PersonManagerSelector => ({
 })
 
 const PersonManager: React.FC<PersonManagerProps> = ({
+  forms,
   replySed,
   setReplySed,
   updateReplySed,
@@ -289,40 +266,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }
 
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
-
-  const beløpNavnOgValutaCondition = () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
-
-  const forms: Array<Form> = [
-    { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
-    { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
-    { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
-    { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
-    { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
-    { label: t('el:option-personmanager-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F' },
-    { label: t('el:option-personmanager-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F' },
-    { label: t('el:option-personmanager-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F' },
-    { label: t('el:option-personmanager-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', barn: true },
-    { label: t('el:option-personmanager-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', barn: true },
-    { label: t('el:option-personmanager-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', barn: true, condition: beløpNavnOgValutaCondition },
-    { label: t('el:option-personmanager-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', family: true },
-    { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
-    { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
-    { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
-    { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
-    { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
-    { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H' },
-
-    { label: t('el:option-personmanager-person'), value: 'person_pd', component: Person, type: 'PD' },
-    { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
-    { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
-    { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
-    { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
-    { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: UtbetalingFC, type: 'PD' }
-
-  ]
 
   const getForm = (value: string): JSX.Element | null => {
     const form: Form | undefined = _.find(forms, o => o.value === value)

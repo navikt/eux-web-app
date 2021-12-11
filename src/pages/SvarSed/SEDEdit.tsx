@@ -16,7 +16,24 @@ import Formaal from 'applications/SvarSed/Formaal/Formaal'
 import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
 import SEDType from 'applications/SvarSed/Formaal/SEDType'
 import Tema from 'applications/SvarSed/Formaal/Tema'
+import Adresser from 'applications/SvarSed/PersonManager/Adresser/Adresser'
+import BeløpNavnOgValuta from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/BeløpNavnOgValuta'
+import Familierelasjon from 'applications/SvarSed/PersonManager/Familierelasjon/Familierelasjon'
+import Forsikring from 'applications/SvarSed/PersonManager/Forsikring/Forsikring'
+import GrunnlagForBosetting from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/GrunnlagForBosetting'
+import GrunnTilOpphør from 'applications/SvarSed/PersonManager/GrunnTilOpphør/GrunnTilOpphør'
+import InntektForm from 'applications/SvarSed/PersonManager/InntektForm/InntektForm'
+import Kontaktinformasjon from 'applications/SvarSed/PersonManager/Kontaktinformasjon/Kontaktinformasjon'
+import Nasjonaliteter from 'applications/SvarSed/PersonManager/Nasjonaliteter/Nasjonaliteter'
+import PeriodeForDagpenger from 'applications/SvarSed/PersonManager/PeriodeForDagpenger/PeriodeForDagpenger'
+import PersonensStatus from 'applications/SvarSed/PersonManager/PersonensStatus/PersonensStatus'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
+import PersonOpplysninger from 'applications/SvarSed/PersonManager/PersonOpplysninger/PersonOpplysninger'
+import Referanseperiode from 'applications/SvarSed/PersonManager/Referanseperiode/Referanseperiode'
+import Relasjon from 'applications/SvarSed/PersonManager/Relasjon/Relasjon'
+import RettTilYtelser from 'applications/SvarSed/PersonManager/RettTilYtelser/RettTilYtelser'
+import SvarPåForespørsel from 'applications/SvarSed/PersonManager/SvarPåForespørsel/SvarPåForespørsel'
+import Trygdeordning from 'applications/SvarSed/PersonManager/Trygdeordning/Trygdeordning'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
@@ -29,8 +46,8 @@ import * as types from 'constants/actionTypes'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, HSed, ReplySed } from 'declarations/sed'
-import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
+import SisteAnsettelsesForhold, { Barn, F002Sed, FSed, HSed, ReplySed } from 'declarations/sed'
+import Arbeidsperioder, { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
@@ -328,6 +345,29 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           </Heading>
           <VerticalSeparatorDiv />
           <PersonManager
+            forms={[
+              { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
+              { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
+              { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
+              { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
+              { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
+              { label: t('el:option-personmanager-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F' },
+              { label: t('el:option-personmanager-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F' },
+              { label: t('el:option-personmanager-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F' },
+              { label: t('el:option-personmanager-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', barn: true },
+              { label: t('el:option-personmanager-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', barn: true },
+              { label: t('el:option-personmanager-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+              { label: t('el:option-personmanager-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', family: true },
+              { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
+              { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
+              { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
+              { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
+              { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
+              { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
+              { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
+              { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
+              { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H' }
+            ]}
             viewValidation={view}
             replySed={replySed}
             updateReplySed={updateReplySed}

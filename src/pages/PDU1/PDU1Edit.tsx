@@ -11,7 +11,13 @@ import {
 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
+import Perioder from 'applications/PDU1/Perioder/Perioder'
+import Person from 'applications/PDU1/Person/Person'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
+import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
+import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
+import UtbetalingFC from 'applications/PDU1/Utbetaling/Utbetaling'
+import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
 import { ReplyPdu1 } from 'declarations/pd'
@@ -227,6 +233,14 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <PersonManager
+        forms={[
+          { label: t('el:option-personmanager-person'), value: 'person_', component: Person, type: 'PD' },
+          { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
+          { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
+          { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
+          { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
+          { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: UtbetalingFC, type: 'PD' }
+        ]}
         replySed={replyPdu1}
         setReplySed={setReplySed}
         updateReplySed={updateReplySed}

@@ -334,7 +334,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         <VerticalSeparatorDiv />
         {_type === 'perioderAndreForsikringer' && (
           <AlignStartRow>
-            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
             <Column>
               <Input
                 error={_v[namespace + idx + '-type']?.feilmelding}
@@ -350,7 +350,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         )}
         {_type === 'perioderAnsettSomForsikret' && (
           <AlignStartRow>
-            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
             <Column>
               <Input
                 error={_v[namespace + idx + '-begrunnelse']?.feilmelding}
@@ -366,7 +366,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         )}
         {_type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
           <AlignStartRow>
-            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
             <Column>
               <Input
                 error={_v[namespace + idx + '-aktivitetstype']?.feilmelding}
@@ -382,7 +382,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
         )}
         {_type && ['perioderLoennSomAnsatt', 'perioderInntektSomSelvstendig'].indexOf(_type) >= 0 && (
           <AlignStartRow>
-            {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
             <Column>
               <Input
                 error={_v[namespace + idx + '-loenn']?.feilmelding}
@@ -475,13 +475,15 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 }
                 return (
                   <div key={o.value}>
-                    <FlexEndDiv>
-                      {getIcon(o.value, '20')}
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <Detail>
-                        {o.label}
-                      </Detail>
-                    </FlexEndDiv>
+                    <PaddedHorizontallyDiv>
+                      <FlexEndDiv>
+                        {getIcon(o.value, '20')}
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <Detail>
+                          {o.label}
+                        </Detail>
+                      </FlexEndDiv>
+                    </PaddedHorizontallyDiv>
                     <VerticalSeparatorDiv />
                     {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
                     <VerticalSeparatorDiv size='2' />
