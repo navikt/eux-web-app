@@ -26,6 +26,13 @@
   "checkbox-pdu1-4.4": "har gitt avkall på ovennevnte rettigheter i løpet av arbeidskontraktens løpetid",
   "checkbox-pdu1-4.5": "mottar for tiden",
 
+  "checkbox-pdu1-6.1":   "Innehaveren har rett til dagpenger fra kontoret som utsteder dette dokumentet, i henhold til artikkel",
+  "checkbox-pdu1-6.1.1": "64 og",
+  "checkbox-pdu1-6.1.2": "65 (5) b) i forordning 883/2004",
+  "checkbox-pdu1-6.2":   "Innehaveren har ikke rett til dagpenger fra kontoret som utsteder dette dokumentet fordi",
+  "checkbox-pdu1-6.2.1": "Det er ingen rett til stønad i henhold til landets lovgivning",
+  "checkbox-pdu1-6.2.2": "Innehaveren søkte ikke om eksport av dagpenger",
+
   "option-familierelasjon-bruker": "bruker",
   "option-familierelasjon-ektefelle": "ektefelle",
   "option-familierelasjon-annenPerson" : "annenPerson",
@@ -140,6 +147,7 @@
   "option-personmanager-sisteansettelseinfo": "Siste ansettelse info",
   "option-personmanager-utbetaling": "Utbetalinger",
   "option-personmanager-dagpenger": "Dagpenger",
+  "option-personmanager-retttildagpenger": "Rett til dagpenger",
 
   "option-relasjon-1": "Daglig omsorg for barnet",
   "option-relasjon-2": "Barn født i ekteskap",

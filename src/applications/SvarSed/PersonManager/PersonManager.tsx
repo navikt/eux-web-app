@@ -174,7 +174,7 @@ export interface PersonManagerFormProps {
   parentNamespace: string
   personID: string | undefined
   personName: string
-  setReplySed: (replySed: ReplySed) => void
+  setReplySed: (replySed: ReplySed | ReplyPdu1) => void
   updateReplySed: (needle: string, value: any) => void
   options ?: any
 }

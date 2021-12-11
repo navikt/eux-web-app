@@ -80,14 +80,14 @@ export const resetCompletePdu1 = () => ({
   type: types.PDU1_COMPLETE_RESET
 })
 
-export const setReplySed: ActionCreator<ActionWithPayload<ReplyPdu1>> = (
+export const setReplyPdu1: ActionCreator<ActionWithPayload<ReplyPdu1>> = (
   replyPdu1: ReplyPdu1
 ): ActionWithPayload<ReplyPdu1> => ({
   type: types.PDU1_REPLYSED_SET,
   payload: replyPdu1
 })
 
-export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplyPdu1Payload>> = (
+export const updateReplyPdu1: ActionCreator<ActionWithPayload<UpdateReplyPdu1Payload>> = (
   needle: string, value: any
 ): ActionWithPayload<UpdateReplyPdu1Payload> => ({
   type: types.PDU1_REPLYSED_UPDATE,

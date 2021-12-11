@@ -1,4 +1,4 @@
-import { setReplySed, updateReplySed } from 'actions/pdu1'
+import { setReplyPdu1, updateReplyPdu1 } from 'actions/pdu1'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
@@ -38,7 +38,7 @@ export const PDU1Page = (): JSX.Element => {
               namespace='pdu1'
               storageKey={storageKey}
               changeMode={changeMode}
-              setReplySed={setReplySed}
+              setReplySed={setReplyPdu1}
             />
           </SideBarDiv>
         )}
@@ -51,7 +51,7 @@ export const PDU1Page = (): JSX.Element => {
         divB2={(
           <SideBarDiv>
             <SEDDetails
-              updateReplySed={updateReplySed}
+              updateReplySed={updateReplyPdu1}
             />
           </SideBarDiv>
         )}

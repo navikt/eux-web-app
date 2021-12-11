@@ -6,8 +6,8 @@ import {
   getPreviewPdu1,
   resetCompletePdu1,
   resetPreviewFile,
-  setReplySed,
-  updateReplySed
+  setReplyPdu1,
+  updateReplyPdu1
 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
@@ -18,6 +18,7 @@ import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnse
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
+import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
 import Adresse from 'applications/SvarSed/PersonManager/Adresser/Adresse'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
@@ -241,11 +242,12 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
           { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
-          { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' }
+          { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
+          { label: t('el:option-personmanager-retttildagpenger'), value: 'retttildagpenger', component: RettTilDagpenger, type: 'PD' }
         ]}
         replySed={replyPdu1}
-        setReplySed={setReplySed}
-        updateReplySed={updateReplySed}
+        setReplySed={setReplyPdu1}
+        updateReplySed={updateReplyPdu1}
         viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />

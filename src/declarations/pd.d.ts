@@ -95,6 +95,6 @@ export interface ReplyPdu1 {
   sisteAnsettelseInfo: GrunnTilOpphør // SisteAnsettelseInfo => 3
   andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
   perioderDagpengerMottatt: DagpengerMottatt // Dagpenger => 5
-  rettTilDagpenger: RettTilDagpenger // RettTilDagpenger => 6
-  ikkeRettTilDagpenger: IkkeRettTilDagpenger // RettTilDagpenger => 6
+  rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6
+  ikkeRettTilDagpenger?: IkkeRettTilDagpenger // RettTilDagpenger => 6
 }
