@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
-import { ReplyPdu1 } from 'declarations/pd'
+import { Pdu1Person, ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -286,6 +286,18 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     return null
   }
 
+  const getPersonName = (replySed: ReplySed | ReplyPdu1 | null | undefined, personId: string) => {
+    const p = _.get(replySed, personId)
+    if (p) {
+      if (p.personInfo) {
+        return p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
+      } else {
+        return (replySed?.bruker as Pdu1Person)?.fornavn + ' ' + ((replySed?.bruker as Pdu1Person)?.etternavn ?? '')
+      }
+    }
+    return '-'
+  }
+
   const changeMenu = (menu: string, menuOption: string | undefined, from: 'event' | 'click') => {
     const changedMenu: boolean = currentMenu !== menu
     const changedMenuOption: boolean =
@@ -315,10 +327,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       }
 
       if (menu !== 'familie') {
-        const p = _.get(replySed, menu)
-        const personName = !_.isEmpty(p.personInfo)
-          ? p.personInfo.fornavn + ' ' + (p.personInfo.etternavn ?? '')
-          : p.fornavn + ' ' + (p.etternavn ?? '')
+        const personName = getPersonName(replySed, menu)
         setCurrentMenuLabel(personName)
       } else {
         setCurrentMenuLabel(t('label:hele-familien'))

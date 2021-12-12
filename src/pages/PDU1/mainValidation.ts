@@ -19,19 +19,21 @@ export interface ValidationPDU1EditProps {
   replyPdu1: ReplyPdu1
 }
 
-export const validatePersonManager = (v: Validation, t: TFunction, replyPdu1: ReplyPdu1, personID: string): boolean => {
+export const validatePDU1Edit = (v: Validation, t: TFunction, {
+  replyPdu1
+}: ValidationPDU1EditProps): boolean => {
   let hasErrors: boolean = false
 
-  const person : Pdu1Person = _.get(replyPdu1, personID)
-  hasErrors ||= validatePerson(v, t, { person, namespace: `personmanager-${personID}-person` })
+  const person : Pdu1Person = _.get(replyPdu1, 'bruker')
+  hasErrors ||= validatePerson(v, t, { person, namespace: 'personmanager-bruker-person' })
 
-  const statsborgerskaper: Array<string> = _.get(replyPdu1, `${personID}.statsborgerskap`)
+  const statsborgerskaper: Array<string> = _.get(replyPdu1, 'bruker.statsborgerskap')
   hasErrors ||= validateStatsborgerskaper(v, t, {
-    statsborgerskaper, namespace: `personmanager-${personID}-statsborgerskap`
+    statsborgerskaper, namespace: 'personmanager-bruker-statsborgerskap'
   })
 
-  const adresse: Adresse = _.get(replyPdu1, `${personID}.adresse`)
-  hasErrors ||= validateAdresse(v, t, { adresse, namespace: `personmanager-${personID}-adresse` })
+  const adresse: Adresse = _.get(replyPdu1, 'bruker.adresse')
+  hasErrors ||= validateAdresse(v, t, { adresse, namespace: 'personmanager-adresse' })
   /*
   const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
     perioderAnsattMedForsikring: replyPdu1.perioderAnsattMedForsikring,
@@ -79,15 +81,5 @@ export const validatePdu1Search = (
     hasErrors = true
   }
 
-  return hasErrors
-}
-export const validatePDU1Edit = (
-  v: Validation,
-  t: TFunction,
-  {
-    replyPdu1
-  }: ValidationPDU1EditProps
-): boolean => {
-  const hasErrors: boolean = validatePersonManager(v, t, replyPdu1, 'bruker')
   return hasErrors
 }

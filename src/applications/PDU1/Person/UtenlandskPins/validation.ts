@@ -12,6 +12,11 @@ export interface ValidationUtenlandskPinProps {
   namespace: string
 }
 
+export interface ValidationUtenlandskPinsProps {
+  utenlandskePins: Array<string> | undefined
+  namespace: string
+}
+
 export const validateUtenlandskPin = (
   v: Validation,
   t: TFunction,
@@ -59,5 +64,27 @@ export const validateUtenlandskPin = (
       hasErrors = true
     }
   }
+  return hasErrors
+}
+
+export const validateUtenlandskPins = (
+  v: Validation,
+  t: TFunction,
+  {
+    namespace,
+    utenlandskePins
+  }: ValidationUtenlandskPinsProps): boolean => {
+  let hasErrors: boolean = false
+  utenlandskePins?.forEach((pin: string, index: number) => {
+    const els = pin.split(/\s+/)
+    const _errors = validateUtenlandskPin(v, t, {
+      index,
+      land: els[0],
+      identifikator: els[1],
+      utenlandskePins: utenlandskePins,
+      namespace: namespace
+    })
+    hasErrors = hasErrors || _errors
+  })
   return hasErrors
 }

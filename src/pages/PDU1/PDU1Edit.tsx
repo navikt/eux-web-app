@@ -237,7 +237,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <PersonManager
         forms={[
-          { label: t('el:option-personmanager-person'), value: 'person_', component: Person, type: 'PD' },
+          { label: t('el:option-personmanager-person'), value: 'person', component: Person, type: 'PD' },
           { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
           { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
           { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },

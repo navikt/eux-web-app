@@ -40,7 +40,7 @@ export const validateInntektOgTime = (
 
   if (_.isEmpty(inntektOgTime?.bruttoinntekt)) {
     v[namespace + idx + '-bruttoinntekt'] = {
-      feilmelding: t('validation:noInntekt') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noInntekt') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-bruttoinntekt'
     } as ErrorElement
     hasErrors = true
@@ -48,7 +48,7 @@ export const validateInntektOgTime = (
 
   if (_.isEmpty(inntektOgTime?.valuta)) {
     v[namespace + idx + '-valuta'] = {
-      feilmelding: t('validation:noValuta') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noValuta') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-valuta'
     } as ErrorElement
     hasErrors = true
@@ -56,7 +56,7 @@ export const validateInntektOgTime = (
 
   if (_.isEmpty(inntektOgTime?.arbeidstimer)) {
     v[namespace + idx + '-arbeidstimer'] = {
-      feilmelding: t('validation:noArbeidstimer') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noArbeidstimer') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-arbeidstimer'
     } as ErrorElement
     hasErrors = true

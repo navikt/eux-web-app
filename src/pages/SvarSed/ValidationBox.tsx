@@ -2,7 +2,6 @@ import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorSummary } from '@navikt/ds-react'
-import { ErrorElement } from 'declarations/app'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -33,25 +32,26 @@ const ValidationBox = (): JSX.Element => {
               .map(v => ({
                 feilmelding: v!.feilmelding,
                 skjemaelementId: v!.skjemaelementId
-              })) as Array<ErrorElement>}
-            customFeilRender={(item: ErrorElement) => (
-              <ErrorSummary.Item
-                href={`#${item.skjemaelementId}`} onClick={(e) => {
-                  e.preventDefault()
-                  const element = document.getElementById(item.skjemaelementId)
-                  if (element) {
-                    element?.focus()
-                    element?.scrollIntoView({
-                      behavior: 'smooth'
-                    })
-                  } else {
-                    document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
-                  }
-                }}
-              >
-                {item.feilmelding}
-              </ErrorSummary.Item>
-              )}
+              })).map(item => (
+                <ErrorSummary.Item
+                  key={item.skjemaelementId}
+                  href={`#${item.skjemaelementId}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const element = document.getElementById(item.skjemaelementId)
+                    if (element) {
+                      element?.focus()
+                      element?.scrollIntoView({
+                        behavior: 'smooth'
+                      })
+                    } else {
+                      document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+                    }
+                  }}
+                >
+                  {item.feilmelding}
+                </ErrorSummary.Item>
+              ))}
           </ErrorSummary>
         </Column>
         <HorizontalSeparatorDiv size='2' />

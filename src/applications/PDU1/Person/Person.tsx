@@ -4,7 +4,6 @@ import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
-import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -17,7 +16,7 @@ import {
   FlexCenterDiv,
   FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedHorizontallyDiv,
+  PaddedDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -52,7 +51,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target: string = 'bruker'
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
-  const namespace: string = `${parentNamespace}-person`
+  const namespace: string = `${parentNamespace}-bruker-person`
 
   const onFnrChange = (newFnr: string) => {
     dispatch(updateReplySed(`${target}.fnr`, newFnr.trim()))
@@ -120,8 +119,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
 
   return (
     <div key={namespace + '-div'}>
-      <VerticalSeparatorDiv />
-      <PaddedHorizontallyDiv>
+      <PaddedDiv>
         <Heading size='medium'>
           {t('label:personopplysninger')}
         </Heading>
@@ -152,7 +150,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
           <Column>
-            <DateInput
+            <Input
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               key={namespace + '-foedselsdato-' + (pdu1Person?.foedselsdato ?? '')}
@@ -270,7 +268,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-      </PaddedHorizontallyDiv>
+      </PaddedDiv>
       <UtenlandskPins
         pins={pdu1Person?.utenlandskePin}
         onPinsChanged={onUtenlandskPinChange}

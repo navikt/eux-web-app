@@ -11,7 +11,7 @@ export const checkIfNotEmpty = (v: Validation, {
 }: any): boolean => {
   if (_.isEmpty(needle?.trim())) {
     v[id] = {
-      feilmelding: i18n.t(message) + personName ? i18n.t('validation:til-person', { person: personName }) : '',
+      feilmelding: i18n.t(message) + (personName ? i18n.t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: id
     } as ErrorElement
     return true

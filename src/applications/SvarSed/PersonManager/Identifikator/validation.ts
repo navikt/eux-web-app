@@ -31,7 +31,7 @@ export const validateIdentifikator = (
 
   if (_.isEmpty(identifikator?.type)) {
     v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noType') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noType') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-type'
     } as ErrorElement
     hasErrors = true
@@ -39,7 +39,7 @@ export const validateIdentifikator = (
 
   if (_.isEmpty(identifikator?.id)) {
     v[namespace + idx + '-id'] = {
-      feilmelding: t('validation:noId') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noId') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-id'
     } as ErrorElement
     hasErrors = true
@@ -56,7 +56,7 @@ export const validateIdentifikator = (
 
     if (duplicate) {
       v[namespace + idx + '-id'] = {
-        feilmelding: t('validation:duplicateId') + personName ? t('validation:til-person', { person: personName }) : '',
+        feilmelding: t('validation:duplicateId') + (personName ? t('validation:til-person', { person: personName }) : ''),
         skjemaelementId: namespace + idx + '-id'
       } as ErrorElement
       hasErrors = true

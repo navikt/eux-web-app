@@ -44,7 +44,7 @@ export const validateAvsenderlandetPeriode = (
     }
     if (duplicate) {
       v[namespace + idx + '-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato') + personName ? t('validation:til-person', { person: personName }) : '',
+        feilmelding: t('validation:duplicateStartdato') + (personName ? t('validation:til-person', { person: personName }) : ''),
         skjemaelementId: namespace + idx + '-startdato'
       } as ErrorElement
       hasErrors = true

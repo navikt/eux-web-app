@@ -70,7 +70,7 @@ const validateGenericPeriode = (
     }
     if (duplicate) {
       v[extraNamespace + idx + '-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato') + personName ? t('validation:til-person', { person: personName }) : '',
+        feilmelding: t('validation:duplicateStartdato') + (personName ? t('validation:til-person', { person: personName }) : ''),
         skjemaelementId: namespace + idx + '-startdato'
       } as ErrorElement
       hasErrors = true
@@ -189,7 +189,7 @@ export const validateFamilieytelserPeriode = (
   }
   if (duplicate) {
     v[extraperiodeNamespace + '-startdato'] = {
-      feilmelding: t('validation:duplicateStartdato') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:duplicateStartdato') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: extraperiodeNamespace + '-startdato'
     } as ErrorElement
     hasErrors = true
@@ -198,7 +198,7 @@ export const validateFamilieytelserPeriode = (
   if (sedCategory === 'perioderMedPensjon') {
     if (_.isEmpty((periode as PensjonPeriode).pensjonstype)) {
       v[extraNamespace + '-pensjonstype'] = {
-        feilmelding: t('validation:noPensjonType') + personName ? t('validation:til-person', { person: personName }) : '',
+        feilmelding: t('validation:noPensjonType') + (personName ? t('validation:til-person', { person: personName }) : ''),
         skjemaelementId: extraNamespace + '-pensjonstype'
       } as ErrorElement
       hasErrors = true

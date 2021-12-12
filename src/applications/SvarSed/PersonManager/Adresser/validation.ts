@@ -33,7 +33,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.type?.trim())) {
     v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noAddressType') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noAddressType') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-type'
     } as ErrorElement
     hasErrors = true
@@ -41,7 +41,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.land?.trim())) {
     v[namespace + idx + '-land'] = {
-      feilmelding: t('validation:noAddressCountry') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noAddressCountry') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-land'
     } as ErrorElement
     hasErrors = true
@@ -49,7 +49,7 @@ export const validateAdresse = (
 
   if (_.isEmpty(adresse?.by?.trim())) {
     v[namespace + idx + '-by'] = {
-      feilmelding: t('validation:noAddressCity') + personName ? t('validation:til-person', { person: personName }) : '',
+      feilmelding: t('validation:noAddressCity') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-by'
     } as ErrorElement
     hasErrors = true

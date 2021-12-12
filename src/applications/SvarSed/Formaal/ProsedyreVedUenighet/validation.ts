@@ -27,7 +27,7 @@ export const validateProsedyreVedUenighetGrunn = (
 
   if (_.isEmpty(grunn?.person)) {
     v[namespace + '-person'] = {
-      feilmelding: t('validation:noPersonGiven') + formalName ? t('validation:til-person', { person: formalName }) : '',
+      feilmelding: t('validation:noPersonGiven') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-person'
     } as ErrorElement
     hasErrors = true
@@ -35,7 +35,7 @@ export const validateProsedyreVedUenighetGrunn = (
 
   if (_.isEmpty(grunn?.grunn?.trim())) {
     v[namespace + '-grunn'] = {
-      feilmelding: t('validation:noGrunn') + formalName ? t('validation:til-person', { person: formalName }) : '',
+      feilmelding: t('validation:noGrunn') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-grunn'
     } as ErrorElement
     hasErrors = true
@@ -44,7 +44,7 @@ export const validateProsedyreVedUenighetGrunn = (
   const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreVedUenighet, grunn.grunn)
   if (duplicate) {
     v[namespace + '-grunn'] = {
-      feilmelding: t('validation:duplicateGrunn') + formalName ? t('validation:til-person', { person: formalName }) : '',
+      feilmelding: t('validation:duplicateGrunn') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-grunn'
     } as ErrorElement
     hasErrors = true
@@ -72,7 +72,7 @@ export const validateProsedyreVedUenighet = (
     !prosedyreVedUenighet.pensjon && !prosedyreVedUenighet.oppholdetsVarighet && !prosedyreVedUenighet.ansettelse
   ) {
     v[namespace + '-grunner'] = {
-      feilmelding: t('validation:noGrunn') + formalName ? t('validation:til-person', { person: formalName }) : '',
+      feilmelding: t('validation:noGrunn') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-grunner'
     } as ErrorElement
     hasErrors = true
@@ -80,7 +80,7 @@ export const validateProsedyreVedUenighet = (
 
   if (prosedyreVedUenighet && prosedyreVedUenighet?.ytterligereGrunner && prosedyreVedUenighet?.ytterligereGrunner?.trim()?.length > 500) {
     v[namespace + '-ytterligereGrunner'] = {
-      feilmelding: t('validation:textOver500') + formalName ? t('validation:til-person', { person: formalName }) : '',
+      feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-ytterligereGrunner'
     } as ErrorElement
     hasErrors = true

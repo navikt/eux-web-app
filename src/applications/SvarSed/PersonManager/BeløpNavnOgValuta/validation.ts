@@ -31,7 +31,7 @@ export const validateBeløpNavnOgValuta = (
   if (personID === 'familie' && _.isEmpty(ytelse?.antallPersoner?.trim())) {
     v[namespace + idx + '-antallPersoner'] = {
       skjemaelementId: namespace + idx + '-antallPersoner',
-      feilmelding: t('validation:noAntallPersoner') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noAntallPersoner') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -39,7 +39,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.ytelseNavn?.trim())) {
     v[namespace + '-ytelseNavn'] = {
       skjemaelementId: namespace + '-ytelseNavn',
-      feilmelding: t('validation:noBetegnelsePåYtelse') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noBetegnelsePåYtelse') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -47,7 +47,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.beloep?.trim())) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:noBeløp') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noBeløp') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -55,7 +55,7 @@ export const validateBeløpNavnOgValuta = (
   if (!_.isEmpty(ytelse?.beloep?.trim()) && !ytelse?.beloep?.trim().match(/^[\d.,]+$/)) {
     v[namespace + '-beloep'] = {
       skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:invalidBeløp') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:invalidBeløp') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -63,7 +63,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.valuta?.trim())) {
     v[namespace + '-valuta'] = {
       skjemaelementId: namespace + '-valuta',
-      feilmelding: t('validation:noValuta') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noValuta') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -80,7 +80,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.mottakersNavn?.trim())) {
     v[namespace + '-mottakersNavn'] = {
       skjemaelementId: namespace + '-mottakersNavn',
-      feilmelding: t('validation:noNavn') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noNavn') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }
@@ -88,7 +88,7 @@ export const validateBeløpNavnOgValuta = (
   if (_.isEmpty(ytelse?.utbetalingshyppighet?.trim())) {
     v[namespace + '-utbetalingshyppighet'] = {
       skjemaelementId: namespace + '-utbetalingshyppighet',
-      feilmelding: t('validation:noUtbetalingshyppighet') + personName ? t('validation:til-person', { person: personName }) : ''
+      feilmelding: t('validation:noUtbetalingshyppighet') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }

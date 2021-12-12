@@ -317,7 +317,7 @@ const FormålManager: React.FC<FormålManagerProps> = ({
                           )
                         : (
                           <>
-                            <SuccessFilled height={20} />
+                            <SuccessFilled color='green' height={20} />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
