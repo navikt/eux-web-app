@@ -4,6 +4,7 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPersonOpplysningProps {
   personInfo: PersonInfo,
@@ -35,17 +36,16 @@ export const validatePin = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(pin.identifikator?.trim())) {
-    v[namespace + idx + '-identifikator'] = {
-      feilmelding: t('validation:noIdTil', { person: personName }),
-      skjemaelementId: namespace + idx + '-identifikator'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors ||= checkIfNotEmpty(v, {
+    needle: pin.identifikator,
+    id: namespace + idx + '-identifikator',
+    message: 'validation:noId',
+    personName
+  })
 
   if (_.isEmpty(pin.land?.trim())) {
     v[namespace + idx + '-land'] = {
-      feilmelding: t('validation:noLandTil', { person: personName }),
+      feilmelding: t('validation:noLand') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-land'
     } as ErrorElement
     hasErrors = true
@@ -62,7 +62,7 @@ export const validatePin = (
     }
     if (duplicate) {
       v[namespace + idx + '-land'] = {
-        feilmelding: t('validation:duplicateLandTil', { person: personName }),
+        feilmelding: t('validation:duplicateLand') + personName ? t('validation:til-person', { person: personName }) : '',
         skjemaelementId: namespace + idx + '-land'
       } as ErrorElement
       hasErrors = true
@@ -83,7 +83,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.fornavn?.trim())) {
     v[namespace + '-fornavn'] = {
-      feilmelding: t('validation:noFornavnTil', { person: personName }),
+      feilmelding: t('validation:noFornavn') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + '-fornavn'
     } as ErrorElement
     hasErrors = true
@@ -91,7 +91,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.etternavn?.trim())) {
     v[namespace + '-etternavn'] = {
-      feilmelding: t('validation:noEtternavnTil', { person: personName }),
+      feilmelding: t('validation:noEtternavn') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + '-etternavn'
     } as ErrorElement
     hasErrors = true
@@ -99,7 +99,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.foedselsdato?.trim())) {
     v[namespace + '-foedselsdato'] = {
-      feilmelding: t('validation:noFoedselsdatoTil', { person: personName }),
+      feilmelding: t('validation:noFoedselsdato') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + '-foedselsdato'
     } as ErrorElement
     hasErrors = true
@@ -107,7 +107,7 @@ export const validatePersonOpplysninger = (
 
   if (!personInfo?.foedselsdato?.trim().match(datePattern)) {
     v[namespace + '-foedselsdato'] = {
-      feilmelding: t('validation:invalidFoedselsdatoTil', { person: personName }),
+      feilmelding: t('validation:invalidFoedselsdato') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + '-foedselsdato'
     } as ErrorElement
     hasErrors = true
@@ -115,7 +115,7 @@ export const validatePersonOpplysninger = (
 
   if (_.isEmpty(personInfo?.kjoenn?.trim())) {
     v[namespace + '-kjoenn'] = {
-      feilmelding: t('validation:noKjoennTil', { person: personName }),
+      feilmelding: t('validation:noKjoenn') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + '-kjoenn'
     } as ErrorElement
     hasErrors = true

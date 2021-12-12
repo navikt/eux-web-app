@@ -97,12 +97,11 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onAdresseChange = (adresse: IAdresse) => {
+  const onAdresseChange = (adresse: IAdresse, type: string |undefined) => {
     dispatch(updateReplySed(`${target}.sisteUtbetaler.adresse`, adresse))
-  }
-
-  const resetAdresseValidation = (fullnamespace: string) => {
-    dispatch(resetValidation(fullnamespace))
+    if (type && validation[namespace + '-' + type]) {
+      dispatch(resetValidation(namespace + '-' + type))
+    }
   }
 
   const onRemove = (index: number) => {
@@ -319,7 +318,6 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <AdresseForm
               type={false}
-              resetValidation={resetAdresseValidation}
               options={{ bygning: false, region: false }}
               namespace={namespace + '-adresse'}
               validation={validation}

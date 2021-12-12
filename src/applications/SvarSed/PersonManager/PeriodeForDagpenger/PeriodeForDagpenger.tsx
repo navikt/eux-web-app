@@ -186,20 +186,16 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       }
     }
   }
-  const setAdresse = (adresse: Adresse, index: number) => {
+  const setAdresse = (adresse: Adresse, id: string | undefined, index: number) => {
     if (index < 0) {
       _setNewAdresse(adresse)
+      if (id) {
+        _resetValidation(namespace + '-' + id)
+      }
     } else {
       dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
-    }
-  }
-
-  const resetAdresseValidation = (fullnamespace: string, index: number) => {
-    if (index < 0) {
-      _resetValidation(fullnamespace)
-    } else {
-      if (validation[fullnamespace]) {
-        dispatch(resetValidation(fullnamespace))
+      if (id && validation[namespace + '-' + id]) {
+        dispatch(resetValidation(namespace + '-' + id))
       }
     }
   }
@@ -359,10 +355,9 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv />
             <AdresseForm
               adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
-              onAdressChanged={(a) => setAdresse(a, index)}
+              onAdressChanged={(a, type: string) => setAdresse(a, type, index)}
               namespace={namespace + '-institusjon-idmangler-adresse'}
               validation={index < 0 ? _validation : validation}
-              resetValidation={(fullnamespace: string) => resetAdresseValidation(fullnamespace, index)}
             />
           </>
         )}

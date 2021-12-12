@@ -1,7 +1,7 @@
 import { Add } from '@navikt/ds-icons'
+import { Button, Heading, Ingress } from '@navikt/ds-react'
 import { updateArbeidsgivere } from 'actions/arbeidsgiver'
 import { fetchInntekt } from 'actions/inntekt'
-import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
@@ -21,14 +21,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Ingress, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -214,23 +207,23 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     _setNewPeriode(p)
   }
 
-  const onIdentifikatorerChanged = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>) => {
+  const onIdentifikatorerChanged = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => {
     _setNewIdentifikatorer(newIdentifikatorer)
+    if (whatChanged && _validationPeriodeMedForsikring[namespace + '-' + whatChanged]) {
+      _resetValidationPeriodeMedForsikring(namespace + '-' + whatChanged)
+    }
   }
-
-  const resetSubValidation = (fullnamespace: string) => resetValidation(fullnamespace)
 
   const onArbeidsgiversNavnChanged = (newName: string) => {
     _resetValidationPeriodeMedForsikring(namespace + '-navn')
     _setNewNavn(newName)
   }
 
-  const setAdresse = (adresse: Adresse) => {
+  const setAdresse = (adresse: Adresse, id: string | undefined) => {
     _setNewAdresse(adresse)
-  }
-
-  const resetAdresseValidation = (fullnamespace: string) => {
-    _resetValidationPeriodeMedForsikring(fullnamespace)
+    if (id) {
+      _resetValidationPeriodeMedForsikring(namespace + '-' + id)
+    }
   }
 
   const onPeriodeMedForsikringAdd = () => {
@@ -300,7 +293,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
             namespace={namespace + '-identifikator'}
             validation={_validationPeriodeMedForsikring}
             personName={_newNavn}
-            resetValidation={resetSubValidation}
           />
         </Column>
       </AlignStartRow>
@@ -310,7 +302,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         onAdressChanged={setAdresse}
         namespace={namespace + '-adresse'}
         validation={_validationPeriodeMedForsikring}
-        resetValidation={resetAdresseValidation}
       />
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>

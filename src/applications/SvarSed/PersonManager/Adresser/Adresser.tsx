@@ -82,11 +82,17 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     }
   }, [adresse, _showModal, _searchingAdresse])
 
-  const setAdresse = (adresse: IAdresse, index: number) => {
+  const setAdresse = (adresse: IAdresse, id: string | undefined, index: number) => {
     if (index < 0) {
       _setNewAdresse(adresse)
+      if (id) {
+        _resetValidation(namespace + '-' + id)
+      }
     } else {
       dispatch(updateReplySed(`${target}[${index}]`, adresse))
+      if (id && validation[namespace + getIdx(index) + '-' + id]) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-' + id))
+      }
     }
   }
 
@@ -109,16 +115,6 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     }
     dispatch(updateReplySed(target, newAdresses))
     standardLogger('svarsed.editor.adresse.remove')
-  }
-
-  const onValidationReset = (fullnamespace: string, index: number) => {
-    if (index < 0) {
-      _resetValidation(fullnamespace)
-    } else {
-      if (validation[fullnamespace]) {
-        dispatch(resetValidation(fullnamespace))
-      }
-    }
   }
 
   const getAdresse = () => {
@@ -198,9 +194,8 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
             key={namespace + idx + getId(index < 0 ? _newAdresse : _adresse)}
             namespace={namespace + idx}
             adresse={index < 0 ? _newAdresse : _adresse}
-            onAdressChanged={(a: IAdresse) => setAdresse(a, index)}
+            onAdressChanged={(a: IAdresse, type: string | undefined) => setAdresse(a, type, index)}
             validation={index < 0 ? _validation : validation}
-            resetValidation={(n: string) => onValidationReset(n, index)}
           />
           <AlignStartRow>
             <AlignEndColumn>

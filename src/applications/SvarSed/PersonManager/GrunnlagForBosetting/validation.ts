@@ -34,7 +34,7 @@ export const validateGrunnlagForBosetting = (
     const duplicate: boolean = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
     if (duplicate) {
       v[namespace + '-perioder-startdato'] = {
-        feilmelding: t('validation:duplicateStartdatoTil', { person: personName }),
+        feilmelding: t('validation:duplicateStartdato') + personName ? t('validation:til-person', { person: personName }) : '',
         skjemaelementId: namespace + 'perioder-startdato'
       } as ErrorElement
       hasErrors = true
@@ -73,7 +73,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilAvsenderlandet) && !flyttegrunn?.datoFlyttetTilAvsenderlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilAvsenderlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilAvsenderlandet',
-      feilmelding: t('validation:invalidDateTil', { person: personName })
+      feilmelding: t('validation:invalidDate') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }
@@ -81,7 +81,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.datoFlyttetTilMottakerlandet) && !flyttegrunn?.datoFlyttetTilMottakerlandet.match(datePattern)) {
     v[namespace + '-datoFlyttetTilMottakerlandet'] = {
       skjemaelementId: namespace + '-datoFlyttetTilMottakerlandet',
-      feilmelding: t('validation:invalidDateTil', { person: personName })
+      feilmelding: t('validation:invalidDate') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }
@@ -89,7 +89,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.personligSituasjon) && flyttegrunn?.personligSituasjon!.length > 500) {
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
-      feilmelding: t('validation:textOver500Til', { person: personName })
+      feilmelding: t('validation:textOver500') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }

@@ -4,31 +4,29 @@ import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
-export interface ValidationNasjonalitetProps {
+export interface ValidationStatsborgerskapProps {
   statsborgerskap: string | undefined
   statsborgerskaper: Array<string> |undefined
   index?: number
   namespace: string
-  personName: string
 }
 
-export const validateNasjonalitet = (
+export const validateStatsborgerskap = (
   v: Validation,
   t: TFunction,
   {
     statsborgerskap,
     statsborgerskaper,
     index,
-    namespace,
-    personName
-  }: ValidationNasjonalitetProps
+    namespace
+  }: ValidationStatsborgerskapProps
 ): boolean => {
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
   if (_.isEmpty(statsborgerskap?.trim())) {
     v[namespace + idx + '-statsborgerskap'] = {
-      feilmelding: t('validation:noBirthCountryTil', { person: personName }),
+      feilmelding: t('validation:noBirthCountry'),
       skjemaelementId: namespace + idx + '-statsborgerskap'
     } as ErrorElement
     hasErrors = true
@@ -63,24 +61,22 @@ export const validateNasjonalitet = (
   return hasErrors
 }
 
-interface ValidateNasjonaliteterProps {
+interface ValidateStatsborgerskaperProps {
   statsborgerskaper: Array<string>
   namespace: string
-  personName: string
 }
 
-export const validateNasjonaliteter = (
+export const validateStatsborgerskaper = (
   validation: Validation,
   t: TFunction,
   {
     statsborgerskaper,
-    namespace,
-    personName
-  }: ValidateNasjonaliteterProps
+    namespace
+  }: ValidateStatsborgerskaperProps
 ): boolean => {
   let hasErrors: boolean = false
   statsborgerskaper?.forEach((statsborgerskap: string, index: number) => {
-    const _error: boolean = validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
+    const _error: boolean = validateStatsborgerskap(validation, t, { statsborgerskap, statsborgerskaper, index, namespace })
     hasErrors = hasErrors || _error
   })
   return hasErrors

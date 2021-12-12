@@ -261,16 +261,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const resetSubValidation = (fullnamespace: string, index: number) => {
-    if (index < 0) {
-      _resetValidation(fullnamespace)
-    } else {
-      if (validation[fullnamespace]) {
-        dispatch(resetValidation(fullnamespace))
-      }
-    }
-  }
-
   const resetForm = () => {
     _setNewPeriode(undefined)
     _resetValidation()
@@ -451,7 +441,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   namespace={namespace + idx + '-arbeidsgiver-identifikatorer'}
                   validation={_v}
                   personName={personName}
-                  resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}
                 />
               </Column>
             </AlignStartRow>
@@ -464,7 +453,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                   onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-adresse'}
                   validation={_v}
-                  resetValidation={(fullnamespace: string) => resetSubValidation(fullnamespace, _index)}
                 />
               </Column>
             </AlignStartRow>

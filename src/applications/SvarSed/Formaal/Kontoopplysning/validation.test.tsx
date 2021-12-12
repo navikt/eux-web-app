@@ -116,7 +116,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-kontoSepa-swift']?.feilmelding).toEqual('validation:invalidSwiftTil')
+    expect(validation['test-mock-kontoSepa-swift']?.feilmelding).toEqual('validation:invalidSwift')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })

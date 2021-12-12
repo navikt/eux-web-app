@@ -38,7 +38,7 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.svarType?.trim())) {
     v[namespace + idx + '-svarType'] = {
-      feilmelding: t('validation:noAnswerTil', { person: formalName }),
+      feilmelding: t('validation:noAnswer') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-svarType'
     } as ErrorElement
     hasErrors = true
@@ -56,7 +56,7 @@ export const validateMotregning = (
     }
     if (type === 'barna' && _.isEmpty(keyAndYtelses)) {
       v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('validation:noYtelseTil', { person: formalName }),
+        feilmelding: t('validation:noYtelse') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + idx + '-ytelseNavn'
       } as ErrorElement
       hasErrors = true
@@ -65,7 +65,7 @@ export const validateMotregning = (
   } else {
     if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
       v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('validation:noYtelseTil', { person: formalName }),
+        feilmelding: t('validation:noYtelse') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + idx + '-ytelseNavn'
       } as ErrorElement
       hasErrors = true
@@ -74,7 +74,7 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.beloep?.trim())) {
     v[namespace + idx + '-beloep'] = {
-      feilmelding: t('validation:noBeløpTil', { person: formalName }),
+      feilmelding: t('validation:noBeløp') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-beloep'
     } as ErrorElement
     hasErrors = true
@@ -82,7 +82,7 @@ export const validateMotregning = (
     if (!motregning?.beloep?.trim().match(/^[\d.,]+$/)) {
       v[namespace + idx + '-beloep'] = {
         skjemaelementId: namespace + idx + '-beloep',
-        feilmelding: t('validation:invalidBeløpTil', { person: formalName })
+        feilmelding: t('validation:invalidBeløp') + formalName ? t('validation:til-person', { person: formalName }) : ''
       } as ErrorElement
       hasErrors = true
     }
@@ -90,7 +90,7 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.valuta?.trim())) {
     v[namespace + idx + '-valuta'] = {
-      feilmelding: t('validation:noValutaTil', { person: formalName }),
+      feilmelding: t('validation:noValuta') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-valuta'
     } as ErrorElement
     hasErrors = true
@@ -108,7 +108,7 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.utbetalingshyppighet?.trim())) {
     v[namespace + idx + '-utbetalingshyppighet'] = {
-      feilmelding: t('validation:noAvgrensingTil', { person: formalName }),
+      feilmelding: t('validation:noAvgrensing') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-utbetalingshyppighet'
     } as ErrorElement
     hasErrors = true
@@ -116,7 +116,7 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
     v[namespace + idx + '-mottakersNavn'] = {
-      feilmelding: t('validation:noMottakersNavnTil', { person: formalName }),
+      feilmelding: t('validation:noMottakersNavn') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-mottakersNavn'
     } as ErrorElement
     hasErrors = true
@@ -124,14 +124,14 @@ export const validateMotregning = (
 
   if (_.isEmpty(motregning?.begrunnelse?.trim())) {
     v[namespace + idx + '-begrunnelse'] = {
-      feilmelding: t('validation:noGrunnTil', { person: formalName }),
+      feilmelding: t('validation:noGrunn') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-begrunnelse'
     } as ErrorElement
     hasErrors = true
   } else {
     if (motregning?.begrunnelse.trim().length > 500) {
       v[namespace + idx + '-begrunnelse'] = {
-        feilmelding: t('validation:textOver500Til', { person: formalName }),
+        feilmelding: t('validation:textOver500') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + idx + '-begrunnelse'
       } as ErrorElement
       hasErrors = true
@@ -140,7 +140,7 @@ export const validateMotregning = (
 
   if (motregning?.ytterligereInfo?.trim()?.length > 500) {
     v[namespace + idx + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500Til', { person: formalName }),
+      feilmelding: t('validation:textOver500') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + idx + '-ytterligereInfo'
     } as ErrorElement
     hasErrors = true

@@ -57,7 +57,7 @@ export const validateVedtakPeriode = (
     }
     if (duplicate) {
       v[namespace + '-perioder' + idx + '-startdato'] = {
-        feilmelding: t('validation:duplicateStartdatoTil', { person: formalName }),
+        feilmelding: t('validation:duplicateStartdato') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + '-perioder' + idx + '-startdato'
       } as ErrorElement
       hasErrors = true
@@ -102,7 +102,7 @@ export const validateVedtakVedtaksperiode = (
     }
     if (duplicate) {
       v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
-        feilmelding: t('validation:duplicateStartdatoTil', { person: formalName }),
+        feilmelding: t('validation:duplicateStartdato') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + '-vedtaksperioder' + idx + '-periode-startdato'
       } as ErrorElement
       hasErrors = true
@@ -111,7 +111,7 @@ export const validateVedtakVedtaksperiode = (
 
   if (_.isEmpty(vedtaksperiode?.skalYtelseUtbetales?.trim())) {
     v[namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'] = {
-      feilmelding: t('validation:noSkalYtelseUtbetalesTil', { person: formalName }),
+      feilmelding: t('validation:noSkalYtelseUtbetales') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'
     } as ErrorElement
     hasErrors = true
@@ -138,7 +138,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.gjelderAlleBarn)) {
     v[namespace + '-gjelderAlleBarn'] = {
-      feilmelding: t('validation:noBarnValgtTil', { person: formalName }),
+      feilmelding: t('validation:noBarnValgt') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-gjelderAlleBarn'
     } as ErrorElement
     hasErrors = true
@@ -151,7 +151,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.vedtakstype?.trim())) {
     v[namespace + '-vedtakstype'] = {
-      feilmelding: t('validation:noVedtakTypeTil', { person: formalName }),
+      feilmelding: t('validation:noVedtakType') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-vedtakstype'
     } as ErrorElement
     hasErrors = true
@@ -159,7 +159,7 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.vedtaksdato?.trim())) {
     v[namespace + '-vedtaksdato'] = {
-      feilmelding: t('validation:noDateTil', { person: formalName }),
+      feilmelding: t('validation:noDate') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-vedtaksdato'
     } as ErrorElement
     hasErrors = true
@@ -167,7 +167,7 @@ export const validateVedtak = (
     if (!vedtak?.vedtaksdato?.trim().match(datePattern)) {
       v[namespace + '-vedtaksdato'] = {
         skjemaelementId: namespace + '-vedtaksdato',
-        feilmelding: t('validation:invalidDateTil', { person: formalName })
+        feilmelding: t('validation:invalidDate') + formalName ? t('validation:til-person', { person: formalName }) : ''
       } as ErrorElement
       hasErrors = true
     }
@@ -175,14 +175,14 @@ export const validateVedtak = (
 
   if (_.isEmpty(vedtak?.begrunnelse?.trim())) {
     v[namespace + '-begrunnelse'] = {
-      feilmelding: t('validation:noBegrunnelseTil', { person: formalName }),
+      feilmelding: t('validation:noBegrunnelse') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-begrunnelse'
     } as ErrorElement
     hasErrors = true
   } else {
     if (vedtak?.begrunnelse?.trim()?.length > 500) {
       v[namespace + '-begrunnelse'] = {
-        feilmelding: t('validation:textOver500Til', { person: formalName }),
+        feilmelding: t('validation:textOver500') + formalName ? t('validation:til-person', { person: formalName }) : '',
         skjemaelementId: namespace + '-begrunnelse'
       } as ErrorElement
       hasErrors = true
@@ -191,7 +191,7 @@ export const validateVedtak = (
 
   if (vedtak?.ytterligereInfo?.trim()?.length > 500) {
     v[namespace + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500Til', { person: formalName }),
+      feilmelding: t('validation:textOver500') + formalName ? t('validation:til-person', { person: formalName }) : '',
       skjemaelementId: namespace + '-ytterligereInfo'
     } as ErrorElement
     hasErrors = true

@@ -27,13 +27,10 @@ const Adresse: React.FC<PersonManagerFormProps> = ({
   const adresse: IAdresse = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser[0]`
 
-  const setAdresse = (adresse: IAdresse) => {
+  const setAdresse = (adresse: IAdresse, id: string | undefined) => {
     dispatch(updateReplySed(target, adresse))
-  }
-
-  const onValidationReset = (fullnamespace: string) => {
-    if (validation[fullnamespace]) {
-      dispatch(resetValidation(fullnamespace))
+    if (id && validation[namespace + '-' + id]) {
+      dispatch(resetValidation(namespace + '-' + id))
     }
   }
 
@@ -49,7 +46,6 @@ const Adresse: React.FC<PersonManagerFormProps> = ({
         adresse={adresse}
         onAdressChanged={setAdresse}
         validation={validation}
-        resetValidation={onValidationReset}
       />
     </PaddedDiv>
   )

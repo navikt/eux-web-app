@@ -14,7 +14,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/validation', () => {
     })
     expect(hasErrors).toBeTruthy()
 
-    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:noKravTil')
+    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:noKrav')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })
@@ -32,7 +32,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:textOver500Til')
+    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:textOver500')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })

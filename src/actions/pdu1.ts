@@ -6,6 +6,7 @@ import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockCreatePdu1 from 'mocks/pdu1/replyPdu1'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
+import mockCompletePdu1 from 'mocks/pdu1/complete'
 import { ActionCreator } from 'redux'
 import File from 'forhandsvisningsfil'
 
@@ -43,7 +44,7 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
   fnr: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
-    url: sprintf(urls.PDU1_UTKAST_URL, { fnr }),
+    url: sprintf(urls.PDU1_GET_URL, { fnr }),
     expectedPayload: mockCreatePdu1,
     context: {
       fnr: fnr
@@ -61,9 +62,9 @@ export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<any>>> = 
 ): ThunkResult<ActionWithPayload<any>> => {
   return call({
     method: 'POST',
-    url: urls.PDU1_POST_URL,
+    url: urls.PDU1_JOURNALPOST_URL,
     body: payload,
-    expectedPayload: mockPreviewPdu1,
+    expectedPayload: mockCompletePdu1,
     type: {
       request: types.PDU1_COMPLETE_REQUEST,
       success: types.PDU1_COMPLETE_SUCCESS,

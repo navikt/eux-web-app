@@ -1,4 +1,5 @@
-import { Add, Close, Edit, Delete, Office1 } from '@navikt/ds-icons'
+import { Add, Close, Delete, Edit, Office1 } from '@navikt/ds-icons'
+import { BodyLong, Button, Checkbox, Detail, Ingress, Panel } from '@navikt/ds-react'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import classNames from 'classnames'
@@ -9,7 +10,6 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Checkbox, Button, Ingress, BodyLong, Detail, Panel } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -103,6 +103,10 @@ const ArbeidsgiverBox = ({
   const [_adresse, _setAdresse] = useState<IAdresse | undefined>(arbeidsgiver.arbeidsgiver.adresse ?? undefined)
   const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
+  const setAdresse = (adresse: IAdresse) => {
+    _setAdresse(adresse)
+  }
+
   const onNameChanged = (newName: string) => {
     resetValidation(_namespace + '-navn')
     setArbeidsgiversNavn(newName)
@@ -111,9 +115,10 @@ const ArbeidsgiverBox = ({
   const onIdentifikatorerChanged = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => {
     resetValidation(_namespace + '-' + whatChanged)
     setArbeidsgiversIdentifikator(newIdentifikatorer)
+    if (whatChanged && _validation[namespace + '-' + whatChanged]) {
+      (resetValidation(namespace + '-' + whatChanged))
+    }
   }
-
-  const resetSubValidation = (fullnamespace: string) => resetValidation(fullnamespace)
 
   const onPeriodeChanged = (newPeriode: Periode) => {
     if (_arbeidsgiverPeriode.startdato !== newPeriode.startdato) {
@@ -256,10 +261,9 @@ const ArbeidsgiverBox = ({
                           <VerticalSeparatorDiv size='0.5' />
                           <AdresseForm
                             adresse={_adresse}
-                            onAdressChanged={_setAdresse}
+                            onAdressChanged={setAdresse}
                             namespace={_namespace}
                             validation={_validation}
-                            resetValidation={resetValidation}
                           />
                         </div>
                       </>
@@ -296,7 +300,6 @@ const ArbeidsgiverBox = ({
                     onIdentifikatorerChanged={onIdentifikatorerChanged}
                     namespace={_namespace + '-identifikatorer'}
                     validation={_validation}
-                    resetValidation={resetSubValidation}
                     personName={_arbeidsgiversNavn}
                   />
                   )

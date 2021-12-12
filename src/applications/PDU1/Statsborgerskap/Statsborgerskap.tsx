@@ -25,7 +25,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
+import { validateStatsborgerskap, ValidationStatsborgerskapProps } from './validation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
@@ -34,7 +34,6 @@ const mapState = (state: State): PersonManagerFormSelector => ({
 const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
   replySed,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
@@ -51,7 +50,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((s: string): string => s)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationStatsborgerskapProps>({}, validateStatsborgerskap)
 
   const onStatsborgerskapSelected = (newStatsborgerskap: string, index: number) => {
     if (index < 0) {
@@ -89,8 +88,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap!,
       statsborgerskaper: statsborgerskaper,
-      namespace: namespace,
-      personName: personName
+      namespace: namespace
     })
     if (valid) {
       let newStatsborgerskaper : Array<string> | undefined = _.cloneDeep(statsborgerskaper)

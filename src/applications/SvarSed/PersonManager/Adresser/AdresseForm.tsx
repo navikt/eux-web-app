@@ -1,4 +1,3 @@
-import { resetValidation } from 'actions/validation'
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -15,7 +14,6 @@ export interface AdresseFormProps {
   onAdressChanged: (a: Adresse, id: string) => void
   namespace: string
   validation: Validation
-  resetValidation: (fullnamespace: string) => void
   type?: boolean
 }
 
@@ -40,7 +38,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       type: type.trim() as AdresseType
     }, 'type')
-    resetValidation(namespace + '-type')
   }
 
   const setGate = (gate: string) => {
@@ -48,7 +45,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       gate: gate.trim()
     }, 'gate')
-    resetValidation(namespace + '-gate')
   }
 
   const setPostnummer = (postnummer: string) => {
@@ -56,7 +52,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       postnummer: postnummer.trim()
     }, 'postnummer')
-    resetValidation(namespace + '-postnummer')
   }
 
   const setBy = (by: string) => {
@@ -64,7 +59,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       by: by.trim()
     }, 'by')
-    resetValidation(namespace + '-by')
   }
 
   const setBygning = (bygning: string) => {
@@ -72,7 +66,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       bygning: bygning.trim()
     }, 'bygning')
-    resetValidation(namespace + '-bygning')
   }
 
   const setRegion = (region: string) => {
@@ -80,7 +73,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       region: region.trim()
     }, 'region')
-    resetValidation(namespace + '-region')
   }
 
   const setLand = (land: string) => {
@@ -88,7 +80,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       ...adresse,
       land: land.trim()
     }, 'land')
-    resetValidation(namespace + '-land')
   }
 
   return (

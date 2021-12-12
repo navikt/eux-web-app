@@ -39,7 +39,7 @@ export const validateKontaktsinformasjonTelefon = (
 
   if (_.isEmpty(telefon?.type?.trim())) {
     v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noTelephoneTypeTil', { person: personName }),
+      feilmelding: t('validation:noTelephoneType') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-type'
     } as ErrorElement
     hasErrors = true
@@ -47,7 +47,7 @@ export const validateKontaktsinformasjonTelefon = (
 
   if (_.isEmpty(telefon?.nummer?.trim())) {
     v[namespace + idx + '-nummer'] = {
-      feilmelding: t('validation:noTelephoneNumberTil', { person: personName }),
+      feilmelding: t('validation:noTelephoneNumber') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-nummer'
     } as ErrorElement
     hasErrors = true
@@ -61,7 +61,7 @@ export const validateKontaktsinformasjonTelefon = (
   }
   if (duplicate) {
     v[namespace + idx + '-nummer'] = {
-      feilmelding: t('validation:duplicateTelephoneNumberTil', { person: personName }),
+      feilmelding: t('validation:duplicateTelephoneNumber') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-nummer'
     } as ErrorElement
     hasErrors = true
@@ -96,14 +96,14 @@ export const validateKontaktsinformasjonEpost = (
   if (!_.isEmpty(epost?.adresse?.trim())) {
     if (!epost.adresse.trim().match(emailPattern)) {
       v[namespace + idx + '-adresse'] = {
-        feilmelding: t('validation:invalidEpostTil', { person: personName }),
+        feilmelding: t('validation:invalidEpost') + personName ? t('validation:til-person', { person: personName }) : '',
         skjemaelementId: namespace + idx + '-adresse'
       } as ErrorElement
       hasErrors = true
     }
   } else {
     v[namespace + idx + '-adresse'] = {
-      feilmelding: t('validation:noEpostTil', { person: personName }),
+      feilmelding: t('validation:noEpost') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-adresse'
     } as ErrorElement
     hasErrors = true
@@ -118,7 +118,7 @@ export const validateKontaktsinformasjonEpost = (
   }
   if (duplicate) {
     v[namespace + idx + '-adresse'] = {
-      feilmelding: t('validation:duplicateEpostAdresseTil', { person: personName }),
+      feilmelding: t('validation:duplicateEpostAdresse') + personName ? t('validation:til-person', { person: personName }) : '',
       skjemaelementId: namespace + idx + '-adresse'
     } as ErrorElement
     hasErrors = true

@@ -44,12 +44,11 @@ const NavInfoFC: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setAdresse = (adresse: Adresse) => {
+  const setAdresse = (adresse: Adresse, type: string | undefined) => {
     dispatch(updateReplySed(`${target}.adresse`, adresse))
-  }
-
-  const resetAdresseValidation = (fullnamespace: string) => {
-    dispatch(resetValidation(fullnamespace))
+    if (type && validation[namespace + '-' + type]) {
+      dispatch(resetValidation(namespace + '-' + type))
+    }
   }
 
   const setTlf = (tlf: string) => {
@@ -130,7 +129,6 @@ export interface NavInfo {
         <Column>
           <AdresseForm
             type={false}
-            resetValidation={resetAdresseValidation}
             options={{ bygning: false, region: false }}
             namespace={namespace + '-adresse'}
             validation={validation}

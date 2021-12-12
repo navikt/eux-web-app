@@ -1,13 +1,13 @@
-import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
-import { validateAlleForsikringPerioder } from 'applications/SvarSed/PersonManager/Forsikring/validation'
-import { validateNasjonaliteter } from 'applications/SvarSed/PersonManager/Nasjonaliteter/validation'
-import { validatePersonOpplysninger } from 'applications/SvarSed/PersonManager/PersonOpplysninger/validation'
-import { ReplyPdu1 } from 'declarations/pd'
-import { Adresse, ForsikringPeriode, PersonInfo, Statsborgerskap } from 'declarations/sed'
+
+import { validateStatsborgerskaper } from 'applications/PDU1/Statsborgerskap/validation'
+import { Pdu1Person, ReplyPdu1 } from 'declarations/pd'
+import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
+import { validatePerson } from 'applications/PDU1/Person/validation'
+import { validateAdresse } from 'applications/SvarSed/PersonManager/Adresser/validation'
 
 export interface ValidationPdu1SearchProps {
   fagsak: string | undefined
@@ -21,27 +21,18 @@ export interface ValidationPDU1EditProps {
 
 export const validatePersonManager = (v: Validation, t: TFunction, replyPdu1: ReplyPdu1, personID: string): boolean => {
   let hasErrors: boolean = false
-  let _error: boolean
-  const personInfo: PersonInfo = _.get(replyPdu1, `${personID}.personInfo`)
-  const personName: string = personInfo.fornavn + ' ' + (personInfo.etternavn ?? '')
 
-  _error = validatePersonOpplysninger(v, t, {
-    personInfo, namespace: `personmanager-${personID}-personopplysninger`, personName
+  const person : Pdu1Person = _.get(replyPdu1, personID)
+  hasErrors ||= validatePerson(v, t, { person, namespace: `personmanager-${personID}-person` })
+
+  const statsborgerskaper: Array<string> = _.get(replyPdu1, `${personID}.statsborgerskap`)
+  hasErrors ||= validateStatsborgerskaper(v, t, {
+    statsborgerskaper, namespace: `personmanager-${personID}-statsborgerskap`
   })
-  hasErrors = hasErrors || _error
 
-  const statsborgerskaper: Array<Statsborgerskap> = _.get(replyPdu1, `${personID}.personInfo.statsborgerskap`)
-  _error = validateNasjonaliteter(v, t, {
-    statsborgerskaper, namespace: `personmanager-${personID}-nasjonaliteter`, personName
-  })
-  hasErrors = hasErrors || _error
-
-  const adresser: Array<Adresse> = _.get(replyPdu1, `${personID}.adresser`)
-  _error = validateAdresser(v, t, {
-    adresser, namespace: `personmanager-${personID}-adresser`, personName
-  })
-  hasErrors = hasErrors || _error
-
+  const adresse: Adresse = _.get(replyPdu1, `${personID}.adresse`)
+  hasErrors ||= validateAdresse(v, t, { adresse, namespace: `personmanager-${personID}-adresse` })
+  /*
   const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
     perioderAnsattMedForsikring: replyPdu1.perioderAnsattMedForsikring,
     perioderSelvstendigMedForsikring: replyPdu1.perioderSelvstendigMedForsikring,
@@ -58,7 +49,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replyPdu1: Re
   hasErrors = hasErrors || _error
 
   hasErrors = hasErrors || _error
-
+*/
   return hasErrors
 }
 
@@ -97,20 +88,6 @@ export const validatePDU1Edit = (
     replyPdu1
   }: ValidationPDU1EditProps
 ): boolean => {
-  let hasErrors: boolean = false
-
-  // this is common to all seds
-  const _error: boolean = validatePersonManager(v, t, replyPdu1, 'bruker')
-  hasErrors = hasErrors || _error
-
-  // @ts-ignore
-  if (!_.isEmpty(replyPdu1?.ytterligereInfo?.trim()) && replyPdu1?.ytterligereInfo?.trim().length > 500) {
-    v['editor-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500Til', { person: 'SED' }),
-      skjemaelementId: 'editor-ytterligereInfo'
-    } as ErrorElement
-    hasErrors = true
-  }
-
+  const hasErrors: boolean = validatePersonManager(v, t, replyPdu1, 'bruker')
   return hasErrors
 }

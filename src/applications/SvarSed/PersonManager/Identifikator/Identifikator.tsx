@@ -20,7 +20,6 @@ import {
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateIdentifikator, ValidationIdentifikatorProps } from './validation'
 
@@ -30,7 +29,6 @@ export interface IdentifikatorProps {
   namespace: string
   personName: string
   validation: Validation
-  resetValidation: (fullnamespace: string) => void
 }
 
 const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
@@ -38,11 +36,9 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   onIdentifikatorerChanged,
   namespace,
   personName,
-  validation,
-  resetValidation
+  validation
 }: IdentifikatorProps): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
 
   const [_newType, _setNewType] = useState<ArbeidsgiverIdentifikatorType | undefined>(undefined)
   const [_newId, _setNewId] = useState<string | undefined>(undefined)
@@ -67,9 +63,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
       newIdentifikatorer[index].id = newId.trim()
       onIdentifikatorerChanged(newIdentifikatorer, 'id')
-      if (validation[namespace + getIdx(index) + '-id']) {
-        (resetValidation(namespace + getIdx(index) + '-id'))
-      }
     }
   }
 
@@ -81,9 +74,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
       newIdentifikatorer[index].type = newType
       onIdentifikatorerChanged(newIdentifikatorer, 'type')
-      if (validation[namespace + getIdx(index) + '-type']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-type'))
-      }
     }
   }
 
@@ -126,7 +116,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       }
       newIdentifikatorer.push(newIdentifikator)
       onIdentifikatorerChanged(newIdentifikatorer, 'add')
-      resetValidation(namespace)
       resetForm()
     }
   }

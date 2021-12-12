@@ -91,10 +91,10 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
     }
   }
 
-  const setOrdinaerAdresse = (newAdresse: IAdresse) => {
+  const setOrdinaerAdresse = (newAdresse: IAdresse, type: string | undefined) => {
     dispatch(updateReplySed(`${target}.kontoOrdinaer.adresse`, newAdresse))
-    if (validation[namespace + '-kontoOrdinaer-adresse']) {
-      dispatch(resetValidation(namespace + '-kontoOrdinaer-adresse'))
+    if (type && validation[namespace + '-kontoOrdinaer-adresse-' + type]) {
+      dispatch(resetValidation(namespace + '-kontoOrdinaer-adresse-' + type))
     }
   }
 
@@ -250,11 +250,6 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             onAdressChanged={setOrdinaerAdresse}
             namespace={namespace + '-kontoOrdinaer'}
             validation={validation}
-            resetValidation={(fullNamespace) => {
-              if (validation[fullNamespace]) {
-                dispatch(resetValidation(fullNamespace))
-              }
-            }}
           />
         </>
       )}

@@ -1,1 +1,5 @@
-export default { success: true }
+export default {
+  journalpostId: '123',
+  journalstatus: '?',
+  melding: '?'
+}

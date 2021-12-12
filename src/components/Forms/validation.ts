@@ -32,9 +32,7 @@ export const validatePeriode = (
   if (mandatoryStartdato && _.isEmpty(periode?.startdato?.trim())) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
-      feilmelding: personName
-        ? t('validation:noDateTil', { person: personName })
-        : t('validation:noDate')
+      feilmelding: t('validation:noDate') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }
@@ -42,9 +40,7 @@ export const validatePeriode = (
   if (!_.isEmpty(periode?.startdato?.trim()) && !(periode.startdato!.trim().match(datePattern))) {
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
-      feilmelding: personName
-        ? t('validation:invalidDateTil', { person: personName })
-        : t('validation:invalidDate')
+      feilmelding: t('validation:invalidDate') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }
@@ -52,9 +48,7 @@ export const validatePeriode = (
   if (!_.isEmpty(periode?.sluttdato?.trim()) && !(periode.sluttdato!.trim().match(datePattern))) {
     v[namespace + idx + '-sluttdato'] = {
       skjemaelementId: namespace + idx + '-sluttdato',
-      feilmelding: personName
-        ? t('validation:invalidDateTil', { person: personName })
-        : t('validation:invalidDate')
+      feilmelding: t('validation:invalidDate') + personName ? t('validation:til-person', { person: personName }) : ''
     } as ErrorElement
     hasErrors = true
   }

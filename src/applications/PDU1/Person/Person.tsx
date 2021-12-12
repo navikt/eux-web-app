@@ -1,40 +1,31 @@
-import { Add, Search } from '@navikt/ds-icons'
-import { BodyLong, Button, Label, Heading, Loader } from '@navikt/ds-react'
+import { Search } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Person as IPerson } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
-import useValidation from 'hooks/useValidation'
-import { Country, CountryFilter } from 'land-verktoy'
-import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
+import { buttonLogger } from 'metrics/loggers'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
   FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedDiv,
   PaddedHorizontallyDiv,
   RadioPanel,
   RadioPanelGroup,
-  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { getIdx } from 'utils/namespace'
-import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
+import UtenlandskPins from './UtenlandskPins/UtenlandskPins'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -62,13 +53,6 @@ const Person: React.FC<PersonManagerFormProps> = ({
   const target: string = 'bruker'
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-person`
-  const landUtenNorge = CountryFilter.STANDARD?.filter((it: string) => it !== 'NO')
-  const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
-
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((p: string): string => p)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
 
   const onFnrChange = (newFnr: string) => {
     dispatch(updateReplySed(`${target}.fnr`, newFnr.trim()))
@@ -112,67 +96,10 @@ const Person: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
-    if (index < 0) {
-      _setNewIdentifikator(newIdentifikator.trim())
-      _resetValidation(namespace + '-utenlandskepin-identifikator')
-    } else {
-      dispatch(updateReplySed(`${target}.pin[${index}].identifikator`, newIdentifikator.trim()))
-      if (validation[namespace + '-utenlandskepin' + getIdx(index) + '-identifikator']) {
-        dispatch(resetValidation('-utenlandskepin' + getIdx(index) + '-identifikator'))
-      }
-    }
-  }
-
-  const onUtenlandskeLandChange = (newLand: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(newLand.trim())
-      _resetValidation(namespace + '-utenlandskepin-land')
-    } else {
-      dispatch(updateReplySed(`${target}.pin[${index}].land`, newLand))
-      if (validation[namespace + '-utenlandskepin' + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + '-utenlandskepin' + getIdx(index) + '-land'))
-      }
-    }
-  }
-
-  const onRemove = (index: number) => {
-    const newUtenlandskePin: Array<string> = _.cloneDeep(pdu1Person?.utenlandskePin) as Array<string>
-    const deletedUtenlandskePin: Array<string> = newUtenlandskePin.splice(index, 1)
-    if (deletedUtenlandskePin && deletedUtenlandskePin.length > 0) {
-      removeFromDeletion(deletedUtenlandskePin[0])
-    }
-    standardLogger('pdu1.editor.person.utenlandskpin.remove')
-    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskePin))
-  }
-
-  const resetForm = () => {
-    _setNewIdentifikator('')
-    _setNewLand('')
-    _resetValidation()
-  }
-
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
-
-  const onAdd = () => {
-    const valid: boolean = performValidation({
-      land: _newLand,
-      identifikator: _newIdentifikator,
-      utenlandskePins: pdu1Person?.utenlandskePin ?? [],
-      namespace: namespace + '-utenlandskepin'
-    })
-    if (valid) {
-      let newUtenlandskePins: Array<string> = _.cloneDeep(pdu1Person?.utenlandskePin) as Array<string>
-      if (_.isNil(newUtenlandskePins)) {
-        newUtenlandskePins = []
-      }
-      newUtenlandskePins = newUtenlandskePins.concat(_newLand + ' ' + _newIdentifikator)
-      dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskePins))
-      standardLogger('pdu1.editor.person.utenlandskpin.add')
-      onCancel()
+  const onUtenlandskPinChange = (newUtenlandskPins: Array<string>, whatChanged: string | undefined) => {
+    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins))
+    if (whatChanged && validation[whatChanged]) {
+      dispatch(resetValidation(whatChanged))
     }
   }
 
@@ -191,65 +118,6 @@ const Person: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const renderRow = (utenlandskePin: string | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(utenlandskePin)
-    const els = utenlandskePin?.split(/\s+/)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-utenlandskepin-' + el]?.feilmelding
-        : validation[namespace + '-utenlandskepin' + idx + '-' + el]?.feilmelding
-    )
-
-    return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
-          <Column>
-            <Input
-              error={getErrorFor(index, 'identifikator')}
-              id='identifikator'
-              key={namespace + '-utenlandskepin' + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : els?.[1])}
-              label={t('label:utenlandsk-pin')}
-              hideLabel
-              namespace={namespace + '-utenlandskepin'}
-              onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
-              value={index < 0 ? _newIdentifikator : els?.[1]}
-            />
-          </Column>
-          <Column>
-            <CountrySelect
-              closeMenuOnSelect
-              data-test-id={namespace + '-utenlandskepin' + idx + '-land'}
-              error={getErrorFor(index, 'land')}
-              flagWave
-              id={namespace + '-utenlandskepin' + idx + '-land'}
-              includeList={landUtenNorge}
-              hideLabel
-              key={namespace + '-utenlandskepin' + idx + '-land-' + (index < 0 ? _newLand : els?.[0])}
-              label={t('label:land')}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => onUtenlandskeLandChange(e.value, index)}
-              values={index < 0 ? _newLand : els?.[0]}
-            />
-          </Column>
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              onBeginRemove={() => addToDeletion(utenlandskePin)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(utenlandskePin)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </RepeatableRow>
-    )
-  }
   return (
     <div key={namespace + '-div'}>
       <VerticalSeparatorDiv />
@@ -403,56 +271,12 @@ const Person: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv />
       </PaddedHorizontallyDiv>
-      {_.isEmpty(pdu1Person?.utenlandskePin)
-        ? (
-          <PaddedDiv>
-            <BodyLong>
-              {t('message:warning-no-utenlandskepin')}
-            </BodyLong>
-          </PaddedDiv>
-          )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:utenlandsk-pin')}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:land')}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {pdu1Person?.utenlandskePin?.map(renderRow)}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Row>
-              <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                </Button>
-              </Column>
-            </Row>
-          </PaddedDiv>
-          )}
+      <UtenlandskPins
+        pins={pdu1Person?.utenlandskePin}
+        onPinsChanged={onUtenlandskPinChange}
+        namespace={namespace + '-utenlandskePin'}
+        validation={validation}
+      />
     </div>
   )
 }
