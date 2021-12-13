@@ -78,7 +78,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Heading size='medium'>
-        {t('label:siste-ansettelse-info')}
+        {t('label:utbetaling')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>

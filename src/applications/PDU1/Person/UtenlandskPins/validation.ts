@@ -74,4 +74,3 @@ export const validateUtenlandskPins = (
   }) ?? []
   return hasErrors.find(value => value) !== undefined
 }
-

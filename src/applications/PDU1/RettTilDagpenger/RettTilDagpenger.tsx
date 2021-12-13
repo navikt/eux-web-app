@@ -5,7 +5,7 @@ import Input from 'components/Forms/Input'
 import { IkkeRettTilDagpenger, ReplyPdu1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { AlignStartRow, Column, FlexCenterDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, FlexEndDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -146,7 +146,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
-          <FlexCenterDiv>
+          <FlexEndDiv>
             <PaddedDiv size='0.5'>
               {t('label:for-perioden-fra')}
             </PaddedDiv>
@@ -171,7 +171,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
               onChanged={onSluttdatoChange}
               value={rettTilDagpenger?.sluttdato}
             />
-          </FlexCenterDiv>
+          </FlexEndDiv>
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

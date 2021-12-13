@@ -28,7 +28,7 @@ const NavInfoFC: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = 'nav'
   const nav: NavInfo = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-nav`
+  const namespace = `${parentNamespace}-${personID}-navinfo`
 
   const setEnhetNavn = (enhetNavn: string) => {
     dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn))
@@ -130,6 +130,7 @@ export interface NavInfo {
           <AdresseForm
             type={false}
             options={{ bygning: false, region: false }}
+            required={['gate', 'postnummer', 'by', 'land']}
             namespace={namespace + '-adresse'}
             validation={validation}
             adresse={nav?.adresse}

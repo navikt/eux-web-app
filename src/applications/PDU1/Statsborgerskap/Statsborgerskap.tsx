@@ -123,6 +123,8 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
               flagWave
               key={namespace + idx + '-statsborgerskap' + (index < 0 ? newStatsborgerskap : statsborgerskap)}
               id={namespace + idx + '-statsborgerskap'}
+              label={t('label:land')}
+              hideLabel={index >= 0}
               includeList={CountryFilter.STANDARD}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
@@ -134,7 +136,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop={false}
+              marginTop={index < 0}
               onBeginRemove={() => addToDeletion(statsborgerskap)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(statsborgerskap)}

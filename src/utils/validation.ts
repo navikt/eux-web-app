@@ -7,7 +7,7 @@ export const addError = (v: Validation, {
   id,
   personName,
   message,
-  extra = {},
+  extra = {}
 }: any) => {
   v[id] = {
     feilmelding: i18n.t(message, extra) + (personName ? i18n.t('validation:til-person', { person: personName }) : ''),
@@ -23,7 +23,7 @@ export const checkIfNotEmpty = (v: Validation, {
   extra
 }: any): boolean => {
   if (_.isEmpty(needle?.trim())) {
-    addError(v, {id, personName, message, extra})
+    addError(v, { id, personName, message, extra })
     return true
   }
   return false
@@ -48,7 +48,7 @@ export const checkIfDuplicate = (v: Validation, {
       duplicate = _.find(otherHaystack, matchFn) !== undefined
     }
     if (duplicate) {
-      addError(v, {id, personName, message, extra})
+      addError(v, { id, personName, message, extra })
       return true
     }
   }
@@ -64,7 +64,7 @@ export const propagateError = (v: Validation, namespace: string) => {
   if (categoryNamespace.indexOf('[') >= 0) {
     categoryNamespace = categoryNamespace.substring(0, categoryNamespace.indexOf('['))
   }
-  v[mainNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as ErrorElement
-  v[personNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as ErrorElement
-  v[categoryNamespace] = {feilmelding: 'notnull', skjemaelementId: ''} as ErrorElement
+  v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+  v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
+  v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
 }

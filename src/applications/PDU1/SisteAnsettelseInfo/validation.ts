@@ -16,7 +16,7 @@ export const validateSisteAnsettelseinfo = (
     namespace
   }: SisteAnsettelseinfoProps
 ): boolean => {
-  let hasErrors: Array<boolean> = []
+  const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,

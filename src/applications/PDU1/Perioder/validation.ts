@@ -103,7 +103,7 @@ export const validatePDPerioder = (
       type,
       index,
       namespace: namespace + '[' + type + ']'
-  })) ?? []
+    })) ?? []
 
   if (type === 'perioderAnsattMedForsikring' || type === 'perioderSelvstendigMedForsikring') {
     if (perioder && perioder.length > 7) {
@@ -144,7 +144,6 @@ export const validatePDPerioder = (
       hasErrors.push(true)
     }
   }
-
 
   return hasErrors.find(value => value) !== undefined
 }

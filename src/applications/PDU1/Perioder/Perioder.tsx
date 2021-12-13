@@ -347,7 +347,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedType)?.type ?? ''}
               />
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
         )}
         {_type === 'perioderAnsettSomForsikret' && (
@@ -364,7 +364,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? ''}
               />
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
         )}
         {_type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
@@ -381,7 +381,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? ''}
               />
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
         )}
         {_type && ['perioderLoennSomAnsatt', 'perioderInntektSomSelvstendig'].indexOf(_type) >= 0 && (
@@ -398,7 +398,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedLoenn)?.loenn ?? ''}
               />
             </Column>
-            <Column/>
+            <Column />
           </AlignStartRow>
         )}
         {index < 0 && (
@@ -422,8 +422,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
 
   return (
     <div key={namespace + '-div'}>
-      <VerticalSeparatorDiv />
-      <PaddedHorizontallyDiv>
+      <PaddedDiv>
         <Heading size='medium'>
           {t('label:perioder')}
         </Heading>
@@ -439,7 +438,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-      </PaddedHorizontallyDiv>
+      </PaddedDiv>
       {_.isEmpty(_allPeriods)
         ? (
           <PaddedDiv>

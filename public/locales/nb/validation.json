@@ -46,6 +46,9 @@
   "noDokumentID": "Du må taste inn en dokumentID",
 
   "noEpost": "Du må taste inn epost adresse",
+  "noEnhet": "Du må taste inn enhet",
+  "noEnhetId": "Du må taste inn enhets id",
+  "noEnhetNavn": "Du må taste inn enhets navn",
   "noEtternavn": "Ingen etternavn",
 
   "noFeriedagerTilGode": "Du må taste inn feriedager",
@@ -98,9 +101,11 @@
   "noSaksnummerOrFnr": "Ingen saksnummer eller f.nr./d.nr.",
   "noSedtype": "Du må velge sedtype",
   "noSektor": "Du må velge sektor",
+  "noSisteNavKontor": "Du må skrive inn siste NAV kontor",
   "noSkalYtelseUtbetales": "Inken svar om ytelse utbetales",
   "noSvarType": "Ingen svar type eller tomme felt",
   "noStartdato": "Ingen startdato",
+  "noSluttdato": "Ingen sluttdato",
   "noSwift": "Ingen SWIFT",
 
   "noTelephoneNumber": "Du må taste inn en telefonnummer",

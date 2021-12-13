@@ -27,7 +27,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { validateDagpenger, ValidationDagpengerProps } from './validation'
+import { validateDagpengerPeriode, ValidationDagpengerPeriodeProps } from './validation'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
@@ -35,6 +35,7 @@ const mapState = (state: State): PersonManagerFormSelector => ({
 
 const Dagpenger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
+  personID,
   replySed,
   updateReplySed
 }: PersonManagerFormProps): JSX.Element => {
@@ -43,14 +44,14 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target: string = 'perioderDagpengerMottatt'
   const perioderDagpengerMottatt: DagpengerMottatt | undefined = _.get(replySed, target)
-  const namespace: string = `${parentNamespace}-perioderDagpengerMottatt`
+  const namespace: string = `${parentNamespace}-${personID}-dagpenger`
 
   const [_newStartdato, _setNewStartdato] = useState<string |undefined>(undefined)
   const [_newSluttdato, _setNewSluttdato] = useState<string |undefined>(undefined)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? ''))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationDagpengerProps>({}, validateDagpenger)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationDagpengerPeriodeProps>({}, validateDagpengerPeriode)
 
   const onStartdatoChange = (newStartdato: string, index: number) => {
     if (index < 0) {
@@ -166,10 +167,10 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               ariaLabel={t('label:startdato')}
               error={getErrorFor(index, 'startdato')}
               id='startdato'
-              key={namespace + '-startdato-' + startdato}
+              key={namespace + '-perioder' + idx + '-startdato-' + startdato}
               hideLabel={index >= 0}
               label={t('label:startdato')}
-              namespace={namespace}
+              namespace={namespace + '-perioder' + idx}
               onChanged={(e: string) => onStartdatoChange(e, index)}
               value={startdato}
             />
@@ -179,10 +180,10 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               ariaLabel={t('label:sluttdato')}
               error={getErrorFor(index, 'sluttdato')}
               id='sluttdato'
-              key={namespace + '-sluttdato-' + sluttdato}
+              key={namespace + '-perioder' + idx + '-sluttdato-' + sluttdato}
               hideLabel={index >= 0}
               label={t('label:sluttdato')}
-              namespace={namespace}
+              namespace={namespace + '-perioder' + idx}
               onChanged={(e: string) => onSluttdatoChange(e, index)}
               value={sluttdato}
             />
@@ -190,7 +191,8 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
+              existingItem={index >= 0}
+              marginTop={index < 0}
               onBeginRemove={() => addToDeletion(p)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(p)}
@@ -205,64 +207,64 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
   }
   return (
     <div key={namespace + '-div'}>
-      <VerticalSeparatorDiv />
-      <PaddedHorizontallyDiv>
+      <PaddedDiv>
         <Heading size='medium'>
           {t('label:dagpenger')}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
+        <VerticalSeparatorDiv />
         <Heading size='small'>
           {t('label:perioder')}
         </Heading>
-        <VerticalSeparatorDiv />
-        {_.isEmpty(perioderDagpengerMottatt?.perioder)
-          ? (
-            <PaddedDiv>
-              <BodyLong>
-                {t('message:warning-no-periods')}
-              </BodyLong>
-            </PaddedDiv>
-            )
-          : (
-            <>
-              <PaddedHorizontallyDiv>
-                <AlignStartRow>
-                  <Column>
-                    <Label>
-                      {t('label:startdato')}
-                    </Label>
-                  </Column>
-                  <Column>
-                    <Label>
-                      {t('label:sluttdato')}
-                    </Label>
-                  </Column>
-                  <Column />
-                </AlignStartRow>
-              </PaddedHorizontallyDiv>
-              <VerticalSeparatorDiv size='0.8' />
-              {perioderDagpengerMottatt?.perioder?.map(renderRow)}
-            </>
-            )}
-        {_seeNewForm
-          ? renderRow(null, -1)
-          : (
-            <PaddedDiv>
-              <Row>
+      </PaddedDiv>
+      {_.isEmpty(perioderDagpengerMottatt?.perioder)
+        ? (
+          <PaddedDiv>
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+          </PaddedDiv>
+          )
+        : (
+          <>
+            <PaddedHorizontallyDiv>
+              <AlignStartRow>
                 <Column>
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <Add />
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                  </Button>
+                  <Label>
+                    {t('label:startdato')}
+                  </Label>
                 </Column>
-              </Row>
-            </PaddedDiv>
-            )}
-        <VerticalSeparatorDiv size='2' />
+                <Column>
+                  <Label>
+                    {t('label:sluttdato')}
+                  </Label>
+                </Column>
+                <Column />
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8' />
+            {perioderDagpengerMottatt?.perioder?.map(renderRow)}
+          </>
+          )}
+      {_seeNewForm
+        ? renderRow(null, -1)
+        : (
+          <PaddedDiv>
+            <Row>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                </Button>
+              </Column>
+            </Row>
+          </PaddedDiv>
+          )}
+      <PaddedHorizontallyDiv>
+        <VerticalSeparatorDiv />
         <Heading size='medium'>
           {t('label:nav')}
         </Heading>
@@ -270,11 +272,11 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow>
           <Column>
             <Input
-              error={validation[namespace + '-sisteNavKontor']?.feilmelding}
+              error={validation[namespace + '-sisteUtbetaler-sisteNavKontor']?.feilmelding}
               id='sisteNavKontor'
-              key={namespace + '-sisteNavKontor-' + (perioderDagpengerMottatt?.sisteUtbetaler.sisteNavKontor ?? '')}
+              key={namespace + '-sisteUtbetaler-sisteNavKontor-' + (perioderDagpengerMottatt?.sisteUtbetaler.sisteNavKontor ?? '')}
               label={t('label:siste-nav-kontor') + ' *'}
-              namespace={namespace}
+              namespace={namespace + '-sisteUtbetaler'}
               onChanged={onSisteNavKontorChange}
               required
               value={perioderDagpengerMottatt?.sisteUtbetaler.sisteNavKontor}
@@ -282,11 +284,11 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <Input
-              error={validation[namespace + '-identifikasjonsnummer']?.feilmelding}
-              id='identifikasjonsnummer'
-              key={namespace + '-identifikasjonsnummer-' + (perioderDagpengerMottatt?.sisteUtbetaler.id ?? '')}
+              error={validation[namespace + '-sisteUtbetaler-id']?.feilmelding}
+              id='id'
+              key={namespace + '-sisteUtbetaler-id-' + (perioderDagpengerMottatt?.sisteUtbetaler.id ?? '')}
               label={t('label:identifikasjonsnummer') + ' *'}
-              namespace={namespace}
+              namespace={namespace + '-sisteUtbetaler'}
               onChanged={onIdChange}
               required
               value={perioderDagpengerMottatt?.sisteUtbetaler.id ?? ''}
@@ -294,11 +296,11 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <Input
-              error={validation[namespace + '-navn']?.feilmelding}
+              error={validation[namespace + '-sisteUtbetaler-navn']?.feilmelding}
               id='navn'
-              key={namespace + '-navn-' + (perioderDagpengerMottatt?.sisteUtbetaler?.navn ?? '')}
+              key={namespace + '-sisteUtbetaler-navn-' + (perioderDagpengerMottatt?.sisteUtbetaler?.navn ?? '')}
               label={t('label:navn') + ' *'}
-              namespace={namespace}
+              namespace={namespace + '-sisteUtbetaler'}
               onChanged={onNavnChange}
               required
               value={perioderDagpengerMottatt?.sisteUtbetaler?.navn ?? ''}
@@ -309,8 +311,8 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
         <AlignStartRow>
           <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
-        <Heading size='small'>
+        <VerticalSeparatorDiv />
+        <Heading size='medium'>
           {t('label:adresse')}
         </Heading>
         <VerticalSeparatorDiv size='2' />
@@ -319,6 +321,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
             <AdresseForm
               type={false}
               options={{ bygning: false, region: false }}
+              required={['gate', 'postnummer', 'by', 'land']}
               namespace={namespace + '-adresse'}
               validation={validation}
               adresse={perioderDagpengerMottatt?.sisteUtbetaler?.adresse}
