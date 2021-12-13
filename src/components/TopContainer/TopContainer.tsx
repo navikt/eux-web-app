@@ -29,7 +29,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--navds-color-text-primary);
-  background: var(--navds-color-background);
+  background: var(--navds-semantic-color-canvas-background);
   display: flex;
   flex-direction: column;
   min-height: 100vh;

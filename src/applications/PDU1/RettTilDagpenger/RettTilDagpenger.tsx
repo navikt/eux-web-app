@@ -104,7 +104,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={rettTilDagpengerCheckbox}
             data-test-id={namespace + '-rettTilDagpengerCheckbox'}
-            error={validation[namespace + '-rettTilDagpengerCheckbox']?.feilmelding}
+            error={!!validation[namespace + '-rettTilDagpengerCheckbox']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onRettTilDagpengerCheckboxChange(e.target.checked)
             }}
@@ -119,7 +119,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
             data-test-id={namespace + '-ihhTilArtikkel64'}
-            error={validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
+            error={!!validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onIhhTilArtikkel64Change(e.target.checked)
             }}
@@ -134,7 +134,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={rettTilDagpenger?.ihhTilArtikkel65 === 'ja'}
             data-test-id={namespace + '-ihhTilArtikkel65'}
-            error={validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
+            error={!!validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onIhhTilArtikkel65Change(e.target.checked)
             }}
@@ -180,7 +180,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={ikkeRettTilDagpengerCheckbox}
             data-test-id={namespace + '-ikkeRettTilDagpengerCheckbox'}
-            error={validation[namespace + '-ikkeRettTilDagpengerCheckbox']?.feilmelding}
+            error={!!validation[namespace + '-ikkeRettTilDagpengerCheckbox']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onIkkeRettTilDagpengerCheckboxChange(e.target.checked)
             }}
@@ -195,7 +195,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
             data-test-id={namespace + '-ihhTilLovgivning'}
-            error={validation[namespace + '-ihhTilLovgivning']?.feilmelding}
+            error={!!validation[namespace + '-ihhTilLovgivning']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onIhhTilLovgivningChange(e.target.checked)
             }}
@@ -210,7 +210,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={ikkeRettTilDagpenger?.ikkeSoekt === 'ja'}
             data-test-id={namespace + '-ikkeSoekt'}
-            error={validation[namespace + '-ikkeSoekt']?.feilmelding}
+            error={!!validation[namespace + '-ikkeSoekt']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               onIkkeSoektChange(e.target.checked)
             }}

@@ -15,6 +15,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
     <div data-test-id={props['data-test-id'] || props.id} style={props.style}>
       {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}</label>)}
       <ReactSelect
+        placeholder=''
         inputId={props.id}
         className={classNames({ 'navds-error-message navds-error-message--medium': !!props.error })}
         isOptionDisabled={(option: any) => option.isDisabled}
@@ -29,14 +30,14 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             minHeight: '48px',
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: props.error ? 'var(--navds-color-text-error)' : 'var(--navds-text-field-color-border)',
-            borderRadius: 'var(--navds-border-radius)',
+            borderColor: props.error ? 'var(--navds-select-color-border-error)' : 'var(--navds-select-color-border)',
+            borderRadius: '4px',
             color: 'var(--navds-color-text-primary)',
-            backgroundColor: isDisabled ? 'var(--navds-color-disabled)' : 'var(--navds-color-background)'
+            backgroundColor: isDisabled ? 'var(--navds-semantic-color-component-background-alternate)' : 'var(--navds-select-color-background)'
           }),
           indicatorSeparator: (styles: any) => ({
             ...styles,
-            backgroundColor: 'var(--navds-text-field-color-border)'
+            backgroundColor: 'var(--navds-select-color-border)'
           }),
           menu: (styles: any) => ({
             ...styles,
@@ -46,30 +47,24 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             ...styles,
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'var(--navds-text-field-color-border)',
+            borderColor: 'var(--navds-select-color-border)',
             backgroundColor: 'var(--navds-semantic-color-component-background-alternate)'
           }),
           option: (styles: any, { isDisabled, isFocused, isSelected }) => ({
             ...styles,
             color: isFocused
-              ? 'var(--navds-color-text-inverse)'
+              ? 'var(--navds-semantic-color-text-inverted)'
               : isSelected
-                ? 'var(--navds-color-text-inverse)'
-                : 'var(--navds-color-text-primary)',
+                ? 'var(--navds-semantic-color-text-inverted)'
+                : 'var(--navds-semantic-color-text-primary)',
             backgroundColor: isFocused
               ? 'var(--navds-semantic-color-focus)'
               : isSelected
-                ? 'var(--navds-semantic-color-interaction-primary-default)'
+                ? 'var(--navds-semantic-color-interaction-primary)'
                 : isDisabled
-                  ? 'var(--navds-color-disabled)'
-                  : 'var(--navds-semantic-color-component-background-alternate)'
+                  ? 'var(--navds-semantic-color-component-background-alternate)'
+                  : 'var(--navds-select-color-background)'
           }),
-          placeholder: (styles: any) => {
-            return {
-              ...styles,
-              color: 'var(--navds-color-disabled)'
-            }
-          },
           singleValue: (styles: any) => ({
             ...styles,
             color: 'var(--navds-color-text-primary)'

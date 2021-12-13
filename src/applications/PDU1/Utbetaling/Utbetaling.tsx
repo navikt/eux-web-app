@@ -86,7 +86,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={utbetalingEtterEndtArbeidsforholdCheckbox}
             data-test-id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
-            error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
+            error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (!e.target.checked) {
                 setUtbetalingEtterEndtArbeidsforhold('')
@@ -120,7 +120,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={kompensasjonForEndtArbeidsforholdCheckbox}
             data-test-id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
-            error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
+            error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
             // id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             // key={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox' + kompensasjonForEndtArbeidsforholdCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +155,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={kompensasjonForFeriedagerCheckbox}
             data-test-id={namespace + '-kompensasjonForFeriedagerCheckbox'}
-            error={validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
+            error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (!e.target.checked) {
                 setKompensasjonForFeriedagerAntallDager('')
@@ -210,7 +210,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={avkallKompensasjonBegrunnelseCheckbox}
             data-test-id={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
-            error={validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
+            error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
             // id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             // key={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox' + kompensasjonForEndtArbeidsforholdCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -245,7 +245,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
           <Checkbox
             checked={andreYtelserSomMottaForTidenCheckbox}
             data-test-id={namespace + '-andreYtelserSomMottaForTidenCheckbox'}
-            error={validation[namespace + '-andreYtelserSomMottaForTidenCheckbox']?.feilmelding}
+            error={!!validation[namespace + '-andreYtelserSomMottaForTidenCheckbox']?.feilmelding}
             // id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             // key={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox' + kompensasjonForEndtArbeidsforholdCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

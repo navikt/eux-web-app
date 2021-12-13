@@ -32,13 +32,13 @@ const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid var(--navds-color-border);
+  border-right: 1px solid var(--navds-semantic-color-border);
   border-width: 1px;
   border-style: solid;
-  border-color: var(--navds-color-border);
+  border-color: var(--navds-semantic-color-border);
   background-color: var(--navds-semantic-color-component-background-alternate);
-  border-top-left-radius: var(--navds-border-radius);
-  border-bottom-left-radius: var(--navds-border-radius);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 `
 const MenuDiv = styled.div`
   display: flex;
@@ -53,17 +53,17 @@ const MenuLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
-   background-color: var(--navds-color-hover);
+   background-color: var(--navds-semantic-color-interaction-primary-hover);
   }
    &.selected {
     font-weight: bold;
     background-color: var(--navds-semantic-color-component-background-alternate);
-     border-left: 6px solid var(--navds-semantic-color-interaction-primary-default);
+     border-left: 6px solid var(--navds-semantic-color-interaction-primary);
   }
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid var(--navds-color-border);
+  border-left: 1px solid var(--navds-semantic-color-border);
   margin-left: -1px;
   align-self: stretch;
   position: relative;
@@ -73,10 +73,10 @@ const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
   border-left-width: 0;
-  border-color: var(--navds-color-border);
+  border-color: var(--navds-semantic-color-border);
   background-color: var(--navds-semantic-color-component-background-alternate);
-  border-top-right-radius: var(--navds-border-radius);
-  border-bottom-right-radius: var(--navds-border-radius);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
   background-color: var(--navds-semantic-color-component-background-alternate);
   height: 100%;
 `

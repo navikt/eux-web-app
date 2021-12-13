@@ -15,7 +15,7 @@ import { cleanData } from 'actions/app'
 const HeaderContent = styled.header<{highContrast: boolean}>`
   background-color: ${({ highContrast }) => highContrast
   ? 'var(--navds-semantic-color-component-background-alternate)'
-  : 'var(--navds-color-blue-20)'};
+  : 'var(--navds-global-color-blue-200)'};
   color: var(--navds-color-text-primary);
   display: flex;
   flex-direction: row;
@@ -30,7 +30,7 @@ const Brand = styled.div`
   margin-left: 1rem;
 `
 const Skillelinje = styled.div`
-  border-left: 1px solid var(--navds-color-border);
+  border-left: 1px solid var(--navds-semantic-color-border);
   display: flex;
   height: 30px;
   margin-left: 1rem;

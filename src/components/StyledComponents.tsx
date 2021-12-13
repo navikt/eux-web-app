@@ -12,10 +12,10 @@ export const FadingLineSeparator = styled.div`
    border-left-style: solid;
    border-image: linear-gradient(
     to bottom,
-     var(--navds-color-background) 0%,
-     var(--navds-color-border) 5%,
-     var(--navds-color-border) 95%,
-     var(--navds-color-background) 100%
+     var(--navds-semantic-color-canvas-background) 0%,
+     var(--navds-semantic-color-border) 5%,
+     var(--navds-semantic-color-border) 95%,
+     var(--navds-semantic-color-canvas-background) 100%
     ) 1 100%;
    opacity: 0;
    &.fadeIn {
@@ -30,10 +30,10 @@ export const FadingLineSeparator = styled.div`
 export const HorizontalLineSeparator = styled.div`
   height: 1px;
   background: linear-gradient(90deg,
-    var(--navds-color-background) 0%,
-    var(--navds-color-border) 5%,
-    var(--navds-color-border) 95%,
-    var(--navds-color-background) 100%
+    var(--navds-semantic-color-canvas-background) 0%,
+    var(--navds-semantic-color-border) 5%,
+    var(--navds-semantic-color-border) 95%,
+    var(--navds-semantic-color-canvas-background) 100%
   );
   width: 100%;
 `
@@ -71,7 +71,7 @@ export const MyTag = styled(Tag)`
   margin-left: -0.15rem;
   color:var(--navds-color-text-primary) !important;
   background-color: var(--navds-semantic-color-component-background-alternate);
-  border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-color-border)' : 'none'};
+  border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-semantic-color-border)' : 'none'};
   border-radius: 5px;
   display: inline-block;
 `
@@ -80,7 +80,7 @@ export const WithErrorPanel = styled(Panel)`
   padding: 0rem;
   background-color: transparent;
   &.error {
-    border-color: var(--navds-color-error-border);
+    border-color: var(--navds-select-color-border-error);
     border-width: 3px;
     .left, .right {
        border: none;
@@ -128,7 +128,7 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
     background-color: rgba(236, 243, 153, 0.5);
   };
   &:hover:not(.new) {
-    background-color: var(--navds-color-gray-20);
+    background-color: var(--navds-global-color-gray-200);
   }
 `
 
