@@ -55,16 +55,6 @@ export interface AndreMottatteUtbetalinger {
   andreYtelserSomMottaForTiden: string // 4.5
 }
 
-export interface DagpengerMottatt {
-  perioder: Array<Periode> // 5.1
-  sisteUtbetaler: {
-    sisteNavKontor: string // 5.2
-    navn: string // 5.4
-    id: string // 5.3
-    adresse: Adresse // 5.5
-  }
-}
-
 export interface RettTilDagpenger {
   startdato: string
   sluttdato: string
@@ -92,9 +82,9 @@ export interface ReplyPdu1 {
   perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // Perioder 2.2.2
   perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // Perioder 2.3.1
   perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // Perioder 2.3.2
-  sisteAnsettelseInfo: GrunnTilOpphør // SisteAnsettelseInfo => 3
+  opphoer: GrunnTilOpphør // SisteAnsettelseInfo => 3
   andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
-  perioderDagpengerMottatt: DagpengerMottatt // Dagpenger => 5
+  perioderDagpengerMottatt: Array<Periode> // Dagpenger => 5
   rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6
   ikkeRettTilDagpenger?: IkkeRettTilDagpenger // RettTilDagpenger => 6
 }

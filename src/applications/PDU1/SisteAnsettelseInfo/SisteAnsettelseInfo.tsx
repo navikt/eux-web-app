@@ -25,7 +25,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = 'sisteAnsettelseInfo'
+  const target = 'opphoer'
   const sisteAnsettelseInfo: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-sisteAnsettelseInfo`
 

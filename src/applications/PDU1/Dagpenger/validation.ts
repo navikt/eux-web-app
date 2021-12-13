@@ -1,10 +1,8 @@
-import { DagpengerMottatt } from 'declarations/pd'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty, propagateError } from 'utils/validation'
-import { validateAdresse } from '../Adresse/validation'
 
 export interface ValidationDagpengerPeriodeProps {
   startdato: string | undefined
@@ -14,7 +12,7 @@ export interface ValidationDagpengerPeriodeProps {
 }
 
 export interface ValidationDagpengerProps {
-  dagpenger: DagpengerMottatt
+  dagpenger: Array<Periode> | undefined
   namespace: string
 }
 
@@ -56,7 +54,7 @@ export const validateDagpenger = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  dagpenger?.perioder?.forEach((periode: Periode, index: number) => {
+  dagpenger?.forEach((periode: Periode, index: number) => {
     hasErrors.push(validateDagpengerPeriode(v, t, {
       startdato: periode.startdato,
       sluttdato: periode.sluttdato,
@@ -65,7 +63,7 @@ export const validateDagpenger = (
     }))
   })
 
-  if (dagpenger?.perioder && dagpenger.perioder.length > 3) {
+  if (dagpenger && dagpenger.length > 3) {
     addError(v, {
       id: namespace + '-generic',
       message: 'validation:tooManyPeriodsMaxIs',
@@ -76,35 +74,6 @@ export const validateDagpenger = (
     })
     hasErrors.push(true)
   }
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: dagpenger?.sisteUtbetaler?.sisteNavKontor,
-    id: namespace + '-sisteUtbetaler-sisteNavKontor',
-    message: 'validation:noSisteNavKontor'
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: dagpenger?.sisteUtbetaler?.id,
-    id: namespace + '-sisteUtbetaler-id',
-    message: 'validation:noId'
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: dagpenger?.sisteUtbetaler?.navn,
-    id: namespace + '-sisteUtbetaler-navn',
-    message: 'validation:noNavn'
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: dagpenger?.sisteUtbetaler?.navn,
-    id: namespace + '-sisteUtbetaler-navn',
-    message: 'validation:noNavn'
-  }))
-
-  hasErrors.push(validateAdresse(v, t, {
-    namespace: namespace + '-adresse',
-    adresse: dagpenger?.sisteUtbetaler?.adresse
-  }))
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)

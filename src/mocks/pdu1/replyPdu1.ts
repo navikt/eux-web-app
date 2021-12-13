@@ -34,6 +34,7 @@ export default {
       enhet: 'Nav Eessi'
     }
   },
+  info: 'melding',
   perioderAnsattMedForsikring: [
     {
       startdato: '2001-01-01',
@@ -131,7 +132,7 @@ export default {
       begrunnelse: 'Under utdanning'
     }
   ],
-  sisteAnsettelseInfo: {
+  opphoer: {
     typeGrunnOpphoerAnsatt: 'oppsagt_av_arbeidsgiver',
     annenGrunnOpphoerAnsatt: 'æøå',
     annenGrunnOpphoerSelvstendig: 'æøå'
@@ -160,29 +161,16 @@ export default {
     avkallKompensasjonBegrunnelse: 'Hadde glemt det',
     andreYtelserSomMottaForTiden: 'Lett lufting'
   },
-  perioderDagpengerMottatt: {
-    sisteUtbetaler: {
-      sisteNavKontor: 'Nav Randen',
-      navn: 'Nav kontoret',
-      id: 'NAV08-01',
-      adresse: {
-        gate: 'Navgata 1',
-        postnr: '0000',
-        poststed: 'Naveren',
-        land: 'NO'
-      }
+  perioderDagpengerMottatt: [
+    {
+      startdato: '2011-01-01',
+      sluttdato: '2012-02-02'
     },
-    perioder: [
-      {
-        startdato: '2011-01-01',
-        sluttdato: '2012-02-02'
-      },
-      {
-        startdato: '2013-03-03',
-        sluttdato: '2014-04-04'
-      }
-    ]
-  },
+    {
+      startdato: '2013-03-03',
+      sluttdato: '2014-04-04'
+    }
+  ],
   rettTilDagpenger: {
     startdato: '2013-03-03',
     sluttdato: '2014-04-04',
