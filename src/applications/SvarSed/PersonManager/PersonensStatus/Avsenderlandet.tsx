@@ -110,7 +110,7 @@ const Avsenderlandet: React.FC<PersonManagerFormProps> = ({
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderMedTrygd' })
-      resetForm()
+      onCancel()
     }
   }
 

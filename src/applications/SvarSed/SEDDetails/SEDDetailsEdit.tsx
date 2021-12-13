@@ -240,7 +240,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       }
       newPerioder = newPerioder.concat(_newAnmodningsperioder)
       dispatch(updateReplySed('anmodningsperioder', newPerioder))
-      resetForm()
+      onCancel()
     }
   }
 

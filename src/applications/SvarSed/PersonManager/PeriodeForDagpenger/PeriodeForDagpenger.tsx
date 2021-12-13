@@ -251,7 +251,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
       newPerioderDagpenger = newPerioderDagpenger.concat(newPeriodeDagpenger)
       dispatch(updateReplySed(target, newPerioderDagpenger))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderDagpenger' })
-      resetForm()
+      onCancel()
     }
   }
 

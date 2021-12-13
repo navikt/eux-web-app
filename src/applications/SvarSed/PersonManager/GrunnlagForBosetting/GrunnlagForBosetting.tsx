@@ -135,7 +135,7 @@ const GrunnlagforBosetting: React.FC<PersonManagerFormProps & {standalone?: bool
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(`${target}.perioder`, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'flyttegrunn' })
-      resetForm()
+      onCancel()
     }
   }
 

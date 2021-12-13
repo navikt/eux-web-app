@@ -137,7 +137,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
       newPensjonPerioder = newPensjonPerioder.concat(newPensjonPeriode)
       dispatch(updateReplySed(target, newPensjonPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderMedPensjon' })
-      resetForm()
+      onCancel()
     }
   }
 

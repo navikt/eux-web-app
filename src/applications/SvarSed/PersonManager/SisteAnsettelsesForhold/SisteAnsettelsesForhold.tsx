@@ -207,7 +207,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
       newUtbetalinger = newUtbetalinger.concat(newUtbetaling)
       dispatch(updateReplySed(`${target}.utbetalinger`, newUtbetalinger))
       standardLogger('svarsed.editor.utbetaling.add')
-      resetForm()
+      onCancel()
     }
   }
 

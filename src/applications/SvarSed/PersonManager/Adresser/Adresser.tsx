@@ -137,7 +137,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
       newAdresses = newAdresses.concat(_newAdresse!)
       dispatch(updateReplySed(target, newAdresses))
       standardLogger('svarsed.editor.adresse.add')
-      resetForm()
+      onCancel()
     }
   }
 

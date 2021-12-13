@@ -119,7 +119,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
       newStatsborgerskaper.push(newStatsborgerskap)
       dispatch(updateReplySed(target, newStatsborgerskaper))
       standardLogger('svarsed.editor.nasjonaliteter.add')
-      resetForm()
+      onCancel()
     }
   }
 

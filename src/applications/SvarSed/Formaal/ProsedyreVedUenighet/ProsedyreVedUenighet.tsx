@@ -166,7 +166,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
       newProsedyreveduenighet[_newGrunn.trim()] = _newPerson.trim()
       dispatch(updateReplySed(target, newProsedyreveduenighet))
       standardLogger('svarsed.editor.prosedyreveduenighet.grunn.add')
-      resetForm()
+      onCancel()
     }
   }
 

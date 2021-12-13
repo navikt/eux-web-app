@@ -230,7 +230,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
       newBarnetilhoerigheter.push(newBarnetilhoerighet)
       dispatch(updateReplySed(target, newBarnetilhoerigheter))
       standardLogger('svarsed.editor.relasjon.add')
-      resetForm()
+      onCancel()
     }
   }
 

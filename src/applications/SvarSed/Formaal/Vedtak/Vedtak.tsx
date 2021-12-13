@@ -256,7 +256,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'vedtaksperioder' })
-      perioderResetForm()
+      onPeriodeCancel()
     }
   }
 
@@ -291,7 +291,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       newVedtaksperioder = newVedtaksperioder.concat(newVedtaksperiode)
       dispatch(updateReplySed(`${target}.${_newVedtaksperioderVedtak}`, newVedtaksperioder))
       standardLogger('svarsed.editor.periode.add', { type: _newVedtaksperioderVedtak })
-      vedtaksperioderResetForm()
+      onVedtaksperiodeCancel()
     }
   }
 

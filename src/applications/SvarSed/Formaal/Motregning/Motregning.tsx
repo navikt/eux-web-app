@@ -570,7 +570,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       newMotregninger.push(newMotregning)
       dispatch(updateReplySed('familie.motregninger', newMotregninger))
       standardLogger('svarsed.editor.motregning.add')
-      resetForm()
+      onCancel()
     }
 
     if (valid && _newBarnaEllerFamilie === 'barna') {
@@ -589,7 +589,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
       })
       dispatch(setReplySed(newReplySed))
       standardLogger('svarsed.editor.motregning.add')
-      resetForm()
+      onCancel()
     }
   }
 

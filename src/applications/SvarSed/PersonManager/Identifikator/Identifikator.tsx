@@ -116,7 +116,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       }
       newIdentifikatorer.push(newIdentifikator)
       onIdentifikatorerChanged(newIdentifikatorer, 'add')
-      resetForm()
+      onCancel()
     }
   }
 

@@ -211,7 +211,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
       newLoennsopplysninger = newLoennsopplysninger.concat(newLoennsopplysning)
       dispatch(updateReplySed(target, newLoennsopplysninger))
       standardLogger('svarsed.editor.loennsopplysning.add')
-      resetForm()
+      onCancel()
     }
   }
 

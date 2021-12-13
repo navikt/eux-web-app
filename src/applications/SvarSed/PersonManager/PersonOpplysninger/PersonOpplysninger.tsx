@@ -258,7 +258,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       newPins = newPins.concat(newPin)
       dispatch(updateReplySed(`${target}.pin`, newPins))
       standardLogger('svarsed.editor.personopplysning.utenlandskpin.add')
-      resetForm()
+      onCancel()
     }
   }
 

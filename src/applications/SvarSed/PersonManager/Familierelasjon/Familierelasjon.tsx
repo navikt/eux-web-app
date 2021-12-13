@@ -205,7 +205,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
       }
       newFamilieRelasjoner.push(newFamilierelasjon)
       dispatch(updateReplySed(target, newFamilieRelasjoner))
-      resetForm()
+      onCancel()
     }
   }
 

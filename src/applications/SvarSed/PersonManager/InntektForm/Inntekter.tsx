@@ -163,7 +163,7 @@ const Inntekter: React.FC<any> = ({
       }
       newInntekter.push(newInntekt)
       onInntekterChanged(newInntekter)
-      resetForm()
+      onCancel()
     }
   }
 

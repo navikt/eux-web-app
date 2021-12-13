@@ -166,7 +166,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
       }
       newInntektOgTimer.push(newInntektOgTime)
       onInntektOgTimeChanged(newInntektOgTimer, 'add')
-      resetForm()
+      onCancel()
     }
   }
 

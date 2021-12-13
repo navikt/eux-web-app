@@ -228,7 +228,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
       newYtelser.push(newYtelse)
       dispatch(updateReplySed(target, newYtelser))
       standardLogger('svarsed.editor.ytelse.add')
-      resetForm()
+      onCancel()
     }
   }
 

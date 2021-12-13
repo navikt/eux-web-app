@@ -193,7 +193,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
       newPerioder = newPerioder.concat(newPeriode)
       dispatch(updateReplySed(`${personID}.${_newCategory}`, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: _newCategory })
-      resetForm()
+      onCancel()
     }
   }
 

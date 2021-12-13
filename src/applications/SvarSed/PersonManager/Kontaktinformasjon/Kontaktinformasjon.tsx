@@ -173,7 +173,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       newTelefoner.push(newTelefon)
       dispatch(updateReplySed(targetTelefon, newTelefoner))
       standardLogger('svarsed.editor.telefon.add')
-      resetForm('telefon')
+      onCancel('telefon')
     }
   }
 
@@ -198,7 +198,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
       newEposter.push(newEpost)
       dispatch(updateReplySed(targetEpost, newEposter))
       standardLogger('svarsed.editor.epost.add')
-      resetForm('epost')
+      onCancel('epost')
     }
   }
 

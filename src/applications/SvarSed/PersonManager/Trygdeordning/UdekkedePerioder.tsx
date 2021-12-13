@@ -112,7 +112,7 @@ const UdekkedePerioder: React.FC<PersonManagerFormProps> = ({
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderUtenforTrygdeordning' })
-      resetForm()
+      onCancel()
     }
   }
 

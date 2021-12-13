@@ -120,7 +120,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
     })
     if (valid) {
       onAdded(_newBarnaKey!.trim(), _newYtelseNavn!.trim())
-      resetForm()
+      onCancel()
     }
   }
 

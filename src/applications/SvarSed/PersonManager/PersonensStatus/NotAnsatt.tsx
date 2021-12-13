@@ -120,7 +120,7 @@ const NotAnsatt: React.FC<PersonManagerFormProps & {arbeidsforhold: string}> = (
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: periodeType })
-      resetForm()
+      onCancel()
     }
   }
 

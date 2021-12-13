@@ -294,7 +294,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
       newPeriodes = newPeriodes.concat(_newPeriode!)
       dispatch(updateReplySed(_newType, newPeriodes))
       standardLogger('svarsed.editor.periode.add', { type: _newType })
-      resetForm()
+      onCancel()
     }
   }
 
