@@ -75,6 +75,7 @@
 
   "noLand": "Du må velge land",
   "noLastName": "Du må taste inn etternavn",
+  "noLoenn": "Du må taste inn lønn",
   "noLoennTilDato": "Du må taste inn lønn til dato",
 
   "noMottakersNavn": "Ingen mottakers navn",
@@ -99,6 +100,7 @@
   "noSektor": "Du må velge sektor",
   "noSkalYtelseUtbetales": "Inken svar om ytelse utbetales",
   "noSvarType": "Ingen svar type eller tomme felt",
+  "noStartdato": "Ingen startdato",
   "noSwift": "Ingen SWIFT",
 
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
@@ -115,6 +117,8 @@
 
   "textOver500": "tekststørrelse over 500 tegn",
   "til-person": " til {{person}}",
+  "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
+
   "uncheckedFnr": "Uverifisert fødselsnummer",
   "unverifiedSaksnummer": "Uverifisert RINA saksnummer"
 }

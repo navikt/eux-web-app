@@ -40,6 +40,7 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 const Person: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   replySed,
+  personID,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -49,9 +50,9 @@ const Person: React.FC<PersonManagerFormProps> = ({
     validation
   } = useSelector<State, PersonOpplysningerSelector>(mapState)
   const dispatch = useDispatch()
-  const target: string = 'bruker'
-  const pdu1Person: Pdu1Person | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
-  const namespace: string = `${parentNamespace}-bruker-person`
+  const target: string | undefined = personID
+  const pdu1Person: Pdu1Person | undefined = _.get(replySed, target!) // undefined for a brief time when switching to 'familie'
+  const namespace: string = `${parentNamespace}-${personID}-person`
 
   const onFnrChange = (newFnr: string) => {
     dispatch(updateReplySed(`${target}.fnr`, newFnr.trim()))

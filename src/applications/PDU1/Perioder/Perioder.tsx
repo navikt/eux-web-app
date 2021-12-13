@@ -1,5 +1,5 @@
 import { Add, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -30,7 +30,8 @@ import {
   FlexEndDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PaddedHorizontallyDiv, Row,
+  PaddedHorizontallyDiv,
+  Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useEffect, useState } from 'react'
@@ -69,14 +70,14 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
 
   const periodeOptions: Options = [
-    { label: t('el:option-perioder-ANSATT-MED-FORSIKRING'), value: 'perioderAnsattMedForsikring' },
-    { label: t('el:option-perioder-SELVSTENDIG-MED-FORSIKRING'), value: 'perioderSelvstendigMedForsikring' },
-    { label: t('el:option-perioder-ANDRE-FORSIKRINGER'), value: 'perioderAndreForsikringer' },
-    { label: t('el:option-perioder-ANSETT-SOM-FORSIKRET'), value: 'perioderAnsettSomForsikret' },
-    { label: t('el:option-perioder-ANSATT-UTEN-FORSIKRING'), value: 'perioderAnsattUtenForsikring' },
-    { label: t('el:option-perioder-SELVSTENDIG-UTEN-FORSIKRING'), value: 'perioderSelvstendigUtenForsikring' },
-    { label: t('el:option-perioder-INNTEKT-ANSETTELSESFORHOLD'), value: 'perioderLoennSomAnsatt' },
-    { label: t('el:option-perioder-INNTEKT-SELVSTENDIG'), value: 'perioderInntektSomSelvstendig' }
+    { label: t('el:option-perioder-perioderAnsattMedForsikring'), value: 'perioderAnsattMedForsikring' },
+    { label: t('el:option-perioder-perioderSelvstendigMedForsikring'), value: 'perioderSelvstendigMedForsikring' },
+    { label: t('el:option-perioder-perioderAndreForsikringer'), value: 'perioderAndreForsikringer' },
+    { label: t('el:option-perioder-perioderAnsettSomForsikret'), value: 'perioderAnsettSomForsikret' },
+    { label: t('el:option-perioder-perioderAnsattUtenForsikring'), value: 'perioderAnsattUtenForsikring' },
+    { label: t('el:option-perioder-perioderSelvstendigUtenForsikring'), value: 'perioderSelvstendigUtenForsikring' },
+    { label: t('el:option-perioder-INNTEKT-perioderLoennSomAnsatt'), value: 'perioderLoennSomAnsatt' },
+    { label: t('el:option-perioder-INNTEKT-perioderInntektSomSelvstendig'), value: 'perioderInntektSomSelvstendig' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
@@ -346,6 +347,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedType)?.type ?? ''}
               />
             </Column>
+            <Column/>
           </AlignStartRow>
         )}
         {_type === 'perioderAnsettSomForsikret' && (
@@ -362,6 +364,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? ''}
               />
             </Column>
+            <Column/>
           </AlignStartRow>
         )}
         {_type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
@@ -378,6 +381,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? ''}
               />
             </Column>
+            <Column/>
           </AlignStartRow>
         )}
         {_type && ['perioderLoennSomAnsatt', 'perioderInntektSomSelvstendig'].indexOf(_type) >= 0 && (
@@ -394,6 +398,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={(_periode as PeriodeMedLoenn)?.loenn ?? ''}
               />
             </Column>
+            <Column/>
           </AlignStartRow>
         )}
         {index < 0 && (
@@ -477,11 +482,11 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                   <div key={o.value}>
                     <PaddedHorizontallyDiv>
                       <FlexEndDiv>
-                        {getIcon(o.value, '20')}
+                        {getIcon(o.value, '24')}
                         <HorizontalSeparatorDiv size='0.35' />
-                        <Detail>
+                        <Ingress>
                           {o.label}
-                        </Detail>
+                        </Ingress>
                       </FlexEndDiv>
                     </PaddedHorizontallyDiv>
                     <VerticalSeparatorDiv />

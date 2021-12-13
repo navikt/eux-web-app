@@ -1,8 +1,7 @@
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
+import { checkIfDuplicate, checkIfNotEmpty, propagateError } from 'utils/validation'
 
 export interface ValidationStatsborgerskapProps {
   statsborgerskap: string | undefined
@@ -21,44 +20,27 @@ export const validateStatsborgerskap = (
     namespace
   }: ValidationStatsborgerskapProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(statsborgerskap?.trim())) {
-    v[namespace + idx + '-statsborgerskap'] = {
-      feilmelding: t('validation:noBirthCountry'),
-      skjemaelementId: namespace + idx + '-statsborgerskap'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: statsborgerskap,
+    id: namespace + idx + '-statsborgerskap',
+    message: 'validation:noBirthCountry'
+  }))
 
-  if (!_.isEmpty(statsborgerskaper)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(statsborgerskaper, s => s === statsborgerskap) !== undefined
-    } else {
-      const otherLands: Array<string> = _.filter(statsborgerskaper, (p, i) => i !== index)
-      duplicate = _.find(otherLands, s => s === statsborgerskap) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-statsborgerskap'] = {
-        feilmelding: t('validation:duplicateBirthCountry'),
-        skjemaelementId: namespace + idx + '-statsborgerskap'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
+  hasErrors.push(checkIfDuplicate(v, {
+    needle: statsborgerskaper,
+    haystack: statsborgerskaper,
+    matchFn: (s: string) => (s === statsborgerskap),
+    index,
+    id: namespace + idx + '-statsborgerskap',
+    message: 'validation:duplicateBirthCountry'
+  }))
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  const hasError: boolean = hasErrors.find(value => value) !== undefined
+  if (hasError) propagateError(v, namespace)
+  return hasError
 }
 
 interface ValidateStatsborgerskaperProps {
@@ -74,10 +56,8 @@ export const validateStatsborgerskaper = (
     namespace
   }: ValidateStatsborgerskaperProps
 ): boolean => {
-  let hasErrors: boolean = false
-  statsborgerskaper?.forEach((statsborgerskap: string, index: number) => {
-    const _error: boolean = validateStatsborgerskap(validation, t, { statsborgerskap, statsborgerskaper, index, namespace })
-    hasErrors = hasErrors || _error
-  })
-  return hasErrors
+  const hasErrors: Array<boolean> = statsborgerskaper?.map((statsborgerskap: string, index: number) =>
+    validateStatsborgerskap(validation, t, { statsborgerskap, statsborgerskaper, index, namespace })
+  ) ?? []
+  return hasErrors.find(value => value) !== undefined
 }

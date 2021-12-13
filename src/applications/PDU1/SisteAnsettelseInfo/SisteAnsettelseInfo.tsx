@@ -26,7 +26,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
   const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'sisteAnsettelseInfo'
-  const grunntilopphor: any = _.get(replySed, target)
+  const sisteAnsettelseInfo: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-sisteAnsettelseInfo`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
@@ -76,12 +76,12 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
             data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
-            label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
+            label={t('label:årsak-til-avslutning-av-arbeidsforhold') + ' *'}
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
-            value={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
-            defaultValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
+            value={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt)}
+            defaultValue={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt)}
           />
         </Column>
       </AlignStartRow>
@@ -94,9 +94,9 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
                 error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
                 namespace={namespace}
                 id='annenGrunnOpphoerAnsatt'
-                label={t('label:annet-opphør') + ' *'}
+                label={t('label:annet-opphør')}
                 onChanged={setAnnenGrunnOpphoerAnsatt}
-                value={grunntilopphor?.annenGrunnOpphoerAnsatt ?? ''}
+                value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
               />
             </Column>
           </AlignStartRow>
@@ -107,9 +107,9 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
                 error={validation[namespace + '-årsakselvstendig']?.feilmelding}
                 namespace={namespace}
                 id='grunnOpphoerSelvstendig'
-                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}
+                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
                 onChanged={setGrunnOpphoerSelvstendig}
-                value={grunntilopphor?.grunnOpphoerSelvstendig ?? ''}
+                value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
               />
             </Column>
           </AlignStartRow>

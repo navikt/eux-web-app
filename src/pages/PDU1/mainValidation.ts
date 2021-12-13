@@ -1,4 +1,5 @@
 
+import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
 import { validateStatsborgerskaper } from 'applications/PDU1/Statsborgerskap/validation'
 import { Pdu1Person, ReplyPdu1 } from 'declarations/pd'
 import { Adresse } from 'declarations/sed'
@@ -7,7 +8,7 @@ import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { validatePerson } from 'applications/PDU1/Person/validation'
-import { validateAdresse } from 'applications/SvarSed/PersonManager/Adresser/validation'
+import { validateAdresse } from 'applications/PDU1/Adresse/validation'
 
 export interface ValidationPdu1SearchProps {
   fagsak: string | undefined
@@ -22,37 +23,21 @@ export interface ValidationPDU1EditProps {
 export const validatePDU1Edit = (v: Validation, t: TFunction, {
   replyPdu1
 }: ValidationPDU1EditProps): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
 
-  const person : Pdu1Person = _.get(replyPdu1, 'bruker')
-  hasErrors ||= validatePerson(v, t, { person, namespace: 'personmanager-bruker-person' })
+  const personID = 'bruker'
+  const person : Pdu1Person = _.get(replyPdu1, personID)
+  hasErrors.push(validatePerson(v, t, { person, namespace: `personmanager-${personID}-person`}))
 
-  const statsborgerskaper: Array<string> = _.get(replyPdu1, 'bruker.statsborgerskap')
-  hasErrors ||= validateStatsborgerskaper(v, t, {
-    statsborgerskaper, namespace: 'personmanager-bruker-statsborgerskap'
-  })
+  const statsborgerskaper: Array<string> = _.get(replyPdu1, `${personID}.statsborgerskap`)
+  hasErrors.push(validateStatsborgerskaper(v, t, {statsborgerskaper, namespace: `personmanager-${personID}-statsborgerskap`}))
 
-  const adresse: Adresse = _.get(replyPdu1, 'bruker.adresse')
-  hasErrors ||= validateAdresse(v, t, { adresse, namespace: 'personmanager-adresse' })
-  /*
-  const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
-    perioderAnsattMedForsikring: replyPdu1.perioderAnsattMedForsikring,
-    perioderSelvstendigMedForsikring: replyPdu1.perioderSelvstendigMedForsikring,
-    perioderAnsattUtenForsikring: replyPdu1.perioderAnsattUtenForsikring,
-    perioderSelvstendigUtenForsikring: replyPdu1.perioderSelvstendigUtenForsikring,
-    perioderAnsettSomForsikret: replyPdu1.perioderAnsettSomForsikret,
-    perioderAnnenForsikring: replyPdu1.perioderAndreForsikringer,
-    perioderLoennSomAnsatt: replyPdu1.perioderLoennSomAnsatt,
-    perioderInntektSomSelvstendig: replyPdu1.perioderInntektSomSelvstendig
-  }
-  _error = validateAlleForsikringPerioder(v, t, {
-    perioder, namespace: `personmanager-${personID}-forsikring`, personName
-  })
-  hasErrors = hasErrors || _error
+  const adresse: Adresse = _.get(replyPdu1, `${personID}.adresse`)
+  hasErrors.push(validateAdresse(v, t, { adresse, namespace: `personmanager-${personID}-adresse` }))
 
-  hasErrors = hasErrors || _error
-*/
-  return hasErrors
+  hasErrors.push(validateAllePDPerioder(v, t, {replyPdu1, namespace: `personmanager-${personID}-perioder`}))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validatePdu1Search = (

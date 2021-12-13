@@ -8,7 +8,7 @@ import { PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import AdresseForm from './AdresseForm'
+import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
@@ -23,14 +23,14 @@ const Adresse: React.FC<PersonManagerFormProps> = ({
   const { t } = useTranslation()
   const { validation }: PersonManagerFormSelector = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
-  const target = `${personID}.adresser[0]`
+  const target = `${personID}.adresse`
   const adresse: IAdresse = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-adresser[0]`
+  const namespace = `${parentNamespace}-${personID}-adresse`
 
-  const setAdresse = (adresse: IAdresse, id: string | undefined) => {
+  const setAdresse = (adresse: IAdresse, whatChanged: string | undefined) => {
     dispatch(updateReplySed(target, adresse))
-    if (id && validation[namespace + '-' + id]) {
-      dispatch(resetValidation(namespace + '-' + id))
+    if (whatChanged && validation[namespace + '-' + whatChanged]) {
+      dispatch(resetValidation(namespace + '-' + whatChanged))
     }
   }
 
@@ -42,6 +42,8 @@ const Adresse: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AdresseForm
         type={false}
+        options={{ bygning: false, region: false }}
+        required={['gate', 'postnummer', 'by', 'land']}
         namespace={namespace}
         adresse={adresse}
         onAdressChanged={setAdresse}

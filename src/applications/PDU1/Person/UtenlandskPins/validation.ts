@@ -1,8 +1,7 @@
-import { ErrorElement } from 'declarations/app'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
   land: string,
@@ -28,43 +27,31 @@ export const validateUtenlandskPin = (
     namespace
   }: ValidationUtenlandskPinProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(identifikator?.trim())) {
-    v[namespace + idx + '-identifikator'] = {
-      feilmelding: t('validation:noId'),
-      skjemaelementId: namespace + idx + '-identifikator'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: identifikator,
+    id: namespace + idx + '-identifikator',
+    message: 'validation:noId'
+  }))
 
-  if (_.isEmpty(land?.trim())) {
-    v[namespace + idx + '-land'] = {
-      feilmelding: t('validation:noLand'),
-      skjemaelementId: namespace + idx + '-land'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: land,
+    id: namespace + idx + '-land',
+    message: 'validation:noLand'
+  }))
 
-  let duplicate: boolean
+  hasErrors.push(checkIfDuplicate(v, {
+    needle: land,
+    haystack: utenlandskePins,
+    matchFn: (pin: string) => pin.split(' ')[0] === land,
+    index,
+    id: namespace + idx + '-land',
+    message: 'validation:duplicateLand'
+  }))
 
-  if (!_.isEmpty(land)) {
-    if (_.isNil(index)) {
-      duplicate = _.find(utenlandskePins, (pin: string) => pin.split(' ')[0] === land) !== undefined
-    } else {
-      const otherPins: Array<string> = _.filter(utenlandskePins, (p, i) => i !== index)
-      duplicate = _.find(otherPins, (pin: string) => pin.split(' ')[0] === land) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-land'] = {
-        feilmelding: t('validation:duplicateLand'),
-        skjemaelementId: namespace + idx + '-land'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateUtenlandskPins = (
@@ -73,18 +60,18 @@ export const validateUtenlandskPins = (
   {
     namespace,
     utenlandskePins
-  }: ValidationUtenlandskPinsProps): boolean => {
-  let hasErrors: boolean = false
-  utenlandskePins?.forEach((pin: string, index: number) => {
+  }: ValidationUtenlandskPinsProps
+): boolean => {
+  const hasErrors: Array<boolean> = utenlandskePins?.map((pin: string, index: number) => {
     const els = pin.split(/\s+/)
-    const _errors = validateUtenlandskPin(v, t, {
+    return validateUtenlandskPin(v, t, {
       index,
       land: els[0],
       identifikator: els[1],
       utenlandskePins: utenlandskePins,
       namespace: namespace
     })
-    hasErrors = hasErrors || _errors
-  })
-  return hasErrors
+  }) ?? []
+  return hasErrors.find(value => value) !== undefined
 }
+

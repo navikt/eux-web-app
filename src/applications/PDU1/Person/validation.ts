@@ -1,9 +1,8 @@
 import { validateUtenlandskPins } from 'applications/PDU1/Person/UtenlandskPins/validation'
-import { ErrorElement } from 'declarations/app'
 import { Pdu1Person } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty } from 'utils/validation'
+import { checkIfNotEmpty, propagateError } from 'utils/validation'
 
 export interface ValidationPersonProps {
   person: Pdu1Person,
@@ -50,15 +49,6 @@ export const validatePerson = (
   }))
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
-
-  if (hasError) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-  }
+  if (hasError) propagateError(v, namespace)
   return hasError
 }

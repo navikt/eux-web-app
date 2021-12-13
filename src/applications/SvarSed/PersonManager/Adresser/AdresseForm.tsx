@@ -9,7 +9,8 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 export interface AdresseFormProps {
-  options?: any,
+  options?: {[k in string]: any}
+  required?: Array<string>
   adresse: Adresse | null | undefined
   onAdressChanged: (a: Adresse, id: string) => void
   namespace: string
@@ -24,7 +25,8 @@ const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
 `
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
-  options = {},
+  options = { bygning: true, region: true },
+  required = ['type', 'by', 'land'],
   adresse,
   onAdressChanged,
   namespace,
@@ -93,8 +95,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               data-test-id={namespace + '-type'}
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
-              legend={t('label:adresse') + ' *'}
+              legend={t('label:adresse-type') + (required.indexOf('type') >= 0 ? ' *' : '')}
               name={namespace + '-type'}
+              required={required.indexOf('type') >= 0}
               onChange={(e: string) => setType((e as AdresseType))}
             >
               <FlexRadioPanels>
@@ -102,7 +105,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
                 <RadioPanel value='opphold'>{t('label:oppholdsland')}</RadioPanel>
               </FlexRadioPanels>
             </RadioPanelGroup>
-
             <VerticalSeparatorDiv size='0.15' />
             <RadioPanelGroupWithNoErrorVisible
               value={adresse?.type}
@@ -111,6 +113,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               name={namespace + '-type'}
+              required={required.indexOf('type') >= 0}
               onChange={(e: string) => setType((e as AdresseType))}
             >
               <FlexRadioPanels>
@@ -118,7 +121,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
                 <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>
               </FlexRadioPanels>
             </RadioPanelGroupWithNoErrorVisible>
-
           </Column>
         </AlignStartRow>
       )}
@@ -129,8 +131,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-gate']?.feilmelding}
             namespace={namespace}
             id='gate'
-            label={t('label:gateadresse')}
+            label={t('label:gateadresse') + (required.indexOf('gate') >= 0 ? ' *' : '')}
             onChanged={setGate}
+            required={required.indexOf('gate') >= 0}
             value={adresse?.gate}
           />
         </Column>
@@ -140,8 +143,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-bygning']?.feilmelding}
               namespace={namespace}
               id='bygning'
-              label={t('label:bygning')}
+              label={t('label:bygning') + (required.indexOf('bygning') >= 0 ? ' *' : '')}
               onChanged={setBygning}
+              required={required.indexOf('bygning') >= 0}
               value={adresse?.bygning}
             />
           </Column>
@@ -154,8 +158,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
-            label={t('label:postnummer')}
+            label={t('label:postnummer') + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
             onChanged={setPostnummer}
+            required={required.indexOf('postnummer') >= 0}
             value={adresse?.postnummer}
           />
         </Column>
@@ -164,9 +169,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-by']?.feilmelding}
             namespace={namespace}
             id='by'
-            label={t('label:by') + ' *'}
+            label={t('label:by') + (required.indexOf('by') >= 0 ? ' *' : '')}
             onChanged={setBy}
-            required
+            required={required.indexOf('by') >= 0}
             value={adresse?.by}
           />
         </Column>
@@ -179,8 +184,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-region']?.feilmelding}
               namespace={namespace}
               id='region'
-              label={t('label:region')}
+              label={t('label:region') + (required.indexOf('region') >= 0 ? ' *' : '')}
               onChanged={setRegion}
+              required={required.indexOf('region') >= 0}
               value={adresse?.region}
             />
           </Column>
@@ -194,9 +200,10 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-land']?.feilmelding}
               flagWave
               id={namespace + '-land'}
-              label={t('label:land') + ' *'}
+              label={t('label:land') + (required.indexOf('land') >= 0 ? ' *' : '')}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setLand(e.value)}
+              required={required.indexOf('land') >= 0}
               values={adresse?.land}
             />
           </div>
