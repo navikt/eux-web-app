@@ -114,7 +114,7 @@ const localStorageReducer = (
           ...state,
           [namespace]: {
             ...(state[namespace]),
-            entries: (action as ActionWithPayload).payload.value
+            entries: newEntries
           }
         }
       }
@@ -124,7 +124,7 @@ const localStorageReducer = (
           ...state,
           [namespace]: {
             ...(state[namespace]),
-            currentEntry: (action as ActionWithPayload).payload
+            currentEntry: (action as ActionWithPayload).payload.entry
           }
         }
       }

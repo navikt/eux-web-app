@@ -274,24 +274,24 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
             <Input
               error={validation[namespace + '-sisteUtbetaler-sisteNavKontor']?.feilmelding}
               id='sisteNavKontor'
-              key={namespace + '-sisteUtbetaler-sisteNavKontor-' + (perioderDagpengerMottatt?.sisteUtbetaler.sisteNavKontor ?? '')}
+              key={namespace + '-sisteUtbetaler-sisteNavKontor-' + (perioderDagpengerMottatt?.sisteUtbetaler?.sisteNavKontor ?? '')}
               label={t('label:siste-nav-kontor') + ' *'}
               namespace={namespace + '-sisteUtbetaler'}
               onChanged={onSisteNavKontorChange}
               required
-              value={perioderDagpengerMottatt?.sisteUtbetaler.sisteNavKontor}
+              value={perioderDagpengerMottatt?.sisteUtbetaler?.sisteNavKontor}
             />
           </Column>
           <Column>
             <Input
               error={validation[namespace + '-sisteUtbetaler-id']?.feilmelding}
               id='id'
-              key={namespace + '-sisteUtbetaler-id-' + (perioderDagpengerMottatt?.sisteUtbetaler.id ?? '')}
+              key={namespace + '-sisteUtbetaler-id-' + (perioderDagpengerMottatt?.sisteUtbetaler?.id ?? '')}
               label={t('label:identifikasjonsnummer') + ' *'}
               namespace={namespace + '-sisteUtbetaler'}
               onChanged={onIdChange}
               required
-              value={perioderDagpengerMottatt?.sisteUtbetaler.id ?? ''}
+              value={perioderDagpengerMottatt?.sisteUtbetaler?.id ?? ''}
             />
           </Column>
           <Column>

@@ -243,7 +243,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
   const initialMenuOption = (() => {
     if (totalPeopleNr !== 1) return undefined
-    const _type = (replySed as ReplySed).sedType ?? 'PDU1'
+    const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
     if (_type.startsWith('F')) return 'personopplysninger'
     if (_type.startsWith('P')) return 'person_pd'
     return 'person_h'
@@ -440,7 +440,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
         </MenuDiv>
         {open && forms
           .filter(o => {
-            const _type = (replySed as ReplySed).sedType ?? 'PDU1'
+            const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
             return _.isString(o.type)
               ? _type.startsWith(o.type)
               : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
