@@ -27,10 +27,12 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
 }
 
 export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>> = (
+  payload: ReplyPdu1
 ): ThunkResult<ActionWithPayload<File>> => {
   return call({
     method: 'POST',
     url: urls.PDU1_PREVIEW_URL,
+    body: payload,
     expectedPayload: mockPreviewPdu1,
     type: {
       request: types.PDU1_PREVIEW_REQUEST,
