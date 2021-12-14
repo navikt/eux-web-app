@@ -42,11 +42,11 @@ export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasa
 export const API_VEDLEGG_OVERSIKT_URL = API_BASE_URL + '/rina/vedlegg/dokumentoversikt/%(fnr)s'
 
 // Joark
-export const API_JOARK_LIST_URL = '/api/vedlegg/dokumentoversikt/%(fnr)s'
-export const API_JOARK_GET_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
-export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
+export const API_JOARK_LIST_URL = API_BASE_URL + '/vedlegg/dokumentoversikt/%(fnr)s'
+export const API_JOARK_GET_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
+export const API_JOARK_ATTACHMENT_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
-// OTHER
-export const PDU1_JOURNALPOST_URL = '/pdu1/pdf/journalpost' // POST
-export const PDU1_PREVIEW_URL = '/pdu1/pdf/utkast' // POST
-export const PDU1_GET_URL = '/api/person/%(fnr)s/info/pdu1' // GET
+// PD U1
+export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/pdf/journalpost' // POST
+export const PDU1_PREVIEW_URL = API_BASE_URL + '/pdu1/pdf/utkast' // POST
+export const PDU1_GET_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET

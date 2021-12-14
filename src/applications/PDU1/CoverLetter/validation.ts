@@ -19,7 +19,7 @@ export const validateCoverLetter = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: info,
-    id: namespace +'-info',
+    id: namespace + '-info',
     message: 'validation:noInfo'
   }))
 

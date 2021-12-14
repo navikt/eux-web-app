@@ -44,7 +44,7 @@ const CoverLetter: React.FC<PersonManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              style={{minHeight: '400px'}}
+              style={{ minHeight: '400px' }}
               error={validation[namespace + '-info']?.feilmelding}
               key={namespace + '-info-' + info}
               id='info'

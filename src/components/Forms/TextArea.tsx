@@ -25,7 +25,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   maxLength = 500,
   onChanged,
   required = false,
-  style={},
+  style = {},
   value
 }: TextAreaProps) => {
   const [_value, _setValue] = useState<string>(value ?? '')
