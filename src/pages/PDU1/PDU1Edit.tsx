@@ -26,7 +26,7 @@ import Modal from 'components/Modal/Modal'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
-import FileFC from 'forhandsvisningsfil'
+import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -43,8 +43,10 @@ import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import { blobToBase64 } from 'utils/blob'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
+import { ModalContent } from 'declarations/components'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
@@ -89,7 +91,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
 
-  const [previewModal, setPreviewModal] = useState<boolean>(false)
+  const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
@@ -121,7 +123,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
   const resetPreview = () => {
     dispatch(resetPreviewFile())
-    setPreviewModal(false)
+    setPreviewModal(undefined)
   }
 
   const resetComplete = () => {
@@ -143,9 +145,44 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
+  const showPreviewModal = (previewFile: Blob) => {
+    blobToBase64(previewFile).then((base64: any) => {
+      const file: File = {
+        id: '' + new Date().getTime(),
+        size: previewFile.size,
+        name: '',
+        mimetype: 'application/pdf',
+        content: {
+          base64: base64.replaceAll('octet-stream', 'pdf')
+        }
+      }
+
+      setPreviewModal({
+        closeButton: true,
+        modalContent: (
+          <div
+            style={{ cursor: 'pointer' }}
+          >
+            <FileFC
+              file={{
+                ...file,
+                mimetype: 'application/pdf'
+              }}
+              width={600}
+              height={800}
+              tema='simple'
+              viewOnePage={false}
+              onContentClick={resetPreview}
+            />
+          </div>
+        )
+      })
+    })
+  }
+
   useEffect(() => {
     if (!previewModal && !_.isNil(previewPdu1)) {
-      setPreviewModal(true)
+      showPreviewModal(previewPdu1)
     }
   }, [previewPdu1])
 
@@ -199,24 +236,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         />
       )}
       <Modal
-        open={previewModal && !_.isNil(previewPdu1)}
-        modal={{
-          closeButton: true,
-          modalContent: (
-            <div
-              style={{ cursor: 'pointer' }}
-            >
-              <FileFC
-                file={previewPdu1 ?? {}}
-                width={600}
-                height={800}
-                tema='simple'
-                viewOnePage={false}
-                onContentClick={resetPreview}
-              />
-            </div>
-          )
-        }}
+        open={!_.isNil(previewModal)}
+        modal={previewModal}
         onModalClose={resetPreview}
       />
       <SavePDU1Modal

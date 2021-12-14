@@ -33,6 +33,7 @@ export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>>
     method: 'POST',
     url: urls.PDU1_PREVIEW_URL,
     body: payload,
+    responseType: 'pdf',
     expectedPayload: mockPreviewPdu1,
     type: {
       request: types.PDU1_PREVIEW_REQUEST,
