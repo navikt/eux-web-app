@@ -5,7 +5,7 @@ import Input from 'components/Forms/Input'
 import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -95,22 +95,24 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)
             }}
           >
-            {t('el:checkbox-pdu1-4.1')}
-            <Input
-              error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-utbetalingEtterEndtArbeidsforhold-' + andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
-              id='utbetalingEtterEndtArbeidsforhold'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setUtbetalingEtterEndtArbeidsforhold(e)
-                if (!utbetalingEtterEndtArbeidsforholdCheckbox) {
-                  setUtbetalingEtterEndtArbeidsforholdCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
-            />
+            <FlexDiv>
+              {t('el:checkbox-pdu1-4.1')}
+              <Input
+                error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-utbetalingEtterEndtArbeidsforhold-' + andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
+                id='utbetalingEtterEndtArbeidsforhold'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setUtbetalingEtterEndtArbeidsforhold(e)
+                  if (!utbetalingEtterEndtArbeidsforholdCheckbox) {
+                    setUtbetalingEtterEndtArbeidsforholdCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
+              />
+            </FlexDiv>
           </Checkbox>
         </Column>
       </AlignStartRow>
@@ -130,22 +132,24 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               setKompensasjonForEndtArbeidsforholdCheckbox(e.target.checked)
             }}
           >
-            {t('el:checkbox-pdu1-4.2')}
-            <Input
-              error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-kompensasjonForEndtArbeidsforhold-' + andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
-              id='kompensasjonForEndtArbeidsforhold'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setKompensasjonForEndtArbeidsforhold(e)
-                if (!kompensasjonForEndtArbeidsforholdCheckbox) {
-                  setKompensasjonForEndtArbeidsforholdCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
-            />
+            <FlexDiv>
+              {t('el:checkbox-pdu1-4.2')}
+              <Input
+                error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-kompensasjonForEndtArbeidsforhold-' + andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
+                id='kompensasjonForEndtArbeidsforhold'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setKompensasjonForEndtArbeidsforhold(e)
+                  if (!kompensasjonForEndtArbeidsforholdCheckbox) {
+                    setKompensasjonForEndtArbeidsforholdCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
+              />
+            </FlexDiv>
           </Checkbox>
         </Column>
       </AlignStartRow>
@@ -164,43 +168,45 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               setKompensasjonForFeriedagerCheckbox(e.target.checked)
             }}
           >
-            {t('el:checkbox-pdu1-4.3')}
-            <Input
-              error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-kompensasjonForFeriedager-antallDager-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
-              id='kompensasjonForFeriedager-antallDager'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setKompensasjonForFeriedagerAntallDager(e)
-                if (!kompensasjonForFeriedagerCheckbox) {
-                  setKompensasjonForFeriedagerCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
-            />
-
-            for
-
-            <Input
-              error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-kompensasjonForFeriedager-beloep-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
-              id='kompensasjonForFeriedager-beloep'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setKompensasjonForFeriedagerBeloep(e)
-                if (!kompensasjonForFeriedagerCheckbox) {
-                  setKompensasjonForFeriedagerCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
-            />
-
-            dager
-
+            <FlexDiv>
+              {t('el:checkbox-pdu1-4.3')}
+              <Input
+                error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-kompensasjonForFeriedager-antallDager-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
+                id='kompensasjonForFeriedager-antallDager'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setKompensasjonForFeriedagerAntallDager(e)
+                  if (!kompensasjonForFeriedagerCheckbox) {
+                    setKompensasjonForFeriedagerCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
+              />
+              <PaddedDiv size='0.5'>
+                for
+              </PaddedDiv>
+              <Input
+                error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-kompensasjonForFeriedager-beloep-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
+                id='kompensasjonForFeriedager-beloep'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setKompensasjonForFeriedagerBeloep(e)
+                  if (!kompensasjonForFeriedagerCheckbox) {
+                    setKompensasjonForFeriedagerCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
+              />
+              <PaddedDiv size='0.5'>
+                dager
+              </PaddedDiv>
+            </FlexDiv>
           </Checkbox>
         </Column>
       </AlignStartRow>
@@ -220,22 +226,24 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)
             }}
           >
-            {t('el:checkbox-pdu1-4.4')}
-            <Input
-              error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-avkallKompensasjonBegrunnelse-' + andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
-              id='avkallKompensasjonBegrunnelse'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setAvkallKompensasjonBegrunnelse(e)
-                if (!avkallKompensasjonBegrunnelseCheckbox) {
-                  setAvkallKompensasjonBegrunnelseCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
-            />
+            <FlexDiv>
+              {t('el:checkbox-pdu1-4.4')}
+              <Input
+                error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-avkallKompensasjonBegrunnelse-' + andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
+                id='avkallKompensasjonBegrunnelse'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setAvkallKompensasjonBegrunnelse(e)
+                  if (!avkallKompensasjonBegrunnelseCheckbox) {
+                    setAvkallKompensasjonBegrunnelseCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
+              />
+            </FlexDiv>
           </Checkbox>
         </Column>
       </AlignStartRow>
@@ -255,22 +263,24 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               setAndreYtelserSomMottaForTidenCheckbox(e.target.checked)
             }}
           >
-            {t('el:checkbox-pdu1-4.5')}
-            <Input
-              error={validation[namespace + '-andreYtelserSomMottaForTiden']?.feilmelding}
-              namespace={namespace}
-              key={namespace + '-andreYtelserSomMottaForTiden-' + andreMottatteUtbetalinger?.andreYtelserSomMottaForTiden}
-              id='andreYtelserSomMottaForTiden'
-              label=''
-              hideLabel
-              onChanged={(e) => {
-                setAndreYtelserSomMottaForTiden(e)
-                if (!andreYtelserSomMottaForTidenCheckbox) {
-                  setAndreYtelserSomMottaForTidenCheckbox(true)
-                }
-              }}
-              value={andreMottatteUtbetalinger?.andreYtelserSomMottaForTiden}
-            />
+            <FlexDiv>
+              {t('el:checkbox-pdu1-4.5')}&nbsp;&nbsp;
+              <Input
+                error={validation[namespace + '-andreYtelserSomMottaForTiden']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-andreYtelserSomMottaForTiden-' + andreMottatteUtbetalinger?.andreYtelserSomMottaForTiden}
+                id='andreYtelserSomMottaForTiden'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setAndreYtelserSomMottaForTiden(e)
+                  if (!andreYtelserSomMottaForTidenCheckbox) {
+                    setAndreYtelserSomMottaForTidenCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.andreYtelserSomMottaForTiden}
+              />
+            </FlexDiv>
           </Checkbox>
         </Column>
       </AlignStartRow>

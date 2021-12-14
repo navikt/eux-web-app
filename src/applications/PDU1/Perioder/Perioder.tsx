@@ -76,8 +76,8 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-perioder-perioderAnsettSomForsikret'), value: 'perioderAnsettSomForsikret' },
     { label: t('el:option-perioder-perioderAnsattUtenForsikring'), value: 'perioderAnsattUtenForsikring' },
     { label: t('el:option-perioder-perioderSelvstendigUtenForsikring'), value: 'perioderSelvstendigUtenForsikring' },
-    { label: t('el:option-perioder-INNTEKT-perioderLoennSomAnsatt'), value: 'perioderLoennSomAnsatt' },
-    { label: t('el:option-perioder-INNTEKT-perioderInntektSomSelvstendig'), value: 'perioderInntektSomSelvstendig' }
+    { label: t('el:option-perioder-perioderLoennSomAnsatt'), value: 'perioderLoennSomAnsatt' },
+    { label: t('el:option-perioder-perioderInntektSomSelvstendig'), value: 'perioderInntektSomSelvstendig' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
