@@ -47,10 +47,6 @@ export const API_JOARK_GET_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(doku
 export const API_JOARK_ATTACHMENT_URL = '/api/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
 // OTHER
-// export const PDU1_JOURNALPOST_URL = '/pdu1/pdf/journalpost' // POST
-// export const PDU1_PREVIEW_URL = '/pdu1/pdf/utkast' // POST
-// export const PDU1_GET_URL = '/api/person/%(fnr)s/info/pdu1' // GET
-
-export const PDU1_JOURNALPOST_URL = '/api/pdf/pdu1' // POST
-export const PDU1_PREVIEW_URL = '/api/pdf/pdu1' // POST
-export const PDU1_GET_URL = '/api/pdf/pdu1/utkast/%(fnr)s' // GET
+export const PDU1_JOURNALPOST_URL = '/pdu1/pdf/journalpost' // POST
+export const PDU1_PREVIEW_URL = '/pdu1/pdf/utkast' // POST
+export const PDU1_GET_URL = '/api/person/%(fnr)s/info/pdu1' // GET
