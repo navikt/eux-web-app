@@ -9,9 +9,9 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const defaultSelector: TopContainerSelector = {
-  bannerMessage: undefined,
+  stripeMessage: undefined,
   highContrast: false,
-  bannerStatus: undefined,
+  stripeStatus: undefined,
   expirationTime: undefined,
   modal: undefined,
   error: undefined

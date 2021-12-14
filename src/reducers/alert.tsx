@@ -135,7 +135,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
-      stripeStatus: stripeMessage ? stripeStatus : undefined,
+      stripeStatus: stripeStatus,
       stripeMessage: stripeMessage,
       error: (action as ActionWithPayload).payload
         ? _.isString((action as ActionWithPayload).payload.error)

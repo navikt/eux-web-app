@@ -44,6 +44,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
+import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
@@ -245,7 +246,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
           { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           { label: t('el:option-personmanager-retttildagpenger'), value: 'retttildagpenger', component: RettTilDagpenger, type: 'PD' },
-          { label: t('el:option-personmanager-navinfo'), value: 'navinfo', component: NavInfo, type: 'PD' }
+          { label: t('el:option-personmanager-navinfo'), value: 'navinfo', component: NavInfo, type: 'PD' },
+          { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={replyPdu1}
         setReplySed={setReplyPdu1}

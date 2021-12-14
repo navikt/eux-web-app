@@ -19,7 +19,6 @@ import Error from 'pages/Error'
 import PT from 'prop-types'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import styled, { createGlobalStyle } from 'styled-components'
 import * as Sentry from '@sentry/browser'
@@ -89,8 +88,8 @@ export interface TopContainerProps {
 }
 
 export interface TopContainerSelector {
-  bannerStatus: string | undefined
-  bannerMessage: string | undefined
+  stripeStatus: string | undefined
+  stripeMessage: string | JSX.Element | undefined
   error: any | undefined
   expirationTime: Date | undefined
   highContrast: boolean
@@ -98,8 +97,8 @@ export interface TopContainerSelector {
 }
 
 const mapState = (state: State): TopContainerSelector => ({
-  bannerStatus: state.alert.bannerStatus,
-  bannerMessage: state.alert.bannerMessage,
+  stripeStatus: state.alert.stripeStatus,
+  stripeMessage: state.alert.stripeMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
   highContrast: state.ui.highContrast,
@@ -110,17 +109,12 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, title
 }: TopContainerProps): JSX.Element => {
   const {
-    bannerMessage, bannerStatus, error, expirationTime, highContrast, modal
+    stripeStatus, stripeMessage, error, expirationTime, highContrast, modal
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
-  const { t } = useTranslation()
 
   const onClear = (): void => {
     dispatch(clientClear())
-  }
-
-  const getbannerMessage = (): string | undefined => {
-    return bannerMessage ? t(bannerMessage) : undefined
   }
 
   if (_.isNil(window.onerror)) {
@@ -157,8 +151,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       >
         <Header title={title} highContrast={highContrast} />
         <Alert
-          message={getbannerMessage()}
-          variant={bannerStatus as AlertVariant}
+          message={stripeMessage}
+          variant={stripeStatus as AlertVariant}
           error={error}
           onClose={onClear}
         />

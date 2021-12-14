@@ -34,7 +34,7 @@ export default {
       enhet: 'Nav Eessi'
     }
   },
-  info: 'melding',
+  info: 'Melding til bruker.<br/> med mange linjer.. <br/> 1<br/>2<br/>3<br/> ..for å se at avsender <br/>ikke <br/>dyttes nedover og <br/>over til nesteside.',
   perioderAnsattMedForsikring: [
     {
       startdato: '2001-01-01',

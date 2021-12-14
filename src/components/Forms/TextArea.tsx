@@ -12,6 +12,7 @@ export interface TextAreaProps {
   maxLength ?: number
   onChanged: (e: string) => void
   required?: boolean
+  style?: any
   value: string | undefined
 }
 const TextArea: React.FC<TextAreaProps> = ({
@@ -24,6 +25,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   maxLength = 500,
   onChanged,
   required = false,
+  style={},
   value
 }: TextAreaProps) => {
   const [_value, _setValue] = useState<string>(value ?? '')
@@ -32,6 +34,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   return (
     <Textarea
       aria-label={label}
+      style={style}
       className={classNames(className, { 'navds-error-message navds-error-message--medium': error })}
       data-test-id={namespace + '-' + id}
       description={description}
