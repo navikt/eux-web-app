@@ -35,7 +35,6 @@ const TextArea: React.FC<TextAreaProps> = ({
     <Textarea
       aria-label={label}
       style={style}
-      className={classNames(className, { 'navds-error-message navds-error-message--medium': error })}
       data-test-id={namespace + '-' + id}
       description={description}
       error={error}

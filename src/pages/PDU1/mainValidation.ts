@@ -1,5 +1,3 @@
-
-import { validateCoverLetter } from 'applications/PDU1/CoverLetter/validation'
 import { validateDagpenger } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
 import { validateStatsborgerskaper } from 'applications/PDU1/Statsborgerskap/validation'
@@ -49,9 +47,6 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
 
   const nav: NavInfo = _.get(replyPdu1, 'nav')
   hasErrors.push(validateNavInfo(v, t, { nav, namespace: `personmanager-${personID}-navinfo` }))
-
-  const info: string = _.get(replyPdu1, 'info')
-  hasErrors.push(validateCoverLetter(v, t, { info, namespace: `personmanager-${personID}-coverletter` }))
 
   return hasErrors.find(value => value) !== undefined
 }

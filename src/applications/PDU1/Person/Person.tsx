@@ -165,7 +165,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
-          <Column>
+          <Column flex='2'>
             <RadioPanelGroup
               value={pdu1Person?.kjoenn}
               data-no-border
@@ -184,12 +184,10 @@ const Person: React.FC<PersonManagerFormProps> = ({
                 <RadioPanel value='M'>
                   {t('label:mann')}
                 </RadioPanel>
-                <RadioPanel value='U'>
-                  {t('label:ukjent')}
-                </RadioPanel>
               </FlexRadioPanels>
             </RadioPanelGroup>
           </Column>
+          <Column/>
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow className={classNames('slideInFromLeft')}>

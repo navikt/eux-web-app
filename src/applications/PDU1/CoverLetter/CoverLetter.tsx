@@ -48,10 +48,9 @@ const CoverLetter: React.FC<PersonManagerFormProps> = ({
               error={validation[namespace + '-info']?.feilmelding}
               key={namespace + '-info-' + info}
               id='info'
-              label={t('label:informasjon') + '*'}
+              label={t('label:informasjon')}
               namespace={namespace}
               onChanged={setInfo}
-              required
               value={info}
             />
           </TextAreaDiv>

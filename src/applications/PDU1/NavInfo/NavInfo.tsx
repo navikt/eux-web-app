@@ -132,6 +132,8 @@ export interface NavInfo {
             options={{ bygning: false, region: false }}
             required={['gate', 'postnummer', 'by', 'land']}
             namespace={namespace + '-adresse'}
+            keyForCity='poststed'
+            keyforZipCode='postnr'
             validation={validation}
             adresse={nav?.adresse}
             onAdressChanged={setAdresse}

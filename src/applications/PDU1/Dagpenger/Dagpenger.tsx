@@ -145,7 +145,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               value={startdato}
             />
           </Column>
-          <Column>
+          <Column flex='1.5'>
             <Input
               ariaLabel={t('label:sluttdato')}
               error={getErrorFor(index, 'sluttdato')}

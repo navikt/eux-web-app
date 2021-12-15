@@ -3,6 +3,7 @@ import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
+import _ from 'lodash'
 import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +17,8 @@ export interface AdresseFormProps {
   namespace: string
   validation: Validation
   type?: boolean
+  keyForCity ?: string
+  keyforZipCode ?: string
 }
 
 const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
@@ -31,7 +34,9 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   onAdressChanged,
   namespace,
   validation,
-  type = true
+  type = true,
+  keyForCity = 'by',
+  keyforZipCode = 'postnummer'
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -52,14 +57,14 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   const setPostnummer = (postnummer: string) => {
     onAdressChanged({
       ...adresse,
-      postnummer: postnummer.trim()
+      [keyforZipCode]: postnummer.trim()
     }, 'postnummer')
   }
 
   const setBy = (by: string) => {
     onAdressChanged({
       ...adresse,
-      by: by.trim()
+      [keyForCity]: by.trim()
     }, 'by')
   }
 
@@ -161,7 +166,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             label={t('label:postnummer') + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
             onChanged={setPostnummer}
             required={required.indexOf('postnummer') >= 0}
-            value={adresse?.postnummer}
+            value={_.get(adresse, keyforZipCode)}
           />
         </Column>
         <Column flex='3'>
@@ -172,7 +177,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             label={t('label:by') + (required.indexOf('by') >= 0 ? ' *' : '')}
             onChanged={setBy}
             required={required.indexOf('by') >= 0}
-            value={adresse?.by}
+            value={_.get(adresse, keyForCity)}
           />
         </Column>
       </AlignStartRow>

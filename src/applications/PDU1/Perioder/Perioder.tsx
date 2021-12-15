@@ -300,7 +300,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={_periode.startdato}
               />
             </Column>
-            <Column>
+            <Column flex='1.5'>
               <Input
                 ariaLabel={t('label:sluttdato')}
                 error={_v[namespace + '-sluttdato']?.feilmelding}
