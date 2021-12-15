@@ -187,7 +187,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
               </FlexRadioPanels>
             </RadioPanelGroup>
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow className={classNames('slideInFromLeft')}>

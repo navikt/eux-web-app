@@ -25,11 +25,11 @@ import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import {
-  FlexCenterDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  PileDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import ValidationBox from 'pages/SvarSed/ValidationBox'
@@ -137,7 +137,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
-              <FlexCenterDiv style={{ minWidth: '300px', minHeight: '100px' }}>
+              <div style={{  textAlign: 'center',
+                display: 'block',
+              minWidth: '400px', minHeight: '100px' }}>
                 {/* <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
                   <Link
                     onClick={(e: any) => {
@@ -153,10 +155,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                     </FlexDiv>
                   </Link>
                 </PileCenterDiv> */}
-                <BodyLong>{completePdu1Response.melding}</BodyLong>
+                <PileDiv><BodyLong>{completePdu1Response.melding}</BodyLong>
                 <BodyLong>journalpostId: {completePdu1Response.journalpostId}</BodyLong>
                 <BodyLong>journalstatus: {completePdu1Response.journalstatus}</BodyLong>
-              </FlexCenterDiv>
+                </PileDiv>
+              </div>
             ),
             modalButtons: [{
               main: true,

@@ -5,8 +5,10 @@ import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, propagateError } from 'utils/validation'
 
 export interface ValidationNavInfoProps {
-  nav: NavInfo,
+  nav: NavInfo
   namespace: string
+  keyForCity?: string
+  keyforZipCode?: string
 }
 
 export const validateNavInfo = (
@@ -14,6 +16,8 @@ export const validateNavInfo = (
   t: TFunction,
   {
     nav,
+    keyForCity = 'by',
+    keyforZipCode = 'postnummer',
     namespace
   }: ValidationNavInfoProps
 ): boolean => {
@@ -33,7 +37,9 @@ export const validateNavInfo = (
 
   hasErrors.push(validateAdresse(v, t, {
     namespace: namespace + '-adresse',
-    adresse: nav?.adresse
+    adresse: nav?.adresse,
+    keyforZipCode,
+    keyForCity
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {

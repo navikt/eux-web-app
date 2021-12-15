@@ -1,10 +1,13 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, propagateError } from 'utils/validation'
 
 export interface ValidationAdresseProps {
   adresse: Adresse | undefined
+  keyForCity?: string
+  keyforZipCode?: string
   namespace: string
 }
 
@@ -13,6 +16,8 @@ export const validateAdresse = (
   t: TFunction,
   {
     adresse,
+    keyForCity = 'by',
+    keyforZipCode = 'postnummer',
     namespace
   }: ValidationAdresseProps
 ): boolean => {
@@ -25,13 +30,13 @@ export const validateAdresse = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.postnummer,
+    needle: _.get(adresse, keyforZipCode),
     id: namespace + '-postnummer',
     message: 'validation:noAddressPostnummer'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.by,
+    needle: _.get(adresse, keyForCity),
     id: namespace + '-by',
     message: 'validation:noAddressCity'
   }))

@@ -35,7 +35,7 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper, namespace: `personmanager-${personID}-statsborgerskap` }))
 
   const adresse: Adresse = _.get(replyPdu1, `${personID}.adresse`)
-  hasErrors.push(validateAdresse(v, t, { adresse, namespace: `personmanager-${personID}-adresse` }))
+  hasErrors.push(validateAdresse(v, t, { adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-adresse` }))
 
   hasErrors.push(validateAllePDPerioder(v, t, { replyPdu1, namespace: `personmanager-${personID}-perioder` }))
 
@@ -46,7 +46,7 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `personmanager-${personID}-dagpenger` }))
 
   const nav: NavInfo = _.get(replyPdu1, 'nav')
-  hasErrors.push(validateNavInfo(v, t, { nav, namespace: `personmanager-${personID}-navinfo` }))
+  hasErrors.push(validateNavInfo(v, t, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-navinfo` }))
 
   return hasErrors.find(value => value) !== undefined
 }

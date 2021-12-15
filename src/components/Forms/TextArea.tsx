@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import { Textarea } from '@navikt/ds-react'
 import React, { useState } from 'react'
 
@@ -33,6 +32,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 
   return (
     <Textarea
+      className={className}
       aria-label={label}
       style={style}
       data-test-id={namespace + '-' + id}
