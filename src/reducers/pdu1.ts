@@ -51,10 +51,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
     case types.PDU1_CREATE_SUCCESS:
       return {
         ...state,
-        replyPdu1: {
-          ...(action as ActionWithPayload).payload,
-          fagsaker: (action as ActionWithPayload).context.fagsaker
-        }
+        replyPdu1: (action as ActionWithPayload).payload
       }
 
     case types.PDU1_CREATE_FAILURE:

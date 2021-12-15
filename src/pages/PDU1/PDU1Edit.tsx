@@ -1,16 +1,11 @@
-import { BackFilled, Download, Sight } from '@navikt/ds-icons'
-import { Button, Link, Loader } from '@navikt/ds-react'
+import { BackFilled } from '@navikt/ds-icons'
+import { BodyLong, Button, Loader } from '@navikt/ds-react'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
-import {
-  completePdu1,
-  getPreviewPdu1,
-  resetCompletePdu1,
-  resetPreviewFile,
-  setReplyPdu1,
-  updateReplyPdu1
-} from 'actions/pdu1'
+import { completePdu1, resetCompletePdu1, setReplyPdu1, updateReplyPdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
+import Adresse from 'applications/PDU1/Adresse/Adresse'
+import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import NavInfo from 'applications/PDU1/NavInfo/NavInfo'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
@@ -20,13 +15,12 @@ import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
-import Adresse from 'applications/PDU1/Adresse/Adresse'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
+import PreviewPDU1 from 'components/PreviewPDU1/PreviewPDU1'
 import { ReplyPdu1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
-import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -36,22 +30,16 @@ import {
   FlexDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PileCenterDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { blobToBase64 } from 'utils/blob'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
-import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
-import { ModalContent } from 'declarations/components'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
-  gettingPreviewPdu1: boolean
-  previewPdu1: any,
   replyPdu1: ReplyPdu1 | null | undefined
   savingPdu1: boolean
   completePdu1Response: any
@@ -66,8 +54,6 @@ export interface PDU1EditProps {
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
-  gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
-  previewPdu1: state.pdu1.previewPdu1,
   replyPdu1: state.pdu1.replyPdu1,
   completePdu1Response: state.pdu1.completePdu1Response,
   validation: state.validation.status,
@@ -82,8 +68,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const dispatch = useDispatch()
   const {
     completingPdu1,
-    gettingPreviewPdu1,
-    previewPdu1,
     replyPdu1,
     completePdu1Response,
     view
@@ -91,7 +75,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
 
-  const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
@@ -121,22 +104,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     }
   }
 
-  const resetPreview = () => {
-    dispatch(resetPreviewFile())
-    setPreviewModal(undefined)
-  }
-
   const resetComplete = () => {
     dispatch(resetCompletePdu1())
     setCompleteModal(false)
-  }
-
-  const onPreviewPdu1Clicked = (e: any) => {
-    if (replyPdu1) {
-      const newReplyPdu1 = _.cloneDeep(replyPdu1)
-      dispatch(getPreviewPdu1(newReplyPdu1))
-      buttonLogger(e)
-    }
   }
 
   const onGoBackClick = () => {
@@ -144,47 +114,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     dispatch(resetCurrentEntry('pdu1'))
     document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
-
-  const showPreviewModal = (previewFile: Blob) => {
-    blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }
-
-      setPreviewModal({
-        closeButton: true,
-        modalContent: (
-          <div
-            style={{ cursor: 'pointer' }}
-          >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
-              width={600}
-              height={800}
-              tema='simple'
-              viewOnePage={false}
-              onContentClick={resetPreview}
-            />
-          </div>
-        )
-      })
-    })
-  }
-
-  useEffect(() => {
-    if (!previewModal && !_.isNil(previewPdu1)) {
-      showPreviewModal(previewPdu1)
-    }
-  }, [previewPdu1])
 
   useEffect(() => {
     if (!completeModal && !_.isNil(completePdu1Response)) {
@@ -208,8 +137,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
-              <FlexCenterDiv style={{ minWidth: '400px', minHeight: '100px' }}>
-                <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
+              <FlexCenterDiv style={{ minWidth: '300px', minHeight: '100px' }}>
+                {/* <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
                   <Link
                     onClick={(e: any) => {
                       e.stopPropagation()
@@ -223,7 +152,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                       <Download width={20} />
                     </FlexDiv>
                   </Link>
-                </PileCenterDiv>
+                </PileCenterDiv> */}
+                <BodyLong>{completePdu1Response.melding}</BodyLong>
+                <BodyLong>journalpostId: {completePdu1Response.journalpostId}</BodyLong>
+                <BodyLong>journalstatus: {completePdu1Response.journalstatus}</BodyLong>
               </FlexCenterDiv>
             ),
             modalButtons: [{
@@ -235,11 +167,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           onModalClose={resetComplete}
         />
       )}
-      <Modal
-        open={!_.isNil(previewModal)}
-        modal={previewModal}
-        onModalClose={resetPreview}
-      />
       <SavePDU1Modal
         open={viewSavePdu1Modal}
         replyPdu1={replyPdu1!}
@@ -276,17 +203,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />
-      <Button
-        variant='tertiary'
-        disabled={gettingPreviewPdu1}
-        data-amplitude='pdu1.editor.preview'
-        onClick={onPreviewPdu1Clicked}
-      >
-        <Sight />
-        <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'PD U1' })}
-        {gettingPreviewPdu1 && <Loader />}
-      </Button>
+      <PreviewPDU1 />
       <VerticalSeparatorDiv size='2' />
       <ValidationBox />
       <VerticalSeparatorDiv size='2' />

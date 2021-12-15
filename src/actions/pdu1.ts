@@ -49,9 +49,6 @@ export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>>
   return call({
     url: sprintf(urls.PDU1_GET_URL, { fnr }),
     expectedPayload: mockCreatePdu1,
-    context: {
-      fnr: fnr
-    },
     type: {
       request: types.PDU1_CREATE_REQUEST,
       success: types.PDU1_CREATE_SUCCESS,
