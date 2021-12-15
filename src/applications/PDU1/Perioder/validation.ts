@@ -1,5 +1,6 @@
 import {
-  PDPeriode, PeriodeMedAktivitetstype, PeriodeMedBegrunnelse, PeriodeMedLoenn, PeriodeMedType, ReplyPdu1
+  PDPeriode, PeriodeMedAktivitetstype, PeriodeMedBegrunnelse,
+  PeriodeMedInntekt, PeriodeMedLoenn, PeriodeMedType, ReplyPdu1
 } from 'declarations/pd.d'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
@@ -75,13 +76,22 @@ export const validatePDPeriode = (
     }))
   }
 
-  if (type === 'perioderLoennSomAnsatt' || type === 'perioderInntektSomSelvstendig') {
+  if (type === 'perioderLoennSomAnsatt') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (periode as PeriodeMedLoenn)?.loenn,
       id: namespace + idx + '-loenn',
       message: 'validation:noLoenn'
     }))
   }
+
+  if (type === 'perioderInntektSomSelvstendig') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: (periode as PeriodeMedInntekt)?.inntekt,
+      id: namespace + idx + '-inntekt',
+      message: 'validation:noInntekt'
+    }))
+  }
+
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)

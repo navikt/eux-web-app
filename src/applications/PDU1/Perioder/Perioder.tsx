@@ -12,6 +12,7 @@ import {
   PDPeriode,
   PeriodeMedAktivitetstype,
   PeriodeMedBegrunnelse,
+  PeriodeMedInntekt,
   PeriodeMedLoenn,
   PeriodeMedType,
   ReplyPdu1
@@ -186,6 +187,21 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       dispatch(updateReplySed(`${type}[${index}].loenn`, newLoenn.trim()))
       if (validation[namespace + getNSIdx(type, index) + '-loenn']) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-loenn'))
+      }
+    }
+  }
+
+  const setPeriodeInntekt = (newInntekt: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        inntekt: newInntekt.trim()
+      } as PeriodeMedInntekt)
+      _resetValidation(namespace + '-inntekt')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].inntekt`, newInntekt.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-inntekt']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-inntekt'))
       }
     }
   }
@@ -384,7 +400,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
             <Column />
           </AlignStartRow>
         )}
-        {_type && ['perioderLoennSomAnsatt', 'perioderInntektSomSelvstendig'].indexOf(_type) >= 0 && (
+        {_type === 'perioderLoennSomAnsatt' && (
           <AlignStartRow>
             {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
             <Column>
@@ -396,6 +412,23 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 label={t('label:loenn')}
                 onChanged={(newLoenn: string) => setPeriodeLoenn(newLoenn, _type, _index)}
                 value={(_periode as PeriodeMedLoenn)?.loenn ?? ''}
+              />
+            </Column>
+            <Column />
+          </AlignStartRow>
+        )}
+        {_type === 'perioderInntektSomSelvstendig' && (
+          <AlignStartRow>
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-loenn']?.feilmelding}
+                namespace={namespace + idx}
+                id='inntekt'
+                key={namespace + idx + '-loenn-' + ((_periode as PeriodeMedInntekt)?.inntekt ?? '')}
+                label={t('label:inntekt')}
+                onChanged={(newInntekt: string) => setPeriodeInntekt(newInntekt, _type, _index)}
+                value={(_periode as PeriodeMedInntekt)?.inntekt ?? ''}
               />
             </Column>
             <Column />

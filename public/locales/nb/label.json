@@ -7,10 +7,12 @@
   "aktivitetstype" : "Aktivitets type",
   "all-data-regarding-x-will-be-lost": "Alle data angående {{x}} vil gå tapt",
   "alle" : "Alle",
+  "andre-mottatte-utbetalinger": "Andre mottatte utbetalinger",
   "anmodning-grunner" : "Grunner til anmodning om motregning ved for mye utbetalt",
   "anmodning-om-motregning": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "anmodning-om-motregning-barn": "Anmodning om motregning per barn",
   "anmodning-om-motregning-svar-barn": "Svar på anmodning om motregning per barn",
+  "annen-grunn": "Annen grunn",
   "annen-person": "Annet person",
   "annen-relasjon": "Annen relasjon",
   "annen-type": "Annen type",
@@ -121,6 +123,7 @@
   "grant-date": "Innvilgelsdato for ytelser",
   "group-by-type": "Grupper etter periodetype",
   "grunn": "Grunn",
+  "grunn-type": "Grunn type",
   "grunn-ingen-rett": "Ingen rett til stønad i henhold til lovgivningen til institusjonen som utsteder denne meldingen",
   "grunn-personen": "Personen søkte ikke om eksport av stønad på riktig måte",
   "grunn-til-opphør": "Grunn til opphør",
@@ -199,6 +202,7 @@
   "motregning": "Motregning",
   "mottaker-institusjon": "Mottaker institusjon",
   "mottakers-navn": "Mottakers navn",
+  "mottatte-dagpenger": "Mottatte dagpenger",
 
   "nasjonalitet": "Nasjonalitet",
   "nav": "NAV",
@@ -354,5 +358,6 @@
   "åpen_sluttdato": "Åpen sluttdato",
   "årlig": "Årlig",
   "årsak-til-avslutning-av-arbeidsforhold" : "Årsak til avslutning av arbeidsforhold",
+  "årsak-til-avsluttet-arbeidsforhold" : "Årsak til avsluttet arbeidsforhold",
   "årsak-til-avslutning-av-selvstendig-næringsvirksomhet" : "Årsak til avslutning av selvstendig næringsvirksomhet"
 }

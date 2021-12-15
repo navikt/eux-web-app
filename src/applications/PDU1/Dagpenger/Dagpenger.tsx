@@ -179,7 +179,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     <div key={namespace + '-div'}>
       <PaddedDiv>
         <Heading size='medium'>
-          {t('label:dagpenger')}
+          {t('label:mottatte-dagpenger')}
         </Heading>
         <VerticalSeparatorDiv />
       </PaddedDiv>

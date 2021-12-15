@@ -68,7 +68,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Heading size='medium'>
-        {t('label:siste-ansettelse-info')}
+        {t('label:årsak-til-avsluttet-arbeidsforhold')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
@@ -78,7 +78,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
             data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
-            label={t('label:årsak-til-avslutning-av-arbeidsforhold') + ' *'}
+            label={t('label:grunn-type') + ' *'}
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
@@ -96,7 +96,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
                 error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
                 namespace={namespace}
                 id='annenGrunnOpphoerAnsatt'
-                label={t('label:annet-opphør')}
+                label={t('label:annen-grunn')}
                 onChanged={setAnnenGrunnOpphoerAnsatt}
                 value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
               />

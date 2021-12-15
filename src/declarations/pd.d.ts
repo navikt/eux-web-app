@@ -21,6 +21,10 @@ export interface PeriodeMedLoenn extends Periode {
   loenn: string
 }
 
+export interface PeriodeMedInntekt extends Periode {
+  inntekt: string
+}
+
 export interface Pdu1Person {
   fnr: string
   kjoenn: string
@@ -67,7 +71,7 @@ export interface IkkeRettTilDagpenger {
   ikkeSoekt: JaNei
 }
 
-export type PDPeriode = Periode | PeriodeMedType | PeriodeMedBegrunnelse | PeriodeMedAktivitetstype | PeriodeMedLoenn
+export type PDPeriode = Periode | PeriodeMedType | PeriodeMedBegrunnelse | PeriodeMedAktivitetstype | PeriodeMedLoenn | PeriodeMedInntekt
 
 export interface ReplyPdu1 {
   saksreferanse: string, // Nav => cover letter,
@@ -81,7 +85,7 @@ export interface ReplyPdu1 {
   perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // Perioder 2.2.1
   perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // Perioder 2.2.2
   perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // Perioder 2.3.1
-  perioderInntektSomSelvstendig: Array<PeriodeMedLoenn> // Perioder 2.3.2
+  perioderInntektSomSelvstendig: Array<PeriodeMedInntekt> // Perioder 2.3.2
   opphoer: GrunnTilOpphør // SisteAnsettelseInfo => 3
   andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
   perioderDagpengerMottatt: Array<Periode> // Dagpenger => 5
