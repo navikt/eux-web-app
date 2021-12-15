@@ -44,11 +44,13 @@ const PreviewPDU1: React.FC = () => {
   }
 
   const onPreviewPdu1Clicked = (e: any) => {
-    if (replyPdu1) {
+    if (_.isNil(previewPdu1)) {
       const newReplyPdu1 = _.cloneDeep(replyPdu1)
       setWillOpenModal(true)
       dispatch(getPreviewPdu1(newReplyPdu1))
       buttonLogger(e)
+    } else {
+      showPreviewModal(previewPdu1)
     }
   }
 
@@ -106,18 +108,24 @@ const PreviewPDU1: React.FC = () => {
         onModalClose={() => setPreviewModal(undefined)}
       />
       <FlexDiv>
-        <Button
-          variant='secondary'
-          disabled={gettingPreviewPdu1 || !_.isNil(previewPdu1)}
-          data-amplitude='pdu1.editor.preview'
-          onClick={onPreviewPdu1Clicked}
-        >
-          <Sight />
-          <HorizontalSeparatorDiv size='0.5' />
-          {gettingPreviewPdu1 ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'PD U1' })}
-          {gettingPreviewPdu1 && <Loader />}
-        </Button>
-        {previewPdu1 && (
+        {replyPdu1 && (
+          <Button
+            variant='secondary'
+            disabled={gettingPreviewPdu1}
+            data-amplitude='pdu1.editor.preview'
+            onClick={onPreviewPdu1Clicked}
+          >
+            <Sight />
+            <HorizontalSeparatorDiv size='0.5' />
+            {gettingPreviewPdu1
+              ? t('label:laster-ned-filen')
+              : _.isNil(previewPdu1)
+                ? t('el:button-generate-preview-x', { x: 'PD U1' })
+                : t('el:button-preview-x', { x: 'PD U1' })}
+            {gettingPreviewPdu1 && <Loader />}
+          </Button>
+        )}
+        {replyPdu1 && previewPdu1 && (
           <>
             <HorizontalSeparatorDiv />
             <Button
@@ -139,7 +147,7 @@ const PreviewPDU1: React.FC = () => {
             >
               <ErrorFilled />
               <HorizontalSeparatorDiv size='0.5' />
-              {t('label:fjern')}
+              {t('label:fjern-pdu1')}
             </Button>
           </>
         )}

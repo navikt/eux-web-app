@@ -42,7 +42,7 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   hasErrors.push(validateAllePDPerioder(v, t, { replyPdu1, namespace: `personmanager-${personID}-perioder` }))
 
   const sisteAnsettelseInfo: GrunnTilOpphør = _.get(replyPdu1, 'opphoer')
-  hasErrors.push(validateSisteAnsettelseinfo(v, t, { sisteAnsettelseInfo, namespace: `personmanager-${personID}-sisteAnsettelseInfo` }))
+  hasErrors.push(validateSisteAnsettelseinfo(v, t, { sisteAnsettelseInfo, namespace: `personmanager-${personID}-sisteansettelseinfo` }))
 
   const dagpenger: Array<Periode> | undefined = _.get(replyPdu1, 'perioderDagpengerMottatt')
   hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `personmanager-${personID}-dagpenger` }))

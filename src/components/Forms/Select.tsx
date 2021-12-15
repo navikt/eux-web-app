@@ -12,12 +12,15 @@ interface SelectProps extends Props {
 
 const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   return (
-    <div data-test-id={props['data-test-id'] || props.id} style={props.style}>
+    <div
+      className={classNames({ 'navds-select--error': !!props.error })}
+      data-test-id={props['data-test-id'] || props.id}
+      style={props.style}
+    >
       {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}</label>)}
       <ReactSelect
         placeholder=''
         inputId={props.id}
-        className={classNames({ 'navds-error-message navds-error-message--medium': !!props.error })}
         isOptionDisabled={(option: any) => option.isDisabled}
         styles={{
           container: (styles: any) => ({

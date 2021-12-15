@@ -6,6 +6,7 @@ import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
+import { GrunnTilOpphør } from 'declarations/sed'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
@@ -26,8 +27,8 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
   const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'opphoer'
-  const sisteAnsettelseInfo: any = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-sisteAnsettelseInfo`
+  const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(replySed, target)
+  const namespace = `${parentNamespace}-${personID}-sisteansettelseinfo`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
 
@@ -73,6 +74,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <Select
+            style={{ width: '100%' }}
             data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
@@ -88,7 +90,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {_typeGrunnOpphoerAnsatt === 'annet' && (
         <>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
             <Column>
               <Input
                 error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
@@ -101,7 +103,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.12s' }}>
             <Column>
               <Input
                 error={validation[namespace + '-årsakselvstendig']?.feilmelding}
