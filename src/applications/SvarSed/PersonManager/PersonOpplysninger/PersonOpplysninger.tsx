@@ -68,7 +68,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
-  const landUtenNorge = CountryFilter.STANDARD?.filter((it: string) => it !== 'NO')
+  const landUtenNorge = CountryFilter.STANDARD({}).filter((it: string) => it !== 'NO')
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
@@ -556,7 +556,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                   data-test-id={namespace + '-foedested-land'}
                   error={validation[namespace + '-foedested-land']?.feilmelding}
                   id={namespace + '-foedested-land'}
-                  includeList={CountryFilter.STANDARD}
+                  includeList={CountryFilter.STANDARD({})}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}

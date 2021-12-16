@@ -7,7 +7,7 @@ import { resetAllValidation, viewValidation } from 'actions/validation'
 import Adresse from 'applications/PDU1/Adresse/Adresse'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
-import NavInfo from 'applications/PDU1/NavInfo/NavInfo'
+import Avsender from 'applications/PDU1/Avsender/Avsender'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
@@ -197,7 +197,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
           { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           { label: t('el:option-personmanager-retttildagpenger'), value: 'retttildagpenger', component: RettTilDagpenger, type: 'PD' },
-          { label: t('el:option-personmanager-navinfo'), value: 'navinfo', component: NavInfo, type: 'PD' },
+          { label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
           { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={replyPdu1}

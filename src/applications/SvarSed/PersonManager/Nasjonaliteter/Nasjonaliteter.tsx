@@ -147,7 +147,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
               flagWave
               key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}
               id={namespace + idx + '-land'}
-              includeList={CountryFilter.STANDARD}
+              includeList={CountryFilter.STANDARD({})}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
               required

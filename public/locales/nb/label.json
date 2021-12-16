@@ -33,6 +33,7 @@
   "artikkelnummer": "Artikkelnummer",
   "avdød": "Avdød",
   "avhuk-de-barn-vedtaket": "Avhuk de barn vedtaket gjelder",
+  "avsender": "Avsender",
 
   "bankens-navn": "Bankens navn",
   "barn": "Barn",
@@ -268,6 +269,8 @@
 
   "sak-i-rina" : "Sak i Rina",
   "saksbehandler" : "Saksbehandler",
+  "saksbehandlers-enhet" : "Saksbehandlers enhet",
+  "saksbehandlers-navn" : "Saksbehandlers navn",
   "saksnummer" : "Saksnummer",
   "saksnummer-eller-fnr" : "RINA saksnummer eller f.nr./d.nr. (11 sifre)",
   "save-sed" : "Lagring SED",

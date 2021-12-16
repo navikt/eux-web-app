@@ -1,7 +1,7 @@
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Country } from 'land-verktoy'
+import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -19,6 +19,7 @@ export interface AdresseFormProps {
   type?: boolean
   keyForCity ?: string
   keyforZipCode ?: string
+  useUK ?: boolean
 }
 
 const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
@@ -36,7 +37,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   validation,
   type = true,
   keyForCity = 'by',
-  keyforZipCode = 'postnummer'
+  keyforZipCode = 'postnummer',
+  useUK = false
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -203,6 +205,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               key={adresse?.land}
               data-test-id={namespace + '-land'}
               error={validation[namespace + '-land']?.feilmelding}
+              includeList={CountryFilter.STANDARD({useUK})}
               flagWave
               id={namespace + '-land'}
               label={t('label:land') + (required.indexOf('land') >= 0 ? ' *' : '')}

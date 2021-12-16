@@ -239,7 +239,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               label={t('label:land')}
               key={'familierelasjoner__input-land-' + _relation.land}
               menuPortalTarget={document.body}
-              includeList={CountryFilter.STANDARD}
+              includeList={CountryFilter.STANDARD({})}
               onOptionSelected={(e: Country) => {
                 updateCountry('land', e.value)
                 resetValidation('land')
@@ -253,7 +253,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             <CountrySelect
               data-test-id='familierelasjoner__input-statsborgerskap'
               error={_validation.statsborgerskap ? _validation.statsborgerskap.feilmelding : undefined}
-              includeList={CountryFilter.STANDARD}
+              includeList={CountryFilter.STANDARD({})}
               label={t('label:statsborgerskap')}
               key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
               menuPortalTarget={document.body}

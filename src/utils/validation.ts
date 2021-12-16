@@ -55,6 +55,34 @@ export const checkIfDuplicate = (v: Validation, {
   return false
 }
 
+export const checkIfValidLand =  (v: Validation, {
+  needle,
+  id,
+  personName,
+  message,
+  extra
+}: any): boolean => {
+  if (needle?.trim()?.length === 2) {
+    addError(v, { id, personName, message, extra })
+    return true
+  }
+  return false
+}
+
+export const checkIfNotGB = (v: Validation, {
+  needle,
+  id,
+  personName,
+  message,
+  extra
+}: any): boolean => {
+  if (needle?.trim()?.toLowerCase() === 'gb') {
+    addError(v, { id, personName, message, extra })
+    return true
+  }
+  return false
+}
+
 export const propagateError = (v: Validation, namespace: string) => {
   const namespaceBits = namespace.split('-')
   const mainNamespace = namespaceBits[0]

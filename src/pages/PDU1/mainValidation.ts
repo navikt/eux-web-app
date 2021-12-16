@@ -10,7 +10,7 @@ import { TFunction } from 'react-i18next'
 import { validatePerson } from 'applications/PDU1/Person/validation'
 import { validateAdresse } from 'applications/PDU1/Adresse/validation'
 import { validateSisteAnsettelseinfo } from 'applications/PDU1/SisteAnsettelseInfo/validation'
-import { validateNavInfo } from 'applications/PDU1/NavInfo/validation'
+import { validateAvsender } from 'applications/PDU1/Avsender/validation'
 
 export interface ValidationPdu1SearchProps {
   fagsak: string | undefined
@@ -46,7 +46,7 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `personmanager-${personID}-dagpenger` }))
 
   const nav: NavInfo = _.get(replyPdu1, 'nav')
-  hasErrors.push(validateNavInfo(v, t, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-navinfo` }))
+  hasErrors.push(validateAvsender(v, t, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-avsender` }))
 
   return hasErrors.find(value => value) !== undefined
 }

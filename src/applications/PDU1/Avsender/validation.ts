@@ -4,14 +4,14 @@ import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, propagateError } from 'utils/validation'
 
-export interface ValidationNavInfoProps {
+export interface ValidationAvsenderProps {
   nav: NavInfo
   namespace: string
   keyForCity?: string
   keyforZipCode?: string
 }
 
-export const validateNavInfo = (
+export const validateAvsender = (
   v: Validation,
   t: TFunction,
   {
@@ -19,7 +19,7 @@ export const validateNavInfo = (
     keyForCity = 'by',
     keyforZipCode = 'postnummer',
     namespace
-  }: ValidationNavInfoProps
+  }: ValidationAvsenderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 

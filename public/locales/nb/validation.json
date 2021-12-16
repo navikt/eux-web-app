@@ -20,6 +20,7 @@
   "invalidFnr": "Fnr må ha 11 siffer",
   "invalidFoedselsdato": "Ugyldig fødselsdato",
   "invalidIban": "Ugyldig IBAN",
+  "invalidLand": "Ugyldig land",
   "invalidSwift": "Ugyldig SWIFT",
   "invalidTema": "Tema kan ikke være 'Generell'",
 

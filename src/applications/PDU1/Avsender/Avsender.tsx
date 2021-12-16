@@ -17,7 +17,7 @@ const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const NavInfoFC: React.FC<PersonManagerFormProps> = ({
+const Avsender: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   replySed,
@@ -28,7 +28,7 @@ const NavInfoFC: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = 'nav'
   const nav: NavInfo = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-navinfo`
+  const namespace = `${parentNamespace}-${personID}-avsender`
 
   const setEnhetNavn = (enhetNavn: string) => {
     dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn))
@@ -87,7 +87,7 @@ export interface NavInfo {
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Heading size='medium'>
-        {t('label:nav-info')}
+        {t('label:avsender')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
@@ -101,6 +101,9 @@ export interface NavInfo {
             value={nav?.enhetNavn}
           />
         </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv/>
+      <AlignStartRow>
         <Column>
           <Input
             error={validation[namespace + '-enhetId']?.feilmelding}
@@ -123,33 +126,13 @@ export interface NavInfo {
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <Heading size='small'>{t('label:adresse')}</Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className={classNames('slideInFromLeft')}>
-        <Column>
-          <AdresseForm
-            type={false}
-            options={{ bygning: false, region: false }}
-            required={['gate', 'postnummer', 'by', 'land']}
-            namespace={namespace + '-adresse'}
-            keyForCity='poststed'
-            keyforZipCode='postnr'
-            validation={validation}
-            adresse={nav?.adresse}
-            onAdressChanged={setAdresse}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <Heading size='small'>{t('label:saksbehandler')}</Heading>
-      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className={classNames('slideInFromLeft')}>
         <Column>
           <Input
             error={validation[namespace + '-saksbehandler-navn']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-navn'
-            label={t('label:navn') + ' *'}
+            label={t('label:saksbehandlers-navn') + ' *'}
             onChanged={setSaksbehandlerNavn}
             value={nav?.saksbehandler?.navn}
           />
@@ -159,9 +142,28 @@ export interface NavInfo {
             error={validation[namespace + '-saksbehandler-enhet']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-enhet'
-            label={t('label:enhet') + ' *'}
+            label={t('label:saksbehandlers-enhet') + ' *'}
             onChanged={setSaksbehandlerEnhet}
             value={nav?.saksbehandler?.enhet}
+          />
+        </Column>
+      </AlignStartRow>
+      <VerticalSeparatorDiv size='2'/>
+      <Heading size='small'>{t('label:adresse')}</Heading>
+      <VerticalSeparatorDiv/>
+      <AlignStartRow className={classNames('slideInFromLeft')}>
+        <Column>
+          <AdresseForm
+            type={false}
+            options={{ bygning: false, region: false }}
+            required={['gate', 'postnummer', 'by', 'land']}
+            useUK={true}
+            namespace={namespace + '-adresse'}
+            keyForCity='poststed'
+            keyforZipCode='postnr'
+            validation={validation}
+            adresse={nav?.adresse}
+            onAdressChanged={setAdresse}
           />
         </Column>
       </AlignStartRow>
@@ -169,4 +171,4 @@ export interface NavInfo {
   )
 }
 
-export default NavInfoFC
+export default Avsender

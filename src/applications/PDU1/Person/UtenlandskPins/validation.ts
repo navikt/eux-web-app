@@ -1,7 +1,7 @@
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
   land: string,
@@ -41,6 +41,19 @@ export const validateUtenlandskPin = (
     id: namespace + idx + '-land',
     message: 'validation:noLand'
   }))
+
+  if (land?.length > 0) {
+    hasErrors.push(checkIfValidLand(v, {
+      needle: land,
+      id: namespace + idx + '-land',
+      message: 'validation:invalidLand'
+    }))
+    hasErrors.push(checkIfNotGB(v, {
+      needle: land,
+      id: namespace + idx + '-land',
+      message: 'validation:invalidLand'
+    }))
+  }
 
   hasErrors.push(checkIfDuplicate(v, {
     needle: land,

@@ -339,7 +339,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               key={namespace + '-lokaleSakIder' + idx + '-land' + (index < 0 ? _newSakseierLand : lokaleSakId?.land)}
               id={namespace + '-lokaleSakIder' + idx + '-land'}
               label={t('label:land')}
-              includeList={CountryFilter.STANDARD}
+              includeList={CountryFilter.STANDARD({})}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setSakseierLand(e.value, index)}
               required
