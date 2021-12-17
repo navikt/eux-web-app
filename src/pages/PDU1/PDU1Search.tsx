@@ -1,6 +1,6 @@
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
-import { createPdu1, getFagsaker } from 'actions/pdu1'
+import { getPdu1, getFagsaker } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
@@ -9,7 +9,7 @@ import Select from 'components/Forms/Select'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { FagSak, FagSaker } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
@@ -40,7 +40,7 @@ export interface PDU1SearchSelector {
   fagsaker: FagSaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
-  replyPdu1: ReplyPdu1 | null | undefined
+  PDU1: PDU1 | null | undefined
 }
 
 const mapState = (state: State): PDU1SearchSelector => ({
@@ -48,7 +48,7 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
-  replyPdu1: state.pdu1.replyPdu1
+  PDU1: state.pdu1.PDU1
 })
 
 export interface PDU1Props {
@@ -65,7 +65,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
-    replyPdu1
+    PDU1
   }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string>(fnrParam ?? '')
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
@@ -132,7 +132,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     setFagsak(f)
   }
 
-  const onCreatePdu1Clicked = () => {
+  const ongetPdu1Clicked = () => {
     const valid = performValidation({
       fnrOrDnr: fnrOrDnr,
       fagsak: fagsak,
@@ -141,17 +141,17 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
     if (valid) {
       setPdu1Request(true)
-      dispatch(createPdu1(fnrOrDnr, fagsak))
+      dispatch(getPdu1(fnrOrDnr, fagsak))
     }
   }
 
   useEffect(() => {
-    if (replyPdu1 && pdu1Request) {
+    if (PDU1 && pdu1Request) {
       setPdu1Request(false)
       dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
-  }, [replyPdu1])
+  }, [PDU1])
 
   useEffect(() => {
     dispatch(startPageStatistic('pdu1-search'))
@@ -232,7 +232,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
           <Button
             variant='primary'
             disabled={!tema || !fagsak || creatingPdu1}
-            onClick={onCreatePdu1Clicked}
+            onClick={ongetPdu1Clicked}
           >
             {creatingPdu1 && <Loader />}
             {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}

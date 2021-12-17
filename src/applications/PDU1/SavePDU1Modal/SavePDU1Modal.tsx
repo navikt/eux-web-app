@@ -1,6 +1,6 @@
 import { saveEntry } from 'actions/localStorage'
 import Modal from 'components/Modal/Modal'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { Alert, Heading, Button, TextField } from '@navikt/ds-react'
@@ -41,16 +41,14 @@ const SectionDiv = styled.div`
 
 interface SavePDU1ModalProps {
   onModalClose: () => void
-  replyPdu1: ReplyPdu1
-  storageKey: string
+  PDU1: PDU1
   open: boolean
 }
 
 const SendPDU1Modal = ({
   open,
   onModalClose,
-  replyPdu1,
-  storageKey
+  PDU1
 }: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_name, setName] = useState<string>('pdu1-' + new Date().getTime())
@@ -77,13 +75,13 @@ const SendPDU1Modal = ({
     if (performValidation()) {
       const now = new Date()
       const dateString = now.toDateString()
-      const newItem: LocalStorageEntry<ReplyPdu1> = {
+      const newItem: LocalStorageEntry<PDU1> = {
         id: '' + now.getTime(),
         name: _name,
         date: dateString,
-        content: replyPdu1
+        content: PDU1
       } as LocalStorageEntry
-      dispatch(saveEntry('pdu1', storageKey, newItem))
+      dispatch(saveEntry('pdu1', newItem))
       setSaved(true)
       setMessage(t('label:lagret-pdu1-utkast', { name: _name, date: dateString }))
     }

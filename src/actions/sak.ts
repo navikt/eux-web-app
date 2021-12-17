@@ -1,16 +1,15 @@
+import { ParamPayload } from 'declarations/app'
 import {
   Arbeidsgiver,
   FagSaker,
   OldFamilieRelasjon,
   Institusjoner,
-  Kodeverk,
-  Person
+  Kodeverk
 } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
-import mockPerson from 'mocks/person'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -84,8 +83,8 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
   fnr: string, sektor: string, tema: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
-    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
-    expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
+    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
+    expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
       request: types.SAK_FAGSAKER_GET_REQUEST,
       success: types.SAK_FAGSAKER_GET_SUCCESS,
@@ -98,8 +97,8 @@ export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Insti
   buctype: string, landkode: string
 ): ThunkResult<ActionWithPayload<Institusjoner>> => {
   return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype: buctype, landkode: landkode }),
-    expectedPayload: mockInstitusjon({ landkode: landkode }),
+    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
+    expectedPayload: mockInstitusjon({ landkode }),
     type: {
       request: types.SAK_INSTITUSJONER_GET_REQUEST,
       success: types.SAK_INSTITUSJONER_GET_SUCCESS,
@@ -112,45 +111,12 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kod
   buctype: string
 ): ThunkResult<ActionWithPayload<Array<Kodeverk>>> => {
   return call({
-    url: sprintf(urls.API_LANDKODER_URL, { buctype: buctype }),
+    url: sprintf(urls.API_LANDKODER_URL, { buctype }),
     expectedPayload: mockLandkode(),
     type: {
       request: types.SAK_LANDKODER_GET_REQUEST,
       success: types.SAK_LANDKODER_GET_SUCCESS,
       failure: types.SAK_LANDKODER_GET_FAILURE
-    }
-  })
-}
-
-export const getPerson: ActionCreator<ThunkResult<ActionWithPayload<Person>>> = (
-  fnr: string
-): ThunkResult<ActionWithPayload<Person>> => {
-  return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
-    expectedPayload: mockPerson,
-    cascadeFailureError: true,
-    type: {
-      request: types.SAK_PERSON_GET_REQUEST,
-      success: types.SAK_PERSON_GET_SUCCESS,
-      failure: types.SAK_PERSON_GET_FAILURE
-    }
-  })
-}
-
-export const getPersonRelated: ActionCreator<ThunkResult<ActionWithPayload<Person>>> = (
-  fnr: string
-): ThunkResult<ActionWithPayload<Person>> => {
-  return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
-    expectedPayload: mockPerson,
-    cascadeFailureError: true,
-    context: {
-      fnr: fnr
-    },
-    type: {
-      request: types.SAK_PERSON_RELATERT_SEARCH_REQUEST,
-      success: types.SAK_PERSON_RELATERT_SEARCH_SUCCESS,
-      failure: types.SAK_PERSON_RELATERT_SEARCH_FAILURE
     }
   })
 }
@@ -173,18 +139,9 @@ export const resetFagsaker: ActionCreator<Action> = (): Action => ({
   type: types.SAK_FAGSAKER_RESET
 })
 
-export const resetPerson: ActionCreator<Action> = (): Action => ({
-  type: types.SAK_PERSON_RESET
-})
-
-export const resetPersonRelatert: ActionCreator<Action> = (): Action => ({
-  type: types.SAK_PERSON_RELATERT_RESET
-})
-
-export const setProperty = (key: string, value: string | undefined) => ({
+export const setProperty: ActionCreator<ActionWithPayload<ParamPayload>> = (
+  key: string, value: string | undefined
+): ActionWithPayload<ParamPayload> => ({
   type: types.SAK_PROPERTY_SET,
-  payload: {
-    key: key,
-    value: value
-  }
+  payload: {key, value}
 })

@@ -167,27 +167,27 @@ const loadingReducer = (
         gettingPreviewFile: false
       }
 
-    case types.PDU1_COMPLETE_REQUEST:
+    case types.PDU1_JOURNALFØRE_REQUEST:
       return {
         ...state,
         completingPdu1: true
       }
 
-    case types.PDU1_COMPLETE_FAILURE:
-    case types.PDU1_COMPLETE_SUCCESS:
+    case types.PDU1_JOURNALFØRE_FAILURE:
+    case types.PDU1_JOURNALFØRE_SUCCESS:
       return {
         ...state,
         completingPdu1: false
       }
 
-    case types.PDU1_CREATE_REQUEST:
+    case types.PDU1_GET_REQUEST:
       return {
         ...state,
         creatingPdu1: true
       }
 
-    case types.PDU1_CREATE_FAILURE:
-    case types.PDU1_CREATE_SUCCESS:
+    case types.PDU1_GET_FAILURE:
+    case types.PDU1_GET_SUCCESS:
       return {
         ...state,
         creatingPdu1: false
@@ -339,27 +339,27 @@ const loadingReducer = (
     case types.APP_CLEAN_DATA:
       return initialLoadingState
 
-    case types.JOARK_LIST_REQUEST:
+    case types.ATTACHMENT_LIST_REQUEST:
       return {
         ...state,
         gettingJoarkList: true
       }
 
-    case types.JOARK_LIST_SUCCESS:
-    case types.JOARK_LIST_FAILURE:
+    case types.ATTACHMENT_LIST_SUCCESS:
+    case types.ATTACHMENT_LIST_FAILURE:
       return {
         ...state,
         gettingJoarkList: false
       }
 
-    case types.JOARK_PREVIEW_REQUEST:
+    case types.ATTACHMENT_PREVIEW_REQUEST:
       return {
         ...state,
         gettingJoarkFile: true
       }
 
-    case types.JOARK_PREVIEW_SUCCESS:
-    case types.JOARK_PREVIEW_FAILURE:
+    case types.ATTACHMENT_PREVIEW_SUCCESS:
+    case types.ATTACHMENT_PREVIEW_FAILURE:
       return {
         ...state,
         gettingJoarkFile: false

@@ -3,15 +3,13 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
 import { Action } from 'redux'
-
 const sprintf = require('sprintf-js').sprintf
 
-jest.mock('js-fetch-api', () => ({
-  call: jest.fn()
-}))
+jest.mock('js-fetch-api', () => ({call: jest.fn()}))
 const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 
 describe('actions/arbeidsgiver', () => {
+
   afterEach(() => {
     call.mockReset()
   })
@@ -41,8 +39,7 @@ describe('actions/arbeidsgiver', () => {
 
   it('updateArbeidsgivere()', () => {
     const payload = 'mockPayload'
-    const generatedResult: Action = arbeidsgiverActions.updateArbeidsgivere(payload)
-    expect(generatedResult)
+    expect(arbeidsgiverActions.updateArbeidsgivere(payload))
       .toMatchObject({
         type: types.ARBEIDSPERIODER_UPDATE,
         payload: payload

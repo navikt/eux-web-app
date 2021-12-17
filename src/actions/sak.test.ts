@@ -22,24 +22,21 @@ describe('actions/sak', () => {
   })
 
   it('addArbeidsgiver()', () => {
-    const generatedResult = sakActions.addArbeidsgiver(mockArbeidsgiver)
-    expect(generatedResult).toMatchObject({
+    expect(sakActions.addArbeidsgiver(mockArbeidsgiver)).toMatchObject({
       type: types.SAK_ARBEIDSGIVER_ADD,
       payload: mockArbeidsgiver
     })
   })
 
   it('addFamilierelasjoner()', () => {
-    const generatedResult = sakActions.addFamilierelasjoner(mockFamilierelasjon)
-    expect(generatedResult).toMatchObject({
+    expect(sakActions.addFamilierelasjoner(mockFamilierelasjon)).toMatchObject({
       type: types.SAK_FAMILIERELASJONER_ADD,
       payload: mockFamilierelasjon
     })
   })
 
   it('cleanData()', () => {
-    const generatedResult = sakActions.cleanData()
-    expect(generatedResult).toMatchObject({
+    expect(sakActions.cleanData()).toMatchObject({
       type: types.SAK_CLEAN_DATA
     })
   })
@@ -59,10 +56,10 @@ describe('actions/sak', () => {
   })
 
   it('getFagsaker()', () => {
-    const mockFnr = '12345678901'
-    const mockSektor = 'mockSektor'
-    const mockTema = 'mockTema'
-    sakActions.getFagsaker(mockFnr, mockSektor, mockTema)
+    const fnr = '12345678901'
+    const sektor = 'mockSektor'
+    const tema = 'mockTema'
+    sakActions.getFagsaker(fnr, sektor, tema)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -70,14 +67,14 @@ describe('actions/sak', () => {
           success: types.SAK_FAGSAKER_GET_SUCCESS,
           failure: types.SAK_FAGSAKER_GET_FAILURE
         },
-        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: mockFnr, sektor: mockSektor, tema: mockTema })
+        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))
   })
 
   it('getInstitusjoner()', () => {
-    const mockBuctype = 'P_BUC_MOCK'
-    const mockLandkode = 'AA'
-    sakActions.getInstitusjoner(mockBuctype, mockLandkode)
+    const buctype = 'P_BUC_MOCK'
+    const landkode = 'AA'
+    sakActions.getInstitusjoner(buctype, landkode)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -85,13 +82,13 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_GET_SUCCESS,
           failure: types.SAK_INSTITUSJONER_GET_FAILURE
         },
-        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype: mockBuctype, landkode: mockLandkode })
+        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
   })
 
   it('getLandkoder()', () => {
-    const mockBuctype = 'P_BUC_MOCK'
-    sakActions.getLandkoder(mockBuctype)
+    const buctype = 'P_BUC_MOCK'
+    sakActions.getLandkoder(buctype)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -99,86 +96,37 @@ describe('actions/sak', () => {
           success: types.SAK_LANDKODER_GET_SUCCESS,
           failure: types.SAK_LANDKODER_GET_FAILURE
         },
-        url: sprintf(urls.API_LANDKODER_URL, { buctype: mockBuctype })
-      }))
-  })
-
-  it('getPerson()', () => {
-    const mockFnr = '12345678901'
-    sakActions.getPerson(mockFnr)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SAK_PERSON_GET_REQUEST,
-          success: types.SAK_PERSON_GET_SUCCESS,
-          failure: types.SAK_PERSON_GET_FAILURE
-        },
-        url: sprintf(urls.API_PERSONER_URL, { fnr: mockFnr })
-      }))
-  })
-
-  it('getPersonRelated()', () => {
-    const mockFnr = '12345678901'
-    sakActions.getPersonRelated(mockFnr)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SAK_PERSON_RELATERT_SEARCH_REQUEST,
-          success: types.SAK_PERSON_RELATERT_SEARCH_SUCCESS,
-          failure: types.SAK_PERSON_RELATERT_SEARCH_FAILURE
-        },
-        url: sprintf(urls.API_PERSONER_URL, { fnr: mockFnr })
+        url: sprintf(urls.API_LANDKODER_URL, { buctype })
       }))
   })
 
   it('removeArbeidsgiver()', () => {
-    const generatedResult = sakActions.removeArbeidsgiver(mockArbeidsgiver)
-    expect(generatedResult).toMatchObject({
+    expect(sakActions.removeArbeidsgiver(mockArbeidsgiver)).toMatchObject({
       type: types.SAK_ARBEIDSGIVER_REMOVE,
       payload: mockArbeidsgiver
     })
   })
 
   it('removeFamilierelasjoner()', () => {
-    const generatedResult = sakActions.removeFamilierelasjoner(mockFamilierelasjon)
-    expect(generatedResult).toMatchObject({
+    expect(sakActions.removeFamilierelasjoner(mockFamilierelasjon)).toMatchObject({
       type: types.SAK_FAMILIERELASJONER_REMOVE,
       payload: mockFamilierelasjon
     })
   })
 
   it('resetFagsaker()', () => {
-    const generatedResult = sakActions.resetFagsaker()
-    expect(generatedResult)
+    expect(sakActions.resetFagsaker())
       .toMatchObject({
         type: types.SAK_FAGSAKER_RESET
       })
   })
 
-  it('resetPerson()', () => {
-    const generatedResult = sakActions.resetPerson()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SAK_PERSON_RESET
-      })
-  })
-
-  it('resetPersonRelatert()', () => {
-    const generatedResult = sakActions.resetPersonRelatert()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SAK_PERSON_RELATERT_RESET
-      })
-  })
-
   it('setProperty()', () => {
-    const generatedResult = sakActions.setProperty('key', 'value')
-    expect(generatedResult).toMatchObject({
+    const key = 'key'
+    const value = 'value'
+    expect(sakActions.setProperty(key, value)).toMatchObject({
       type: types.SAK_PROPERTY_SET,
-      payload: {
-        key: 'key',
-        value: 'value'
-      }
+      payload: {key, value}
     })
   })
 })

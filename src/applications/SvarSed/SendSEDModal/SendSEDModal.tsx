@@ -1,9 +1,8 @@
-import { clientClear } from 'actions/alert'
+import { alertClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import { sendSedInRina } from 'actions/svarsed'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import { SuccessFilled } from '@navikt/ds-icons'
-import Alert from 'components/Alert/Alert'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -20,7 +19,7 @@ import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Button, Loader, Heading } from '@navikt/ds-react'
+import { Alert, Button, Loader, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
   HorizontalSeparatorDiv,
@@ -196,7 +195,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
                 <AlertstripeDiv>
-                  <Alert variant='error' message={alertMessage} onClose={() => dispatch(clientClear())} />
+                  <Alert variant='error'>{alertMessage}</Alert>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
                 <FlexCenterSpacedDiv>
@@ -219,7 +218,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     message={alertMessage}
                     onClose={() => {
                       _setSendButtonClicked(false)
-                      dispatch(clientClear())
+                      dispatch(alertClear())
                     }}
                   />
                 </AlertstripeDiv>

@@ -8,10 +8,6 @@ jest.mock('components/JoarkBrowser/JoarkBrowser', () => {
   return () => <div data-test-id='mock-joarkbrowser' />
 })
 
-jest.mock('components/Alert/Alert', () => {
-  return () => <div data-test-id='mock-c-alert' />
-})
-
 const defaultSelector = {
   clientErrorParam: undefined,
   stripeStatus: undefined,

@@ -213,7 +213,7 @@ export interface UpdateReplySedPayload {
   value: any
 }
 
-export interface UpdateReplyPdu1Payload {
+export interface UpdatePdu1Payload {
   needle: string
   value: any
 }

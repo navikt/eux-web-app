@@ -1,5 +1,6 @@
 import * as appActions from 'actions/app'
 import * as sakActions from 'actions/sak'
+import * as personActions from 'actions/person'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import classNames from 'classnames'
@@ -115,6 +116,9 @@ const mapState = (state: State): OpprettSakSelector => ({
 
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
 
+  person: state.person.person,
+  personRelatert: state.person.personRelatert,
+
   valgteArbeidsgivere: state.sak.arbeidsgivere,
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
@@ -124,8 +128,6 @@ const mapState = (state: State): OpprettSakSelector => ({
   institusjoner: state.sak.institusjonList,
   valgtLandkode: state.sak.landkode,
   opprettetSak: state.sak.opprettetSak,
-  person: state.sak.person,
-  personRelatert: state.sak.personRelatert,
   valgtSaksId: state.sak.saksId,
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
@@ -313,9 +315,9 @@ const OpprettSak: React.FC = (): JSX.Element => {
             onSearchPerformed={(fnr: string) => {
               dispatch(sakActions.setProperty('fnr', fnr))
               dispatch(sakActions.cleanData())
-              dispatch(sakActions.getPerson(fnr))
+              dispatch(personActions.seasrchPerson(fnr))
             }}
-            onPersonRemoved={() => dispatch(sakActions.resetPerson())}
+            onPersonRemoved={() => dispatch(personActions.resetPerson())}
             person={person}
             resetAllValidation={() => _resetValidation()}
           />
@@ -500,7 +502,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                           types.SAK_ABROADPERSON_ADD_FAILURE
                         ]}
                         TPSPersonFormAlertTypesWatched={[
-                          types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
+                          types.PERSON_RELATERT_SEARCH_FAILURE,
                           types.SAK_TPSPERSON_ADD_FAILURE
                         ]}
                         familierelasjonKodeverk={familierelasjonKodeverk}
@@ -522,15 +524,15 @@ const OpprettSak: React.FC = (): JSX.Element => {
                           )
                         }}
                         onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
-                        onRelationReset={() => dispatch(sakActions.resetPersonRelatert())}
+                        onRelationReset={() => dispatch(personActions.resetPersonRelated())}
                         onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
                         onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
                           dispatch(sakActions.addFamilierelasjoner(relation))
                           dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
                         }}
                         onSearchFnr={(fnrQuery: string) => {
-                          dispatch(sakActions.resetPersonRelatert())
-                          dispatch(sakActions.getPersonRelated(fnrQuery))
+                          dispatch(personActions.resetPersonRelated())
+                          dispatch(personActions.searchPersonRelated(fnrQuery))
                         }}
                       />
                     </Panel>

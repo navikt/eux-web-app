@@ -5,6 +5,14 @@ import mockPerson from 'mocks/person'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
+export const resetPerson: ActionCreator<Action> = () => ({
+  type: types.PERSON_SEARCH_RESET
+})
+
+export const resetPersonRelated: ActionCreator<Action> = () => ({
+  type: types.PERSON_RELATERT_SEARCH_RESET
+})
+
 export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string
 ): ThunkResult<ActionWithPayload> => {
@@ -19,10 +27,6 @@ export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
     }
   })
 }
-
-export const resetPerson: ActionCreator<Action> = () => ({
-  type: types.PERSON_SEARCH_RESET
-})
 
 export const searchPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
   fnr: string

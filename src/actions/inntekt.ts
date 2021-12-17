@@ -4,7 +4,6 @@ import { IInntekter } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockInntekt from 'mocks/inntekt/inntekt'
 import { ActionCreator } from 'redux'
-
 const sprintf = require('sprintf-js').sprintf
 
 export const fetchInntekt: ActionCreator<ThunkResult<ActionWithPayload<IInntekter>>> = (

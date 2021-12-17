@@ -1,23 +1,53 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ReplyPdu1 } from 'declarations/pd'
-import { FagSaker, UpdateReplyPdu1Payload } from 'declarations/types'
+import { PDU1 } from 'declarations/pd'
+import { FagSaker, UpdatePdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockCreatePdu1 from 'mocks/pdu1/replyPdu1empty'
+import mockGetPdu1 from 'mocks/pdu1/pdu1empty'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
-import mockCompletePdu1 from 'mocks/pdu1/complete'
-import { ActionCreator } from 'redux'
+import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
+import { Action, ActionCreator } from 'redux'
 import File from 'forhandsvisningsfil'
 
 const sprintf = require('sprintf-js').sprintf
+
+export const getPdu1: ActionCreator<ThunkResult<Action>> = (
+  fnr: string
+): ThunkResult<Action> => {
+  return call({
+    url: sprintf(urls.PDU1_GET_URL, { fnr }),
+    expectedPayload: mockGetPdu1,
+    type: {
+      request: types.PDU1_GET_REQUEST,
+      success: types.PDU1_GET_SUCCESS,
+      failure: types.PDU1_GET_FAILURE
+    }
+  })
+}
+
+export const jornalførePdu1: ActionCreator<ThunkResult<ActionWithPayload<PDU1>>> = (
+  payload: PDU1
+): ThunkResult<ActionWithPayload<PDU1>> => {
+  return call({
+    method: 'POST',
+    url: urls.PDU1_JOURNALPOST_URL,
+    body: payload,
+    expectedPayload: mockJornalførePdu1,
+    type: {
+      request: types.PDU1_JOURNALFØRE_REQUEST,
+      success: types.PDU1_JOURNALFØRE_SUCCESS,
+      failure: types.PDU1_JOURNALFØRE_FAILURE
+    }
+  })
+}
 
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
   fnr: string, sektor: string, tema: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
-    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
-    expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
+    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
+    expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
       request: types.PDU1_FAGSAKER_GET_REQUEST,
       success: types.PDU1_FAGSAKER_GET_SUCCESS,
@@ -26,8 +56,8 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
   })
 }
 
-export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>> = (
-  payload: ReplyPdu1
+export const previewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>> = (
+  payload: PDU1
 ): ThunkResult<ActionWithPayload<File>> => {
   return call({
     method: 'POST',
@@ -43,57 +73,24 @@ export const getPreviewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>>
   })
 }
 
-export const createPdu1: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
-  fnr: string
-): ThunkResult<ActionWithPayload<FagSaker>> => {
-  return call({
-    url: sprintf(urls.PDU1_GET_URL, { fnr }),
-    expectedPayload: mockCreatePdu1,
-    type: {
-      request: types.PDU1_CREATE_REQUEST,
-      success: types.PDU1_CREATE_SUCCESS,
-      failure: types.PDU1_CREATE_FAILURE
-    }
-  })
-}
-
-export const completePdu1: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
-  payload: ReplyPdu1
-): ThunkResult<ActionWithPayload<any>> => {
-  return call({
-    method: 'POST',
-    url: urls.PDU1_JOURNALPOST_URL,
-    body: payload,
-    expectedPayload: mockCompletePdu1,
-    type: {
-      request: types.PDU1_COMPLETE_REQUEST,
-      success: types.PDU1_COMPLETE_SUCCESS,
-      failure: types.PDU1_COMPLETE_FAILURE
-    }
-  })
-}
-
-export const resetPreviewFile = () => ({
+export const resetPreviewPdu1 = () => ({
   type: types.PDU1_PREVIEW_RESET
 })
 
-export const resetCompletePdu1 = () => ({
-  type: types.PDU1_COMPLETE_RESET
+export const resetJornalførePdu1 = () => ({
+  type: types.PDU1_JOURNALFØRE_RESET
 })
 
-export const setReplyPdu1: ActionCreator<ActionWithPayload<ReplyPdu1>> = (
-  replyPdu1: ReplyPdu1
-): ActionWithPayload<ReplyPdu1> => ({
-  type: types.PDU1_REPLYSED_SET,
-  payload: replyPdu1
+export const setPdu1: ActionCreator<ActionWithPayload<PDU1>> = (
+  PDU1: PDU1
+): ActionWithPayload<PDU1> => ({
+  type: types.PDU1_SET,
+  payload: PDU1
 })
 
-export const updateReplyPdu1: ActionCreator<ActionWithPayload<UpdateReplyPdu1Payload>> = (
+export const updatePdu1: ActionCreator<ActionWithPayload<UpdatePdu1Payload>> = (
   needle: string, value: any
-): ActionWithPayload<UpdateReplyPdu1Payload> => ({
-  type: types.PDU1_REPLYSED_UPDATE,
-  payload: {
-    needle,
-    value
-  }
+): ActionWithPayload<UpdatePdu1Payload> => ({
+  type: types.PDU1_UPDATE,
+  payload: {needle, value}
 })

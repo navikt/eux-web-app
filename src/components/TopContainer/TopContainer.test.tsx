@@ -1,4 +1,4 @@
-import { clientClear } from 'actions/alert'
+import { alertClear } from 'actions/alert'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { stageSelector } from 'setupTests'
@@ -18,8 +18,8 @@ const defaultSelector: TopContainerSelector = {
 }
 
 jest.mock('actions/alert', () => ({
-  clientClear: jest.fn(),
-  clientError: jest.fn()
+  alertClear: jest.fn(),
+  setAlertError: jest.fn()
 }))
 
 jest.mock('actions/ui', () => ({
@@ -54,7 +54,7 @@ describe('components/TopContainer', () => {
   })
 
   it('Compute the client error message', () => {
-    (clientClear as jest.Mock).mockReset()
+    (alertClear as jest.Mock).mockReset()
     stageSelector(defaultSelector, { bannerMessage: 'mockMessage|mockParams' })
     wrapper = mount(
       <TopContainer {...initialMockProps}>
@@ -65,6 +65,6 @@ describe('components/TopContainer', () => {
     expect(clientAlert.render().text()).toEqual('error' + 'mockMessage|mockParams')
 
     clientAlert.find('Icons').simulate('click')
-    expect(clientClear).toHaveBeenCalled()
+    expect(alertClear).toHaveBeenCalled()
   })
 })

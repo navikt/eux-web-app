@@ -20,8 +20,7 @@ describe('actions/app', () => {
   })
 
   it('cleanData()', () => {
-    const generatedResult: Action = appActions.cleanData()
-    expect(generatedResult)
+    expect(appActions.cleanData())
       .toMatchObject({
         type: types.APP_CLEAN_DATA
       })
@@ -93,8 +92,7 @@ describe('actions/app', () => {
   })
 
   it('preload()', () => {
-    const generatedResult = appActions.preload()
-    expect(generatedResult)
+    expect(appActions.preload())
       .toMatchObject({
         type: types.APP_PRELOAD,
         payload: {
@@ -109,14 +107,10 @@ describe('actions/app', () => {
   it('setStatusParam()', () => {
     const key = 'mockKey'
     const value = 'mockValue'
-    const generatedResult: Action = appActions.setStatusParam(key, value)
-    expect(generatedResult)
+     expect( appActions.setStatusParam(key, value))
       .toMatchObject({
         type: types.APP_PARAM_SET,
-        payload: {
-          key: key,
-          value: value
-        }
+        payload: {key, value}
       })
   })
 })

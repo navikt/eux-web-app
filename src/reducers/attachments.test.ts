@@ -3,10 +3,10 @@ import mockJoarkRaw from 'mocks/attachments/joark'
 import joarkReducer, { initialJoarkState } from './attachments'
 
 describe('reducers/joark', () => {
-  it('JOARK_LIST_SUCCESS', () => {
+  it('ATTACHMENT_LIST_SUCCESS', () => {
     expect(
       joarkReducer(initialJoarkState, {
-        type: types.JOARK_LIST_SUCCESS,
+        type: types.ATTACHMENT_LIST_SUCCESS,
         payload: mockJoarkRaw
       })
     ).toEqual({
@@ -15,10 +15,10 @@ describe('reducers/joark', () => {
     })
   })
 
-  it('JOARK_PREVIEW_SET', () => {
+  it('ATTACHMENT_PREVIEW_SET', () => {
     expect(
       joarkReducer(initialJoarkState, {
-        type: types.JOARK_PREVIEW_SET,
+        type: types.ATTACHMENT_PREVIEW_SET,
         payload: 'something'
       })
     ).toEqual({
@@ -27,10 +27,10 @@ describe('reducers/joark', () => {
     })
   })
 
-  it('JOARK_PREVIEW_SUCCESS', () => {
+  it('ATTACHMENT_PREVIEW_SUCCESS', () => {
     expect(
       joarkReducer(initialJoarkState, {
-        type: types.JOARK_PREVIEW_SUCCESS,
+        type: types.ATTACHMENT_PREVIEW_SUCCESS,
         context: {
           journalpostId: 'mockjournalpostId',
           tilleggsopplysninger: 'mocktilleggsopplysninger',

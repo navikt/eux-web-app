@@ -21,31 +21,31 @@ export const initialJoarkState: JoarkState = {
 
 const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithPayload = { type: '', payload: '' }): JoarkState => {
   switch (action.type) {
-    case types.JOARK_LIST_SUCCESS:
+    case types.ATTACHMENT_LIST_SUCCESS:
       return {
         ...state,
         list: action.payload.data.dokumentoversiktBruker.journalposter
       }
 
-    case types.JOARK_PREVIEW_SET:
+    case types.ATTACHMENT_PREVIEW_SET:
       return {
         ...state,
         previewFileRaw: action.payload
       }
 
-    case types.JOARK_PREVIEW_REQUEST:
+    case types.ATTACHMENT_PREVIEW_REQUEST:
       return {
         ...state,
         previewFileRaw: undefined
       }
 
-    case types.JOARK_PREVIEW_FAILURE:
+    case types.ATTACHMENT_PREVIEW_FAILURE:
       return {
         ...state,
         previewFileRaw: null
       }
 
-    case types.JOARK_PREVIEW_SUCCESS:
+    case types.ATTACHMENT_PREVIEW_SUCCESS:
       return {
         ...state,
         previewFileRaw: action.payload

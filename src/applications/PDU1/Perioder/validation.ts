@@ -1,6 +1,6 @@
 import {
   PDPeriode, PeriodeMedAktivitetstype, PeriodeMedBegrunnelse,
-  PeriodeMedInntekt, PeriodeMedLoenn, PeriodeMedType, ReplyPdu1
+  PeriodeMedInntekt, PeriodeMedLoenn, PeriodeMedType, PDU1
 } from 'declarations/pd.d'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
@@ -21,7 +21,7 @@ export interface ValidatePDPerioderProps {
 }
 
 export interface ValidateAllePDPerioderProps {
-  replyPdu1: ReplyPdu1
+  PDU1: PDU1
   namespace: string
 }
 
@@ -162,18 +162,18 @@ export const validateAllePDPerioder = (
   v: Validation,
   t: TFunction,
   {
-    replyPdu1,
+    PDU1,
     namespace
   } : ValidateAllePDPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: replyPdu1.perioderAnsattMedForsikring, namespace: namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: replyPdu1.perioderSelvstendigMedForsikring, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAndreForsikringer', perioder: replyPdu1.perioderAndreForsikringer, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsettSomForsikret', perioder: replyPdu1.perioderAnsettSomForsikret, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattUtenForsikring', perioder: replyPdu1.perioderAnsattUtenForsikring, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderSelvstendigUtenForsikring', perioder: replyPdu1.perioderSelvstendigUtenForsikring, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderLoennSomAnsatt', perioder: replyPdu1.perioderLoennSomAnsatt, namespace }))
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderInntektSomSelvstendig', perioder: replyPdu1.perioderInntektSomSelvstendig, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: PDU1.perioderAnsattMedForsikring, namespace: namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: PDU1.perioderSelvstendigMedForsikring, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAndreForsikringer', perioder: PDU1.perioderAndreForsikringer, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsettSomForsikret', perioder: PDU1.perioderAnsettSomForsikret, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattUtenForsikring', perioder: PDU1.perioderAnsattUtenForsikring, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderSelvstendigUtenForsikring', perioder: PDU1.perioderSelvstendigUtenForsikring, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderLoennSomAnsatt', perioder: PDU1.perioderLoennSomAnsatt, namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderInntektSomSelvstendig', perioder: PDU1.perioderInntektSomSelvstendig, namespace }))
   return hasErrors.find(value => value) !== undefined
 }

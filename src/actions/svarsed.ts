@@ -22,7 +22,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   delete copyReplySed.sedId
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: rinaSakId }),
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
@@ -44,8 +44,8 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
   fnr: string, sektor: string, tema: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {
   return call({
-    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema }),
-    expectedPayload: mockFagsakerList({ fnr: fnr, sektor: sektor, tema: tema }),
+    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
+    expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
       request: types.SVARSED_FAGSAKER_GET_REQUEST,
       success: types.SVARSED_FAGSAKER_GET_SUCCESS,
@@ -57,7 +57,7 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
 export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: rinaSakId }),
+    url: sprintf(urls.API_PREVIEW_URL, { rinaSakId }),
     expectedPayload: mockPreview,
     responseType: 'pdf',
     type: {
@@ -71,12 +71,12 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
 
 export const getSedStatus = (rinaSakId: string, sedId: string) => {
   return call({
-    url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId }),
+    url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId, sedId }),
     expectedPayload: {
       status: 'new'
     },
     context: {
-      sedId: sedId
+      sedId
     },
     type: {
       request: types.SVARSED_SED_STATUS_REQUEST,
@@ -107,8 +107,8 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
     url: url,
     expectedPayload: mockConnectedReplySeds,
     context: {
-      type: type,
-      saksnummerOrFnr: saksnummerOrFnr
+      type,
+      saksnummerOrFnr
     },
     type: {
       request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
@@ -130,16 +130,16 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
   return call({
     url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
       rinaSakId: saksnummer,
-      sedId: sedId,
+      sedId,
       sedType: connectedSed.svarsedType
     }),
     expectedPayload: {
       ...mockSed,
-      saksnummer: saksnummer
+      saksnummer
     },
     context: {
-      saksnummer: saksnummer,
-      sakUrl: sakUrl,
+      saksnummer,
+      sakUrl,
       sedId: connectedSed.svarsedId
     },
     type: {
@@ -150,7 +150,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
   })
 }
 
-export const resetPreviewFile = () => ({
+export const resetPreviewPdu1 = () => ({
   type: types.SVARSED_PREVIEW_RESET
 })
 
@@ -159,9 +159,9 @@ export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> =
 ): ThunkResult<ActionWithPayload<any>> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_SEND_URL, { rinaSakId: rinaSakId, sedId: sedId }),
+    url: sprintf(urls.API_SED_SEND_URL, { rinaSakId, sedId }),
     expectedPayload: {
-      foo: 'bar'
+      success: 'true'
     },
     type: {
       request: types.SVARSED_SED_SEND_REQUEST,
@@ -171,9 +171,9 @@ export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> =
   })
 }
 
-export const setParentSed: ActionCreator<ActionWithPayload> = (
+export const setParentSed: ActionCreator<ActionWithPayload<string>> = (
   payload: string
-): ActionWithPayload => ({
+): ActionWithPayload<string> => ({
   type: types.SVARSED_PARENTSED_SET,
   payload: payload
 })
@@ -189,8 +189,5 @@ export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPaylo
   needle: string, value: any
 ): ActionWithPayload<UpdateReplySedPayload> => ({
   type: types.SVARSED_REPLYSED_UPDATE,
-  payload: {
-    needle,
-    value
-  }
+  payload: {needle, value}
 })

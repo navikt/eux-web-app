@@ -50,7 +50,7 @@ describe('actions/svarsed', () => {
           success: types.SVARSED_FAGSAKER_GET_SUCCESS,
           failure: types.SVARSED_FAGSAKER_GET_FAILURE
         },
-        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr: fnr, sektor: sektor, tema: tema })
+        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))
   })
 
@@ -68,14 +68,13 @@ describe('actions/svarsed', () => {
           success: types.SVARSED_PREVIEW_SUCCESS,
           failure: types.SVARSED_PREVIEW_FAILURE
         },
-        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: rinaSakId })
+        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId })
       }))
   })
 
   it('getSedStatus()', () => {
     const rinaSakId = '123'
     const sedId = '456'
-
     svarsedActions.getSedStatus(rinaSakId, sedId)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
@@ -84,7 +83,7 @@ describe('actions/svarsed', () => {
           success: types.SVARSED_SED_STATUS_SUCCESS,
           failure: types.SVARSED_SED_STATUS_FAILURE
         },
-        url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId: rinaSakId, sedId: sedId })
+        url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId, sedId })
       }))
   })
 
@@ -101,7 +100,7 @@ describe('actions/svarsed', () => {
         },
         context: {
           type: 'saksnummer',
-          saksnummerOrFnr: saksnummerOrFnr
+          saksnummerOrFnr
         },
         url: sprintf(urls.API_RINASAKER_OVERSIKT_SAKID_QUERY_URL, { rinaSakId: saksnummerOrFnr })
       }))
@@ -120,7 +119,7 @@ describe('actions/svarsed', () => {
         },
         context: {
           type: 'fnr',
-          saksnummerOrFnr: saksnummerOrFnr
+          saksnummerOrFnr
         },
         url: sprintf(urls.API_RINASAKER_OVERSIKT_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
       }))
@@ -139,7 +138,7 @@ describe('actions/svarsed', () => {
         },
         context: {
           type: 'dnr',
-          saksnummerOrFnr: saksnummerOrFnr
+          saksnummerOrFnr
         },
         url: sprintf(urls.API_RINASAKER_OVERSIKT_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
       }))
@@ -174,12 +173,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('resetPreviewFile()', () => {
-    const generatedResult = svarsedActions.resetPreviewFile()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SVARSED_PREVIEW_RESET
-      })
+  it('resetPreviewPdu1()', () => {
+    expect(svarsedActions.resetPreviewPdu1()).toMatchObject({
+      type: types.SVARSED_PREVIEW_RESET
+    })
   })
 
   it('sendSedInRina()', () => {
@@ -194,18 +191,13 @@ describe('actions/svarsed', () => {
           failure: types.SVARSED_SED_SEND_FAILURE
         },
         method: 'POST',
-        url: sprintf(urls.API_SED_SEND_URL, {
-          rinaSakId: rinaSakId,
-          sedId: sedId
-        })
+        url: sprintf(urls.API_SED_SEND_URL, {rinaSakId, sedId})
       }))
   })
 
   it('setParentSed()', () => {
     const payload = 'payload'
-    const generatedResult = svarsedActions.setParentSed(payload)
-    expect(generatedResult)
-      .toMatchObject({
+    expect(svarsedActions.setParentSed(payload)).toMatchObject({
         type: types.SVARSED_PARENTSED_SET,
         payload: payload
       })
@@ -213,9 +205,7 @@ describe('actions/svarsed', () => {
 
   it('setReplySed()', () => {
     const replySed = 'replySed'
-    const generatedResult = svarsedActions.setReplySed(replySed)
-    expect(generatedResult)
-      .toMatchObject({
+    expect(svarsedActions.setReplySed(replySed)).toMatchObject({
         type: types.SVARSED_REPLYSED_SET,
         payload: replySed
       })
@@ -225,13 +215,9 @@ describe('actions/svarsed', () => {
     const needle = 'needle'
     const value = 'value'
     const generatedResult = svarsedActions.updateReplySed(needle, value)
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.SVARSED_REPLYSED_UPDATE,
-        payload: {
-          needle: needle,
-          value: value
-        }
-      })
+    expect(generatedResult).toMatchObject({
+      type: types.SVARSED_REPLYSED_UPDATE,
+      payload: {needle, value}
+    })
   })
 })

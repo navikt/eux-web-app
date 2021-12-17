@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
-import { Pdu1Person, ReplyPdu1 } from 'declarations/pd'
+import { Pdu1Person, PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -159,7 +159,7 @@ const MenuLabelText = styled(BodyLong)`
 
 export interface PersonManagerProps {
   forms: Array<Form>
-  replySed: ReplySed | ReplyPdu1 | null | undefined
+  replySed: ReplySed | PDU1 | null | undefined
   viewValidation: boolean
   setReplySed: (replySed: ReplySed) => void
   updateReplySed: (needle: string, value: any) => void
@@ -170,11 +170,11 @@ export interface PersonManagerSelector extends PersonManagerFormSelector {
 }
 
 export interface PersonManagerFormProps {
-  replySed: ReplySed | ReplyPdu1 | null | undefined
+  replySed: ReplySed | PDU1 | null | undefined
   parentNamespace: string
   personID: string | undefined
   personName: string
-  setReplySed: (replySed: ReplySed | ReplyPdu1) => void
+  setReplySed: (replySed: ReplySed | PDU1) => void
   updateReplySed: (needle: string, value: any) => void
   options ?: any
 }
@@ -286,7 +286,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     return null
   }
 
-  const getPersonName = (replySed: ReplySed | ReplyPdu1 | null | undefined, personId: string) => {
+  const getPersonName = (replySed: ReplySed | PDU1 | null | undefined, personId: string) => {
     const p = _.get(replySed, personId)
     if (p) {
       if (p.personInfo) {
@@ -362,13 +362,13 @@ const PersonManager: React.FC<PersonManagerProps> = ({
     setSeeNewPersonModal(true)
   }
 
-  const renderMenu = (replySed: ReplySed | ReplyPdu1, personId: string, totalIndex: number) => {
+  const renderMenu = (replySed: ReplySed | PDU1, personId: string, totalIndex: number) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
     const personName = personId === 'familie'
       ? t('label:hele-familien')
       : personInfo
         ? personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')
-        : (replySed as ReplyPdu1).bruker.fornavn + ' ' + ((replySed as ReplyPdu1).bruker.etternavn ?? '')
+        : (replySed as PDU1).bruker.fornavn + ' ' + ((replySed as PDU1).bruker.etternavn ?? '')
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
     const selected: boolean = _.find(selectedMenus, _id => _id === personId) !== undefined

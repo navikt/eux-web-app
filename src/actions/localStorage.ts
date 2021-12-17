@@ -1,25 +1,25 @@
 import * as types from 'constants/actionTypes'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
+import { LocalStorageNamespaces } from 'reducers/localStorage'
 
-export const loadEntries = (namespace: string, key: string): ActionWithPayload => ({
+export const loadEntries = (namespace: LocalStorageNamespaces): ActionWithPayload => ({
   type: types.LOCALSTORAGE_ENTRIES_LOAD,
   payload: {
-    namespace: namespace,
-    key: key
+    namespace: namespace
   }
 })
 
-export const resetCurrentEntry = (namespace: string): ActionWithPayload => ({
+export const resetCurrentEntry = (namespace: LocalStorageNamespaces): ActionWithPayload => ({
   type: types.LOCALSTORAGE_CURRENTENTRY_RESET,
   payload: {
     namespace: namespace
   }
 })
 
-export const setCurrentEntry = (namespace: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>) : ActionWithPayload<{namespace: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>}> => ({
+export const setCurrentEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>) : ActionWithPayload<{namespace: string, entry: LocalStorageEntry<ReplySed | PDU1>}> => ({
   type: types.LOCALSTORAGE_CURRENTENTRY_SET,
   payload: {
     namespace: namespace,
@@ -27,28 +27,25 @@ export const setCurrentEntry = (namespace: string, entry: LocalStorageEntry<Repl
   }
 })
 
-export const removeEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>) => ({
+export const removeEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>) => ({
   type: types.LOCALSTORAGE_ENTRY_REMOVE,
   payload: {
     namespace: namespace,
-    key: key,
     entry: entry
   }
 })
 
-export const saveEntry = (namespace: string, key: string, entry: LocalStorageEntry<ReplySed | ReplyPdu1>): ActionWithPayload<any> => ({
+export const saveEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>): ActionWithPayload<any> => ({
   type: types.LOCALSTORAGE_ENTRY_SAVE,
   payload: {
     namespace: namespace,
-    key: key,
     entry: entry
   }
 })
 
-export const removeAll = (namespace: string, key: string) => ({
-  type: types.LOCALSTORAGE_REMOVE_ALL,
+export const removeAllEntries = (namespace: LocalStorageNamespaces) => ({
+  type: types.LOCALSTORAGE_ALL_REMOVE,
   payload: {
-    namespace: namespace,
-    key: key
+    namespace: namespace
   }
 })

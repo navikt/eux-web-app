@@ -45,14 +45,12 @@ interface SaveSEDModalProps {
   open: boolean
   onModalClose: () => void
   replySed: ReplySed
-  storageKey: string
 }
 
 const SendSEDModal = ({
   open,
   onModalClose,
-  replySed,
-  storageKey
+  replySed
 }: SaveSEDModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_name, setName] = useState<string>(replySed.saksnummer + '-' + replySed.sedType)
@@ -84,7 +82,7 @@ const SendSEDModal = ({
         date: dateString,
         content: replySed
       } as LocalStorageEntry
-      dispatch(saveEntry('svarsed', storageKey, newItem))
+      dispatch(saveEntry('svarsed', newItem))
       setSaved(true)
       setMessage(t('label:lagret-sed-utkast', { name: _name, date: dateString }))
     }

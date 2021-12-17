@@ -73,7 +73,7 @@ export interface IkkeRettTilDagpenger {
 
 export type PDPeriode = Periode | PeriodeMedType | PeriodeMedBegrunnelse | PeriodeMedAktivitetstype | PeriodeMedLoenn | PeriodeMedInntekt
 
-export interface ReplyPdu1 {
+export interface PDU1 {
   saksreferanse: string, // Nav => cover letter,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1

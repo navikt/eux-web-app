@@ -1,7 +1,7 @@
 import { BackFilled } from '@navikt/ds-icons'
 import { BodyLong, Button, Loader } from '@navikt/ds-react'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
-import { completePdu1, resetCompletePdu1, setReplyPdu1, updateReplyPdu1 } from 'actions/pdu1'
+import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
 import Adresse from 'applications/PDU1/Adresse/Adresse'
@@ -18,7 +18,7 @@ import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
 import PreviewPDU1 from 'components/PreviewPDU1/PreviewPDU1'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
@@ -40,54 +40,52 @@ import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
-  replyPdu1: ReplyPdu1 | null | undefined
+  PDU1: PDU1 | null | undefined
   savingPdu1: boolean
-  completePdu1Response: any
+  jornalførePdu1Response: any
   validation: Validation
   view: boolean
 }
 
 export interface PDU1EditProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
-  storageKey: string
 }
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
-  replyPdu1: state.pdu1.replyPdu1,
-  completePdu1Response: state.pdu1.completePdu1Response,
+  PDU1: state.pdu1.PDU1,
+  jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
   view: state.validation.view
 })
 
 const PDU1Edit: React.FC<PDU1EditProps> = ({
-  changeMode,
-  storageKey
+  changeMode
 }: PDU1EditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
     completingPdu1,
-    replyPdu1,
-    completePdu1Response,
+    PDU1,
+    jornalførePdu1Response,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
-  const currentEntry = useSelector<State, LocalStorageEntry<ReplyPdu1> | undefined>(
+  const currentEntry = useSelector<State, LocalStorageEntry<PDU1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
 
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
-  const completePdu1Clicked = (e: any): void => {
-    if (replyPdu1) {
-      const newReplyPdu1: ReplyPdu1 = _.cloneDeep(replyPdu1)
+  const jornalførePdu1Clicked = (e: any): void => {
+    if (PDU1) {
+      const newPdu1: PDU1 = _.cloneDeep(PDU1)
       const valid = performValidation({
-        replyPdu1: newReplyPdu1
+        PDU1: newPdu1
       })
       dispatch(viewValidation())
       if (valid) {
-        dispatch(completePdu1(newReplyPdu1))
+        dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
@@ -98,14 +96,14 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     if (_.isNil(currentEntry)) {
       setViewSavePdu1Modal(true)
     } else {
-      const newCurrentEntry: LocalStorageEntry<ReplyPdu1> = _.cloneDeep(currentEntry)
-      newCurrentEntry.content = _.cloneDeep(replyPdu1!)
-      dispatch(saveEntry('pdu1', storageKey, newCurrentEntry))
+      const newCurrentEntry: LocalStorageEntry<PDU1> = _.cloneDeep(currentEntry)
+      newCurrentEntry.content = _.cloneDeep(PDU1!)
+      dispatch(saveEntry('pdu1', newCurrentEntry))
     }
   }
 
   const resetComplete = () => {
-    dispatch(resetCompletePdu1())
+    dispatch(resetJornalførePdu1())
     setCompleteModal(false)
   }
 
@@ -116,10 +114,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }
 
   useEffect(() => {
-    if (!completeModal && !_.isNil(completePdu1Response)) {
+    if (!completeModal && !_.isNil(jornalførePdu1Response)) {
       setCompleteModal(true)
     }
-  }, [completePdu1Response])
+  }, [jornalførePdu1Response])
 
   useEffect(() => {
     dispatch(startPageStatistic('pdu1editor'))
@@ -130,7 +128,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
   return (
     <PaddedDiv size='0.5'>
-      {completePdu1Response && (
+      {jornalførePdu1Response && (
         <Modal
           open={completeModal}
           modal={{
@@ -145,8 +143,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                     onClick={(e: any) => {
                       e.stopPropagation()
                     }}
-                    href={'data:application/octet-stream;base64,' + encodeURIComponent(completePdu1Response.content.base64)}
-                    download={completePdu1Response?.name}
+                    href={'data:application/octet-stream;base64,' + encodeURIComponent(jornalførePdu1Response.content.base64)}
+                    download={jornalførePdu1Response?.name}
                   >
                     <FlexDiv>
                       {t('label:last-ned-pdu1')}
@@ -155,9 +153,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                     </FlexDiv>
                   </Link>
                 </PileCenterDiv> */}
-                <PileDiv><BodyLong>{completePdu1Response.melding}</BodyLong>
-                <BodyLong>journalpostId: {completePdu1Response.journalpostId}</BodyLong>
-                <BodyLong>journalstatus: {completePdu1Response.journalstatus}</BodyLong>
+                <PileDiv><BodyLong>{jornalførePdu1Response.melding}</BodyLong>
+                <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
+                <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
                 </PileDiv>
               </div>
             ),
@@ -172,8 +170,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       )}
       <SavePDU1Modal
         open={viewSavePdu1Modal}
-        replyPdu1={replyPdu1!}
-        storageKey={storageKey}
+        PDU1={PDU1!}
         onModalClose={() => setViewSavePdu1Modal(false)}
       />
       <FlexCenterSpacedDiv>
@@ -200,9 +197,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
           { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
-        replySed={replyPdu1}
-        setReplySed={setReplyPdu1}
-        updateReplySed={updateReplyPdu1}
+        replySed={PDU1}
+        setReplySed={setPdu1}
+        updateReplySed={updatePdu1}
         viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />
@@ -215,8 +212,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           <Button
             variant='primary'
             data-amplitude='pdu1.editor.opprett'
-            onClick={completePdu1Clicked}
-            disabled={completingPdu1 || !_.isEmpty(completePdu1Response)}
+            onClick={jornalførePdu1Clicked}
+            disabled={completingPdu1 || !_.isEmpty(jornalførePdu1Response)}
           >
             {completingPdu1
               ? t('message:loading-opprette-pdu1')

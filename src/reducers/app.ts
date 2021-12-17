@@ -58,6 +58,10 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
   let newParams: Params
 
   switch (action.type) {
+    case types.APP_CLIPBOARD_COPY:
+      navigator.clipboard.writeText(action.payload)
+      return state
+
     case types.APP_PARAM_SET:
       newParams = _.cloneDeep(state.params)
       newParams[action.payload.key] = action.payload.value

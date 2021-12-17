@@ -3,72 +3,63 @@ import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import getReplySed from 'mocks/svarsed/replySed'
+import { LocalStorageNamespaces } from 'reducers/localStorage'
 
 describe('actions/localStorage', () => {
-  const namespace = 'svarsed'
+
+  const namespace: LocalStorageNamespaces = 'svarsed'
+
+  const entry: LocalStorageEntry<ReplySed> = {
+    id: 'id',
+    name: 'name',
+    date: 'date',
+    content: getReplySed('H002') as ReplySed
+  }
 
   it('loadEntries()', () => {
-    const mockKey = 'mockKey'
-    const generatedResult = localStorageActions.loadEntries(namespace, mockKey)
-    expect(generatedResult)
+    expect(localStorageActions.loadEntries(namespace))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRIES_LOAD,
-        payload: {
-          key: mockKey
-        }
+        payload: {namespace}
+      })
+  })
+
+  it('resetCurrentEntry()', () => {
+    expect(localStorageActions.resetCurrentEntry(namespace))
+      .toMatchObject({
+        type: types.LOCALSTORAGE_CURRENTENTRY_RESET,
       })
   })
 
   it('setCurrentEntry()', () => {
-    const mockEntry = {
-      id: 'id',
-      name: 'name',
-      date: 'date',
-      content: getReplySed('H002')
-    } as LocalStorageEntry<ReplySed>
-    const generatedResult = localStorageActions.setCurrentEntry(namespace, mockEntry)
-    expect(generatedResult)
+    expect(localStorageActions.setCurrentEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_CURRENTENTRY_SET,
-        payload: mockEntry
+        payload: {namespace, entry}
       })
   })
 
   it('removeEntry()', () => {
-    const mockKey = 'mockKey'
-    const mockEntry = {
-      id: 'id',
-      name: 'name',
-      date: 'date',
-      content: getReplySed('H002')!
-    }
-    const generatedResult = localStorageActions.removeEntry(namespace, mockKey, mockEntry)
-    expect(generatedResult)
+    expect(localStorageActions.removeEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_REMOVE,
-        payload: {
-          key: mockKey,
-          entry: mockEntry
-        }
+        payload: {namespace, entry}
       })
   })
 
   it('saveEntry()', () => {
-    const mockKey = 'mockKey'
-    const mockEntry = {
-      id: 'id',
-      name: 'name',
-      date: 'date',
-      content: getReplySed('H002')!
-    }
-    const generatedResult = localStorageActions.saveEntry(namespace, mockKey, mockEntry)
-    expect(generatedResult)
+    expect( localStorageActions.saveEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_SAVE,
-        payload: {
-          key: mockKey,
-          entry: mockEntry
-        }
+        payload: {namespace, entry}
+      })
+  })
+
+  it('removeAllEntries()', () => {
+    expect( localStorageActions.removeAllEntries(namespace))
+      .toMatchObject({
+        type: types.LOCALSTORAGE_ALL_REMOVE,
+        payload: {namespace}
       })
   })
 })

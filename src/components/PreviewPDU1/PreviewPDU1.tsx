@@ -1,9 +1,9 @@
 import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
-import { getPreviewPdu1, resetPreviewFile } from 'actions/pdu1'
+import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import FileFC, { File } from 'forhandsvisningsfil'
 import _ from 'lodash'
@@ -16,13 +16,13 @@ import { blobToBase64 } from 'utils/blob'
 import { saveAs } from 'file-saver'
 
 export interface PreviewPDU1Selector {
-  replyPdu1: ReplyPdu1
+  PDU1: PDU1
   gettingPreviewPdu1: boolean
   previewPdu1: any
 }
 
 const mapState = (state: State): any => ({
-  replyPdu1: state.pdu1.replyPdu1,
+  PDU1: state.pdu1.PDU1,
   gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
   previewPdu1: state.pdu1.previewPdu1
 })
@@ -31,7 +31,7 @@ const PreviewPDU1: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    replyPdu1,
+    PDU1,
     gettingPreviewPdu1,
     previewPdu1
   }: PreviewPDU1Selector = useSelector<State, PreviewPDU1Selector>(mapState)
@@ -40,14 +40,14 @@ const PreviewPDU1: React.FC = () => {
   const [willOpenModal, setWillOpenModal] = useState<boolean>(false)
 
   const onResetPdu1Clicked = () => {
-    dispatch(resetPreviewFile())
+    dispatch(resetPreviewPdu1())
   }
 
   const onPreviewPdu1Clicked = (e: any) => {
     if (_.isNil(previewPdu1)) {
-      const newReplyPdu1 = _.cloneDeep(replyPdu1)
+      const newPdu1 = _.cloneDeep(PDU1)
       setWillOpenModal(true)
-      dispatch(getPreviewPdu1(newReplyPdu1))
+      dispatch(previewPdu1(newPdu1))
       buttonLogger(e)
     } else {
       showPreviewModal(previewPdu1)
@@ -108,7 +108,7 @@ const PreviewPDU1: React.FC = () => {
         onModalClose={() => setPreviewModal(undefined)}
       />
       <FlexDiv>
-        {replyPdu1 && (
+        {PDU1 && (
           <Button
             variant='secondary'
             disabled={gettingPreviewPdu1}
@@ -125,7 +125,7 @@ const PreviewPDU1: React.FC = () => {
             {gettingPreviewPdu1 && <Loader />}
           </Button>
         )}
-        {replyPdu1 && previewPdu1 && (
+        {PDU1 && previewPdu1 && (
           <>
             <HorizontalSeparatorDiv />
             <Button

@@ -12,7 +12,6 @@ import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockJoark from 'mocks/attachments/joark'
 import mockPreview from 'mocks/attachments/preview'
 import { Action, ActionCreator } from 'redux'
-
 const sprintf = require('sprintf-js').sprintf
 
 export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBrowserItems>> = (
@@ -35,9 +34,9 @@ export const getJoarkItemPreview: ActionCreator<ThunkResult<ActionWithPayload<Jo
     expectedPayload: mockPreview(),
     context: item,
     type: {
-      request: types.JOARK_PREVIEW_REQUEST,
-      success: types.JOARK_PREVIEW_SUCCESS,
-      failure: types.JOARK_PREVIEW_FAILURE
+      request: types.ATTACHMENT_PREVIEW_REQUEST,
+      success: types.ATTACHMENT_PREVIEW_SUCCESS,
+      failure: types.ATTACHMENT_PREVIEW_FAILURE
     }
   })
 }
@@ -46,15 +45,19 @@ export const listJoarkItems: ActionCreator<ThunkResult<ActionWithPayload<JoarkLi
   fnr: string
 ): ThunkResult<ActionWithPayload<JoarkList>> => {
   return call({
-    url: sprintf(urls.API_JOARK_LIST_URL, { fnr: fnr }),
+    url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr: fnr }),
     expectedPayload: mockJoark,
     type: {
-      request: types.JOARK_LIST_REQUEST,
-      success: types.JOARK_LIST_SUCCESS,
-      failure: types.JOARK_LIST_FAILURE
+      request: types.ATTACHMENT_LIST_REQUEST,
+      success: types.ATTACHMENT_LIST_SUCCESS,
+      failure: types.ATTACHMENT_LIST_FAILURE
     }
   })
 }
+
+export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
+  type: types.ATTACHMENT_RESET
+})
 
 export const sendAttachmentToSed: ActionCreator<ThunkResult<Action>> = (
   params: SEDAttachmentPayloadWithFile, joarkBrowserItem: JoarkBrowserItem
@@ -79,10 +82,6 @@ export const sendAttachmentToSed: ActionCreator<ThunkResult<Action>> = (
 export const setJoarkItemPreview: ActionCreator<ActionWithPayload<JoarkBrowserItemWithContent | undefined>> = (
   item: JoarkBrowserItemWithContent | undefined
 ): ActionWithPayload<JoarkBrowserItemWithContent | undefined> => ({
-  type: types.JOARK_PREVIEW_SET,
+  type: types.ATTACHMENT_PREVIEW_SET,
   payload: item
-})
-
-export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
-  type: types.ATTACHMENT_RESET
 })

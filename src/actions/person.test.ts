@@ -1,3 +1,4 @@
+import * as pdu1Actions from 'actions/pdu1'
 import * as personActions from 'actions/person'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
@@ -18,6 +19,12 @@ describe('actions/persons', () => {
     call.mockRestore()
   })
 
+  it('resetPerson()', () => {
+    expect(personActions.resetPerson()).toMatchObject({
+      type: types.PERSON_SEARCH_RESET
+    })
+  })
+
   it('searchPerson()', () => {
     const fnr = 'mockFnr'
     personActions.searchPerson(fnr)
@@ -28,7 +35,7 @@ describe('actions/persons', () => {
           success: types.PERSON_SEARCH_SUCCESS,
           failure: types.PERSON_SEARCH_FAILURE
         },
-        url: sprintf(urls.API_PERSONER_URL, { fnr: fnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr })
       }))
   })
 
@@ -42,7 +49,7 @@ describe('actions/persons', () => {
           success: types.PERSON_RELATERT_SEARCH_SUCCESS,
           failure: types.PERSON_RELATERT_SEARCH_FAILURE
         },
-        url: sprintf(urls.API_PERSONER_URL, { fnr: fnr })
+        url: sprintf(urls.API_PERSONER_URL, { fnr })
       }))
   })
 })

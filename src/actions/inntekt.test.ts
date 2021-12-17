@@ -2,11 +2,9 @@ import * as inntektActions from 'actions/inntekt'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
-
 const sprintf = require('sprintf-js').sprintf
-jest.mock('js-fetch-api', () => ({
-  call: jest.fn()
-}))
+
+jest.mock('js-fetch-api', () => ({call: jest.fn()}))
 const call = originalCall as jest.Mock<typeof originalCall>
 
 describe('actions/attachments', () => {
@@ -31,7 +29,7 @@ describe('actions/attachments', () => {
           success: types.INNTEKT_GET_SUCCESS,
           failure: types.INNTEKT_GET_FAILURE
         },
-        url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom: fom ?? '', tom: tom ?? '', inntektsliste: inntektsliste ?? '' })
+        url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom, tom, inntektsliste })
       }))
   })
 })

@@ -2,7 +2,7 @@ import { Checkbox, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
-import { IkkeRettTilDagpenger, ReplyPdu1, RettTilDagpenger } from 'declarations/pd'
+import { IkkeRettTilDagpenger, PDU1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { AlignStartRow, Column, FlexEndDiv, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
@@ -33,7 +33,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
 
   const onRettTilDagpengerCheckboxChange = (checked: boolean) => {
     if (!checked) {
-      const newReplySed: ReplyPdu1 = _.cloneDeep(replySed) as ReplyPdu1
+      const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
       delete newReplySed.rettTilDagpenger
       dispatch(setReplySed(newReplySed))
     }
@@ -42,7 +42,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
 
   const onIkkeRettTilDagpengerCheckboxChange = (checked: boolean) => {
     if (!checked) {
-      const newReplySed: ReplyPdu1 = _.cloneDeep(replySed) as ReplyPdu1
+      const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
       delete newReplySed.ikkeRettTilDagpenger
       dispatch(setReplySed(newReplySed))
     }

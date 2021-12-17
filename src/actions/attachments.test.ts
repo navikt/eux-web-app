@@ -4,7 +4,6 @@ import * as urls from 'constants/urls'
 import { JoarkBrowserItem, SEDAttachmentPayloadWithFile } from 'declarations/attachments'
 import { call as originalCall } from 'js-fetch-api'
 import mockItems from 'mocks/attachments/items'
-import { Action } from 'redux'
 
 const sprintf = require('sprintf-js').sprintf
 jest.mock('js-fetch-api', () => ({
@@ -23,8 +22,7 @@ describe('actions/attachments', () => {
 
   it('createSavingAttachmentJob()', () => {
     const joarkBrowserItems: Array<JoarkBrowserItem> = []
-    const generatedResult: Action = attachmentsActions.createSavingAttachmentJob(joarkBrowserItems)
-    expect(generatedResult)
+    expect(attachmentsActions.createSavingAttachmentJob(joarkBrowserItems))
       .toMatchObject({
         type: types.ATTACHMENT_SAVINGATTACHMENTJOB_SET,
         payload: joarkBrowserItems
@@ -35,9 +33,9 @@ describe('actions/attachments', () => {
     attachmentsActions.getJoarkItemPreview(mockItems[0])
     expect(call).toBeCalledWith(expect.objectContaining({
       type: {
-        request: types.JOARK_PREVIEW_REQUEST,
-        success: types.JOARK_PREVIEW_SUCCESS,
-        failure: types.JOARK_PREVIEW_FAILURE
+        request: types.ATTACHMENT_PREVIEW_REQUEST,
+        success: types.ATTACHMENT_PREVIEW_SUCCESS,
+        failure: types.ATTACHMENT_PREVIEW_FAILURE
       },
       context: mockItems[0],
       url: sprintf(urls.API_JOARK_GET_URL, {
@@ -49,16 +47,22 @@ describe('actions/attachments', () => {
   })
 
   it('listJoarkItems()', () => {
-    const mockFnr = '123'
-    attachmentsActions.listJoarkItems(mockFnr)
+    const fnr = '123'
+    attachmentsActions.listJoarkItems(fnr)
     expect(call).toBeCalledWith(expect.objectContaining({
       type: {
-        request: types.JOARK_LIST_REQUEST,
-        success: types.JOARK_LIST_SUCCESS,
-        failure: types.JOARK_LIST_FAILURE
+        request: types.ATTACHMENT_LIST_REQUEST,
+        success: types.ATTACHMENT_LIST_SUCCESS,
+        failure: types.ATTACHMENT_LIST_FAILURE
       },
-      url: sprintf(urls.API_JOARK_LIST_URL, { fnr: mockFnr })
+      url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr })
     }))
+  })
+
+  it('resetSedAttachments()', () => {
+    expect(attachmentsActions.resetSedAttachments()).toMatchObject({
+      type: types.ATTACHMENT_RESET
+    })
   })
 
   it('sendAttachmentToSed()', () => {
@@ -83,7 +87,7 @@ describe('actions/attachments', () => {
     }
     attachmentsActions.sendAttachmentToSed(params, joarkBrowserItem)
     expect(call).toBeCalledWith(expect.objectContaining({
-      method: 'PUT',
+      method: 'POST',
       type: {
         request: types.ATTACHMENT_SEND_REQUEST,
         success: types.ATTACHMENT_SEND_SUCCESS,
@@ -98,17 +102,9 @@ describe('actions/attachments', () => {
   })
 
   it('setJoarkItemPreview()', () => {
-    const generatedResult = attachmentsActions.setJoarkItemPreview(mockItems[0])
-    expect(generatedResult).toMatchObject({
-      type: types.JOARK_PREVIEW_SET,
+    expect(attachmentsActions.setJoarkItemPreview(mockItems[0])).toMatchObject({
+      type: types.ATTACHMENT_PREVIEW_SET,
       payload: mockItems[0]
-    })
-  })
-
-  it('resetSedAttachments()', () => {
-    const generatedResult = attachmentsActions.resetSedAttachments()
-    expect(generatedResult).toMatchObject({
-      type: types.ATTACHMENT_RESET
     })
   })
 })

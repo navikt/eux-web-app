@@ -10,11 +10,9 @@ import SEDSearch from 'pages/SvarSed/SEDSearch'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { STORAGE_SVARSED } from 'constants/storage'
 import { useLocation } from 'react-router-dom'
 
 export const SvarSedPage = (): JSX.Element => {
-  const storageKey = STORAGE_SVARSED
   const [_mounted, setMounted] = useState<boolean>(false)
   const dispatch = useDispatch()
   const location = useLocation()
@@ -54,7 +52,6 @@ export const SvarSedPage = (): JSX.Element => {
           <SideBarDiv>
             <LoadSave
               namespace='svarsed'
-              storageKey={storageKey}
               changeMode={changeMode}
               setReplySed={setReplySed}
             />
@@ -62,7 +59,6 @@ export const SvarSedPage = (): JSX.Element => {
       )}
         divB1={(
           <SEDEdit
-            storageKey={storageKey}
             changeMode={changeMode}
           />)}
         divB2={(

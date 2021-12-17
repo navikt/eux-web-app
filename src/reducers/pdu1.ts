@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { FagSaker } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
@@ -7,16 +7,16 @@ import { Action } from 'redux'
 
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
-  replyPdu1: ReplyPdu1 | null | undefined
+  PDU1: PDU1 | null | undefined
   previewPdu1: any
-  completePdu1Response: any
+  jornalførePdu1Response: any
 }
 
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
-  replyPdu1: undefined,
+  PDU1: undefined,
   previewPdu1: undefined,
-  completePdu1Response: undefined
+  jornalførePdu1Response: undefined
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {
@@ -42,22 +42,22 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         fagsaker: null
       }
 
-    case types.PDU1_CREATE_REQUEST:
+    case types.PDU1_GET_REQUEST:
       return {
         ...state,
-        replyPdu1: undefined
+        PDU1: undefined
       }
 
-    case types.PDU1_CREATE_SUCCESS:
+    case types.PDU1_GET_SUCCESS:
       return {
         ...state,
-        replyPdu1: (action as ActionWithPayload).payload
+        PDU1: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_CREATE_FAILURE:
+    case types.PDU1_GET_FAILURE:
       return {
         ...state,
-        replyPdu1: null
+        PDU1: null
       }
 
     case types.PDU1_PREVIEW_RESET:
@@ -79,44 +79,44 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         previewPdu1: null
       }
 
-    case types.PDU1_COMPLETE_RESET:
-    case types.PDU1_COMPLETE_REQUEST:
+    case types.PDU1_JOURNALFØRE_RESET:
+    case types.PDU1_JOURNALFØRE_REQUEST:
       return {
         ...state,
-        completePdu1Response: undefined
+        jornalførePdu1Response: undefined
       }
 
-    case types.PDU1_COMPLETE_SUCCESS:
+    case types.PDU1_JOURNALFØRE_SUCCESS:
       return {
         ...state,
-        completePdu1Response: (action as ActionWithPayload).payload
+        jornalførePdu1Response: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_COMPLETE_FAILURE:
+    case types.PDU1_JOURNALFØRE_FAILURE:
       return {
         ...state,
-        completePdu1Response: null
+        jornalførePdu1Response: null
       }
 
-    case types.PDU1_REPLYSED_SET:
+    case types.PDU1_SET:
       return {
         ...state,
-        replyPdu1: (action as ActionWithPayload).payload
+        PDU1: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_REPLYSED_UPDATE: {
-      let newReplyPdu1: ReplyPdu1 | null | undefined = _.cloneDeep(state.replyPdu1)
-      if (!newReplyPdu1) {
-        newReplyPdu1 = {} as ReplyPdu1
+    case types.PDU1_UPDATE: {
+      let newPdu1: PDU1 | null | undefined = _.cloneDeep(state.PDU1)
+      if (!newPdu1) {
+        newPdu1 = {} as PDU1
       }
-      _.set(newReplyPdu1,
+      _.set(newPdu1,
         (action as ActionWithPayload).payload.needle,
         (action as ActionWithPayload).payload.value
       )
 
       return {
         ...state,
-        replyPdu1: newReplyPdu1
+        PDU1: newPdu1
       }
     }
 

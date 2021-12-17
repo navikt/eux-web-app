@@ -5,7 +5,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { MyTag } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
@@ -35,19 +35,17 @@ const LoadSaveDiv = styled(FlexDiv)`
 
 interface LoadSaveProps {
   changeMode: ChangeModeFunction
-  storageKey: string
   namespace: LocalStorageNamespaces
-  setReplySed: (payload: ReplySed | ReplyPdu1) => void
+  setReplySed: (payload: ReplySed | PDU1) => void
 }
 
 interface LoadSaveSelector {
-  entries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined
+  entries: Array<LocalStorageEntry<ReplySed | PDU1>> | null | undefined
   sedStatus: {[k in string]: string | null}
 }
 
 const LoadSave: React.FC<LoadSaveProps> = ({
   changeMode,
-  storageKey,
   namespace,
   setReplySed
 }: LoadSaveProps) => {
@@ -58,25 +56,25 @@ const LoadSave: React.FC<LoadSaveProps> = ({
       sedStatus: state.svarsed.sedStatus
     }))
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed | ReplyPdu1>>(
-    (entry: LocalStorageEntry<ReplySed | ReplyPdu1>): string => entry.id)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed | PDU1>>(
+    (entry: LocalStorageEntry<ReplySed | PDU1>): string => entry.id)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string | undefined>(undefined)
 
   const { t } = useTranslation()
 
-  const onRemove = (entry: LocalStorageEntry<ReplySed | ReplyPdu1>) => {
+  const onRemove = (entry: LocalStorageEntry<ReplySed | PDU1>) => {
     standardLogger(namespace + '.sidebar.removedraft', {})
-    dispatch(localStorageActions.removeEntry(namespace, storageKey, entry))
+    dispatch(localStorageActions.removeEntry(namespace, entry))
   }
 
   const onRemoveAll = (e: any) => {
     buttonLogger(e)
     if (window.confirm(t('label:er-du-sikker'))) {
-      dispatch(localStorageActions.removeAll(namespace, storageKey))
+      dispatch(localStorageActions.removeAllEntries(namespace))
     }
   }
 
-  const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed | ReplyPdu1>) => {
+  const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed | PDU1>) => {
     if ((savedEntry.content as ReplySed).sedType) {
       buttonLogger(e, { type: (savedEntry.content as ReplySed).sedType })
       setSedStatusRequested(savedEntry.id)
@@ -84,7 +82,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
     } else {
       // no need to chevk for status on PDU1 for now
       buttonLogger(e, { type: 'pdu1' })
-      const entry: LocalStorageEntry<ReplySed | ReplyPdu1> | undefined = findSavedEntry(savedEntry.id)
+      const entry: LocalStorageEntry<ReplySed | PDU1> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(setReplySed(entry.content))
@@ -94,8 +92,8 @@ const LoadSave: React.FC<LoadSaveProps> = ({
     }
   }
 
-  const findSavedEntry = (svarsedId: string): LocalStorageEntry<ReplySed | ReplyPdu1> | undefined => (
-    _.find(entries, (e: LocalStorageEntry<ReplySed | ReplyPdu1>) => e.id === svarsedId)
+  const findSavedEntry = (svarsedId: string): LocalStorageEntry<ReplySed | PDU1> | undefined => (
+    _.find(entries, (e: LocalStorageEntry<ReplySed | PDU1>) => e.id === svarsedId)
   )
 
   const hasSentStatus = (svarsedId: string): boolean => {
@@ -107,7 +105,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
 
   useEffect(() => {
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
-      const entry: LocalStorageEntry<ReplySed | ReplyPdu1> | undefined = findSavedEntry(_sedStatusRequested)
+      const entry: LocalStorageEntry<ReplySed | PDU1> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(setReplySed(entry.content))
@@ -120,7 +118,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
   useEffect(() => {
     if (!loadingSavedItems && entries === undefined) {
       setLoadingSavedItems(true)
-      dispatch(localStorageActions.loadEntries(namespace, storageKey))
+      dispatch(localStorageActions.loadEntries(namespace))
     }
   }, [entries, loadingSavedItems])
 
@@ -146,7 +144,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
             </BodyLong>
             )}
         <VerticalSeparatorDiv />
-        {entries?.map((savedEntry: LocalStorageEntry<ReplySed | ReplyPdu1>) => (
+        {entries?.map((savedEntry: LocalStorageEntry<ReplySed | PDU1>) => (
           <div key={savedEntry.id}>
             <MyTag variant='info'>
               <PileDiv flex='1'>

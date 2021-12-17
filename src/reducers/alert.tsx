@@ -35,7 +35,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   let bannerStatus: string
 
   if (
-    action.type === types.ALERT_CLIENT_CLEAR ||
+    action.type === types.ALERT_CLEAR ||
     action.type === types.APP_CLEAN_DATA ||
     action.type === types.SAK_PERSON_RELATERT_RESET ||
     action.type === types.SAK_PERSON_GET_REQUEST ||
@@ -43,6 +43,16 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     action.type === types.SAK_ABROADPERSON_ADD_SUCCESS ||
     action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
     return initialAlertState
+  }
+
+  if ( action.type === types.ALERT_ERROR_SET) {
+    return {
+      ...state,
+      type: action.type,
+      bannerMessage: (action as ActionWithPayload).payload.error,
+      bannerStatus: 'error',
+      error: (action as ActionWithPayload).payload.error
+    }
   }
 
   /**

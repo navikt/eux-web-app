@@ -1,12 +1,12 @@
 import { Sight, BackFilled } from '@navikt/ds-icons'
-import { Loader, Button, Heading } from '@navikt/ds-react'
-import { clientClear } from 'actions/alert'
+import { Loader, Button, Heading, Alert } from '@navikt/ds-react'
+import { alertClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
   getPreviewFile,
-  resetPreviewFile,
+  resetPreviewPdu1,
   sendSedInRina,
   setReplySed,
   updateReplySed
@@ -39,7 +39,6 @@ import Trygdeordning from 'applications/SvarSed/PersonManager/Trygdeordning/Tryg
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
-import Alert from 'components/Alert/Alert'
 
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
@@ -90,7 +89,6 @@ export interface SEDEditSelector {
 
 export interface SEDEditProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
-  storageKey: string
 }
 
 const mapState = (state: State): any => ({
@@ -109,8 +107,7 @@ const mapState = (state: State): any => ({
 })
 
 const SEDEdit: React.FC<SEDEditProps> = ({
-  changeMode,
-  storageKey
+  changeMode
 }: SEDEditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -185,12 +182,12 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     } else {
       const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
       newCurrentEntry.content = _.cloneDeep(replySed!)
-      dispatch(saveEntry('svarsed', storageKey, newCurrentEntry))
+      dispatch(saveEntry('svarsed', newCurrentEntry))
     }
   }
 
   const resetPreview = () => {
-    dispatch(resetPreviewFile())
+    dispatch(resetPreviewPdu1())
     setModal(undefined)
   }
 
@@ -297,7 +294,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       <SaveSEDModal
         open={_viewSaveSedModal}
         replySed={replySed!}
-        storageKey={storageKey}
         onModalClose={() => setViewSaveSedModal(false)}
       />
       <FlexCenterSpacedDiv>
@@ -481,14 +477,15 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           <FlexDiv>
             <Alert
               variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'info'}
-              onClose={() => {
-                _setSendButtonClicked(false)
-                dispatch(clientClear())
-              }}
             >
               {alertMessage!}
             </Alert>
-            <div />
+            <Button variant='tertiary' onClick={() => {
+              _setSendButtonClicked(false)
+              dispatch(alertClear())
+            }}>
+              OK
+            </Button>
           </FlexDiv>
           <VerticalSeparatorDiv />
         </>

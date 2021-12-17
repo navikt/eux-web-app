@@ -1,6 +1,6 @@
-import { clientClear, clientError } from 'actions/alert'
+import { alertClear, setAlertError } from 'actions/alert'
 import { closeModal } from 'actions/ui'
-import Alert from 'components/Alert/Alert'
+import BannerAlert from 'components/BannerAlert/BannerAlert'
 import Header from 'components/Header/Header'
 import Modal from 'components/Modal/Modal'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
@@ -114,12 +114,12 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   const dispatch = useDispatch()
 
   const onClear = (): void => {
-    dispatch(clientClear())
+    dispatch(alertClear())
   }
 
   if (_.isNil(window.onerror)) {
     window.onerror = (msg) => {
-      dispatch(clientError({ error: msg }))
+      dispatch(setAlertError({ error: msg }))
     }
   }
 
@@ -150,7 +150,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         }}
       >
         <Header title={title} highContrast={highContrast} />
-        <Alert
+        <BannerAlert
           message={stripeMessage}
           variant={stripeStatus as AlertVariant}
           error={error}

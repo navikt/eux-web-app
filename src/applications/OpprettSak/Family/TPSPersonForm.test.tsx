@@ -9,7 +9,7 @@ describe('components/Family/TPSPersonForm', () => {
   let wrapper: ReactWrapper
   const initialMockProps: TPSPersonFormProps = {
     alertMessage: 'Message',
-    alertType: types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
+    alertType: types.PERSON_RELATERT_SEARCH_FAILURE,
     alertTypesWatched: [],
     existingFamilyRelationships: [],
     onRelationReset: jest.fn(),

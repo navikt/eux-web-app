@@ -1,11 +1,12 @@
 import * as types from 'constants/actionTypes'
-import { ReplyPdu1 } from 'declarations/pd'
+import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 import _ from 'lodash'
 import { Action } from 'redux'
 
+// these are used for: 1) reducer namespace, and 2) local storage key
 export type LocalStorageNamespaces = 'svarsed' | 'pdu1'
 
 export interface LocalStorageState {
@@ -17,8 +18,8 @@ export interface LocalStorageState {
     currentEntry: LocalStorageEntry<ReplySed> | undefined
   }
   pdu1: {
-    entries: Array<LocalStorageEntry<ReplyPdu1>> | null | undefined
-    currentEntry: LocalStorageEntry<ReplyPdu1> | undefined
+    entries: Array<LocalStorageEntry<PDU1>> | null | undefined
+    currentEntry: LocalStorageEntry<PDU1> | undefined
   }
 }
 
@@ -42,8 +43,8 @@ const localStorageReducer = (
   if (namespace) {
     switch (action.type) {
       case types.LOCALSTORAGE_ENTRIES_LOAD: {
-        const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.key)
-        let entries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined
+        const items: string | null = window.localStorage.getItem((action as ActionWithPayload).payload.namespace)
+        let entries: Array<LocalStorageEntry<ReplySed | PDU1>> | null | undefined
         if (_.isString(items)) {
           entries = JSON.parse(items)
         } else {
@@ -59,7 +60,7 @@ const localStorageReducer = (
       }
 
       case types.LOCALSTORAGE_ENTRY_REMOVE: {
-        const newEntries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined = _.cloneDeep(state[namespace].entries)
+        const newEntries: Array<LocalStorageEntry<ReplySed | PDU1>> | null | undefined = _.cloneDeep(state[namespace].entries)
         const index: number = _.findIndex(newEntries, (entry) =>
           entry.id === ((action as ActionWithPayload).payload).entry.id
         )
@@ -67,7 +68,7 @@ const localStorageReducer = (
           if (!_.isNil(newEntries)) {
             newEntries.splice(index, 1)
             window.localStorage.setItem(
-              (action as ActionWithPayload).payload.key,
+              (action as ActionWithPayload).payload.namespace,
               JSON.stringify(newEntries, null, 2))
           }
         }
@@ -80,8 +81,8 @@ const localStorageReducer = (
         }
       }
 
-      case types.LOCALSTORAGE_REMOVE_ALL : {
-        window.localStorage.setItem((action as ActionWithPayload).payload.key, '[]')
+      case types.LOCALSTORAGE_ALL_REMOVE : {
+        window.localStorage.setItem((action as ActionWithPayload).payload.namespace, '[]')
         return {
           ...state,
           [namespace]: {
@@ -92,8 +93,8 @@ const localStorageReducer = (
       }
 
       case types.LOCALSTORAGE_ENTRY_SAVE: {
-        let newEntries: Array<LocalStorageEntry<ReplySed | ReplyPdu1>> | null | undefined = _.cloneDeep(state[namespace].entries)
-        const newEntry: LocalStorageEntry<ReplySed | ReplyPdu1> = (action as ActionWithPayload).payload.entry
+        let newEntries: Array<LocalStorageEntry<ReplySed | PDU1>> | null | undefined = _.cloneDeep(state[namespace].entries)
+        const newEntry: LocalStorageEntry<ReplySed | PDU1> = (action as ActionWithPayload).payload.entry
 
         if (_.isNil(newEntries)) {
           newEntries = []
@@ -107,7 +108,7 @@ const localStorageReducer = (
         }
 
         window.localStorage.setItem(
-          (action as ActionWithPayload).payload.key,
+          (action as ActionWithPayload).payload.namespace,
           JSON.stringify(newEntries, null, 2))
 
         return {
