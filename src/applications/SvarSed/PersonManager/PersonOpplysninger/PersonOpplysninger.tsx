@@ -27,7 +27,8 @@ import {
   FlexRadioPanels,
   RadioPanel,
   Row,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv,
+  FlexEndDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -463,7 +464,8 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
               <Column>
-                <Button
+                <FlexEndDiv>
+                  <Button
                   variant='secondary'
                   disabled={searchingPerson}
                   data-amplitude='svarsed.editor.personopplysning.norskpin.search'
@@ -483,6 +485,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 >
                   {t('el:button-cancel')}
                 </Button>
+                </FlexEndDiv>
               </Column>
             </>
             )}

@@ -7,14 +7,14 @@ import { Action } from 'redux'
 
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
-  PDU1: PDU1 | null | undefined
+  pdu1: PDU1 | null | undefined
   previewPdu1: any
   jornalførePdu1Response: any
 }
 
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
-  PDU1: undefined,
+  pdu1: undefined,
   previewPdu1: undefined,
   jornalførePdu1Response: undefined
 }
@@ -45,19 +45,19 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
     case types.PDU1_GET_REQUEST:
       return {
         ...state,
-        PDU1: undefined
+        pdu1: undefined
       }
 
     case types.PDU1_GET_SUCCESS:
       return {
         ...state,
-        PDU1: (action as ActionWithPayload).payload
+        pdu1: (action as ActionWithPayload).payload
       }
 
     case types.PDU1_GET_FAILURE:
       return {
         ...state,
-        PDU1: null
+        pdu1: null
       }
 
     case types.PDU1_PREVIEW_RESET:
@@ -101,11 +101,11 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
     case types.PDU1_SET:
       return {
         ...state,
-        PDU1: (action as ActionWithPayload).payload
+        pdu1: (action as ActionWithPayload).payload
       }
 
     case types.PDU1_UPDATE: {
-      let newPdu1: PDU1 | null | undefined = _.cloneDeep(state.PDU1)
+      let newPdu1: PDU1 | null | undefined = _.cloneDeep(state.pdu1)
       if (!newPdu1) {
         newPdu1 = {} as PDU1
       }
@@ -116,7 +116,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
 
       return {
         ...state,
-        PDU1: newPdu1
+        pdu1: newPdu1
       }
     }
 

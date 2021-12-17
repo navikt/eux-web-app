@@ -34,7 +34,7 @@ export interface PersonSearchProps {
   error: string | undefined
   id: string
   initialFnr: any
-  gettingPerson: boolean
+  searchingPerson: boolean
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
@@ -50,7 +50,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   error,
   id,
   initialFnr,
-  gettingPerson,
+  searchingPerson,
   onFnrChange,
   onPersonFound,
   onPersonRemoved,
@@ -133,8 +133,8 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           onChange={onChange}
           error={error ?? localValidation}
         />
-        <MyButton onClick={sokEtterPerson} disabled={gettingPerson}>
-          {gettingPerson
+        <MyButton onClick={sokEtterPerson} disabled={searchingPerson}>
+          {searchingPerson
             ? <WaitingPanel size='xsmall' message={t('message:loading-searching')} oneLine />
             : t('el:button-search')}
         </MyButton>

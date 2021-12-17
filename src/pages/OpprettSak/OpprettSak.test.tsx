@@ -26,7 +26,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
     tema: undefined,
 
     sendingSak: false,
-    gettingPerson: false,
+    searchingPerson: false,
     gettingFagsaker: false,
     gettingArbeidsperioder: false,
 

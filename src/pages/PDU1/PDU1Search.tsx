@@ -48,7 +48,7 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
-  PDU1: state.pdu1.PDU1
+  PDU1: state.pdu1.pdu1
 })
 
 export interface PDU1Props {

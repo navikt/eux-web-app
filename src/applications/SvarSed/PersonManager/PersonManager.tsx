@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
-import { Pdu1Person, PDU1 } from 'declarations/pd'
+import { PDU1, Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -140,10 +140,6 @@ const PreviousFormDiv = styled(RightActiveDiv)`
     display: none;
   }
 `
-
-const RightFlexCenterSpacedDiv = styled.div`
-  text-align: center;
-`
 const MarginDiv = styled.div`
   padding: 1rem 0.5rem;
 `
@@ -163,10 +159,6 @@ export interface PersonManagerProps {
   viewValidation: boolean
   setReplySed: (replySed: ReplySed) => void
   updateReplySed: (needle: string, value: any) => void
-}
-
-export interface PersonManagerSelector extends PersonManagerFormSelector {
-  gettingPerson: boolean
 }
 
 export interface PersonManagerFormProps {
@@ -192,8 +184,7 @@ export interface Form extends Option {
   options?: any
 }
 
-const mapState = (state: State): PersonManagerSelector => ({
-  gettingPerson: state.loading.gettingPerson,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -205,10 +196,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   viewValidation
 }: PersonManagerProps) => {
   const { t } = useTranslation()
-  const {
-    gettingPerson,
-    validation
-  }: any = useSelector<State, PersonManagerSelector>(mapState)
+  const {validation}: any = useSelector<State, PersonManagerFormSelector>(mapState)
   const namespace = 'personmanager'
 
   const dispatch = useDispatch()
@@ -552,11 +540,6 @@ const PersonManager: React.FC<PersonManagerProps> = ({
             <VerticalSeparatorDiv />
           </LeftDiv>
           <RightDiv className='mainright'>
-            {gettingPerson && (
-              <RightFlexCenterSpacedDiv>
-                {t('message:loading-getting-person')}
-              </RightFlexCenterSpacedDiv>
-            )}
             {!currentMenu && (
               <PileCenterDiv style={{ height: '100%' }}>
                 <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>

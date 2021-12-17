@@ -16,24 +16,24 @@ import { blobToBase64 } from 'utils/blob'
 import { saveAs } from 'file-saver'
 
 export interface PreviewPDU1Selector {
-  PDU1: PDU1
+  pdu1: PDU1
   gettingPreviewPdu1: boolean
-  previewPdu1: any
+  previewPdu1file: any
 }
 
 const mapState = (state: State): any => ({
-  PDU1: state.pdu1.PDU1,
+  pdu1: state.pdu1.pdu1,
   gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
-  previewPdu1: state.pdu1.previewPdu1
+  previewPdu1file: state.pdu1.previewPdu1
 })
 
 const PreviewPDU1: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
-    PDU1,
+    pdu1,
     gettingPreviewPdu1,
-    previewPdu1
+    previewPdu1file
   }: PreviewPDU1Selector = useSelector<State, PreviewPDU1Selector>(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
@@ -44,23 +44,23 @@ const PreviewPDU1: React.FC = () => {
   }
 
   const onPreviewPdu1Clicked = (e: any) => {
-    if (_.isNil(previewPdu1)) {
-      const newPdu1 = _.cloneDeep(PDU1)
+    if (_.isNil(previewPdu1file)) {
+      const newPdu1 = _.cloneDeep(pdu1)
       setWillOpenModal(true)
       dispatch(previewPdu1(newPdu1))
       buttonLogger(e)
     } else {
-      showPreviewModal(previewPdu1)
+      showPreviewModal(previewPdu1file)
     }
   }
 
   const onDownloadPdu1Clicked = () => {
-    saveAs(previewPdu1, 'PDU1.pdf')
+    saveAs(previewPdu1file, 'PDU1.pdf')
   }
 
   useEffect(() => {
-    if (!previewModal && !_.isNil(previewPdu1) && willOpenModal) {
-      showPreviewModal(previewPdu1)
+    if (!previewModal && !_.isNil(previewPdu1file) && willOpenModal) {
+      showPreviewModal(previewPdu1file)
       setWillOpenModal(false)
     }
   }, [previewPdu1, willOpenModal])
@@ -108,7 +108,7 @@ const PreviewPDU1: React.FC = () => {
         onModalClose={() => setPreviewModal(undefined)}
       />
       <FlexDiv>
-        {PDU1 && (
+        {pdu1 && (
           <Button
             variant='secondary'
             disabled={gettingPreviewPdu1}
@@ -125,7 +125,7 @@ const PreviewPDU1: React.FC = () => {
             {gettingPreviewPdu1 && <Loader />}
           </Button>
         )}
-        {PDU1 && previewPdu1 && (
+        {pdu1 && previewPdu1file && (
           <>
             <HorizontalSeparatorDiv />
             <Button

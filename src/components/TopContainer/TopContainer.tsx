@@ -88,8 +88,8 @@ export interface TopContainerProps {
 }
 
 export interface TopContainerSelector {
-  stripeStatus: string | undefined
-  stripeMessage: string | JSX.Element | undefined
+  bannerStatus: string | undefined
+  bannerMessage: string | JSX.Element | undefined
   error: any | undefined
   expirationTime: Date | undefined
   highContrast: boolean
@@ -97,8 +97,8 @@ export interface TopContainerSelector {
 }
 
 const mapState = (state: State): TopContainerSelector => ({
-  stripeStatus: state.alert.stripeStatus,
-  stripeMessage: state.alert.stripeMessage,
+  bannerStatus: state.alert.bannerStatus,
+  bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
   highContrast: state.ui.highContrast,
@@ -109,7 +109,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, title
 }: TopContainerProps): JSX.Element => {
   const {
-    stripeStatus, stripeMessage, error, expirationTime, highContrast, modal
+    bannerStatus, bannerMessage, error, expirationTime, highContrast, modal
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
 
@@ -151,8 +151,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       >
         <Header title={title} highContrast={highContrast} />
         <BannerAlert
-          message={stripeMessage}
-          variant={stripeStatus as AlertVariant}
+          message={bannerMessage}
+          variant={bannerStatus as AlertVariant}
           error={error}
           onClose={onClear}
         />

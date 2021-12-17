@@ -213,14 +213,17 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
             {alertMessage && _sendButtonClicked && (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
               <>
                 <AlertstripeDiv>
-                  <Alert
-                    variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}
-                    message={alertMessage}
-                    onClose={() => {
+                  <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>
+                    {alertMessage}
+                  </Alert>
+                  <Button
+                    variant='tertiary'
+                    onClick={() => {
                       _setSendButtonClicked(false)
                       dispatch(alertClear())
-                    }}
-                  />
+                    }}>
+                      OK
+                  </Button>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
               </>

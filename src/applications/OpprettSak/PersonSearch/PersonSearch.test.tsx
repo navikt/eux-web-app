@@ -8,13 +8,13 @@ describe('components/PersonSearch/PersonSearch', () => {
   let wrapper: ReactWrapper
   const initialMockProps: PersonSearchProps = {
     alertMessage: 'message',
-    alertType: types.SAK_PERSON_GET_FAILURE,
-    alertTypesWatched: [types.SAK_PERSON_GET_FAILURE],
+    alertType: types.PERSON_SEARCH_FAILURE,
+    alertTypesWatched: [types.PERSON_SEARCH_FAILURE],
     className: 'mock-className',
     id: 'id',
     error: undefined,
     initialFnr: '12345678901',
-    gettingPerson: false,
+    searchingPerson: false,
     onFnrChange: jest.fn(),
     onPersonFound: jest.fn(),
     onPersonRemoved: jest.fn(),

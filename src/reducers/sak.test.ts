@@ -79,96 +79,6 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_PERSON_GET_FAILURE', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        person: {}
-      }, {
-        type: types.SAK_PERSON_GET_FAILURE,
-        payload: {}
-      })
-    ).toEqual({
-      ...initialSakState,
-      person: null
-    })
-  })
-
-  it('SAK_PERSON_GET_SUCCESS', () => {
-    const payload = 'mockPayload'
-    expect(
-      sakReducer({
-        ...initialSakState
-      }, {
-        type: types.SAK_PERSON_GET_SUCCESS,
-        payload: payload
-      })
-    ).toEqual({
-      ...initialSakState,
-      person: payload
-    })
-  })
-
-  it('SAK_PERSON_RELATERT_SEARCH_FAILURE', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        personRelatert: {}
-      }, {
-        type: types.SAK_PERSON_RELATERT_SEARCH_FAILURE,
-        payload: {}
-      })
-    ).toEqual({
-      ...initialSakState,
-      personRelatert: null
-    })
-  })
-
-  it('SAK_PERSON_RELATERT_SEARCH_SUCCESS', () => {
-    const payload = 'mockPayload'
-    expect(
-      sakReducer({
-        ...initialSakState
-      }, {
-        type: types.SAK_PERSON_RELATERT_SEARCH_SUCCESS,
-        payload: payload
-      })
-    ).toEqual({
-      ...initialSakState,
-      personRelatert: payload
-    })
-  })
-
-  it('SAK_PERSON_RESET', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        person: {}
-      }, {
-        type: types.SAK_PERSON_RESET,
-        payload: {}
-      })
-    ).toEqual({
-      ...initialSakState,
-      person: undefined
-    })
-  })
-
-  it('SAK_PERSON_RELATERT_RESET', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        personRelatert: {}
-      }, {
-        type: types.SAK_PERSON_RELATERT_RESET,
-        payload: {}
-      })
-    ).toEqual({
-      ...initialSakState,
-      personRelatert: undefined
-    })
-  })
-
   it('SAK_SEND_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
@@ -208,17 +118,6 @@ describe('reducers/sak', () => {
         fnr: '123'
       }, {
         type: types.APP_CLEAN_DATA
-      })
-    ).toEqual(initialSakState)
-  })
-
-  it('SAK_PERSON_RESET', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        fnr: '123'
-      }, {
-        type: types.SAK_PERSON_RESET
       })
     ).toEqual(initialSakState)
   })

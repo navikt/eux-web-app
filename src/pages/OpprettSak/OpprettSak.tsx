@@ -64,7 +64,7 @@ export interface OpprettSakSelector {
 
   sendingSak: boolean
   gettingFagsaker: boolean
-  gettingPerson: boolean
+  searchingPerson: boolean
   gettingArbeidsperioder: boolean
 
   arbeidsperioder: Arbeidsperioder | null | undefined
@@ -111,7 +111,7 @@ const mapState = (state: State): OpprettSakSelector => ({
 
   sendingSak: state.loading.sendingSak,
   gettingFagsaker: state.loading.gettingFagsaker,
-  gettingPerson: state.loading.gettingPerson,
+  searchingPerson: state.loading.searchingPerson,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
 
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
@@ -141,7 +141,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
     alertMessage,
     alertType,
     gettingFagsaker,
-    gettingPerson,
+    searchingPerson,
     enheter,
     serverInfo,
     sendingSak,
@@ -299,11 +299,11 @@ const OpprettSak: React.FC = (): JSX.Element => {
           <PersonSearch
             alertMessage={alertMessage}
             alertType={alertType}
-            alertTypesWatched={[types.SAK_PERSON_GET_FAILURE]}
+            alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
             className='slideInFromLeft'
             data-test-id={namespace + '-fnr'}
             error={_validation[namespace + '-fnr']?.feilmelding}
-            gettingPerson={gettingPerson}
+            searchingPerson={searchingPerson}
             id={namespace + '-fnr'}
             initialFnr=''
             onFnrChange={() => {
@@ -315,7 +315,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
             onSearchPerformed={(fnr: string) => {
               dispatch(sakActions.setProperty('fnr', fnr))
               dispatch(sakActions.cleanData())
-              dispatch(personActions.seasrchPerson(fnr))
+              dispatch(personActions.searchPerson(fnr))
             }}
             onPersonRemoved={() => dispatch(personActions.resetPerson())}
             person={person}

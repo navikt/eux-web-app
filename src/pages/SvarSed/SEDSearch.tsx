@@ -61,7 +61,7 @@ const SEDPanel = styled(Panel)`
   margin-left: 3rem;
   &:hover {
     color: var(--navds-color-text-primary) !important;
-    background-color: var(--navds-semantic-color-interaction-primary-hover) !important;
+    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle) !important;
   }
 `
 

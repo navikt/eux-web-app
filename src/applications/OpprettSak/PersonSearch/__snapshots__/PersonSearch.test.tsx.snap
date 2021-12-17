@@ -192,7 +192,7 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
     ]
   }
   className="mock-className"
-  gettingPerson={false}
+  searchingPerson={false}
   initialFnr="12345678901"
   onAlertClose={[MockFunction]}
   onFnrChange={[MockFunction]}
@@ -496,7 +496,7 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                               data-test-id="panelheader__tittel__hoved"
                             >
                               STOR
-                               
+
                               BLYANT
                             </h2>
                           </TypografiBase>

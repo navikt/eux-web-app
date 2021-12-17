@@ -53,7 +53,7 @@ export interface PDU1EditProps {
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
-  PDU1: state.pdu1.PDU1,
+  PDU1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
   view: state.validation.view

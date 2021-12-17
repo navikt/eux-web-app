@@ -37,9 +37,9 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   if (
     action.type === types.ALERT_CLEAR ||
     action.type === types.APP_CLEAN_DATA ||
-    action.type === types.SAK_PERSON_RELATERT_RESET ||
-    action.type === types.SAK_PERSON_GET_REQUEST ||
-    action.type === types.SAK_PERSON_RELATERT_SEARCH_REQUEST ||
+    action.type === types.PERSON_RELATERT_SEARCH_RESET ||
+    action.type === types.PERSON_SEARCH_REQUEST ||
+    action.type === types.PERSON_RELATERT_SEARCH_REQUEST ||
     action.type === types.SAK_ABROADPERSON_ADD_SUCCESS ||
     action.type === types.SAK_TPSPERSON_ADD_SUCCESS) {
     return initialAlertState
@@ -94,11 +94,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   if (_.endsWith(action.type, '/FAILURE')) {
     stripeStatus = 'error'
     switch (action.type) {
-      case types.SAK_PERSON_GET_FAILURE:
+      case types.PERSON_SEARCH_FAILURE:
         stripeMessage = i18n.t('message:error-person-notFound')
         break
 
-      case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
+      case types.PERSON_RELATERT_SEARCH_FAILURE:
         stripeMessage = i18n.t('message:error-personRelated-notFound')
         break
 

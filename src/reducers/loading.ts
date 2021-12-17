@@ -19,7 +19,6 @@ export const initialLoadingState: LoadingState = {
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingLandkoder: false,
-  gettingPerson: false,
   gettingPreviewFile: false,
   gettingPreviewPdu1: false,
   gettingSaksbehandler: false,
@@ -29,6 +28,7 @@ export const initialLoadingState: LoadingState = {
   queryingReplySed: false,
   queryingSaksnummerOrFnr: false,
   searchingPerson: false,
+  searchingRelatertPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false
@@ -141,17 +141,17 @@ const loadingReducer = (
         gettingLandkoder: false
       }
 
-    case types.SAK_PERSON_GET_REQUEST:
+    case types.PERSON_SEARCH_REQUEST:
       return {
         ...state,
-        gettingPerson: true
+        searchingPerson: true
       }
 
-    case types.SAK_PERSON_GET_SUCCESS:
-    case types.SAK_PERSON_GET_FAILURE:
+    case types.PERSON_SEARCH_SUCCESS:
+    case types.PERSON_SEARCH_FAILURE:
       return {
         ...state,
-        gettingPerson: false
+        searchingPerson: false
       }
 
     case types.SVARSED_PREVIEW_REQUEST:
@@ -217,6 +217,19 @@ const loadingReducer = (
       return {
         ...state,
         searchingPerson: false
+      }
+
+    case types.PERSON_RELATERT_SEARCH_REQUEST:
+      return {
+        ...state,
+        searchingRelatertPerson: true
+      }
+
+    case types.PERSON_RELATERT_SEARCH_SUCCESS:
+    case types.PERSON_RELATERT_SEARCH_FAILURE:
+      return {
+        ...state,
+        searchingRelatertPerson: false
       }
 
     case types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST:

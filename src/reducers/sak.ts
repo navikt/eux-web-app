@@ -88,37 +88,37 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
         landkode: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_PERSON_GET_FAILURE:
+    case types.PERSON_SEARCH_FAILURE:
       return {
         ...state,
         person: null
       }
 
-    case types.SAK_PERSON_GET_SUCCESS:
+    case types.PERSON_SEARCH_SUCCESS:
       return {
         ...state,
         person: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_PERSON_RELATERT_SEARCH_FAILURE:
+    case types.PERSON_RELATERT_SEARCH_FAILURE:
       return {
         ...state,
         personRelatert: null
       }
 
-    case types.SAK_PERSON_RELATERT_SEARCH_SUCCESS:
+    case types.PERSON_RELATERT_SEARCH_SUCCESS:
       return {
         ...state,
         personRelatert: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_PERSON_RESET:
+    case types.PERSON_SEARCH_RESET:
       return {
         ...state,
         person: undefined
       }
 
-    case types.SAK_PERSON_RELATERT_RESET:
+    case types.PERSON_RELATERT_SEARCH_RESET:
       return {
         ...state,
         personRelatert: undefined

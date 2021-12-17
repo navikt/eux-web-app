@@ -96,16 +96,16 @@ describe('reducers/loading', () => {
     simulateFailure(types.SAK_LANDKODER_GET_FAILURE, 'gettingLandkoder')
   })
 
-  it('SAK_PERSON_GET_REQUEST', () => {
-    simulateRequest(types.SAK_PERSON_GET_REQUEST, 'gettingPerson')
+  it('PERSON_SEARCH_REQUEST', () => {
+    simulateRequest(types.PERSON_SEARCH_REQUEST, 'searchingPerson')
   })
 
-  it('SAK_PERSON_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_PERSON_GET_SUCCESS, 'gettingPerson')
+  it('PERSON_SEARCH_SUCCESS', () => {
+    simulateSuccess(types.PERSON_SEARCH_SUCCESS, 'searchingPerson')
   })
 
-  it('SAK_PERSON_GET_FAILURE', () => {
-    simulateFailure(types.SAK_PERSON_GET_FAILURE, 'gettingPerson')
+  it('PERSON_SEARCH_FAILURE', () => {
+    simulateFailure(types.PERSON_SEARCH_FAILURE, 'searchingPerson')
   })
 
   it('SAK_SEND_REQUEST', () => {
