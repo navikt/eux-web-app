@@ -67,7 +67,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_sort, _setSort] = useState<Sort>('time')
+  const [_sort, _setSort] = useState<Sort>('group')
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
 
   const periodeOptions: Options = [

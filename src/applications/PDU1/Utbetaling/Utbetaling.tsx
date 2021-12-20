@@ -91,7 +91,6 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
               if (!e.target.checked) {
                 setUtbetalingEtterEndtArbeidsforhold('')
               }
-              console.log('setting to ' + e.target.checked)
               setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)
             }}
           >
@@ -171,24 +170,6 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
             <FlexDiv>
               {t('el:checkbox-pdu1-4.3')}
               <Input
-                error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
-                namespace={namespace}
-                key={namespace + '-kompensasjonForFeriedager-antallDager-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
-                id='kompensasjonForFeriedager-antallDager'
-                label=''
-                hideLabel
-                onChanged={(e) => {
-                  setKompensasjonForFeriedagerAntallDager(e)
-                  if (!kompensasjonForFeriedagerCheckbox) {
-                    setKompensasjonForFeriedagerCheckbox(true)
-                  }
-                }}
-                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
-              />
-              <PaddedDiv size='0.5'>
-                for
-              </PaddedDiv>
-              <Input
                 error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
                 namespace={namespace}
                 key={namespace + '-kompensasjonForFeriedager-beloep-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
@@ -202,6 +183,24 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
                   }
                 }}
                 value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
+              />
+              <PaddedDiv size='0.5'>
+                for
+              </PaddedDiv>
+              <Input
+                error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
+                namespace={namespace}
+                key={namespace + '-kompensasjonForFeriedager-antallDager-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
+                id='kompensasjonForFeriedager-antallDager'
+                label=''
+                hideLabel
+                onChanged={(e) => {
+                  setKompensasjonForFeriedagerAntallDager(e)
+                  if (!kompensasjonForFeriedagerCheckbox) {
+                    setKompensasjonForFeriedagerCheckbox(true)
+                  }
+                }}
+                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
               />
               <PaddedDiv size='0.5'>
                 dager
