@@ -358,7 +358,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       />
       <Table
         <JoarkBrowserItem, JoarkBrowserContext>
-        className='tabell compact'
         id={'joarkbrowser-' + tableId}
         key={_tableKey}
         items={_items}
@@ -368,7 +367,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         }}
         animatable={false}
         itemsPerPage={30}
-        compact
         searchable={mode === 'select'}
         selectable={mode === 'select'}
         sortable={mode === 'select'}
