@@ -22,7 +22,6 @@ i18n
       escapeValue: false
     },
     react: {
-      wait: true,
       bindI18n: 'languageChange loaded',
       nsMode: 'default'
     }
