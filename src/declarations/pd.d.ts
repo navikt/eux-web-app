@@ -4,6 +4,8 @@ import {
   Periode,
   Adresse
 } from 'declarations/sed'
+import _ from 'lodash'
+import { useState } from 'react'
 
 export interface PeriodeMedAktivitetstype extends Periode {
   aktivitetstype: string
@@ -56,7 +58,12 @@ export interface AndreMottatteUtbetalinger {
     beloep: string
   }
   avkallKompensasjonBegrunnelse: string // 4.4.1
-  andreYtelserSomMottaForTiden: string // 4.5
+  andreYtelserSomMottasForTiden: string // 4.5
+  _utbetalingEtterEndtArbeidsforholdCheckbox: boolean | undefined
+  _kompensasjonForEndtArbeidsforholdCheckbox: boolean | undefined
+  _kompensasjonForFeriedagerCheckbox: boolean | undefined
+  _avkallKompensasjonBegrunnelseCheckbox: boolean | undefined
+  _andreYtelserSomMottasForTidenCheckbox: boolean | undefined
 }
 
 export interface RettTilDagpenger {

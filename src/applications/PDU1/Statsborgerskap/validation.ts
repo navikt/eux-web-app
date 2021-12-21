@@ -44,7 +44,7 @@ export const validateStatsborgerskap = (
 }
 
 interface ValidateStatsborgerskaperProps {
-  statsborgerskaper: Array<string>
+  statsborgerskaper: Array<string> | undefined
   namespace: string
 }
 

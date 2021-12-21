@@ -8,6 +8,7 @@
   "duplicateStartdato": "Startdato eksisterer allerede",
   "duplicateTelephoneNumber": "Telefon eksisterer allerede",
 
+  "emptyField": "Tomt felt",
   "endDateBeforeStartDate": "Sluttdato er tidligere enn startdato",
 
   "feiloppsummering": "For å gå videre må du rette opp følgende:",

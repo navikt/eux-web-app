@@ -40,7 +40,7 @@ import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
-  PDU1: PDU1 | null | undefined
+  pdu1: PDU1 | null | undefined
   savingPdu1: boolean
   jornalførePdu1Response: any
   validation: Validation
@@ -53,7 +53,7 @@ export interface PDU1EditProps {
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
-  PDU1: state.pdu1.pdu1,
+  pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
   view: state.validation.view
@@ -66,7 +66,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const dispatch = useDispatch()
   const {
     completingPdu1,
-    PDU1,
+    pdu1,
     jornalførePdu1Response,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
@@ -78,13 +78,23 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
   const jornalførePdu1Clicked = (e: any): void => {
-    if (PDU1) {
-      const newPdu1: PDU1 = _.cloneDeep(PDU1)
+    if (pdu1) {
+      const newPdu1: PDU1 = _.cloneDeep(pdu1)
       const valid = performValidation({
-        PDU1: newPdu1
+        pdu1: newPdu1
       })
       dispatch(viewValidation())
       if (valid) {
+
+        if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
+          delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
+        }
+
+
         dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)
@@ -97,7 +107,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       setViewSavePdu1Modal(true)
     } else {
       const newCurrentEntry: LocalStorageEntry<PDU1> = _.cloneDeep(currentEntry)
-      newCurrentEntry.content = _.cloneDeep(PDU1!)
+      newCurrentEntry.content = _.cloneDeep(pdu1!)
       dispatch(saveEntry('pdu1', newCurrentEntry))
     }
   }
@@ -135,24 +145,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
-              <div style={{  textAlign: 'center',
-                display: 'block',
-              minWidth: '400px', minHeight: '100px' }}>
-                {/* <PileCenterDiv style={{ alignItems: 'center', width: '100%' }}>
-                  <Link
-                    onClick={(e: any) => {
-                      e.stopPropagation()
-                    }}
-                    href={'data:application/octet-stream;base64,' + encodeURIComponent(jornalførePdu1Response.content.base64)}
-                    download={jornalførePdu1Response?.name}
-                  >
-                    <FlexDiv>
-                      {t('label:last-ned-pdu1')}
-                      <HorizontalSeparatorDiv />
-                      <Download width={20} />
-                    </FlexDiv>
-                  </Link>
-                </PileCenterDiv> */}
+              <div style={{  textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
                 <PileDiv><BodyLong>{jornalførePdu1Response.melding}</BodyLong>
                 <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
                 <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
@@ -170,7 +163,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       )}
       <SavePDU1Modal
         open={viewSavePdu1Modal}
-        PDU1={PDU1!}
+        pdu1={pdu1!}
         onModalClose={() => setViewSavePdu1Modal(false)}
       />
       <FlexCenterSpacedDiv>
@@ -197,7 +190,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
           { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
-        replySed={PDU1}
+        replySed={pdu1}
         setReplySed={setPdu1}
         updateReplySed={updatePdu1}
         viewValidation={view}

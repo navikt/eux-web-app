@@ -41,14 +41,14 @@ const SectionDiv = styled.div`
 
 interface SavePDU1ModalProps {
   onModalClose: () => void
-  PDU1: PDU1
+  pdu1: PDU1
   open: boolean
 }
 
 const SendPDU1Modal = ({
   open,
   onModalClose,
-  PDU1
+  pdu1
 }: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
   const [_name, setName] = useState<string>('pdu1-' + new Date().getTime())
@@ -79,7 +79,7 @@ const SendPDU1Modal = ({
         id: '' + now.getTime(),
         name: _name,
         date: dateString,
-        content: PDU1
+        content: pdu1
       } as LocalStorageEntry
       dispatch(saveEntry('pdu1', newItem))
       setSaved(true)

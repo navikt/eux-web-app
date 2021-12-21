@@ -159,7 +159,7 @@ export default {
       beloep: '100 NOK'
     },
     avkallKompensasjonBegrunnelse: 'Hadde glemt det',
-    andreYtelserSomMottaForTiden: 'Lett lufting'
+    andreYtelserSomMottasForTiden: 'Lett lufting'
   },
   perioderDagpengerMottatt: [
     {
