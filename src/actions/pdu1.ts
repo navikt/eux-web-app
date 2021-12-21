@@ -13,11 +13,12 @@ import File from 'forhandsvisningsfil'
 const sprintf = require('sprintf-js').sprintf
 
 export const getPdu1: ActionCreator<ThunkResult<Action>> = (
-  fnr: string
+  fnr: string, fagsakId: string
 ): ThunkResult<Action> => {
   return call({
     url: sprintf(urls.PDU1_GET_URL, { fnr }),
     expectedPayload: mockGetPdu1,
+    context: {fagsakId },
     type: {
       request: types.PDU1_GET_REQUEST,
       success: types.PDU1_GET_SUCCESS,

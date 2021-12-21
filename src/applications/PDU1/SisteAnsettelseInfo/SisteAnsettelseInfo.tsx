@@ -40,12 +40,17 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-grunntilopphør-avsluttet_etter_felles_overenskomst'), value: 'avsluttet_etter_felles_overenskomst' },
     { label: t('el:option-grunntilopphør-avskjediget_av_disiplinære_grunner'), value: 'avskjediget_av_disiplinære_grunner' },
     { label: t('el:option-grunntilopphør-overtallighet'), value: 'overtallighet' },
-    { label: t('el:option-grunntilopphør-annet'), value: 'annet' }
+    { label: t('el:option-grunntilopphør-annet-ansettelsesforhold'), value: 'annet-ansettelsesforhold' },
+    { label: t('el:option-grunntilopphør-annet-selvstendig'), value: 'annet-selvstendig' }
   ]
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string | undefined) => {
     _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
-    dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
+    if (typeGrunnOpphoerAnsatt === undefined) {
+      dispatch(updateReplySed(target, {}))
+    } else {
+      dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
+    }
     if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
       dispatch(resetValidation(namespace + '-typeGrunnOpphoerAnsatt'))
     }
@@ -71,7 +76,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
         {t('label:årsak-til-avsluttet-arbeidsforhold')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow className='slideInFromLeft'>
         <Column flex='2'>
           <Select
             style={{ width: '100%' }}
@@ -97,34 +102,33 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_typeGrunnOpphoerAnsatt === 'annet' && (
-        <>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
-            <Column>
-              <Input
-                error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
-                namespace={namespace}
-                id='annenGrunnOpphoerAnsatt'
-                label={t('label:annen-grunn')}
-                onChanged={setAnnenGrunnOpphoerAnsatt}
-                value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.12s' }}>
-            <Column>
-              <Input
-                error={validation[namespace + '-årsakselvstendig']?.feilmelding}
-                namespace={namespace}
-                id='grunnOpphoerSelvstendig'
-                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
-                onChanged={setGrunnOpphoerSelvstendig}
-                value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-        </>
+      {_typeGrunnOpphoerAnsatt === 'annet-ansettelsesforhold' && (
+        <AlignStartRow className='slideInFromLeft'>
+          <Column>
+            <Input
+              error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
+              namespace={namespace}
+              id='annenGrunnOpphoerAnsatt'
+              label={t('label:annen-grunn')}
+              onChanged={setAnnenGrunnOpphoerAnsatt}
+              value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
+            />
+          </Column>
+        </AlignStartRow>
+      )}
+      {_typeGrunnOpphoerAnsatt === 'annet-selvstendig' && (
+        <AlignStartRow className='slideInFromLeft'>
+          <Column>
+            <Input
+              error={validation[namespace + '-årsakselvstendig']?.feilmelding}
+              namespace={namespace}
+              id='grunnOpphoerSelvstendig'
+              label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
+              onChanged={setGrunnOpphoerSelvstendig}
+              value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
+            />
+          </Column>
+        </AlignStartRow>
       )}
     </PaddedDiv>
   )

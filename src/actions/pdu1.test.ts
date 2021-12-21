@@ -17,9 +17,10 @@ describe('actions/pdu1', () => {
     call.mockRestore()
   })
 
-  it('fetchInntekt()', () => {
+  it('getPdu1()', () => {
     const fnr = 'mockFnr'
-    pdu1Actions.getPdu1(fnr)
+    const fagsakId = 'fagsakId'
+    pdu1Actions.getPdu1(fnr, fagsakId)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -27,6 +28,7 @@ describe('actions/pdu1', () => {
           success: types.PDU1_GET_SUCCESS,
           failure: types.PDU1_GET_FAILURE
         },
+        context: { fagsakId },
         url: sprintf(urls.PDU1_GET_URL, { fnr })
       }))
   })
