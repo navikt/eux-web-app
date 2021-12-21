@@ -1,14 +1,12 @@
 import { validateDagpenger } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
-import { validateStatsborgerskaper } from 'applications/PDU1/Statsborgerskap/validation'
 import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger } from 'declarations/pd'
-import { Adresse, GrunnTilOpphør, Periode } from 'declarations/sed'
+import { GrunnTilOpphør, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { validatePerson } from 'applications/PDU1/Person/validation'
-import { validateAdresse } from 'applications/PDU1/Adresse/validation'
 import { validateSisteAnsettelseinfo } from 'applications/PDU1/SisteAnsettelseInfo/validation'
 import { validateAvsender } from 'applications/PDU1/Avsender/validation'
 import { validateUtbetaling } from 'applications/PDU1/Utbetaling/validation'
@@ -31,12 +29,6 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   const personID = 'bruker'
   const person : Pdu1Person = _.get(pdu1, personID)
   hasErrors.push(validatePerson(v, t, { person, namespace: `personmanager-${personID}-person` }))
-
-  const statsborgerskaper: Array<string> | undefined = _.get(pdu1, `${personID}.statsborgerskap`)
-  hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper, namespace: `personmanager-${personID}-statsborgerskap` }))
-
-  const adresse: Adresse | undefined = _.get(pdu1, `${personID}.adresse`)
-  hasErrors.push(validateAdresse(v, t, { adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-adresse` }))
 
   hasErrors.push(validateAllePDPerioder(v, t, { pdu1, namespace: `personmanager-${personID}-perioder` }))
 

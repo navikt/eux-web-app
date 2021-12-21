@@ -1,4 +1,4 @@
-import { validateAdresse } from 'applications/PDU1/Adresse/validation'
+import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
 import { NavInfo } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'

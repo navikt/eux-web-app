@@ -1,9 +1,9 @@
 import { Search } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
 import { resetPerson, searchPerson } from 'actions/person'
+import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -24,6 +24,8 @@ import {
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import Adresse from './Adresse/Adresse'
+import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 import UtenlandskPins from './UtenlandskPins/UtenlandskPins'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
@@ -41,6 +43,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   replySed,
   personID,
+  personName,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -86,13 +89,6 @@ const Person: React.FC<PersonManagerFormProps> = ({
     dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       dispatch(resetValidation(namespace + '-kjoenn'))
-    }
-  }
-
-  const onEtternavnVedFoedselChange = (newEtternavnVedFoedsel: string) => {
-    dispatch(updateReplySed(`${target}.etternavnVedFoedsel`, newEtternavnVedFoedsel.trim()))
-    if (validation[namespace + '-etternavnVedFoedsel']) {
-      dispatch(resetValidation(namespace + '-etternavnVedFoedsel'))
     }
   }
 
@@ -189,20 +185,28 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column />
         </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow className={classNames('slideInFromLeft')}>
-          <Column>
-            <Input
-              error={validation[namespace + '-etternavnVedFoedsel']?.feilmelding}
-              id='etternavnVedFoedsel'
-              label={t('label:etternavn-ved-foedsel')}
-              namespace={namespace}
-              onChanged={onEtternavnVedFoedselChange}
-              value={pdu1Person?.etternavnVedFoedsel}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
+        <VerticalSeparatorDiv size='2' />
+        <Heading size='small'>{t('label:statsborgerskap')}</Heading>
+      </PaddedDiv>
+      <StatsborgerskapFC
+          replySed={replySed}
+          parentNamespace={namespace}
+          personID={personID}
+          personName={personName}
+          setReplySed={setReplySed}
+          updateReplySed={updateReplySed}
+        />
+      <VerticalSeparatorDiv size='2' />
+      <PaddedDiv>
+        <Heading size='small'>{t('label:statsborgerskap')}</Heading>
+        <Adresse
+          replySed={replySed}
+          parentNamespace={namespace}
+          personID={personID}
+          personName={personName}
+          setReplySed={setReplySed}
+          updateReplySed={updateReplySed}
+        />
         <VerticalSeparatorDiv size='2' />
         <Heading size='small'>{t('label:pins')}</Heading>
         <VerticalSeparatorDiv />
@@ -266,8 +270,8 @@ const Person: React.FC<PersonManagerFormProps> = ({
                 : <div />}
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
       </PaddedDiv>
+      <VerticalSeparatorDiv />
       <UtenlandskPins
         pins={pdu1Person?.utenlandskePin}
         onPinsChanged={onUtenlandskPinChange}

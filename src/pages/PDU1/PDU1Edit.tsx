@@ -4,7 +4,6 @@ import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
-import Adresse from 'applications/PDU1/Adresse/Adresse'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import Avsender from 'applications/PDU1/Avsender/Avsender'
@@ -13,7 +12,6 @@ import Person from 'applications/PDU1/Person/Person'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
-import Statsborgerskap from 'applications/PDU1/Statsborgerskap/Statsborgerskap'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
@@ -180,8 +178,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <PersonManager
         forms={[
           { label: t('el:option-personmanager-person'), value: 'person', component: Person, type: 'PD' },
-          { label: t('el:option-personmanager-statsborgerskap'), value: 'statsborgerskap', component: Statsborgerskap, type: 'PD' },
-          { label: t('el:option-personmanager-adresse'), value: 'adresse', component: Adresse, type: ['PD'], options: { bygning: false, region: false } },
           { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           { label: t('el:option-personmanager-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: 'PD' },
           { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },

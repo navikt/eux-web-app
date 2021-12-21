@@ -1,8 +1,10 @@
+import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
 import { validateUtenlandskPins } from 'applications/PDU1/Person/UtenlandskPins/validation'
 import { Pdu1Person } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, propagateError } from 'utils/validation'
+import { validateStatsborgerskaper } from './Statsborgerskap/validation'
 
 export interface ValidationPersonProps {
   person: Pdu1Person,
@@ -47,6 +49,10 @@ export const validatePerson = (
     namespace: namespace + '-utenlandskePin',
     utenlandskePins: person?.utenlandskePin
   }))
+
+  hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))
+
+  hasErrors.push(validateAdresse(v, t, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace:namespace + '-adresse' }))
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)

@@ -1,5 +1,5 @@
 import { Add } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
@@ -16,7 +16,6 @@ import {
   AlignStartRow,
   Column,
   HorizontalSeparatorDiv,
-  PaddedDiv,
   PaddedHorizontallyDiv,
   Row,
   VerticalSeparatorDiv
@@ -44,7 +43,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const target = `${personID}.statsborgerskap`
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-statsborgerskap`
+  const namespace = `${parentNamespace}-statsborgerskap`
 
   const [newStatsborgerskap, setNewStatsborgerskap] = useState<string | undefined>(undefined)
 
@@ -152,15 +151,9 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
 
   return (
     <div key={namespace + '-div'}>
-      <PaddedDiv>
-        <Heading size='medium'>
-          {t('label:statsborgerskap')}
-        </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
       {_.isEmpty(statsborgerskaper)
         ? (
-          <PaddedDiv>
+          <PaddedHorizontallyDiv>
             <AlignStartRow>
               <Column>
                 <BodyLong>
@@ -169,7 +162,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
               </Column>
             </AlignStartRow>
             <VerticalSeparatorDiv />
-          </PaddedDiv>
+          </PaddedHorizontallyDiv>
           )
         : (
           <>
@@ -192,7 +185,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <PaddedHorizontallyDiv>
             <Row>
               <Column>
                 <Button
@@ -206,7 +199,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
 
               </Column>
             </Row>
-          </PaddedDiv>
+          </PaddedHorizontallyDiv>
           )}
     </div>
   )
