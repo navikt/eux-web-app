@@ -480,10 +480,12 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             >
               {alertMessage!}
             </Alert>
-            <Button variant='tertiary' onClick={() => {
-              _setSendButtonClicked(false)
-              dispatch(alertClear())
-            }}>
+            <Button
+              variant='tertiary' onClick={() => {
+                _setSendButtonClicked(false)
+                dispatch(alertClear())
+              }}
+            >
               OK
             </Button>
           </FlexDiv>

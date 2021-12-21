@@ -228,7 +228,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
             error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
             id={namespace + '-kompensasjonForFeriedagerCheckbox'}
             key={namespace + '-kompensasjonForFeriedagerCheckbox' + andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>  setKompensasjonForFeriedagerCheckbox(e.target.checked)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForFeriedagerCheckbox(e.target.checked)}
           >
             <FlexDiv>
               {t('el:checkbox-pdu1-4.3')}

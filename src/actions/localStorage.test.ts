@@ -6,7 +6,6 @@ import getReplySed from 'mocks/svarsed/replySed'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 
 describe('actions/localStorage', () => {
-
   const namespace: LocalStorageNamespaces = 'svarsed'
 
   const entry: LocalStorageEntry<ReplySed> = {
@@ -20,14 +19,14 @@ describe('actions/localStorage', () => {
     expect(localStorageActions.loadEntries(namespace))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRIES_LOAD,
-        payload: {namespace}
+        payload: { namespace }
       })
   })
 
   it('resetCurrentEntry()', () => {
     expect(localStorageActions.resetCurrentEntry(namespace))
       .toMatchObject({
-        type: types.LOCALSTORAGE_CURRENTENTRY_RESET,
+        type: types.LOCALSTORAGE_CURRENTENTRY_RESET
       })
   })
 
@@ -35,7 +34,7 @@ describe('actions/localStorage', () => {
     expect(localStorageActions.setCurrentEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_CURRENTENTRY_SET,
-        payload: {namespace, entry}
+        payload: { namespace, entry }
       })
   })
 
@@ -43,23 +42,23 @@ describe('actions/localStorage', () => {
     expect(localStorageActions.removeEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_REMOVE,
-        payload: {namespace, entry}
+        payload: { namespace, entry }
       })
   })
 
   it('saveEntry()', () => {
-    expect( localStorageActions.saveEntry(namespace, entry))
+    expect(localStorageActions.saveEntry(namespace, entry))
       .toMatchObject({
         type: types.LOCALSTORAGE_ENTRY_SAVE,
-        payload: {namespace, entry}
+        payload: { namespace, entry }
       })
   })
 
   it('removeAllEntries()', () => {
-    expect( localStorageActions.removeAllEntries(namespace))
+    expect(localStorageActions.removeAllEntries(namespace))
       .toMatchObject({
         type: types.LOCALSTORAGE_ALL_REMOVE,
-        payload: {namespace}
+        payload: { namespace }
       })
   })
 })

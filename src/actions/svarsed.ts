@@ -189,5 +189,5 @@ export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPaylo
   needle: string, value: any
 ): ActionWithPayload<UpdateReplySedPayload> => ({
   type: types.SVARSED_REPLYSED_UPDATE,
-  payload: {needle, value}
+  payload: { needle, value }
 })

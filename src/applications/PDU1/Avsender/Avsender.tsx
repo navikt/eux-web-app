@@ -102,7 +102,7 @@ export interface NavInfo {
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
           <Input
@@ -148,16 +148,16 @@ export interface NavInfo {
           />
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <Heading size='small'>{t('label:adresse')}</Heading>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow className={classNames('slideInFromLeft')}>
         <Column>
           <AdresseForm
             type={false}
             options={{ bygning: false, region: false }}
             required={['gate', 'postnummer', 'by', 'land']}
-            useUK={true}
+            useUK
             namespace={namespace + '-adresse'}
             keyForCity='poststed'
             keyforZipCode='postnr'

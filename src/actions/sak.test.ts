@@ -126,7 +126,7 @@ describe('actions/sak', () => {
     const value = 'value'
     expect(sakActions.setProperty(key, value)).toMatchObject({
       type: types.SAK_PROPERTY_SET,
-      payload: {key, value}
+      payload: { key, value }
     })
   })
 })

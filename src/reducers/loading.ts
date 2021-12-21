@@ -141,19 +141,6 @@ const loadingReducer = (
         gettingLandkoder: false
       }
 
-    case types.PERSON_SEARCH_REQUEST:
-      return {
-        ...state,
-        searchingPerson: true
-      }
-
-    case types.PERSON_SEARCH_SUCCESS:
-    case types.PERSON_SEARCH_FAILURE:
-      return {
-        ...state,
-        searchingPerson: false
-      }
-
     case types.SVARSED_PREVIEW_REQUEST:
       return {
         ...state,

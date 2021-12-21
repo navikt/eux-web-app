@@ -1,4 +1,3 @@
-import * as pdu1Actions from 'actions/pdu1'
 import * as personActions from 'actions/person'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'

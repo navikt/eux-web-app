@@ -24,4 +24,3 @@ export const searchAdresse: ActionCreator<ThunkResult<ActionWithPayload<Array<Ad
     }
   })
 }
-

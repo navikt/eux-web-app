@@ -39,7 +39,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   validation
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
-  const landUtenNorge = CountryFilter.STANDARD({useUK: true})?.filter((it: string) => it !== 'NO')
+  const landUtenNorge = CountryFilter.STANDARD({ useUK: true })?.filter((it: string) => it !== 'NO')
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 

@@ -4,7 +4,7 @@ import { ErrorPayload } from 'js-fetch-api'
 
 describe('actions/alert', () => {
   it('alertClear()', () => {
-   expect(alertActions.alertClear()).toMatchObject({
+    expect(alertActions.alertClear()).toMatchObject({
       type: types.ALERT_CLEAR
     })
   })

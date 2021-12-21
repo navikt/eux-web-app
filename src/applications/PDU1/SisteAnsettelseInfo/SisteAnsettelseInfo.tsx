@@ -92,11 +92,11 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
           />
         </Column>
         <Column>
-          <div style={{marginTop: '2rem'}}>
-          <Button variant='secondary'  onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}>
-            <Delete />
-            {t('el:button-remove')}
-          </Button>
+          <div style={{ marginTop: '2rem' }}>
+            <Button variant='secondary' onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}>
+              <Delete />
+              {t('el:button-remove')}
+            </Button>
           </div>
 
         </Column>

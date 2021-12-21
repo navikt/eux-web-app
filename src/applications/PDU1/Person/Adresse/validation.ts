@@ -60,7 +60,6 @@ export const validateAdresse = (
     }))
   }
 
-
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)
   return hasError

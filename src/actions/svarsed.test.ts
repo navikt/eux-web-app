@@ -191,24 +191,24 @@ describe('actions/svarsed', () => {
           failure: types.SVARSED_SED_SEND_FAILURE
         },
         method: 'POST',
-        url: sprintf(urls.API_SED_SEND_URL, {rinaSakId, sedId})
+        url: sprintf(urls.API_SED_SEND_URL, { rinaSakId, sedId })
       }))
   })
 
   it('setParentSed()', () => {
     const payload = 'payload'
     expect(svarsedActions.setParentSed(payload)).toMatchObject({
-        type: types.SVARSED_PARENTSED_SET,
-        payload: payload
-      })
+      type: types.SVARSED_PARENTSED_SET,
+      payload: payload
+    })
   })
 
   it('setReplySed()', () => {
     const replySed = 'replySed'
     expect(svarsedActions.setReplySed(replySed)).toMatchObject({
-        type: types.SVARSED_REPLYSED_SET,
-        payload: replySed
-      })
+      type: types.SVARSED_REPLYSED_SET,
+      payload: replySed
+    })
   })
 
   it('updateReplySed()', () => {
@@ -217,7 +217,7 @@ describe('actions/svarsed', () => {
     const generatedResult = svarsedActions.updateReplySed(needle, value)
     expect(generatedResult).toMatchObject({
       type: types.SVARSED_REPLYSED_UPDATE,
-      payload: {needle, value}
+      payload: { needle, value }
     })
   })
 })

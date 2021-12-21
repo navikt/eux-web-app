@@ -48,14 +48,14 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         pdu1: undefined
       }
 
-    case types.PDU1_GET_SUCCESS:
-
+    case types.PDU1_GET_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
       pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
       return {
         ...state,
         pdu1: pdu1
       }
+    }
 
     case types.PDU1_GET_FAILURE:
       return {

@@ -205,7 +205,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               key={adresse?.land}
               data-test-id={namespace + '-land'}
               error={validation[namespace + '-land']?.feilmelding}
-              includeList={CountryFilter.STANDARD({useUK})}
+              includeList={CountryFilter.STANDARD({ useUK })}
               flagWave
               id={namespace + '-land'}
               label={t('label:land') + (required.indexOf('land') >= 0 ? ' *' : '')}

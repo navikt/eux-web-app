@@ -196,7 +196,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   viewValidation
 }: PersonManagerProps) => {
   const { t } = useTranslation()
-  const {validation}: any = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation }: any = useSelector<State, PersonManagerFormSelector>(mapState)
   const namespace = 'personmanager'
 
   const dispatch = useDispatch()

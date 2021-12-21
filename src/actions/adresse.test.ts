@@ -11,9 +11,8 @@ jest.mock('js-fetch-api', () => ({
 const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 
 describe('actions/adresse', () => {
-
   it('resetAdresse()', () => {
-    expect( adresseActions.resetAdresse()).toMatchObject({
+    expect(adresseActions.resetAdresse()).toMatchObject({
       type: types.ADRESSE_SEARCH_RESET
     })
   })

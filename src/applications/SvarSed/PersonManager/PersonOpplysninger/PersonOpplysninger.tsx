@@ -466,25 +466,25 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <FlexEndDiv>
                   <Button
-                  variant='secondary'
-                  disabled={searchingPerson}
-                  data-amplitude='svarsed.editor.personopplysning.norskpin.search'
-                  onClick={onSearchUser}
-                >
-                  <Search />
-                  <HorizontalSeparatorDiv />
-                  {searchingPerson
-                    ? t('message:loading-searching')
-                    : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                  {searchingPerson && <Loader />}
-                </Button>
-                <HorizontalSeparatorDiv size='0.35' />
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNorskPinForm(false)}
-                >
-                  {t('el:button-cancel')}
-                </Button>
+                    variant='secondary'
+                    disabled={searchingPerson}
+                    data-amplitude='svarsed.editor.personopplysning.norskpin.search'
+                    onClick={onSearchUser}
+                  >
+                    <Search />
+                    <HorizontalSeparatorDiv />
+                    {searchingPerson
+                      ? t('message:loading-searching')
+                      : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+                    {searchingPerson && <Loader />}
+                  </Button>
+                  <HorizontalSeparatorDiv size='0.35' />
+                  <Button
+                    variant='tertiary'
+                    onClick={() => _setSeeNorskPinForm(false)}
+                  >
+                    {t('el:button-cancel')}
+                  </Button>
                 </FlexEndDiv>
               </Column>
             </>

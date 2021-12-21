@@ -189,13 +189,13 @@ const Person: React.FC<PersonManagerFormProps> = ({
         <Heading size='small'>{t('label:statsborgerskap')}</Heading>
       </PaddedDiv>
       <StatsborgerskapFC
-          replySed={replySed}
-          parentNamespace={namespace}
-          personID={personID}
-          personName={personName}
-          setReplySed={setReplySed}
-          updateReplySed={updateReplySed}
-        />
+        replySed={replySed}
+        parentNamespace={namespace}
+        personID={personID}
+        personName={personName}
+        setReplySed={setReplySed}
+        updateReplySed={updateReplySed}
+      />
       <VerticalSeparatorDiv size='2' />
       <PaddedDiv>
         <Heading size='small'>{t('label:statsborgerskap')}</Heading>

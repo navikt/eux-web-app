@@ -4,8 +4,6 @@ import {
   Periode,
   Adresse
 } from 'declarations/sed'
-import _ from 'lodash'
-import { useState } from 'react'
 
 export interface PeriodeMedAktivitetstype extends Periode {
   aktivitetstype: string

@@ -18,7 +18,7 @@ export const getPdu1: ActionCreator<ThunkResult<Action>> = (
   return call({
     url: sprintf(urls.PDU1_GET_URL, { fnr }),
     expectedPayload: mockGetPdu1,
-    context: {fagsakId },
+    context: { fagsakId },
     type: {
       request: types.PDU1_GET_REQUEST,
       success: types.PDU1_GET_SUCCESS,
@@ -93,5 +93,5 @@ export const updatePdu1: ActionCreator<ActionWithPayload<UpdatePdu1Payload>> = (
   needle: string, value: any
 ): ActionWithPayload<UpdatePdu1Payload> => ({
   type: types.PDU1_UPDATE,
-  payload: {needle, value}
+  payload: { needle, value }
 })

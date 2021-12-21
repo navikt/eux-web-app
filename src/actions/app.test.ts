@@ -3,7 +3,6 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import EKV from 'eessi-kodeverk'
 import { call as originalCall } from 'js-fetch-api'
-import { Action } from 'redux'
 
 jest.mock('js-fetch-api', () => ({
   call: jest.fn()
@@ -107,10 +106,10 @@ describe('actions/app', () => {
   it('setStatusParam()', () => {
     const key = 'mockKey'
     const value = 'mockValue'
-     expect( appActions.setStatusParam(key, value))
+    expect(appActions.setStatusParam(key, value))
       .toMatchObject({
         type: types.APP_PARAM_SET,
-        payload: {key, value}
+        payload: { key, value }
       })
   })
 })

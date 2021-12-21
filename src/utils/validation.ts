@@ -55,7 +55,7 @@ export const checkIfDuplicate = (v: Validation, {
   return false
 }
 
-export const checkIfValidLand =  (v: Validation, {
+export const checkIfValidLand = (v: Validation, {
   needle,
   id,
   personName,

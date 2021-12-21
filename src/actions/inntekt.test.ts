@@ -4,7 +4,7 @@ import * as urls from 'constants/urls'
 import { call as originalCall } from 'js-fetch-api'
 const sprintf = require('sprintf-js').sprintf
 
-jest.mock('js-fetch-api', () => ({call: jest.fn()}))
+jest.mock('js-fetch-api', () => ({ call: jest.fn() }))
 const call = originalCall as jest.Mock<typeof originalCall>
 
 describe('actions/attachments', () => {

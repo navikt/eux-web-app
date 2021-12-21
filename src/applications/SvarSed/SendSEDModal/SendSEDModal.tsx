@@ -221,8 +221,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     onClick={() => {
                       _setSendButtonClicked(false)
                       dispatch(alertClear())
-                    }}>
-                      OK
+                    }}
+                  >
+                    OK
                   </Button>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />

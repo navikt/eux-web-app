@@ -143,5 +143,5 @@ export const setProperty: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string, value: string | undefined
 ): ActionWithPayload<ParamPayload> => ({
   type: types.SAK_PROPERTY_SET,
-  payload: {key, value}
+  payload: { key, value }
 })

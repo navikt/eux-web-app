@@ -5,7 +5,7 @@ import { PDU1 } from 'declarations/pd'
 import { call as originalCall } from 'js-fetch-api'
 const sprintf = require('sprintf-js').sprintf
 
-jest.mock('js-fetch-api', () => ({call: jest.fn()}))
+jest.mock('js-fetch-api', () => ({ call: jest.fn() }))
 const call = originalCall as jest.Mock<typeof originalCall>
 
 describe('actions/pdu1', () => {
@@ -34,7 +34,7 @@ describe('actions/pdu1', () => {
   })
 
   it('jornalførePdu1()', () => {
-    const payload = { saksreferanse: '123'} as PDU1
+    const payload = { saksreferanse: '123' } as PDU1
     pdu1Actions.jornalførePdu1(payload)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
@@ -66,7 +66,7 @@ describe('actions/pdu1', () => {
   })
 
   it('previewPdu1()', () => {
-    const payload = { saksreferanse: '123'} as PDU1
+    const payload = { saksreferanse: '123' } as PDU1
     pdu1Actions.previewPdu1(payload)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
@@ -95,7 +95,7 @@ describe('actions/pdu1', () => {
   })
 
   it('setPdu1()', () => {
-    const payload = { saksreferanse: '123'} as PDU1
+    const payload = { saksreferanse: '123' } as PDU1
     expect(pdu1Actions.setPdu1(payload)).toMatchObject({
       type: types.PDU1_SET,
       payload: payload
@@ -104,10 +104,10 @@ describe('actions/pdu1', () => {
 
   it('updatePdu1()', () => {
     const needle = 'foo'
-    const value = { 'bar': '123'}
+    const value = { bar: '123' }
     expect(pdu1Actions.updatePdu1(needle, value)).toMatchObject({
       type: types.PDU1_UPDATE,
-      payload: {needle, value}
+      payload: { needle, value }
     })
   })
 })

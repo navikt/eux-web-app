@@ -83,7 +83,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       })
       dispatch(viewValidation())
       if (valid) {
-
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
@@ -91,7 +90,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
-
 
         dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
@@ -143,10 +141,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
-              <div style={{  textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
+              <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
                 <PileDiv><BodyLong>{jornalførePdu1Response.melding}</BodyLong>
-                <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
-                <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
+                  <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
+                  <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
                 </PileDiv>
               </div>
             ),

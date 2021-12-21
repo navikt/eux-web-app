@@ -52,7 +52,7 @@ export const validatePerson = (
 
   hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))
 
-  hasErrors.push(validateAdresse(v, t, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace:namespace + '-adresse' }))
+  hasErrors.push(validateAdresse(v, t, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: namespace + '-adresse' }))
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)
