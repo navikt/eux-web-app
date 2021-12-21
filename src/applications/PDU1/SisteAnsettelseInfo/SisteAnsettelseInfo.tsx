@@ -1,4 +1,5 @@
-import { Heading } from '@navikt/ds-react'
+import { Delete } from '@navikt/ds-icons'
+import { Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import Input from 'components/Forms/Input'
@@ -39,11 +40,10 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
     { label: t('el:option-grunntilopphør-avsluttet_etter_felles_overenskomst'), value: 'avsluttet_etter_felles_overenskomst' },
     { label: t('el:option-grunntilopphør-avskjediget_av_disiplinære_grunner'), value: 'avskjediget_av_disiplinære_grunner' },
     { label: t('el:option-grunntilopphør-overtallighet'), value: 'overtallighet' },
-    { label: t('el:option-grunntilopphør-ukjent'), value: 'ukjent' },
     { label: t('el:option-grunntilopphør-annet'), value: 'annet' }
   ]
 
-  const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string) => {
+  const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string | undefined) => {
     _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
     dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
     if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
@@ -72,7 +72,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-        <Column>
+        <Column flex='2'>
           <Select
             style={{ width: '100%' }}
             data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
@@ -82,9 +82,18 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
-            value={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt)}
+            value={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt) ?? null}
             defaultValue={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt)}
           />
+        </Column>
+        <Column>
+          <div style={{marginTop: '2rem'}}>
+          <Button variant='secondary'  onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}>
+            <Delete />
+            {t('el:button-remove')}
+          </Button>
+          </div>
+
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

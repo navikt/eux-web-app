@@ -53,7 +53,7 @@ describe('reducers/alert', () => {
       })
     ).toEqual({
       ...initialAlertState,
-      stripeMessage: 'ui:error',
+      stripeMessage: 'label:error',
       stripeStatus: 'error',
       type: 'UNKNOWN/FAILURE'
     })

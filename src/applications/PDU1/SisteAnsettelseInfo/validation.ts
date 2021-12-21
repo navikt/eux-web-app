@@ -1,7 +1,7 @@
 import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, propagateError } from 'utils/validation'
+import { propagateError } from 'utils/validation'
 
 interface SisteAnsettelseinfoProps {
   sisteAnsettelseInfo: GrunnTilOpphør | undefined
@@ -18,11 +18,7 @@ export const validateSisteAnsettelseinfo = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
-    id: namespace + '-typeGrunnOpphoerAnsatt',
-    message: 'validation:noType'
-  }))
+  console.log(sisteAnsettelseInfo)
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)

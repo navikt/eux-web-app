@@ -137,7 +137,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             ? (action as ActionWithPayload).payload.error
             : (action as ActionWithPayload).payload.error?.message
         } else {
-          stripeMessage = i18n.t('ui:error')
+          stripeMessage = i18n.t('label:error')
         }
         break
     }
