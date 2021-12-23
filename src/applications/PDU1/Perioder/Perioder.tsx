@@ -59,13 +59,14 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-perioder`
 
-  const getId = (p: PDPeriode | null): string => p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
+  const getId = ({ p, i }: {p: PDPeriode | null, i: number | undefined}): string =>
+    p ? (p.__type + '-' + p?.startdato ?? '') + '[' + i + ']-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
 
   const [_newType, _setNewType] = useState<string | undefined>(undefined)
   const [_allPeriods, _setAllPeriods] = useState<Array<PDPeriode>>([])
   const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>(getId)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<{p: PDPeriode, i: number}>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<Sort>('group')
   const [_validation, _resetValidation, _performValidation] = useValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
@@ -216,8 +217,8 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     resetForm()
   }
 
-  const onRemove = (periode: PDPeriode) => {
-    removeFromDeletion(periode)
+  const onRemove = (periode: PDPeriode, index: number) => {
+    removeFromDeletion({ p: periode, i: index })
     const newPeriodes: Array<PDPeriode> = _.get(replySed, periode.__type!) as Array<PDPeriode>
     newPeriodes.splice(periode.__index!, 1)
     dispatch(updateReplySed(periode.__type!, newPeriodes))
@@ -256,7 +257,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   )
 
   const renderRow = (periode: PDPeriode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
+    const candidateForDeletion = index < 0 ? false : isInDeletion({ p: periode!, i: index })
     const _type: string = index < 0 ? _newType! : periode!.__type!
     const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
     // namespace for index < 0: personmanager-bruker-forsikring-arbeidsgiver-adresse-gate
@@ -270,7 +271,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     return (
       <RepeatableRow
         className={classNames('slideInFromLeft', { new: index < 0 })}
-        key={getId(periode)}
+        key={getId({ p: periode, i: index })}
       >
         {index < 0 && (
           <>
@@ -336,9 +337,9 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                     <AddRemovePanel
                       candidateForDeletion={candidateForDeletion}
                       existingItem={(index >= 0)}
-                      onBeginRemove={() => addToDeletion(periode)}
-                      onConfirmRemove={() => onRemove(periode!)}
-                      onCancelRemove={() => removeFromDeletion(periode)}
+                      onBeginRemove={() => addToDeletion({ p: periode!, i: index })}
+                      onConfirmRemove={() => onRemove(periode!, index)}
+                      onCancelRemove={() => removeFromDeletion({ p: periode!, i: index })}
                       onAddNew={onAdd}
                       onCancelNew={onCancel}
                     />
@@ -440,9 +441,9 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(periode!)}
-              onCancelRemove={() => removeFromDeletion(periode)}
+              onBeginRemove={() => addToDeletion({ p: periode!, i: index })}
+              onConfirmRemove={() => onRemove(periode!, index)}
+              onCancelRemove={() => removeFromDeletion({ p: periode!, i: index })}
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />

@@ -72,18 +72,6 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  /*
-export interface NavInfo {
-  enhetNavn: string,
-  enhetId: string,
-  adresse: Adresse,
-  tlf: string,
-  saksbehandler: { // cover letter
-    navn: string
-    enhet: string
-  }
-} */
-
   return (
     <PaddedDiv key={namespace + '-div'}>
       <Heading size='medium'>

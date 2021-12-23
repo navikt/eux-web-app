@@ -165,7 +165,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
-            label={t('label:postnummer') + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
+            label={t('label:' + keyforZipCode) + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
             onChanged={setPostnummer}
             required={required.indexOf('postnummer') >= 0}
             value={_.get(adresse, keyforZipCode)}
@@ -176,7 +176,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-by']?.feilmelding}
             namespace={namespace}
             id='by'
-            label={t('label:by') + (required.indexOf('by') >= 0 ? ' *' : '')}
+            label={t('label:' + keyForCity) + (required.indexOf('by') >= 0 ? ' *' : '')}
             onChanged={setBy}
             required={required.indexOf('by') >= 0}
             value={_.get(adresse, keyForCity)}

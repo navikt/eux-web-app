@@ -86,6 +86,7 @@
   "etternavn-ved-foedsel": "Etternavn ved foedsel",
 
   "fagsak" : "Fagsak",
+  "fagsakNr" : "Fagsak nr.",
   "familie-alle-lagt-inn": "Du har lagt til alle som fantes i listen",
   "familien": "Familien",
   "familierelasjon": "Familierelasjon til ektefelle eller annen person",
@@ -247,7 +248,9 @@
   "personmanager": "Velg personer og fyll inn opplysninger",
   "personopplysninger": "Personopplysninger",
   "pins": "PINs",
+  "postnr": "Postnummer",
   "postnummer": "Postnummer",
+  "poststed": "Poststed",
   "preview": "Forhåndsvis",
   "prosedyre-ved-uenighet": "Prosedyre ved uenighet",
 

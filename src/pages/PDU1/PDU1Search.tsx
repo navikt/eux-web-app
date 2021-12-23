@@ -1,6 +1,7 @@
+import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
-import { getPdu1, getFagsaker } from 'actions/pdu1'
+import { getFagsaker, getPdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
@@ -14,10 +15,11 @@ import { State } from 'declarations/reducers'
 import { FagSak, FagSaker } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { BodyLong, Loader, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
+  FlexBaseDiv,
+  HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
   RadioPanelBorder,
@@ -219,9 +221,28 @@ const PDU1Search: React.FC<PDU1Props> = ({
               {fagsaker?.map((f: FagSak) => (
                 <div key={f.saksID}>
                   <RadioPanelBorder key={f.saksID} value={f.saksID}>
-                    <Heading size='small'>
-                      {f.temakode + '-' + f.saksID}
-                    </Heading>
+                    <PileDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:fagsakNr')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.fagsakNr}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:tema')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.temakode}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:saksnummer')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.saksID}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:siste-oppdatert')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.opprettetTidspunkt}</BodyLong>
+                      </FlexBaseDiv>
+                    </PileDiv>
                   </RadioPanelBorder>
                   <VerticalSeparatorDiv />
                 </div>

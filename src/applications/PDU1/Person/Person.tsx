@@ -4,6 +4,7 @@ import { resetPerson, searchPerson } from 'actions/person'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -147,7 +148,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
           <Column>
-            <Input
+            <DateInput
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               key={namespace + '-foedselsdato-' + (pdu1Person?.foedselsdato ?? '')}
@@ -198,7 +199,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
       />
       <VerticalSeparatorDiv size='2' />
       <PaddedDiv>
-        <Heading size='small'>{t('label:statsborgerskap')}</Heading>
+        <Heading size='small'>{t('label:adresse')}</Heading>
         <Adresse
           replySed={replySed}
           parentNamespace={namespace}
@@ -271,7 +272,6 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
       </PaddedDiv>
-      <VerticalSeparatorDiv />
       <UtenlandskPins
         pins={pdu1Person?.utenlandskePin}
         onPinsChanged={onUtenlandskPinChange}
