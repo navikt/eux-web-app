@@ -5,7 +5,7 @@ import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Id
 import classNames from 'classnames'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import Input from 'components/Forms/Input'
-import PeriodeInput, { toUIDateFormat } from 'components/Forms/PeriodeInput'
+import PeriodeInput, { toDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
 import useValidation from 'hooks/useValidation'
@@ -219,9 +219,9 @@ const ArbeidsgiverBox = ({
           : (
             <FlexEndDiv style={{ padding: '0.5rem' }}>
               <Ingress>
-                {toUIDateFormat(_arbeidsgiverPeriode.startdato)} {
+                {toDateFormat(_arbeidsgiverPeriode.startdato, 'DD.MM.YYYY')} {
                 _arbeidsgiverPeriode.sluttdato
-                  ? ' - ' + toUIDateFormat(_arbeidsgiverPeriode.sluttdato)
+                  ? ' - ' + toDateFormat(_arbeidsgiverPeriode.sluttdato, 'DD.MM.YYYY')
                   : '(' + t('label:' + _arbeidsgiverPeriode.aapenPeriodeType).toLowerCase() + ')'
                 }
               </Ingress>

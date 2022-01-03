@@ -1,5 +1,5 @@
 import { TextField } from '@navikt/ds-react'
-import { toFinalDateFormat, toUIDateFormat } from 'components/Forms/PeriodeInput'
+import { toDateFormat } from 'components/Forms/PeriodeInput'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -14,6 +14,8 @@ export interface DateInputProps {
   onChanged: (dato: string) => void
   required ?: boolean
   value: string | undefined
+  uiFormat ?: string
+  finalFormat ?: string
 }
 
 const DateInput = ({
@@ -25,14 +27,16 @@ const DateInput = ({
   namespace,
   onChanged,
   required = false,
+  uiFormat = 'DD.MM.YYYY',
+  finalFormat = 'YYYY-MM-DD',
   value
 }: DateInputProps) => {
-  const [_dato, _setDato] = useState<string>(() => toUIDateFormat(value) ?? '')
+  const [_dato, _setDato] = useState<string>(() => toDateFormat(value, uiFormat) ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const onDatoBlur = () => {
-    const date = toFinalDateFormat(_dato)
+    const date = toDateFormat(_dato, finalFormat)
     onChanged(date)
   }
 

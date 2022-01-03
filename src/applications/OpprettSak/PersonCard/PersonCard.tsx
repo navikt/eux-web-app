@@ -2,7 +2,7 @@ import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import { Delete, Add } from '@navikt/ds-icons'
-import { toUIDateFormat } from 'components/Forms/PeriodeInput'
+import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -146,7 +146,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             </Heading>
             <Undertitle>
               <div>{t('label:fnr') + ' : ' + fnr}</div>
-              <div>{t('label:fødselsdato') + ': ' + toUIDateFormat(fdato)}</div>
+              <div>{t('label:fødselsdato') + ': ' + toDateFormat(fdato, 'DD.MM.YYYY')}</div>
             </Undertitle>
           </div>
         </Description>

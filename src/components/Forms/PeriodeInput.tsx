@@ -34,6 +34,8 @@ export interface PeriodeProps<T> {
   setPeriode: (periode: T, id: string) => void
   showLabel?: boolean
   value: T | null | undefined
+  uiFormat ?: string
+  finalFormat ?: string
 }
 
 const parseDate = (date: string | undefined): Moment | undefined => {
@@ -52,16 +54,10 @@ const parseDate = (date: string | undefined): Moment | undefined => {
   return newDate
 }
 
-export const toFinalDateFormat = (date: string | undefined): string => {
+export const toDateFormat = (date: string | undefined, format: string): string => {
   const newDate = parseDate(date)
   if (!newDate) { return '' }
-  return newDate.isValid() ? newDate!.format('YYYY-MM-DD') : ''
-}
-
-export const toUIDateFormat = (date: string | undefined): string => {
-  const newDate = parseDate(date)
-  if (!newDate) { return '' }
-  return newDate.isValid() ? newDate.format('DD.MM.YYYY') : ''
+  return newDate.isValid() ? newDate!.format(format) : ''
 }
 
 const PeriodeInput = <T extends Periode>({
@@ -73,7 +69,9 @@ const PeriodeInput = <T extends Periode>({
   requiredSluttDato = false,
   setPeriode,
   showLabel = true,
-  value
+  value,
+  finalFormat = 'YYYY-MM-DD',
+  uiFormat = 'DD.MM.YYYY'
 }: PeriodeProps<T>) => {
   const { t } = useTranslation()
 
@@ -81,14 +79,14 @@ const PeriodeInput = <T extends Periode>({
 
   const onStartDatoChanged = (startDato: string) => {
     const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
-    newPeriode.startdato = toFinalDateFormat(startDato)
+    newPeriode.startdato = toDateFormat(startDato, finalFormat)
     _setPeriode(newPeriode)
     setPeriode(newPeriode, 'startdato')
   }
 
   const onEndDatoChanged = (sluttDato: string) => {
     const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
-    newPeriode.sluttdato = toFinalDateFormat(sluttDato)
+    newPeriode.sluttdato = toDateFormat(sluttDato, uiFormat)
     if (_.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     } else {
@@ -120,7 +118,7 @@ const PeriodeInput = <T extends Periode>({
           namespace={namespace}
           onChanged={onStartDatoChanged}
           required={requiredStartDato}
-          value={toUIDateFormat(_periode?.startdato) ?? ''}
+          value={toDateFormat(_periode?.startdato, uiFormat) ?? ''}
         />
       </Column>
       <Column>
@@ -136,7 +134,7 @@ const PeriodeInput = <T extends Periode>({
           namespace={namespace}
           onChanged={onEndDatoChanged}
           required={requiredSluttDato}
-          value={toUIDateFormat(_periode?.sluttdato) ?? ''}
+          value={toDateFormat(_periode?.sluttdato, uiFormat) ?? ''}
         />
       </Column>
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (

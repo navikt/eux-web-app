@@ -1,6 +1,6 @@
 import { Add } from '@navikt/ds-icons'
 import DateInput from 'components/Forms/DateInput'
-import { toUIDateFormat } from 'components/Forms/PeriodeInput'
+import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person, Validation } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -333,7 +333,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 updateRelation('fdato', date)
                 resetValidation('fdato')
               }}
-              value={toUIDateFormat(_relation.fdato)}
+              value={toDateFormat(_relation.fdato, 'DD.MM.YYYY')}
             />
             <VerticalSeparatorDiv />
           </Column>

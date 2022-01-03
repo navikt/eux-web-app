@@ -149,6 +149,8 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <DateInput
+              uiFormat='DD.MM.YYYY'
+              finalFormat='DD.MM.YYYY'
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               key={namespace + '-foedselsdato-' + (pdu1Person?.foedselsdato ?? '')}
