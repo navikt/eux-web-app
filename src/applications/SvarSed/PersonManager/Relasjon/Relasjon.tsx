@@ -251,31 +251,22 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
+              key={namespace + idx + '-relasjonTilPerson1-' + (index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson)}
               data-test-id={namespace + idx + '-relasjonTilPerson'}
-              error={getErrorFor(index, 'relasjonTilPerson') ? ' ' : undefined}
+              error={getErrorFor(index, 'relasjonTilPerson')}
               id={namespace + idx + '-relasjonTilPerson'}
               legend={t('label:relasjon-med') + ' *'}
               name={namespace + idx + '-relasjonTilPerson'}
               onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
             >
               <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                <RadioPanel value='01'>{t('label:søker')}</RadioPanel>
+                <RadioPanel value='02'>{t('label:avdød')}</RadioPanel>
               </FlexRadioPanels>
-            </RadioPanelGroup>
-            <VerticalSeparatorDiv size='0.15' />
-            <RadioPanelGroup
-              checked={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
-              data-no-border
-              data-test-id={namespace + idx + '-relasjonTilPerson'}
-              error={getErrorFor(index, 'relasjonTilPerson')}
-              id={namespace + idx + '-relasjonTilPerson'}
-              name={namespace + idx + '-relasjonTilPerson'}
-              onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
-            >
+              <VerticalSeparatorDiv size='0.3' />
               <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                <RadioPanel value='03'>{t('label:partner')}</RadioPanel>
+                <RadioPanel value='04'>{t('label:annen-person')}</RadioPanel>
               </FlexRadioPanels>
             </RadioPanelGroup>
           </Column>
@@ -325,6 +316,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-erDeltForeldreansvar'}
               error={getErrorFor(index, 'erDeltForeldreansvar')}
               id={namespace + idx + '-erDeltForeldreansvar'}
+              key={namespace + idx + '-erDeltForeldreansvar-' + (index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar)}
               legend={t('label:delt-foreldreansvar')}
               name={namespace + '-erDeltForeldreansvar'}
               onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
@@ -354,6 +346,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-borIBrukersHushold'}
               error={getErrorFor(index, 'borIBrukersHushold')}
               id={namespace + idx + '-borIBrukersHushold'}
+              key={namespace + idx + '-borIBrukersHushold-' + (index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold)}
               name={namespace + idx + '-borIBrukersHushold'}
               onChange={(e: string) => setQuestion1(e as JaNei, index)}
             >
@@ -378,6 +371,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-borIEktefellesHushold'}
               error={getErrorFor(index, 'borIEktefellesHushold')}
               id={namespace + idx + '-borIEktefellesHushold'}
+              key={namespace + idx + '-borIEktefellesHushold-' + (index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold)}
               name={namespace + idx + '-borIEktefellesHushold'}
               onChange={(e: string) => setQuestion2(e as JaNei, index)}
             >
@@ -402,6 +396,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + idx + '-borIAnnenPersonsHushold'}
               error={getErrorFor(index, 'borIAnnenPersonsHushold')}
               id={namespace + idx + '-borIAnnenPersonsHushold'}
+              key={namespace + idx + '-borIAnnenPersonsHushold-' + (index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold)}
               name={namespace + idx + '-borIAnnenPersonsHushold'}
               onChange={(e: string) => setQuestion3(e as JaNei, index)}
             >
@@ -425,6 +420,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               data-no-border
               data-test-id={namespace + idx + '-borPaaInstitusjon'}
               error={getErrorFor(index, 'borPaaInstitusjon')}
+              key={namespace + idx + '-borPaaInstitusjon-' + (index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon)}
               id={namespace + idx + '-borPaaInstitusjon'}
               name={namespace + idx + '-borPaaInstitusjon'}
               onChange={(e: string) => setQuestion4(e as JaNei, index)}

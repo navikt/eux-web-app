@@ -7,7 +7,6 @@ import _ from 'lodash'
 import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 
 export interface AdresseFormProps {
   options?: {[k in string]: any}
@@ -21,12 +20,6 @@ export interface AdresseFormProps {
   keyforZipCode ?: string
   useUK ?: boolean
 }
-
-const RadioPanelGroupWithNoErrorVisible = styled(RadioPanelGroup)`
-  .typo-feilmelding {
-     display: none;
-  }
-`
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
   options = { bygning: true, region: true },
@@ -111,23 +104,12 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
                 <RadioPanel value='bosted'>{t('label:bostedsland')}</RadioPanel>
                 <RadioPanel value='opphold'>{t('label:oppholdsland')}</RadioPanel>
               </FlexRadioPanels>
-            </RadioPanelGroup>
-            <VerticalSeparatorDiv size='0.15' />
-            <RadioPanelGroupWithNoErrorVisible
-              value={adresse?.type}
-              data-no-border
-              data-test-id={namespace + '-type'}
-              error={validation[namespace + '-type']?.feilmelding}
-              id={namespace + '-type'}
-              name={namespace + '-type'}
-              required={required.indexOf('type') >= 0}
-              onChange={(e: string) => setType((e as AdresseType))}
-            >
+              <VerticalSeparatorDiv size='0.3' />
               <FlexRadioPanels>
                 <RadioPanel value='kontakt'>{t('label:kontaktadresse')}</RadioPanel>
                 <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>
               </FlexRadioPanels>
-            </RadioPanelGroupWithNoErrorVisible>
+            </RadioPanelGroup>
           </Column>
         </AlignStartRow>
       )}

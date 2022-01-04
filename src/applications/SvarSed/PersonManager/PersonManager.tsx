@@ -64,11 +64,11 @@ const MenuDiv = styled.div`
   }
 `
 const MenuCheckbox = styled(Checkbox)`
-  padding: 1rem 0.5rem;
+  padding: 0rem 0.5rem;
 `
 const MenuLabelDiv = styled(FlexCenterDiv)`
   cursor: pointer;
-  padding: 1rem 0.5rem;
+  padding: 0rem 0.5rem;
   flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
