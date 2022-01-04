@@ -7,9 +7,10 @@ import DocumentSearch, { DocumentSearchProps, DocumentSearchSelector } from './D
 describe('components/DocumentSearch/DocumentSearch', () => {
   let wrapper: ReactWrapper
   const initialMockProps: DocumentSearchProps = {
+    parentNamespace: 'test',
     className: 'mockClassname',
     onDocumentFound: jest.fn(),
-    onRinasaksnummerChanged: jest.fn(),
+    onRinaSaksnummerChanged: jest.fn(),
     resetValidation: jest.fn(),
     validation: {}
   }

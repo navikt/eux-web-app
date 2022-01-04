@@ -2,7 +2,6 @@ import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorSummary } from '@navikt/ds-react'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
@@ -18,46 +17,37 @@ const ValidationBox = (): JSX.Element => {
     return <div />
   }
   return (
-    <div>
-      <VerticalSeparatorDiv size='2' />
-      <Row>
-        <Column>
-          <ErrorSummary
-            data-test-id='opprettsak__feiloppsummering'
-            heading={t('validation:feiloppsummering')}
+    <ErrorSummary
+      data-test-id='opprettsak__feiloppsummering'
+      heading={t('validation:feiloppsummering')}
+    >
+      {Object.values(validation)
+        .filter(v => v !== undefined)
+        .filter(v => v?.feilmelding !== 'notnull')
+        .map(v => ({
+          feilmelding: v!.feilmelding,
+          skjemaelementId: v!.skjemaelementId
+        })).map(item => (
+          <ErrorSummary.Item
+            key={item.skjemaelementId}
+            href={`#${item.skjemaelementId}`}
+            onClick={(e) => {
+              e.preventDefault()
+              const element = document.getElementById(item.skjemaelementId)
+              if (element) {
+                element?.focus()
+                element?.scrollIntoView({
+                  behavior: 'smooth'
+                })
+              } else {
+                document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+              }
+            }}
           >
-            {Object.values(validation)
-              .filter(v => v !== undefined)
-              .filter(v => v?.feilmelding !== 'notnull')
-              .map(v => ({
-                feilmelding: v!.feilmelding,
-                skjemaelementId: v!.skjemaelementId
-              })).map(item => (
-                <ErrorSummary.Item
-                  key={item.skjemaelementId}
-                  href={`#${item.skjemaelementId}`}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    const element = document.getElementById(item.skjemaelementId)
-                    if (element) {
-                      element?.focus()
-                      element?.scrollIntoView({
-                        behavior: 'smooth'
-                      })
-                    } else {
-                      document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
-                    }
-                  }}
-                >
-                  {item.feilmelding}
-                </ErrorSummary.Item>
-              ))}
-          </ErrorSummary>
-        </Column>
-        <HorizontalSeparatorDiv size='2' />
-        <Column />
-      </Row>
-    </div>
+            {item.feilmelding}
+          </ErrorSummary.Item>
+        ))}
+    </ErrorSummary>
   )
 }
 

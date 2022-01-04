@@ -3,7 +3,7 @@ import { VedleggSendResponse } from 'declarations/types'
 import { ActionWithPayload } from 'js-fetch-api'
 
 export interface VedleggState {
-  vedlegg: VedleggSendResponse | undefined;
+  vedleggResponse: VedleggSendResponse | undefined;
   rinasaksnummer: any;
   rinadokumentID: any;
   journalpostID: any;
@@ -12,7 +12,7 @@ export interface VedleggState {
 }
 
 export const initialVedleggState: VedleggState = {
-  vedlegg: undefined,
+  vedleggResponse: undefined,
   rinasaksnummer: undefined,
   rinadokumentID: undefined,
   journalpostID: undefined,
@@ -25,7 +25,7 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: Actio
     case types.VEDLEGG_POST_SUCCESS:
       return {
         ...state,
-        vedlegg: action.payload
+        vedleggResponse: action.payload
       }
 
     case types.VEDLEGG_DOKUMENT_GET_REQUEST:

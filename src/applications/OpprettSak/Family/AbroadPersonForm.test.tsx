@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)
 }))
 
-describe('components/Family/AbroadPersonForm', () => {
+describe('applications/OpprettSak/Family/AbroadPersonForm', () => {
   let wrapper: ReactWrapper
   const initialMockProps: AbroadPersonFormProps = {
     alertMessage: undefined,

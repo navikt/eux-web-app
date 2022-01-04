@@ -29,6 +29,20 @@ export const checkIfNotEmpty = (v: Validation, {
   return false
 }
 
+export const checkIfNotTrue = (v: Validation, {
+  needle,
+  id,
+  personName,
+  message,
+  extra
+}: any): boolean => {
+  if (!needle) {
+    addError(v, { id, personName, message, extra })
+    return true
+  }
+  return false
+}
+
 export const checkIfDuplicate = (v: Validation, {
   needle,
   haystack,

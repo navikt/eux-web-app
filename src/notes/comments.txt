@@ -2,7 +2,6 @@ Todo:
 
 1. na familierelasjon, pode ser que envie borSammen, etc com REPA/EKTE/etc. Confirmar que backend limpa
 
-- Move to ds-react, ds-icons
 - Validation
   - better system for personName
   - Better system that opens forms when clicking validation error
@@ -16,8 +15,6 @@ remove underscores
   - _set to set, set to handle
   - validation, _val to thisVal
 
-padding on right form: let form make it, also make hover color to separate each element
-make hover color to separate itens
 
 go eazy on keys
 - rever slideAnimate 0.05

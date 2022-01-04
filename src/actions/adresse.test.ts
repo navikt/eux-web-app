@@ -1,7 +1,6 @@
 import * as adresseActions from 'actions/adresse'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import mockItems from 'mocks/attachments/items'
 import { call as originalCall } from 'js-fetch-api'
 const sprintf = require('sprintf-js').sprintf
 
@@ -26,7 +25,6 @@ describe('actions/adresse', () => {
         success: types.ADRESSE_SEARCH_SUCCESS,
         failure: types.ADRESSE_SEARCH_FAILURE
       },
-      context: mockItems[0],
       url: sprintf(urls.API_ADRESSE_URL, { fnr })
     }))
   })

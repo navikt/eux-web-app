@@ -13,12 +13,13 @@ describe('pages/Vedlegg', () => {
   const defaultSelector: VedleggSelector = {
     alertType: undefined,
     alertMessage: undefined,
-    vedlegg: undefined,
+    vedleggResponse: undefined,
     rinasaksnummer: undefined,
     journalpostID: undefined,
     rinadokumentID: undefined,
     dokumentID: undefined,
-    sendingVedlegg: false
+    sendingVedlegg: false,
+    validation: {}
   }
 
   beforeAll(() => {
