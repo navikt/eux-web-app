@@ -1,12 +1,15 @@
+import { Alert, Button, ErrorSummary, Heading, Link, Loader, Panel, Select } from '@navikt/ds-react'
 import * as appActions from 'actions/app'
-import * as sakActions from 'actions/sak'
 import * as personActions from 'actions/person'
+import * as sakActions from 'actions/sak'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import classNames from 'classnames'
 import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
+import { ErrorElement } from 'declarations/app'
+import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import {
@@ -31,7 +34,6 @@ import useValidation from 'hooks/useValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Alert, Button, Link, Loader, ErrorSummary, Panel, Select, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -51,8 +53,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
-import { ErrorElement } from 'declarations/app'
-import { AlertVariant } from 'declarations/components'
 
 export interface OpprettSakSelector {
   alertVariant: AlertVariant | undefined
