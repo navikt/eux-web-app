@@ -1,29 +1,15 @@
+import { Search } from '@navikt/ds-icons'
+import { Alert, Loader, SearchField } from '@navikt/ds-react'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import classNames from 'classnames'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
+import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Alert, TextField, Button } from '@navikt/ds-react'
-import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-
-const Container = styled.div`
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-`
-
-const MarginDiv = styled.div`
-  margin: 0.5rem;
-`
-const AlignCenterColumn = styled(Column)`
-  display: flex;
-  align-items: center;
-`
+import { TPSPersonFormValidationProps, validateTPSPersonForm } from './validation'
 
 export interface TPSPersonFormProps {
   alertMessage: JSX.Element | string | undefined
@@ -37,6 +23,7 @@ export interface TPSPersonFormProps {
   onTPSPersonAddedSuccess: (e: any) => void
   person: Person
   personRelatert: Person | null | undefined
+  searchingRelatertPerson: boolean
   rolleList: Array<Kodeverk>
 }
 
@@ -44,7 +31,6 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   alertMessage,
   alertType,
   alertTypesWatched = [],
-  className,
   existingFamilyRelationships,
   onRelationReset,
   onSearchFnr,
@@ -52,18 +38,29 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   onTPSPersonAddedSuccess,
   person,
   personRelatert,
+  searchingRelatertPerson,
   rolleList
 }: TPSPersonFormProps): JSX.Element => {
   const [_query, setQuery] = useState<string>('')
   const [_personRelatert, setPersonRelatert] = useState<OldFamilieRelasjon | undefined>(undefined)
   const [_tpsperson, setTpsPerson] = useState<OldFamilieRelasjon | undefined>(undefined)
+  const [validation, resetValidation, performValidation] = useValidation<TPSPersonFormValidationProps>({}, validateTPSPersonForm)
   const { t } = useTranslation()
+  const namespace = 'tpspersonform'
 
   const sokEtterFnr = () => {
-    setPersonRelatert(undefined)
-    setTpsPerson(undefined)
-    if (_.isFunction(onSearchFnr)) {
-      onSearchFnr(_query)
+    const valid = performValidation({
+      person,
+      namespace,
+      fnr: _query,
+      tpsperson: _tpsperson
+    })
+    if (valid) {
+      setPersonRelatert(undefined)
+      setTpsPerson(undefined)
+      if (_.isFunction(onSearchFnr)) {
+        onSearchFnr(_query)
+      }
     }
   }
 
@@ -71,9 +68,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     if (personRelatert && !_personRelatert) {
       // Fjern relasjoner array, NOTE! det er kun relasjoner som har rolle.
       const person = _.omit(personRelatert, 'relasjoner')
-      const tpsperson = personRelatert && personRelatert.relasjoner
-        ? personRelatert.relasjoner.find((elem: OldFamilieRelasjon) => elem.fnr === person.fnr)
-        : undefined
+      const tpsperson = personRelatert?.relasjoner?.find((elem: OldFamilieRelasjon) => elem.fnr === person.fnr)
       setTpsPerson(tpsperson)
       if (!tpsperson) {
         setPersonRelatert(person)
@@ -84,10 +79,11 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         setPersonRelatert(undefined)
       }
     }
-  }, [personRelatert, _personRelatert, onRelationReset])
+  }, [personRelatert])
 
   const updateQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
+    resetValidation(namespace + '-fnr-dnr')
     setPersonRelatert(undefined)
     if (onRelationReset) {
       onRelationReset()
@@ -95,8 +91,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   }
 
   const conflictingPerson = (): boolean => {
-    const { fnr } = _personRelatert!
-    if (_.find(existingFamilyRelationships, (f) => f.fnr === fnr) !== undefined) {
+    if (_.find(existingFamilyRelationships, (f) => f.fnr === _personRelatert?.fnr) !== undefined) {
       if (onTPSPersonAddedFailure) {
         onTPSPersonAddedFailure()
       }
@@ -124,60 +119,50 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   }
 
   return (
-    <Container>
-      <Row
-        className={classNames(className, 'slideInFromLeft', { error: !!alertMessage })}
-      >
-        <Column>
-          <TextField
-            data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
-            label={t('label:fnr-dnr')}
-            value={_query}
+    <>
+      <FlexDiv>
+        <SearchField
+          id='TPSPersonForm__input-fnr-or-dnr-id'
+          data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
+          label={t('label:fnr-dnr')}
+          error={validation[namespace + '-fnr-dnr']?.feilmelding}
+        >
+          <SearchField.Input
+            data-test-id={namespace + '-fnr-dnr'}
+            id={namespace + '-fnr-dnr'}
             onChange={updateQuery}
+            required
+            value={_query}
           />
-          <VerticalSeparatorDiv />
-        </Column>
-        <HorizontalSeparatorDiv />
-        <AlignCenterColumn>
-          <Button
-            variant='secondary'
-            disabled={person.fnr === _query}
+          <SearchField.Button
+            disabled={searchingRelatertPerson}
             onClick={sokEtterFnr}
           >
+            <Search />
             {t('el:button-search')}
-          </Button>
-        </AlignCenterColumn>
-      </Row>
+            {searchingRelatertPerson && <Loader />}
+          </SearchField.Button>
+        </SearchField>
+      </FlexDiv>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column>
-          {person.fnr === _query && (
-            <Alert variant='warning'>
-              {t('message:error-fnr-is-user', { sok: _query })}
-            </Alert>
-          )}
-          {_tpsperson && (
-            <Alert variant='warning'>
-              {t('message:error-relation-already-in-tps')}
-            </Alert>
-          )}
-          {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
-            <Alert variant='warning'>
-              {alertMessage}
-            </Alert>
-          )}
-          {_personRelatert && (
-            <MarginDiv>
-              <PersonCard
-                person={_personRelatert}
-                onAddClick={leggTilPersonOgRolle}
-                rolleList={rolleList}
-              />
-            </MarginDiv>
-          )}
-        </Column>
-      </Row>
-    </Container>
+      {_tpsperson && (
+        <Alert variant='warning'>
+          {t('message:error-relation-already-in-tps')}
+        </Alert>
+      )}
+      {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
+        <Alert variant='error'>
+          {alertMessage}
+        </Alert>
+      )}
+      {_personRelatert && (
+        <PersonCard
+          person={_personRelatert}
+          onAddClick={leggTilPersonOgRolle}
+          rolleList={rolleList}
+        />
+      )}
+    </>
   )
 }
 

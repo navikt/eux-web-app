@@ -17,6 +17,7 @@ describe('components/Family/TPSPersonForm', () => {
     onTPSPersonAddedFailure: jest.fn(),
     onTPSPersonAddedSuccess: jest.fn(),
     person: samplePerson,
+    searchingRelatertPerson: false,
     personRelatert: undefined,
     rolleList: familierelasjoner
   }

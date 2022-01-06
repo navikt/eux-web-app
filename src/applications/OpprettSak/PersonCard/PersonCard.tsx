@@ -20,10 +20,8 @@ const PersonCardDiv = styled.div`
   align-items: center;
 `
 const PersonCardPanel = styled(Panel)`
-  border: 1px solid lightgray;
   background: transparent;
   margin-top: 1.5rem;
-  max-width: 800px;
   min-width: 400px;
   padding: 1rem;
   border-radius: 5px;
@@ -127,7 +125,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
   }
 
   return (
-    <PersonCardPanel className={className}>
+    <PersonCardPanel border className={className}>
       <PersonCardDiv>
         <Description>
           <img

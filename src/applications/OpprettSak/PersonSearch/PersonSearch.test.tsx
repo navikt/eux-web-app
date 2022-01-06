@@ -14,6 +14,7 @@ describe('components/PersonSearch/PersonSearch', () => {
     id: 'id',
     error: undefined,
     initialFnr: '12345678901',
+    parentNamespace: 'test',
     searchingPerson: false,
     onFnrChange: jest.fn(),
     onPersonFound: jest.fn(),

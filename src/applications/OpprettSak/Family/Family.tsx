@@ -1,23 +1,13 @@
+import { BodyLong, Button, Heading, Ingress, Panel } from '@navikt/ds-react'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
+import { FadingLineSeparator } from 'components/StyledComponents'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import _ from 'lodash'
-import { Ingress, Detail, Heading, Button } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexDiv, PileDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
-
-const FamilySubArea = styled.div`
-  width: 500px;
-`
-const FamilySeparator = styled.div`
-  border-left: 1px solid lightgrey;
-`
-const MarginDiv = styled.div`
-  margin: 0.5rem;
-`
 
 export interface FamilyProps {
   abroadPersonFormAlertTypesWatched: Array<string> | undefined
@@ -35,6 +25,7 @@ export interface FamilyProps {
   onTPSPersonAddedSuccess: (e: any) => void
   person: Person | null | undefined
   personRelatert: Person | null | undefined
+  searchingRelatertPerson: boolean
   TPSPersonFormAlertTypesWatched: Array<string> | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon> | undefined
 }
@@ -54,6 +45,7 @@ const Family: React.FC<FamilyProps> = ({
   onTPSPersonAddedSuccess,
   personRelatert,
   person,
+  searchingRelatertPerson,
   valgteFamilieRelasjoner,
   TPSPersonFormAlertTypesWatched
 }: FamilyProps): JSX.Element => {
@@ -65,13 +57,9 @@ const Family: React.FC<FamilyProps> = ({
     _.find(valgteFamilieRelasjoner, (valgteRelasjon: OldFamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined
   )
 
-  const toggleViewAbroadPersonForm = (): void => {
-    setViewAbroadPersonForm(!_viewAbroadPersonForm)
-  }
+  const toggleViewAbroadPersonForm = (): void => setViewAbroadPersonForm(!_viewAbroadPersonForm)
 
-  const toggleViewTPSRelatedForm = (): void => {
-    setViewTPSRelatedForm(!_viewTPSRelatedForm)
-  }
+  const toggleViewTPSRelatedForm = (): void => setViewTPSRelatedForm(!_viewTPSRelatedForm)
 
   const ekskluderteVerdier: Array<string> = []
 
@@ -90,94 +78,83 @@ const Family: React.FC<FamilyProps> = ({
     }
   }
 
-  const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter(
-    (kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false
-  )
+  const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false)
 
   return (
-    <div data-test-id='family'>
-      <HorizontalSeparatorDiv />
+    <Panel border data-test-id='family'>
       <Heading size='small'>
         {t('label:family-description')}
       </Heading>
-      <VerticalSeparatorDiv />
+      <VerticalSeparatorDiv size='2' />
       <FlexDiv>
-        <FamilySubArea>
-          <HorizontalSeparatorDiv />
+        <div style={{ minWidth: '450px', flex: 1 }}>
           <Ingress>
             {t('label:familierelasjon-i-tps')}
           </Ingress>
           {remainingRelationsFromTPS.map((relation: OldFamilieRelasjon) => (
-            <MarginDiv key={relation.fnr}>
-              <PersonCard
-                className='slideInFromLeft personNotSelected'
-                familierelasjonKodeverk={familierelasjonKodeverk}
-                key={relation.fnr}
-                onAddClick={onRelationAdded}
-                person={relation}
-              />
-            </MarginDiv>
+            <PersonCard
+              className='slideInFromLeft personNotSelected'
+              familierelasjonKodeverk={familierelasjonKodeverk}
+              key={relation.fnr}
+              onAddClick={onRelationAdded}
+              person={relation}
+            />
           ))}
           {!_.isEmpty(person!.relasjoner) && _.isEmpty(remainingRelationsFromTPS) && (
             <>
-              <HorizontalSeparatorDiv size='0.5' />
               <VerticalSeparatorDiv size='1.5' />
-              <Detail>
+              <BodyLong>
                 ({t('label:familie-alle-lagt-inn')})
-              </Detail>
+              </BodyLong>
             </>
           )}
           {_.isEmpty(person!.relasjoner) && (
             <>
-              <HorizontalSeparatorDiv size='0.5' />
               <VerticalSeparatorDiv size='1.5' />
-              <Detail>
+              <BodyLong>
                 ({t('label:ingen-familie-i-tps')})
-              </Detail>
+              </BodyLong>
             </>
           )}
-        </FamilySubArea>
-        <HorizontalSeparatorDiv size='0.5' />
-        <FamilySeparator />
-        <HorizontalSeparatorDiv size='0.5' />
-        <FamilySubArea>
-          <HorizontalSeparatorDiv />
+          <VerticalSeparatorDiv />
+        </div>
+        <FadingLineSeparator style={{ marginLeft: '1rem', marginRight: '1rem' }} className='fadeIn'>
+          &nbsp;
+        </FadingLineSeparator>
+        <div style={{ minWidth: '450px', flex: 1 }}>
           <Ingress>
             {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
           </Ingress>
           {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: OldFamilieRelasjon) => (
-            <MarginDiv key={relation.fnr}>
-              <PersonCard
-                className='slideInFromLeft personSelected'
-                familierelasjonKodeverk={familierelasjonKodeverk}
-                key={relation.fnr}
-                onRemoveClick={onRelationRemoved}
-                person={relation}
-              />
-            </MarginDiv>
+            <PersonCard
+              className='slideInFromLeft personSelected'
+              familierelasjonKodeverk={familierelasjonKodeverk}
+              key={relation.fnr}
+              onRemoveClick={onRelationRemoved}
+              person={relation}
+            />
           ))}
-        </FamilySubArea>
+          <VerticalSeparatorDiv />
+        </div>
       </FlexDiv>
-      <PileCenterDiv>
+      <VerticalSeparatorDiv size='1.5' />
+      <PileDiv>
         <div>
-          <VerticalSeparatorDiv size='1.5' />
           <Ingress>
             {t('label:family-utland')}
           </Ingress>
+          <VerticalSeparatorDiv />
           {_viewAbroadPersonForm && (
-            <>
-              <VerticalSeparatorDiv />
-              <AbroadPersonForm
-                alertMessage={alertMessage}
-                alertType={alertType}
-                alertTypesWatched={abroadPersonFormAlertTypesWatched}
-                existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
-                onAbroadPersonAddedFailure={onAbroadPersonAddedFailure}
-                onAbroadPersonAddedSuccess={onAbroadPersonAddedSuccess}
-                person={person}
-                rolleList={rolleList}
-              />
-            </>
+            <AbroadPersonForm
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={abroadPersonFormAlertTypesWatched}
+              existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
+              onAbroadPersonAddedFailure={onAbroadPersonAddedFailure}
+              onAbroadPersonAddedSuccess={onAbroadPersonAddedSuccess}
+              person={person}
+              rolleList={rolleList}
+            />
           )}
           <VerticalSeparatorDiv />
           <Button
@@ -189,28 +166,27 @@ const Family: React.FC<FamilyProps> = ({
               : t('label:vis-skjema')}
           </Button>
         </div>
+        <VerticalSeparatorDiv size='2' />
         <div>
-          <VerticalSeparatorDiv size='1.5' />
           <Ingress>
             {t('label:family-tps')}
           </Ingress>
+          <VerticalSeparatorDiv />
           {_viewTPSRelatedForm && person && (
-            <>
-              <VerticalSeparatorDiv />
-              <TPSPersonForm
-                alertMessage={alertMessage}
-                alertType={alertType}
-                alertTypesWatched={TPSPersonFormAlertTypesWatched}
-                existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
-                onSearchFnr={onSearchFnr}
-                onRelationReset={onRelationReset}
-                onTPSPersonAddedFailure={onTPSPersonAddedFailure}
-                onTPSPersonAddedSuccess={onTPSPersonAddedSuccess}
-                person={person}
-                personRelatert={personRelatert}
-                rolleList={rolleList}
-              />
-            </>
+            <TPSPersonForm
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={TPSPersonFormAlertTypesWatched}
+              existingFamilyRelationships={(valgteFamilieRelasjoner || []).concat(remainingRelationsFromTPS || [])}
+              onSearchFnr={onSearchFnr}
+              onRelationReset={onRelationReset}
+              onTPSPersonAddedFailure={onTPSPersonAddedFailure}
+              onTPSPersonAddedSuccess={onTPSPersonAddedSuccess}
+              person={person}
+              personRelatert={personRelatert}
+              searchingRelatertPerson={searchingRelatertPerson}
+              rolleList={rolleList}
+            />
           )}
           <VerticalSeparatorDiv />
           <Button
@@ -222,8 +198,8 @@ const Family: React.FC<FamilyProps> = ({
               : t('label:vis-skjema')}
           </Button>
         </div>
-      </PileCenterDiv>
-    </div>
+      </PileDiv>
+    </Panel>
   )
 }
 

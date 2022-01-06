@@ -1,30 +1,12 @@
+import { Search } from '@navikt/ds-icons'
+import { Alert, Loader, SearchField } from '@navikt/ds-react'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import { Alert, TextField, Button } from '@navikt/ds-react'
+import { PileDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-
-const PersonSearchDiv = styled.div`
-  margin-bottom: 2em;
-`
-const PersonSearchPanel = styled.div`
-  display: flex;
-  flex-direction: row;
-`
-const PersonSearchInput = styled(TextField)`
-  min-width: 24.5em;
-`
-const MyButton = styled(Button)`
-  display: flex;
-  flex: 0;
-  height: 2.4em;
-  align-self: flex-start;
-  margin: 1.9em 0 0 1em;
-`
 
 export interface PersonSearchProps {
   alertMessage: JSX.Element | string | undefined
@@ -34,6 +16,7 @@ export interface PersonSearchProps {
   error: string | undefined
   id: string
   initialFnr: any
+  parentNamespace: string
   searchingPerson: boolean
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
@@ -50,6 +33,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   error,
   id,
   initialFnr,
+  parentNamespace,
   searchingPerson,
   onFnrChange,
   onPersonFound,
@@ -59,16 +43,14 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   resetAllValidation
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_fnr, setFnr] = useState<string | undefined>(undefined)
+  const [_fnr, setFnr] = useState<string>(initialFnr)
   const [_person, setPerson] = useState<Person | null | undefined>(undefined)
-  const [localValidation, setLocalValidation] = useState<string | undefined>(
-    undefined
-  )
+  const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
+  const namespace = parentNamespace + '-personSearch'
 
-  const isPersonValid = useCallback(
-    (person: Person) =>
-      person?.fornavn?.length !== undefined && person?.fnr !== undefined,
-    []
+  const isPersonValid = useCallback((person: Person) =>
+    person?.fornavn?.length !== undefined && person?.fnr !== undefined,
+  []
   )
 
   useEffect(() => {
@@ -78,13 +60,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         onPersonFound(person)
       }
     }
-  }, [person, _person, isPersonValid, onPersonFound])
-
-  useEffect(() => {
-    if (initialFnr && !_fnr) {
-      setFnr(initialFnr)
-    }
-  }, [_fnr, initialFnr])
+  }, [person])
 
   const sokEtterPerson = (): void => {
     if (!_fnr) {
@@ -123,22 +99,29 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }
 
   return (
-    <PersonSearchDiv>
-      <PersonSearchPanel>
-        <PersonSearchInput
-          id={id}
-          data-test-id={id}
-          label={t('label:søker')}
-          value={_fnr || ''}
+    <PileDiv style={{ alignItems: 'flex-start' }}>
+      <SearchField
+        id={id}
+        data-test-id={id}
+        label={t('label:søker')}
+        error={error ?? localValidation}
+      >
+        <SearchField.Input
+          data-test-id={namespace + '-saksnummerOrFnr'}
+          id={namespace + '-saksnummerOrFnr'}
           onChange={onChange}
-          error={error ?? localValidation}
+          required
+          value={_fnr || ''}
         />
-        <MyButton onClick={sokEtterPerson} disabled={searchingPerson}>
-          {searchingPerson
-            ? <WaitingPanel size='xsmall' message={t('message:loading-searching')} oneLine />
-            : t('el:button-search')}
-        </MyButton>
-      </PersonSearchPanel>
+        <SearchField.Button
+          disabled={searchingPerson}
+          onClick={sokEtterPerson}
+        >
+          <Search />
+          {t('el:button-search')}
+          {searchingPerson && <Loader />}
+        </SearchField.Button>
+      </SearchField>
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <Alert variant='warning'>
           {alertMessage}
@@ -151,7 +134,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           onRemoveClick={onRemovePerson}
         />
       )}
-    </PersonSearchDiv>
+    </PileDiv>
   )
 }
 

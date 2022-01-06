@@ -27,6 +27,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
 
     sendingSak: false,
     searchingPerson: false,
+    searchingRelatertPerson: false,
     gettingFagsaker: false,
     gettingArbeidsperioder: false,
 

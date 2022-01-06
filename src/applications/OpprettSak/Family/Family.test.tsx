@@ -21,6 +21,7 @@ describe('components/Family/Family', () => {
     onTPSPersonAddedFailure: jest.fn(),
     onTPSPersonAddedSuccess: jest.fn(),
     personRelatert: undefined,
+    searchingRelatertPerson: false,
     person: samplePerson,
     valgteFamilieRelasjoner: undefined,
     abroadPersonFormAlertTypesWatched: [],

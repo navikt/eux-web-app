@@ -1,28 +1,20 @@
 import { Add } from '@navikt/ds-icons'
+import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
 import DateInput from 'components/Forms/DateInput'
 import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
-import { Kodeverk, OldFamilieRelasjon, Person, Validation } from 'declarations/types'
+import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
+import useValidation from 'hooks/useValidation'
 import { Country, CountryFilter } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
-import { Alert, Button, Panel, TextField, Select, BodyLong } from '@navikt/ds-react'
 import { Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { ErrorElement } from 'declarations/app'
-import styled from 'styled-components'
-
-const Container = styled.div`
-  margin-top: 1, 5rem;
-`
-const AlignCenterColumn = styled(Column)`
-  display: flex;
-  align-items: center;
-`
+import { AbroadPersonFormValidationProps, validateAbroadPersonForm } from './validation'
 
 export interface AbroadPersonFormSelector {
   kjoennList: Array<Kodeverk> | undefined
@@ -59,7 +51,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   alertMessage,
   alertType,
   alertTypesWatched = [],
-  className,
   rolleList,
   existingFamilyRelationships,
   onAbroadPersonAddedFailure,
@@ -69,57 +60,51 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const { t } = useTranslation()
   const { kjoennList }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
-  const [_validation, setValidation] = useState<Validation>({})
+  const [_validation, resetValidation, performValidation] = useValidation<AbroadPersonFormValidationProps>({}, validateAbroadPersonForm)
+  const namespace = 'familierelasjoner'
 
   useEffect(() => {
     setRelation(emptyFamilieRelasjon)
-    setValidation({})
+    resetValidation()
   }, [person])
 
-  const updateCountry = (felt: string, value: string): void => {
+  const updateCountry = (felt: string, value: string): void =>
     setRelation({
       ..._relation,
       [felt]: value
     })
-  }
 
   const updateRelation = (
     felt: string,
     value: string
-  ): void => {
-    setRelation({
-      ..._relation,
-      [felt]: value ?? ''
-    })
-  }
+  ): void => setRelation({
+    ..._relation,
+    [felt]: value ?? ''
+  })
 
-  const trimFamilyRelation = (relation: OldFamilieRelasjon): OldFamilieRelasjon => {
-    return {
-      fnr: relation.fnr ? relation.fnr.trim() : '',
-      fdato: relation.fdato ? relation.fdato.trim() : '',
-      fornavn: relation.fornavn ? relation.fornavn.trim() : '',
-      etternavn: relation.etternavn ? relation.etternavn.trim() : '',
-      kjoenn: relation.kjoenn ? relation.kjoenn.trim() : '',
-      relasjoner: relation.relasjoner,
-      land: relation.land,
-      statsborgerskap: relation.statsborgerskap,
-      rolle: relation.rolle
-    } as OldFamilieRelasjon
-  }
+  const trimFamilyRelation = (relation: OldFamilieRelasjon): OldFamilieRelasjon => ({
+    fnr: relation.fnr ? relation.fnr.trim() : '',
+    fdato: relation.fdato ? relation.fdato.trim() : '',
+    fornavn: relation.fornavn ? relation.fornavn.trim() : '',
+    etternavn: relation.etternavn ? relation.etternavn.trim() : '',
+    kjoenn: relation.kjoenn ? relation.kjoenn.trim() : '',
+    relasjoner: relation.relasjoner,
+    land: relation.land,
+    statsborgerskap: relation.statsborgerskap,
+    rolle: relation.rolle
+  } as OldFamilieRelasjon)
 
-  const canAddRelation = (): boolean => {
-    return (
-      !_.isEmpty(_relation.fnr) &&
-      !_.isEmpty(_relation.rolle) &&
-      !_.isEmpty(_relation.land) &&
-      !_.isEmpty(_relation.statsborgerskap) &&
-      !_.isEmpty(_relation.kjoenn) &&
-      !_.isEmpty(_relation.fornavn) &&
-      !_.isEmpty(_relation.etternavn) &&
-      !_.isEmpty(_relation.fdato) &&
-      _relation.fdato?.match(/\d{4}-\d{2}-\d{2}/) !== null
-    )
-  }
+  const canAddRelation = (): boolean => (
+    !_.isEmpty(_relation.fnr) &&
+    !_.isEmpty(_relation.rolle) &&
+    !_.isEmpty(_relation.land) &&
+    !_.isEmpty(_relation.statsborgerskap) &&
+    !_.isEmpty(_relation.kjoenn) &&
+    !_.isEmpty(_relation.fornavn) &&
+    !_.isEmpty(_relation.etternavn) &&
+    !_.isEmpty(_relation.fdato) &&
+    _relation.fdato?.match(/\d{4}-\d{2}-\d{2}/) !== null
+  )
 
   const conflictingPerson = (): boolean => {
     if (_.find(existingFamilyRelationships, (f) => f.fnr === _relation.fnr) !== undefined) {
@@ -129,82 +114,12 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     return false
   }
 
-  const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  const performValidation = (): boolean => {
-    const validation: Validation = {
-      // saksnummer: saksnummer ? null : "No saksnummer",
-      fnr: _relation.fnr
-        ? undefined
-        : {
-          feilmelding: t('validation:noFnr'),
-          skjemaelementId: 'familierelasjoner__input-fnr-id'
-        } as ErrorElement,
-      fornavn: _relation.fornavn
-        ? undefined
-        : {
-          feilmelding: t('validation:noFirstName'),
-          skjemaelementId: 'familierelasjoner__input-fornavn'
-        } as ErrorElement,
-      etternavn: _relation.etternavn
-        ? undefined
-        : {
-          feilmelding: t('validation:noLastName'),
-          skjemaelementId: 'familierelasjoner__input-etternavn'
-        } as ErrorElement,
-      kjoenn: _relation.kjoenn
-        ? undefined
-        : {
-          feilmelding: t('validation:noGender'),
-          skjemaelementId: 'familierelasjoner__select-kjoenn'
-        } as ErrorElement,
-      fdato: _relation.fdato
-        ? undefined
-        : {
-          feilmelding: t('validation:noDate'),
-          skjemaelementId: 'familierelasjoner__input-fdato'
-        } as ErrorElement,
-      rolle: _relation.rolle
-        ? undefined
-        : {
-          feilmelding: t('validation:noRolle'),
-          skjemaelementId: 'familierelasjoner__input-familierelasjon'
-        } as ErrorElement,
-      land: _relation.land
-        ? undefined
-        : {
-          feilmelding: t('validation:noLand'),
-          skjemaelementId: 'familierelasjoner__input-land'
-        } as ErrorElement,
-      statsborgerskap: _relation.land
-        ? undefined
-        : {
-          feilmelding: t('validation:noNationality'),
-          skjemaelementId: 'familierelasjoner__input-statsborgerskap'
-        } as ErrorElement
-    } as Validation
-    setValidation(validation)
-    return hasNoValidationErrors(validation)
-  }
-
-  const resetValidation = (key: Array<string> | string | undefined): void => {
-    let newValidation = _.cloneDeep(_validation)
-    if (!key) {
-      newValidation = {}
-    }
-    if (_.isString(key)) {
-      newValidation[key] = undefined
-    }
-    if (_.isArray(key)) {
-      key.forEach((k) => {
-        newValidation[k] = undefined
-      })
-    }
-    setValidation(newValidation)
-  }
-
   const addRelation = (): void => {
-    if (performValidation()) {
+    const valid = performValidation({
+      namespace,
+      relation: _relation
+    })
+    if (valid) {
       if (canAddRelation() && !conflictingPerson()) {
         setRelation(emptyFamilieRelasjon)
         onAbroadPersonAddedSuccess(trimFamilyRelation(_relation))
@@ -213,183 +128,170 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   }
 
   return (
-    <Container className={className}>
+    <>
       <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
       <VerticalSeparatorDiv />
-      <Panel data-test-id='familierelasjoner__utland__wrapper'>
-        <Row>
-          <Column className='slideInFromLeft'>
-            <TextField
-              data-test-id='familierelasjoner__input-fnr-id'
-              error={_validation.fnr ? _validation.fnr.feilmelding : undefined}
-              label={t('label:utenlandsk-id')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateRelation('fnr', e.currentTarget.value)
-                resetValidation('fnr')
-              }}
-              value={_relation.fnr}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-          <HorizontalSeparatorDiv />
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
-            <CountrySelect
-              data-test-id='familierelasjoner__input-land'
-              error={_validation.land ? _validation.land.feilmelding : undefined}
-              label={t('label:land')}
-              key={'familierelasjoner__input-land-' + _relation.land}
-              menuPortalTarget={document.body}
-              includeList={CountryFilter.STANDARD({})}
-              onOptionSelected={(e: Country) => {
-                updateCountry('land', e.value)
-                resetValidation('land')
-              }}
-              values={_relation.land}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-          <HorizontalSeparatorDiv />
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-            <CountrySelect
-              data-test-id='familierelasjoner__input-statsborgerskap'
-              error={_validation.statsborgerskap ? _validation.statsborgerskap.feilmelding : undefined}
-              includeList={CountryFilter.STANDARD({})}
-              label={t('label:statsborgerskap')}
-              key={'familierelasjoner__input-statsborgerskap' + _relation.statsborgerskap}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => {
-                updateCountry('statsborgerskap', e.value)
-                resetValidation('statsborgerskap')
-              }}
-              values={_relation.statsborgerskap}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <Row>
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
-            <TextField
-              data-test-id='familierelasjoner__input-fornavn'
-              error={_validation.fornavn ? _validation.fornavn.feilmelding : undefined}
-              label={t('label:fornavn')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateRelation('fornavn', e.currentTarget.value)
-                resetValidation('fornavn')
-              }}
-              value={_relation.fornavn}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-          <HorizontalSeparatorDiv />
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-            <TextField
-              data-test-id='familierelasjoner__input-etternavn'
-              error={_validation.etternavn ? _validation.etternavn.feilmelding : undefined}
-              label={t('label:etternavn')}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateRelation('etternavn', e.currentTarget.value)
-                resetValidation('etternavn')
-              }}
-              value={_relation.etternavn}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <Row>
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
-            <Select
-              data-test-id='familierelasjoner__select-kjoenn'
-              error={_validation.kjoenn ? _validation.kjoenn.feilmelding : undefined}
-              id='familierelasjoner__select-kjoenn'
-              label={t('label:kjønn')}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                updateRelation('kjoenn', e.currentTarget.value)
-                resetValidation('kjoenn')
-              }}
-              value={_relation.kjoenn}
-            >
-              <option value='' disabled>
-                {t('el:placeholder-select-default')}
-              </option>
-              {kjoennList &&
+      <Row>
+        <Column className='slideInFromLeft'>
+          <TextField
+            id={namespace + '-fnr'}
+            data-test-id={namespace + '-fnr'}
+            error={_validation[namespace + '-fnr']?.feilmelding}
+            label={t('label:utenlandsk-id')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              updateRelation('fnr', e.currentTarget.value)
+              resetValidation('fnr')
+            }}
+            value={_relation.fnr}
+          />
+        </Column>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+          <CountrySelect
+            id={namespace + '-land'}
+            data-test-id={namespace + '-land'}
+            error={_validation[namespace + '-land']?.feilmelding}
+            label={t('label:land')}
+            key={namespace + '-land-' + _relation.land}
+            menuPortalTarget={document.body}
+            includeList={CountryFilter.STANDARD({})}
+            onOptionSelected={(e: Country) => {
+              updateCountry('land', e.value)
+              resetValidation('land')
+            }}
+            values={_relation.land}
+          />
+        </Column>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <CountrySelect
+            id={namespace + '-statsborgerskap'}
+            data-test-id={namespace + '-statsborgerskap'}
+            error={_validation[namespace + '-statsborgerskap']?.feilmelding}
+            includeList={CountryFilter.STANDARD({})}
+            label={t('label:statsborgerskap')}
+            key={namespace + '-statsborgerskap-' + _relation.statsborgerskap}
+            menuPortalTarget={document.body}
+            onOptionSelected={(e: Country) => {
+              updateCountry('statsborgerskap', e.value)
+              resetValidation('statsborgerskap')
+            }}
+            values={_relation.statsborgerskap}
+          />
+        </Column>
+      </Row>
+      <VerticalSeparatorDiv />
+      <Row>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+          <TextField
+            id={namespace + '-fornavn'}
+            data-test-id={namespace + '-fornavn'}
+            error={_validation[namespace + '-fornavn']?.feilmelding}
+            label={t('label:fornavn')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              updateRelation('fornavn', e.currentTarget.value)
+              resetValidation('fornavn')
+            }}
+            value={_relation.fornavn}
+          />
+        </Column>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+          <TextField
+            id={namespace + '-etternavn'}
+            data-test-id={namespace + '-etternavn'}
+            error={_validation[namespace + '-etternavn']?.feilmelding}
+            label={t('label:etternavn')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              updateRelation('etternavn', e.currentTarget.value)
+              resetValidation('etternavn')
+            }}
+            value={_relation.etternavn}
+          />
+        </Column>
+      </Row>
+      <VerticalSeparatorDiv />
+      <Row>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+          <Select
+            id={namespace + '-kjoenn'}
+            data-test-id={namespace + '-kjoenn'}
+            error={_validation[namespace + '-kjoenn']?.feilmelding}
+            label={t('label:kjønn')}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              updateRelation('kjoenn', e.currentTarget.value)
+              resetValidation('kjoenn')
+            }}
+            value={_relation.kjoenn}
+          >
+            <option value='' disabled>
+              {t('el:placeholder-select-default')}
+            </option>
+            {kjoennList &&
                 kjoennList.map((element: Kodeverk) => (
                   <option value={element.kode} key={element.kode}>
                     {element.term}
                   </option>
                 ))}
-            </Select>
-            <VerticalSeparatorDiv />
-          </Column>
-          <HorizontalSeparatorDiv />
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
-            <DateInput
-              id='fdato'
-              data-test-id='familierelasjoner__input-fdato'
-              key={'familierelasjoner__input-fdato-' + _relation.fdato}
-              namespace='familierelasjoner__input'
-              error={_validation['familierelasjoner__input-fdato']?.feilmelding}
-              label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
-              onChanged={(date: string) => {
-                updateRelation('fdato', date)
-                resetValidation('fdato')
-              }}
-              value={toDateFormat(_relation.fdato, 'DD.MM.YYYY')}
-            />
-            <VerticalSeparatorDiv />
-          </Column>
-        </Row>
-        <Row>
-          <Column className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
-            <Select
-              data-test-id='familierelasjoner__input-familierelasjon'
-              error={_validation.rolle ? _validation.rolle.feilmelding : undefined}
-              label={t('label:familierelasjon')}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                updateRelation('rolle', e.currentTarget.value)
-                resetValidation('rolle')
-              }}
-              value={_relation.rolle}
-            >
-              <option value='' disabled>
-                {t('el:placeholder-select-default')}
-              </option>
-              {rolleList.map((element: Kodeverk) => (
-                <option value={element.kode} key={element.kode}>
-                  {element.term}
-                </option>
-              ))}
-            </Select>
-            <VerticalSeparatorDiv />
-          </Column>
-          <HorizontalSeparatorDiv />
-          <AlignCenterColumn
-            className='slideInFromLeft'
-            style={{ animationDelay: '0.4s' }}
+          </Select>
+        </Column>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+          <DateInput
+            id='fdato'
+            data-test-id={namespace + '-fdato'}
+            key={namespace + '-fdato-' + _relation.fdato}
+            namespace={namespace}
+            error={_validation[namespace + '-fdato']?.feilmelding}
+            label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
+            onChanged={(date: string) => {
+              updateRelation('fdato', date)
+              resetValidation('fdato')
+            }}
+            value={toDateFormat(_relation.fdato, 'DD.MM.YYYY')}
+          />
+          <VerticalSeparatorDiv />
+        </Column>
+      </Row>
+      <VerticalSeparatorDiv />
+      <Row>
+        <Column className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+          <Select
+            id={namespace + 'familierelasjon'}
+            data-test-id={namespace + '-familierelasjon'}
+            error={_validation[namespace + '-familierelasjon']?.feilmelding}
+            label={t('label:familierelasjon')}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              updateRelation('rolle', e.currentTarget.value)
+              resetValidation('rolle')
+            }}
+            value={_relation.rolle}
           >
-            <Button
-              variant='secondary'
-              onClick={addRelation}
-              className='relasjon familierelasjoner__knapp'
-            >
-              <Add
-                width='20'
-                height='20'
-                color={!canAddRelation() ? 'white' : '#0067C5'}
-              />
-              <HorizontalSeparatorDiv />
-              <span>
-                {t('el:button-add')}
-              </span>
-            </Button>
-          </AlignCenterColumn>
-          {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
-            <Alert variant='warning'>
-              {alertMessage}
-            </Alert>
-          )}
-        </Row>
-      </Panel>
-    </Container>
+            <option value='' disabled>
+              {t('el:placeholder-select-default')}
+            </option>
+            {rolleList.map((element: Kodeverk) => (
+              <option value={element.kode} key={element.kode}>
+                {element.term}
+              </option>
+            ))}
+          </Select>
+        </Column>
+        <Column>
+          <Button
+            style={{ marginTop: '2rem' }}
+            variant='secondary'
+            onClick={addRelation}
+            className='relasjon familierelasjoner__knapp'
+          >
+            <Add />
+            <HorizontalSeparatorDiv />
+            {t('el:button-add')}
+          </Button>
+        </Column>
+        {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
+          <Alert variant='warning'>
+            {alertMessage}
+          </Alert>
+        )}
+      </Row>
+    </>
   )
 }
 
