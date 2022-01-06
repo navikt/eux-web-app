@@ -6,7 +6,7 @@ import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
   getPreviewFile,
-  resetPreviewPdu1,
+  resetPreviewSvarSed,
   sendSedInRina,
   setReplySed,
   updateReplySed
@@ -187,7 +187,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
   }
 
   const resetPreview = () => {
-    dispatch(resetPreviewPdu1())
+    dispatch(resetPreviewSvarSed())
     setModal(undefined)
   }
 

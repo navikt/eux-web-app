@@ -150,7 +150,7 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
   })
 }
 
-export const resetPreviewPdu1 = () => ({
+export const resetPreviewSvarSed = () => ({
   type: types.SVARSED_PREVIEW_RESET
 })
 

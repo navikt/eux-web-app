@@ -5,15 +5,14 @@ import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import FileFC, { File } from 'forhandsvisningsfil'
+import { saveAs } from 'file-saver'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
+import moment from 'moment'
 import { FlexDiv, HorizontalSeparatorDiv } from 'nav-hoykontrast'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { blobToBase64 } from 'utils/blob'
-import { saveAs } from 'file-saver'
 
 export interface PreviewPDU1Selector {
   pdu1: PDU1
@@ -37,67 +36,19 @@ const PreviewPDU1: React.FC = () => {
   }: PreviewPDU1Selector = useSelector<State, PreviewPDU1Selector>(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
-  const [willOpenModal, setWillOpenModal] = useState<boolean>(false)
 
   const onResetPdu1Clicked = () => {
     dispatch(resetPreviewPdu1())
   }
 
   const onPreviewPdu1Clicked = (e: any) => {
-    if (_.isNil(previewPdu1file)) {
-      const newPdu1 = _.cloneDeep(pdu1)
-      setWillOpenModal(true)
-      dispatch(previewPdu1(newPdu1))
-      buttonLogger(e)
-    } else {
-      showPreviewModal(previewPdu1file)
-    }
+    const newPdu1 = _.cloneDeep(pdu1)
+    dispatch(previewPdu1(newPdu1))
+    buttonLogger(e)
   }
 
   const onDownloadPdu1Clicked = () => {
-    saveAs(previewPdu1file, 'PDU1.pdf')
-  }
-
-  useEffect(() => {
-    if (!previewModal && !_.isNil(previewPdu1file) && willOpenModal) {
-      showPreviewModal(previewPdu1file)
-      setWillOpenModal(false)
-    }
-  }, [previewPdu1, willOpenModal])
-
-  const showPreviewModal = (previewFile: Blob) => {
-    blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }
-
-      setPreviewModal({
-        closeButton: true,
-        modalContent: (
-          <div
-            style={{ cursor: 'pointer' }}
-          >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
-              width={600}
-              height={800}
-              tema='simple'
-              viewOnePage={false}
-              onContentClick={() => setPreviewModal(undefined)}
-            />
-          </div>
-        )
-      })
-    })
+    saveAs(previewPdu1file, 'PDU1-' + moment().format('DD.MM.YYYY') + '.pdf')
   }
 
   return (
@@ -111,7 +62,7 @@ const PreviewPDU1: React.FC = () => {
         {pdu1 && (
           <Button
             variant='secondary'
-            disabled={gettingPreviewPdu1}
+            disabled={gettingPreviewPdu1 || !_.isNil(previewPdu1file)}
             data-amplitude='pdu1.editor.preview'
             onClick={onPreviewPdu1Clicked}
           >

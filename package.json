@@ -67,7 +67,7 @@
     "redux-thunk": "^2.4.1",
     "stacktracey": "^2.1.7",
     "styled-components": "^5.3.3",
-    "tabell": "^2.2.9"
+    "tabell": "^2.2.10"
   },
   "devDependencies": {
     "@navikt/fnrvalidator": "^1.1.4",

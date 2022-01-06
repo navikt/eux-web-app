@@ -173,8 +173,8 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('resetPreviewPdu1()', () => {
-    expect(svarsedActions.resetPreviewPdu1()).toMatchObject({
+  it('resetPreviewSvarSed()', () => {
+    expect(svarsedActions.resetPreviewSvarSed()).toMatchObject({
       type: types.SVARSED_PREVIEW_RESET
     })
   })
