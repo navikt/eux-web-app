@@ -47,7 +47,9 @@ describe('pages/OpprettSak/OpprettSak', () => {
     valgtSedType: undefined,
     valgtSektor: undefined,
     valgtTema: undefined,
-    valgtUnit: undefined
+    valgtUnit: undefined,
+
+    validation: {}
   }
 
   beforeAll(() => {

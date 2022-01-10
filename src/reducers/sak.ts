@@ -124,6 +124,12 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
         personRelatert: undefined
       }
 
+    case types.SAK_SEND_RESET:
+      return {
+        ...state,
+        opprettetSak: undefined
+      }
+
     case types.SAK_SEND_SUCCESS:
       return {
         ...state,

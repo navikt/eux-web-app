@@ -121,6 +121,13 @@ describe('actions/sak', () => {
       })
   })
 
+  it('resetSentSed()', () => {
+    expect(sakActions.resetSentSed())
+      .toMatchObject({
+        type: types.SAK_SEND_RESET
+      })
+  })
+
   it('setProperty()', () => {
     const key = 'key'
     const value = 'value'

@@ -139,6 +139,10 @@ export const resetFagsaker: ActionCreator<Action> = (): Action => ({
   type: types.SAK_FAGSAKER_RESET
 })
 
+export const resetSentSed: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_SEND_RESET
+})
+
 export const setProperty: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string, value: string | undefined
 ): ActionWithPayload<ParamPayload> => ({

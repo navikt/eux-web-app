@@ -1,6 +1,7 @@
 {
   "button-add": "Legg til",
   "button-add-new-x": "Legg til ny {{x}}",
+  "button-add-new-x2": "Legg til nytt {{x}}",
   "button-add-new-xs": "Legg til nye {{x}}",
   "button-add-selected-attachments": "Legg til markerte vedlegg",
   "button-add-x": "Legg til {{x}}",
@@ -19,7 +20,7 @@
   "button-search-i-x" : "Søk i {{x}}",
   "button-search-for-x" : "Søk {{x}}",
   "button-send-sed" : "Send SED",
-  "button-update-draft-x" : "Oppdattere utkast {{x}}",
+  "button-update-draft-x" : "Oppdatere utkast {{x}}",
 
   "checkbox-pdu1-4.1": "har mottatt eller har fortsatt ikke mottatt lønn for perioden etter avsluttet arbeidsforhold, inntil",
   "checkbox-pdu1-4.2": "har mottatt eller har fortsatt ikke mottatt kompensasjon for avsluttet arbeidsforhold eller lignende utbetaling, som beløper seg til",
@@ -71,7 +72,7 @@
   "option-grunn-bosted": "Barnets/barnas bosted",
   "option-grunn-personligSituasjon": "Elementer i personlig situasjon (artikkel 11 i forordning (EF) nr. 987/2009)",
 
-  "option-grunntilopphør-oppsagt_av_arbeidsgiver": "Oppsakt av arbeidsgiver",
+  "option-grunntilopphør-oppsagt_av_arbeidsgiver": "Oppsagt av arbeidsgiver",
   "option-grunntilopphør-arbeidstaker_har_sagt_opp_selv": "Arbeidstaker har sagt opp selv",
   "option-grunntilopphør-kontrakten_utløpt": "Kontrakt utløpt",
   "option-grunntilopphør-avsluttet_etter_felles_overenskomst": "Avsluttet etter felles overenskomst",

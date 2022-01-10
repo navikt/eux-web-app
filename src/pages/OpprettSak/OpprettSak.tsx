@@ -1,13 +1,15 @@
-import { Alert, Button, ErrorSummary, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import { ErrorFilled } from '@navikt/ds-icons'
+import { Alert, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import * as sakActions from 'actions/sak'
+import { resetSentSed } from 'actions/sak'
+import { resetAllValidation, resetValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
-import { ErrorElement } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { PeriodeMedForsikring } from 'declarations/sed'
@@ -26,10 +28,11 @@ import {
   OpprettetSak,
   Person,
   ServerInfo,
-  Tema
+  Tema,
+  Validation
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
-import useValidation from 'hooks/useValidation'
+import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Country } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
@@ -45,6 +48,7 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
+import ValidationBox from 'pages/SvarSed/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -91,6 +95,8 @@ export interface OpprettSakSelector {
   valgtSektor: string | undefined
   valgtTema: string | undefined
   valgtUnit: string | undefined
+
+  validation: Validation
 }
 
 const mapState = (state: State): OpprettSakSelector => ({
@@ -132,7 +138,9 @@ const mapState = (state: State): OpprettSakSelector => ({
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
-  valgtUnit: state.sak.unit
+  valgtUnit: state.sak.unit,
+
+  validation: state.validation.status
 })
 
 const OpprettSak: React.FC = (): JSX.Element => {
@@ -169,13 +177,15 @@ const OpprettSak: React.FC = (): JSX.Element => {
     valgtSedType,
     valgtSektor,
     valgtTema,
-    valgtUnit
+    valgtUnit,
+
+    validation
   }: OpprettSakSelector = useSelector<State, OpprettSakSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationOpprettSakProps>({}, validateOpprettSak)
+  const performValidation = useGlobalValidation<ValidationOpprettSakProps>(validateOpprettSak)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
@@ -225,30 +235,40 @@ const OpprettSak: React.FC = (): JSX.Element => {
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    _resetValidation(namespace + '-unit')
     dispatch(sakActions.setProperty('unit', e.target.value))
+    if (validation[namespace + '-unit']) {
+      dispatch(resetValidation(namespace + '-unit'))
+    }
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    _resetValidation(namespace + '-sektor')
     dispatch(sakActions.setProperty('unit', undefined))
     dispatch(sakActions.setProperty('sektor', e.target.value))
+    if (validation[namespace + '-sektor']) {
+      dispatch(resetValidation(namespace + '-sektor'))
+    }
   }
 
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
-    _resetValidation(namespace + '-buctype')
-    _resetValidation(namespace + '-landkode')
     dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('institution', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
     dispatch(sakActions.getLandkoder(buctype))
+    if (validation[namespace + '-buctype']) {
+      dispatch(resetValidation(namespace + '-buctype'))
+    }
+    if (validation[namespace + '-landkode']) {
+      dispatch(resetValidation(namespace + '-landkode'))
+    }
   }
 
   const onSedtypeSet = (e: string): void => {
-    _resetValidation(namespace + '-sedtype')
     dispatch(sakActions.setProperty('sedtype', e))
+    if (validation[namespace + '-sedtype']) {
+      dispatch(resetValidation(namespace + '-sedtype'))
+    }
   }
 
   const onSedtypeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
@@ -256,24 +276,34 @@ const OpprettSak: React.FC = (): JSX.Element => {
   }
 
   const onLandkodeChange = (country: Country): void => {
-    _resetValidation(namespace + '-landkode')
-    _resetValidation(namespace + '-institusjon')
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
+    if (validation[namespace + '-landkode']) {
+      dispatch(resetValidation(namespace + '-landkode'))
+    }
+    if (validation[namespace + '-institusjon']) {
+      dispatch(resetValidation(namespace + '-institusjon'))
+    }
   }
 
   const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    _resetValidation(namespace + '-institusjon')
     dispatch(sakActions.setProperty('institusjon', event.target.value))
+    if (validation[namespace + '-institusjon']) {
+      dispatch(resetValidation(namespace + '-institusjon'))
+    }
   }
 
   const onTemaChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    _resetValidation(namespace + '-tema')
-    _resetValidation(namespace + '-saksId')
     dispatch(sakActions.setProperty('tema', event.target.value))
     dispatch(sakActions.resetFagsaker())
     dispatch(sakActions.setProperty('saksId', ''))
+    if (validation[namespace + '-tema']) {
+      dispatch(resetValidation(namespace + '-tema'))
+    }
+    if (validation[namespace + '-saksId']) {
+      dispatch(resetValidation(namespace + '-saksId'))
+    }
   }
 
   const onViewFagsakerClick = (): void => {
@@ -281,11 +311,11 @@ const OpprettSak: React.FC = (): JSX.Element => {
   }
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    _resetValidation(namespace + '-saksId')
     dispatch(sakActions.setProperty('saksId', event.target.value))
+    if (validation[namespace + '-saksId']) {
+      dispatch(resetValidation(namespace + '-saksId'))
+    }
   }
-
-  const isValid: boolean = _.find(_.values(_validation), (e) => e !== undefined) === undefined
 
   return (
     <TopContainer title={t('app:page-title-opprettsak')}>
@@ -298,7 +328,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
             alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
             className='slideInFromLeft'
             data-test-id={namespace + '-fnr'}
-            error={_validation[namespace + '-fnr']?.feilmelding}
+            error={validation[namespace + '-fnr']?.feilmelding}
             searchingPerson={searchingPerson}
             id={namespace + '-fnr'}
             initialFnr=''
@@ -307,6 +337,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
               setIsFnrValid(false)
               dispatch(sakActions.cleanData())
               dispatch(appActions.cleanData())
+              dispatch(resetAllValidation())
             }}
             onPersonFound={() => setIsFnrValid(true)}
             onSearchPerformed={(fnr: string) => {
@@ -314,9 +345,11 @@ const OpprettSak: React.FC = (): JSX.Element => {
               dispatch(sakActions.cleanData())
               dispatch(personActions.searchPerson(fnr))
             }}
-            onPersonRemoved={() => dispatch(personActions.resetPerson())}
+            onPersonRemoved={() => {
+              dispatch(personActions.resetPerson())
+              dispatch(resetAllValidation())
+            }}
             person={person}
-            resetAllValidation={_resetValidation}
           />
           <VerticalSeparatorDiv size='2' />
           {!_.isEmpty(person) && (
@@ -325,7 +358,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                 <Column>
                   <Select
                     data-test-id={namespace + '-sektor'}
-                    error={_validation[namespace + '-sektor']?.feilmelding}
+                    error={validation[namespace + '-sektor']?.feilmelding}
                     id={namespace + '-sektor'}
                     label={t('label:sektor')}
                     onChange={onSektorChange}
@@ -347,7 +380,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   {visEnheter && (
                     <Select
                       data-test-id={namespace + '-unit'}
-                      error={_validation[namespace + '-unit']?.feilmelding}
+                      error={validation[namespace + '-unit']?.feilmelding}
                       id={namespace + '-unit'}
                       label={t('label:enhet')}
                       onChange={onUnitChange}
@@ -373,7 +406,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <Select
                     data-test-id={namespace + '-buctype'}
                     disabled={!!_.isEmpty(valgtSektor)}
-                    error={_validation[namespace + '-buctype']?.feilmelding}
+                    error={validation[namespace + '-buctype']?.feilmelding}
                     id={namespace + '-buctype'}
                     label={t('label:buc')}
                     onChange={onBuctypeChange}
@@ -394,7 +427,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <Select
                     data-test-id={namespace + '-sedtype'}
                     disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor)}
-                    error={_validation[namespace + '-sedtype']?.feilmelding}
+                    error={validation[namespace + '-sedtype']?.feilmelding}
                     id={namespace + '-sedtype'}
                     label={t('label:sed')}
                     onChange={onSedtypeChange}
@@ -424,7 +457,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                   <CountrySelect
                     closeMenuOnSelect
                     data-test-id={namespace + '-landkode'}
-                    error={_validation[namespace + '-landkode']?.feilmelding}
+                    error={validation[namespace + '-landkode']?.feilmelding}
                     id={namespace + '-landkode'}
                     includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
                     label={t('label:land')}
@@ -441,7 +474,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                     data-test-id={namespace + '-institusjon'}
                     key={namespace + '-institusjon-' + valgtInstitusjon}
                     disabled={!!_.isEmpty(valgtLandkode)}
-                    error={_validation[namespace + '-institusjon']?.feilmelding}
+                    error={validation[namespace + '-institusjon']?.feilmelding}
                     id={namespace + '-institusjon'}
                     label={t('label:mottaker-institusjon')}
                     onChange={onInstitusjonChange}
@@ -523,7 +556,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                       <div style={{ flex: 3 }}>
                         <Select
                           data-test-id={namespace + '-tema'}
-                          error={_validation[namespace + '-tema']?.feilmelding}
+                          error={validation[namespace + '-tema']?.feilmelding}
                           id={namespace + '-tema'}
                           label={t('label:velg-tema')}
                           onChange={onTemaChange}
@@ -575,7 +608,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                         )}
                         <Select
                           data-test-id={namespace + '-saksId'}
-                          error={_validation[namespace + '-saksId']?.feilmelding}
+                          error={validation[namespace + '-saksId']?.feilmelding}
                           id={namespace + '-saksId'}
                           label={t('label:velg-fagsak')}
                           onChange={onSakIDChange}
@@ -625,22 +658,7 @@ const OpprettSak: React.FC = (): JSX.Element => {
                 </Column>
               </Row>
               <VerticalSeparatorDiv />
-              {!isValid && (
-                <Row>
-                  <Column>
-                    <ErrorSummary
-                      data-test-id='opprettsak__feiloppsummering'
-                      heading={t('validation:feiloppsummering')}
-                    >
-                      {_.filter(Object.values(_validation), v => v !== undefined).map((a: ErrorElement | undefined) => (
-                        <ErrorSummary.Item key={a?.skjemaelementId} href={a?.skjemaelementId}>{a?.feilmelding}</ErrorSummary.Item>
-                      ))}
-                    </ErrorSummary>
-                  </Column>
-                  <HorizontalSeparatorDiv size='2' />
-                  <Column />
-                </Row>
-              )}
+              <ValidationBox />
             </>
           )}
           <VerticalSeparatorDiv />
@@ -649,33 +667,41 @@ const OpprettSak: React.FC = (): JSX.Element => {
               <Column>
                 <Alert variant='success'>
                   <FlexDiv>
-                    <span>
-                      {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer}
-                    </span>
-                    <HorizontalSeparatorDiv size='0.25' />
-                    <span>
-                      {t('label:er-opprettet')}.
-                    </span>
-                    <HorizontalSeparatorDiv size='0.25' />
-                    {opprettetSak.url && (
-                      <Link
-                        className='vedlegg__lenke'
-                        href={opprettetSak.url}
-                        target='_blank' rel='noreferrer'
-                      >
-                        {t('label:gå-til-rina')}
-                      </Link>
-                    )}
+                    <FlexDiv>
+                      <span>
+                        {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer + ' ' + t('label:er-opprettet')}.
+                      </span>
+                      <HorizontalSeparatorDiv />
+                      {opprettetSak.url && (
+                        <Link
+                          className='vedlegg__lenke'
+                          href={opprettetSak.url}
+                          target='_blank' rel='noreferrer'
+                        >
+                          {t('label:gå-til-rina')}
+                        </Link>
+                      )}
+                    </FlexDiv>
+                    <HorizontalSeparatorDiv />
+                    <div>
+                      {opprettetSak.rinasaksnummer && (
+                        <DOMLink
+                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                        >
+                          {t('label:legg-til-vedlegg-til-sed')}
+                        </DOMLink>
+                      )}
+                    </div>
+                    <HorizontalSeparatorDiv />
+                    <div
+                      style={{ cursor: 'pointer' }}
+                      role='button'
+                      tabIndex={0}
+                      onKeyPress={() => dispatch(resetSentSed())} onClick={() => dispatch(resetSentSed())}
+                    >
+                      <ErrorFilled />
+                    </div>
                   </FlexDiv>
-                  <div>
-                    {opprettetSak.rinasaksnummer && (
-                      <DOMLink
-                        to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
-                      >
-                        {t('label:legg-til-vedlegg-til-sed')}
-                      </DOMLink>
-                    )}
-                  </div>
                 </Alert>
               </Column>
             </Row>

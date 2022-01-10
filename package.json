@@ -26,11 +26,11 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.12.6",
-    "@navikt/ds-icons": "^0.7.1",
-    "@navikt/ds-react": "^0.14.3",
+    "@navikt/ds-css": "^0.12.7",
+    "@navikt/ds-icons": "^0.7.2",
+    "@navikt/ds-react": "^0.14.4",
     "@sentry/browser": "^6.16.1",
-    "amplitude-js": "^8.14.1",
+    "amplitude-js": "^8.15.0",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",
     "core-js": "^3.20.2",
@@ -65,7 +65,7 @@
     "react-select": "^5.2.1",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
-    "stacktracey": "^2.1.7",
+    "stacktracey": "^2.1.8",
     "styled-components": "^5.3.3",
     "tabell": "^2.2.10"
   },
@@ -103,7 +103,7 @@
     "react-axe": "^3.5.3",
     "react-scripts": "^5.0.0",
     "read-pkg": "^7.0.0",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "simple-git": "^2.48.0",
     "standardx": "^7.0.0",
     "typescript": "^4.5.4",

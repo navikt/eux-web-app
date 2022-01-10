@@ -23,7 +23,6 @@ export interface PersonSearchProps {
   onSearchPerformed: (fnr: any) => void
   onPersonRemoved: () => void
   person?: Person | null | undefined
-  resetAllValidation: () => void
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -39,8 +38,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   onPersonFound,
   onPersonRemoved,
   onSearchPerformed,
-  person,
-  resetAllValidation
+  person
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [_fnr, setFnr] = useState<string>(initialFnr)
@@ -81,7 +79,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLocalValidation(undefined)
-    resetAllValidation()
     const newFnr = e.target.value.trim()
     setFnr(newFnr)
     if (_.isFunction(onFnrChange)) {
@@ -91,7 +88,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   const onRemovePerson = (): void => {
     setLocalValidation(undefined)
-    resetAllValidation()
     setPerson(undefined)
     if (_.isFunction(onPersonRemoved)) {
       onPersonRemoved()
@@ -141,8 +137,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 PersonSearch.propTypes = {
   className: PT.string,
   onFnrChange: PT.func,
-  onPersonFound: PT.func,
-  resetAllValidation: PT.func.isRequired
+  onPersonFound: PT.func
   // validation: ErrorElementPropType
 }
 

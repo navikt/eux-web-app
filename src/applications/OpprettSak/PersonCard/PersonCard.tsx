@@ -48,10 +48,6 @@ const RemoveButton = styled(Button)`
   align-self: center;
   justify-self: flex-end;
 `
-const ButtonLabel = styled.div`
-  display: flex;
-  align-self: center;
-`
 
 export interface PersonCardProps {
   className?: string
@@ -169,10 +165,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
               onClick={() => _onRemoveClick(person)}
             >
               <Delete width='20' height='20' />
-              <HorizontalSeparatorDiv />
-              <ButtonLabel>
-                {t('el:button-remove')}
-              </ButtonLabel>
             </RemoveButton>
           </>
         )}
@@ -186,10 +178,6 @@ const PersonCard: React.FC<PersonCardProps> = ({
               onClick={() => _onAddClick(person)}
             >
               <Add width={20} />
-              <HorizontalSeparatorDiv />
-              <ButtonLabel>
-                {t('label:legg-til')}
-              </ButtonLabel>
             </Button>
           </>
         )}
