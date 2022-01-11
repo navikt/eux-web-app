@@ -80,7 +80,7 @@ export const validateProsedyreVedUenighet = (
 
   if (prosedyreVedUenighet && prosedyreVedUenighet?.ytterligereGrunner && prosedyreVedUenighet?.ytterligereGrunner?.trim()?.length > 500) {
     v[namespace + '-ytterligereGrunner'] = {
-      feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+      feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-ytterligereGrunner'
     } as ErrorElement
     hasErrors = true

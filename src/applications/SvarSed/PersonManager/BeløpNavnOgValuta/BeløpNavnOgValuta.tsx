@@ -1,11 +1,12 @@
-import { Add, Helptext } from '@navikt/ds-icons'
+import { Add } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
@@ -16,22 +17,21 @@ import { Currency } from 'land-verktoy'
 import CountrySelect from 'landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { BodyLong, Heading, Button } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  FlexCenterSpacedDiv,
-  RadioPanelGroup,
+  FlexRadioPanels,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
+  RadioPanel,
+  RadioPanelGroup,
+  VerticalSeparatorDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
-import Tooltip from 'rc-tooltip'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
@@ -282,26 +282,14 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               error={getErrorFor(index, 'beloep')}
               namespace={namespace}
               id='beloep'
-              label={personID === 'familie'
-                ? (
-                  <FlexCenterSpacedDiv>
-                    <span>{t('label:beløp') + ' *'}</span>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <Tooltip
-                      placement='top' trigger={['hover']}
-                      overlay={<span>{t('message:help-familieytelser-beløp')}</span>}
-                    >
-                      <Helptext width='22' height='22' />
-                    </Tooltip>
-                  </FlexCenterSpacedDiv>
-                  )
-                : t('label:beløp') + ' *'}
+              description={personID === 'familie' ? t('message:help-familieytelser-beløp') : undefined}
+              label={t('label:beløp') + ' *'}
               key={namespace + '-beløp-' + (index < 0 ? _newBeløp : (ytelse?.beloep ?? ''))}
               onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
               value={index < 0 ? _newBeløp : (ytelse?.beloep ?? '')}
             />
           </Column>
-          <Column>
+          <Column style={{marginTop: personID === 'familie' ? '3rem' : '0rem' }}>
             <CountrySelect
               key={namespace + '-valuta-' + (index < 0 ? _newYtelsesNavn : (ytelse?.valuta ?? ''))}
               closeMenuOnSelect

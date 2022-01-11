@@ -122,7 +122,7 @@
   "noVedtakType": "Ingen vedtak type",
   "noYtelse": "Ingen ytelse",
 
-  "textOver500": "tekststørrelse over 500 tegn",
+  "textOverX": "tekststørrelse over {{x}} tegn",
   "til-person": " til {{person}}",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 

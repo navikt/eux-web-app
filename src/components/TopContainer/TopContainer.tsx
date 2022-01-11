@@ -27,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
   padding: 0;
-  color: var(--navds-color-text-primary);
+  color: var(--navds-semantic-color-text);
   background: var(--navds-semantic-color-canvas-background);
   display: flex;
   flex-direction: column;

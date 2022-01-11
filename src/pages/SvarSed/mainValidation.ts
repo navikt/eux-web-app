@@ -424,7 +424,7 @@ export const validateSEDEdit = (
   // @ts-ignore
   if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
     v['editor-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500') + t('validation:til-person', { person: 'SED' }),
+      feilmelding: t('validation:textOverX', {x: 500}) + t('validation:til-person', { person: 'SED' }),
       skjemaelementId: 'editor-ytterligereInfo'
     } as ErrorElement
     hasErrors = true

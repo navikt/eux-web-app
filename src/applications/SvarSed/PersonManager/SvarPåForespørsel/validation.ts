@@ -1,8 +1,8 @@
 import { HSed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
+import { checkIfNotTrue, checkLength, propagateError } from 'utils/validation'
 
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed
@@ -19,7 +19,8 @@ export const validateSvarPåForespørsel = (
     personName
   }: ValidationSvarPåForespørselProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
+
   const doWeHavePositive: boolean = !_.isEmpty((replySed as HSed)?.positivtSvar?.informasjon) ||
     !_.isEmpty((replySed as HSed)?.positivtSvar?.dokument) ||
       !_.isEmpty((replySed as HSed)?.positivtSvar?.sed)
@@ -29,81 +30,77 @@ export const validateSvarPåForespørsel = (
       !_.isEmpty((replySed as HSed)?.negativeSvar?.sed) ||
         !_.isEmpty((replySed as HSed)?.negativeSvar?.grunn)
 
-  if (!doWeHavePositive && !doWeHaveNegative) {
-    v[namespace + '-svar'] = {
-      skjemaelementId: namespace + '-svar',
-      feilmelding: t('validation:noSvarType') + (personName ? t('validation:til-person', { person: personName }) : '')
-    } as ErrorElement
-    hasErrors = true
-  }
-
   const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negative' : undefined
 
+  hasErrors.push(checkIfNotTrue(v, {
+    needle: doWeHavePositive || doWeHaveNegative,
+    id: namespace + '-svar',
+    message: 'validation:noSvarType',
+    personName
+  }))
+
   if (target === 'positivt') {
-    if (!_.isEmpty((replySed as HSed).positivtSvar?.informasjon) && (replySed as HSed).positivtSvar!.informasjon.length > 500) {
-      v[namespace + '-informasjon'] = {
-        skjemaelementId: namespace + '-informasjon',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (!_.isEmpty((replySed as HSed).positivtSvar?.dokument) && (replySed as HSed).positivtSvar!.dokument.length > 500) {
-      v[namespace + '-dokument'] = {
-        skjemaelementId: namespace + '-dokument',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (!_.isEmpty((replySed as HSed).positivtSvar?.sed) && (replySed as HSed).positivtSvar!.sed.length > 500) {
-      v[namespace + '-sed'] = {
-        skjemaelementId: namespace + '-sed',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
+
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).positivtSvar?.informasjon,
+      max: 255,
+      id: namespace + '-informasjon',
+      message: 'validation:textOverX',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).positivtSvar?.dokument,
+      max: 500,
+      id: namespace + '-dokument',
+      message: 'validation:textOverX',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).positivtSvar?.sed,
+      max: 65,
+      id: namespace + '-sed',
+      message: 'validation:textOverX',
+      personName
+    }))
   }
 
   if (target === 'negative') {
-    if (!_.isEmpty((replySed as HSed).negativeSvar?.informasjon) && (replySed as HSed).negativeSvar!.informasjon.length > 500) {
-      v[namespace + '-informasjon'] = {
-        skjemaelementId: namespace + '-informasjon',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (!_.isEmpty((replySed as HSed).negativeSvar?.dokument) && (replySed as HSed).negativeSvar!.dokument.length > 500) {
-      v[namespace + '-dokument'] = {
-        skjemaelementId: namespace + '-dokument',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (!_.isEmpty((replySed as HSed).negativeSvar?.sed) && (replySed as HSed).negativeSvar!.sed.length > 500) {
-      v[namespace + '-sed'] = {
-        skjemaelementId: namespace + '-sed',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-    // @ts-ignore
-    if (!_.isEmpty((replySed as HSed).negativeSvar.grunn) && (replySed as HSed)?.negativeSvar?.grunn?.length > 500) {
-      v[namespace + '-grunn'] = {
-        skjemaelementId: namespace + '-grunn',
-        feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-  }
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).negativeSvar?.informasjon,
+      max: 255,
+      id: namespace + '-informasjon',
+      message: 'validation:textOverX',
+      personName
+    }))
 
-  return hasErrors
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).negativeSvar?.dokument,
+      max: 500,
+      id: namespace + '-dokument',
+      message: 'validation:textOverX',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).negativeSvar?.sed,
+      max: 65,
+      id: namespace + '-sed',
+      message: 'validation:textOverX',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as HSed).negativeSvar?.grunn,
+      max: 500,
+      id: namespace + '-grunn',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+  const hasError: boolean = hasErrors.find(value => value) !== undefined
+  if (hasError) propagateError(v, namespace)
+  return hasError
 }

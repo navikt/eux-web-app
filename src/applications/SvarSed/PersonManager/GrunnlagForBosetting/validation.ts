@@ -89,7 +89,7 @@ export const validateAllGrunnlagForBosetting = (
   if (!_.isEmpty(flyttegrunn?.personligSituasjon) && flyttegrunn?.personligSituasjon!.length > 500) {
     v[namespace + '-personligSituasjon'] = {
       skjemaelementId: namespace + '-personligSituasjon',
-      feilmelding: t('validation:textOver500') + (personName ? t('validation:til-person', { person: personName }) : '')
+      feilmelding: t('validation:textOverX', {x: 500}) + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }

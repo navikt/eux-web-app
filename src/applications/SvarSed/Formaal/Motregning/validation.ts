@@ -131,7 +131,7 @@ export const validateMotregning = (
   } else {
     if (motregning?.begrunnelse.trim().length > 500) {
       v[namespace + idx + '-begrunnelse'] = {
-        feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+        feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
         skjemaelementId: namespace + idx + '-begrunnelse'
       } as ErrorElement
       hasErrors = true
@@ -140,7 +140,7 @@ export const validateMotregning = (
 
   if (motregning?.ytterligereInfo?.trim()?.length > 500) {
     v[namespace + idx + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+      feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + idx + '-ytterligereInfo'
     } as ErrorElement
     hasErrors = true

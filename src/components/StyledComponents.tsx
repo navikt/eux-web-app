@@ -69,7 +69,7 @@ export const TextAreaDiv = styled.div`
 export const MyTag = styled(Tag)`
   padding: 0.25rem 0.5rem;
   margin-left: -0.15rem;
-  color:var(--navds-color-text-primary) !important;
+  color: var(--navds-semantic-color-text) !important;
   background-color: var(--navds-semantic-color-component-background-alternate);
   border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-semantic-color-border)' : 'none'};
   border-radius: 5px;

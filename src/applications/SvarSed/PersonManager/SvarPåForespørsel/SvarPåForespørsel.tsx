@@ -1,4 +1,4 @@
-import { Helptext } from '@navikt/ds-icons'
+import { Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import TextArea from 'components/Forms/TextArea'
@@ -6,17 +6,15 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H002Sed, HSed, HSvar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
-import { Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  FlexCenterDiv,
-  RadioPanelGroup,
-  HorizontalSeparatorDiv,
+  FlexRadioPanels,
   PaddedDiv,
-  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
+  RadioPanel,
+  RadioPanelGroup,
+  VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import Tooltip from 'rc-tooltip'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -158,6 +156,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             data-test-id={namespace + '-svar'}
             error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
+            key={namespace + '-svar-' + _svar}
             name={namespace + '-svar'}
             onChange={(e: string) => {
               if (e !== _svar) {
@@ -166,23 +165,11 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             }}
           >
             <FlexRadioPanels>
-              <RadioPanel value='positivt'>
-                <FlexCenterDiv>
-                  <span>{t('el:option-svar-1')}</span>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-sende')}</span>}>
-                    <Helptext width='22' />
-                  </Tooltip>
-                </FlexCenterDiv>
+              <RadioPanel description={t('message:help-jeg-kan-sende')} value='positivt'>
+                {t('el:option-svar-1')}
               </RadioPanel>
-              <RadioPanel value='negative'>
-                <FlexCenterDiv>
-                  <span>{t('el:option-svar-2')}</span>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <Tooltip placement='top' trigger={['hover']} overlay={<span>{t('message:help-jeg-kan-ikke-sende')}</span>}>
-                    <Helptext width='22' />
-                  </Tooltip>
-                </FlexCenterDiv>
+              <RadioPanel description={t('message:help-jeg-kan-ikke-sende')}  value='negative'>
+               {t('el:option-svar-2')}
               </RadioPanel>
             </FlexRadioPanels>
           </RadioPanelGroup>
@@ -195,6 +182,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
+                  maxLength={255}
                   error={validation[namespace + '-dokument']?.feilmelding}
                   namespace={namespace}
                   id='dokument'
@@ -210,6 +198,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
+                  maxLength={500}
                   error={validation[namespace + '-informasjon']?.feilmelding}
                   namespace={namespace}
                   id='informasjon'
@@ -225,6 +214,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             <Column>
               <TextAreaDiv>
                 <TextArea
+                  maxLength={65}
                   error={validation[namespace + '-sed']?.feilmelding}
                   namespace={namespace}
                   id='sed'

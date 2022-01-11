@@ -182,7 +182,7 @@ export const validateVedtak = (
   } else {
     if (vedtak?.begrunnelse?.trim()?.length > 500) {
       v[namespace + '-begrunnelse'] = {
-        feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+        feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
         skjemaelementId: namespace + '-begrunnelse'
       } as ErrorElement
       hasErrors = true
@@ -191,7 +191,7 @@ export const validateVedtak = (
 
   if (vedtak?.ytterligereInfo?.trim()?.length > 500) {
     v[namespace + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOver500') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+      feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
       skjemaelementId: namespace + '-ytterligereInfo'
     } as ErrorElement
     hasErrors = true

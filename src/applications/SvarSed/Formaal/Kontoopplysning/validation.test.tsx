@@ -49,7 +49,7 @@ describe('applications/SvarSed/Formaal/Kontoopplysning/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('validation:textOver500Til')
+    expect(validation['test-mock-begrunnelse']?.feilmelding).toEqual('validation:textOverXTil')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })

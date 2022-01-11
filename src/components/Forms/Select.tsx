@@ -35,7 +35,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             borderStyle: 'solid',
             borderColor: props.error ? 'var(--navds-select-color-border-error)' : 'var(--navds-select-color-border)',
             borderRadius: '4px',
-            color: 'var(--navds-color-text-primary)',
+            color: 'var(--navds-semantic-color-text-primary)',
             backgroundColor: isDisabled ? 'var(--navds-semantic-color-component-background-alternate)' : 'var(--navds-select-color-background)'
           }),
           indicatorSeparator: (styles: any) => ({
@@ -59,7 +59,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
               ? 'var(--navds-semantic-color-text-inverted)'
               : isSelected
                 ? 'var(--navds-semantic-color-text-inverted)'
-                : 'var(--navds-semantic-color-text-primary)',
+                : 'var(--navds-color-text-primary)',
             backgroundColor: isFocused
               ? 'var(--navds-semantic-color-focus)'
               : isSelected

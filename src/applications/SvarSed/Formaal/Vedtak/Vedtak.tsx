@@ -390,6 +390,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
               data-no-border
               error={getErrorFor(index, 'skalYtelseUtbetales')}
               id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
+              key={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales-' + (index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales)}
               legend={t('label:skal-ytelse-utbetales') + ' *'}
               name={namespace + idx + '-borSammen'}
               onChange={(e: string) => setVedtaksperioderSkalYtelseUtbetales(e as JaNei, index, vedtaktype)}
@@ -432,6 +433,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
             data-test-id={namespace + '-gjelderAlleBarn'}
             error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
             id={namespace + '-gjelderAlleBarn'}
+            key={namespace + '-gjelderAlleBarn-' + vedtak?.gjelderAlleBarn}
             legend={t('label:vedtak-angående-alle-barn') + ' *'}
             name={namespace + '-gjelderAlleBarn'}
             onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}

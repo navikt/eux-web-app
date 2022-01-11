@@ -32,7 +32,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/validation', () => {
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
-    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:textOver500')
+    expect(validation['test-mock-krav']?.feilmelding).toEqual('validation:textOverX')
     expect(validation.test?.feilmelding).toEqual('notnull')
     expect(validation['test-mock']?.feilmelding).toEqual('notnull')
   })

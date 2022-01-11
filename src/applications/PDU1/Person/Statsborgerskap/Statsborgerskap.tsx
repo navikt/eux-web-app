@@ -194,7 +194,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
                 >
                   <Add />
                   <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new2-x', { x: t('label:statsborgerskap').toLowerCase() })}
+                  {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
                 </Button>
 
               </Column>

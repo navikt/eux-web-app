@@ -3,25 +3,24 @@ import _ from 'lodash'
 import i18n from 'i18n'
 import { Validation } from 'declarations/types'
 
-export const addError = (v: Validation, {
-  id,
-  personName,
-  message,
-  extra = {}
-}: any) => {
+export const addError = (v: Validation, {id, personName, message, extra = {}}: any) => {
   v[id] = {
     feilmelding: i18n.t(message, extra) + (personName ? i18n.t('validation:til-person', { person: personName }) : ''),
     skjemaelementId: id
   } as ErrorElement
 }
 
-export const checkIfNotEmpty = (v: Validation, {
-  needle,
-  id,
-  personName,
-  message,
-  extra
-}: any): boolean => {
+export const checkLength = (v: Validation, {needle, max = 500, id, personName, message, extra}: any): boolean => {
+  if (!_.isEmpty(needle?.trim()) && needle?.trim().length > max) {
+    const newExtra = {...extra, x: max}
+    addError(v, { id, personName, message, extra: newExtra })
+    return true
+  }
+  return false
+}
+
+
+export const checkIfNotEmpty = (v: Validation, {needle, id, personName, message, extra}: any): boolean => {
   if (_.isEmpty(needle?.trim())) {
     addError(v, { id, personName, message, extra })
     return true
@@ -29,13 +28,7 @@ export const checkIfNotEmpty = (v: Validation, {
   return false
 }
 
-export const checkIfNotTrue = (v: Validation, {
-  needle,
-  id,
-  personName,
-  message,
-  extra
-}: any): boolean => {
+export const checkIfNotTrue = (v: Validation, {needle, id, personName, message, extra}: any): boolean => {
   if (!needle) {
     addError(v, { id, personName, message, extra })
     return true
@@ -43,15 +36,7 @@ export const checkIfNotTrue = (v: Validation, {
   return false
 }
 
-export const checkIfDuplicate = (v: Validation, {
-  needle,
-  haystack,
-  index,
-  matchFn,
-  id,
-  personName,
-  message, extra
-}: any): boolean => {
+export const checkIfDuplicate = (v: Validation, {needle, haystack, index, matchFn, id, personName, message, extra}: any): boolean => {
   let duplicate: boolean
 
   if (!_.isEmpty(needle)) {

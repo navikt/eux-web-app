@@ -4,6 +4,7 @@ import { TextField } from '@navikt/ds-react'
 export interface InputProps {
   ariaLabel ?: string
   className ?: string
+  description ?: string
   error: string | null | undefined
   namespace: string
   hideLabel?: boolean
@@ -20,6 +21,7 @@ export interface InputProps {
 const Input: React.FC<InputProps> = ({
   ariaLabel,
   className,
+  description,
   error,
   hideLabel = false,
   id,
@@ -41,6 +43,7 @@ const Input: React.FC<InputProps> = ({
       aria-label={ariaLabel}
       className={className}
       data-test-id={namespace + '-' + id}
+      description={description}
       error={error}
       id={namespace + '-' + id}
       hideLabel={hideLabel}
