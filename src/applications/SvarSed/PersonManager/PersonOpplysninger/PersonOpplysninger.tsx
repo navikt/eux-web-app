@@ -8,7 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -28,13 +28,14 @@ import {
   RadioPanel,
   Row,
   VerticalSeparatorDiv,
-  FlexEndDiv
+  FlexEndDiv, PaddedHorizontallyDiv
 } from 'nav-hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validatePin, ValidationPinProps } from './validation'
+import ExtraInformation from './ExtraInformation'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -327,277 +328,297 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   }
 
   return (
-    <PaddedDiv key={namespace + '-div'}>
-      <Heading size='small'>
-        {t('label:personopplysninger')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <Input
-            error={validation[namespace + '-fornavn']?.feilmelding}
-            id='fornavn'
-            key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
-            label={t('label:fornavn') + ' *'}
-            namespace={namespace}
-            onChanged={onFornavnChange}
-            required
-            value={personInfo?.fornavn ?? ''}
-          />
-        </Column>
-        <Column>
-          <Input
-            error={validation[namespace + '-etternavn']?.feilmelding}
-            id='etternavn'
-            key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
-            label={t('label:etternavn') + ' *'}
-            namespace={namespace}
-            onChanged={onEtternavnChange}
-            required
-            value={personInfo?.etternavn ?? ''}
-          />
-        </Column>
-        <Column>
-          <DateInput
-            error={validation[namespace + '-foedselsdato']?.feilmelding}
-            id='foedselsdato'
-            key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
-            label={t('label:fødselsdato') + ' *'}
-            namespace={namespace}
-            onChanged={onFodselsdatoChange}
-            required
-            value={personInfo?.foedselsdato ?? ''}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <RadioPanelGroup
-            value={personInfo?.kjoenn}
-            data-no-border
-            data-test-id={namespace + '-kjoenn'}
-            error={validation[namespace + '-kjoenn']?.feilmelding}
-            id={namespace + '-kjoenn'}
-            key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
-            legend={t('label:kjønn') + ' *'}
-            name={namespace + '-kjoenn'}
-            onChange={onKjoennChange}
-          >
-            <FlexRadioPanels>
-              <RadioPanel value='K'>
-                {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-              </RadioPanel>
-              <RadioPanel value='M'>
-                {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-              </RadioPanel>
-              <RadioPanel value='U'>
-                {t('label:ukjent')}
-              </RadioPanel>
-            </FlexRadioPanels>
+    <>
+      <PaddedDiv key={namespace + '-div'}>
+        <Heading size='small'>
+          {t('label:personopplysninger')}
+        </Heading>
+        <VerticalSeparatorDiv size='2' />
+        <AlignStartRow>
+          <Column>
+            <Input
+              error={validation[namespace + '-fornavn']?.feilmelding}
+              id='fornavn'
+              key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
+              label={t('label:fornavn') + ' *'}
+              namespace={namespace}
+              onChanged={onFornavnChange}
+              required
+              value={personInfo?.fornavn ?? ''}
+            />
+          </Column>
+          <Column>
+            <Input
+              error={validation[namespace + '-etternavn']?.feilmelding}
+              id='etternavn'
+              key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
+              label={t('label:etternavn') + ' *'}
+              namespace={namespace}
+              onChanged={onEtternavnChange}
+              required
+              value={personInfo?.etternavn ?? ''}
+            />
+          </Column>
+          <Column>
+            <DateInput
+              error={validation[namespace + '-foedselsdato']?.feilmelding}
+              id='foedselsdato'
+              key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
+              label={t('label:fødselsdato') + ' *'}
+              namespace={namespace}
+              onChanged={onFodselsdatoChange}
+              required
+              value={personInfo?.foedselsdato ?? ''}
+            />
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='2' />
+        <AlignStartRow>
+          <Column>
+            <RadioPanelGroup
+              value={personInfo?.kjoenn}
+              data-no-border
+              data-test-id={namespace + '-kjoenn'}
+              error={validation[namespace + '-kjoenn']?.feilmelding}
+              id={namespace + '-kjoenn'}
+              key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
+              legend={t('label:kjønn') + ' *'}
+              name={namespace + '-kjoenn'}
+              onChange={onKjoennChange}
+            >
+              <FlexRadioPanels>
+                <RadioPanel value='K'>
+                  {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+                </RadioPanel>
+                <RadioPanel value='M'>
+                  {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+                </RadioPanel>
+                <RadioPanel value='U'>
+                  {t('label:ukjent')}
+                </RadioPanel>
+              </FlexRadioPanels>
 
-          </RadioPanelGroup>
+            </RadioPanelGroup>
 
-        </Column>
-      </AlignStartRow>
+          </Column>
+        </AlignStartRow>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {personInfo?.pin?.map(renderRow)}
       <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
+      <PaddedHorizontallyDiv>
+        <HorizontalLineSeparator />
+      </PaddedHorizontallyDiv>
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
-          )}
-      <VerticalSeparatorDiv />
-      <label className='navds-text-field__label navds-label'>
-        {t('label:norsk-fnr')}
-      </label>
-      <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft'>
-        {!_seeNorskPinForm
-          ? (
-            <>
-              <Column>
-                <BodyLong>
-                  {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-                </BodyLong>
-              </Column>
-              <Column>
-                <Button
-                  variant='secondary'
-                  onClick={() => _setSeeNorskPinForm(true)}
-                >
-                  <FlexCenterDiv>
-                    <Edit />
-                    <HorizontalSeparatorDiv size='0.35' />
-                    {t('label:endre')}
-                  </FlexCenterDiv>
-                </Button>
-              </Column>
-              <Column />
-            </>
-            )
-          : (
-            <>
-              <Column>
-                <Input
-                  error={validation[namespace + '-norskpin-nummer']?.feilmelding}
-                  id='norskpin-nummer'
-                  key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
-                  label=''
-                  namespace={namespace}
-                  onChanged={onNorwegianPinChange}
-                  value={norwegianPin?.identifikator}
-                />
-              </Column>
-              <Column>
-                <FlexEndDiv>
-                  <Button
-                    variant='secondary'
-                    disabled={searchingPerson}
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.search'
-                    onClick={onSearchUser}
-                  >
-                    <Search />
-                    <HorizontalSeparatorDiv />
-                    {searchingPerson
-                      ? t('message:loading-searching')
-                      : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                    {searchingPerson && <Loader />}
-                  </Button>
-                  <HorizontalSeparatorDiv size='0.35' />
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNorskPinForm(false)}
-                  >
-                    {t('el:button-cancel')}
-                  </Button>
-                </FlexEndDiv>
-              </Column>
-            </>
-            )}
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          {searchedPerson
-            ? (
-              <FlexCenterDiv>
-                <BodyLong>
-                  {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-                </BodyLong>
-                <HorizontalSeparatorDiv />
-                <Button
-                  variant='secondary'
-                  data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
-                  onClick={(e) => {
-                    buttonLogger(e)
-                    onFillOutPerson(searchedPerson)
-                  }}
-                >
-                  {t('label:fill-in-person-data')}
-                </Button>
-              </FlexCenterDiv>
-              )
-            : _.isEmpty(norwegianPin?.identifikator)
-              ? (
-                <BodyLong>
-                  {t('label:norsk-fnr-beskrivelse')}
-                </BodyLong>
-                )
-              : <div />}
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <Heading size='small'>
-            {t('label:fødested')}
-          </Heading>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='0.5' />
-      {_seeNewFoedstedForm
-        ? (
-          <>
-            <AlignStartRow key='showNewForm' className='slideInFromLeft'>
-              <Column>
-                <Input
-                  error={validation[namespace + '-foedested-by']?.feilmelding}
-                  id='foedested-by'
-                  label={t('label:by')}
-                  namespace={namespace}
-                  onChanged={onFoedestedByChange}
-                  value={personInfo!.pinMangler?.foedested?.by ?? ''}
-                />
-              </Column>
-              <Column>
-                <Input
-                  error={validation[namespace + '-foedested-region']?.feilmelding}
-                  id='foedested-region'
-                  label={t('label:region')}
-                  namespace={namespace}
-                  onChanged={onFoedestedRegionChange}
-                  value={personInfo!.pinMangler?.foedested?.region ?? ''}
-                />
-              </Column>
-              <Column>
-                <CountrySelect
-                  data-test-id={namespace + '-foedested-land'}
-                  error={validation[namespace + '-foedested-land']?.feilmelding}
-                  id={namespace + '-foedested-land'}
-                  includeList={CountryFilter.STANDARD({})}
-                  label={t('label:land')}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
-                  values={personInfo!.pinMangler?.foedested?.land ?? ''}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column flex='2' />
+          <PaddedHorizontallyDiv>
+            <Row>
               <Column>
                 <Button
                   variant='tertiary'
-                  onClick={() => setSeeNewFoedstedForm(false)}
+                  onClick={() => _setSeeNewForm(true)}
                 >
-                  <CollapseFilled />
+                  <Add />
                   <HorizontalSeparatorDiv size='0.5' />
-                  {t('label:show-less')}
+                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+                </Button>
+              </Column>
+            </Row>
+          </PaddedHorizontallyDiv>
+          )}
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <label className='navds-text-field__label navds-label'>
+          {t('label:norsk-fnr')}
+        </label>
+        <VerticalSeparatorDiv />
+        <AlignStartRow className='slideInFromLeft'>
+          {!_seeNorskPinForm
+            ? (
+              <>
+                <Column>
+                  <BodyLong>
+                    {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
+                  </BodyLong>
+                </Column>
+                <Column>
+                  <Button
+                    variant='secondary'
+                    onClick={() => _setSeeNorskPinForm(true)}
+                  >
+                    <FlexCenterDiv>
+                      <Edit />
+                      <HorizontalSeparatorDiv size='0.35' />
+                      {t('label:endre')}
+                    </FlexCenterDiv>
+                  </Button>
+                </Column>
+                <Column />
+              </>
+              )
+            : (
+              <>
+                <Column>
+                  <Input
+                    error={validation[namespace + '-norskpin-nummer']?.feilmelding}
+                    id='norskpin-nummer'
+                    key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
+                    label=''
+                    namespace={namespace}
+                    onChanged={onNorwegianPinChange}
+                    value={norwegianPin?.identifikator}
+                  />
+                </Column>
+                <Column>
+                  <FlexEndDiv>
+                    <Button
+                      variant='secondary'
+                      disabled={searchingPerson}
+                      data-amplitude='svarsed.editor.personopplysning.norskpin.search'
+                      onClick={onSearchUser}
+                    >
+                      <Search />
+                      <HorizontalSeparatorDiv />
+                      {searchingPerson
+                        ? t('message:loading-searching')
+                        : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+                      {searchingPerson && <Loader />}
+                    </Button>
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <Button
+                      variant='tertiary'
+                      onClick={() => _setSeeNorskPinForm(false)}
+                    >
+                      {t('el:button-cancel')}
+                    </Button>
+                  </FlexEndDiv>
+                </Column>
+              </>
+              )}
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            {searchedPerson
+              ? (
+                <FlexCenterDiv>
+                  <BodyLong>
+                    {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
+                  </BodyLong>
+                  <HorizontalSeparatorDiv />
+                  <Button
+                    variant='secondary'
+                    data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
+                    onClick={(e) => {
+                      buttonLogger(e)
+                      onFillOutPerson(searchedPerson)
+                    }}
+                  >
+                    {t('label:fill-in-person-data')}
+                  </Button>
+                </FlexCenterDiv>
+                )
+              : _.isEmpty(norwegianPin?.identifikator)
+                ? (
+                  <BodyLong>
+                    {t('label:norsk-fnr-beskrivelse')}
+                  </BodyLong>
+                  )
+                : <div />}
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='2' />
+        <AlignStartRow>
+          <Column>
+            <Heading size='small'>
+              {t('label:fødested')}
+            </Heading>
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
+        {_seeNewFoedstedForm
+          ? (
+            <>
+              <AlignStartRow key='showNewForm' className='slideInFromLeft'>
+                <Column>
+                  <Input
+                    error={validation[namespace + '-foedested-by']?.feilmelding}
+                    id='foedested-by'
+                    label={t('label:by')}
+                    namespace={namespace}
+                    onChanged={onFoedestedByChange}
+                    value={personInfo!.pinMangler?.foedested?.by ?? ''}
+                  />
+                </Column>
+                <Column>
+                  <Input
+                    error={validation[namespace + '-foedested-region']?.feilmelding}
+                    id='foedested-region'
+                    label={t('label:region')}
+                    namespace={namespace}
+                    onChanged={onFoedestedRegionChange}
+                    value={personInfo!.pinMangler?.foedested?.region ?? ''}
+                  />
+                </Column>
+                <Column>
+                  <CountrySelect
+                    data-test-id={namespace + '-foedested-land'}
+                    error={validation[namespace + '-foedested-land']?.feilmelding}
+                    id={namespace + '-foedested-land'}
+                    includeList={CountryFilter.STANDARD({})}
+                    label={t('label:land')}
+                    menuPortalTarget={document.body}
+                    onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
+                    values={personInfo!.pinMangler?.foedested?.land ?? ''}
+                  />
+                </Column>
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <AlignStartRow>
+                <Column flex='2' />
+                <Column>
+                  <Button
+                    variant='tertiary'
+                    onClick={() => setSeeNewFoedstedForm(false)}
+                  >
+                    <CollapseFilled />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('label:show-less')}
+                  </Button>
+                </Column>
+              </AlignStartRow>
+            </>
+            )
+          : (
+            <AlignStartRow key='seeNewForm'>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => setSeeNewFoedstedForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-x', { x: t('label:fødested') })}
                 </Button>
               </Column>
             </AlignStartRow>
-          </>
-          )
-        : (
-          <AlignStartRow key='seeNewForm'>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => setSeeNewFoedstedForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-x', { x: t('label:fødested') })}
-              </Button>
-            </Column>
-          </AlignStartRow>
-          )}
-    </PaddedDiv>
+            )}
+      </PaddedDiv>
+      {(replySed as ReplySed)?.sedType === 'H001' && (
+        <>
+          <VerticalSeparatorDiv size='2' />
+          <ExtraInformation
+            replySed={replySed}
+            parentNamespace={namespace}
+            personID={personID}
+            personName={personName}
+            updateReplySed={updateReplySed}
+          />
+        </>
+      )}
+    </>
   )
 }
 

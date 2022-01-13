@@ -37,7 +37,7 @@ export const validateKontoopplysning = (
   } else {
     if (uti.begrunnelse.length > 500) {
       v[namespace + '-begrunnelse'] = {
-        feilmelding: t('validation:textOverX', {x: 500}) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
+        feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
         skjemaelementId: namespace + '-begrunnelse'
       } as ErrorElement
       hasErrors = true

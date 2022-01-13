@@ -20,7 +20,8 @@ describe('components/PersonSearch/PersonSearch', () => {
     onPersonFound: jest.fn(),
     onPersonRemoved: jest.fn(),
     onSearchPerformed: jest.fn(),
-    person: samplePerson
+    person: samplePerson,
+    value: ''
   }
 
   beforeEach(() => {

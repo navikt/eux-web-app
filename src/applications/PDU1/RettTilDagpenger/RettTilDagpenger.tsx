@@ -35,7 +35,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
     if (!checked) {
       const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
       delete newReplySed.rettTilDagpenger
-      dispatch(setReplySed(newReplySed))
+      dispatch(setReplySed!(newReplySed))
     }
     setRettTilDagpengerCheckbox(checked)
   }
@@ -44,7 +44,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
     if (!checked) {
       const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
       delete newReplySed.ikkeRettTilDagpenger
-      dispatch(setReplySed(newReplySed))
+      dispatch(setReplySed!(newReplySed))
     }
     setIkkeRettTilDagpengerCheckbox(checked)
   }

@@ -23,6 +23,7 @@ export interface PersonSearchProps {
   onSearchPerformed: (fnr: any) => void
   onPersonRemoved: () => void
   person?: Person | null | undefined
+  value: string | undefined
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -38,13 +39,18 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   onPersonFound,
   onPersonRemoved,
   onSearchPerformed,
-  person
+  person,
+  value
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_fnr, setFnr] = useState<string>(initialFnr)
+  const [_fnr, setFnr] = useState<string>(initialFnr ?? value)
   const [_person, setPerson] = useState<Person | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
+
+  useEffect(() => {
+    setFnr(value ?? initialFnr)
+  }, [value])
 
   const isPersonValid = useCallback((person: Person) =>
     person?.fornavn?.length !== undefined && person?.fnr !== undefined,

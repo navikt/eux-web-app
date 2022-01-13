@@ -81,10 +81,11 @@ export interface SlidePageProps {
   initialPage: string
   initialDirection: string
   changeModeFunc: MutableRefObject<ChangeModeFunction | null>
+  withSidebar ?: boolean
   divA1: JSX.Element
-  divA2: JSX.Element
+  divA2?: JSX.Element
   divB1: JSX.Element
-  divB2: JSX.Element
+  divB2?: JSX.Element
 }
 
 export enum Slide {
@@ -103,6 +104,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
   initialPage,
   initialDirection,
   changeModeFunc,
+  withSidebar = true,
   divA1,
   divA2,
   divB1,
@@ -139,8 +141,10 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         dispatch(startPageStatistic(page))
         setPositionContentA(Slide.LEFT)
         setPositionContentB(Slide.RIGHT)
-        setPositionSidebarA(Slide.ALT_LEFT)
-        setPositionSidebarB(Slide.ALT_RIGHT)
+        if (withSidebar) {
+          setPositionSidebarA(Slide.ALT_LEFT)
+          setPositionSidebarB(Slide.ALT_RIGHT)
+        }
         if (callback) {
           callback()
         }
@@ -149,15 +153,19 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         dispatch(logPageStatistics('editor', 'selection'))
         setPositionContentA(Slide.A_GOING_TO_RIGHT)
         setPositionContentB(Slide.B_GOING_TO_RIGHT)
-        setPositionSidebarA(Slide.A_GOING_TO_LEFT)
-        setPositionSidebarB(Slide.B_GOING_TO_LEFT)
+        if (withSidebar) {
+          setPositionSidebarA(Slide.A_GOING_TO_LEFT)
+          setPositionSidebarB(Slide.B_GOING_TO_LEFT)
+        }
         setAnimating(true)
         setTimeout(() => {
           console.log('Timeout end')
           setPositionContentA(Slide.LEFT)
           setPositionContentB(Slide.RIGHT)
-          setPositionSidebarA(Slide.ALT_LEFT)
-          setPositionSidebarB(Slide.ALT_RIGHT)
+          if (withSidebar) {
+            setPositionSidebarA(Slide.ALT_LEFT)
+            setPositionSidebarB(Slide.ALT_RIGHT)
+          }
           setAnimating(false)
           if (callback) {
             callback()
@@ -165,15 +173,19 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         }, timeout)
       }
       setContentA(divA1)
-      setSidebarB(divA2)
+      if (divA2) {
+        setSidebarB(divA2)
+      }
     }
     if (page === 'B') {
       if (!direction || direction === 'none') {
         dispatch(startPageStatistic('editor'))
         setPositionContentA(Slide.ALT_LEFT)
         setPositionContentB(Slide.ALT_RIGHT)
-        setPositionSidebarA(Slide.LEFT)
-        setPositionSidebarB(Slide.RIGHT)
+        if (withSidebar) {
+          setPositionSidebarA(Slide.LEFT)
+          setPositionSidebarB(Slide.RIGHT)
+        }
         if (callback) {
           callback()
         }
@@ -182,15 +194,19 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         dispatch(logPageStatistics('selection', 'editor'))
         setPositionContentA(Slide.A_GOING_TO_LEFT)
         setPositionContentB(Slide.B_GOING_TO_LEFT)
-        setPositionSidebarA(Slide.A_GOING_TO_RIGHT)
-        setPositionSidebarB(Slide.B_GOING_TO_RIGHT)
+        if (withSidebar) {
+          setPositionSidebarA(Slide.A_GOING_TO_RIGHT)
+          setPositionSidebarB(Slide.B_GOING_TO_RIGHT)
+        }
         setAnimating(true)
         setTimeout(() => {
           console.log('Timeout end')
           setPositionContentA(Slide.ALT_LEFT)
           setPositionContentB(Slide.ALT_RIGHT)
-          setPositionSidebarA(Slide.LEFT)
-          setPositionSidebarB(Slide.RIGHT)
+          if (withSidebar) {
+            setPositionSidebarA(Slide.LEFT)
+            setPositionSidebarB(Slide.RIGHT)
+          }
           setAnimating(false)
           if (callback) {
             callback()
@@ -198,7 +214,9 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         }, timeout)
       }
       setContentB(divB1)
-      setSidebarA(divB2)
+      if (withSidebar) {
+        setSidebarA(divB2)
+      }
     }
   }
 
@@ -209,7 +227,9 @@ export const SlidePage: React.FC<SlidePageProps> = ({
   useEffect(() => {
     if (!_mounted) {
       setContentA(divA1)
-      setSidebarB(divA2)
+      if (withSidebar) {
+        setSidebarB(divA2)
+      }
       changeMode(initialPage, initialDirection)
       setMounted(true)
     }
@@ -260,27 +280,31 @@ export const SlidePage: React.FC<SlidePageProps> = ({
           </WindowDiv>
         </ContainerDiv>
       </Content>
-      <FadingLineSeparator className='fadeIn'>
+      {withSidebar && (
+        <>
+          <FadingLineSeparator className='fadeIn'>
           &nbsp;
-      </FadingLineSeparator>
-      <Content style={{ width: '23.5rem' }}>
-        <ContainerDiv>
-          <WindowDiv>
-            <AnimatableDiv
-              key='animatableDivA'
-              className={classNames(cls(positionSidebarA))}
-            >
-              {sidebarA}
-            </AnimatableDiv>
-            <AnimatableDiv
-              key='animatableDivB'
-              className={classNames(cls(positionSidebarB))}
-            >
-              {sidebarB}
-            </AnimatableDiv>
-          </WindowDiv>
-        </ContainerDiv>
-      </Content>
+          </FadingLineSeparator>
+          <Content style={{ width: '23.5rem' }}>
+            <ContainerDiv>
+              <WindowDiv>
+                <AnimatableDiv
+                  key='animatableDivA'
+                  className={classNames(cls(positionSidebarA))}
+                >
+                  {sidebarA}
+                </AnimatableDiv>
+                <AnimatableDiv
+                  key='animatableDivB'
+                  className={classNames(cls(positionSidebarB))}
+                >
+                  {sidebarB}
+                </AnimatableDiv>
+              </WindowDiv>
+            </ContainerDiv>
+          </Content>
+        </>
+      )}
       <Margin />
     </Container>
   )

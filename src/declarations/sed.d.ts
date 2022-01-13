@@ -10,9 +10,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H002Sed
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H002'
+export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002'
 
 export type SedCategory = 'perioderMedArbeid' | 'perioderMedTrygd' |
   'perioderMedYtelser' | 'perioderMedPensjon'
@@ -457,5 +457,7 @@ export interface HSed extends BaseReplySed {
   tema?: string
   fagsakId?: string
 }
+
+export interface H001Sed extends HSed {}
 
 export interface H002Sed extends HSed {}

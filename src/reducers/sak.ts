@@ -55,6 +55,7 @@ export const initialSakState: SakState = {
 const sakReducer = (state: SakState = initialSakState, action: Action | ActionWithPayload = { type: '' }): SakState => {
   switch (action.type) {
     case types.APP_CLEAN_DATA:
+    case types.SAK_CLEAN_DATA:
       return initialSakState
 
     case types.SAK_FAGSAKER_RESET:
@@ -133,23 +134,7 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
     case types.SAK_SEND_SUCCESS:
       return {
         ...state,
-        opprettetSak: (action as ActionWithPayload).payload,
-        // do an app reset
-        arbeidsgivere: [],
-        buctype: undefined,
-        fagsaker: undefined,
-        familierelasjoner: [],
-        institusjonList: undefined,
-        institusjon: undefined,
-        landkode: undefined,
-        person: undefined,
-        personRelatert: undefined,
-        saksId: undefined,
-        sedtype: undefined,
-        sektor: undefined,
-        tema: undefined,
-        unit: undefined,
-        fnr: undefined
+        opprettetSak: (action as ActionWithPayload).payload
       }
 
     case types.SAK_PROPERTY_SET:

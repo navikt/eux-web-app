@@ -17,8 +17,10 @@ import FormålManager from 'applications/SvarSed/Formaal/FormålManager'
 import SEDType from 'applications/SvarSed/Formaal/SEDType'
 import Tema from 'applications/SvarSed/Formaal/Tema'
 import Adresser from 'applications/SvarSed/PersonManager/Adresser/Adresser'
+import Anmodning from 'applications/SvarSed/PersonManager/Anmodning/Anmodning'
 import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
 import BeløpNavnOgValuta from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/BeløpNavnOgValuta'
+import EndredeForhold from 'applications/SvarSed/PersonManager/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/PersonManager/Familierelasjon/Familierelasjon'
 import Forsikring from 'applications/SvarSed/PersonManager/Forsikring/Forsikring'
 import GrunnlagForBosetting from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/GrunnlagForBosetting'
@@ -364,7 +366,10 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               { label: t('el:option-personmanager-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
               { label: t('el:option-personmanager-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
               { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
-              { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H' }
+              { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
+              { label: t('el:option-personmanager-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
+              { label: t('el:option-personmanager-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+              { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' }
             ]}
             viewValidation={view}
             replySed={replySed}

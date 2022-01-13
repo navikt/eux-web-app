@@ -289,7 +289,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newBeløp : (ytelse?.beloep ?? '')}
             />
           </Column>
-          <Column style={{marginTop: personID === 'familie' ? '3rem' : '0rem' }}>
+          <Column style={{ marginTop: personID === 'familie' ? '3rem' : '0rem' }}>
             <CountrySelect
               key={namespace + '-valuta-' + (index < 0 ? _newYtelsesNavn : (ytelse?.valuta ?? ''))}
               closeMenuOnSelect

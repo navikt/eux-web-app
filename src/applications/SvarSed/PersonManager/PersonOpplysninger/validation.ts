@@ -7,20 +7,49 @@ import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPersonOpplysningProps {
-  personInfo: PersonInfo,
-  namespace: string,
+  personInfo: PersonInfo
+  namespace: string
   personName: string
 }
 
 export interface ValidationPinProps {
-  pin: Pin,
-  pins: Array<Pin>,
+  pin: Pin
+  pins: Array<Pin>
+  index ?: number
+  namespace: string
+  personName: string
+}
+
+export interface ValidationExtraInformationProps {
+  status: string
   index ?: number
   namespace: string
   personName: string
 }
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
+
+export const validateExtraInformation = (
+  v: Validation,
+  t: TFunction,
+  {
+    status,
+    index,
+    namespace,
+    personName
+  }: ValidationExtraInformationProps
+): boolean => {
+  let hasErrors: boolean = false
+  const idx = getIdx(index)
+
+  hasErrors ||= checkIfNotEmpty(v, {
+    needle: status,
+    id: namespace + idx + '-status',
+    message: 'validation:nostatus',
+    personName
+  })
+  return hasErrors
+}
 
 export const validatePin = (
   v: Validation,

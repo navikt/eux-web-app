@@ -23,12 +23,12 @@ const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
-const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
+const Anmodning: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   setReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}: PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     validation
@@ -72,7 +72,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
       }
 
       delete (newReplySed as HSed).negativeSvar
-      dispatch(setReplySed!(newReplySed))
+      dispatch(setReplySed(newReplySed))
     } else {
       const newNegativtSvar = {
         informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon ?? '' : (replySed as HSed)?.negativeSvar?.informasjon ?? '',
@@ -89,7 +89,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         negativeSvar: newNegativtSvar
       }
       delete (newReplySed as HSed).positivtSvar
-      dispatch(setReplySed!(newReplySed))
+      dispatch(setReplySed(newReplySed))
     }
   }
 
@@ -248,4 +248,4 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   )
 }
 
-export default SvarPåForespørsel
+export default Anmodning

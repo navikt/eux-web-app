@@ -84,6 +84,7 @@
   "er-opprettet": "er opprettet",
   "etternavn": "Etternavn",
   "etternavn-ved-foedsel": "Etternavn ved foedsel",
+  "extra-information": "Ytterligere informasjon",
 
   "fagsak" : "Fagsak",
   "fagsakNr" : "Fagsak nr.",
@@ -246,6 +247,7 @@
   "person": "Person",
   "person-navn": "Navn på person",
   "personen-det-gjelder": "Personen det gjelder",
+  "personens-status": "Personens status",
   "personmanager": "Velg personer og fyll inn opplysninger",
   "personopplysninger": "Personopplysninger",
   "pins": "PINs",
@@ -265,6 +267,7 @@
   "relasjon-til-barn" : "Relasjon til det enkelte barn",
   "relasjonens-varighet": "Relasjonens varighet",
   "replySed": "svarSED",
+  "reset": "Nullstill",
   "rett-til-dagpenger": "Rett til dagpenger",
   "rett-til-stønad": "Rett til stønad?",
   "rett-til-ytelser" : "Rett til ytelser",

@@ -157,7 +157,7 @@ export interface PersonManagerProps {
   forms: Array<Form>
   replySed: ReplySed | PDU1 | null | undefined
   viewValidation: boolean
-  setReplySed: (replySed: ReplySed) => void
+  setReplySed?: (replySed: ReplySed) => void
   updateReplySed: (needle: string, value: any) => void
 }
 
@@ -166,7 +166,7 @@ export interface PersonManagerFormProps {
   parentNamespace: string
   personID: string | undefined
   personName: string
-  setReplySed: (replySed: ReplySed | PDU1) => void
+  setReplySed?: (replySed: ReplySed | PDU1) => void
   updateReplySed: (needle: string, value: any) => void
   options ?: any
 }
@@ -184,7 +184,7 @@ export interface Form extends Option {
   options?: any
 }
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+export const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -509,7 +509,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
       {_seeNewPersonModal && (
         <AddPersonModal
           replySed={replySed as ReplySed}
-          setReplySed={setReplySed}
+          setReplySed={setReplySed!}
           parentNamespace={namespace}
           onModalClose={() => setSeeNewPersonModal(false)}
         />

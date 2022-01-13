@@ -59,6 +59,7 @@ const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`
 const SEDPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
   margin-left: 3rem;
+  margin-right 0.5rem;
   &:hover {
     color: var(--navds-color-text-primary) !important;
     background-color: var(--navds-semantic-color-interaction-primary-hover-subtle) !important;
