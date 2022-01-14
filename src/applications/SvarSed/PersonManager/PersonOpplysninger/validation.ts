@@ -45,7 +45,7 @@ export const validateExtraInformation = (
   hasErrors ||= checkIfNotEmpty(v, {
     needle: status,
     id: namespace + idx + '-status',
-    message: 'validation:nostatus',
+    message: 'validation:noStatus',
     personName
   })
   return hasErrors

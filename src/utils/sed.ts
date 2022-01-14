@@ -16,3 +16,7 @@ export const isU002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const isU004Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U004'
 
 export const isU017Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U017'
+
+export const isH001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H001'
+
+export const isH002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H002'

@@ -5,6 +5,7 @@ import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/Prose
 import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
+import { validateEndredeForhold } from 'applications/SvarSed/PersonManager/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/PersonManager/Forsikring/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/PersonManager/GrunnlagForBosetting/validation'
@@ -54,7 +55,7 @@ import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
-import { isFSed, isHSed, isUSed } from 'utils/sed'
+import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -330,10 +331,23 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     })
     hasErrors = hasErrors || _error
 
-    _error = validateSvarPåForespørsel(v, t, {
-      replySed, namespace: `personmanager-${personID}-svarpåforespørsel`, personName: t('label:svar-på-forespørsel').toLowerCase()
-    })
-    hasErrors = hasErrors || _error
+    if (isH002Sed(replySed)) {
+      _error = validateSvarPåForespørsel(v, t, {
+        replySed,
+        namespace: `personmanager-${personID}-svarpåforespørsel`,
+        personName: t('label:svar-på-forespørsel').toLowerCase()
+      })
+      hasErrors = hasErrors || _error
+    }
+
+    if (isH001Sed(replySed)) {
+      _error = validateEndredeForhold(v, t, {
+        ytterligereInfo: _.get(replySed, 'ytterligereInfo'),
+        namespace: `personmanager-${personID}-endredeforhold`,
+        personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      })
+      hasErrors = hasErrors || _error
+    }
   }
 
   return hasErrors
@@ -420,14 +434,15 @@ export const validateSEDEdit = (
       }
     }
   }
-
-  // @ts-ignore
-  if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
-    v['editor-ytterligereInfo'] = {
-      feilmelding: t('validation:textOverX', { x: 500 }) + t('validation:til-person', { person: 'SED' }),
-      skjemaelementId: 'editor-ytterligereInfo'
-    } as ErrorElement
-    hasErrors = true
+  if (!isH001Sed(replySed)) {
+    // @ts-ignore
+    if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
+      v['editor-ytterligereInfo'] = {
+        feilmelding: t('validation:textOverX', { x: 500 }) + t('validation:til-person', { person: 'SED' }),
+        skjemaelementId: 'editor-ytterligereInfo'
+      } as ErrorElement
+      hasErrors = true
+    }
   }
 
   return hasErrors

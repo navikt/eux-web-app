@@ -9,6 +9,7 @@
   "alle" : "Alle",
   "andre-mottatte-utbetalinger": "Andre mottatte utbetalinger",
   "anmodning-grunner" : "Grunner til anmodning om motregning ved for mye utbetalt",
+  "anmodning-om-informasjon": "Melding/Anmodning om informasjon",
   "anmodning-om-motregning": "Anmodning eller svar på anmodning om motregning av familieytelser for barn",
   "anmodning-om-motregning-barn": "Anmodning om motregning per barn",
   "anmodning-om-motregning-svar-barn": "Svar på anmodning om motregning per barn",
@@ -361,6 +362,7 @@
 
   "ytelse": "Ytelse",
   "ytterligere-informasjon": "Ytterligere informasjon",
+  "ytterligere-informasjon_endrede_forhold": "Ytterligere informasjon/endrede forhold",
   "ytterligere-informasjon-til-sed" : "Ytterlige anmodning eller informasjon til SED",
   "ytterligere-grunner-til-uenighet":  "Ytterligere grunner til uenighet",
 

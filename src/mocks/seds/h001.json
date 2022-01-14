@@ -51,19 +51,14 @@
       }
     ]
   },
-  "vedlagteDokumenttyper": {
-    "dokumenttyper": [
-      "søknad"
-    ],
-    "andreDokumenttyper": [
-      "æøå"
-    ]
-  },
-  "positivtSvar": {
+  "anmodning": {
     "informasjon": "æøå",
     "dokument": "æøå",
     "sed": "æøå"
   },
-  "negativeSvar": {},
-  "ytterligereInfo": "æøå"
+
+  "ytterligereInfo": {
+    "velg": "01",
+    "tekst": "tekst"
+  }
 }

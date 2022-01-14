@@ -1,8 +1,7 @@
-import { HSed, ReplySed } from 'declarations/sed'
+import { H001Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { TFunction } from 'react-i18next'
-import { checkIfNotTrue, checkLength, propagateError } from 'utils/validation'
+import { checkLength, propagateError } from 'utils/validation'
 
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed
@@ -21,83 +20,30 @@ export const validateSvarPåForespørsel = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  const doWeHavePositive: boolean = !_.isEmpty((replySed as HSed)?.positivtSvar?.informasjon) ||
-    !_.isEmpty((replySed as HSed)?.positivtSvar?.dokument) ||
-      !_.isEmpty((replySed as HSed)?.positivtSvar?.sed)
-
-  const doWeHaveNegative: boolean = !!((replySed as HSed)?.negativeSvar?.informasjon) ||
-    !_.isEmpty((replySed as HSed)?.negativeSvar?.dokument) ||
-      !_.isEmpty((replySed as HSed)?.negativeSvar?.sed) ||
-        !_.isEmpty((replySed as HSed)?.negativeSvar?.grunn)
-
-  const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negative' : undefined
-
-  hasErrors.push(checkIfNotTrue(v, {
-    needle: doWeHavePositive || doWeHaveNegative,
-    id: namespace + '-svar',
-    message: 'validation:noSvarType',
+  hasErrors.push(checkLength(v, {
+    needle: (replySed as H001Sed).anmodning?.informasjon,
+    max: 255,
+    id: namespace + '-informasjon',
+    message: 'validation:textOverX',
     personName
   }))
 
-  if (target === 'positivt') {
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).positivtSvar?.informasjon,
-      max: 255,
-      id: namespace + '-informasjon',
-      message: 'validation:textOverX',
-      personName
-    }))
+  hasErrors.push(checkLength(v, {
+    needle: (replySed as H001Sed).anmodning?.dokument,
+    max: 500,
+    id: namespace + '-dokument',
+    message: 'validation:textOverX',
+    personName
+  }))
 
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).positivtSvar?.dokument,
-      max: 500,
-      id: namespace + '-dokument',
-      message: 'validation:textOverX',
-      personName
-    }))
+  hasErrors.push(checkLength(v, {
+    needle: (replySed as H001Sed).anmodning?.sed,
+    max: 65,
+    id: namespace + '-sed',
+    message: 'validation:textOverX',
+    personName
+  }))
 
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).positivtSvar?.sed,
-      max: 65,
-      id: namespace + '-sed',
-      message: 'validation:textOverX',
-      personName
-    }))
-  }
-
-  if (target === 'negative') {
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).negativeSvar?.informasjon,
-      max: 255,
-      id: namespace + '-informasjon',
-      message: 'validation:textOverX',
-      personName
-    }))
-
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).negativeSvar?.dokument,
-      max: 500,
-      id: namespace + '-dokument',
-      message: 'validation:textOverX',
-      personName
-    }))
-
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).negativeSvar?.sed,
-      max: 65,
-      id: namespace + '-sed',
-      message: 'validation:textOverX',
-      personName
-    }))
-
-    hasErrors.push(checkLength(v, {
-      needle: (replySed as HSed).negativeSvar?.grunn,
-      max: 500,
-      id: namespace + '-grunn',
-      message: 'validation:textOverX',
-      personName
-    }))
-  }
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)
   return hasError

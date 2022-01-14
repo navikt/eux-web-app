@@ -49,7 +49,7 @@ import * as types from 'constants/actionTypes'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, HSed, ReplySed } from 'declarations/sed'
+import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
 import FileFC, { File } from 'forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
@@ -70,7 +70,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
-import { isFSed, isHSed, isSed, isUSed } from 'utils/sed'
+import { isFSed, isH001Sed, isH002Sed, isHSed, isSed, isUSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -346,8 +346,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           <VerticalSeparatorDiv />
           <PersonManager
             forms={[
-              { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: 'F', barn: true },
-              { label: t('el:option-personmanager-person'), value: 'person_h', component: PersonOpplysninger, type: ['U', 'H'] },
+              { label: t('el:option-personmanager-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], barn: true },
               { label: t('el:option-personmanager-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
               { label: t('el:option-personmanager-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], barn: true },
               { label: t('el:option-personmanager-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F' },
@@ -390,23 +389,28 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           <VerticalSeparatorDiv size='2' />
         </>
       )}
-      <VerticalSeparatorDiv />
-      <Row>
-        <Column flex='2'>
-          <TextAreaDiv>
-            <TextArea
-              namespace={namespace}
-              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              key={namespace + '-' + replySed?.sedType}
-              id='ytterligereInfo'
-              label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setComment}
-              value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
-            />
-          </TextAreaDiv>
-        </Column>
-        <Column />
-      </Row>
+
+      {!isH001Sed(replySed) && (
+        <>
+          <VerticalSeparatorDiv />
+          <Row>
+            <Column flex='2'>
+              <TextAreaDiv>
+                <TextArea
+                  namespace={namespace}
+                  error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+                  key={namespace + '-' + replySed?.sedType}
+                  id='ytterligereInfo'
+                  label={t('label:ytterligere-informasjon-til-sed')}
+                  onChanged={setComment}
+                  value={isH002Sed(replySed) ? (replySed as H002Sed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
+                />
+              </TextAreaDiv>
+            </Column>
+            <Column />
+          </Row>
+        </>
+      )}
       <VerticalSeparatorDiv size='2' />
       <Attachments
         fnr={fnr}

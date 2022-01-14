@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { H002Sed, HSed, HSvar, HSvarType } from 'declarations/sed'
+import { H002Sed, HSvar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
 import {
   AlignStartRow,
@@ -35,14 +35,14 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
   } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
 
-  const doWeHavePositive: boolean = !_.isEmpty((replySed as HSed)?.positivtSvar?.informasjon) ||
-    !_.isEmpty((replySed as HSed)?.positivtSvar?.dokument) ||
-    !_.isEmpty((replySed as HSed)?.positivtSvar?.sed)
+  const doWeHavePositive: boolean = !_.isEmpty((replySed as H002Sed)?.positivtSvar?.informasjon) ||
+    !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
+    !_.isEmpty((replySed as H002Sed)?.positivtSvar?.sed)
 
-  const doWeHaveNegative: boolean = !_.isEmpty((replySed as HSed)?.negativeSvar?.informasjon) ||
-    !_.isEmpty((replySed as HSed)?.negativeSvar?.dokument) ||
-    !_.isEmpty((replySed as HSed)?.negativeSvar?.sed) ||
-    !_.isEmpty((replySed as HSed)?.negativeSvar?.grunn)
+  const doWeHaveNegative: boolean = !_.isEmpty((replySed as H002Sed)?.negativeSvar?.informasjon) ||
+    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.dokument) ||
+    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.sed) ||
+    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.grunn)
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
     doWeHavePositive
@@ -57,9 +57,9 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
       const newPositivtSvar: HSvar = {
-        informasjon: (svarChanged ? (replySed as HSed)?.negativeSvar?.informasjon : (replySed as HSed)?.positivtSvar?.informasjon) ?? '',
-        dokument: (svarChanged ? (replySed as HSed)?.negativeSvar?.dokument : (replySed as HSed)?.positivtSvar?.dokument) ?? '',
-        sed: (svarChanged ? (replySed as HSed)?.negativeSvar?.sed : (replySed as HSed)?.positivtSvar?.sed) ?? ''
+        informasjon: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
+        dokument: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
+        sed: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -71,13 +71,13 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         positivtSvar: newPositivtSvar
       }
 
-      delete (newReplySed as HSed).negativeSvar
+      delete (newReplySed as H002Sed).negativeSvar
       dispatch(setReplySed!(newReplySed))
     } else {
       const newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as HSed)?.positivtSvar?.informasjon ?? '' : (replySed as HSed)?.negativeSvar?.informasjon ?? '',
-        dokument: svarChanged ? (replySed as HSed)?.positivtSvar?.dokument ?? '' : (replySed as HSed)?.negativeSvar?.dokument ?? '',
-        sed: svarChanged ? (replySed as HSed)?.positivtSvar?.sed ?? '' : (replySed as HSed)?.negativeSvar?.sed ?? ''
+        informasjon: svarChanged ? (replySed as H002Sed)?.positivtSvar?.informasjon ?? '' : (replySed as H002Sed)?.negativeSvar?.informasjon ?? '',
+        dokument: svarChanged ? (replySed as H002Sed)?.positivtSvar?.dokument ?? '' : (replySed as H002Sed)?.negativeSvar?.dokument ?? '',
+        sed: svarChanged ? (replySed as H002Sed)?.positivtSvar?.sed ?? '' : (replySed as H002Sed)?.negativeSvar?.sed ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -88,7 +88,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
         ...(replySed as H002Sed),
         negativeSvar: newNegativtSvar
       }
-      delete (newReplySed as HSed).positivtSvar
+      delete (newReplySed as H002Sed).positivtSvar
       dispatch(setReplySed!(newReplySed))
     }
   }
@@ -131,7 +131,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const data = _svar === 'positivt' ? (replySed as HSed)?.positivtSvar : (replySed as HSed)?.negativeSvar
+  const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativeSvar
 
   return (
     <PaddedDiv>

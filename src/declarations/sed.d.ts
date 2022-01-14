@@ -447,6 +447,21 @@ export interface U017Sed extends U002Sed {
 }
 
 export interface HSed extends BaseReplySed {
+  tema?: string
+  fagsakId?: string
+}
+
+export interface H001YtterligereInfo {
+  velg: string
+  tekst: string
+}
+
+export interface H001Sed extends HSed {
+  anmodning: HSvar
+  ytterligereInfo: H001YtterligereInfo
+}
+
+export interface H002Sed extends HSed {
   vedlagteDokumenttyper: {
     dokumenttyper: Array<string>
     andreDokumenttyper: Array<string>
@@ -454,10 +469,4 @@ export interface HSed extends BaseReplySed {
   positivtSvar?: HSvar
   negativeSvar?: HSvar
   ytterligereInfo: string
-  tema?: string
-  fagsakId?: string
 }
-
-export interface H001Sed extends HSed {}
-
-export interface H002Sed extends HSed {}
