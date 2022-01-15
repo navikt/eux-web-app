@@ -136,7 +136,7 @@
     "prop-types": "^15.7.2",
     "react-axe": "^3.5.3",
     "read-pkg": "^7.0.0",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "standardx": "^7.0.0",
     "typescript": "^4.4.3",
     "write-pkg": "^5.0.0"
