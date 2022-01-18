@@ -9,7 +9,7 @@ import { State } from 'declarations/reducers'
 import { Validation, VedleggSendResponse } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
-import ValidationBox from 'pages/SvarSed/ValidationBox'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -168,7 +168,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv size='2' />
             </>
           )}
-          <ValidationBox />
+          <ValidationBox validation={validation} />
           {vedleggResponse && (
             <>
               <VerticalSeparatorDiv size='2' />

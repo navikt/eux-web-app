@@ -8,7 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -35,7 +35,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validatePin, ValidationPinProps } from './validation'
-import ExtraInformation from './ExtraInformation'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -606,18 +605,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             </AlignStartRow>
             )}
       </PaddedDiv>
-      {(replySed as ReplySed)?.sedType === 'H001' && (
-        <>
-          <VerticalSeparatorDiv size='2' />
-          <ExtraInformation
-            replySed={replySed}
-            parentNamespace={namespace}
-            personID={personID}
-            personName={personName}
-            updateReplySed={updateReplySed}
-          />
-        </>
-      )}
     </>
   )
 }

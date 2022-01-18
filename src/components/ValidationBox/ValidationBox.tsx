@@ -1,15 +1,19 @@
-import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorSummary } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 
-const ValidationBox = (): JSX.Element => {
+export interface ValidationBoxProps {
+  validation: Validation,
+  eventName?: string
+}
+
+const ValidationBox: React.FC<ValidationBoxProps> = ({
+  validation,
+  eventName = 'feillenke'
+}: ValidationBoxProps): JSX.Element => {
   const { t } = useTranslation()
-
-  const validation: Validation = useSelector<State, any>(state => state.validation.status)
 
   const isValid = _.find(_.values(validation), (e) => e !== undefined && e.feilmelding !== 'notnull') === undefined
 
@@ -18,7 +22,7 @@ const ValidationBox = (): JSX.Element => {
   }
   return (
     <ErrorSummary
-      data-test-id='opprettsak__feiloppsummering'
+      data-test-id='validationBox'
       heading={t('validation:feiloppsummering')}
     >
       {Object.values(validation)
@@ -40,7 +44,7 @@ const ValidationBox = (): JSX.Element => {
                   behavior: 'smooth'
                 })
               } else {
-                document.dispatchEvent(new CustomEvent('feillenke', { detail: item }))
+                document.dispatchEvent(new CustomEvent(eventName, { detail: item }))
               }
             }}
           >

@@ -31,7 +31,7 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import ValidationBox from 'pages/SvarSed/ValidationBox'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -67,6 +67,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     completingPdu1,
     pdu1,
     jornalførePdu1Response,
+    validation,
     view
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
   const currentEntry = useSelector<State, LocalStorageEntry<PDU1> | undefined>(
@@ -210,7 +211,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <PreviewPDU1 />
       <VerticalSeparatorDiv size='2' />
-      <ValidationBox />
+      <ValidationBox validation={validation} />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>

@@ -64,7 +64,7 @@ import {
   Row,
   VerticalSeparatorDiv
 } from 'nav-hoykontrast'
-import ValidationBox from 'pages/SvarSed/ValidationBox'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -367,8 +367,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               { label: t('el:option-personmanager-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
               { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
               { label: t('el:option-personmanager-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
-              { label: t('el:option-personmanager-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
-              { label: t('el:option-personmanager-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' }
+              { label: t('el:option-personmanager-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' }
             ]}
             viewValidation={view}
             replySed={replySed}
@@ -428,7 +427,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         {gettingPreviewFile && <Loader />}
       </Button>
       <VerticalSeparatorDiv size='2' />
-      <ValidationBox />
+      <ValidationBox validation={validation} />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>
