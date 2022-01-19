@@ -168,7 +168,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv size='2' />
             </>
           )}
-          <ValidationBox validation={validation} />
+          <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
           {vedleggResponse && (
             <>
               <VerticalSeparatorDiv size='2' />

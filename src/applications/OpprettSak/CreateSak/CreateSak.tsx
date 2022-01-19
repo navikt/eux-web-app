@@ -696,7 +696,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               </Column>
             </Row>
             <VerticalSeparatorDiv />
-            <ValidationBox validation={validation} />
+            <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
           </>
         )}
         <VerticalSeparatorDiv />

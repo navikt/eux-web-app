@@ -26,11 +26,11 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.12.10",
+    "@navikt/ds-css": "^0.12.11",
     "@navikt/ds-icons": "^0.7.2",
     "@navikt/ds-react": "^0.14.11",
     "@sentry/browser": "^6.16.1",
-    "amplitude-js": "^8.15.0",
+    "amplitude-js": "^8.15.1",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",
     "core-js": "^3.20.3",
@@ -66,7 +66,7 @@
     "redux-thunk": "^2.4.1",
     "stacktracey": "^2.1.8",
     "styled-components": "^5.3.3",
-    "tabell": "^2.2.11"
+    "tabell": "^2.2.13"
   },
   "devDependencies": {
     "@navikt/fnrvalidator": "^1.1.4",
@@ -77,12 +77,12 @@
     "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
     "@types/md5": "^2.3.1",
-    "@types/node": "^17.0.9",
+    "@types/node": "^17.0.10",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/react-modal": "^3.13.1",
     "@types/react-redux": "^7.1.22",
-    "@types/react-router-dom": "^5.3.2",
+    "@types/react-router-dom": "^5.3.3",
     "@types/react-select": "^5.0.0",
     "@types/styled-components": "^5.1.20",
     "@typescript-eslint/eslint-plugin": "5.10.0",

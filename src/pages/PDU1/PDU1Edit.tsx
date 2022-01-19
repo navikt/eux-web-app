@@ -211,7 +211,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <PreviewPDU1 />
       <VerticalSeparatorDiv size='2' />
-      <ValidationBox validation={validation} />
+      <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
       <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>
