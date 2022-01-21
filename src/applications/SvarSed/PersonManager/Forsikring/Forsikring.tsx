@@ -1,6 +1,8 @@
 import {
   Add,
   Bag,
+  CollapseFilled,
+  ExpandFilled,
   Hospital,
   Law,
   Office1,
@@ -10,10 +12,9 @@ import {
   SchoolBag,
   ShakeHandsFilled,
   Stroller,
-  Vacation,
-  CollapseFilled,
-  ExpandFilled
+  Vacation
 } from '@navikt/ds-icons'
+import { BodyLong, Button, Checkbox, Detail, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import InntektOgTimerFC from 'applications/SvarSed/PersonManager/Forsikring/InntektOgTimer/InntektOgTimer'
@@ -49,8 +50,8 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { BodyLong, Detail, Heading, Checkbox, Button } from '@navikt/ds-react'
 import {
+  AlignCenterRow,
   AlignStartRow,
   Column,
   FlexCenterDiv,
@@ -356,7 +357,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </>
         )}
         {_type && (
-          <AlignStartRow>
+          <AlignCenterRow>
             {index >= 0 && _sort === 'time' && (
               <Column style={{ maxWidth: '40px' }}>
                 <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
@@ -377,15 +378,15 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
             {index >= 0
               ? (
                 <Column flex='1.5'>
-                  <FlexEndDiv style={{ justifyContent: 'end' }}>
+                  <FlexCenterDiv style={{ justifyContent: 'end' }}>
                     {index >= 0 && [
                       'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
                       'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring',
                       'perioderAnnenForsikring'
                     ].indexOf(_type) >= 0 && (
-
                       <Button
                         variant='tertiary'
+                        size='small'
                         onClick={() => toggleVisibility(_type, _index)}
                       >
                         <FlexCenterDiv>
@@ -394,7 +395,6 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                           {_visible ? t('label:show-less') : t('label:show-more')}
                         </FlexCenterDiv>
                       </Button>
-
                     )}
                     <HorizontalSeparatorDiv size='0.5' />
                     <AddRemovePanel
@@ -406,11 +406,11 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                       onAddNew={onAdd}
                       onCancelNew={onCancel}
                     />
-                  </FlexEndDiv>
+                  </FlexCenterDiv>
                 </Column>
                 )
               : <Column />}
-          </AlignStartRow>
+          </AlignCenterRow>
         )}
         <VerticalSeparatorDiv />
         {_type && _visible && [
@@ -432,8 +432,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv />
+            <VerticalSeparatorDiv size='2'/>
             <AlignStartRow>
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <IdentifikatorFC
                   identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
@@ -444,11 +445,21 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv />
+            <VerticalSeparatorDiv size='2'/>
+            <Row>
+              {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
+              <Column>
+                <Heading size='small'>
+                  {t('label:adresse')}
+                </Heading>
+              </Column>
+            </Row>
+            <VerticalSeparatorDiv/>
             <AlignStartRow>
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
                 <AdresseForm
+                  type={false}
                   adresse={(_periode as PeriodeMedForsikring).arbeidsgiver?.adresse}
                   onAdressChanged={(newAdresse, whatChanged) => setAdresse(newAdresse, whatChanged, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-adresse'}
@@ -506,7 +517,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </>
         )}
         {index < 0 && (
-          <FlexEndDiv style={{ justifyContent: 'end' }}>
+          <FlexCenterDiv style={{ justifyContent: 'end' }}>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
@@ -517,7 +528,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               onAddNew={onAdd}
               onCancelNew={onCancel}
             />
-          </FlexEndDiv>
+          </FlexCenterDiv>
         )}
         <VerticalSeparatorDiv />
       </RepeatableRow>
@@ -525,6 +536,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
   }
 
   return (
+    <>
     <PaddedDiv>
       <Heading size='small'>
         {t('label:forsikring')}
@@ -541,63 +553,66 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           <VerticalSeparatorDiv size='2' />
         </>
       )}
-      {_.isEmpty(_allPeriods)
+    </PaddedDiv>
+    {_.isEmpty(_allPeriods)
+      ? (
+        <BodyLong>
+          {t('message:warning-no-periods')}
+        </BodyLong>
+        )
+      : _sort === 'time'
         ? (
-          <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
+          <>
+            <AlignStartRow>
+              <Column style={{ maxWidth: '40px' }} />
+              <Column>
+                <label className='navds-text-field__label navds-label'>
+                  {t('label:startdato')}
+                </label>
+              </Column>
+              <Column>
+                <label className='navds-text-field__label navds-label'>
+                  {t('label:sluttdato')}
+                </label>
+              </Column>
+              <Column flex='2' />
+            </AlignStartRow>
+            {_allPeriods.map(renderRow)}
+          </>
           )
-        : _sort === 'time'
-          ? (
-            <>
-              <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }} />
-                <Column>
-                  <label className='navds-text-field__label navds-label'>
-                    {t('label:startdato')}
-                  </label>
-                </Column>
-                <Column>
-                  <label className='navds-text-field__label navds-label'>
-                    {t('label:sluttdato')}
-                  </label>
-                </Column>
-                <Column flex='2' />
-              </AlignStartRow>
-              {_allPeriods.map(renderRow)}
-            </>
-            )
-          : (
-            <>
-              {periodeOptions.map(o => {
-                const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
-                if (_.isEmpty(periods)) {
-                  return null
-                }
-                return (
-                  <div key={o.value}>
-                    <FlexEndDiv>
-                      {getIcon(o.value, '20')}
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <Detail>
-                        {o.label}
-                      </Detail>
-                    </FlexEndDiv>
-                    <VerticalSeparatorDiv />
-                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                    <VerticalSeparatorDiv size='2' />
-                  </div>
-                )
-              })}
-            </>
-            )}
-      <VerticalSeparatorDiv size='2' />
+        : (
+          <>
+            {periodeOptions.map(o => {
+              const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
+              if (_.isEmpty(periods)) {
+                return null
+              }
+              return (
+                <div key={o.value}>
+                  <FlexEndDiv>
+                    {getIcon(o.value, '20')}
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <Detail>
+                      {o.label}
+                    </Detail>
+                  </FlexEndDiv>
+                  <VerticalSeparatorDiv />
+                  {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                  <VerticalSeparatorDiv size='2' />
+                </div>
+              )
+            })}
+          </>
+          )}
+    <VerticalSeparatorDiv />
+    <PaddedDiv>
       <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
+    </PaddedDiv>
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row>
+          <PaddedDiv>
+            <Row>
             <Column>
               <Button
                 variant='tertiary'
@@ -609,8 +624,9 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
               </Button>
             </Column>
           </Row>
+          </PaddedDiv>
           )}
-    </PaddedDiv>
+    </>
   )
 }
 

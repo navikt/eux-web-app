@@ -86,7 +86,7 @@ const PeriodeInput = <T extends Periode>({
 
   const onEndDatoChanged = (sluttDato: string) => {
     const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
-    newPeriode.sluttdato = toDateFormat(sluttDato, uiFormat)
+    newPeriode.sluttdato = toDateFormat(sluttDato, finalFormat)
     if (_.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     } else {

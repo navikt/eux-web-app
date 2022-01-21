@@ -123,7 +123,6 @@ export const Dl = styled.dl`
 export const RepeatableRow = styled(PaddedHorizontallyDiv)`
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
-
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
   };
