@@ -15,7 +15,8 @@ import {
   PeriodeMedInntekt,
   PeriodeMedLoenn,
   PeriodeMedType,
-  PDU1
+  PDU1,
+  PeriodeMedComment
 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
@@ -100,6 +101,21 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
   const setType = (type: string) => {
     _setNewType(type)
     _resetValidation(namespace + '-type')
+  }
+
+  const setPeriodeComment = (newComment: string, type: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriode({
+        ..._newPeriode,
+        comment: newComment.trim()
+      } as PeriodeMedComment)
+      _resetValidation(namespace + '-comment')
+    } else {
+      dispatch(updateReplySed(`${type}[${index}].comment`, newComment.trim()))
+      if (validation[namespace + getNSIdx(type, index) + '-comment']) {
+        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-comment'))
+      }
+    }
   }
 
   const setPeriodeType = (newType: string, type: string, index: number) => {
@@ -350,6 +366,22 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
+        {_type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring'].indexOf(_type) >= 0 && (
+          <AlignStartRow>
+            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
+            <Column>
+              <Input
+                error={_v[namespace + idx + '-comment']?.feilmelding}
+                namespace={namespace + idx}
+                id='type'
+                key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.comment ?? '')}
+                label={t('label:comment')}
+                onChanged={(newComment: string) => setPeriodeComment(newComment, _type, _index)}
+                value={(_periode as PeriodeMedComment)?.comment ?? ''}
+              />
+            </Column>
+          </AlignStartRow>
+        )}
         {_type === 'perioderAndreForsikringer' && (
           <AlignStartRow>
             {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}

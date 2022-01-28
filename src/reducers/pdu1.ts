@@ -8,6 +8,7 @@ import { Action } from 'redux'
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
   pdu1: PDU1 | null | undefined
+  pdu1results: FagSaker | null | undefined
   previewPdu1: any
   jornalførePdu1Response: any
 }
@@ -15,6 +16,7 @@ export interface Pdu1State {
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
   pdu1: undefined,
+  pdu1results: undefined,
   previewPdu1: undefined,
   jornalførePdu1Response: undefined
 }
@@ -25,6 +27,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
       return initialPdu1State
 
     case types.PDU1_FAGSAKER_GET_REQUEST:
+    case types.PDU1_FAGSAKER_RESET:
       return {
         ...state,
         fagsaker: undefined
@@ -61,6 +64,26 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
       return {
         ...state,
         pdu1: null
+      }
+
+    case types.PDU1_FETCH_REQUEST:
+    case types.PDU1_FETCH_RESET:
+      return {
+        ...state,
+        pdu1results: undefined
+      }
+
+    case types.PDU1_FETCH_SUCCESS:
+      return {
+        ...state,
+        pdu1results: (action as ActionWithPayload).payload
+      }
+
+
+    case types.PDU1_FETCH_FAILURE:
+      return {
+        ...state,
+        pdu1results: null
       }
 
     case types.PDU1_PREVIEW_RESET:

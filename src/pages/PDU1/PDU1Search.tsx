@@ -1,13 +1,14 @@
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
-import { getFagsaker, getPdu1 } from 'actions/pdu1'
+import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
 import { PDU1 } from 'declarations/pd'
@@ -42,7 +43,9 @@ export interface PDU1SearchSelector {
   fagsaker: FagSaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
+  fetchingPdu1: boolean
   PDU1: PDU1 | null | undefined
+  pdu1results: FagSaker | null | undefined
 }
 
 const mapState = (state: State): PDU1SearchSelector => ({
@@ -50,7 +53,9 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
-  PDU1: state.pdu1.pdu1
+  fetchingPdu1: state.loading.fetchingPdu1,
+  PDU1: state.pdu1.pdu1,
+  pdu1results: state.pdu1.pdu1results
 })
 
 export interface PDU1Props {
@@ -67,7 +72,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
-    PDU1
+    fetchingPdu1,
+    PDU1,
+    pdu1results
   }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string>(fnrParam ?? '')
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
@@ -75,6 +82,8 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [pdu1Request, setPdu1Request] = useState<boolean>(false)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [validMessage, setValidMessage] = useState<string>('')
+  const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
+  const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
   const [validation, resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
 
@@ -107,7 +116,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
       setValidFnr(false)
-      setValidMessage(t('label:unknown'))
+      setValidMessage(t('label:ukjent'))
     } else {
       setValidFnr(true)
       if (result.type === 'fnr') {
@@ -134,7 +143,13 @@ const PDU1Search: React.FC<PDU1Props> = ({
     setFagsak(f)
   }
 
-  const ongetPdu1Clicked = () => {
+  const onStartPdu1Clicked = () => {
+    dispatch(resetPdu1results())
+    setSearchingPdu1(false)
+    setStartingPdu1(true)
+  }
+
+  const onGetPdu1Clicked = () => {
     const valid = performValidation({
       fnrOrDnr: fnrOrDnr,
       fagsak: fagsak,
@@ -145,6 +160,28 @@ const PDU1Search: React.FC<PDU1Props> = ({
       setPdu1Request(true)
       dispatch(getPdu1(fnrOrDnr, fagsak))
     }
+  }
+
+  const onEditingPdu1Clicked = () => {
+    const valid = performValidation({
+      fnrOrDnr: fnrOrDnr,
+      fagsak: fagsak,
+      namespace: namespace
+    })
+
+    if (valid) {
+      setPdu1Request(true)
+      dispatch(getPdu1(fnrOrDnr, fagsak))
+    }
+  }
+
+  const onSearchPdu1Clicked = () => {
+    setStartingPdu1(false)
+    setSearchingPdu1(true)
+
+    dispatch(resetFagsaker())
+    setTema(undefined)
+    dispatch(fetchPdu1(fnrOrDnr))
   }
 
   useEffect(() => {
@@ -169,7 +206,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
-        style={{ minWidth: '600px' }}
+        style={{width: '100%'}}
         className={classNames('slideInFromLeft', { error: validation[namespace + '-search'] })}
       >
         <Column>
@@ -190,25 +227,54 @@ const PDU1Search: React.FC<PDU1Props> = ({
           </PileDiv>
         </Column>
         <Column>
-          {validFnr && (
-            <Select
-              label={t('label:tema')}
-              defaultValue={_.find(temaOptions, { value: tema })}
-              error={validation[namespace + '-tema']?.feilmelding}
-              key={namespace + '-tema-' + tema}
-              id={namespace + '-tema'}
-              menuPortalTarget={document.body}
-              onChange={onTemaChanged}
-              options={temaOptions}
-              value={_.find(temaOptions, { value: tema })}
-              style={{ minWidth: '300px' }}
-            />
-          )}
+          <FlexBaseDiv style={{marginTop: '2rem'}}>
+            <Button
+              variant='primary'
+              disabled={!validFnr || searchingPdu1}
+              onClick={onSearchPdu1Clicked}
+            >
+              {fetchingPdu1 && <Loader />}
+              {fetchingPdu1 ? t('label:searching') : t('el:button-search-for-x', { x: 'PD U1' })}
+            </Button>
+            <HorizontalSeparatorDiv/>
+            {t('label:eller')}
+            <HorizontalSeparatorDiv/>
+            <Button
+              variant='primary'
+              disabled={!validFnr}
+              onClick={onStartPdu1Clicked}
+            >
+              {t('el:button-start-new-x', { x: 'PD U1' })}
+            </Button>
+          </FlexBaseDiv>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      {validFnr && (
+      {startingPdu1 && (
         <>
+          <VerticalSeparatorDiv/>
+          <HorizontalLineSeparator/>
+          <VerticalSeparatorDiv size='2'/>
+          <Heading size='small'>
+            {t('el:button-start-new-x', { x: 'PD U1' })}
+          </Heading>
+          <VerticalSeparatorDiv size='2'/>
+          <AlignStartRow>
+            <Column>
+              <Select
+                label={t('label:tema')}
+                defaultValue={_.find(temaOptions, { value: tema })}
+                error={validation[namespace + '-tema']?.feilmelding}
+                key={namespace + '-tema-' + tema}
+                id={namespace + '-tema'}
+                menuPortalTarget={document.body}
+                onChange={onTemaChanged}
+                options={temaOptions}
+                value={_.find(temaOptions, { value: tema })}
+                style={{ minWidth: '300px' }}
+              />
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv size='2' />
           <div style={{ width: '100%' }}>
             {gettingFagsaker && (
               <WaitingPanel />
@@ -253,10 +319,68 @@ const PDU1Search: React.FC<PDU1Props> = ({
           <Button
             variant='primary'
             disabled={!tema || !fagsak || creatingPdu1}
-            onClick={ongetPdu1Clicked}
+            onClick={onGetPdu1Clicked}
           >
             {creatingPdu1 && <Loader />}
             {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
+          </Button>
+        </>
+      )}
+      {searchingPdu1 && (
+        <>
+          <VerticalSeparatorDiv/>
+          <HorizontalLineSeparator/>
+          <VerticalSeparatorDiv size='2'/>
+          <Heading size='small'>
+            {t('el:button-edit-x', { x: 'PD U1' })}
+          </Heading>
+          <VerticalSeparatorDiv size='2'/>
+          {fetchingPdu1 && <Loader/>}
+          <div style={{ width: '100%' }}>
+            <RadioPanelGroup
+            value={fagsak}
+            name={namespace + '-fagsaker'}
+            onChange={(e: string) => onFagsakerSelected(e)}
+          >
+            {pdu1results?.map((f: FagSak) => (
+              <div key={f.saksID}>
+                <RadioPanelBorder key={f.saksID} value={f.saksID}>
+                  <PileDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:fagsakNr')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.fagsakNr}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:tema')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.temakode}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:saksnummer')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.saksID}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:siste-oppdatert')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.opprettetTidspunkt}</BodyLong>
+                    </FlexBaseDiv>
+                  </PileDiv>
+                </RadioPanelBorder>
+                <VerticalSeparatorDiv />
+              </div>
+            ))}
+          </RadioPanelGroup>
+          </div>
+          <VerticalSeparatorDiv size='2' />
+          <Button
+          variant='primary'
+          disabled={!fagsak || creatingPdu1}
+          onClick={onEditingPdu1Clicked}
+          >
+          {creatingPdu1 && <Loader />}
+          {creatingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
           </Button>
         </>
       )}

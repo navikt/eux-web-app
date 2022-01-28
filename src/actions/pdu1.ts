@@ -4,13 +4,28 @@ import { PDU1 } from 'declarations/pd'
 import { FagSaker, UpdatePdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockGetPdu1 from 'mocks/pdu1/pdu1'
+import mockGetPdu1 from 'mocks/pdu1/get'
+import mockFetchPdu1 from 'mocks/pdu1/fetch'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
 import { Action, ActionCreator } from 'redux'
 import File from 'forhandsvisningsfil'
 
 const sprintf = require('sprintf-js').sprintf
+
+export const fetchPdu1: ActionCreator<ThunkResult<Action>> = (
+  fnr: string
+): ThunkResult<Action> => {
+  return call({
+    url: sprintf(urls.PDU1_FETCH_URL, { fnr }),
+    expectedPayload: mockFetchPdu1,
+    type: {
+      request: types.PDU1_FETCH_REQUEST,
+      success: types.PDU1_FETCH_SUCCESS,
+      failure: types.PDU1_FETCH_FAILURE
+    }
+  })
+}
 
 export const getPdu1: ActionCreator<ThunkResult<Action>> = (
   fnr: string, fagsakId: string
@@ -73,6 +88,14 @@ export const previewPdu1: ActionCreator<ThunkResult<ActionWithPayload<File>>> = 
     }
   })
 }
+
+export const resetPdu1results = () => ({
+  type: types.PDU1_FETCH_RESET
+})
+
+export const resetFagsaker = () => ({
+  type: types.PDU1_FAGSAKER_RESET
+})
 
 export const resetPreviewPdu1 = () => ({
   type: types.PDU1_PREVIEW_RESET

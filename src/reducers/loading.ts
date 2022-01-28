@@ -10,6 +10,7 @@ export const initialLoadingState: LoadingState = {
   completingPdu1: false,
   creatingPdu1: false,
   creatingSvarSed: false,
+  fetchingPdu1: false,
   gettingAdresse: false,
   gettingArbeidsperioder: false,
   gettingDokument: false,
@@ -192,6 +193,20 @@ const loadingReducer = (
         ...state,
         gettingPreviewPdu1: false
       }
+
+    case types.PDU1_FETCH_REQUEST:
+      return {
+        ...state,
+        fetchingPdu1: true
+      }
+
+    case types.PDU1_FETCH_FAILURE:
+    case types.PDU1_FETCH_SUCCESS:
+      return {
+        ...state,
+        fetchingPdu1: false
+      }
+
 
     case types.PERSON_SEARCH_REQUEST:
       return {

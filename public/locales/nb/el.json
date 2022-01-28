@@ -9,6 +9,7 @@
   "button-close": "Lukk",
   "button-create-x": "Opprett {{x}}",
   "button-edit": "Rediger",
+  "button-edit-x": "Rediger {{x}}",
   "button-load": "Last inn",
   "button-remove" : "Fjern",
   "button-remove-all" : "Fjern alle",
@@ -19,6 +20,7 @@
   "button-search" : "Søk",
   "button-search-i-x" : "Søk i {{x}}",
   "button-search-for-x" : "Søk {{x}}",
+  "button-start-new-x" : "Start en ny {{x}}",
   "button-send-sed" : "Send SED",
   "button-update-draft-x" : "Oppdatere utkast {{x}}",
 

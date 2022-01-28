@@ -6,6 +6,8 @@ import ReactSelect, { Props } from 'react-select'
 interface SelectProps extends Props {
   error?: string
   label?: string | undefined
+  noMarginTop?: boolean
+  size?: 'medium' | 'small'
   style ?: any
   'data-test-id'?: string
 }
@@ -25,12 +27,12 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
         styles={{
           container: (styles: any) => ({
             ...styles,
-            marginTop: '8px',
-            minHeight: '48px'
+            marginTop: props.noMarginTop ? '0px' : '8px',
+            minHeight: props.size === 'small' ? '35px' : '48px'
           }),
           control: (styles: any, { isDisabled }) => ({
             ...styles,
-            minHeight: '48px',
+            minHeight: props.size === 'small' ? '35px' : '48px',
             borderWidth: '1px',
             borderStyle: 'solid',
             borderColor: props.error ? 'var(--navds-select-color-border-error)' : 'var(--navds-select-color-border)',

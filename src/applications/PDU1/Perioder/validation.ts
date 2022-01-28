@@ -114,44 +114,40 @@ export const validatePDPerioder = (
       namespace: namespace + '[' + type + ']'
     })) ?? []
 
-  if (type === 'perioderAnsattMedForsikring' || type === 'perioderSelvstendigMedForsikring') {
-    if (perioder && perioder.length > 7) {
-      addError(validation, {
-        id: namespace + '-generic',
-        message: 'validation:tooManyPeriodsMaxIs',
-        extra: {
-          type: t('el:option-perioder-' + type),
-          max: '7'
-        }
-      })
-      hasErrors.push(true)
-    }
-  } else {
-    if (perioder && perioder.length > 3) {
-      addError(validation, {
-        id: namespace + '-generic',
-        message: 'validation:tooManyPeriodsMaxIs',
-        extra: {
-          type: t('el:option-perioder-' + type),
-          max: '3'
-        }
-      })
-      hasErrors.push(true)
-    }
+  let max: number = 0
+  switch (type) {
+    case 'perioderAnsattMedForsikring':
+      max = 20
+      break
+    case 'perioderSelvstendigMedForsikring':
+      max = 13
+      break
+    case 'perioderAndreForsikringer':
+      max = 7
+      break
+    case 'perioderAnsettSomForsikret':
+    case 'perioderAnsattUtenForsikring' :
+    case 'perioderSelvstendigUtenForsikring':
+      max = 3
+      break
+    case 'perioderLoennSomAnsatt':
+    case 'perioderInntektSomSelvstendig':
+      max = 2
+      break
+    default:
+      break
   }
 
-  if (type === 'perioderAnsattMedForsikring' || type === 'perioderSelvstendigMedForsikring') {
-    if (perioder && perioder.length > 7) {
-      addError(validation, {
-        id: namespace + '-generic',
-        message: 'validation:tooManyPeriodsMaxIs',
-        extra: {
-          type: t('el:option-perioder-' + type),
-          max: '7'
-        }
-      })
-      hasErrors.push(true)
-    }
+  if (perioder && perioder.length > max) {
+    addError(validation, {
+      id: namespace + '-generic',
+      message: 'validation:tooManyPeriodsMaxIs',
+      extra: {
+        type: t('el:option-perioder-' + type),
+        max: '' + max
+      }
+    })
+    hasErrors.push(true)
   }
 
   return hasErrors.find(value => value) !== undefined

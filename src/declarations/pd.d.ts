@@ -9,6 +9,10 @@ export interface PeriodeMedAktivitetstype extends Periode {
   aktivitetstype: string
 }
 
+export interface PeriodeMedComment extends Periode {
+  comment: string
+}
+
 export interface PeriodeMedType extends Periode {
   type: string
 }
@@ -83,8 +87,8 @@ export interface PDU1 {
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
   nav: NavInfo // NAV => cover letter, section 7
-  perioderAnsattMedForsikring: Array<Periode>, // Perioder => 2.1.1
-  perioderSelvstendigMedForsikring: Array<Periode>, // Perioder 2.1.2
+  perioderAnsattMedForsikring: Array<PeriodeMedComment>, // Perioder => 2.1.1
+  perioderSelvstendigMedForsikring: Array<PeriodeMedComment>, // Perioder 2.1.2
   perioderAndreForsikringer: Array<PeriodeMedType> // Perioder 2.1.3
   perioderAnsettSomForsikret: Array<PeriodeMedBegrunnelse> // Perioder 2.1.4?
   perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // Perioder 2.2.1
