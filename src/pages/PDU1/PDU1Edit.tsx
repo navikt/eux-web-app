@@ -123,7 +123,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const onGoBackClick = () => {
     changeMode('A', 'back')
     dispatch(resetCurrentEntry('pdu1'))
-    document.dispatchEvent(new CustomEvent('tilbake', {detail: {}}))
+    document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             closeButton: true,
             modalTitle: t('message:success-complete-pdu1'),
             modalContent: (
-              <div style={{textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px'}}>
+              <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
                 <PileDiv><BodyLong>{jornalførePdu1Response.melding}</BodyLong>
                   <BodyLong>journalpostId: {jornalførePdu1Response.journalpostId}</BodyLong>
                   <BodyLong>journalstatus: {jornalførePdu1Response.journalstatus}</BodyLong>
@@ -174,43 +174,43 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           variant='secondary'
           onClick={onGoBackClick}
         >
-          <BackFilled/>
-          <HorizontalSeparatorDiv size='0.5'/>
+          <BackFilled />
+          <HorizontalSeparatorDiv size='0.5' />
           {t('label:tilbake')}
         </Button>
       </FlexCenterSpacedDiv>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       <PersonManager
         forms={[
-          {label: t('el:option-personmanager-person'), value: 'person', component: Person, type: 'PD'},
-          {label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD'},
+          { label: t('el:option-personmanager-person'), value: 'person', component: Person, type: 'PD' },
+          { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           {
             label: t('el:option-personmanager-sisteansettelseinfo'),
             value: 'sisteansettelseinfo',
             component: SisteAnsettelseInfo,
             type: 'PD'
           },
-          {label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD'},
-          {label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD'},
+          { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
+          { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           {
             label: t('el:option-personmanager-retttildagpenger'),
             value: 'retttildagpenger',
             component: RettTilDagpenger,
             type: 'PD'
           },
-          {label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD'},
-          {label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD'}
+          { label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
+          { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={pdu1}
         setReplySed={setPdu1}
         updateReplySed={updatePdu1}
         viewValidation={view}
       />
-      <VerticalSeparatorDiv size='2'/>
-      <PreviewPDU1/>
-      <VerticalSeparatorDiv size='2'/>
-      <ValidationBox heading={t('validation:feiloppsummering')} validation={validation}/>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
+      <PreviewPDU1 />
+      <VerticalSeparatorDiv size='2' />
+      <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+      <VerticalSeparatorDiv size='2' />
       <FlexDiv>
         <div>
           <Button
@@ -222,11 +222,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             {completingPdu1
               ? t('message:loading-opprette-pdu1')
               : t('label:opprett-pdu1')}
-            {completingPdu1 && <Loader/>}
+            {completingPdu1 && <Loader />}
           </Button>
-          <VerticalSeparatorDiv size='0.5'/>
+          <VerticalSeparatorDiv size='0.5' />
         </div>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
 
         <div>
           <Button
@@ -235,13 +235,13 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             onClick={onSavePdu1Click}
           >
             {_.isNil(currentEntry)
-              ? t('el:button-save-draft-x', {x: 'PD U1'})
-              : t('el:button-update-draft-x', {x: 'PD U1'})}
+              ? t('el:button-save-draft-x', { x: 'PD U1' })
+              : t('el:button-update-draft-x', { x: 'PD U1' })}
           </Button>
-          <VerticalSeparatorDiv size='0.5'/>
+          <VerticalSeparatorDiv size='0.5' />
         </div>
       </FlexDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
     </PaddedDiv>
   )
 }

@@ -342,7 +342,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
 
     if (isH001Sed(replySed)) {
       _error = validateEndredeForhold(v, t, {
-        ytterligereInfo: _.get(replySed, 'ytterligereInfo'),
+        replySed: replySed,
         namespace: `personmanager-${personID}-endredeforhold`,
         personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
       })

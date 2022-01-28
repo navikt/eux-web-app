@@ -207,7 +207,6 @@ const loadingReducer = (
         fetchingPdu1: false
       }
 
-
     case types.PERSON_SEARCH_REQUEST:
       return {
         ...state,

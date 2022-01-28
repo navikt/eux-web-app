@@ -158,6 +158,12 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     dispatch(getSedStatus(sakId, svarsedId))
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      onSaksnummerOrFnrClick()
+    }
+  }
+
   const onSaksnummerOrFnrClick = () => {
     const valid: boolean = performValidation({
       saksnummerOrFnr: _saksnummerOrFnr.trim()
@@ -172,6 +178,11 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(svarsedActions.setParentSed(e.target.value))
+  }
+
+  const onEditSedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
+    setReplySedRequested(true)
+    dispatch(svarsedActions.editDraftSed(connectedSed, saksnummer, sakUrl))
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
@@ -234,6 +245,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               <SearchField.Input
                 data-test-id={namespace + '-saksnummerOrFnr'}
                 id={namespace + '-saksnummerOrFnr'}
+                onKeyPress={handleKeyPress}
                 onChange={onSaksnummerOrFnrChange}
                 required
                 value={_saksnummerOrFnr}
@@ -541,30 +553,56 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                   {_sedStatusRequested === connectedSed.svarsedId && <Loader />}
                                 </Button>
                                 )
-                              : connectedSed.svarsedType
-                                ? (
-                                  <Button
-                                    variant='primary'
-                                    disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                                    data-amplitude='svarsed.selection.replysed'
-                                    title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                                    onClick={(e: any) => {
-                                      buttonLogger(e, {
-                                        type: connectedSed.svarsedType,
-                                        parenttype: connectedSed.sedType
-                                      })
-                                      onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
-                                    }}
-                                  >
-                                    {queryingReplySed
-                                      ? t('message:loading-replying')
-                                      : t('label:besvar-med', {
-                                        sedtype: connectedSed.svarsedType
-                                      })}
-                                    {queryingReplySed && <Loader />}
-                                  </Button>
-                                  )
-                                : (<div />)}
+                              : (
+                                <>
+                                  {connectedSed.status === 'new' && (
+                                    <>
+                                      <Button
+                                        variant='secondary'
+                                        disabled={queryingReplySed}
+                                        data-amplitude='svarsed.selection.editsed'
+                                        onClick={(e: any) => {
+                                          buttonLogger(e, {
+                                            type: connectedSed.sedType
+                                          })
+                                          onEditSedClick(connectedSed, sed.sakId, sed.sakUrl)
+                                        }}
+                                      >
+                                        {queryingReplySed
+                                          ? t('message:loading-replying')
+                                          : t('label:edit-sed-x', {
+                                            x: connectedSed.sedType
+                                          })}
+                                        {queryingReplySed && <Loader />}
+                                      </Button>
+                                      <VerticalSeparatorDiv size='0.5' />
+                                    </>
+
+                                  )}
+                                  {connectedSed.svarsedType && (
+                                    <Button
+                                      variant='primary'
+                                      disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                                      data-amplitude='svarsed.selection.replysed'
+                                      title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                                      onClick={(e: any) => {
+                                        buttonLogger(e, {
+                                          type: connectedSed.svarsedType,
+                                          parenttype: connectedSed.sedType
+                                        })
+                                        onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
+                                      }}
+                                    >
+                                      {queryingReplySed
+                                        ? t('message:loading-replying')
+                                        : t('label:besvar-med', {
+                                          sedtype: connectedSed.svarsedType
+                                        })}
+                                      {queryingReplySed && <Loader />}
+                                    </Button>
+                                  )}
+                                </>
+                                )}
                           </PileDiv>
                         </FlexDiv>
                       </SEDPanel>

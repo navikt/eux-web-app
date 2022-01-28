@@ -432,7 +432,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv size='2'/>
+            <VerticalSeparatorDiv size='2' />
             <AlignStartRow>
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
@@ -445,7 +445,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv size='2'/>
+            <VerticalSeparatorDiv size='2' />
             <Row>
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
@@ -454,7 +454,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 </Heading>
               </Column>
             </Row>
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
             <AlignStartRow>
               {index >= 0 && (<Column style={{ maxWidth: '40px' }} />)}
               <Column>
@@ -537,93 +537,93 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
 
   return (
     <>
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:forsikring')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      {!_.isEmpty(_allPeriods) && (
-        <>
-          <Checkbox
-            checked={_sort === 'group'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-          >
-            {t('label:group-by-type')}
-          </Checkbox>
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-    </PaddedDiv>
-    {_.isEmpty(_allPeriods)
-      ? (
-        <BodyLong>
-          {t('message:warning-no-periods')}
-        </BodyLong>
-        )
-      : _sort === 'time'
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:forsikring')}
+        </Heading>
+        <VerticalSeparatorDiv size='2' />
+        {!_.isEmpty(_allPeriods) && (
+          <>
+            <Checkbox
+              checked={_sort === 'group'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+            >
+              {t('label:group-by-type')}
+            </Checkbox>
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
+      </PaddedDiv>
+      {_.isEmpty(_allPeriods)
         ? (
-          <>
-            <AlignStartRow>
-              <Column style={{ maxWidth: '40px' }} />
-              <Column>
-                <label className='navds-text-field__label navds-label'>
-                  {t('label:startdato')}
-                </label>
-              </Column>
-              <Column>
-                <label className='navds-text-field__label navds-label'>
-                  {t('label:sluttdato')}
-                </label>
-              </Column>
-              <Column flex='2' />
-            </AlignStartRow>
-            {_allPeriods.map(renderRow)}
-          </>
+          <BodyLong>
+            {t('message:warning-no-periods')}
+          </BodyLong>
           )
-        : (
-          <>
-            {periodeOptions.map(o => {
-              const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
-              if (_.isEmpty(periods)) {
-                return null
-              }
-              return (
-                <div key={o.value}>
-                  <FlexEndDiv>
-                    {getIcon(o.value, '20')}
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <Detail>
-                      {o.label}
-                    </Detail>
-                  </FlexEndDiv>
-                  <VerticalSeparatorDiv />
-                  {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                  <VerticalSeparatorDiv size='2' />
-                </div>
-              )
-            })}
-          </>
-          )}
-    <VerticalSeparatorDiv />
-    <PaddedDiv>
-      <HorizontalLineSeparator />
-    </PaddedDiv>
+        : _sort === 'time'
+          ? (
+            <>
+              <AlignStartRow>
+                <Column style={{ maxWidth: '40px' }} />
+                <Column>
+                  <label className='navds-text-field__label navds-label'>
+                    {t('label:startdato')}
+                  </label>
+                </Column>
+                <Column>
+                  <label className='navds-text-field__label navds-label'>
+                    {t('label:sluttdato')}
+                  </label>
+                </Column>
+                <Column flex='2' />
+              </AlignStartRow>
+              {_allPeriods.map(renderRow)}
+            </>
+            )
+          : (
+            <>
+              {periodeOptions.map(o => {
+                const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
+                if (_.isEmpty(periods)) {
+                  return null
+                }
+                return (
+                  <div key={o.value}>
+                    <FlexEndDiv>
+                      {getIcon(o.value, '20')}
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <Detail>
+                        {o.label}
+                      </Detail>
+                    </FlexEndDiv>
+                    <VerticalSeparatorDiv />
+                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                    <VerticalSeparatorDiv size='2' />
+                  </div>
+                )
+              })}
+            </>
+            )}
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <HorizontalLineSeparator />
+      </PaddedDiv>
       {_seeNewForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
             <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <Add />
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                </Button>
+              </Column>
+            </Row>
           </PaddedDiv>
           )}
     </>

@@ -191,11 +191,24 @@ export interface Motregning {
   ytterligereInfo: string
 }
 
-export interface HSvar {
+export interface H001Svar {
+  dokumentasjon: {
+    informasjon: string
+    dokument: string
+    sed: string
+  }
+  info?: string
+}
+
+export interface H002Svar {
   informasjon: string
   dokument: string
   sed: string
   grunn?: string
+}
+
+export interface Melding {
+  info?: string
 }
 
 export interface Barnetilhoerighet {
@@ -451,14 +464,10 @@ export interface HSed extends BaseReplySed {
   fagsakId?: string
 }
 
-export interface H001YtterligereInfo {
-  velg: string
-  tekst: string
-}
-
 export interface H001Sed extends HSed {
-  anmodning: HSvar
-  ytterligereInfo: H001YtterligereInfo
+  anmodning: H001Svar
+  melding: Melding
+  ytterligereInfo: string
 }
 
 export interface H002Sed extends HSed {
@@ -466,7 +475,7 @@ export interface H002Sed extends HSed {
     dokumenttyper: Array<string>
     andreDokumenttyper: Array<string>
   }
-  positivtSvar?: HSvar
-  negativeSvar?: HSvar
+  positivtSvar?: H002Svar
+  negativeSvar?: H002Svar
   ytterligereInfo: string
 }

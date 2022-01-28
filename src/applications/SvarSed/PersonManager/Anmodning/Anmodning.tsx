@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { HSvar } from 'declarations/sed'
+import { H001Svar } from 'declarations/sed'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
 import React from 'react'
@@ -26,24 +26,24 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-anmodning`
   const target = 'anmodning'
-  const anmodning: HSvar | undefined = _.get(replySed, target)
+  const anmodning: H001Svar | undefined = _.get(replySed, target)
 
   const setDokument = (newDokument: string) => {
-    dispatch(updateReplySed('dokument', newDokument))
+    dispatch(updateReplySed('dokumentasjon.dokument', newDokument))
     if (validation[namespace + '-dokument']) {
       dispatch(resetValidation(namespace + '-dokument'))
     }
   }
 
   const setInformasjon = (newInformasjon: string) => {
-    dispatch(updateReplySed('informasjon', newInformasjon))
+    dispatch(updateReplySed('dokumentasjon.informasjon', newInformasjon))
     if (validation[namespace + '-informasjon']) {
       dispatch(resetValidation(namespace + '-informasjon'))
     }
   }
 
   const setSed = (newSed: string) => {
-    dispatch(updateReplySed('sed', newSed))
+    dispatch(updateReplySed('dokumentasjon.sed', newSed))
     if (validation[namespace + '-sed']) {
       dispatch(resetValidation(namespace + '-sed'))
     }
@@ -69,7 +69,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               id='dokument'
               label={t('label:vi-vedlegger-dokumenter')}
               onChanged={setDokument}
-              value={anmodning?.dokument ?? ''}
+              value={anmodning?.dokumentasjon?.dokument ?? ''}
             />
           </TextAreaDiv>
         </Column>
@@ -85,7 +85,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               id='informasjon'
               label={t('label:vi-sender-informasjon')}
               onChanged={setInformasjon}
-              value={anmodning?.informasjon ?? ''}
+              value={anmodning?.dokumentasjon?.informasjon ?? ''}
             />
           </TextAreaDiv>
         </Column>
@@ -101,7 +101,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               id='sed'
               label={t('label:sed')}
               onChanged={setSed}
-              value={anmodning?.sed ?? ''}
+              value={anmodning?.dokumentasjon?.sed ?? ''}
             />
           </TextAreaDiv>
         </Column>

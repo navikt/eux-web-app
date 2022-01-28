@@ -118,6 +118,38 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
   })
 }
 
+export const editDraftSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
+  connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
+): ThunkResult<ActionWithPayload<ReplySed>> => {
+  const mockSed = mockReplySed(connectedSed.svarsedType)
+
+  const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
+    ? connectedSed.sedIdParent
+    : connectedSed.sedId
+
+  return call({
+    url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+      rinaSakId: saksnummer,
+      sedId,
+      sedType: connectedSed.svarsedType
+    }),
+    expectedPayload: {
+      ...mockSed,
+      saksnummer
+    },
+    context: {
+      saksnummer,
+      sakUrl,
+      sedId: connectedSed.svarsedId
+    },
+    type: {
+      request: types.SVARSED_REPLYSED_QUERY_REQUEST,
+      success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
+      failure: types.SVARSED_REPLYSED_QUERY_FAILURE
+    }
+  })
+}
+
 export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
   connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {

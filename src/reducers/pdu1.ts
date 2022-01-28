@@ -79,7 +79,6 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | Actio
         pdu1results: (action as ActionWithPayload).payload
       }
 
-
     case types.PDU1_FETCH_FAILURE:
       return {
         ...state,

@@ -9,5 +9,5 @@ export default [
     fagsakNr: '456',
     temakode: 'DEF',
     opprettetTidspunkt: '1971-01-01'
-  },
+  }
 ]

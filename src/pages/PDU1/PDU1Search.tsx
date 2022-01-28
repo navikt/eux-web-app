@@ -206,7 +206,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
-        style={{width: '100%'}}
+        style={{ width: '100%' }}
         className={classNames('slideInFromLeft', { error: validation[namespace + '-search'] })}
       >
         <Column>
@@ -227,7 +227,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
           </PileDiv>
         </Column>
         <Column>
-          <FlexBaseDiv style={{marginTop: '2rem'}}>
+          <FlexBaseDiv style={{ marginTop: '2rem' }}>
             <Button
               variant='primary'
               disabled={!validFnr || searchingPdu1}
@@ -236,9 +236,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
               {fetchingPdu1 && <Loader />}
               {fetchingPdu1 ? t('label:searching') : t('el:button-search-for-x', { x: 'PD U1' })}
             </Button>
-            <HorizontalSeparatorDiv/>
+            <HorizontalSeparatorDiv />
             {t('label:eller')}
-            <HorizontalSeparatorDiv/>
+            <HorizontalSeparatorDiv />
             <Button
               variant='primary'
               disabled={!validFnr}
@@ -251,13 +251,13 @@ const PDU1Search: React.FC<PDU1Props> = ({
       </AlignStartRow>
       {startingPdu1 && (
         <>
-          <VerticalSeparatorDiv/>
-          <HorizontalLineSeparator/>
-          <VerticalSeparatorDiv size='2'/>
+          <VerticalSeparatorDiv />
+          <HorizontalLineSeparator />
+          <VerticalSeparatorDiv size='2' />
           <Heading size='small'>
             {t('el:button-start-new-x', { x: 'PD U1' })}
           </Heading>
-          <VerticalSeparatorDiv size='2'/>
+          <VerticalSeparatorDiv size='2' />
           <AlignStartRow>
             <Column>
               <Select
@@ -328,59 +328,59 @@ const PDU1Search: React.FC<PDU1Props> = ({
       )}
       {searchingPdu1 && (
         <>
-          <VerticalSeparatorDiv/>
-          <HorizontalLineSeparator/>
-          <VerticalSeparatorDiv size='2'/>
+          <VerticalSeparatorDiv />
+          <HorizontalLineSeparator />
+          <VerticalSeparatorDiv size='2' />
           <Heading size='small'>
             {t('el:button-edit-x', { x: 'PD U1' })}
           </Heading>
-          <VerticalSeparatorDiv size='2'/>
-          {fetchingPdu1 && <Loader/>}
+          <VerticalSeparatorDiv size='2' />
+          {fetchingPdu1 && <Loader />}
           <div style={{ width: '100%' }}>
             <RadioPanelGroup
-            value={fagsak}
-            name={namespace + '-fagsaker'}
-            onChange={(e: string) => onFagsakerSelected(e)}
-          >
-            {pdu1results?.map((f: FagSak) => (
-              <div key={f.saksID}>
-                <RadioPanelBorder key={f.saksID} value={f.saksID}>
-                  <PileDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:fagsakNr')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.fagsakNr}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:tema')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.temakode}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:saksnummer')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.saksID}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:siste-oppdatert')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.opprettetTidspunkt}</BodyLong>
-                    </FlexBaseDiv>
-                  </PileDiv>
-                </RadioPanelBorder>
-                <VerticalSeparatorDiv />
-              </div>
-            ))}
-          </RadioPanelGroup>
+              value={fagsak}
+              name={namespace + '-fagsaker'}
+              onChange={(e: string) => onFagsakerSelected(e)}
+            >
+              {pdu1results?.map((f: FagSak) => (
+                <div key={f.saksID}>
+                  <RadioPanelBorder key={f.saksID} value={f.saksID}>
+                    <PileDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:fagsakNr')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.fagsakNr}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:tema')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.temakode}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:saksnummer')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.saksID}</BodyLong>
+                      </FlexBaseDiv>
+                      <FlexBaseDiv>
+                        <Label>{t('label:siste-oppdatert')}:</Label>
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <BodyLong>{f.opprettetTidspunkt}</BodyLong>
+                      </FlexBaseDiv>
+                    </PileDiv>
+                  </RadioPanelBorder>
+                  <VerticalSeparatorDiv />
+                </div>
+              ))}
+            </RadioPanelGroup>
           </div>
           <VerticalSeparatorDiv size='2' />
           <Button
-          variant='primary'
-          disabled={!fagsak || creatingPdu1}
-          onClick={onEditingPdu1Clicked}
+            variant='primary'
+            disabled={!fagsak || creatingPdu1}
+            onClick={onEditingPdu1Clicked}
           >
-          {creatingPdu1 && <Loader />}
-          {creatingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
+            {creatingPdu1 && <Loader />}
+            {creatingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
           </Button>
         </>
       )}

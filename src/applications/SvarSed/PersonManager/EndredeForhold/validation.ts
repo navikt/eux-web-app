@@ -1,10 +1,12 @@
-import { H001YtterligereInfo } from 'declarations/sed'
+import { ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, checkLength, propagateError } from 'utils/validation'
+import { Velg } from './EndredeForhold'
 
 export interface ValidationEndredeForholdProps {
-  ytterligereInfo: H001YtterligereInfo
+  replySed: ReplySed
   namespace: string,
   personName: string
 }
@@ -13,22 +15,34 @@ export const validateEndredeForhold = (
   v: Validation,
   t: TFunction,
   {
-    ytterligereInfo,
+    replySed,
     namespace,
     personName
   }: ValidationEndredeForholdProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
+  const where: Velg = !_.isEmpty(_.get(replySed, 'anmodning.info'))
+    ? 'anmodning'
+    : !_.isEmpty(_.get(replySed, 'melding.info'))
+        ? 'melding'
+        : undefined
+
+  const needle: string | undefined = where === 'anmodning'
+    ? _.get(replySed, 'anmodning.info')
+    : where === 'melding'
+      ? _.get(replySed, 'melding.info')
+      : undefined
+
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: ytterligereInfo.velg,
+    needle: needle,
     id: namespace + '-velg',
     message: 'validation:noVelg',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: ytterligereInfo.tekst,
+    needle: needle,
     max: 500,
     id: namespace + '-tekst',
     message: 'validation:textOverX',

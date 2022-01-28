@@ -51,14 +51,18 @@
       }
     ]
   },
-  "anmodning": {
-    "informasjon": "æøå",
-    "dokument": "æøå",
-    "sed": "æøå"
+  "anmodning":{
+    "dokumentasjon": {
+      "informasjon": "æøå",
+      "dokument": "æøå",
+      "sed": "æøå"
+    },
+    "info": "æøå"
   },
-
-  "ytterligereInfo": {
-    "velg": "01",
-    "tekst": "tekst"
-  }
+  "melding": {
+    "info": "æøå"
+  },
+  "ytterligereInfo": "æøå",
+  "fagsakId": "æøå",
+  "tema": "GEN"
 }

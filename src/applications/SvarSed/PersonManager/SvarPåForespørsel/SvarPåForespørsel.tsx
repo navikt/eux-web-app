@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { H002Sed, HSvar, HSvarType } from 'declarations/sed'
+import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
 import _ from 'lodash'
 import {
   AlignStartRow,
@@ -56,7 +56,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
     const svarChanged: boolean = needle === 'svar'
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
-      const newPositivtSvar: HSvar = {
+      const newPositivtSvar: H002Svar = {
         informasjon: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
         dokument: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
         sed: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''
