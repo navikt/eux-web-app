@@ -1,11 +1,9 @@
 import { alertClear, setAlertError } from 'actions/alert'
-import { closeModal } from 'actions/ui'
 import BannerAlert from 'components/BannerAlert/BannerAlert'
 import Header from 'components/Header/Header'
-import Modal from 'components/Modal/Modal'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
 import Version from 'components/Version/Version'
-import { AlertVariant, ModalContent } from 'declarations/components'
+import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import NavHighContrast, {
@@ -93,7 +91,6 @@ export interface TopContainerSelector {
   error: any | undefined
   expirationTime: Date | undefined
   highContrast: boolean
-  modal: ModalContent | undefined
 }
 
 const mapState = (state: State): TopContainerSelector => ({
@@ -101,15 +98,14 @@ const mapState = (state: State): TopContainerSelector => ({
   bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
-  highContrast: state.ui.highContrast,
-  modal: state.ui.modal
+  highContrast: state.ui.highContrast
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
   className, children, title
 }: TopContainerProps): JSX.Element => {
   const {
-    bannerStatus, bannerMessage, error, expirationTime, highContrast, modal
+    bannerStatus, bannerMessage, error, expirationTime, highContrast
   }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
   const dispatch = useDispatch()
 
@@ -121,10 +117,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     window.onerror = (msg) => {
       dispatch(setAlertError({ error: msg }))
     }
-  }
-
-  const handleModalClose = (): void => {
-    dispatch(closeModal())
   }
 
   const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
@@ -155,12 +147,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           variant={bannerStatus as AlertVariant}
           error={error}
           onClose={onClear}
-        />
-        <Modal
-          open={!_.isUndefined(modal)}
-          appElementId='main'
-          modal={modal}
-          onModalClose={handleModalClose}
         />
         <Main
           id='main'

@@ -39,6 +39,9 @@ const ContentDiv = styled.div`
     margin-top: 3rem;
   }
 `
+const ModalHeading = styled(Heading)`
+  text-align: center;
+`
 
 export interface ModalProps {
   appElementId?: string
@@ -73,9 +76,9 @@ const ModalFC: React.FC<ModalProps> = ({
         )}
         <ContentDiv className={classNames({ icon: !!icon })}>
           {modal?.modalTitle && (
-            <Heading size='medium' data-test-id='modal__title-id'>
+            <ModalHeading size='medium' data-test-id='modal__title-id'>
               {modal?.modalTitle}
-            </Heading>
+            </ModalHeading>
           )}
           {modal?.modalContent || (
             <ModalText data-test-id='modal__text-id'>
@@ -86,6 +89,9 @@ const ModalFC: React.FC<ModalProps> = ({
         {modal?.modalButtons && (
           <ModalButtons className={classNames('buttons')}>
             {modal?.modalButtons.map((button, i) => {
+              if (button.hide) {
+                return null
+              }
               let variant: 'tertiary' | 'primary' | 'secondary' | 'danger' | undefined = 'secondary'
               if (button.main) {
                 variant = 'primary'
@@ -99,7 +105,6 @@ const ModalFC: React.FC<ModalProps> = ({
                   onModalClose()
                   }
                 : onModalClose
-
               return (
                 <ButtonMargin key={i}>
                   <Button

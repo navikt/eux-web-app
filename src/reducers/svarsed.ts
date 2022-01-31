@@ -37,6 +37,9 @@ const svarsedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ): SvarsedState => {
   switch (action.type) {
+    case types.APP_CLEAN_DATA:
+      return initialSvarsedState
+
     case types.SVARSED_FAGSAKER_RESET:
     case types.SVARSED_FAGSAKER_GET_REQUEST:
       return {
@@ -218,17 +221,6 @@ const svarsedReducer = (
         replySed: newReplySed
       }
     }
-
-    case types.APP_CLEAN_DATA:
-
-      // keep seds, they are for the sed dropdown options
-      return {
-        ...initialSvarsedState,
-        seds: state.seds,
-        previousParentSed: state.previousParentSed,
-        parentSed: state.parentSed,
-        replySed: state.replySed
-      }
 
     default:
       return state

@@ -14,7 +14,7 @@ import { validateUtbetaling } from 'applications/PDU1/Utbetaling/validation'
 export interface ValidationPdu1SearchProps {
   fagsak: string | undefined
   namespace: string
-  fnrOrDnr: string
+  fnrOrDnr: string | undefined
 }
 
 export interface ValidationPDU1EditProps {

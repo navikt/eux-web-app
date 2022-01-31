@@ -293,10 +293,19 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           onModalClose={() => setViewSendSedModal(false)}
         />
       )}
-      <SaveSEDModal
+      <Modal
         open={_viewSaveSedModal}
-        replySed={replySed!}
         onModalClose={() => setViewSaveSedModal(false)}
+        modal={{
+          closeButton: false,
+          modalContent: (
+            <SaveSEDModal
+              replySed={replySed!}
+              onSaved={() => setViewSaveSedModal(false)}
+              onCancelled={() => setViewSaveSedModal(false)}
+            />
+          )
+        }}
       />
       <FlexCenterSpacedDiv>
         <Button

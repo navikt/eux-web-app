@@ -13,17 +13,12 @@ const defaultSelector: TopContainerSelector = {
   bannerStatus: undefined,
   expirationTime: undefined,
   highContrast: false,
-  modal: undefined,
   error: undefined
 }
 
 jest.mock('actions/alert', () => ({
   alertClear: jest.fn(),
   setAlertError: jest.fn()
-}))
-
-jest.mock('actions/ui', () => ({
-  closeModal: jest.fn()
 }))
 
 describe('components/TopContainer', () => {

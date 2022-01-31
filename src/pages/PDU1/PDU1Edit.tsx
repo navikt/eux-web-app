@@ -164,10 +164,19 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           onModalClose={resetComplete}
         />
       )}
-      <SavePDU1Modal
+      <Modal
         open={viewSavePdu1Modal}
-        pdu1={pdu1!}
         onModalClose={() => setViewSavePdu1Modal(false)}
+        modal={{
+          closeButton: false,
+          modalContent: (
+            <SavePDU1Modal
+              pdu1={pdu1!}
+              onCancelled={() => setViewSavePdu1Modal(false)}
+              onSaved={() => setViewSavePdu1Modal(false)}
+            />
+          )
+        }}
       />
       <FlexCenterSpacedDiv>
         <Button

@@ -50,6 +50,8 @@
   "success-localstorage-save": "Utkastet er lagret",
   "success-x-attachments-total-y-saved": "{{saved}} av {{total}} vedlegg er lagret",
   "success-no-attachments-to-save": "Ingen vedlegg å lagre",
+  "success-pdu1-reloaded-after-token" : "Utkast PDU1 {{name}} ble lastet inn",
+  "success-svarsed-reloaded-after-token" : "Utkast SvarSED {{name}} ble lastet inn",
 
   "warning-no-address": "Ingen adresser",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",

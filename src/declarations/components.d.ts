@@ -4,12 +4,13 @@ export interface ModalButton {
   main?: boolean
   flat?: boolean
   text: string
+  hide ?: boolean
 }
 
 export interface ModalContent {
   modalTitle?: string | null
-  modalContent ?: JSX.Element |string |null
-  modalText ?: string |null
+  modalContent ?: JSX.Element | string |null
+  modalText ?: JSX.Element | string | null
   modalButtons?: Array<ModalButton> |null
   closeButton?: boolean | null
 }

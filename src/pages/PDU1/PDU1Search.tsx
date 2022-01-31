@@ -66,17 +66,18 @@ const PDU1Search: React.FC<PDU1Props> = ({
   changeMode
 }: PDU1Props): JSX.Element => {
   const { t } = useTranslation()
+
   const dispatch = useDispatch()
   const {
-    fnrParam,
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
     fetchingPdu1,
     PDU1,
-    pdu1results
+    pdu1results,
+    fnrParam
   }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
-  const [fnrOrDnr, setFnrOrDnr] = useState<string>(fnrParam ?? '')
+  const [fnrOrDnr, setFnrOrDnr] = useState<string | undefined>(fnrParam)
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
   const [tema, setTema] = useState<string | undefined>(undefined)
   const [pdu1Request, setPdu1Request] = useState<boolean>(false)
@@ -84,6 +85,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [validMessage, setValidMessage] = useState<string>('')
   const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
   const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
+
   const [validation, resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
 

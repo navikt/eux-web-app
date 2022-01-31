@@ -202,7 +202,10 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div />
                   <Button
                     variant='secondary'
-                    onClick={onModalClose}
+                    onClick={() => {
+                      dispatch(alertClear())
+                      onModalClose()
+                    }}
                   >
                     {t('label:damn-really')}
                   </Button>

@@ -1,17 +1,11 @@
+import { Alert, Button, Heading, TextField } from '@navikt/ds-react'
 import { saveEntry } from 'actions/localStorage'
-import Modal from 'components/Modal/Modal'
+import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import _ from 'lodash'
-import { Alert, Heading, Button, TextField } from '@navikt/ds-react'
-import { ErrorElement } from 'declarations/app.d'
-import {
-  FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from 'nav-hoykontrast'
-import React, { useState } from 'react'
+import { FlexCenterSpacedDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -40,18 +34,22 @@ const SectionDiv = styled.div`
 `
 
 interface SavePDU1ModalProps {
-  onModalClose: () => void
+  saveName ?: string
+  onSaved: (name ?: string) => void
+  savedButtonText ?: string
+  onCancelled: () => void
   pdu1: PDU1
-  open: boolean
 }
 
-const SendPDU1Modal = ({
-  open,
-  onModalClose,
+const SavePDU1Modal = ({
+  saveName,
+  onSaved,
+  savedButtonText,
+  onCancelled,
   pdu1
 }: SavePDU1ModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_name, setName] = useState<string>('pdu1-' + new Date().getTime())
+  const [_name, setName] = useState<string>(saveName ?? 'pdu1-' + new Date().getTime())
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)
@@ -71,100 +69,99 @@ const SendPDU1Modal = ({
     return hasNoValidationErrors(validation)
   }
 
-  const onSave = async () => {
+  const onSave = async (name: string) => {
     if (performValidation()) {
       const now = new Date()
       const dateString = now.toDateString()
       const newItem: LocalStorageEntry<PDU1> = {
         id: '' + now.getTime(),
-        name: _name,
+        name: name,
         date: dateString,
         content: pdu1
       } as LocalStorageEntry
       dispatch(saveEntry('pdu1', newItem))
       setSaved(true)
-      setMessage(t('label:lagret-pdu1-utkast', { name: _name, date: dateString }))
+      setMessage(t('label:lagret-pdu1-utkast', { name: name, date: dateString }))
     }
   }
 
-  return (
-    <Modal
-      open={open}
-      modal={{
-        closeButton: false,
-        modalContent: (
-          <MinimalModalDiv>
-            <Heading size='small'>
-              {t('label:save-pdu1')}
-            </Heading>
-            <VerticalSeparatorDiv />
-            {_message && (
-              <>
-                <Alert variant='success'>
-                  {t(_message)}
-                </Alert>
-                <VerticalSeparatorDiv />
-              </>
-            )}
-            <MinimalContentDiv>
-              {!_saved && (
-                <SectionDiv>
-                  <PileDiv style={{ alignItems: 'flex-start' }}>
-                    <div>
-                      <FlexCenterSpacedDiv>
-                        <TextField
-                          data-test-id='savepdu1modal-name'
-                          error={_validation['savepdu1modal-name']?.feilmelding}
-                          id='savepdu1modal-name'
-                          label={t('label:navn')}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                          value={_name}
-                        />
-                      </FlexCenterSpacedDiv>
-                    </div>
-                    <VerticalSeparatorDiv size='0.5' />
-                  </PileDiv>
-                </SectionDiv>
-              )}
-              <SectionDiv>
-                <VerticalSeparatorDiv />
-                {!_saved
-                  ? (
-                    <div>
-                      <Button
-                        variant='primary'
-                        onClick={onSave}
-                      >
-                        {t('el:button-save-draft-x', { x: 'PD U1' })}
-                      </Button>
-                      <HorizontalSeparatorDiv />
-                      <Button
-                        variant='tertiary'
-                        onClick={onModalClose}
-                      >
-                        {t('el:button-cancel')}
-                      </Button>
+  useEffect(() => {
+    if (!_.isEmpty(saveName)) {
+      onSave(saveName!)
+    }
+  }, [])
 
-                    </div>
-                    )
-                  : (
-                    <div>
-                      <Button
-                        variant='primary'
-                        onClick={onModalClose}
-                      >
-                        {t('el:button-close')}
-                      </Button>
-                    </div>
-                    )}
-              </SectionDiv>
-            </MinimalContentDiv>
-          </MinimalModalDiv>
-        )
-      }}
-      onModalClose={onModalClose}
-    />
+  return (
+
+    <MinimalModalDiv>
+      <Heading size='small'>
+        {t('label:save-pdu1')}
+      </Heading>
+      <VerticalSeparatorDiv />
+      {_message && (
+        <>
+          <Alert variant='success'>
+            {t(_message)}
+          </Alert>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      <MinimalContentDiv>
+        {!_saved && (
+          <SectionDiv>
+            <PileDiv style={{ alignItems: 'flex-start' }}>
+              <div>
+                <FlexCenterSpacedDiv>
+                  <TextField
+                    disabled={_saved}
+                    data-test-id='savepdu1modal-name'
+                    error={_validation['savepdu1modal-name']?.feilmelding}
+                    id='savepdu1modal-name'
+                    label={t('label:navn')}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                    value={_name}
+                  />
+                </FlexCenterSpacedDiv>
+              </div>
+              <VerticalSeparatorDiv size='0.5' />
+            </PileDiv>
+          </SectionDiv>
+        )}
+        <SectionDiv>
+          <VerticalSeparatorDiv />
+          {!_saved
+            ? (
+              <div>
+                <Button
+                  variant='primary'
+                  onClick={() => onSave(_name)}
+                >
+                  {t('el:button-save-draft-x', { x: 'PD U1' })}
+                </Button>
+                <HorizontalSeparatorDiv />
+                <Button
+                  variant='tertiary'
+                  onClick={onCancelled}
+                >
+                  {t('el:button-cancel')}
+                </Button>
+
+              </div>
+              )
+            : (
+              <div>
+                <Button
+                  variant='primary'
+                  onClick={() => onSaved(_name)}
+                >
+                  {savedButtonText ?? t('el:button-close')}
+                </Button>
+              </div>
+              )}
+        </SectionDiv>
+      </MinimalContentDiv>
+    </MinimalModalDiv>
   )
 }
 
-export default SendPDU1Modal
+export default SavePDU1Modal

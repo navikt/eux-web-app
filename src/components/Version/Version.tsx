@@ -1,4 +1,4 @@
-import classnames from 'classnames'
+import { Button, Heading, Modal } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import { ServerInfo } from 'declarations/types'
 import React, { useState } from 'react'
@@ -14,57 +14,24 @@ const mapState = (state: State): VersjonSelector => ({
   serverInfo: state.app.serverinfo
 })
 
-const VersionDiv = styled.div`
-  dl {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
+const ModalDiv = styled.div`
+  padding: 1rem;
+  min-width: 400px;
   dt {
-    clear:both;
+    width: 200px;
+    float: left;
+    clear: left;
     font-weight: bold;
-    padding-right: 3px;
-    width: 30%;
   }
-
+  dt::after {
+     content: ":";
+  }
+  .odd {
+    background: lightgray;
+  }
   dd {
-    margin: 0;
-    width: 70%;
+   margin-left: 200px;
   }
-  &.App__versjonering--vis {
-    max-height: inherit;
-    overflow: visible;
-    background-color: #cbcbcb;
-    border: 1px solid #ababab;
-  }
-
-  .App__versjonering__kopierknapp {
-    display: block;
-    border: 0;
-    padding: 0;
-    background-color: transparent;
-    text-decoration: underline;
-  }
-
-  .App__versjonering__spark {
-    position: relative;
-    display: block;
-
-    &:link,
-    &:visited {
-      color: #000000;
-    }
-  }
-`
-const ExpandButton = styled.button`
-  border: 0;
-  background-color: transparent;
-  outline: none;
-  padding: 0;
-  font-size: 80%;
-  self-align: right;
-
 `
 
 const Version = () => {
@@ -93,39 +60,36 @@ const Version = () => {
     return null
   }
   return (
-    <VersionDiv
-      className={classnames({ 'App__versjonering--vis': visVersjonDetaljer })}
-      onClick={toggleVersjon}
-    >
-      <div style={{ textAlign: 'right' }}>
-        <ExpandButton>
-          Versjon {versjon}
-        </ExpandButton>
-      </div>
-      {visVersjonDetaljer && serverInfo && (
-        <>
+    <>
+      <Modal onClose={() => setVisVersjonDetaljer(false)} open={visVersjonDetaljer && !!serverInfo}>
+        <ModalDiv>
           <dl>
-            <dt>Web</dt><dd />
-            <dt>Build time:</dt><dd>{byggTidspunkt()}</dd>
-            <dt>Build version:</dt><dd>{byggVersjon()}</dd>
-            <dt>Branch:</dt><dd>{branchVersjon()}</dd>
-            <dt>eessi-kodeverk:</dt><dd>{eessiKodeverk()}</dd>
-            <dt>React:</dt><dd>{reactLibVersion()}</dd>
-            <dt>&nbsp;</dt><dd />
-            <dt>Server</dt><dd />
-            <dt>Namespace:</dt><dd>{serverInfo.namespace}</dd>
-            <dt>Cluster:</dt><dd>{serverInfo.cluster}</dd>
-            <dt>BranchName:</dt><dd>{serverInfo.branchName}</dd>
-            <dt>Vera:</dt><dd>{serverInfo.veraUrl}</dd>
-            <dt>Gosys:</dt><dd>{serverInfo.gosysURL}</dd>
-            <dt>VersionHash:</dt><dd>{serverInfo.longVersionHash}</dd>
+            <Heading size='small'>Web</Heading>
+            <dt className='odd'>Build time</dt><dd className='odd'>{byggTidspunkt()}</dd>
+            <dt>Build version</dt><dd>{byggVersjon()}</dd>
+            <dt className='odd'>Branch</dt><dd className='odd'>{branchVersjon()}</dd>
+            <dt>eessi-kodeverk</dt><dd>{eessiKodeverk()}</dd>
+            <dt className='odd'>React</dt><dd className='odd'>{reactLibVersion()}</dd>
+            <p />
+            <Heading size='small'>Server</Heading>
+            <dt className='odd'>Namespace</dt><dd className='odd'>{serverInfo.namespace ?? '-'}</dd>
+            <dt>Cluster</dt><dd>{serverInfo.cluster ?? '-'}</dd>
+            <dt className='odd'>BranchName</dt><dd className='odd'>{serverInfo.branchName ?? '-'}</dd>
+            <dt>Vera</dt><dd>{serverInfo.veraUrl ?? '-'}</dd>
+            <dt className='odd'>Gosys</dt><dd className='odd'>{serverInfo.gosysURL ?? '-'}</dd>
+            <dt>VersionHash</dt><dd>{serverInfo.longVersionHash ?? '-'}</dd>
           </dl>
-          <button className='App__versjonering__kopierknapp' onClick={copyToClipBoard}>
+          <Button onClick={copyToClipBoard}>
             Klikk for å kopiere versjonsinfo
-          </button>
-        </>
-      )}
-    </VersionDiv>
+          </Button>
+        </ModalDiv>
+      </Modal>
+      <div style={{ textAlign: 'right' }}>
+        <Button variant='tertiary' size='small' onClick={toggleVersjon}>
+          Versjon {versjon}
+        </Button>
+      </div>
+    </>
   )
 }
 

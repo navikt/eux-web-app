@@ -5,6 +5,7 @@ export interface InputProps {
   ariaLabel ?: string
   className ?: string
   description ?: string
+  disabled ?: boolean
   error: string | null | undefined
   namespace: string
   hideLabel?: boolean
@@ -22,6 +23,7 @@ const Input: React.FC<InputProps> = ({
   ariaLabel,
   className,
   description,
+  disabled = false,
   error,
   hideLabel = false,
   id,
@@ -44,6 +46,7 @@ const Input: React.FC<InputProps> = ({
       className={className}
       data-test-id={namespace + '-' + id}
       description={description}
+      disabled={disabled}
       error={error}
       id={namespace + '-' + id}
       hideLabel={hideLabel}

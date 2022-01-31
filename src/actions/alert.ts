@@ -12,3 +12,12 @@ export const setAlertError: ActionCreator<ActionWithPayload<ErrorPayload>> = (
   type: types.ALERT_ERROR_SET,
   payload: payload
 })
+
+export const setAlertSuccess: ActionCreator<ActionWithPayload<any>> = (
+  message: string
+): ActionWithPayload<any> => ({
+  type: types.ALERT_SUCCESS_SET,
+  payload: {
+    message
+  }
+})
