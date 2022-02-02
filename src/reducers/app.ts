@@ -120,7 +120,7 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
     }
 
     case types.APP_LOGMEAGAIN_SUCCESS:
-      window.location.href = action.payload.Location
+      window.location.href = action.context.redirectUrl
       return state
 
     case types.APP_PRELOAD:

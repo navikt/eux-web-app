@@ -9,12 +9,10 @@ describe('actions/alert', () => {
     })
   })
 
-  it('setAlertError()', () => {
-    const payload: ErrorPayload = {
-      error: 'mockError'
-    }
-    expect(alertActions.setAlertError(payload)).toMatchObject({
-      type: types.ALERT_ERROR_SET,
+  it('alertFailure()', () => {
+    let payload = 'payload'
+    expect(alertActions.alertFailure(payload)).toMatchObject({
+      type: types.ALERT_FAILURE,
       payload: payload
     })
   })

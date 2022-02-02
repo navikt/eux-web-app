@@ -1,4 +1,4 @@
-import { alertClear, setAlertError } from 'actions/alert'
+import { alertClear, alertFailure } from 'actions/alert'
 import BannerAlert from 'components/BannerAlert/BannerAlert'
 import Header from 'components/Header/Header'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
@@ -114,8 +114,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   if (_.isNil(window.onerror)) {
-    window.onerror = (msg) => {
-      dispatch(setAlertError({ error: msg }))
+    window.onerror = (msg: string | Event) => {
+      dispatch(alertFailure( msg as string))
     }
   }
 

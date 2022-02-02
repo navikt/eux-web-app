@@ -55,10 +55,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const { t } = useTranslation()
   const dispatch = useDispatch()
 
-  const logMe = useCallback(() => {
-    dispatch(logMeAgain())
-  }, [dispatch])
-
   const getDiff = (expirationTime: any, now: any) => {
     const _now: Date = now || new Date()
     const diff: number = expirationTime.getTime() - _now.getTime()
@@ -67,13 +63,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
-  const triggerReload = (name ?: string) => {
-    // origin: http://{host:port} pathname: /pdu1, no hash
-    let url = window.location.origin + window.location.pathname
-    if (name) {
-      url += '?name=' + name
-    }
-    window.location.href = url
+  const triggerReload = () => {
+    window.location.reload()
   }
 
   const checkTimeout = () => {
@@ -122,7 +113,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
                   saveName='svarsed-localstorage-token-save'
                   replySed={replySed!}
                   savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name ?: string) => triggerReload(name)}
+                  onSaved={(name ?: string) => logMeAgain(name)}
                   onCancelled={() => setSaveAndRenew(false)}
                 />
               )}
@@ -131,7 +122,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
                   saveName='pdu1-localstorage-token-save'
                   pdu1={pdu1!}
                   savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name?: string) => triggerReload(name)}
+                  onSaved={(name?: string) => logMeAgain(name)}
                   onCancelled={() => setSaveAndRenew(false)}
                 />
               )}
@@ -158,7 +149,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
             }, {
               main: false,
               text: t('app:log-me-again'),
-              onClick: logMe
+              onClick: () => dispatch(logMeAgain())
             }
           ]
         }}

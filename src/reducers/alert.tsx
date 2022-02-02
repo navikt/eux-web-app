@@ -45,7 +45,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return initialAlertState
   }
 
-  if (action.type === types.ALERT_SUCCESS_SET) {
+  if (action.type === types.ALERT_SUCCESS) {
     return {
       ...state,
       type: action.type,
@@ -54,7 +54,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     }
   }
 
-  if (action.type === types.ALERT_ERROR_SET) {
+  if (action.type === types.ALERT_FAILURE) {
     return {
       ...state,
       type: action.type,

@@ -18,7 +18,7 @@ const defaultSelector: TopContainerSelector = {
 
 jest.mock('actions/alert', () => ({
   alertClear: jest.fn(),
-  setAlertError: jest.fn()
+  alertFailure: jest.fn()
 }))
 
 describe('components/TopContainer', () => {

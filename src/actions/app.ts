@@ -73,10 +73,21 @@ export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDa
 }
 
 export const logMeAgain: ActionCreator<ThunkResult<ActionWithPayload<LogMeAgainPayload>>> = (
+  name ?: string
 ): ThunkResult<ActionWithPayload<LogMeAgainPayload>> => {
+
+  // origin: http://{host:port} pathname: /pdu1, no hash
+  let redirectUrl = window.location.origin + window.location.pathname
+  if (name) {
+    redirectUrl += '?name=' + name
+  }
+
   return call({
     url: urls.API_REAUTENTISERING_URL,
     expectedPayload: mockReautorisering,
+    context: {
+      redirectUrl
+    },
     type: {
       request: types.APP_LOGMEAGAIN_REQUEST,
       success: types.APP_LOGMEAGAIN_SUCCESS,
