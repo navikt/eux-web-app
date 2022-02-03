@@ -41,6 +41,8 @@ export type PeriodeType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet
 
 export type KontoType = 'sepa' | 'ordinaer'
 
+export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'admodning_om_mer_informasjon'
+
 export interface Adresse {
   by?: string
   bygning?: string
@@ -197,7 +199,6 @@ export interface H001Svar {
     dokument: string
     sed: string
   }
-  info?: string
 }
 
 export interface H002Svar {
@@ -205,10 +206,6 @@ export interface H002Svar {
   dokument: string
   sed: string
   grunn?: string
-}
-
-export interface Melding {
-  info?: string
 }
 
 export interface Barnetilhoerighet {
@@ -466,8 +463,8 @@ export interface HSed extends BaseReplySed {
 
 export interface H001Sed extends HSed {
   anmodning: H001Svar
-  melding: Melding
-  ytterligereInfo: string
+  ytterligereinfoType: YtterligereInfoType
+  ytterligereinfo: string
 }
 
 export interface H002Sed extends HSed {

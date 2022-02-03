@@ -194,12 +194,12 @@ const LoadSave: React.FC<LoadSaveProps> = ({
                 <FlexBaseSpacedDiv>
                   <Button
                     variant='tertiary'
-                    disabled={_sedStatusRequested === savedEntry.id || hasSentStatus(savedEntry.id)}
+                    disabled={(savedEntry.id && _sedStatusRequested === savedEntry.id) || hasSentStatus(savedEntry.id)}
                     data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
                   >
-                    {_sedStatusRequested === savedEntry.id && <Loader />}
-                    {_sedStatusRequested === savedEntry.id
+                    {savedEntry.id && _sedStatusRequested === savedEntry.id && <Loader />}
+                    {savedEntry.id && _sedStatusRequested === savedEntry.id
                       ? t('message:loading-checking-sed-status')
                       : (hasSentStatus(savedEntry.id)
                           ? t('label:sendt')

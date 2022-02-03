@@ -325,12 +325,15 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createH001ReplySed = (): ReplySed => {
-    return mockReplySed('H001') as ReplySed
+  const createH001ReplySed = (saksnummer: string): ReplySed => {
+    let h001sed = mockReplySed('H001') as ReplySed
+    h001sed.saksnummer = saksnummer
+    return h001sed
   }
 
-  const fillOutSed = () => {
-    const replySed = createH001ReplySed()
+  const fillOutSed = (opprettetSak: OpprettetSak) => {
+    const replySed = createH001ReplySed(opprettetSak.rinasaksnummer)
+    replySed.sedId = '' + new Date().getTime()
     dispatch(setReplySed(replySed))
     changeMode('B', 'forward')
   }
@@ -679,9 +682,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 <Button
                   variant='secondary'
                   disabled={!(opprettetSak && valgtSedType === 'H001')}
-                  onClick={fillOutSed}
+                  onClick={() => fillOutSed(opprettetSak!)}
                 >
-                  Fill out SED
+                  {t('el:button-fill-sed')}
                 </Button>
                 <HorizontalSeparatorDiv />
                 <Button
@@ -701,6 +704,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         )}
         <VerticalSeparatorDiv />
         {opprettetSak && opprettetSak.url && (
+          <>
           <Row>
             <Column>
               <Alert variant='success'>
@@ -743,6 +747,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
               </Alert>
             </Column>
           </Row>
+          <VerticalSeparatorDiv size='2'/>
+          </>
         )}
       </Content>
       <Margin />

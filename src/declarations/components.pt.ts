@@ -11,7 +11,7 @@ export const ModalButtonPropType = PT.shape({
 export const ModalContentPropType = PT.shape({
   modalTitle: PT.string,
   modalContent: PT.oneOfType([PT.element, PT.string]),
-  modalText: PT.string,
+  modalText: PT.oneOfType([PT.element, PT.string]),
   modalButtons: PT.arrayOf(ModalButtonPropType.isRequired),
   closeButton: PT.bool
 })

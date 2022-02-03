@@ -10,7 +10,6 @@ import { Validation, VedleggSendResponse } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
-import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -189,10 +188,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
       </Container>
     </TopContainer>
   )
-}
-
-Vedlegg.propTypes = {
-  location: PT.object.isRequired
 }
 
 export default Vedlegg

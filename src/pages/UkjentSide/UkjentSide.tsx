@@ -1,7 +1,6 @@
 import { Container, Content, Margin } from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { Alert, Link, Heading } from '@navikt/ds-react'
-import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
@@ -31,10 +30,6 @@ const UkjentSide: React.FC = (): JSX.Element => {
       </Container>
     </TopContainer>
   )
-}
-
-UkjentSide.propTypes = {
-  location: PT.any.isRequired
 }
 
 export default UkjentSide
