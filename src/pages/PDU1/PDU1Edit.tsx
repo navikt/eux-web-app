@@ -20,7 +20,7 @@ import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
-import CountryData from 'land-verktoy'
+import CountryData from '@navikt/land-verktoy'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import {
@@ -30,7 +30,7 @@ import {
   PaddedDiv,
   PileDiv,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

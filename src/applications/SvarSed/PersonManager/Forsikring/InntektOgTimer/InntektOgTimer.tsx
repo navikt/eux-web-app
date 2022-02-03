@@ -9,8 +9,8 @@ import { InntektOgTime, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Currency } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { Heading, Button } from '@navikt/ds-react'
 import {
@@ -19,7 +19,7 @@ import {
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

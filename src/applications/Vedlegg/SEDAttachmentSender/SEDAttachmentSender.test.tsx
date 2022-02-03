@@ -1,6 +1,6 @@
 import { SavingAttachmentsJob } from 'declarations/attachments'
 import { mount, ReactWrapper } from 'enzyme'
-import ProgressBar from 'fremdriftslinje'
+import ProgressBar from '@navikt/fremdriftslinje'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentSender, { SEDAttachmentSenderProps } from './SEDAttachmentSender'

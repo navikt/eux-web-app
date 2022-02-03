@@ -1,10 +1,10 @@
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Country, CountryFilter } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

@@ -23,7 +23,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

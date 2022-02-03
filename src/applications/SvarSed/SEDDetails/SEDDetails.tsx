@@ -7,7 +7,7 @@ import {
   VerticalSeparatorDiv,
   FlexCenterSpacedDiv,
   HorizontalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'

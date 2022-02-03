@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { FeatureToggles, Params } from 'declarations/app'
 import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
 

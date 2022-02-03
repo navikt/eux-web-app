@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export interface ValidationState {
   view: boolean

@@ -6,7 +6,7 @@ import {
   Institusjoner,
   Kodeverk
 } from 'declarations/types'
-import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'

@@ -26,7 +26,7 @@ import {
   RadioPanelBorder,
   RadioPanelGroup,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

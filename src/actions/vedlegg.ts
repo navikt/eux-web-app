@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { VedleggPayload } from 'declarations/types'
-import { call, ActionWithPayload, ThunkResult } from 'js-fetch-api'
+import { call, ActionWithPayload, ThunkResult } from '@navikt/fetch'
 import { ActionCreator } from 'redux'
 import mockSendVedlegg from 'mocks/vedlegg/sendVedlegg'
 import mockRinaDokumenter from 'mocks/vedlegg/rinaDokumenter'

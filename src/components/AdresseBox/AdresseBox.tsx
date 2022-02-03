@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import CountryData from 'land-verktoy'
+import CountryData from '@navikt/land-verktoy'
 import { Panel, BodyLong } from '@navikt/ds-react'
 
 const AdresseBox = ({ adresse, border = true }: any) => {

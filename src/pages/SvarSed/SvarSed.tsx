@@ -1,4 +1,4 @@
-import { setAlertSuccess } from 'actions/alert'
+import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
 import { querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
@@ -59,7 +59,7 @@ export const SvarSedPage = (): JSX.Element => {
             dispatch(setCurrentEntry('svarsed', entry))
             dispatch(setReplySed(entry.content))
             changeMode('B', 'forward')
-            dispatch(setAlertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
+            dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
         }
         setMounted(true)

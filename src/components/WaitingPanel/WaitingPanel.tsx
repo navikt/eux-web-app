@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { BodyLong, Loader } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React from 'react'

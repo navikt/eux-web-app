@@ -6,7 +6,7 @@ import mockJoark from 'mocks/attachments/joark'
 import mockJoarkProcessed from 'mocks/attachments/joarkAsItems'
 import { stageSelector } from 'setupTests'
 import { JoarkBrowser, JoarkBrowserProps, JoarkBrowserSelector } from './JoarkBrowser'
-import TableSorter from 'tabell'
+import TableSorter from '@navikt/tabell'
 import _ from 'lodash'
 
 jest.mock('actions/joark', () => ({

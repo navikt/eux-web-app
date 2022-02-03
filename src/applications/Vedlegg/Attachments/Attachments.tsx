@@ -7,7 +7,7 @@ import {
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import { Button } from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

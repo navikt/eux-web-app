@@ -3,7 +3,7 @@ import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from 'eessi-kodeverk'
-import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
 import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
@@ -75,7 +75,6 @@ export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDa
 export const logMeAgain: ActionCreator<ThunkResult<ActionWithPayload<LogMeAgainPayload>>> = (
   name ?: string
 ): ThunkResult<ActionWithPayload<LogMeAgainPayload>> => {
-
   // origin: http://{host:port} pathname: /pdu1, no hash
   let redirectUrl = window.location.origin + window.location.pathname
   if (name) {

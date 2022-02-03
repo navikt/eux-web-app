@@ -9,8 +9,8 @@ import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country, CountryFilter } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
@@ -20,7 +20,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

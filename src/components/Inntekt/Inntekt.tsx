@@ -11,8 +11,8 @@ import {
   PaddedDiv,
   PileDiv,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
-import Pagination from 'paginering'
+} from '@navikt/hoykontrast'
+import Pagination from '@navikt/paginering'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'

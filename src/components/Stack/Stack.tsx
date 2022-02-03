@@ -7,7 +7,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { Heading, Button } from '@navikt/ds-react'
-import { FlexCenterSpacedDiv, PileDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { FlexCenterSpacedDiv, PileDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 

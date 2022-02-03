@@ -12,7 +12,7 @@ import NavHighContrast, {
   slideInFromLeft,
   slideInFromRight,
   slideInFromTop
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import Error from 'pages/Error'
 import PT from 'prop-types'
 import React from 'react'
@@ -115,7 +115,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 
   if (_.isNil(window.onerror)) {
     window.onerror = (msg: string | Event) => {
-      dispatch(alertFailure( msg as string))
+      dispatch(alertFailure(msg as string))
     }
   }
 

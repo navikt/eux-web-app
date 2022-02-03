@@ -3,7 +3,7 @@ import DekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/De
 import FamilieYtelser from 'applications/SvarSed/PersonManager/Trygdeordning/FamilieYtelser'
 import UdekkedePerioder from 'applications/SvarSed/PersonManager/Trygdeordning/UdekkedePerioder'
 import { Heading } from '@navikt/ds-react'
-import { PaddedDiv, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 

@@ -4,7 +4,7 @@ import {
   JoarkPoster,
   JoarkBrowserItem, JoarkBrowserItems
 } from 'declarations/attachments'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 
 export interface JoarkState {

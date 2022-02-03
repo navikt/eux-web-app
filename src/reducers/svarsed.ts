@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Seds } from 'declarations/types.d'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Action } from 'redux'

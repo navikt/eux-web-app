@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Validation } from 'declarations/types'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import { Action, ActionCreator } from 'redux'
 
 export const resetAllValidation: ActionCreator<ActionWithPayload<{}>> = (

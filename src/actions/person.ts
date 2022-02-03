@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockPerson from 'mocks/person'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf

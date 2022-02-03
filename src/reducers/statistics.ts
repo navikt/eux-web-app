@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Action } from 'redux'

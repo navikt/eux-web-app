@@ -7,8 +7,8 @@ import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledCompone
 import { Inntekt } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Currency } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { Button, Heading } from '@navikt/ds-react'
 import {
@@ -17,7 +17,7 @@ import {
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

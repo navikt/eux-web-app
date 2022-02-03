@@ -1,6 +1,5 @@
 import * as alertActions from 'actions/alert'
 import * as types from 'constants/actionTypes'
-import { ErrorPayload } from 'js-fetch-api'
 
 describe('actions/alert', () => {
   it('alertClear()', () => {
@@ -10,7 +9,7 @@ describe('actions/alert', () => {
   })
 
   it('alertFailure()', () => {
-    let payload = 'payload'
+    const payload = 'payload'
     expect(alertActions.alertFailure(payload)).toMatchObject({
       type: types.ALERT_FAILURE,
       payload: payload

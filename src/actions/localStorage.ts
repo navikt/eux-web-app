@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 
 export const loadEntries = (namespace: LocalStorageNamespaces): ActionWithPayload => ({

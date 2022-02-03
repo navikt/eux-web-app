@@ -1,4 +1,4 @@
-import { setAlertSuccess } from 'actions/alert'
+import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
 import { fetchPdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
@@ -54,7 +54,7 @@ export const PDU1Page = (): JSX.Element => {
             dispatch(setCurrentEntry('pdu1', entry))
             dispatch(setPdu1(entry.content))
             changeMode('B', 'forward')
-            dispatch(setAlertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
+            dispatch(alertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
           }
         }
         setMounted(true)

@@ -1,6 +1,6 @@
 import { ErrorFilled } from '@navikt/ds-icons'
 import classNames from 'classnames'
-import { fadeIn } from 'nav-hoykontrast'
+import { fadeIn } from '@navikt/hoykontrast'
 import { AlertError, AlertVariant } from 'declarations/components'
 import { AlertErrorPropType } from 'declarations/components.pt'
 import _ from 'lodash'

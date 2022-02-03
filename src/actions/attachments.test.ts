@@ -2,11 +2,11 @@ import * as attachmentsActions from 'actions/attachments'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { JoarkBrowserItem, SEDAttachmentPayloadWithFile } from 'declarations/attachments'
-import { call as originalCall } from 'js-fetch-api'
+import { call as originalCall } from '@navikt/fetch'
 import mockItems from 'mocks/attachments/items'
 
 const sprintf = require('sprintf-js').sprintf
-jest.mock('js-fetch-api', () => ({
+jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))
 const call = originalCall as jest.Mock<typeof originalCall>

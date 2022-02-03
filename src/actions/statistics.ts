@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export const startMenuStatistic = (domain: string, initialMenu: string | undefined): ActionWithPayload<any> => ({
   type: types.STATISTICS_MENU_START,

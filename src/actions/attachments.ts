@@ -8,7 +8,7 @@ import {
   JoarkPreview,
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments.d'
-import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockJoark from 'mocks/attachments/joark'
 import mockPreview from 'mocks/attachments/preview'
 import { Action, ActionCreator } from 'redux'

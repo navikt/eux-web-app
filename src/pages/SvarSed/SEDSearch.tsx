@@ -27,7 +27,7 @@ import {
   RadioPanelBorder,
   RadioPanelGroup,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import { validateSEDSearch } from 'pages/SvarSed/mainValidation'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

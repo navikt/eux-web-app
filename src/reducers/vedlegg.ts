@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { VedleggSendResponse } from 'declarations/types'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export interface VedleggState {
   vedleggResponse: VedleggSendResponse | undefined;

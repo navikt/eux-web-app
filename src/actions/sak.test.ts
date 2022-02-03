@@ -1,12 +1,12 @@
 import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { call as originalCall } from 'js-fetch-api'
+import { call as originalCall } from '@navikt/fetch'
 import mockArbeidsgiver from 'mocks/arbeidsgiver/arbeidsgiver'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
 
-jest.mock('js-fetch-api', () => ({
+jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))
 const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>

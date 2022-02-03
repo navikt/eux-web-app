@@ -1,4 +1,4 @@
-import { Container, Content, Margin } from 'nav-hoykontrast'
+import { Container, Content, Margin } from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { Alert, Link, Heading } from '@navikt/ds-react'
 import PT from 'prop-types'

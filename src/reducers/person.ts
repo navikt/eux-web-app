@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Person } from 'declarations/types.d'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export interface PersonState {
   person: Person | null | undefined

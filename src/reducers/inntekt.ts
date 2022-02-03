@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { IInntekter } from 'declarations/types.d'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export interface InntektState {
   inntekter: IInntekter | null | undefined

@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Arbeidsperioder } from 'declarations/types.d'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 
 export interface ArbeidsgiverState {

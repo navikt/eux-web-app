@@ -9,11 +9,11 @@ import {
   SEDAttachmentPayloadPropType
 } from 'declarations/attachments.pt'
 import { State } from 'declarations/reducers'
-import ProgressBar, { ProgressBarStatus } from 'fremdriftslinje'
+import ProgressBar, { ProgressBarStatus } from '@navikt/fremdriftslinje'
 import _ from 'lodash'
 import md5 from 'md5'
 import { Button } from '@navikt/ds-react'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

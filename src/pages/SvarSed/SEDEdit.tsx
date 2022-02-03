@@ -51,7 +51,7 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
-import FileFC, { File } from 'forhandsvisningsfil'
+import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -63,7 +63,7 @@ import {
   PaddedDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'

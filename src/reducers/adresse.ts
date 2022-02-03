@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Adresse } from 'declarations/sed'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 
 export interface AdresseState {
   adresse: Array<Adresse> | null | undefined

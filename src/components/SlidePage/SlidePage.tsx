@@ -4,7 +4,7 @@ import { finishPageStatistic, logPageStatistics, startPageStatistic } from 'acti
 import classNames from 'classnames'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Container, Content, fadeIn, fadeOut, Margin } from 'nav-hoykontrast'
+import { Container, Content, fadeIn, fadeOut, Margin } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { MutableRefObject, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'

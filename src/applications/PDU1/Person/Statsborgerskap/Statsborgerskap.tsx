@@ -8,8 +8,8 @@ import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledCompone
 import { State } from 'declarations/reducers'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country, CountryFilter } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import {
@@ -19,7 +19,7 @@ import {
   PaddedHorizontallyDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

@@ -14,7 +14,7 @@ jobs:
       application: "eux-web-app"
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
     steps:
 
       # PULL REPOSITORY
@@ -50,18 +50,21 @@ jobs:
             ${{ runner.os }}-
 
       # SETUP NODE
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: 'Setup Node'
+        uses: actions/setup-node@v2.1.2
         with:
-          node-version: ${{ matrix.node-version }}
-
+           node-version: 16.x
+           registry-url: https://npm.pkg.github.com/
+           scope: "@navikt"
 
       # INSTALL NPM DEPENDENCIES
       - name: 'Install NPM dependencies'
         run: |
           application="eux-web-app"
           npm install
-
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      -
       # BUILD NPM
       - name: 'Build npm'
         run: |

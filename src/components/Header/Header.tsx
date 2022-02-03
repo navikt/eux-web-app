@@ -1,5 +1,5 @@
 import { toggleHighContrast } from 'actions/ui'
-import { HorizontalSeparatorDiv } from 'nav-hoykontrast'
+import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
 import { Link, Heading } from '@navikt/ds-react'

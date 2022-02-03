@@ -4,7 +4,7 @@ import {
   animationOpen,
   fadeIn,
   fadeOut, PaddedHorizontallyDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import { Panel, Tag } from '@navikt/ds-react'
 
 export const FadingLineSeparator = styled.div`

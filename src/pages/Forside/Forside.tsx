@@ -1,5 +1,5 @@
 import { State } from 'declarations/reducers'
-import { Container, Content, Margin, VerticalSeparatorDiv } from 'nav-hoykontrast'
+import { Container, Content, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

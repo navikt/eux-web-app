@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ModalContent } from 'declarations/components'
-import { ActionWithPayload } from 'js-fetch-api'
+import { ActionWithPayload } from '@navikt/fetch'
 import { Action } from 'redux'
 
 export interface UiState {

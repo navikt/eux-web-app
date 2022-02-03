@@ -1,6 +1,6 @@
 import { resetValidation } from 'actions/validation'
-import { Country, CountryFilter } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -20,7 +20,7 @@ import {
   HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

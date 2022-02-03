@@ -2,14 +2,14 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { PDU1 } from 'declarations/pd'
 import { FagSaker, UpdatePdu1Payload } from 'declarations/types'
-import { ActionWithPayload, call, ThunkResult } from 'js-fetch-api'
+import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockGetPdu1 from 'mocks/pdu1/get'
 import mockFetchPdu1 from 'mocks/pdu1/fetch'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
 import { Action, ActionCreator } from 'redux'
-import File from 'forhandsvisningsfil'
+import File from '@navikt/forhandsvisningsfil'
 
 const sprintf = require('sprintf-js').sprintf
 

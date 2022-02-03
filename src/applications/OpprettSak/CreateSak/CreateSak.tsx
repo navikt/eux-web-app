@@ -34,8 +34,8 @@ import {
 } from 'declarations/types'
 import * as EKV from 'eessi-kodeverk'
 import useGlobalValidation from 'hooks/useGlobalValidation'
-import { Country } from 'land-verktoy'
-import CountrySelect from 'landvelger'
+import { Country } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import mockReplySed from 'mocks/svarsed/replySed'
 import {
@@ -49,7 +49,7 @@ import {
   PileDiv,
   Row,
   VerticalSeparatorDiv
-} from 'nav-hoykontrast'
+} from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
