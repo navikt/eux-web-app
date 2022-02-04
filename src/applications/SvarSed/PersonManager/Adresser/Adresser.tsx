@@ -127,6 +127,7 @@ const Adresser: React.FC<PersonManagerFormProps> = ({
     const valid: boolean = performValidation({
       adresse: _newAdresse,
       namespace: namespace,
+      checkAdresseType: true,
       personName: personName
     })
     if (valid) {

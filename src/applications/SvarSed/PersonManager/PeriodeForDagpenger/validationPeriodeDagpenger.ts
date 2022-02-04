@@ -80,6 +80,7 @@ export const validatePeriodeDagpenger = (
     const _error: boolean = validateAdresse(v, t, {
       adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
       namespace: namespace + idx + '-institusjon-idmangler-adresse',
+      checkAdresseType: true,
       personName: personName
     })
     hasErrors = hasErrors || _error

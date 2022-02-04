@@ -10,6 +10,7 @@ export interface ValidationPeriodeProps {
   periode: Periode
   index?: number | undefined
   mandatoryStartdato ?: boolean
+  mandatorySluttdato ?: boolean
   namespace: string,
   personName?: string
 }
@@ -24,6 +25,7 @@ export const validatePeriode = (
     index = undefined,
     namespace,
     mandatoryStartdato = true,
+    mandatorySluttdato = false,
     personName
   }: ValidationPeriodeProps
 ): boolean => {
@@ -41,6 +43,14 @@ export const validatePeriode = (
     v[namespace + idx + '-startdato'] = {
       skjemaelementId: namespace + idx + '-startdato',
       feilmelding: t('validation:invalidDate') + (personName ? t('validation:til-person', { person: personName }) : '')
+    } as ErrorElement
+    hasErrors = true
+  }
+
+  if (mandatorySluttdato && _.isEmpty(periode?.sluttdato?.trim())) {
+    v[namespace + idx + '-sluttdato'] = {
+      skjemaelementId: namespace + idx + '-sluttdato',
+      feilmelding: t('validation:noDate') + (personName ? t('validation:til-person', { person: personName }) : '')
     } as ErrorElement
     hasErrors = true
   }

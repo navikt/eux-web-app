@@ -8,12 +8,14 @@ import { getIdx } from 'utils/namespace'
 export interface ValidationAddressProps {
   adresse: Adresse | undefined
   index?: number
+  checkAdresseType: boolean
   namespace: string
   personName?: string
 }
 
 interface ValidateAdresserProps {
   adresser: Array<Adresse>
+  checkAdresseType: boolean
   namespace: string
   personName?: string
 }
@@ -24,6 +26,7 @@ export const validateAdresse = (
   {
     adresse,
     index,
+    checkAdresseType,
     namespace,
     personName
   }: ValidationAddressProps
@@ -31,7 +34,7 @@ export const validateAdresse = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  if (_.isEmpty(adresse?.type?.trim())) {
+  if (checkAdresseType && _.isEmpty(adresse?.type?.trim())) {
     v[namespace + idx + '-type'] = {
       feilmelding: t('validation:noAddressType') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + idx + '-type'
@@ -72,6 +75,7 @@ export const validateAdresser = (
   t: TFunction,
   {
     adresser,
+    checkAdresseType,
     namespace,
     personName
   }: ValidateAdresserProps
@@ -81,6 +85,7 @@ export const validateAdresser = (
     const _errors: boolean = validateAdresse(validation, t, {
       adresse,
       index,
+      checkAdresseType,
       namespace,
       personName
     })

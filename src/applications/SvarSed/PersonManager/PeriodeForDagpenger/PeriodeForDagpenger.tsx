@@ -190,12 +190,12 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
     if (index < 0) {
       _setNewAdresse(adresse)
       if (id) {
-        _resetValidation(namespace + '-' + id)
+        _resetValidation(namespace + '-institusjon-idmangler-adresse-' + id)
       }
     } else {
-      dispatch(updateReplySed(`${target}[${index}].adresse`, adresse))
-      if (id && validation[namespace + '-' + id]) {
-        dispatch(resetValidation(namespace + '-' + id))
+      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.adresse`, adresse))
+      if (id && validation[namespace + getIdx(index) + '-institusjon-idmangler-adresse-' + id]) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-adresse-' + id))
       }
     }
   }
@@ -278,7 +278,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
         >
           <PeriodeInput
-            namespace={namespace}
+            namespace={namespace + idx}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),
               sluttdato: getErrorFor(index, 'periode-sluttdato')
@@ -293,7 +293,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Input
               error={getErrorFor(index, 'institusjon-id')}
-              namespace={namespace}
+              namespace={namespace + idx}
               id='institusjon-id'
               key={'institusjon-id-' + (index < 0 ? _newInstitutionsId : periodeDagpenger?.institusjon.id ?? '')}
               label={t('label:institusjonens-id')}
@@ -304,7 +304,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Input
               error={getErrorFor(index, 'institusjon-navn')}
-              namespace={namespace}
+              namespace={namespace + idx}
               id='institusjon-navn'
               key={'institusjon-navn-' + (index < 0 ? _newInstitutionsNavn : periodeDagpenger?.institusjon.navn ?? '')}
               label={t('label:institusjonens-navn')}
@@ -342,7 +342,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <Input
                   error={getErrorFor(index, 'institusjon-idmangler-navn')}
-                  namespace={namespace}
+                  namespace={namespace + idx}
                   id='institusjon-idmangler-navn'
                   key={'institusjon-idmangler-navn-' + (index < 0 ? _newNavn : periodeDagpenger?.institusjon.idmangler?.navn ?? '')}
                   label={t('label:navn')}
@@ -356,7 +356,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             <AdresseForm
               adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
               onAdressChanged={(a, type: string) => setAdresse(a, type, index)}
-              namespace={namespace + '-institusjon-idmangler-adresse'}
+              namespace={namespace + idx +'-institusjon-idmangler-adresse'}
               validation={index < 0 ? _validation : validation}
             />
           </>

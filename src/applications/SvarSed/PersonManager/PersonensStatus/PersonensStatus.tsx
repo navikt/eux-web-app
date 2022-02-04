@@ -12,7 +12,7 @@ import {
   RadioPanelGroup,
   PaddedDiv,
   VerticalSeparatorDiv,
-  FlexRadioPanels, RadioPanel
+  RadioPanel
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -47,7 +47,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
             name={namespace + '-type'}
             onChange={setArbeidsforhold}
           >
-            <FlexRadioPanels>
+
               <RadioPanel value='arbeidsforhold-1'>{t('el:option-personensstatus-1')}</RadioPanel>
               <RadioPanel value='arbeidsforhold-2'>{t('el:option-personensstatus-2')}</RadioPanel>
               <RadioPanel value='arbeidsforhold-3'>
@@ -67,7 +67,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
                   lessText={t('label:se-mindre')}
                 />
               </RadioPanel>
-            </FlexRadioPanels>
+
           </RadioPanelGroup>
         </Column>
       </AlignStartRow>

@@ -53,6 +53,7 @@
   "success-pdu1-reloaded-after-token" : "Utkast PDU1 ble lastet inn",
   "success-svarsed-reloaded-after-token" : "Utkast SvarSED ble lastet inn",
 
+  "warning-max-1-utenlandsk-pin" : "Maks 1 utenlandsk pin til H001",
   "warning-no-address": "Ingen adresser",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",
   "warning-no-barn": "Ingen barn",

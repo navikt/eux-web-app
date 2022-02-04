@@ -77,6 +77,7 @@ export const validateForsikringPeriode = (
     .indexOf(type) >= 0) {
     const _error: boolean = validateAdresse(v, t, {
       adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
+      checkAdresseType: false,
       namespace: namespace + idx + '-arbeidsgiver-adresse',
       personName: (periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? personName
     })

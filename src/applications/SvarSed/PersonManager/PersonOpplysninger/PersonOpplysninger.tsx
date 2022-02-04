@@ -8,7 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -68,6 +68,8 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
+  const nrOfUtenlandskPin: number = _.filter(personInfo?.pin, p => p.land !== 'NO')?.length ?? 0
+
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
   const landUtenNorge = CountryFilter.STANDARD({}).filter((it: string) => it !== 'NO')
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
@@ -403,6 +405,12 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
       </PaddedDiv>
       <VerticalSeparatorDiv />
+      {(replySed as ReplySed).sedType === 'H001' && (
+        <PaddedHorizontallyDiv>
+          <BodyLong>{t('message:warning-max-1-utenlandsk-pin')}</BodyLong>
+          <VerticalSeparatorDiv />
+        </PaddedHorizontallyDiv>
+      )}
       {personInfo?.pin?.map(renderRow)}
       <VerticalSeparatorDiv />
       <PaddedHorizontallyDiv>
@@ -415,14 +423,17 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <PaddedHorizontallyDiv>
             <Row>
               <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                </Button>
+                {/* Limit H001 utenlandskpins to 1 */
+                  ((replySed as ReplySed).sedType === 'H001' ? nrOfUtenlandskPin === 0 : true) && (
+                  <Button
+                    variant='tertiary'
+                    onClick={() => _setSeeNewForm(true)}
+                  >
+                    <Add />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+                  </Button>
+                )}
               </Column>
             </Row>
           </PaddedHorizontallyDiv>

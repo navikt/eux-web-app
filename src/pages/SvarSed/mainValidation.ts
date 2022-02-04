@@ -133,7 +133,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
 
       const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
       _error = validateAdresser(v, t, {
-        adresser, namespace: `personmanager-${personID}-adresser`, personName
+        adresser, checkAdresseType: true, namespace: `personmanager-${personID}-adresser`, personName
       })
       hasErrors = hasErrors || _error
     }
@@ -327,7 +327,7 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     hasErrors = hasErrors || _error
 
     _error = validateAdresser(v, t, {
-      adresser: _.get(replySed, `${personID}.adresser`), namespace: `personmanager-${personID}-adresser`, personName
+      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, namespace: `personmanager-${personID}-adresser`, personName
     })
     hasErrors = hasErrors || _error
 
