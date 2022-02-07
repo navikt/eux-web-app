@@ -149,12 +149,22 @@ export const validatePersonOpplysninger = (
     } as ErrorElement
     hasErrors = true
   }
+  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
+  const utenlandskPins: Array<Pin> =  _.filter(personInfo?.pin, p => p.land !== 'NO')
 
-  personInfo.pin?.forEach((pin: Pin, index: number) => {
+  if (_.isEmpty(norwegianPin?.identifikator)) {
+    v[namespace + '-norskpin-nummer'] = {
+      feilmelding: t('validation:noId') + (personName ? t('validation:til-person', {person: personName}) : ''),
+      skjemaelementId: namespace + '-norskpin-nummer',
+    } as ErrorElement
+    hasErrors = true
+  }
+
+  utenlandskPins?.forEach((pin: Pin, index: number) => {
     const _errors = validatePin(v, t, {
       index,
       pin: pin,
-      pins: personInfo.pin ?? [],
+      pins: utenlandskPins,
       namespace: namespace + '-pin',
       personName
     })

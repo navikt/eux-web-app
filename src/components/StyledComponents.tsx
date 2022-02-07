@@ -127,7 +127,7 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
     background-color: rgba(236, 243, 153, 0.5);
   };
   &:hover:not(.new) {
-    background-color: var(--navds-global-color-gray-200);
+    background-color: var(--navds-global-color-gray-100);
   }
 `
 

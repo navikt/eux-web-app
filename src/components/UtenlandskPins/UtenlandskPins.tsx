@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -26,9 +27,11 @@ import { getIdx } from 'utils/namespace'
 import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
 
 export interface UtenlandskPinProps {
-  pins: Array<string> | undefined
-  onPinsChanged: (newPins: Array<string>, whatChanged: string | undefined) => void
+  pins: Array<Pin> | undefined
+  onPinsChanged: (newPins: Array<Pin>, whatChanged: string | undefined) => void
   namespace: string,
+  loggingNamespace: string,
+  limit?: number
   validation: Validation
 }
 
@@ -36,6 +39,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   pins,
   onPinsChanged,
   namespace,
+  loggingNamespace,
+  limit=99,
   validation
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
@@ -43,7 +48,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((p: string): string => p)
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Pin>((p: Pin): string => p.land + '-' + p.identifikator)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
 
@@ -52,10 +57,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       _setNewIdentifikator(newIdentifikator.trim())
       _resetValidation(namespace + '-identifikator')
     } else {
-      const newPins: Array<string> = _.cloneDeep(pins) as Array<string>
-      const els = newPins[index].split(/\s+/)
-      els[1] = newIdentifikator.trim()
-      newPins[index] = els.join(' ')
+      const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+      newPins[index].identifikator = newIdentifikator.trim()
       onPinsChanged(newPins, namespace + '[' + index + ']-identifikator')
     }
   }
@@ -65,21 +68,19 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       _setNewLand(newLand.trim())
       _resetValidation(namespace + '-land')
     } else {
-      const newPins: Array<string> = _.cloneDeep(pins) as Array<string>
-      const els = newPins[index].split(/\s+/)
-      els[0] = newLand.trim()
-      newPins[index] = els.join(' ')
+      const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+      newPins[index].land = newLand.trim()
       onPinsChanged(newPins, namespace + '[' + index + ']-land')
     }
   }
 
   const onRemove = (index: number) => {
-    const newUtenlandskePins: Array<string> = _.cloneDeep(pins) as Array<string>
-    const deletedUtenlandskePin: Array<string> = newUtenlandskePins.splice(index, 1)
+    const newUtenlandskePins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+    const deletedUtenlandskePin: Array<Pin> = newUtenlandskePins.splice(index, 1)
     if (deletedUtenlandskePin && deletedUtenlandskePin.length > 0) {
       removeFromDeletion(deletedUtenlandskePin[0])
     }
-    standardLogger('pdu1.editor.person.utenlandskpin.remove')
+    standardLogger(loggingNamespace + '.utenlandskpin.remove')
     onPinsChanged(newUtenlandskePins, undefined)
   }
 
@@ -95,27 +96,31 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   }
 
   const onAdd = () => {
-    const valid: boolean = performValidation({
+
+    const newPin: Pin = {
       land: _newLand,
       identifikator: _newIdentifikator,
+    }
+
+    const valid: boolean = performValidation({
+      pin: newPin,
       utenlandskePins: pins,
       namespace: namespace
     })
     if (valid) {
-      let newUtenlandskePins: Array<string> = _.cloneDeep(pins) as Array<string>
+      let newUtenlandskePins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
       if (_.isNil(newUtenlandskePins)) {
         newUtenlandskePins = []
       }
-      newUtenlandskePins = newUtenlandskePins.concat(_newLand + ' ' + _newIdentifikator)
+      newUtenlandskePins = newUtenlandskePins.concat(newPin)
       onPinsChanged(newUtenlandskePins, undefined)
-      standardLogger('pdu1.editor.person.utenlandskpin.add')
+      standardLogger(loggingNamespace + '.utenlandskpin.add')
       onCancel()
     }
   }
 
-  const renderRow = (utenlandskePin: string | null, index: number) => {
+  const renderRow = (utenlandskePin: Pin | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(utenlandskePin)
-    const els = utenlandskePin?.split(/\s+/)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
@@ -132,12 +137,12 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
             <Input
               error={getErrorFor(index, 'identifikator')}
               id='identifikator'
-              key={namespace + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : els?.[1])}
+              key={namespace + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : utenlandskePin?.identifikator)}
               label={t('label:utenlandsk-pin')}
               hideLabel={index >= 0}
               namespace={namespace}
               onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
-              value={index < 0 ? _newIdentifikator : els?.[1]}
+              value={index < 0 ? _newIdentifikator : utenlandskePin?.identifikator}
             />
           </Column>
           <Column>
@@ -149,11 +154,11 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               id={namespace + idx + '-land'}
               includeList={landUtenNorge}
               hideLabel={index >= 0}
-              key={namespace + idx + '-land-' + (index < 0 ? _newLand : els?.[0])}
+              key={namespace + idx + '-land-' + (index < 0 ? _newLand : utenlandskePin?.land)}
               label={t('label:land')}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => onUtenlandskeLandChange(e.value, index)}
-              values={index < 0 ? _newLand : els?.[0]}
+              values={index < 0 ? _newLand : utenlandskePin?.land}
             />
           </Column>
           <Column>
@@ -214,14 +219,16 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <PaddedDiv>
             <Row>
               <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                </Button>
+                {(pins?.length ?? 0) <= limit && (
+                  <Button
+                    variant='tertiary'
+                    onClick={() => _setSeeNewForm(true)}
+                  >
+                    <Add />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
+                  </Button>
+                )}
               </Column>
             </Row>
           </PaddedDiv>

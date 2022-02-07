@@ -33,6 +33,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
     searchingRelatertPerson: false,
     gettingFagsaker: false,
     gettingArbeidsperioder: false,
+    gettingInstitusjoner: false,
 
     arbeidsperioder: undefined,
     valgteArbeidsgivere: [],

@@ -32,6 +32,7 @@
   "help-send-sed": "Sender avgårde en Sed som allerede fins i Rina.",
 
   "loading-checking-sed-status": "Kontrollerer SED status...",
+  "loading-editing" : "Rediger...",
   "loading-getting-person" : "Hent personinfo...",
   "loading-oppdatering-svarsed" : "Oppdatering svarSED...",
   "loading-opprette-svarsed" : "Oppretter svarSED...",

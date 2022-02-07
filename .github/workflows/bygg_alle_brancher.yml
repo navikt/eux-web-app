@@ -64,7 +64,7 @@ jobs:
           npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      
+
       # BUILD NPM
       - name: 'Build npm'
         run: |

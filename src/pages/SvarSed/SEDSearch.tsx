@@ -20,6 +20,7 @@ import {
   AlignStartRow,
   Column,
   FlexDiv,
+  FlexCenterDiv,
   FlexEndSpacedDiv,
   HorizontalSeparatorDiv,
   PileCenterDiv,
@@ -36,10 +37,6 @@ import styled from 'styled-components'
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
-  align-items: center;
-`
-const LeftDiv = styled.div`
-  display: flex;
   align-items: center;
 `
 const FilterDiv = styled(FlexDiv)`
@@ -112,6 +109,8 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSearch)
   const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
+  const [_buttonClickedId, setButtonClickedId] = useState<string>('')
+
   const namespace = 'sedsearch'
 
   const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -205,6 +204,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   useEffect(() => {
     if (!_.isEmpty(replySed) && _replySedRequested) {
       setReplySedRequested(false)
+      setButtonClickedId('')
       dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
@@ -420,7 +420,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                       <Heading size='small'>
                         {sed.sakType + ' - ' + sed.sakTittel}
                       </Heading>
-                      <LeftDiv>
+                      <FlexCenterDiv>
                         <span>
                           {t('label:saksnummer') + ': ' + sed.sakId}
                         </span>
@@ -445,7 +445,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                           <HorizontalSeparatorDiv size='0.35' />
                           <Copy />
                         </Link>
-                      </LeftDiv>
+                      </FlexCenterDiv>
                       <FlexDiv>
                         <BodyLong>
                           {t('label:motpart')}:
@@ -540,17 +540,22 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                     buttonLogger(e, {
                                       type: connectedSed.svarsedType
                                     })
+                                    setButtonClickedId('draft-' + connectedSed.sedId)
                                     loadDraft(sed.sakId, connectedSed.svarsedId)
                                   }}
                                 >
                                   <Edit />
                                   <HorizontalSeparatorDiv size='0.35' />
-                                  {_sedStatusRequested === connectedSed.svarsedId
-                                    ? t('message:loading-checking-sed-status')
+                                  {(_sedStatusRequested === connectedSed.svarsedId && _buttonClickedId === 'draft-' + connectedSed.sedId)
+                                    ? (
+                                      <>
+                                        {t('message:loading-checking-sed-status')}
+                                        <Loader />
+                                      </>
+                                    )
                                     : (hasSentStatus(connectedSed.svarsedId)
                                         ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
                                         : t('label:gå-til-draft'))}
-                                  {_sedStatusRequested === connectedSed.svarsedId && <Loader />}
                                 </Button>
                                 )
                               : (
@@ -565,19 +570,23 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                           buttonLogger(e, {
                                             type: connectedSed.sedType
                                           })
+                                          setButtonClickedId('edit-' + connectedSed.sedId)
                                           onEditSedClick(connectedSed, sed.sakId, sed.sakUrl)
                                         }}
                                       >
-                                        {queryingReplySed
-                                          ? t('message:loading-replying')
+                                        {(queryingReplySed && _buttonClickedId === 'edit-' + connectedSed.sedId)
+                                          ? (
+                                            <>
+                                              {t('message:loading-editing')}
+                                              <Loader />
+                                            </>
+                                          )
                                           : t('label:edit-sed-x', {
                                             x: connectedSed.sedType
                                           })}
-                                        {queryingReplySed && <Loader />}
                                       </Button>
                                       <VerticalSeparatorDiv size='0.5' />
                                     </>
-
                                   )}
                                   {connectedSed.svarsedType && (
                                     <Button
@@ -590,15 +599,20 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                           type: connectedSed.svarsedType,
                                           parenttype: connectedSed.sedType
                                         })
+                                        setButtonClickedId('reply-' + connectedSed.sedId)
                                         onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
                                       }}
                                     >
-                                      {queryingReplySed
-                                        ? t('message:loading-replying')
+                                      {(queryingReplySed && _buttonClickedId === 'reply-' + connectedSed.sedId)
+                                        ? (
+                                          <>
+                                            {t('message:loading-replying')}
+                                            <Loader />
+                                          </>
+                                        )
                                         : t('label:besvar-med', {
                                           sedtype: connectedSed.svarsedType
                                         })}
-                                      {queryingReplySed && <Loader />}
                                     </Button>
                                   )}
                                 </>

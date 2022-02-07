@@ -2,14 +2,21 @@ import * as appActions from 'actions/app'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import EKV from 'eessi-kodeverk'
-import { call as originalCall } from '@navikt/fetch'
+import { call } from '@navikt/fetch'
 
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))
-const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
+
+Object.defineProperty(window, 'location', {
+  value: {
+    origin: 'http://mock-localhost:9999',
+    pathname: '/mock-pathname'
+  }
+})
 
 describe('actions/app', () => {
+
   afterEach(() => {
     call.mockReset()
   })
@@ -22,6 +29,15 @@ describe('actions/app', () => {
     expect(appActions.cleanData())
       .toMatchObject({
         type: types.APP_CLEAN_DATA
+      })
+  })
+
+  it('copyToClipboard()', () => {
+    const text = 'text'
+    expect(appActions.copyToClipboard(text))
+      .toMatchObject({
+        type: types.APP_CLIPBOARD_COPY,
+        payload: text
       })
   })
 
@@ -85,6 +101,26 @@ describe('actions/app', () => {
           request: types.APP_LOGMEAGAIN_REQUEST,
           success: types.APP_LOGMEAGAIN_SUCCESS,
           failure: types.APP_LOGMEAGAIN_FAILURE
+        },
+        context: {
+          redirectUrl: 'http://mock-localhost:9999/mock-pathname'
+        },
+        url: urls.API_REAUTENTISERING_URL
+      }))
+  })
+
+  it('logMeAgain(name)', () => {
+    const name = 'mockname'
+    appActions.logMeAgain(name)
+    expect(call)
+      .toBeCalledWith(expect.objectContaining({
+        type: {
+          request: types.APP_LOGMEAGAIN_REQUEST,
+          success: types.APP_LOGMEAGAIN_SUCCESS,
+          failure: types.APP_LOGMEAGAIN_FAILURE
+        },
+        context: {
+          redirectUrl: 'http://mock-localhost:9999/mock-pathname?name=mockname'
         },
         url: urls.API_REAUTENTISERING_URL
       }))

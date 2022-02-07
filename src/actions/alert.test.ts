@@ -12,7 +12,29 @@ describe('actions/alert', () => {
     const payload = 'payload'
     expect(alertActions.alertFailure(payload)).toMatchObject({
       type: types.ALERT_FAILURE,
-      payload: payload
+      payload: {
+        message: payload
+      }
+    })
+  })
+
+  it('alertWarning()', () => {
+    const payload = 'payload'
+    expect(alertActions.alertWarning(payload)).toMatchObject({
+      type: types.ALERT_WARNING,
+      payload: {
+        message: payload
+      }
+    })
+  })
+
+  it('alertSuccess()', () => {
+    const payload = 'payload'
+    expect(alertActions.alertSuccess(payload)).toMatchObject({
+      type: types.ALERT_SUCCESS,
+      payload: {
+        message: payload
+      }
     })
   })
 })

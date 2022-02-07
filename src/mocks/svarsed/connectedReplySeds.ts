@@ -32,7 +32,7 @@ export default [
     ]
   }, {
     sakTittel: 'Dagpenger',
-    sakType: 'U_BUC_01',
+    sakType: 'UB_BUC_01',
     sakId: '1166593',
     sakUrl: 'http://foo.com',
     sistEndretDato: '2020-01-01',

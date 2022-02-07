@@ -1,18 +1,19 @@
+import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
-  land: string,
-  identifikator: string
-  utenlandskePins: Array<string> | undefined
+  pin: Pin
+  utenlandskePins: Array<Pin> | undefined
   index ?: number
   namespace: string
 }
 
 export interface ValidationUtenlandskPinsProps {
-  utenlandskePins: Array<string> | undefined
+  utenlandskePins: Array<Pin> | undefined
   namespace: string
 }
 
@@ -20,8 +21,7 @@ export const validateUtenlandskPin = (
   v: Validation,
   t: TFunction,
   {
-    land,
-    identifikator,
+    pin,
     utenlandskePins,
     index,
     namespace
@@ -31,34 +31,34 @@ export const validateUtenlandskPin = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: identifikator,
+    needle: pin.identifikator,
     id: namespace + idx + '-identifikator',
     message: 'validation:noId'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: land,
+    needle: pin.land,
     id: namespace + idx + '-land',
     message: 'validation:noLand'
   }))
 
-  if (land?.length > 0) {
+  if (!_.isEmpty(pin?.land)) {
     hasErrors.push(checkIfValidLand(v, {
-      needle: land,
+      needle: pin.land,
       id: namespace + idx + '-land',
       message: 'validation:invalidLand'
     }))
     hasErrors.push(checkIfNotGB(v, {
-      needle: land,
+      needle: pin.land,
       id: namespace + idx + '-land',
       message: 'validation:invalidLand'
     }))
   }
 
   hasErrors.push(checkIfDuplicate(v, {
-    needle: land,
+    needle: pin.land,
     haystack: utenlandskePins,
-    matchFn: (pin: string) => pin.split(' ')[0] === land,
+    matchFn: (_pin: Pin) => _pin.land === pin.land,
     index,
     id: namespace + idx + '-land',
     message: 'validation:duplicateLand'
@@ -75,12 +75,10 @@ export const validateUtenlandskPins = (
     utenlandskePins
   }: ValidationUtenlandskPinsProps
 ): boolean => {
-  const hasErrors: Array<boolean> = utenlandskePins?.map((pin: string, index: number) => {
-    const els = pin.split(/\s+/)
+  const hasErrors: Array<boolean> = utenlandskePins?.map((pin: Pin, index: number) => {
     return validateUtenlandskPin(v, t, {
       index,
-      land: els[0],
-      identifikator: els[1],
+      pin,
       utenlandskePins: utenlandskePins,
       namespace: namespace
     })

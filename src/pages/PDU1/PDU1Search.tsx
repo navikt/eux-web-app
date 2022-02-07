@@ -236,7 +236,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
               onClick={onSearchPdu1Clicked}
             >
               {fetchingPdu1 && <Loader />}
-              {fetchingPdu1 ? t('label:searching') : t('el:button-search-for-x', { x: 'PD U1' })}
+              {fetchingPdu1 ? t('message:loading-searching') : t('el:button-search-for-x', { x: 'PD U1' })}
             </Button>
             <HorizontalSeparatorDiv />
             {t('label:eller')}

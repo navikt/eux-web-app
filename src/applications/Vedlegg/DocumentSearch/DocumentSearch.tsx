@@ -99,9 +99,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRinaSaksnummer(e.target.value)}
           value={rinasaksnummer}
         />
-        <SearchField.Button onClick={sokEtterDokument}>
+        <SearchField.Button disabled={gettingDokument} onClick={sokEtterDokument}>
           <Search />
-          {t('el:button-search')}
+          {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
           {gettingDokument && <Loader />}
         </SearchField.Button>
       </SearchField>

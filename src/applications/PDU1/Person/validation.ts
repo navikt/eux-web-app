@@ -1,6 +1,7 @@
 import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
-import { validateUtenlandskPins } from 'applications/PDU1/Person/UtenlandskPins/validation'
+import { validateUtenlandskPins } from 'components/UtenlandskPins/validation'
 import { Pdu1Person } from 'declarations/pd'
+import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, propagateError } from 'utils/validation'
@@ -47,7 +48,13 @@ export const validatePerson = (
 
   hasErrors.push(validateUtenlandskPins(v, t, {
     namespace: namespace + '-utenlandskePin',
-    utenlandskePins: person?.utenlandskePin
+    utenlandskePins: person?.utenlandskePin.map((pin: string) => {
+      const els = pin.split(/\s+/)
+      return {
+        land: els[0],
+        identifikator: els[1]
+      } as Pin
+    })
   }))
 
   hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))

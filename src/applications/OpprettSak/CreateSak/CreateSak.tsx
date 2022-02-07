@@ -44,6 +44,7 @@ import {
   Container,
   Content,
   FlexDiv,
+  FlexCenterDiv,
   HorizontalSeparatorDiv,
   Margin,
   PileDiv,
@@ -71,6 +72,7 @@ export interface CreateSakSelector {
   searchingPerson: boolean
   searchingRelatertPerson: boolean
   gettingArbeidsperioder: boolean
+  gettingInstitusjoner: boolean
 
   arbeidsperioder: Arbeidsperioder | null | undefined
   buctyper: BucTyper | undefined
@@ -121,6 +123,7 @@ const mapState = (state: State): CreateSakSelector => ({
   searchingPerson: state.loading.searchingPerson,
   searchingRelatertPerson: state.loading.searchingRelatertPerson,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
+  gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
   arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
 
@@ -157,6 +160,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     alertMessage,
     alertType,
     gettingFagsaker,
+    gettingInstitusjoner,
     searchingPerson,
     searchingRelatertPerson,
     enheter,
@@ -493,10 +497,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 />
               </Column>
               <Column>
-                <Select
+                <FlexCenterDiv>
+                  <Select
                   data-test-id={namespace + '-institusjon'}
                   key={namespace + '-institusjon-' + valgtInstitusjon}
-                  disabled={!!_.isEmpty(valgtLandkode)}
+                  disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner}
                   error={validation[namespace + '-institusjon']?.feilmelding}
                   id={namespace + '-institusjon'}
                   label={t('label:mottaker-institusjon')}
@@ -516,6 +521,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
                         </option>
                       ))}
                 </Select>
+                <HorizontalSeparatorDiv size='0.5'/>
+                {gettingInstitusjoner && <Loader/>}
+                </FlexCenterDiv>
                 <VerticalSeparatorDiv />
               </Column>
             </Row>

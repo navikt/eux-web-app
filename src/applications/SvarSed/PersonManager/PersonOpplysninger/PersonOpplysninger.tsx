@@ -1,40 +1,34 @@
-import { Add, Edit, Search, CollapseFilled } from '@navikt/ds-icons'
-import { resetPerson, searchPerson } from 'actions/person'
-import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
-import Input from 'components/Forms/Input'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
-import { Person } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
-import useValidation from 'hooks/useValidation'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
-import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Heading, Loader } from '@navikt/ds-react'
+import { Add, CollapseFilled, Edit, Search } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
+  FlexEndDiv,
+  FlexRadioPanels,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  RadioPanelGroup,
-  FlexRadioPanels,
+  PaddedHorizontallyDiv,
   RadioPanel,
-  Row,
-  VerticalSeparatorDiv,
-  FlexEndDiv, PaddedHorizontallyDiv
+  RadioPanelGroup,
+  VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
+import { resetPerson, searchPerson } from 'actions/person'
+import { resetValidation } from 'actions/validation'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import DateInput from 'components/Forms/DateInput'
+import Input from 'components/Forms/Input'
+import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
+import { State } from 'declarations/reducers'
+import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
+import { Person } from 'declarations/types'
+import _ from 'lodash'
+import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { getIdx } from 'utils/namespace'
-import { validatePin, ValidationPinProps } from './validation'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -50,7 +44,6 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
 const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
-  personName,
   replySed,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
@@ -68,16 +61,9 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
-  const nrOfUtenlandskPin: number = _.filter(personInfo?.pin, p => p.land !== 'NO')?.length ?? 0
+  const utenlandskPins: Array<Pin> =  _.filter(personInfo?.pin, p => p.land !== 'NO')
 
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
-  const landUtenNorge = CountryFilter.STANDARD({}).filter((it: string) => it !== 'NO')
-  const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
-
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Pin>((p: Pin): string => p.land + '-' + p.identifikator)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationPinProps>({}, validatePin)
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
@@ -148,27 +134,18 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
     _setSeeNorskPinForm(false)
   }
 
-  const onUtenlandskIdentifikatorChange = (newIdentifikator: string, index: number) => {
-    if (index < 0) {
-      _setNewIdentifikator(newIdentifikator.trim())
-      _resetValidation(namespace + '-pin-identifikator')
-    } else {
-      dispatch(updateReplySed(`${target}.pin[${index}].identifikator`, newIdentifikator.trim()))
-      if (validation[namespace + '-pin' + getIdx(index) + '-identifikator']) {
-        dispatch(resetValidation('-pin' + getIdx(index) + '-identifikator'))
-      }
+  const onUtenlandskPinChange = (newPins: Array<Pin>, whatChanged: string | undefined) => {
+    let pins: Array<Pin> = _.cloneDeep(newPins)
+    if (_.isNil(pins)) {
+      pins = []
     }
-  }
-
-  const onUtenlandskLandChange = (newLand: string, index: number) => {
-    if (index < 0) {
-      _setNewLand(newLand.trim())
-      _resetValidation(namespace + '-pin-land')
-    } else {
-      dispatch(updateReplySed(`${target}.pin[${index}].land`, newLand))
-      if (validation[namespace + '-pin' + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + '-pin' + getIdx(index) + '-land'))
-      }
+    const norwegianPin: Pin | undefined = _.find(personInfo!.pin, p => p.land === 'NO')
+    if (!_.isEmpty(norwegianPin)) {
+      pins.unshift(norwegianPin!)
+    }
+    dispatch(updateReplySed(`${target}.pin`, pins))
+    if (whatChanged && validation[whatChanged]) {
+      dispatch(resetValidation(whatChanged))
     }
   }
 
@@ -218,114 +195,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
       buttonLogger(e)
       dispatch(searchPerson(norwegianPin.identifikator))
     }
-  }
-
-  const resetForm = () => {
-    _setNewIdentifikator('')
-    _setNewLand('')
-    _resetValidation()
-  }
-
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
-
-  const onRemove = (index: number) => {
-    const newPin: Array<Pin> = _.cloneDeep(personInfo?.pin) as Array<Pin>
-    const deletedPin: Array<Pin> = newPin.splice(index, 1)
-    if (deletedPin && deletedPin.length > 0) {
-      removeFromDeletion(deletedPin[0])
-    }
-    standardLogger('svarsed.editor.personopplysning.utenlandskpin.remove')
-    dispatch(updateReplySed(`${target}.pin`, newPin))
-  }
-
-  const onAdd = () => {
-    const newPin: Pin = {
-      identifikator: _newIdentifikator,
-      land: _newLand
-    }
-
-    const valid: boolean = performValidation({
-      pin: newPin,
-      pins: personInfo?.pin ?? [],
-      namespace: namespace + '-pin',
-      personName: personName
-    })
-    if (valid) {
-      let newPins: Array<Pin> | undefined = _.cloneDeep(personInfo?.pin)
-      if (_.isNil(newPins)) {
-        newPins = []
-      }
-      newPins = newPins.concat(newPin)
-      dispatch(updateReplySed(`${target}.pin`, newPins))
-      standardLogger('svarsed.editor.personopplysning.utenlandskpin.add')
-      onCancel()
-    }
-  }
-
-  const renderRow = (pin: Pin | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(pin)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-pin-' + el]?.feilmelding
-        : validation[namespace + '-pin' + idx + '-' + el]?.feilmelding
-    )
-    // hide the Norwegian pins. We are doing this to preserve index numbers,
-    // so when we are deleting / changing elements, pin array keeps the order
-    if (pin?.land === 'NO') {
-      return <div />
-    }
-    return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
-          <Column>
-            <Input
-              error={getErrorFor(index, 'identifikator')}
-              id='identifikator'
-              key={namespace + '-pin' + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : pin?.identifikator)}
-              label={t('label:utenlandsk-pin')}
-              namespace={namespace + '-pin'}
-              onChanged={(id: string) => onUtenlandskIdentifikatorChange(id, index)}
-              value={index < 0 ? _newIdentifikator : pin?.identifikator}
-            />
-          </Column>
-          <Column>
-            <CountrySelect
-              closeMenuOnSelect
-              data-test-id={namespace + '-pin' + idx + '-land'}
-              error={getErrorFor(index, 'land')}
-              flagWave
-              id={namespace + '-pin' + idx + '-land'}
-              includeList={landUtenNorge}
-              key={namespace + '-pin' + idx + '-land-' + (index < 0 ? _newLand : pin?.land)}
-              label={t('label:land')}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => onUtenlandskLandChange(e.value, index)}
-              values={index < 0 ? _newLand : pin?.land}
-            />
-          </Column>
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(pin)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(pin)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </RepeatableRow>
-    )
   }
 
   return (
@@ -411,33 +280,17 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <VerticalSeparatorDiv />
         </PaddedHorizontallyDiv>
       )}
-      {personInfo?.pin?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      <PaddedHorizontallyDiv>
-        <HorizontalLineSeparator />
-      </PaddedHorizontallyDiv>
-      <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedHorizontallyDiv>
-            <Row>
-              <Column>
-                {/* Limit H001 utenlandskpins to 1 */
-                  ((replySed as ReplySed).sedType === 'H001' ? nrOfUtenlandskPin === 0 : true) && (
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <Add />
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {t('el:button-add-new-x', { x: t('label:utenlandsk-pin').toLowerCase() })}
-                  </Button>
-                )}
-              </Column>
-            </Row>
-          </PaddedHorizontallyDiv>
-          )}
+
+
+      <UtenlandskPins
+        limit={(replySed as ReplySed).sedType === 'H001' ? 1 : 99}
+        loggingNamespace='svarsed.editor.personopplysning'
+        pins={utenlandskPins}
+        onPinsChanged={onUtenlandskPinChange}
+        namespace={namespace + '-pin'}
+        validation={validation}
+      />
+
       <VerticalSeparatorDiv />
       <PaddedDiv>
         <label className='navds-text-field__label navds-label'>

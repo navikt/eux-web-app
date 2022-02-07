@@ -55,7 +55,6 @@ const OptionDiv = styled.div`
     border-left: 6px solid var(--navds-semantic-color-interaction-primary-selected);
   }
 `
-
 const MenuDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -216,7 +215,7 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   }
 
   // list of open menus (= persons). If SED only has one person (bruker), open it by default
-  const [openMenus, setOpenMenus] = useState<Array<string>>(totalPeopleNr === 1 ? ['bruker'] : [])
+  const [openMenus, setOpenMenus] = useState<Array<string>>(() => totalPeopleNr === 1 ? ['bruker'] : [])
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)
   const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
@@ -229,20 +228,12 @@ const PersonManager: React.FC<PersonManagerProps> = ({
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const initialMenuOption = (() => {
-    if (totalPeopleNr !== 1) return undefined
-    const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
-    if (_type.startsWith('F')) return 'personopplysninger'
-    if (_type.startsWith('P')) return 'person_pd'
-    return 'person_h'
-  })()
+  const initialMenuOption = 'personopplysninger'
   const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
   useEffect(() => {
-    if (!_.isNil(initialMenuOption)) {
-      dispatch(startMenuStatistic('personmanager', initialMenuOption))
-    }
+    dispatch(startMenuStatistic('personmanager', initialMenuOption))
     return () => {
       dispatch(finishMenuStatistic('personmanager'))
     }

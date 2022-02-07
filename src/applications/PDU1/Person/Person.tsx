@@ -8,6 +8,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
+import { Pin } from 'declarations/sed'
 import { Person as IPerson } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -27,7 +28,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
-import UtenlandskPins from './UtenlandskPins/UtenlandskPins'
+import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -93,8 +94,8 @@ const Person: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const onUtenlandskPinChange = (newUtenlandskPins: Array<string>, whatChanged: string | undefined) => {
-    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins))
+  const onUtenlandskPinChange = (newUtenlandskPins: Array<Pin>, whatChanged: string | undefined) => {
+    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.land + ' ' + pin.identifikator)))
     if (whatChanged && validation[whatChanged]) {
       dispatch(resetValidation(whatChanged))
     }
@@ -254,7 +255,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
                   <HorizontalSeparatorDiv />
                   <Button
                     variant='secondary'
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
+                    data-amplitude='pdu1.editor.person.norskpin.fill'
                     onClick={(e) => {
                       buttonLogger(e)
                       onFillOutPerson(searchedPerson)
@@ -275,7 +276,14 @@ const Person: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
       </PaddedDiv>
       <UtenlandskPins
-        pins={pdu1Person?.utenlandskePin}
+        loggingNamespace='pdu1.editor.person'
+        pins={pdu1Person?.utenlandskePin.map((pin: string) => {
+          const els = pin.split(/\s+/)
+          return {
+            land: els[0],
+            identifikator: els[1]
+          } as Pin
+        })}
         onPinsChanged={onUtenlandskPinChange}
         namespace={namespace + '-utenlandskePin'}
         validation={validation}
