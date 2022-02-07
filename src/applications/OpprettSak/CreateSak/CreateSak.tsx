@@ -59,6 +59,7 @@ import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 import h001template from 'mocks/seds/h001template.json'
+import styled from 'styled-components'
 
 export interface CreateSakSelector {
   alertVariant: AlertVariant | undefined
@@ -154,6 +155,15 @@ const mapState = (state: State): CreateSakSelector => ({
 export interface CreateSakProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
 }
+
+export const MyContent = styled(Content)`
+  @media (min-width: 768px) {
+   min-width: 800px;
+   maxWidth: 1000px;
+ }
+  align-items: center;
+`
+
 
 const CreateSak: React.FC<CreateSakProps> = ({
   changeMode
@@ -367,7 +377,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   return (
     <Container>
       <Margin />
-      <Content style={{ minWidth: '800px', maxWidth: '1000px' }}>
+      <MyContent>
         <PersonSearch
           key={namespace + '-fnr-' + valgtFnr}
           alertMessage={alertMessage}
@@ -471,6 +481,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                         </option>
                       ))}
                 </Select>
+                <VerticalSeparatorDiv />
               </Column>
               <Column>
                 <Select
@@ -517,6 +528,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   flagWave
                   value={valgtLandkode}
                 />
+                <VerticalSeparatorDiv />
               </Column>
               <Column>
                 <FlexCenterDiv>
@@ -640,6 +652,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                       </FlexDiv>
                     </PileDiv>
                   </FlexDiv>
+                  <VerticalSeparatorDiv />
                 </Column>
                 <Column>
                   {visFagsakerListe && (
@@ -679,6 +692,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                       </Select>
                     </>
                   )}
+                  <VerticalSeparatorDiv />
                 </Column>
               </AlignStartRow>
             )}
@@ -700,6 +714,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <VerticalSeparatorDiv />
             <Row className='slideInFromLeft'>
               <Column>
+                <FlexDiv>
                 <Button
                   variant='primary'
                   disabled={sendingSak}
@@ -730,6 +745,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 >
                   {t('label:reset')}
                 </Button>
+                </FlexDiv>
+                <VerticalSeparatorDiv />
               </Column>
             </Row>
             <VerticalSeparatorDiv />
@@ -784,7 +801,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-      </Content>
+      </MyContent>
       <Margin />
     </Container>
   )

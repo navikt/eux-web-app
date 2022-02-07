@@ -67,7 +67,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               error={validation[namespace + '-dokument']?.feilmelding}
               namespace={namespace}
               id='dokument'
-              label={t('label:vi-vedlegger-dokumenter')}
+              label={t('label:vennligst-send-oss-folgende-dokumenter')}
               onChanged={setDokument}
               value={anmodning?.dokumentasjon?.dokument ?? ''}
             />
@@ -83,7 +83,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               error={validation[namespace + '-informasjon']?.feilmelding}
               namespace={namespace}
               id='informasjon'
-              label={t('label:vi-sender-informasjon')}
+              label={t('label:vennligst-send-oss-folgende-informasjon')}
               onChanged={setInformasjon}
               value={anmodning?.dokumentasjon?.informasjon ?? ''}
             />
@@ -99,7 +99,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
               error={validation[namespace + '-sed']?.feilmelding}
               namespace={namespace}
               id='sed'
-              label={t('label:sed')}
+              label={t('label:vennligst-send-oss-folgende-sed-er')}
               onChanged={setSed}
               value={anmodning?.dokumentasjon?.sed ?? ''}
             />

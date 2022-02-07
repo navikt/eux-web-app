@@ -11,7 +11,8 @@ import NavHighContrast, {
   PileDiv, slideInFromBottom,
   slideInFromLeft,
   slideInFromRight,
-  slideInFromTop
+  slideInFromTop,
+  VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import Error from 'pages/Error'
 import PT from 'prop-types'
@@ -155,6 +156,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         >
           {children}
         </Main>
+        <VerticalSeparatorDiv size='3'/>
         <Debug>
           <SessionMonitor
             expirationTime={expirationTime!}
