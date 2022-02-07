@@ -211,6 +211,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && !_.isEmpty(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
+  const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
+
   _sedtyper = _sedtyper.reduce((acc: any, curr: any) => {
     const kode = sedtyper?.find((elem: any) => elem.kode === curr)
     acc.push(kode)
@@ -234,6 +236,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
     } as ValidationOpprettSakProps)
 
     if (valid) {
+      setTempInfoForEdit({
+        person: _.cloneDeep(person),
+        tema: valgtTema,
+        fagsak: valgtSaksId
+      })
       dispatch(sakActions.createSak({
         buctype: valgtBucType,
         fnr: valgtFnr,
@@ -336,6 +343,17 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const createH001ReplySed = (saksnummer: string): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
     h001sed.saksnummer = saksnummer
+    h001sed.tema = tempInfoForEdit.tema
+    h001sed.fagsakId = tempInfoForEdit.fagsak
+    h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
+    h001sed.bruker.personInfo.etternavn = tempInfoForEdit.person.etternavn
+    h001sed.bruker.personInfo.kjoenn = tempInfoForEdit.person.kjoenn
+    h001sed.bruker.personInfo.foedselsdato = tempInfoForEdit.person.fdato
+    h001sed.bruker.personInfo.statsborgerskap = [{ land: 'NO' }]
+    h001sed.bruker.personInfo.pin = [{
+      land: 'NO',
+      identifikator: tempInfoForEdit.person.fnr
+    }]
     return h001sed
   }
 

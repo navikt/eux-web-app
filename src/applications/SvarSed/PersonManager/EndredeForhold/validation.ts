@@ -23,7 +23,7 @@ export const validateEndredeForhold = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: (replySed as H001Sed).ytterligereinfoType,
     id: namespace + '-ytterligereinfoType',
-    message: 'validation:noVelg',
+    message: 'validation:noYtterligereinfoType',
     personName
   }))
 
