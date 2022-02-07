@@ -462,9 +462,9 @@ export interface HSed extends BaseReplySed {
 }
 
 export interface H001Sed extends HSed {
-  anmodning: H001Svar
-  ytterligereinfoType: YtterligereInfoType
-  ytterligereinfo: string
+  anmodning?: H001Svar
+  ytterligereinfoType?: YtterligereInfoType
+  ytterligereinfo?: string
 }
 
 export interface H002Sed extends HSed {

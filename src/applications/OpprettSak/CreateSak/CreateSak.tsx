@@ -14,7 +14,7 @@ import * as types from 'constants/actionTypes'
 import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { PeriodeMedForsikring, ReplySed } from 'declarations/sed'
+import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import {
   Arbeidsgiver,
   Arbeidsperioder,
@@ -58,7 +58,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
-import h001template from '../seds/h001template.json'
+import h001template from 'mocks/seds/h001template.json'
 
 export interface CreateSakSelector {
   alertVariant: AlertVariant | undefined
@@ -334,7 +334,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const createH001ReplySed = (saksnummer: string): ReplySed => {
-    const h001sed = _.cloneDeep(h001template)
+    const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
     h001sed.saksnummer = saksnummer
     return h001sed
   }
