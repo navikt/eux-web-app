@@ -8,7 +8,6 @@ import {
   FlexRadioPanels,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PaddedHorizontallyDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -22,7 +21,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -274,15 +273,8 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
         </AlignStartRow>
       </PaddedDiv>
       <VerticalSeparatorDiv />
-      {(replySed as ReplySed).sedType === 'H001' && (
-        <PaddedHorizontallyDiv>
-          <BodyLong>{t('message:warning-max-1-utenlandsk-pin')}</BodyLong>
-          <VerticalSeparatorDiv />
-        </PaddedHorizontallyDiv>
-      )}
-
       <UtenlandskPins
-        limit={(replySed as ReplySed).sedType === 'H001' ? 1 : 99}
+        limit={99}
         loggingNamespace='svarsed.editor.personopplysning'
         pins={utenlandskPins}
         onPinsChanged={onUtenlandskPinChange}

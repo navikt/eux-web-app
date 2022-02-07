@@ -1,17 +1,5 @@
 import { Search } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
-import { resetPerson, searchPerson } from 'actions/person'
-import { setReplySed } from 'actions/svarsed'
-import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
-import DateInput from 'components/Forms/DateInput'
-import Input from 'components/Forms/Input'
-import { Pdu1Person } from 'declarations/pd'
-import { State } from 'declarations/reducers'
-import { Pin } from 'declarations/sed'
-import { Person as IPerson } from 'declarations/types'
-import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import {
   AlignStartRow,
   Column,
@@ -23,12 +11,24 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetPerson, searchPerson } from 'actions/person'
+import { setReplySed } from 'actions/svarsed'
+import { resetValidation } from 'actions/validation'
+import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import DateInput from 'components/Forms/DateInput'
+import Input from 'components/Forms/Input'
+import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
+import { Pdu1Person } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { Pin, ReplySed } from 'declarations/sed'
+import { Person as IPerson } from 'declarations/types'
+import _ from 'lodash'
+import { buttonLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
-import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 
 interface PersonOpplysningerSelector extends PersonManagerFormSelector {
   searchingPerson: boolean
@@ -275,7 +275,14 @@ const Person: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
       </PaddedDiv>
+      {(replySed as ReplySed).sedType === 'H001' && (
+        <PaddedDiv>
+          <BodyLong>{t('message:warning-max-1-utenlandsk-pin')}</BodyLong>
+          <VerticalSeparatorDiv />
+        </PaddedDiv>
+      )}
       <UtenlandskPins
+        limit={1}
         loggingNamespace='pdu1.editor.person'
         pins={pdu1Person?.utenlandskePin.map((pin: string) => {
           const els = pin.split(/\s+/)
