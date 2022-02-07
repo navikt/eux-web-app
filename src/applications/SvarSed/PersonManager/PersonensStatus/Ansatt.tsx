@@ -429,7 +429,8 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
               namespace={namespace + '-periode' + idx}
               error={{
                 startdato: getErrorFor('startdato'),
-                sluttdato: getErrorFor('sluttdato')
+                sluttdato: getErrorFor('sluttdato'),
+                aapenPeriodeType: getErrorFor('aapenPeriodeType')
               }}
               setPeriode={(p: Periode) => setPeriode(p, item.index!)}
               value={(item.item as Periode)}

@@ -21,6 +21,7 @@ export interface PeriodeProps<T> {
   error: {
     startdato: string | null | undefined
     sluttdato: string | null | undefined
+    aapenPeriodeType?: string | null | undefined
   }
   index?: number
   label?: {
@@ -80,14 +81,16 @@ const PeriodeInput = <T extends Periode>({
   const onStartDatoChanged = (startDato: string) => {
     const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
     newPeriode.startdato = toDateFormat(startDato, finalFormat)
-    _setPeriode(newPeriode)
+    if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato) && _.isEmpty(newPeriode.aapenPeriodeType)) {
+      newPeriode.aapenPeriodeType = 'åpen_sluttdato'
+    }
     setPeriode(newPeriode, 'startdato')
   }
 
   const onEndDatoChanged = (sluttDato: string) => {
     const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
     newPeriode.sluttdato = toDateFormat(sluttDato, finalFormat)
-    if (_.isEmpty(newPeriode.sluttdato)) {
+    if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     } else {
       delete newPeriode.aapenPeriodeType
@@ -141,6 +144,8 @@ const PeriodeInput = <T extends Periode>({
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (
             <Checkbox
+              error={!!error.aapenPeriodeType}
+              id='aapenPeriodeType'
               checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
             > {t('label:ukjent')}

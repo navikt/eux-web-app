@@ -1,4 +1,4 @@
-import { Periode } from 'declarations/sed'
+import { Periode, PeriodeInputType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
@@ -11,6 +11,7 @@ export interface ValidationPeriodeProps {
   index?: number | undefined
   mandatoryStartdato ?: boolean
   mandatorySluttdato ?: boolean
+  periodeType ?: PeriodeInputType
   namespace: string,
   personName?: string
 }
@@ -26,6 +27,7 @@ export const validatePeriode = (
     namespace,
     mandatoryStartdato = true,
     mandatorySluttdato = false,
+    periodeType = 'withcheckbox',
     personName
   }: ValidationPeriodeProps
 ): boolean => {
@@ -72,5 +74,14 @@ export const validatePeriode = (
     } as ErrorElement
     hasErrors = true
   }
+
+  if (periodeType === 'withcheckbox' && _.isEmpty(periode.aapenPeriodeType)) {
+    v[namespace + idx + '-aapenPeriodeType'] = {
+      skjemaelementId: namespace + idx + '-aapenPeriodeType',
+      feilmelding: t('validation:noAapenPeriodeType')
+    } as ErrorElement
+    hasErrors = true
+  }
+
   return hasErrors
 }

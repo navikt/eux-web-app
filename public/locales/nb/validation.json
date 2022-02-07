@@ -25,6 +25,7 @@
   "invalidSwift": "Ugyldig SWIFT",
   "invalidTema": "Tema kan ikke være 'Generell'",
 
+  "noAapenPeriodeType" : "Ingen åpen/ukjent dato info",
   "noAddressCity": "Poststed/By mangler",
   "noAddressCountry": "Land mangler",
   "noAddressPostnummer": "Postnummer mangler",
