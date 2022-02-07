@@ -61,7 +61,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
   const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
-  const utenlandskPins: Array<Pin> =  _.filter(personInfo?.pin, p => p.land !== 'NO')
+  const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
 
@@ -280,7 +280,6 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
           <VerticalSeparatorDiv />
         </PaddedHorizontallyDiv>
       )}
-
 
       <UtenlandskPins
         limit={(replySed as ReplySed).sedType === 'H001' ? 1 : 99}

@@ -11,6 +11,7 @@ import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
 import * as types from 'constants/actionTypes'
+import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { PeriodeMedForsikring, ReplySed } from 'declarations/sed'
@@ -37,7 +38,6 @@ import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import mockReplySed from 'mocks/svarsed/replySed'
 import {
   AlignStartRow,
   Column,
@@ -58,6 +58,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
+import h001template from '../seds/h001template.json'
 
 export interface CreateSakSelector {
   alertVariant: AlertVariant | undefined
@@ -78,6 +79,7 @@ export interface CreateSakSelector {
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
+  featureToggles: FeatureToggles
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<Kodeverk> | undefined
@@ -112,6 +114,7 @@ const mapState = (state: State): CreateSakSelector => ({
   serverInfo: state.app.serverinfo,
   buctyper: state.app.buctyper,
   familierelasjonKodeverk: state.app.familierelasjoner,
+  featureToggles: state.app.featureToggles,
   kodemaps: state.app.kodemaps,
   landkoder: state.app.landkoder,
   sedtyper: state.app.sedtyper,
@@ -170,6 +173,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     buctyper,
     fagsaker,
     familierelasjonKodeverk,
+    featureToggles,
     sedtyper,
     institusjoner,
     kodemaps,
@@ -330,7 +334,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const createH001ReplySed = (saksnummer: string): ReplySed => {
-    let h001sed = mockReplySed('H001') as ReplySed
+    const h001sed = _.cloneDeep(h001template)
     h001sed.saksnummer = saksnummer
     return h001sed
   }
@@ -499,19 +503,19 @@ const CreateSak: React.FC<CreateSakProps> = ({
               <Column>
                 <FlexCenterDiv>
                   <Select
-                  data-test-id={namespace + '-institusjon'}
-                  key={namespace + '-institusjon-' + valgtInstitusjon}
-                  disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner}
-                  error={validation[namespace + '-institusjon']?.feilmelding}
-                  id={namespace + '-institusjon'}
-                  label={t('label:mottaker-institusjon')}
-                  onChange={onInstitusjonChange}
-                  value={valgtInstitusjon}
-                >
-                  <option value=''>
-                    {t('label:velg')}
-                  </option>)
-                  {institusjoner &&
+                    data-test-id={namespace + '-institusjon'}
+                    key={namespace + '-institusjon-' + valgtInstitusjon}
+                    disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner}
+                    error={validation[namespace + '-institusjon']?.feilmelding}
+                    id={namespace + '-institusjon'}
+                    label={t('label:mottaker-institusjon')}
+                    onChange={onInstitusjonChange}
+                    value={valgtInstitusjon}
+                  >
+                    <option value=''>
+                      {t('label:velg')}
+                    </option>)
+                    {institusjoner &&
                       _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
                         <option
                           value={i.institusjonsID}
@@ -520,9 +524,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
                           {i.navn}
                         </option>
                       ))}
-                </Select>
-                <HorizontalSeparatorDiv size='0.5'/>
-                {gettingInstitusjoner && <Loader/>}
+                  </Select>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {gettingInstitusjoner && <Loader />}
                 </FlexCenterDiv>
                 <VerticalSeparatorDiv />
               </Column>
@@ -687,14 +691,18 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   {t('label:opprett-sak-i-rina')}
                 </Button>
                 <HorizontalSeparatorDiv />
-                <Button
-                  variant='secondary'
-                  disabled={!(opprettetSak && valgtSedType === 'H001')}
-                  onClick={() => fillOutSed(opprettetSak!)}
-                >
-                  {t('el:button-fill-sed')}
-                </Button>
-                <HorizontalSeparatorDiv />
+                {featureToggles?.featureSvarsedH001 && (
+                  <>
+                    <Button
+                      variant='secondary'
+                      disabled={!(opprettetSak && valgtSedType === 'H001')}
+                      onClick={() => fillOutSed(opprettetSak!)}
+                    >
+                      {t('el:button-fill-sed')}
+                    </Button>
+                    <HorizontalSeparatorDiv />
+                  </>
+                )}
                 <Button
                   variant='tertiary'
                   onClick={() => {
@@ -713,49 +721,49 @@ const CreateSak: React.FC<CreateSakProps> = ({
         <VerticalSeparatorDiv />
         {opprettetSak && opprettetSak.url && (
           <>
-          <Row>
-            <Column>
-              <Alert variant='success'>
-                <FlexDiv>
+            <Row>
+              <Column>
+                <Alert variant='success'>
                   <FlexDiv>
-                    <span>
-                      {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer + ' ' + t('label:er-opprettet')}.
-                    </span>
+                    <FlexDiv>
+                      <span>
+                        {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer + ' ' + t('label:er-opprettet')}.
+                      </span>
+                      <HorizontalSeparatorDiv />
+                      {opprettetSak.url && (
+                        <Link
+                          className='vedlegg__lenke'
+                          href={opprettetSak.url}
+                          target='_blank' rel='noreferrer'
+                        >
+                          {t('label:gå-til-rina')}
+                        </Link>
+                      )}
+                    </FlexDiv>
                     <HorizontalSeparatorDiv />
-                    {opprettetSak.url && (
-                      <Link
-                        className='vedlegg__lenke'
-                        href={opprettetSak.url}
-                        target='_blank' rel='noreferrer'
-                      >
-                        {t('label:gå-til-rina')}
-                      </Link>
-                    )}
+                    <div>
+                      {opprettetSak.rinasaksnummer && (
+                        <DOMLink
+                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                        >
+                          {t('label:legg-til-vedlegg-til-sed')}
+                        </DOMLink>
+                      )}
+                    </div>
+                    <HorizontalSeparatorDiv />
+                    <div
+                      style={{ cursor: 'pointer' }}
+                      role='button'
+                      tabIndex={0}
+                      onKeyPress={() => dispatch(resetSentSed())} onClick={() => dispatch(resetSentSed())}
+                    >
+                      <ErrorFilled />
+                    </div>
                   </FlexDiv>
-                  <HorizontalSeparatorDiv />
-                  <div>
-                    {opprettetSak.rinasaksnummer && (
-                      <DOMLink
-                        to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
-                      >
-                        {t('label:legg-til-vedlegg-til-sed')}
-                      </DOMLink>
-                    )}
-                  </div>
-                  <HorizontalSeparatorDiv />
-                  <div
-                    style={{ cursor: 'pointer' }}
-                    role='button'
-                    tabIndex={0}
-                    onKeyPress={() => dispatch(resetSentSed())} onClick={() => dispatch(resetSentSed())}
-                  >
-                    <ErrorFilled />
-                  </div>
-                </FlexDiv>
-              </Alert>
-            </Column>
-          </Row>
-          <VerticalSeparatorDiv size='2'/>
+                </Alert>
+              </Column>
+            </Row>
+            <VerticalSeparatorDiv size='2' />
           </>
         )}
       </Content>

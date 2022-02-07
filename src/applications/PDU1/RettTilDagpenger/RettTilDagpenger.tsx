@@ -128,116 +128,116 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
         name={namespace + '-rettTilDagpengerRadio'}
         onChange={onRettTilDagpengerRadioChange}
       >
-      <AlignStartRow>
-        <Column>
-          <Radio value={'rettTilDagpenger'}>
-            {t('el:checkbox-pdu1-6.1')}
-          </Radio>
-        </Column>
-      </AlignStartRow>
-      <AlignStartRow>
-        <Column style={{ maxWidth: '40px' }} />
-        <Column>
-          <Checkbox
-            checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
-            data-test-id={namespace + '-ihhTilArtikkel64'}
-            key={namespace + '-ihhTilArtikkel64-' + (rettTilDagpenger?.ihhTilArtikkel64 ?? '')}
-            error={!!validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              onIhhTilArtikkel64Change(e.target.checked)
-            }}
-          >
-            {t('el:checkbox-pdu1-6.1.1')}
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
-      <AlignStartRow>
-        <Column style={{ maxWidth: '40px' }} />
-        <Column>
-          <Checkbox
-            checked={rettTilDagpenger?.ihhTilArtikkel65 === 'ja'}
-            data-test-id={namespace + '-ihhTilArtikkel65'}
-            key={namespace + '-ihhTilArtikkel65-' + (rettTilDagpenger?.ihhTilArtikkel65 ?? '')}
-            error={!!validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              onIhhTilArtikkel65Change(e.target.checked)
-            }}
-          >
-            {t('el:checkbox-pdu1-6.1.2')}
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <FlexEndDiv>
-            <PaddedDiv size='0.5'>
-              {t('label:for-perioden-fra')}
-            </PaddedDiv>
-            <Input
-              ariaLabel={t('label:startdato')}
-              error={validation[namespace + '-startdato']?.feilmelding}
-              id='startdato'
-              key={namespace + '-startdato-' + rettTilDagpenger?.startdato}
-              label={t('label:startdato')}
-              namespace={namespace}
-              onChanged={onStartdatoChange}
-              value={rettTilDagpenger?.startdato}
-            />
-            <PaddedDiv size='0.5'>{t('label:til').toLowerCase()}</PaddedDiv>
-            <Input
-              ariaLabel={t('label:sluttdato')}
-              error={validation[namespace + '-sluttdato']?.feilmelding}
-              id='sluttdato'
-              key={namespace + '-sluttdato-' + rettTilDagpenger?.sluttdato}
-              label={t('label:sluttdato')}
-              namespace={namespace}
-              onChanged={onSluttdatoChange}
-              value={rettTilDagpenger?.sluttdato}
-            />
-          </FlexEndDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <Radio value='ikkeRettTilDagpenger'>
-            {t('el:checkbox-pdu1-6.2')}
-          </Radio>
-        </Column>
-      </AlignStartRow>
-      <AlignStartRow>
-        <Column style={{ maxWidth: '40px' }} />
-        <Column>
-          <Checkbox
-            checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
-            data-test-id={namespace + '-ihhTilLovgivning'}
-            key={namespace + '-ihhTilLovgivning-' + (ikkeRettTilDagpenger?.ihhTilLovgivning ?? '')}
-            error={!!validation[namespace + '-ihhTilLovgivning']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              onIhhTilLovgivningChange(e.target.checked)
-            }}
-          >
-            {t('el:checkbox-pdu1-6.2.1')}
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
-      <AlignStartRow>
-        <Column style={{ maxWidth: '40px' }} />
-        <Column>
-          <Checkbox
-            checked={ikkeRettTilDagpenger?.ikkeSoekt === 'ja'}
-            data-test-id={namespace + '-ikkeSoekt'}
-            key={namespace + '-ikkeSoekt-' + (ikkeRettTilDagpenger?.ikkeSoekt ?? '')}
-            error={!!validation[namespace + '-ikkeSoekt']?.feilmelding}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              onIkkeSoektChange(e.target.checked)
-            }}
-          >
-            {t('el:checkbox-pdu1-6.2.2')}
-          </Checkbox>
-        </Column>
-      </AlignStartRow>
+        <AlignStartRow>
+          <Column>
+            <Radio value='rettTilDagpenger'>
+              {t('el:checkbox-pdu1-6.1')}
+            </Radio>
+          </Column>
+        </AlignStartRow>
+        <AlignStartRow>
+          <Column style={{ maxWidth: '40px' }} />
+          <Column>
+            <Checkbox
+              checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
+              data-test-id={namespace + '-ihhTilArtikkel64'}
+              key={namespace + '-ihhTilArtikkel64-' + (rettTilDagpenger?.ihhTilArtikkel64 ?? '')}
+              error={!!validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onIhhTilArtikkel64Change(e.target.checked)
+              }}
+            >
+              {t('el:checkbox-pdu1-6.1.1')}
+            </Checkbox>
+          </Column>
+        </AlignStartRow>
+        <AlignStartRow>
+          <Column style={{ maxWidth: '40px' }} />
+          <Column>
+            <Checkbox
+              checked={rettTilDagpenger?.ihhTilArtikkel65 === 'ja'}
+              data-test-id={namespace + '-ihhTilArtikkel65'}
+              key={namespace + '-ihhTilArtikkel65-' + (rettTilDagpenger?.ihhTilArtikkel65 ?? '')}
+              error={!!validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onIhhTilArtikkel65Change(e.target.checked)
+              }}
+            >
+              {t('el:checkbox-pdu1-6.1.2')}
+            </Checkbox>
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            <FlexEndDiv>
+              <PaddedDiv size='0.5'>
+                {t('label:for-perioden-fra')}
+              </PaddedDiv>
+              <Input
+                ariaLabel={t('label:startdato')}
+                error={validation[namespace + '-startdato']?.feilmelding}
+                id='startdato'
+                key={namespace + '-startdato-' + rettTilDagpenger?.startdato}
+                label={t('label:startdato')}
+                namespace={namespace}
+                onChanged={onStartdatoChange}
+                value={rettTilDagpenger?.startdato}
+              />
+              <PaddedDiv size='0.5'>{t('label:til').toLowerCase()}</PaddedDiv>
+              <Input
+                ariaLabel={t('label:sluttdato')}
+                error={validation[namespace + '-sluttdato']?.feilmelding}
+                id='sluttdato'
+                key={namespace + '-sluttdato-' + rettTilDagpenger?.sluttdato}
+                label={t('label:sluttdato')}
+                namespace={namespace}
+                onChanged={onSluttdatoChange}
+                value={rettTilDagpenger?.sluttdato}
+              />
+            </FlexEndDiv>
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='2' />
+        <AlignStartRow>
+          <Column>
+            <Radio value='ikkeRettTilDagpenger'>
+              {t('el:checkbox-pdu1-6.2')}
+            </Radio>
+          </Column>
+        </AlignStartRow>
+        <AlignStartRow>
+          <Column style={{ maxWidth: '40px' }} />
+          <Column>
+            <Checkbox
+              checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
+              data-test-id={namespace + '-ihhTilLovgivning'}
+              key={namespace + '-ihhTilLovgivning-' + (ikkeRettTilDagpenger?.ihhTilLovgivning ?? '')}
+              error={!!validation[namespace + '-ihhTilLovgivning']?.feilmelding}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onIhhTilLovgivningChange(e.target.checked)
+              }}
+            >
+              {t('el:checkbox-pdu1-6.2.1')}
+            </Checkbox>
+          </Column>
+        </AlignStartRow>
+        <AlignStartRow>
+          <Column style={{ maxWidth: '40px' }} />
+          <Column>
+            <Checkbox
+              checked={ikkeRettTilDagpenger?.ikkeSoekt === 'ja'}
+              data-test-id={namespace + '-ikkeSoekt'}
+              key={namespace + '-ikkeSoekt-' + (ikkeRettTilDagpenger?.ikkeSoekt ?? '')}
+              error={!!validation[namespace + '-ikkeSoekt']?.feilmelding}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onIkkeSoektChange(e.target.checked)
+              }}
+            >
+              {t('el:checkbox-pdu1-6.2.2')}
+            </Checkbox>
+          </Column>
+        </AlignStartRow>
       </RadioGroup>
     </PaddedDiv>
   )

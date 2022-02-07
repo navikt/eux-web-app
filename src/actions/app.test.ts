@@ -16,7 +16,6 @@ Object.defineProperty(window, 'location', {
 })
 
 describe('actions/app', () => {
-
   afterEach(() => {
     call.mockReset()
   })

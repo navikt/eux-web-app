@@ -1,0 +1,16 @@
+{
+  "sedType": "H001",
+  "sedVersjon": "4.2",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "",
+      "etternavn": "",
+      "kjoenn": "",
+      "foedselsdato": "",
+      "statsborgerskap": [],
+      "pin": []
+    },
+    "adresser": []
+  },
+  "anmodning":{}
+}

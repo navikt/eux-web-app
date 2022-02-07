@@ -48,25 +48,25 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
             onChange={setArbeidsforhold}
           >
 
-              <RadioPanel value='arbeidsforhold-1'>{t('el:option-personensstatus-1')}</RadioPanel>
-              <RadioPanel value='arbeidsforhold-2'>{t('el:option-personensstatus-2')}</RadioPanel>
-              <RadioPanel value='arbeidsforhold-3'>
-                <LesMer
-                  visibleText={t('el:option-personensstatus-3')}
-                  invisibleText={t('el:option-personensstatus-3-more')}
-                  moreText={t('label:vis-mer')}
-                  lessText={t('label:se-mindre')}
-                />
-              </RadioPanel>
-              <RadioPanel value='arbeidsforhold-4'>{t('el:option-personensstatus-4')}</RadioPanel>
-              <RadioPanel value='arbeidsforhold-5'>
-                <LesMer
-                  visibleText={t('el:option-personensstatus-5')}
-                  invisibleText={t('el:option-personensstatus-5-more')}
-                  moreText={t('label:vis-mer')}
-                  lessText={t('label:se-mindre')}
-                />
-              </RadioPanel>
+            <RadioPanel value='arbeidsforhold-1'>{t('el:option-personensstatus-1')}</RadioPanel>
+            <RadioPanel value='arbeidsforhold-2'>{t('el:option-personensstatus-2')}</RadioPanel>
+            <RadioPanel value='arbeidsforhold-3'>
+              <LesMer
+                visibleText={t('el:option-personensstatus-3')}
+                invisibleText={t('el:option-personensstatus-3-more')}
+                moreText={t('label:vis-mer')}
+                lessText={t('label:se-mindre')}
+              />
+            </RadioPanel>
+            <RadioPanel value='arbeidsforhold-4'>{t('el:option-personensstatus-4')}</RadioPanel>
+            <RadioPanel value='arbeidsforhold-5'>
+              <LesMer
+                visibleText={t('el:option-personensstatus-5')}
+                invisibleText={t('el:option-personensstatus-5-more')}
+                moreText={t('label:vis-mer')}
+                lessText={t('label:se-mindre')}
+              />
+            </RadioPanel>
 
           </RadioPanelGroup>
         </Column>

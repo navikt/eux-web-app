@@ -356,7 +356,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
             <AdresseForm
               adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
               onAdressChanged={(a, type: string) => setAdresse(a, type, index)}
-              namespace={namespace + idx +'-institusjon-idmangler-adresse'}
+              namespace={namespace + idx + '-institusjon-idmangler-adresse'}
               validation={index < 0 ? _validation : validation}
             />
           </>

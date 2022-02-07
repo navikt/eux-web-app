@@ -40,7 +40,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   onPinsChanged,
   namespace,
   loggingNamespace,
-  limit=99,
+  limit = 99,
   validation
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
@@ -96,10 +96,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   }
 
   const onAdd = () => {
-
     const newPin: Pin = {
       land: _newLand,
-      identifikator: _newIdentifikator,
+      identifikator: _newIdentifikator
     }
 
     const valid: boolean = performValidation({

@@ -178,11 +178,12 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(svarsedActions.setParentSed(e.target.value))
   }
-
+  /*
   const onEditSedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
     dispatch(svarsedActions.editDraftSed(connectedSed, saksnummer, sakUrl))
   }
+*/
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
@@ -552,7 +553,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                         {t('message:loading-checking-sed-status')}
                                         <Loader />
                                       </>
-                                    )
+                                      )
                                     : (hasSentStatus(connectedSed.svarsedId)
                                         ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
                                         : t('label:gå-til-draft'))}
@@ -560,7 +561,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                 )
                               : (
                                 <>
-                                  {connectedSed.status === 'new' && (
+                                  {/* connectedSed.status === 'new' && (
                                     <>
                                       <Button
                                         variant='secondary'
@@ -587,7 +588,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                       </Button>
                                       <VerticalSeparatorDiv size='0.5' />
                                     </>
-                                  )}
+                                  ) */}
                                   {connectedSed.svarsedType && (
                                     <Button
                                       variant='primary'
@@ -609,7 +610,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                             {t('message:loading-replying')}
                                             <Loader />
                                           </>
-                                        )
+                                          )
                                         : t('label:besvar-med', {
                                           sedtype: connectedSed.svarsedType
                                         })}

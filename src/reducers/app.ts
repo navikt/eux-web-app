@@ -50,6 +50,7 @@ export const initialAppState: AppState = {
   params: {},
   featureToggles: {
     featureSvarsedU: false,
+    featureSvarsedH001: IS_DEVELOPMENT,
     featurePdu1: IS_DEVELOPMENT
   }
 }

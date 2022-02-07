@@ -28,14 +28,14 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-endredeforhold`
 
   const setYtterligereinfoType = (newYtterligereinfoType: YtterligereInfoType) => {
-    dispatch(updateReplySed( 'ytterligereinfoType', newYtterligereinfoType))
+    dispatch(updateReplySed('ytterligereinfoType', newYtterligereinfoType))
     if (validation[namespace + '-ytterligereinfoType']) {
       dispatch(resetValidation(namespace + '-ytterligereinfoType'))
     }
   }
 
   const setYtterligereinfo = (newYtterligereinfo: string) => {
-    dispatch(updateReplySed(`ytterligereinfo`, newYtterligereinfo))
+    dispatch(updateReplySed('ytterligereinfo', newYtterligereinfo))
     if (validation[namespace + '-ytterligereinfo']) {
       dispatch(resetValidation(namespace + '-ytterligereinfo'))
     }
