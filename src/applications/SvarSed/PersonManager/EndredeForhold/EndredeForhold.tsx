@@ -27,17 +27,17 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-endredeforhold`
 
-  const setYtterligereinfoType = (newYtterligereinfoType: YtterligereInfoType) => {
-    dispatch(updateReplySed('ytterligereinfoType', newYtterligereinfoType))
-    if (validation[namespace + '-ytterligereinfoType']) {
-      dispatch(resetValidation(namespace + '-ytterligereinfoType'))
+  const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
+    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType))
+    if (validation[namespace + '-ytterligereInfoType']) {
+      dispatch(resetValidation(namespace + '-ytterligereInfoType'))
     }
   }
 
-  const setYtterligereinfo = (newYtterligereinfo: string) => {
-    dispatch(updateReplySed('ytterligereinfo', newYtterligereinfo))
-    if (validation[namespace + '-ytterligereinfo']) {
-      dispatch(resetValidation(namespace + '-ytterligereinfo'))
+  const setYtterligereInfo = (newYtterligereInfo: string) => {
+    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo))
+    if (validation[namespace + '-ytterligereInfo']) {
+      dispatch(resetValidation(namespace + '-ytterligereiInfo'))
     }
   }
 
@@ -53,12 +53,12 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <RadioGroup
         legend=''
-        data-test-id={namespace + '-ytterligereinfoType'}
-        key={namespace + '-ytterligereinfoType-' + (replySed as H001Sed).ytterligereinfoType}
-        id={namespace + '-ytterligereinfoType'}
-        error={validation[namespace + '-ytterligereinfoType']?.feilmelding}
-        value={(replySed as H001Sed).ytterligereinfoType}
-        onChange={(e: string) => setYtterligereinfoType(e as YtterligereInfoType)}
+        data-test-id={namespace + '-ytterligereInfoType'}
+        key={namespace + '-ytterligereInfoType-' + (replySed as H001Sed).ytterligereInfoType}
+        id={namespace + '-ytterligereInfoType'}
+        error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
+        value={(replySed as H001Sed).ytterligereInfoType}
+        onChange={(e: string) => setYtterligereInfoType(e as YtterligereInfoType)}
       >
         <Radio value='melding_om_mer_informasjon'>
           {t('el:option-ytterligere-1')}
@@ -76,8 +76,8 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setYtterligereinfo}
-              value={(replySed as H001Sed).ytterligereinfo ?? ''}
+              onChanged={setYtterligereInfo}
+              value={(replySed as H001Sed).ytterligereInfo ?? ''}
             />
           </TextAreaDiv>
         </Column>

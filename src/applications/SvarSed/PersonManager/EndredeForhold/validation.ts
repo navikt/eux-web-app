@@ -21,14 +21,14 @@ export const validateEndredeForhold = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as H001Sed).ytterligereinfoType,
-    id: namespace + '-ytterligereinfoType',
-    message: 'validation:noYtterligereinfoType',
+    needle: (replySed as H001Sed).ytterligereInfoType,
+    id: namespace + '-ytterligereInfoType',
+    message: 'validation:noYtterligereInfoType',
     personName
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: (replySed as H001Sed).ytterligereinfo,
+    needle: (replySed as H001Sed).ytterligereInfo,
     max: 500,
     id: namespace + '-tekst',
     message: 'validation:textOverX',
