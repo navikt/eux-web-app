@@ -48,7 +48,7 @@ export const validatePerson = (
 
   hasErrors.push(validateUtenlandskPins(v, t, {
     namespace: namespace + '-utenlandskePin',
-    utenlandskePins: person?.utenlandskePin.map((pin: string) => {
+    utenlandskePins: person?.utenlandskePin?.map((pin: string) => {
       const els = pin.split(/\s+/)
       return {
         land: els[0],

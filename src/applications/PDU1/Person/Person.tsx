@@ -284,7 +284,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
       <UtenlandskPins
         limit={1}
         loggingNamespace='pdu1.editor.person'
-        pins={pdu1Person?.utenlandskePin.map((pin: string) => {
+        pins={pdu1Person?.utenlandskePin?.map((pin: string) => {
           const els = pin.split(/\s+/)
           return {
             land: els[0],
