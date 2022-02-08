@@ -156,7 +156,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         >
           {children}
         </Main>
-        <VerticalSeparatorDiv size='3'/>
+        <VerticalSeparatorDiv size='3' />
         <Debug>
           <SessionMonitor
             expirationTime={expirationTime!}

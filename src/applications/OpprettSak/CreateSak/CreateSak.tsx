@@ -164,7 +164,6 @@ export const MyContent = styled(Content)`
   align-items: center;
 `
 
-
 const CreateSak: React.FC<CreateSakProps> = ({
   changeMode
 }: CreateSakProps): JSX.Element => {
@@ -715,36 +714,36 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <Row className='slideInFromLeft'>
               <Column>
                 <FlexDiv>
-                <Button
-                  variant='primary'
-                  disabled={sendingSak}
-                  onClick={skjemaSubmit}
-                >
-                  {sendingSak && <Loader />}
-                  {t('label:opprett-sak-i-rina')}
-                </Button>
-                <HorizontalSeparatorDiv />
-                {featureToggles?.featureSvarsedH001 && (
-                  <>
-                    <Button
-                      variant='secondary'
-                      disabled={!(opprettetSak && valgtSedType === 'H001')}
-                      onClick={() => fillOutSed(opprettetSak!)}
-                    >
-                      {t('el:button-fill-sed')}
-                    </Button>
-                    <HorizontalSeparatorDiv />
-                  </>
-                )}
-                <Button
-                  variant='tertiary'
-                  onClick={() => {
-                    dispatch(cleanPersons())
-                    dispatch(cleanData())
-                  }}
-                >
-                  {t('label:reset')}
-                </Button>
+                  <Button
+                    variant='primary'
+                    disabled={sendingSak}
+                    onClick={skjemaSubmit}
+                  >
+                    {sendingSak && <Loader />}
+                    {t('label:opprett-sak-i-rina')}
+                  </Button>
+                  <HorizontalSeparatorDiv />
+                  {featureToggles?.featureSvarsedH001 && (
+                    <>
+                      <Button
+                        variant='secondary'
+                        disabled={!(opprettetSak && valgtSedType === 'H001')}
+                        onClick={() => fillOutSed(opprettetSak!)}
+                      >
+                        {t('el:button-fill-sed')}
+                      </Button>
+                      <HorizontalSeparatorDiv />
+                    </>
+                  )}
+                  <Button
+                    variant='tertiary'
+                    onClick={() => {
+                      dispatch(cleanPersons())
+                      dispatch(cleanData())
+                    }}
+                  >
+                    {t('label:reset')}
+                  </Button>
                 </FlexDiv>
                 <VerticalSeparatorDiv />
               </Column>

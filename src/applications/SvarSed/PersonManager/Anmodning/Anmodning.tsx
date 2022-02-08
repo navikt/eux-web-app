@@ -29,21 +29,21 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
   const anmodning: H001Svar | undefined = _.get(replySed, target)
 
   const setDokument = (newDokument: string) => {
-    dispatch(updateReplySed('dokumentasjon.dokument', newDokument))
+    dispatch(updateReplySed(`${target}.dokumentasjon.dokument`, newDokument))
     if (validation[namespace + '-dokument']) {
       dispatch(resetValidation(namespace + '-dokument'))
     }
   }
 
   const setInformasjon = (newInformasjon: string) => {
-    dispatch(updateReplySed('dokumentasjon.informasjon', newInformasjon))
+    dispatch(updateReplySed(`${target}.dokumentasjon.informasjon`, newInformasjon))
     if (validation[namespace + '-informasjon']) {
       dispatch(resetValidation(namespace + '-informasjon'))
     }
   }
 
   const setSed = (newSed: string) => {
-    dispatch(updateReplySed('dokumentasjon.sed', newSed))
+    dispatch(updateReplySed(`${target}.dokumentasjon.sed`, newSed))
     if (validation[namespace + '-sed']) {
       dispatch(resetValidation(namespace + '-sed'))
     }
