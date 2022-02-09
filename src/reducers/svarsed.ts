@@ -83,6 +83,29 @@ const svarsedReducer = (
         replySed: null
       }
 
+    case types.SVARSED_EDIT_REQUEST:
+      return {
+        ...state,
+        sedCreatedResponse: undefined,
+        sedSendResponse: undefined
+      }
+
+    case types.SVARSED_EDIT_SUCCESS:
+      return {
+        ...state,
+        replySed: {
+          ...(action as ActionWithPayload).payload,
+          saksnummer: (action as ActionWithPayload).context.saksnummer,
+          sedId: (action as ActionWithPayload).context.sedId
+        }
+      }
+
+    case types.SVARSED_EDIT_FAILURE:
+      return {
+        ...state,
+        replySed: null
+      }
+
     case types.SVARSED_PREVIEW_SUCCESS:
       return {
         ...state,

@@ -118,20 +118,15 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
   })
 }
 
-export const editDraftSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
+export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
+  sedId: string, sedType: string, saksnummer: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
-  const mockSed = mockReplySed(connectedSed.svarsedType)
-
-  const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
-    ? connectedSed.sedIdParent
-    : connectedSed.sedId
+  const mockSed = mockReplySed(sedType)
 
   return call({
-    url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
+    url: sprintf(urls.API_SED_EDIT_URL, {
       rinaSakId: saksnummer,
-      sedId,
-      sedType: connectedSed.svarsedType
+      sedId
     }),
     expectedPayload: {
       ...mockSed,
@@ -139,13 +134,12 @@ export const editDraftSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>
     },
     context: {
       saksnummer,
-      sakUrl,
-      sedId: connectedSed.svarsedId
+      sedId
     },
     type: {
-      request: types.SVARSED_REPLYSED_QUERY_REQUEST,
-      success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
-      failure: types.SVARSED_REPLYSED_QUERY_FAILURE
+      request: types.SVARSED_EDIT_REQUEST,
+      success: types.SVARSED_EDIT_SUCCESS,
+      failure: types.SVARSED_EDIT_FAILURE
     }
   })
 }

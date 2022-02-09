@@ -60,6 +60,12 @@ export default [
         svarsedDisplay: 'Description for U004',
         svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2'
       }, {
+        sedTittel: 'Description for U004',
+        status: 'new',
+        sedType: 'U004',
+        sedId: '603e18ebd5b549b1b5c0f53c58558118',
+        sistEndretDato: '2020-01-04'
+      }, {
         sedTittel: 'Description for U00X',
         status: 'new',
         sedType: 'U00X',

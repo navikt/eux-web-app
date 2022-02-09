@@ -3,6 +3,7 @@ const FULL_HOST = window.location.protocol + '//' + HOST
 export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.location.port : '')
 
 export const API_BASE_URL = '/api'
+export const V2_BASE_URL = '/v2'
 
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
@@ -14,6 +15,7 @@ export const API_RINASAKER_OVERSIKT_DNR_QUERY_URL = API_BASE_URL + '/person/%(fn
 export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
+export const API_SED_EDIT_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
 export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
 export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
@@ -48,6 +50,6 @@ export const API_JOARK_ATTACHMENT_URL = API_BASE_URL + '/vedlegg/dokument/%(jour
 
 // PD U1
 export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/pdf/journalpost' // POST
-export const PDU1_PREVIEW_URL = API_BASE_URL + '/v2/pdu1/pdf/utkast' // POST
+export const PDU1_PREVIEW_URL = V2_BASE_URL + '/pdu1/pdf/utkast' // POST
 export const PDU1_GET_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET
 export const PDU1_FETCH_URL = API_BASE_URL + '/person/%(fnr)s/search/pdu1' // GET

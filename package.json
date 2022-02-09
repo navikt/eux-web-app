@@ -38,7 +38,7 @@
     "@navikt/landvelger": "^3.0.0",
     "@navikt/paginering": "^3.0.0",
     "@navikt/tabell": "^3.0.0",
-    "@sentry/browser": "^6.17.5",
+    "@sentry/browser": "^6.17.6",
     "amplitude-js": "^8.16.1",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",

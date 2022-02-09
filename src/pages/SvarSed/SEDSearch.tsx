@@ -69,6 +69,7 @@ const mapState = (state: State): any => ({
   featureToggles: state.app.featureToggles,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
   queryingReplySed: state.loading.queryingReplySed,
+  editingSed: state.loading.editingSed,
   parentSed: state.svarsed.parentSed,
   previousParentSed: state.svarsed.previousParentSed,
   replySed: state.svarsed.replySed,
@@ -89,6 +90,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const {
     alertMessage,
     alertType,
+    editingSed,
     featureToggles,
     parentSed,
     previousParentSed,
@@ -178,17 +180,18 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(svarsedActions.setParentSed(e.target.value))
   }
-  /*
-  const onEditSedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
+
+  const onEditSedClick = (sedId: string, sedType: string, saksnummer: string) => {
     setReplySedRequested(true)
-    dispatch(svarsedActions.editDraftSed(connectedSed, saksnummer, sakUrl))
+    dispatch(svarsedActions.editSed(sedId, sedType, saksnummer))
   }
-*/
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
     dispatch(svarsedActions.queryReplySed(connectedSed, saksnummer, sakUrl))
   }
+
+  const canEditSed = (sedType: string) => ['F002', 'H001', 'H002', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
 
   useEffect(() => {
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
@@ -561,34 +564,34 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                 )
                               : (
                                 <>
-                                  {/* connectedSed.status === 'new' && (
+                                  {connectedSed.status === 'new' && canEditSed(connectedSed.sedType) && (
                                     <>
                                       <Button
                                         variant='secondary'
-                                        disabled={queryingReplySed}
+                                        disabled={editingSed}
                                         data-amplitude='svarsed.selection.editsed'
                                         onClick={(e: any) => {
                                           buttonLogger(e, {
                                             type: connectedSed.sedType
                                           })
                                           setButtonClickedId('edit-' + connectedSed.sedId)
-                                          onEditSedClick(connectedSed, sed.sakId, sed.sakUrl)
+                                          onEditSedClick(connectedSed.sedId, connectedSed.sedType, sed.sakId)
                                         }}
                                       >
-                                        {(queryingReplySed && _buttonClickedId === 'edit-' + connectedSed.sedId)
+                                        {(editingSed && _buttonClickedId === 'edit-' + connectedSed.sedId)
                                           ? (
                                             <>
                                               {t('message:loading-editing')}
                                               <Loader />
                                             </>
-                                          )
+                                            )
                                           : t('label:edit-sed-x', {
                                             x: connectedSed.sedType
                                           })}
                                       </Button>
                                       <VerticalSeparatorDiv size='0.5' />
                                     </>
-                                  ) */}
+                                  )}
                                   {connectedSed.svarsedType && (
                                     <Button
                                       variant='primary'

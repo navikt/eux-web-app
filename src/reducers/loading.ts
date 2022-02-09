@@ -10,6 +10,7 @@ export const initialLoadingState: LoadingState = {
   completingPdu1: false,
   creatingPdu1: false,
   creatingSvarSed: false,
+  editingSed: false,
   fetchingPdu1: false,
   gettingAdresse: false,
   gettingArbeidsperioder: false,
@@ -153,6 +154,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingPreviewFile: false
+      }
+
+    case types.SVARSED_EDIT_REQUEST:
+      return {
+        ...state,
+        editingSed: true
+      }
+
+    case types.SVARSED_EDIT_SUCCESS:
+    case types.SVARSED_EDIT_FAILURE:
+      return {
+        ...state,
+        editingSed: false
       }
 
     case types.PDU1_JOURNALFØRE_REQUEST:
