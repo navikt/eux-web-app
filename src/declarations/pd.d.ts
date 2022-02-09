@@ -10,7 +10,7 @@ export interface PeriodeMedAktivitetstype extends Periode {
 }
 
 export interface PeriodeMedComment extends Periode {
-  comment: string
+  info: string
 }
 
 export interface PeriodeMedType extends Periode {

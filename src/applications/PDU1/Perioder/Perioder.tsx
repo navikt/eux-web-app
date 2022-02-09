@@ -107,11 +107,11 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
-        comment: newComment.trim()
+        info: newComment.trim()
       } as PeriodeMedComment)
       _resetValidation(namespace + '-comment')
     } else {
-      dispatch(updateReplySed(`${type}[${index}].comment`, newComment.trim()))
+      dispatch(updateReplySed(`${type}[${index}].info`, newComment.trim()))
       if (validation[namespace + getNSIdx(type, index) + '-comment']) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-comment'))
       }
@@ -374,10 +374,10 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 error={_v[namespace + idx + '-comment']?.feilmelding}
                 namespace={namespace + idx}
                 id='type'
-                key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.comment ?? '')}
+                key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.info ?? '')}
                 label={t('label:comment')}
                 onChanged={(newComment: string) => setPeriodeComment(newComment, _type, _index)}
-                value={(_periode as PeriodeMedComment)?.comment ?? ''}
+                value={(_periode as PeriodeMedComment)?.info ?? ''}
               />
             </Column>
           </AlignStartRow>
