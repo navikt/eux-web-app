@@ -5,27 +5,27 @@ import {
   Adresse
 } from 'declarations/sed'
 
-export interface PeriodeMedAktivitetstype extends Periode {
-  aktivitetstype: string
-}
-
 export interface PeriodeMedComment extends Periode {
   info: string
 }
 
-export interface PeriodeMedType extends Periode {
+export interface PeriodeMedAktivitetstype extends PeriodeMedComment {
+  aktivitetstype: string
+}
+
+export interface PeriodeMedType extends PeriodeMedComment {
   type: string
 }
 
-export interface PeriodeMedBegrunnelse extends Periode {
+export interface PeriodeMedBegrunnelse extends PeriodeMedComment {
   begrunnelse: string
 }
 
-export interface PeriodeMedLoenn extends Periode {
+export interface PeriodeMedLoenn extends PeriodeMedComment {
   loenn: string
 }
 
-export interface PeriodeMedInntekt extends Periode {
+export interface PeriodeMedInntekt extends PeriodeMedComment {
   inntekt: string
 }
 
@@ -69,8 +69,8 @@ export interface AndreMottatteUtbetalinger {
 }
 
 export interface RettTilDagpenger {
-  startdato: string
-  sluttdato: string
+  startdato?: string
+  sluttdato?: string
   ihhTilArtikkel64: JaNei
   ihhTilArtikkel65: JaNei
 }

@@ -75,7 +75,7 @@ export const validatePeriode = (
     hasErrors = true
   }
 
-  if (periodeType === 'withcheckbox' && _.isEmpty(periode.aapenPeriodeType)) {
+  if (periodeType === 'withcheckbox' && _.isEmpty(periode?.sluttdato?.trim()) && _.isEmpty(periode.aapenPeriodeType)) {
     v[namespace + idx + '-aapenPeriodeType'] = {
       skjemaelementId: namespace + idx + '-aapenPeriodeType',
       feilmelding: t('validation:noAapenPeriodeType')

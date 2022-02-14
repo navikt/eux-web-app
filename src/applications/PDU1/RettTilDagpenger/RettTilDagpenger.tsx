@@ -37,8 +37,16 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
     const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
     if (value === 'rettTilDagpenger') {
       delete newReplySed.ikkeRettTilDagpenger
+      newReplySed.rettTilDagpenger = {
+        ihhTilArtikkel64: 'nei',
+        ihhTilArtikkel65: 'nei'
+      }
     } else {
       delete newReplySed.rettTilDagpenger
+      newReplySed.ikkeRettTilDagpenger = {
+        ihhTilLovgivning: 'nei',
+        ikkeSoekt: 'nei'
+      }
     }
     setRettTilDagpengerRadio(value as RettTilDagpengerRadio)
     dispatch(setReplySed!(newReplySed))

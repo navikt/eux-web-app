@@ -366,22 +366,20 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        {_type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring'].indexOf(_type) >= 0 && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-comment']?.feilmelding}
-                namespace={namespace + idx}
-                id='type'
-                key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.info ?? '')}
-                label={t('label:comment')}
-                onChanged={(newComment: string) => setPeriodeComment(newComment, _type, _index)}
-                value={(_periode as PeriodeMedComment)?.info ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-        )}
+        <AlignStartRow>
+          {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
+          <Column>
+            <Input
+              error={_v[namespace + idx + '-comment']?.feilmelding}
+              namespace={namespace + idx}
+              id='type'
+              key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.info ?? '')}
+              label={t('label:comment')}
+              onChanged={(newComment: string) => setPeriodeComment(newComment, _type, _index)}
+              value={(_periode as PeriodeMedComment)?.info ?? ''}
+            />
+          </Column>
+        </AlignStartRow>
         {_type === 'perioderAndreForsikringer' && (
           <AlignStartRow>
             {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}

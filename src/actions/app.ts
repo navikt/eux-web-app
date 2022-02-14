@@ -124,7 +124,6 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
   }
 })
 
-
 export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string,
   value: any

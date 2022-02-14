@@ -90,7 +90,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       getDiff(expirationTime, now)
       checkTimeout()
     }
-  }, [ expirationTime])
+  }, [expirationTime])
 
   const title = t(diff > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
   const text = []

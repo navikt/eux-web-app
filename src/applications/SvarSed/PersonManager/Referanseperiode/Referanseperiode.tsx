@@ -52,6 +52,7 @@ const Referanseperiode: React.FC<PersonManagerFormProps> = ({
             startdato: validation[namespace + '-startdato']?.feilmelding,
             sluttdato: validation[namespace + '-sluttdato']?.feilmelding
           }}
+          periodeType='simple'
           setPeriode={setPeriode}
           value={anmodningsperiode}
         />
