@@ -3,26 +3,26 @@ import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { checkLength, propagateError } from 'utils/validation'
 
-export interface ValidationSvarPåForespørselProps {
+export interface ValidationAnmodningProps {
   replySed: ReplySed
   namespace: string,
   personName: string
 }
 
-export const validateSvarPåForespørsel = (
+export const validateAnmodning = (
   v: Validation,
   t: TFunction,
   {
     replySed,
     namespace,
     personName
-  }: ValidationSvarPåForespørselProps
+  }: ValidationAnmodningProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkLength(v, {
     needle: (replySed as H001Sed).anmodning?.dokumentasjon?.informasjon,
-    max: 255,
+    max: 500,
     id: namespace + '-informasjon',
     message: 'validation:textOverX',
     personName
@@ -30,7 +30,7 @@ export const validateSvarPåForespørsel = (
 
   hasErrors.push(checkLength(v, {
     needle: (replySed as H001Sed).anmodning?.dokumentasjon?.dokument,
-    max: 500,
+    max: 255,
     id: namespace + '-dokument',
     message: 'validation:textOverX',
     personName

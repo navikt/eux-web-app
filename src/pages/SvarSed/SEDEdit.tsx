@@ -448,11 +448,11 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           >
             {_.isEmpty(sedCreatedResponse)
               ? creatingSvarSed
-                  ? t('message:loading-opprette-svarsed')
-                  : t('label:opprett-svarsed')
+                  ? t('message:loading-opprette-sed')
+                  : t('label:opprett-sed')
               : creatingSvarSed
-                ? t('message:loading-oppdatering-svarsed')
-                : t('label:oppdatere-svarsed')}
+                ? t('message:loading-oppdatering-sed')
+                : t('label:oppdatere-sed')}
             {creatingSvarSed && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />

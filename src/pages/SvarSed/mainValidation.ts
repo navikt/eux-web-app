@@ -5,6 +5,7 @@ import { validateProsedyreVedUenighet } from 'applications/SvarSed/Formaal/Prose
 import { validateVedtak } from 'applications/SvarSed/Formaal/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/PersonManager/Adresser/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/validation'
+import { validateAnmodning } from 'applications/SvarSed/PersonManager/Anmodning/validation'
 import { validateEndredeForhold } from 'applications/SvarSed/PersonManager/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/PersonManager/Familierelasjon/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/PersonManager/Forsikring/validation'
@@ -28,6 +29,7 @@ import { validateRettTilYtelse } from 'applications/SvarSed/PersonManager/RettTi
 import { validateSisteansettelsesforhold } from 'applications/SvarSed/PersonManager/SisteAnsettelsesForhold/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/PersonManager/SvarPåForespørsel/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/PersonManager/Trygdeordning/validation'
+import { ErrorElement } from 'declarations/app.d'
 import {
   Adresse,
   Barnetilhoerighet,
@@ -53,7 +55,6 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
 
@@ -341,6 +342,13 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
     }
 
     if (isH001Sed(replySed)) {
+      _error = validateAnmodning(v, t, {
+        replySed,
+        namespace: `personmanager-${personID}-anmodning`,
+        personName: t('label:anmodning-om-informasjon').toLowerCase()
+      })
+      hasErrors = hasErrors || _error
+
       _error = validateEndredeForhold(v, t, {
         replySed: replySed,
         namespace: `personmanager-${personID}-endredeforhold`,

@@ -220,7 +220,7 @@
   "norsk-fnr" : "Norsk personnummer",
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
-  "oppdatere-svarsed" : "Oppdatere SvarSED",
+  "oppdatere-sed" : "Oppdatere SED",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
   "opphoer": "Opphør",
   "opphoer-rettighet": "Opphør rettighet",
@@ -232,7 +232,7 @@
   "opprett-sak": "Opprett Sak",
   "opprett-pdu1": "Ferdigstill PD U1",
   "opprett-sak-i-rina" : "Opprett sak i RINA",
-  "opprett-svarsed" : "Opprett SvarSED",
+  "opprett-sed" : "Opprett SED",
   "opprette-ny-sed" : "Opprette ny SED",
   "ordinær-konto": "Ordinær konto",
   "orgnr": "Org.nr.",
