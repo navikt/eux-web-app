@@ -103,6 +103,12 @@ const appReducer = (state: AppState = initialAppState, action: ActionWithPayload
         serverinfo: action.payload
       }
 
+    case types.APP_SESSION_SET:
+      return {
+        ...state,
+        expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes))
+      }
+
     case types.APP_ENHETER_GET_SUCCESS:
       return {
         ...state,

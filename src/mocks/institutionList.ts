@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import EKV from 'eessi-kodeverk'
+import EKV from '@navikt/eessi-kodeverk'
 
 const institusjoner = [
   {

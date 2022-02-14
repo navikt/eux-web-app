@@ -2,8 +2,8 @@ import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import AbroadPersonForm, { AbroadPersonFormProps, AbroadPersonFormSelector } from './AbroadPersonForm'
-import { kjoenn } from 'eessi-kodeverk/lib/kjoenn'
-import { familierelasjoner } from 'eessi-kodeverk/lib/familierelasjoner'
+import { kjoenn } from '@navikt/eessi-kodeverk/lib/kjoenn'
+import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
 
 jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)

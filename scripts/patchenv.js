@@ -20,7 +20,7 @@ const describe = await git.raw('describe', '--always', '--dirty', '--abbrev=8');
 
 const {
   dependencies: {
-    'eessi-kodeverk': kodeverk_versjon,
+    '@navikt/eessi-kodeverk': kodeverk_versjon,
     react: react_lib_versjon,
   },
 } = pkg;

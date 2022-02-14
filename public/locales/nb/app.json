@@ -31,7 +31,7 @@
 
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}}",
-
+  "session-reduce-to-6-min": "Q-miljø: reduser tokens tid til 6 min",
   "status-received-sent" : "Sendt",
   "status-received-received" : "Mottatt",
   "status-received-new" : "Utkast",

@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { familierelasjoner } from 'eessi-kodeverk/lib/familierelasjoner'
+import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
 import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'

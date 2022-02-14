@@ -33,7 +33,7 @@ import {
   Tema,
   Validation
 } from 'declarations/types'
-import * as EKV from 'eessi-kodeverk'
+import * as EKV from '@navikt/eessi-kodeverk'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'

@@ -1,3 +1,4 @@
+import { ErrorElement } from 'declarations/app'
 import useValidation from 'hooks/useValidation'
 const mockSetState: any = jest.fn()
 
@@ -50,9 +51,13 @@ describe('hooks/useValidation', () => {
   })
 
   it('useValidation: sert validation', () => {
+    const error: ErrorElement = {
+      feilmelding: 'feilmelding',
+      skjemaelementId: 'skjemaelementId'
+    };
     (mockSetState).mockReset()
     const [, , , setValidation]  = useValidation<Item>(initialValidation, validationFunc)
-    setValidation({c: '3'})
-    expect(mockSetState).toBeCalledWith({c: '3'})
+    setValidation({c: error})
+    expect(mockSetState).toBeCalledWith({c: error})
   })
 })

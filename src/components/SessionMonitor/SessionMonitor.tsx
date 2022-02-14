@@ -1,4 +1,4 @@
-import { logMeAgain } from 'actions/app'
+import { logMeAgain, reduceSessionTime } from 'actions/app'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
@@ -12,6 +12,7 @@ import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
+import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -46,7 +47,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   sessionExpiredReload = 1000,
   now
 }: SessionMonitorProps): JSX.Element => {
-  const [mounted, setMounted] = useState<boolean>(false)
   const [diff, setDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
   const [saveAndRenew, setSaveAndRenew] = useState<boolean>(false)
@@ -72,6 +72,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       return
     }
     setTimeout(() => {
+      console.log('doing a check timeout')
       const diff = getDiff(expirationTime, now)
       if (diff < sessionExpiredReload) {
         triggerReload()
@@ -84,12 +85,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   useEffect(() => {
-    if (!mounted && expirationTime !== undefined) {
+    console.log('Bootstrapping / Updating check timeout')
+    if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
       checkTimeout()
-      setMounted(true)
     }
-  }, [mounted, expirationTime])
+  }, [ expirationTime])
 
   const title = t(diff > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
   const text = []
@@ -98,6 +99,31 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   if (hasDraft) {
     text.push(t('app:session-you-have-draft', { utkast: !_.isNil(pdu1) ? 'PD U1' : 'Svar SED' }))
+  }
+
+  const modalButtons = [
+    {
+      main: true,
+      text: t('app:ok-got-it'),
+      onClick: () => setModal(false)
+    }, {
+      hide: !hasDraft,
+      main: true,
+      text: t('app:save-and-renew'),
+      onClick: () => setSaveAndRenew(true)
+    }, {
+      main: false,
+      text: t('app:log-me-again'),
+      onClick: () => dispatch(logMeAgain())
+    }
+  ]
+
+  if (IS_Q || IS_DEVELOPMENT) {
+    modalButtons.splice(2, 0, {
+      main: false,
+      text: t('app:session-reduce-to-6-min'),
+      onClick: () => dispatch(reduceSessionTime())
+    })
   }
 
   return (
@@ -136,22 +162,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         modal={{
           modalTitle: title,
           modalText: (<>{text.map(t => <BodyLong key={t}>{t}</BodyLong>)}</>),
-          modalButtons: [
-            {
-              main: true,
-              text: t('app:ok-got-it'),
-              onClick: () => setModal(false)
-            }, {
-              hide: !hasDraft,
-              main: true,
-              text: t('app:save-and-renew'),
-              onClick: () => setSaveAndRenew(true)
-            }, {
-              main: false,
-              text: t('app:log-me-again'),
-              onClick: () => dispatch(logMeAgain())
-            }
-          ]
+          modalButtons: modalButtons
         }}
       />
       <Button variant='tertiary' size='small' onClick={() => setModal(true)}>

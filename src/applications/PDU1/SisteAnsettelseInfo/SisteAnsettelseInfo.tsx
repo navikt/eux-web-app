@@ -6,6 +6,7 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
+import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { GrunnTilOpphør } from 'declarations/sed'
 import _ from 'lodash'
@@ -22,6 +23,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
   parentNamespace,
   personID,
   replySed,
+  setReplySed,
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
@@ -49,7 +51,15 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
     if (typeGrunnOpphoerAnsatt === undefined) {
       dispatch(updateReplySed(target, {}))
     } else {
-      dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
+      const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
+      _.set(newReplySed, `${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt)
+      if (typeGrunnOpphoerAnsatt !== 'annet-ansettelsesforhold') {
+        delete newReplySed[target].annenGrunnOpphoerAnsatt
+      }
+      if (typeGrunnOpphoerAnsatt !== 'annet-selvstendig') {
+        delete newReplySed[target].grunnOpphoerSelvstendig
+      }
+      dispatch(setReplySed(newReplySed!))
     }
     if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
       dispatch(resetValidation(namespace + '-typeGrunnOpphoerAnsatt'))

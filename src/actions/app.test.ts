@@ -1,7 +1,7 @@
 import * as appActions from 'actions/app'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import EKV from 'eessi-kodeverk'
+import * as EKV from '@navikt/eessi-kodeverk'
 import { call } from '@navikt/fetch'
 
 jest.mock('@navikt/fetch', () => ({

@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
-import EKV from 'eessi-kodeverk'
+import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
 import mockReautorisering from 'mocks/app/reautorisering'
@@ -116,6 +116,14 @@ export const preload: ActionCreator<ActionWithPayload<any>> = (
     }
   } // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
 })
+
+export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWithPayload => ({
+  type: types.APP_SESSION_SET,
+  payload: {
+    minutes: 6
+  }
+})
+
 
 export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string,
