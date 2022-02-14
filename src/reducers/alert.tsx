@@ -36,7 +36,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
   if (
     action.type === types.ALERT_CLEAR ||
-    action.type === types.APP_CLEAN_DATA ||
+    action.type === types.APP_CLEAN ||
     action.type === types.PERSON_RELATERT_SEARCH_RESET ||
     action.type === types.PERSON_SEARCH_REQUEST ||
     action.type === types.PERSON_RELATERT_SEARCH_REQUEST ||

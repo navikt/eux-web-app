@@ -17,7 +17,7 @@ const personReducer = (
   action: ActionWithPayload = { type: '', payload: undefined }
 ): PersonState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
     case types.PERSON_CLEAN_DATA:
       return initialPersonState
 

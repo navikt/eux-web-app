@@ -12,7 +12,7 @@ import mockUtgaarDato from 'mocks/app/utgaarDato'
 import { Action, ActionCreator } from 'redux'
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
-  type: types.APP_CLEAN_DATA
+  type: types.APP_CLEAN
 })
 
 export const copyToClipboard = (text: string) => ({

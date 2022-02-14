@@ -364,7 +364,7 @@ const loadingReducer = (
         gettingServerinfo: false
       }
 
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialLoadingState
 
     case types.ATTACHMENT_LIST_REQUEST:

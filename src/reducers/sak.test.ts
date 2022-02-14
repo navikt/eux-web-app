@@ -94,7 +94,7 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('APP_CLEAN_DATA', () => {
+  it('APP_CLEAN', () => {
     expect(
       sakReducer({
         ...initialSakState,
@@ -105,19 +105,19 @@ describe('reducers/sak', () => {
           fnr: '123'
         }
       }, {
-        type: types.APP_CLEAN_DATA,
+        type: types.APP_CLEAN,
         payload: {}
       })
     ).toEqual(initialSakState)
   })
 
-  it('APP_CLEAN_DATA', () => {
+  it('APP_CLEAN', () => {
     expect(
       sakReducer({
         ...initialSakState,
         fnr: '123'
       }, {
-        type: types.APP_CLEAN_DATA
+        type: types.APP_CLEAN
       })
     ).toEqual(initialSakState)
   })

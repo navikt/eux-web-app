@@ -54,7 +54,7 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: Action | ActionWithPayload = { type: '' }): SakState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
     case types.SAK_CLEAN_DATA:
       return initialSakState
 

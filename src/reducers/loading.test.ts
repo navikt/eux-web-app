@@ -156,10 +156,10 @@ describe('reducers/loading', () => {
     simulateFailure(types.APP_SERVERINFO_GET_FAILURE, 'gettingServerinfo')
   })
 
-  it('APP_CLEAN_DATA', () => {
+  it('APP_CLEAN', () => {
     expect(
       loadingReducer({}, {
-        type: types.APP_CLEAN_DATA
+        type: types.APP_CLEAN
       })
     ).toEqual(initialLoadingState)
   })

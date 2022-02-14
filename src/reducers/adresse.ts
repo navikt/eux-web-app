@@ -14,7 +14,7 @@ const adresseReducer = (
   action: ActionWithPayload = { type: '', payload: undefined }
 ): AdresseState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialAdresseState
 
     case types.ADRESSE_SEARCH_REQUEST:

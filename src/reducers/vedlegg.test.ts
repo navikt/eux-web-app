@@ -86,10 +86,10 @@ describe('reducers/app', () => {
     })
   })
 
-  it('APP_CLEAN_DATA', () => {
+  it('APP_CLEAN', () => {
     expect(
       vedleggReducer({} as VedleggState, {
-        type: types.APP_CLEAN_DATA,
+        type: types.APP_CLEAN,
         payload: undefined
       })
     ).toEqual(initialVedleggState)

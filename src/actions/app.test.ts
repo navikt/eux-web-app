@@ -27,7 +27,7 @@ describe('actions/app', () => {
   it('cleanData()', () => {
     expect(appActions.cleanData())
       .toMatchObject({
-        type: types.APP_CLEAN_DATA
+        type: types.APP_CLEAN
       })
   })
 

@@ -16,7 +16,7 @@ export const initialInntektState: InntektState = {
 
 const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }): InntektState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialInntektState
 
     case types.INNTEKT_GET_REQUEST:

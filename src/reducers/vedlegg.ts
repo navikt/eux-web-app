@@ -51,7 +51,7 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: Actio
         ...state,
         [action.payload.key]: action.payload.value
       }
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialVedleggState
 
     default:

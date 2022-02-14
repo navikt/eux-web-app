@@ -37,7 +37,7 @@ const svarsedReducer = (
   action: Action | ActionWithPayload = { type: '', payload: undefined }
 ): SvarsedState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialSvarsedState
 
     case types.SVARSED_FAGSAKER_RESET:

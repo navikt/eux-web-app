@@ -13,7 +13,7 @@ export const initialArbeidsgiverState: ArbeidsgiverState = {
 
 const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState, action: ActionWithPayload = { type: '', payload: undefined }): ArbeidsgiverState => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialArbeidsgiverState
 
     case types.ARBEIDSPERIODER_GET_REQUEST:

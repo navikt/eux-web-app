@@ -23,7 +23,7 @@ export const initialPdu1State: Pdu1State = {
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {
   switch (action.type) {
-    case types.APP_CLEAN_DATA:
+    case types.APP_CLEAN:
       return initialPdu1State
 
     case types.PDU1_FAGSAKER_GET_REQUEST:
