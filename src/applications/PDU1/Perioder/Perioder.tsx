@@ -9,14 +9,8 @@ import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import {
-  PDPeriode,
-  PeriodeMedAktivitetstype,
-  PeriodeMedBegrunnelse,
-  PeriodeMedInntekt,
-  PeriodeMedLoenn,
-  PeriodeMedType,
   PDU1,
-  PeriodeMedComment
+  PDPeriode
 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
@@ -108,7 +102,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       _setNewPeriode({
         ..._newPeriode,
         info: newComment.trim()
-      } as PeriodeMedComment)
+      } as PDPeriode)
       _resetValidation(namespace + '-comment')
     } else {
       dispatch(updateReplySed(`${type}[${index}].info`, newComment.trim()))
@@ -118,27 +112,12 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const setPeriodeType = (newType: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        type: newType.trim()
-      } as PeriodeMedType)
-      _resetValidation(namespace + '-type')
-    } else {
-      dispatch(updateReplySed(`${type}[${index}].type`, newType.trim()))
-      if (validation[namespace + getNSIdx(type, index) + '-type']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-type'))
-      }
-    }
-  }
-
   const setPeriodeStartdato = (newStartdato: string, type: string, index: number) => {
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
         startdato: newStartdato.trim()
-      })
+      } as PDPeriode)
       _resetValidation(namespace + '-startdato')
     } else {
       dispatch(updateReplySed(`${type}[${index}].startdato`, newStartdato.trim()))
@@ -159,66 +138,6 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
       dispatch(updateReplySed(`${type}[${index}].sluttdato`, newSluttdato.trim()))
       if (validation[namespace + getNSIdx(type, index) + '-sluttdato']) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-sluttdato'))
-      }
-    }
-  }
-
-  const setPeriodeBegrunnelse = (newBegrunnelse: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        begrunnelse: newBegrunnelse.trim()
-      } as PeriodeMedBegrunnelse)
-      _resetValidation(namespace + '-begrunnelse')
-    } else {
-      dispatch(updateReplySed(`${type}[${index}].begrunnelse`, newBegrunnelse.trim()))
-      if (validation[namespace + getNSIdx(type, index) + '-begrunnelse']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-begrunnelse'))
-      }
-    }
-  }
-
-  const setPeriodeAktivitetstype = (newAktivitetstype: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        aktivitetstype: newAktivitetstype.trim()
-      } as PeriodeMedAktivitetstype)
-      _resetValidation(namespace + '-aktivitetstype')
-    } else {
-      dispatch(updateReplySed(`${type}[${index}].aktivitetstype`, newAktivitetstype.trim()))
-      if (validation[namespace + getNSIdx(type, index) + '-aktivitetstype']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-aktivitetstype'))
-      }
-    }
-  }
-
-  const setPeriodeLoenn = (newLoenn: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        loenn: newLoenn.trim()
-      } as PeriodeMedLoenn)
-      _resetValidation(namespace + '-loenn')
-    } else {
-      dispatch(updateReplySed(`${type}[${index}].loenn`, newLoenn.trim()))
-      if (validation[namespace + getNSIdx(type, index) + '-loenn']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-loenn'))
-      }
-    }
-  }
-
-  const setPeriodeInntekt = (newInntekt: string, type: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        inntekt: newInntekt.trim()
-      } as PeriodeMedInntekt)
-      _resetValidation(namespace + '-inntekt')
-    } else {
-      dispatch(updateReplySed(`${type}[${index}].inntekt`, newInntekt.trim()))
-      if (validation[namespace + getNSIdx(type, index) + '-inntekt']) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-inntekt'))
       }
     }
   }
@@ -333,7 +252,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
                 value={_periode.startdato}
               />
             </Column>
-            <Column flex='1.5'>
+            <Column>
               <Input
                 ariaLabel={t('label:sluttdato')}
                 error={_v[namespace + '-sluttdato']?.feilmelding}
@@ -348,7 +267,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
             </Column>
             {index >= 0
               ? (
-                <Column flex='1.5'>
+                <Column>
                   <FlexEndDiv style={{ justifyContent: 'end' }}>
                     <AddRemovePanel
                       candidateForDeletion={candidateForDeletion}
@@ -373,98 +292,23 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
               error={_v[namespace + idx + '-comment']?.feilmelding}
               namespace={namespace + idx}
               id='type'
-              key={namespace + idx + '-comment-' + ((_periode as PeriodeMedComment)?.info ?? '')}
-              label={t('label:comment')}
+              key={namespace + idx + '-comment-' + ((_periode as PDPeriode)?.info ?? '')}
+              label={_type === 'perioderAndreForsikringer'
+                ? t('label:type')
+                : _type === 'perioderAnsettSomForsikret'
+                  ? t('label:begrunnelse')
+                  : ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
+                      ? t('label:aktivitetstype')
+                      : _type === 'perioderLoennSomAnsatt'
+                        ? t('label:loenn')
+                        : _type === 'perioderInntektSomSelvstendig'
+                          ? t('label:inntekt')
+                          : t('label:comment')}
               onChanged={(newComment: string) => setPeriodeComment(newComment, _type, _index)}
-              value={(_periode as PeriodeMedComment)?.info ?? ''}
+              value={(_periode as PDPeriode)?.info ?? ''}
             />
           </Column>
         </AlignStartRow>
-        {_type === 'perioderAndreForsikringer' && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-type']?.feilmelding}
-                namespace={namespace + idx}
-                id='type'
-                key={namespace + idx + '-type-' + ((_periode as PeriodeMedType)?.type ?? '')}
-                label={t('label:type')}
-                onChanged={(newType: string) => setPeriodeType(newType, _type, _index)}
-                value={(_periode as PeriodeMedType)?.type ?? ''}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        {_type === 'perioderAnsettSomForsikret' && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-begrunnelse']?.feilmelding}
-                namespace={namespace + idx}
-                id='begrunnelse'
-                key={namespace + idx + '-begrunnelse-' + ((_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? '')}
-                label={t('label:begrunnelse')}
-                onChanged={(newBegrunnelse: string) => setPeriodeBegrunnelse(newBegrunnelse, _type, _index)}
-                value={(_periode as PeriodeMedBegrunnelse)?.begrunnelse ?? ''}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        {_type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0 && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-aktivitetstype']?.feilmelding}
-                namespace={namespace + idx}
-                id='aktivitetstype'
-                key={namespace + idx + '-aktivitetstype-' + ((_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? '')}
-                label={t('label:aktivitetstype')}
-                onChanged={(newAktivitetstype: string) => setPeriodeAktivitetstype(newAktivitetstype, _type, _index)}
-                value={(_periode as PeriodeMedAktivitetstype)?.aktivitetstype ?? ''}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        {_type === 'perioderLoennSomAnsatt' && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-loenn']?.feilmelding}
-                namespace={namespace + idx}
-                id='loenn'
-                key={namespace + idx + '-loenn-' + ((_periode as PeriodeMedLoenn)?.loenn ?? '')}
-                label={t('label:loenn')}
-                onChanged={(newLoenn: string) => setPeriodeLoenn(newLoenn, _type, _index)}
-                value={(_periode as PeriodeMedLoenn)?.loenn ?? ''}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        {_type === 'perioderInntektSomSelvstendig' && (
-          <AlignStartRow>
-            {index >= 0 && _sort === 'time' && (<Column style={{ maxWidth: '40px' }} />)}
-            <Column>
-              <Input
-                error={_v[namespace + idx + '-loenn']?.feilmelding}
-                namespace={namespace + idx}
-                id='inntekt'
-                key={namespace + idx + '-loenn-' + ((_periode as PeriodeMedInntekt)?.inntekt ?? '')}
-                label={t('label:inntekt')}
-                onChanged={(newInntekt: string) => setPeriodeInntekt(newInntekt, _type, _index)}
-                value={(_periode as PeriodeMedInntekt)?.inntekt ?? ''}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
         {index < 0 && (
           <FlexEndDiv style={{ justifyContent: 'end' }}>
             <AddRemovePanel

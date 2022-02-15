@@ -1,6 +1,5 @@
 import {
-  PDPeriode, PeriodeMedAktivitetstype, PeriodeMedBegrunnelse,
-  PeriodeMedInntekt, PeriodeMedLoenn, PeriodeMedType, PDU1
+  PDPeriode, PDU1
 } from 'declarations/pd.d'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
@@ -51,46 +50,6 @@ export const validatePDPeriode = (
     id: namespace + idx + '-startdato',
     message: 'validation:noStartdato'
   }))
-
-  if (type === 'perioderAndreForsikringer') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedType)?.type,
-      id: namespace + idx + '-type',
-      message: 'validation:noType'
-    }))
-  }
-
-  if (type === 'perioderAnsettSomForsikret') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedBegrunnelse)?.begrunnelse,
-      id: namespace + idx + '-begrunnelse',
-      message: 'validation:noBegrunnelse'
-    }))
-  }
-
-  if (type === 'perioderAnsattUtenForsikring' || type === 'perioderSelvstendigUtenForsikring') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedAktivitetstype)?.aktivitetstype,
-      id: namespace + idx + '-aktivitetstype',
-      message: 'validation:noAktivitetstype'
-    }))
-  }
-
-  if (type === 'perioderLoennSomAnsatt') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedLoenn)?.loenn,
-      id: namespace + idx + '-loenn',
-      message: 'validation:noLoenn'
-    }))
-  }
-
-  if (type === 'perioderInntektSomSelvstendig') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedInntekt)?.inntekt,
-      id: namespace + idx + '-inntekt',
-      message: 'validation:noInntekt'
-    }))
-  }
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)

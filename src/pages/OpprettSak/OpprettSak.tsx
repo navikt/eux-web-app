@@ -21,7 +21,7 @@ export const OpprettSakPage = (): JSX.Element => {
   return (
     <TopContainer title={t('app:page-title-opprettsak')}>
       <SlidePage
-        withSidebar={true}
+        withSidebar
         changeModeFunc={changeModeFunc}
         initialPage='A'
         initialDirection='none'

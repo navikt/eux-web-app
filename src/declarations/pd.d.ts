@@ -5,28 +5,8 @@ import {
   Adresse
 } from 'declarations/sed'
 
-export interface PeriodeMedComment extends Periode {
+export interface PDPeriode extends Periode {
   info: string
-}
-
-export interface PeriodeMedAktivitetstype extends PeriodeMedComment {
-  aktivitetstype: string
-}
-
-export interface PeriodeMedType extends PeriodeMedComment {
-  type: string
-}
-
-export interface PeriodeMedBegrunnelse extends PeriodeMedComment {
-  begrunnelse: string
-}
-
-export interface PeriodeMedLoenn extends PeriodeMedComment {
-  loenn: string
-}
-
-export interface PeriodeMedInntekt extends PeriodeMedComment {
-  inntekt: string
 }
 
 export interface Pdu1Person {
@@ -80,21 +60,19 @@ export interface IkkeRettTilDagpenger {
   ikkeSoekt: JaNei
 }
 
-export type PDPeriode = Periode | PeriodeMedType | PeriodeMedBegrunnelse | PeriodeMedAktivitetstype | PeriodeMedLoenn | PeriodeMedInntekt
-
 export interface PDU1 {
   saksreferanse: string, // Nav => cover letter,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
   nav: NavInfo // NAV => cover letter, section 7
-  perioderAnsattMedForsikring: Array<PeriodeMedComment>, // Perioder => 2.1.1
-  perioderSelvstendigMedForsikring: Array<PeriodeMedComment>, // Perioder 2.1.2
-  perioderAndreForsikringer: Array<PeriodeMedType> // Perioder 2.1.3
-  perioderAnsettSomForsikret: Array<PeriodeMedBegrunnelse> // Perioder 2.1.4?
-  perioderAnsattUtenForsikring: Array<PeriodeMedAktivitetstype> // Perioder 2.2.1
-  perioderSelvstendigUtenForsikring?: Array<PeriodeMedAktivitetstype> // Perioder 2.2.2
-  perioderLoennSomAnsatt: Array<PeriodeMedLoenn> // Perioder 2.3.1
-  perioderInntektSomSelvstendig: Array<PeriodeMedInntekt> // Perioder 2.3.2
+  perioderAnsattMedForsikring: Array<PDPeriode>, // Perioder => 2.1.1
+  perioderSelvstendigMedForsikring: Array<PDPeriode>, // Perioder 2.1.2
+  perioderAndreForsikringer: Array<PDPeriode> // Perioder 2.1.3
+  perioderAnsettSomForsikret: Array<PDPeriode> // Perioder 2.1.4?
+  perioderAnsattUtenForsikring: Array<PDPeriode> // Perioder 2.2.1
+  perioderSelvstendigUtenForsikring?: Array<PDPeriode> // Perioder 2.2.2
+  perioderLoennSomAnsatt: Array<PDPeriode> // Perioder 2.3.1
+  perioderInntektSomSelvstendig: Array<PDPeriode> // Perioder 2.3.2
   opphoer: GrunnTilOpphør // SisteAnsettelseInfo => 3
   andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
   perioderDagpengerMottatt: Array<Periode> // Dagpenger => 5
