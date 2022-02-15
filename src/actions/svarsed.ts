@@ -40,6 +40,35 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
+export const updateSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+  replySed: ReplySed
+): ThunkResult<ActionWithPayload> => {
+  const rinaSakId = replySed.saksnummer
+  const sedId = replySed.sedId
+  const copyReplySed = _.cloneDeep(replySed)
+  delete copyReplySed.saksnummer
+  delete copyReplySed.sakUrl
+  delete copyReplySed.sedId
+  return call({
+    method: 'PUT',
+    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId, sedId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sedId: '456'
+    } as CreateSedResponse,
+    context: {
+      sedType: replySed.sedType,
+      sakUrl: replySed.sakUrl
+    },
+    type: {
+      request: types.SVARSED_SED_UPDATE_REQUEST,
+      success: types.SVARSED_SED_UPDATE_SUCCESS,
+      failure: types.SVARSED_SED_UPDATE_FAILURE
+    },
+    body: copyReplySed
+  })
+}
+
 export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
   fnr: string, sektor: string, tema: string
 ): ThunkResult<ActionWithPayload<FagSaker>> => {

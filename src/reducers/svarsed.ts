@@ -161,8 +161,29 @@ const svarsedReducer = (
         sedCreatedResponse: null
       }
 
+    case types.SVARSED_SED_UPDATE_SUCCESS:
+      standardLogger('svarsed.update.success', { type: (action as ActionWithPayload).context.sedType })
+      return {
+        ...state,
+        sedCreatedResponse: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARSED_SED_UPDATE_FAILURE:
+      standardLogger('svarsed.update.failure', { type: (action as ActionWithPayload).context.sedType })
+      return {
+        ...state,
+        sedCreatedResponse: null
+      }
+
     case types.SVARSED_SED_CREATE_REQUEST:
       standardLogger('svarsed.create.request')
+      return {
+        ...state,
+        sedCreatedResponse: undefined
+      }
+
+    case types.SVARSED_SED_UPDATE_REQUEST:
+      standardLogger('svarsed.update.request')
       return {
         ...state,
         sedCreatedResponse: undefined

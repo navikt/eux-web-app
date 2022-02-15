@@ -33,7 +33,8 @@ export const initialLoadingState: LoadingState = {
   searchingRelatertPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
-  sendingSed: false
+  sendingSed: false,
+  updatingSvarSed: false
 
 }
 
@@ -323,6 +324,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingSedStatus: false
+      }
+
+    case types.SVARSED_SED_UPDATE_REQUEST:
+      return {
+        ...state,
+        updatingSvarSed: true
+      }
+
+    case types.SVARSED_SED_UPDATE_SUCCESS:
+    case types.SVARSED_SED_UPDATE_FAILURE:
+      return {
+        ...state,
+        updatingSvarSed: false
       }
 
     case types.VEDLEGG_POST_REQUEST:

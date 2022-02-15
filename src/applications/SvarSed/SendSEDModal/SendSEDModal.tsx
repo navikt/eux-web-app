@@ -189,7 +189,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         modalContent: (
           <MinimalModalDiv>
             <Heading size='small'>
-              {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-svarsed')}
+              {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-sed')}
             </Heading>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE].indexOf(alertType) >= 0 && (
@@ -240,7 +240,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <Loader type='xsmall' />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{_.isEmpty(sedCreatedResponse) ? t('message:loading-opprette-svarsed') : t('message:loading-oppdatering-svarsed')}</span>
+                        <span>{_.isEmpty(sedCreatedResponse) ? t('message:loading-opprette-sed') : t('message:loading-oppdatering-sed')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {!_.isNil(sedCreatedResponse) && (

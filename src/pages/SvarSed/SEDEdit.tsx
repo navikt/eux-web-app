@@ -9,7 +9,8 @@ import {
   resetPreviewSvarSed,
   sendSedInRina,
   setReplySed,
-  updateReplySed
+  updateReplySed,
+  updateSed
 } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import Formaal from 'applications/SvarSed/Formaal/Formaal'
@@ -77,6 +78,7 @@ export interface SEDEditSelector {
   alertType: string | undefined
   alertMessage: JSX.Element | string | undefined
   creatingSvarSed: boolean
+  updatingSvarSed: boolean
   gettingPreviewFile: boolean
   previewFile: any,
   replySed: ReplySed | null | undefined
@@ -97,6 +99,7 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
+  updatingSvarSed: state.loading.updatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
@@ -117,6 +120,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     alertType,
     alertMessage,
     creatingSvarSed,
+    updatingSvarSed,
     gettingPreviewFile,
     previewFile,
     replySed,
@@ -150,6 +154,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
 
   const cleanReplySed = (replySed: ReplySed): ReplySed => {
     const newReplySed = _.cloneDeep(replySed)
+
     // if we do not have vedtak, do not have ytelse in barna
     if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
       (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
@@ -170,8 +175,11 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        cleanReplySed(newReplySed)
-        dispatch(createSed(newReplySed))
+        if (sedCreatedResponse) {
+          dispatch(updateSed(newReplySed))
+        } else {
+          dispatch(createSed(newReplySed))
+        }
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
@@ -444,16 +452,16 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             variant='primary'
             data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
-            disabled={creatingSvarSed}
+            disabled={creatingSvarSed || updatingSvarSed}
           >
             {_.isEmpty(sedCreatedResponse)
               ? creatingSvarSed
                   ? t('message:loading-opprette-sed')
-                  : t('label:opprett-sed')
-              : creatingSvarSed
-                ? t('message:loading-oppdatering-sed')
-                : t('label:oppdatere-sed')}
-            {creatingSvarSed && <Loader />}
+                  : updatingSvarSed
+                    ? t('message:loading-oppdatering-sed')
+                    : t('label:opprett-sed')
+              : t('label:oppdatere-sed')}
+            {(creatingSvarSed || updatingSvarSed) && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />
         </div>
