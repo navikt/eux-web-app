@@ -354,6 +354,7 @@ export interface BaseReplySed {
   // added
   saksnummer ?: string
   sakUrl ?: string
+  // this will identify if we will create the ReplySed (if undefined) or edit the ReplySed
   sedId ?: string
 }
 

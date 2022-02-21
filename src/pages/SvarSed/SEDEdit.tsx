@@ -175,7 +175,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        if (sedCreatedResponse) {
+        if (!_.isEmpty(newReplySed?.sedId)) {
           dispatch(updateSed(newReplySed))
         } else {
           dispatch(createSed(newReplySed))
@@ -450,11 +450,11 @@ const SEDEdit: React.FC<SEDEditProps> = ({
         <div>
           <Button
             variant='primary'
-            data-amplitude={_.isEmpty(sedCreatedResponse) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
+            data-amplitude={_.isEmpty(replySed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
             disabled={creatingSvarSed || updatingSvarSed}
           >
-            {_.isEmpty(sedCreatedResponse)
+            {_.isEmpty(replySed?.sedId)
               ? creatingSvarSed
                   ? t('message:loading-opprette-sed')
                   : updatingSvarSed

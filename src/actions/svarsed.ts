@@ -148,21 +148,17 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 }
 
 export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  sedId: string, sedType: string, saksnummer: string
+  sedId: string, sedType: string, rinaSakId: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(sedType)
-
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, {
-      rinaSakId: saksnummer,
-      sedId
-    }),
+    url: sprintf(urls.API_SED_EDIT_URL, {rinaSakId, sedId}),
     expectedPayload: {
       ...mockSed,
-      saksnummer
+      saksnummer: rinaSakId
     },
     context: {
-      saksnummer,
+      saksnummer: rinaSakId,
       sedId
     },
     type: {

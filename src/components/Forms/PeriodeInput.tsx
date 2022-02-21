@@ -18,6 +18,7 @@ const WrapperDiv = styled.div`
 `
 
 export interface PeriodeProps<T> {
+  breakInTwo ?: boolean
   error: {
     startdato: string | null | undefined
     sluttdato: string | null | undefined
@@ -63,6 +64,7 @@ export const toDateFormat = (date: string | undefined, format: string): string =
 
 const PeriodeInput = <T extends Periode>({
   error,
+  breakInTwo = false,
   label = {},
   namespace,
   periodeType = 'withcheckbox',
@@ -140,6 +142,7 @@ const PeriodeInput = <T extends Periode>({
           value={toDateFormat(_periode?.sluttdato, uiFormat) ?? ''}
         />
       </Column>
+      {breakInTwo && <div/>  }
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (

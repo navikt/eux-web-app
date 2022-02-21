@@ -44,7 +44,7 @@ const FilterDiv = styled(FlexDiv)`
   .selected {
     text-decoration: underline;
     text-decoration: bold;
-    color: var(--navds-color-action-active) !important;
+    color: var(--navds-semantic-color-interaction-primary) !important;
   }
 `
 const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`

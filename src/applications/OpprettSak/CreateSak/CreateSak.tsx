@@ -351,6 +351,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const createH001ReplySed = (saksnummer: string): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
+    h001sed.sedId = 'notnull' /// TODO change
     h001sed.saksnummer = saksnummer
     h001sed.tema = tempInfoForEdit.tema
     h001sed.fagsakId = tempInfoForEdit.fagsak
