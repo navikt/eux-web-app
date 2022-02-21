@@ -144,6 +144,7 @@ export interface LogMeAgainPayload {
 export interface OpprettetSak {
   rinasaksnummer: string
   url: string
+  sedId ?: string
 }
 
 export interface Saksbehandler {

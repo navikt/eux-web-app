@@ -142,7 +142,7 @@ const PeriodeInput = <T extends Periode>({
           value={toDateFormat(_periode?.sluttdato, uiFormat) ?? ''}
         />
       </Column>
-      {breakInTwo && <div/>  }
+      {breakInTwo && <div />}
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
           {_.isEmpty(_periode?.sluttdato) && (

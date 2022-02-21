@@ -152,7 +152,7 @@ export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = 
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(sedType)
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, {rinaSakId, sedId}),
+    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId, sedId }),
     expectedPayload: {
       ...mockSed,
       saksnummer: rinaSakId

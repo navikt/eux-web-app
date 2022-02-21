@@ -349,10 +349,10 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createH001ReplySed = (saksnummer: string): ReplySed => {
+  const createH001ReplySed = (opprettetSak: OpprettetSak): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
-    h001sed.sedId = 'notnull' /// TODO change
-    h001sed.saksnummer = saksnummer
+    h001sed.sedId = opprettetSak.sedId
+    h001sed.saksnummer = opprettetSak.rinasaksnummer
     h001sed.tema = tempInfoForEdit.tema
     h001sed.fagsakId = tempInfoForEdit.fagsak
     h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
@@ -368,8 +368,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const fillOutSed = (opprettetSak: OpprettetSak) => {
-    const replySed = createH001ReplySed(opprettetSak.rinasaksnummer)
-    replySed.sedId = '' + new Date().getTime()
+    const replySed = createH001ReplySed(opprettetSak)
     dispatch(setReplySed(replySed))
     changeMode('B', 'forward')
   }

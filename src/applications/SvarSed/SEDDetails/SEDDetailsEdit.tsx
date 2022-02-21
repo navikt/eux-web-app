@@ -285,7 +285,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
-            breakInTwo={true}
+            breakInTwo
             setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
             value={_periode}
           />
@@ -395,7 +395,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   }
 
   return (
-    <div style={{maxWidth: '23.5rem'}}>
+    <div style={{ maxWidth: '23.5rem' }}>
       {!isHSed(replySed) && (
         <>
           <Detail>
@@ -412,7 +412,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                     sluttdato: validation[namespace + '-anmodningsperiode-sluttdato']?.feilmelding
                   }}
                   setPeriode={setAnmodningsperiode}
-                  breakInTwo={true}
+                  breakInTwo
                   value={(replySed as USed).anmodningsperiode}
                 />
               </AlignStartRow>
