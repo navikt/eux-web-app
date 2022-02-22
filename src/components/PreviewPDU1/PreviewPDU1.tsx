@@ -1,15 +1,19 @@
 import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
+import CountryData from '@navikt/land-verktoy'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
+import { resetAllValidation, viewValidation } from 'actions/validation'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { saveAs } from 'file-saver'
+import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,15 +40,41 @@ const PreviewPDU1: React.FC = () => {
   }: PreviewPDU1Selector = useSelector<State, PreviewPDU1Selector>(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
+  const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
+  const countryData = CountryData.getCountryInstance('nb')
 
   const onResetPdu1Clicked = () => {
     dispatch(resetPreviewPdu1())
   }
 
   const onPreviewPdu1Clicked = (e: any) => {
-    const newPdu1 = _.cloneDeep(pdu1)
-    dispatch(previewPdu1(newPdu1))
-    buttonLogger(e)
+    if (pdu1) {
+      const newPdu1: PDU1 = _.cloneDeep(pdu1)
+      const valid = performValidation({
+        pdu1: newPdu1
+      })
+      dispatch(viewValidation())
+      if (valid) {
+        if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
+          delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
+          delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
+        }
+        // yes it should be always Norway, but don't really want to hard-code it
+        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
+          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
+        }
+        if (!_.isEmpty(newPdu1.nav?.adresse?.land)) {
+          newPdu1.nav.adresse.land = countryData.findByValue(newPdu1.nav.adresse.land).label
+        }
+
+        dispatch(previewPdu1(newPdu1))
+        dispatch(resetAllValidation())
+        buttonLogger(e)
+      }
+    }
   }
 
   const onDownloadPdu1Clicked = () => {
