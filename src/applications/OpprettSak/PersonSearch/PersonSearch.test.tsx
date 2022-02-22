@@ -18,7 +18,6 @@ describe('components/PersonSearch/PersonSearch', () => {
     searchingPerson: false,
     onFnrChange: jest.fn(),
     onPersonFound: jest.fn(),
-    onPersonRemoved: jest.fn(),
     onSearchPerformed: jest.fn(),
     person: samplePerson,
     value: ''

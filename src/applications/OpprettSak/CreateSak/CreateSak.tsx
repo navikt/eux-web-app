@@ -403,10 +403,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
             dispatch(sakActions.setProperty('fnr', fnr))
             dispatch(personActions.searchPerson(fnr))
           }}
-          onPersonRemoved={() => {
-            dispatch(personActions.resetPerson())
-            dispatch(resetAllValidation())
-          }}
           person={person}
         />
         <VerticalSeparatorDiv size='2' />

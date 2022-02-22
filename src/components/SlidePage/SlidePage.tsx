@@ -81,7 +81,8 @@ export interface SlidePageProps {
   initialPage: string
   initialDirection: string
   changeModeFunc: MutableRefObject<ChangeModeFunction | null>
-  withSidebar ?: boolean
+  withSidebar ?: boolean,
+  sidebarWidth ?: number
   divA1: JSX.Element
   divA2?: JSX.Element
   divB1: JSX.Element
@@ -105,6 +106,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
   initialDirection,
   changeModeFunc,
   withSidebar = true,
+  sidebarWidth = 23.5,
   divA1,
   divA2,
   divB1,
@@ -285,7 +287,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
           <FadingLineSeparator className='fadeIn'>
           &nbsp;
           </FadingLineSeparator>
-          <Content style={{ width: '23.5rem' }}>
+          <Content style={{ width: sidebarWidth + 'rem' }}>
             <ContainerDiv>
               <WindowDiv>
                 <AnimatableDiv

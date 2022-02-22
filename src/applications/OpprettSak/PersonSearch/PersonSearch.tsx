@@ -1,6 +1,5 @@
 import { Search } from '@navikt/ds-icons'
 import { Alert, Loader, SearchField } from '@navikt/ds-react'
-import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { PileDiv } from '@navikt/hoykontrast'
@@ -21,7 +20,6 @@ export interface PersonSearchProps {
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
-  onPersonRemoved: () => void
   person?: Person | null | undefined
   value: string | undefined
 }
@@ -37,7 +35,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   searchingPerson,
   onFnrChange,
   onPersonFound,
-  onPersonRemoved,
   onSearchPerformed,
   person,
   value
@@ -92,14 +89,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }
 
-  const onRemovePerson = (): void => {
-    setLocalValidation(undefined)
-    setPerson(undefined)
-    if (_.isFunction(onPersonRemoved)) {
-      onPersonRemoved()
-    }
-  }
-
   return (
     <PileDiv style={{ alignItems: 'flex-start' }}>
       <SearchField
@@ -128,13 +117,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         <Alert variant='warning'>
           {alertMessage}
         </Alert>
-      )}
-      {person && isPersonValid(person) && (
-        <PersonCard
-          className='neutral'
-          person={person}
-          onRemoveClick={onRemovePerson}
-        />
       )}
     </PileDiv>
   )
