@@ -67,8 +67,9 @@ export const ServerInfoPropType = PT.shape({
 })
 
 export const opprettetSakPropType = PT.shape({
-  rinasaksnummer: PT.string,
-  url: PT.string
+  sakId: PT.string,
+  sakUrl: PT.string,
+  sedId: PT.string
 })
 
 export const ErrorElementPropType = PT.shape({

@@ -352,7 +352,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const createH001ReplySed = (opprettetSak: OpprettetSak): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
     h001sed.sedId = opprettetSak.sedId
-    h001sed.saksnummer = opprettetSak.rinasaksnummer
+    h001sed.saksnummer = opprettetSak.sakId
     h001sed.tema = tempInfoForEdit.tema
     h001sed.fagsakId = tempInfoForEdit.fagsak
     h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
@@ -748,7 +748,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         <VerticalSeparatorDiv />
         <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
         <VerticalSeparatorDiv />
-        {opprettetSak && opprettetSak.url && (
+        {opprettetSak && opprettetSak.sakUrl && (
           <>
             <Row>
               <Column>
@@ -756,13 +756,13 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   <FlexDiv>
                     <FlexDiv>
                       <span>
-                        {t('label:saksnummer') + ': ' + opprettetSak.rinasaksnummer + ' ' + t('label:er-opprettet')}.
+                        {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
                       </span>
                       <HorizontalSeparatorDiv />
-                      {opprettetSak.url && (
+                      {opprettetSak.sakUrl && (
                         <Link
                           className='vedlegg__lenke'
-                          href={opprettetSak.url}
+                          href={opprettetSak.sakUrl}
                           target='_blank' rel='noreferrer'
                         >
                           {t('label:gå-til-rina')}
@@ -771,9 +771,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
                     </FlexDiv>
                     <HorizontalSeparatorDiv />
                     <div>
-                      {opprettetSak.rinasaksnummer && (
+                      {opprettetSak.sakId && (
                         <DOMLink
-                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.rinasaksnummer}
+                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.sakId}
                         >
                           {t('label:legg-til-vedlegg-til-sed')}
                         </DOMLink>
