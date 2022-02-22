@@ -66,9 +66,6 @@ const PreviewPDU1: React.FC = () => {
         if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
           newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
         }
-        if (!_.isEmpty(newPdu1.nav?.adresse?.land)) {
-          newPdu1.nav.adresse.land = countryData.findByValue(newPdu1.nav.adresse.land).label
-        }
 
         dispatch(previewPdu1(newPdu1))
         dispatch(resetAllValidation())

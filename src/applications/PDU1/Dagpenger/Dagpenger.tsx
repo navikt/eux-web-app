@@ -146,7 +146,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     const info = index < 0 ? _newInfo : p?.info
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
@@ -176,7 +176,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               value={sluttdato}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow
@@ -197,7 +197,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={index >= 0}
-              marginTop={true}
+              marginTop
               onBeginRemove={() => addToDeletion(p)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(p)}
@@ -206,7 +206,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </RepeatableRow>
     )
   }

@@ -48,7 +48,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
             </Column>
           </Row>
         )}
-        {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2'/>}
+        {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2' />}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsgiver: Arbeidsgiver) => {
             const selected: boolean = valgteArbeidsgivere

@@ -650,48 +650,48 @@ const CreateSak: React.FC<CreateSakProps> = ({
               <VerticalSeparatorDiv />
             </Column>
             <Column>
-            {visFagsakerListe && (
-              <>
-                {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
-                  <Alert variant='warning'>
-                    {t('message:error-fagsak-notFound')}
-                    {serverInfo && (
-                      <Link
-                        href={serverInfo?.gosysURL}
-                        aria-label={t('label:lenke-til-gosys')}
-                        target='_blank' rel='noreferrer'
-                      >
-                        {t('label:lenke-til-gosys')}
-                      </Link>
-                    )}
-                    <VerticalSeparatorDiv />
-                  </Alert>
-                )}
-                <Select
-                  data-test-id={namespace + '-saksId'}
-                  error={validation[namespace + '-saksId']?.feilmelding}
-                  id={namespace + '-saksId'}
-                  label={t('label:velg-fagsak')}
-                  onChange={onSakIDChange}
-                  value={valgtSaksId}
-                >
-                  <option value=''>
-                    {t('label:velg')}
-                  </option>
-                  {fagsaker &&
+              {visFagsakerListe && (
+                <>
+                  {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
+                    <Alert variant='warning'>
+                      {t('message:error-fagsak-notFound')}
+                      {serverInfo && (
+                        <Link
+                          href={serverInfo?.gosysURL}
+                          aria-label={t('label:lenke-til-gosys')}
+                          target='_blank' rel='noreferrer'
+                        >
+                          {t('label:lenke-til-gosys')}
+                        </Link>
+                      )}
+                      <VerticalSeparatorDiv />
+                    </Alert>
+                  )}
+                  <Select
+                    data-test-id={namespace + '-saksId'}
+                    error={validation[namespace + '-saksId']?.feilmelding}
+                    id={namespace + '-saksId'}
+                    label={t('label:velg-fagsak')}
+                    onChange={onSakIDChange}
+                    value={valgtSaksId}
+                  >
+                    <option value=''>
+                      {t('label:velg')}
+                    </option>
+                    {fagsaker &&
                 _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
                   <option value={f.saksID} key={f.saksID}>
                     {f.fagsakNr || f.saksID}
                   </option>
                 ))}
-                </Select>
-              </>
-            )}
-            <VerticalSeparatorDiv />
-          </Column>
+                  </Select>
+                </>
+              )}
+              <VerticalSeparatorDiv />
+            </Column>
           </AlignStartRow>
         )}
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         {visArbeidsgivere && (
           <Arbeidsgivere
             namespace={namespace + '-arbeidsgivere'}
@@ -706,7 +706,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             )}
           />
         )}
-        <VerticalSeparatorDiv size='2'/>
+        <VerticalSeparatorDiv size='2' />
         <Row className='slideInFromLeft'>
           <Column>
             <FlexDiv>

@@ -97,9 +97,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
           newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
         }
-        if (!_.isEmpty(newPdu1.nav?.adresse?.land)) {
-          newPdu1.nav.adresse.land = countryData.findByValue(newPdu1.nav.adresse.land).label
-        }
 
         dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
