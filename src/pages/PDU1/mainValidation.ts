@@ -1,7 +1,7 @@
 import { validateDagpenger } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
-import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger } from 'declarations/pd'
-import { GrunnTilOpphør, Periode } from 'declarations/sed'
+import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger, PDPeriode } from 'declarations/pd'
+import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
@@ -38,7 +38,7 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')
   hasErrors.push(validateUtbetaling(v, t, { utbetaling, namespace: `personmanager-${personID}-utbetaling` }))
 
-  const dagpenger: Array<Periode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
+  const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
   hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `personmanager-${personID}-dagpenger` }))
 
   const nav: NavInfo = _.get(pdu1, 'nav')

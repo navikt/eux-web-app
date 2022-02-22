@@ -3,7 +3,7 @@ import { PeriodeMedForsikring } from 'declarations/sed'
 import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types.d'
 import _ from 'lodash'
 import { BodyLong } from '@navikt/ds-react'
-import { Column, Row } from '@navikt/hoykontrast'
+import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { arbeidsgiverToPeriodeMedForsikring } from 'utils/arbeidsgiver'
@@ -38,7 +38,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   return (
     <Row>
       <Column className='arbeidsgiver'>
-        {searchable && !arbeidsperioder && (
+        {searchable && (
           <Row>
             <Column>
               <ArbeidsgiverSøk
@@ -48,6 +48,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
             </Column>
           </Row>
         )}
+        {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2'/>}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsgiver: Arbeidsgiver) => {
             const selected: boolean = valgteArbeidsgivere

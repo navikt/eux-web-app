@@ -36,7 +36,7 @@
     "@navikt/fremdriftslinje": "^3.0.1",
     "@navikt/hoykontrast": "^3.0.1",
     "@navikt/land-verktoy": "^3.0.0",
-    "@navikt/landvelger": "^3.0.0",
+    "@navikt/landvelger": "^3.0.2",
     "@navikt/paginering": "^3.0.0",
     "@navikt/tabell": "^3.0.5",
     "@sentry/browser": "^6.17.9",

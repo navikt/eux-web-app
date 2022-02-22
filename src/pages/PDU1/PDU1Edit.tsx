@@ -94,7 +94,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
         // yes it should be always Norway, but don't really want to hard-code it
-        if (newPdu1.nav?.adresse?.land) {
+        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
+          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
+        }
+        if (!_.isEmpty(newPdu1.nav?.adresse?.land)) {
           newPdu1.nav.adresse.land = countryData.findByValue(newPdu1.nav.adresse.land).label
         }
 

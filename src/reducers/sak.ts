@@ -152,7 +152,7 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
     case types.SAK_ARBEIDSGIVER_REMOVE:
       return {
         ...state,
-        arbeidsgivere: _.filter(state.arbeidsgivere, i => i !== (action as ActionWithPayload).payload)
+        arbeidsgivere: _.reject(state.arbeidsgivere, i => _.isEqual(i, (action as ActionWithPayload).payload))
       }
 
     case types.SAK_FAMILIERELASJONER_ADD:
@@ -164,7 +164,7 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
     case types.SAK_FAMILIERELASJONER_REMOVE:
       return {
         ...state,
-        familierelasjoner: _.filter(state.familierelasjoner, i => i.fnr !== (action as ActionWithPayload).payload.fnr)
+        familierelasjoner: _.reject(state.familierelasjoner, i => i.fnr === (action as ActionWithPayload).payload.fnr)
       }
 
     default:

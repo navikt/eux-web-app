@@ -1,18 +1,19 @@
-import { Periode } from 'declarations/sed'
+import { PDPeriode } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty, propagateError } from 'utils/validation'
+import { addError, checkIfNotEmpty, checkLength, propagateError } from 'utils/validation'
 
 export interface ValidationDagpengerPeriodeProps {
   startdato: string | undefined
   sluttdato: string |undefined
+  info: string |undefined
   index ? : number
   namespace: string
 }
 
 export interface ValidationDagpengerProps {
-  dagpenger: Array<Periode> | undefined
+  dagpenger: Array<PDPeriode> | undefined
   namespace: string
 }
 
@@ -22,6 +23,7 @@ export const validateDagpengerPeriode = (
   {
     startdato,
     sluttdato,
+    info,
     index,
     namespace
   }: ValidationDagpengerPeriodeProps
@@ -41,6 +43,13 @@ export const validateDagpengerPeriode = (
     message: 'validation:noSluttdato'
   }))
 
+  hasErrors.push(checkLength(v, {
+    needle: info,
+    max: 500,
+    id: namespace + idx + '-info',
+    message: 'validation:textOverX'
+  }))
+
   return hasErrors.find(value => value) !== undefined
 }
 
@@ -54,10 +63,11 @@ export const validateDagpenger = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  dagpenger?.forEach((periode: Periode, index: number) => {
+  dagpenger?.forEach((periode: PDPeriode, index: number) => {
     hasErrors.push(validateDagpengerPeriode(v, t, {
       startdato: periode.startdato,
       sluttdato: periode.sluttdato,
+      info: periode.info,
       index,
       namespace: namespace + '-perioder'
     }))

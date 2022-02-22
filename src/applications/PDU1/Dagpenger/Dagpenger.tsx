@@ -7,7 +7,6 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import { RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -26,6 +25,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateDagpengerPeriode, ValidationDagpengerPeriodeProps } from './validation'
+import { PDPeriode } from 'declarations/pd'
 
 const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
@@ -41,13 +41,14 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
   const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'perioderDagpengerMottatt'
-  const perioderDagpengerMottatt: Array<Periode> | undefined = _.get(replySed, target)
+  const perioderDagpengerMottatt: Array<PDPeriode> | undefined = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-dagpenger`
 
   const [_newStartdato, _setNewStartdato] = useState<string |undefined>(undefined)
   const [_newSluttdato, _setNewSluttdato] = useState<string |undefined>(undefined)
+  const [_newInfo, _setNewInfo] = useState<string |undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? ''))
+  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>((p: PDPeriode): string => p.startdato + '-' + (p.sluttdato ?? ''))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationDagpengerPeriodeProps>({}, validateDagpengerPeriode)
 
@@ -75,9 +76,21 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
+  const onInfoChange = (newInfo: string, index: number) => {
+    if (index < 0) {
+      _setNewInfo(newInfo.trim())
+      _resetValidation(namespace + '-info')
+    } else {
+      dispatch(updateReplySed(`${target}[${index}].info`, newInfo.trim()))
+      if (validation[namespace + getIdx(index) + '-info']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-info'))
+      }
+    }
+  }
+
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(perioderDagpengerMottatt) as Array<Periode>
-    const deletedPerioder: Array<Periode> = newPerioder.splice(index, 1)
+    const newPerioder: Array<PDPeriode> = _.cloneDeep(perioderDagpengerMottatt) as Array<PDPeriode>
+    const deletedPerioder: Array<PDPeriode> = newPerioder.splice(index, 1)
     if (deletedPerioder && deletedPerioder.length > 0) {
       removeFromDeletion(deletedPerioder[0])
     }
@@ -88,6 +101,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
   const resetForm = () => {
     _setNewStartdato('')
     _setNewSluttdato('')
+    _setNewInfo('')
     _resetValidation()
   }
 
@@ -100,16 +114,18 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     const valid: boolean = performValidation({
       startdato: _newStartdato,
       sluttdato: _newSluttdato,
+      info: _newInfo,
       namespace: namespace
     })
     if (valid) {
-      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderDagpengerMottatt)
+      let newPerioder: Array<PDPeriode> | undefined = _.cloneDeep(perioderDagpengerMottatt)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
       newPerioder = newPerioder.concat({
         startdato: _newStartdato!,
-        sluttdato: _newSluttdato!
+        sluttdato: _newSluttdato!,
+        info: _newInfo ?? ''
       })
       dispatch(updateReplySed(`${target}`, newPerioder))
       standardLogger('pdu1.editor.dagpenger.perioder.add')
@@ -117,7 +133,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     }
   }
 
-  const renderRow = (p: Periode | null, index: number) => {
+  const renderRow = (p: PDPeriode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(p)
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
@@ -127,8 +143,10 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
     )
     const startdato = index < 0 ? _newStartdato : p?.startdato
     const sluttdato = index < 0 ? _newSluttdato : p?.sluttdato
+    const info = index < 0 ? _newInfo : p?.info
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
+        <VerticalSeparatorDiv/>
         <AlignStartRow
           className={classNames('slideInFromLeft')}
         >
@@ -145,7 +163,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               value={startdato}
             />
           </Column>
-          <Column flex='1.5'>
+          <Column>
             <Input
               ariaLabel={t('label:sluttdato')}
               error={getErrorFor(index, 'sluttdato')}
@@ -158,11 +176,28 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
               value={sluttdato}
             />
           </Column>
+          <Column/>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow
+          className={classNames('slideInFromLeft')}
+        >
+          <Column flex='2'>
+            <Input
+              error={getErrorFor(index, 'info')}
+              namespace={namespace + idx}
+              id='type'
+              key={namespace + idx + '-info-' + info}
+              label={t('label:comment')}
+              onChanged={(newInfo: string) => onInfoChange(newInfo, index)}
+              value={info}
+            />
+          </Column>
           <Column>
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={index >= 0}
-              marginTop={index < 0}
+              marginTop={true}
               onBeginRemove={() => addToDeletion(p)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(p)}
@@ -171,7 +206,7 @@ const Dagpenger: React.FC<PersonManagerFormProps> = ({
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv/>
       </RepeatableRow>
     )
   }

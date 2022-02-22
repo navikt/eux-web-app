@@ -222,11 +222,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
 
-  _sedtyper = _sedtyper.reduce((acc: any, curr: any) => {
+  _sedtyper = _sedtyper?.reduce((acc: any, curr: any) => {
     const kode = sedtyper?.find((elem: any) => elem.kode === curr)
     acc.push(kode)
     return acc
-  }, [])
+  }, []) ?? []
 
   const skjemaSubmit = (): void => {
     const valid: boolean = performValidation({
@@ -406,348 +406,347 @@ const CreateSak: React.FC<CreateSakProps> = ({
           person={person}
         />
         <VerticalSeparatorDiv size='2' />
-        {!_.isEmpty(person) && (
-          <>
-            <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
-              <Column>
-                <Select
-                  data-test-id={namespace + '-sektor'}
-                  error={validation[namespace + '-sektor']?.feilmelding}
-                  id={namespace + '-sektor'}
-                  label={t('label:sektor')}
-                  onChange={onSektorChange}
-                  value={valgtSektor ?? ''}
-                >
-                  <option value=''>
-                    {t('label:velg')}
-                  </option>
-                  {sektor &&
-                      _.orderBy(sektor, 'term').map((k: Kodeverk) => (
-                        <option value={k.kode} key={k.kode}>
-                          {k.term}
-                        </option>
-                      ))}
-                </Select>
-                <VerticalSeparatorDiv />
-              </Column>
-              <Column>
-                {visEnheter && (
-                  <Select
-                    data-test-id={namespace + '-unit'}
-                    error={validation[namespace + '-unit']?.feilmelding}
-                    id={namespace + '-unit'}
-                    label={t('label:enhet')}
-                    onChange={onUnitChange}
-                    value={valgtUnit}
-                  >
-                    <option value=''>
-                      {t('label:velg')}
+        <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
+          <Column>
+            <Select
+              data-test-id={namespace + '-sektor'}
+              disabled={_.isEmpty(person)}
+              error={validation[namespace + '-sektor']?.feilmelding}
+              id={namespace + '-sektor'}
+              label={t('label:sektor')}
+              onChange={onSektorChange}
+              value={valgtSektor ?? ''}
+            >
+              <option value=''>
+                {t('label:velg')}
+              </option>
+              {sektor &&
+                  _.orderBy(sektor, 'term').map((k: Kodeverk) => (
+                    <option value={k.kode} key={k.kode}>
+                      {k.term}
                     </option>
-                    {sektor &&
-                        _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                          <option value={e.enhetId} key={e.enhetId}>
-                            {e.navn}
-                          </option>
-                        ))}
-                  </Select>
-                )}
-                <VerticalSeparatorDiv />
-              </Column>
-            </Row>
+                  ))}
+            </Select>
             <VerticalSeparatorDiv />
-            <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
-              <Column>
-                <Select
-                  data-test-id={namespace + '-buctype'}
-                  disabled={!!_.isEmpty(valgtSektor)}
-                  error={validation[namespace + '-buctype']?.feilmelding}
-                  id={namespace + '-buctype'}
-                  label={t('label:buc')}
-                  onChange={onBuctypeChange}
-                  value={valgtBucType}
-                >
-                  <option value=''>
-                    {t('label:velg')}
-                  </option>
-                  {_buctyper &&
-                      _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
-                        <option value={k.kode} key={k.kode}>
-                          {k.kode} - {k.term}
-                        </option>
-                      ))}
-                </Select>
-                <VerticalSeparatorDiv />
-              </Column>
-              <Column>
-                <Select
-                  data-test-id={namespace + '-sedtype'}
-                  disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor)}
-                  error={validation[namespace + '-sedtype']?.feilmelding}
-                  id={namespace + '-sedtype'}
-                  label={t('label:sed')}
-                  onChange={onSedtypeChange}
-                  value={valgtSedType}
-                >
-                  <option value=''>
-                    {t('label:velg')}
-                  </option>)
-                  {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
-                    // if only one element, select it
-                    if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
-                      onSedtypeSet((k as Kodeverk).kode)
-                    }
-                    return (
-                      <option value={(k as Kodeverk).kode} key={(k as Kodeverk).kode}>
-                        {(k as Kodeverk).kode} - {(k as Kodeverk).term}
+          </Column>
+          <Column>
+            {visEnheter && (
+              <Select
+                data-test-id={namespace + '-unit'}
+                error={validation[namespace + '-unit']?.feilmelding}
+                id={namespace + '-unit'}
+                label={t('label:enhet')}
+                onChange={onUnitChange}
+                value={valgtUnit}
+              >
+                <option value=''>
+                  {t('label:velg')}
+                </option>
+                {sektor &&
+                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                      <option value={e.enhetId} key={e.enhetId}>
+                        {e.navn}
                       </option>
-                    )
-                  })}
-                </Select>
-                <VerticalSeparatorDiv />
-              </Column>
-            </Row>
+                    ))}
+              </Select>
+            )}
             <VerticalSeparatorDiv />
-            <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
-              <Column>
-                <CountrySelect
-                  closeMenuOnSelect
-                  data-test-id={namespace + '-landkode'}
-                  error={validation[namespace + '-landkode']?.feilmelding}
-                  id={namespace + '-landkode'}
-                  includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
-                  label={t('label:land')}
-                  lang='nb'
-                  disabled={_.isEmpty(valgtBucType)}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={onLandkodeChange}
-                  flagWave
-                  value={valgtLandkode}
-                />
-                <VerticalSeparatorDiv />
-              </Column>
-              <Column>
-                <FlexCenterDiv>
+          </Column>
+        </Row>
+        <VerticalSeparatorDiv />
+        <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <Column>
+            <Select
+              data-test-id={namespace + '-buctype'}
+              disabled={!!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              error={validation[namespace + '-buctype']?.feilmelding}
+              id={namespace + '-buctype'}
+              label={t('label:buc')}
+              onChange={onBuctypeChange}
+              value={valgtBucType}
+            >
+              <option value=''>
+                {t('label:velg')}
+              </option>
+              {_buctyper &&
+                  _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
+                    <option value={k.kode} key={k.kode}>
+                      {k.kode} - {k.term}
+                    </option>
+                  ))}
+            </Select>
+            <VerticalSeparatorDiv />
+          </Column>
+          <Column>
+            <Select
+              data-test-id={namespace + '-sedtype'}
+              disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              error={validation[namespace + '-sedtype']?.feilmelding}
+              id={namespace + '-sedtype'}
+              label={t('label:sed')}
+              onChange={onSedtypeChange}
+              value={valgtSedType}
+            >
+              <option value=''>
+                {t('label:velg')}
+              </option>)
+              {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
+                // if only one element, select it
+                if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
+                  onSedtypeSet((k as Kodeverk).kode)
+                }
+                return (
+                  <option value={(k as Kodeverk).kode} key={(k as Kodeverk).kode}>
+                    {(k as Kodeverk).kode} - {(k as Kodeverk).term}
+                  </option>
+                )
+              })}
+            </Select>
+            <VerticalSeparatorDiv />
+          </Column>
+        </Row>
+        <VerticalSeparatorDiv />
+        <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+          <Column>
+            <CountrySelect
+              closeMenuOnSelect
+              data-test-id={namespace + '-landkode'}
+              error={validation[namespace + '-landkode']?.feilmelding}
+              id={namespace + '-landkode'}
+              includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
+              label={t('label:land')}
+              lang='nb'
+              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person)}
+              menuPortalTarget={document.body}
+              onOptionSelected={onLandkodeChange}
+              flagWave
+              value={valgtLandkode}
+            />
+            <VerticalSeparatorDiv />
+          </Column>
+          <Column>
+            <FlexCenterDiv>
+              <Select
+                data-test-id={namespace + '-institusjon'}
+                key={namespace + '-institusjon-' + valgtInstitusjon}
+                disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person)}
+                error={validation[namespace + '-institusjon']?.feilmelding}
+                id={namespace + '-institusjon'}
+                label={t('label:mottaker-institusjon')}
+                onChange={onInstitusjonChange}
+                value={valgtInstitusjon}
+              >
+                <option value=''>
+                  {t('label:velg')}
+                </option>)
+                {institusjoner &&
+                  _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
+                    <option
+                      value={i.institusjonsID}
+                      key={i.institusjonsID}
+                    >
+                      {i.navn}
+                    </option>
+                  ))}
+              </Select>
+              <HorizontalSeparatorDiv size='0.5' />
+              {gettingInstitusjoner && <Loader />}
+            </FlexCenterDiv>
+            <VerticalSeparatorDiv />
+          </Column>
+        </Row>
+        <VerticalSeparatorDiv />
+        {valgtSektor === 'FB' && (
+          <>
+            <VerticalSeparatorDiv />
+            <Heading size='medium'>
+              {t('label:familierelasjon')}
+            </Heading>
+            <VerticalSeparatorDiv />
+            <Family
+              alertVariant={alertVariant}
+              alertMessage={alertMessage}
+              alertType={alertType}
+              abroadPersonFormAlertTypesWatched={[
+                types.SAK_ABROADPERSON_ADD_FAILURE
+              ]}
+              TPSPersonFormAlertTypesWatched={[
+                types.PERSON_RELATERT_SEARCH_FAILURE,
+                types.SAK_TPSPERSON_ADD_FAILURE
+              ]}
+              familierelasjonKodeverk={familierelasjonKodeverk}
+              personRelatert={personRelatert}
+              searchingRelatertPerson={searchingRelatertPerson}
+              person={person}
+              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+              onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
+              onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
+                dispatch(sakActions.addFamilierelasjoner(relation))
+                dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
+              }}
+              onRelationAdded={(relation: OldFamilieRelasjon) => {
+                /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
+                dispatch(
+                  sakActions.addFamilierelasjoner({
+                    ...relation,
+                    nasjonalitet: 'NO'
+                  })
+                )
+              }}
+              onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
+              onRelationReset={() => dispatch(personActions.resetPersonRelated())}
+              onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
+              onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
+                dispatch(sakActions.addFamilierelasjoner(relation))
+                dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
+              }}
+              onSearchFnr={(fnrQuery: string) => {
+                dispatch(personActions.resetPersonRelated())
+                dispatch(personActions.searchPersonRelated(fnrQuery))
+              }}
+            />
+          </>
+        )}
+        <VerticalSeparatorDiv />
+        {valgtSektor && (
+          <AlignStartRow classname='slideInFromLeft'>
+            <Column>
+              <FlexDiv>
+                <div style={{ flex: 3 }}>
                   <Select
-                    data-test-id={namespace + '-institusjon'}
-                    key={namespace + '-institusjon-' + valgtInstitusjon}
-                    disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner}
-                    error={validation[namespace + '-institusjon']?.feilmelding}
-                    id={namespace + '-institusjon'}
-                    label={t('label:mottaker-institusjon')}
-                    onChange={onInstitusjonChange}
-                    value={valgtInstitusjon}
+                    data-test-id={namespace + '-tema'}
+                    error={validation[namespace + '-tema']?.feilmelding}
+                    id={namespace + '-tema'}
+                    label={t('label:velg-tema')}
+                    onChange={onTemaChange}
+                    disabled={_.isEmpty(person)}
+                    value={valgtTema}
                   >
                     <option value=''>
                       {t('label:velg')}
                     </option>)
-                    {institusjoner &&
-                      _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
-                        <option
-                          value={i.institusjonsID}
-                          key={i.institusjonsID}
-                        >
-                          {i.navn}
-                        </option>
-                      ))}
+                    {temaer && temaer.map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.term}
+                      </option>
+                    ))}
                   </Select>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {gettingInstitusjoner && <Loader />}
-                </FlexCenterDiv>
-                <VerticalSeparatorDiv />
-              </Column>
-            </Row>
-            <VerticalSeparatorDiv />
-            {valgtSektor === 'FB' && (
+                </div>
+                <HorizontalSeparatorDiv />
+                <PileDiv>
+                  <VerticalSeparatorDiv size='2' />
+                  <FlexDiv>
+                    <Button
+                      variant='secondary'
+                      onClick={onViewFagsakerClick}
+                      disabled={gettingFagsaker || !!_.isEmpty(valgtTema) || _.isEmpty(person)}
+                    >
+                      {gettingFagsaker && <Loader />}
+                      {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
+                    </Button>
+                  </FlexDiv>
+                </PileDiv>
+              </FlexDiv>
+              <VerticalSeparatorDiv />
+            </Column>
+            <Column>
+            {visFagsakerListe && (
               <>
-                <VerticalSeparatorDiv />
-                <Heading size='medium'>
-                  {t('label:familierelasjon')}
-                </Heading>
-                <VerticalSeparatorDiv />
-                <Family
-                  alertVariant={alertVariant}
-                  alertMessage={alertMessage}
-                  alertType={alertType}
-                  abroadPersonFormAlertTypesWatched={[
-                    types.SAK_ABROADPERSON_ADD_FAILURE
-                  ]}
-                  TPSPersonFormAlertTypesWatched={[
-                    types.PERSON_RELATERT_SEARCH_FAILURE,
-                    types.SAK_TPSPERSON_ADD_FAILURE
-                  ]}
-                  familierelasjonKodeverk={familierelasjonKodeverk}
-                  personRelatert={personRelatert}
-                  searchingRelatertPerson={searchingRelatertPerson}
-                  person={person}
-                  valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-                  onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
-                  onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                    dispatch(sakActions.addFamilierelasjoner(relation))
-                    dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
-                  }}
-                  onRelationAdded={(relation: OldFamilieRelasjon) => {
-                    /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-                    dispatch(
-                      sakActions.addFamilierelasjoner({
-                        ...relation,
-                        nasjonalitet: 'NO'
-                      })
-                    )
-                  }}
-                  onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
-                  onRelationReset={() => dispatch(personActions.resetPersonRelated())}
-                  onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-                  onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                    dispatch(sakActions.addFamilierelasjoner(relation))
-                    dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
-                  }}
-                  onSearchFnr={(fnrQuery: string) => {
-                    dispatch(personActions.resetPersonRelated())
-                    dispatch(personActions.searchPersonRelated(fnrQuery))
-                  }}
-                />
+                {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
+                  <Alert variant='warning'>
+                    {t('message:error-fagsak-notFound')}
+                    {serverInfo && (
+                      <Link
+                        href={serverInfo?.gosysURL}
+                        aria-label={t('label:lenke-til-gosys')}
+                        target='_blank' rel='noreferrer'
+                      >
+                        {t('label:lenke-til-gosys')}
+                      </Link>
+                    )}
+                    <VerticalSeparatorDiv />
+                  </Alert>
+                )}
+                <Select
+                  data-test-id={namespace + '-saksId'}
+                  error={validation[namespace + '-saksId']?.feilmelding}
+                  id={namespace + '-saksId'}
+                  label={t('label:velg-fagsak')}
+                  onChange={onSakIDChange}
+                  value={valgtSaksId}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {fagsaker &&
+                _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
+                  <option value={f.saksID} key={f.saksID}>
+                    {f.fagsakNr || f.saksID}
+                  </option>
+                ))}
+                </Select>
               </>
             )}
             <VerticalSeparatorDiv />
-            {valgtSektor && (
-              <AlignStartRow classname='slideInFromLeft'>
-                <Column>
-                  <FlexDiv>
-                    <div style={{ flex: 3 }}>
-                      <Select
-                        data-test-id={namespace + '-tema'}
-                        error={validation[namespace + '-tema']?.feilmelding}
-                        id={namespace + '-tema'}
-                        label={t('label:velg-tema')}
-                        onChange={onTemaChange}
-                        value={valgtTema}
-                      >
-                        <option value=''>
-                          {t('label:velg')}
-                        </option>)
-                        {temaer && temaer.map((k: Kodeverk) => (
-                          <option value={k.kode} key={k.kode}>
-                            {k.term}
-                          </option>
-                        ))}
-                      </Select>
-                    </div>
-                    <HorizontalSeparatorDiv />
-                    <PileDiv>
-                      <VerticalSeparatorDiv size='2' />
-                      <FlexDiv>
-                        <Button
-                          variant='secondary'
-                          onClick={onViewFagsakerClick}
-                          disabled={gettingFagsaker || !!_.isEmpty(valgtTema)}
-                        >
-                          {gettingFagsaker && <Loader />}
-                          {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-                        </Button>
-                      </FlexDiv>
-                    </PileDiv>
-                  </FlexDiv>
-                  <VerticalSeparatorDiv />
-                </Column>
-                <Column>
-                  {visFagsakerListe && (
-                    <>
-                      {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
-                        <Alert variant='warning'>
-                          {t('message:error-fagsak-notFound')}
-                          {serverInfo && (
-                            <Link
-                              href={serverInfo?.gosysURL}
-                              aria-label={t('label:lenke-til-gosys')}
-                              target='_blank' rel='noreferrer'
-                            >
-                              {t('label:lenke-til-gosys')}
-                            </Link>
-                          )}
-                          <VerticalSeparatorDiv />
-                        </Alert>
-                      )}
-                      <Select
-                        data-test-id={namespace + '-saksId'}
-                        error={validation[namespace + '-saksId']?.feilmelding}
-                        id={namespace + '-saksId'}
-                        label={t('label:velg-fagsak')}
-                        onChange={onSakIDChange}
-                        value={valgtSaksId}
-                      >
-                        <option value=''>
-                          {t('label:velg')}
-                        </option>
-                        {fagsaker &&
-                      _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
-                        <option value={f.saksID} key={f.saksID}>
-                          {f.fagsakNr || f.saksID}
-                        </option>
-                      ))}
-                      </Select>
-                    </>
-                  )}
-                  <VerticalSeparatorDiv />
-                </Column>
-              </AlignStartRow>
+          </Column>
+          </AlignStartRow>
+        )}
+        <VerticalSeparatorDiv/>
+        {visArbeidsgivere && (
+          <Arbeidsgivere
+            namespace={namespace + '-arbeidsgivere'}
+            searchable
+            fnr={person?.fnr}
+            valgteArbeidsgivere={valgteArbeidsgivere}
+            arbeidsperioder={arbeidsperioder}
+            onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(
+              checked
+                ? sakActions.addArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
+                : sakActions.removeArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
             )}
-            <VerticalSeparatorDiv size='2' />
-            {visArbeidsgivere && (
-              <Arbeidsgivere
-                namespace={namespace + '-arbeidsgivere'}
-                searchable
-                fnr={person?.fnr}
-                valgteArbeidsgivere={valgteArbeidsgivere}
-                arbeidsperioder={arbeidsperioder}
-                onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(
-                  checked
-                    ? sakActions.addArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
-                    : sakActions.removeArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
-                )}
-              />
-            )}
-            <VerticalSeparatorDiv />
-            <Row className='slideInFromLeft'>
-              <Column>
-                <FlexDiv>
+          />
+        )}
+        <VerticalSeparatorDiv size='2'/>
+        <Row className='slideInFromLeft'>
+          <Column>
+            <FlexDiv>
+              <Button
+                variant='primary'
+                disabled={sendingSak || _.isEmpty(person)}
+                onClick={skjemaSubmit}
+              >
+                {sendingSak && <Loader />}
+                {t('label:opprett-sak-i-rina')}
+              </Button>
+              <HorizontalSeparatorDiv />
+              {featureToggles?.featureSvarsedH001 && (
+                <>
                   <Button
-                    variant='primary'
-                    disabled={sendingSak}
-                    onClick={skjemaSubmit}
+                    variant='secondary'
+                    disabled={!(opprettetSak && valgtSedType === 'H001')}
+                    onClick={() => fillOutSed(opprettetSak!)}
                   >
-                    {sendingSak && <Loader />}
-                    {t('label:opprett-sak-i-rina')}
+                    {t('el:button-fill-sed')}
                   </Button>
                   <HorizontalSeparatorDiv />
-                  {featureToggles?.featureSvarsedH001 && (
-                    <>
-                      <Button
-                        variant='secondary'
-                        disabled={!(opprettetSak && valgtSedType === 'H001')}
-                        onClick={() => fillOutSed(opprettetSak!)}
-                      >
-                        {t('el:button-fill-sed')}
-                      </Button>
-                      <HorizontalSeparatorDiv />
-                    </>
-                  )}
-                  <Button
-                    variant='tertiary'
-                    onClick={() => {
-                      dispatch(cleanPersons())
-                      dispatch(cleanData())
-                    }}
-                  >
-                    {t('label:reset')}
-                  </Button>
-                </FlexDiv>
-                <VerticalSeparatorDiv />
-              </Column>
-            </Row>
+                </>
+              )}
+              <Button
+                variant='tertiary'
+                disabled={_.isEmpty(person)}
+                onClick={() => {
+                  dispatch(cleanPersons())
+                  dispatch(cleanData())
+                }}
+              >
+                {t('label:reset')}
+              </Button>
+            </FlexDiv>
             <VerticalSeparatorDiv />
-            <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-          </>
-        )}
+          </Column>
+        </Row>
+        <VerticalSeparatorDiv />
+        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
         <VerticalSeparatorDiv />
         {opprettetSak && opprettetSak.url && (
           <>
