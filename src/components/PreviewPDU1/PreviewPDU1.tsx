@@ -1,6 +1,5 @@
 import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
-import CountryData from '@navikt/land-verktoy'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
 import { resetAllValidation, viewValidation } from 'actions/validation'
 import Modal from 'components/Modal/Modal'
@@ -41,7 +40,6 @@ const PreviewPDU1: React.FC = () => {
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
-  const countryData = CountryData.getCountryInstance('nb')
 
   const onResetPdu1Clicked = () => {
     dispatch(resetPreviewPdu1())
@@ -61,10 +59,6 @@ const PreviewPDU1: React.FC = () => {
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
-        }
-        // yes it should be always Norway, but don't really want to hard-code it
-        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
-          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
         }
 
         dispatch(previewPdu1(newPdu1))

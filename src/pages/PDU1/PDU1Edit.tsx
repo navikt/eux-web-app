@@ -20,7 +20,6 @@ import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
-import CountryData from '@navikt/land-verktoy'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import {
@@ -73,7 +72,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const currentEntry = useSelector<State, LocalStorageEntry<PDU1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
 
-  const countryData = CountryData.getCountryInstance('nb')
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
@@ -92,10 +90,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
-        }
-        // yes it should be always Norway, but don't really want to hard-code it
-        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
-          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
         }
 
         dispatch(jornalførePdu1(newPdu1))

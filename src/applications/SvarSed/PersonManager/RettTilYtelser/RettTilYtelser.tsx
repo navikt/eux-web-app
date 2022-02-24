@@ -124,7 +124,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
               error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
-              onChange={(e: string  | number | boolean) => setBekreftelsesgrunn(e as string)}
+              onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
             >
               <Radio
                 value='artikkel_64_i_forordningen_EF_nr._883/2004'
