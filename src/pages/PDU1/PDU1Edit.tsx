@@ -35,7 +35,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
-import CountryData from '@navikt/land-verktoy'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
@@ -72,7 +71,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
   const currentEntry = useSelector<State, LocalStorageEntry<PDU1> | undefined>(
     (state) => state.localStorage.pdu1.currentEntry)
-  const countryData = CountryData.getCountryInstance('nb')
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
@@ -92,9 +90,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
-        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
-          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
-        }
+       
         dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)
