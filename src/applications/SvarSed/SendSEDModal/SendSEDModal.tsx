@@ -63,6 +63,7 @@ interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   creatingSvarSed: boolean
+  updatingSvarSed: boolean
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sendingSed: boolean
@@ -82,6 +83,7 @@ const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   creatingSvarSed: state.loading.creatingSvarSed,
+  updatingSvarSed: state.loading.updatingSvarSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
   sendingSed: state.loading.sendingSed
@@ -100,6 +102,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     alertMessage,
     alertType,
     creatingSvarSed,
+    updatingSvarSed,
     sendingSed,
     sedCreatedResponse,
     sedSendResponse
@@ -236,11 +239,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               <SectionDiv>
                 <PileDiv style={{ alignItems: 'flex-start' }}>
                   <div>
-                    {creatingSvarSed && (
+                    {(creatingSvarSed || updatingSvarSed) && (
                       <FlexCenterSpacedDiv>
                         <Loader type='xsmall' />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{_.isEmpty(sedCreatedResponse) ? t('message:loading-opprette-sed') : t('message:loading-oppdatering-sed')}</span>
+                        <span>{creatingSvarSed ? t('message:loading-opprette-sed') : t('message:loading-oppdatering-sed')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                     {!_.isNil(sedCreatedResponse) && (

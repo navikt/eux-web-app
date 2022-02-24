@@ -33,9 +33,9 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
     !_.isEmpty(rettTilDagpenger) ? 'rettTilDagpenger' : !_.isEmpty(ikkeRettTilDagpenger) ? 'ikkeRettTilDagpenger' : undefined
   )
 
-  const onRettTilDagpengerRadioChange = (value: string) => {
+  const onRettTilDagpengerRadioChange = (value: string | number | boolean) => {
     const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
-    if (value === 'rettTilDagpenger') {
+    if (value as string === 'rettTilDagpenger') {
       delete newReplySed.ikkeRettTilDagpenger
       newReplySed.rettTilDagpenger = {
         ihhTilArtikkel64: 'nei',

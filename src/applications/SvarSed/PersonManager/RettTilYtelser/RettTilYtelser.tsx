@@ -99,7 +99,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
             legend={t('label:rett-til-stønad') + ' *'}
             key={'rett-til-stonad-' + _rettTilStonad}
             error={validation[namespace + '-retttilstønad']?.feilmelding}
-            onChange={(e: string) => setRettTilStonad(e as JaNei)}
+            onChange={(e: string | number | boolean) => setRettTilStonad(e as JaNei)}
           >
             <Radio
               value='ja'
@@ -124,7 +124,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
               data-test-id={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
               error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
-              onChange={(e: string) => setBekreftelsesgrunn(e)}
+              onChange={(e: string  | number | boolean) => setBekreftelsesgrunn(e as string)}
             >
               <Radio
                 value='artikkel_64_i_forordningen_EF_nr._883/2004'
@@ -150,7 +150,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
               key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}
               value={rettTilYtelse?.avvisningsgrunn}
               error={validation[namespace + '-avvisningsgrunn']?.feilmelding}
-              onChange={(e) => setAvvisningsGrunn(e)}
+              onChange={(e: string | number | boolean) => setAvvisningsGrunn(e as string)}
             >
               <Radio
                 value='ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'

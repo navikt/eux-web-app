@@ -58,7 +58,7 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
         id={namespace + '-ytterligereInfoType'}
         error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
         value={(replySed as H001Sed).ytterligereInfoType}
-        onChange={(e: string) => setYtterligereInfoType(e as YtterligereInfoType)}
+        onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
       >
         <Radio value='melding_om_mer_informasjon'>
           {t('el:option-ytterligere-1')}

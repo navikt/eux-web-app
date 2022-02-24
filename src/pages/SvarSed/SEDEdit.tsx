@@ -489,7 +489,9 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             onClick={onSaveSedClick}
             disabled={savingSed}
           >
-            {_.isNil(currentEntry) ? t('el:button-save-draft-x', { x: 'svarSED' }) : t('el:button-update-draft-x', { x: 'svarSED' })}
+            {_.isNil(currentEntry)
+              ? t('el:button-save-draft-x', { x: t('label:sed') })
+              : t('el:button-update-draft-x', { x: t('label:sed') })}
             {savingSed && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />

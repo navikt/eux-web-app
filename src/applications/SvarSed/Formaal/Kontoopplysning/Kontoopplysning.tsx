@@ -193,7 +193,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
             id={namespace + '-kontotype'}
             legend={t('label:konto-type') + ' *'}
             name={namespace + '-kontotype'}
-            onChange={(e: string) => setKontoType(e as KontoType)}
+            onChange={(e: string | number | boolean) => setKontoType(e as KontoType)}
           >
             <Radio
               value='ordinaer'

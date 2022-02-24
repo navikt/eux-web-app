@@ -544,7 +544,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               data-test-id='seddetails-typeKrav'
               error={validation['seddetails-typeKrav']?.feilmelding}
               id='seddetails-kravType'
-              onChange={(e: string) => setKravType(e)}
+              onChange={(e: string | number | boolean) => setKravType(e as string)}
               value={(replySed as F002Sed).krav?.kravType}
             >
               <Radio
@@ -577,7 +577,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               error={validation['seddetails-informasjon']?.feilmelding}
               id='seddetails-informasjon'
               value={(replySed as F002Sed).krav?.infoType}
-              onChange={(e: string) => setInfoType(e)}
+              onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
               <Radio
                 value='vi_bekrefter_leverte_opplysninger'
