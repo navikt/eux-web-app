@@ -1,5 +1,5 @@
 export default {
-  rinasaksnummer: '161007',
+  sakId: '161007',
   sedId: '123',
-  url: 'http://www.nav.no'
+  sakUrl: 'http://www.nav.no'
 }

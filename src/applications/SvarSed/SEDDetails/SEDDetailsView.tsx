@@ -114,7 +114,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
               {t('label:type-krav')}
             </Dt>
             <Dd>
-              {t('app:kravType-' + (replySed as F002Sed).krav?.kravType)}
+              {t('label:kravType-' + (replySed as F002Sed).krav?.kravType)}
             </Dd>
             <Dt>
               {t('label:krav-mottatt-dato')}
@@ -129,7 +129,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   <SuccessFilled color='green' width={18} height={18} />
                   <HorizontalSeparatorDiv size='0.5' />
                   <BodyLong>
-                    {t('app:info-confirm-information')}
+                    {t('label:info-confirm-information')}
                   </BodyLong>
                 </FlexDiv>
               </>
@@ -141,7 +141,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   <Warning width={18} height={18} />
                   <HorizontalSeparatorDiv size='0.5' />
                   <BodyLong>
-                    {t('app:info-point-information')}
+                    {t('label:info-point-information')}
                   </BodyLong>
                 </FlexDiv>
                 <VerticalSeparatorDiv />

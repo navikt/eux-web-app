@@ -5,14 +5,14 @@ import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
 export interface DocumentSearchSelector {
-  dokument: Array<Dokument> | undefined
+  dokument: Array<Dokument> | null | undefined
   gettingDokument: boolean
   rinadokumentID: string | undefined
   rinasaksnummer: string | undefined
@@ -41,16 +41,12 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const namespace = parentNamespace + '-documentSearch'
-  const [_dokument, setDokument] = useState<Array<Dokument> | null | undefined>(undefined)
 
   useEffect(() => {
-    if (dokument !== undefined && _dokument === undefined) {
-      setDokument(dokument)
-      if (_.isFunction(onDocumentFound)) {
-        onDocumentFound(dokument)
-      }
+    if (!_.isNil(dokument) && _.isFunction(onDocumentFound)) {
+      onDocumentFound(dokument)
     }
-  }, [dokument, _dokument, onDocumentFound])
+  }, [dokument])
 
   const sokEtterDokument = (): void => {
     if (rinasaksnummer) {
@@ -60,7 +56,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
   const setRinaSaksnummer = (newRinaSaksnummer: string): void => {
     if (!_.isNil(document)) {
-      setDokument(undefined)
       dispatch(vedleggActions.propertySet('dokument', undefined))
       if (validation[namespace + '-dokument']) {
         dispatch(resetValidation(namespace + '-dokument'))
@@ -87,52 +82,56 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   const yyyMMdd = (dato: string): string => moment(dato).format('YYYY-MM-DD')
 
   return (
-    <div className={className}>
-      <SearchField
-        label={t('label:rina-saksnummer')}
-        error={validation[namespace + '-rinasaksnummer']?.feilmelding}
-      >
-        <SearchField.Input
-          data-test-id={namespace + '-rinasaksnummer'}
-          id={namespace + '-rinasaksnummer'}
-          required
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRinaSaksnummer(e.target.value)}
-          value={rinasaksnummer}
-        />
-        <SearchField.Button disabled={gettingDokument} onClick={sokEtterDokument}>
-          <Search />
-          {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
-          {gettingDokument && <Loader />}
-        </SearchField.Button>
-      </SearchField>
-      <VerticalSeparatorDiv />
-      <div data-test-id='dokumentsok__card slideInFromLeft'>
-        <Select
-          data-test-id={namespace + '-rinadokumentID'}
-          id={namespace + '-rinadokumentID'}
-          disabled={!_dokument}
-          error={validation[namespace + '-rinadokumentID']?.feilmelding}
-          label={t('label:rina-dokument-id')}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRinaDokumentID(e.target.value)}
-          value={rinadokumentID}
+    <>
+      <Column className={className}>
+        <SearchField
+          label={t('label:rina-saksnummer')}
+          error={validation[namespace + '-rinasaksnummer']?.feilmelding}
         >
-          <option value=''>
-            {t('el:placeholder-select-default')}
-          </option>
-          {dokument?.map((element: Dokument) => (
-            <option value={element.rinadokumentID} key={element.rinadokumentID}>
-              {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
-            </option>)
-          )}
-        </Select>
-      </div>
-      <VerticalSeparatorDiv />
-      {(dokument === null || dokument?.length === 0) && (
-        <BodyLong>
-          {t('message:error-noDocumentFound')}
-        </BodyLong>
-      )}
-    </div>
+          <SearchField.Input
+            data-test-id={namespace + '-rinasaksnummer'}
+            id={namespace + '-rinasaksnummer'}
+            required
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRinaSaksnummer(e.target.value)}
+            value={rinasaksnummer}
+          />
+          <SearchField.Button disabled={gettingDokument} onClick={sokEtterDokument}>
+            <Search />
+            {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
+            {gettingDokument && <Loader />}
+          </SearchField.Button>
+        </SearchField>
+        <VerticalSeparatorDiv />
+      </Column>
+      <Column>
+        <div data-test-id='dokumentsok__card slideInFromLeft'>
+          <Select
+            data-test-id={namespace + '-rinadokumentID'}
+            id={namespace + '-rinadokumentID'}
+            disabled={_.isNil(dokument)}
+            error={validation[namespace + '-rinadokumentID']?.feilmelding}
+            label={t('label:rina-dokument-id')}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRinaDokumentID(e.target.value)}
+            value={rinadokumentID}
+          >
+            <option value=''>
+              {t('el:placeholder-select-default')}
+            </option>
+            {dokument?.map((element: Dokument) => (
+              <option value={element.rinadokumentID} key={element.rinadokumentID}>
+                {element.kode + (element.opprettetdato ? ' (' + yyyMMdd(element.opprettetdato) + ')' : '')}
+              </option>)
+            )}
+          </Select>
+        </div>
+        <VerticalSeparatorDiv />
+        {(dokument === null || dokument?.length === 0) && (
+          <BodyLong>
+            {t('message:error-noDocumentFound')}
+          </BodyLong>
+        )}
+      </Column>
+    </>
   )
 }
 

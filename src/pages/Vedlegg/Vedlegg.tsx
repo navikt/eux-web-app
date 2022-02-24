@@ -1,4 +1,4 @@
-import { Alert, Button, HelpText, Link, Loader } from '@navikt/ds-react'
+import { Alert, Button, Checkbox, HelpText, Link, Loader } from '@navikt/ds-react'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
@@ -6,14 +6,15 @@ import Input from 'components/Forms/Input'
 import TopContainer from 'components/TopContainer/TopContainer'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { Validation, VedleggSendResponse } from 'declarations/types'
+import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
-import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { AlignStartRow, Column, Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
 
 export interface VedleggSelector {
@@ -23,6 +24,7 @@ export interface VedleggSelector {
   journalpostID: string | undefined
   rinadokumentID: string | undefined
   rinasaksnummer: string | undefined
+  sensitivt: boolean
   sendingVedlegg: boolean
   vedleggResponse: VedleggSendResponse | undefined
   validation: Validation
@@ -36,15 +38,24 @@ const mapState = (state: State): VedleggSelector => ({
   journalpostID: state.vedlegg.journalpostID,
   rinadokumentID: state.vedlegg.rinadokumentID,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
+  sensitivt: state.vedlegg.sensitivt,
   vedleggResponse: state.vedlegg.vedleggResponse,
   validation: state.validation.status
 })
+
+export const MyContent = styled(Content)`
+  @media (min-width: 768px) {
+   min-width: 600px;
+   maxWidth: 800px;
+ }
+  align-items: center;
+`
 
 const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useDispatch()
   const location = useLocation()
   const { t } = useTranslation()
-  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, vedleggResponse, validation }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
   const [isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg)
   const namespace = 'vedlegg'
@@ -74,8 +85,9 @@ const Vedlegg: React.FC = (): JSX.Element => {
         rinasaksnummer: rinasaksnummer,
         rinadokumentID: rinadokumentID,
         rinaNrErSjekket: isRinaNumberValid,
-        rinaNrErGyldig: isRinaNumberValid
-      }))
+        rinaNrErGyldig: isRinaNumberValid,
+        sensitivt: sensitivt
+      } as VedleggPayload))
       dispatch(resetAllValidation())
     }
   }
@@ -94,51 +106,75 @@ const Vedlegg: React.FC = (): JSX.Element => {
     }
   }
 
+  const setSensitivt = (newSensitivt: boolean): void => {
+    dispatch(vedleggActions.propertySet('sensitivt', newSensitivt))
+    if (validation[namespace + '-sensitivt']) {
+      dispatch(resetValidation(namespace + '-sensitivt'))
+    }
+  }
+
   return (
     <TopContainer title={t('app:page-title-vedlegg')}>
       <Container>
         <Margin />
-        <Content>
-          <VerticalSeparatorDiv />
-          <Input
-            id='journalpostID'
-            data-test-id={namespace + '-journalpostID'}
-            namespace={namespace}
-            value={journalpostID}
-            label={(
-              <FlexDiv>
-                {t('label:journalpost-id')}
-                <HorizontalSeparatorDiv size='0.35' />
-                <HelpText id='journalPostID'>
-                  {t('message:help-journalpostID')}
-                </HelpText>
-              </FlexDiv>
-            )}
-            onChanged={setJournalpostID}
-            error={validation[namespace + '-journalpostID']?.feilmelding}
-          />
-          <VerticalSeparatorDiv />
-          <div className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
-            <Input
-              id='dokumentID'
-              namespace={namespace}
-              data-test-id={namespace + '-dokumentID'}
-              value={dokumentID}
-              label={(
-                <FlexDiv>
-                  {t('label:dokument-id')}
-                  <HorizontalSeparatorDiv size='0.35' />
-                  <HelpText id={namespace + '-dokumentID-help'}>
-                    {t('message:help-dokumentID')}
-                  </HelpText>
-                </FlexDiv>
-              )}
-              onChanged={setDokumentID}
-              error={validation[namespace + '-dokumentID']?.feilmelding}
-            />
-            <VerticalSeparatorDiv />
-          </div>
-          <div className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <MyContent>
+          <AlignStartRow>
+            <Column>
+              <Input
+                id='journalpostID'
+                data-test-id={namespace + '-journalpostID'}
+                namespace={namespace}
+                value={journalpostID}
+                label={(
+                  <FlexDiv>
+                    {t('label:journalpost-id')}
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <HelpText id='journalPostID'>
+                      {t('message:help-journalpostID')}
+                    </HelpText>
+                  </FlexDiv>
+                )}
+                onChanged={setJournalpostID}
+                error={validation[namespace + '-journalpostID']?.feilmelding}
+              />
+              <VerticalSeparatorDiv />
+            </Column>
+            <Column>
+              <Input
+                id='dokumentID'
+                namespace={namespace}
+                data-test-id={namespace + '-dokumentID'}
+                value={dokumentID}
+                label={(
+                  <FlexDiv>
+                    {t('label:dokument-id')}
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <HelpText id={namespace + '-dokumentID-help'}>
+                      {t('message:help-dokumentID')}
+                    </HelpText>
+                  </FlexDiv>
+                )}
+                onChanged={setDokumentID}
+                error={validation[namespace + '-dokumentID']?.feilmelding}
+              />
+              <VerticalSeparatorDiv />
+            </Column>
+          </AlignStartRow>
+          <AlignStartRow>
+            <Column>
+              <Checkbox
+                checked={sensitivt}
+                data-test-id={namespace + '-sensitivt'}
+                key={namespace + '-sensitivt-' + sensitivt}
+                error={!!validation[namespace + '-sensitivt']?.feilmelding}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSensitivt(e.target.checked)}
+              >
+                {t('label:sensitivt')}
+              </Checkbox>
+              <VerticalSeparatorDiv />
+            </Column>
+          </AlignStartRow>
+          <AlignStartRow>
             <DocumentSearch
               parentNamespace={namespace}
               validation={validation}
@@ -146,18 +182,16 @@ const Vedlegg: React.FC = (): JSX.Element => {
               onRinaSaksnummerChanged={() => setIsRinaNumberValid(false)}
               onDocumentFound={() => setIsRinaNumberValid(true)}
             />
-          </div>
+          </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
-          <div className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
-            <Button
-              variant='primary'
-              onClick={sendSkjema}
-              disabled={sendingVedlegg}
-            >
-              {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
-              {sendingVedlegg && <Loader />}
-            </Button>
-          </div>
+          <Button
+            variant='primary'
+            onClick={sendSkjema}
+            disabled={sendingVedlegg}
+          >
+            {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
+            {sendingVedlegg && <Loader />}
+          </Button>
           <VerticalSeparatorDiv size='2' />
           {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
             <>
@@ -167,23 +201,24 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv size='2' />
             </>
           )}
-          <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+          <ValidationBox
+            heading={t('validation:feiloppsummering')}
+            validation={validation}
+          />
+          <VerticalSeparatorDiv size='2' />
           {vedleggResponse && (
-            <>
-              <VerticalSeparatorDiv size='2' />
-              <Alert variant='success'>
-                <div>
-                  <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
-                  {vedleggResponse.url && (
-                    <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
-                      {t('label:gå-til-rina')}
-                    </Link>
-                  )}
-                </div>
-              </Alert>
-            </>
+            <Alert variant='success'>
+              <div>
+                <div>{t('label:vedlagte')}: {vedleggResponse.filnavn || vedleggResponse.vedleggID}</div>
+                {vedleggResponse.url && (
+                  <Link href={vedleggResponse.url} rel='noreferrer' target='_blank'>
+                    {t('label:gå-til-rina')}
+                  </Link>
+                )}
+              </div>
+            </Alert>
           )}
-        </Content>
+        </MyContent>
         <Margin />
       </Container>
     </TopContainer>

@@ -6,5 +6,6 @@ export default {
   journalpostID: '789',
   rinaNrErGyldig: true,
   rinaNrErSjekket: true,
-  rinasaksnummer: '100'
+  rinasaksnummer: '100',
+  sensitivt: true
 } as VedleggPayload

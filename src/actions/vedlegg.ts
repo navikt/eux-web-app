@@ -19,7 +19,7 @@ export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinas
   })
 }
 
-export const propertySet = (key: string, value: string | undefined) => ({
+export const propertySet = (key: string, value: string | boolean | undefined) => ({
   type: types.VEDLEGG_PROPERTY_SET,
   payload: {
     key: key,

@@ -1,14 +1,15 @@
 import * as types from 'constants/actionTypes'
-import { VedleggSendResponse } from 'declarations/types'
+import { Dokument, VedleggSendResponse } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 
 export interface VedleggState {
   vedleggResponse: VedleggSendResponse | undefined;
-  rinasaksnummer: any;
-  rinadokumentID: any;
-  journalpostID: any;
-  dokumentID: any;
-  dokument: any;
+  rinasaksnummer: string | undefined
+  rinadokumentID: string | undefined
+  journalpostID: string | undefined
+  dokumentID: string | undefined
+  dokument: Array<Dokument> | null | undefined
+  sensitivt: boolean
 }
 
 export const initialVedleggState: VedleggState = {
@@ -17,7 +18,8 @@ export const initialVedleggState: VedleggState = {
   rinadokumentID: undefined,
   journalpostID: undefined,
   dokumentID: undefined,
-  dokument: undefined
+  dokument: undefined,
+  sensitivt: false
 }
 
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload = { type: '', payload: undefined }): VedleggState => {

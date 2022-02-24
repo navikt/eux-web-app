@@ -1,4 +1,5 @@
 import * as types from 'constants/actionTypes'
+import { Dokument } from 'declarations/types'
 import vedleggReducer, { initialVedleggState, VedleggState } from './vedlegg'
 
 describe('reducers/app', () => {
@@ -26,7 +27,7 @@ describe('reducers/app', () => {
     expect(
       vedleggReducer({
         ...initialVedleggState,
-        dokument: ''
+        dokument: [{ kode: 'bar' } as Dokument]
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_REQUEST,
         payload: payload
@@ -42,7 +43,7 @@ describe('reducers/app', () => {
     expect(
       vedleggReducer({
         ...initialVedleggState,
-        dokument: ''
+        dokument: [{ kode: 'bar' } as Dokument]
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_FAILURE,
         payload: payload
@@ -54,11 +55,11 @@ describe('reducers/app', () => {
   })
 
   it('VEDLEGG_DOKUMENT_GET_SUCCESS', () => {
-    const payload = 'mockPayload'
+    const payload = [{ kode: 'bar' } as Dokument]
     expect(
       vedleggReducer({
         ...initialVedleggState,
-        dokument: ''
+        dokument: undefined
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_SUCCESS,
         payload: payload

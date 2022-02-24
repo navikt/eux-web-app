@@ -18,6 +18,7 @@ describe('pages/Vedlegg', () => {
     journalpostID: undefined,
     rinadokumentID: undefined,
     dokumentID: undefined,
+    sensitivt: true,
     sendingVedlegg: false,
     validation: {}
   }

@@ -104,16 +104,16 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const modalButtons = [
     {
       main: true,
-      text: t('app:ok-got-it'),
+      text: t('el:button-ok-got-it'),
       onClick: () => setModal(false)
     }, {
       hide: !hasDraft,
       main: true,
-      text: t('app:save-and-renew'),
+      text: t('el:button-save-and-renew'),
       onClick: () => setSaveAndRenew(true)
     }, {
       main: false,
-      text: t('app:log-me-again'),
+      text: t('el:button-log-me-again'),
       onClick: () => dispatch(logMeAgain())
     }
   ]

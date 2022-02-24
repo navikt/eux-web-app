@@ -1,15 +1,5 @@
 {
-  "info-confirm-information" : "Vi bekrefter leverte opplysninger",
-  "info-point-information" : "Gi oss punktvise opplysninger",
-
-  "kravType-nytt_krav" : "Nytt krav",
-  "kravType-endrede_omstendigheter" : "Endrede omstendigheter",
-
-  "log-me-again": "Logg inn på nytt",
-
   "name" : "nEESSI",
-
-  "ok-got-it" : "Ok, stemmer det",
 
   "page-title-forside": "Velkommen til nEESSI",
   "page-title-vedlegg": "Legg vedlegg til SED",
@@ -20,18 +10,16 @@
   "page-title-pdu1-search": "Søk på person og opprett PD U1",
   "page-title-unknown": "Ukjent",
 
-  "save-and-renew" : "Lagre utkast arbeid og fornye token",
-
   "session-ok-title" : "Sesjonsovervåker",
   "session-ok-text" : "Du har {{minutes}} minutter igjen på tokenet",
   "session-you-have-draft": "Du har 1 {{utkast}} utkast du burde lagre før du fornye token",
 
   "session-saving-draft": "Lagring utkast",
   "session-saved-going-to-reboot": "Start på nytt og fornye token",
-
   "session-expire-title" : "Du vil snart bli logget ut",
   "session-expire-text" : "Husk å lagre opplysningene. Hvis du ønsker å fortsette, må du logge inn igjen.  Du blir logget ut om {{minutes}}",
   "session-reduce-to-6-min": "Q-miljø: reduser tokens tid til 6 min",
+
   "status-received-sent" : "Sendt",
   "status-received-received" : "Mottatt",
   "status-received-new" : "Utkast",

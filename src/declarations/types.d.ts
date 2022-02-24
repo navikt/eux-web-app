@@ -196,6 +196,7 @@ export interface VedleggPayload {
   rinadokumentID: string
   rinaNrErSjekket: boolean
   rinaNrErGyldig: boolean
+  sensitivt: boolean
 }
 
 export interface VedleggSendResponse {

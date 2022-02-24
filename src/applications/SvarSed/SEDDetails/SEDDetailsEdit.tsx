@@ -550,12 +550,12 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <Radio
                 value='nytt_krav'
               >
-                {t('app:kravType-nytt_krav')}
+                {t('label:kravType-nytt_krav')}
               </Radio>
               <Radio
                 value='endrede_omstendigheter'
               >
-                {t('app:kravType-endrede_omstendigheter')}
+                {t('label:kravType-endrede_omstendigheter')}
               </Radio>
             </RadioGroup>
           </div>
@@ -582,12 +582,12 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <Radio
                 value='vi_bekrefter_leverte_opplysninger'
               >
-                {t('app:info-confirm-information')}
+                {t('label:info-confirm-information')}
               </Radio>
               <Radio
                 value='gi_oss_punktvise_opplysninger'
               >
-                {t('app:info-point-information')}
+                {t('label:info-point-information')}
               </Radio>
               {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
                 <div className='slideInFromLeft'>
