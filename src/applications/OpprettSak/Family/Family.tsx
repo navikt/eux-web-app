@@ -1,4 +1,5 @@
 import { BodyLong, Button, Heading, Ingress, Panel } from '@navikt/ds-react'
+import { resetPersonRelated } from 'actions/person'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
@@ -8,6 +9,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
+import { useDispatch } from 'react-redux'
 
 export interface FamilyProps {
   abroadPersonFormAlertTypesWatched: Array<string> | undefined
@@ -52,6 +54,7 @@ const Family: React.FC<FamilyProps> = ({
   const [_viewAbroadPersonForm, setViewAbroadPersonForm] = useState<boolean>(false)
   const [_viewTPSRelatedForm, setViewTPSRelatedForm] = useState<boolean>(false)
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const remainingRelationsFromTPS: Array<OldFamilieRelasjon> = _.filter(person!.relasjoner, (relation: OldFamilieRelasjon) =>
     _.find(valgteFamilieRelasjoner, (valgteRelasjon: OldFamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined
@@ -59,7 +62,12 @@ const Family: React.FC<FamilyProps> = ({
 
   const toggleViewAbroadPersonForm = (): void => setViewAbroadPersonForm(!_viewAbroadPersonForm)
 
-  const toggleViewTPSRelatedForm = (): void => setViewTPSRelatedForm(!_viewTPSRelatedForm)
+  const toggleViewTPSRelatedForm = (): void => {
+    setViewTPSRelatedForm(!_viewTPSRelatedForm)
+    if (personRelatert) {
+      dispatch(resetPersonRelated())
+    }
+  }
 
   const ekskluderteVerdier: Array<string> = []
 
@@ -156,7 +164,7 @@ const Family: React.FC<FamilyProps> = ({
               rolleList={rolleList}
             />
           )}
-          <VerticalSeparatorDiv />
+          <VerticalSeparatorDiv size='2' />
           <Button
             variant='secondary'
             onClick={toggleViewAbroadPersonForm}
@@ -188,7 +196,7 @@ const Family: React.FC<FamilyProps> = ({
               rolleList={rolleList}
             />
           )}
-          <VerticalSeparatorDiv />
+          <VerticalSeparatorDiv size='2' />
           <Button
             variant='secondary'
             onClick={toggleViewTPSRelatedForm}

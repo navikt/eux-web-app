@@ -16,6 +16,7 @@ import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValida
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
+import CountryData from '@navikt/land-verktoy'
 
 export interface PreviewPDU1Selector {
   pdu1: PDU1
@@ -40,6 +41,7 @@ const PreviewPDU1: React.FC = () => {
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
+  const countryData = CountryData.getCountryInstance('nb')
 
   const onResetPdu1Clicked = () => {
     dispatch(resetPreviewPdu1())
@@ -60,7 +62,9 @@ const PreviewPDU1: React.FC = () => {
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
-
+        if (!_.isEmpty(newPdu1.bruker?.adresse?.land)) {
+          newPdu1.bruker.adresse.land = countryData.findByValue(newPdu1.bruker.adresse.land).label
+        }
         dispatch(previewPdu1(newPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)

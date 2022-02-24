@@ -40,7 +40,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   value
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_fnr, setFnr] = useState<string>(initialFnr ?? value)
+  const [fnr, setFnr] = useState<string>(initialFnr ?? value)
   const [_person, setPerson] = useState<Person | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
@@ -64,19 +64,19 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }, [person])
 
   const sokEtterPerson = (): void => {
-    if (!_fnr) {
+    if (!fnr) {
       setLocalValidation(t('validation:noFnr'))
       return
     }
     const fnrPattern = /^[0-9]{11}$/
-    if (_fnr && !fnrPattern.test(_fnr)) {
+    if (fnr && !fnrPattern.test(fnr)) {
       setLocalValidation(t('validation:invalidFnr'))
       return
     }
     setLocalValidation(undefined)
     setPerson(undefined)
     if (_.isFunction(onSearchPerformed)) {
-      onSearchPerformed(_fnr)
+      onSearchPerformed(fnr)
     }
   }
 
@@ -102,14 +102,14 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
           id={namespace + '-saksnummerOrFnr'}
           onChange={onChange}
           required
-          value={_fnr || ''}
+          value={fnr || ''}
         />
         <SearchField.Button
-          disabled={searchingPerson}
+          disabled={searchingPerson || _.isEmpty(fnr)}
           onClick={sokEtterPerson}
         >
           <Search />
-          {t('el:button-search')}
+          {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
           {searchingPerson && <Loader />}
         </SearchField.Button>
       </SearchField>

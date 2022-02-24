@@ -5,7 +5,7 @@ import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { FlexDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -143,6 +143,15 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             {searchingRelatertPerson && <Loader />}
           </SearchField.Button>
         </SearchField>
+        <HorizontalSeparatorDiv />
+        {_personRelatert && (
+          <PersonCard
+            className='slideInFromLeft'
+            person={_personRelatert}
+            onAddClick={leggTilPersonOgRolle}
+            rolleList={rolleList}
+          />
+        )}
       </FlexDiv>
       <VerticalSeparatorDiv />
       {_tpsperson && (
@@ -155,13 +164,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
           {alertMessage}
         </Alert>
       )}
-      {_personRelatert && (
-        <PersonCard
-          person={_personRelatert}
-          onAddClick={leggTilPersonOgRolle}
-          rolleList={rolleList}
-        />
-      )}
+
     </>
   )
 }

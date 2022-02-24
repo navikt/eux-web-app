@@ -131,8 +131,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     <>
       <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column className='slideInFromLeft'>
+      <Row className='slideInFromLeft'>
+        <Column>
           <TextField
             id={namespace + '-fnr'}
             data-test-id={namespace + '-fnr'}
@@ -145,7 +145,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             value={_relation.fnr}
           />
         </Column>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+        <Column>
           <CountrySelect
             id={namespace + '-land'}
             data-test-id={namespace + '-land'}
@@ -161,7 +161,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             values={_relation.land}
           />
         </Column>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Column>
           <CountrySelect
             id={namespace + '-statsborgerskap'}
             data-test-id={namespace + '-statsborgerskap'}
@@ -179,8 +179,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+        <Column>
           <TextField
             id={namespace + '-fornavn'}
             data-test-id={namespace + '-fornavn'}
@@ -193,7 +193,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             value={_relation.fornavn}
           />
         </Column>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+        <Column>
           <TextField
             id={namespace + '-etternavn'}
             data-test-id={namespace + '-etternavn'}
@@ -208,8 +208,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.10s' }}>
+        <Column>
           <Select
             id={namespace + '-kjoenn'}
             data-test-id={namespace + '-kjoenn'}
@@ -232,7 +232,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
                 ))}
           </Select>
         </Column>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+        <Column>
           <DateInput
             id='fdato'
             data-test-id={namespace + '-fdato'}
@@ -250,8 +250,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row>
-        <Column className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+      <Row className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+        <Column>
           <Select
             id={namespace + 'familierelasjon'}
             data-test-id={namespace + '-familierelasjon'}
@@ -273,9 +273,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             ))}
           </Select>
         </Column>
-        <Column>
+        <Column style={{ marginTop: '2rem' }}>
           <Button
-            style={{ marginTop: '2rem' }}
             variant='secondary'
             onClick={addRelation}
             className='relasjon familierelasjoner__knapp'

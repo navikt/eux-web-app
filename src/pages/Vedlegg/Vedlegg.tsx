@@ -118,7 +118,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <MyContent>
-          <AlignStartRow>
+          <AlignStartRow className='slideInFromLeft'>
             <Column>
               <Input
                 id='journalpostID'
@@ -160,7 +160,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv />
             </Column>
           </AlignStartRow>
-          <AlignStartRow>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
             <Column>
               <Checkbox
                 checked={sensitivt}
@@ -174,7 +174,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv />
             </Column>
           </AlignStartRow>
-          <AlignStartRow>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
             <DocumentSearch
               parentNamespace={namespace}
               validation={validation}
@@ -184,14 +184,18 @@ const Vedlegg: React.FC = (): JSX.Element => {
             />
           </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
-          <Button
-            variant='primary'
-            onClick={sendSkjema}
-            disabled={sendingVedlegg}
-          >
-            {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
-            {sendingVedlegg && <Loader />}
-          </Button>
+          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+            <Column>
+              <Button
+                variant='primary'
+                onClick={sendSkjema}
+                disabled={sendingVedlegg}
+              >
+                {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
+                {sendingVedlegg && <Loader />}
+              </Button>
+            </Column>
+          </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
           {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
             <>
