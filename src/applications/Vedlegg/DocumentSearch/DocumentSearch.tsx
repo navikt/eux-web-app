@@ -7,7 +7,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -20,8 +20,6 @@ export interface DocumentSearchSelector {
 
 export interface DocumentSearchProps {
   className?: string
-  onDocumentFound?: (dokument: Array<Dokument>) => void
-  onRinaSaksnummerChanged?: () => void
   parentNamespace: string
   resetValidation: (k: string) => void
   validation: Validation
@@ -35,18 +33,12 @@ const mapState = (state: State): DocumentSearchSelector => ({
 })
 
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
-  className, onDocumentFound, parentNamespace, onRinaSaksnummerChanged, resetValidation, validation = {}
+  className, parentNamespace, resetValidation, validation = {}
 }: DocumentSearchProps): JSX.Element => {
   const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const namespace = parentNamespace + '-documentSearch'
-
-  useEffect(() => {
-    if (!_.isNil(dokument) && _.isFunction(onDocumentFound)) {
-      onDocumentFound(dokument)
-    }
-  }, [dokument])
 
   const sokEtterDokument = (): void => {
     if (rinasaksnummer) {
@@ -61,14 +53,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         dispatch(resetValidation(namespace + '-dokument'))
       }
     }
-
     dispatch(vedleggActions.propertySet('rinasaksnummer', newRinaSaksnummer))
     if (validation[namespace + '-rinasaksnummer']) {
       dispatch(resetValidation(namespace + '-rinasaksnummer'))
-    }
-
-    if (_.isFunction(onRinaSaksnummerChanged)) {
-      onRinaSaksnummerChanged()
     }
   }
 
@@ -137,8 +124,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
 
 DocumentSearch.propTypes = {
   className: PT.string,
-  onDocumentFound: PT.func,
-  onRinaSaksnummerChanged: PT.func,
   resetValidation: PT.func.isRequired,
   parentNamespace: PT.string.isRequired
 //  validation: ValidationPropType.isRequired

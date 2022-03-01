@@ -22,6 +22,7 @@ import styled from 'styled-components'
 
 const SEDAttachmentSenderDiv = styled.div`
   display: flex;
+  align-items: center;
 `
 
 export interface SEDAttachmentSenderProps {

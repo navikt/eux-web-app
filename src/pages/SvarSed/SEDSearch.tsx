@@ -68,7 +68,7 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
   queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
-  queryingReplySed: state.loading.queryingReplySed,
+  replyingToSed: state.loading.replyingToSed,
   editingSed: state.loading.editingSed,
   parentSed: state.svarsed.parentSed,
   previousParentSed: state.svarsed.previousParentSed,
@@ -95,7 +95,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     parentSed,
     previousParentSed,
     queryingSaksnummerOrFnr,
-    queryingReplySed,
+    replyingToSed,
     replySed,
     rinasaksnummerOrFnrParam,
     seds,
@@ -181,14 +181,14 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     dispatch(svarsedActions.setParentSed(e.target.value))
   }
 
-  const onEditSedClick = (sedId: string, sedType: string, saksnummer: string) => {
+  const onEditSedClick = (sedId: string, sedType: string, saksnummer: string, status: string) => {
     setReplySedRequested(true)
-    dispatch(svarsedActions.editSed(sedId, sedType, saksnummer))
+    dispatch(svarsedActions.editSed(sedId, sedType, saksnummer, status))
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
     setReplySedRequested(true)
-    dispatch(svarsedActions.queryReplySed(connectedSed, saksnummer, sakUrl))
+    dispatch(svarsedActions.replyToSed(connectedSed, saksnummer, sakUrl))
   }
 
   const canEditSed = (sedType: string) => ['F002', 'H001', 'H002', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
@@ -575,7 +575,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                             type: connectedSed.sedType
                                           })
                                           setButtonClickedId('edit-' + connectedSed.sedId)
-                                          onEditSedClick(connectedSed.sedId, connectedSed.sedType, sed.sakId)
+                                          onEditSedClick(connectedSed.sedId, connectedSed.sedType, sed.sakId, connectedSed.status)
                                         }}
                                       >
                                         {(editingSed && _buttonClickedId === 'edit-' + connectedSed.sedId)
@@ -595,7 +595,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                   {connectedSed.svarsedType && (
                                     <Button
                                       variant='primary'
-                                      disabled={queryingReplySed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                                      disabled={replyingToSed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
                                       data-amplitude='svarsed.selection.replysed'
                                       title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
                                       onClick={(e: any) => {
@@ -607,7 +607,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                         onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
                                       }}
                                     >
-                                      {(queryingReplySed && _buttonClickedId === 'reply-' + connectedSed.sedId)
+                                      {(replyingToSed && _buttonClickedId === 'reply-' + connectedSed.sedId)
                                         ? (
                                           <>
                                             {t('message:loading-replying')}

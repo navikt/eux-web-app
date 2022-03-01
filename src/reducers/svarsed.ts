@@ -59,25 +59,26 @@ const svarsedReducer = (
         fagsaker: null
       }
 
-    case types.SVARSED_REPLYSED_QUERY_REQUEST:
+    case types.SVARSED_REPLYTOSED_REQUEST:
       return {
         ...state,
         sedCreatedResponse: undefined,
         sedSendResponse: undefined
       }
 
-    case types.SVARSED_REPLYSED_QUERY_SUCCESS:
+    case types.SVARSED_REPLYTOSED_SUCCESS:
       return {
         ...state,
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
           sakUrl: (action as ActionWithPayload).context.sakUrl,
-          sedId: (action as ActionWithPayload).context.sedId
+          sedId: (action as ActionWithPayload).context.sedId,
+          status: (action as ActionWithPayload).context.status
         }
       }
 
-    case types.SVARSED_REPLYSED_QUERY_FAILURE:
+    case types.SVARSED_REPLYTOSED_FAILURE:
       return {
         ...state,
         replySed: null
@@ -96,7 +97,8 @@ const svarsedReducer = (
         replySed: {
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
-          sedId: (action as ActionWithPayload).context.sedId
+          sedId: (action as ActionWithPayload).context.sedId,
+          status: (action as ActionWithPayload).context.status
         }
       }
 
@@ -231,11 +233,15 @@ const svarsedReducer = (
         sedSendResponse: null
       }
 
-    case types.SVARSED_SED_SEND_SUCCESS:
+    case types.SVARSED_SED_SEND_SUCCESS: {
+      const newReplySed = _.cloneDeep(state.replySed)
+      newReplySed!.status = 'sent'
       return {
         ...state,
+        replySed: newReplySed,
         sedSendResponse: { success: true }
       }
+    }
 
     case types.SVARSED_PARENTSED_SET:
       return {

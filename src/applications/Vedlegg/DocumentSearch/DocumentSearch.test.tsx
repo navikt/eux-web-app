@@ -9,8 +9,6 @@ describe('components/DocumentSearch/DocumentSearch', () => {
   const initialMockProps: DocumentSearchProps = {
     parentNamespace: 'test',
     className: 'mockClassname',
-    onDocumentFound: jest.fn(),
-    onRinaSaksnummerChanged: jest.fn(),
     resetValidation: jest.fn(),
     validation: {}
   }

@@ -1,5 +1,5 @@
-import { Sight, BackFilled } from '@navikt/ds-icons'
-import { Loader, Button, Heading, Alert } from '@navikt/ds-react'
+import { Sight, BackFilled, Email, Send, Star, Edit, Close } from '@navikt/ds-icons'
+import { Loader, Button, Heading, Alert, Detail } from '@navikt/ds-react'
 import { alertClear } from 'actions/alert'
 import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -58,10 +58,11 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import {
   Column,
+  FlexBaseDiv,
   FlexCenterSpacedDiv,
   FlexDiv,
   HorizontalSeparatorDiv,
-  PaddedDiv,
+  PaddedDiv, PileCenterDiv,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
@@ -249,6 +250,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       const rinaSakId = newReplySed.saksnummer
       delete newReplySed.saksnummer
       delete newReplySed.sakUrl
+      delete newReplySed.status
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
       buttonLogger(e)
     }
@@ -328,9 +330,23 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>
-          <Heading size='medium'>
-            {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
-          </Heading>
+          <FlexBaseDiv>
+            <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
+              {replySed?.status === 'received' && <Email width='32' height='32' />}
+              {replySed?.status === 'sent' && <Send width='32' height='32' />}
+              {replySed?.status === 'new' && <Star width='32' height='32' />}
+              {replySed?.status === 'active' && <Edit width='32' height='32' />}
+              {replySed?.status === 'cancelled' && <Close width='32' height='32' />}
+              <VerticalSeparatorDiv size='0.35' />
+              <Detail>
+                {t('app:status-received-' + replySed?.status?.toLowerCase())}
+              </Detail>
+            </PileCenterDiv>
+            <HorizontalSeparatorDiv />
+            <Heading size='medium'>
+              {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
+            </Heading>
+          </FlexBaseDiv>
           <VerticalSeparatorDiv />
           {isFSed(replySed) && (
             <Formaal
@@ -454,13 +470,15 @@ const SEDEdit: React.FC<SEDEditProps> = ({
             onClick={sendReplySed}
             disabled={creatingSvarSed || updatingSvarSed}
           >
-            {_.isEmpty(replySed?.sedId)
-              ? creatingSvarSed
-                  ? t('message:loading-opprette-sed')
-                  : updatingSvarSed
-                    ? t('message:loading-oppdatering-sed')
-                    : t('label:opprett-sed')
-              : t('label:oppdatere-sed')}
+            {creatingSvarSed
+              ? t('message:loading-opprette-sed')
+              : updatingSvarSed
+                ? t('message:loading-oppdatering-sed')
+                : _.isEmpty(replySed?.sedId)
+                  ? t('label:opprett-sed')
+                  : _.isEmpty(sedCreatedResponse)
+                    ? t('label:oppdatere-sende-sed')
+                    : t('label:oppdatere-sed')}
             {(creatingSvarSed || updatingSvarSed) && <Loader />}
           </Button>
           <VerticalSeparatorDiv size='0.5' />

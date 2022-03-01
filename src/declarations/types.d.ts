@@ -194,8 +194,6 @@ export interface VedleggPayload {
   dokumentID: string
   rinasaksnummer: string
   rinadokumentID: string
-  rinaNrErSjekket: boolean
-  rinaNrErGyldig: boolean
   sensitivt: boolean
 }
 

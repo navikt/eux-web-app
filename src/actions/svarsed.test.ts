@@ -144,7 +144,7 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('queryReplySed()', () => {
+  it('replyToSed()', () => {
     const connectedSed = {
       svarsedType: 'U002',
       svarsedId: '123',
@@ -152,13 +152,13 @@ describe('actions/svarsed', () => {
     } as ConnectedSed
     const saksnummer = '456'
     const sakUrl = 'mockSakurl'
-    svarsedActions.queryReplySed(connectedSed, saksnummer, sakUrl)
+    svarsedActions.replyToSed(connectedSed, saksnummer, sakUrl)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARSED_REPLYSED_QUERY_REQUEST,
-          success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
-          failure: types.SVARSED_REPLYSED_QUERY_FAILURE
+          request: types.SVARSED_REPLYTOSED_REQUEST,
+          success: types.SVARSED_REPLYTOSED_SUCCESS,
+          failure: types.SVARSED_REPLYTOSED_FAILURE
         },
         context: {
           saksnummer: saksnummer,

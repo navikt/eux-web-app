@@ -9,6 +9,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 export interface AdresseFormProps {
+  disabled?: boolean
   options?: {[k in string]: any}
   required?: Array<string>
   adresse: Adresse | null | undefined
@@ -22,6 +23,7 @@ export interface AdresseFormProps {
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
+  disabled = false,
   options = { bygning: true, region: true },
   required = ['type', 'by', 'land'],
   adresse,
@@ -90,6 +92,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         <AlignStartRow>
           <Column flex='4'>
             <RadioPanelGroup
+              disabled={disabled}
               value={adresse?.type}
               data-no-border
               data-test-id={namespace + '-type'}
@@ -117,6 +120,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       <AlignStartRow>
         <Column flex='3'>
           <Input
+            disabled={disabled}
             error={validation[namespace + '-gate']?.feilmelding}
             namespace={namespace}
             id='gate'
@@ -129,6 +133,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         {!options.bygning === false && (
           <Column>
             <Input
+              disabled={disabled}
               error={validation[namespace + '-bygning']?.feilmelding}
               namespace={namespace}
               id='bygning'
@@ -144,6 +149,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
       <AlignStartRow>
         <Column>
           <Input
+            disabled={disabled}
             error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
@@ -155,6 +161,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         </Column>
         <Column flex='3'>
           <Input
+            disabled={disabled}
             error={validation[namespace + '-by']?.feilmelding}
             namespace={namespace}
             id='by'
@@ -170,6 +177,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         {!options.region === false && (
           <Column flex='1.3'>
             <Input
+              disabled={disabled}
               error={validation[namespace + '-region']?.feilmelding}
               namespace={namespace}
               id='region'
@@ -183,6 +191,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         <Column flex='1.3'>
           <div style={{ maxWidth: '400px' }}>
             <CountrySelect
+              isDisabled={disabled}
               closeMenuOnSelect
               key={adresse?.land}
               data-test-id={namespace + '-land'}

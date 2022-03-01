@@ -75,6 +75,7 @@
   "draft-address-filled": "Fikk én adresse fra PDL, utkastadresse var fylt med den",
   "du-kan": "Du kan",
 
+  "edit" : "Rediger",
   "edit-sed-x" : "Rediger {{x}}",
   "elementter-i-personlig-situasjon": "Elementer i personlig situasjon",
   "eller": "eller",
@@ -225,6 +226,7 @@
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
   "oppdatere-sed" : "Oppdatere SED",
+  "oppdatere-sende-sed" : "Oppdatere/Sende SED",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
   "opphoer": "Opphør",
   "opphoer-rettighet": "Opphør rettighet",

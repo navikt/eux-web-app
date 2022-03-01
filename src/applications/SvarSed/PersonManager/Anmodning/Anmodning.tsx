@@ -4,7 +4,7 @@ import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { H001Svar } from 'declarations/sed'
+import { H001Svar, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
@@ -79,7 +79,7 @@ const Anmodning: React.FC<PersonManagerFormProps> = ({
         <Column>
           <TextAreaDiv>
             <TextArea
-              maxLength={500}
+              maxLength={(replySed as ReplySed)?.sedType === 'H001' ? 255 : 500}
               error={validation[namespace + '-informasjon']?.feilmelding}
               namespace={namespace}
               id='informasjon'

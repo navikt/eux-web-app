@@ -90,7 +90,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
-       
+
         dispatch(jornalførePdu1(newPdu1))
         dispatch(resetAllValidation())
         buttonLogger(e)

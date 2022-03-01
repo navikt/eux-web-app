@@ -10,7 +10,7 @@ import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/ty
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { AlignStartRow, Column, Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -56,7 +56,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const location = useLocation()
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
-  const [isRinaNumberValid, setIsRinaNumberValid] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg)
   const namespace = 'vedlegg'
 
@@ -73,7 +72,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
       journalpostID,
       dokumentID,
       rinasaksnummer,
-      isRinaNumberValid,
       rinadokumentID,
       namespace
     })
@@ -84,8 +82,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
         dokumentID: dokumentID,
         rinasaksnummer: rinasaksnummer,
         rinadokumentID: rinadokumentID,
-        rinaNrErSjekket: isRinaNumberValid,
-        rinaNrErGyldig: isRinaNumberValid,
         sensitivt: sensitivt
       } as VedleggPayload))
       dispatch(resetAllValidation())
@@ -179,8 +175,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
               parentNamespace={namespace}
               validation={validation}
               resetValidation={resetValidation}
-              onRinaSaksnummerChanged={() => setIsRinaNumberValid(false)}
-              onDocumentFound={() => setIsRinaNumberValid(true)}
             />
           </AlignStartRow>
           <VerticalSeparatorDiv size='2' />

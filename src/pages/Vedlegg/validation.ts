@@ -1,13 +1,12 @@
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, checkIfNotTrue } from 'utils/validation'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationVedleggProps {
   journalpostID: string | undefined
   dokumentID: string | undefined
   rinasaksnummer: string | undefined
   rinadokumentID: string | undefined
-  isRinaNumberValid: boolean
   namespace: string
 }
 
@@ -19,7 +18,6 @@ export const validateVedlegg = (
     dokumentID,
     rinasaksnummer,
     rinadokumentID,
-    isRinaNumberValid,
     namespace
   }: ValidationVedleggProps
 ): boolean => {
@@ -41,12 +39,6 @@ export const validateVedlegg = (
     needle: rinasaksnummer,
     id: namespace + '-documentSearch-rinasaksnummer',
     message: 'validation:noSaksnummer'
-  }))
-
-  hasErrors.push(checkIfNotTrue(v, {
-    needle: isRinaNumberValid,
-    id: namespace + '-documentSearch-rinasaksnummer',
-    message: 'validation:unverifiedSaksnummer'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {

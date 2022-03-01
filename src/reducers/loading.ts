@@ -27,7 +27,7 @@ export const initialLoadingState: LoadingState = {
   gettingSavedItems: false,
   gettingServerinfo: false,
   gettingSedStatus: false,
-  queryingReplySed: false,
+  replyingToSed: false,
   queryingSaksnummerOrFnr: false,
   searchingPerson: false,
   searchingRelatertPerson: false,
@@ -287,17 +287,17 @@ const loadingReducer = (
         sendingSed: false
       }
 
-    case types.SVARSED_REPLYSED_QUERY_REQUEST:
+    case types.SVARSED_REPLYTOSED_REQUEST:
       return {
         ...state,
-        queryingReplySed: true
+        replyingToSed: true
       }
 
-    case types.SVARSED_REPLYSED_QUERY_SUCCESS:
-    case types.SVARSED_REPLYSED_QUERY_FAILURE:
+    case types.SVARSED_REPLYTOSED_SUCCESS:
+    case types.SVARSED_REPLYTOSED_FAILURE:
       return {
         ...state,
-        queryingReplySed: false
+        replyingToSed: false
       }
 
     case types.SVARSED_SED_CREATE_REQUEST:

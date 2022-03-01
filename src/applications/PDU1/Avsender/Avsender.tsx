@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import { Heading, Switch } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -9,7 +9,7 @@ import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -29,6 +29,8 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
   const target = 'nav'
   const nav: NavInfo = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-avsender`
+
+  const [allowEdit, setAllowEdit] = useState<boolean>(false)
 
   const setEnhetNavn = (enhetNavn: string) => {
     dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn))
@@ -78,9 +80,17 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
         {t('label:avsender')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
+      <Switch
+        checked={allowEdit}
+        onChange={() => setAllowEdit(!allowEdit)}
+      >
+        {t('label:edit')}
+      </Switch>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow className='slideInFromLeft'>
         <Column>
           <Input
+            disabled={!allowEdit}
             error={validation[namespace + '-enhetNavn']?.feilmelding}
             namespace={namespace}
             id='enhetNavn'
@@ -94,6 +104,7 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow>
         <Column>
           <Input
+            disabled={!allowEdit}
             error={validation[namespace + '-enhetId']?.feilmelding}
             namespace={namespace}
             id='enhetId'
@@ -104,6 +115,7 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <Input
+            disabled={!allowEdit}
             error={validation[namespace + '-tlf']?.feilmelding}
             namespace={namespace}
             id='tlf'
@@ -117,6 +129,7 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className={classNames('slideInFromLeft')}>
         <Column>
           <Input
+            disabled={!allowEdit}
             error={validation[namespace + '-saksbehandler-navn']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-navn'
@@ -127,6 +140,7 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <Input
+            disabled={!allowEdit}
             error={validation[namespace + '-saksbehandler-enhet']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-enhet'
@@ -142,6 +156,7 @@ const Avsender: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className={classNames('slideInFromLeft')}>
         <Column>
           <AdresseForm
+            disabled={!allowEdit}
             type={false}
             options={{ bygning: false, region: false }}
             required={['gate', 'postnummer', 'by', 'land']}

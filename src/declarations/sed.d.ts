@@ -351,9 +351,11 @@ export interface BaseReplySed {
   bruker: Person
   sedType: string
   sedVersjon: string
+
   // added
   saksnummer ?: string
   sakUrl ?: string
+  status ?: string
   // this will identify if we will create the ReplySed (if undefined) or edit the ReplySed
   sedId ?: string
 }

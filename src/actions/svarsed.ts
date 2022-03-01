@@ -19,6 +19,7 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   const copyReplySed = _.cloneDeep(replySed)
   delete copyReplySed.saksnummer
   delete copyReplySed.sakUrl
+  delete copyReplySed.status
   delete copyReplySed.sedId
   return call({
     method: 'POST',
@@ -48,6 +49,7 @@ export const updateSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   const copyReplySed = _.cloneDeep(replySed)
   delete copyReplySed.saksnummer
   delete copyReplySed.sakUrl
+  delete copyReplySed.status
   delete copyReplySed.sedId
   return call({
     method: 'PUT',
@@ -148,7 +150,7 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 }
 
 export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  sedId: string, sedType: string, rinaSakId: string
+  sedId: string, sedType: string, rinaSakId: string, status: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(sedType)
   return call({
@@ -159,7 +161,8 @@ export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = 
     },
     context: {
       saksnummer: rinaSakId,
-      sedId
+      sedId,
+      status
     },
     type: {
       request: types.SVARSED_EDIT_REQUEST,
@@ -169,7 +172,7 @@ export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = 
   })
 }
 
-export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
+export const replyToSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
   connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
@@ -191,12 +194,13 @@ export const queryReplySed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed
     context: {
       saksnummer,
       sakUrl,
-      sedId: connectedSed.svarsedId
+      sedId: connectedSed.svarsedId,
+      status: 'new'
     },
     type: {
-      request: types.SVARSED_REPLYSED_QUERY_REQUEST,
-      success: types.SVARSED_REPLYSED_QUERY_SUCCESS,
-      failure: types.SVARSED_REPLYSED_QUERY_FAILURE
+      request: types.SVARSED_REPLYTOSED_REQUEST,
+      success: types.SVARSED_REPLYTOSED_SUCCESS,
+      failure: types.SVARSED_REPLYTOSED_FAILURE
     }
   })
 }
