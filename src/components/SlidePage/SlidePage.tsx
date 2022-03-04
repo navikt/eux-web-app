@@ -161,7 +161,6 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         }
         setAnimating(true)
         setTimeout(() => {
-          console.log('Timeout end')
           setPositionContentA(Slide.LEFT)
           setPositionContentB(Slide.RIGHT)
           if (withSidebar) {
@@ -202,7 +201,6 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         }
         setAnimating(true)
         setTimeout(() => {
-          console.log('Timeout end')
           setPositionContentA(Slide.ALT_LEFT)
           setPositionContentB(Slide.ALT_RIGHT)
           if (withSidebar) {

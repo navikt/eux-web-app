@@ -72,7 +72,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       return
     }
     setTimeout(() => {
-      console.log('doing a check timeout')
       const diff = getDiff(expirationTime, now)
       if (diff < sessionExpiredReload) {
         triggerReload()
@@ -85,7 +84,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   useEffect(() => {
-    console.log('Bootstrapping / Updating check timeout')
     if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
       checkTimeout()

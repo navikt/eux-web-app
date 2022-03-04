@@ -135,7 +135,6 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
   }, [replySed])
 
   const setKeyAndYtelseMap = (newKeyAndYtelseMap: KeyAndYtelseMap) => {
-    console.log('KeyAndYtelseMap updated: ', newKeyAndYtelseMap)
     _setKeyAndYtelseMap(newKeyAndYtelseMap)
   }
 
