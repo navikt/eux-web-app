@@ -225,6 +225,7 @@
   "norsk-fnr" : "Norsk personnummer",
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
+  "only-active-seds": "Bare aktiv SED-er",
   "oppdatere-sed" : "Oppdatere SED",
   "oppdatere-sende-sed" : "Oppdatere/Sende SED",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
