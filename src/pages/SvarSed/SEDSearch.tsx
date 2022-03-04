@@ -417,14 +417,14 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             {filteredSeds.map((sed: Sed) => {
               const sedId = sed.sakId + '-' + sed.sakType
               const alone = filteredSeds?.length === 1
-              const visible = _.find(sed?.sedListe, (connectedSed: ConnectedSed) => (
+              const editableSed = _.find(sed?.sedListe, (connectedSed: ConnectedSed) => (
                 !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
                 (hasDraft(connectedSed) && !hasSentStatus(connectedSed.svarsedId)) ||
                 (connectedSed.status === 'new' && canEditSed(connectedSed.sedType)) ||
                 (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
               )) !== useDispatch
-              if (!visible) {
-                return null
+              if (_onlyEditableSeds && !editableSed) {
+                return <div key={sedId}/>
               }
               return (
                 <div key={sedId}>
