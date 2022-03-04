@@ -422,7 +422,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                 (hasDraft(connectedSed) && !hasSentStatus(connectedSed.svarsedId)) ||
                 (connectedSed.status === 'new' && canEditSed(connectedSed.sedType)) ||
                 (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
-              )) !== useDispatch
+              )) !== undefined
               if (_onlyEditableSeds && !editableSed) {
                 return <div key={sedId}/>
               }
