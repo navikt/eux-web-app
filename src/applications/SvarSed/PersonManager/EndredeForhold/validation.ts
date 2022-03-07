@@ -1,7 +1,8 @@
 import { H001Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, checkLength, propagateError } from 'utils/validation'
+import { checkLength, propagateError } from 'utils/validation'
 
 export interface ValidationEndredeForholdProps {
   replySed: ReplySed
@@ -20,20 +21,15 @@ export const validateEndredeForhold = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as H001Sed).ytterligereInfoType,
-    id: namespace + '-ytterligereInfoType',
-    message: 'validation:noYtterligereInfoType',
-    personName
-  }))
-
-  hasErrors.push(checkLength(v, {
-    needle: (replySed as H001Sed).ytterligereInfo,
-    max: 500,
-    id: namespace + '-tekst',
-    message: 'validation:textOverX',
-    personName
-  }))
+  if (!_.isEmpty((replySed as H001Sed).ytterligereInfo)) {
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as H001Sed).ytterligereInfo,
+      max: 500,
+      id: namespace + '-tekst',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
 
   const hasError: boolean = hasErrors.find(value => value) !== undefined
   if (hasError) propagateError(v, namespace)
