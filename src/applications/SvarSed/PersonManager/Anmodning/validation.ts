@@ -22,7 +22,7 @@ export const validateAnmodning = (
 
   hasErrors.push(checkLength(v, {
     needle: (replySed as H001Sed).anmodning?.dokumentasjon?.informasjon,
-    max: 500,
+    max: 255,
     id: namespace + '-informasjon',
     message: 'validation:textOverX',
     personName

@@ -73,13 +73,13 @@ export const validateDagpenger = (
     }))
   })
 
-  if (dagpenger && dagpenger.length > 3) {
+  if (dagpenger && dagpenger.length > 40) {
     addError(v, {
       id: namespace + '-generic',
       message: 'validation:tooManyPeriodsMaxIs',
       extra: {
         type: t('label:dagpenger'),
-        max: '3'
+        max: '40'
       }
     })
     hasErrors.push(true)
