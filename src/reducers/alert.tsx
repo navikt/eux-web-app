@@ -120,6 +120,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.SVARSED_SED_CREATE_FAILURE:
+      case types.SVARSED_SED_UPDATE_FAILURE:
         if ((action as ActionWithPayload).status === 409) {
           const url = (action as ActionWithPayload).context.sakUrl
           stripeMessage = (
@@ -178,6 +179,12 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     bannerMessage = i18n.t('message:success-localstorage-save')
     dealWithBanner = true
   }
+
+  if (action.type === types.SVARSED_SED_SEND_SUCCESS) {
+    bannerMessage = i18n.t('message:success-sed-send')
+    dealWithBanner = true
+  }
+
 
   if (dealWithBanner) {
     return {
