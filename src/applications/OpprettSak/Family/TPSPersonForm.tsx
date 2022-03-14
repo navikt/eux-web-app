@@ -1,11 +1,10 @@
-import { Search } from '@navikt/ds-icons'
-import { Alert, Loader, SearchField } from '@navikt/ds-react'
+import { Alert, Loader, Search } from '@navikt/ds-react'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -81,8 +80,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
     }
   }, [personRelatert])
 
-  const updateQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
+  const updateQuery = (q: string) => {
+    setQuery(q)
     resetValidation(namespace + '-fnr-dnr')
     setPersonRelatert(undefined)
     if (onRelationReset) {
@@ -121,28 +120,33 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   return (
     <>
       <FlexDiv>
-        <SearchField
+        <PileDiv>
+          <Search
           id='TPSPersonForm__input-fnr-or-dnr-id'
           data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
           label={t('label:fnr-dnr')}
-          error={validation[namespace + '-fnr-dnr']?.feilmelding}
+          /*error={validation[namespace + '-fnr-dnr']?.feilmelding}*/
+          onChange={updateQuery}
+          required
+          value={_query}
+          disabled={searchingRelatertPerson}
+          onSearch={sokEtterFnr}
         >
-          <SearchField.Input
-            data-test-id={namespace + '-fnr-dnr'}
-            id={namespace + '-fnr-dnr'}
-            onChange={updateQuery}
-            required
-            value={_query}
-          />
-          <SearchField.Button
-            disabled={searchingRelatertPerson}
-            onClick={sokEtterFnr}
-          >
-            <Search />
+          <Search.Button>
             {t('el:button-search')}
             {searchingRelatertPerson && <Loader />}
-          </SearchField.Button>
-        </SearchField>
+          </Search.Button>
+        </Search>
+          {validation[namespace + '-fnr-dnr']?.feilmelding && (
+            <>
+              <VerticalSeparatorDiv size='0.5'/>
+              <span className='navds-error-message navds-error-message--medium'>
+              {validation[namespace + '-fnr-dnr']?.feilmelding}
+              </span>
+            </>
+          )}
+        </PileDiv>
+
         <HorizontalSeparatorDiv />
         {_personRelatert && (
           <PersonCard

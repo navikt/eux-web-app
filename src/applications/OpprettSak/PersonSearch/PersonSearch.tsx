@@ -1,8 +1,7 @@
-import { Search } from '@navikt/ds-icons'
-import { Alert, Loader, SearchField } from '@navikt/ds-react'
+import { Alert, Loader, Search } from '@navikt/ds-react'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import { PileDiv } from '@navikt/hoykontrast'
+import { PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +12,7 @@ export interface PersonSearchProps {
   alertTypesWatched: Array<string> | undefined
   className?: string
   error: string | undefined
-  id: string
+  id ?: string
   initialFnr: any
   parentNamespace: string
   searchingPerson: boolean
@@ -63,13 +62,13 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }, [person])
 
-  const sokEtterPerson = (): void => {
+  const onSearch = (fnr: string | number | readonly string[]) => {
     if (!fnr) {
       setLocalValidation(t('validation:noFnr'))
       return
     }
     const fnrPattern = /^[0-9]{11}$/
-    if (fnr && !fnrPattern.test(fnr)) {
+    if (fnr && !fnrPattern.test('' + fnr)) {
       setLocalValidation(t('validation:invalidFnr'))
       return
     }
@@ -80,9 +79,9 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const onChange = (fnr: string): void => {
     setLocalValidation(undefined)
-    const newFnr = e.target.value.trim()
+    const newFnr = fnr.trim()
     setFnr(newFnr)
     if (_.isFunction(onFnrChange)) {
       onFnrChange(newFnr)
@@ -91,28 +90,31 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   return (
     <PileDiv style={{ alignItems: 'flex-start' }}>
-      <SearchField
-        id={id}
-        data-test-id={id}
+      <Search
         label={t('label:søker')}
-        error={error ?? localValidation}
+        /*error={error ?? localValidation}*/
+        data-test-id={id ?? namespace + '-saksnummerOrFnr'}
+        id={id ?? namespace + '-saksnummerOrFnr'}
+        onChange={onChange}
+        required
+        hideLabel={false}
+        value={fnr || ''}
+        disabled={searchingPerson}
+        onSearch={onSearch}
       >
-        <SearchField.Input
-          data-test-id={namespace + '-saksnummerOrFnr'}
-          id={namespace + '-saksnummerOrFnr'}
-          onChange={onChange}
-          required
-          value={fnr || ''}
-        />
-        <SearchField.Button
-          disabled={searchingPerson || _.isEmpty(fnr)}
-          onClick={sokEtterPerson}
-        >
-          <Search />
-          {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
-          {searchingPerson && <Loader />}
-        </SearchField.Button>
-      </SearchField>
+        <Search.Button>
+        {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
+        {searchingPerson && <Loader />}
+        </Search.Button>
+      </Search>
+      {(error ?? localValidation) && (
+        <>
+          <VerticalSeparatorDiv size='0.5'/>
+          <span className='navds-error-message navds-error-message--medium'>
+            {error ?? localValidation}
+            </span>
+        </>
+      )}
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <Alert variant='warning'>
           {alertMessage}

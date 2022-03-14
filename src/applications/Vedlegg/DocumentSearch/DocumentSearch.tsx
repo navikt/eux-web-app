@@ -1,5 +1,4 @@
-import { Search } from '@navikt/ds-icons'
-import { BodyLong, Loader, SearchField, Select } from '@navikt/ds-react'
+import { BodyLong, Loader, Search, Select } from '@navikt/ds-react'
 import * as vedleggActions from 'actions/vedlegg'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
@@ -71,23 +70,29 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   return (
     <>
       <Column className={className}>
-        <SearchField
+        <Search
           label={t('label:rina-saksnummer')}
-          error={validation[namespace + '-rinasaksnummer']?.feilmelding}
-        >
-          <SearchField.Input
-            data-test-id={namespace + '-rinasaksnummer'}
-            id={namespace + '-rinasaksnummer'}
-            required
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRinaSaksnummer(e.target.value)}
-            value={rinasaksnummer}
-          />
-          <SearchField.Button disabled={gettingDokument} onClick={sokEtterDokument}>
-            <Search />
+          /*error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
+          data-test-id={namespace + '-rinasaksnummer'}
+          id={namespace + '-rinasaksnummer'}
+          required
+          hideLabel={false}
+          onChange={setRinaSaksnummer}
+          value={rinasaksnummer}
+          disabled={gettingDokument}  onSearch={sokEtterDokument}>
+          <Search.Button>
             {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
             {gettingDokument && <Loader />}
-          </SearchField.Button>
-        </SearchField>
+          </Search.Button>
+        </Search>
+        {validation[namespace + '-rinasaksnummer']?.feilmelding && (
+          <>
+            <VerticalSeparatorDiv size='0.5'/>
+            <span className='navds-error-message navds-error-message--medium'>
+              {validation[namespace + '-rinasaksnummer']?.feilmelding}
+              </span>
+          </>
+        )}
         <VerticalSeparatorDiv />
       </Column>
       <Column>

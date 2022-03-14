@@ -1,5 +1,5 @@
-import { Close, Copy, Edit, Email, Search, Send, Star, ExternalLink } from '@navikt/ds-icons'
-import { Alert, Loader, Button, Checkbox, Link, Panel, BodyLong, Detail, Heading, SearchField } from '@navikt/ds-react'
+import { Close, Copy, Edit, Email, Send, Star, ExternalLink } from '@navikt/ds-icons'
+import { Alert, Loader, Button, Checkbox, Link, Panel, BodyLong, Detail, Heading, Search } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import { cleanData, copyToClipboard } from 'actions/app'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -116,12 +116,11 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   const namespace = 'sedsearch'
 
-  const onSaksnummerOrFnrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value
+  const onSaksnummerOrFnrChange = (query: string) => {
     dispatch(cleanData())
     _resetValidation(namespace + '-saksnummerOrFnr')
-    _setSaksnummerOrFnr(query)
-    const result = validator.idnr(query)
+    _setSaksnummerOrFnr(query.trim())
+    const result = validator.idnr(query.trim())
     if (result.status !== 'valid') {
       _setQueryType('saksnummer')
       _setValidMessage(t('label:saksnummer'))
@@ -251,29 +250,32 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
-            <SearchField
+            <Search
               label={t('label:saksnummer-eller-fnr')}
-              error={_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+              data-test-id={namespace + '-saksnummerOrFnr'}
+              id={namespace + '-saksnummerOrFnr'}
+              onKeyPress={handleKeyPress}
+              onChange={onSaksnummerOrFnrChange}
+              required
+              value={_saksnummerOrFnr}
+              disabled={queryingSaksnummerOrFnr}
+              onSearch={onSaksnummerOrFnrClick}
             >
-              <SearchField.Input
-                data-test-id={namespace + '-saksnummerOrFnr'}
-                id={namespace + '-saksnummerOrFnr'}
-                onKeyPress={handleKeyPress}
-                onChange={onSaksnummerOrFnrChange}
-                required
-                value={_saksnummerOrFnr}
-              />
-              <SearchField.Button
-                disabled={queryingSaksnummerOrFnr}
-                onClick={onSaksnummerOrFnrClick}
-              >
-                <Search />
+              <Search.Button>
                 {queryingSaksnummerOrFnr
                   ? t('message:loading-searching')
                   : t('el:button-search')}
                 {queryingSaksnummerOrFnr && <Loader />}
-              </SearchField.Button>
-            </SearchField>
+              </Search.Button>
+            </Search>
+            {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
+              <>
+              <VerticalSeparatorDiv size='0.5'/>
+              <span className='navds-error-message navds-error-message--medium'>
+              {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+              </span>
+              </>
+            )}
             <VerticalSeparatorDiv size='0.5' />
             <BodyLong>
               {_validMessage}
