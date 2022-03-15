@@ -176,7 +176,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        if (!_.isEmpty(newReplySed?.sedId)) {
+        if (newReplySed?.status !== 'new') {
           dispatch(updateSed(newReplySed))
         } else {
           dispatch(createSed(newReplySed))

@@ -30,9 +30,11 @@ const AnimatableDiv = styled.div`
   }
   &.right {
     transform: translateX(20%);
+    height: 1vh;
   }
   &.alt_left {
     transform: translateX(-120%);
+    height: 1vh;
   }
   &.alt_right {
     transform: translateX(-100%);
