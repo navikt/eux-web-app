@@ -73,7 +73,7 @@ const svarsedReducer = (
           ...(action as ActionWithPayload).payload,
           saksnummer: (action as ActionWithPayload).context.saksnummer,
           sakUrl: (action as ActionWithPayload).context.sakUrl,
-          sedId: (action as ActionWithPayload).context.sedId,
+          sedId: undefined, // so we can signal this SED as a SED that needs to be created, not updated
           status: (action as ActionWithPayload).context.status
         }
       }

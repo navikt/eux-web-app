@@ -349,7 +349,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createH001ReplySed = (opprettetSak: OpprettetSak): ReplySed => {
+  const createH001Sed = (opprettetSak: OpprettetSak): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
     h001sed.sedId = opprettetSak.sedId
     h001sed.saksnummer = opprettetSak.sakId
@@ -368,7 +368,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const fillOutSed = (opprettetSak: OpprettetSak) => {
-    const replySed = createH001ReplySed(opprettetSak)
+    const replySed = createH001Sed(opprettetSak)
     dispatch(setReplySed(replySed))
     changeMode('B', 'forward')
   }
