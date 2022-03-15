@@ -72,14 +72,15 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       <Column className={className}>
         <Search
           label={t('label:rina-saksnummer')}
-          /*error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
+          /* error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
           data-test-id={namespace + '-rinasaksnummer'}
           id={namespace + '-rinasaksnummer'}
           required
           hideLabel={false}
           onChange={setRinaSaksnummer}
           value={rinasaksnummer}
-          disabled={gettingDokument}  onSearch={sokEtterDokument}>
+          disabled={gettingDokument} onSearch={sokEtterDokument}
+        >
           <Search.Button>
             {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
             {gettingDokument && <Loader />}
@@ -87,10 +88,10 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         </Search>
         {validation[namespace + '-rinasaksnummer']?.feilmelding && (
           <>
-            <VerticalSeparatorDiv size='0.5'/>
+            <VerticalSeparatorDiv size='0.5' />
             <span className='navds-error-message navds-error-message--medium'>
               {validation[namespace + '-rinasaksnummer']?.feilmelding}
-              </span>
+            </span>
           </>
         )}
         <VerticalSeparatorDiv />

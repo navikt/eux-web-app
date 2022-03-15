@@ -163,7 +163,7 @@ const svarsedReducer = (
         sedCreatedResponse: null
       }
 
-    case types.SVARSED_SED_UPDATE_SUCCESS:
+    case types.SVARSED_SED_UPDATE_SUCCESS: {
       const sedType = (action as ActionWithPayload).context.sedType
       const sedsThatCanBeResendAfterUpdate = ['H001']
       let sedSendResponse = _.cloneDeep(state.sedSendResponse)
@@ -176,8 +176,9 @@ const svarsedReducer = (
       return {
         ...state,
         sedSendResponse: sedSendResponse,
-        sedCreatedResponse: (action as ActionWithPayload).payload,
+        sedCreatedResponse: (action as ActionWithPayload).payload
       }
+    }
 
     case types.SVARSED_SED_UPDATE_FAILURE:
       standardLogger('svarsed.update.failure', { type: (action as ActionWithPayload).context.sedType })

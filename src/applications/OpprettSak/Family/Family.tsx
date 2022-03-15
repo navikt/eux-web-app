@@ -100,13 +100,15 @@ const Family: React.FC<FamilyProps> = ({
             {t('label:familierelasjon-i-tps')}
           </Ingress>
           {remainingRelationsFromTPS.map((relation: OldFamilieRelasjon) => (
-            <PersonCard
-              className='slideInFromLeft personNotSelected'
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              key={relation.fnr}
-              onAddClick={onRelationAdded}
-              person={relation}
-            />
+            <div key={relation.fnr}>
+              <PersonCard
+                className='slideInFromLeft personNotSelected'
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                onAddClick={onRelationAdded}
+                person={relation}
+              />
+              <VerticalSeparatorDiv size='1.5' />
+            </div>
           ))}
           {!_.isEmpty(person!.relasjoner) && _.isEmpty(remainingRelationsFromTPS) && (
             <>
@@ -134,13 +136,15 @@ const Family: React.FC<FamilyProps> = ({
             {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
           </Ingress>
           {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: OldFamilieRelasjon) => (
-            <PersonCard
-              className='slideInFromLeft personSelected'
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              key={relation.fnr}
-              onRemoveClick={onRelationRemoved}
-              person={relation}
-            />
+            <div key={relation.fnr}>
+              <PersonCard
+                className='slideInFromLeft personSelected'
+                familierelasjonKodeverk={familierelasjonKodeverk}
+                onRemoveClick={onRelationRemoved}
+                person={relation}
+              />
+              <VerticalSeparatorDiv size='1.5' />
+            </div>
           ))}
           <VerticalSeparatorDiv />
         </div>

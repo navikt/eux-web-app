@@ -92,7 +92,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     <PileDiv style={{ alignItems: 'flex-start' }}>
       <Search
         label={t('label:søker')}
-        /*error={error ?? localValidation}*/
+        /* error={error ?? localValidation} */
         data-test-id={id ?? namespace + '-saksnummerOrFnr'}
         id={id ?? namespace + '-saksnummerOrFnr'}
         onChange={onChange}
@@ -103,16 +103,16 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         onSearch={onSearch}
       >
         <Search.Button>
-        {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
-        {searchingPerson && <Loader />}
+          {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
+          {searchingPerson && <Loader />}
         </Search.Button>
       </Search>
       {(error ?? localValidation) && (
         <>
-          <VerticalSeparatorDiv size='0.5'/>
+          <VerticalSeparatorDiv size='0.5' />
           <span className='navds-error-message navds-error-message--medium'>
             {error ?? localValidation}
-            </span>
+          </span>
         </>
       )}
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (

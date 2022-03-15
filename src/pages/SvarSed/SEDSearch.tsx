@@ -270,10 +270,10 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             </Search>
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
               <>
-              <VerticalSeparatorDiv size='0.5'/>
-              <span className='navds-error-message navds-error-message--medium'>
-              {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
-              </span>
+                <VerticalSeparatorDiv size='0.5' />
+                <span className='navds-error-message navds-error-message--medium'>
+                  {_validation[namespace + '-saksnummerOrFnr']?.feilmelding}
+                </span>
               </>
             )}
             <VerticalSeparatorDiv size='0.5' />

@@ -122,26 +122,26 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
       <FlexDiv>
         <PileDiv>
           <Search
-          id='TPSPersonForm__input-fnr-or-dnr-id'
-          data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
-          label={t('label:fnr-dnr')}
-          /*error={validation[namespace + '-fnr-dnr']?.feilmelding}*/
-          onChange={updateQuery}
-          required
-          value={_query}
-          disabled={searchingRelatertPerson}
-          onSearch={sokEtterFnr}
-        >
-          <Search.Button>
-            {t('el:button-search')}
-            {searchingRelatertPerson && <Loader />}
-          </Search.Button>
-        </Search>
+            id='TPSPersonForm__input-fnr-or-dnr-id'
+            data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
+            label={t('label:fnr-dnr')}
+          /* error={validation[namespace + '-fnr-dnr']?.feilmelding} */
+            onChange={updateQuery}
+            required
+            value={_query}
+            disabled={searchingRelatertPerson}
+            onSearch={sokEtterFnr}
+          >
+            <Search.Button>
+              {t('el:button-search')}
+              {searchingRelatertPerson && <Loader />}
+            </Search.Button>
+          </Search>
           {validation[namespace + '-fnr-dnr']?.feilmelding && (
             <>
-              <VerticalSeparatorDiv size='0.5'/>
+              <VerticalSeparatorDiv size='0.5' />
               <span className='navds-error-message navds-error-message--medium'>
-              {validation[namespace + '-fnr-dnr']?.feilmelding}
+                {validation[namespace + '-fnr-dnr']?.feilmelding}
               </span>
             </>
           )}

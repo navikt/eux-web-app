@@ -353,6 +353,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
     h001sed.sedId = opprettetSak.sedId
     h001sed.saksnummer = opprettetSak.sakId
+    h001sed.status = 'new'
     h001sed.tema = tempInfoForEdit.tema
     h001sed.fagsakId = tempInfoForEdit.fagsak
     h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
@@ -377,34 +378,39 @@ const CreateSak: React.FC<CreateSakProps> = ({
     <Container>
       <Margin />
       <MyContent>
-        <PersonSearch
-          key={namespace + '-fnr-' + valgtFnr}
-          alertMessage={alertMessage}
-          alertType={alertType}
-          alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
-          className='slideInFromLeft'
-          data-test-id={namespace + '-fnr'}
-          error={validation[namespace + '-fnr']?.feilmelding}
-          searchingPerson={searchingPerson}
-          id={namespace + '-fnr'}
-          initialFnr=''
-          value={valgtFnr}
-          parentNamespace={namespace}
-          onFnrChange={() => {
-            if (isFnrValid) {
-              setIsFnrValid(false)
-              dispatch(appActions.cleanData()) // cleans person and sak reducer
-              dispatch(resetAllValidation())
-            }
-          }}
-          onPersonFound={() => setIsFnrValid(true)}
-          onSearchPerformed={(fnr: string) => {
-            dispatch(sakActions.cleanData())
-            dispatch(sakActions.setProperty('fnr', fnr))
-            dispatch(personActions.searchPerson(fnr))
-          }}
-          person={person}
-        />
+        <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
+          <Column>
+            <PersonSearch
+              key={namespace + '-fnr-' + valgtFnr}
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
+              className='slideInFromLeft'
+              data-test-id={namespace + '-fnr'}
+              error={validation[namespace + '-fnr']?.feilmelding}
+              searchingPerson={searchingPerson}
+              id={namespace + '-fnr'}
+              initialFnr=''
+              value={valgtFnr}
+              parentNamespace={namespace}
+              onFnrChange={() => {
+                if (isFnrValid) {
+                  setIsFnrValid(false)
+                  dispatch(appActions.cleanData()) // cleans person and sak reducer
+                  dispatch(resetAllValidation())
+                }
+              }}
+              onPersonFound={() => setIsFnrValid(true)}
+              onSearchPerformed={(fnr: string) => {
+                dispatch(sakActions.cleanData())
+                dispatch(sakActions.setProperty('fnr', fnr))
+                dispatch(personActions.searchPerson(fnr))
+              }}
+              person={person}
+            />
+          </Column>
+          <Column />
+        </Row>
         <VerticalSeparatorDiv size='2' />
         <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
           <Column>

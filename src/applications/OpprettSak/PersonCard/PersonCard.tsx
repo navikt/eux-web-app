@@ -3,7 +3,7 @@ import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import { Delete, Add } from '@navikt/ds-icons'
 import { toDateFormat } from 'components/Forms/PeriodeInput'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import { HorizontalSeparatorDiv, VerticalSeparatorDiv, FlexCenterSpacedDiv, FlexDiv } from '@navikt/hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
@@ -13,15 +13,8 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-const PersonCardDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`
 const PersonCardPanel = styled(Panel)`
   background: transparent;
-  margin-top: 1.5rem;
   min-width: 400px;
   padding: 1rem;
   border-radius: 5px;
@@ -35,9 +28,6 @@ const PersonCardPanel = styled(Panel)`
   &.neutral {
     background: white;
   }
-`
-const Description = styled.div`
-  display: flex;
 `
 const Undertitle = styled.div`
   display: flex;
@@ -122,8 +112,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
 
   return (
     <PersonCardPanel border className={className}>
-      <PersonCardDiv>
-        <Description>
+      <FlexCenterSpacedDiv>
+        <FlexDiv>
           <img
             alt={kind}
             width={50}
@@ -143,22 +133,9 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <div>{t('label:fødselsdato') + ': ' + toDateFormat(fdato, 'DD.MM.YYYY')}</div>
             </Undertitle>
           </div>
-        </Description>
-        {rolleList !== undefined && (
-          <Select
-            label={t('label:familierelasjon')}
-            date-testid='familierelasjoner__select-familirelasjon-rolle'
-            value={(person as OldFamilieRelasjon).rolle}
-            onChange={updateFamilyRelation}
-          >
-            <option value=''>{t('label:velg')}</option>
-            {rolleList && rolleList.map((element: Kodeverk) => (
-              <option value={element.kode} key={element.kode}>{element.term}</option>)
-            )}
-          </Select>
-        )}
+        </FlexDiv>
         {_.isFunction(onRemoveClick) && (
-          <>
+          <FlexDiv>
             <HorizontalSeparatorDiv size='0.5' />
             <RemoveButton
               kompakt
@@ -166,10 +143,10 @@ const PersonCard: React.FC<PersonCardProps> = ({
             >
               <Delete width='20' height='20' />
             </RemoveButton>
-          </>
+          </FlexDiv>
         )}
         {_.isFunction(onAddClick) && (
-          <>
+          <FlexDiv>
             <HorizontalSeparatorDiv size='0.5' />
             <Button
               variant='secondary'
@@ -179,9 +156,27 @@ const PersonCard: React.FC<PersonCardProps> = ({
             >
               <Add width={20} />
             </Button>
-          </>
+          </FlexDiv>
         )}
-      </PersonCardDiv>
+      </FlexCenterSpacedDiv>
+      {rolleList !== undefined && (
+        <>
+          <VerticalSeparatorDiv />
+          <FlexDiv>
+            <Select
+              label={t('label:familierelasjon')}
+              date-testid='familierelasjoner__select-familirelasjon-rolle'
+              value={(person as OldFamilieRelasjon).rolle}
+              onChange={updateFamilyRelation}
+            >
+              <option value=''>{t('label:velg')}</option>
+              {rolleList && rolleList.map((element: Kodeverk) => (
+                <option value={element.kode} key={element.kode}>{element.term}</option>)
+              )}
+            </Select>
+          </FlexDiv>
+        </>
+      )}
     </PersonCardPanel>
   )
 }

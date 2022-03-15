@@ -185,7 +185,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     dealWithBanner = true
   }
 
-
   if (dealWithBanner) {
     return {
       ...state,
