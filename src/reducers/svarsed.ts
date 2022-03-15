@@ -153,6 +153,11 @@ const svarsedReducer = (
       standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
+        // now I can restore sedId to the replySed, so it can be updated later
+        replySed: {
+          ...state.replySed,
+          sedId: (action as ActionWithPayload).payload.sedId
+        } as ReplySed,
         sedCreatedResponse: (action as ActionWithPayload).payload
       }
 
