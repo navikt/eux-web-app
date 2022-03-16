@@ -48,7 +48,7 @@ interface InntektFormSelector extends PersonManagerFormSelector {
 
 const mapState = (state: State): InntektFormSelector => ({
   gettingInntekter: state.loading.gettingInntekter,
-  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder,
   inntekter: state.inntekt.inntekter,
   validation: state.validation.status
 })

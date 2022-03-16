@@ -47,7 +47,7 @@ export interface ArbeidsforholdProps {
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({
-  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,

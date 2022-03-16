@@ -9,9 +9,6 @@ describe('reducers/arbeidsperioder', () => {
         type: types.ARBEIDSPERIODER_GET_SUCCESS,
         payload: payload
       })
-    ).toEqual({
-      ...initialArbeidsperioderState,
-      arbeidsperioder: payload
-    })
+    ).toEqual(payload)
   })
 })

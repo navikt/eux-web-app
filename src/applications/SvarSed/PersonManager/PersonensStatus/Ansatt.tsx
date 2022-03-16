@@ -1,4 +1,6 @@
 import { Add } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading, Ingress } from '@navikt/ds-react'
+import { AlignStartRow, Column, FlexCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
@@ -9,6 +11,7 @@ import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Ar
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
@@ -17,15 +20,6 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { ErrorElement } from 'declarations/app.d'
-import { Button, Ingress, BodyLong, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,7 +34,7 @@ interface AnsattSelector extends PersonManagerFormSelector {
 }
 
 const mapState = (state: State): AnsattSelector => ({
-  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder,
   validation: state.validation.status
 })
 
@@ -52,10 +46,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    arbeidsperioder,
-    validation
-  } = useSelector<State, AnsattSelector>(mapState)
+  const {arbeidsperioder, validation} = useSelector<State, AnsattSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`

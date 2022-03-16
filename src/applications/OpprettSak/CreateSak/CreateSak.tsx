@@ -129,7 +129,7 @@ const mapState = (state: State): CreateSakSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
-  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder,
 
   person: state.person.person,
   personRelatert: state.person.personRelatert,
