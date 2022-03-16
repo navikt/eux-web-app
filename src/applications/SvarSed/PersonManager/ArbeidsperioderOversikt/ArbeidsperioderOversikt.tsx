@@ -403,6 +403,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     })
     return plan?.map((item: PlanItem<PeriodeMedForsikring>) => (
       <div key={
+        item.type + '-' +
         item.item?.arbeidsgiver?.identifikatorer?.map(i => i.type + '-' + i.id).join(',') ?? '' +
         '-' + item.item.startdato + '-' + item.item.sluttdato
       }>

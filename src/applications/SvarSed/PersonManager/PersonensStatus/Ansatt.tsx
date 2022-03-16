@@ -477,7 +477,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     } as RenderPlanProps<Periode>)
 
     return plan?.map((item: PlanItem<Periode>) => (
-      <div key={item.item.startdato + '-' + item.item.sluttdato}>
+      <div key={item.type + '-' + item.item.startdato + '-' + item.item.sluttdato}>
         <AlignStartRow className='slideInFromLeft'>
           {renderPlanItem(item)}
         </AlignStartRow>
