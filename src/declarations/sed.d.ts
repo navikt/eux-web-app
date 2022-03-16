@@ -376,7 +376,7 @@ export interface InntektOgTime {
 
 export interface PeriodeMedForsikring extends Periode {
   arbeidsgiver: ArbeidsgiverWithAdresse
-  // this is just to accommodate Arbeidsgiver conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsgiverBox
+  // this is just to accommodate ArbeidsperiodeFraAA conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsperioderBox
   extra ?: {
     fraInntektsregisteret?: string
     fraArbeidsgiverregisteret?: string

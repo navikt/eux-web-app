@@ -20,7 +20,7 @@ export const checkLength = (v: Validation, { needle, max = 500, id, personName, 
 }
 
 export const checkIfNotEmpty = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
-  if (_.isEmpty(needle?.trim())) {
+  if (_.isEmpty(_.isString(needle) ? needle.trim() : needle)) {
     addError(v, { id, personName, message, extra })
     return true
   }

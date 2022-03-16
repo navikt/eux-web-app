@@ -1,4 +1,4 @@
-import { Add, Close, Delete, Edit, Office1 } from '@navikt/ds-icons'
+import { SaveFile, Close, Delete, Edit, Office1 } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Detail, Ingress, Panel } from '@navikt/ds-react'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
@@ -18,14 +18,13 @@ import {
   FlexEndDiv,
   HorizontalSeparatorDiv,
   PileCenterDiv,
-  PileDiv,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { generateIdentifikatorKey } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey } from 'utils/arbeidsperioder'
 import { validateArbeidsgiver, ValidationArbeidsgiverProps } from './validation'
 
 const ArbeidsgiverPanel = styled(Panel)`
@@ -69,7 +68,7 @@ export interface ArbeidsgiverProps {
   selectable?: boolean
 }
 
-const ArbeidsgiverBox = ({
+const ArbeidsperioderBox = ({
   arbeidsgiver,
   editable = 'no',
   error = false,
@@ -275,6 +274,7 @@ const ArbeidsgiverBox = ({
                     <Detail>
                       {_arbeidsgiversNavn}
                     </Detail>
+
                     <HorizontalLineSeparator />
                     <VerticalSeparatorDiv size='0.5' />
                     {_.isEmpty(_adresse)
@@ -285,7 +285,7 @@ const ArbeidsgiverBox = ({
                         )
                       : (
                         <AdresseDiv>
-                          <AdresseBox border={false} adresse={_adresse} />
+                          <AdresseBox border={false} adresse={_adresse} padding='0' />
                         </AdresseDiv>
                         )}
                   </div>
@@ -326,7 +326,7 @@ const ArbeidsgiverBox = ({
 
             </>
           </FlexDiv>
-          <FlexDiv style={{ padding: '1rem' }} className='slideInFromRight'>
+          <FlexDiv style={{ padding: '1rem', flex: 1, flexDirection: 'row-reverse' }} className='slideInFromRight'>
             {editable === 'full' && !_isEditing && !_isDeleting && (
               <>
                 <Button
@@ -354,7 +354,7 @@ const ArbeidsgiverBox = ({
                 >
                   <EditIcon />
                 </Button>
-                <HorizontalSeparatorDiv />
+                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {!_isEditing && !_isDeleting && selectable && (
@@ -365,16 +365,16 @@ const ArbeidsgiverBox = ({
               </Checkbox>
             )}
             {_isEditing && (
-              <PileDiv>
+              <FlexDiv>
                 <Button
                   variant='secondary'
                   onClick={onSaveEditButtonClicked}
                 >
-                  <Add />
+                  <SaveFile />
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-save')}
                 </Button>
-                <VerticalSeparatorDiv size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
                 <Button
                   variant='tertiary'
                   onClick={onCancelButtonClicked}
@@ -383,7 +383,7 @@ const ArbeidsgiverBox = ({
                   <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-cancel')}
                 </Button>
-              </PileDiv>
+              </FlexDiv>
             )}
           </FlexDiv>
           {_isDeleting && (
@@ -423,4 +423,4 @@ const ArbeidsgiverBox = ({
   )
 }
 
-export default ArbeidsgiverBox
+export default ArbeidsperioderBox

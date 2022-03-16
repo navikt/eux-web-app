@@ -1,7 +1,7 @@
 import adresse from './adresse'
 import alert from './alert'
 import app from './app'
-import arbeidsgiver from './arbeidsgiver'
+import arbeidsperioder from './arbeidsperioder'
 import attachments from './attachments'
 import inntekt from './inntekt'
 import loading from './loading'
@@ -16,5 +16,5 @@ import validation from './validation'
 import vedlegg from './vedlegg'
 
 export {
-  adresse, alert, app, arbeidsgiver, attachments, inntekt, loading, localStorage, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
+  adresse, alert, app, arbeidsperioder, attachments, inntekt, loading, localStorage, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
 }

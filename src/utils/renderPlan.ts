@@ -1,8 +1,8 @@
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { arbeidsgiverToPeriodeMedForsikring } from './arbeidsgiver'
+import { arbeidsperioderFraAAToPeriodeMedForsikring } from './arbeidsperioder'
 
 export type PlanItemType = 'orphan' | 'arbeidsgiver' | 'addedArbeidsgiver'
 
@@ -17,7 +17,7 @@ type Plan<T> = Array<PlanItem<T>>
 
 export interface RenderPlanProps<T> {
   perioder: Array<T> | undefined
-  arbeidsperioder: Arbeidsperioder | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   addedArbeidsperioder: Array<PeriodeMedForsikring>
 }
 
@@ -66,8 +66,8 @@ export default <T extends Periode | PeriodeMedForsikring>({
 
   // 2nd step: go through all arbeidsperioder. If they match periods, pair then, otherwise just append them in the end
 
-  arbeidsperioder?.arbeidsperioder.forEach((arbeidsgiver: Arbeidsgiver) => {
-    const arbeidsgiverAsPeriodeMedForsikring: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(arbeidsgiver)
+  arbeidsperioder?.arbeidsperioder.forEach((arbeidsgiver: ArbeidsperiodeFraAA) => {
+    const arbeidsgiverAsPeriodeMedForsikring: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsgiver)
 
     const foundIndex: number = _.findIndex(plan, p =>
       getStartDato(p.item as T) === arbeidsgiverAsPeriodeMedForsikring.startdato &&

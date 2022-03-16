@@ -138,11 +138,11 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_ARBEIDSGIVER_ADD', () => {
+  it('SAK_ARBEIDSPERIODER_ADD', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        arbeidsgivere: [{
+        arbeidsperioder: [{
           fraDato: '1',
           tilDato: '1',
           fraInntektsregisteret: 'ja',
@@ -151,7 +151,7 @@ describe('reducers/sak', () => {
           arbeidsgiversNavn: 'abc'
         }]
       }, {
-        type: types.SAK_ARBEIDSGIVER_ADD,
+        type: types.SAK_ARBEIDSPERIODER_ADD,
         payload: {
           fraDato: '2',
           tilDato: '2',
@@ -163,7 +163,7 @@ describe('reducers/sak', () => {
       })
     ).toEqual({
       ...initialSakState,
-      arbeidsgivere: [{
+      arbeidsperioder: [{
         fraDato: '1',
         tilDato: '1',
         fraInntektsregisteret: 'ja',
@@ -181,11 +181,11 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_ARBEIDSGIVER_REMOVE', () => {
+  it('SAK_ARBEIDSPERIODER_REMOVE', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        arbeidsgivere: [{
+        arbeidsperioder: [{
           fraDato: '1',
           tilDato: '1',
           fraInntektsregisteret: 'ja',
@@ -201,7 +201,7 @@ describe('reducers/sak', () => {
           arbeidsgiversNavn: 'def'
         }]
       }, {
-        type: types.SAK_ARBEIDSGIVER_REMOVE,
+        type: types.SAK_ARBEIDSPERIODER_REMOVE,
         payload: {
           fraDato: '2',
           tilDato: '2',
@@ -213,7 +213,7 @@ describe('reducers/sak', () => {
       })
     ).toEqual({
       ...initialSakState,
-      arbeidsgivere: [{
+      arbeidsperioder: [{
         fraDato: '1',
         tilDato: '1',
         fraInntektsregisteret: 'ja',

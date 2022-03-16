@@ -1,4 +1,4 @@
-import { Arbeidsgiver } from 'declarations/types'
+import { ArbeidsperiodeFraAA } from 'declarations/types'
 
 export default {
   fraDato: '01.01.1970',
@@ -7,4 +7,4 @@ export default {
   arbeidsgiversOrgnr: '123456789',
   fraInntektsregisteret: 'nei',
   fraArbeidsgiverregisteret: 'ja'
-} as Arbeidsgiver
+} as ArbeidsperiodeFraAA

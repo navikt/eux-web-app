@@ -75,7 +75,9 @@ const SaveSEDModal = ({
     if (performValidation()) {
       const dateString = new Date().toDateString()
       const newItem: LocalStorageEntry<ReplySed> = {
-        id: replySed.sedId,
+        // replySed.sedId is undefined if we are dealing with a besvar SED, but since the ID is only for local storage purposes
+        // only, generate a random one
+        id: replySed.sedId ?? 'id-' + new Date().getTime(),
         name: name,
         date: dateString,
         content: replySed

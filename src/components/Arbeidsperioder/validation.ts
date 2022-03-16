@@ -4,7 +4,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
-import { getOrgnr } from 'utils/arbeidsgiver'
+import { getOrgnr } from 'utils/arbeidsperioder'
 
 export interface ValidationArbeidsgiverProps {
   arbeidsgiver: PeriodeMedForsikring
@@ -12,7 +12,7 @@ export interface ValidationArbeidsgiverProps {
   includeAddress: boolean
 }
 
-export interface ValidationArbeidsgiverSøkProps {
+export interface ValidationArbeidsperioderSøkProps {
   fom: string
   tom: string
   inntektslistetype: string
@@ -23,7 +23,7 @@ const dateSearchPattern = /^\d{4}-\d{2}$/
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
-export const validateArbeidsgiverSøk = (
+export const validateArbeidsperioderSøk = (
   v: Validation,
   t: TFunction,
   {
@@ -31,7 +31,7 @@ export const validateArbeidsgiverSøk = (
     tom,
     inntektslistetype,
     namespace
-  }: ValidationArbeidsgiverSøkProps
+  }: ValidationArbeidsperioderSøkProps
 ): boolean => {
   let hasErrors: boolean = false
   if (_.isEmpty(fom.trim())) {

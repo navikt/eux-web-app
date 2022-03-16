@@ -1,17 +1,17 @@
 import { Add } from '@navikt/ds-icons'
-import { updateArbeidsgivere } from 'actions/arbeidsgiver'
+import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation } from 'actions/validation'
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
-import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
-import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsgiver/validation'
+import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
+import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
+import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsperioder/validation'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -29,18 +29,18 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattValidation'
 
 interface AnsattSelector extends PersonManagerFormSelector {
-  arbeidsperioder: Arbeidsperioder | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
 }
 
 const mapState = (state: State): AnsattSelector => ({
-  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
   validation: state.validation.status
 })
 
@@ -135,15 +135,15 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     if (!newPerioder) {
       newPerioder = []
     }
-    const newArbeidsgivere: Array<Arbeidsgiver> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
+    const newArbeidsgivere: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
     const needleId: string | undefined = getOrgnr(newArbeidsgiver, 'organisasjonsnummer')
 
     if (needleId) {
-      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
+      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: ArbeidsperiodeFraAA) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
         newArbeidsgivere[indexArbeidsgiver].fraDato = newArbeidsgiver.startdato
         newArbeidsgivere[indexArbeidsgiver].tilDato = newArbeidsgiver.sluttdato
-        dispatch(updateArbeidsgivere(newArbeidsgivere))
+        dispatch(updateArbeidsperioder(newArbeidsgivere))
       }
 
       if (selected) {
@@ -453,7 +453,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
                 editable='only_period'
                 newArbeidsgiver={false}
@@ -473,7 +473,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
                 editable='full'
                 error={item.duplicate}
@@ -510,7 +510,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
-      <ArbeidsgiverSøk
+      <ArbeidsperioderSøk
         amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
         fnr={fnr}
         fillOutFnr={() => {

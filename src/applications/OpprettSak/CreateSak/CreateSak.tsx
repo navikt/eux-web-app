@@ -9,15 +9,15 @@ import { setReplySed } from 'actions/svarsed'
 import { resetAllValidation, resetValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
-import Arbeidsgivere from 'components/Arbeidsgiver/Arbeidsgivere'
+import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
 import * as types from 'constants/actionTypes'
 import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import {
-  Arbeidsgiver,
-  Arbeidsperioder,
+  ArbeidsperiodeFraAA,
+  ArbeidsperioderFraAA,
   BucTyper,
   Enhet,
   Enheter,
@@ -56,7 +56,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as DOMLink } from 'react-router-dom'
-import { periodeMedForsikringToArbeidsgiver } from 'utils/arbeidsgiver'
+import { periodeMedForsikringToArbeidsperioderFraAA } from 'utils/arbeidsperioder'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 import h001template from 'mocks/seds/h001template.json'
 import styled from 'styled-components'
@@ -76,7 +76,7 @@ export interface CreateSakSelector {
   gettingArbeidsperioder: boolean
   gettingInstitusjoner: boolean
 
-  arbeidsperioder: Arbeidsperioder | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -91,7 +91,7 @@ export interface CreateSakSelector {
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined
 
-  valgteArbeidsgivere: Array<Arbeidsgiver>
+  valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
   valgtBucType: string | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
   valgtFnr: string | undefined
@@ -129,12 +129,12 @@ const mapState = (state: State): CreateSakSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
-  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
 
   person: state.person.person,
   personRelatert: state.person.personRelatert,
 
-  valgteArbeidsgivere: state.sak.arbeidsgivere,
+  valgteArbeidsperioder: state.sak.arbeidsperioder,
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
@@ -192,7 +192,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     personRelatert,
     sektor,
     tema,
-    valgteArbeidsgivere,
+    valgteArbeidsperioder,
     valgtBucType,
     valgteFamilieRelasjoner,
     valgtFnr,
@@ -216,7 +216,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
   let _sedtyper: Array<Kodeverk | string> = !kodemaps ? [] : !valgtSektor ? [] : !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
-  const visArbeidsgivere: boolean = EKV.Koder.sektor.FB === valgtSektor &&
+  const visArbeidsperioder: boolean = EKV.Koder.sektor.FB === valgtSektor &&
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && !_.isEmpty(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
@@ -260,7 +260,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         sektor: valgtSektor,
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
-        arbeidsgivere: valgteArbeidsgivere,
+        arbeidsperioder: valgteArbeidsperioder,
         enhet: valgtUnit
       }))
     }
@@ -698,17 +698,17 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        {visArbeidsgivere && (
-          <Arbeidsgivere
+        {visArbeidsperioder && (
+          <ArbeidsperioderList
             namespace={namespace + '-arbeidsgivere'}
             searchable
             fnr={person?.fnr}
-            valgteArbeidsgivere={valgteArbeidsgivere}
+            valgteArbeidsperioder={valgteArbeidsperioder}
             arbeidsperioder={arbeidsperioder}
             onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(
               checked
-                ? sakActions.addArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
-                : sakActions.removeArbeidsgiver(periodeMedForsikringToArbeidsgiver(a))
+                ? sakActions.addArbeidsperiode(periodeMedForsikringToArbeidsperioderFraAA(a))
+                : sakActions.removeArbeidsperiode(periodeMedForsikringToArbeidsperioderFraAA(a))
             )}
           />
         )}

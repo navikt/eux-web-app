@@ -2,7 +2,7 @@ import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
-import mockArbeidsgiver from 'mocks/arbeidsgiver/arbeidsgiver'
+import mockArbeidsperiode from 'mocks/arbeidsperioder/arbeidsperiode'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
 
@@ -21,10 +21,10 @@ describe('actions/sak', () => {
     call.mockRestore()
   })
 
-  it('addArbeidsgiver()', () => {
-    expect(sakActions.addArbeidsgiver(mockArbeidsgiver)).toMatchObject({
-      type: types.SAK_ARBEIDSGIVER_ADD,
-      payload: mockArbeidsgiver
+  it('addArbeidsperiode()', () => {
+    expect(sakActions.addArbeidsperiode(mockArbeidsperiode)).toMatchObject({
+      type: types.SAK_ARBEIDSPERIODER_ADD,
+      payload: mockArbeidsperiode
     })
   })
 
@@ -100,10 +100,10 @@ describe('actions/sak', () => {
       }))
   })
 
-  it('removeArbeidsgiver()', () => {
-    expect(sakActions.removeArbeidsgiver(mockArbeidsgiver)).toMatchObject({
-      type: types.SAK_ARBEIDSGIVER_REMOVE,
-      payload: mockArbeidsgiver
+  it('removeArbeidsperiode()', () => {
+    expect(sakActions.removeArbeidsperiode(mockArbeidsperiode)).toMatchObject({
+      type: types.SAK_ARBEIDSPERIODER_REMOVE,
+      payload: mockArbeidsperiode
     })
   })
 

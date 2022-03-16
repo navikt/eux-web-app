@@ -1,7 +1,7 @@
 import { AdresseState } from 'reducers/adresse'
 import { AlertState } from 'reducers/alert'
 import { AppState } from 'reducers/app'
-import { ArbeidsgiverState } from 'reducers/arbeidsgiver'
+import { ArbeidsperioderState } from 'reducers/arbeidsperioder'
 import { AttachmentsState } from 'reducers/attachments'
 import { InntektState } from 'reducers/inttekt'
 import { LoadingState } from 'reducers/loading'
@@ -18,7 +18,7 @@ export interface State {
   adresse: AdresseState,
   alert: AlertState,
   app: AppState,
-  arbeidsgiver: ArbeidsgiverState,
+  arbeidsperioder: ArbeidsperioderState,
   attachments: AttachmentsState,
   inntekt: InntektState,
   loading: LoadingState,

@@ -1,21 +1,21 @@
 import { Add } from '@navikt/ds-icons'
 import { Button, Heading, Ingress } from '@navikt/ds-react'
-import { updateArbeidsgivere } from 'actions/arbeidsgiver'
+import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { fetchInntekt } from 'actions/inntekt'
 import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/PersonManager/Identifikator/Identifikator'
 import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/InntektSearch'
 import { PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
-import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
+import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
+import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import Inntekt from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder, IInntekter, Validation } from 'declarations/types'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -25,13 +25,13 @@ import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSepar
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { generateIdentifikatorKey, getOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsgiver'
+import { generateIdentifikatorKey, getOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validation'
 
 export interface ArbeidsforholdSelector extends PersonManagerFormSelector {
-  arbeidsperioder: Arbeidsperioder | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   gettingArbeidsperioder: boolean
   inntekter: IInntekter | undefined
   gettingInntekter: boolean
@@ -47,7 +47,7 @@ export interface ArbeidsforholdProps {
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({
-  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
@@ -126,14 +126,14 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const onPeriodeMedForsikringEdit = (newPeriodeMedForsikring: PeriodeMedForsikring, oldPeriodeMedForsikring: PeriodeMedForsikring, selected: boolean) => {
     const newPerioderMedForsikring: Array<PeriodeMedForsikring> = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
-    const newArbeidsgivere: Array<Arbeidsgiver> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<Arbeidsgiver>
+    const newArbeidsgivere: Array<ArbeidsperiodeFraAA> = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
     const needleId: string | undefined = getOrgnr(newPeriodeMedForsikring, 'organisasjonsnummer')
     if (needleId) {
-      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: Arbeidsgiver) => p.arbeidsgiversOrgnr === needleId)
+      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: ArbeidsperiodeFraAA) => p.arbeidsgiversOrgnr === needleId)
       if (indexArbeidsgiver >= 0) {
         newArbeidsgivere[indexArbeidsgiver].fraDato = newPeriodeMedForsikring.startdato
         newArbeidsgivere[indexArbeidsgiver].tilDato = newPeriodeMedForsikring.sluttdato
-        dispatch(updateArbeidsgivere(newArbeidsgivere))
+        dispatch(updateArbeidsperioder(newArbeidsgivere))
       }
       if (selected) {
         const indexPerioder = _.findIndex(newPerioderMedForsikring, (p: PeriodeMedForsikring) =>
@@ -339,7 +339,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column flex='2'>
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={item.item}
                 editable='no'
                 includeAddress={includeAddress}
@@ -366,7 +366,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={item.item}
                 editable='only_period'
                 includeAddress={includeAddress}
@@ -385,7 +385,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         element = (
           <AlignStartRow className='slideInFromLeft'>
             <Column>
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={item.item}
                 editable='full'
                 includeAddress={includeAddress}
@@ -422,7 +422,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
-      <ArbeidsgiverSøk
+      <ArbeidsperioderSøk
         amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}

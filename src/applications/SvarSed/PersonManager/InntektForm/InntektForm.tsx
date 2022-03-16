@@ -5,8 +5,8 @@ import InntektSearch from 'applications/SvarSed/PersonManager/InntektSearch/Innt
 import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsgiverBox from 'components/Arbeidsgiver/ArbeidsgiverBox'
-import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
+import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
+import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
@@ -16,7 +16,7 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import { Loennsopplysning, Periode, PeriodeMedForsikring, PeriodeType } from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
-import { Arbeidsperioder, IInntekter } from 'declarations/types'
+import { ArbeidsperioderFraAA, IInntekter } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -35,20 +35,20 @@ import {
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { arbeidsgiverToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsgiver'
+import { arbeidsperioderFraAAToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import { validateLoennsopplysning, ValidationLoennsopplysningProps } from './validationInntektForm'
 
 interface InntektFormSelector extends PersonManagerFormSelector {
   gettingInntekter: boolean
-  arbeidsperioder: Arbeidsperioder | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   inntekter: IInntekter | undefined
 }
 
 const mapState = (state: State): InntektFormSelector => ({
   gettingInntekter: state.loading.gettingInntekter,
-  arbeidsperioder: state.arbeidsgiver.arbeidsperioder,
+  arbeidsperioder: state.arbeidsperioder.arbeidsperioder,
   inntekter: state.inntekt.inntekter,
   validation: state.validation.status
 })
@@ -403,7 +403,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </Ingress>
       <VerticalSeparatorDiv />
-      <ArbeidsgiverSøk
+      <ArbeidsperioderSøk
         amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}
@@ -416,9 +416,9 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
           </Heading>
           <VerticalSeparatorDiv size='2' />
           {arbeidsperioder?.arbeidsperioder?.map(a => {
-            const period: PeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(a)
+            const period: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(a)
             return (
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={period}
                 editable='no'
                 includeAddress={false}

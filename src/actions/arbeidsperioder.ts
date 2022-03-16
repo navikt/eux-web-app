@@ -1,8 +1,8 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
-import mockArbeidsperioder from 'mocks/arbeidsgiver/arbeidsperioder'
+import mockArbeidsperioder from 'mocks/arbeidsperioder/arbeidsperioder'
 import { ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
@@ -13,9 +13,9 @@ export interface GetArbeidsperiodeOptions {
   tom: string
 }
 
-export const fetchArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<Arbeidsperioder>>> = (
+export const fetchArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<ArbeidsperioderFraAA>>> = (
   options: GetArbeidsperiodeOptions
-): ThunkResult<ActionWithPayload<Arbeidsperioder>> => {
+): ThunkResult<ActionWithPayload<ArbeidsperioderFraAA>> => {
   return call({
     url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, options),
     expectedPayload: mockArbeidsperioder,
@@ -27,9 +27,9 @@ export const fetchArbeidsperioder: ActionCreator<ThunkResult<ActionWithPayload<A
   })
 }
 
-export const updateArbeidsgivere: ActionCreator<ActionWithPayload<Array<Arbeidsgiver>>> = (
-  arbeidsgivere: Array<Arbeidsgiver>
-): ActionWithPayload<Array<Arbeidsgiver>> => ({
+export const updateArbeidsperioder: ActionCreator<ActionWithPayload<Array<ArbeidsperiodeFraAA>>> = (
+  arbeidsperioder: Array<ArbeidsperiodeFraAA>
+): ActionWithPayload<Array<ArbeidsperiodeFraAA>> => ({
   type: types.ARBEIDSPERIODER_UPDATE,
-  payload: arbeidsgivere
+  payload: arbeidsperioder
 })

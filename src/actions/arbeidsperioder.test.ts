@@ -1,4 +1,4 @@
-import * as arbeidsgiverActions from 'actions/arbeidsgiver'
+import * as arbeidsperioderActions from 'actions/arbeidsperioder'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
@@ -7,7 +7,7 @@ const sprintf = require('sprintf-js').sprintf
 jest.mock('@navikt/fetch', () => ({ call: jest.fn() }))
 const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
 
-describe('actions/arbeidsgiver', () => {
+describe('actions/arbeidsperioder', () => {
   afterEach(() => {
     call.mockReset()
   })
@@ -23,7 +23,7 @@ describe('actions/arbeidsgiver', () => {
       fom: 'fom',
       tom: 'tom'
     }
-    arbeidsgiverActions.fetchArbeidsperioder(mockOptions)
+    arbeidsperioderActions.fetchArbeidsperioder(mockOptions)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -35,9 +35,9 @@ describe('actions/arbeidsgiver', () => {
       }))
   })
 
-  it('updateArbeidsgivere()', () => {
+  it('updateArbeidsperioder()', () => {
     const payload = 'mockPayload'
-    expect(arbeidsgiverActions.updateArbeidsgivere(payload))
+    expect(arbeidsperioderActions.updateArbeidsperioder(payload))
       .toMatchObject({
         type: types.ARBEIDSPERIODER_UPDATE,
         payload: payload

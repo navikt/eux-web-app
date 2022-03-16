@@ -1,4 +1,4 @@
-import { GetArbeidsperiodeOptions, fetchArbeidsperioder } from 'actions/arbeidsgiver'
+import { GetArbeidsperiodeOptions, fetchArbeidsperioder } from 'actions/arbeidsperioder'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Option, Options } from 'declarations/app'
@@ -13,39 +13,39 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { validateArbeidsgiverSøk, ValidationArbeidsgiverSøkProps } from './validation'
+import { validateArbeidsperioderSøk, ValidationArbeidsperioderSøkProps } from './validation'
 import { Search } from '@navikt/ds-icons'
 
-interface ArbeidsgiverSøkProps {
+interface ArbeidsperioderSøkProps {
   amplitude ?: string
   fnr: string | undefined
   namespace: string
   fillOutFnr ?: () => void
 }
 
-interface ArbeidsgiverSøkSelector {
+interface ArbeidsperioderSøkSelector {
   gettingArbeidsperioder: boolean
 }
 
-const mapState = (state: State): ArbeidsgiverSøkSelector => ({
+const mapState = (state: State): ArbeidsperioderSøkSelector => ({
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder
 })
 
-const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
+const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   amplitude,
   fnr,
   namespace,
   fillOutFnr
-}: ArbeidsgiverSøkProps): JSX.Element => {
+}: ArbeidsperioderSøkProps): JSX.Element => {
   const { t } = useTranslation()
-  const { gettingArbeidsperioder }: ArbeidsgiverSøkSelector = useSelector<State, ArbeidsgiverSøkSelector>(mapState)
+  const { gettingArbeidsperioder }: ArbeidsperioderSøkSelector = useSelector<State, ArbeidsperioderSøkSelector>(mapState)
   const dispatch = useDispatch()
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('2015-01')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))
   const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
 
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationArbeidsgiverSøkProps>({}, validateArbeidsgiverSøk)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationArbeidsperioderSøkProps>({}, validateArbeidsperioderSøk)
 
   const inntektslistetypeOptions : Options = [
     { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
@@ -168,4 +168,4 @@ const ArbeidsgiverSøk: React.FC<ArbeidsgiverSøkProps> = ({
   )
 }
 
-export default ArbeidsgiverSøk
+export default ArbeidsperioderSøk

@@ -6,7 +6,7 @@ export interface OldPeriod {
   tom: string
 }
 
-export interface Arbeidsgiver {
+export interface ArbeidsperiodeFraAA {
   fraDato?: string
   tilDato?: string
   fraInntektsregisteret?: string
@@ -15,10 +15,10 @@ export interface Arbeidsgiver {
   arbeidsgiversNavn ?: string
 }
 
-export interface Arbeidsperioder {
+export interface ArbeidsperioderFraAA {
   uriArbeidsgiverRegister: string
   uriInntektRegister: string
-  arbeidsperioder: Array<Arbeidsgiver>
+  arbeidsperioder: Array<ArbeidsperiodeFraAA>
 }
 
 export type StringMap = {[k: string]: string}

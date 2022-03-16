@@ -37,7 +37,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
     gettingInstitusjoner: false,
 
     arbeidsperioder: undefined,
-    valgteArbeidsgivere: [],
+    valgteArbeidsperioder: [],
     valgtBucType: undefined,
     valgteFamilieRelasjoner: [],
     fagsaker: undefined,

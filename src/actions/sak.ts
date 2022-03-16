@@ -1,6 +1,6 @@
 import { ParamPayload } from 'declarations/app'
 import {
-  Arbeidsgiver,
+  ArbeidsperiodeFraAA,
   FagSaker,
   OldFamilieRelasjon,
   Institusjoner,
@@ -17,10 +17,10 @@ import * as urls from 'constants/urls'
 
 const sprintf = require('sprintf-js').sprintf
 
-export const addArbeidsgiver: ActionCreator<ActionWithPayload<Arbeidsgiver>> = (
-  payload: Arbeidsgiver
-): ActionWithPayload<Arbeidsgiver> => ({
-  type: types.SAK_ARBEIDSGIVER_ADD,
+export const addArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
+  payload: ArbeidsperiodeFraAA
+): ActionWithPayload<ArbeidsperiodeFraAA> => ({
+  type: types.SAK_ARBEIDSPERIODER_ADD,
   payload: payload
 })
 
@@ -54,8 +54,8 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
   if (data.enhet) {
     payload.enhet = data.enhet
   }
-  if (data.arbeidsgivere && data.arbeidsgivere.length > 0) {
-    payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsgivere
+  if (data.arbeidsperioder && data.arbeidsperioder.length > 0) {
+    payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsperioder
   }
   if (data.familierelasjoner && data.familierelasjoner.length > 0) {
     payload.tilleggsopplysninger.familierelasjoner = data.familierelasjoner.map((relasjon: any) => ({
@@ -121,10 +121,10 @@ export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kod
   })
 }
 
-export const removeArbeidsgiver: ActionCreator<ActionWithPayload<Arbeidsgiver>> = (
-  payload: Arbeidsgiver
-): ActionWithPayload<Arbeidsgiver> => ({
-  type: types.SAK_ARBEIDSGIVER_REMOVE,
+export const removeArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
+  payload: ArbeidsperiodeFraAA
+): ActionWithPayload<ArbeidsperiodeFraAA> => ({
+  type: types.SAK_ARBEIDSPERIODER_REMOVE,
   payload: payload
 })
 

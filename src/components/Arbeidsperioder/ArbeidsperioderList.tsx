@@ -1,16 +1,16 @@
-import ArbeidsgiverSøk from 'components/Arbeidsgiver/ArbeidsgiverSøk'
+import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import { PeriodeMedForsikring } from 'declarations/sed'
-import { Arbeidsgiver, Arbeidsperioder } from 'declarations/types.d'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types.d'
 import _ from 'lodash'
 import { BodyLong } from '@navikt/ds-react'
 import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { arbeidsgiverToPeriodeMedForsikring } from 'utils/arbeidsgiver'
-import ArbeidsgiverBox, { Editable } from './ArbeidsgiverBox'
+import { arbeidsperioderFraAAToPeriodeMedForsikring } from 'utils/arbeidsperioder'
+import ArbeidsperioderBox, { Editable } from './ArbeidsperioderBox'
 
-export interface ArbeidsgivereProps {
-  arbeidsperioder: Arbeidsperioder | null | undefined
+export interface ArbeidsperioderListProps {
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   editable?: Editable
   fnr: string | undefined
   namespace: string
@@ -19,10 +19,10 @@ export interface ArbeidsgivereProps {
   onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
   searchable?: boolean
-  valgteArbeidsgivere: Array<Arbeidsgiver>
+  valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
 }
 
-const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
+const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
   arbeidsperioder,
   editable = 'no',
   fnr,
@@ -32,8 +32,8 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   onArbeidsgiverEdit = () => {},
   onArbeidsgiverDelete = () => {},
   searchable = false,
-  valgteArbeidsgivere
-}: ArbeidsgivereProps): JSX.Element => {
+  valgteArbeidsperioder
+}: ArbeidsperioderListProps): JSX.Element => {
   const { t } = useTranslation()
   return (
     <Row>
@@ -41,7 +41,7 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
         {searchable && (
           <Row>
             <Column>
-              <ArbeidsgiverSøk
+              <ArbeidsperioderSøk
                 fnr={fnr}
                 namespace={namespace}
               />
@@ -50,17 +50,19 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
         )}
         {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2' />}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
-          (arbeidsgiver: Arbeidsgiver) => {
-            const selected: boolean = valgteArbeidsgivere
-              ? valgteArbeidsgivere.find((item: Arbeidsgiver) => item.arbeidsgiversOrgnr === arbeidsgiver.arbeidsgiversOrgnr) !== undefined
+          (arbeidsperiode: ArbeidsperiodeFraAA) => {
+            const selected: boolean = valgteArbeidsperioder
+              ? valgteArbeidsperioder.find((item: ArbeidsperiodeFraAA) =>
+              item.arbeidsgiversOrgnr === arbeidsperiode.arbeidsgiversOrgnr &&
+              item.fraDato === arbeidsperiode.fraDato && item.tilDato === arbeidsperiode.tilDato) !== undefined
               : false
-            const arbeidsgiverAsPeriodeMedForsikring = arbeidsgiverToPeriodeMedForsikring(arbeidsgiver)
+            const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
             return (
-              <ArbeidsgiverBox
+              <ArbeidsperioderBox
                 arbeidsgiver={arbeidsgiverAsPeriodeMedForsikring}
                 editable={editable}
                 selected={selected}
-                key={arbeidsgiver.arbeidsgiversOrgnr}
+                key={arbeidsperiode.arbeidsgiversOrgnr}
                 onArbeidsgiverSelect={onArbeidsgiverSelect}
                 onArbeidsgiverDelete={onArbeidsgiverDelete}
                 onArbeidsgiverEdit={onArbeidsgiverEdit}
@@ -82,4 +84,5 @@ const Arbeidsgivere: React.FC<ArbeidsgivereProps> = ({
   )
 }
 
-export default Arbeidsgivere
+export default ArbeidsperioderList
+

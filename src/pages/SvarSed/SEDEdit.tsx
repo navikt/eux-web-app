@@ -19,7 +19,7 @@ import SEDType from 'applications/SvarSed/Formaal/SEDType'
 import Tema from 'applications/SvarSed/Formaal/Tema'
 import Adresser from 'applications/SvarSed/PersonManager/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/PersonManager/Anmodning/Anmodning'
-import Arbeidsperioder from 'applications/SvarSed/PersonManager/Arbeidsperioder/Arbeidsperioder'
+import ArbeidsperioderOversikt from 'applications/SvarSed/PersonManager/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
 import BeløpNavnOgValuta from 'applications/SvarSed/PersonManager/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import EndredeForhold from 'applications/SvarSed/PersonManager/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/PersonManager/Familierelasjon/Familierelasjon'
@@ -391,7 +391,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({
               { label: t('el:option-personmanager-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
               { label: t('el:option-personmanager-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', family: true },
               { label: t('el:option-personmanager-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
-              { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: Arbeidsperioder, type: 'U002' },
+              { label: t('el:option-personmanager-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: 'U002' },
               { label: t('el:option-personmanager-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
               { label: t('el:option-personmanager-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
               { label: t('el:option-personmanager-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },

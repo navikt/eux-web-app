@@ -1,20 +1,20 @@
 import * as types from 'constants/actionTypes'
-import { Arbeidsperioder } from 'declarations/types.d'
+import { ArbeidsperioderFraAA } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 
-export interface ArbeidsgiverState {
-  arbeidsperioder: Arbeidsperioder | null | undefined
+export interface ArbeidsperioderState {
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
 }
 
-export const initialArbeidsgiverState: ArbeidsgiverState = {
+export const initialArbeidsperioderState: ArbeidsperioderState = {
   arbeidsperioder: undefined
 }
 
-const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState, action: ActionWithPayload = { type: '', payload: undefined }): ArbeidsgiverState => {
+const arbeidsperioderReducer = (state: ArbeidsperioderState = initialArbeidsperioderState, action: ActionWithPayload = { type: '', payload: undefined }): ArbeidsperioderState => {
   switch (action.type) {
     case types.APP_CLEAN:
-      return initialArbeidsgiverState
+      return initialArbeidsperioderState
 
     case types.ARBEIDSPERIODER_GET_REQUEST:
       return {
@@ -35,7 +35,7 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
       }
 
     case types.ARBEIDSPERIODER_UPDATE: {
-      const newArbeidsperioder: Arbeidsperioder | null | undefined = _.cloneDeep(state.arbeidsperioder)
+      const newArbeidsperioder: ArbeidsperioderFraAA | null | undefined = _.cloneDeep(state.arbeidsperioder)
       if (_.isNil(newArbeidsperioder)) {
         return state
       }
@@ -52,4 +52,4 @@ const arbeidsgiverReducer = (state: ArbeidsgiverState = initialArbeidsgiverState
       return state
   }
 }
-export default arbeidsgiverReducer
+export default arbeidsperioderReducer

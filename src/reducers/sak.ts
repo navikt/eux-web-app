@@ -2,8 +2,7 @@ import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import * as types from 'constants/actionTypes'
 import {
-  Arbeidsgiver,
-  Arbeidsperioder,
+  ArbeidsperiodeFraAA,
   FagSaker,
   OldFamilieRelasjon,
   Institusjon,
@@ -13,8 +12,7 @@ import {
 import { Action } from 'redux'
 
 export interface SakState {
-  arbeidsperioder: Arbeidsperioder | undefined
-  arbeidsgivere: Array<Arbeidsgiver>
+  arbeidsperioder: Array<ArbeidsperiodeFraAA>
   buctype: any
   familierelasjoner: Array<OldFamilieRelasjon>
   fagsaker: FagSaker | undefined | null
@@ -33,8 +31,7 @@ export interface SakState {
 }
 
 export const initialSakState: SakState = {
-  arbeidsperioder: undefined,
-  arbeidsgivere: [],
+  arbeidsperioder: [],
   buctype: undefined,
   fagsaker: undefined,
   familierelasjoner: [],
@@ -143,16 +140,16 @@ const sakReducer = (state: SakState = initialSakState, action: Action | ActionWi
         [(action as ActionWithPayload).payload.key]: (action as ActionWithPayload).payload.value
       }
 
-    case types.SAK_ARBEIDSGIVER_ADD:
+    case types.SAK_ARBEIDSPERIODER_ADD:
       return {
         ...state,
-        arbeidsgivere: (state.arbeidsgivere || []).concat((action as ActionWithPayload).payload)
+        arbeidsperioder: (state.arbeidsperioder || []).concat((action as ActionWithPayload).payload)
       }
 
-    case types.SAK_ARBEIDSGIVER_REMOVE:
+    case types.SAK_ARBEIDSPERIODER_REMOVE:
       return {
         ...state,
-        arbeidsgivere: _.reject(state.arbeidsgivere, i => _.isEqual(i, (action as ActionWithPayload).payload))
+        arbeidsperioder: _.reject(state.arbeidsperioder, i => _.isEqual(i, (action as ActionWithPayload).payload))
       }
 
     case types.SAK_FAMILIERELASJONER_ADD:
