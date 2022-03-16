@@ -326,90 +326,92 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     </>
   )
 
+  const renderPlanItem = (item: any) => {
+    if (item.type === 'periode') {
+      const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as PeriodeMedForsikring) : false
+      return (
+        <>
+          <Column flex='2'>
+            <ArbeidsperioderBox
+              arbeidsgiver={item.item}
+              editable='no'
+              includeAddress={includeAddress}
+              orphanArbeidsgiver
+              key={getOrgnr(item.item, 'organisasjonsnummer')}
+              namespace={namespace}
+              selectable={false}
+            />
+          </Column>
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem
+              marginTop
+              onBeginRemove={() => addToDeletion(item.item as PeriodeMedForsikring)}
+              onConfirmRemove={() => removePeriodeMedForsikring(item.item as PeriodeMedForsikring)}
+              onCancelRemove={() => removeFromDeletion(item.item as PeriodeMedForsikring)}
+            />
+          </Column>
+        </>
+      )
+    }
+
+    if (item.type === 'arbeidsperiode') {
+      return (
+        <Column>
+          <ArbeidsperioderBox
+            arbeidsgiver={item.item}
+            editable='only_period'
+            includeAddress={includeAddress}
+            newArbeidsgiver={false}
+            selected={!_.isNil(item.index) && item.index >= 0}
+            key={getOrgnr(item.item, 'organisasjonsnummer')}
+            onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
+            onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
+            namespace={namespace}
+          />
+        </Column>
+      )
+    }
+
+    if (item.type === 'addedArbeidsperiode') {
+      return (
+        <Column>
+          <ArbeidsperioderBox
+            arbeidsgiver={item.item}
+            editable='full'
+            includeAddress={includeAddress}
+            error={item.duplicate}
+            newArbeidsgiver
+            selected={!_.isNil(item.index) && item.index >= 0}
+            key={getOrgnr(item.item, 'organisasjonsnummer')}
+            onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
+            onArbeidsgiverDelete={onPeriodeMedForsikringDelete}
+            onArbeidsgiverEdit={onAddedPeriodeMedForsikringEdit}
+            namespace={namespace}
+          />
+        </Column>
+      )
+    }
+  }
+
   const renderPlan = () => {
     const plan = makeRenderPlan<PeriodeMedForsikring>({
       perioder,
       arbeidsperioder,
       addedArbeidsperioder: _addedPeriodeMedForsikring
     })
-    return plan?.map((item: PlanItem<PeriodeMedForsikring>, i: number) => {
-      let element: JSX.Element | null = null
-      if (item.type === 'orphan') {
-        const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as PeriodeMedForsikring) : false
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <Column flex='2'>
-              <ArbeidsperioderBox
-                arbeidsgiver={item.item}
-                editable='no'
-                includeAddress={includeAddress}
-                orphanArbeidsgiver
-                key={getOrgnr(item.item, 'organisasjonsnummer')}
-                namespace={namespace}
-                selectable={false}
-              />
-            </Column>
-            <Column>
-              <AddRemovePanel
-                candidateForDeletion={candidateForDeletion}
-                existingItem
-                marginTop
-                onBeginRemove={() => addToDeletion(item.item as PeriodeMedForsikring)}
-                onConfirmRemove={() => removePeriodeMedForsikring(item.item as PeriodeMedForsikring)}
-                onCancelRemove={() => removeFromDeletion(item.item as PeriodeMedForsikring)}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-      if (item.type === 'arbeidsgiver') {
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <Column>
-              <ArbeidsperioderBox
-                arbeidsgiver={item.item}
-                editable='only_period'
-                includeAddress={includeAddress}
-                newArbeidsgiver={false}
-                selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item, 'organisasjonsnummer')}
-                onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
-                onArbeidsgiverEdit={onPeriodeMedForsikringEdit}
-                namespace={namespace}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-      if (item.type === 'addedArbeidsgiver') {
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <Column>
-              <ArbeidsperioderBox
-                arbeidsgiver={item.item}
-                editable='full'
-                includeAddress={includeAddress}
-                error={item.duplicate}
-                newArbeidsgiver
-                selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item, 'organisasjonsnummer')}
-                onArbeidsgiverSelect={onPeriodeMedForsikringSelect}
-                onArbeidsgiverDelete={onPeriodeMedForsikringDelete}
-                onArbeidsgiverEdit={onAddedPeriodeMedForsikringEdit}
-                namespace={namespace}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-
-      return (
-        <div key={i}>
-          {element}
-          <VerticalSeparatorDiv />
-        </div>
-      )
-    })
+    return plan?.map((item: PlanItem<PeriodeMedForsikring>) => (
+      <div key={
+        item.item?.arbeidsgiver?.identifikatorer?.map(i => i.type + '-' + i.id).join(',') ?? '' +
+        '-' + item.item.startdato + '-' + item.item.sluttdato
+      }>
+        <AlignStartRow className='slideInFromLeft'>
+          {renderPlanItem(item)}
+        </AlignStartRow>
+        <VerticalSeparatorDiv/>
+      </div>
+    ))
   }
 
   return (

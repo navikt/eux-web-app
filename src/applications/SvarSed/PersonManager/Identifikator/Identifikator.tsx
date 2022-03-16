@@ -156,7 +156,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               error={getErrorFor('id')}
               id='id'
               key={namespace + idx + '-id-' + (index < 0 ? _newId : identifikator?.id)}
-              label={t('label:institusjonens-id') + ' *'}
+              label={t('label:inst-id') + ' *'}
               namespace={namespace + idx}
               onChanged={(value: string) => setId(value, index)}
               value={index < 0 ? _newId : identifikator?.id}

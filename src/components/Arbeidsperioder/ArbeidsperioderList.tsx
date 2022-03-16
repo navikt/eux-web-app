@@ -37,7 +37,7 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
   const { t } = useTranslation()
   return (
     <Row>
-      <Column className='arbeidsgiver'>
+      <Column>
         {searchable && (
           <Row>
             <Column>

@@ -1,10 +1,8 @@
-import { Periode, PeriodeMedForsikring } from 'declarations/sed'
+import { Periode, PeriodeMedForsikring, PlanItemType } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { arbeidsperioderFraAAToPeriodeMedForsikring } from './arbeidsperioder'
-
-export type PlanItemType = 'orphan' | 'arbeidsgiver' | 'addedArbeidsgiver'
 
 export interface PlanItem<T> {
   type: PlanItemType
@@ -54,11 +52,11 @@ export default <T extends Periode | PeriodeMedForsikring>({
   const unmatchedArbeidsgiver: Plan<T> = []
   const unmatchedAddedArbeidsgiver: Plan<T> = []
 
-  // 1st step: all all existing periodes into plan
+  // 1st step: add all existing periodes into plan
 
   let plan: Plan<T> = perioder?.map((periode: T, index: number) => ({
     item: periode,
-    type: 'orphan',
+    type: 'periode',
     selected: undefined,
     duplicate: undefined,
     index: index
@@ -82,14 +80,14 @@ export default <T extends Periode | PeriodeMedForsikring>({
       // by having an index, it is marked as selected
       plan[foundIndex] = {
         item: isPeriode ? arbeidsgiverAsPeriodeMedForsikring as T : plan[foundIndex].item,
-        type: 'arbeidsgiver',
+        type: 'arbeidsperiode',
         duplicate: false,
         index: foundIndex
       }
     } else {
       unmatchedArbeidsgiver.push({
         item: arbeidsgiverAsPeriodeMedForsikring as T,
-        type: 'arbeidsgiver',
+        type: 'arbeidsperiode',
         duplicate: false,
         index: undefined
       })
@@ -102,12 +100,12 @@ export default <T extends Periode | PeriodeMedForsikring>({
 
   addedArbeidsperioder.forEach((arbeidsgiver: PeriodeMedForsikring) => {
     const foundPeriodeIndex: number = _.findIndex(plan, (item: PlanItem<T>) => {
-      return item.type === 'orphan'
+      return item.type === 'periode'
         ? getStartDato(item.item as T) === arbeidsgiver.startdato && getSluttDato(item.item as T) === arbeidsgiver.sluttdato
         : false // only match Periods
     })
     const foundArbeidsgiver: boolean = _.find(plan, (item: PlanItem<T>) => {
-      return item.type === 'arbeidsgiver'
+      return item.type === 'arbeidsperiode'
         ? (item.item as PeriodeMedForsikring).startdato === arbeidsgiver.startdato && (item.item as PeriodeMedForsikring).sluttdato === arbeidsgiver.sluttdato
         : false // only match PeriodeMedForsikring
     }) !== undefined
@@ -115,14 +113,14 @@ export default <T extends Periode | PeriodeMedForsikring>({
     if (foundPeriodeIndex >= 0) {
       plan[foundPeriodeIndex] = {
         item: arbeidsgiver as T,
-        type: 'addedArbeidsgiver',
+        type: 'addedArbeidsperiode',
         duplicate: false,
         index: foundPeriodeIndex
       }
     } else {
       unmatchedAddedArbeidsgiver.push({
         item: arbeidsgiver as T,
-        type: 'addedArbeidsgiver',
+        type: 'addedArbeidsperiode',
         duplicate: foundArbeidsgiver,
         index: undefined
       })
@@ -133,7 +131,7 @@ export default <T extends Periode | PeriodeMedForsikring>({
 
   // 4th step: sort all by startdato
 
-  return plan?.sort((a: PlanItem<T>, b: PlanItem<T>) => {
-    return moment(getStartDato(a.item), 'YYYY-MM-DD').isSameOrBefore(moment(getStartDato(b.item), 'YYYY-MM-DD')) ? -1 : 1
-  })
+  return plan?.sort((a: PlanItem<T>, b: PlanItem<T>) =>
+     moment(getStartDato(a.item), 'YYYY-MM-DD').isSameOrBefore(moment(getStartDato(b.item), 'YYYY-MM-DD')) ? -1 : 1
+  )
 }

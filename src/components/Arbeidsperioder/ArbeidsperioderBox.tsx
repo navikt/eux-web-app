@@ -188,6 +188,9 @@ const ArbeidsperioderBox = ({
   if (!_arbeidsgiversNavn || _.isEmpty(_arbeidsgiversIdentifikator)) {
     return <div />
   }
+
+  const WrappingComponent = _isEditing && editable === 'full' ? PileCenterDiv : FlexCenterSpacedDiv
+
   return (
     <div
       className='slideInFromLeft'
@@ -200,7 +203,7 @@ const ArbeidsperioderBox = ({
       >
         {_isEditing
           ? (
-            <FlexDiv style={{ padding: '0.5rem 0.5rem 0rem 0.5rem' }}>
+            <FlexDiv style={{ padding: '0.5rem' }}>
               <VerticalSeparatorDiv size='0.5' />
               <Row>
                 <PeriodeInput
@@ -233,7 +236,7 @@ const ArbeidsperioderBox = ({
               )}
             </FlexEndDiv>
             )}
-        <FlexCenterSpacedDiv>
+        <WrappingComponent>
           <FlexDiv style={{ padding: '1rem' }} className='slideInFromLeft'>
             <Office1 width='30' height='30' />
             <HorizontalSeparatorDiv />
@@ -326,7 +329,7 @@ const ArbeidsperioderBox = ({
 
             </>
           </FlexDiv>
-          <FlexDiv style={{ padding: '1rem', flex: 1, flexDirection: 'row-reverse' }} className='slideInFromRight'>
+          <FlexDiv style={{ padding: '1rem', flex: 1, flexDirection: 'row-reverse', alignSelf: 'end' }} className='slideInFromRight'>
             {editable === 'full' && !_isEditing && !_isDeleting && (
               <>
                 <Button
@@ -416,7 +419,7 @@ const ArbeidsperioderBox = ({
               </FlexDiv>
             </PileCenterDiv>
           )}
-        </FlexCenterSpacedDiv>
+        </WrappingComponent>
       </ArbeidsgiverPanel>
       <VerticalSeparatorDiv size='0.5' />
     </div>

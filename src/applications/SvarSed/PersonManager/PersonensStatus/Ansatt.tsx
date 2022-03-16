@@ -46,7 +46,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {arbeidsperioder, validation} = useSelector<State, AnsattSelector>(mapState)
+  const { arbeidsperioder, validation } = useSelector<State, AnsattSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`
@@ -54,22 +54,21 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   const includeAddress = false
   const fnr = getFnr(replySed, personID)
 
+  // added arbeidsperioder list
   const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Array<PeriodeMedForsikring>>([])
 
-  // arbeidsgivere
+  // fields for new arbeidsperiode
   const [_newArbeidsgiverPeriode, _setNewArbeidsgiverPeriode] = useState<Periode>({ startdato: '' })
   const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
   const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
-  const [_validationArbeidsgiver, _resetValidationArbeidsgiver, performValidationArbeidsgiver] =
-    useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+  const [_validationArbeidsperiode, _resetValidationArbeidsperiode, performValidationArbeidsperiode] = useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
-  // periode
+  // fields for new periode (not connected to arbeidsgiver)
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
-  const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] =
-    useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
+  const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] = useValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
 
   const addPeriode = (newPeriode: Periode) => {
     let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
@@ -200,7 +199,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     _setNewArbeidsgiversNavn('')
     _setNewArbeidsgiversOrgnr('')
     _setNewArbeidsgiverPeriode({ startdato: '' })
-    _resetValidationArbeidsgiver()
+    _resetValidationArbeidsperiode()
   }
 
   const resetPeriodeForm = () => {
@@ -220,7 +219,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       }
     }
 
-    const valid: boolean = performValidationArbeidsgiver({
+    const valid: boolean = performValidationArbeidsperiode({
       arbeidsgiver: newArbeidsgiver,
       namespace: namespace + '-arbeidsgiver',
       includeAddress: includeAddress
@@ -260,18 +259,18 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
   }
 
   const onArbeidsgiverPeriodeChanged = (periode: Periode) => {
-    _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-startdato')
-    _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-sluttdato')
+    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-startdato')
+    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-sluttdato')
     _setNewArbeidsgiverPeriode(periode)
   }
 
   const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
-    _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-orgnr')
+    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-orgnr')
     _setNewArbeidsgiversOrgnr(newOrg)
   }
 
   const onArbeidsgiversNavnChanged = (newName: string) => {
-    _resetValidationArbeidsgiver(namespace + '-arbeidsgiver-navn')
+    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-navn')
     _setNewArbeidsgiversNavn(newName)
   }
 
@@ -301,8 +300,8 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         <PeriodeInput
           namespace={namespace}
           error={{
-            startdato: _validationArbeidsgiver[namespace + '-arbeidsgiver-startdato']?.feilmelding,
-            sluttdato: _validationArbeidsgiver[namespace + '-arbeidsgiver-sluttdato']?.feilmelding
+            startdato: _validationArbeidsperiode[namespace + '-arbeidsgiver-startdato']?.feilmelding,
+            sluttdato: _validationArbeidsperiode[namespace + '-arbeidsgiver-sluttdato']?.feilmelding
           }}
           setPeriode={onArbeidsgiverPeriodeChanged}
           value={_newArbeidsgiverPeriode}
@@ -313,7 +312,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <Input
-            error={_validationArbeidsgiver[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
+            error={_validationArbeidsperiode[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
             namespace={namespace + '-arbeidsgiver'}
             id='orgnr'
             key={namespace + '-arbeidsgiver-orgnr-' + _newArbeidsgiversOrgnr}
@@ -324,7 +323,7 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
         </Column>
         <Column>
           <Input
-            error={_validationArbeidsgiver[namespace + '-arbeidsgiver-navn']?.feilmelding}
+            error={_validationArbeidsperiode[namespace + '-arbeidsgiver-navn']?.feilmelding}
             namespace={namespace + '-arbeidsgiver'}
             key={namespace + '-arbeidsgiver-navn-' + _newArbeidsgiversNavn}
             id='navn'
@@ -396,6 +395,80 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
     </RepeatableRow>
   )
 
+  const renderPlanItem = (item: any) => {
+    if (item.type === 'periode') {
+      const idx = getIdx(item.index)
+      const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as Periode) : false
+      const getErrorFor = (el: string): string | undefined => (
+        !_.isNil(item.index) && item.index >= 0
+          ? validation[namespace + '-periode' + idx + '-' + el]?.feilmelding
+          : _validationPeriode[namespace + '-periode-' + el]?.feilmelding
+      )
+      return (
+        <>
+          <PeriodeInput
+            namespace={namespace + '-periode' + idx}
+            error={{
+              startdato: getErrorFor('startdato'),
+              sluttdato: getErrorFor('sluttdato'),
+              aapenPeriodeType: getErrorFor('aapenPeriodeType')
+            }}
+            setPeriode={(p: Periode) => setPeriode(p, item.index!)}
+            value={(item.item as Periode)}
+          />
+          <Column>
+            <AddRemovePanel
+              candidateForDeletion={candidateForDeletion}
+              existingItem
+              marginTop
+              onBeginRemove={() => addToDeletion(item.item as Periode)}
+              onConfirmRemove={() => removePeriode(item.item as Periode)}
+              onCancelRemove={() => removeFromDeletion(item.item as Periode)}
+            />
+          </Column>
+        </>
+      )
+    }
+
+    if (item.type === 'arbeidsperiode') {
+      return (
+        <Column>
+          <ArbeidsperioderBox
+            arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
+            editable='only_period'
+            newArbeidsgiver={false}
+            includeAddress={includeAddress}
+            selected={!_.isNil(item.index) && item.index >= 0}
+            key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
+            onArbeidsgiverSelect={onArbeidsgiverSelect}
+            onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
+            namespace={namespace}
+          />
+        </Column>
+      )
+    }
+
+    if (item.type === 'addedArbeidsperiode') {
+      return (
+        <Column>
+          <ArbeidsperioderBox
+            arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
+            editable='full'
+            error={item.duplicate}
+            newArbeidsgiver
+            includeAddress={includeAddress}
+            selected={!_.isNil(item.index) && item.index >= 0}
+            key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
+            onArbeidsgiverSelect={onArbeidsgiverSelect}
+            onArbeidsgiverDelete={onArbeidsgiverDelete}
+            onArbeidsgiverEdit={onArbeidsgiverEdit}
+            namespace={namespace}
+          />
+        </Column>
+      )
+    }
+  }
+
   const renderPlan = () => {
     const plan = makeRenderPlan<Periode>({
       perioder: perioderSomAnsatt,
@@ -403,92 +476,14 @@ const Ansatt: React.FC<PersonManagerFormProps> = ({
       addedArbeidsperioder: _addedArbeidsperioder
     } as RenderPlanProps<Periode>)
 
-    return plan?.map((item: PlanItem<Periode>, i: number) => {
-      let element: JSX.Element | null = null
-      if (item.type === 'orphan') {
-        const idx = getIdx(item.index)
-        const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as Periode) : false
-        const getErrorFor = (el: string): string | undefined => (
-          !_.isNil(item.index) && item.index >= 0
-            ? validation[namespace + '-periode' + idx + '-' + el]?.feilmelding
-            : _validationPeriode[namespace + '-periode-' + el]?.feilmelding
-        )
-
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <PeriodeInput
-              namespace={namespace + '-periode' + idx}
-              error={{
-                startdato: getErrorFor('startdato'),
-                sluttdato: getErrorFor('sluttdato'),
-                aapenPeriodeType: getErrorFor('aapenPeriodeType')
-              }}
-              setPeriode={(p: Periode) => setPeriode(p, item.index!)}
-              value={(item.item as Periode)}
-            />
-            <Column>
-              <AddRemovePanel
-                candidateForDeletion={candidateForDeletion}
-                existingItem
-                marginTop
-                onBeginRemove={() => addToDeletion(item.item as Periode)}
-                onConfirmRemove={() => removePeriode(item.item as Periode)}
-                onCancelRemove={() => removeFromDeletion(item.item as Periode)}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-
-      if (item.type === 'arbeidsgiver') {
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <Column>
-              <ArbeidsperioderBox
-                arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-                editable='only_period'
-                newArbeidsgiver={false}
-                includeAddress={includeAddress}
-                selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
-                onArbeidsgiverSelect={onArbeidsgiverSelect}
-                onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
-                namespace={namespace}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-
-      if (item.type === 'addedArbeidsgiver') {
-        element = (
-          <AlignStartRow className='slideInFromLeft'>
-            <Column>
-              <ArbeidsperioderBox
-                arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-                editable='full'
-                error={item.duplicate}
-                newArbeidsgiver
-                includeAddress={includeAddress}
-                selected={!_.isNil(item.index) && item.index >= 0}
-                key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
-                onArbeidsgiverSelect={onArbeidsgiverSelect}
-                onArbeidsgiverDelete={onArbeidsgiverDelete}
-                onArbeidsgiverEdit={onArbeidsgiverEdit}
-                namespace={namespace}
-              />
-            </Column>
-          </AlignStartRow>
-        )
-      }
-
-      return (
-        <div key={i}>
-          {element}
-          <VerticalSeparatorDiv />
-        </div>
-      )
-    })
+    return plan?.map((item: PlanItem<Periode>) => (
+      <div key={item.item.startdato + '-' + item.item.sluttdato}>
+        <AlignStartRow className='slideInFromLeft'>
+          {renderPlanItem(item)}
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+      </div>
+    ))
   }
 
   return (
