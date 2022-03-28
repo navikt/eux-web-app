@@ -32,7 +32,7 @@ export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (paylo
     url: urls.API_VEDLEGG_POST_URL,
     method: 'POST',
     payload: payload,
-    expectedFailureRate: 0.5,
+    expectedErrorRate: {500: 0.5},
     expectedPayload: mockSendVedlegg,
     type: {
       request: types.VEDLEGG_POST_REQUEST,

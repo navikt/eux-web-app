@@ -1,8 +1,8 @@
 import { toggleHighContrast } from 'actions/ui'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import { Link, Heading } from '@navikt/ds-react'
+import { Heading, Link } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,25 +22,6 @@ const HeaderContent = styled.header<{highContrast: boolean}>`
   height: 4rem;
   justify-content: space-between;
   align-items: center;
-`
-const Brand = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  margin-left: 1rem;
-`
-const Skillelinje = styled.div`
-  border-left: 1px solid var(--navds-semantic-color-border);
-  display: flex;
-  height: 30px;
-  margin-left: 1rem;
-  margin-right: 1rem;
-`
-const Title = styled.div`
-  color: var(--navds-color-text-primary);
-  display: flex;
-  font-size: 14pt;
-  font-weight: bold;
 `
 const SaksbehandlerDiv = styled.div`
   align-items: flex-end;
@@ -62,7 +43,7 @@ export interface HeaderSelector {
 }
 
 export interface HeaderProps {
-  highContrast: boolean;
+  highContrast: boolean
   title: string
 }
 
@@ -88,18 +69,16 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderContent highContrast={highContrast}>
-      <Brand>
-        <DomLink to='/' onClick={_cleanData}>
-          <NEESSILogo />
-        </DomLink>
-        <Skillelinje />
-        <Title>
-          {t('app:name')}
-        </Title>
-      </Brand>
-      <Heading size='small'>
-        {title}
-      </Heading>
+      <div/>
+        <FlexCenterDiv>
+          <DomLink to='/' onClick={_cleanData}>
+            <NEESSILogo />
+          </DomLink>
+          <HorizontalSeparatorDiv/>
+          <Heading size='small'>
+            {title}
+          </Heading>
+        </FlexCenterDiv>
       <SaksbehandlerDiv>
         <Link
           data-test-id='header__highcontrast-link'

@@ -17,11 +17,11 @@ Object.defineProperty(window, 'location', {
 
 describe('actions/app', () => {
   afterEach(() => {
-    call.mockReset()
+    (call as jest.Mock).mockReset()
   })
 
   afterAll(() => {
-    call.mockRestore()
+    (call as jest.Mock).mockRestore()
   })
 
   it('cleanData()', () => {
