@@ -1,8 +1,9 @@
+import { BackFilled } from '@navikt/ds-icons'
 import { toggleHighContrast } from 'actions/ui'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import { Heading, Link } from '@navikt/ds-react'
+import { Button, Heading, Link } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,12 +23,13 @@ const HeaderContent = styled.header<{highContrast: boolean}>`
   height: 4rem;
   justify-content: space-between;
   align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `
 const SaksbehandlerDiv = styled.div`
   align-items: flex-end;
   display: flex;
   flex-direction: row;
-  margin-right: 1rem;
   align-items: center;
 `
 const Name = styled.div`
@@ -45,6 +47,8 @@ export interface HeaderSelector {
 export interface HeaderProps {
   highContrast: boolean
   title: string
+  backButton?: boolean
+  onGoBackClick?: () => void
 }
 
 export const mapState = (state: State): HeaderSelector => ({
@@ -52,7 +56,9 @@ export const mapState = (state: State): HeaderSelector => ({
 })
 
 const Header: React.FC<HeaderProps> = ({
+  backButton,
   highContrast,
+  onGoBackClick,
   title
 }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
@@ -69,16 +75,27 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderContent highContrast={highContrast}>
-      <div/>
-        <FlexCenterDiv>
-          <DomLink to='/' onClick={_cleanData}>
-            <NEESSILogo />
-          </DomLink>
-          <HorizontalSeparatorDiv/>
-          <Heading size='small'>
-            {title}
-          </Heading>
-        </FlexCenterDiv>
+      <div>
+        {backButton && (
+          <Button
+            variant='secondary'
+            onClick={onGoBackClick}
+          >
+            <BackFilled />
+            <HorizontalSeparatorDiv size='0.5' />
+            {t('label:tilbake')}
+          </Button>
+        )}
+      </div>
+      <FlexCenterDiv>
+        <DomLink to='/' onClick={_cleanData}>
+          <NEESSILogo />
+        </DomLink>
+        <HorizontalSeparatorDiv/>
+        <Heading size='small'>
+          {title}
+        </Heading>
+      </FlexCenterDiv>
       <SaksbehandlerDiv>
         <Link
           data-test-id='header__highcontrast-link'

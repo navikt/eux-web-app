@@ -1,7 +1,18 @@
-import { Sight, BackFilled, Email, Send, Star, Edit, Close } from '@navikt/ds-icons'
-import { Loader, Button, Heading, Alert, Detail } from '@navikt/ds-react'
+import { Close, Edit, Email, Send, Sight, Star } from '@navikt/ds-icons'
+import { Alert, Button, Detail, Heading, Loader } from '@navikt/ds-react'
+import FileFC, { File } from '@navikt/forhandsvisningsfil'
+import {
+  Column,
+  FlexBaseDiv,
+  FlexDiv,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  PileCenterDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
-import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
+import { saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
@@ -46,27 +57,16 @@ import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import {
-  Column,
-  FlexBaseDiv,
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv, PileCenterDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
-import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -92,10 +92,6 @@ export interface SEDEditSelector {
   view: boolean
 }
 
-export interface SEDEditProps {
-  changeMode: (mode: string, from: string, callback?: () => void) => void
-}
-
 const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.stripeMessage,
@@ -112,9 +108,7 @@ const mapState = (state: State): any => ({
   view: state.validation.view
 })
 
-const SEDEdit: React.FC<SEDEditProps> = ({
-  changeMode
-}: SEDEditProps): JSX.Element => {
+const SEDEdit: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
@@ -256,12 +250,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
     }
   }
 
-  const onGoBackClick = () => {
-    changeMode('A', 'back')
-    dispatch(resetCurrentEntry('svarsed'))
-    document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-  }
-
   const setComment = (comment: string) => {
     if (isHSed(replySed)) {
       dispatch(updateReplySed('ytterligereInfo', comment))
@@ -317,16 +305,6 @@ const SEDEdit: React.FC<SEDEditProps> = ({
           )
         }}
       />
-      <FlexCenterSpacedDiv>
-        <Button
-          variant='secondary'
-          onClick={onGoBackClick}
-        >
-          <BackFilled />
-          <HorizontalSeparatorDiv size='0.5' />
-          {t('label:tilbake')}
-        </Button>
-      </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <Row>
         <Column flex='2'>

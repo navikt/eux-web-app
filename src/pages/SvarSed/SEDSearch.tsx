@@ -27,7 +27,8 @@ import {
   PileDiv,
   RadioPanelBorder,
   RadioPanelGroup,
-  VerticalSeparatorDiv
+  VerticalSeparatorDiv,
+  FlexEndDiv
 } from '@navikt/hoykontrast'
 import { validateSEDSearch } from 'pages/SvarSed/mainValidation'
 import React, { useEffect, useState } from 'react'
@@ -36,7 +37,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 
 const ContainerDiv = styled(PileCenterDiv)`
-  width: 780px;
   align-items: center;
 `
 const FilterDiv = styled(FlexDiv)`
@@ -80,10 +80,12 @@ const mapState = (state: State): any => ({
 
 export interface SvarSedProps {
   changeMode: (mode: string, from: string, callback?: () => void) => void
+  currentSak: ConnectedSed
+  setCurrentSak: (sed: Sed) => void
 }
 
 const SEDSearch: React.FC<SvarSedProps> = ({
-  changeMode
+  changeMode, currentSak, setCurrentSak
 }: SvarSedProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -104,26 +106,29 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const entries = useSelector<State, Array<LocalStorageEntry<ReplySed>> | null | undefined>(
     (state) => state.localStorage.svarsed.entries)
   const [_allOpen, _setAllOpen] = useState<boolean>(false)
-  const [_onlyEditableSeds, _setOnlyEditableSeds] = useState<boolean>(true)
+  const [_buttonClickedId, _setButtonClickedId] = useState<string>('')
   const [_filter, _setFilter] = useState<string | undefined>(undefined)
-  const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
+  const [_onlyEditableSeds, _setOnlyEditableSeds] = useState<boolean>(true)
   const [_queryType, _setQueryType] = useState<string |undefined>(undefined)
+  const [_replySedRequested, _setReplySedRequested] = useState<boolean>(false)
+  const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(rinasaksnummerOrFnrParam ?? '')
+  const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
   const [_validMessage, _setValidMessage] = useState<string>('')
-  const [_validation, _resetValidation, performValidation] = useValidation({}, validateSEDSearch)
-  const [_replySedRequested, setReplySedRequested] = useState<boolean>(false)
-  const [_sedStatusRequested, setSedStatusRequested] = useState<string |undefined>(undefined)
-  const [_buttonClickedId, setButtonClickedId] = useState<string>('')
+  const [_validation, _resetValidation, _performValidation] = useValidation({}, validateSEDSearch)
 
   const namespace = 'sedsearch'
 
   const onSaksnummerOrFnrChange = (query: string) => {
     dispatch(cleanData())
+    const q: string = query.trim()
     _resetValidation(namespace + '-saksnummerOrFnr')
-    _setSaksnummerOrFnr(query.trim())
-    const result = validator.idnr(query.trim())
+    _setSaksnummerOrFnr(q)
+    const result = validator.idnr(q)
     if (result.status !== 'valid') {
-      _setQueryType('saksnummer')
-      _setValidMessage(t('label:saksnummer'))
+      if (q.match(/^\d+$/)) {
+        _setQueryType('saksnummer')
+        _setValidMessage(t('label:saksnummer'))
+      }
     } else {
       if (result.type === 'fnr') {
         _setQueryType('fnr')
@@ -140,12 +145,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     _.find(entries, (e: LocalStorageEntry<ReplySed>) => e.id === svarsedId)
   )
 
-  const hasDraft = (connectedSed: ConnectedSed): boolean => {
-    if (_.isEmpty(entries)) {
-      return false
-    }
-    return findSavedEntry(connectedSed.svarsedId) !== undefined
-  }
+  const hasDraft = (connectedSed: ConnectedSed): boolean => (
+    findSavedEntry(connectedSed.svarsedId) !== undefined
+  )
 
   const hasSentStatus = (svarsedId: string): boolean => {
     if (!Object.prototype.hasOwnProperty.call(sedStatus, svarsedId)) {
@@ -155,7 +157,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   }
 
   const loadDraft = (sakId: string, svarsedId: string) => {
-    setSedStatusRequested(svarsedId)
+    _setSedStatusRequested(svarsedId)
     dispatch(getSedStatus(sakId, svarsedId))
   }
 
@@ -166,7 +168,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   }
 
   const onSaksnummerOrFnrClick = () => {
-    const valid: boolean = performValidation({
+    const valid: boolean = _performValidation({
       saksnummerOrFnr: _saksnummerOrFnr.trim()
     })
     if (valid) {
@@ -177,17 +179,18 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     }
   }
 
-  const onParentSedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(svarsedActions.setParentSed(e.target.value))
+  const onParentSedChange = (sed: Sed, sedId: string) => {
+    setCurrentSak(sed)
+    dispatch(svarsedActions.setParentSed(sedId))
   }
 
   const onEditSedClick = (sedId: string, sedType: string, saksnummer: string, status: string) => {
-    setReplySedRequested(true)
+    _setReplySedRequested(true)
     dispatch(svarsedActions.editSed(sedId, sedType, saksnummer, status))
   }
 
   const onReplySedClick = (connectedSed: ConnectedSed, saksnummer: string, sakUrl: string) => {
-    setReplySedRequested(true)
+    _setReplySedRequested(true)
     dispatch(svarsedActions.replyToSed(connectedSed, saksnummer, sakUrl))
   }
 
@@ -200,26 +203,49 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
   )
 
+  /** if we have areceived SEDS, and we have searched for saksnummer, add it as the currentSak */
   useEffect(() => {
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
       const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry('svarsed', entry))
         dispatch(setReplySed(entry.content))
-        setReplySedRequested(true)
+        _setReplySedRequested(true)
       }
-      setSedStatusRequested(undefined)
+      _setSedStatusRequested(undefined)
     }
   }, [_sedStatusRequested, sedStatus])
 
+
+  /** if we have a saved entry, let's load it */
+  useEffect(() => {
+    if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
+      const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested)
+      if (entry && !hasSentStatus(entry.id)) {
+        dispatch(setCurrentEntry('svarsed', entry))
+        dispatch(setReplySed(entry.content))
+        _setReplySedRequested(true)
+      }
+      _setSedStatusRequested(undefined)
+    }
+  }, [_sedStatusRequested, sedStatus])
+
+  /** if we have a reply sed, let's go to edit mode */
   useEffect(() => {
     if (!_.isEmpty(replySed) && _replySedRequested) {
-      setReplySedRequested(false)
-      setButtonClickedId('')
+      _setReplySedRequested(false)
+      _setButtonClickedId('')
       dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
   }, [replySed])
+
+  /** if we get seds by searching a saksnummer,set the currentSak */
+  useEffect(() => {
+    if (_.isUndefined(currentSak) && seds.length === 1 && _validMessage === t('label:saksnummer')) {
+     setCurrentSak(seds[0])
+    }
+  }, [seds])
 
   useEffect(() => {
     dispatch(startPageStatistic('selection'))
@@ -250,24 +276,34 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
-            <Search
-              label={t('label:saksnummer-eller-fnr')}
-              data-test-id={namespace + '-saksnummerOrFnr'}
-              id={namespace + '-saksnummerOrFnr'}
-              onKeyPress={handleKeyPress}
-              onChange={onSaksnummerOrFnrChange}
-              required
-              value={_saksnummerOrFnr}
-              disabled={queryingSaksnummerOrFnr}
-              onSearch={onSaksnummerOrFnrClick}
-            >
-              <Search.Button>
-                {queryingSaksnummerOrFnr
-                  ? t('message:loading-searching')
-                  : t('el:button-search')}
-                {queryingSaksnummerOrFnr && <Loader />}
-              </Search.Button>
-            </Search>
+            <FlexEndDiv>
+              <Search
+                label={t('label:saksnummer-eller-fnr')}
+                data-test-id={namespace + '-saksnummerOrFnr'}
+                id={namespace + '-saksnummerOrFnr'}
+                onKeyPress={handleKeyPress}
+                onChange={onSaksnummerOrFnrChange}
+                required
+                hideLabel={false}
+                value={_saksnummerOrFnr}
+                disabled={queryingSaksnummerOrFnr}
+                onSearch={onSaksnummerOrFnrClick}
+              >
+                <Search.Button>
+                  {queryingSaksnummerOrFnr
+                    ? t('message:loading-searching')
+                    : t('el:button-search')}
+                  {queryingSaksnummerOrFnr && <Loader />}
+                </Search.Button>
+              </Search>
+              <HorizontalSeparatorDiv/>
+              <PileDiv>
+                <BodyLong>
+                  {_validMessage}
+                </BodyLong>
+                <VerticalSeparatorDiv size='0.5'/>
+              </PileDiv>
+              </FlexEndDiv>
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
               <>
                 <VerticalSeparatorDiv size='0.5' />
@@ -276,10 +312,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                 </span>
               </>
             )}
-            <VerticalSeparatorDiv size='0.5' />
-            <BodyLong>
-              {_validMessage}
-            </BodyLong>
+
           </PileDiv>
         </Column>
       </AlignStartRow>
@@ -439,7 +472,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                     checked={alone || parentSed === sedId}
                     className='slideInFromLeft'
                     name={namespace + '-saksnummerOrFnr-results'}
-                    onChange={onParentSedChange}
+                    onChange={() => onParentSedChange(sed, sedId)}
                     value={sedId}
                   >
                     <PileDiv>
@@ -570,7 +603,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                       buttonLogger(e, {
                                         type: connectedSed.svarsedType
                                       })
-                                      setButtonClickedId('draft-' + connectedSed.sedId)
+                                      _setButtonClickedId('draft-' + connectedSed.sedId)
                                       loadDraft(sed.sakId, connectedSed.svarsedId)
                                     }}
                                   >
@@ -600,7 +633,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                             buttonLogger(e, {
                                               type: connectedSed.sedType
                                             })
-                                            setButtonClickedId('edit-' + connectedSed.sedId)
+                                            _setButtonClickedId('edit-' + connectedSed.sedId)
                                             onEditSedClick(connectedSed.sedId, connectedSed.sedType, sed.sakId, connectedSed.status)
                                           }}
                                         >
@@ -629,7 +662,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                                             type: connectedSed.svarsedType,
                                             parenttype: connectedSed.sedType
                                           })
-                                          setButtonClickedId('reply-' + connectedSed.sedId)
+                                          _setButtonClickedId('reply-' + connectedSed.sedId)
                                           onReplySedClick(connectedSed, sed.sakId, sed.sakUrl)
                                         }}
                                       >

@@ -1,6 +1,6 @@
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
-import { setCurrentEntry } from 'actions/localStorage'
+import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { fetchPdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
@@ -23,6 +23,7 @@ export const PDU1Page = (): JSX.Element => {
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [mounted, setMounted] = useState<boolean>(false)
+  const [currentPage, setCurrentPage] = useState<string>('A')
   const dispatch = useDispatch()
   const entries: Array<LocalStorageEntry<PDU1>> | null | undefined =
     useSelector<State, Array<LocalStorageEntry<PDU1>> | null | undefined>(state => state.localStorage.pdu1.entries)
@@ -30,7 +31,14 @@ export const PDU1Page = (): JSX.Element => {
   const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
     if (changeModeFunc.current !== null) {
       changeModeFunc.current(newPage, newDirection, newCallback)
+      setCurrentPage(newPage)
     }
+  }
+
+  const onGoBackClick = () => {
+    changeMode('A', 'back')
+    dispatch(resetCurrentEntry('pdu1'))
+    document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
   useEffect(() => {
@@ -63,7 +71,11 @@ export const PDU1Page = (): JSX.Element => {
   }, [entries])
 
   return (
-    <TopContainer title={t('app:page-title-pdu1')}>
+    <TopContainer
+      backButton={currentPage === 'B'}
+      onGoBackClick={onGoBackClick}
+      title={t('app:page-title-pdu1')}
+    >
       <SlidePage
         changeModeFunc={changeModeFunc}
         initialPage='A'
@@ -83,9 +95,7 @@ export const PDU1Page = (): JSX.Element => {
           </SideBarDiv>
         )}
         divB1={(
-          <PDU1Edit
-            changeMode={changeMode}
-          />
+          <PDU1Edit/>
         )}
         divB2={(
           <SideBarDiv>

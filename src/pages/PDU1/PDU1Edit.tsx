@@ -1,12 +1,12 @@
-import { BackFilled } from '@navikt/ds-icons'
 import { BodyLong, Button, Loader } from '@navikt/ds-react'
-import { resetCurrentEntry, saveEntry } from 'actions/localStorage'
+import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { saveEntry } from 'actions/localStorage'
 import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetAllValidation, viewValidation } from 'actions/validation'
+import Avsender from 'applications/PDU1/Avsender/Avsender'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
-import Avsender from 'applications/PDU1/Avsender/Avsender'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
@@ -16,21 +16,13 @@ import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
 import PreviewPDU1 from 'components/PreviewPDU1/PreviewPDU1'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import {
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
-import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,10 +37,6 @@ export interface PDU1EditSelector {
   view: boolean
 }
 
-export interface PDU1EditProps {
-  changeMode: (mode: string, from: string, callback?: () => void) => void
-}
-
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
   pdu1: state.pdu1.pdu1,
@@ -57,9 +45,7 @@ const mapState = (state: State): any => ({
   view: state.validation.view
 })
 
-const PDU1Edit: React.FC<PDU1EditProps> = ({
-  changeMode
-}: PDU1EditProps): JSX.Element => {
+const PDU1Edit: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const {
@@ -111,12 +97,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const resetComplete = () => {
     dispatch(resetJornalførePdu1())
     setCompleteModal(false)
-  }
-
-  const onGoBackClick = () => {
-    changeMode('A', 'back')
-    dispatch(resetCurrentEntry('pdu1'))
-    document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
   }
 
   useEffect(() => {
@@ -171,16 +151,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           )
         }}
       />
-      <FlexCenterSpacedDiv>
-        <Button
-          variant='secondary'
-          onClick={onGoBackClick}
-        >
-          <BackFilled />
-          <HorizontalSeparatorDiv size='0.5' />
-          {t('label:tilbake')}
-        </Button>
-      </FlexCenterSpacedDiv>
       <VerticalSeparatorDiv size='2' />
       <PersonManager
         forms={[

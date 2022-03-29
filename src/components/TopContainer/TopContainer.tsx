@@ -81,8 +81,10 @@ const Debug = styled.div`
 export interface TopContainerProps {
   className?: string
   children?: JSX.Element | Array<JSX.Element | null>
+  backButton ?: boolean
   fluid?: boolean
   header?: string | JSX.Element
+  onGoBackClick ?: () => void
   title: string
 }
 
@@ -103,7 +105,11 @@ const mapState = (state: State): TopContainerSelector => ({
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
-  className, children, title
+  className,
+  backButton,
+  onGoBackClick,
+  children,
+  title
 }: TopContainerProps): JSX.Element => {
   const {
     bannerStatus, bannerMessage, error, expirationTime, highContrast
@@ -142,7 +148,12 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           // reset the state of your app so the error doesn't happen again
         }}
       >
-        <Header title={title} highContrast={highContrast} />
+        <Header
+          title={title}
+          highContrast={highContrast}
+          backButton={backButton}
+          onGoBackClick={onGoBackClick}
+        />
         <BannerAlert
           message={bannerMessage}
           variant={bannerStatus as AlertVariant}

@@ -1,6 +1,6 @@
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
-import { setCurrentEntry } from 'actions/localStorage'
+import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
@@ -23,6 +23,8 @@ export const SvarSedPage = (): JSX.Element => {
   const dispatch = useDispatch()
   const location = useLocation()
   const { t } = useTranslation()
+  const [_currentPage, _setCurrentPage] = useState<string>('A')
+  const [_currentSak, _setCurrentSak] = useState<any>(undefined)
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
   const params: URLSearchParams = new URLSearchParams(location.search)
   const entries: Array<LocalStorageEntry<ReplySed>> | null | undefined =
@@ -31,6 +33,18 @@ export const SvarSedPage = (): JSX.Element => {
   const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
     if (changeModeFunc.current !== null) {
       changeModeFunc.current(newPage, newDirection, newCallback)
+      _setCurrentPage(newPage)
+    }
+  }
+
+  const onGoBackClick = () => {
+    if (_currentPage ===  'B') {
+      changeMode('A', 'back')
+      dispatch(resetCurrentEntry('svarsed'))
+      document.dispatchEvent(new CustomEvent('tilbake', {detail: {}}))
+    }
+    if (_currentPage ===  'A' && _currentSak !== undefined) {
+       _setCurrentSak(undefined)
     }
   }
 
@@ -68,33 +82,49 @@ export const SvarSedPage = (): JSX.Element => {
   }, [entries])
 
   return (
-    <TopContainer title={t('app:page-title-svarsed')}>
-      <SlidePage
-        changeModeFunc={changeModeFunc}
-        initialPage='A'
-        initialDirection='none'
-        divA1={(<SEDSearch changeMode={changeMode} />)}
-        divA2={(
-          <SideBarDiv>
-            <LoadSave
-              namespace='svarsed'
+    <TopContainer
+      backButton={_currentPage === 'B' || (_currentPage === 'A' && _currentSak !== undefined)}
+      onGoBackClick={onGoBackClick}
+      title={t('app:page-title-svarsed')}
+    >
+      <>
+        {_currentSak !== undefined && (
+          <div>
+            sdfsddsfsfdsfd
+          </div>
+        )}
+        <SlidePage
+          changeModeFunc={changeModeFunc}
+          initialPage='A'
+          initialDirection='none'
+          divA1={(
+            <SEDSearch
               changeMode={changeMode}
-              setReplySed={setReplySed}
+              currentSak={_currentSak}
+              setCurrentSak={_setCurrentSak}
             />
-          </SideBarDiv>
-      )}
-        divB1={(
-          <SEDEdit
-            changeMode={changeMode}
-          />)}
-        divB2={(
-          <SideBarDiv>
-            <SEDDetails
-              updateReplySed={updateReplySed}
-            />
-          </SideBarDiv>
-      )}
-      />
+          )}
+          divA2={(
+            <SideBarDiv>
+              <LoadSave
+                namespace='svarsed'
+                changeMode={changeMode}
+                setReplySed={setReplySed}
+              />
+            </SideBarDiv>
+        )}
+          divB1={(
+            <SEDEdit/>
+          )}
+          divB2={(
+            <SideBarDiv>
+              <SEDDetails
+                updateReplySed={updateReplySed}
+              />
+            </SideBarDiv>
+        )}
+        />
+      </>
     </TopContainer>
   )
 }
