@@ -34,10 +34,6 @@ describe('applications/OpprettSak/Family/AbroadPersonForm', () => {
     wrapper = render(<AbroadPersonForm {...initialMockProps} />)
   })
 
-  afterEach(() => {
-    wrapper.unmount()
-  })
-
   it('Render: match snapshot', () => {
     expect(wrapper.isEmptyRender()).toBeFalsy()
     expect(wrapper).toMatchSnapshot()
