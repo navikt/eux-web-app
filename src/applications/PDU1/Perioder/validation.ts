@@ -86,12 +86,14 @@ export const validatePDPerioder = (
       break
     case 'perioderAnsettSomForsikret':
     case 'perioderAnsattUtenForsikring' :
-    case 'perioderSelvstendigUtenForsikring':
       max = 3
+      break
+    case 'perioderSelvstendigUtenForsikring':
+      max = 5
       break
     case 'perioderLoennSomAnsatt':
     case 'perioderInntektSomSelvstendig':
-      max = 2
+      max = 30
       break
     default:
       break

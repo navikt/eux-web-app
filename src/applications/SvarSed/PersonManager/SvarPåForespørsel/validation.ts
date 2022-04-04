@@ -42,7 +42,7 @@ export const validateSvarPåForespørsel = (
   if (target === 'positivt') {
     hasErrors.push(checkLength(v, {
       needle: (replySed as H002Sed).positivtSvar?.informasjon,
-      max: 255,
+      max: 500,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
       personName
@@ -50,7 +50,7 @@ export const validateSvarPåForespørsel = (
 
     hasErrors.push(checkLength(v, {
       needle: (replySed as H002Sed).positivtSvar?.dokument,
-      max: 500,
+      max: 255,
       id: namespace + '-dokument',
       message: 'validation:textOverX',
       personName
