@@ -123,7 +123,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         <PileDiv>
           <Search
             id='TPSPersonForm__input-fnr-or-dnr-id'
-            data-test-id='TPSPersonForm__input-fnr-or-dnr-id'
+            data-testid='TPSPersonForm__input-fnr-or-dnr-id'
             label={t('label:fnr-dnr')}
           /* error={validation[namespace + '-fnr-dnr']?.feilmelding} */
             onChange={updateQuery}

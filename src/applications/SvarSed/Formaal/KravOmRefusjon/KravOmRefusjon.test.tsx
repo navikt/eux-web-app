@@ -1,6 +1,6 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import KravOmRefusjon from 'applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
 
@@ -19,7 +19,7 @@ const defaultSelector: FormålManagerFormSelector = {
 }
 
 describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: FormålManagerFormProps = {
     parentNamespace: 'test',
@@ -31,7 +31,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(<KravOmRefusjon {...initialMockProps} />)
+    wrapper = render(<KravOmRefusjon {...initialMockProps} />)
   })
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
   it('Handling: update krav', () => {
     (initialMockProps.updateReplySed as jest.Mock).mockReset()
     const mockText = 'mockText'
-    const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-krav\']').hostNodes()
+    const formField = wrapper.find('[data-testid=\'test-refusjonskrav-krav\']').hostNodes()
     formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('refusjonskrav', mockText)
@@ -49,7 +49,7 @@ describe('applications/SvarSed/Formaal/KravOmRefusjon/KravOmRefusjon', () => {
 
   it('Handling: see kontoopplysning button clicked', () => {
     (initialMockProps.seeKontoopplysninger as jest.Mock).mockReset()
-    const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-konto-button\']').hostNodes()
+    const formField = wrapper.find('[data-testid=\'test-refusjonskrav-konto-button\']').hostNodes()
     formField.simulate('click')
     expect(initialMockProps.seeKontoopplysninger).toHaveBeenCalled()
   })

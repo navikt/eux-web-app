@@ -331,7 +331,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
               <Select
                 aria-label={t('label:familierelasjon')}
                 key={namespace + '-relasjon-' + _newPersonRelation}
-                data-test-id={namespace + '-relasjon'}
+                data-testid={namespace + '-relasjon'}
                 error={_validation[namespace + '-relasjon']?.feilmelding}
                 id={namespace + '-relasjon'}
                 label={t('label:familierelasjon')}

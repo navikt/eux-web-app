@@ -367,7 +367,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
                 <Select
                   closeMenuOnSelect
                   key={namespace + '-vedtaksperioder-vedtak-' + _newVedtaksperioderVedtak}
-                  data-test-id={namespace + '-vedtaksperioder-vedtak'}
+                  data-testid={namespace + '-vedtaksperioder-vedtak'}
                   error={getErrorFor(index, 'vedtak')}
                   id={namespace + '-vedtaksperioder-vedtak'}
                   label={t('label:vedtak-type')}
@@ -386,7 +386,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           <Column>
             <RadioPanelGroup
               value={index < 0 ? _newVedtaksperioderSkalYtelseUtbetales : vedtaksperiode?.skalYtelseUtbetales}
-              data-test-id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
+              data-testid={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
               data-no-border
               error={getErrorFor(index, 'skalYtelseUtbetales')}
               id={namespace + '-vedtaksperioder' + getIdx(index) + '-skalYtelseUtbetales'}
@@ -430,7 +430,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
           <RadioPanelGroup
             value={vedtak?.gjelderAlleBarn}
             data-no-border
-            data-test-id={namespace + '-gjelderAlleBarn'}
+            data-testid={namespace + '-gjelderAlleBarn'}
             error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
             id={namespace + '-gjelderAlleBarn'}
             key={namespace + '-gjelderAlleBarn-' + vedtak?.gjelderAlleBarn}
@@ -517,7 +517,7 @@ const VedtakFC: React.FC<FormålManagerFormProps> = ({
       >
         <Column flex='2'>
           <Select
-            data-test-id={namespace + '-vedtakstype'}
+            data-testid={namespace + '-vedtakstype'}
             error={validation[namespace + '-vedtakstype']?.feilmelding}
             key={namespace + '-vedtakstype-' + vedtak?.vedtakstype}
             id={namespace + '-vedtakstype'}

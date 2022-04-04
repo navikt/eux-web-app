@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import Vedlegg, { VedleggSelector } from './Vedlegg'
@@ -8,7 +8,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('pages/Vedlegg', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const defaultSelector: VedleggSelector = {
     alertType: undefined,
@@ -28,7 +28,7 @@ describe('pages/Vedlegg', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<Vedlegg />)
+    wrapper = render(<Vedlegg />)
   })
 
   afterEach(() => {

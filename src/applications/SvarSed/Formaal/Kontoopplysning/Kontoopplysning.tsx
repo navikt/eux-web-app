@@ -188,7 +188,7 @@ const Kontoopplysning: React.FC<FormålManagerFormProps> = ({
         <Column>
           <RadioGroup
             value={_kontoType}
-            data-test-id={namespace + '-kontotype'}
+            data-testid={namespace + '-kontotype'}
             error={validation[namespace + '-kontotype']?.feilmelding}
             id={namespace + '-kontotype'}
             legend={t('label:konto-type') + ' *'}

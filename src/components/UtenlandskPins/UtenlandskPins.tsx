@@ -147,7 +147,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <Column>
             <CountrySelect
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-land'}
+              data-testid={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
               id={namespace + idx + '-land'}

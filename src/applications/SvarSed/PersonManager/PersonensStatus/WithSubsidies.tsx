@@ -174,7 +174,7 @@ const WithSubsidies: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-pensjontype'}
+              data-testid={namespace + idx + '-pensjontype'}
               error={getErrorFor(index, 'pensjontype')}
               id={namespace + idx + '-pensjontype'}
               key={namespace + idx + '-pensjontype-' + (index < 0 ? _newPensjonType : (pensjonPeriode as PensjonPeriode)?.pensjonstype)}

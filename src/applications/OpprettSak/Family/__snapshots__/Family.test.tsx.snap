@@ -249,7 +249,7 @@ exports[`components/Family/Family Renders 1`] = `
   }
 >
   <div
-    data-test-id="family"
+    data-testid="family"
   >
     <styled.div>
       <div
@@ -371,21 +371,21 @@ exports[`components/Family/Family Renders 1`] = `
                                   />
                                 </styled.div>
                                 <div
-                                  data-test-id="panelheader__tittel"
+                                  data-testid="panelheader__tittel"
                                 >
                                   <Undertittel
-                                    data-test-id="panelheader__tittel__hoved"
+                                    data-testid="panelheader__tittel__hoved"
                                   >
                                     <TypografiBase
-                                      data-test-id="panelheader__tittel__hoved"
+                                      data-testid="panelheader__tittel__hoved"
                                       type="undertittel"
                                     >
                                       <h2
                                         className="typo-undertittel"
-                                        data-test-id="panelheader__tittel__hoved"
+                                        data-testid="panelheader__tittel__hoved"
                                       >
                                         PEN
-                                         
+
                                         BLYANT
                                          - Ektefelle til
                                       </h2>
@@ -415,14 +415,14 @@ exports[`components/Family/Family Renders 1`] = `
                               />
                             </styled.div>
                             <Styled(u)
-                              data-test-id="familierelasjoner__knapp--legg-til"
+                              data-testid="familierelasjoner__knapp--legg-til"
                               disabled={false}
                               kompakt={true}
                               onClick={[Function]}
                             >
                               <u
                                 className="c10"
-                                data-test-id="familierelasjoner__knapp--legg-til"
+                                data-testid="familierelasjoner__knapp--legg-til"
                                 disabled={false}
                                 kompakt={true}
                                 onClick={[Function]}
@@ -430,7 +430,7 @@ exports[`components/Family/Family Renders 1`] = `
                                 <p
                                   autoDisableVedSpinner={false}
                                   className="c10"
-                                  data-test-id="familierelasjoner__knapp--legg-til"
+                                  data-testid="familierelasjoner__knapp--legg-til"
                                   disabled={false}
                                   htmlType="submit"
                                   inaktivKlasseVedDisabled={false}
@@ -442,7 +442,7 @@ exports[`components/Family/Family Renders 1`] = `
                                 >
                                   <button
                                     className="knapp c10 knapp--standard knapp--kompakt"
-                                    data-test-id="familierelasjoner__knapp--legg-til"
+                                    data-testid="familierelasjoner__knapp--legg-til"
                                     disabled={false}
                                     onClick={[Function]}
                                     type="submit"
@@ -580,21 +580,21 @@ exports[`components/Family/Family Renders 1`] = `
                                   />
                                 </styled.div>
                                 <div
-                                  data-test-id="panelheader__tittel"
+                                  data-testid="panelheader__tittel"
                                 >
                                   <Undertittel
-                                    data-test-id="panelheader__tittel__hoved"
+                                    data-testid="panelheader__tittel__hoved"
                                   >
                                     <TypografiBase
-                                      data-test-id="panelheader__tittel__hoved"
+                                      data-testid="panelheader__tittel__hoved"
                                       type="undertittel"
                                     >
                                       <h2
                                         className="typo-undertittel"
-                                        data-test-id="panelheader__tittel__hoved"
+                                        data-testid="panelheader__tittel__hoved"
                                       >
                                         LITEN
-                                         
+
                                         BLYANT
                                          - Barn av
                                       </h2>
@@ -624,14 +624,14 @@ exports[`components/Family/Family Renders 1`] = `
                               />
                             </styled.div>
                             <Styled(u)
-                              data-test-id="familierelasjoner__knapp--legg-til"
+                              data-testid="familierelasjoner__knapp--legg-til"
                               disabled={false}
                               kompakt={true}
                               onClick={[Function]}
                             >
                               <u
                                 className="c10"
-                                data-test-id="familierelasjoner__knapp--legg-til"
+                                data-testid="familierelasjoner__knapp--legg-til"
                                 disabled={false}
                                 kompakt={true}
                                 onClick={[Function]}
@@ -639,7 +639,7 @@ exports[`components/Family/Family Renders 1`] = `
                                 <p
                                   autoDisableVedSpinner={false}
                                   className="c10"
-                                  data-test-id="familierelasjoner__knapp--legg-til"
+                                  data-testid="familierelasjoner__knapp--legg-til"
                                   disabled={false}
                                   htmlType="submit"
                                   inaktivKlasseVedDisabled={false}
@@ -651,7 +651,7 @@ exports[`components/Family/Family Renders 1`] = `
                                 >
                                   <button
                                     className="knapp c10 knapp--standard knapp--kompakt"
-                                    data-test-id="familierelasjoner__knapp--legg-til"
+                                    data-testid="familierelasjoner__knapp--legg-til"
                                     disabled={false}
                                     onClick={[Function]}
                                     type="submit"

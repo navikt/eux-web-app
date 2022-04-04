@@ -334,7 +334,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             <CountrySelect
               ariaLabel={t('label:land')}
               closeMenuOnSelect
-              data-test-id={namespace + '-lokaleSakIder' + idx + '-land'}
+              data-testid={namespace + '-lokaleSakIder' + idx + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
               key={namespace + '-lokaleSakIder' + idx + '-land' + (index < 0 ? _newSakseierLand : lokaleSakId?.land)}
@@ -541,7 +541,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <div>
             <RadioGroup
               legend={t('label:type-krav')}
-              data-test-id='seddetails-typeKrav'
+              data-testid='seddetails-typeKrav'
               error={validation['seddetails-typeKrav']?.feilmelding}
               id='seddetails-kravType'
               onChange={(e: string | number | boolean) => setKravType(e as string)}
@@ -573,7 +573,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
           <div>
             <RadioGroup
               legend={t('label:informasjon-om-søknaden')}
-              data-test-id='seddetails-informasjon'
+              data-testid='seddetails-informasjon'
               error={validation['seddetails-informasjon']?.feilmelding}
               id='seddetails-informasjon'
               value={(replySed as F002Sed).krav?.infoType}

@@ -139,7 +139,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-type'}
+              data-testid={namespace + idx + '-type'}
               error={getErrorFor('type')}
               id={namespace + idx + '-type'}
               key={namespace + idx + '-type-' + _type}
@@ -216,7 +216,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                data-test-id={namespace + '-new'}
+                data-testid={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

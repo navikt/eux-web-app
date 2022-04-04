@@ -350,7 +350,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }
 
   return (
-    <div data-test-id='joarkBrowser'>
+    <div data-testid='joarkBrowser'>
       <Modal
         open={!_.isNil(_modal)}
         modal={_modal}

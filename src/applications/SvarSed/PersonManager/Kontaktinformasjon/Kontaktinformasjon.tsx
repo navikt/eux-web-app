@@ -236,7 +236,7 @@ const Kontaktinformasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
           <Column>
             <Select
-              data-test-id={namespaceTelefon + idx + '-type'}
+              data-testid={namespaceTelefon + idx + '-type'}
               error={getErrorFor(index, 'telefon', 'type')}
               id={namespaceTelefon + idx + '-type'}
               key={namespaceTelefon + idx + '-type-' + (index < 0 ? _newType : telefon?.type)}

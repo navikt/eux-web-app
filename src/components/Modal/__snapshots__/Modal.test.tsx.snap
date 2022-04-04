@@ -445,7 +445,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                 >
                   <button
                     class="lukknapp c2"
-                    data-test-id="modal__close-button-id"
+                    data-testid="modal__close-button-id"
                   >
                     <span
                       class="text-hide"
@@ -453,13 +453,13 @@ exports[`components/Modal Render: match snapshot 1`] = `
                   </button>
                   <h2
                     class="typo-undertittel c3"
-                    data-test-id="modal__title-id"
+                    data-testid="modal__title-id"
                   >
                     mockModalTitle
                   </h2>
                   <div
                     class="c4"
-                    data-test-id="modal__text-id"
+                    data-testid="modal__text-id"
                   >
                     mockModalText
                   </div>
@@ -472,7 +472,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                   >
                     <button
                       class="knapp c7 knapp--hoved"
-                      data-test-id="modal__button-id-0"
+                      data-testid="modal__button-id-0"
                       id="modal__button-id-0"
                       type="submit"
                     >
@@ -484,7 +484,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                   >
                     <button
                       class="knapp c8 knapp--standard"
-                      data-test-id="modal__button-id-1"
+                      data-testid="modal__button-id-1"
                       id="modal__button-id-1"
                       type="submit"
                     >
@@ -572,20 +572,20 @@ exports[`components/Modal Render: match snapshot 1`] = `
                   className="c1"
                 >
                   <Styled(Lukknapp)
-                    data-test-id="modal__close-button-id"
+                    data-testid="modal__close-button-id"
                     onClick={[Function]}
                   >
                     <Lukknapp
                       bla={false}
                       className="c2"
-                      data-test-id="modal__close-button-id"
+                      data-testid="modal__close-button-id"
                       hvit={false}
                       onClick={[Function]}
                       overstHjorne={false}
                     >
                       <button
                         className="lukknapp c2"
-                        data-test-id="modal__close-button-id"
+                        data-testid="modal__close-button-id"
                         onClick={[Function]}
                       >
                         <span
@@ -595,20 +595,20 @@ exports[`components/Modal Render: match snapshot 1`] = `
                     </Lukknapp>
                   </Styled(Lukknapp)>
                   <Styled(Undertittel)
-                    data-test-id="modal__title-id"
+                    data-testid="modal__title-id"
                   >
                     <Undertittel
                       className="c3"
-                      data-test-id="modal__title-id"
+                      data-testid="modal__title-id"
                     >
                       <TypografiBase
                         className="c3"
-                        data-test-id="modal__title-id"
+                        data-testid="modal__title-id"
                         type="undertittel"
                       >
                         <h2
                           className="typo-undertittel c3"
-                          data-test-id="modal__title-id"
+                          data-testid="modal__title-id"
                         >
                           mockModalTitle
                         </h2>
@@ -616,11 +616,11 @@ exports[`components/Modal Render: match snapshot 1`] = `
                     </Undertittel>
                   </Styled(Undertittel)>
                   <styled.div
-                    data-test-id="modal__text-id"
+                    data-testid="modal__text-id"
                   >
                     <div
                       className="c4"
-                      data-test-id="modal__text-id"
+                      data-testid="modal__text-id"
                     >
                       mockModalText
                     </div>
@@ -640,7 +640,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                       className="c6"
                     >
                       <Styled(u)
-                        data-test-id="modal__button-id-0"
+                        data-testid="modal__button-id-0"
                         disabled={false}
                         id="modal__button-id-0"
                         key="modalMainButtonText"
@@ -648,7 +648,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                       >
                         <u
                           className="c7"
-                          data-test-id="modal__button-id-0"
+                          data-testid="modal__button-id-0"
                           disabled={false}
                           id="modal__button-id-0"
                           onClick={[Function]}
@@ -656,7 +656,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                           <p
                             autoDisableVedSpinner={false}
                             className="c7"
-                            data-test-id="modal__button-id-0"
+                            data-testid="modal__button-id-0"
                             disabled={false}
                             htmlType="submit"
                             id="modal__button-id-0"
@@ -669,7 +669,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                           >
                             <button
                               className="knapp c7 knapp--hoved"
-                              data-test-id="modal__button-id-0"
+                              data-testid="modal__button-id-0"
                               disabled={false}
                               id="modal__button-id-0"
                               onClick={[Function]}
@@ -689,7 +689,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                       className="c6"
                     >
                       <Styled(u)
-                        data-test-id="modal__button-id-1"
+                        data-testid="modal__button-id-1"
                         disabled={false}
                         id="modal__button-id-1"
                         key="modalOtherButtonText"
@@ -697,7 +697,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                       >
                         <u
                           className="c8"
-                          data-test-id="modal__button-id-1"
+                          data-testid="modal__button-id-1"
                           disabled={false}
                           id="modal__button-id-1"
                           onClick={[Function]}
@@ -705,7 +705,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                           <p
                             autoDisableVedSpinner={false}
                             className="c8"
-                            data-test-id="modal__button-id-1"
+                            data-testid="modal__button-id-1"
                             disabled={false}
                             htmlType="submit"
                             id="modal__button-id-1"
@@ -718,7 +718,7 @@ exports[`components/Modal Render: match snapshot 1`] = `
                           >
                             <button
                               className="knapp c8 knapp--standard"
-                              data-test-id="modal__button-id-1"
+                              data-testid="modal__button-id-1"
                               disabled={false}
                               id="modal__button-id-1"
                               onClick={[Function]}

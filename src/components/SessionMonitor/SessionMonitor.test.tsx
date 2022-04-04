@@ -1,9 +1,9 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import SessionMonitor, { SessionMonitorProps } from './SessionMonitor'
 
 describe('components/SessionMonitor/SessionMonitor', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: SessionMonitorProps = {
     expirationTime: new Date(2020, 1, 1)
   }
@@ -11,7 +11,7 @@ describe('components/SessionMonitor/SessionMonitor', () => {
   it('Renders', () => {
     const aDate = new Date('2020-12-17T03:24:00')
     const expirationTime = new Date('2020-12-17T03:24:10')
-    wrapper = mount(
+    wrapper = render(
       <SessionMonitor
         now={aDate}
         expirationTime={expirationTime}
@@ -28,7 +28,7 @@ describe('components/SessionMonitor/SessionMonitor', () => {
     // expires in 5 seconds - will check every 0.5s - warnings start at 9.9s - reload only happens under 1s
     const aDate = new Date('2020-12-17T03:24:00')
     const expirationTime = new Date('2020-12-17T03:24:05')
-    wrapper = mount(
+    wrapper = render(
       <SessionMonitor
         now={aDate}
         expirationTime={expirationTime}
@@ -51,7 +51,7 @@ describe('components/SessionMonitor/SessionMonitor', () => {
     (window.location.reload as jest.Mock).mockReset()
     const aDate = new Date('2020-12-17T03:24:00')
     const expirationTime = new Date('2020-12-17T03:23:59')
-    wrapper = mount(
+    wrapper = render(
       <SessionMonitor
         now={aDate}
         expirationTime={expirationTime}

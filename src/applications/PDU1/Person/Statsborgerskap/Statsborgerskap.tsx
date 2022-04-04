@@ -117,7 +117,7 @@ const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
             <CountrySelect
               ariaLabel={t('label:statsborgerskap')}
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-statsborgerskap'}
+              data-testid={namespace + idx + '-statsborgerskap'}
               error={getErrorFor(index, 'statsborgerskap')}
               flagWave
               key={namespace + idx + '-statsborgerskap' + (index < 0 ? newStatsborgerskap : statsborgerskap)}

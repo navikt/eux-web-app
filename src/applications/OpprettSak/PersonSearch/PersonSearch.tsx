@@ -93,7 +93,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
       <Search
         label={t('label:søker')}
         /* error={error ?? localValidation} */
-        data-test-id={id ?? namespace + '-saksnummerOrFnr'}
+        data-testid={id ?? namespace + '-saksnummerOrFnr'}
         id={id ?? namespace + '-saksnummerOrFnr'}
         onChange={onChange}
         required

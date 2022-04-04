@@ -247,7 +247,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + '-ytelseNavn'}
+              data-testid={namespace + '-ytelseNavn'}
               error={getErrorFor(index, 'ytelseNavn')}
               id={namespace + '-ytelseNavn'}
               key={namespace + '-ytelseNavn-' + (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn)}
@@ -294,7 +294,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
               key={namespace + '-valuta-' + (index < 0 ? _newYtelsesNavn : (ytelse?.valuta ?? ''))}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + '-valuta'}
+              data-testid={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}
@@ -346,7 +346,7 @@ const BeløpNavnOgValuta: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
               data-no-border
-              data-test-id={namespace + '-utbetalingshyppighet'}
+              data-testid={namespace + '-utbetalingshyppighet'}
               id={namespace + '-utbetalingshyppighet'}
               key={namespace + '-utbetalingshyppighet' + (index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet)}
               error={getErrorFor(index, 'utbetalingshyppighet')}

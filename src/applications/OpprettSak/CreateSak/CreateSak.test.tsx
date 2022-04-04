@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import CreateSak, { CreateSakProps, CreateSakSelector } from './CreateSak'
@@ -8,7 +8,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('pages/OpprettSak/OpprettSak', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: CreateSakProps = {
     changeMode: jest.fn()
@@ -62,7 +62,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<CreateSak {...initialMockProps} />)
+    wrapper = render(<CreateSak {...initialMockProps} />)
   })
 
   afterEach(() => {

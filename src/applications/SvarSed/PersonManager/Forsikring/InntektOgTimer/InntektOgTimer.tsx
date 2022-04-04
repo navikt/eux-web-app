@@ -225,7 +225,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               key={namespace + idx + '-valuta-' + (index < 0 ? _newValuta : inntektOgTime?.valuta ?? '')}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + idx + '-valuta'}
+              data-testid={namespace + idx + '-valuta'}
               error={getErrorFor('valuta')}
               id={namespace + idx + '-valuta'}
               label={t('label:valuta') + ' *'}

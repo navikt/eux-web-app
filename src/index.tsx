@@ -1,4 +1,4 @@
-import * as appActions from 'actions/app'
+import { preload, getSaksbehandler, getEnheter, getServerinfo, getUtgaarDato } from 'actions/app'
 import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
 import * as Amplitude from 'metrics/amplitude'
@@ -6,7 +6,7 @@ import * as Sentry from 'metrics/sentry'
 import 'nav-frontend-tabell-style/dist/main.css'
 import Pages from 'pages'
 import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { Provider } from 'react-redux'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
@@ -29,17 +29,19 @@ if (!IS_PRODUCTION) {
 }
 
 (window as any).frontendlogger.info(Utils.buildinfo())
-store.dispatch(appActions.preload())
+store.dispatch(preload())
 // @ts-ignore
-store.dispatch(appActions.getSaksbehandler())
+store.dispatch(getSaksbehandler())
 // @ts-ignore
-store.dispatch(appActions.getEnheter())
+store.dispatch(getEnheter())
 // @ts-ignore
-store.dispatch(appActions.getServerinfo())
+store.dispatch(getServerinfo())
 // @ts-ignore
-store.dispatch(appActions.getUtgaarDato())
+store.dispatch(getUtgaarDato())
 
-ReactDOM.render(
+const container = document.getElementById('root')
+const root = createRoot(container!)
+root.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
       <Suspense fallback={<span>...</span>}>
@@ -55,8 +57,7 @@ ReactDOM.render(
         </BrowserRouter>
       </Suspense>
     </Provider>
-  </I18nextProvider>,
-  document.getElementById('root')
+  </I18nextProvider>
 )
 
 unregister()

@@ -170,7 +170,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
-            data-test-id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
+            data-testid={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
             id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
             key={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox' + andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
             error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
@@ -197,7 +197,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
-            data-test-id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
+            data-testid={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
             id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             key={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox' + andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
@@ -224,7 +224,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
-            data-test-id={namespace + '-kompensasjonForFeriedagerCheckbox'}
+            data-testid={namespace + '-kompensasjonForFeriedagerCheckbox'}
             error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
             id={namespace + '-kompensasjonForFeriedagerCheckbox'}
             key={namespace + '-kompensasjonForFeriedagerCheckbox' + andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
@@ -267,7 +267,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
-            data-test-id={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
+            data-testid={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
             error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
             id={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
             key={namespace + '-avkallKompensasjonBegrunnelseCheckbox' + andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
@@ -294,7 +294,7 @@ const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox}
-            data-test-id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
+            data-testid={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
             error={!!validation[namespace + '-andreYtelserSomMottasForTidenCheckbox']?.feilmelding}
             id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
             key={namespace + '-andreYtelserSomMottasForTidenCheckbox' + andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox}

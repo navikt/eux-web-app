@@ -78,6 +78,7 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
 
   return (
     <AlertDiv
+      data-testid='c-BannerAlert'
       className={classNames('status-' + variant, className)}
       style={style}
       role='alert'
@@ -86,7 +87,7 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
       {_message}
       {onClose && (
         <CloseIcon
-          data-test-id='c-alert__close-icon'
+          data-testid='c-BannerAlert__CloseIcon'
           onClick={onCloseIconClicked}
         />
       )}

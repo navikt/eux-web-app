@@ -1,11 +1,11 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import joarkBrowserItems from 'mocks/attachments/items'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentModal, { SEDAttachmentModalProps } from './SEDAttachmentModal'
 
 jest.mock('components/JoarkBrowser/JoarkBrowser', () => {
-  return () => <div data-test-id='mock-joarkbrowser' />
+  return () => <div data-testid='mock-joarkbrowser' />
 })
 
 const defaultSelector = {
@@ -17,7 +17,7 @@ const defaultSelector = {
 }
 
 describe('components/SEDAttachmentModal', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: SEDAttachmentModalProps = {
     open: true,
@@ -30,7 +30,7 @@ describe('components/SEDAttachmentModal', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(<SEDAttachmentModal {...initialMockProps} />)
+    wrapper = render(<SEDAttachmentModal {...initialMockProps} />)
   })
 
   afterEach(() => {
@@ -43,7 +43,7 @@ describe('components/SEDAttachmentModal', () => {
   })
 
   it('Render: Has proper HTML structure', () => {
-    expect(wrapper.exists('[data-test-id=\'c-sedattachmentmodal__joarkbrowser-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-testid=\'c-sedattachmentmodal__joarkbrowser-id\']')).toBeTruthy()
   })
 
   it('Render: show alert inside modal if there is an error', () => {
@@ -51,7 +51,7 @@ describe('components/SEDAttachmentModal', () => {
       stripeStatus: 'error',
       stripeMessage: 'something'
     })
-    wrapper = mount(<SEDAttachmentModal {...initialMockProps} />)
-    expect(wrapper.exists('[data-test-id=\'mock-c-alert\']')).toBeTruthy()
+    wrapper = render(<SEDAttachmentModal {...initialMockProps} />)
+    expect(wrapper.exists('[data-testid=\'mock-c-alert\']')).toBeTruthy()
   })
 })

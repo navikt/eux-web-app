@@ -1,11 +1,11 @@
 import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
 import PersonCard, { PersonCardProps } from './PersonCard'
 
 describe('components/PersonCard/PersonCard', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: PersonCardProps = {
     className: 'mock-classname',
     familierelasjonKodeverk: familierelasjoner,
@@ -16,7 +16,7 @@ describe('components/PersonCard/PersonCard', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<PersonCard {...initialMockProps} />)
+    wrapper = render(<PersonCard {...initialMockProps} />)
   })
 
   afterEach(() => {

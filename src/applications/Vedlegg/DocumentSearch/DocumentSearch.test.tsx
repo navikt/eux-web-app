@@ -1,11 +1,11 @@
 
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import DocumentSearch, { DocumentSearchProps, DocumentSearchSelector } from './DocumentSearch'
 
 describe('components/DocumentSearch/DocumentSearch', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: DocumentSearchProps = {
     parentNamespace: 'test',
     className: 'mockClassname',
@@ -25,7 +25,7 @@ describe('components/DocumentSearch/DocumentSearch', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<DocumentSearch {...initialMockProps} />)
+    wrapper = render(<DocumentSearch {...initialMockProps} />)
   })
 
   afterEach(() => {

@@ -245,7 +245,7 @@ const InntektForm: React.FC<PersonManagerFormProps> = ({
             <Column>
               <Select
                 closeMenuOnSelect
-                data-test-id={namespace + '-periodetype'}
+                data-testid={namespace + '-periodetype'}
                 error={validation[namespace + '-periodetype']?.feilmelding}
                 id={namespace + '-periodetype'}
                 key={namespace + '-periodetype-' + loennsopplysning?.periodetype}

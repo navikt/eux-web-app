@@ -41,7 +41,7 @@ const WaitingPanel: React.FC<WaitingPanelProps> = ({
         <HorizontalSeparatorDiv />
         <BodyLong
           className={classNames({ oneLine: oneLine })}
-          data-test-id='c-waitingpanel__text-id'
+          data-testid='c-waitingpanel__text-id'
         >
           {message}
         </BodyLong>

@@ -185,7 +185,7 @@ const Inntekter: React.FC<any> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + '-type'}
+              data-testid={namespace + '-type'}
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               key={namespace + '-type-' + (index < 0 ? _newInntektType : inntekt?.type ?? '')}
@@ -213,7 +213,7 @@ const Inntekter: React.FC<any> = ({
               key={namespace + '-valuta-' + (index < 0 ? _newValuta : inntekt?.valuta ?? '')}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + '-valuta'}
+              data-testid={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}

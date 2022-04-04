@@ -1,5 +1,5 @@
 import { SavingAttachmentsJob } from 'declarations/attachments'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import ProgressBar from '@navikt/fremdriftslinje'
 import React from 'react'
 import { stageSelector } from 'setupTests'
@@ -16,7 +16,7 @@ const defaultSelector = {
 }
 
 describe('components/SEDAttachmentSender/SEDAttachmentSender', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: SEDAttachmentSenderProps = {
     attachmentsError: false,
     className: 'mock-sedAttachmentSender',
@@ -33,7 +33,7 @@ describe('components/SEDAttachmentSender/SEDAttachmentSender', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(<SEDAttachmentSender {...initialMockProps} />)
+    wrapper = render(<SEDAttachmentSender {...initialMockProps} />)
   })
 
   afterEach(() => {
@@ -46,14 +46,14 @@ describe('components/SEDAttachmentSender/SEDAttachmentSender', () => {
   })
 
   it('Render: Has proper HTML structure', () => {
-    expect(wrapper.exists('[data-test-id=\'c-sedAttachmentSender__div-id\']')).toBeTruthy()
-    expect(wrapper.exists('[data-test-id=\'c-sedAttachmentSender__progress-bar-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-testid=\'c-sedAttachmentSender__div-id\']')).toBeTruthy()
+    expect(wrapper.exists('[data-testid=\'c-sedAttachmentSender__progress-bar-id\']')).toBeTruthy()
     expect(wrapper.find(ProgressBar).props().status).toEqual(initialMockProps.initialStatus)
   })
 
   it('Handling: cancel button pressed', () => {
     (initialMockProps.onCancel as jest.Mock).mockReset()
-    wrapper.find('[data-test-id=\'c-sedAttachmentSender__cancel-button-id\']').hostNodes().simulate('click')
+    wrapper.find('[data-testid=\'c-sedAttachmentSender__cancel-button-id\']').hostNodes().simulate('click')
     expect(initialMockProps.onCancel).toHaveBeenCalled()
   })
 
@@ -67,7 +67,7 @@ describe('components/SEDAttachmentSender/SEDAttachmentSender', () => {
     stageSelector(defaultSelector, {
       savingAttachmentsJob: mockSavingAttachmentJob
     })
-    wrapper = mount(<SEDAttachmentSender {...initialMockProps} />)
+    wrapper = render(<SEDAttachmentSender {...initialMockProps} />)
     expect(wrapper.find(ProgressBar).props().status).toEqual('done')
     expect(initialMockProps.onSaved).toHaveBeenCalledWith(mockSavingAttachmentJob)
     expect(initialMockProps.onFinished).toHaveBeenCalled()

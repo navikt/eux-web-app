@@ -121,8 +121,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
             src={src}
           />
           <HorizontalSeparatorDiv />
-          <div data-test-id='panelheader__tittel'>
-            <Heading size='small' data-test-id='panelheader__tittel__hoved'>
+          <div data-testid='panelheader__tittel'>
+            <Heading size='small' data-testid='panelheader__tittel__hoved'>
               {fornavn}
               {' '}
               {etternavn}
@@ -150,7 +150,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <HorizontalSeparatorDiv size='0.5' />
             <Button
               variant='secondary'
-              data-test-id='familierelasjoner__knapp--legg-til'
+              data-testid='familierelasjoner__knapp--legg-til'
               disabled={rolleList !== undefined && !rolle}
               onClick={() => _onAddClick(person)}
             >

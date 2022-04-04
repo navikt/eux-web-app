@@ -233,7 +233,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? ''}
               data-multiple-line
               data-no-border
-              data-test-id={namespace + '-utbetalingType'}
+              data-testid={namespace + '-utbetalingType'}
               error={getErrorFor(index, 'utbetalingType')}
               key={namespace + '-utbetalingType-' + (index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType ?? '')}
               id={namespace + '-utbetalingType'}
@@ -271,7 +271,7 @@ const SisteAnsettelsesForholdFC: React.FC<PersonManagerFormProps> = ({
               key={'valuta-' + _currencyData.findByValue(index < 0 ? _newValuta : utbetaling?.valuta)}
               closeMenuOnSelect
               ariaLabel={t('label:valuta')}
-              data-test-id={namespace + '-valuta'}
+              data-testid={namespace + '-valuta'}
               error={getErrorFor(index, 'valuta')}
               id={namespace + '-valuta'}
               label={t('label:valuta') + ' *'}

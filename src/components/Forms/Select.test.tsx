@@ -1,10 +1,10 @@
 import Select from 'components/Forms/Select'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import ReactSelect from 'react-select'
 import React from 'react'
 
 describe('components/Forms/Select', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps = {
     error: undefined,
     id: 'test',
@@ -12,7 +12,7 @@ describe('components/Forms/Select', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<Select {...initialMockProps} />)
+    wrapper = render(<Select {...initialMockProps} />)
   })
 
   afterEach(() => {

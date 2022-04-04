@@ -53,7 +53,7 @@ const EndredeForhold: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <RadioGroup
         legend=''
-        data-test-id={namespace + '-ytterligereInfoType'}
+        data-testid={namespace + '-ytterligereInfoType'}
         key={namespace + '-ytterligereInfoType-' + (replySed as H001Sed).ytterligereInfoType}
         id={namespace + '-ytterligereInfoType'}
         error={validation[namespace + '-ytterligereInfoType']?.feilmelding}

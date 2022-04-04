@@ -1,5 +1,5 @@
 import { alertClear } from 'actions/alert'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import { TopContainer, TopContainerProps, TopContainerSelector } from './TopContainer'
@@ -22,7 +22,7 @@ jest.mock('actions/alert', () => ({
 }))
 
 describe('components/TopContainer', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: TopContainerProps = {
     header: 'mockHeader',
     title: 'title'
@@ -30,7 +30,7 @@ describe('components/TopContainer', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(
+    wrapper = render(
       <TopContainer {...initialMockProps}>
         <div id='TEST_CHILD' />
       </TopContainer>
@@ -51,7 +51,7 @@ describe('components/TopContainer', () => {
   it('Compute the client error message', () => {
     (alertClear as jest.Mock).mockReset()
     stageSelector(defaultSelector, { bannerMessage: 'mockMessage|mockParams' })
-    wrapper = mount(
+    wrapper = render(
       <TopContainer {...initialMockProps}>
         <div id='TEST_CHILD' />
       </TopContainer>

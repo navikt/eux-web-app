@@ -254,21 +254,21 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                   />
                 </styled.div>
                 <div
-                  data-test-id="panelheader__tittel"
+                  data-testid="panelheader__tittel"
                 >
                   <Undertittel
-                    data-test-id="panelheader__tittel__hoved"
+                    data-testid="panelheader__tittel__hoved"
                   >
                     <TypografiBase
-                      data-test-id="panelheader__tittel__hoved"
+                      data-testid="panelheader__tittel__hoved"
                       type="undertittel"
                     >
                       <h2
                         className="typo-undertittel"
-                        data-test-id="panelheader__tittel__hoved"
+                        data-testid="panelheader__tittel__hoved"
                       >
                         STOR
-                         
+
                         BLYANT
                       </h2>
                     </TypografiBase>
@@ -440,14 +440,14 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
               />
             </styled.div>
             <Styled(u)
-              data-test-id="familierelasjoner__knapp--legg-til"
+              data-testid="familierelasjoner__knapp--legg-til"
               disabled={true}
               kompakt={true}
               onClick={[Function]}
             >
               <u
                 className="c6"
-                data-test-id="familierelasjoner__knapp--legg-til"
+                data-testid="familierelasjoner__knapp--legg-til"
                 disabled={true}
                 kompakt={true}
                 onClick={[Function]}
@@ -455,7 +455,7 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                 <p
                   autoDisableVedSpinner={false}
                   className="c6"
-                  data-test-id="familierelasjoner__knapp--legg-til"
+                  data-testid="familierelasjoner__knapp--legg-til"
                   disabled={true}
                   htmlType="submit"
                   inaktivKlasseVedDisabled={false}
@@ -467,7 +467,7 @@ exports[`components/PersonCard/PersonCard Renders 1`] = `
                 >
                   <button
                     className="knapp c6 knapp--standard knapp--disabled knapp--kompakt"
-                    data-test-id="familierelasjoner__knapp--legg-til"
+                    data-testid="familierelasjoner__knapp--legg-til"
                     disabled={true}
                     onClick={[Function]}
                     type="submit"

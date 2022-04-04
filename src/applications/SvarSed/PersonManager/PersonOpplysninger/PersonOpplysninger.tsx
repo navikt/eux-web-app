@@ -247,7 +247,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={personInfo?.kjoenn}
               data-no-border
-              data-test-id={namespace + '-kjoenn'}
+              data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
               id={namespace + '-kjoenn'}
               key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
@@ -418,7 +418,7 @@ const PersonOpplysninger: React.FC<PersonManagerFormProps> = ({
                 </Column>
                 <Column>
                   <CountrySelect
-                    data-test-id={namespace + '-foedested-land'}
+                    data-testid={namespace + '-foedested-land'}
                     error={validation[namespace + '-foedested-land']?.feilmelding}
                     id={namespace + '-foedested-land'}
                     includeList={CountryFilter.STANDARD({})}

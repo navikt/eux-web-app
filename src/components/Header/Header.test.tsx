@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import Header, { HeaderProps, HeaderSelector } from './Header'
@@ -8,7 +8,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('components/Header/Header', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: HeaderProps = {
     title: 'title',
     highContrast: false
@@ -23,7 +23,7 @@ describe('components/Header/Header', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<Header {...initialMockProps} />)
+    wrapper = render(<Header {...initialMockProps} />)
   })
 
   afterEach(() => {

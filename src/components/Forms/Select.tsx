@@ -9,14 +9,14 @@ interface SelectProps extends Props {
   noMarginTop?: boolean
   size?: 'medium' | 'small'
   style ?: any
-  'data-test-id'?: string
+  'data-testid'?: string
 }
 
 const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
   return (
     <div
       className={classNames({ 'navds-select--error': !!props.error })}
-      data-test-id={props['data-test-id'] || props.id}
+      data-testid={props['data-testid'] || props.id}
       style={props.style}
     >
       {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}</label>)}

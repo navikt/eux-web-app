@@ -628,7 +628,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             <RadioPanelGroup
               value={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
               data-no-border
-              data-test-id={namespace + idx + '-barnaEllerFamilie'}
+              data-testid={namespace + idx + '-barnaEllerFamilie'}
               error={getErrorFor('barnaEllerFamilie')}
               id={namespace + idx + '-barnaEllerFamilie'}
               key={namespace + idx + '-barnaEllerFamilie-' + (motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie)}
@@ -651,7 +651,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
               value={motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType}
               data-multiple-line
               data-no-border
-              data-test-id={namespace + idx + '-svarType'}
+              data-testid={namespace + idx + '-svarType'}
               error={getErrorFor('svarType')}
               id={namespace + idx + '-svarType'}
               key={namespace + idx + '-svarType-' + (motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType)}
@@ -743,7 +743,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             <CountrySelect
               ariaLabel={t('label:valuta')}
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-valuta'}
+              data-testid={namespace + idx + '-valuta'}
               error={getErrorFor('valuta')}
               id={namespace + idx + '-valuta'}
               key={namespace + idx + '-valuta-' + (motregningKey === 'new-motregning' ? _newValuta : _currencyData.findByValue(motregning?.valuta)?.valuta ?? '')}
@@ -786,7 +786,7 @@ const Motregning: React.FC<FormålManagerFormProps> = ({
             <RadioPanelGroup
               checked={motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet}
               data-no-border
-              data-test-id={namespace + idx + '-utbetalingshyppighet'}
+              data-testid={namespace + idx + '-utbetalingshyppighet'}
               id={namespace + idx + '-utbetalingshyppighet'}
               key={namespace + idx + '-utbetalingshyppighet-' + (motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet)}
               error={getErrorFor('utbetalingshyppighet')}

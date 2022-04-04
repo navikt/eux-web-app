@@ -1,12 +1,12 @@
 import * as types from 'constants/actionTypes'
 import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
 import TPSPersonForm, { TPSPersonFormProps } from './TPSPersonForm'
 
 describe('components/Family/TPSPersonForm', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: TPSPersonFormProps = {
     alertMessage: 'Message',
     alertType: types.PERSON_RELATERT_SEARCH_FAILURE,
@@ -23,7 +23,7 @@ describe('components/Family/TPSPersonForm', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<TPSPersonForm {...initialMockProps} />)
+    wrapper = render(<TPSPersonForm {...initialMockProps} />)
   })
 
   afterEach(() => {

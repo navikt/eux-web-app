@@ -194,7 +194,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-grunn'}
+              data-testid={namespace + idx + '-grunn'}
               error={getErrorFor('grunn')}
               id={namespace + idx + '-grunn'}
               key={namespace + idx + '-grunn-' + (grunn === null ? _newGrunn : grunn?.grunn)}
@@ -209,7 +209,7 @@ const ProsedyreVedUenighet: React.FC<FormålManagerFormProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-person'}
+              data-testid={namespace + idx + '-person'}
               error={getErrorFor('person')}
               id={namespace + idx + '-person'}
               key={namespace + idx + '-person-' + (grunn === null ? _newPerson : grunn?.person)}

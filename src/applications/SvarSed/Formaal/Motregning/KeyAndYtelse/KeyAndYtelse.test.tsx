@@ -1,8 +1,8 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import KeyAndYtelseFC, { KeyAndYtelseProps } from './KeyAndYtelse'
 
 describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: KeyAndYtelseProps = {
     keyAndYtelses: [{ fullKey: 'barn[0]', ytelseNavn: 'ytelseNavn' }],
@@ -16,7 +16,7 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
   }
 
   beforeEach(() => {
-    wrapper = mount(<KeyAndYtelseFC {...initialMockProps} />)
+    wrapper = render(<KeyAndYtelseFC {...initialMockProps} />)
   })
 
   afterEach(() => {
@@ -35,7 +35,7 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
   it('Handling: update ytelseNavn', () => {
     (initialMockProps.onYtelseChanged as jest.Mock).mockReset()
     const mockYtelseNavn = 'mockYtelseNavn'
-    const ytelseNavnInput = wrapper.find('[data-test-id=\'test-keyandytelse[0]-ytelseNavn\']').hostNodes()
+    const ytelseNavnInput = wrapper.find('[data-testid=\'test-keyandytelse[0]-ytelseNavn\']').hostNodes()
     ytelseNavnInput.simulate('change', { target: { value: mockYtelseNavn } })
     ytelseNavnInput.simulate('blur')
     expect(initialMockProps.onYtelseChanged).toHaveBeenCalledWith('barn[0]', mockYtelseNavn)
@@ -43,26 +43,26 @@ describe('applications/SvarSed/Formaal/Motregning/KeyAndYtelse/KeyAndYtelse', ()
 
   it('Handling: adding key/ytelseNavn', () => {
     (initialMockProps.onAdded as jest.Mock).mockReset()
-    wrapper.find('[data-test-id=\'test-keyandytelse-new\']').hostNodes().simulate('click')
+    wrapper.find('[data-testid=\'test-keyandytelse-new\']').hostNodes().simulate('click')
 
-    const keySelect = wrapper.find('[data-test-id=\'test-keyandytelse-key\'] input').hostNodes()
+    const keySelect = wrapper.find('[data-testid=\'test-keyandytelse-key\'] input').hostNodes()
     keySelect.simulate('keyDown', { key: 'ArrowDown' })
     keySelect.simulate('keyDown', { key: 'ArrowDown' })
     keySelect.simulate('keyDown', { key: 'Enter' }) // changes from barn[0] to barn[1]
 
     const mockYtelseNavn = 'mockYtelseNavn'
-    const ytelseNavnInput = wrapper.find('[data-test-id=\'test-keyandytelse-ytelseNavn\']').hostNodes()
+    const ytelseNavnInput = wrapper.find('[data-testid=\'test-keyandytelse-ytelseNavn\']').hostNodes()
     ytelseNavnInput.simulate('change', { target: { value: mockYtelseNavn } })
     ytelseNavnInput.simulate('blur')
 
-    wrapper.find('[data-test-id=\'test-keyandytelse-addremove-add\']').hostNodes().simulate('click')
+    wrapper.find('[data-testid=\'test-keyandytelse-addremove-add\']').hostNodes().simulate('click')
     expect(initialMockProps.onAdded).toHaveBeenCalledWith('barn[1]', mockYtelseNavn)
   })
 
   it('Handling: removing key/ytelseNavn', () => {
     (initialMockProps.onRemoved as jest.Mock).mockReset()
-    wrapper.find('[data-test-id=\'test-keyandytelse[0]-addremove-remove\']').hostNodes().simulate('click')
-    wrapper.find('[data-test-id=\'test-keyandytelse[0]-addremove-yes\']').hostNodes().simulate('click')
+    wrapper.find('[data-testid=\'test-keyandytelse[0]-addremove-remove\']').hostNodes().simulate('click')
+    wrapper.find('[data-testid=\'test-keyandytelse[0]-addremove-yes\']').hostNodes().simulate('click')
     expect(initialMockProps.onRemoved).toHaveBeenCalledWith('barn[0]')
   })
 })

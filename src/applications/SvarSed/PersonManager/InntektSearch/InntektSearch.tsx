@@ -103,7 +103,7 @@ const InntektSearch = ({
       </Column>
       <Column>
         <Select
-          data-test-id={namespace + '-inntektsliste'}
+          data-testid={namespace + '-inntektsliste'}
           error={_validation[namespace + '-inntektsliste']?.feilmelding}
           id={namespace + '-inntektsliste'}
           label={t('label:inntektsfilter')}

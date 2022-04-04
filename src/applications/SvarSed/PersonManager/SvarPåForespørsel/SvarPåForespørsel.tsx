@@ -153,7 +153,7 @@ const SvarPåForespørsel: React.FC<PersonManagerFormProps> = ({
             value={_svar}
             data-multiple-line
             data-no-border
-            data-test-id={namespace + '-svar'}
+            data-testid={namespace + '-svar'}
             error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
             key={namespace + '-svar-' + _svar}

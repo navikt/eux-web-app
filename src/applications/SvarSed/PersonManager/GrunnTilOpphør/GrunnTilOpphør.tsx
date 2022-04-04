@@ -73,7 +73,7 @@ const GrunnTilOpphør: React.FC<PersonManagerFormProps> = ({
       <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
         <Column>
           <Select
-            data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
+            data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:årsak-til-avslutning-av-arbeidsforhold')}

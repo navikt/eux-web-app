@@ -114,7 +114,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
         </Column>
         <Column>
           <Select
-            data-test-id={namespace + '-arbeidssok-inntektsliste'}
+            data-testid={namespace + '-arbeidssok-inntektsliste'}
             error={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
             id={namespace + '-arbeidssok-inntektsliste'}
             label={t('label:filter')}

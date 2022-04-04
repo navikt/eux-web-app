@@ -1,11 +1,11 @@
 import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
 import Family, { FamilyProps } from './Family'
 
 describe('components/Family/Family', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: FamilyProps = {
     alertVariant: undefined,
@@ -29,7 +29,7 @@ describe('components/Family/Family', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<Family {...initialMockProps} />)
+    wrapper = render(<Family {...initialMockProps} />)
   })
 
   afterEach(() => {

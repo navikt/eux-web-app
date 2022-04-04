@@ -373,7 +373,7 @@ ui-fss.g36[id="c4"] {
             ],
             "modalContent": <React.Fragment>
               <Unknown
-                data-test-id="a-buc-c-sedattachmentmodal__joarkbrowser-id"
+                data-testid="a-buc-c-sedattachmentmodal__joarkbrowser-id"
                 existingItems={
                   Array [
                     Object {
@@ -841,14 +841,14 @@ ui-fss.g36[id="c4"] {
                           >
                             <button
                               class="lukknapp c6 c7"
-                              data-test-id="c-modal__close-button-id"
+                              data-testid="c-modal__close-button-id"
                             >
                               <span
                                 class="text-hide"
                               />
                             </button>
                             <div
-                              data-test-id="mock-joarkbrowser"
+                              data-testid="mock-joarkbrowser"
                             />
                           </div>
                           <div
@@ -859,7 +859,7 @@ ui-fss.g36[id="c4"] {
                             >
                               <button
                                 class="knapp c12 c13 knapp--hoved"
-                                data-test-id="c-modal__button-id-0"
+                                data-testid="c-modal__button-id-0"
                                 id="c-modal__button-id-0"
                                 type="submit"
                               >
@@ -871,7 +871,7 @@ ui-fss.g36[id="c4"] {
                             >
                               <button
                                 class="knapp c14 c15 knapp--standard"
-                                data-test-id="c-modal__button-id-1"
+                                data-testid="c-modal__button-id-1"
                                 id="c-modal__button-id-1"
                                 type="submit"
                               >
@@ -1030,20 +1030,20 @@ ui-fss.g36[id="c4"] {
                             className="c4 c5 icon"
                           >
                             <Styled(Lukknapp)
-                              data-test-id="c-modal__close-button-id"
+                              data-testid="c-modal__close-button-id"
                               onClick={[Function]}
                             >
                               <Lukknapp
                                 bla={false}
                                 className="c6 c7"
-                                data-test-id="c-modal__close-button-id"
+                                data-testid="c-modal__close-button-id"
                                 hvit={false}
                                 onClick={[Function]}
                                 overstHjorne={false}
                               >
                                 <button
                                   className="lukknapp c6 c7"
-                                  data-test-id="c-modal__close-button-id"
+                                  data-testid="c-modal__close-button-id"
                                   onClick={[Function]}
                                 >
                                   <span
@@ -1053,7 +1053,7 @@ ui-fss.g36[id="c4"] {
                               </Lukknapp>
                             </Styled(Lukknapp)>
                             <Component
-                              data-test-id="a-buc-c-sedattachmentmodal__joarkbrowser-id"
+                              data-testid="a-buc-c-sedattachmentmodal__joarkbrowser-id"
                               existingItems={
                                 Array [
                                   Object {
@@ -1077,7 +1077,7 @@ ui-fss.g36[id="c4"] {
                               tableId="test-id"
                             >
                               <div
-                                data-test-id="mock-joarkbrowser"
+                                data-testid="mock-joarkbrowser"
                               />
                             </Component>
                           </div>
@@ -1095,7 +1095,7 @@ ui-fss.g36[id="c4"] {
                                 className="c10 c11"
                               >
                                 <Styled(o)
-                                  data-test-id="c-modal__button-id-0"
+                                  data-testid="c-modal__button-id-0"
                                   disabled={false}
                                   id="c-modal__button-id-0"
                                   key="buc:form-addSelectedAttachments"
@@ -1103,7 +1103,7 @@ ui-fss.g36[id="c4"] {
                                 >
                                   <o
                                     className="c12 c13"
-                                    data-test-id="c-modal__button-id-0"
+                                    data-testid="c-modal__button-id-0"
                                     disabled={false}
                                     id="c-modal__button-id-0"
                                     onClick={[Function]}
@@ -1111,7 +1111,7 @@ ui-fss.g36[id="c4"] {
                                     <c
                                       autoDisableVedSpinner={false}
                                       className="c12 c13"
-                                      data-test-id="c-modal__button-id-0"
+                                      data-testid="c-modal__button-id-0"
                                       disabled={false}
                                       htmlType="submit"
                                       id="c-modal__button-id-0"
@@ -1124,7 +1124,7 @@ ui-fss.g36[id="c4"] {
                                     >
                                       <button
                                         className="knapp c12 c13 knapp--hoved"
-                                        data-test-id="c-modal__button-id-0"
+                                        data-testid="c-modal__button-id-0"
                                         disabled={false}
                                         id="c-modal__button-id-0"
                                         onClick={[Function]}
@@ -1144,7 +1144,7 @@ ui-fss.g36[id="c4"] {
                                 className="c10 c11"
                               >
                                 <Styled(o)
-                                  data-test-id="c-modal__button-id-1"
+                                  data-testid="c-modal__button-id-1"
                                   disabled={false}
                                   id="c-modal__button-id-1"
                                   key="ui:cancel"
@@ -1152,7 +1152,7 @@ ui-fss.g36[id="c4"] {
                                 >
                                   <o
                                     className="c14 c15"
-                                    data-test-id="c-modal__button-id-1"
+                                    data-testid="c-modal__button-id-1"
                                     disabled={false}
                                     id="c-modal__button-id-1"
                                     onClick={[Function]}
@@ -1160,7 +1160,7 @@ ui-fss.g36[id="c4"] {
                                     <c
                                       autoDisableVedSpinner={false}
                                       className="c14 c15"
-                                      data-test-id="c-modal__button-id-1"
+                                      data-testid="c-modal__button-id-1"
                                       disabled={false}
                                       htmlType="submit"
                                       id="c-modal__button-id-1"
@@ -1173,7 +1173,7 @@ ui-fss.g36[id="c4"] {
                                     >
                                       <button
                                         className="knapp c14 c15 knapp--standard"
-                                        data-test-id="c-modal__button-id-1"
+                                        data-testid="c-modal__button-id-1"
                                         disabled={false}
                                         id="c-modal__button-id-1"
                                         onClick={[Function]}

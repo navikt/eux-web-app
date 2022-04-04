@@ -254,7 +254,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
               <Column>
                 {index < 0 && (
                   <Select
-                    data-test-id={namespace + idx + '-category'}
+                    data-testid={namespace + idx + '-category'}
                     error={getErrorFor(index, 'category')}
                     id={namespace + idx + '-category'}
                     key={namespace + idx + '-category-' + _newCategory}
@@ -273,7 +273,7 @@ const FamilieYtelser: React.FC<PersonManagerFormProps> = ({
                 ) &&
                 (
                   <Select
-                    data-test-id={namespace + idx + '-pensjonstype'}
+                    data-testid={namespace + idx + '-pensjonstype'}
                     error={getErrorFor(index, 'pensjonstype')}
                     id={namespace + idx + '-pensjonstype'}
                     key={namespace + idx + '-pensjonstype-' + (index < 0 ? _newPensjonsType : (periode as PensjonPeriode)?.pensjonstype)}

@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import AbroadPersonForm, { AbroadPersonFormProps, AbroadPersonFormSelector } from './AbroadPersonForm'
@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('applications/OpprettSak/Family/AbroadPersonForm', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: AbroadPersonFormProps = {
     alertMessage: undefined,
     alertType: undefined,
@@ -31,7 +31,7 @@ describe('applications/OpprettSak/Family/AbroadPersonForm', () => {
   })
 
   beforeEach(() => {
-    wrapper = mount(<AbroadPersonForm {...initialMockProps} />)
+    wrapper = render(<AbroadPersonForm {...initialMockProps} />)
   })
 
   afterEach(() => {

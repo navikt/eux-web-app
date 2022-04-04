@@ -142,7 +142,7 @@ const Nasjonaliteter: React.FC<PersonManagerFormProps> = ({
             <CountrySelect
               ariaLabel={t('label:nasjonalitet')}
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-land'}
+              data-testid={namespace + idx + '-land'}
               error={getErrorFor(index, 'land')}
               flagWave
               key={namespace + idx + '-land' + (index < 0 ? _newLand : statsborgerskap?.land)}

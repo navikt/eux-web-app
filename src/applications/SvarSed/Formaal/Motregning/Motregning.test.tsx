@@ -1,7 +1,7 @@
 import { FormålManagerFormProps, FormålManagerFormSelector } from 'applications/SvarSed/Formaal/FormålManager'
 import Motregning from 'applications/SvarSed/Formaal/Motregning/Motregning'
 import { F002Sed } from 'declarations/sed'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
 
@@ -20,7 +20,7 @@ const defaultSelector: FormålManagerFormSelector = {
 }
 
 describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   const initialMockProps: FormålManagerFormProps = {
     parentNamespace: 'test',
@@ -32,7 +32,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
 
   beforeEach(() => {
     stageSelector(defaultSelector, {})
-    wrapper = mount(<Motregning {...initialMockProps} />)
+    wrapper = render(<Motregning {...initialMockProps} />)
   })
 
   afterEach(() => {
@@ -47,7 +47,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
       }
     })
     const mockText = 'mockText'
-    const formField = wrapper.find('[data-test-id=\'test-motregning-svarType\']').hostNodes()
+    const formField = wrapper.find('[data-testid=\'test-motregning-svarType\']').hostNodes()
     formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('svarType', mockText)
@@ -55,7 +55,7 @@ describe('applications/SvarSed/Formaal/Motregning/Motregning', () => {
 
   it('Handling: see kontoopplysning button clicked', () => {
     (initialMockProps.seeKontoopplysninger as jest.Mock).mockReset()
-    const formField = wrapper.find('[data-test-id=\'test-refusjonskrav-konto-button\']').hostNodes()
+    const formField = wrapper.find('[data-testid=\'test-refusjonskrav-konto-button\']').hostNodes()
     formField.simulate('click')
     expect(initialMockProps.seeKontoopplysninger).toHaveBeenCalled()
   })

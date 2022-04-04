@@ -124,7 +124,7 @@ const Stack: React.FC<StackProps> = ({
                 </>
               )}
               <Select
-                data-test-id={namespace}
+                data-testid={namespace}
                 id={namespace}
                 value={_newItem}
                 menuPortalTarget={document.body}

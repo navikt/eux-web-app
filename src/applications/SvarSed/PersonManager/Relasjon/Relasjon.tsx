@@ -252,7 +252,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
               value={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
               key={namespace + idx + '-relasjonTilPerson1-' + (index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson)}
-              data-test-id={namespace + idx + '-relasjonTilPerson'}
+              data-testid={namespace + idx + '-relasjonTilPerson'}
               error={getErrorFor(index, 'relasjonTilPerson')}
               id={namespace + idx + '-relasjonTilPerson'}
               legend={t('label:relasjon-med') + ' *'}
@@ -276,7 +276,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
           <Column flex='3'>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-relasjonType'}
+              data-testid={namespace + idx + '-relasjonType'}
               error={getErrorFor(index, 'relasjonType')}
               id={namespace + idx + '-relasjonType'}
               key={namespace + idx + '-relasjonType' + (index < 0 ? _newRelasjonType : _.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType))}
@@ -313,7 +313,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
               data-no-border
-              data-test-id={namespace + idx + '-erDeltForeldreansvar'}
+              data-testid={namespace + idx + '-erDeltForeldreansvar'}
               error={getErrorFor(index, 'erDeltForeldreansvar')}
               id={namespace + idx + '-erDeltForeldreansvar'}
               key={namespace + idx + '-erDeltForeldreansvar-' + (index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar)}
@@ -343,7 +343,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold}
               data-no-border
-              data-test-id={namespace + idx + '-borIBrukersHushold'}
+              data-testid={namespace + idx + '-borIBrukersHushold'}
               error={getErrorFor(index, 'borIBrukersHushold')}
               id={namespace + idx + '-borIBrukersHushold'}
               key={namespace + idx + '-borIBrukersHushold-' + (index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold)}
@@ -368,7 +368,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold}
               data-no-border
-              data-test-id={namespace + idx + '-borIEktefellesHushold'}
+              data-testid={namespace + idx + '-borIEktefellesHushold'}
               error={getErrorFor(index, 'borIEktefellesHushold')}
               id={namespace + idx + '-borIEktefellesHushold'}
               key={namespace + idx + '-borIEktefellesHushold-' + (index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold)}
@@ -393,7 +393,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold}
               data-no-border
-              data-test-id={namespace + idx + '-borIAnnenPersonsHushold'}
+              data-testid={namespace + idx + '-borIAnnenPersonsHushold'}
               error={getErrorFor(index, 'borIAnnenPersonsHushold')}
               id={namespace + idx + '-borIAnnenPersonsHushold'}
               key={namespace + idx + '-borIAnnenPersonsHushold-' + (index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold)}
@@ -418,7 +418,7 @@ const Relasjon: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon}
               data-no-border
-              data-test-id={namespace + idx + '-borPaaInstitusjon'}
+              data-testid={namespace + idx + '-borPaaInstitusjon'}
               error={getErrorFor(index, 'borPaaInstitusjon')}
               key={namespace + idx + '-borPaaInstitusjon-' + (index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon)}
               id={namespace + idx + '-borPaaInstitusjon'}

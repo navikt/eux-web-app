@@ -128,7 +128,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <RadioGroup
         value={rettTilDagpengerRadio}
-        data-test-id={namespace + '-rettTilDagpengerRadio'}
+        data-testid={namespace + '-rettTilDagpengerRadio'}
         error={!!validation[namespace + '-rettTilDagpengerRadio']?.feilmelding}
         id={namespace + '-rettTilDagpengerRadio'}
         key={namespace + '-rettTilDagpengerRadio-' + rettTilDagpengerRadio}
@@ -148,7 +148,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Checkbox
               checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
-              data-test-id={namespace + '-ihhTilArtikkel64'}
+              data-testid={namespace + '-ihhTilArtikkel64'}
               key={namespace + '-ihhTilArtikkel64-' + (rettTilDagpenger?.ihhTilArtikkel64 ?? '')}
               error={!!validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,7 +164,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Checkbox
               checked={rettTilDagpenger?.ihhTilArtikkel65 === 'ja'}
-              data-test-id={namespace + '-ihhTilArtikkel65'}
+              data-testid={namespace + '-ihhTilArtikkel65'}
               key={namespace + '-ihhTilArtikkel65-' + (rettTilDagpenger?.ihhTilArtikkel65 ?? '')}
               error={!!validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -219,7 +219,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Checkbox
               checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
-              data-test-id={namespace + '-ihhTilLovgivning'}
+              data-testid={namespace + '-ihhTilLovgivning'}
               key={namespace + '-ihhTilLovgivning-' + (ikkeRettTilDagpenger?.ihhTilLovgivning ?? '')}
               error={!!validation[namespace + '-ihhTilLovgivning']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,7 +235,7 @@ const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
           <Column>
             <Checkbox
               checked={ikkeRettTilDagpenger?.ikkeSoekt === 'ja'}
-              data-test-id={namespace + '-ikkeSoekt'}
+              data-testid={namespace + '-ikkeSoekt'}
               key={namespace + '-ikkeSoekt-' + (ikkeRettTilDagpenger?.ikkeSoekt ?? '')}
               error={!!validation[namespace + '-ikkeSoekt']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

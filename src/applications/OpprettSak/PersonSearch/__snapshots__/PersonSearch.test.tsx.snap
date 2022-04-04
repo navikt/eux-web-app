@@ -482,18 +482,18 @@ exports[`components/PersonSearch/PersonSearch Render: match snapshot 1`] = `
                         />
                       </styled.div>
                       <div
-                        data-test-id="panelheader__tittel"
+                        data-testid="panelheader__tittel"
                       >
                         <Undertittel
-                          data-test-id="panelheader__tittel__hoved"
+                          data-testid="panelheader__tittel__hoved"
                         >
                           <TypografiBase
-                            data-test-id="panelheader__tittel__hoved"
+                            data-testid="panelheader__tittel__hoved"
                             type="undertittel"
                           >
                             <h2
                               className="typo-undertittel"
-                              data-test-id="panelheader__tittel__hoved"
+                              data-testid="panelheader__tittel__hoved"
                             >
                               STOR
 

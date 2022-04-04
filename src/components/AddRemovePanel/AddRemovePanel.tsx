@@ -48,7 +48,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HorizontalSeparatorDiv size='0.5' />
         <Button
           variant='tertiary'
-          data-test-id={namespace + '-addremove-yes'}
+          data-testid={namespace + '-addremove-yes'}
           onClick={onConfirmRemove}
         >
           {labels?.yes ?? t('label:ja')}
@@ -56,7 +56,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
         <HorizontalSeparatorDiv size='0.5' />
         <Button
           variant='tertiary'
-          data-test-id={namespace + '-addremove-no'}
+          data-testid={namespace + '-addremove-no'}
           onClick={onCancelRemove}
         >
           {labels?.no ?? t('label:nei')}
@@ -67,7 +67,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
       <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
         <Button
           variant='tertiary'
-          data-test-id={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
+          data-testid={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
           {!existingItem ? <Add /> : <Delete />}
@@ -79,7 +79,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
             <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
-              data-test-id={namespace + '-addremove-cancel'}
+              data-testid={namespace + '-addremove-cancel'}
               onClick={onCancelNew}
             >
               {labels?.cancel ?? t('el:button-cancel')}

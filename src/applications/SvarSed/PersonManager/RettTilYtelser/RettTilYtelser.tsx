@@ -95,7 +95,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
           <RadioGroup
             defaultValue={_rettTilStonad}
             id={namespace + '-retttilstønad'}
-            data-test-id={namespace + '-retttilstønad'}
+            data-testid={namespace + '-retttilstønad'}
             legend={t('label:rett-til-stønad') + ' *'}
             key={'rett-til-stonad-' + _rettTilStonad}
             error={validation[namespace + '-retttilstønad']?.feilmelding}
@@ -121,7 +121,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
             <RadioGroup
               id={namespace + '-bekreftelsesgrunn'}
               value={rettTilYtelse?.bekreftelsesgrunn}
-              data-test-id={namespace + '-bekreftelsesgrunn'}
+              data-testid={namespace + '-bekreftelsesgrunn'}
               legend={t('label:artikkelnummer') + ' *'}
               error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
               onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
@@ -145,7 +145,7 @@ const RettTilYtelser: React.FC<PersonManagerFormProps> = ({
           <Column>
             <RadioGroup
               id={namespace + '-avvisningsgrunn'}
-              data-test-id={namespace + '-avvisningsgrunn'}
+              data-testid={namespace + '-avvisningsgrunn'}
               legend={t('label:grunn') + ' *'}
               key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}
               value={rettTilYtelse?.avvisningsgrunn}

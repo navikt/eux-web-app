@@ -90,7 +90,7 @@ const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
         <Column flex='2'>
           <Select
             style={{ width: '100%' }}
-            data-test-id={namespace + '-typeGrunnOpphoerAnsatt'}
+            data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:grunn-type') + ' *'}

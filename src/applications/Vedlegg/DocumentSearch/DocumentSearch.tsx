@@ -73,7 +73,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <Search
           label={t('label:rina-saksnummer')}
           /* error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
-          data-test-id={namespace + '-rinasaksnummer'}
+          data-testid={namespace + '-rinasaksnummer'}
           id={namespace + '-rinasaksnummer'}
           required
           hideLabel={false}
@@ -97,9 +97,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <VerticalSeparatorDiv />
       </Column>
       <Column>
-        <div data-test-id='dokumentsok__card slideInFromLeft'>
+        <div data-testid='dokumentsok__card slideInFromLeft'>
           <Select
-            data-test-id={namespace + '-rinadokumentID'}
+            data-testid={namespace + '-rinadokumentID'}
             id={namespace + '-rinadokumentID'}
             disabled={_.isNil(dokument)}
             error={validation[namespace + '-rinadokumentID']?.feilmelding}

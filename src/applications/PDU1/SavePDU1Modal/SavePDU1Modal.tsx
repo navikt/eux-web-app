@@ -114,7 +114,7 @@ const SavePDU1Modal = ({
                 <FlexCenterSpacedDiv>
                   <TextField
                     disabled={_saved}
-                    data-test-id='savepdu1modal-name'
+                    data-testid='savepdu1modal-name'
                     error={_validation['savepdu1modal-name']?.feilmelding}
                     id='savepdu1modal-name'
                     label={t('label:navn')}

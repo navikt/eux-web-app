@@ -61,7 +61,7 @@ const KravOmRefusjon: React.FC<FormålManagerFormProps> = ({
         <Column>
           <Button
             variant='tertiary'
-            data-test-id={namespace + '-konto-button'}
+            data-testid={namespace + '-konto-button'}
             data-amplitude='svarsed.editor.seekontoopplysning'
             onClick={(e) => {
               buttonLogger(e)

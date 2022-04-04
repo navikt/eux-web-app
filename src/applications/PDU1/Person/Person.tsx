@@ -169,7 +169,7 @@ const Person: React.FC<PersonManagerFormProps> = ({
             <RadioPanelGroup
               value={pdu1Person?.kjoenn}
               data-no-border
-              data-test-id={namespace + '-kjoenn'}
+              data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
               id={namespace + '-kjoenn'}
               key={namespace + '-kjoenn-' + (pdu1Person?.kjoenn ?? '')}

@@ -227,7 +227,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         >
           <Column flex='2'>
             <Select
-              data-test-id={namespace + idx + '-relasjonType'}
+              data-testid={namespace + idx + '-relasjonType'}
               error={getErrorFor(index, 'relasjonType')}
               key={namespace + idx + '-relasjonType-' + (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType)}
               id={namespace + idx + '-relasjonType'}
@@ -312,7 +312,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
               <Column flex='3'>
                 <RadioPanelGroup
                   value={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
-                  data-test-id={namespace + idx + '-borSammen'}
+                  data-testid={namespace + idx + '-borSammen'}
                   data-no-border
                   id={namespace + idx + '-borSammen'}
                   error={getErrorFor(index, 'borSammen')}

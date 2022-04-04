@@ -21,7 +21,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
   }
   return (
     <ErrorSummary
-      data-test-id='validationBox'
+      data-testid='validationBox'
       heading={heading}
     >
       {Object.values(validation)

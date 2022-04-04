@@ -135,7 +135,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <TextField
             id={namespace + '-fnr'}
-            data-test-id={namespace + '-fnr'}
+            data-testid={namespace + '-fnr'}
             error={_validation[namespace + '-fnr']?.feilmelding}
             label={t('label:utenlandsk-id')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +148,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <CountrySelect
             id={namespace + '-land'}
-            data-test-id={namespace + '-land'}
+            data-testid={namespace + '-land'}
             error={_validation[namespace + '-land']?.feilmelding}
             label={t('label:land')}
             key={namespace + '-land-' + _relation.land}
@@ -164,7 +164,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <CountrySelect
             id={namespace + '-statsborgerskap'}
-            data-test-id={namespace + '-statsborgerskap'}
+            data-testid={namespace + '-statsborgerskap'}
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
             includeList={CountryFilter.STANDARD({})}
             label={t('label:statsborgerskap')}
@@ -183,7 +183,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <TextField
             id={namespace + '-fornavn'}
-            data-test-id={namespace + '-fornavn'}
+            data-testid={namespace + '-fornavn'}
             error={_validation[namespace + '-fornavn']?.feilmelding}
             label={t('label:fornavn')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,7 +196,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <TextField
             id={namespace + '-etternavn'}
-            data-test-id={namespace + '-etternavn'}
+            data-testid={namespace + '-etternavn'}
             error={_validation[namespace + '-etternavn']?.feilmelding}
             label={t('label:etternavn')}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -212,7 +212,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <Select
             id={namespace + '-kjoenn'}
-            data-test-id={namespace + '-kjoenn'}
+            data-testid={namespace + '-kjoenn'}
             error={_validation[namespace + '-kjoenn']?.feilmelding}
             label={t('label:kjønn')}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -235,7 +235,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <DateInput
             id='fdato'
-            data-test-id={namespace + '-fdato'}
+            data-testid={namespace + '-fdato'}
             key={namespace + '-fdato-' + _relation.fdato}
             namespace={namespace}
             error={_validation[namespace + '-fdato']?.feilmelding}
@@ -254,7 +254,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         <Column>
           <Select
             id={namespace + 'familierelasjon'}
-            data-test-id={namespace + '-familierelasjon'}
+            data-testid={namespace + '-familierelasjon'}
             error={_validation[namespace + '-familierelasjon']?.feilmelding}
             label={t('label:familierelasjon')}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

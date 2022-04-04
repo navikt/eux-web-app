@@ -214,7 +214,7 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
               <Column>
                 <Select
                   closeMenuOnSelect
-                  data-test-id={namespace + idx + '-type'}
+                  data-testid={namespace + idx + '-type'}
                   error={_v[namespace + idx + '-type']?.feilmelding}
                   id={namespace + idx + '-type'}
                   key={namespace + idx + '-type-' + _newType}

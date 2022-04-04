@@ -118,7 +118,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
             <Column>
               <Input
                 id='journalpostID'
-                data-test-id={namespace + '-journalpostID'}
+                data-testid={namespace + '-journalpostID'}
                 namespace={namespace}
                 value={journalpostID}
                 label={(
@@ -139,7 +139,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <Input
                 id='dokumentID'
                 namespace={namespace}
-                data-test-id={namespace + '-dokumentID'}
+                data-testid={namespace + '-dokumentID'}
                 value={dokumentID}
                 label={(
                   <FlexDiv>
@@ -160,7 +160,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
             <Column>
               <Checkbox
                 checked={sensitivt}
-                data-test-id={namespace + '-sensitivt'}
+                data-testid={namespace + '-sensitivt'}
                 key={namespace + '-sensitivt-' + sensitivt}
                 error={!!validation[namespace + '-sensitivt']?.feilmelding}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSensitivt(e.target.checked)}

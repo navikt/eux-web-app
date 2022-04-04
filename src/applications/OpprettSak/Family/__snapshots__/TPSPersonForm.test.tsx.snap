@@ -195,7 +195,7 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
             >
               <Input
                 bredde="fullbredde"
-                data-test-id="TPSPersonForm__input-fnr-or-dnr-id"
+                data-testid="TPSPersonForm__input-fnr-or-dnr-id"
                 label="label:fnr-dnr"
                 onChange={[Function]}
                 placeholder="label:fnr-dnr"
@@ -217,7 +217,7 @@ exports[`components/Family/TPSPersonForm Render: match snapshot 1`] = `
                   <input
                     aria-invalid={false}
                     className="skjemaelement__input input--fullbredde"
-                    data-test-id="TPSPersonForm__input-fnr-or-dnr-id"
+                    data-testid="TPSPersonForm__input-fnr-or-dnr-id"
                     id="32645966-04709-06956-10607-2876069867041"
                     onChange={[Function]}
                     placeholder="label:fnr-dnr"

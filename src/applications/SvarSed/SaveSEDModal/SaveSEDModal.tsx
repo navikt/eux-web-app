@@ -118,7 +118,7 @@ const SaveSEDModal = ({
                 <FlexCenterSpacedDiv>
                   <Input
                     disabled={_saved}
-                    data-test-id='savesedmodal-name'
+                    data-testid='savesedmodal-name'
                     error={_validation['savesedmodal-name']?.feilmelding}
                     id='name'
                     namespace='savesedmodal'

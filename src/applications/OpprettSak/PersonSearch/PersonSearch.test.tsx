@@ -1,11 +1,11 @@
 import * as types from 'constants/actionTypes'
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import samplePerson from 'resources/tests/samplePerson'
 import PersonSearch, { PersonSearchProps } from './PersonSearch'
 
 describe('components/PersonSearch/PersonSearch', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
   const initialMockProps: PersonSearchProps = {
     alertMessage: 'message',
     alertType: types.PERSON_SEARCH_FAILURE,
@@ -24,7 +24,7 @@ describe('components/PersonSearch/PersonSearch', () => {
   }
 
   beforeEach(() => {
-    wrapper = mount(<PersonSearch {...initialMockProps} />)
+    wrapper = render(<PersonSearch {...initialMockProps} />)
   })
 
   afterEach(() => {

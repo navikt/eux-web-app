@@ -3,7 +3,7 @@ import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
 import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
-import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
+import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
 import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
@@ -20,8 +20,7 @@ export const copyToClipboard = (text: string) => ({
   payload: text
 })
 
-export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> = (
-): ThunkResult<ActionWithPayload<Enheter>> => {
+export const getEnheter = (): Promise<ActionWithPayload<Enheter>> => {
   return call({
     url: urls.API_ENHETER_URL,
     expectedPayload: mockEnhet,
@@ -33,8 +32,7 @@ export const getEnheter: ActionCreator<ThunkResult<ActionWithPayload<Enheter>>> 
   })
 }
 
-export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksbehandler>>> = (
-): ThunkResult<ActionWithPayload<Saksbehandler>> => {
+export const getSaksbehandler = (): Promise<ActionWithPayload<Saksbehandler>> => {
   return call({
     url: urls.API_SAKSBEHANDLER_URL,
     expectedPayload: mockSaksbehandler(),
@@ -46,8 +44,7 @@ export const getSaksbehandler: ActionCreator<ThunkResult<ActionWithPayload<Saksb
   })
 }
 
-export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload<ServerInfo>>> = (
-): ThunkResult<ActionWithPayload<ServerInfo>> => {
+export const getServerinfo = (): Promise<ActionWithPayload<ServerInfo>> => {
   return call({
     url: urls.API_SERVERINFO_URL,
     expectedPayload: mockServerInfo(),
@@ -59,8 +56,7 @@ export const getServerinfo: ActionCreator<ThunkResult<ActionWithPayload<ServerIn
   })
 }
 
-export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDatoPayload>>> = (
-): ThunkResult<ActionWithPayload<UtgaarDatoPayload>> => {
+export const getUtgaarDato = (): Promise<ActionWithPayload<UtgaarDatoPayload>> => {
   return call({
     url: urls.API_UTGAARDATO_URL,
     expectedPayload: mockUtgaarDato,
@@ -72,11 +68,9 @@ export const getUtgaarDato: ActionCreator<ThunkResult<ActionWithPayload<UtgaarDa
   })
 }
 
-export const logMeAgain: ActionCreator<ThunkResult<ActionWithPayload<LogMeAgainPayload>>> = (
-  name ?: string
-): ThunkResult<ActionWithPayload<LogMeAgainPayload>> => {
+export const logMeAgain = (name ?: string): Promise<ActionWithPayload<LogMeAgainPayload>> => {
   // origin: http://{host:port} pathname: /pdu1, no hash
-  let redirectUrl = window.location.origin + window.location.pathname
+  let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {
     redirectUrl += '?name=' + name
   }
@@ -110,9 +104,9 @@ export const preload: ActionCreator<ActionWithPayload<any>> = (
 ): ActionWithPayload<any> => ({
   type: types.APP_PRELOAD,
   payload: {
-    ...EKV.KTObjects,
+    ...(EKV as any).KTObjects,
     kodemaps: {
-      ...EKV.Kodemaps
+      ...(EKV as any).Kodemaps
     }
   } // kodemaps: { BUC2SEDS, SEKTOR2FAGSAK, SEKTOR2BUC }
 })

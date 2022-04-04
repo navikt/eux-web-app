@@ -95,7 +95,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               disabled={disabled}
               value={adresse?.type}
               data-no-border
-              data-test-id={namespace + '-type'}
+              data-testid={namespace + '-type'}
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               legend={t('label:adresse-type') + (required.indexOf('type') >= 0 ? ' *' : '')}
@@ -194,7 +194,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               isDisabled={disabled}
               closeMenuOnSelect
               key={adresse?.land}
-              data-test-id={namespace + '-land'}
+              data-testid={namespace + '-land'}
               error={validation[namespace + '-land']?.feilmelding}
               includeList={CountryFilter.STANDARD({ useUK })}
               flagWave

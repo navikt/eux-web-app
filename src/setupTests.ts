@@ -1,16 +1,13 @@
-import Enzyme, { mount, render, shallow } from 'enzyme'
-import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
+import {render, screen} from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
 import 'jest-styled-components'
+import '@testing-library/jest-dom/extend-expect'
 
-jest.mock('react-redux')
+jest.mock('react-redux');
 
-Enzyme.configure({ adapter: new Adapter() });
-
-(global as any).shallow = shallow;
+(global as any).screen = screen;
 (global as any).render = render;
-(global as any).mount = mount;
 (global as any).act = act
 
 // eslint-disable-next-line no-undef

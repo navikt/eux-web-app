@@ -353,19 +353,19 @@ exports[`components/TopContainer Renders 1`] = `
                   className="c4"
                 >
                   <Styled(f)
-                    data-test-id="header__highcontrast-link"
+                    data-testid="header__highcontrast-link"
                     href="#highContrast"
                     onClick={[Function]}
                   >
                     <f
                       className="c5"
-                      data-test-id="header__highcontrast-link"
+                      data-testid="header__highcontrast-link"
                       href="#highContrast"
                       onClick={[Function]}
                     >
                       <a
                         className="lenke c5"
-                        data-test-id="header__highcontrast-link"
+                        data-testid="header__highcontrast-link"
                         href="#highContrast"
                         onClick={[Function]}
                       >
@@ -410,7 +410,7 @@ exports[`components/TopContainer Renders 1`] = `
                 <div
                   className="c10"
                 >
-                  Sesjon utløper om 
+                  Sesjon utløper om
                 </div>
               </styled.div>
             </SessionMonitor>

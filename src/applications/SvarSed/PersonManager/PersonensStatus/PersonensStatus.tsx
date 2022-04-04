@@ -42,7 +42,7 @@ const PersonensStatus: React.FC<PersonManagerFormProps> = ({
             value={_arbeidsforhold}
             data-multiple-line
             data-no-border
-            data-test-id={namespace + '-type'}
+            data-testid={namespace + '-type'}
             id={namespace + '-type'}
             name={namespace + '-type'}
             onChange={setArbeidsforhold}

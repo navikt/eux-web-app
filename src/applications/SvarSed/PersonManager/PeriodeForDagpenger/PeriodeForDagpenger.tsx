@@ -319,7 +319,7 @@ const PeriodeForDagpenger: React.FC<PersonManagerFormProps> = ({
           <Column>
             <RadioPanelGroup
               value={institusjonKjent ? 'ja' : 'nei'}
-              data-test-id={namespace + idx + '-idmangler'}
+              data-testid={namespace + idx + '-idmangler'}
               data-no-border
               id={namespace + idx + '-idmangler'}
               error={getErrorFor(index, 'idmangler')}

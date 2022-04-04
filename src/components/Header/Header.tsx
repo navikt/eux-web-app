@@ -98,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({
       </FlexCenterDiv>
       <SaksbehandlerDiv>
         <Link
-          data-test-id='header__highcontrast-link'
+          data-testid='header__highcontrast-link'
           href='#highContrast'
           onClick={(e: React.MouseEvent) => {
             e.preventDefault()

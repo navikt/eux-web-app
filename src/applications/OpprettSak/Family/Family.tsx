@@ -89,7 +89,7 @@ const Family: React.FC<FamilyProps> = ({
   const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false)
 
   return (
-    <Panel border data-test-id='family'>
+    <Panel border data-testid='family'>
       <Heading size='small'>
         {t('label:family-description')}
       </Heading>

@@ -279,7 +279,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             <FlexEndDiv>
               <Search
                 label={t('label:saksnummer-eller-fnr')}
-                data-test-id={namespace + '-saksnummerOrFnr'}
+                data-testid={namespace + '-saksnummerOrFnr'}
                 id={namespace + '-saksnummerOrFnr'}
                 onKeyPress={handleKeyPress}
                 onChange={onSaksnummerOrFnrChange}

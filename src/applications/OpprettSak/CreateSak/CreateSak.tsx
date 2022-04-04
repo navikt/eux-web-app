@@ -386,7 +386,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               alertType={alertType}
               alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
               className='slideInFromLeft'
-              data-test-id={namespace + '-fnr'}
+              data-testid={namespace + '-fnr'}
               error={validation[namespace + '-fnr']?.feilmelding}
               searchingPerson={searchingPerson}
               id={namespace + '-fnr'}
@@ -415,7 +415,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
           <Column>
             <Select
-              data-test-id={namespace + '-sektor'}
+              data-testid={namespace + '-sektor'}
               disabled={_.isEmpty(person)}
               error={validation[namespace + '-sektor']?.feilmelding}
               id={namespace + '-sektor'}
@@ -438,7 +438,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column>
             {visEnheter && (
               <Select
-                data-test-id={namespace + '-unit'}
+                data-testid={namespace + '-unit'}
                 error={validation[namespace + '-unit']?.feilmelding}
                 id={namespace + '-unit'}
                 label={t('label:enhet')}
@@ -463,7 +463,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
           <Column>
             <Select
-              data-test-id={namespace + '-buctype'}
+              data-testid={namespace + '-buctype'}
               disabled={!!_.isEmpty(valgtSektor) || _.isEmpty(person)}
               error={validation[namespace + '-buctype']?.feilmelding}
               id={namespace + '-buctype'}
@@ -485,7 +485,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </Column>
           <Column>
             <Select
-              data-test-id={namespace + '-sedtype'}
+              data-testid={namespace + '-sedtype'}
               disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor) || _.isEmpty(person)}
               error={validation[namespace + '-sedtype']?.feilmelding}
               id={namespace + '-sedtype'}
@@ -516,7 +516,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column>
             <CountrySelect
               closeMenuOnSelect
-              data-test-id={namespace + '-landkode'}
+              data-testid={namespace + '-landkode'}
               error={validation[namespace + '-landkode']?.feilmelding}
               id={namespace + '-landkode'}
               includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
@@ -533,7 +533,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column>
             <FlexCenterDiv>
               <Select
-                data-test-id={namespace + '-institusjon'}
+                data-testid={namespace + '-institusjon'}
                 key={namespace + '-institusjon-' + valgtInstitusjon}
                 disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person)}
                 error={validation[namespace + '-institusjon']?.feilmelding}
@@ -620,7 +620,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               <FlexDiv>
                 <div style={{ flex: 3 }}>
                   <Select
-                    data-test-id={namespace + '-tema'}
+                    data-testid={namespace + '-tema'}
                     error={validation[namespace + '-tema']?.feilmelding}
                     id={namespace + '-tema'}
                     label={t('label:velg-tema')}
@@ -674,7 +674,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                     </Alert>
                   )}
                   <Select
-                    data-test-id={namespace + '-saksId'}
+                    data-testid={namespace + '-saksId'}
                     error={validation[namespace + '-saksId']?.feilmelding}
                     id={namespace + '-saksId'}
                     label={t('label:velg-fagsak')}

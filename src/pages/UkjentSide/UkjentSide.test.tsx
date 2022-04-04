@@ -1,13 +1,13 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import UkjentSide from './UkjentSide'
 jest.mock('components/TopContainer/TopContainer', () => ({ children }: any) => (<div className='mock-topContainer'>{children}</div>))
 
 describe('pages/OpprettSak/OpprettSak', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   beforeEach(() => {
-    wrapper = mount(<UkjentSide />)
+    wrapper = render(<UkjentSide />)
   })
 
   afterEach(() => {

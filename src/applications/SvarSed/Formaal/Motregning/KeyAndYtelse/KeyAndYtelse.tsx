@@ -151,7 +151,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
           <Column>
             <Select
               closeMenuOnSelect
-              data-test-id={namespace + idx + '-key'}
+              data-testid={namespace + idx + '-key'}
               error={getErrorFor('key')}
               id={namespace + idx + '-key'}
               key={namespace + idx + '-key-' + barnaKey}
@@ -216,7 +216,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
             <Column>
               <Button
                 variant='tertiary'
-                data-test-id={namespace + '-new'}
+                data-testid={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
                 <Add />

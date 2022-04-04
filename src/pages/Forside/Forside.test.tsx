@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme'
+import { render } from '@testing-library/react'
 import React from 'react'
 import Forside from './Forside'
 
@@ -8,10 +8,10 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('pages/Forside', () => {
-  let wrapper: ReactWrapper
+  let wrapper: any
 
   beforeEach(() => {
-    wrapper = mount(<Forside />)
+    wrapper = render(<Forside />)
   })
 
   afterEach(() => {
