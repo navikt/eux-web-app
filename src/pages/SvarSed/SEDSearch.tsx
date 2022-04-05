@@ -242,7 +242,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   /** if we get seds by searching a saksnummer,set the currentSak */
   useEffect(() => {
-    if (_.isUndefined(currentSak) && seds.length === 1 && _validMessage === t('label:saksnummer')) {
+    if (_.isUndefined(currentSak) && seds?.length === 1 && _validMessage === t('label:saksnummer')) {
      setCurrentSak(seds[0])
     }
   }, [seds])

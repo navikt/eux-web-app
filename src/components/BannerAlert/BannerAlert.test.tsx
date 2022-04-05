@@ -1,6 +1,5 @@
 import { AlertError, AlertVariant } from 'declarations/components'
 import { screen, fireEvent, render } from '@testing-library/react'
-
 import React from 'react'
 import BannerAlert, { BannerAlertProps } from './BannerAlert'
 
