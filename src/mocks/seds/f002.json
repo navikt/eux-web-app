@@ -220,7 +220,7 @@
     },
     "familierelasjoner": [
       {
-        "relasjonType": "REPA",
+        "relasjonType": "registrert_partnerskap",
         "relasjonInfo": "Gift med Marge",
         "periode": {
           "startdato": "1992-01-01",
@@ -228,7 +228,7 @@
         }
       },
       {
-        "relasjonType": "ANNEN",
+        "relasjonType": "annet",
         "relasjonInfo": "Relasjon med øl",
         "periode": {
           "startdato": "1993-01-01",

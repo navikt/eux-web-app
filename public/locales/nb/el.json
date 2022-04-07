@@ -47,12 +47,12 @@
   "option-familierelasjon-annenPerson" : "annenPerson",
   "option-familierelasjon-barn": "barn",
 
-  "option-familierelasjon-gift" : "gift",
-  "option-familierelasjon-samboer" : "samboer",
-  "option-familierelasjon-registrert_partnerskap" : "registrert_partnerskap",
-  "option-familierelasjon-skilt" : "skilt",
-  "option-familierelasjon-aleneforelder" : "aleneforelder",
-  "option-familierelasjon-annet" : "annet",
+  "option-familierelasjon-gift" : "Gift",
+  "option-familierelasjon-samboer" : "Samboer",
+  "option-familierelasjon-registrert_partnerskap" : "Registrert partnerskap",
+  "option-familierelasjon-skilt" : "Skilt",
+  "option-familierelasjon-aleneforelder" : "Aleneforelder",
+  "option-familierelasjon-annet" : "Annet",
 
   "option-familieytelser-barnetrygd": "Barnetrygd",
   "option-familieytelser-kontantstøtte": "Kontantstøtte",
