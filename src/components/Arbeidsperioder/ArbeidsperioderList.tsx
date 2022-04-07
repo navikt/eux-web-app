@@ -53,7 +53,7 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
           (arbeidsperiode: ArbeidsperiodeFraAA) => {
             const selected: boolean = valgteArbeidsperioder
               ? valgteArbeidsperioder.find((item: ArbeidsperiodeFraAA) =>
-              item.arbeidsgiversOrgnr === arbeidsperiode.arbeidsgiversOrgnr &&
+                  item.arbeidsgiversOrgnr === arbeidsperiode.arbeidsgiversOrgnr &&
               item.fraDato === arbeidsperiode.fraDato && item.tilDato === arbeidsperiode.tilDato) !== undefined
               : false
             const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
@@ -85,4 +85,3 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
 }
 
 export default ArbeidsperioderList
-

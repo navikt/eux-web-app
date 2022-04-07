@@ -132,6 +132,6 @@ export default <T extends Periode | PeriodeMedForsikring>({
   // 4th step: sort all by startdato
 
   return plan?.sort((a: PlanItem<T>, b: PlanItem<T>) =>
-     moment(getStartDato(a.item), 'YYYY-MM-DD').isSameOrBefore(moment(getStartDato(b.item), 'YYYY-MM-DD')) ? -1 : 1
+    moment(getStartDato(a.item), 'YYYY-MM-DD').isSameOrBefore(moment(getStartDato(b.item), 'YYYY-MM-DD')) ? -1 : 1
   )
 }

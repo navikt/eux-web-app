@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({
         <DomLink to='/' onClick={_cleanData}>
           <NEESSILogo />
         </DomLink>
-        <HorizontalSeparatorDiv/>
+        <HorizontalSeparatorDiv />
         <Heading size='small'>
           {title}
         </Heading>

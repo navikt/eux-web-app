@@ -7,7 +7,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1 }: any) => {
   const countryData = CountryData.getCountryInstance('nb')
   const { t } = useTranslation()
   return (
-    <Panel border={border} style={{padding: padding + 'rem'}}>
+    <Panel border={border} style={{ padding: padding + 'rem' }}>
       <BodyLong>
         {adresse?.gate ?? '-'}
         {adresse?.bygning ? ', ' + t('label:bygning').toLowerCase() + ' ' + adresse?.bygning : ''}

@@ -216,7 +216,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     }
   }, [_sedStatusRequested, sedStatus])
 
-
   /** if we have a saved entry, let's load it */
   useEffect(() => {
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
@@ -243,7 +242,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   /** if we get seds by searching a saksnummer,set the currentSak */
   useEffect(() => {
     if (_.isUndefined(currentSak) && seds?.length === 1 && _validMessage === t('label:saksnummer')) {
-     setCurrentSak(seds[0])
+      setCurrentSak(seds[0])
     }
   }, [seds])
 
@@ -296,14 +295,14 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                   {queryingSaksnummerOrFnr && <Loader />}
                 </Search.Button>
               </Search>
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
               <PileDiv>
                 <BodyLong>
                   {_validMessage}
                 </BodyLong>
-                <VerticalSeparatorDiv size='0.5'/>
+                <VerticalSeparatorDiv size='0.5' />
               </PileDiv>
-              </FlexEndDiv>
+            </FlexEndDiv>
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
               <>
                 <VerticalSeparatorDiv size='0.5' />

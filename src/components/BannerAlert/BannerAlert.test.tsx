@@ -4,7 +4,6 @@ import React from 'react'
 import BannerAlert, { BannerAlertProps } from './BannerAlert'
 
 describe('components/BannerAlert/BannerAlert', () => {
-
   const initialMockProps: BannerAlertProps = {
     variant: 'success',
     message: 'mockErrorMessage',
@@ -28,17 +27,17 @@ describe('components/BannerAlert/BannerAlert', () => {
   })
 
   it('Render: has proper HTML structure as client in OK type', () => {
-    const {container} = render(<BannerAlert {...initialMockProps} />)
+    const { container } = render(<BannerAlert {...initialMockProps} />)
     expect(container.querySelector('.navds-alert--success')).toBeInTheDocument()
   })
 
   it('Render: has proper HTML structure as client in WARNING type', () => {
-    const {container} = render(<BannerAlert {...initialMockProps} variant='warning' />)
+    const { container } = render(<BannerAlert {...initialMockProps} variant='warning' />)
     expect(container.querySelector('.navds-alert--warning')).toBeInTheDocument()
   })
 
   it('Render: has proper HTML structure as client in ERROR type', () => {
-    const {container} = render(<BannerAlert {...initialMockProps} variant='error' />)
+    const { container } = render(<BannerAlert {...initialMockProps} variant='error' />)
     expect(container.querySelector('.navds-alert--error')).toBeInTheDocument()
   })
 
@@ -49,13 +48,13 @@ describe('components/BannerAlert/BannerAlert', () => {
       error: 'error',
       uuid: 'uuid'
     }
-    const {container} = render(<BannerAlert {...initialMockProps} error={error} />)
+    render(<BannerAlert {...initialMockProps} error={error} />)
     expect(screen.getByTestId('c-BannerAlert')).toHaveTextContent('mockErrorMessage: message - error - uuid')
   })
 
   it('Render: Pretty prints a string error', () => {
     const error: string = 'error'
-    const {container}  = render(<BannerAlert {...initialMockProps} error={error} />)
+    render(<BannerAlert {...initialMockProps} error={error} />)
     expect(screen.getByTestId('c-BannerAlert')).toHaveTextContent('mockErrorMessage: error')
   })
 

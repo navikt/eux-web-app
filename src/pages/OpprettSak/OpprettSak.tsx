@@ -28,7 +28,7 @@ export const OpprettSakPage = (): JSX.Element => {
         initialPage='A'
         initialDirection='none'
         divA1={(<CreateSak changeMode={changeMode} />)}
-        divB1={(<SEDEdit/>)}
+        divB1={(<SEDEdit />)}
         divA2={(
           <SideBarDiv>
             <SakSidebar />

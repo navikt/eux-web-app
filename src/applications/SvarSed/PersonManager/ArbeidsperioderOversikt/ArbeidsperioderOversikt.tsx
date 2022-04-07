@@ -406,11 +406,12 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         item.type + '-' +
         item.item?.arbeidsgiver?.identifikatorer?.map(i => i.type + '-' + i.id).join(',') ?? '' +
         '-' + item.item.startdato + '-' + item.item.sluttdato
-      }>
+      }
+      >
         <AlignStartRow className='slideInFromLeft'>
           {renderPlanItem(item)}
         </AlignStartRow>
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
       </div>
     ))
   }

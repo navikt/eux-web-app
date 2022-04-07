@@ -4,7 +4,7 @@ export type BarnRelasjon = '01' | '02' | '03' | '04'
 
 export type BarnRelasjonType = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08'
 
-export type RelasjonType = 'BARN' |'EKTE' | 'REPA' | 'SAMB' | 'ANNEN'
+export type RelasjonType = 'gift' |'samboer' | 'registrert_partnerskap' | 'skilt' | 'aleneforelder' | 'annet'
 
 export type Kjoenn = 'K' | 'M' | 'U'
 

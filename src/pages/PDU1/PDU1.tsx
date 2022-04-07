@@ -95,7 +95,7 @@ export const PDU1Page = (): JSX.Element => {
           </SideBarDiv>
         )}
         divB1={(
-          <PDU1Edit/>
+          <PDU1Edit />
         )}
         divB2={(
           <SideBarDiv>

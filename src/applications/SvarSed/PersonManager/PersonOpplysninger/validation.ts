@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
+import validator from '@navikt/fnrvalidator'
 
 export interface ValidationPersonOpplysningProps {
   personInfo: PersonInfo
@@ -152,12 +153,23 @@ export const validatePersonOpplysninger = (
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
-  if (_.isEmpty(norwegianPin?.identifikator)) {
+  if (norwegianPin === undefined && _.isEmpty(utenlandskPins)) {
     v[namespace + '-norskpin-nummer'] = {
       feilmelding: t('validation:noId') + (personName ? t('validation:til-person', { person: personName }) : ''),
       skjemaelementId: namespace + '-norskpin-nummer'
     } as ErrorElement
     hasErrors = true
+  }
+
+  if (!_.isEmpty(norwegianPin?.identifikator)) {
+    const result = validator.idnr(norwegianPin!.identifikator!)
+    if (result.status !== 'valid') {
+      v[namespace + '-norskpin-nummer'] = {
+        feilmelding: t('validation:badId') + (personName ? t('validation:til-person', { person: personName }) : ''),
+        skjemaelementId: namespace + '-norskpin-nummer'
+      } as ErrorElement
+      hasErrors = true
+    }
   }
 
   utenlandskPins?.forEach((pin: Pin, index: number) => {

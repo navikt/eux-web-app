@@ -67,6 +67,7 @@
 
   "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
   "noId": "Du må skrive identifikatoren",
+  "badId": "Ugyldig identifikatoren",
   "noInntekt": "Ingen inntekt",
   "noInntektInfo": "Ingen inntekt info",
   "noInntektsliste": "Du må velge en inntektsfilter",

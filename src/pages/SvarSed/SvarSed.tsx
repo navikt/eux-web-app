@@ -38,13 +38,13 @@ export const SvarSedPage = (): JSX.Element => {
   }
 
   const onGoBackClick = () => {
-    if (_currentPage ===  'B') {
+    if (_currentPage === 'B') {
       changeMode('A', 'back')
       dispatch(resetCurrentEntry('svarsed'))
-      document.dispatchEvent(new CustomEvent('tilbake', {detail: {}}))
+      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
-    if (_currentPage ===  'A' && _currentSak !== undefined) {
-       _setCurrentSak(undefined)
+    if (_currentPage === 'A' && _currentSak !== undefined) {
+      _setCurrentSak(undefined)
     }
   }
 
@@ -89,9 +89,7 @@ export const SvarSedPage = (): JSX.Element => {
     >
       <>
         {_currentSak !== undefined && (
-          <div>
-            sdfsddsfsfdsfd
-          </div>
+          <div />
         )}
         <SlidePage
           changeModeFunc={changeModeFunc}
@@ -114,7 +112,7 @@ export const SvarSedPage = (): JSX.Element => {
             </SideBarDiv>
         )}
           divB1={(
-            <SEDEdit/>
+            <SEDEdit />
           )}
           divB2={(
             <SideBarDiv>

@@ -11,7 +11,6 @@ import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledCompone
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FamilieRelasjon, JaNei, Periode, RelasjonType } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -32,12 +31,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateFamilierelasjon, ValidationFamilierelasjonProps } from './validation'
 
-interface FamilierelasjonSelector extends PersonManagerFormSelector {
-  familierelasjonKodeverk: Array<Kodeverk> | undefined
-}
-
-const mapState = (state: State): FamilierelasjonSelector => ({
-  familierelasjonKodeverk: state.app.familierelasjoner,
+const mapState = (state: State): PersonManagerFormSelector => ({
   validation: state.validation.status
 })
 
@@ -49,10 +43,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   updateReplySed
 }:PersonManagerFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    familierelasjonKodeverk,
-    validation
-  } = useSelector<State, FamilierelasjonSelector>(mapState)
+  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.familierelasjoner`
   const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, target)
@@ -69,18 +60,23 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
 
-  const relasjonTypeOptions: Options = familierelasjonKodeverk?.map((f: Kodeverk) => ({
-    label: f.term, value: f.kode
-  })) ?? []
+  const relasjonTypeOptions: Options = [
+    { label: t('el:option-familierelasjon-gift'), value: 'gift' },
+    { label: t('el:option-familierelasjon-samboer'), value: 'samboer' },
+    { label: t('el:option-familierelasjon-registrert_partnerskap'), value: 'registrert_partnerskap' },
+    { label: t('el:option-familierelasjon-skilt'), value: 'skilt' },
+    { label: t('el:option-familierelasjon-aleneforelder'), value: 'aleneforelder' },
+    { label: t('el:option-familierelasjon-annet'), value: 'annet' }
+  ]
 
   const setRelasjonType = (relasjonType: RelasjonType, index: number) => {
     if (index < 0) {
       _setNewRelasjonType(relasjonType.trim() as RelasjonType)
-      _resetValidation(namespace + '-RelasjonType')
+      _resetValidation(namespace + '-relasjonType')
     } else {
       dispatch(updateReplySed(`${target}[${index}].relasjonType`, relasjonType.trim()))
-      if (validation[namespace + getIdx(index) + '-RelasjonType']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-RelasjonType'))
+      if (validation[namespace + getIdx(index) + '-relasjonType']) {
+        dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
       }
     }
   }
@@ -185,7 +181,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
       periode: _newPeriode
     }
 
-    if (_newRelasjonType === 'ANNEN' as RelasjonType) {
+    if (_newRelasjonType === 'annet' as RelasjonType) {
       newFamilierelasjon.borSammen = _newBorSammen?.trim() as JaNei
       newFamilierelasjon.annenRelasjonType = _newAnnenRelasjonType?.trim()
       newFamilierelasjon.annenRelasjonPersonNavn = _newAnnenRelasjonPersonNavn?.trim()
@@ -218,7 +214,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
     const _periode = index < 0 ? _newPeriode : familierelasjon?.periode
-
+    const _relasjonType = index < 0 ? _newRelasjonType : familierelasjon!.relasjonType
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <AlignStartRow
@@ -229,14 +225,14 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
             <Select
               data-testid={namespace + idx + '-relasjonType'}
               error={getErrorFor(index, 'relasjonType')}
-              key={namespace + idx + '-relasjonType-' + (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType)}
+              key={namespace + idx + '-relasjonType-' + _relasjonType}
               id={namespace + idx + '-relasjonType'}
               label={t('label:type') + ' *'}
               menuPortalTarget={document.body}
               onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
               options={relasjonTypeOptions}
-              defaultValue={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
-              value={_.find(relasjonTypeOptions, r => r.value === (index < 0 ? _newRelasjonType : familierelasjon!.relasjonType))}
+              defaultValue={_.find(relasjonTypeOptions, r => r.value === _relasjonType)}
+              value={_.find(relasjonTypeOptions, r => r.value === _relasjonType)}
             />
           </Column>
           <PeriodeInput
@@ -262,7 +258,7 @@ const Familierelasjon: React.FC<PersonManagerFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        {(index < 0 ? _newRelasjonType === 'ANNEN' : familierelasjon?.relasjonType === 'ANNEN') && (
+        {_relasjonType === 'annet' && (
           <div style={{ marginLeft: '1.5rem' }}>
             <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
               <Column flex='2'>

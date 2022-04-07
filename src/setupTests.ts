@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
 import 'jest-styled-components'
