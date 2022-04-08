@@ -24,14 +24,13 @@ const Panel = styled(FullWidthDiv)`
   padding: 0.5rem 3rem;
 `
 
-const SakFC = ({sak}: SakProps) => {
-
+const SakBanner = ({ sak }: SakProps) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const sektor : Array<Kodeverk> | undefined = useSelector<State, Array<Kodeverk> | undefined>(state => state.app.sektor)
 
   let thisSektor = sak.sakType.split('_')[0]
-  if (thisSektor === 'H') {thisSektor = 'HZ'}
+  if (thisSektor === 'H') { thisSektor = 'HZ' }
   const thisSektorName: string | undefined = _.find(sektor, s => s.kode === thisSektor)?.term
 
   let kind: string = 'nav-unknown-icon'
@@ -58,29 +57,31 @@ const SakFC = ({sak}: SakProps) => {
         {sak.person && (
           <>
             <FlexDiv>
-            <img
-              alt={kind}
-              width={24}
-              height={24}
-              src={src}
-            />
-            <HorizontalSeparatorDiv/>
-            <Label>
-              {sak.person.etternavn + ', ' + sak.person.fornavn}
-            </Label>
+              <img
+                alt={kind}
+                width={24}
+                height={24}
+                src={src}
+              />
+              <HorizontalSeparatorDiv />
+              <Label>
+                {sak.person.etternavn + ', ' + sak.person.fornavn}
+              </Label>
             </FlexDiv>
             <FlexDiv>
               {t('label:fnr.') + ': '}
-              <HorizontalSeparatorDiv size='0.5'/>
-              <Link title={t('label:kopiere')} onClick={(e: any) => {
-                e.preventDefault()
-                e.stopPropagation()
-                dispatch(copyToClipboard(sak.sakId))
-              }}>
+              <HorizontalSeparatorDiv size='0.5' />
+              <Link
+                title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(sak.sakId))
+                }}
+              >
                 {' ' + sak.person.fnr + ' '}
-                <Copy/>
+                <Copy />
               </Link>
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
               {sak.person.foedselsdato}
             </FlexDiv>
           </>
@@ -93,16 +94,18 @@ const SakFC = ({sak}: SakProps) => {
             {t('label:rina-saksnummer')}
           </span>
           <HorizontalSeparatorDiv />
-          <Link title={t('label:kopiere')} onClick={(e: any) => {
-            e.preventDefault()
-            e.stopPropagation()
-            dispatch(copyToClipboard(sak.sakId))
-          }}>
+          <Link
+            title={t('label:kopiere')} onClick={(e: any) => {
+              e.preventDefault()
+              e.stopPropagation()
+              dispatch(copyToClipboard(sak.sakId))
+            }}
+          >
             {sak.sakId + ' '}
-            <Copy/>
+            <Copy />
           </Link>
           <HorizontalSeparatorDiv />
-          <InformationFilled/>
+          <InformationFilled />
         </FlexDiv>
         <FlexDiv>
           <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>
@@ -118,4 +121,4 @@ const SakFC = ({sak}: SakProps) => {
   )
 }
 
-export default SakFC
+export default SakBanner

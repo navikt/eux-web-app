@@ -98,7 +98,7 @@ export const validateForsikringPeriode = (
         skjemaelementId: namespace + idx + '-arbeidsgiver-identifikatorer'
       } as ErrorElement
       hasErrors = true
-    }*/
+    } */
   }
 
   if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {

@@ -1,9 +1,8 @@
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
-import { setCurrentSak } from 'actions/svarsed'
+import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import { querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
-import SakFC from 'applications/SvarSed/Sak/Sak'
+import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
@@ -89,14 +88,14 @@ export const SvarSedPage = (): JSX.Element => {
     >
       <>
         {currentSak !== undefined && (
-          <SakFC sak={currentSak} />
+          <SakBanner sak={currentSak} />
         )}
         <SlidePage
           changeModeFunc={changeModeFunc}
           initialPage='A'
           initialDirection='none'
           divA1={(
-            <SEDSearch changeMode={changeMode}/>
+            <SEDSearch changeMode={changeMode} />
           )}
           divA2={(
             <SideBarDiv>
@@ -112,7 +111,7 @@ export const SvarSedPage = (): JSX.Element => {
           )}
           divB2={(
             <SideBarDiv>
-              <SEDDetails updateReplySed={updateReplySed}/>
+              <SEDDetails updateReplySed={updateReplySed} />
             </SideBarDiv>
         )}
         />

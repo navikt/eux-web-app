@@ -1,5 +1,4 @@
 export default (saksnummer: string) => {
-
   const saks = [
     {
       person: {
@@ -40,59 +39,59 @@ export default (saksnummer: string) => {
         }
       ]
     }, {
-    person: {
-      fornavn: 'Ola',
-      etternavn: 'Nordmenn',
-      kjoenn: 'M',
-      foedselsdato: '1970-01-01',
-      fnr: '12345678901'
-    },
-    sakTittel: 'Dagpenger',
-    sakType: 'UB_BUC_01',
-    sakId: '1166593',
-    sakUrl: 'http://foo.com',
-    sistEndretDato: '2020-01-01',
-    motpart: [
-      'Lodzkie Voivodeship Office in Lodz (Polen)'
-    ],
-    sedListe: [
-      {
-        sedTittel: 'Description for U001',
-        status: 'sent',
-        sedType: 'U001',
-        sedId: '603e18ebd5b549b1b5c0f53c58558116',
-        sistEndretDato: '2020-01-03',
-        svarsedType: 'U002',
-        svarsedDisplay: 'Description for U002',
-        svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
+      person: {
+        fornavn: 'Ola',
+        etternavn: 'Nordmenn',
+        kjoenn: 'M',
+        foedselsdato: '1970-01-01',
+        fnr: '12345678901'
       },
-      {
-        sedTittel: 'Description for U003',
-        status: 'new',
-        sedType: 'U003',
-        sedId: '603e18ebd5b549b1b5c0f53c58558117',
-        sistEndretDato: '2020-01-04',
-        svarsedType: 'U004',
-        svarsedDisplay: 'Description for U004',
-        svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2'
-      }, {
-        sedTittel: 'Description for U004',
-        status: 'new',
-        sedType: 'U004',
-        sedId: '603e18ebd5b549b1b5c0f53c58558118',
-        sistEndretDato: '2020-01-04'
-      }, {
-        sedTittel: 'Description for U00X',
-        status: 'new',
-        sedType: 'U00X',
-        sedId: '603e18ebd5b549b1b5c0f53c58558118',
-        sistEndretDato: '2020-01-04',
-        svarsedType: 'U017',
-        svarsedDisplay: 'Description for U017',
-        svarsedId: '603e18ebd5b549b1b5c0f53c58558118_2'
-      }
-    ]
-  },
+      sakTittel: 'Dagpenger',
+      sakType: 'UB_BUC_01',
+      sakId: '1166593',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2020-01-01',
+      motpart: [
+        'Lodzkie Voivodeship Office in Lodz (Polen)'
+      ],
+      sedListe: [
+        {
+          sedTittel: 'Description for U001',
+          status: 'sent',
+          sedType: 'U001',
+          sedId: '603e18ebd5b549b1b5c0f53c58558116',
+          sistEndretDato: '2020-01-03',
+          svarsedType: 'U002',
+          svarsedDisplay: 'Description for U002',
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
+        },
+        {
+          sedTittel: 'Description for U003',
+          status: 'new',
+          sedType: 'U003',
+          sedId: '603e18ebd5b549b1b5c0f53c58558117',
+          sistEndretDato: '2020-01-04',
+          svarsedType: 'U004',
+          svarsedDisplay: 'Description for U004',
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2'
+        }, {
+          sedTittel: 'Description for U004',
+          status: 'new',
+          sedType: 'U004',
+          sedId: '603e18ebd5b549b1b5c0f53c58558118',
+          sistEndretDato: '2020-01-04'
+        }, {
+          sedTittel: 'Description for U00X',
+          status: 'new',
+          sedType: 'U00X',
+          sedId: '603e18ebd5b549b1b5c0f53c58558119',
+          sistEndretDato: '2020-01-04',
+          svarsedType: 'U017',
+          svarsedDisplay: 'Description for U017',
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558119_2'
+        }
+      ]
+    },
     {
       person: {
         fornavn: 'Ola',
@@ -169,5 +168,4 @@ export default (saksnummer: string) => {
   }
 
   return saks
-
 }
