@@ -137,7 +137,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
                   saveName='svarsed-localstorage-token-save'
                   replySed={replySed!}
                   savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name ?: string) => logMeAgain(name)}
+                  onSaved={(name ?: string) => dispatch(logMeAgain(name))}
                   onCancelled={() => setSaveAndRenew(false)}
                 />
               )}
@@ -146,7 +146,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
                   saveName='pdu1-localstorage-token-save'
                   pdu1={pdu1!}
                   savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name?: string) => logMeAgain(name)}
+                  onSaved={(name?: string) => dispatch(logMeAgain(name))}
                   onCancelled={() => setSaveAndRenew(false)}
                 />
               )}

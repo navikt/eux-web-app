@@ -718,7 +718,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={sendingSak || _.isEmpty(person)}
+                disabled={sendingSak || !!opprettetSak || _.isEmpty(person)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}

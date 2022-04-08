@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -227,6 +227,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.0.4",
+  "_id": "neessi@6.1.1",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

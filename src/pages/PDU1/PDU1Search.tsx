@@ -113,6 +113,8 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   const onFnrDnrChange = (query: string) => {
     dispatch(appActions.cleanData())
+    setStartingPdu1(false)
+    setSearchingPdu1(false)
     resetValidation(namespace + '-search')
     setFnrOrDnr(query)
     const result = validator.idnr(query)
