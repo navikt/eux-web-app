@@ -361,26 +361,6 @@ export const validatePersonManager = (v: Validation, t: TFunction, replySed: Rep
   return hasErrors
 }
 
-export const validateSEDSearch = (
-  v: Validation,
-  t: TFunction,
-  {
-    saksnummerOrFnr
-  }: {
-    saksnummerOrFnr: string
-  }
-): boolean => {
-  let hasErrors: boolean = false
-  if (_.isEmpty(saksnummerOrFnr.trim())) {
-    v['sedsearch-saksnummerOrFnr'] = {
-      feilmelding: t('validation:noSaksnummerOrFnr'),
-      skjemaelementId: 'sedsearch-saksnummerOrFnr'
-    } as ErrorElement
-    hasErrors = true
-  }
-  return hasErrors
-}
-
 export const validateSEDEdit = (
   v: Validation,
   t: TFunction,
