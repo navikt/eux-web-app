@@ -39,7 +39,7 @@ export const HorizontalLineSeparator = styled.div`
 `
 export const SideBarDiv = styled.div`
   display: flex;
-  padding-top: 2rem;
+  padding-top: 1.5rem;
 `
 export const HiddenFormContainer = styled.div`
   overflow: hidden;

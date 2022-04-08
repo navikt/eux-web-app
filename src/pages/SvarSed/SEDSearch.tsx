@@ -1,5 +1,7 @@
 import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import {
+  AlignStartRow,
+  Column,
   FlexDiv,
   FullWidthDiv,
   HorizontalSeparatorDiv,
@@ -13,6 +15,7 @@ import { querySaksnummerOrFnr, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
+import SEDLeftPanel from 'applications/SvarSed/SEDLeftPanel/SEDLeftPanel'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
@@ -169,32 +172,42 @@ const SEDSearch: React.FC<SvarSedProps> = ({
           </>
         )}
         <VerticalSeparatorDiv />
-        <RadioPanelGroup>
-          {!currentSak
-            ? filteredSaks.map((sak: Sak) => (
-                _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
-                  ? <div />
-                  : (
-                    <div key={'sak-' + sak.sakId}>
-                      <SakPanel
-                        sak={sak}
-                        onSelected={() => dispatch(setCurrentSak(sak))}
-                        onCopy={() => dispatch(copyToClipboard(sak.sakId))}
-                      />
-                      <VerticalSeparatorDiv />
-                    </div>
-                    )))
-            : currentSak.sedListe.map((connectedSed: Sed) => (
-              <div key={'sed-' + connectedSed.sedId}>
-                <SEDPanel
-                  currentSak={currentSak}
-                  changeMode={changeMode}
-                  connectedSed={connectedSed}
-                />
-                <VerticalSeparatorDiv />
-              </div>
-            ))}
-        </RadioPanelGroup>
+        <AlignStartRow>
+          {!!currentSak && (
+            <Column>
+              <SEDLeftPanel />
+            </Column>
+          )}
+          <Column flex='2'>
+            <RadioPanelGroup>
+              {!currentSak
+                ? filteredSaks.map((sak: Sak) => (
+                    _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
+                      ? <div />
+                      : (
+                        <div key={'sak-' + sak.sakId}>
+                          <SakPanel
+                            sak={sak}
+                            onSelected={() => dispatch(setCurrentSak(sak))}
+                            onCopy={() => dispatch(copyToClipboard(sak.sakId))}
+                          />
+                          <VerticalSeparatorDiv />
+                        </div>
+                        )))
+                : currentSak.sedListe.map((connectedSed: Sed) => (
+                  <div key={'sed-' + connectedSed.sedId}>
+                    <SEDPanel
+                      currentSak={currentSak}
+                      changeMode={changeMode}
+                      connectedSed={connectedSed}
+                    />
+                    <VerticalSeparatorDiv />
+                  </div>
+                ))}
+            </RadioPanelGroup>
+
+          </Column>
+        </AlignStartRow>
       </FullWidthDiv>
     </PileStartDiv>
   )

@@ -29,7 +29,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
     const q: string = query.trim()
     _resetValidation(namespace + '-saksnummerOrFnr')
     _setSaksnummerOrFnr(q)
-    let message = '', queryType = ''
+    let message = ''; let queryType = ''
     const result = validator.idnr(q)
     if (result.status !== 'valid') {
       if (q.match(/^\d+$/)) {

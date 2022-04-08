@@ -264,7 +264,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
 
     <Container>
       <Margin />
-      <Content style={{ flex: 3, maxWidth: '1100px' }}>
+      <Content style={{ flex: 6, maxWidth: '1200px' }}>
         <ContainerDiv>
           <WindowDiv>
             <AnimatableDiv
