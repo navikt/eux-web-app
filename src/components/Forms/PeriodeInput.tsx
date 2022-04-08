@@ -86,6 +86,7 @@ const PeriodeInput = <T extends Periode>({
     if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato) && _.isEmpty(newPeriode.aapenPeriodeType)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
+    _setPeriode(newPeriode)
     setPeriode(newPeriode, 'startdato')
   }
 

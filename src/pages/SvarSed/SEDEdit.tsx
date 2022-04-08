@@ -226,7 +226,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
                 mimetype: 'application/pdf'
               }}
               width={600}
-              height={800}
+              height={1200}
               tema='simple'
               viewOnePage={false}
               onContentClick={resetPreview}
