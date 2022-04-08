@@ -1,7 +1,10 @@
-import { ExternalLink, Copy } from '@navikt/ds-icons'
-import { BodyLong, Heading, Link } from '@navikt/ds-react'
+import { ExternalLink, Copy, InformationFilled } from '@navikt/ds-icons'
+import { BodyLong, Label, Heading, Link } from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
+import mann from 'assets/icons/Man.png'
+import ukjent from 'assets/icons/Unknown.png'
+import kvinne from 'assets/icons/Woman.png'
 import { State } from 'declarations/reducers'
 import { Kodeverk, Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -31,6 +34,16 @@ const SakFC = ({sak}: SakProps) => {
   if (thisSektor === 'H') {thisSektor = 'HZ'}
   const thisSektorName: string | undefined = _.find(sektor, s => s.kode === thisSektor)?.term
 
+  let kind: string = 'nav-unknown-icon'
+  let src = ukjent
+  if (sak?.person?.kjoenn === 'K') {
+    kind = 'nav-woman-icon'
+    src = kvinne
+  } else if (sak?.person?.kjoenn === 'M') {
+    kind = 'nav-man-icon'
+    src = mann
+  }
+
   return (
     <Panel>
       <PileDiv>
@@ -38,19 +51,46 @@ const SakFC = ({sak}: SakProps) => {
           {sak.sakType + ' - ' + sak.sakTittel}
         </Heading>
         <BodyLong>
-          {thisSektorName ?? ''}
+          {thisSektorName ? thisSektorName + ' ' + t('label:sektor').toLowerCase() : ''}
         </BodyLong>
       </PileDiv>
       <PileDiv>
-        User
-      </PileDiv>
-      <PileDiv>
+        {sak.person && (
+          <>
+            <FlexDiv>
+            <img
+              alt={kind}
+              width={24}
+              height={24}
+              src={src}
+            />
+            <HorizontalSeparatorDiv/>
+            <Label>
+              {sak.person.etternavn + ', ' + sak.person.fornavn}
+            </Label>
+            </FlexDiv>
+            <FlexDiv>
+              {t('label:fnr.') + ': '}
+              <HorizontalSeparatorDiv size='0.5'/>
+              <Link title={t('label:kopiere')} onClick={(e: any) => {
+                e.preventDefault()
+                e.stopPropagation()
+                dispatch(copyToClipboard(sak.sakId))
+              }}>
+                {' ' + sak.person.fnr + ' '}
+                <Copy/>
+              </Link>
+              <HorizontalSeparatorDiv/>
+              {sak.person.foedselsdato}
+            </FlexDiv>
+          </>
 
+        )}
       </PileDiv>
       <PileDiv>
         <FlexDiv>
           <span>
-            {t('label:rina-saksnummer') + ' ' + sak.sakId }
+            {t('label:rina-saksnummer')}
           </span>
           <HorizontalSeparatorDiv />
           <Link title={t('label:kopiere')} onClick={(e: any) => {
@@ -58,9 +98,11 @@ const SakFC = ({sak}: SakProps) => {
             e.stopPropagation()
             dispatch(copyToClipboard(sak.sakId))
           }}>
+            {sak.sakId + ' '}
             <Copy/>
           </Link>
-
+          <HorizontalSeparatorDiv />
+          <InformationFilled/>
         </FlexDiv>
         <FlexDiv>
           <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>

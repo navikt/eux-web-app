@@ -155,6 +155,13 @@ export interface Saksbehandler {
 }
 
 export interface Sak {
+  person?: {
+    fornavn: string
+    etternavn: string
+    foedselsdato: string
+    kjoenn: string
+    fnr: string
+  }
   erSakseier? : JaNei
   sakType: string
   sakTittel: string
