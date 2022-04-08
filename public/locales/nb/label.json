@@ -206,6 +206,7 @@
   "loenn": "Lønn",
   "loenn-til-dato": "Lønn til dato",
   "loennsopplysninger" : "Lønnsopplysninger",
+  "lovvalg" : "Lovvalg",
 
   "månedlig": "Månedlig",
   "mann" : "Mann",
@@ -226,7 +227,7 @@
   "norsk-fnr" : "Norsk personnummer",
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
-  "only-active-seds": "Bare aktiv SED-er",
+  "only-active-seds": "Vis kun saker som kan behandles i nEESSI",
   "oppdatere-sed" : "Oppdatere SED",
   "oppdatere-sende-sed" : "Oppdatere/Sende SED",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
@@ -381,6 +382,7 @@
   "ytterligere-grunner-til-uenighet":  "Ytterligere grunner til uenighet",
 
   "åpen": "Åpen",
+  "åpne_sak_i_RINA": "Åpne sak i RINA",
   "åpen_sluttdato": "Åpen sluttdato",
   "årlig": "Årlig",
   "årsak-til-avslutning-av-arbeidsforhold" : "Årsak til avslutning av arbeidsforhold",

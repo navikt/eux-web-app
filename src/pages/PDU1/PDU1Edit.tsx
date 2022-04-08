@@ -15,7 +15,7 @@ import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnse
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
 import Modal from 'components/Modal/Modal'
-import PreviewPDU1 from 'components/PreviewPDU1/PreviewPDU1'
+import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'

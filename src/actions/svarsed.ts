@@ -1,11 +1,11 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { ConnectedSed, CreateSedResponse, FagSaker, UpdateReplySedPayload } from 'declarations/types'
+import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak } from 'declarations/types'
 import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/svarsed/replySed'
-import mockConnectedReplySeds from 'mocks/svarsed/connectedReplySeds'
+import mockSaks from 'mocks/svarsed/saks'
 import { ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
@@ -117,9 +117,9 @@ export const getSedStatus = (rinaSakId: string, sedId: string) => {
   })
 }
 
-export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<ConnectedSed>>> = (
+export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<Sed>>> = (
   saksnummerOrFnr: string
-): ThunkResult<ActionWithPayload<ConnectedSed>> => {
+): ThunkResult<ActionWithPayload<Sed>> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
   if (result.status === 'valid') {
@@ -136,15 +136,15 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<C
 
   return call({
     url: url,
-    expectedPayload: mockConnectedReplySeds,
+    expectedPayload: mockSaks(saksnummerOrFnr),
     context: {
       type,
       saksnummerOrFnr
     },
     type: {
-      request: types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST,
-      success: types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS,
-      failure: types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE
+      request: types.SVARSED_SAKS_REQUEST,
+      success: types.SVARSED_SAKS_SUCCESS,
+      failure: types.SVARSED_SAKS_FAILURE
     }
   })
 }
@@ -173,7 +173,7 @@ export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = 
 }
 
 export const replyToSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
-  connectedSed: ConnectedSed, saksnummer: string, sakUrl: string
+  connectedSed: Sed, saksnummer: string, sakUrl: string
 ): ThunkResult<ActionWithPayload<ReplySed>> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
 
@@ -226,11 +226,9 @@ export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> =
   })
 }
 
-export const setParentSed: ActionCreator<ActionWithPayload<string>> = (
-  payload: string
-): ActionWithPayload<string> => ({
-  type: types.SVARSED_PARENTSED_SET,
-  payload: payload
+export const setCurrentSak = (currentSak: Sak | undefined) => ({
+  type: types.SVARSED_CURRENTSAK_SET,
+  payload: currentSak
 })
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (

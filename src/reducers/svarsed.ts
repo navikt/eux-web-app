@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed.d'
-import { CreateSedResponse, FagSaker, Seds } from 'declarations/types.d'
+import { CreateSedResponse, FagSaker, Sak, Saks } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -8,12 +8,11 @@ import { Action } from 'redux'
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
-  parentSed: string | undefined
   personRelatert: any
   previewFile: any
-  previousParentSed: string | undefined
   replySed: ReplySed | null | undefined
-  seds: Seds | null | undefined
+  saks: Saks | null | undefined
+  currentSak: Sak | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sedStatus: {[k in string]: string | null}
@@ -21,12 +20,11 @@ export interface SvarsedState {
 
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
-  parentSed: undefined,
   personRelatert: undefined,
   previewFile: undefined,
-  previousParentSed: undefined,
   replySed: undefined,
-  seds: undefined,
+  saks: undefined,
+  currentSak: undefined,
   sedCreatedResponse: undefined,
   sedSendResponse: undefined,
   sedStatus: {}
@@ -127,25 +125,31 @@ const svarsedReducer = (
         previewFile: undefined
       }
 
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST:
+    case types.SVARSED_CURRENTSAK_SET:
       return {
         ...state,
-        seds: undefined
+        currentSak: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE:
+    case types.SVARSED_SAKS_REQUEST:
       return {
         ...state,
-        seds: null
+        saks: undefined
       }
 
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS: {
-      const seds = _.isArray((action as ActionWithPayload).payload)
+    case types.SVARSED_SAKS_FAILURE:
+      return {
+        ...state,
+        saks: null
+      }
+
+    case types.SVARSED_SAKS_SUCCESS: {
+      const saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload
         : [(action as ActionWithPayload).payload]
       return {
         ...state,
-        seds: seds
+        saks: saks
       }
     }
 
@@ -257,13 +261,6 @@ const svarsedReducer = (
         sedSendResponse: { success: true }
       }
     }
-
-    case types.SVARSED_PARENTSED_SET:
-      return {
-        ...state,
-        previousParentSed: state.parentSed,
-        parentSed: (action as ActionWithPayload).payload
-      }
 
     case types.SVARSED_REPLYSED_SET:
       return {

@@ -1,5 +1,6 @@
 import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
+import { JaNei } from 'declarations/sed'
 
 export interface OldPeriod {
   fom: string
@@ -50,7 +51,7 @@ export interface LocalStorageEntry<CustomLocalStorageContent extends any = any> 
   content: CustomLocalStorageContent
 }
 
-export interface ConnectedSed {
+export interface Sed {
   sedTittel: string
   sedType: string
   sedId: string
@@ -153,7 +154,8 @@ export interface Saksbehandler {
   featureToggles: FeatureToggles
 }
 
-export interface Sed {
+export interface Sak {
+  erSakseier? : JaNei
   sakType: string
   sakTittel: string
   sakId: string
@@ -161,10 +163,10 @@ export interface Sed {
   motpart: Array<string>
   motpartInstitusjon: string
   sistEndretDato: string
-  sedListe: Array<ConnectedSed>
+  sedListe: Array<Sed>
 }
 
-export type Seds = Array<Sed>
+export type Saks = Array<Sak>
 
 export interface ServerInfo {
   namespace: string

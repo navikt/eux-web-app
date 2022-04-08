@@ -248,14 +248,14 @@ const loadingReducer = (
         searchingRelatertPerson: false
       }
 
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_REQUEST:
+    case types.SVARSED_SAKS_REQUEST:
       return {
         ...state,
         queryingSaksnummerOrFnr: true
       }
 
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_SUCCESS:
-    case types.SVARSED_SAKSNUMMERORFNR_QUERY_FAILURE:
+    case types.SVARSED_SAKS_SUCCESS:
+    case types.SVARSED_SAKS_FAILURE:
       return {
         ...state,
         queryingSaksnummerOrFnr: false

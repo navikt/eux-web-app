@@ -1,7 +1,9 @@
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
+import { setCurrentSak } from 'actions/svarsed'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
+import SakFC from 'applications/SvarSed/Sak/Sak'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
@@ -9,7 +11,7 @@ import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry } from 'declarations/types'
+import { LocalStorageEntry, Sak } from 'declarations/types'
 import _ from 'lodash'
 import SEDEdit from 'pages/SvarSed/SEDEdit'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
@@ -24,11 +26,11 @@ export const SvarSedPage = (): JSX.Element => {
   const location = useLocation()
   const { t } = useTranslation()
   const [_currentPage, _setCurrentPage] = useState<string>('A')
-  const [_currentSak, _setCurrentSak] = useState<any>(undefined)
   const changeModeFunc = React.useRef<ChangeModeFunction>(null)
   const params: URLSearchParams = new URLSearchParams(location.search)
   const entries: Array<LocalStorageEntry<ReplySed>> | null | undefined =
     useSelector<State, Array<LocalStorageEntry<ReplySed>> | null | undefined>(state => state.localStorage.svarsed.entries)
+  const currentSak: Sak | undefined = useSelector<State, Sak | undefined>(state => state.svarsed.currentSak)
 
   const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
     if (changeModeFunc.current !== null) {
@@ -43,9 +45,7 @@ export const SvarSedPage = (): JSX.Element => {
       dispatch(resetCurrentEntry('svarsed'))
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
-    if (_currentPage === 'A' && _currentSak !== undefined) {
-      _setCurrentSak(undefined)
-    }
+    dispatch(setCurrentSak(undefined))
   }
 
   useEffect(() => {
@@ -83,24 +83,20 @@ export const SvarSedPage = (): JSX.Element => {
 
   return (
     <TopContainer
-      backButton={_currentPage === 'B' || (_currentPage === 'A' && _currentSak !== undefined)}
+      backButton={_currentPage === 'B' || (_currentPage === 'A' && currentSak !== undefined)}
       onGoBackClick={onGoBackClick}
       title={t('app:page-title-svarsed')}
     >
       <>
-        {_currentSak !== undefined && (
-          <div />
+        {currentSak !== undefined && (
+          <SakFC sak={currentSak} />
         )}
         <SlidePage
           changeModeFunc={changeModeFunc}
           initialPage='A'
           initialDirection='none'
           divA1={(
-            <SEDSearch
-              changeMode={changeMode}
-              currentSak={_currentSak}
-              setCurrentSak={_setCurrentSak}
-            />
+            <SEDSearch changeMode={changeMode}/>
           )}
           divA2={(
             <SideBarDiv>
@@ -116,9 +112,7 @@ export const SvarSedPage = (): JSX.Element => {
           )}
           divB2={(
             <SideBarDiv>
-              <SEDDetails
-                updateReplySed={updateReplySed}
-              />
+              <SEDDetails updateReplySed={updateReplySed}/>
             </SideBarDiv>
         )}
         />
