@@ -5,7 +5,7 @@ import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
 import moment, { Moment } from 'moment'
 import { Column } from '@navikt/hoykontrast'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
@@ -78,34 +78,29 @@ const PeriodeInput = <T extends Periode>({
 }: PeriodeProps<T>) => {
   const { t } = useTranslation()
 
-  const [_periode, _setPeriode] = useState<T | null | undefined>(value)
-
   const onStartDatoChanged = (startDato: string) => {
-    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
-    newPeriode.startdato = toDateFormat(startDato, finalFormat)
+    const newPeriode: T = _.cloneDeep(value) ?? {} as T
+    newPeriode.startdato = toDateFormat(startDato, finalFormat!)
     if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato) && _.isEmpty(newPeriode.aapenPeriodeType)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
-    _setPeriode(newPeriode)
     setPeriode(newPeriode, 'startdato')
   }
 
   const onEndDatoChanged = (sluttDato: string) => {
-    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
-    newPeriode.sluttdato = toDateFormat(sluttDato, finalFormat)
+    const newPeriode: T = _.cloneDeep(value) ?? {} as T
+    newPeriode.sluttdato = toDateFormat(sluttDato, finalFormat!)
     if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     } else {
       delete newPeriode.aapenPeriodeType
     }
-    _setPeriode(newPeriode)
     setPeriode(newPeriode, 'sluttdato')
   }
 
   const onCheckboxChanged = (checked: boolean) => {
-    const newPeriode: T = _.cloneDeep(_periode) ?? {} as T
+    const newPeriode: T = _.cloneDeep(value) ?? {} as T
     newPeriode.aapenPeriodeType = checked ? 'ukjent_sluttdato' : 'åpen_sluttdato'
-    _setPeriode(newPeriode)
     setPeriode(newPeriode, 'aapenPeriodeType')
   }
 
@@ -116,7 +111,7 @@ const PeriodeInput = <T extends Periode>({
           ariaLabel={label?.startdato ?? t('label:startdato')}
           error={error.startdato}
           id='startdato'
-          key={namespace + '-startdato-' + _periode?.startdato}
+          key={namespace + '-startdato-' + value?.startdato}
           label={showLabel
             ? (label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : '')) +
             ' (' + t('el:placeholder-date-default') + ')'
@@ -124,7 +119,7 @@ const PeriodeInput = <T extends Periode>({
           namespace={namespace}
           onChanged={onStartDatoChanged}
           required={requiredStartDato}
-          value={toDateFormat(_periode?.startdato, uiFormat) ?? ''}
+          value={toDateFormat(value?.startdato, uiFormat!) ?? ''}
         />
       </Column>
       <Column>
@@ -132,7 +127,7 @@ const PeriodeInput = <T extends Periode>({
           ariaLabel={label?.sluttdato || t('label:sluttdato')}
           error={error.sluttdato}
           id='sluttdato'
-          key={namespace + '-sluttdato-' + _periode?.sluttdato}
+          key={namespace + '-sluttdato-' + value?.sluttdato}
           label={showLabel
             ? (label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '')) +
               ' (' + t('el:placeholder-date-default') + ')'
@@ -140,17 +135,17 @@ const PeriodeInput = <T extends Periode>({
           namespace={namespace}
           onChanged={onEndDatoChanged}
           required={requiredSluttDato}
-          value={toDateFormat(_periode?.sluttdato, uiFormat) ?? ''}
+          value={toDateFormat(value?.sluttdato, uiFormat!) ?? ''}
         />
       </Column>
       {breakInTwo && <div />}
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
         <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
-          {_.isEmpty(_periode?.sluttdato) && (
+          {_.isEmpty(value?.sluttdato) && (
             <Checkbox
               error={!!error.aapenPeriodeType}
               id='aapenPeriodeType'
-              checked={_periode?.aapenPeriodeType === 'ukjent_sluttdato'}
+              checked={value?.aapenPeriodeType === 'ukjent_sluttdato'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
             > {t('label:ukjent')}
             </Checkbox>

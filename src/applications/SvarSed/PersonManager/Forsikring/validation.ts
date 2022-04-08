@@ -10,7 +10,6 @@ import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { validateAdresse } from '../Adresser/validation'
 import { validateInntektOgTimer } from './InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
@@ -75,6 +74,7 @@ export const validateForsikringPeriode = (
 
   if (type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
     .indexOf(type) >= 0) {
+    /*  Address is not mandatory
     const _error: boolean = validateAdresse(v, t, {
       adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false,
@@ -82,7 +82,7 @@ export const validateForsikringPeriode = (
       personName: (periode as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? personName
     })
     hasErrors = hasErrors || _error
-
+    */
     if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.navn)) {
       v[namespace + idx + '-arbeidsgiver-navn'] = {
         feilmelding: t('validation:noInstitusjonensNavn') + (personName ? t('validation:til-person', { person: personName }) : ''),
@@ -91,13 +91,14 @@ export const validateForsikringPeriode = (
       hasErrors = true
     }
 
+    /*  Id is not mandatory
     if (_.isEmpty((periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer)) {
       v[namespace + idx + '-arbeidsgiver-identifikatorer'] = {
         feilmelding: t('validation:noOrgnr') + (personName ? t('validation:til-person', { person: personName }) : ''),
         skjemaelementId: namespace + idx + '-arbeidsgiver-identifikatorer'
       } as ErrorElement
       hasErrors = true
-    }
+    }*/
   }
 
   if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {

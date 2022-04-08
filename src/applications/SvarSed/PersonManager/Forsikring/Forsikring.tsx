@@ -51,7 +51,6 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import {
-  AlignCenterRow,
   AlignStartRow,
   Column,
   FlexCenterDiv,
@@ -357,7 +356,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
           </>
         )}
         {_type && (
-          <AlignCenterRow>
+          <AlignStartRow>
             {index >= 0 && _sort === 'time' && (
               <Column style={{ maxWidth: '40px' }}>
                 <div title={_.find(periodeOptions, o => o.value === _type)?.label ?? ''}>
@@ -410,7 +409,7 @@ const Forsikring: React.FC<PersonManagerFormProps> = ({
                 </Column>
                 )
               : <Column />}
-          </AlignCenterRow>
+          </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
         {_type && _visible && [
