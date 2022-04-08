@@ -49,7 +49,7 @@
     "lodash": "^4.17.21",
     "lodash.throttle": "^4.1.1",
     "md5": "^2.3.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "nav-frontend-alertstriper": "^4.0.1",
     "nav-frontend-alertstriper-style": "^3.0.1",
     "nav-frontend-chevron": "^1.0.30",
