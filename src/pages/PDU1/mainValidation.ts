@@ -28,21 +28,21 @@ export const validatePDU1Edit = (v: Validation, t: TFunction, {
 
   const personID = 'bruker'
   const person : Pdu1Person = _.get(pdu1, personID)
-  hasErrors.push(validatePerson(v, t, { person, namespace: `personmanager-${personID}-person` }))
+  hasErrors.push(validatePerson(v, t, { person, namespace: `TwoLevelForm-${personID}-person` }))
 
-  hasErrors.push(validateAllePDPerioder(v, t, { pdu1, namespace: `personmanager-${personID}-perioder` }))
+  hasErrors.push(validateAllePDPerioder(v, t, { pdu1, namespace: `TwoLevelForm-${personID}-perioder` }))
 
   const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(pdu1, 'opphoer')
-  hasErrors.push(validateSisteAnsettelseinfo(v, t, { sisteAnsettelseInfo, namespace: `personmanager-${personID}-sisteansettelseinfo` }))
+  hasErrors.push(validateSisteAnsettelseinfo(v, t, { sisteAnsettelseInfo, namespace: `TwoLevelForm-${personID}-sisteansettelseinfo` }))
 
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')
-  hasErrors.push(validateUtbetaling(v, t, { utbetaling, namespace: `personmanager-${personID}-utbetaling` }))
+  hasErrors.push(validateUtbetaling(v, t, { utbetaling, namespace: `TwoLevelForm-${personID}-utbetaling` }))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
-  hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `personmanager-${personID}-dagpenger` }))
+  hasErrors.push(validateDagpenger(v, t, { dagpenger, namespace: `TwoLevelForm-${personID}-dagpenger` }))
 
   const nav: NavInfo = _.get(pdu1, 'nav')
-  hasErrors.push(validateAvsender(v, t, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `personmanager-${personID}-avsender` }))
+  hasErrors.push(validateAvsender(v, t, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `TwoLevelForm-${personID}-avsender` }))
 
   return hasErrors.find(value => value) !== undefined
 }

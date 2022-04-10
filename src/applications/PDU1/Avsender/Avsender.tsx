@@ -1,7 +1,7 @@
 import { Heading, Switch } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import { NavInfo } from 'declarations/pd'
@@ -13,18 +13,18 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const Avsender: React.FC<PersonManagerFormProps> = ({
+const Avsender: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'nav'
   const nav: NavInfo = _.get(replySed, target)

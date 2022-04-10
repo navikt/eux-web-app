@@ -1,4 +1,4 @@
-import { BackFilled } from '@navikt/ds-icons'
+import { BackFilled, FileContentFilled } from '@navikt/ds-icons'
 import { toggleHighContrast } from 'actions/ui'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
@@ -49,6 +49,7 @@ export interface HeaderProps {
   title: string
   backButton?: boolean
   onGoBackClick?: () => void
+  unsavedDoc?: boolean
 }
 
 export const mapState = (state: State): HeaderSelector => ({
@@ -59,7 +60,8 @@ const Header: React.FC<HeaderProps> = ({
   backButton,
   highContrast,
   onGoBackClick,
-  title
+  title,
+  unsavedDoc = false
 }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
   const { t } = useTranslation()
@@ -87,6 +89,7 @@ const Header: React.FC<HeaderProps> = ({
           </Button>
         )}
       </div>
+      <div />
       <FlexCenterDiv>
         <DomLink to='/' onClick={_cleanData}>
           <NEESSILogo />
@@ -96,6 +99,15 @@ const Header: React.FC<HeaderProps> = ({
           {title}
         </Heading>
       </FlexCenterDiv>
+      <div>
+        {unsavedDoc && (
+          <FlexCenterDiv>
+            {t('label:utkast')}
+            <HorizontalSeparatorDiv size='0.5' />
+            <FileContentFilled />
+          </FlexCenterDiv>
+        )}
+      </div>
       <SaksbehandlerDiv>
         <Link
           data-testid='header__highcontrast-link'

@@ -11,6 +11,7 @@ export interface SvarsedState {
   personRelatert: any
   previewFile: any
   replySed: ReplySed | null | undefined
+  replySedChanged: boolean
   saks: Saks | null | undefined
   currentSak: Sak | undefined
   sedCreatedResponse: CreateSedResponse | null | undefined
@@ -23,6 +24,7 @@ export const initialSvarsedState: SvarsedState = {
   personRelatert: undefined,
   previewFile: undefined,
   replySed: undefined,
+  replySedChanged: false,
   saks: undefined,
   currentSak: undefined,
   sedCreatedResponse: undefined,
@@ -61,7 +63,8 @@ const svarsedReducer = (
       return {
         ...state,
         sedCreatedResponse: undefined,
-        sedSendResponse: undefined
+        sedSendResponse: undefined,
+        replySedChanged: false
       }
 
     case types.SVARSED_REPLYTOSED_SUCCESS:
@@ -73,12 +76,14 @@ const svarsedReducer = (
           sakUrl: (action as ActionWithPayload).context.sakUrl,
           sedId: undefined, // so we can signal this SED as a SED that needs to be created, not updated
           status: (action as ActionWithPayload).context.status
-        }
+        },
+        replySedChanged: false
       }
 
     case types.SVARSED_REPLYTOSED_FAILURE:
       return {
         ...state,
+        replySedChanged: false,
         replySed: null
       }
 
@@ -97,13 +102,15 @@ const svarsedReducer = (
           saksnummer: (action as ActionWithPayload).context.saksnummer,
           sedId: (action as ActionWithPayload).context.sedId,
           status: (action as ActionWithPayload).context.status
-        }
+        },
+        replySedChanged: false
       }
 
     case types.SVARSED_EDIT_FAILURE:
       return {
         ...state,
-        replySed: null
+        replySed: null,
+        replySedChanged: false
       }
 
     case types.SVARSED_PREVIEW_SUCCESS:
@@ -162,7 +169,8 @@ const svarsedReducer = (
           ...state.replySed,
           sedId: (action as ActionWithPayload).payload.sedId
         } as ReplySed,
-        sedCreatedResponse: (action as ActionWithPayload).payload
+        sedCreatedResponse: (action as ActionWithPayload).payload,
+        replySedChanged: false
       }
 
     case types.SVARSED_SED_CREATE_FAILURE:
@@ -185,7 +193,8 @@ const svarsedReducer = (
       return {
         ...state,
         sedSendResponse: sedSendResponse,
-        sedCreatedResponse: (action as ActionWithPayload).payload
+        sedCreatedResponse: (action as ActionWithPayload).payload,
+        replySedChanged: false
       }
     }
 
@@ -265,7 +274,8 @@ const svarsedReducer = (
     case types.SVARSED_REPLYSED_SET:
       return {
         ...state,
-        replySed: (action as ActionWithPayload).payload
+        replySed: (action as ActionWithPayload).payload,
+        replySedChanged: true
       }
 
     case types.SVARSED_REPLYSED_UPDATE: {
@@ -280,7 +290,8 @@ const svarsedReducer = (
 
       return {
         ...state,
-        replySed: newReplySed
+        replySed: newReplySed,
+        replySedChanged: true
       }
     }
 

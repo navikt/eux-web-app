@@ -10,7 +10,7 @@ export interface StatisticsState {
 }
 
 export const initialUiState: StatisticsState = {
-  menuTime: { personmanager: {}, formalmanager: {} },
+  menuTime: { TwoLevelForm: {}, formalmanager: {} },
   pageTime: { total: {}, selection: {}, editor: {} }
 }
 

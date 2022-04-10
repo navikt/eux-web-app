@@ -1,6 +1,6 @@
 import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import Input from 'components/Forms/Input'
 import { IkkeRettTilDagpenger, PDU1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -12,18 +12,18 @@ import { useDispatch, useSelector } from 'react-redux'
 
 type RettTilDagpengerRadio = 'rettTilDagpenger' | 'ikkeRettTilDagpenger' | undefined
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const RettTilDagpengerFC: React.FC<PersonManagerFormProps> = ({
+const RettTilDagpengerFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   setReplySed
-}: PersonManagerFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const rettTilDagpenger: RettTilDagpenger | undefined = _.get(replySed, 'rettTilDagpenger')
   const ikkeRettTilDagpenger: IkkeRettTilDagpenger | undefined = _.get(replySed, 'ikkeRettTilDagpenger')

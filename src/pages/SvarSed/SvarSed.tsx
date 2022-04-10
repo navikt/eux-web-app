@@ -1,12 +1,13 @@
+import { Container, Content, Margin } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
+import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
-import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
-import { SideBarDiv } from 'components/StyledComponents'
+import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -25,22 +26,19 @@ export const SvarSedPage = (): JSX.Element => {
   const location = useLocation()
   const { t } = useTranslation()
   const [_currentPage, _setCurrentPage] = useState<string>('A')
-  const changeModeFunc = React.useRef<ChangeModeFunction>(null)
   const params: URLSearchParams = new URLSearchParams(location.search)
   const entries: Array<LocalStorageEntry<ReplySed>> | null | undefined =
     useSelector<State, Array<LocalStorageEntry<ReplySed>> | null | undefined>(state => state.localStorage.svarsed.entries)
+  const replySedChanged: boolean = useSelector<State, boolean>(state => state.svarsed.replySedChanged)
   const currentSak: Sak | undefined = useSelector<State, Sak | undefined>(state => state.svarsed.currentSak)
 
-  const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
-    if (changeModeFunc.current !== null) {
-      changeModeFunc.current(newPage, newDirection, newCallback)
-      _setCurrentPage(newPage)
-    }
+  const changeMode = (newPage: string) => {
+    _setCurrentPage(newPage)
   }
 
   const onGoBackClick = () => {
     if (_currentPage === 'B') {
-      changeMode('A', 'back')
+      changeMode('A')
       dispatch(resetCurrentEntry('svarsed'))
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
@@ -61,7 +59,7 @@ export const SvarSedPage = (): JSX.Element => {
 
   useEffect(() => {
     if (!mounted) {
-      // Load PDU1 from localStorage if I see a GET param - used for token renew
+      // Load SvarSED from localStorage if I see a GET param - used for token renew
       // I have to wait until localStorage is loaded
       if (entries !== undefined) {
         const name: string | null = params.get('name')
@@ -71,7 +69,7 @@ export const SvarSedPage = (): JSX.Element => {
           if (entry) {
             dispatch(setCurrentEntry('svarsed', entry))
             dispatch(setReplySed(entry.content))
-            changeMode('B', 'forward')
+            changeMode('B')
             dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
         }
@@ -84,37 +82,49 @@ export const SvarSedPage = (): JSX.Element => {
     <TopContainer
       backButton={_currentPage === 'B' || (_currentPage === 'A' && currentSak !== undefined)}
       onGoBackClick={onGoBackClick}
+      unsavedDoc={replySedChanged}
       title={t('app:page-title-svarsed')}
     >
       <>
         {currentSak !== undefined && (
           <SakBanner sak={currentSak} />
         )}
-        <SlidePage
-          changeModeFunc={changeModeFunc}
-          initialPage='A'
-          initialDirection='none'
-          divA1={(
-            <SEDSearch changeMode={changeMode} />
-          )}
-          divA2={(
+        <Container>
+          <Margin />
+          <Content style={{ flex: 6, maxWidth: '1200px' }}>
+            {_currentPage === 'A' && (
+              <SEDSearch changeMode={changeMode} />
+            )}
+            {_currentPage === 'B' && (
+              <SEDEdit />
+            )}
+          </Content>
+          <FadingLineSeparator className='fadeIn'>
+            &nbsp;
+          </FadingLineSeparator>
+          <Content style={{ width: '23.5rem' }}>
             <SideBarDiv>
-              <LoadSave
-                namespace='svarsed'
-                changeMode={changeMode}
-                setReplySed={setReplySed}
-              />
+              {_currentPage === 'A' && (
+                currentSak === undefined
+                  ? (
+                    <LoadSave
+                      namespace='svarsed'
+                      changeMode={changeMode}
+                      setReplySed={setReplySed}
+                    />
+                    )
+                  : (
+                    <Saksopplysninger sak={currentSak} />
+                    )
+              )}
+
+              {_currentPage === 'B' && (
+                <SEDDetails updateReplySed={updateReplySed} />
+              )}
             </SideBarDiv>
-        )}
-          divB1={(
-            <SEDEdit />
-          )}
-          divB2={(
-            <SideBarDiv>
-              <SEDDetails updateReplySed={updateReplySed} />
-            </SideBarDiv>
-        )}
-        />
+          </Content>
+          <Margin />
+        </Container>
       </>
     </TopContainer>
   )

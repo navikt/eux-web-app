@@ -1,6 +1,6 @@
 import { Checkbox, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import Input from 'components/Forms/Input'
 import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -10,18 +10,18 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const UtbetalingFC: React.FC<PersonManagerFormProps> = ({
+const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-} :PersonManagerFormProps): JSX.Element => {
+} :TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'andreMottatteUtbetalinger'
   const andreMottatteUtbetalinger: AndreMottatteUtbetalinger = _.get(replySed, target)

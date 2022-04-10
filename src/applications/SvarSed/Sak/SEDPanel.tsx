@@ -30,8 +30,7 @@ const IconDiv = styled(PileCenterDiv)`
   margin-bottom: -1rem;
   justify-content: center;
   background-color: var(--navds-semantic-color-component-background-alternate);
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
 `
 
 interface SEDPanelProps {

@@ -14,7 +14,7 @@ import {
 import { resetPerson, searchPerson } from 'actions/person'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
@@ -30,7 +30,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 
-interface PersonOpplysningerSelector extends PersonManagerFormSelector {
+interface PersonOpplysningerSelector extends TwoLevelFormSelector {
   searchingPerson: boolean
   searchedPerson: IPerson | null | undefined
 }
@@ -41,13 +41,13 @@ const mapState = (state: State): PersonOpplysningerSelector => ({
   validation: state.validation.status
 })
 
-const Person: React.FC<PersonManagerFormProps> = ({
+const Person: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
   personID,
   personName,
   updateReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     searchedPerson,

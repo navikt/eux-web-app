@@ -72,7 +72,7 @@ Amplitude - nEESSI
 5 F-Sed
 
   5.1 Time spent in menus
-    #neessi.svarsed.editor.personmanager.time { [key]: {minutes, seconds}} -
+    #neessi.svarsed.editor.TwoLevelForm.time { [key]: {minutes, seconds}} -
 
   5.2 F-Sed formål added - distribution
     #neessi.svarsed.fsed.formal.add, {item: string}
@@ -83,7 +83,7 @@ Amplitude - nEESSI
   5.4 Persons removed from F-Sed
     * #neessi.svarsed.editor.personmodal.remove, {type: string} - Person removed
 
-6 PersonManager
+6 TwoLevelForm
 
   6.1 Norsk / utenlandsk PIN searches
 
@@ -207,14 +207,14 @@ Amplitude - nEESSI
     #neessi.svarsed.editor.arbeidsgiver.added.remove - Arbeidsgiver added removed
     #neessi.svarsed.editor.arbeidsgiver.added.add - Arbeidsgiver added add
 
-7. FormålManager
+7. BottomForm
 
   7.1 (not created) - Editor - Ytelse added / removed
     ** #neessi.svarsed.editor.ytelse.add - ytelse added
     ** #neessi.svarsed.editor.ytelse.remove - ytelse removed
 
   4.17 (not created)
-    ERROR -> #neessi.svarsed.editor.formålmanager.time { [key]: {status, total, date}} - Total time spent on each personManager menu, grouped by main menu (Nasjonalitetet, Adresse, etc)
+    ERROR -> #neessi.svarsed.editor.BottomForm.time { [key]: {status, total, date}} - Total time spent on each TwoLevelForm menu, grouped by main menu (Nasjonalitetet, Adresse, etc)
 
   4.18 (not created)
     #neessi.svarsed.editor.inntekt.search - Inntekt search

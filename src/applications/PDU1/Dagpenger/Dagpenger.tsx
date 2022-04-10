@@ -1,7 +1,7 @@
 import { Add } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -27,18 +27,18 @@ import { getIdx } from 'utils/namespace'
 import { validateDagpengerPeriode, ValidationDagpengerPeriodeProps } from './validation'
 import { PDPeriode } from 'declarations/pd'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const Dagpenger: React.FC<PersonManagerFormProps> = ({
+const Dagpenger: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-}: PersonManagerFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target: string = 'perioderDagpengerMottatt'
   const perioderDagpengerMottatt: Array<PDPeriode> | undefined = _.get(replySed, target)

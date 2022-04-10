@@ -85,6 +85,7 @@ export interface TopContainerProps {
   fluid?: boolean
   header?: string | JSX.Element
   onGoBackClick ?: () => void
+  unsavedDoc ?: boolean
   title: string
 }
 
@@ -108,6 +109,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   className,
   backButton,
   onGoBackClick,
+  unsavedDoc,
   children,
   title
 }: TopContainerProps): JSX.Element => {
@@ -153,6 +155,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           highContrast={highContrast}
           backButton={backButton}
           onGoBackClick={onGoBackClick}
+          unsavedDoc={unsavedDoc}
         />
         <BannerAlert
           message={bannerMessage}

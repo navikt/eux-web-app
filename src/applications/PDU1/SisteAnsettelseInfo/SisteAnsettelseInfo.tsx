@@ -1,7 +1,7 @@
 import { Delete } from '@navikt/ds-icons'
 import { Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -15,19 +15,19 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const SisteAnsettelseInfo: React.FC<PersonManagerFormProps> = ({
+const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   setReplySed,
   updateReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = 'opphoer'
   const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(replySed, target)

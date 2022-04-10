@@ -1,23 +1,23 @@
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import { State } from 'declarations/reducers'
 import { Adresse as IAdresse } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AdresseForm from 'applications/SvarSed/PersonManager/Adresser/AdresseForm'
+import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const Adresse: React.FC<PersonManagerFormProps> = ({
+const Adresse: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-}: PersonManagerFormProps): JSX.Element => {
-  const { validation }: PersonManagerFormSelector = useSelector<State, PersonManagerFormSelector>(mapState)
+}: TwoLevelFormProps): JSX.Element => {
+  const { validation }: TwoLevelFormSelector = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.adresse`
   const adresse: IAdresse = _.get(replySed, target)

@@ -15,7 +15,7 @@ import { querySaksnummerOrFnr, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
-import SEDLeftPanel from 'applications/SvarSed/SEDLeftPanel/SEDLeftPanel'
+import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
@@ -175,7 +175,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <AlignStartRow>
           {!!currentSak && (
             <Column>
-              <SEDLeftPanel />
+              <Sakshandlinger />
             </Column>
           )}
           <Column flex='2'>

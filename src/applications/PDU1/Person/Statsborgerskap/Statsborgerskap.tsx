@@ -1,7 +1,7 @@
 import { Add } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
@@ -26,20 +26,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateStatsborgerskap, ValidationStatsborgerskapProps } from './validation'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const StatsborgerskapFC: React.FC<PersonManagerFormProps> = ({
+const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     validation
-  } = useSelector<State, PersonManagerFormSelector>(mapState)
+  } = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const target = `${personID}.statsborgerskap`
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)

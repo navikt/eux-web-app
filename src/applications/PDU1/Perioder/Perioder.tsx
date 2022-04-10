@@ -1,7 +1,7 @@
 import { Add, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { PersonManagerFormProps, PersonManagerFormSelector } from 'applications/SvarSed/PersonManager/PersonManager'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -36,21 +36,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getNSIdx } from 'utils/namespace'
 import { validatePDPeriode, ValidationPDPeriodeProps } from './validation'
 
-const mapState = (state: State): PersonManagerFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
 type Sort = 'time' | 'group'
 
-const Perioder: React.FC<PersonManagerFormProps> = ({
+const Perioder: React.FC<TwoLevelFormProps> = ({
   options,
   parentNamespace,
   personID,
   replySed,
   updateReplySed
-}:PersonManagerFormProps): JSX.Element => {
+}:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: PersonManagerFormSelector = useSelector<State, PersonManagerFormSelector>(mapState)
+  const { validation }: TwoLevelFormSelector = useSelector<State, TwoLevelFormSelector>(mapState)
   const dispatch = useDispatch()
   const namespace = `${parentNamespace}-${personID}-perioder`
 
@@ -195,8 +195,8 @@ const Perioder: React.FC<PersonManagerFormProps> = ({
     const candidateForDeletion = index < 0 ? false : isInDeletion({ p: periode!, i: index })
     const _type: string = index < 0 ? _newType! : periode!.__type!
     const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
-    // namespace for index < 0: personmanager-bruker-forsikring-arbeidsgiver-adresse-gate
-    // namespace for index >= 0: personmanager-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
+    // namespace for index < 0: TwoLevelForm-bruker-forsikring-arbeidsgiver-adresse-gate
+    // namespace for index >= 0: TwoLevelForm-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
     const idx = getNSIdx(_type, _index)
 
     const _v: Validation = index < 0 ? _validation : validation

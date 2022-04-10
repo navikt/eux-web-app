@@ -4,264 +4,264 @@ editor-ytterligereInfo - {CONNECTED} ytterligereInfo
 editor-sedtype         - {CONNECTED} sedType
 editor-formål          - {CONNECTED} formaal
 
-personmanager-addpersonmodal-fnr       - {INTERNAL} not used
-personmanager-addpersonmodal-navn      - {INTERNAL} not used
-personmanager-addpersonmodal-relasjon  - {INTERNAL} not used
+TwoLevelForm-addpersonmodal-fnr       - {INTERNAL} not used
+TwoLevelForm-addpersonmodal-navn      - {INTERNAL} not used
+TwoLevelForm-addpersonmodal-relasjon  - {INTERNAL} not used
 
 F-Sed, H-Sed
-personmanager-{personID}-adresser-type            - {INTERNAL}  not used
-personmanager-{personID}-adresser-gate            - {INTERNAL}  not used
-personmanager-{personID}-adresser-postnummer      - {INTERNAL}  not used
-personmanager-{personID}-adresser-by              - {INTERNAL}  not used
-personmanager-{personID}-adresser-land            - {INTERNAL}  not used
-personmanager-{personID}-adresser-bygning         - {INTERNAL}  not used
-personmanager-{personID}-adresser-region          - {INTERNAL}  not used
-personmanager-{personID}-adresser[{i}]-type       - {CONNECTED} {person}.adresser[].type
-personmanager-{personID}-adresser[{i}]-gate       - {CONNECTED} {person}.adresser[].gate
-personmanager-{personID}-adresser[{i}]-postnummer - {CONNECTED} {person}.adresser[].postnummer
-personmanager-{personID}-adresser[{i}]-by         - {CONNECTED} {person}.adresser[].by
-personmanager-{personID}-adresser[{i}]-land       - {CONNECTED} {person}.adresser[].land
-personmanager-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresser[].bygning
-personmanager-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
+TwoLevelForm-{personID}-adresser-type            - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-gate            - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-postnummer      - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-by              - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-land            - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-bygning         - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser-region          - {INTERNAL}  not used
+TwoLevelForm-{personID}-adresser[{i}]-type       - {CONNECTED} {person}.adresser[].type
+TwoLevelForm-{personID}-adresser[{i}]-gate       - {CONNECTED} {person}.adresser[].gate
+TwoLevelForm-{personID}-adresser[{i}]-postnummer - {CONNECTED} {person}.adresser[].postnummer
+TwoLevelForm-{personID}-adresser[{i}]-by         - {CONNECTED} {person}.adresser[].by
+TwoLevelForm-{personID}-adresser[{i}]-land       - {CONNECTED} {person}.adresser[].land
+TwoLevelForm-{personID}-adresser[{i}]-bygning    - {CONNECTED} {person}.adresser[].bygning
+TwoLevelForm-{personID}-adresser[{i}]-region     - {CONNECTED} {person}.adresser[].region
 
 U-Sed
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-startdato - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-sluttdato - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-startdato            - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-sluttdato            - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-orgnr                - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-navn                 - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-gate                 - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-postnummer           - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-by                   - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-land                 - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-bygning              - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring-region               - {INTERNAL}  not used
-personmanager-{personID}-arbeidsforhold-perioderAnsattMedForsikring[]                    - {CONNECTED} perioderAnsattMedForsikring[]
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-startdato - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-arbeidssok-sluttdato - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-startdato            - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-sluttdato            - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-orgnr                - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-navn                 - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-gate                 - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-postnummer           - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-by                   - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-land                 - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-bygning              - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring-region               - {INTERNAL}  not used
+TwoLevelForm-{personID}-arbeidsforhold-perioderAnsattMedForsikring[]                    - {CONNECTED} perioderAnsattMedForsikring[]
 
 F-Sed, barn:
-personmanager-{personID}-beløpnavnogvaluta-ytelseNavn                - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-beloep                    - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-valuta                    - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-startdato                 - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-sluttdato                 - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-mottakersNavn             - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta-utbetalingshyppighet      - {INTERNAL} not used
-personmanager-{personID}-beløpnavnogvaluta[{i}]-ytelseNavn           - {CONNECTED} barn[].ytelser[].ytelseNavn
-personmanager-{personID}-beløpnavnogvaluta[{i}]-beloep               - {CONNECTED} barn[].ytelser[].beloep
-personmanager-{personID}-beløpnavnogvaluta[{i}]-valuta               - {CONNECTED} barn[].ytelser[].valuta
-personmanager-{personID}-beløpnavnogvaluta[{i}]-startdato            - {CONNECTED} barn[].ytelser[].startdato
-personmanager-{personID}-beløpnavnogvaluta[{i}]-sluttdato            - {CONNECTED} barn[].ytelser[].sluttdato
-personmanager-{personID}-beløpnavnogvaluta[{i}]-mottakersNavn        - {CONNECTED} barn[].ytelser[].mottakersNavn
-personmanager-{personID}-beløpnavnogvaluta[{i}]-utbetalingshyppighet - {CONNECTED} barn[].ytelser[].utbetalingshyppighet
+TwoLevelForm-{personID}-beløpnavnogvaluta-ytelseNavn                - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-beloep                    - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-valuta                    - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-startdato                 - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-sluttdato                 - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-mottakersNavn             - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta-utbetalingshyppighet      - {INTERNAL} not used
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-ytelseNavn           - {CONNECTED} barn[].ytelser[].ytelseNavn
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-beloep               - {CONNECTED} barn[].ytelser[].beloep
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-valuta               - {CONNECTED} barn[].ytelser[].valuta
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-startdato            - {CONNECTED} barn[].ytelser[].startdato
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-sluttdato            - {CONNECTED} barn[].ytelser[].sluttdato
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-mottakersNavn        - {CONNECTED} barn[].ytelser[].mottakersNavn
+TwoLevelForm-{personID}-beløpnavnogvaluta[{i}]-utbetalingshyppighet - {CONNECTED} barn[].ytelser[].utbetalingshyppighet
 
 F-Sed:
-personmanager-{personID}-familierelasjon-relasjonType                 - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-periode-startdato            - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-periode-sluttdato            - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-annenRelasjonType            - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-annenRelasjonPersonNavn      - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-annenRelasjonDato            - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon-borSammen                    - {INTERNAL}  not used
-personmanager-{personID}-familierelasjon[{i}]-relasjonType            - {CONNECTED} {person}.familierelasjoner[].relasjonType
-personmanager-{personID}-familierelasjon[{i}]-periode-startdato       - {CONNECTED} {person}.familierelasjoner[].periode.startdato
-personmanager-{personID}-familierelasjon[{i}]-periode-sluttdato       - {CONNECTED} {person}.familierelasjoner[].periode.sluttdato
-personmanager-{personID}-familierelasjon[{i}]-annenRelasjonType       - {CONNECTED} {person}.familierelasjoner[].annenRelasjonType
-personmanager-{personID}-familierelasjon[{i}]-annenRelasjonPersonNavn - {CONNECTED} {person}.familierelasjoner[].annenRelasjonPersonNavn
-personmanager-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECTED} {person}.familierelasjoner[].annenRelasjonDato
-personmanager-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
+TwoLevelForm-{personID}-familierelasjon-relasjonType                 - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-periode-startdato            - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-periode-sluttdato            - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-annenRelasjonType            - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-annenRelasjonPersonNavn      - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-annenRelasjonDato            - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon-borSammen                    - {INTERNAL}  not used
+TwoLevelForm-{personID}-familierelasjon[{i}]-relasjonType            - {CONNECTED} {person}.familierelasjoner[].relasjonType
+TwoLevelForm-{personID}-familierelasjon[{i}]-periode-startdato       - {CONNECTED} {person}.familierelasjoner[].periode.startdato
+TwoLevelForm-{personID}-familierelasjon[{i}]-periode-sluttdato       - {CONNECTED} {person}.familierelasjoner[].periode.sluttdato
+TwoLevelForm-{personID}-familierelasjon[{i}]-annenRelasjonType       - {CONNECTED} {person}.familierelasjoner[].annenRelasjonType
+TwoLevelForm-{personID}-familierelasjon[{i}]-annenRelasjonPersonNavn - {CONNECTED} {person}.familierelasjoner[].annenRelasjonPersonNavn
+TwoLevelForm-{personID}-familierelasjon[{i}]-annenRelasjonDato       - {CONNECTED} {person}.familierelasjoner[].annenRelasjonDato
+TwoLevelForm-{personID}-familierelasjon[{i}]-borSammen               - {CONNECTED} {person}.familierelasjoner[].borSammen
 
 F-Sed, hele familien
-personmanager-{personID=familie}-familieytelser-antallPersoner            - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-ytelseNavn                - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-beloep                    - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-valuta                    - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-startdato                 - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-sluttdato                 - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-mottakersNavn             - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser-utbetalingshyppighet      - {INTERNAL} not used
-personmanager-{personID=familie}-familieytelser[{i}]-antallPersoner       - {CONNECTED} familie.ytelser[].antallPersoner
-personmanager-{personID=familie}-familieytelser[{i}]-ytelseNavn           - {CONNECTED} familie.ytelser[].ytelseNavn
-personmanager-{personID=familie}-familieytelser[{i}]-beloep               - {CONNECTED} familie.ytelser[].beloep
-personmanager-{personID=familie}-familieytelser[{i}]-valuta               - {CONNECTED} familie.ytelser[].valuta
-personmanager-{personID=familie}-familieytelser[{i}]-startdato            - {CONNECTED} familie.ytelser[].startdato
-personmanager-{personID=familie}-familieytelser[{i}]-sluttdato            - {CONNECTED} familie.ytelser[].sluttdato
-personmanager-{personID=familie}-familieytelser[{i}]-mottakersNavn        - {CONNECTED} familie.ytelser[].mottakersNavn
-personmanager-{personID=familie}-familieytelser[{i}]-utbetalingshyppighet - {CONNECTED} familie.ytelser[].utbetalingshyppighet
+TwoLevelForm-{personID=familie}-familieytelser-antallPersoner            - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-ytelseNavn                - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-beloep                    - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-valuta                    - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-startdato                 - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-sluttdato                 - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-mottakersNavn             - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser-utbetalingshyppighet      - {INTERNAL} not used
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-antallPersoner       - {CONNECTED} familie.ytelser[].antallPersoner
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-ytelseNavn           - {CONNECTED} familie.ytelser[].ytelseNavn
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-beloep               - {CONNECTED} familie.ytelser[].beloep
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-valuta               - {CONNECTED} familie.ytelser[].valuta
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-startdato            - {CONNECTED} familie.ytelser[].startdato
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-sluttdato            - {CONNECTED} familie.ytelser[].sluttdato
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-mottakersNavn        - {CONNECTED} familie.ytelser[].mottakersNavn
+TwoLevelForm-{personID=familie}-familieytelser[{i}]-utbetalingshyppighet - {CONNECTED} familie.ytelser[].utbetalingshyppighet
 
 U-Sed:
-personmanager-{personID}-forsikring-${target}-arbeidssok-startdato       - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidssok-sluttdato       - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidsgiver-startdato     - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidsgiver-sluttdato     - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidsgiver-orgnr         - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidsgiver-navn          - {INTERNAL}  not used
-personmanager-{personID}-forsikring-${target}-arbeidsgiver[] - {CONNECTED} ${target}[]
+TwoLevelForm-{personID}-forsikring-${target}-arbeidssok-startdato       - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidssok-sluttdato       - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidsgiver-startdato     - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidsgiver-sluttdato     - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidsgiver-orgnr         - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidsgiver-navn          - {INTERNAL}  not used
+TwoLevelForm-{personID}-forsikring-${target}-arbeidsgiver[] - {CONNECTED} ${target}[]
 
 (target = perioderAnsattMedForsikring, perioderAnsattUtenForsikring, perioderSelvstendigMedForsikring,
   perioderSelvstendigUtenForsikring, perioderFrihetsberoevet, perioderSyk, perioderSvangerskapBarn,
   perioderUtdanning, perioderMilitaertjeneste, perioderAnnenForsikring)
 
 F-Sed:
-personmanager-{personID}-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
-personmanager-{personID}-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
-personmanager-{personID}-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
-personmanager-{personID}-grunnlagforbosetting-perioder[{i}]-sluttdato      - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
-personmanager-{personID}-grunnlagforbosetting-personligSituasjon           - {CONNECTED} {person}.flyttegrunn.personligSituasjon
-personmanager-{personID}-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
-personmanager-{personID}-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
+TwoLevelForm-{personID}-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
+TwoLevelForm-{personID}-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
+TwoLevelForm-{personID}-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
+TwoLevelForm-{personID}-grunnlagforbosetting-perioder[{i}]-sluttdato      - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
+TwoLevelForm-{personID}-grunnlagforbosetting-personligSituasjon           - {CONNECTED} {person}.flyttegrunn.personligSituasjon
+TwoLevelForm-{personID}-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+TwoLevelForm-{personID}-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
 F-Sed:
-personmanager-{personID}-kontaktinformasjon-telefon-nummer      - {INTERNAL}  not used
-personmanager-{personID}-kontaktinformasjon-telefon-type        - {INTERNAL}  not used
-personmanager-{personID}-kontaktinformasjon-epost-adresse       - {INTERNAL}  not used
-personmanager-{personID}-kontaktinformasjon[{i}]-telefon-nummer - {CONNECTED} {person}.telefon[].nummer
-personmanager-{personID}-kontaktinformasjon[{i}]-telefon-type   - {CONNECTED} {person}.telefon[].type
-personmanager-{personID}-kontaktinformasjon[{i}]-epost-adresse  - {CONNECTED} {person}.epost[].adresse
+TwoLevelForm-{personID}-kontaktinformasjon-telefon-nummer      - {INTERNAL}  not used
+TwoLevelForm-{personID}-kontaktinformasjon-telefon-type        - {INTERNAL}  not used
+TwoLevelForm-{personID}-kontaktinformasjon-epost-adresse       - {INTERNAL}  not used
+TwoLevelForm-{personID}-kontaktinformasjon[{i}]-telefon-nummer - {CONNECTED} {person}.telefon[].nummer
+TwoLevelForm-{personID}-kontaktinformasjon[{i}]-telefon-type   - {CONNECTED} {person}.telefon[].type
+TwoLevelForm-{personID}-kontaktinformasjon[{i}]-epost-adresse  - {CONNECTED} {person}.epost[].adresse
 
 F-Sed:
-personmanager-{personID}-nasjonaliteter-land         - {INTERNAL}  not used
-personmanager-{personID}-nasjonaliteter-fradato      - {INTERNAL}  not used
-personmanager-{personID}-nasjonaliteter[{i}]-land    - {CONNECTED} {person}.personinfo.statsborgerskap[].land
-personmanager-{personID}-nasjonaliteter[{i}]-fradato - {CONNECTED} {person}.personinfo.statsborgerskap[].fradato
+TwoLevelForm-{personID}-nasjonaliteter-land         - {INTERNAL}  not used
+TwoLevelForm-{personID}-nasjonaliteter-fradato      - {INTERNAL}  not used
+TwoLevelForm-{personID}-nasjonaliteter[{i}]-land    - {CONNECTED} {person}.personinfo.statsborgerskap[].land
+TwoLevelForm-{personID}-nasjonaliteter[{i}]-fradato - {CONNECTED} {person}.personinfo.statsborgerskap[].fradato
 
 F-Sed:
-personmanager-{personID}-personopplysninger-fornavn              - {CONNECTED} {person}.personInfo.fornavn
-personmanager-{personID}-personopplysninger-etternavn            - {CONNECTED} {person}.personInfo.etternavn
-personmanager-{personID}-personopplysninger-foedselsdato         - {CONNECTED} {person}.personInfo.foedselsdato
-personmanager-{personID}-personopplysninger-kjoenn               - {CONNECTED} {person}.personInfo.kjoenn
-personmanager-{personID}-personopplysninger-utenlandskpin-nummer - {CONNECTED} {person}.personInfo.pin[].identifikator
-personmanager-{personID}-personopplysninger-utenlandskpin-land   - {CONNECTED} {person}.personInfo.pin[].land
-personmanager-{personID}-personopplysninger-norskpin-nummer      - {CONNECTED} {person}.personInfo.pin[].identifikator
-personmanager-{personID}-personopplysninger-fodested-by          - {CONNECTED} {person}.personInfo.pinMangler.fodested.by
-personmanager-{personID}-personopplysninger-fodested-region      - {CONNECTED} {person}.personInfo.pinMangler.fodested.region
-personmanager-{personID}-personopplysninger-fodested-land        - {CONNECTED} {person}.personInfo.pinMangler.fodested.land
+TwoLevelForm-{personID}-personopplysninger-fornavn              - {CONNECTED} {person}.personInfo.fornavn
+TwoLevelForm-{personID}-personopplysninger-etternavn            - {CONNECTED} {person}.personInfo.etternavn
+TwoLevelForm-{personID}-personopplysninger-foedselsdato         - {CONNECTED} {person}.personInfo.foedselsdato
+TwoLevelForm-{personID}-personopplysninger-kjoenn               - {CONNECTED} {person}.personInfo.kjoenn
+TwoLevelForm-{personID}-personopplysninger-utenlandskpin-nummer - {CONNECTED} {person}.personInfo.pin[].identifikator
+TwoLevelForm-{personID}-personopplysninger-utenlandskpin-land   - {CONNECTED} {person}.personInfo.pin[].land
+TwoLevelForm-{personID}-personopplysninger-norskpin-nummer      - {CONNECTED} {person}.personInfo.pin[].identifikator
+TwoLevelForm-{personID}-personopplysninger-fodested-by          - {CONNECTED} {person}.personInfo.pinMangler.fodested.by
+TwoLevelForm-{personID}-personopplysninger-fodested-region      - {CONNECTED} {person}.personInfo.pinMangler.fodested.region
+TwoLevelForm-{personID}-personopplysninger-fodested-land        - {CONNECTED} {person}.personInfo.pinMangler.fodested.land
 
 F-Sed:
-personmanager-{personID}-personensstatus-ansatt-periode-startdato             - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-periode-sluttdato             - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-navn             - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-orgnr            - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-startdato        - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver-sluttdato        - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
-personmanager-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
-personmanager-{personID}-personensstatus-ansatt-periode[{i}]-startdato        - {CONNECTED} {person}.perioderSomAnsatt[].startdato
-personmanager-{personID}-personensstatus-ansatt-periode[{i}]-sluttdato        - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
+TwoLevelForm-{personID}-personensstatus-ansatt-periode-startdato             - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-periode-sluttdato             - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver-navn             - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver-orgnr            - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver-startdato        - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver-sluttdato        - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
+TwoLevelForm-{personID}-personensstatus-ansatt-arbeidsgiver[orgnr]-startdato - {CONNECTED} {person}.perioderSomAnsatt[].startdato
+TwoLevelForm-{personID}-personensstatus-ansatt-periode[{i}]-startdato        - {CONNECTED} {person}.perioderSomAnsatt[].startdato
+TwoLevelForm-{personID}-personensstatus-ansatt-periode[{i}]-sluttdato        - {CONNECTED} {person}.perioderSomAnsatt[].sluttdato
 
 F-Sed:
-personmanager-{personID}-personensstatus-avsenderlandet[{i}]-startdato               - {CONNECTED} {person}.perioderMedTrygd[].startdato
-personmanager-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato               - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
-personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-startdato       - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-sluttdato       - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-startdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].startdato
-personmanager-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-sluttdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].sluttdato
+TwoLevelForm-{personID}-personensstatus-avsenderlandet[{i}]-startdato               - {CONNECTED} {person}.perioderMedTrygd[].startdato
+TwoLevelForm-{personID}-personensstatus-avsenderlandet[{i}]-sluttdato               - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
+TwoLevelForm-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-startdato       - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}-sluttdato       - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-startdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].startdato
+TwoLevelForm-{personID}-personensstatus-notansatt-{PSS/PSS/PSP/PSP}[{i}]-sluttdato - {CONNECTED} {person}.{PSS/PSS/PSP/PSP}[].sluttdato
 
 F-Sed:
-personmanager-{personID}-personensstatus-withsubsidies-startdato              - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-withsubsidies-sluttdato              - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-withsubsidies-pensjonytpe            - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-withsubsidies[{i}]-startdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.startdato
-personmanager-{personID}-personensstatus-withsubsidies[{i}]-sluttdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
-personmanager-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe       - {CONNECTED} {person}.perioderMedPensjon[].pensjonytpe
-personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
-personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
-personmanager-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-sluttdato      - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
-personmanager-{personID}-personensstatus-grunnlagforbosetting-personligSituasjon           - {CONNECTED} {person}.flyttegrunn.personligSituasjon
-personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
-personmanager-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
+TwoLevelForm-{personID}-personensstatus-withsubsidies-startdato              - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-withsubsidies-sluttdato              - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-withsubsidies-pensjonytpe            - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-withsubsidies[{i}]-startdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.startdato
+TwoLevelForm-{personID}-personensstatus-withsubsidies[{i}]-sluttdato         - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
+TwoLevelForm-{personID}-personensstatus-withsubsidies[{i}]-pensjonytpe       - {CONNECTED} {person}.perioderMedPensjon[].pensjonytpe
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-perioder-startdato           - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-perioder-sluttdato           - {INTERNAL}  not used
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-startdato      - {CONNECTED} {person}.flyttegrunn.perioder[].startdato
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-perioder[{i}]-sluttdato      - {CONNECTED} {person}.flyttegrunn.perioder[].sluttdato
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-personligSituasjon           - {CONNECTED} {person}.flyttegrunn.personligSituasjon
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilAvsenderlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilAvsenderlandet
+TwoLevelForm-{personID}-personensstatus-grunnlagforbosetting-datoFlyttetTilMottakerlandet - {CONNECTED} {person}.flyttegrunn.datoFlyttetTilMottakerlandet
 
 U-Sed:
-personmanager-{personID}-referanseperiode-startdato - {CONNECTED} {person}.anmodningsperiode.startdato
-personmanager-{personID}-referanseperiode-sluttdato - {CONNECTED} {person}.anmodningsperiode.sluttdato
+TwoLevelForm-{personID}-referanseperiode-startdato - {CONNECTED} {person}.anmodningsperiode.startdato
+TwoLevelForm-{personID}-referanseperiode-sluttdato - {CONNECTED} {person}.anmodningsperiode.sluttdato
 
 F-Sed:
-personmanager-{personID}-relasjon[0]-relasjonTilPerson       - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonTilPerson
-personmanager-{personID}-relasjon[0]-relasjonType            - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonType
-personmanager-{personID}-relasjon[0]-periode-startdato       - {CONNECTED} barn[].barnetilhoerigheter[0].periode.startdato
-personmanager-{personID}-relasjon[0]-periode-sluttdato       - {CONNECTED} barn[].barnetilhoerigheter[0].periode.sluttdato
-personmanager-{personID}-relasjon[0]-erDeltForeldreansvar    - {CONNECTED} barn[].barnetilhoerigheter[0].erDeltForeldreansvar
-personmanager-{personID}-relasjon[0]-borIBrukersHushold      - {CONNECTED} barn[].barnetilhoerigheter[0].borIBrukersHushold
-personmanager-{personID}-relasjon[0]-borIEktefellesHushold   - {CONNECTED} barn[].barnetilhoerigheter[0].borIEktefellesHushold
-personmanager-{personID}-relasjon[0]-borIAnnenPersonsHushold - {CONNECTED} barn[].barnetilhoerigheter[0].borIAnnenPersonsHushold
-personmanager-{personID}-relasjon[0]-borPaaInstitusjon       - {CONNECTED} barn[].barnetilhoerigheter[0].borPaaInstitusjon
+TwoLevelForm-{personID}-relasjon[0]-relasjonTilPerson       - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonTilPerson
+TwoLevelForm-{personID}-relasjon[0]-relasjonType            - {CONNECTED} barn[].barnetilhoerigheter[0].relasjonType
+TwoLevelForm-{personID}-relasjon[0]-periode-startdato       - {CONNECTED} barn[].barnetilhoerigheter[0].periode.startdato
+TwoLevelForm-{personID}-relasjon[0]-periode-sluttdato       - {CONNECTED} barn[].barnetilhoerigheter[0].periode.sluttdato
+TwoLevelForm-{personID}-relasjon[0]-erDeltForeldreansvar    - {CONNECTED} barn[].barnetilhoerigheter[0].erDeltForeldreansvar
+TwoLevelForm-{personID}-relasjon[0]-borIBrukersHushold      - {CONNECTED} barn[].barnetilhoerigheter[0].borIBrukersHushold
+TwoLevelForm-{personID}-relasjon[0]-borIEktefellesHushold   - {CONNECTED} barn[].barnetilhoerigheter[0].borIEktefellesHushold
+TwoLevelForm-{personID}-relasjon[0]-borIAnnenPersonsHushold - {CONNECTED} barn[].barnetilhoerigheter[0].borIAnnenPersonsHushold
+TwoLevelForm-{personID}-relasjon[0]-borPaaInstitusjon       - {CONNECTED} barn[].barnetilhoerigheter[0].borPaaInstitusjon
 
 F-Sed:
-personmanager-{personID}-trygdeordninger-dekkede-startdato                         - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-dekkede-sluttdato                         - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-udekkede-startdato                        - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-udekkede-sluttdato                        - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-familieYtelse-startdato                   - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-familieYtelse-sluttdato                   - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-familieYtelse-category                    - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-familieYtelse-pensjontype                 - {INTERNAL}  not used
-personmanager-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato            - {CONNECTED} {person}.perioderMedArbeid[].startdato
-personmanager-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato            - {CONNECTED} {person}.perioderMedArbeid[].sluttdato
-personmanager-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato             - {CONNECTED} {person}.perioderMedTrygd[].startdato
-personmanager-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato             - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
-personmanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato    - {CONNECTED} {person}.perioderMedITrygdeordning[].startdato
-personmanager-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato    - {CONNECTED} {person}.perioderMedITrygdeordning[].sluttdato
-personmanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato - {CONNECTED} {person}.perioderUtenforTrygdeordning[].startdato
-personmanager-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato - {CONNECTED} {person}.perioderUtenforTrygdeordning[].sluttdato
-personmanager-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato           - {CONNECTED} {person}.perioderMedYtelser[].startdato
-personmanager-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato           - {CONNECTED} {person}.perioderMedYtelser[].sluttdato
-personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.startdato
-personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
-personmanager-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
+TwoLevelForm-{personID}-trygdeordninger-dekkede-startdato                         - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-dekkede-sluttdato                         - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-udekkede-startdato                        - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-udekkede-sluttdato                        - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-familieYtelse-startdato                   - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-familieYtelse-sluttdato                   - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-familieYtelse-category                    - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-familieYtelse-pensjontype                 - {INTERNAL}  not used
+TwoLevelForm-{personID}-trygdeordninger-perioderMedArbeid[i]-startdato            - {CONNECTED} {person}.perioderMedArbeid[].startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedArbeid[i]-sluttdato            - {CONNECTED} {person}.perioderMedArbeid[].sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedTrygd[i]-startdato             - {CONNECTED} {person}.perioderMedTrygd[].startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedTrygd[i]-sluttdato             - {CONNECTED} {person}.perioderMedTrygd[].sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-startdato    - {CONNECTED} {person}.perioderMedITrygdeordning[].startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedITrygdeordning[i]-sluttdato    - {CONNECTED} {person}.perioderMedITrygdeordning[].sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-startdato - {CONNECTED} {person}.perioderUtenforTrygdeordning[].startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderUtenforTrygdeordning[i]-sluttdato - {CONNECTED} {person}.perioderUtenforTrygdeordning[].sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedYtelser[i]-startdato           - {CONNECTED} {person}.perioderMedYtelser[].startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedYtelser[i]-sluttdato           - {CONNECTED} {person}.perioderMedYtelser[].sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-startdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.startdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedPensjon[i]-periode-sluttdato   - {CONNECTED} {person}.perioderMedPensjon[].periode.sluttdato
+TwoLevelForm-{personID}-trygdeordninger-perioderMedPensjon[i]-pensjontype         - {CONNECTED} {person}.perioderMedPensjon[].pensjonstype
 
 F-Sed formål:
-formålmanager-kontoopplysninger-begrunnelse              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
-formålmanager-kontoopplysninger-id                       - {CONNECTED} utbetalingTilInstitusjon.id
-formålmanager-kontoopplysninger-navn                     - {CONNECTED} utbetalingTilInstitusjon.navn
-formålmanager-kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto
-formålmanager-kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
-formålmanager-kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
+BottomForm-kontoopplysninger-begrunnelse              - {CONNECTED} utbetalingTilInstitusjon.begrunnelse
+BottomForm-kontoopplysninger-id                       - {CONNECTED} utbetalingTilInstitusjon.id
+BottomForm-kontoopplysninger-navn                     - {CONNECTED} utbetalingTilInstitusjon.navn
+BottomForm-kontoopplysninger-kontoOrdinaer-sepaKonto  - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.sepaKonto
+BottomForm-kontoopplysninger-kontoOrdinaer-iban       - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.iban
+BottomForm-kontoopplysninger-kontoOrdinaer-swift      - {CONNECTED} utbetalingTilInstitusjon.kontoOrdinaer.swift
 
 F-Sed formål:
-formålmanager-refusjon_i_henhold_til_artikkel_58_i_forordningen-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
+BottomForm-refusjon_i_henhold_til_artikkel_58_i_forordningen-krav - {CONNECTED} - refusjon_ihht_artikkel_58_i_forordning
 
 F-Sed formål:
-formålmanager-motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
-formålmanager-motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
-formålmanager-motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
-formålmanager-motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} {barna[i]}.motregning.barnetsNavn + sets {barna[i]} for motregning
-formålmanager-motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} {barna[i]}.motregning.ytelseNavn
-formålmanager-motregning-beloep                                  - {CONNECTED} {barna[i]|familie}.motregning.beloep
-formålmanager-motregning-valuta                                  - {CONNECTED} {barna[i]|familie}.motregning.valuta
-formålmanager-motregning-startdato                               - {CONNECTED} {barna[i]|familie}.motregning.startdato
-formålmanager-motregning-sluttdato                               - {CONNECTED} {barna[i]|familie}.motregning.sluttdato
-formålmanager-motregning-utbetalingshyppighet                    - {CONNECTED} {barna[i]|familie}.motregning.utbetalingshyppighet
-formålmanager-motregning-vedtaksdato                             - {CONNECTED} {barna[i]|familie}.motregning.vedtaksdato
-formålmanager-motregning-mottakersNavn                           - {CONNECTED} {barna[i]|familie}.motregning.mottakersNavn
-formålmanager-motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
-formålmanager-motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
+BottomForm-motregning-anmodningEllerSvar                      - {CONNECTED} {barna[i]|familie}.motregning.svarType
+BottomForm-motregning-navnOgBetegnelser-navn                  - {INTERNAL} not used
+BottomForm-motregning-navnOgBetegnelser-betegnelsepåytelse    - {INTERNAL} not used
+BottomForm-motregning-navnOgBetegnelser[i]-navn               - {CONNECTED} {barna[i]}.motregning.barnetsNavn + sets {barna[i]} for motregning
+BottomForm-motregning-navnOgBetegnelser[i]-betegnelsepåytelse - {CONNECTED} {barna[i]}.motregning.ytelseNavn
+BottomForm-motregning-beloep                                  - {CONNECTED} {barna[i]|familie}.motregning.beloep
+BottomForm-motregning-valuta                                  - {CONNECTED} {barna[i]|familie}.motregning.valuta
+BottomForm-motregning-startdato                               - {CONNECTED} {barna[i]|familie}.motregning.startdato
+BottomForm-motregning-sluttdato                               - {CONNECTED} {barna[i]|familie}.motregning.sluttdato
+BottomForm-motregning-utbetalingshyppighet                    - {CONNECTED} {barna[i]|familie}.motregning.utbetalingshyppighet
+BottomForm-motregning-vedtaksdato                             - {CONNECTED} {barna[i]|familie}.motregning.vedtaksdato
+BottomForm-motregning-mottakersNavn                           - {CONNECTED} {barna[i]|familie}.motregning.mottakersNavn
+BottomForm-motregning-begrunnelse                             - {CONNECTED} {barna[i]|familie}.motregning.begrunnelse
+BottomForm-motregning-ytterligereInfo                         - {CONNECTED} {barna[i]|familie}.motregning.ytterligereInfo
 
 F-Sed formål:
-formålmanager-prosedyre_ved_uenighet-grunn                - {INTERNAL}  not used
-formålmanager-prosedyre_ved_uenighet-person               - {INTERNAL}  not used
-formålmanager-prosedyre_ved_uenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
-formålmanager-prosedyre_ved_uenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
-formålmanager-prosedyre_ved_uenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
+BottomForm-prosedyre_ved_uenighet-grunn                - {INTERNAL}  not used
+BottomForm-prosedyre_ved_uenighet-person               - {INTERNAL}  not used
+BottomForm-prosedyre_ved_uenighet-[{grunn}]-grunn      - {CONNECTED} uenighet[key]
+BottomForm-prosedyre_ved_uenighet-[{grunn}]-person     - {CONNECTED} uenighet[key].value
+BottomForm-prosedyre_ved_uenighet-ytterligereGrunner   - {CONNECTED} uenighet.ytterligereGrunner
 
 F-Sed formål:
-formålmanager-vedtak-gjelderAlleBarn                                     - {CONNECTED} vedtak.gjelderAlleBarn
-formålmanager-vedtak-barn[]                                              - {CONNECTED} vedtak.barnVedtaketOmfatter
-formålmanager-vedtak-perioder-startdato                                  - {INTERNAL} not used
-formålmanager-vedtak-perioder-sluttdato                                  - {INTERNAL} not used
-formålmanager-vedtak-perioder[i]-startdato                               - {CONNECTED} vedtak.vedtaksperioder[i].startdato
-formålmanager-vedtak-perioder[i]-sluttdato                               - {CONNECTED} vedtak.vedtaksperioder[i].sluttdato
-formålmanager-vedtak-vedtakstype                                         - {CONNECTED} vedtak.vedtakstype
-formålmanager-vedtak-vedtaksdato                                         - {CONNECTED} vedtak.vedtaksdato
-formålmanager-vedtak-begrunnelse                                         - {CONNECTED} vedtak.begrunnelse
-formålmanager-vedtak-ytterligereInfo                                     - {CONNECTED} vedtak.ytterligereInfo
-formålmanager-vedtak-vedtaksperioder-periode-startdato                   - {INTERNAL} not used
-formålmanager-vedtak-vedtaksperioder-periode-sluttdato                   - {INTERNAL} not used
-formålmanager-vedtak-vedtaksperioder-skalYtelseUtbetales                 - {INTERNAL} not used
-formålmanager-vedtak-vedtaksperioder-vedtak                              - {INTERNAL} not used
-formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-startdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.startdato
-formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-sluttdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.sluttdato
-formålmanager-vedtak-vedtaksperioder-{$vedtak}[{i}]-skalYtelseUtbetales  - {CONNECTED} vedtak.{$vedtak}[i].skalYtelseUtbetales
+BottomForm-vedtak-gjelderAlleBarn                                     - {CONNECTED} vedtak.gjelderAlleBarn
+BottomForm-vedtak-barn[]                                              - {CONNECTED} vedtak.barnVedtaketOmfatter
+BottomForm-vedtak-perioder-startdato                                  - {INTERNAL} not used
+BottomForm-vedtak-perioder-sluttdato                                  - {INTERNAL} not used
+BottomForm-vedtak-perioder[i]-startdato                               - {CONNECTED} vedtak.vedtaksperioder[i].startdato
+BottomForm-vedtak-perioder[i]-sluttdato                               - {CONNECTED} vedtak.vedtaksperioder[i].sluttdato
+BottomForm-vedtak-vedtakstype                                         - {CONNECTED} vedtak.vedtakstype
+BottomForm-vedtak-vedtaksdato                                         - {CONNECTED} vedtak.vedtaksdato
+BottomForm-vedtak-begrunnelse                                         - {CONNECTED} vedtak.begrunnelse
+BottomForm-vedtak-ytterligereInfo                                     - {CONNECTED} vedtak.ytterligereInfo
+BottomForm-vedtak-vedtaksperioder-periode-startdato                   - {INTERNAL} not used
+BottomForm-vedtak-vedtaksperioder-periode-sluttdato                   - {INTERNAL} not used
+BottomForm-vedtak-vedtaksperioder-skalYtelseUtbetales                 - {INTERNAL} not used
+BottomForm-vedtak-vedtaksperioder-vedtak                              - {INTERNAL} not used
+BottomForm-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-startdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.startdato
+BottomForm-vedtak-vedtaksperioder-{$vedtak}[{i}]-periode-sluttdato    - {CONNECTED} vedtak.{$vedtak}[i].periode.sluttdato
+BottomForm-vedtak-vedtaksperioder-{$vedtak}[{i}]-skalYtelseUtbetales  - {CONNECTED} vedtak.{$vedtak}[i].skalYtelseUtbetales
 
 ($vedtak = primaerkompetanseArt58, sekundaerkompetanseArt58, primaerkompetanseArt68, sekundaerkompetanseArt68)
 

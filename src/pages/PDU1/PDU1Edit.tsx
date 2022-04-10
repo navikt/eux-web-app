@@ -13,7 +13,7 @@ import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenge
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
-import PersonManager from 'applications/SvarSed/PersonManager/PersonManager'
+import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import Modal from 'components/Modal/Modal'
 import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
@@ -152,26 +152,26 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         }}
       />
       <VerticalSeparatorDiv size='2' />
-      <PersonManager
+      <TwoLevelForm
         forms={[
-          { label: t('el:option-personmanager-person'), value: 'person', component: Person, type: 'PD' },
-          { label: t('el:option-personmanager-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
+          { label: t('el:option-TwoLevelForm-person'), value: 'person', component: Person, type: 'PD' },
+          { label: t('el:option-TwoLevelForm-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           {
-            label: t('el:option-personmanager-sisteansettelseinfo'),
+            label: t('el:option-TwoLevelForm-sisteansettelseinfo'),
             value: 'sisteansettelseinfo',
             component: SisteAnsettelseInfo,
             type: 'PD'
           },
-          { label: t('el:option-personmanager-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
-          { label: t('el:option-personmanager-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
+          { label: t('el:option-TwoLevelForm-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
+          { label: t('el:option-TwoLevelForm-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           {
-            label: t('el:option-personmanager-retttildagpenger'),
+            label: t('el:option-TwoLevelForm-retttildagpenger'),
             value: 'retttildagpenger',
             component: RettTilDagpenger,
             type: 'PD'
           },
-          { label: t('el:option-personmanager-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
-          { label: t('el:option-personmanager-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
+          { label: t('el:option-TwoLevelForm-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
+          { label: t('el:option-TwoLevelForm-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={pdu1}
         setReplySed={setPdu1}
