@@ -1,3 +1,4 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -22,7 +23,7 @@ import { Edit } from '@navikt/ds-icons'
 
 interface SEDTypeProps {
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => void
+  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
 }
 
 interface SEDTypeSelector {

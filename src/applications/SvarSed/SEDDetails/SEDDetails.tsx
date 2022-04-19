@@ -1,6 +1,8 @@
 import { Edit, ExternalLink, ErrorFilled } from '@navikt/ds-icons'
+import { ActionWithPayload } from '@navikt/fetch'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
+import { UpdateReplySedPayload } from 'declarations/types'
 import { buttonLogger } from 'metrics/loggers'
 import { Button, Heading, Link, Panel } from '@navikt/ds-react'
 import {
@@ -15,7 +17,7 @@ import SEDDetailsEdit from './SEDDetailsEdit'
 import SEDDetailsView from './SEDDetailsView'
 
 export interface SEDDetailsProps {
-  updateReplySed: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 const SEDDetails: React.FC<SEDDetailsProps> = ({

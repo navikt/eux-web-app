@@ -8,7 +8,7 @@ import {
   JoarkPreview,
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments.d'
-import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
+import { ActionWithPayload, call } from '@navikt/fetch'
 import mockJoark from 'mocks/attachments/joark'
 import mockPreview from 'mocks/attachments/preview'
 import { Action, ActionCreator } from 'redux'
@@ -21,9 +21,9 @@ export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBro
   payload: joarkBrowserItems
 })
 
-export const getJoarkItemPreview: ActionCreator<ThunkResult<ActionWithPayload<JoarkPreview>>> = (
+export const getJoarkItemPreview = (
   item: JoarkBrowserItem
-): ThunkResult<ActionWithPayload<JoarkPreview>> => {
+): ActionWithPayload<JoarkPreview> => {
   return call({
     url: sprintf(urls.API_JOARK_GET_URL, {
       dokumentInfoId: item.dokumentInfoId,
@@ -41,9 +41,9 @@ export const getJoarkItemPreview: ActionCreator<ThunkResult<ActionWithPayload<Jo
   })
 }
 
-export const listJoarkItems: ActionCreator<ThunkResult<ActionWithPayload<JoarkList>>> = (
+export const listJoarkItems = (
   fnr: string
-): ThunkResult<ActionWithPayload<JoarkList>> => {
+): ActionWithPayload<JoarkList> => {
   return call({
     url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr: fnr }),
     expectedPayload: mockJoark,
@@ -59,9 +59,9 @@ export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
   type: types.ATTACHMENT_RESET
 })
 
-export const sendAttachmentToSed: ActionCreator<ThunkResult<Action>> = (
+export const sendAttachmentToSed = (
   params: SEDAttachmentPayloadWithFile, joarkBrowserItem: JoarkBrowserItem
-): ThunkResult<Action> => {
+): Action => {
   return call({
     url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params),
     method: 'POST',

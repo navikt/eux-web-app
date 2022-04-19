@@ -3,7 +3,7 @@ import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetAllValidation } from 'actions/validation'
+import { resetValidation, resetAllValidation } from 'actions/validation'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -86,7 +86,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
   const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
 
-  const [validation, resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
+  const [validation, _resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
 
   const temaOptions: Options = [
@@ -115,7 +115,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     dispatch(appActions.cleanData())
     setStartingPdu1(false)
     setSearchingPdu1(false)
-    resetValidation(namespace + '-search')
+    _resetValidation(namespace + '-search')
     setFnrOrDnr(query)
     const result = validator.idnr(query)
     if (result.status !== 'valid') {
@@ -137,7 +137,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
       dispatch(resetValidation(namespace + '-tema'))
     }
     setTema((o as Option).value)
-    dispatch(getFagsaker(fnrOrDnr, 'PD', (o as Option).value))
+    if (fnrOrDnr) {
+      dispatch(getFagsaker(fnrOrDnr, 'PD', (o as Option).value))
+    }
   }
 
   const onFagsakerSelected = (f: string) => {
@@ -162,7 +164,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
     if (valid) {
       setPdu1Request(true)
-      dispatch(getPdu1(fnrOrDnr, fagsak))
+      dispatch(getPdu1(fnrOrDnr!, fagsak!))
     }
   }
 
@@ -175,7 +177,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
     if (valid) {
       setPdu1Request(true)
-      dispatch(getPdu1(fnrOrDnr, fagsak))
+      dispatch(getPdu1(fnrOrDnr!, fagsak!))
     }
   }
 
@@ -185,7 +187,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
     dispatch(resetFagsaker())
     setTema(undefined)
-    dispatch(fetchPdu1(fnrOrDnr))
+    if (fnrOrDnr) {
+      dispatch(fetchPdu1(fnrOrDnr))
+    }
   }
 
   useEffect(() => {

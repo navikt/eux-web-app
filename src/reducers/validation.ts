@@ -1,5 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
+import { AnyAction } from 'redux'
 
 export interface ValidationState {
   view: boolean
@@ -11,7 +12,7 @@ export const initialValidationState: ValidationState = {
   status: {}
 }
 
-const validationReducer = (state: ValidationState = initialValidationState, action: ActionWithPayload = { type: '', payload: undefined }): ValidationState => {
+const validationReducer = (state: ValidationState = initialValidationState, action: AnyAction): ValidationState => {
   switch (action.type) {
     case types.APP_CLEAN:
       return initialValidationState

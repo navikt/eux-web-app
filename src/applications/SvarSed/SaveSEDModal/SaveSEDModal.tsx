@@ -81,7 +81,7 @@ const SaveSEDModal = ({
         name: name,
         date: dateString,
         content: replySed
-      } as LocalStorageEntry
+      } as LocalStorageEntry<ReplySed>
       dispatch(saveEntry('svarsed', newItem))
       setSaved(true)
       setMessage(t('label:lagret-sed-utkast', { name: name, date: dateString }))

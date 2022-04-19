@@ -140,9 +140,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }
 
   const onSendSedClick = () => {
-    _setSendButtonClicked(true)
-    dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
-    standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
+    if (replySed?.saksnummer && sedCreatedResponse?.sedId) {
+      _setSendButtonClicked(true)
+      dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
+      standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
+    }
   }
 
   const _onFinished = (summary: any) => {

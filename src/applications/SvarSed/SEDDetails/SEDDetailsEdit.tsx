@@ -1,3 +1,4 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { resetValidation } from 'actions/validation'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
@@ -9,7 +10,7 @@ import TextArea from 'components/Forms/TextArea'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -30,7 +31,7 @@ import { Add } from '@navikt/ds-icons'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed,
-  updateReplySed: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({

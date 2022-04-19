@@ -3,7 +3,7 @@ import { PDU1 } from 'declarations/pd'
 import { FagSaker } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
@@ -21,7 +21,7 @@ export const initialPdu1State: Pdu1State = {
   jornalførePdu1Response: undefined
 }
 
-const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: Action | ActionWithPayload = { type: '' }): Pdu1State => {
+const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
   switch (action.type) {
     case types.APP_CLEAN:
       return initialPdu1State

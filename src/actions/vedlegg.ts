@@ -1,13 +1,12 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { VedleggPayload } from 'declarations/types'
-import { call, ActionWithPayload, ThunkResult } from '@navikt/fetch'
-import { ActionCreator } from 'redux'
+import { call, ActionWithPayload } from '@navikt/fetch'
 import mockSendVedlegg from 'mocks/vedlegg/sendVedlegg'
 import mockRinaDokumenter from 'mocks/vedlegg/rinaDokumenter'
 const sprintf = require('sprintf-js').sprintf
 
-export const getDokument: ActionCreator<ThunkResult<ActionWithPayload>> = (rinasaksnummer: string): ThunkResult<ActionWithPayload> => {
+export const getDokument = (rinasaksnummer: string): ActionWithPayload => {
   return call({
     url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer: rinasaksnummer }),
     expectedPayload: mockRinaDokumenter,
@@ -27,7 +26,7 @@ export const propertySet = (key: string, value: string | boolean | undefined) =>
   }
 })
 
-export const sendVedlegg: ActionCreator<ThunkResult<ActionWithPayload>> = (payload: VedleggPayload): ThunkResult<ActionWithPayload> => {
+export const sendVedlegg = (payload: VedleggPayload): ActionWithPayload => {
   return call({
     url: urls.API_VEDLEGG_POST_URL,
     method: 'POST',

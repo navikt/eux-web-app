@@ -10,16 +10,13 @@ import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
 import { Provider } from 'react-redux'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
-import * as reducers from 'reducers'
-import { applyMiddleware, combineReducers, compose, createStore, Store } from 'redux'
-import thunk from 'redux-thunk'
 import * as Utils from 'utils/utils'
 import i18n from './i18n'
 import { unregister } from './registerServiceWorker'
 import '@navikt/ds-css'
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store: Store = createStore(combineReducers(reducers), composeEnhancers(applyMiddleware(thunk)))
+import store from 'hooks/store'
+
 if (!IS_PRODUCTION) {
   // const axe = require('react-axe')
   // axe(React, ReactDOM, 1000)

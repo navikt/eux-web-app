@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
+import { ActionWithPayload, call } from '@navikt/fetch'
 import mockPerson from 'mocks/person'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
@@ -17,9 +17,9 @@ export const resetPersonRelated: ActionCreator<Action> = () => ({
   type: types.PERSON_RELATERT_SEARCH_RESET
 })
 
-export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const searchPerson = (
   fnr: string
-): ThunkResult<ActionWithPayload> => {
+): ActionWithPayload => {
   return call({
     url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
     expectedPayload: mockPerson,
@@ -32,9 +32,9 @@ export const searchPerson: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
-export const searchPersonRelated: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const searchPersonRelated = (
   fnr: string
-): ThunkResult<ActionWithPayload> => {
+): ActionWithPayload => {
   return call({
     url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
     expectedPayload: mockPerson,

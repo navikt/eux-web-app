@@ -51,9 +51,9 @@ export const SvarSedPage = (): JSX.Element => {
     if (fnrParam) {
       setStatusParam('fnr', fnrParam)
     }
-    if (rinasaksnummerParam || fnrParam) {
-      setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam || undefined)
-      dispatch(querySaksnummerOrFnr(rinasaksnummerParam || fnrParam || undefined))
+    if (!!rinasaksnummerParam || !!fnrParam) {
+      setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam)
+      dispatch(querySaksnummerOrFnr((rinasaksnummerParam || fnrParam)!))
     }
   }, [])
 
@@ -107,7 +107,7 @@ export const SvarSedPage = (): JSX.Element => {
               {_currentPage === 'A' && (
                 currentSak === undefined
                   ? (
-                    <LoadSave
+                    <LoadSave<ReplySed>
                       namespace='svarsed'
                       changeMode={changeMode}
                       setReplySed={setReplySed}

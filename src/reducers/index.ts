@@ -15,6 +15,6 @@ import ui from './ui'
 import validation from './validation'
 import vedlegg from './vedlegg'
 
-export {
+export default {
   adresse, alert, app, arbeidsperioder, attachments, inntekt, loading, localStorage, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
 }

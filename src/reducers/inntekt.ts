@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { IInntekter } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
+import { AnyAction } from 'redux'
 
 export interface InntektState {
   inntekter: IInntekter | null | undefined
@@ -14,7 +15,7 @@ export const initialInntektState: InntektState = {
   til: undefined
 }
 
-const inntektReducer = (state: InntektState = initialInntektState, action: ActionWithPayload = { type: '', payload: undefined }): InntektState => {
+const inntektReducer = (state: InntektState = initialInntektState, action: AnyAction): InntektState => {
   switch (action.type) {
     case types.APP_CLEAN:
       return initialInntektState

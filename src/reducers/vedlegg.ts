@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { Dokument, VedleggSendResponse } from 'declarations/types'
-import { ActionWithPayload } from '@navikt/fetch'
+import { AnyAction } from 'redux'
 
 export interface VedleggState {
   vedleggResponse: VedleggSendResponse | undefined;
@@ -22,7 +22,7 @@ export const initialVedleggState: VedleggState = {
   sensitivt: false
 }
 
-const vedleggReducer = (state: VedleggState = initialVedleggState, action: ActionWithPayload = { type: '', payload: undefined }): VedleggState => {
+const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAction): VedleggState => {
   switch (action.type) {
     case types.VEDLEGG_POST_SUCCESS:
       return {

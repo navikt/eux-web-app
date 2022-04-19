@@ -1,5 +1,6 @@
 import { Add } from '@navikt/ds-icons'
 import { Button, Heading, Ingress } from '@navikt/ds-react'
+import { ActionWithPayload } from '@navikt/fetch'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { fetchInntekt } from 'actions/inntekt'
 import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
@@ -15,7 +16,13 @@ import Inntekt from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
-import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
+import {
+  ArbeidsperiodeFraAA,
+  ArbeidsperioderFraAA,
+  IInntekter,
+  UpdateReplySedPayload,
+  Validation
+} from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -43,7 +50,7 @@ export interface ArbeidsforholdProps {
   personID: string | undefined
   target: string
   replySed: ReplySed | null | undefined
-  updateReplySed: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({

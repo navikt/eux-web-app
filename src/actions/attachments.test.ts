@@ -1,7 +1,7 @@
 import * as attachmentsActions from 'actions/attachments'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { JoarkBrowserItem, SEDAttachmentPayloadWithFile } from 'declarations/attachments'
+import { JoarkBrowserItem, JoarkFileVariant, SEDAttachmentPayloadWithFile } from 'declarations/attachments'
 import { call as originalCall } from '@navikt/fetch'
 import mockItems from 'mocks/attachments/items'
 
@@ -80,7 +80,8 @@ describe('actions/attachments', () => {
       type: 'joark',
       journalpostId: '1',
       dokumentInfoId: '2',
-      variant: 'variant',
+      key: '1',
+      variant: 'variant' as unknown as JoarkFileVariant,
       title: 'title',
       tema: 'tema',
       date: new Date(1970, 1, 1)

@@ -9,7 +9,7 @@ import {
   OpprettetSak,
   Person
 } from 'declarations/types'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface SakState {
   arbeidsperioder: Array<ArbeidsperiodeFraAA>
@@ -49,7 +49,7 @@ export const initialSakState: SakState = {
   unit: undefined
 }
 
-const sakReducer = (state: SakState = initialSakState, action: Action | ActionWithPayload = { type: '' }): SakState => {
+const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakState => {
   switch (action.type) {
     case types.APP_CLEAN:
     case types.SAK_CLEAN_DATA:

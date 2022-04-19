@@ -1,5 +1,6 @@
 import { Add, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
+import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/MainForm/AddPersonModal/AddPersonModal'
 import classNames from 'classnames'
@@ -9,7 +10,7 @@ import { ErrorElement } from 'declarations/app.d'
 import { PDU1, Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import {
   FlexCenterDiv,
@@ -152,12 +153,12 @@ const MenuLabelText = styled(BodyLong)`
   }
 `
 
-export interface _TwoLevelFormProps {
+export interface _TwoLevelFormProps<T> {
   forms: Array<Form>
-  replySed: ReplySed | PDU1 | null | undefined
+  replySed: T | null | undefined
   viewValidation: boolean
-  setReplySed: (replySed: ReplySed) => void
-  updateReplySed: (needle: string, value: any) => void
+  setReplySed: (replySed: T) => ActionWithPayload<T>
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 export interface TwoLevelFormProps {
@@ -165,8 +166,8 @@ export interface TwoLevelFormProps {
   parentNamespace: string
   personID: string | undefined
   personName: string
-  setReplySed: (replySed: ReplySed | PDU1) => void
-  updateReplySed: (needle: string, value: any) => void
+  setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
 }
 
@@ -187,13 +188,13 @@ export const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const TwoLevelForm: React.FC<_TwoLevelFormProps> = ({
+const TwoLevelForm = <T extends StorageTypes>({
   forms,
   replySed,
   setReplySed,
   updateReplySed,
   viewValidation
-}: _TwoLevelFormProps) => {
+}: _TwoLevelFormProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useSelector<State, TwoLevelFormSelector>(mapState)
   const namespace = 'TwoLevelForm'
@@ -498,8 +499,8 @@ const TwoLevelForm: React.FC<_TwoLevelFormProps> = ({
   return (
     <PileDiv key={(replySed as ReplySed)?.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
       {_seeNewPersonModal && (
-        <AddPersonModal
-          replySed={replySed as ReplySed}
+        <AddPersonModal<T>
+          replySed={replySed}
           setReplySed={setReplySed!}
           parentNamespace={namespace}
           onModalClose={() => setSeeNewPersonModal(false)}

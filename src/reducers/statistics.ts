@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface StatisticsState {
   menuTime: {[k in string]: any}
@@ -14,7 +14,7 @@ export const initialUiState: StatisticsState = {
   pageTime: { total: {}, selection: {}, editor: {} }
 }
 
-const statisticReducer = (state: StatisticsState = initialUiState, action: Action | ActionWithPayload = { type: '' }): StatisticsState => {
+const statisticReducer = (state: StatisticsState = initialUiState, action: AnyAction): StatisticsState => {
   switch (action.type) {
     case types.STATISTICS_MENU_START: {
       const domain = (action as ActionWithPayload).payload.domain

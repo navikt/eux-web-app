@@ -1,4 +1,5 @@
 import { BodyLong, Loader, Search, Select } from '@navikt/ds-react'
+import { ActionWithPayload } from '@navikt/fetch'
 import * as vedleggActions from 'actions/vedlegg'
 import { State } from 'declarations/reducers'
 import { Dokument, Validation } from 'declarations/types'
@@ -20,7 +21,7 @@ export interface DocumentSearchSelector {
 export interface DocumentSearchProps {
   className?: string
   parentNamespace: string
-  resetValidation: (k: string) => void
+  resetValidation: (k: string) => ActionWithPayload
   validation: Validation
 }
 

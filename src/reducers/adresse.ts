@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { Adresse } from 'declarations/sed'
 import { ActionWithPayload } from '@navikt/fetch'
+import { AnyAction } from 'redux'
 
 export interface AdresseState {
   adresse: Array<Adresse> | null | undefined
@@ -11,7 +12,7 @@ export const initialAdresseState: AdresseState = {
 
 const adresseReducer = (
   state: AdresseState = initialAdresseState,
-  action: ActionWithPayload = { type: '', payload: undefined }
+  action: AnyAction
 ): AdresseState => {
   switch (action.type) {
     case types.APP_CLEAN:

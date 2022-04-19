@@ -1,4 +1,5 @@
 import { Add, Child } from '@navikt/ds-icons'
+import { ActionWithPayload } from '@navikt/fetch'
 import {
   validateAddPersonModal,
   ValidationAddPersonModalProps
@@ -8,7 +9,8 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
-import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
+import { F002Sed, PersonInfo } from 'declarations/sed'
+import { StorageTypes } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -49,21 +51,21 @@ const GreySpan = styled.span`
   white-space: nowrap;
 `
 
-interface AddPersonModalProps {
+interface AddPersonModalProps<T> {
   appElement?: any
   onModalClose?: () => void
   closeButton?: boolean
   parentNamespace: string
-  replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => void
+  replySed: T | null | undefined
+  setReplySed: (replySed: T) => ActionWithPayload<T>
 }
 
-const AddPersonModal: React.FC<AddPersonModalProps> = ({
+const AddPersonModal = <T extends StorageTypes>({
   onModalClose = () => {},
   parentNamespace,
   replySed,
   setReplySed
-}: AddPersonModalProps) => {
+}: AddPersonModalProps<T>) => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`
   const dispatch = useDispatch()
@@ -72,7 +74,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
   const [_newPersonName, _setNewPersonName] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
-  const [_replySed, _setReplySed] = useState<ReplySed | null | undefined>(replySed)
+  const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
 
   const brukerNr = 0
@@ -196,7 +198,7 @@ const AddPersonModal: React.FC<AddPersonModalProps> = ({
         }
       }
     }
-    dispatch(setReplySed(_replySed!))
+    dispatch(setReplySed(_replySed as T))
   }
 
   const getRelationOptions = (): Array<Option> => {

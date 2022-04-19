@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { Person } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
+import { AnyAction } from 'redux'
 
 export interface PersonState {
   person: Person | null | undefined
@@ -14,7 +15,7 @@ export const initialPersonState: PersonState = {
 
 const personReducer = (
   state: PersonState = initialPersonState,
-  action: ActionWithPayload = { type: '', payload: undefined }
+  action: AnyAction
 ): PersonState => {
   switch (action.type) {
     case types.APP_CLEAN:

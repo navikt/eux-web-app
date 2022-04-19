@@ -1,8 +1,9 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { resetValidation } from 'actions/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import { standardLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +13,7 @@ import Stack from 'components/Stack/Stack'
 interface FormaalProps {
   parentNamespace: string
   replySed: ReplySed | null | undefined
-  updateReplySed: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 interface FormaalSelector {

@@ -2,7 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
 import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak } from 'declarations/types'
-import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
+import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
@@ -12,9 +12,9 @@ import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
-export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const createSed = (
   replySed: ReplySed
-): ThunkResult<ActionWithPayload> => {
+): ActionWithPayload => {
   const rinaSakId = replySed.saksnummer
   const copyReplySed = _.cloneDeep(replySed)
   delete copyReplySed.saksnummer
@@ -41,9 +41,9 @@ export const createSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
-export const updateSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
+export const updateSed = (
   replySed: ReplySed
-): ThunkResult<ActionWithPayload> => {
+): ActionWithPayload => {
   const rinaSakId = replySed.saksnummer
   const sedId = replySed.sedId
   const copyReplySed = _.cloneDeep(replySed)
@@ -71,9 +71,9 @@ export const updateSed: ActionCreator<ThunkResult<ActionWithPayload>> = (
   })
 }
 
-export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
+export const getFagsaker = (
   fnr: string, sektor: string, tema: string
-): ThunkResult<ActionWithPayload<FagSaker>> => {
+): ActionWithPayload<FagSaker> => {
   return call({
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
@@ -100,7 +100,7 @@ export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
   })
 }
 
-export const getSedStatus = (rinaSakId: string, sedId: string) => {
+export const getSedStatus = (rinaSakId: string, sedId: string): ActionWithPayload => {
   return call({
     url: sprintf(urls.API_SED_STATUS_URL, { rinaSakId, sedId }),
     expectedPayload: {
@@ -117,9 +117,9 @@ export const getSedStatus = (rinaSakId: string, sedId: string) => {
   })
 }
 
-export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<Sed>>> = (
+export const querySaksnummerOrFnr = (
   saksnummerOrFnr: string
-): ThunkResult<ActionWithPayload<Sed>> => {
+): ActionWithPayload<Sed> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
   if (result.status === 'valid') {
@@ -149,9 +149,9 @@ export const querySaksnummerOrFnr: ActionCreator<ThunkResult<ActionWithPayload<S
   })
 }
 
-export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
+export const editSed = (
   sedId: string, sedType: string, rinaSakId: string, status: string
-): ThunkResult<ActionWithPayload<ReplySed>> => {
+): ActionWithPayload<ReplySed> => {
   const mockSed = mockReplySed(sedType)
   return call({
     url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId, sedId }),
@@ -172,9 +172,9 @@ export const editSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = 
   })
 }
 
-export const replyToSed: ActionCreator<ThunkResult<ActionWithPayload<ReplySed>>> = (
+export const replyToSed = (
   connectedSed: Sed, saksnummer: string, sakUrl: string
-): ThunkResult<ActionWithPayload<ReplySed>> => {
+): ActionWithPayload<ReplySed> => {
   const mockSed = mockReplySed(connectedSed.svarsedType)
 
   const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
@@ -209,9 +209,9 @@ export const resetPreviewSvarSed = () => ({
   type: types.SVARSED_PREVIEW_RESET
 })
 
-export const sendSedInRina: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
+export const sendSedInRina = (
   rinaSakId: string, sedId: string
-): ThunkResult<ActionWithPayload<any>> => {
+): ActionWithPayload<any> => {
   return call({
     method: 'POST',
     url: sprintf(urls.API_SED_SEND_URL, { rinaSakId, sedId }),

@@ -152,7 +152,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         }}
       />
       <VerticalSeparatorDiv size='2' />
-      <TwoLevelForm
+      <TwoLevelForm<PDU1>
         forms={[
           { label: t('el:option-TwoLevelForm-person'), value: 'person', component: Person, type: 'PD' },
           { label: t('el:option-TwoLevelForm-perioder'), value: 'perioder', component: Perioder, type: 'PD' },

@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { ModalContent } from 'declarations/components'
 import { ActionWithPayload } from '@navikt/fetch'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface UiState {
   highContrast: boolean
@@ -13,7 +13,7 @@ export const initialUiState: UiState = {
   modal: undefined
 }
 
-const uiReducer = (state: UiState = initialUiState, action: Action | ActionWithPayload = { type: '' }): UiState => {
+const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState => {
   switch (action.type) {
     case types.UI_MODAL_SET:
       return {

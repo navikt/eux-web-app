@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
+import { resetValidation } from 'actions/validation'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
@@ -48,7 +49,7 @@ const Inntekter: React.FC<any> = ({
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Inntekt>((it: Inntekt): string => it.type + '-' + it.beloep)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationInntekterProps>({}, validateInntekt)
+  const [_validation, _resetValidation, performValidation] = useValidation<ValidationInntekterProps>({}, validateInntekt)
 
   const inntektTypeOptions = [
     { label: t('el:option-inntekttype-nettoinntekt'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
@@ -62,7 +63,7 @@ const Inntekter: React.FC<any> = ({
   const onInntektTypeChanged = (type: string, index: number) => {
     if (index < 0) {
       _setNewInntektType(type.trim())
-      resetValidation(namespace + '-type')
+      _resetValidation(namespace + '-type')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].type = type.trim()
@@ -76,7 +77,7 @@ const Inntekter: React.FC<any> = ({
   const onInformasjonOmVederlagChanged = (newInformasjonOmVederlag: string, index: number) => {
     if (index < 0) {
       _setNewInformasjonOmVederlag(newInformasjonOmVederlag.trim())
-      resetValidation(namespace + '-informasjonOmVederlag')
+      _resetValidation(namespace + '-informasjonOmVederlag')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].typeAnnen = newInformasjonOmVederlag.trim()
@@ -90,7 +91,7 @@ const Inntekter: React.FC<any> = ({
   const setBeløp = (newBeløp: string, index: number) => {
     if (index < 0) {
       _setNewBeløp(newBeløp.trim())
-      resetValidation(namespace + '-beloep')
+      _resetValidation(namespace + '-beloep')
       if (_.isNil(_newValuta)) {
         setValuta({ value: 'NOK' } as Currency, index)
       }
@@ -110,7 +111,7 @@ const Inntekter: React.FC<any> = ({
   const setValuta = (newValuta: Currency, index: number) => {
     if (index < 0) {
       _setNewValuta(newValuta.value)
-      resetValidation(namespace + '-valuta')
+      _resetValidation(namespace + '-valuta')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
       newInntekter[index].valuta = newValuta?.value
@@ -126,7 +127,7 @@ const Inntekter: React.FC<any> = ({
     _setNewInformasjonOmVederlag(undefined)
     _setNewBeløp(undefined)
     _setNewValuta('NOK')
-    resetValidation()
+    _resetValidation()
   }
 
   const onCancel = () => {

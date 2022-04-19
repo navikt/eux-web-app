@@ -20,7 +20,7 @@ export const copyToClipboard = (text: string) => ({
   payload: text
 })
 
-export const getEnheter = (): Promise<ActionWithPayload<Enheter>> => {
+export const getEnheter = (): ActionWithPayload<Enheter> => {
   return call({
     url: urls.API_ENHETER_URL,
     expectedPayload: mockEnhet,
@@ -32,7 +32,7 @@ export const getEnheter = (): Promise<ActionWithPayload<Enheter>> => {
   })
 }
 
-export const getSaksbehandler = (): Promise<ActionWithPayload<Saksbehandler>> => {
+export const getSaksbehandler = (): ActionWithPayload<Saksbehandler> => {
   return call({
     url: urls.API_SAKSBEHANDLER_URL,
     expectedPayload: mockSaksbehandler(),
@@ -44,7 +44,7 @@ export const getSaksbehandler = (): Promise<ActionWithPayload<Saksbehandler>> =>
   })
 }
 
-export const getServerinfo = (): Promise<ActionWithPayload<ServerInfo>> => {
+export const getServerinfo = (): ActionWithPayload<ServerInfo> => {
   return call({
     url: urls.API_SERVERINFO_URL,
     expectedPayload: mockServerInfo(),
@@ -56,7 +56,7 @@ export const getServerinfo = (): Promise<ActionWithPayload<ServerInfo>> => {
   })
 }
 
-export const getUtgaarDato = (): Promise<ActionWithPayload<UtgaarDatoPayload>> => {
+export const getUtgaarDato = (): ActionWithPayload<UtgaarDatoPayload> => {
   return call({
     url: urls.API_UTGAARDATO_URL,
     expectedPayload: mockUtgaarDato,
@@ -68,7 +68,7 @@ export const getUtgaarDato = (): Promise<ActionWithPayload<UtgaarDatoPayload>> =
   })
 }
 
-export const logMeAgain = (name ?: string): Promise<ActionWithPayload<LogMeAgainPayload>> => {
+export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
   // origin: http://{host:port} pathname: /pdu1, no hash
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {

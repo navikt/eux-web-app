@@ -118,9 +118,11 @@ const Adresser: React.FC<TwoLevelFormProps> = ({
   }
 
   const getAdresse = () => {
-    _setSearchingAdresse(true)
-    _setNewAdresseMessage(undefined)
-    dispatch(searchAdresse(fnr))
+    if (fnr) {
+      _setSearchingAdresse(true)
+      _setNewAdresseMessage(undefined)
+      dispatch(searchAdresse(fnr))
+    }
   }
 
   const onAdd = () => {

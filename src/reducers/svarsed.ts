@@ -4,7 +4,7 @@ import { CreateSedResponse, FagSaker, Sak, Saks } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
@@ -34,7 +34,7 @@ export const initialSvarsedState: SvarsedState = {
 
 const svarsedReducer = (
   state: SvarsedState = initialSvarsedState,
-  action: Action | ActionWithPayload = { type: '', payload: undefined }
+  action: AnyAction
 ): SvarsedState => {
   switch (action.type) {
     case types.APP_CLEAN:

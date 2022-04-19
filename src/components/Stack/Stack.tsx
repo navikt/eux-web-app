@@ -157,7 +157,7 @@ const Stack: React.FC<StackProps> = ({
           )}
       {error && (
         <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-          {error}
+          {error.feilmelding}
         </div>
       )}
     </>

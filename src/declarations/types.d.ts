@@ -1,6 +1,9 @@
 import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
-import { JaNei } from 'declarations/sed'
+import { PDU1 } from 'declarations/pd'
+import { JaNei, ReplySed } from 'declarations/sed'
+
+export type StorageTypes = PDU1 | ReplySed
 
 export interface OldPeriod {
   fom: string
@@ -44,7 +47,7 @@ export interface BucTyper {
   unemployment: Array<Kodeverk>
 }
 
-export interface LocalStorageEntry<CustomLocalStorageContent extends any = any> {
+export interface LocalStorageEntry<CustomLocalStorageContent extends StorageTypes = any> {
   id: string
   name: string
   date: string

@@ -9,7 +9,6 @@ import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -56,11 +55,11 @@ export const PDU1Page = (): JSX.Element => {
       if (entries !== undefined) {
         const name: string | null = params.get('name')
         if (name) {
-          const entry: LocalStorageEntry<ReplySed | PDU1> | undefined =
+          const entry: LocalStorageEntry<PDU1> | undefined =
             _.find(entries, (e: LocalStorageEntry<PDU1>) => e.name === name)
           if (entry) {
             dispatch(setCurrentEntry('pdu1', entry))
-            dispatch(setPdu1(entry.content))
+            dispatch(setPdu1(entry.content as PDU1))
             changeMode('B', 'forward')
             dispatch(alertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
           }
@@ -87,7 +86,7 @@ export const PDU1Page = (): JSX.Element => {
         )}
         divA2={(
           <SideBarDiv>
-            <LoadSave
+            <LoadSave<PDU1>
               namespace='pdu1'
               changeMode={changeMode}
               setReplySed={setPdu1}

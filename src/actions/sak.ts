@@ -6,7 +6,7 @@ import {
   Institusjoner,
   Kodeverk
 } from 'declarations/types'
-import { ActionWithPayload, call, ThunkResult } from '@navikt/fetch'
+import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
@@ -35,9 +35,7 @@ export const cleanData: ActionCreator<Action> = (): Action => ({
   type: types.SAK_CLEAN_DATA
 })
 
-export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
-  data: any
-): ThunkResult<ActionWithPayload<any>> => {
+export const createSak = (data: any): ActionWithPayload<any> => {
   const payload = {
     buctype: data.buctype,
     fnr: data.fnr,
@@ -79,9 +77,9 @@ export const createSak: ActionCreator<ThunkResult<ActionWithPayload<any>>> = (
   })
 }
 
-export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>> = (
+export const getFagsaker = (
   fnr: string, sektor: string, tema: string
-): ThunkResult<ActionWithPayload<FagSaker>> => {
+): ActionWithPayload<FagSaker> => {
   return call({
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
@@ -93,9 +91,9 @@ export const getFagsaker: ActionCreator<ThunkResult<ActionWithPayload<FagSaker>>
   })
 }
 
-export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Institusjoner>>> = (
+export const getInstitusjoner = (
   buctype: string, landkode: string
-): ThunkResult<ActionWithPayload<Institusjoner>> => {
+): ActionWithPayload<Institusjoner> => {
   return call({
     url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
     expectedPayload: mockInstitusjon({ landkode }),
@@ -107,9 +105,9 @@ export const getInstitusjoner: ActionCreator<ThunkResult<ActionWithPayload<Insti
   })
 }
 
-export const getLandkoder: ActionCreator<ThunkResult<ActionWithPayload<Array<Kodeverk>>>> = (
+export const getLandkoder = (
   buctype: string
-): ThunkResult<ActionWithPayload<Array<Kodeverk>>> => {
+): ActionWithPayload<Array<Kodeverk>> => {
   return call({
     url: sprintf(urls.API_LANDKODER_URL, { buctype }),
     expectedPayload: mockLandkode(),

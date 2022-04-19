@@ -1,3 +1,4 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { setCurrentEntry } from 'actions/localStorage'
 import * as localStorageActions from 'actions/localStorage'
 import { getSedStatus } from 'actions/svarsed'
@@ -8,7 +9,7 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry } from 'declarations/types'
+import { LocalStorageEntry, StorageTypes } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -33,25 +34,25 @@ const LoadSaveDiv = styled(FlexDiv)`
   flex-direction: column;
 `
 
-interface LoadSaveProps {
+interface LoadSaveProps<T> {
   changeMode: ChangeModeFunction
   namespace: LocalStorageNamespaces
-  setReplySed: (payload: ReplySed | PDU1) => void
+  setReplySed: (payload: T) => ActionWithPayload<T>
 }
 
 interface LoadSaveSelector {
-  entries: Array<LocalStorageEntry<ReplySed | PDU1>> | null | undefined
+  entries: Array<LocalStorageEntry<PDU1 | ReplySed>> | null | undefined
   sedStatus: {[k in string]: string | null}
 }
 
-const LoadSave: React.FC<LoadSaveProps> = ({
+const LoadSave = <T extends StorageTypes>({
   changeMode,
   namespace,
   setReplySed
-}: LoadSaveProps) => {
+}: LoadSaveProps<T>) => {
   const dispatch = useDispatch()
   const { entries, sedStatus }: LoadSaveSelector =
-    useSelector<State, LoadSaveSelector>((state: State): LoadSaveSelector => ({
+    useSelector<State, LoadSaveSelector>((state: State) => ({
       entries: state.localStorage[namespace].entries,
       sedStatus: state.svarsed.sedStatus
     }))
@@ -82,7 +83,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
     } else {
       // no need to chevk for status on PDU1 for now
       buttonLogger(e, { type: 'pdu1' })
-      const entry: LocalStorageEntry<ReplySed | PDU1> | undefined = findSavedEntry(savedEntry.id)
+      const entry: LocalStorageEntry<T> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(setReplySed(entry.content))
@@ -92,9 +93,12 @@ const LoadSave: React.FC<LoadSaveProps> = ({
     }
   }
 
-  const findSavedEntry = (svarsedId: string): LocalStorageEntry<ReplySed | PDU1> | undefined => (
-    _.find(entries, (e: LocalStorageEntry<ReplySed | PDU1>) => e.id === svarsedId)
-  )
+  const findSavedEntry = (svarsedId: string): LocalStorageEntry | undefined => {
+    const x : LocalStorageEntry | undefined = _.find(entries, (e: LocalStorageEntry) => {
+      return e.id === svarsedId
+    })
+    return x
+  }
 
   const hasSentStatus = (svarsedId: string): boolean => {
     if (!Object.prototype.hasOwnProperty.call(sedStatus, svarsedId)) {
@@ -105,10 +109,10 @@ const LoadSave: React.FC<LoadSaveProps> = ({
 
   useEffect(() => {
     if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
-      const entry: LocalStorageEntry<ReplySed | PDU1> | undefined = findSavedEntry(_sedStatusRequested)
+      const entry: LocalStorageEntry<T> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
-        dispatch(setReplySed(entry.content))
+        dispatch(setReplySed(entry.content as T))
         changeMode('B', 'forward')
       }
       setSedStatusRequested(undefined)
@@ -144,7 +148,7 @@ const LoadSave: React.FC<LoadSaveProps> = ({
             </BodyLong>
             )}
         <VerticalSeparatorDiv />
-        {entries?.map((savedEntry: LocalStorageEntry<ReplySed | PDU1>) => (
+        {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>) => (
           <div key={savedEntry.id}>
             <MyTag variant='info'>
               <PileDiv flex='1'>

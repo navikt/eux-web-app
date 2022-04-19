@@ -1,9 +1,9 @@
 import * as types from 'constants/actionTypes'
 import { FeatureToggles, Params } from 'declarations/app'
 import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
-import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
+import { AnyAction } from 'redux'
 
 export interface AppState {
   buctyper: BucTyper | undefined
@@ -55,7 +55,7 @@ export const initialAppState: AppState = {
   }
 }
 
-const appReducer = (state: AppState = initialAppState, action: ActionWithPayload = { type: '', payload: undefined }): AppState => {
+const appReducer = (state: AppState = initialAppState, action: AnyAction): AppState => {
   let newParams: Params
 
   switch (action.type) {

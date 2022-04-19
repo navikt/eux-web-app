@@ -125,11 +125,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
           const url = (action as ActionWithPayload).context.sakUrl
           stripeMessage = (
             <FlexDiv>
-              <span>{i18n.t('message:error-svarsed-failure-duplicate')}</span>
+              <span>{i18n.t('message:error-svarsed-failure-duplicate') as string}</span>
               <HorizontalSeparatorDiv size='0.5' />
               <Link target='_blank' href={url} rel='noreferrer'>
                 <span>
-                  {i18n.t('message:error-svarsed-failure-duplicate-2')}
+                  {i18n.t('message:error-svarsed-failure-duplicate-2') as string}
                 </span>
                 <HorizontalSeparatorDiv size='0.35' />
                 <ExternalLink />

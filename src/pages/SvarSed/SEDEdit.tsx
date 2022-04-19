@@ -197,9 +197,11 @@ const SEDEdit: React.FC = (): JSX.Element => {
   }
 
   const onSendSedClick = () => {
-    _setSendButtonClicked(true)
-    dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
-    standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
+    if (replySed?.saksnummer && sedCreatedResponse?.sedId) {
+      _setSendButtonClicked(true)
+      dispatch(sendSedInRina(replySed.saksnummer!, sedCreatedResponse.sedId!))
+      standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
+    }
   }
 
   const showPreviewModal = (previewFile: Blob) => {
@@ -354,7 +356,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
             {t('label:TwoLevelForm')}
           </Heading>
           <VerticalSeparatorDiv />
-          <TwoLevelForm
+          <TwoLevelForm<ReplySed>
             forms={[
               { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], barn: true },
               { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },

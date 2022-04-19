@@ -4,7 +4,7 @@ import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 // these are used for: 1) reducer namespace, and 2) local storage key
 export type LocalStorageNamespaces = 'svarsed' | 'pdu1'
@@ -36,7 +36,7 @@ export const initialLocalStorageState: LocalStorageState = {
 
 const localStorageReducer = (
   state: LocalStorageState = initialLocalStorageState,
-  action: Action = { type: '' }
+  action: AnyAction
 ): LocalStorageState => {
   const namespace: LocalStorageNamespaces | undefined = (action as ActionWithPayload).payload?.namespace
 

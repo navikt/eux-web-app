@@ -6,6 +6,7 @@ import {
 } from 'declarations/attachments'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
+import { AnyAction } from 'redux'
 
 export interface JoarkState {
   list: Array<JoarkPoster> | undefined
@@ -19,7 +20,7 @@ export const initialJoarkState: JoarkState = {
   savingAttachmentsJob: undefined
 }
 
-const joarkReducer = (state: JoarkState = initialJoarkState, action: ActionWithPayload = { type: '', payload: '' }): JoarkState => {
+const joarkReducer = (state: JoarkState = initialJoarkState, action: AnyAction): JoarkState => {
   switch (action.type) {
     case types.ATTACHMENT_LIST_SUCCESS:
       return {

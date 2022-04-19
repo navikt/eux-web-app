@@ -1,3 +1,4 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import Kontoopplysning from 'applications/SvarSed/BottomForm/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon'
@@ -10,7 +11,7 @@ import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
-import { Validation } from 'declarations/types'
+import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
 import {
@@ -129,8 +130,8 @@ const MenuLabelText = styled(BodyLong)`
 
 export interface _OneLevelFormProps {
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => void
-  updateReplySed: (needle: string, value: any) => void
+  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   viewValidation: boolean
 }
 
@@ -141,8 +142,8 @@ export interface OneLevelFormSelector {
 export interface OneLevelFormProps {
   parentNamespace: string
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => void
-  updateReplySed: (needle: string, value: any) => void
+  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   seeKontoopplysninger?: () => void
 }
 

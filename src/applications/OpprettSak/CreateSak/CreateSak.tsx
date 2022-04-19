@@ -34,6 +34,7 @@ import {
   Validation
 } from 'declarations/types'
 import * as EKV from '@navikt/eessi-kodeverk'
+import { useAppDispatch, useAppSelector } from 'hooks/hooks'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
@@ -54,7 +55,6 @@ import {
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link as DOMLink } from 'react-router-dom'
 import { periodeMedForsikringToArbeidsperioderFraAA } from 'utils/arbeidsperioder'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
@@ -205,8 +205,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
     valgtUnit,
 
     validation
-  }: CreateSakSelector = useSelector<State, CreateSakSelector>(mapState)
-  const dispatch = useDispatch()
+  }: CreateSakSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -310,7 +310,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const onLandkodeChange = (country: Country): void => {
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
-    dispatch(sakActions.getInstitusjoner(valgtBucType, landKode))
+    dispatch(sakActions.getInstitusjoner(valgtBucType!, landKode))
     if (validation[namespace + '-landkode']) {
       dispatch(resetValidation(namespace + '-landkode'))
     }
@@ -339,7 +339,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const onViewFagsakerClick = (): void => {
-    dispatch(sakActions.getFagsaker(person?.fnr, valgtSektor, valgtTema))
+    if (!!person?.fnr && valgtSektor && valgtTema) {
+      dispatch(sakActions.getFagsaker(person.fnr!, valgtSektor!, valgtTema!))
+    }
   }
 
   const onSakIDChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {

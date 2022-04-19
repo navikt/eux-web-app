@@ -1,10 +1,11 @@
+import { ActionWithPayload } from '@navikt/fetch'
 import { getFagsaker } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
-import { FagSak, FagSaker, Validation } from 'declarations/types'
+import { FagSak, FagSaker, UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Loader, Button } from '@navikt/ds-react'
@@ -18,7 +19,7 @@ import { Edit } from '@navikt/ds-icons'
 
 interface TemaProps {
   replySed: ReplySed | null | undefined
-  updateReplySed: (needle: string, value: any) => void
+  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
 interface TemaSelector {
@@ -81,7 +82,9 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
       dispatch(resetValidation(namespace))
     }
     setTema((o as Option).value)
-    dispatch(getFagsaker(fnr, 'HZ', (o as Option).value))
+    if (fnr) {
+      dispatch(getFagsaker(fnr, 'HZ', (o as Option).value))
+    }
   }
 
   const onSakIDChange = (o: unknown): void => {
@@ -102,7 +105,7 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
 
   useEffect(() => {
     if (fagsaker === undefined && !_.isNil(fnr) && !gettingFagsaker && !_.isEmpty(_tema)) {
-      dispatch(getFagsaker(fnr, 'HZ', _tema))
+      dispatch(getFagsaker(fnr, 'HZ', _tema!))
     }
   }, [fagsaker, gettingFagsaker, fnr, _tema])
 
