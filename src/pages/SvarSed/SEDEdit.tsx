@@ -352,10 +352,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
       <VerticalSeparatorDiv size='3' />
       {showTwoLevelForm() && (
         <>
-          <Heading size='small'>
-            {t('label:TwoLevelForm')}
-          </Heading>
-          <VerticalSeparatorDiv />
           <TwoLevelForm<ReplySed>
             forms={[
               { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], barn: true },

@@ -1,7 +1,8 @@
 import { Add, CollapseFilled, Edit, Search } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import {
   AlignStartRow,
+  AlignCenterRow,
   Column,
   FlexCenterDiv,
   FlexEndDiv,
@@ -19,9 +20,10 @@ import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
+import { Hr } from 'components/StyledComponents'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -58,6 +60,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
 
   const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
+  const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
@@ -149,16 +152,20 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   }
 
   const onNorwegianPinChange = (newPin: string) => {
+    _setTempNorwegianPin(newPin)
+  }
+
+  const onNorwegianPinSave = () => {
     let pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
     if (_.isNil(pins)) {
       pins = []
     }
     const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
-      pins[norwegianPinIndex].identifikator = newPin.trim()
+      pins[norwegianPinIndex].identifikator = _tempNorwegianPin!.trim()
     } else {
       pins.push({
-        identifikator: newPin.trim(),
+        identifikator: _tempNorwegianPin!.trim(),
         land: 'NO'
       })
     }
@@ -166,6 +173,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
     if (validation[namespace + '-norskpin-nummer']) {
       dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
+    _setSeeNorskPinForm(false)
   }
 
   const onFoedestedByChange = (newFodestedBy: string) => {
@@ -197,12 +205,129 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   }
 
   return (
-    <>
-      <PaddedDiv key={namespace + '-div'}>
-        <Heading size='small'>
-          {t('label:personopplysninger')}
+    <div key={namespace + '-div'}>
+      <PaddedDiv>
+        <Heading size='medium'>
+          {(replySed as ReplySed)?.sedType} - {t('buc:' + (replySed as ReplySed)?.sedType)}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
+      </PaddedDiv>
+      <Hr />
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <AlignCenterRow>
+          {!_seeNorskPinForm
+            ? (
+              <>
+                <Column>
+                  <FlexCenterDiv>
+                    <Label>
+                      {t('label:fnr-eller-dnr')}
+                    </Label>
+                    <HorizontalSeparatorDiv />
+                    <BodyLong>
+                      {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
+                    </BodyLong>
+                  </FlexCenterDiv>
+                </Column>
+                <Column>
+                  <Button
+                    variant='secondary'
+                    onClick={() => {
+                      _setTempNorwegianPin(norwegianPin?.identifikator)
+                      _setSeeNorskPinForm(true)
+                    }}
+                  >
+                    <FlexCenterDiv>
+                      <Edit />
+                      <HorizontalSeparatorDiv size='0.35' />
+                      {t('label:endre')}
+                    </FlexCenterDiv>
+                  </Button>
+                </Column>
+                <Column />
+              </>
+              )
+            : (
+              <>
+                <Column>
+                  <Input
+                    error={validation[namespace + '-norskpin-nummer']?.feilmelding}
+                    id='norskpin-nummer'
+                    key={namespace + '-norskpin-nummer-' + _tempNorwegianPin}
+                    label={t('label:fnr-eller-dnr')}
+                    hideLabel
+                    namespace={namespace}
+                    onChanged={onNorwegianPinChange}
+                    value={_tempNorwegianPin}
+                  />
+                </Column>
+                <Column>
+                  <FlexEndDiv>
+                    <Button
+                      variant='secondary'
+                      disabled={_.isEmpty(_tempNorwegianPin?.trim())}
+                      data-amplitude='svarsed.editor.personopplysning.norskpin.save'
+                      onClick={onNorwegianPinSave}
+                    >
+                      {t('el:button-save')}
+                    </Button>
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <Button
+                      variant='secondary'
+                      disabled={searchingPerson}
+                      data-amplitude='svarsed.editor.personopplysning.norskpin.search'
+                      onClick={onSearchUser}
+                    >
+                      <Search />
+                      {searchingPerson
+                        ? t('message:loading-searching')
+                        : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+                      {searchingPerson && <Loader />}
+                    </Button>
+                    <HorizontalSeparatorDiv size='0.35' />
+                    <Button
+                      variant='tertiary'
+                      onClick={() => _setSeeNorskPinForm(false)}
+                    >
+                      {t('el:button-cancel')}
+                    </Button>
+                  </FlexEndDiv>
+                </Column>
+              </>
+              )}
+        </AlignCenterRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            {searchedPerson
+              ? (
+                <FlexCenterDiv>
+                  <BodyLong>
+                    {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
+                  </BodyLong>
+                  <HorizontalSeparatorDiv />
+                  <Button
+                    variant='secondary'
+                    data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
+                    onClick={(e) => {
+                      buttonLogger(e)
+                      onFillOutPerson(searchedPerson!)
+                    }}
+                  >
+                    {t('label:fill-in-person-data')}
+                  </Button>
+                </FlexCenterDiv>
+                )
+              : _.isEmpty(norwegianPin?.identifikator)
+                ? (
+                  <BodyLong>
+                    {t('label:norsk-fnr-beskrivelse')}
+                  </BodyLong>
+                  )
+                : <div />}
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <Input
@@ -256,23 +381,24 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
               onChange={onKjoennChange}
             >
               <FlexRadioPanels>
-                <RadioPanel value='K'>
-                  {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                </RadioPanel>
                 <RadioPanel value='M'>
                   {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+                </RadioPanel>
+                <RadioPanel value='K'>
+                  {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
                 </RadioPanel>
                 <RadioPanel value='U'>
                   {t('label:ukjent')}
                 </RadioPanel>
               </FlexRadioPanels>
-
             </RadioPanelGroup>
-
           </Column>
         </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <Heading size='small'>
+          {t('label:utenlandske-pin')}
+        </Heading>
       </PaddedDiv>
-      <VerticalSeparatorDiv />
       <UtenlandskPins
         limit={99}
         loggingNamespace='svarsed.editor.personopplysning'
@@ -281,108 +407,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
         namespace={namespace + '-pin'}
         validation={validation}
       />
-
-      <VerticalSeparatorDiv />
       <PaddedDiv>
-        <label className='navds-text-field__label navds-label'>
-          {t('label:norsk-fnr')}
-        </label>
-        <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft'>
-          {!_seeNorskPinForm
-            ? (
-              <>
-                <Column>
-                  <BodyLong>
-                    {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-                  </BodyLong>
-                </Column>
-                <Column>
-                  <Button
-                    variant='secondary'
-                    onClick={() => _setSeeNorskPinForm(true)}
-                  >
-                    <FlexCenterDiv>
-                      <Edit />
-                      <HorizontalSeparatorDiv size='0.35' />
-                      {t('label:endre')}
-                    </FlexCenterDiv>
-                  </Button>
-                </Column>
-                <Column />
-              </>
-              )
-            : (
-              <>
-                <Column>
-                  <Input
-                    error={validation[namespace + '-norskpin-nummer']?.feilmelding}
-                    id='norskpin-nummer'
-                    key={namespace + '-norskpin-nummer-' + norwegianPin?.identifikator}
-                    label=''
-                    namespace={namespace}
-                    onChanged={onNorwegianPinChange}
-                    value={norwegianPin?.identifikator}
-                  />
-                </Column>
-                <Column>
-                  <FlexEndDiv>
-                    <Button
-                      variant='secondary'
-                      disabled={searchingPerson}
-                      data-amplitude='svarsed.editor.personopplysning.norskpin.search'
-                      onClick={onSearchUser}
-                    >
-                      <Search />
-                      <HorizontalSeparatorDiv />
-                      {searchingPerson
-                        ? t('message:loading-searching')
-                        : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                      {searchingPerson && <Loader />}
-                    </Button>
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <Button
-                      variant='tertiary'
-                      onClick={() => _setSeeNorskPinForm(false)}
-                    >
-                      {t('el:button-cancel')}
-                    </Button>
-                  </FlexEndDiv>
-                </Column>
-              </>
-              )}
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            {searchedPerson
-              ? (
-                <FlexCenterDiv>
-                  <BodyLong>
-                    {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-                  </BodyLong>
-                  <HorizontalSeparatorDiv />
-                  <Button
-                    variant='secondary'
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
-                    onClick={(e) => {
-                      buttonLogger(e)
-                      onFillOutPerson(searchedPerson)
-                    }}
-                  >
-                    {t('label:fill-in-person-data')}
-                  </Button>
-                </FlexCenterDiv>
-                )
-              : _.isEmpty(norwegianPin?.identifikator)
-                ? (
-                  <BodyLong>
-                    {t('label:norsk-fnr-beskrivelse')}
-                  </BodyLong>
-                  )
-                : <div />}
-          </Column>
-        </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
           <Column>
@@ -460,7 +485,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
             </AlignStartRow>
             )}
       </PaddedDiv>
-    </>
+    </div>
   )
 }
 

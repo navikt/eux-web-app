@@ -28,7 +28,7 @@ const ArbeidsgiverDiv = styled(FlexDiv)`
  padding: 1rem;
 `
 const LeftBorderFlexDiv = styled(FlexDiv)`
-  border-left: 1px solid var(--navds-semantic-color-border);
+  border-left: 1px solid var(--navds-panel-color-border);
 `
 
 const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {

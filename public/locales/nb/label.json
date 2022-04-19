@@ -111,6 +111,7 @@
   "fnr." : "F.nr",
   "fnr" : "Fødselsnummer",
   "fnr-dnr" : "F.nummer/d-nr.",
+  "fnr-eller-dnr" : "F.nr. eller d-nr.",
   "for-perioden-fra": "For perioden fra",
   "forhåndsvis-sed": "Forhåndsvis SED",
   "formål": "Formål",
@@ -263,6 +264,7 @@
   "personens-status": "Personens status",
   "personmanager": "Velg personer og fyll inn opplysninger",
   "personopplysninger": "Personopplysninger",
+  "pin": "PIN",
   "pins": "PINs",
   "postnr": "Postnummer",
   "postnummer": "Postnummer",
@@ -346,6 +348,7 @@
   "utbetaling-type": "Utbetaling type",
   "utenlandsk-id": "Utenlandsk ID",
   "utenlandsk-pin" : "Utenlandsk PIN",
+  "utenlandske-pin" : "Utenlandske PIN",
   "utkast": "Utkast",
   "utvid-alle": "Utvid alle",
 

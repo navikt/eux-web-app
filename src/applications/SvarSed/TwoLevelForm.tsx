@@ -32,10 +32,10 @@ const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid var(--navds-semantic-color-border);
+  border-right: 1px solid var(--navds-panel-color-border);
   border-width: 1px;
   border-style: solid;
-  border-color: var(--navds-semantic-color-border);
+  border-color: var(--navds-panel-color-border);
   background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -84,7 +84,7 @@ const CheckboxDiv = styled.div`
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid var(--navds-semantic-color-border);
+  border-left: 1px solid var(--navds-panel-color-border);
   margin-left: -1px;
   align-self: stretch;
   position: relative;
@@ -95,7 +95,7 @@ const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
   border-left-width: 0;
-  border-color: var(--navds-semantic-color-border);
+  border-color: var(--navds-panel-color-border);
   background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;

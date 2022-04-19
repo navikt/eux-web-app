@@ -6,7 +6,7 @@ const useAddRemove = <Item extends any>(
 ): [
   (item: Item | null) => void,
   (item: Item | null) => void,
-  (item: Item | null) => boolean,
+  (item: Item | null) => boolean
 ] => {
   const [_confirmDelete, _setConfirmDelete] = useState<Array<string>>([])
 

@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import {
-  animationClose,
-  animationOpen,
   fadeIn,
   fadeOut, PaddedHorizontallyDiv
 } from '@navikt/hoykontrast'
@@ -31,34 +29,27 @@ export const HorizontalLineSeparator = styled.div`
   height: 1px;
   background: linear-gradient(90deg,
     var(--navds-semantic-color-canvas-background) 0%,
-    var(--navds-semantic-color-border) 5%,
-    var(--navds-semantic-color-border) 95%,
+    var(--navds-panel-color-border) 5%,
+    var(--navds-panel-color-border) 95%,
     var(--navds-semantic-color-canvas-background) 100%
   );
   width: 100%;
 `
+
+export const Hr = styled.div`
+   background: var(--navds-panel-color-border);
+   width: 100%;
+   height: 1px;
+`
+
+export const SpacedHr = styled(Hr)`
+   margin-top: 0.5rem;
+   margin-bottom: 0.5rem;
+`
+
 export const SideBarDiv = styled.div`
   display: flex;
   padding-top: 1.5rem;
-`
-export const HiddenFormContainer = styled.div`
-  overflow: hidden;
-  &.slideOpen {
-    will-change: max-height, height;
-    max-height: 10em;
-    height: 100%;
-    animation: ${animationOpen(10)} 0.3s ease;
-  }
-  &.slideClose {
-    will-change: max-height, height;
-    max-height: 0;
-    height: 0%;
-    animation: ${animationClose(10)} 0.3s ease;
-  }
-  &.closed {
-    height: 0%;
-    max-height: 0;
-  }
 `
 export const TextAreaDiv = styled.div`
   textarea {
@@ -125,7 +116,10 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
   };
-  &:hover:not(.new) {
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+  &:hover:not(.new):not(.error) {
     background-color: var(--navds-global-color-gray-100);
   }
 `
