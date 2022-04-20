@@ -1,25 +1,26 @@
 import { AddCircle, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
+import { BodyLong, Button } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
-import AddPersonModal from 'applications/SvarSed/MainForm/AddPersonModal/AddPersonModal'
-import classNames from 'classnames'
-import { WithErrorPanel } from 'components/StyledComponents'
-import { Option } from 'declarations/app'
-import { ErrorElement } from 'declarations/app.d'
-import { PDU1, Pdu1Person } from 'declarations/pd'
-import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
-import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/types'
-import _ from 'lodash'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
   HorizontalSeparatorDiv,
+  PaddedHorizontallyDiv,
   PileCenterDiv,
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
+import AddPersonModal from 'applications/SvarSed/MainForm/AddPersonModal/AddPersonModal'
+import classNames from 'classnames'
+import { HorizontalLineSeparator, WithErrorPanel } from 'components/StyledComponents'
+import { Option } from 'declarations/app'
+import { ErrorElement } from 'declarations/app.d'
+import { PDU1, Pdu1Person } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
+import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/types'
+import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -53,39 +54,42 @@ const OptionDiv = styled.div`
   }
   &.selected {
     font-weight: bold;
+    border-top: 1px solid var(--navds-panel-color-border);
+    border-bottom: 1px solid var(--navds-panel-color-border);
     border-left: 6px solid var(--navds-semantic-color-interaction-primary-selected);
   }
-`
-const MenuDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .skjemaelement {
-     display: flex;
+  &.whiteborder {
+    border-right: 1px solid var(--navds-panel-color-background);
+    margin-right: -1px;
+  }
+  &.first {
+    margin-top: -1px;
   }
 `
-const MenuCheckbox = styled(Checkbox)`
-  padding: 0rem 0.5rem;
+const NameAndOptionsDiv = styled(PileDiv)`
+ &.whiteborder {
+    border-right: 1px solid var(--navds-panel-color-background);
+    margin-right: -1px;
+ }
+ border-bottom: 1px solid var(--navds-panel-color-border);
 `
-const MenuLabelDiv = styled(FlexCenterDiv)`
+
+const NameDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
   padding: 1rem 0.5rem;
-  flex: 1;
   transition: all 0.2s ease-in-out;
   &:hover {
    color: var(--navds-semantic-color-text-inverted);
    background-color: var(--navds-semantic-color-interaction-primary-hover);
   }
 `
-const CheckboxDiv = styled.div`
-  transition: all 0.3s ease-in-out;
-  &:hover {
-   background-color: var(--navds-semantic-color-interaction-primary-hover);
-  }
+const NameLabelDiv = styled(FlexCenterDiv)`
+  flex: 1;
 `
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid var(--navds-panel-color-border);
-  margin-left: -1px;
   align-self: stretch;
   position: relative;
   overflow: hidden;
@@ -148,9 +152,10 @@ const LandSpan = styled.span`
   white-space: nowrap;
 `
 const MenuLabelText = styled(BodyLong)`
-  &.selected {
-    font-weight: bold;
-  }
+  font-weight: bold;
+`
+const MenuArrowDiv = styled.div`
+ padding: 0rem 0.5rem;
 `
 
 export interface _TwoLevelFormProps<T> {
@@ -201,28 +206,16 @@ const TwoLevelForm = <T extends StorageTypes>({
 
   const dispatch = useDispatch()
   const brukerNr = 1
-  const initialSelectedMenus = ['bruker']
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
-  if (ektefelleNr > 0) initialSelectedMenus.push('ektefelle')
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
-  if (annenPersonNr > 0) initialSelectedMenus.push('annenPerson')
-  const barnNr = annenPersonNr + ((replySed as F002Sed)?.barn ? 1 : 0)
   const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0);
-  (replySed as F002Sed)?.barn?.forEach((b: Barn, i: number) => initialSelectedMenus.push(`barn[${i}]`))
-  let familieNr: number | undefined
-  if ((replySed as F002Sed)?.sedType?.startsWith('F')) {
-    familieNr = barnNr + 1
-    initialSelectedMenus.push('familie')
-  }
+
 
   // list of open menus (= persons). If SED only has one person (bruker), open it by default
   const [openMenus, setOpenMenus] = useState<Array<string>>(() => totalPeopleNr === 1 ? ['bruker'] : [])
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)
   const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
-
-  // list of selected menus (with checkbox)
-  const [selectedMenus, setSelectedMenus] = useState<Array<string>>(initialSelectedMenus)
 
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
@@ -331,18 +324,11 @@ const TwoLevelForm = <T extends StorageTypes>({
     menuRef.current = menu + '|' + menuOption
   }
 
-  const onSelectMenu = (menu: string, checked: boolean) => {
-    setSelectedMenus(checked
-      ? selectedMenus.concat(menu)
-      : _.filter(selectedMenus, _id => _id !== menu)
-    )
-  }
-
   const onAddNewPerson = () => {
     setSeeNewPersonModal(true)
   }
 
-  const renderMenu = (replySed: ReplySed | PDU1, personId: string, totalIndex: number) => {
+  const renderMenu = (replySed: ReplySed | PDU1, personId: string) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
     const personName = personId === 'familie'
       ? t('label:hele-familien')
@@ -351,11 +337,11 @@ const TwoLevelForm = <T extends StorageTypes>({
         : (replySed as PDU1).bruker.fornavn + ' ' + ((replySed as PDU1).bruker.etternavn ?? '')
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
-    const selected: boolean = _.find(selectedMenus, _id => _id === personId) !== undefined
+
     return (
-      <PileDiv>
-        <MenuDiv>
-          <MenuLabelDiv
+      <NameAndOptionsDiv className={classNames({whiteborder: !open && currentMenu === personId})}>
+        <NameDiv>
+          <NameLabelDiv
             onClick={() => {
               changeMenu(personId, undefined, 'click')
               return false
@@ -364,8 +350,6 @@ const TwoLevelForm = <T extends StorageTypes>({
               selected: focusedMenu === personId
             })}
           >
-            {open ? <ExpandFilled /> : <NextFilled />}
-            <HorizontalSeparatorDiv size='0.5' />
             {viewValidation && (
               validation[namespace + '-' + personId]
                 ? (
@@ -382,7 +366,7 @@ const TwoLevelForm = <T extends StorageTypes>({
                   )
             )}
             <>
-              <MenuLabelText className={classNames({ selected: selected })}>
+              <MenuLabelText>
                 {personName}
               </MenuLabelText>
               <HorizontalSeparatorDiv size='0.5' />
@@ -398,24 +382,12 @@ const TwoLevelForm = <T extends StorageTypes>({
                 <Child />
               </>
             )}
-          </MenuLabelDiv>
-          {isFSed(replySed) && (
-            <CheckboxDiv>
-              <MenuCheckbox
-                aria-label={t('label:velg-person', { person: personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '') })}
-                aria-checked={selected}
-                checked={selected}
-                hideLabel
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  e.stopPropagation()
-                  onSelectMenu(personId, e.target.checked)
-                }}
-              >&nbsp;
-              </MenuCheckbox>
-
-            </CheckboxDiv>
-          )}
-        </MenuDiv>
+          </NameLabelDiv>
+          <MenuArrowDiv>
+            {open ? <ExpandFilled /> : <NextFilled />}
+          </MenuArrowDiv>
+        </NameDiv>
+        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator/></PaddedHorizontallyDiv>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -434,7 +406,9 @@ const TwoLevelForm = <T extends StorageTypes>({
             return (
               <OptionDiv
                 className={classNames({
-                  selected: currentMenu === personId && currentMenuOption === o.value
+                  selected: currentMenu === personId && currentMenuOption === o.value,
+                  whiteborder: currentMenu === personId && currentMenuOption === o.value,
+                  first: i === 0
                 })}
                 key={o.value}
                 onClick={() => changeMenu(personId, o.value, 'click')}
@@ -450,7 +424,7 @@ const TwoLevelForm = <T extends StorageTypes>({
               </OptionDiv>
             )
           })}
-      </PileDiv>
+      </NameAndOptionsDiv>
     )
   }
 
@@ -508,11 +482,11 @@ const TwoLevelForm = <T extends StorageTypes>({
       >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>
-            {replySed?.bruker && renderMenu(replySed, 'bruker', brukerNr)}
-            {(replySed as F002Sed)?.ektefelle && renderMenu(replySed!, 'ektefelle', ektefelleNr)}
-            {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson', annenPersonNr)}
-            {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`, barnNr + i))}
-            {isFSed(replySed) && renderMenu(replySed!, 'familie', familieNr as number)}
+            {replySed?.bruker && renderMenu(replySed, 'bruker')}
+            {(replySed as F002Sed)?.ektefelle && renderMenu(replySed!, 'ektefelle')}
+            {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson')}
+            {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`))}
+            {isFSed(replySed) && renderMenu(replySed!, 'familie')}
             {isFSed(replySed) && (
               <MarginDiv>
                 <Button
