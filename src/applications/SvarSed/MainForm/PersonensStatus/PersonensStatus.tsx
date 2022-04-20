@@ -36,7 +36,7 @@ const PersonensStatus: React.FC<TwoLevelFormProps> = ({
         {t('label:arbeidsforhold-type')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <RadioPanelGroup
             value={_arbeidsforhold}
@@ -73,7 +73,7 @@ const PersonensStatus: React.FC<TwoLevelFormProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {_arbeidsforhold && (
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <AlignStartRow>
           <Column>
             {_arbeidsforhold === 'arbeidsforhold-1'
               ? (
@@ -103,7 +103,7 @@ const PersonensStatus: React.FC<TwoLevelFormProps> = ({
       {_arbeidsforhold && (_arbeidsforhold !== 'arbeidsforhold-1' && _arbeidsforhold !== 'arbeidsforhold-2') && (
         <>
           <VerticalSeparatorDiv size='3' />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+          <AlignStartRow>
             <Column>
               <WithSubsidies
                 parentNamespace={namespace}
@@ -121,7 +121,7 @@ const PersonensStatus: React.FC<TwoLevelFormProps> = ({
       {_arbeidsforhold && (
         <>
           <VerticalSeparatorDiv size='2' />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.3s' }}>
+          <AlignStartRow>
             <Column>
               <Avsenderlandet
                 parentNamespace={namespace}
@@ -134,7 +134,7 @@ const PersonensStatus: React.FC<TwoLevelFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.4s' }}>
+          <AlignStartRow>
             <Column>
               <GrunnlagforBosetting
                 parentNamespace={namespace}

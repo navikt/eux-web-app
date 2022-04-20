@@ -27,7 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateBarnetilhoerighet, ValidationBarnetilhoerigheterProps } from './validation'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -290,7 +290,7 @@ const Relasjon: React.FC<TwoLevelFormProps> = ({
           </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
-        <Heading size='small' className='slideInFromLeft'>
+        <Heading size='small'>
           {t('label:relasjonens-varighet')}
         </Heading>
         <VerticalSeparatorDiv />
@@ -455,7 +455,7 @@ const Relasjon: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small' className='slideInFromLeft'>
+      <Heading size='small'>
         {t('label:relasjon-til-barn')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
@@ -479,8 +479,7 @@ const Relasjon: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:relasjon').toLowerCase() })}
               </Button>
             </Column>

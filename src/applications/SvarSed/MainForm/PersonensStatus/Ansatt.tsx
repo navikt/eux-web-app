@@ -1,6 +1,13 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Ingress } from '@navikt/ds-react'
-import { AlignStartRow, Column, FlexCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {
+  AlignStartRow,
+  Column,
+  FlexCenterDiv,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -296,7 +303,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
         {t('label:legg-til-arbeidsperiode')}
       </Heading>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
           error={{
@@ -309,7 +316,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <Input
             error={_validationArbeidsperiode[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
@@ -335,14 +342,13 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow>
         <Column>
           <Button
             variant='secondary'
             onClick={onArbeidsgiverAdd}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add')}
           </Button>
           <HorizontalSeparatorDiv size='0.5' />
@@ -360,7 +366,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
   const renderNewPeriode = () => (
     <RepeatableRow className='new'>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
           error={{
@@ -373,14 +379,13 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow>
         <Column>
           <Button
             variant='secondary'
             onClick={onPeriodeAdd}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add')}
           </Button>
           <HorizontalSeparatorDiv size='0.5' />
@@ -478,7 +483,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
 
     return plan?.map((item: PlanItem<Periode>) => (
       <div key={item.type + '-' + item.item.startdato + '-' + item.item.sluttdato}>
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           {renderPlanItem(item)}
         </AlignStartRow>
         <VerticalSeparatorDiv />
@@ -531,8 +536,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
             variant='tertiary'
             onClick={() => _setSeeNewArbeidsgiver(true)}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add-new-x', {
               x: t('label:arbeidperioder').toLowerCase()
             })}
@@ -542,8 +546,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
             variant='tertiary'
             onClick={() => _setSeeNewPeriode(true)}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add-new-x', {
               x: t('label:periode').toLowerCase()
             })}

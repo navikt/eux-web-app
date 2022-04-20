@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -217,10 +217,7 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
         : (periode as Periode)
 
     return (
-      <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
-        style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-      >
+      <RepeatableRow>
         <AlignStartRow>
           <PeriodeInput
             showLabel={false}
@@ -250,7 +247,7 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
         {(index < 0 || sedCategory === 'perioderMedPensjon') && (
           <>
             <VerticalSeparatorDiv size='0.5' />
-            <AlignStartRow className={classNames('slideInFromLeft')}>
+            <AlignStartRow>
               <Column>
                 {index < 0 && (
                   <Select
@@ -334,7 +331,7 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
       <VerticalSeparatorDiv size={2} />
       {existsFamilieYtelser
         ? (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <label className='navds-text-field__label navds-label'>
                 {t('label:startdato') + ' *'}
@@ -367,14 +364,13 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
       {_seeNewForm
         ? renderRow(null, null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>

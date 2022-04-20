@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -243,7 +243,7 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           <Column>
             <Select
               closeMenuOnSelect
@@ -276,7 +276,7 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
           )}
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+        <AlignStartRow>
           <Column>
             <Input
               error={getErrorFor(index, 'beloep')}
@@ -307,11 +307,11 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
-        <Heading size='small' className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Heading size='small'>
           {t('label:grant-date')}
         </Heading>
         <VerticalSeparatorDiv size={2} />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace}
             error={{
@@ -327,7 +327,7 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+        <AlignStartRow>
           <Column>
             <Input
               error={getErrorFor(index, 'mottakersNavn')}
@@ -341,7 +341,7 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+        <AlignStartRow>
           <Column flex='2'>
             <RadioPanelGroup
               value={index < 0 ? _newUtbetalingshyppighet : ytelse?.utbetalingshyppighet}
@@ -403,8 +403,7 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
               </Button>
 

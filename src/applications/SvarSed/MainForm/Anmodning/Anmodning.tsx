@@ -51,7 +51,7 @@ const Anmodning: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Heading size='small'>
             {t('label:anmodning-om-informasjon')}
@@ -59,7 +59,7 @@ const Anmodning: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea
@@ -75,7 +75,7 @@ const Anmodning: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea
@@ -91,7 +91,7 @@ const Anmodning: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

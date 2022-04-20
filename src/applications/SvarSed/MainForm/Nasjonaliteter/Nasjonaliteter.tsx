@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -134,10 +134,7 @@ const Nasjonaliteter: React.FC<TwoLevelFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.05) + 's' }}
-        >
+        <AlignStartRow>
           <Column>
             <CountrySelect
               ariaLabel={t('label:nasjonalitet')}
@@ -232,8 +229,7 @@ const Nasjonaliteter: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
               </Button>
 

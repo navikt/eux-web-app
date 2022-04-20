@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -144,7 +144,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
     const ytelseNavn = (index < 0 ? _newYtelseNavn : keyAndYtelse?.ytelseNavn)
     return (
       <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
+        className={classNames({ new: index < 0 })}
         key={getId(keyAndYtelse)}
       >
         <AlignStartRow>
@@ -212,15 +212,14 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 data-testid={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:betegnelse-på-ytelse').toLowerCase() })}
               </Button>
             </Column>

@@ -73,7 +73,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
   return (
     <>
       <AlignStartRow
-        className={classNames('slideInFromLeft', { error: _validation.saksnummerOrFnr })}
+        className={classNames({ error: _validation.saksnummerOrFnr })}
       >
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>

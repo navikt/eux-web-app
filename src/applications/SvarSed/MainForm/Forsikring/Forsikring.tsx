@@ -1,5 +1,5 @@
 import {
-  Add,
+  AddCircle,
   Bag,
   CollapseFilled,
   ExpandFilled,
@@ -330,7 +330,7 @@ const Forsikring: React.FC<TwoLevelFormProps> = ({
 
     return (
       <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
+        className={classNames({ new: index < 0 })}
         key={getId(periode)}
       >
         {index < 0 && (
@@ -390,7 +390,6 @@ const Forsikring: React.FC<TwoLevelFormProps> = ({
                       >
                         <FlexCenterDiv>
                           {_visible ? <CollapseFilled /> : <ExpandFilled />}
-                          <HorizontalSeparatorDiv size='0.35' />
                           {_visible ? t('label:show-less') : t('label:show-more')}
                         </FlexCenterDiv>
                       </Button>
@@ -617,8 +616,7 @@ const Forsikring: React.FC<TwoLevelFormProps> = ({
                   variant='tertiary'
                   onClick={() => _setSeeNewForm(true)}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                 </Button>
               </Column>

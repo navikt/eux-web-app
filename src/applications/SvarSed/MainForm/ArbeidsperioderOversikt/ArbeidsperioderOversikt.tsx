@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { Button, Heading, Ingress } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
@@ -264,7 +264,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         {t('label:legg-til-arbeidsperiode')}
       </Heading>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
           error={{
@@ -277,7 +277,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <Input
             error={_validationPeriodeMedForsikring[namespace + '-navn']?.feilmelding}
@@ -292,7 +292,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <IdentifikatorFC
             identifikatorer={_newIdentifikatorer}
@@ -311,14 +311,13 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         validation={_validationPeriodeMedForsikring}
       />
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+      <AlignStartRow>
         <Column>
           <Button
             variant='secondary'
             onClick={onPeriodeMedForsikringAdd}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add')}
           </Button>
           <HorizontalSeparatorDiv size='0.5' />
@@ -415,7 +414,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         '-' + item.item.startdato + '-' + item.item.sluttdato
       }
       >
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           {renderPlanItem(item)}
         </AlignStartRow>
         <VerticalSeparatorDiv />
@@ -454,8 +453,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
             variant='tertiary'
             onClick={() => _setSeeNewPeriodeMedForsikring(true)}
           >
-            <Add />
-            <HorizontalSeparatorDiv size='0.5' />
+            <AddCircle />
             {t('el:button-add-new-x', {
               x: t('label:arbeidperioder').toLowerCase()
             })}

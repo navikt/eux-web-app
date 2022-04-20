@@ -44,7 +44,7 @@ const SakPanel = ({
   return (
     <RadioPanelBorderWithLinks
       ariaLabel={sak.sakType + ' - ' + sak.sakTittel}
-      className='slideInFromLeft'
+
       onChange={onSelected}
       value={sakId}
     >

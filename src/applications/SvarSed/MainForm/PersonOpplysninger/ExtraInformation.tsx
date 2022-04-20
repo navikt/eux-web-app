@@ -48,9 +48,7 @@ const ExtraInformation: React.FC<TwoLevelFormProps> = ({
     const idx = getIdx(index)
     return (
       <RepeatableRow>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
+        <AlignStartRow>
           <Column>
             <FlexCenterDiv style={{ marginTop: '2rem' }}>
               <Flag country={pin.land!} />

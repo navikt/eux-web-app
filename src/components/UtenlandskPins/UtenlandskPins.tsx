@@ -1,10 +1,10 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import Input from 'components/Forms/Input'
-import { HorizontalLineSeparator, SpacedHr, RepeatableRow } from 'components/StyledComponents'
+import { SpacedHr, RepeatableRow } from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useValidation from 'hooks/useValidation'
@@ -131,9 +131,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
       })}>
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
+        <AlignStartRow>
           <Column>
             {editing
               ? (
@@ -179,7 +177,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 )
               : (
                 <FlexCenterDiv>
-                  <Flag country={utenlandskePin?.land!} />
+                  <Flag size='S' country={utenlandskePin?.land!} />
                   <HorizontalSeparatorDiv />
                   {countryData.findByValue(utenlandskePin?.land)?.label ?? utenlandskePin?.land}
                 </FlexCenterDiv>
@@ -240,8 +238,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           </>
           )}
       <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
@@ -253,8 +249,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                     variant='tertiary'
                     onClick={() => _setSeeNewForm(true)}
                   >
-                    <Add />
-                    <HorizontalSeparatorDiv size='0.5' />
+                    <AddCircle />
                     {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
                   </Button>
                 )}

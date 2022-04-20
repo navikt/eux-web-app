@@ -86,7 +86,7 @@ const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
         {t('label:årsak-til-avsluttet-arbeidsforhold')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column flex='2'>
           <Select
             style={{ width: '100%' }}
@@ -113,7 +113,7 @@ const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {_typeGrunnOpphoerAnsatt === 'annet-ansettelsesforhold' && (
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           <Column>
             <Input
               error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
@@ -127,7 +127,7 @@ const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
         </AlignStartRow>
       )}
       {_typeGrunnOpphoerAnsatt === 'annet-selvstendig' && (
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           <Column>
             <Input
               error={validation[namespace + '-årsakselvstendig']?.feilmelding}

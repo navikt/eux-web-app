@@ -135,7 +135,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Heading size='small'>
             {t('label:svar-på-forespørsel')}
@@ -143,7 +143,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <label className='navds-text-field__label navds-label'>
             {t('label:choose')}
@@ -178,7 +178,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {!_.isNil(_svar) && (
         <>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+          <AlignStartRow>
             <Column>
               <TextAreaDiv>
                 <TextArea
@@ -194,7 +194,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow>
             <Column>
               <TextAreaDiv>
                 <TextArea
@@ -210,7 +210,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+          <AlignStartRow>
             <Column>
               <TextAreaDiv>
                 <TextArea
@@ -229,7 +229,7 @@ const SvarPåForespørsel: React.FC<TwoLevelFormProps> = ({
         </>
       )}
       {_svar === 'negative' && (
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+        <AlignStartRow>
           <Column>
             <TextAreaDiv>
               <TextArea

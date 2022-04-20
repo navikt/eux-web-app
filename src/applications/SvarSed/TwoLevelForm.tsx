@@ -1,4 +1,4 @@
-import { Add, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
+import { AddCircle, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
@@ -360,9 +360,7 @@ const TwoLevelForm = <T extends StorageTypes>({
               changeMenu(personId, undefined, 'click')
               return false
             }}
-            style={{ animationDelay: totalIndex * 0.03 + 's' }}
             className={classNames({
-              slideInFromLeft: true,
               selected: focusedMenu === personId
             })}
           >
@@ -436,13 +434,11 @@ const TwoLevelForm = <T extends StorageTypes>({
             return (
               <OptionDiv
                 className={classNames({
-                  slideInFromLeft: true,
                   selected: currentMenu === personId && currentMenuOption === o.value
                 })}
                 key={o.value}
                 onClick={() => changeMenu(personId, o.value, 'click')}
                 role='button'
-                style={{ animationDelay: i * 0.03 + 's' }}
               >
                 {viewValidation && (
                   validation[namespace + '-' + personId + '-' + o.value] === undefined
@@ -523,8 +519,7 @@ const TwoLevelForm = <T extends StorageTypes>({
                   variant='tertiary'
                   onClick={onAddNewPerson}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:person') })}
                 </Button>
               </MarginDiv>

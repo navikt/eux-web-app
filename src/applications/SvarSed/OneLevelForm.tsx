@@ -300,9 +300,7 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
                       changeMenu(menu)
                       return false
                     }}
-                    style={{ animationDelay: menu === 'kontoopplysninger' ? '0s' : index * 0.1 + 's' }}
                     className={classNames({
-                      slideInFromLeft: true,
                       selected: currentMenu === menu
                     })}
                   >

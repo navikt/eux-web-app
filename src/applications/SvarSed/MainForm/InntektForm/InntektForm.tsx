@@ -21,7 +21,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Add, ExpandFilled, CollapseFilled } from '@navikt/ds-icons'
+import { AddCircle, ExpandFilled, CollapseFilled } from '@navikt/ds-icons'
 import { Button, Ingress, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -228,10 +228,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace}
             error={{
@@ -267,7 +264,6 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
                 >
                   <FlexCenterDiv>
                     {visible ? <CollapseFilled /> : <ExpandFilled />}
-                    <HorizontalSeparatorDiv size='0.35' />
                     {visible ? t('label:show-less') : t('label:show-more')}
                   </FlexCenterDiv>
 
@@ -280,10 +276,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
         {visible
           ? (
             <>
-              <AlignStartRow
-                className={classNames('slideInFromLeft')}
-                style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-              >
+              <AlignStartRow>
                 <Column>
                   <Inntekter
                     key={JSON.stringify(index < 0 ? _newInntekter : loennsopplysning?.inntekter ?? [])}
@@ -295,7 +288,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv size='0.5' />
-              <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+              <AlignStartRow>
                 <Column>
                   <Input
                     error={getErrorFor(index, 'arbeidsdager')}
@@ -368,8 +361,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-xs', { x: t('label:loennsopplysninger').toLowerCase() })}
               </Button>
             </Column>
@@ -378,7 +370,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Heading size='small'>
             {t('label:inntekt-fra-komponent')}

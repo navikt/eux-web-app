@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -182,10 +182,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     const _periode = index < 0 ? _newPeriode : inntektOgTime?.inntektsperiode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx + '-inntektsperiode'}
             error={{
@@ -267,14 +264,13 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
               </Button>
             </Column>

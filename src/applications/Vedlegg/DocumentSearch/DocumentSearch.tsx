@@ -98,7 +98,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
         <VerticalSeparatorDiv />
       </Column>
       <Column>
-        <div data-testid='dokumentsok__card slideInFromLeft'>
+        <div data-testid='dokumentsok__card'>
           <Select
             data-testid={namespace + '-rinadokumentID'}
             id={namespace + '-rinadokumentID'}

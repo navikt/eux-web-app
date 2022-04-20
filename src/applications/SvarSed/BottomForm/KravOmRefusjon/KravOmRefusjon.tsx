@@ -38,9 +38,7 @@ const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
         {t('label:krav-om-refusjon')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-      >
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

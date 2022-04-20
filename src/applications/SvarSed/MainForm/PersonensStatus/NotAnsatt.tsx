@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -135,10 +135,7 @@ const NotAnsatt: React.FC<TwoLevelFormProps & {arbeidsforhold: string}> = ({
     const _periode = index < 0 ? _newPeriode : periode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx}
             error={{
@@ -198,8 +195,7 @@ const NotAnsatt: React.FC<TwoLevelFormProps & {arbeidsforhold: string}> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>

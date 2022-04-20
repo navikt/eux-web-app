@@ -34,7 +34,7 @@ import {
   Validation
 } from 'declarations/types'
 import * as EKV from '@navikt/eessi-kodeverk'
-import { useAppDispatch, useAppSelector } from 'hooks/hooks'
+import { useAppDispatch, useAppSelector } from 'store'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
@@ -380,14 +380,13 @@ const CreateSak: React.FC<CreateSakProps> = ({
     <Container>
       <Margin />
       <MyContent>
-        <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
+        <Row>
           <Column>
             <PersonSearch
               key={namespace + '-fnr-' + valgtFnr}
               alertMessage={alertMessage}
               alertType={alertType}
               alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
-              className='slideInFromLeft'
               data-testid={namespace + '-fnr'}
               error={validation[namespace + '-fnr']?.feilmelding}
               searchingPerson={searchingPerson}
@@ -414,7 +413,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column />
         </Row>
         <VerticalSeparatorDiv size='2' />
-        <Row className='slideInFromLeft' style={{ animationDelay: '0s' }}>
+        <Row>
           <Column>
             <Select
               data-testid={namespace + '-sektor'}
@@ -462,7 +461,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </Column>
         </Row>
         <VerticalSeparatorDiv />
-        <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <Row>
           <Column>
             <Select
               data-testid={namespace + '-buctype'}
@@ -514,7 +513,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </Column>
         </Row>
         <VerticalSeparatorDiv />
-        <Row className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+        <Row>
           <Column>
             <CountrySelect
               closeMenuOnSelect
@@ -617,7 +616,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
         )}
         <VerticalSeparatorDiv />
         {valgtSektor && (
-          <AlignStartRow classname='slideInFromLeft'>
+          <AlignStartRow>
             <Column>
               <FlexDiv>
                 <div style={{ flex: 3 }}>
@@ -715,7 +714,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           />
         )}
         <VerticalSeparatorDiv size='2' />
-        <Row className='slideInFromLeft'>
+        <Row>
           <Column>
             <FlexDiv>
               <Button

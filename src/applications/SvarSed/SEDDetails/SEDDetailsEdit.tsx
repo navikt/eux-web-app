@@ -27,7 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed,
@@ -435,8 +435,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                         variant='tertiary'
                         onClick={() => _setSeeNewForm(true)}
                       >
-                        <Add />
-                        <HorizontalSeparatorDiv size='0.5' />
+                        <AddCircle />
                         {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                       </Button>
                     </Column>
@@ -497,8 +496,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                     variant='tertiary'
                     onClick={() => _setSakseierSeeNewForm(true)}
                   >
-                    <Add />
-                    <HorizontalSeparatorDiv size='0.5' />
+                    <AddCircle />
                     {t('el:button-add-new-x', { x: t('label:motpart-sakseier').toLowerCase() })}
                   </Button>
                 </Column>
@@ -591,7 +589,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 {t('label:info-point-information')}
               </Radio>
               {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
-                <div className='slideInFromLeft'>
+                <div>
                   <VerticalSeparatorDiv />
                   <TextAreaDiv>
                     <TextArea

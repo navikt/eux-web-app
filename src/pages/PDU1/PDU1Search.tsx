@@ -215,7 +215,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow
         style={{ width: '100%' }}
-        className={classNames('slideInFromLeft', { error: validation[namespace + '-search'] })}
+        className={classNames({ error: validation[namespace + '-search'] })}
       >
         <Column>
           <PileDiv>

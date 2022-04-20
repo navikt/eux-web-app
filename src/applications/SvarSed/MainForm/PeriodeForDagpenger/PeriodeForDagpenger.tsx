@@ -31,7 +31,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 interface PeriodeForDagpengerSelector extends TwoLevelFormSelector {
   landkoderList: Array<Kodeverk> | undefined
@@ -273,10 +273,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
     const institusjonKjent = !idmangler
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx}
             error={{
@@ -289,7 +286,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <AlignStartRow>
           <Column>
             <Input
               error={getErrorFor(index, 'institusjon-id')}
@@ -315,7 +312,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <AlignStartRow>
           <Column>
             <RadioPanelGroup
               value={institusjonKjent ? 'ja' : 'nei'}
@@ -338,7 +335,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
         <VerticalSeparatorDiv />
         {idmangler && (
           <>
-            <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+            <AlignStartRow>
               <Column>
                 <Input
                   error={getErrorFor(index, 'institusjon-idmangler-navn')}
@@ -407,8 +404,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>

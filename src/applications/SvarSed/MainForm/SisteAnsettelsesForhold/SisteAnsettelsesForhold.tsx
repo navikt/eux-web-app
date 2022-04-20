@@ -29,7 +29,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -221,10 +221,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
     )
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
+        <AlignStartRow>
           <Column>
             <label className='navds-text-field__label navds-label'>
               {t('label:utbetaling-type')}
@@ -284,7 +281,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+        <AlignStartRow>
           <Column>
             {(index < 0 ? _newUtbetalingType : utbetaling?.utbetalingType) === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
               <DateInput
@@ -329,7 +326,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Heading size='small'>
             {t('label:siste-ansettelsesforhold')}
@@ -356,8 +353,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:utbetaling').toLowerCase() })}
               </Button>
             </Column>
@@ -368,7 +364,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
         {t('label:opphoer')}
       </Heading>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea
@@ -383,7 +379,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea
@@ -398,7 +394,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

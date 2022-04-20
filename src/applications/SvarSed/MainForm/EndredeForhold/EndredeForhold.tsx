@@ -43,7 +43,7 @@ const EndredeForhold: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Heading size='small'>
             {t('label:ytterligere-informasjon_endrede_forhold')}
@@ -68,7 +68,7 @@ const EndredeForhold: React.FC<TwoLevelFormProps> = ({
         </Radio>
       </RadioGroup>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

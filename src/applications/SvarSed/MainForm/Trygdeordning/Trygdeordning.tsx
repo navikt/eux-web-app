@@ -19,7 +19,7 @@ const Trygdeordning: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small' className='slideInFromLeft'>
+      <Heading size='small'>
         {t('label:dekning-trygdeordningen')}
       </Heading>
       <>

@@ -214,7 +214,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
         <VerticalSeparatorDiv size='2' />
         <Heading size='small'>{t('label:pins')}</Heading>
         <VerticalSeparatorDiv />
-        <AlignStartRow className='slideInFromLeft'>
+        <AlignStartRow>
           <Column>
             <Input
               error={validation[namespace + '-fnr']?.feilmelding}
@@ -235,7 +235,6 @@ const Person: React.FC<TwoLevelFormProps> = ({
               onClick={onSearchUser}
             >
               <Search />
-              <HorizontalSeparatorDiv />
               {searchingPerson
                 ? t('message:loading-searching')
                 : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}

@@ -9,7 +9,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { Button, Loader } from '@navikt/ds-react'
-import { AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateInntektSearch, ValidationInntektSearchProps } from './validation'
@@ -80,7 +80,7 @@ const InntektSearch = ({
   }
 
   return (
-    <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+    <AlignStartRow>
       <Column>
         <Input
           namespace={namespace}

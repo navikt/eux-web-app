@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -217,10 +217,7 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
     const idx = getIdx(index)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <Column>
             <Input
               ariaLabel={t('label:telefonnummer')}
@@ -270,10 +267,7 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
     const idx = getIdx(index)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <Column flex='2'>
             <Input
               ariaLabel={t('label:epost')}
@@ -311,7 +305,7 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
         {t('label:kontaktinformasjon')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <Row className='slideInFromLeft'>
+      <Row>
         <Column>
           {!_.isEmpty(telefoner)
             ? (
@@ -342,21 +336,20 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
       {_seeNewTelefonForm
         ? renderTelefonRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewTelefonForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
               </Button>
             </Column>
           </Row>
           )}
       <VerticalSeparatorDiv size='3' />
-      <Row className='slideInFromLeft'>
+      <Row>
         <Column>
           {!_.isEmpty(eposter)
             ? (
@@ -380,14 +373,13 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewEpostForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
               </Button>
             </Column>

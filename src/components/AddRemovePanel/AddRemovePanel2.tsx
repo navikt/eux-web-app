@@ -1,4 +1,4 @@
-import { Add, Delete, Edit, SuccessStroke } from '@navikt/ds-icons'
+import { AddCircle, Cancel, Delete, Edit, SuccessStroke } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Button, BodyLong } from '@navikt/ds-react'
@@ -27,6 +27,7 @@ export interface AddRemovePanelProps<T> {
 const InlineFlexDiv = styled.div`
   display: inline-flex;
   align-items: center;
+  margin-top: 0.5rem;
 `
 
 const AddRemovePanel2 = <T extends any>({
@@ -60,6 +61,7 @@ const AddRemovePanel2 = <T extends any>({
         </BodyLong>
         <HorizontalSeparatorDiv size='0.5' />
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-delete-yes'}
           onClick={() => onRemove(item!)}
@@ -68,6 +70,7 @@ const AddRemovePanel2 = <T extends any>({
         </Button>
         <HorizontalSeparatorDiv size='0.5' />
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-delete-no'}
           onClick={() => removeFromDeletion(item)}
@@ -83,6 +86,7 @@ const AddRemovePanel2 = <T extends any>({
       <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
         <HorizontalSeparatorDiv />
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-edit-ok'}
           onClick={() => {
@@ -94,6 +98,7 @@ const AddRemovePanel2 = <T extends any>({
         </Button>
         <HorizontalSeparatorDiv />
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-edit-remove'}
           onClick={() => addToDeletion(item)}
@@ -110,19 +115,22 @@ const AddRemovePanel2 = <T extends any>({
     return (
       <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-add'}
           onClick={onAddNew}
         >
-          <Add />
+          <AddCircle />
           {labels?.add ?? t('el:button-add')}
         </Button>
         <HorizontalSeparatorDiv />
         <Button
+          size='small'
           variant='tertiary'
           data-testid={namespace + '-addremove-cancel'}
           onClick={() => onCancelNew()}
         >
+          <Cancel/>
           {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>
@@ -132,6 +140,7 @@ const AddRemovePanel2 = <T extends any>({
   return (
     <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
       <Button
+        size='small'
         variant='tertiary'
         data-testid={namespace + '-addremove-edit'}
         onClick={() => {

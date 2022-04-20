@@ -133,7 +133,6 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
             onClick={getArbeidsperioder}
           >
             <Search />
-            <HorizontalSeparatorDiv size='0.5' />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
               : t('el:button-search-for-x', { x: t('label:arbeidsperioder') })}

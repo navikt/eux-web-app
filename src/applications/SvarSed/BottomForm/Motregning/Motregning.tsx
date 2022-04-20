@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { OneLevelFormProps, OneLevelFormSelector, mapState } from 'applications/SvarSed/OneLevelForm'
 import classNames from 'classnames'
@@ -892,8 +892,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
               </Button>
             </Column>

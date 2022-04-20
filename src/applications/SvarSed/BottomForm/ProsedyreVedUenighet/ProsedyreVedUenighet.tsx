@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): OneLevelFormSelector => ({
   validation: state.validation.status
@@ -187,10 +187,7 @@ const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <Column>
             <Select
               closeMenuOnSelect
@@ -269,24 +266,20 @@ const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
       {_seeNewForm
         ? renderRow(null, _grunns, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:reason').toLowerCase() })}
               </Button>
             </Column>
           </Row>
           )}
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.2s' }}
-      >
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

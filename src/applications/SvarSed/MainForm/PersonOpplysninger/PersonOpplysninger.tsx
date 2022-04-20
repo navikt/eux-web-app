@@ -1,4 +1,4 @@
-import { Add, CollapseFilled, Edit, Search } from '@navikt/ds-icons'
+import { AddCircle, Edit, Search, Cancel, SuccessStroke } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -237,11 +237,8 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                       _setSeeNorskPinForm(true)
                     }}
                   >
-                    <FlexCenterDiv>
-                      <Edit />
-                      <HorizontalSeparatorDiv size='0.35' />
-                      {t('label:endre')}
-                    </FlexCenterDiv>
+                    <Edit />
+                    {t('label:endre')}
                   </Button>
                 </Column>
                 <Column />
@@ -269,6 +266,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                       data-amplitude='svarsed.editor.personopplysning.norskpin.save'
                       onClick={onNorwegianPinSave}
                     >
+                      <SuccessStroke />
                       {t('el:button-save')}
                     </Button>
                     <HorizontalSeparatorDiv size='0.35' />
@@ -289,6 +287,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                       variant='tertiary'
                       onClick={() => _setSeeNorskPinForm(false)}
                     >
+                      <Cancel/>
                       {t('el:button-cancel')}
                     </Button>
                   </FlexEndDiv>
@@ -420,7 +419,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
         {_seeNewFoedstedForm
           ? (
             <>
-              <AlignStartRow key='showNewForm' className='slideInFromLeft'>
+              <AlignStartRow key='showNewForm'>
                 <Column>
                   <Input
                     error={validation[namespace + '-foedested-by']?.feilmelding}
@@ -462,9 +461,8 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                     variant='tertiary'
                     onClick={() => setSeeNewFoedstedForm(false)}
                   >
-                    <CollapseFilled />
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {t('label:show-less')}
+                    <Cancel />
+                    {t('el:button-cancel')}
                   </Button>
                 </Column>
               </AlignStartRow>
@@ -477,8 +475,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                   variant='tertiary'
                   onClick={() => setSeeNewFoedstedForm(true)}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add-x', { x: t('label:fødested') })}
                 </Button>
               </Column>

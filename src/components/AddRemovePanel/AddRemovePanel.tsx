@@ -1,4 +1,4 @@
-import { Add, Delete } from '@navikt/ds-icons'
+import { AddCircle, Delete } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Button, BodyLong } from '@navikt/ds-react'
@@ -70,8 +70,7 @@ const AddRemovePanel: React.FC<AddRemovePanelProps> = ({
           data-testid={namespace + '-addremove-' + (existingItem ? 'remove' : 'add')}
           onClick={existingItem ? onBeginRemove : onAddNew}
         >
-          {!existingItem ? <Add /> : <Delete />}
-          <HorizontalSeparatorDiv size='0.5' />
+          {!existingItem ? <AddCircle /> : <Delete />}
           {!existingItem ? labels?.add ?? t('el:button-add') : labels?.remove ?? t('el:button-remove')}
         </Button>
         {!existingItem && (

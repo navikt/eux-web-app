@@ -88,7 +88,6 @@ const PreviewPDU1: React.FC = () => {
             onClick={onPreviewPdu1Clicked}
           >
             <Sight />
-            <HorizontalSeparatorDiv size='0.5' />
             {gettingPreviewPdu1
               ? t('label:laster-ned-filen')
               : _.isNil(previewPdu1)
@@ -107,7 +106,6 @@ const PreviewPDU1: React.FC = () => {
               onClick={onDownloadPdu1Clicked}
             >
               <Download />
-              <HorizontalSeparatorDiv size='0.5' />
               {t('label:last-ned-pdu1')}
             </Button>
             <HorizontalSeparatorDiv />
@@ -118,7 +116,6 @@ const PreviewPDU1: React.FC = () => {
               onClick={onResetPdu1Clicked}
             >
               <ErrorFilled />
-              <HorizontalSeparatorDiv size='0.5' />
               {t('label:fjern-pdu1')}
             </Button>
           </>

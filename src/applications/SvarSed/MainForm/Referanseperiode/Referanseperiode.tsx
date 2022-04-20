@@ -45,7 +45,7 @@ const Referanseperiode: React.FC<TwoLevelFormProps> = ({
         {t('label:referanseperiode')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
           error={{

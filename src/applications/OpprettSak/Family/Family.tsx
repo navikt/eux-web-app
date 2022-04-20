@@ -102,7 +102,7 @@ const Family: React.FC<FamilyProps> = ({
           {remainingRelationsFromTPS.map((relation: OldFamilieRelasjon) => (
             <div key={relation.fnr}>
               <PersonCard
-                className='slideInFromLeft personNotSelected'
+                className='personNotSelected'
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 onAddClick={onRelationAdded}
                 person={relation}
@@ -138,7 +138,7 @@ const Family: React.FC<FamilyProps> = ({
           {valgteFamilieRelasjoner && valgteFamilieRelasjoner.map((relation: OldFamilieRelasjon) => (
             <div key={relation.fnr}>
               <PersonCard
-                className='slideInFromLeft personSelected'
+                className='personSelected'
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 onRemoveClick={onRelationRemoved}
                 person={relation}

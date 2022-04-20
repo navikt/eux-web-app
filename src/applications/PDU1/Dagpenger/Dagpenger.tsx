@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -147,9 +147,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
         <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
+        <AlignStartRow>
           <Column>
             <Input
               ariaLabel={t('label:startdato')}
@@ -179,9 +177,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
           <Column />
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-        >
+        <AlignStartRow>
           <Column flex='2'>
             <Input
               error={getErrorFor(index, 'info')}
@@ -257,8 +253,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
                   variant='tertiary'
                   onClick={() => _setSeeNewForm(true)}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                 </Button>
               </Column>

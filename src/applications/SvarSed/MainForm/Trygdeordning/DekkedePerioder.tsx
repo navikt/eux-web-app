@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -120,10 +120,7 @@ const DekkedePerioder: React.FC<TwoLevelFormProps> = ({
     const _periode = index < 0 ? _newPeriode : periode
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx}
             showLabel={false}
@@ -165,7 +162,7 @@ const DekkedePerioder: React.FC<TwoLevelFormProps> = ({
           </BodyLong>
           )
         : (
-          <Row className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <Row>
             <Column>
               <label className='navds-text-field__label navds-label'>
                 {t('label:startdato') + ' *'}
@@ -186,14 +183,13 @@ const DekkedePerioder: React.FC<TwoLevelFormProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:dekkede-periode').toLowerCase() })}
               </Button>
             </Column>

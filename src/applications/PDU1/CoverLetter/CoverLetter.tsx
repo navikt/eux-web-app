@@ -40,7 +40,7 @@ const CoverLetter: React.FC<TwoLevelFormProps> = ({
         {t('label:cover-letter')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <TextAreaDiv>
             <TextArea

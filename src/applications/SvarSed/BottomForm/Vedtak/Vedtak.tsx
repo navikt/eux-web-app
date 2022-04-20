@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): OneLevelFormSelector => ({
   validation: state.validation.status
@@ -307,7 +307,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
 
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + '-perioder' + getIdx(index)}
             error={{
@@ -348,7 +348,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
     // @ts-ignore
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow className={classNames('slideInFromLeft')}>
+        <AlignStartRow>
           <PeriodeInput
             namespace={namespace + '-vedtaksperioder' + getIdx(index) + '-periode'}
             error={{
@@ -448,7 +448,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
       </Row>
       <VerticalSeparatorDiv />
       {vedtak?.gjelderAlleBarn === 'nei' && (
-        <div className={classNames('slideInFromLeft')}>
+        <div>
           <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
           <VerticalSeparatorDiv />
           {(replySed as F002Sed)?.barn?.map((b, index) => {
@@ -464,8 +464,6 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
             return (
               <div
                 key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
-                className={classNames('slideInFromLeft')}
-                style={{ animationDelay: (index * 0.1) + 's' }}
               >
                 <Checkbox
                   checked={checked}
@@ -497,24 +495,20 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
       {_seeNewPerioderForm
         ? renderPeriode(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewPerioderForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>
           </Row>
           )}
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.1s' }}
-      >
+      <AlignStartRow>
         <Column flex='2'>
           <Select
             data-testid={namespace + '-vedtakstype'}
@@ -543,10 +537,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.15s' }}
-      >
+      <AlignStartRow>
         <Column flex='2'>
           <TextAreaDiv>
             <TextArea
@@ -561,10 +552,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      <AlignStartRow
-        className={classNames('slideInFromLeft')}
-        style={{ animationDelay: '0.2s' }}
-      >
+      <AlignStartRow>
         <Column flex='2'>
           <TextAreaDiv>
             <TextArea
@@ -612,14 +600,13 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
       {_seeNewVedtaksperioderForm
         ? renderVedtakPeriode(null, -1, '')
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewVedtaksperioderForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>

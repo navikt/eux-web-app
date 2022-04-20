@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -217,10 +217,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
     const _relasjonType = index < 0 ? _newRelasjonType : familierelasjon!.relasjonType
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.3) + 's' }}
-        >
+        <AlignStartRow>
           <Column flex='2'>
             <Select
               data-testid={namespace + idx + '-relasjonType'}
@@ -260,7 +257,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
         <VerticalSeparatorDiv />
         {_relasjonType === 'annet' && (
           <div style={{ marginLeft: '1.5rem' }}>
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
+            <AlignStartRow>
               <Column flex='2'>
                 <Input
                   error={getErrorFor(index, 'annenRelasjonType')}
@@ -276,7 +273,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
               <Column flex='2' />
             </AlignStartRow>
             <VerticalSeparatorDiv />
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.1s' : (index * 0.3 + 0.1) + 's' }}>
+            <AlignStartRow>
               <Column flex='2'>
                 <Input
                   error={getErrorFor(index, 'annenRelasjonPersonNavn')}
@@ -304,7 +301,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
               <Column />
             </AlignStartRow>
             <VerticalSeparatorDiv />
-            <AlignStartRow className={classNames('slideInFromLeft')} style={{ animationDelay: index < 0 ? '0.2s' : (index * 0.3 + 0.2) + 's' }}>
+            <AlignStartRow>
               <Column flex='3'>
                 <RadioPanelGroup
                   value={index < 0 ? _newBorSammen : familierelasjon?.borSammen}
@@ -356,8 +353,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
               </Button>
             </Column>

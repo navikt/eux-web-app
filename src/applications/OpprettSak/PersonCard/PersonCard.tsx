@@ -1,7 +1,7 @@
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import { Delete, Add } from '@navikt/ds-icons'
+import { Delete, AddCircle } from '@navikt/ds-icons'
 import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalSeparatorDiv, VerticalSeparatorDiv, FlexCenterSpacedDiv, FlexDiv } from '@navikt/hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
@@ -154,7 +154,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               disabled={rolleList !== undefined && !rolle}
               onClick={() => _onAddClick(person)}
             >
-              <Add width={20} />
+              <AddCircle width={20} />
             </Button>
           </FlexDiv>
         )}

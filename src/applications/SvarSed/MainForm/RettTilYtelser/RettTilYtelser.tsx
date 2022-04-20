@@ -167,7 +167,7 @@ const RettTilYtelser: React.FC<TwoLevelFormProps> = ({
         </AlignStartRow>
       )}
       <VerticalSeparatorDiv />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
           error={{

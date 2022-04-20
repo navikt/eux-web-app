@@ -140,7 +140,7 @@ const PeriodeInput = <T extends Periode>({
       </Column>
       {breakInTwo && <div />}
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
-        <WrapperDiv className={classNames('slideInFromLeft', { nolabel: showLabel })}>
+        <WrapperDiv className={classNames({ nolabel: showLabel })}>
           {_.isEmpty(value?.sluttdato) && (
             <Checkbox
               error={!!error.aapenPeriodeType}

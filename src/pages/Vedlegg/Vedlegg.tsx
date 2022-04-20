@@ -114,7 +114,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <MyContent>
-          <AlignStartRow className='slideInFromLeft'>
+          <AlignStartRow>
             <Column>
               <Input
                 id='journalpostID'
@@ -156,7 +156,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv />
             </Column>
           </AlignStartRow>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+          <AlignStartRow>
             <Column>
               <Checkbox
                 checked={sensitivt}
@@ -170,7 +170,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv />
             </Column>
           </AlignStartRow>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow>
             <DocumentSearch
               parentNamespace={namespace}
               validation={validation}
@@ -178,7 +178,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
             />
           </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+          <AlignStartRow>
             <Column>
               <Button
                 variant='primary'

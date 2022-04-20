@@ -202,7 +202,6 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               onClick={onEditModeClicked}
             >
               <Edit />
-              <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-edit')}
             </Button>
           )}

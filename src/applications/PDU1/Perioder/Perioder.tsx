@@ -1,4 +1,4 @@
-import { Add, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
+import { AddCircle, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -205,7 +205,7 @@ const Perioder: React.FC<TwoLevelFormProps> = ({
 
     return (
       <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
+        className={classNames({ new: index < 0 })}
         key={getId({ p: periode, i: index })}
       >
         {index < 0 && (
@@ -417,8 +417,7 @@ const Perioder: React.FC<TwoLevelFormProps> = ({
                   variant='tertiary'
                   onClick={() => _setSeeNewForm(true)}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                 </Button>
               </Column>

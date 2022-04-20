@@ -193,7 +193,7 @@ const ArbeidsperioderBox = ({
 
   return (
     <div
-      className='slideInFromLeft'
+
       key={generateIdentifikatorKey(_arbeidsgiversIdentifikator)}
     >
       <VerticalSeparatorDiv size='0.5' />
@@ -237,7 +237,7 @@ const ArbeidsperioderBox = ({
             </FlexEndDiv>
             )}
         <WrappingComponent>
-          <FlexDiv style={{ padding: '1rem' }} className='slideInFromLeft'>
+          <FlexDiv style={{ padding: '1rem' }}>
             <Office1 width='30' height='30' />
             <HorizontalSeparatorDiv />
             <div>
@@ -374,7 +374,6 @@ const ArbeidsperioderBox = ({
                   onClick={onSaveEditButtonClicked}
                 >
                   <SaveFile />
-                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-save')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
@@ -383,7 +382,6 @@ const ArbeidsperioderBox = ({
                   onClick={onCancelButtonClicked}
                 >
                   <Close />
-                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-cancel')}
                 </Button>
               </FlexDiv>
@@ -405,7 +403,6 @@ const ArbeidsperioderBox = ({
                   }}
                 >
                   <Delete />
-                  <HorizontalSeparatorDiv size='0.5' />
                   {t('el:button-remove')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />

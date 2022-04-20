@@ -1,4 +1,4 @@
-import { Add, Search } from '@navikt/ds-icons'
+import { AddCircle, Search } from '@navikt/ds-icons'
 import { resetAdresse, searchAdresse } from 'actions/adresse'
 import { resetValidation } from 'actions/validation'
 import AdresseModal from 'applications/SvarSed/MainForm/Adresser/AdresseModal'
@@ -17,7 +17,6 @@ import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   Row,
   VerticalSeparatorDiv
@@ -175,7 +174,6 @@ const Adresser: React.FC<TwoLevelFormProps> = ({
                   onClick={getAdresse}
                 >
                   <Search />
-                  <HorizontalSeparatorDiv size='0.5' />
                   {gettingAdresse
                     ? t('message:loading-searching')
                     : t('label:søk-pdl-adresse-til', { person: personName })}
@@ -252,8 +250,7 @@ const Adresser: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </Button>
             </Column>

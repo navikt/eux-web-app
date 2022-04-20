@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -14,7 +14,6 @@ import { Button, BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  HorizontalSeparatorDiv,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
@@ -132,7 +131,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     const _type = index < 0 ? _newType : identifikator?.type
     return (
       <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
+        className={classNames({ new: index < 0 })}
         key={getId(identifikator)}
       >
         <AlignStartRow>
@@ -212,15 +211,14 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 data-testid={namespace + '-new'}
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
               </Button>
             </Column>

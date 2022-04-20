@@ -26,7 +26,6 @@ const Forside: React.FC = (): JSX.Element => {
         <Margin />
         <Content style={{ minWidth: '800px' }}>
           <LinkPanel
-            className='slideInFromLeft'
             href='#'
             onClick={() => navigate({ pathname: '/opprettsak', search: window.location.search })}
           >
@@ -34,20 +33,16 @@ const Forside: React.FC = (): JSX.Element => {
           </LinkPanel>
           <VerticalSeparatorDiv />
           <LinkPanel
-            className='slideInFromLeft'
             href='#'
             onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}
-            style={{ animationDelay: '0.05s' }}
           >
             <LinkPanel.Title>{t('app:page-title-vedlegg')}</LinkPanel.Title>
           </LinkPanel>
           <>
             <VerticalSeparatorDiv />
             <LinkPanel
-              className='slideInFromLeft'
               href='#'
               onClick={() => navigate({ pathname: '/svarsed', search: window.location.search })}
-              style={{ animationDelay: '0.1s' }}
             >
               <LinkPanel.Title>{t('app:page-title-svarsed')}</LinkPanel.Title>
             </LinkPanel>
@@ -56,10 +51,8 @@ const Forside: React.FC = (): JSX.Element => {
             <>
               <VerticalSeparatorDiv />
               <LinkPanel
-                className='slideInFromLeft'
                 href='#'
                 onClick={() => navigate({ pathname: '/pdu1', search: window.location.search })}
-                style={{ animationDelay: '0.1.5s' }}
               >
                 <LinkPanel.Title>{t('app:page-title-pdu1')}</LinkPanel.Title>
               </LinkPanel>

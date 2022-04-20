@@ -15,7 +15,7 @@ import i18n from './i18n'
 import { unregister } from './registerServiceWorker'
 import '@navikt/ds-css'
 
-import store from 'hooks/store'
+import store from 'store'
 
 if (!IS_PRODUCTION) {
   // const axe = require('react-axe')

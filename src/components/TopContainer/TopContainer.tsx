@@ -38,7 +38,7 @@ body {
   flex-direction: column;
 }
 .nolabel {
-  margin-top: 1.8rem;
+  margin-top: 2.5rem !important;
 }
 .fadeIn {
   opacity: 0;

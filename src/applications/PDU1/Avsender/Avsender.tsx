@@ -87,7 +87,7 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
         {t('label:edit')}
       </Switch>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft'>
+      <AlignStartRow>
         <Column>
           <Input
             disabled={!allowEdit}
@@ -126,7 +126,7 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className={classNames('slideInFromLeft')}>
+      <AlignStartRow>
         <Column>
           <Input
             disabled={!allowEdit}
@@ -153,7 +153,7 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <Heading size='small'>{t('label:adresse')}</Heading>
       <VerticalSeparatorDiv />
-      <AlignStartRow className={classNames('slideInFromLeft')}>
+      <AlignStartRow>
         <Column>
           <AdresseForm
             disabled={!allowEdit}

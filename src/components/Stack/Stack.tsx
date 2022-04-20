@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
 import { MyTag } from 'components/StyledComponents'
@@ -80,11 +80,7 @@ const Stack: React.FC<StackProps> = ({
           return _a.localeCompare(_b)
         })
         ?.map((item: string, i: number) => (
-          <FlexCenterSpacedDiv
-            className='slideInFromLeft'
-            style={{ animationDelay: i === _newItemIndex ? '0s' : (i * 0.1) + 's' }}
-            key={item}
-          >
+          <FlexCenterSpacedDiv key={item}>
             <MyTag variant='info' data-border>
               {_.find(options, _f => _f.value === item)?.label}
             </MyTag>
@@ -101,13 +97,12 @@ const Stack: React.FC<StackProps> = ({
       <VerticalSeparatorDiv />
       {!_addItem
         ? (
-          <div className='slideInFromLeft'>
+          <div>
             <Button
               variant='tertiary'
               onClick={() => setAddItem(!_addItem)}
             >
-              <Add />
-              <HorizontalSeparatorDiv size='0.5' />
+              <AddCircle />
               {t('el:button-add-new-x', { x: itemLabel.toLowerCase() })}
             </Button>
           </div>
@@ -140,8 +135,7 @@ const Stack: React.FC<StackProps> = ({
                   variant='secondary'
                   onClick={onAdd}
                 >
-                  <Add />
-                  <HorizontalSeparatorDiv size='0.5' />
+                  <AddCircle />
                   {t('el:button-add')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />

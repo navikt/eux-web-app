@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
 import DateInput from 'components/Forms/DateInput'
 import { toDateFormat } from 'components/Forms/PeriodeInput'
@@ -131,7 +131,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     <>
       <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft'>
+      <Row>
         <Column>
           <TextField
             id={namespace + '-fnr'}
@@ -179,7 +179,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <Row>
         <Column>
           <TextField
             id={namespace + '-fornavn'}
@@ -208,7 +208,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.10s' }}>
+      <Row>
         <Column>
           <Select
             id={namespace + '-kjoenn'}
@@ -250,7 +250,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
         </Column>
       </Row>
       <VerticalSeparatorDiv />
-      <Row className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+      <Row>
         <Column>
           <Select
             id={namespace + 'familierelasjon'}
@@ -279,8 +279,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             onClick={addRelation}
             className='relasjon familierelasjoner__knapp'
           >
-            <Add />
-            <HorizontalSeparatorDiv />
+            <AddCircle />
             {t('el:button-add')}
           </Button>
         </Column>

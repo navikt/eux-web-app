@@ -1,4 +1,4 @@
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -179,10 +179,7 @@ const Inntekter: React.FC<any> = ({
     const idx = getIdx(index)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow
-          className={classNames('slideInFromLeft')}
-          style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-        >
+        <AlignStartRow>
           <Column>
             <Select
               closeMenuOnSelect
@@ -240,10 +237,7 @@ const Inntekter: React.FC<any> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
         {(index < 0 ? _newInntektType : inntekt?.type ?? '') === 'annet_vederlag' && (
-          <AlignStartRow
-            className={classNames('slideInFromLeft')}
-            style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-          >
+          <AlignStartRow>
             <Column>
               <Input
                 ariaLabel={t('label:informasjon-om-vederlag')}
@@ -277,14 +271,13 @@ const Inntekter: React.FC<any> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row className='slideInFromLeft'>
+          <Row>
             <Column>
               <Button
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
               </Button>
             </Column>

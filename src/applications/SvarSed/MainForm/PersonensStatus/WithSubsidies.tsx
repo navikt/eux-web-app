@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
-import { Add } from '@navikt/ds-icons'
+import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -153,10 +153,7 @@ const WithSubsidies: React.FC<TwoLevelFormProps> = ({
     )
     const _periode = index < 0 ? _newPeriode : pensjonPeriode?.periode
     return (
-      <RepeatableRow
-        className={classNames('slideInFromLeft', { new: index < 0 })}
-        style={{ animationDelay: index < 0 ? '0s' : (index * 0.1) + 's' }}
-      >
+      <RepeatableRow>
         <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx + '-periode'}
@@ -234,8 +231,7 @@ const WithSubsidies: React.FC<TwoLevelFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setSeeNewForm(true)}
               >
-                <Add />
-                <HorizontalSeparatorDiv size='0.5' />
+                <AddCircle />
                 {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>

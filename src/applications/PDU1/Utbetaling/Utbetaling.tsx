@@ -166,7 +166,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
         {t('label:andre-mottatte-utbetalinger')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.05s' }}>
+      <AlignStartRow>
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
@@ -193,7 +193,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
 
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
@@ -220,7 +220,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
 
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.15s' }}>
+      <AlignStartRow>
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
@@ -263,7 +263,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
 
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.2s' }}>
+      <AlignStartRow>
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
@@ -290,7 +290,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
 
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.25s' }}>
+      <AlignStartRow>
         <Column>
           <Checkbox
             checked={andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox}

@@ -1,4 +1,4 @@
-import { Add, Child } from '@navikt/ds-icons'
+import { AddCircle, Child } from '@navikt/ds-icons'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
   validateAddPersonModal,
@@ -76,11 +76,6 @@ const AddPersonModal = <T extends StorageTypes>({
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
   const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
   const [_validation, _resetValidation, performValidation] = useValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
-
-  const brukerNr = 0
-  const ektefelleNr = brukerNr + ((_replySed as F002Sed).ektefelle ? 1 : 0)
-  const annenPersonNr = ektefelleNr + ((_replySed as F002Sed).annenPerson ? 1 : 0)
-  const barnNr = annenPersonNr + ((_replySed as F002Sed).barn ? 1 : 0)
 
   const onRemovePerson = (personID: string) => {
     const newReplySed = _.cloneDeep(_replySed)
@@ -242,16 +237,12 @@ const AddPersonModal = <T extends StorageTypes>({
     return t('el:option-familierelasjon-' + id)
   }
 
-  const renderPerson = (personId: string, i: number) => {
+  const renderPerson = (personId: string) => {
     const p: PersonInfo = _.get(_replySed, `${personId}.personInfo`)
     const candidateForDeletion = isInDeletion(p)
 
     return (
-      <FlexDiv
-        className='slideInFromLeft'
-        style={{ animationDelay: i * 0.05 + 's' }}
-        key={personId}
-      >
+      <FlexDiv key={personId}>
         <CheckboxDiv>
           <FlexCenterSpacedDiv>
             <FlexBaseSpacedDiv>
@@ -293,10 +284,10 @@ const AddPersonModal = <T extends StorageTypes>({
         </Heading>
         <VerticalSeparatorDiv size='2' />
         <>
-          {_replySed?.bruker && renderPerson('bruker', brukerNr)}
-          {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle', ektefelleNr)}
-          {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson', annenPersonNr)}
-          {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`, barnNr + i))}
+          {_replySed?.bruker && renderPerson('bruker')}
+          {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
+          {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
+          {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`))}
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv size='2' />
@@ -304,7 +295,7 @@ const AddPersonModal = <T extends StorageTypes>({
             {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
           </Heading>
           <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft'>
+          <AlignStartRow>
             <Column>
               <Input
                 error={_validation[namespace + '-fnr']?.feilmelding}
@@ -350,8 +341,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   variant='secondary'
                   onClick={onAdd}
                 >
-                  <Add width={20} />
-                  <HorizontalSeparatorDiv />
+                  <AddCircle width={20} />
                   {t('el:button-add')}
                 </Button>
               </div>

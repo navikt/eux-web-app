@@ -70,7 +70,7 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
         {t('label:grunn-til-opphør')}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+      <AlignStartRow>
         <Column>
           <Select
             data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
@@ -88,7 +88,7 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {_typeGrunnOpphoerAnsatt === '99' && (
         <>
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow>
             <Column>
               <Input
                 error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
@@ -101,7 +101,7 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow className='slideInFromLeft' style={{ animationDelay: '0.1s' }}>
+          <AlignStartRow>
             <Column>
               <Input
                 error={validation[namespace + '-årsakselvstendig']?.feilmelding}
