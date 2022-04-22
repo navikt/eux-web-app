@@ -1,4 +1,8 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -9,18 +13,8 @@ import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Detail, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

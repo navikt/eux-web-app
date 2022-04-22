@@ -44,7 +44,6 @@ const SakPanel = ({
   return (
     <RadioPanelBorderWithLinks
       ariaLabel={sak.sakType + ' - ' + sak.sakTittel}
-
       onChange={onSelected}
       value={sakId}
     >

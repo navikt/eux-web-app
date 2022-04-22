@@ -1,3 +1,6 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import classNames from 'classnames'
@@ -6,27 +9,17 @@ import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
+import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { F002Sed, ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { F002Sed, Grunn, ProsedyreVedUenighet as IProsedyreVedUenighet } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { BodyLong, Heading, Button } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Option } from 'declarations/app.d'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
-import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): OneLevelFormSelector => ({
   validation: state.validation.status

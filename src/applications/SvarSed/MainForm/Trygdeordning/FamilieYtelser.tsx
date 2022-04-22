@@ -1,10 +1,13 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Detail, Ingress } from '@navikt/ds-react'
+import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
-import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Select from 'components/Forms/Select'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { ErrorElement, Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, PensjonsType, Periode, SedCategory } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -12,21 +15,11 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { ErrorElement, Option } from 'declarations/app.d'
-import { Button, Ingress, BodyLong, Detail } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
-import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status

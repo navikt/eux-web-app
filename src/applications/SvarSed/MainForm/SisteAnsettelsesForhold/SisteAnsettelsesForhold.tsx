@@ -1,9 +1,21 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import CountryData, { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { standardLogger } from 'metrics/loggers'
-import { validateUtbetaling, ValidationUtbetalingProps } from './validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
@@ -12,24 +24,13 @@ import { State } from 'declarations/reducers'
 import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import CountryData, { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import { Button, BodyLong, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  RadioPanelGroup,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
-} from '@navikt/hoykontrast'
+import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { AddCircle } from '@navikt/ds-icons'
+import { validateUtbetaling, ValidationUtbetalingProps } from './validation'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status

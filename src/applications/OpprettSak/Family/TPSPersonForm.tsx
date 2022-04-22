@@ -150,7 +150,6 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
         <HorizontalSeparatorDiv />
         {_personRelatert && (
           <PersonCard
-
             person={_personRelatert}
             onAddClick={leggTilPersonOgRolle}
             rolleList={rolleList}

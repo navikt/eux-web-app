@@ -1,16 +1,15 @@
+import { Button, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import classNames from 'classnames'
+import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { F002Sed } from 'declarations/sed'
 import { buttonLogger } from 'metrics/loggers'
-import { Heading, Button } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { OneLevelFormProps, OneLevelFormSelector, mapState } from 'applications/SvarSed/OneLevelForm'
 
 const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
   parentNamespace,

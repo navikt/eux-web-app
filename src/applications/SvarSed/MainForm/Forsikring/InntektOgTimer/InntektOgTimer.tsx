@@ -1,4 +1,8 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { Button, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -9,17 +13,7 @@ import { InntektOgTime, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import { Heading, Button } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'

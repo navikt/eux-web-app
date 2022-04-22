@@ -130,7 +130,7 @@ const AddRemovePanel2 = <T extends any>({
           data-testid={namespace + '-addremove-cancel'}
           onClick={() => onCancelNew()}
         >
-          <Cancel/>
+          <Cancel />
           {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>

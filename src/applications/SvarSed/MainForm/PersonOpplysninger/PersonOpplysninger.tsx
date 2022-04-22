@@ -1,4 +1,4 @@
-import { AddCircle, Edit, Search, Cancel, SuccessStroke } from '@navikt/ds-icons'
+import { Edit, Search, Cancel, SuccessStroke } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -13,8 +13,6 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -22,8 +20,9 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { Hr } from 'components/StyledComponents'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
+import FoedestedFC from 'components/Foedested/Foedested'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin, ReplySed } from 'declarations/sed'
+import { Kjoenn, PersonInfo, Pin, ReplySed, Foedested } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
@@ -59,12 +58,10 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
 
-  const [_seeNewFoedstedForm, setSeeNewFoedstedForm] = useState<boolean>(false)
-  const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
-
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
+  const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
 
   const onFornavnChange = (newFornavn: string) => {
@@ -151,6 +148,17 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
     }
   }
 
+  const onFoedestedChange = (newFoedested: Foedested | undefined, whatChanged: string | undefined) => {
+    let foedested: Foedested | undefined = _.cloneDeep(newFoedested)
+    if (_.isNil(foedested)) {
+      foedested = {} as Foedested
+    }
+    dispatch(updateReplySed(`${target}.pinMangler.foedested`, foedested))
+    if (whatChanged && validation[namespace + '-foedested-' + whatChanged]) {
+      dispatch(resetValidation(namespace + '-foedested-' + whatChanged))
+    }
+  }
+
   const onNorwegianPinChange = (newPin: string) => {
     _setTempNorwegianPin(newPin)
   }
@@ -176,27 +184,6 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
     _setSeeNorskPinForm(false)
   }
 
-  const onFoedestedByChange = (newFodestedBy: string) => {
-    dispatch(updateReplySed(`${target}.pinMangler.foedested.by`, newFodestedBy.trim()))
-    if (validation[namespace + '-foedested-by']) {
-      dispatch(resetValidation(namespace + '-foedested-by'))
-    }
-  }
-
-  const onFoedestedRegionChange = (newFodestedRegion: string) => {
-    dispatch(updateReplySed(`${target}.pinMangler.foedested.region`, newFodestedRegion.trim()))
-    if (validation[namespace + '-foedested-region']) {
-      dispatch(resetValidation(namespace + '-foedested-region'))
-    }
-  }
-
-  const onFoedestedLandChange = (newLand: string) => {
-    dispatch(updateReplySed(`${target}.pinMangler.foedested.land`, newLand.trim()))
-    if (validation[namespace + '-foedested-land']) {
-      dispatch(resetValidation(namespace + '-foedested-land'))
-    }
-  }
-
   const onSearchUser = (e: any) => {
     if (norwegianPin && norwegianPin.identifikator) {
       buttonLogger(e)
@@ -206,7 +193,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
 
   return (
     <div key={namespace + '-div'}>
-      <PaddedDiv>
+      <PaddedDiv style={{ padding: '0.88rem' }}>
         <Heading size='medium'>
           {(replySed as ReplySed)?.sedType} - {t('buc:' + (replySed as ReplySed)?.sedType)}
         </Heading>
@@ -287,7 +274,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
                       variant='tertiary'
                       onClick={() => _setSeeNorskPinForm(false)}
                     >
-                      <Cancel/>
+                      <Cancel />
                       {t('el:button-cancel')}
                     </Button>
                   </FlexEndDiv>
@@ -407,81 +394,18 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
         validation={validation}
       />
       <PaddedDiv>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column>
-            <Heading size='small'>
-              {t('label:fødested')}
-            </Heading>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-        {_seeNewFoedstedForm
-          ? (
-            <>
-              <AlignStartRow key='showNewForm'>
-                <Column>
-                  <Input
-                    error={validation[namespace + '-foedested-by']?.feilmelding}
-                    id='foedested-by'
-                    label={t('label:by')}
-                    namespace={namespace}
-                    onChanged={onFoedestedByChange}
-                    value={personInfo!.pinMangler?.foedested?.by ?? ''}
-                  />
-                </Column>
-                <Column>
-                  <Input
-                    error={validation[namespace + '-foedested-region']?.feilmelding}
-                    id='foedested-region'
-                    label={t('label:region')}
-                    namespace={namespace}
-                    onChanged={onFoedestedRegionChange}
-                    value={personInfo!.pinMangler?.foedested?.region ?? ''}
-                  />
-                </Column>
-                <Column>
-                  <CountrySelect
-                    data-testid={namespace + '-foedested-land'}
-                    error={validation[namespace + '-foedested-land']?.feilmelding}
-                    id={namespace + '-foedested-land'}
-                    includeList={CountryFilter.STANDARD({})}
-                    label={t('label:land')}
-                    menuPortalTarget={document.body}
-                    onOptionSelected={(e: Country) => onFoedestedLandChange(e.value)}
-                    values={personInfo!.pinMangler?.foedested?.land ?? ''}
-                  />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2' />
-                <Column>
-                  <Button
-                    variant='tertiary'
-                    onClick={() => setSeeNewFoedstedForm(false)}
-                  >
-                    <Cancel />
-                    {t('el:button-cancel')}
-                  </Button>
-                </Column>
-              </AlignStartRow>
-            </>
-            )
-          : (
-            <AlignStartRow key='seeNewForm'>
-              <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => setSeeNewFoedstedForm(true)}
-                >
-                  <AddCircle />
-                  {t('el:button-add-x', { x: t('label:fødested') })}
-                </Button>
-              </Column>
-            </AlignStartRow>
-            )}
+        <VerticalSeparatorDiv />
+        <Heading size='small'>
+          {t('label:fødested')}
+        </Heading>
       </PaddedDiv>
+      <FoedestedFC
+        loggingNamespace='svarsed.editor.fodested'
+        foedested={personInfo?.pinMangler?.foedested}
+        onFoedestedChanged={onFoedestedChange}
+        namespace={namespace + '-foedested'}
+        validation={validation}
+      />
     </div>
   )
 }

@@ -14,7 +14,6 @@ import { standardLogger } from 'metrics/loggers'
 import {
   AlignStartRow,
   Column,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   Row,

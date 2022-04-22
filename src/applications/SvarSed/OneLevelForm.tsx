@@ -1,19 +1,6 @@
-import { ActionWithPayload } from '@navikt/fetch'
-import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
-import Kontoopplysning from 'applications/SvarSed/BottomForm/Kontoopplysning/Kontoopplysning'
-import KravOmRefusjon from 'applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/BottomForm/Motregning/Motregning'
-import ProsedyreVedUenighet from 'applications/SvarSed/BottomForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
-import Vedtak from 'applications/SvarSed/BottomForm/Vedtak/Vedtak'
-import { NextFilled, ErrorFilled, SuccessFilled } from '@navikt/ds-icons'
+import { ErrorFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong, Heading } from '@navikt/ds-react'
-import classNames from 'classnames'
-import { WithErrorPanel } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import { FSed, ReplySed } from 'declarations/sed'
-import { UpdateReplySedPayload, Validation } from 'declarations/types'
-import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
+import { ActionWithPayload } from '@navikt/fetch'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
@@ -22,6 +9,19 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
+import Kontoopplysning from 'applications/SvarSed/BottomForm/Kontoopplysning/Kontoopplysning'
+import KravOmRefusjon from 'applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/BottomForm/Motregning/Motregning'
+import ProsedyreVedUenighet from 'applications/SvarSed/BottomForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import Vedtak from 'applications/SvarSed/BottomForm/Vedtak/Vedtak'
+import classNames from 'classnames'
+import { WithErrorPanel } from 'components/StyledComponents'
+import { ErrorElement } from 'declarations/app.d'
+import { State } from 'declarations/reducers'
+import { FSed, ReplySed } from 'declarations/sed'
+import { UpdateReplySedPayload, Validation } from 'declarations/types'
+import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
@@ -292,7 +292,7 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
       <WithErrorPanel border className={classNames({ error: validation[namespace]?.feilmelding })}>
         <FlexCenterSpacedDiv>
           <LeftDiv>
-            {menus.map((menu, index) => (
+            {menus.map((menu) => (
               <PileDiv key={menu}>
                 <MenuDiv>
                   <MenuLabelDiv

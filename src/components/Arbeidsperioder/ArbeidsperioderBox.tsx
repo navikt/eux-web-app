@@ -192,10 +192,7 @@ const ArbeidsperioderBox = ({
   const WrappingComponent = _isEditing && editable === 'full' ? PileCenterDiv : FlexCenterSpacedDiv
 
   return (
-    <div
-
-      key={generateIdentifikatorKey(_arbeidsgiversIdentifikator)}
-    >
+    <div key={generateIdentifikatorKey(_arbeidsgiversIdentifikator)}>
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel
         border

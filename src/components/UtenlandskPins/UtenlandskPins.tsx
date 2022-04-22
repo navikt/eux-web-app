@@ -127,9 +127,10 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 
     return (
       <RepeatableRow className={classNames({
-        new: index < 0 ,
+        new: index < 0,
         error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
-      })}>
+      })}
+      >
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
@@ -151,11 +152,11 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   <BodyLong>{utenlandskePin?.identifikator}</BodyLong>
                   {getErrorFor(index, 'identifikator') && (
                     <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                    {getErrorFor(index, 'identifikator')}
+                      {getErrorFor(index, 'identifikator')}
                     </div>
                   )}
                 </PileDiv>
-              )}
+                )}
           </Column>
           <Column>
             {editing

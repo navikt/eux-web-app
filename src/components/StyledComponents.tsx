@@ -72,7 +72,12 @@ export const WithErrorPanel = styled(Panel)`
   &.error {
     border-color: var(--navds-select-color-border-error);
     border-width: 3px;
-    .left, .right {
+    .left {
+       border-top: none;
+       border-left: none;
+       border-bottom: none;
+    }
+    .right {
        border: none;
     }
   }

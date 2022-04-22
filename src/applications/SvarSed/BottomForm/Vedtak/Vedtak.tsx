@@ -1,18 +1,31 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import {
   validateVedtakVedtaksperiode,
   ValidationVedtakPeriodeProps,
   ValidationVedtakVedtaksperiodeProps
 } from 'applications/SvarSed/BottomForm/Vedtak/validation'
+import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
+import PeriodeInput from 'components/Forms/PeriodeInput'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
-import { Options, ErrorElement } from 'declarations/app'
+import { ErrorElement, Options } from 'declarations/app'
+import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { F002Sed, JaNei, Periode, Vedtak, VedtakBarn, VedtakPeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -21,23 +34,11 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { Ingress, BodyLong, Heading, Checkbox, Button } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  RadioPanelGroup,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv, FlexRadioPanels, RadioPanel
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { Option } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
-import { AddCircle } from '@navikt/ds-icons'
 
 const mapState = (state: State): OneLevelFormSelector => ({
   validation: state.validation.status
@@ -451,13 +452,12 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
         <div>
           <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
           <VerticalSeparatorDiv />
-          {(replySed as F002Sed)?.barn?.map((b, index) => {
+          {(replySed as F002Sed)?.barn?.map((b) => {
             const vedtakBarn: VedtakBarn = {
               fornavn: b.personInfo.fornavn,
               etternavn: b.personInfo.etternavn,
               foedselsdato: b.personInfo.foedselsdato
             }
-
             const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb =>
               `${vb.fornavn}-${vb.etternavn}-${vb.foedselsdato}` === `${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`
             ) !== undefined

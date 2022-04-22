@@ -1,19 +1,22 @@
 import { BodyLong, Heading, Label } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import Flag from '@navikt/flagg-ikoner'
 import {
-  mapState,
-  TwoLevelFormProps,
-  TwoLevelFormSelector
-} from 'applications/SvarSed/TwoLevelForm'
-import classNames from 'classnames'
+  AlignStartRow,
+  Column,
+  FlexCenterDiv,
+  HorizontalSeparatorDiv,
+  PaddedHorizontallyDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { resetValidation } from 'actions/validation'
+import { mapState, TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import Select from 'components/Forms/Select'
 import { RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
-import Flag from '@navikt/flagg-ikoner'
 import _ from 'lodash'
-import { AlignStartRow, Column, FlexCenterDiv, HorizontalSeparatorDiv, PaddedHorizontallyDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

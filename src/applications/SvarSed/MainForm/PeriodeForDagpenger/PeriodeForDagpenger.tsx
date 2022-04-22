@@ -1,11 +1,17 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
-import { standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Heading } from '@navikt/ds-react'
-import {
-  validatePeriodeDagpenger,
-  ValidationPeriodeDagpengerProps
-} from './validationPeriodeDagpenger'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -18,20 +24,12 @@ import { Kodeverk } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import {
-  AlignStartRow,
-  Column, FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv, RadioPanel,
-  RadioPanelGroup,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { getIdx } from 'utils/namespace'
-import { AddCircle } from '@navikt/ds-icons'
+import { validatePeriodeDagpenger, ValidationPeriodeDagpengerProps } from './validationPeriodeDagpenger'
 
 interface PeriodeForDagpengerSelector extends TwoLevelFormSelector {
   landkoderList: Array<Kodeverk> | undefined

@@ -16,7 +16,7 @@ interface StackProps {
   initialValues: any
   itemLabel: string
   namespace: string
-  options: any
+  options: Array<Option>
   onChange: (options: any, action: 'add' | 'remove', item: string) => void
   selectLabel?: string
   title?: string
@@ -38,25 +38,23 @@ const Stack: React.FC<StackProps> = ({
   const [_addItem, setAddItem] = useState<boolean>(false)
   const [_items, setItems] = useState<Array<string>>(initialValues || [])
   const [_newItem, setNewItem] = useState<Option | undefined>(undefined)
-  const [_newItemIndex, setNewItemIndex] = useState<number | undefined>(undefined)
   const [_itemValues, setItemValues] = useState<Array<Option>>(_.filter(options, p => _items.indexOf(p.value) < 0))
 
   const saveChanges = (newFormaals: Array<string>, action: 'add' | 'remove', item: string) => {
     const newFormaalValues = _.filter(options, p => newFormaals.indexOf(p.value) < 0)
     setItems(newFormaals)
-    setItemValues(newFormaalValues)
+    setItemValues(newFormaalValues as Array<Option>)
     onChange(newFormaals, action, item)
   }
   const onRemove = (item: string) => {
     removeFromDeletion(item)
-    const newItems = _.filter(_items, _f => _f !== item)
+    const newItems : Array<string> = _.filter(_items, _f => _f !== item)
     saveChanges(newItems, 'remove', item)
   }
 
   const onAdd = () => {
     if (_newItem) {
       const newItems = _items.concat(_newItem.value.trim())
-      setNewItemIndex(newItems.length - 1)
       saveChanges(newItems, 'add', _newItem.value.trim())
       setNewItem(undefined)
     }
@@ -79,7 +77,7 @@ const Stack: React.FC<StackProps> = ({
           const _b = _.find(options, _f => _f.value === b)?.label ?? ''
           return _a.localeCompare(_b)
         })
-        ?.map((item: string, i: number) => (
+        ?.map((item: string) => (
           <FlexCenterSpacedDiv key={item}>
             <MyTag variant='info' data-border>
               {_.find(options, _f => _f.value === item)?.label}

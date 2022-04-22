@@ -1,13 +1,6 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Ingress } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { AlignStartRow, Column, FlexCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'

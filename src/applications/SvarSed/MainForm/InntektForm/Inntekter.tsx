@@ -1,4 +1,9 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { Button, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
+import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -7,24 +12,13 @@ import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledCompone
 import { Inntekt } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import { Button, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
-import { resetValidation } from 'actions/validation'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;

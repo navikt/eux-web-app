@@ -1,4 +1,4 @@
-import { AddCircle, Child, ErrorFilled, ExpandFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
+import { AddCircle, Child, ErrorFilled, ExpandFilled, EllipsisCircleH, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
@@ -208,8 +208,7 @@ const TwoLevelForm = <T extends StorageTypes>({
   const brukerNr = 1
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
-  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0);
-
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0)
 
   // list of open menus (= persons). If SED only has one person (bruker), open it by default
   const [openMenus, setOpenMenus] = useState<Array<string>>(() => totalPeopleNr === 1 ? ['bruker'] : [])
@@ -339,7 +338,7 @@ const TwoLevelForm = <T extends StorageTypes>({
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
 
     return (
-      <NameAndOptionsDiv className={classNames({whiteborder: !open && currentMenu === personId})}>
+      <NameAndOptionsDiv className={classNames({ whiteborder: !open && currentMenu === personId })}>
         <NameDiv>
           <NameLabelDiv
             onClick={() => {
@@ -387,7 +386,7 @@ const TwoLevelForm = <T extends StorageTypes>({
             {open ? <ExpandFilled /> : <NextFilled />}
           </MenuArrowDiv>
         </NameDiv>
-        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator/></PaddedHorizontallyDiv>}
+        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
         {open && forms
           .filter(o => {
             const _type = (replySed as ReplySed)?.sedType ?? 'PDU1'
@@ -414,13 +413,17 @@ const TwoLevelForm = <T extends StorageTypes>({
                 onClick={() => changeMenu(personId, o.value, 'click')}
                 role='button'
               >
-                {viewValidation && (
-                  validation[namespace + '-' + personId + '-' + o.value] === undefined
-                    ? <SuccessFilled color='green' height={20} />
-                    : <ErrorFilled height={20} color='red' />
-                )}
+                {viewValidation
+                  ? (
+                      validation[namespace + '-' + personId + '-' + o.value] === undefined
+                        ? <SuccessFilled color='green' height={20} />
+                        : <ErrorFilled color='red' height={20} />
+                    )
+                  : (
+                    <EllipsisCircleH height={20} />
+                    )}
                 <HorizontalSeparatorDiv size='0.5' />
-                {`${i + 1}. ${o.label}`}
+                {o.label}
               </OptionDiv>
             )
           })}

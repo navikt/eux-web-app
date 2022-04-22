@@ -1,11 +1,13 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
-import TextArea from 'components/Forms/TextArea'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
@@ -14,15 +16,6 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import { BodyLong, Detail, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

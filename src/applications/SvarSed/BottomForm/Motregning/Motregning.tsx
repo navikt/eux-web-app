@@ -1,6 +1,19 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import CountryData, { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
-import { OneLevelFormProps, OneLevelFormSelector, mapState } from 'applications/SvarSed/OneLevelForm'
+import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -20,22 +33,8 @@ import {
 } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import CountryData, { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { BodyLong, Detail, Heading, Button } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  RadioPanelGroup,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv,
-  FlexRadioPanels,
-  RadioPanel
-} from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

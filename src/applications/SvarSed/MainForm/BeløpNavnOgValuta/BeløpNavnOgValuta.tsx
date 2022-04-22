@@ -1,5 +1,16 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -13,20 +24,8 @@ import { State } from 'declarations/reducers'
 import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
-import { Currency } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'

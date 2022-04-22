@@ -114,6 +114,12 @@ export interface Statsborgerskap {
   fraDato?: string
 }
 
+export interface Foedested {
+  by: string
+  region: string
+  land: string
+}
+
 export interface PersonInfo {
   fornavn: string
   etternavn: string
@@ -122,11 +128,7 @@ export interface PersonInfo {
   statsborgerskap: Array<Statsborgerskap>
   pin: Array<Pin>
   pinMangler?: {
-    foedested: {
-      by: string
-      region: string
-      land: string
-    }
+    foedested: Foedested
     far: {
       fornavn: string
       etternavnVedFoedsel: string
