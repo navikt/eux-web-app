@@ -85,8 +85,8 @@ export const validateLoennsopplysninger = (
   let hasErrors: boolean = false
   loennsopplysninger?.forEach((loennsopplysning: Loennsopplysning, index: number) => {
     const _errors: boolean = validateLoennsopplysning(validation, t, {
-      loennsopplysning: loennsopplysning,
-      loennsopplysninger: loennsopplysninger,
+      loennsopplysning,
+      loennsopplysninger,
       index,
       namespace
     })

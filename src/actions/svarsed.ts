@@ -135,7 +135,7 @@ export const querySaksnummerOrFnr = (
   }
 
   return call({
-    url: url,
+    url,
     expectedPayload: mockSaks(saksnummerOrFnr),
     context: {
       type,

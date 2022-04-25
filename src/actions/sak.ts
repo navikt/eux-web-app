@@ -21,14 +21,14 @@ export const addArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFr
   payload: ArbeidsperiodeFraAA
 ): ActionWithPayload<ArbeidsperiodeFraAA> => ({
   type: types.SAK_ARBEIDSPERIODER_ADD,
-  payload: payload
+  payload
 })
 
 export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
   payload: OldFamilieRelasjon
 ): ActionWithPayload<OldFamilieRelasjon> => ({
   type: types.SAK_FAMILIERELASJONER_ADD,
-  payload: payload
+  payload
 })
 
 export const cleanData: ActionCreator<Action> = (): Action => ({
@@ -67,7 +67,7 @@ export const createSak = (data: any): ActionWithPayload<any> => {
   return call({
     url: urls.API_SAK_SEND_URL,
     method: 'POST',
-    payload: payload,
+    payload,
     expectedPayload: mockSendSak,
     type: {
       request: types.SAK_SEND_REQUEST,
@@ -123,14 +123,14 @@ export const removeArbeidsperiode: ActionCreator<ActionWithPayload<Arbeidsperiod
   payload: ArbeidsperiodeFraAA
 ): ActionWithPayload<ArbeidsperiodeFraAA> => ({
   type: types.SAK_ARBEIDSPERIODER_REMOVE,
-  payload: payload
+  payload
 })
 
 export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
   payload: OldFamilieRelasjon
 ): ActionWithPayload<OldFamilieRelasjon> => ({
   type: types.SAK_FAMILIERELASJONER_REMOVE,
-  payload: payload
+  payload
 })
 
 export const resetFagsaker: ActionCreator<Action> = (): Action => ({

@@ -143,7 +143,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       if (personID === 'familie') {
         const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
         _error = validateBeløpNavnOgValutas(v, t, {
-          ytelser: ytelser, namespace: `TwoLevelForm-${personID}-familieytelser`, personID, personName
+          ytelser, namespace: `TwoLevelForm-${personID}-familieytelser`, personID, personName
         })
         hasErrors = hasErrors || _error
       } else {
@@ -279,7 +279,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       _error = validatePerioderDagpenger(v, t, {
         perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
         namespace: `TwoLevelForm-${personID}-periodefordagpenger`,
-        personName: personName
+        personName
       })
       hasErrors = hasErrors || _error
 
@@ -350,7 +350,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       hasErrors = hasErrors || _error
 
       _error = validateEndredeForhold(v, t, {
-        replySed: replySed,
+        replySed,
         namespace: `TwoLevelForm-${personID}-endredeforhold`,
         personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
       })

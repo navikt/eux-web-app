@@ -102,8 +102,8 @@ const NotAnsatt: React.FC<TwoLevelFormProps & {arbeidsforhold: string}> = ({
     const valid: boolean = performValidation({
       periode: _newPeriode,
       perioder: replySedPerioder,
-      namespace: namespace,
-      personName: personName
+      namespace,
+      personName
     })
 
     if (valid) {

@@ -16,7 +16,7 @@ export const searchAdresse = (
   fnr: string
 ): ActionWithPayload<Array<Adresse>> => {
   return call({
-    url: sprintf(urls.API_ADRESSE_URL, { fnr: fnr }),
+    url: sprintf(urls.API_ADRESSE_URL, { fnr }),
     expectedPayload: mockAdresse,
     cascadeFailureError: true,
     type: {

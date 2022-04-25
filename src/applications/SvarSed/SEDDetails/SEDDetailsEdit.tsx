@@ -232,7 +232,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const onAdd = () => {
     const valid: boolean = performValidation({
       anmodningsperiode: _newAnmodningsperioder,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
@@ -255,7 +255,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 
     const valid: boolean = sakseierPerformValidation({
       lokaleSakId: newLokaleSaksId,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newLokaleSaksIder: Array<LokaleSakId> = _.cloneDeep((replySed as USed).lokaleSakIder)

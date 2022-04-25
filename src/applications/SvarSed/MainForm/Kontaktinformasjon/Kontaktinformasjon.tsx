@@ -153,9 +153,9 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
 
     const valid: boolean = performValidationTelefon({
       telefon: newTelefon,
-      telefoner: telefoner,
+      telefoner,
       namespace: namespaceTelefon,
-      personName: personName
+      personName
     })
 
     if (valid) {
@@ -177,9 +177,9 @@ const Kontaktinformasjon: React.FC<TwoLevelFormProps> = ({
 
     const valid: boolean = performValidationEpost({
       epost: newEpost,
-      eposter: eposter,
+      eposter,
       namespace: namespaceEpost,
-      personName: personName
+      personName
     })
 
     if (valid) {

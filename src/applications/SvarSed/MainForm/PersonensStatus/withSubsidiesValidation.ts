@@ -30,7 +30,7 @@ export const validateWithSubsidiesPeriode = (
   let hasErrors: boolean = validatePeriode(v, t, {
     periode: pensjonPeriode.periode,
     namespace: namespace + '-periode' + idx,
-    personName: personName
+    personName
   })
 
   let duplicate: boolean

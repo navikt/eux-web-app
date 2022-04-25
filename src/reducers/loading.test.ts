@@ -8,7 +8,7 @@ describe('reducers/loading', () => {
         ...initialLoadingState,
         [param]: initialBool
       }, {
-        type: type
+        type
       })
     ).toEqual({
       ...initialLoadingState,

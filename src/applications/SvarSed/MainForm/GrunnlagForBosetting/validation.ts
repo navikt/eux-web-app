@@ -27,7 +27,7 @@ export const validateGrunnlagForBosetting = (
 ): boolean => {
   let hasErrors = validatePeriode(v, t, {
     periode,
-    namespace: namespace,
+    namespace,
     personName
   })
   if (!_.isEmpty(periode?.startdato)) {

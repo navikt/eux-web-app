@@ -132,7 +132,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
     Sentry.captureEvent({
       message: error.message,
       extra: {
-        error: error
+        error
       },
       level: Sentry.Severity.Error
     })

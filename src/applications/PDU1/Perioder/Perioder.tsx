@@ -168,7 +168,7 @@ const Perioder: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = _performValidation({
       periode: _newPeriode as PDPeriode,
       type: _newType,
-      namespace: namespace
+      namespace
     })
     if (valid && _newType) {
       newPeriodes = newPeriodes.concat(_newPeriode!)

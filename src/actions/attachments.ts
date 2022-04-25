@@ -45,7 +45,7 @@ export const listJoarkItems = (
   fnr: string
 ): ActionWithPayload<JoarkList> => {
   return call({
-    url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr: fnr }),
+    url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr }),
     expectedPayload: mockJoark,
     type: {
       request: types.ATTACHMENT_LIST_REQUEST,
@@ -68,8 +68,8 @@ export const sendAttachmentToSed = (
     cascadeFailureError: true,
     expectedPayload: joarkBrowserItem,
     context: {
-      params: params,
-      joarkBrowserItem: joarkBrowserItem
+      params,
+      joarkBrowserItem
     },
     type: {
       request: types.ATTACHMENT_SEND_REQUEST,

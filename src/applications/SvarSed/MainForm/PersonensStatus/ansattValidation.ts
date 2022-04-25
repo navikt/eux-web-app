@@ -28,8 +28,8 @@ export const validateAnsattPeriode = (
   let hasErrors: boolean = validatePeriode(v, t, {
     periode,
     namespace: namespace + '-periode',
-    index: index,
-    personName: personName
+    index,
+    personName
   })
   const idx = getIdx(index)
   if (!_.isEmpty(periode?.startdato)) {

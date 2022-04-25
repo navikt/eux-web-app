@@ -105,7 +105,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     const valid: boolean = _performValidation({
       identifikatorer,
       identifikator: newIdentifikator,
-      namespace: namespace,
+      namespace,
       personName
     })
     if (valid) {

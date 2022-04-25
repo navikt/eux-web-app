@@ -101,9 +101,9 @@ const Nasjonaliteter: React.FC<TwoLevelFormProps> = ({
     }
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap,
-      statsborgerskaper: statsborgerskaper,
-      namespace: namespace,
-      personName: personName
+      statsborgerskaper,
+      namespace,
+      personName
     })
     if (valid) {
       let newStatsborgerskaper = _.cloneDeep(statsborgerskaper)

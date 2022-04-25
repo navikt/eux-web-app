@@ -176,7 +176,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
           newMotregninger.push(_clonedMotregning)
           newReplySed.barn![i].motregninger = newMotregninger
           // update indexes
-          _newIndex.push({ fullKey: fullKey, ytelseNavn: _clonedMotregning.ytelseNavn })
+          _newIndex.push({ fullKey, ytelseNavn: _clonedMotregning.ytelseNavn })
         })
       }
 
@@ -196,7 +196,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
         newMotregninger.push(_clonedMotregning)
         _.set(newReplySed, 'familie.motregninger', newMotregninger)
         // update indexes
-        _newIndex.push({ fullKey: fullKey })
+        _newIndex.push({ fullKey })
       }
       newKeyAndYtelseMap[motregningKey] = _newIndex
       setKeyAndYtelseMap(newKeyAndYtelseMap)
@@ -223,7 +223,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
   const onAdded = (barnKey: string, ytelseNavn: string, motregningKey: string) => {
     if (motregningKey === 'new-motregning') {
       let newKeyAndYtelses = _.cloneDeep(_newKeyAndYtelses)
-      newKeyAndYtelses = newKeyAndYtelses.concat({ fullKey: barnKey, ytelseNavn: ytelseNavn })
+      newKeyAndYtelses = newKeyAndYtelses.concat({ fullKey: barnKey, ytelseNavn })
       _setNewKeyAndYtelses(newKeyAndYtelses)
     } else {
       const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
@@ -236,10 +236,10 @@ const Motregning: React.FC<OneLevelFormProps> = ({
       const newFullKey = barnKey + '.motregninger[' + newMotregninger.length + ']'
       newMotregninger.push({
         ..._clonedMotregning,
-        ytelseNavn: ytelseNavn
+        ytelseNavn
       })
       newKeyAndYtelseMap[motregningKey].push({
-        fullKey: newFullKey, ytelseNavn: ytelseNavn
+        fullKey: newFullKey, ytelseNavn
       })
       setKeyAndYtelseMap(newKeyAndYtelseMap)
       dispatch(updateReplySed(barnKey + '.motregninger', newMotregninger))
@@ -328,7 +328,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
         if (it.fullKey === fullKey) {
           return {
             ...it,
-            ytelseNavn: ytelseNavn
+            ytelseNavn
           }
         }
         return it
@@ -343,7 +343,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
         if (keyAndYtelse.fullKey === fullKey) {
           return {
             ...keyAndYtelse,
-            ytelseNavn: ytelseNavn
+            ytelseNavn
           }
         }
         return keyAndYtelse
@@ -556,7 +556,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
       motregning: newMotregning,
       keyAndYtelses: _newKeyAndYtelses,
       type: _newBarnaEllerFamilie as BarnaEllerFamilie,
-      namespace: namespace,
+      namespace,
       formalName: t('label:motregning').toLowerCase()
     })
 

@@ -12,6 +12,7 @@
   "button-edit": "Rediger",
   "button-edit-x": "Rediger {{x}}",
   "button-fill-sed": "Fyll ut SED",
+  "button-hide": "Skjul",
   "button-load": "Last inn",
   "button-log-me-again": "Logg inn på nytt",
   "button-ok-got-it" : "Ok, stemmer det",
@@ -28,6 +29,7 @@
   "button-search-for-x" : "Søk {{x}}",
   "button-start-new-x" : "Start en ny {{x}}",
   "button-send-sed" : "Send SED",
+  "button-show" : "Vis",
   "button-update-draft-x" : "Oppdatere utkast {{x}}",
 
   "checkbox-pdu1-4.1": "har mottatt eller har fortsatt ikke mottatt lønn for perioden etter avsluttet arbeidsforhold, inntil",

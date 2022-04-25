@@ -156,7 +156,7 @@ const svarsedReducer = (
         : [(action as ActionWithPayload).payload]
       return {
         ...state,
-        saks: saks
+        saks
       }
     }
 
@@ -192,7 +192,7 @@ const svarsedReducer = (
 
       return {
         ...state,
-        sedSendResponse: sedSendResponse,
+        sedSendResponse,
         sedCreatedResponse: (action as ActionWithPayload).payload,
         replySedChanged: false
       }

@@ -78,13 +78,13 @@ const SaveSEDModal = ({
         // replySed.sedId is undefined if we are dealing with a besvar SED, but since the ID is only for local storage purposes
         // only, generate a random one
         id: replySed.sedId ?? 'id-' + new Date().getTime(),
-        name: name,
+        name,
         date: dateString,
         content: replySed
       } as LocalStorageEntry<ReplySed>
       dispatch(saveEntry('svarsed', newItem))
       setSaved(true)
-      setMessage(t('label:lagret-sed-utkast', { name: name, date: dateString }))
+      setMessage(t('label:lagret-sed-utkast', { name, date: dateString }))
     }
   }
 

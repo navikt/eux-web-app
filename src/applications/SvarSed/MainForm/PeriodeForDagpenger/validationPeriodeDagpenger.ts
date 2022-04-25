@@ -81,7 +81,7 @@ export const validatePeriodeDagpenger = (
       adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
       namespace: namespace + idx + '-institusjon-idmangler-adresse',
       checkAdresseType: true,
-      personName: personName
+      personName
     })
     hasErrors = hasErrors || _error
   }
@@ -116,8 +116,8 @@ export const validatePerioderDagpenger = (
   let hasErrors: boolean = false
   perioderDagpenger?.forEach((periodeDagpenger: PeriodeDagpenger, index: number) => {
     const _errors: boolean = validatePeriodeDagpenger(validation, t, {
-      periodeDagpenger: periodeDagpenger,
-      perioderDagpenger: perioderDagpenger,
+      periodeDagpenger,
+      perioderDagpenger,
       index,
       namespace,
       personName

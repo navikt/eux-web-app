@@ -40,7 +40,7 @@ describe('actions/arbeidsperioder', () => {
     expect(arbeidsperioderActions.updateArbeidsperioder(payload))
       .toMatchObject({
         type: types.ARBEIDSPERIODER_UPDATE,
-        payload: payload
+        payload
       })
   })
 })

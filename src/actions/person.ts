@@ -21,7 +21,7 @@ export const searchPerson = (
   fnr: string
 ): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
+    url: sprintf(urls.API_PERSONER_URL, { fnr }),
     expectedPayload: mockPerson,
     cascadeFailureError: true,
     type: {
@@ -36,11 +36,11 @@ export const searchPersonRelated = (
   fnr: string
 ): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr: fnr }),
+    url: sprintf(urls.API_PERSONER_URL, { fnr }),
     expectedPayload: mockPerson,
     cascadeFailureError: true,
     context: {
-      fnr: fnr
+      fnr
     },
     type: {
       request: types.PERSON_RELATERT_SEARCH_REQUEST,

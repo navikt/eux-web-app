@@ -86,10 +86,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const [_tableKey, setTableKey] = useState<string>('')
 
   const context: JoarkBrowserContext = {
-    existingItems: existingItems,
-    gettingJoarkFile: gettingJoarkFile,
+    existingItems,
+    gettingJoarkFile,
     clickedPreviewItem: _clickedPreviewItem,
-    mode: mode
+    mode
   }
 
   const handleModalClose = useCallback(() => {
@@ -202,7 +202,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
         const selected = _.find(selectedItems, {
           dokumentInfoId: doc.dokumentInfoId,
-          variant: variant
+          variant
         }) !== undefined
 
         let disabled = _.find(disabledItems, {
@@ -219,14 +219,14 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
           journalpostId: post.journalpostId,
           dokumentInfoId: doc.dokumentInfoId,
-          variant: variant,
+          variant,
 
           title: doc.tittel || '-',
           tema: post.tema,
           date: new Date(Date.parse(post.datoOpprettet)),
 
-          selected: selected,
-          disabled: disabled,
+          selected,
+          disabled,
           hasSubrows: false
         }
         if (multipleDocuments) {

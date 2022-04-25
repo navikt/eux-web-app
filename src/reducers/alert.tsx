@@ -86,8 +86,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
-      bannerMessage: bannerMessage,
-      bannerStatus: bannerStatus,
+      bannerMessage,
+      bannerStatus,
       error: (action as ActionWithPayload).payload
         ? _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
@@ -155,8 +155,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
-      stripeStatus: stripeStatus,
-      stripeMessage: stripeMessage,
+      stripeStatus,
+      stripeMessage,
       error: (action as ActionWithPayload).payload
         ? _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
@@ -190,7 +190,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       ...state,
       type: action.type,
       bannerStatus: 'success',
-      bannerMessage: bannerMessage,
+      bannerMessage,
       uuid: undefined,
       error: undefined
     }
@@ -213,8 +213,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   return {
     ...state,
     type: action.type,
-    stripeStatus: stripeStatus,
-    stripeMessage: stripeMessage,
+    stripeStatus,
+    stripeMessage,
     uuid: undefined,
     error: undefined
   }

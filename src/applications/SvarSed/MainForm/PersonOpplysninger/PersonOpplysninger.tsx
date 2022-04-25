@@ -1,8 +1,8 @@
-import { Edit, Search, Cancel, SuccessStroke } from '@navikt/ds-icons'
+import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import {
-  AlignStartRow,
   AlignCenterRow,
+  AlignStartRow,
   Column,
   FlexCenterDiv,
   FlexEndDiv,
@@ -16,19 +16,18 @@ import {
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import FoedestedFC from 'components/Foedested/Foedested'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
-import { Hr } from 'components/StyledComponents'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
-import FoedestedFC from 'components/Foedested/Foedested'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin, ReplySed, Foedested } from 'declarations/sed.d'
+import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 interface PersonOpplysningerSelector extends TwoLevelFormSelector {
   searchingPerson: boolean
@@ -52,8 +51,8 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
     searchedPerson,
     searchingPerson,
     validation
-  } = useSelector<State, PersonOpplysningerSelector>(mapState)
-  const dispatch = useDispatch()
+  } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
@@ -193,13 +192,6 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
 
   return (
     <div key={namespace + '-div'}>
-      <PaddedDiv style={{ padding: '0.88rem' }}>
-        <Heading size='medium'>
-          {(replySed as ReplySed)?.sedType} - {t('buc:' + (replySed as ReplySed)?.sedType)}
-        </Heading>
-      </PaddedDiv>
-      <Hr />
-      <VerticalSeparatorDiv />
       <PaddedDiv>
         <AlignCenterRow>
           {!_seeNorskPinForm

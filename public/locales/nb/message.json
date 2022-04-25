@@ -55,7 +55,7 @@
   "success-sed-send": "SED sendt",
 
   "warning-max-1-utenlandsk-pin" : "Maks 1 utenlandsk pin til H001",
-  "warning-no-address": "Ingen adresser",
+  "warning-no-address": "Ingen adresser er registrert",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",
   "warning-no-barn": "Ingen barn",
   "warning-no-email": "Ingen e-post adresser",

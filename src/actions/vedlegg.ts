@@ -8,7 +8,7 @@ const sprintf = require('sprintf-js').sprintf
 
 export const getDokument = (rinasaksnummer: string): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer: rinasaksnummer }),
+    url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer }),
     expectedPayload: mockRinaDokumenter,
     type: {
       request: types.VEDLEGG_DOKUMENT_GET_REQUEST,
@@ -21,8 +21,8 @@ export const getDokument = (rinasaksnummer: string): ActionWithPayload => {
 export const propertySet = (key: string, value: string | boolean | undefined) => ({
   type: types.VEDLEGG_PROPERTY_SET,
   payload: {
-    key: key,
-    value: value
+    key,
+    value
   }
 })
 
@@ -30,7 +30,7 @@ export const sendVedlegg = (payload: VedleggPayload): ActionWithPayload => {
   return call({
     url: urls.API_VEDLEGG_POST_URL,
     method: 'POST',
-    payload: payload,
+    payload,
     expectedErrorRate: { 500: 0.5 },
     expectedPayload: mockSendVedlegg,
     type: {

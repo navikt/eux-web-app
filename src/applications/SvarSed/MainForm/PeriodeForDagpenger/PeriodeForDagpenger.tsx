@@ -238,8 +238,8 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = performValidation({
       periodeDagpenger: newPeriodeDagpenger,
       perioderDagpenger: perioder ?? [],
-      namespace: namespace,
-      personName: personName
+      namespace,
+      personName
     })
     if (valid) {
       let newPerioderDagpenger: Array<PeriodeDagpenger> | undefined = _.cloneDeep(perioder)

@@ -59,7 +59,7 @@ export default <T extends Periode | PeriodeMedForsikring>({
     type: 'periode',
     selected: undefined,
     duplicate: undefined,
-    index: index
+    index
   })) || []
 
   // 2nd step: go through all arbeidsperioder. If they match periods, pair then, otherwise just append them in the end

@@ -88,8 +88,8 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
 
       return {
         ...state,
-        brukernavn: brukernavn,
-        navn: navn,
+        brukernavn,
+        navn,
         featureToggles: {
           ...state.featureToggles,
           ...payload
@@ -122,7 +122,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         : new Date(new Date().setMinutes(now.getMinutes() + 60))
       return {
         ...state,
-        expirationTime: expirationTime
+        expirationTime
       }
     }
 

@@ -124,7 +124,7 @@ export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
 ): ActionWithPayload<ParamPayload> => ({
   type: types.APP_PARAM_SET,
   payload: {
-    key: key,
-    value: value
+    key,
+    value
   } as ParamPayload
 })

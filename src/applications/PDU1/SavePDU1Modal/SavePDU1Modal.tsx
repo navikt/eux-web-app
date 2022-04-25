@@ -75,13 +75,13 @@ const SavePDU1Modal = ({
       const dateString = now.toDateString()
       const newItem: LocalStorageEntry<PDU1> = {
         id: '' + now.getTime(),
-        name: name,
+        name,
         date: dateString,
         content: pdu1
       } as LocalStorageEntry<PDU1>
       dispatch(saveEntry('pdu1', newItem))
       setSaved(true)
-      setMessage(t('label:lagret-pdu1-utkast', { name: name, date: dateString }))
+      setMessage(t('label:lagret-pdu1-utkast', { name, date: dateString }))
     }
   }
 

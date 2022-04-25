@@ -19,6 +19,7 @@ export interface AdresseFormProps {
   type?: boolean
   keyForCity ?: string
   keyforZipCode ?: string
+  labelforZipCode ?: string
   useUK ?: boolean
 }
 
@@ -33,6 +34,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   type = true,
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
+  labelforZipCode = 'postnr',
   useUK = false
 }: AdresseFormProps) => {
   const { t } = useTranslation()
@@ -87,7 +89,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   }
 
   return (
-    <div>
+    <>
+      <VerticalSeparatorDiv />
       {type && (
         <AlignStartRow>
           <Column flex='4'>
@@ -104,11 +107,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               onChange={(e: string) => setType((e as AdresseType))}
             >
               <FlexRadioPanels>
-                <RadioPanel value='bosted'>{t('label:bostedsland')}</RadioPanel>
-                <RadioPanel value='opphold'>{t('label:oppholdsland')}</RadioPanel>
-              </FlexRadioPanels>
-              <VerticalSeparatorDiv size='0.3' />
-              <FlexRadioPanels>
+                <RadioPanel value='bosted'>{t('label:bostedsadresse')}</RadioPanel>
+                <RadioPanel value='opphold'>{t('label:oppholdsadresse')}</RadioPanel>
                 <RadioPanel value='kontakt'>{t('label:kontaktadresse')}</RadioPanel>
                 <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>
               </FlexRadioPanels>
@@ -153,13 +153,13 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
-            label={t('label:' + keyforZipCode) + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
+            label={t('label:' + labelforZipCode) + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
             onChanged={setPostnummer}
             required={required.indexOf('postnummer') >= 0}
             value={_.get(adresse, keyforZipCode)}
           />
         </Column>
-        <Column flex='3'>
+        <Column>
           <Input
             disabled={disabled}
             error={validation[namespace + '-by']?.feilmelding}
@@ -171,11 +171,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             value={_.get(adresse, keyForCity)}
           />
         </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
         {!options.region === false && (
-          <Column flex='1.3'>
+          <Column>
             <Input
               disabled={disabled}
               error={validation[namespace + '-region']?.feilmelding}
@@ -188,7 +185,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             />
           </Column>
         )}
-        <Column flex='1.3'>
+        <Column>
           <div style={{ maxWidth: '400px' }}>
             <CountrySelect
               isDisabled={disabled}
@@ -208,8 +205,8 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
           </div>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-    </div>
+      <VerticalSeparatorDiv />
+    </>
   )
 }
 

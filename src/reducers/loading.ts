@@ -12,7 +12,7 @@ export const initialLoadingState: LoadingState = {
   creatingSvarSed: false,
   editingSed: false,
   fetchingPdu1: false,
-  gettingAdresse: false,
+  gettingAdresser: false,
   gettingArbeidsperioder: false,
   gettingDokument: false,
   gettingFagsaker: false,
@@ -50,14 +50,14 @@ const loadingReducer = (
     case types.ADRESSE_SEARCH_REQUEST:
       return {
         ...state,
-        gettingAdresse: true
+        gettingAdresser: true
       }
 
     case types.ADRESSE_SEARCH_FAILURE:
     case types.ADRESSE_SEARCH_SUCCESS:
       return {
         ...state,
-        gettingAdresse: false
+        gettingAdresser: false
       }
 
     case types.ARBEIDSPERIODER_GET_REQUEST:

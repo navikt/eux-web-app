@@ -67,7 +67,7 @@ export const validatePDPerioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = perioder?.map((periode: PDPeriode, index: number) =>
     validatePDPeriode(validation, t, {
-      periode: periode,
+      periode,
       type,
       index,
       namespace: namespace + '[' + type + ']'
@@ -123,7 +123,7 @@ export const validateAllePDPerioder = (
   } : ValidateAllePDPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: pdu1.perioderAnsattMedForsikring, namespace: namespace }))
+  hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: pdu1.perioderAnsattMedForsikring, namespace }))
   hasErrors.push(validatePDPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: pdu1.perioderSelvstendigMedForsikring, namespace }))
   hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAndreForsikringer', perioder: pdu1.perioderAndreForsikringer, namespace }))
   hasErrors.push(validatePDPerioder(v, t, { type: 'perioderAnsettSomForsikret', perioder: pdu1.perioderAnsettSomForsikret, namespace }))

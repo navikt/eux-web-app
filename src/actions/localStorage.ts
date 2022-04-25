@@ -8,44 +8,44 @@ import { LocalStorageNamespaces } from 'reducers/localStorage'
 export const loadEntries = (namespace: LocalStorageNamespaces): ActionWithPayload => ({
   type: types.LOCALSTORAGE_ENTRIES_LOAD,
   payload: {
-    namespace: namespace
+    namespace
   }
 })
 
 export const resetCurrentEntry = (namespace: LocalStorageNamespaces): ActionWithPayload => ({
   type: types.LOCALSTORAGE_CURRENTENTRY_RESET,
   payload: {
-    namespace: namespace
+    namespace
   }
 })
 
 export const setCurrentEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>) : ActionWithPayload<{namespace: string, entry: LocalStorageEntry<ReplySed | PDU1>}> => ({
   type: types.LOCALSTORAGE_CURRENTENTRY_SET,
   payload: {
-    namespace: namespace,
-    entry: entry
+    namespace,
+    entry
   }
 })
 
 export const removeEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>) => ({
   type: types.LOCALSTORAGE_ENTRY_REMOVE,
   payload: {
-    namespace: namespace,
-    entry: entry
+    namespace,
+    entry
   }
 })
 
 export const saveEntry = (namespace: LocalStorageNamespaces, entry: LocalStorageEntry<ReplySed | PDU1>): ActionWithPayload<any> => ({
   type: types.LOCALSTORAGE_ENTRY_SAVE,
   payload: {
-    namespace: namespace,
-    entry: entry
+    namespace,
+    entry
   }
 })
 
 export const removeAllEntries = (namespace: LocalStorageNamespaces) => ({
   type: types.LOCALSTORAGE_ALL_REMOVE,
   payload: {
-    namespace: namespace
+    namespace
   }
 })

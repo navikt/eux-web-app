@@ -60,7 +60,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
   const onSaksnummerOrFnrClick = () => {
     const valid: boolean = _performValidation({
       saksnummerOrFnr: _saksnummerOrFnr.trim(),
-      namespace: namespace
+      namespace
     })
     if (valid) {
       standardLogger('svarsed.selection.query', {

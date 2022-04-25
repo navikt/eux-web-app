@@ -245,7 +245,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
     const valid: boolean = performValidationPeriodeMedForsikring({
       periodeMedForsikring: newPeriodeMedForsikring,
-      namespace: namespace,
+      namespace,
       includeAddress: true
     })
 

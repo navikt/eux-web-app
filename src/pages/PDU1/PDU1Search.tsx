@@ -157,9 +157,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   const onGetPdu1Clicked = () => {
     const valid = performValidation({
-      fnrOrDnr: fnrOrDnr,
-      fagsak: fagsak,
-      namespace: namespace
+      fnrOrDnr,
+      fagsak,
+      namespace
     })
 
     if (valid) {
@@ -170,9 +170,9 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   const onEditingPdu1Clicked = () => {
     const valid = performValidation({
-      fnrOrDnr: fnrOrDnr,
-      fagsak: fagsak,
-      namespace: namespace
+      fnrOrDnr,
+      fagsak,
+      namespace
     })
 
     if (valid) {

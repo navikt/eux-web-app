@@ -1,16 +1,7 @@
-import { Close, Edit, Email, Send, Sight, Star } from '@navikt/ds-icons'
-import { Alert, Button, Detail, Heading, Loader } from '@navikt/ds-react'
+import { Sight } from '@navikt/ds-icons'
+import { Alert, Button, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import {
-  Column,
-  FlexBaseDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PileCenterDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { Column, FlexDiv, HorizontalSeparatorDiv, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -24,10 +15,6 @@ import {
   updateSed
 } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
-import OneLevelForm from 'applications/SvarSed/OneLevelForm'
-import Formaal from 'applications/SvarSed/TopForm/Formaal'
-import SEDType from 'applications/SvarSed/BottomForm/SEDType'
-import Tema from 'applications/SvarSed/BottomForm/Tema'
 import Adresser from 'applications/SvarSed/MainForm/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/MainForm/Anmodning/Anmodning'
 import ArbeidsperioderOversikt from 'applications/SvarSed/MainForm/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
@@ -42,7 +29,6 @@ import Kontaktinformasjon from 'applications/SvarSed/MainForm/Kontaktinformasjon
 import Nasjonaliteter from 'applications/SvarSed/MainForm/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/MainForm/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/MainForm/PersonensStatus/PersonensStatus'
-import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import PersonOpplysninger from 'applications/SvarSed/MainForm/PersonOpplysninger/PersonOpplysninger'
 import Referanseperiode from 'applications/SvarSed/MainForm/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/MainForm/Relasjon/Relasjon'
@@ -50,8 +36,10 @@ import RettTilYtelser from 'applications/SvarSed/MainForm/RettTilYtelser/RettTil
 import SisteAnsettelsesForhold from 'applications/SvarSed/MainForm/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
+import OneLevelForm from 'applications/SvarSed/OneLevelForm'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
+import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 
 import TextArea from 'components/Forms/TextArea'
@@ -72,7 +60,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
-import { isFSed, isH001Sed, isH002Sed, isHSed, isSed, isUSed } from 'utils/sed'
+import { isFSed, isH001Sed, isH002Sed, isHSed, isSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -307,49 +295,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
           )
         }}
       />
-      <Row>
-        <Column flex='2'>
-          <FlexBaseDiv>
-            <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
-              {replySed?.status === 'received' && <Email width='32' height='32' />}
-              {replySed?.status === 'sent' && <Send width='32' height='32' />}
-              {replySed?.status === 'new' && <Star width='32' height='32' />}
-              {replySed?.status === 'active' && <Edit width='32' height='32' />}
-              {replySed?.status === 'cancelled' && <Close width='32' height='32' />}
-              <VerticalSeparatorDiv size='0.35' />
-              <Detail>
-                {t('app:status-received-' + replySed?.status?.toLowerCase())}
-              </Detail>
-            </PileCenterDiv>
-            <HorizontalSeparatorDiv />
-            <Heading size='medium'>
-              {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
-            </Heading>
-          </FlexBaseDiv>
-          <VerticalSeparatorDiv />
-          {isFSed(replySed) && (
-            <Formaal
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              parentNamespace={namespace}
-            />
-          )}
-          {isUSed(replySed) && (
-            <SEDType
-              replySed={replySed}
-              setReplySed={setReplySed}
-            />
-          )}
-          {isHSed(replySed) && (
-            <Tema
-              updateReplySed={updateReplySed}
-              replySed={replySed}
-            />
-          )}
-        </Column>
-        <Column />
-      </Row>
-      <VerticalSeparatorDiv size='3' />
       {showTwoLevelForm() && (
         <>
           <TwoLevelForm<ReplySed>

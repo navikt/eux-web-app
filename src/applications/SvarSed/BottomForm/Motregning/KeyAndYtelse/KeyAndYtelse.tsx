@@ -110,7 +110,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
     }
     const valid: boolean = _performValidation({
       keyAndYtelse: newKeyAndYtelse,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       onAdded(_newBarnaKey!.trim(), _newYtelseNavn!.trim())

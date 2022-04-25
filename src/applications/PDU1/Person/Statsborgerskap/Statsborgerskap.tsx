@@ -85,8 +85,8 @@ const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
   const onAdd = () => {
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap!,
-      statsborgerskaper: statsborgerskaper,
-      namespace: namespace
+      statsborgerskaper,
+      namespace
     })
     if (valid) {
       let newStatsborgerskaper : Array<string> | undefined = _.cloneDeep(statsborgerskaper)

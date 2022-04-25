@@ -14,7 +14,7 @@ describe('reducers/app', () => {
         ...initialVedleggState
       }, {
         type: types.VEDLEGG_POST_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialVedleggState,
@@ -30,7 +30,7 @@ describe('reducers/app', () => {
         dokument: [{ kode: 'bar' } as Dokument]
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_REQUEST,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialVedleggState,
@@ -46,7 +46,7 @@ describe('reducers/app', () => {
         dokument: [{ kode: 'bar' } as Dokument]
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_FAILURE,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialVedleggState,
@@ -62,7 +62,7 @@ describe('reducers/app', () => {
         dokument: undefined
       }, {
         type: types.VEDLEGG_DOKUMENT_GET_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialVedleggState,

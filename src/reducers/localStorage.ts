@@ -54,7 +54,7 @@ const localStorageReducer = (
           ...state,
           [namespace]: {
             currentEntry: state[namespace].currentEntry,
-            entries: entries
+            entries
           }
         }
       }

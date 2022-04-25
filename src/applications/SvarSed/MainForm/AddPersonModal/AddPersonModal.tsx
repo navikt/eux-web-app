@@ -131,27 +131,27 @@ const AddPersonModal = <T extends StorageTypes>({
       if (_newPersonRelation === 'barn') {
         if (!Object.prototype.hasOwnProperty.call(newReplySed, 'barn')) {
           (newReplySed as F002Sed).barn = [{
-            personInfo: personInfo
+            personInfo
           }]
         } else {
           (newReplySed as F002Sed).barn?.push({
-            personInfo: personInfo
+            personInfo
           })
         }
       }
       if (_newPersonRelation === 'bruker') {
         newReplySed!.bruker = {
-          personInfo: personInfo
+          personInfo
         }
       }
       if (_newPersonRelation === 'ektefelle') {
         (newReplySed as F002Sed).ektefelle = {
-          personInfo: personInfo
+          personInfo
         }
       }
       if (_newPersonRelation === 'annenPerson') {
         (newReplySed as F002Sed).annenPerson = {
-          personInfo: personInfo
+          personInfo
         }
       }
       _setReplySed(newReplySed)

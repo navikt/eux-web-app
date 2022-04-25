@@ -7,7 +7,7 @@ describe('reducers/arbeidsperioder', () => {
     expect(
       arbeidsperioderReducer(initialArbeidsperioderState, {
         type: types.ARBEIDSPERIODER_GET_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual(payload)
   })

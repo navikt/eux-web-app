@@ -98,7 +98,7 @@ describe('actions/pdu1', () => {
     const payload = { saksreferanse: '123' } as PDU1
     expect(pdu1Actions.setPdu1(payload)).toMatchObject({
       type: types.PDU1_SET,
-      payload: payload
+      payload
     })
   })
 

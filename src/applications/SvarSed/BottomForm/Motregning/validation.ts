@@ -162,7 +162,7 @@ export const validateMotregninger = (
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
     b.motregninger?.forEach((motregning: IMotregning, index: number) => {
       const answer = validateMotregning(v, t, {
-        motregning: motregning,
+        motregning,
         type: 'barna',
         index,
         namespace,
@@ -175,7 +175,7 @@ export const validateMotregninger = (
   if (!_.isNil((replySed as F002Sed).familie?.motregninger)) {
     (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, index: number) => {
       const answer = validateMotregning(v, t, {
-        motregning: motregning,
+        motregning,
         type: 'familie',
         index,
         namespace,

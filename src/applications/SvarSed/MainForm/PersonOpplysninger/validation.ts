@@ -175,7 +175,7 @@ export const validatePersonOpplysninger = (
   utenlandskPins?.forEach((pin: Pin, index: number) => {
     const _errors = validatePin(v, t, {
       index,
-      pin: pin,
+      pin,
       pins: utenlandskPins,
       namespace: namespace + '-pin',
       personName

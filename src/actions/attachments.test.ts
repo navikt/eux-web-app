@@ -95,8 +95,8 @@ describe('actions/attachments', () => {
         failure: types.ATTACHMENT_SEND_FAILURE
       },
       context: {
-        params: params,
-        joarkBrowserItem: joarkBrowserItem
+        params,
+        joarkBrowserItem
       },
       url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params)
     }))

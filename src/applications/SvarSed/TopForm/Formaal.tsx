@@ -48,7 +48,7 @@ const Formaal: React.FC<FormaalProps> = ({
 
   const onItemsChanged = (newFormaals: Array<string>, action: 'add' | 'remove', item: string) => {
     dispatch(updateReplySed('formaal', newFormaals))
-    standardLogger('svarsed.fsed.formal.' + action, { item: item })
+    standardLogger('svarsed.fsed.formal.' + action, { item })
     dispatch(resetValidation(namespace))
   }
 

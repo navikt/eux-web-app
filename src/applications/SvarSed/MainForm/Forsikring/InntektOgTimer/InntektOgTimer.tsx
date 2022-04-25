@@ -149,8 +149,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
 
     const valid: boolean = _performValidation({
       inntektOgTime: newInntektOgTime,
-      namespace: namespace,
-      personName: personName
+      namespace,
+      personName
     })
 
     if (valid) {

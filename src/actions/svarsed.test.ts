@@ -161,8 +161,8 @@ describe('actions/svarsed', () => {
           failure: types.SVARSED_REPLYTOSED_FAILURE
         },
         context: {
-          saksnummer: saksnummer,
-          sakUrl: sakUrl,
+          saksnummer,
+          sakUrl,
           sedId: '123'
         },
         url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {

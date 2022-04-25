@@ -147,7 +147,7 @@ export const validateForsikringPerioder = (
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode, index: number) => {
     const _errors: boolean = validateForsikringPeriode(validation, t, {
-      periode: periode,
+      periode,
       type,
       index,
       namespace: namespace + '[' + type + ']',

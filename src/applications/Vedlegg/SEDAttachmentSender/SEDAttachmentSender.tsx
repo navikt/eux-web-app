@@ -138,8 +138,8 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
       >
         <>
           {_status === 'inprogress' && t('message:loading-sending-XofY', {
-            current: current,
-            total: total
+            current,
+            total
           })}
           {_status === 'done' && t('label:vedlegg-sendt')}
           {_status === 'error' && t('message:error-sending-attachments')}

@@ -69,7 +69,7 @@ const InntektSearch = ({
       fom: _searchPeriode?.startdato,
       tom: _searchPeriode?.sluttdato ?? '',
       inntektsliste: _filter,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       onInntektSearch(fnr, _searchPeriode?.startdato ?? '2015-01', _searchPeriode?.sluttdato ?? '', _filter ?? '')

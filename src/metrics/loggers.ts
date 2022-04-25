@@ -7,7 +7,7 @@ export const linkLogger = (event: any, values?: object) => {
   const data = values || {}
   amplitudeLogger(name, {
     ...data,
-    url: url
+    url
   })
 }
 

@@ -231,16 +231,16 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const skjemaSubmit = (): void => {
     const valid: boolean = performValidation({
       fnr: valgtFnr,
-      isFnrValid: isFnrValid,
+      isFnrValid,
       sektor: valgtSektor,
       buctype: valgtBucType,
       sedtype: valgtSedType,
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
-      namespace: namespace,
+      namespace,
       tema: valgtTema,
       saksId: valgtSaksId,
-      visEnheter: visEnheter,
+      visEnheter,
       unit: valgtUnit
     } as ValidationOpprettSakProps)
 

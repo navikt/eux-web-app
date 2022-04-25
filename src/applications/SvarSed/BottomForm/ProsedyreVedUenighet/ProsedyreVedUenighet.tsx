@@ -146,8 +146,8 @@ const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
-      prosedyreVedUenighet: prosedyreVedUenighet,
-      namespace: namespace
+      prosedyreVedUenighet,
+      namespace
     })
 
     if (valid) {

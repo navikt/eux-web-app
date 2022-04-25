@@ -79,8 +79,8 @@ export const validateUtenlandskPins = (
     return validateUtenlandskPin(v, t, {
       index,
       pin,
-      utenlandskePins: utenlandskePins,
-      namespace: namespace
+      utenlandskePins,
+      namespace
     })
   }) ?? []
   return hasErrors.find(value => value) !== undefined

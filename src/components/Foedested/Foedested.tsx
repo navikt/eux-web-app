@@ -188,8 +188,8 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 <FlexCenterDiv>
                   {foedested?.land && (
                     <>
-                    <Flag size='S' country={foedested?.land!} />
-                    <HorizontalSeparatorDiv />
+                      <Flag size='S' country={foedested?.land!} />
+                      <HorizontalSeparatorDiv />
                     </>
                   )}
                   {countryData.findByValue(foedested?.land)?.label ?? foedested?.land}
@@ -254,7 +254,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               <VerticalSeparatorDiv size='0.8' />
               {renderRow(foedested!)}
             </>
-          )
+            )
       }
       <VerticalSeparatorDiv />
       {_seeNewForm
@@ -277,8 +277,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               </PaddedDiv>
             )}
           </>
-        )
-      }
+          )}
     </>
   )
 }

@@ -215,9 +215,9 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
 
     const valid = performValidation({
       ytelse: newYtelse,
-      namespace: namespace,
-      personID: personID,
-      personName: personName
+      namespace,
+      personID,
+      personName
     })
     if (valid) {
       let newYtelser = _.cloneDeep(ytelser)

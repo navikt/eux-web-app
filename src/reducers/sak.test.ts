@@ -10,7 +10,7 @@ describe('reducers/sak', () => {
         fagsaker: []
       }, {
         type: types.SAK_FAGSAKER_GET_REQUEST,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialSakState,
@@ -26,7 +26,7 @@ describe('reducers/sak', () => {
         fagsaker: []
       }, {
         type: types.SAK_FAGSAKER_GET_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialSakState,
@@ -56,7 +56,7 @@ describe('reducers/sak', () => {
         ...initialSakState
       }, {
         type: types.SAK_INSTITUSJONER_GET_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialSakState,
@@ -71,7 +71,7 @@ describe('reducers/sak', () => {
         ...initialSakState
       }, {
         type: types.SAK_LANDKODER_GET_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialSakState,
@@ -86,7 +86,7 @@ describe('reducers/sak', () => {
         ...initialSakState
       }, {
         type: types.SAK_SEND_SUCCESS,
-        payload: payload
+        payload
       })
     ).toEqual({
       ...initialSakState,

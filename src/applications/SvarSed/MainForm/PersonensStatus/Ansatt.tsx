@@ -222,7 +222,7 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = performValidationArbeidsperiode({
       arbeidsgiver: newArbeidsgiver,
       namespace: namespace + '-arbeidsgiver',
-      includeAddress: includeAddress
+      includeAddress
     })
 
     if (valid) {
@@ -238,8 +238,8 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = performValidationPeriode({
       periode: _newPeriode,
       perioder: perioderSomAnsatt,
-      namespace: namespace,
-      personName: personName
+      namespace,
+      personName
     })
     if (valid) {
       addPeriode(_newPeriode)

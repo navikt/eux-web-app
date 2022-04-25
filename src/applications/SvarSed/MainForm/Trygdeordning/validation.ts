@@ -158,7 +158,7 @@ export const validateFamilieytelserPeriode = (
     {
       periode: _periode,
       namespace: extraperiodeNamespace,
-      personName: personName
+      personName
     }
   )
   hasErrors = hasErrors || periodError

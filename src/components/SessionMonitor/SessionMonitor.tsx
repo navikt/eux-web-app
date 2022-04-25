@@ -160,7 +160,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         modal={{
           modalTitle: title,
           modalText: (<>{text.map(t => <BodyLong key={t}>{t}</BodyLong>)}</>),
-          modalButtons: modalButtons
+          modalButtons
         }}
       />
       <Button variant='tertiary' size='small' onClick={() => setModal(true)}>

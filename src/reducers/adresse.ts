@@ -4,10 +4,10 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { AnyAction } from 'redux'
 
 export interface AdresseState {
-  adresse: Array<Adresse> | null | undefined
+  adresser: Array<Adresse> | null | undefined
 }
 export const initialAdresseState: AdresseState = {
-  adresse: undefined
+  adresser: undefined
 }
 
 const adresseReducer = (
@@ -21,17 +21,17 @@ const adresseReducer = (
     case types.ADRESSE_SEARCH_REQUEST:
     case types.ADRESSE_SEARCH_RESET:
       return {
-        adresse: undefined
+        adresser: undefined
       }
 
     case types.ADRESSE_SEARCH_SUCCESS:
       return {
-        adresse: (action as ActionWithPayload).payload
+        adresser: (action as ActionWithPayload).payload
       }
 
     case types.ADRESSE_SEARCH_FAILURE:
       return {
-        adresse: null
+        adresser: null
       }
 
     default:

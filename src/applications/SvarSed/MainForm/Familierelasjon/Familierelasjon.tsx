@@ -192,7 +192,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = performValidation({
       familierelasjon: newFamilierelasjon,
       namespace,
-      personName: personName
+      personName
     })
 
     if (valid) {

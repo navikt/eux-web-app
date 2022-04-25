@@ -193,7 +193,7 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = performValidation({
       loennsopplysning: newLoennsopplysning,
       loennsopplysninger: loennsopplysninger ?? [],
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newLoennsopplysninger: Array<Loennsopplysning> | undefined = _.cloneDeep(loennsopplysninger)

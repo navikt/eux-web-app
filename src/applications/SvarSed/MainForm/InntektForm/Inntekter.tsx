@@ -148,7 +148,7 @@ const Inntekter: React.FC<any> = ({
 
     const valid: boolean = performValidation({
       inntekt: newInntekt,
-      namespace: namespace
+      namespace
     })
 
     if (valid) {

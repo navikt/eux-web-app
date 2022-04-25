@@ -40,7 +40,7 @@ export const validateVedtakPeriode = (
   const idx = getIdx(index)
   const periodeError: boolean = validatePeriode(
     v, t, {
-      periode: periode,
+      periode,
       namespace: namespace + '-perioder' + idx,
       personName: formalName
     }
@@ -145,7 +145,7 @@ export const validateVedtak = (
   }
 
   vedtak?.vedtaksperioder?.forEach((vedtaksperioder, index) => {
-    const _error: boolean = validateVedtakPeriode(v, t, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, namespace, formalName: formalName })
+    const _error: boolean = validateVedtakPeriode(v, t, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, namespace, formalName })
     hasErrors = hasErrors || _error
   })
 
@@ -203,11 +203,11 @@ export const validateVedtak = (
     vedtaksperioder?.forEach((vp: VedtakPeriode, index: number) => {
       _error = validateVedtakVedtaksperiode(v, t, {
         vedtaksperiode: vp,
-        vedtaksperioder: vedtaksperioder,
-        vedtaktype: vedtaktype,
+        vedtaksperioder,
+        vedtaktype,
         index,
         namespace,
-        formalName: formalName
+        formalName
       })
       hasErrors = hasErrors || _error
     })

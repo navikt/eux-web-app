@@ -300,7 +300,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <SEDAttachmentSender
                         attachmentsError={undefined}
                         payload={{
-                          fnr: fnr,
+                          fnr,
                           rinaId: replySed!.saksnummer,
                           rinaDokumentId: sedCreatedResponse?.sedId
                         } as SEDAttachmentPayload}

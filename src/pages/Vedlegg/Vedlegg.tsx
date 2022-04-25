@@ -78,11 +78,11 @@ const Vedlegg: React.FC = (): JSX.Element => {
     dispatch(viewValidation())
     if (valid) {
       dispatch(vedleggActions.sendVedlegg({
-        journalpostID: journalpostID,
-        dokumentID: dokumentID,
-        rinasaksnummer: rinasaksnummer,
-        rinadokumentID: rinadokumentID,
-        sensitivt: sensitivt
+        journalpostID,
+        dokumentID,
+        rinasaksnummer,
+        rinadokumentID,
+        sensitivt
       } as VedleggPayload))
       dispatch(resetAllValidation())
     }

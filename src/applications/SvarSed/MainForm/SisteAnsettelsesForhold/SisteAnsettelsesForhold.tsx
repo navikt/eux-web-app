@@ -198,7 +198,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
 
     const valid: boolean = performValidation({
       utbetaling: newUtbetaling,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold?.utbetalinger)

@@ -114,7 +114,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
       startdato: _newStartdato,
       sluttdato: _newSluttdato,
       info: _newInfo,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newPerioder: Array<PDPeriode> | undefined = _.cloneDeep(perioderDagpengerMottatt)

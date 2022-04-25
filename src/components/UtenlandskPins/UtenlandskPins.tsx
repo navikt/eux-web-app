@@ -10,7 +10,6 @@ import {
   PaddedDiv,
   PaddedHorizontallyDiv,
   PileDiv,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
@@ -104,7 +103,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const valid: boolean = performValidation({
       pin: newPin,
       utenlandskePins: pins,
-      namespace: namespace
+      namespace
     })
     if (valid) {
       let newUtenlandskePins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
@@ -175,7 +174,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
                   value={index < 0 ? _newIdentifikator : utenlandskePin?.identifikator}
                 />
-              )
+                )
               : (
                 <PileDiv id={namespace + idx + '-identifikator'}>
                   <BodyLong>{utenlandskePin?.identifikator}</BodyLong>
@@ -185,7 +184,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                     </div>
                   )}
                 </PileDiv>
-              )}
+                )}
           </Column>
           <AlignEndColumn>
             <AddRemovePanel2<Pin>
@@ -248,21 +247,17 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <>
             {(pins?.length ?? 0) <= limit && (
               <PaddedDiv>
-                <Row>
-                  <Column>
-                    <Button
-                      variant='tertiary'
-                      onClick={() => _setSeeNewForm(true)}
-                    >
-                      <AddCircle />
-                      {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
-                    </Button>
-                  </Column>
-                </Row>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewForm(true)}
+                >
+                  <AddCircle />
+                  {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
+                </Button>
               </PaddedDiv>
-          )}
+            )}
           </>
-        )}
+          )}
     </>
   )
 }

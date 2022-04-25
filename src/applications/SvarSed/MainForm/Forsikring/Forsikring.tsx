@@ -287,8 +287,8 @@ const Forsikring: React.FC<TwoLevelFormProps> = ({
     const valid: boolean = _performValidation({
       periode: _newPeriode as ForsikringPeriode,
       type: _newType,
-      namespace: namespace,
-      personName: personName
+      namespace,
+      personName
     })
     if (valid && _newType) {
       newPeriodes = newPeriodes.concat(_newPeriode!)

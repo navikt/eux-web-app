@@ -144,7 +144,7 @@ const ArbeidsperioderBox = ({
 
     const valid: boolean = performValidation({
       arbeidsgiver: newArbeidsgiver,
-      includeAddress: includeAddress,
+      includeAddress,
       namespace: _namespace
     })
     if (valid) {
