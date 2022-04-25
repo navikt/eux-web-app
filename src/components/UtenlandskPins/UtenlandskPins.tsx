@@ -1,26 +1,29 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
-import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
-import Input from 'components/Forms/Input'
-import { SpacedHr, RepeatableRow } from 'components/StyledComponents'
-import { Pin } from 'declarations/sed'
-import { Validation } from 'declarations/types'
-import useValidation from 'hooks/useValidation'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
-import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import {
+  AlignEndColumn,
   AlignStartRow,
-  Column, FlexCenterDiv,
+  Column,
+  FlexCenterDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
-  Row, PileDiv,
+  PileDiv,
+  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
+import classNames from 'classnames'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import Input from 'components/Forms/Input'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { Pin } from 'declarations/sed'
+import { Validation } from 'declarations/types'
+import useValidation from 'hooks/useValidation'
+import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
@@ -136,31 +139,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <Column>
             {editing
               ? (
-                <Input
-                  error={getErrorFor(index, 'identifikator')}
-                  id='identifikator'
-                  key={namespace + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : utenlandskePin?.identifikator)}
-                  label={t('label:utenlandsk-pin')}
-                  hideLabel={index >= 0}
-                  namespace={namespace}
-                  onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
-                  value={index < 0 ? _newIdentifikator : utenlandskePin?.identifikator}
-                />
-                )
-              : (
-                <PileDiv id={namespace + idx + '-identifikator'}>
-                  <BodyLong>{utenlandskePin?.identifikator}</BodyLong>
-                  {getErrorFor(index, 'identifikator') && (
-                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                      {getErrorFor(index, 'identifikator')}
-                    </div>
-                  )}
-                </PileDiv>
-                )}
-          </Column>
-          <Column>
-            {editing
-              ? (
                 <CountrySelect
                   closeMenuOnSelect
                   data-testid={namespace + idx + '-land'}
@@ -185,6 +163,31 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 )}
           </Column>
           <Column>
+            {editing
+              ? (
+                <Input
+                  error={getErrorFor(index, 'identifikator')}
+                  id='identifikator'
+                  key={namespace + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : utenlandskePin?.identifikator)}
+                  label={t('label:utenlandsk-pin')}
+                  hideLabel={index >= 0}
+                  namespace={namespace}
+                  onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
+                  value={index < 0 ? _newIdentifikator : utenlandskePin?.identifikator}
+                />
+              )
+              : (
+                <PileDiv id={namespace + idx + '-identifikator'}>
+                  <BodyLong>{utenlandskePin?.identifikator}</BodyLong>
+                  {getErrorFor(index, 'identifikator') && (
+                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+                      {getErrorFor(index, 'identifikator')}
+                    </div>
+                  )}
+                </PileDiv>
+              )}
+          </Column>
+          <AlignEndColumn>
             <AddRemovePanel2<Pin>
               getId={(p): string => p.land + '-' + p.identifikator}
               item={utenlandskePin}
@@ -198,7 +201,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               onEditing={(p, index) => _setEditing(_editing.concat(index))}
               onCancelEditing={(p, index) => _setEditing(_.filter(_editing, i => i !== index))}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
@@ -242,22 +245,24 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
-            <Row>
-              <Column>
-                {(pins?.length ?? 0) <= limit && (
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <AddCircle />
-                    {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
-                  </Button>
-                )}
-              </Column>
-            </Row>
-          </PaddedDiv>
+          <>
+            {(pins?.length ?? 0) <= limit && (
+              <PaddedDiv>
+                <Row>
+                  <Column>
+                    <Button
+                      variant='tertiary'
+                      onClick={() => _setSeeNewForm(true)}
+                    >
+                      <AddCircle />
+                      {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
+                    </Button>
+                  </Column>
+                </Row>
+              </PaddedDiv>
           )}
+          </>
+        )}
     </>
   )
 }

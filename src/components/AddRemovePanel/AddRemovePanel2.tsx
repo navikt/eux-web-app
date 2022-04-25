@@ -26,7 +26,7 @@ export interface AddRemovePanelProps<T> {
 
 const InlineFlexDiv = styled.div`
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 0.5rem;
 `
 

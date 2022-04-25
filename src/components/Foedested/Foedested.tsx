@@ -3,7 +3,9 @@ import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import {
   AlignStartRow,
+  PaddedRow,
   Column,
+  AlignEndColumn,
   FlexCenterDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -45,7 +47,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   const [_newRegion, _setNewRegion] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
 
-  const [_editing, _setEditing] = useState<boolean>(false)
+  const [_editMode, _setEditMode] = useState<boolean>(false)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
 
   const emptyFoedsted: boolean = (
@@ -57,45 +59,45 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   const onByChange = (newBy: string, index: number) => {
     if (index < 0) {
       _setNewBy(newBy.trim())
-    } else {
-      let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-      if (_.isEmpty(newFoedested)) {
-        newFoedested = {} as Foedested
-      }
-      newFoedested!.by = newBy.trim()
-      onFoedestedChanged(newFoedested, namespace + '[' + index + ']-by')
+      return
     }
+    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
+    if (_.isEmpty(newFoedested)) {
+      newFoedested = {} as Foedested
+    }
+    newFoedested!.by = newBy.trim()
+    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-by')
   }
 
   const onRegionChange = (newRegion: string, index: number) => {
     if (index < 0) {
       _setNewRegion(newRegion.trim())
-    } else {
-      let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-      if (_.isEmpty(newFoedested)) {
-        newFoedested = {} as Foedested
-      }
-      newFoedested!.region = newRegion.trim()
-      onFoedestedChanged(newFoedested, namespace + '[' + index + ']-region')
+      return
     }
+    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
+    if (_.isEmpty(newFoedested)) {
+      newFoedested = {} as Foedested
+    }
+    newFoedested!.region = newRegion.trim()
+    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-region')
   }
 
   const onLandChange = (newLand: string, index: number) => {
     if (index < 0) {
       _setNewLand(newLand.trim())
-    } else {
-      let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-      if (_.isEmpty(newFoedested)) {
-        newFoedested = {} as Foedested
-      }
-      newFoedested!.land = newLand.trim()
-      onFoedestedChanged(newFoedested, namespace + '[' + index + ']-land')
+      return
     }
+    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
+    if (_.isEmpty(newFoedested)) {
+      newFoedested = {} as Foedested
+    }
+    newFoedested!.land = newLand.trim()
+    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-land')
   }
 
   const onRemove = () => {
     standardLogger(loggingNamespace + '.foedested.remove')
-    onFoedestedChanged(undefined, undefined)
+    onFoedestedChanged(undefined, 'remove')
   }
 
   const resetForm = () => {
@@ -106,7 +108,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 
   const onCancel = () => {
     _setSeeNewForm(false)
-    _setEditing(false)
+    _setEditMode(false)
     resetForm()
   }
 
@@ -117,29 +119,30 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
       by: _newBy
     }
     // this one does not have validation.
-
-    onFoedestedChanged(newFoedested, undefined)
     standardLogger(loggingNamespace + '.foedested.add')
+    onFoedestedChanged(newFoedested, 'add')
     onCancel()
   }
 
   const renderRow = (foedested: Foedested | null) => {
     const index = foedested === null ? -1 : 0
+    const isNew = index < 0
+    const displayForms = _editMode || isNew
     return (
       <RepeatableRow className={classNames({
         new: foedested === null
       })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <Row>
           <Column>
-            {_editing
+            {displayForms
               ? (
                 <Input
                   error={validation[namespace + '-by']?.feilmelding}
                   id='by'
                   label={t('label:by')}
-                  hideLabel
+                  hideLabel={index >= 0}
                   namespace={namespace}
                   onChanged={(newBy: string) => onByChange(newBy, index)}
                   value={foedested?.by ?? ''}
@@ -150,13 +153,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 )}
           </Column>
           <Column>
-            {_editing
+            {displayForms
               ? (
                 <Input
                   error={validation[namespace + '-region']?.feilmelding}
                   id='region'
                   label={t('label:region')}
-                  hideLabel
+                  hideLabel={index >= 0}
                   namespace={namespace}
                   onChanged={(newRegion: string) => onRegionChange(newRegion, index)}
                   value={foedested?.region ?? ''}
@@ -167,7 +170,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 )}
           </Column>
           <Column>
-            {_editing
+            {displayForms
               ? (
                 <CountrySelect
                   data-testid={namespace + '-land'}
@@ -175,7 +178,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   id={namespace + '-land'}
                   includeList={CountryFilter.STANDARD({})}
                   label={t('label:land')}
-                  hideLabel
+                  hideLabel={index >= 0}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onLandChange(e.value, index)}
                   values={foedested?.land ?? ''}
@@ -183,30 +186,33 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 )
               : (
                 <FlexCenterDiv>
-                  <Flag size='S' country={foedested?.land!} />
-                  <HorizontalSeparatorDiv />
+                  {foedested?.land && (
+                    <>
+                    <Flag size='S' country={foedested?.land!} />
+                    <HorizontalSeparatorDiv />
+                    </>
+                  )}
                   {countryData.findByValue(foedested?.land)?.label ?? foedested?.land}
                 </FlexCenterDiv>
                 )}
           </Column>
-        </AlignStartRow>
-        <AlignStartRow>
-          <Column>
+        </Row>
+        <PaddedRow size='0.5'>
+          <AlignEndColumn>
             <AddRemovePanel2<Foedested>
-              getId={(f): string => f.by + '-' + f.region + '-' + f.land}
+              getId={(foedested): string => foedested.by + '-' + foedested.region + '-' + foedested.land}
               item={foedested}
-              marginTop
               index={index}
-              editing={_editing}
+              editing={_editMode}
               namespace={namespace}
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              onEditing={() => _setEditing(true)}
-              onCancelEditing={() => _setEditing(false)}
+              onEditing={() => _setEditMode(true)}
+              onCancelEditing={() => _setEditMode(false)}
             />
-          </Column>
-        </AlignStartRow>
+          </AlignEndColumn>
+        </PaddedRow>
       </RepeatableRow>
     )
   }
@@ -248,28 +254,31 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               <VerticalSeparatorDiv size='0.8' />
               {renderRow(foedested!)}
             </>
-            )
+          )
       }
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null)
         : (
-          <PaddedDiv>
-            <Row style={{ flexDirection: 'row-reverse' }}>
-              <Column>
-                {emptyFoedsted && (
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <AddCircle />
-                    {t('el:button-add-new-x', { x: t('label:fødested')?.toLowerCase() })}
-                  </Button>
-                )}
-              </Column>
-            </Row>
-          </PaddedDiv>
-          )}
+          <>
+            {emptyFoedsted && (
+              <PaddedDiv>
+                <Row>
+                  <Column>
+                    <Button
+                      variant='tertiary'
+                      onClick={() => _setSeeNewForm(true)}
+                    >
+                      <AddCircle />
+                      {t('el:button-add-new-x', { x: t('label:fødested')?.toLowerCase() })}
+                    </Button>
+                  </Column>
+                </Row>
+              </PaddedDiv>
+            )}
+          </>
+        )
+      }
     </>
   )
 }
