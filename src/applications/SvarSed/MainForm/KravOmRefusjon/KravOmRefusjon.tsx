@@ -1,11 +1,10 @@
-import { Button, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed } from 'declarations/sed'
-import { buttonLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -13,8 +12,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
   parentNamespace,
   replySed,
-  updateReplySed,
-  seeKontoopplysninger
+  updateReplySed
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: OneLevelFormSelector = useAppSelector(mapState)
@@ -50,22 +48,6 @@ const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
               value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
             />
           </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Button
-            variant='tertiary'
-            data-testid={namespace + '-konto-button'}
-            data-amplitude='svarsed.editor.seekontoopplysning'
-            onClick={(e) => {
-              buttonLogger(e)
-              if (seeKontoopplysninger) seeKontoopplysninger()
-            }}
-          >
-            {t('label:oppgi-kontoopplysninger')}
-          </Button>
         </Column>
       </AlignStartRow>
     </PaddedDiv>

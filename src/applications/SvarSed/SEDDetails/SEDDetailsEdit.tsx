@@ -1,33 +1,25 @@
+import { AddCircle } from '@navikt/ds-icons'
+import { Button, Detail } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
-import { useAppDispatch } from 'store'
-import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
+import { resetValidation } from 'actions/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
-import TextArea from 'components/Forms/TextArea'
 import PeriodeInput from 'components/Forms/PeriodeInput'
-import { HorizontalLineSeparator, TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed, FSed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { F002Sed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
 import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { Button, Detail, Radio, RadioGroup } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  HorizontalSeparatorDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAppDispatch } from 'store'
 import { getIdx } from 'utils/namespace'
-import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
-import { AddCircle } from '@navikt/ds-icons'
+import { isF002Sed, isHSed, isUSed } from 'utils/sed'
+import { validateSakseier, ValidationSakseierProps } from './validation'
 
 export interface SEDDetailsEditProps {
   replySed: ReplySed,
@@ -41,12 +33,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const { t } = useTranslation()
   const validation: Validation = {}
   const dispatch = useAppDispatch()
-
-  const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
-
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationSEDDetailsProps>({}, validateSEDDetail)
 
   const [_newSakseierSaksnummer, _setNewSakseierSaksnummer] = useState<string>('')
   const [_newSakseierInstitusjonsnavn, _setNewSakseierInstitusjonsnavn] = useState<string>('')
@@ -62,7 +48,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierLand = (land: string, index: number) => {
     if (index < 0) {
       _setNewSakseierLand(land.trim())
-      _resetValidation(namespace + '-lokaleSakIder-land')
+//      _resetValidation(namespace + '-lokaleSakIder-land')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].land`, land.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-land']) {
@@ -74,7 +60,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierInstitusjonsid = (institusjonsid: string, index: number) => {
     if (index < 0) {
       _setNewSakseierInstitusjonsid(institusjonsid.trim())
-      _resetValidation(namespace + '-lokaleSakIder-institusjonsid')
+  //    _resetValidation(namespace + '-lokaleSakIder-institusjonsid')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].institusjonsid`, institusjonsid.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsid']) {
@@ -86,7 +72,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierInstitusjonsnavn = (institusjonsnavn: string, index: number) => {
     if (index < 0) {
       _setNewSakseierInstitusjonsnavn(institusjonsnavn.trim())
-      _resetValidation(namespace + '-lokaleSakIder-institusjonsnavn')
+    //  _resetValidation(namespace + '-lokaleSakIder-institusjonsnavn')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].institusjonsnavn`, institusjonsnavn.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsnavn']) {
@@ -98,7 +84,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierSaksnummer = (saksnummer: string, index: number) => {
     if (index < 0) {
       _setNewSakseierSaksnummer(saksnummer.trim())
-      _resetValidation(namespace + '-lokaleSakIder-saksnummer')
+   //   _resetValidation(namespace + '-lokaleSakIder-saksnummer')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].saksnummer`, saksnummer.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-saksnummer']) {
@@ -107,32 +93,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     }
   }
 
-  const setInfoPresisering = (infoPresisering: string) => {
-    dispatch(updateReplySed('krav.infoPresisering', infoPresisering.trim()))
-    if (validation[namespace + '-infoPresisering']) {
-      dispatch(resetValidation(namespace + '-infoPresisering'))
-    }
-  }
-
-  const setKravMottattDato = (kravDato: string) => {
-    dispatch(updateReplySed('krav.kravMottattDato', kravDato.trim()))
-    if (validation[namespace + '-kravMottattDato']) {
-      dispatch(resetValidation(namespace + '-kravMottattDato'))
-    }
-  }
-  const setKravType = (krav: string) => {
-    dispatch(updateReplySed('krav.kravType', krav.trim()))
-    if (validation[namespace + '-kravType']) {
-      dispatch(resetValidation(namespace + '-kravType'))
-    }
-  }
-
-  const setInfoType = (info: string) => {
-    dispatch(updateReplySed('krav.infoType', info.trim()))
-    if (validation[namespace + '-infoType']) {
-      dispatch(resetValidation(namespace + '-infoType'))
-    }
-  }
 
   const setBrukerFornavn = (fornavn: string) => {
     dispatch(updateReplySed('bruker.personInfo.fornavn', fornavn.trim()))
@@ -172,27 +132,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     }
   }
 
-  const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
-    if (index < 0) {
-      _setNewAnmodningsperioder(newPeriode)
-      _resetValidation(namespace + '-anmodningsperioder-stardato')
-      _resetValidation(namespace + '-anmodningsperioder-sluttdato')
-    } else {
-      dispatch(updateReplySed(`anmodningsperioder[${index}]`, newPeriode))
-      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-stardato']) {
-        dispatch(resetValidation(namespace + '-anmodningsperiode' + getIdx(index) + '-stardato'))
-      }
-      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato'))
-      }
-    }
-  }
-
-  const resetForm = () => {
-    _setNewAnmodningsperioder({ startdato: '' })
-    _resetValidation()
-  }
-
   const sakseierResetForm = () => {
     _setNewSakseierInstitusjonsid('')
     _setNewSakseierInstitusjonsnavn('')
@@ -201,23 +140,10 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     _sakseierResetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
 
   const onSakeierCancel = () => {
     _setSakseierSeeNewForm(false)
     sakseierResetForm()
-  }
-
-  const onRemove = (index: number) => {
-    const newAnmodningsperioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
-    const deletedAnmodningsperioder: Array<Periode> = newAnmodningsperioder.splice(index, 1)
-    if (deletedAnmodningsperioder && deletedAnmodningsperioder.length > 0) {
-      removeFromDeletion(deletedAnmodningsperioder[0])
-    }
-    dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
   }
 
   const onSakeierRemove = (index: number) => {
@@ -229,21 +155,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     dispatch(updateReplySed('lokaleSakIder', newLokaleSaksIds))
   }
 
-  const onAdd = () => {
-    const valid: boolean = performValidation({
-      anmodningsperiode: _newAnmodningsperioder,
-      namespace
-    })
-    if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
-      if (_.isNil(newPerioder)) {
-        newPerioder = []
-      }
-      newPerioder = newPerioder.concat(_newAnmodningsperioder)
-      dispatch(updateReplySed('anmodningsperioder', newPerioder))
-      onCancel()
-    }
-  }
 
   const onSakseierAdd = () => {
     const newLokaleSaksId: LokaleSakId = {
@@ -266,46 +177,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       dispatch(updateReplySed('lokaleSakIder', newLokaleSaksIder))
       sakseierResetForm()
     }
-  }
-
-  const renderPeriode = (periode: Periode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
-    const getErrorFor = (index: number, el: string): string | undefined => {
-      return index < 0
-        ? _validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
-        : validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
-    }
-    const _periode = index < 0 ? _newAnmodningsperioder : periode
-    return (
-      <>
-        <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + '-perioder' + getIdx(index)}
-            error={{
-              startdato: getErrorFor(index, 'startdato'),
-              sluttdato: getErrorFor(index, 'sluttdato')
-            }}
-            breakInTwo
-            setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
-            value={_periode}
-          />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </>
-    )
   }
 
   const renderLokaleSakId = (lokaleSakId: LokaleSakId | null, index: number) => {
@@ -420,30 +291,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               <VerticalSeparatorDiv size='0.5' />
             </>
           )}
-          {isFSed(replySed) && (
-            <>
-              {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
-              <VerticalSeparatorDiv />
-              <HorizontalLineSeparator />
-              <VerticalSeparatorDiv />
-              {_seeNewForm
-                ? renderPeriode(null, -1)
-                : (
-                  <Row>
-                    <Column>
-                      <Button
-                        variant='tertiary'
-                        onClick={() => _setSeeNewForm(true)}
-                      >
-                        <AddCircle />
-                        {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                      </Button>
-                    </Column>
-                  </Row>
-                  )}
-              <VerticalSeparatorDiv />
-            </>
-          )}
+
           <VerticalSeparatorDiv />
         </>
       )}
@@ -537,75 +385,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <div>
-            <RadioGroup
-              legend={t('label:type-krav')}
-              data-testid='seddetails-typeKrav'
-              error={validation['seddetails-typeKrav']?.feilmelding}
-              id='seddetails-kravType'
-              onChange={(e: string | number | boolean) => setKravType(e as string)}
-              value={(replySed as F002Sed).krav?.kravType}
-            >
-              <Radio
-                value='nytt_krav'
-              >
-                {t('label:kravType-nytt_krav')}
-              </Radio>
-              <Radio
-                value='endrede_omstendigheter'
-              >
-                {t('label:kravType-endrede_omstendigheter')}
-              </Radio>
-            </RadioGroup>
-          </div>
-          <VerticalSeparatorDiv />
-          <DateInput
-            error={validation[namespace + '-kravMottattDato']?.feilmelding}
-            namespace={namespace}
-            key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
-            id='kravMottattDato'
-            label={t('label:krav-mottatt-dato')}
-            onChanged={setKravMottattDato}
-            value={(replySed as F002Sed).krav?.kravMottattDato}
-          />
-          <VerticalSeparatorDiv />
-          <div>
-            <RadioGroup
-              legend={t('label:informasjon-om-søknaden')}
-              data-testid='seddetails-informasjon'
-              error={validation['seddetails-informasjon']?.feilmelding}
-              id='seddetails-informasjon'
-              value={(replySed as F002Sed).krav?.infoType}
-              onChange={(e: string | number | boolean) => setInfoType(e as string)}
-            >
-              <Radio
-                value='vi_bekrefter_leverte_opplysninger'
-              >
-                {t('label:info-confirm-information')}
-              </Radio>
-              <Radio
-                value='gi_oss_punktvise_opplysninger'
-              >
-                {t('label:info-point-information')}
-              </Radio>
-              {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
-                <div>
-                  <VerticalSeparatorDiv />
-                  <TextAreaDiv>
-                    <TextArea
-                      error={validation['seddetails-opplysninger']?.feilmelding}
-                      id='opplysninger'
-                      namespace='seddetails'
-                      label={t('label:opplysninger')}
-                      maxLength={500}
-                      onChanged={setInfoPresisering}
-                      value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
-                    />
-                  </TextAreaDiv>
-                </div>
-              )}
-            </RadioGroup>
-          </div>
         </>
       )}
     </div>

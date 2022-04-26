@@ -33,7 +33,7 @@ import {
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
+import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -47,8 +47,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
   parentNamespace,
   setReplySed,
   replySed,
-  updateReplySed,
-  seeKontoopplysninger
+  updateReplySed
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: OneLevelFormSelector = useAppSelector(mapState)
@@ -896,21 +895,6 @@ const Motregning: React.FC<OneLevelFormProps> = ({
             </Column>
           </Row>
           )}
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Button
-            variant='tertiary'
-            data-amplitude='svarsed.editor.seekontoopplysning'
-            onClick={(e) => {
-              buttonLogger(e)
-              if (seeKontoopplysninger) seeKontoopplysninger()
-            }}
-          >
-            {t('label:oppgi-kontoopplysninger')}
-          </Button>
-        </Column>
-      </AlignStartRow>
       <VerticalSeparatorDiv size='0.5' />
     </PaddedDiv>
   )

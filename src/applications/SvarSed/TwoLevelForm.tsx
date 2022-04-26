@@ -176,7 +176,6 @@ export interface TwoLevelFormProps {
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
-  seeKontoopplysninger?: () => void
 }
 
 export interface TwoLevelFormSelector {

@@ -129,7 +129,6 @@ export interface _OneLevelFormProps {
   setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   viewValidation: boolean
-  setViewKontoopplysninger?: (b: boolean) => void
   target?: string
   loggingTarget?: string
 }
@@ -143,7 +142,6 @@ export interface OneLevelFormProps {
   replySed: ReplySed | null | undefined
   setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
-  seeKontoopplysninger?: () => void
 }
 
 export const mapState = (state: State): OneLevelFormSelector => ({
@@ -156,7 +154,6 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
   setReplySed,
   updateReplySed,
   viewValidation,
-  setViewKontoopplysninger,
   loggingTarget
 }: _OneLevelFormProps) => {
   const { t } = useTranslation()
@@ -200,12 +197,6 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
           replySed={replySed}
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
-          seeKontoopplysninger={() => {
-            if (setViewKontoopplysninger) {
-              setViewKontoopplysninger(true)
-              document.dispatchEvent(new CustomEvent('switch', {detail: namespace + '-kontoopplysninger'}))
-            }
-          }}
         />
       )
     }
@@ -231,9 +222,6 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const currentMenu = menuRef.current
-      if (newMenu === 'kontoopplysninger' && setViewKontoopplysninger) {
-        setViewKontoopplysninger(true)
-      }
       if (newMenu !== currentMenu) {
         changeMenu(newMenu)
       }
@@ -253,9 +241,6 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const currentMenu = menuRef.current
-      if (newMenu === 'kontoopplysninger' && setViewKontoopplysninger) {
-        setViewKontoopplysninger(true)
-      }
       if (newMenu !== currentMenu) {
         changeMenu(newMenu)
       }

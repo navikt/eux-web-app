@@ -24,7 +24,6 @@ describe('applications/SvarSed/MainForm/Kontoopplysning/Kontoopplysning', () => 
 
   const initialMockProps: OneLevelFormProps = {
     parentNamespace: 'test',
-    seeKontoopplysninger: jest.fn(),
     replySed: mockReplySed,
     updateReplySed: jest.fn(),
     setReplySed: jest.fn()

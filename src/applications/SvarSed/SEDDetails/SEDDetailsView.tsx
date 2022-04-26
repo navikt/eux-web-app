@@ -1,22 +1,13 @@
-import { Warning, SuccessFilled } from '@navikt/ds-icons'
-import { Dd, Dl, Dt } from 'components/StyledComponents'
-import { F002Sed, FSed, ReplySed, USed } from 'declarations/sed'
+import { Detail } from '@navikt/ds-react'
 import Flag, { FlagList } from '@navikt/flagg-ikoner'
+import { FlexCenterDiv, FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import CountryData from '@navikt/land-verktoy'
-import { BodyLong, Detail } from '@navikt/ds-react'
-import { FlexCenterDiv, FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Dd, Dl, Dt } from 'components/StyledComponents'
+import { F002Sed, ReplySed, USed } from 'declarations/sed'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
-import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
+import { isF002Sed, isUSed } from 'utils/sed'
 
-const Blockquote = styled.blockquote`
-  border-left: 2px solid gray;
-  padding-left: 1rem;
-  margin-inline-start: 1rem;
-  margin-inline-end: 0rem;
-  font-style: italic;
-`
 export interface SEDDetailsViewProps {
   replySed: ReplySed
 }
@@ -29,7 +20,7 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
   return (
     <>
       <Dl>
-        {!isHSed(replySed) && (
+        {!isUSed(replySed) && (
           <>
             <Dt>
               {t('label:periode')}
@@ -41,11 +32,6 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
                   {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
                 </Detail>
               )}
-              {(replySed as FSed).anmodningsperioder && (replySed as FSed).anmodningsperioder.map((p) => (
-                <Detail key={p.startdato}>
-                  {p.startdato} - {p.sluttdato ? p.sluttdato : '...'}
-                </Detail>
-              ))}
             </Dd>
           </>
         )}
@@ -108,52 +94,6 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
             </Dd>
           </React.Fragment>
         ))}
-        {isFSed(replySed) && (replySed as F002Sed).krav?.kravType && (
-          <>
-            <Dt>
-              {t('label:type-krav')}
-            </Dt>
-            <Dd>
-              {t('label:kravType-' + (replySed as F002Sed).krav?.kravType)}
-            </Dd>
-            <Dt>
-              {t('label:krav-mottatt-dato')}
-            </Dt>
-            <Dd>
-              {(replySed as F002Sed).krav?.kravMottattDato}
-            </Dd>
-            {(replySed as F002Sed).krav?.infoType === 'vi_bekrefter_leverte_opplysninger' && (
-              <>
-                <VerticalSeparatorDiv size='3' />
-                <FlexDiv>
-                  <SuccessFilled color='green' width={18} height={18} />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <BodyLong>
-                    {t('label:info-confirm-information')}
-                  </BodyLong>
-                </FlexDiv>
-              </>
-            )}
-            {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
-              <>
-                <VerticalSeparatorDiv size='3' />
-                <FlexDiv>
-                  <Warning width={18} height={18} />
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <BodyLong>
-                    {t('label:info-point-information')}
-                  </BodyLong>
-                </FlexDiv>
-                <VerticalSeparatorDiv />
-                <FlexDiv>
-                  <Blockquote>
-                    {(replySed as F002Sed).krav?.infoPresisering}
-                  </Blockquote>
-                </FlexDiv>
-              </>
-            )}
-          </>
-        )}
       </Dl>
     </>
   )

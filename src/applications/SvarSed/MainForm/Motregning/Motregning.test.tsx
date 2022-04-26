@@ -24,7 +24,6 @@ describe('applications/SvarSed/MainForm/Motregning/Motregning', () => {
 
   const initialMockProps: OneLevelFormProps = {
     parentNamespace: 'test',
-    seeKontoopplysninger: jest.fn(),
     replySed: mockReplySed,
     updateReplySed: jest.fn(),
     setReplySed: jest.fn()
@@ -51,12 +50,5 @@ describe('applications/SvarSed/MainForm/Motregning/Motregning', () => {
     formField.simulate('change', { target: { value: mockText } })
     formField.simulate('blur')
     expect(initialMockProps.updateReplySed).toHaveBeenCalledWith('svarType', mockText)
-  })
-
-  it('Handling: see kontoopplysning button clicked', () => {
-    (initialMockProps.seeKontoopplysninger as jest.Mock).mockReset()
-    const formField = wrapper.find('[data-testid=\'test-refusjonskrav-konto-button\']').hostNodes()
-    formField.simulate('click')
-    expect(initialMockProps.seeKontoopplysninger).toHaveBeenCalled()
   })
 })

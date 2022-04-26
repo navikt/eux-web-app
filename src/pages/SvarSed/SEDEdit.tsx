@@ -130,7 +130,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
-  const [_viewKontoopplysninger, _setViewKontoopplysninger] = useState<boolean>(false)
 
   const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
 
@@ -368,13 +367,12 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen', component: KravOmRefusjon,
                 condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false  },
               { label: t('el:option-mainform-kontoopplysninger'), value: 'kontoopplysninger', component: Kontoopplysning,
-                condition: () =>  _viewKontoopplysninger}
+                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0}
             ]}
             replySed={replySed}
             viewValidation={view}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
-            setViewKontoopplysninger={_setViewKontoopplysninger}
             loggingTarget='formalmanager'
           />
           <VerticalSeparatorDiv size='2' />
