@@ -1,3 +1,4 @@
+import { Delete } from '@navikt/ds-icons'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import Input from 'components/Forms/Input'
@@ -5,7 +6,7 @@ import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { Heading } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -64,6 +65,8 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
     }
   }
 
+  const value = _.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt) || null
+
   return (
     <PaddedDiv>
       <Heading size='small'>
@@ -71,7 +74,7 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
       </Heading>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
-        <Column>
+        <Column flex='3'>
           <Select
             data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
@@ -80,10 +83,22 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
-            value={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
-            defaultValue={_.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt)}
+            value={value}
+            defaultValue={value}
           />
         </Column>
+        <Column>
+          <div style={{paddingTop: '2rem'}}>
+          <Button
+            variant='tertiary'
+            onClick={() => setTypeGrunnOpphoerAnsatt('')}
+          >
+            <Delete/>
+            {t('el:button-clear')}
+          </Button>
+          </div>
+        </Column>
+
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
       {_typeGrunnOpphoerAnsatt === '99' && (

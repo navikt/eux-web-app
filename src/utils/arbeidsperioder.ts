@@ -45,9 +45,14 @@ export const periodeMedForsikringToArbeidsperioderFraAA = (a: PeriodeMedForsikri
   }
 }
 
-export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator>): string => ids
-  .sort((a, b) => a.type.localeCompare(b.type))
-  .map(it => it.type + '-' + it.id).join(';')
+export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator> | undefined): string | undefined => {
+  if (_.isNil(ids)) {
+    return undefined
+  }
+  return ids
+    .sort((a, b) => a.type.localeCompare(b.type))
+    .map(it => it.type + '-' + it.id).join(';')
+}
 
 export const getOrgnr = (arbeidsgiver: PeriodeMedForsikring, type: string): string | undefined => (
   _.find(arbeidsgiver.arbeidsgiver?.identifikatorer, (id: ArbeidsgiverIdentifikator) => id.type === type)?.id

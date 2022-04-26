@@ -289,7 +289,22 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
         (perioder?.perioderAnsattUtenForsikring?.length ?? 0) +
         (perioder?.perioderSelvstendigUtenForsikring?.length ?? 0)
       )
-      if (nrArbeidsperioder > 0) {
+
+      let allArbeidsPerioderOK = true
+
+      // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
+      if (replySed.sedType === 'U002') {
+        if (
+          _.find(perioder?.perioderAnsattMedForsikring, (p => !_.isEmpty(p.sluttdato))) ||
+          _.find(perioder?.perioderSelvstendigMedForsikring, (p => !_.isEmpty(p.sluttdato))) ||
+          _.find(perioder?.perioderAnsattUtenForsikring, (p => !_.isEmpty(p.sluttdato))) ||
+          _.find(perioder?.perioderSelvstendigUtenForsikring, (p => !_.isEmpty(p.sluttdato)))
+        ) {
+          allArbeidsPerioderOK = false
+        }
+      }
+
+      if (nrArbeidsperioder > 0 && allArbeidsPerioderOK) {
         _error = validateGrunnTilOpphor(v, t, {
           grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
           namespace: `TwoLevelForm-${personID}-grunntilopphør`
