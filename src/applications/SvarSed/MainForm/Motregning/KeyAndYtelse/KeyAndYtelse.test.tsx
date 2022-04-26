@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import KeyAndYtelseFC, { KeyAndYtelseProps } from './KeyAndYtelse'
 
-describe('applications/SvarSed/BottomForm/Motregning/KeyAndYtelse/KeyAndYtelse', () => {
+describe('applications/SvarSed/MainForm/Motregning/KeyAndYtelse/KeyAndYtelse', () => {
   let wrapper: any
 
   const initialMockProps: KeyAndYtelseProps = {

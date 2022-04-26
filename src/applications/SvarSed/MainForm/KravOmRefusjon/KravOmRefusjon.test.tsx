@@ -1,5 +1,5 @@
 import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
-import KravOmRefusjon from 'applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon'
+import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
 import { render } from '@testing-library/react'
 import getReplySed from 'mocks/svarsed/replySed'
 import { stageSelector } from 'setupTests'
@@ -18,7 +18,7 @@ const defaultSelector: OneLevelFormSelector = {
   validation: {}
 }
 
-describe('applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon', () => {
+describe('applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon', () => {
   let wrapper: any
 
   const initialMockProps: OneLevelFormProps = {

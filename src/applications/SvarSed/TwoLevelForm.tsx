@@ -41,53 +41,6 @@ const LeftDiv = styled.div`
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 `
-const OptionDiv = styled.div`
-  transition: all 0.2s ease-in-out;
-  padding: 0.5rem;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    color: var(--navds-semantic-color-text-inverted);
-    background-color: var(--navds-semantic-color-interaction-primary-hover);
-  }
-  &.selected {
-    font-weight: bold;
-    border-top: 1px solid var(--navds-panel-color-border);
-    border-bottom: 1px solid var(--navds-panel-color-border);
-    border-left: 6px solid var(--navds-semantic-color-interaction-primary-selected);
-  }
-  &.whiteborder {
-    border-right: 1px solid var(--navds-panel-color-background);
-    margin-right: -1px;
-  }
-  &.first {
-    margin-top: -1px;
-  }
-`
-const NameAndOptionsDiv = styled(PileDiv)`
- &.whiteborder {
-    border-right: 1px solid var(--navds-panel-color-background);
-    margin-right: -1px;
- }
- border-bottom: 1px solid var(--navds-panel-color-border);
-`
-
-const NameDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 1rem 0.5rem;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-   color: var(--navds-semantic-color-text-inverted);
-   background-color: var(--navds-semantic-color-interaction-primary-hover);
-  }
-`
-const NameLabelDiv = styled(FlexCenterDiv)`
-  flex: 1;
-`
 const RightDiv = styled.div`
   flex: 3;
   align-self: stretch;
@@ -144,6 +97,55 @@ const PreviousFormDiv = styled(RightActiveDiv)`
     display: none;
   }
 `
+const NameAndOptionsDiv = styled(PileDiv)`
+ &.whiteborder {
+    border-right: 1px solid var(--navds-panel-color-background);
+    margin-right: -1px;
+ }
+ border-bottom: 1px solid var(--navds-panel-color-border);
+`
+
+const NameDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+   color: var(--navds-semantic-color-text-inverted);
+   background-color: var(--navds-semantic-color-interaction-primary-hover);
+  }
+`
+const NameLabelDiv = styled(FlexCenterDiv)`
+  flex: 1;
+`
+
+
+const OptionDiv = styled.div`
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    color: var(--navds-semantic-color-text-inverted);
+    background-color: var(--navds-semantic-color-interaction-primary-hover);
+  }
+  &.selected {
+    font-weight: bold;
+    border-top: 1px solid var(--navds-panel-color-border);
+    border-bottom: 1px solid var(--navds-panel-color-border);
+    border-left: 6px solid var(--navds-semantic-color-interaction-primary-selected);
+  }
+  &.whiteborder {
+    border-right: 1px solid var(--navds-panel-color-background);
+    margin-right: -1px;
+  }
+  &.first {
+    margin-top: -1px;
+  }
+`
 const MarginDiv = styled.div`
   padding: 1rem 0.5rem;
 `
@@ -174,6 +176,7 @@ export interface TwoLevelFormProps {
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
+  seeKontoopplysninger?: () => void
 }
 
 export interface TwoLevelFormSelector {
@@ -182,7 +185,7 @@ export interface TwoLevelFormSelector {
 
 export interface Form extends Option {
   component: any
-  type: string | Array<string>
+  type?: string | Array<string>
   barn?: boolean
   family?: boolean
   condition ?: () => void

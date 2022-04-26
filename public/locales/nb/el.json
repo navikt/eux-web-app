@@ -149,6 +149,13 @@
   "option-mainform-coverletter": "Følgebrev",
   "option-mainform-anmodning": "Anmodning om informasjon",
   "option-mainform-endredeforhold": "Ytterligere informasjon",
+  "option-mainform-vedtak": "Vedtak",
+  "option-mainform-motregning": "Motregning",
+  "option-mainform-refusjon": "Krav om refusjon",
+  "option-mainform-prosedyre": "Prosedyre ved uenighet",
+  "option-mainform-kontoopplysninger": "Kontoopplysninger",
+  "option-mainform-periode": "Periode",
+  "option-mainform-formål": "Formål",
 
   "option-perioder-perioderAnsattMedForsikring" : "Forsikret ansettelsesforhold",
   "option-perioder-perioderSelvstendigMedForsikring" : "Forsikret selvstendig næringsdrivende",

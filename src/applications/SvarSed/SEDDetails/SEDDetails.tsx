@@ -9,9 +9,8 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { setReplySed } from 'actions/svarsed'
-import SEDType from 'applications/SvarSed/BottomForm/SEDType'
-import Tema from 'applications/SvarSed/BottomForm/Tema'
-import Formaal from 'applications/SvarSed/TopForm/Formaal'
+import SEDType from 'applications/SvarSed/MainForm/SEDType'
+import Tema from 'applications/SvarSed/MainForm/Tema'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
 import { UpdateReplySedPayload } from 'declarations/types'
@@ -19,7 +18,7 @@ import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'store'
-import { isFSed, isHSed, isUSed } from 'utils/sed'
+import { isHSed, isUSed } from 'utils/sed'
 import SEDDetailsEdit from './SEDDetailsEdit'
 import SEDDetailsView from './SEDDetailsView'
 
@@ -33,7 +32,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
   const { t } = useTranslation()
   const replySed: ReplySed | null | undefined = useAppSelector((state: State) => state.svarsed.replySed)
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const namespace = 'sidebar'
 
   const toggleEditing = (e: any) => {
     if (!isEditing) {
@@ -67,13 +65,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
         </Heading>
       </FlexBaseDiv>
       <VerticalSeparatorDiv />
-      {isFSed(replySed) && (
-        <Formaal
-          replySed={replySed}
-          updateReplySed={updateReplySed}
-          parentNamespace={namespace}
-        />
-      )}
       {isUSed(replySed) && (
         <SEDType
           replySed={replySed}

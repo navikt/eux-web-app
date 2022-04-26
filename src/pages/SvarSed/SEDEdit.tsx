@@ -1,7 +1,7 @@
 import { Sight } from '@navikt/ds-icons'
 import { Alert, Button, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import { Column, FlexDiv, HorizontalSeparatorDiv, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Row, FlexDiv, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv, PaddedDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -15,6 +15,11 @@ import {
   updateSed
 } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
+import Kontoopplysning from 'applications/SvarSed/MainForm/Kontoopplysning/Kontoopplysning'
+import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/MainForm/Motregning/Motregning'
+import ProsedyreVedUenighet from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
 import Adresser from 'applications/SvarSed/MainForm/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/MainForm/Anmodning/Anmodning'
 import ArbeidsperioderOversikt from 'applications/SvarSed/MainForm/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
@@ -36,12 +41,13 @@ import RettTilYtelser from 'applications/SvarSed/MainForm/RettTilYtelser/RettTil
 import SisteAnsettelsesForhold from 'applications/SvarSed/MainForm/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
+import Formål from 'applications/SvarSed/MainForm/Formål/Formål'
+import Periode from 'applications/SvarSed/MainForm/Periode/Periode'
 import OneLevelForm from 'applications/SvarSed/OneLevelForm'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import Attachments from 'applications/Vedlegg/Attachments/Attachments'
-
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -124,14 +130,19 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
+  const [_viewKontoopplysninger, _setViewKontoopplysninger] = useState<boolean>(false)
+
   const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
 
+  const showTopForm =  (): boolean => isFSed(replySed)
   const showTwoLevelForm = (): boolean => isSed(replySed)
   const showBottomForm = (): boolean =>
-    (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
-    (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+    isFSed(replySed) && (
+      (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
+      (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
+      (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
+      (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+    )
 
   const cleanReplySed = (replySed: ReplySed): ReplySed => {
     const newReplySed = _.cloneDeep(replySed)
@@ -293,6 +304,22 @@ const SEDEdit: React.FC = (): JSX.Element => {
           )
         }}
       />
+      {showTopForm() && (
+        <>
+          <OneLevelForm
+            forms={[
+              { label: t('el:option-mainform-formål'), value: 'formål', component: Formål},
+              { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode}
+            ]}
+            replySed={replySed}
+            viewValidation={view}
+            updateReplySed={updateReplySed}
+            setReplySed={setReplySed}
+          />
+          <VerticalSeparatorDiv size='2' />
+        </>
+      )}
+
       {showTwoLevelForm() && (
         <>
           <TwoLevelForm<ReplySed>
@@ -328,13 +355,27 @@ const SEDEdit: React.FC = (): JSX.Element => {
           <VerticalSeparatorDiv size='2' />
         </>
       )}
-      {isFSed(replySed) && showBottomForm() && (
+      {showBottomForm() && (
         <>
           <OneLevelForm
+            forms={[
+              { label: t('el:option-mainform-vedtak'), value: 'vedtak', component: Vedtak,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+              { label: t('el:option-mainform-motregning'), value: 'motregning', component: Motregning,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false  },
+              { label: t('el:option-mainform-prosedyre'), value: 'prosedyre_ved_uenighet', component: ProsedyreVedUenighet,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false  },
+              { label: t('el:option-mainform-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen', component: KravOmRefusjon,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false  },
+              { label: t('el:option-mainform-kontoopplysninger'), value: 'kontoopplysninger', component: Kontoopplysning,
+                condition: () =>  _viewKontoopplysninger}
+            ]}
             replySed={replySed}
             viewValidation={view}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
+            setViewKontoopplysninger={_setViewKontoopplysninger}
+            loggingTarget='formalmanager'
           />
           <VerticalSeparatorDiv size='2' />
         </>

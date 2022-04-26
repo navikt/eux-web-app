@@ -1,11 +1,18 @@
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexRadioPanels,
+  PaddedDiv,
+  RadioPanelGroup,
+  RadioPanel,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Sed, YtterligereInfoType } from 'declarations/sed'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -41,15 +48,7 @@ const EndredeForhold: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow>
-        <Column>
-          <Heading size='small'>
-            {t('label:ytterligere-informasjon_endrede_forhold')}
-          </Heading>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <RadioGroup
+      <RadioPanelGroup
         legend=''
         data-testid={namespace + '-ytterligereInfoType'}
         key={namespace + '-ytterligereInfoType-' + (replySed as H001Sed).ytterligereInfoType}
@@ -58,13 +57,15 @@ const EndredeForhold: React.FC<TwoLevelFormProps> = ({
         value={(replySed as H001Sed).ytterligereInfoType}
         onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
       >
-        <Radio value='melding_om_mer_informasjon'>
-          {t('el:option-ytterligere-1')}
-        </Radio>
-        <Radio value='anmodning_om_mer_informasjon'>
-          {t('el:option-ytterligere-2')}
-        </Radio>
-      </RadioGroup>
+        <FlexRadioPanels>
+          <RadioPanel value='melding_om_mer_informasjon'>
+            {t('el:option-ytterligere-1')}
+          </RadioPanel>
+          <RadioPanel value='anmodning_om_mer_informasjon'>
+            {t('el:option-ytterligere-2')}
+          </RadioPanel>
+        </FlexRadioPanels>
+      </RadioPanelGroup>
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>

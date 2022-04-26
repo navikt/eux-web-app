@@ -1,38 +1,46 @@
+import { Checkbox } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
+import { PaddedDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { UpdateReplySedPayload, Validation } from 'declarations/types'
+import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import Stack from 'components/Stack/Stack'
 import { useAppDispatch, useAppSelector } from 'store'
+import styled from 'styled-components'
 
-interface FormaalProps {
+const CheckboxDiv = styled.div`
+ display: inline-block;
+ width: 100%;
+`
+
+interface FormålProps {
   parentNamespace: string
   replySed: ReplySed | null | undefined
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
-interface FormaalSelector {
+interface FormålSelector {
   validation: Validation
 }
 
-const mapState = (state: State): FormaalSelector => ({
+const mapState = (state: State): FormålSelector => ({
   validation: state.validation.status
 })
 
-const Formaal: React.FC<FormaalProps> = ({
+const Formål: React.FC<FormålProps> = ({
   replySed,
   parentNamespace,
   updateReplySed
-}: FormaalProps): JSX.Element => {
+}: FormålProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const formaal: Array<string> = (replySed as FSed)?.formaal
+  const formaal: Array<string> | undefined = (replySed as FSed)?.formaal
   const namespace: string = `${parentNamespace}-formål`
 
   const formaalOptions: Options = [
@@ -46,26 +54,40 @@ const Formaal: React.FC<FormaalProps> = ({
     { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
 
-  const onItemsChanged = (newFormaals: Array<string>, action: 'add' | 'remove', item: string) => {
+  const onItemsChanged = (item: string, checked: boolean) => {
+    let newFormaals: Array<string> | undefined = _.cloneDeep(formaal)
+    if (_.isNil(newFormaals)) {
+      newFormaals = []
+    }
+    if (checked) {
+       newFormaals.push(item)
+    } else {
+      newFormaals = _.reject(newFormaals, f => f == item)
+    }
     dispatch(updateReplySed('formaal', newFormaals))
-    standardLogger('svarsed.fsed.formal.' + action, { item })
+    standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item: item })
     dispatch(resetValidation(namespace))
   }
 
   return (
-    <div id={namespace}>
-      <Stack
-        key={namespace}
-        error={validation[namespace]?.feilmelding}
-        initialValues={formaal}
-        itemLabel={t('label:formål')}
-        namespace={namespace}
-        options={formaalOptions}
-        onChange={onItemsChanged}
-        title={t('label:velg-formål')}
-      />
-    </div>
+    <PaddedDiv style={{columns: '2'}}>
+      {formaalOptions.map(f => (
+        <CheckboxDiv >
+          <Checkbox
+          checked={formaal.indexOf(f.value) >= 0}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onItemsChanged(f.value, e.target.checked)}
+        >
+          {f.label}
+        </Checkbox>
+        </CheckboxDiv>
+      ))}
+      {validation[namespace]?.feilmelding && (
+      <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+        {validation[namespace]?.feilmelding}
+      </div>
+    )}
+    </PaddedDiv>
   )
 }
 
-export default Formaal
+export default Formål

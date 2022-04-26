@@ -1,9 +1,9 @@
-import { KeyAndYtelse } from 'applications/SvarSed/BottomForm/Motregning/KeyAndYtelse/KeyAndYtelse'
+import { KeyAndYtelse } from 'applications/SvarSed/MainForm/Motregning/KeyAndYtelse/KeyAndYtelse'
 import { Validation } from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import { validateKeyAndYtelse } from './validation'
 
-describe('applications/SvarSed/BottomForm/Motregning/KeyAndYtelse/validation', () => {
+describe('applications/SvarSed/MainForm/Motregning/KeyAndYtelse/validation', () => {
   const { t } = useTranslation()
 
   it('Empty form: failed validation', () => {

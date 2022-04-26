@@ -3,7 +3,7 @@ import { Validation } from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import { validateKontoopplysning } from './validation'
 
-describe('applications/SvarSed/BottomForm/Kontoopplysning/validation', () => {
+describe('applications/SvarSed/MainForm/Kontoopplysning/validation', () => {
   const { t } = useTranslation()
   /*
   it('Empty form: failed validation', () => {

@@ -1,5 +1,5 @@
 import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
-import Motregning from 'applications/SvarSed/BottomForm/Motregning/Motregning'
+import Motregning from 'applications/SvarSed/MainForm/Motregning/Motregning'
 import { F002Sed } from 'declarations/sed'
 import { render } from '@testing-library/react'
 import getReplySed from 'mocks/svarsed/replySed'
@@ -19,7 +19,7 @@ const defaultSelector: OneLevelFormSelector = {
   validation: {}
 }
 
-describe('applications/SvarSed/BottomForm/Motregning/Motregning', () => {
+describe('applications/SvarSed/MainForm/Motregning/Motregning', () => {
   let wrapper: any
 
   const initialMockProps: OneLevelFormProps = {

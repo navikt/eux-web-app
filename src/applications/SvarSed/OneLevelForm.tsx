@@ -1,5 +1,5 @@
 import { ErrorFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
-import { BodyLong, Heading } from '@navikt/ds-react'
+import { BodyLong } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
   FlexCenterDiv,
@@ -10,16 +10,12 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
-import Kontoopplysning from 'applications/SvarSed/BottomForm/Kontoopplysning/Kontoopplysning'
-import KravOmRefusjon from 'applications/SvarSed/BottomForm/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/BottomForm/Motregning/Motregning'
-import ProsedyreVedUenighet from 'applications/SvarSed/BottomForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
-import Vedtak from 'applications/SvarSed/BottomForm/Vedtak/Vedtak'
+import { Form } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import { WithErrorPanel } from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { FSed, ReplySed } from 'declarations/sed'
+import { ReplySed } from 'declarations/sed'
 import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
@@ -33,52 +29,29 @@ const LeftDiv = styled.div`
   flex: 1;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid var(--navds-semantic-color-border);
+  border-right: 1px solid var(--navds-panel-color-border);
   border-width: 1px;
   border-style: solid;
   border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-component-background-alternate);
+  background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 `
-const MenuDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .skjemaelement {
-     display: flex;
-  }
-`
-const MenuLabelDiv = styled(FlexCenterDiv)`
-  cursor: pointer;
-  padding: 1rem 0.5rem;
-  flex: 1;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-   background-color: var(--navds-semantic-color-interaction-primary-hover);
-  }
-   &.selected {
-    font-weight: bold;
-    background-color: var(--navds-semantic-color-component-background-alternate);
-     border-left: 6px solid var(--navds-semantic-color-interaction-primary);
-  }
-`
 const RightDiv = styled.div`
   flex: 3;
-  border-left: 1px solid var(--navds-panel-color-border);
-  margin-left: -1px;
   align-self: stretch;
   position: relative;
   overflow: hidden;
+  width: 780px;
 `
 const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
   border-left-width: 0;
   border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-component-background-alternate);
+  background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  background-color: var(--navds-semantic-color-component-background-alternate);
   height: 100%;
 `
 const slideIn = keyframes`
@@ -122,17 +95,43 @@ const PreviousFormDiv = styled(RightActiveDiv)`
     display: none;
   }
 `
+const NameAndOptionsDiv = styled(PileDiv)`
+ &.whiteborder {
+    border-right: 1px solid var(--navds-panel-color-background);
+    margin-right: -1px;
+ }
+ border-bottom: 1px solid var(--navds-panel-color-border);
+`
 const MenuLabelText = styled(BodyLong)`
-  &.selected {
-    font-weight: bold;
+  font-weight: bold;
+`
+const NameDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+   color: var(--navds-semantic-color-text-inverted);
+   background-color: var(--navds-semantic-color-interaction-primary-hover);
   }
+`
+const NameLabelDiv = styled(FlexCenterDiv)`
+  flex: 1;
+`
+const MenuArrowDiv = styled.div`
+ padding: 0rem 0.5rem;
 `
 
 export interface _OneLevelFormProps {
+  forms: Array<Form>
   replySed: ReplySed | null | undefined
   setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   viewValidation: boolean
+  setViewKontoopplysninger?: (b: boolean) => void
+  target?: string
+  loggingTarget?: string
 }
 
 export interface OneLevelFormSelector {
@@ -152,63 +151,65 @@ export const mapState = (state: State): OneLevelFormSelector => ({
 })
 
 const OneLevelForm: React.FC<_OneLevelFormProps> = ({
+  forms,
   replySed,
   setReplySed,
   updateReplySed,
-  viewValidation
+  viewValidation,
+  setViewKontoopplysninger,
+  loggingTarget
 }: _OneLevelFormProps) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
 
   const dispatch = useAppDispatch()
-  const namespace = 'BottomForm'
-  const target = 'formaal'
-  const initialSelectedMenus: Array<string> = _.get(replySed, target)
+  const namespace = 'MainForm'
 
   const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
-  const initialMenu: string | undefined = initialSelectedMenus.length === 1 ? initialSelectedMenus[0] : undefined
+  const initialMenu: string | undefined = forms.length === 1 ? forms[0].value : undefined
   const [currentMenu, _setCurrentMenu] = useState<string | undefined>(initialMenu)
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
-  const [_viewKontoopplysninger, setViewKontoopplysninger] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!_.isNil(initialMenu)) {
-      dispatch(startMenuStatistic('formalmanager', initialMenu))
+    if (loggingTarget && !_.isNil(initialMenu)) {
+      dispatch(startMenuStatistic(loggingTarget, initialMenu))
     }
     return () => {
-      dispatch(finishMenuStatistic('formalmanager'))
+      if (loggingTarget) {
+        dispatch(finishMenuStatistic(loggingTarget))
+      }
     }
   }, [])
 
   const setCurrentMenu = (newMenu: string | undefined) => {
-    dispatch(logMenuStatistic('formalmanager', currentMenu, newMenu))
+    if (loggingTarget) {
+      dispatch(logMenuStatistic(loggingTarget, currentMenu, newMenu))
+    }
     _setCurrentMenu(newMenu)
   }
 
   const menuRef = useRef(currentMenu)
 
-  const options: any = {
-    vedtak: Vedtak,
-    motregning: Motregning,
-    prosedyre_ved_uenighet: ProsedyreVedUenighet,
-    refusjon_i_henhold_til_artikkel_58_i_forordningen: KravOmRefusjon,
-    kontoopplysninger: Kontoopplysning
-  }
-
   const getForm = (value: string): JSX.Element | null => {
-    const Component = options[value]
-    return (
-      <Component
-        parentNamespace={namespace}
-        replySed={replySed}
-        setReplySed={setReplySed}
-        updateReplySed={updateReplySed}
-        seeKontoopplysninger={() => {
-          setViewKontoopplysninger(true)
-          document.dispatchEvent(new CustomEvent('switch', { detail: namespace + '-kontoopplysninger' }))
-        }}
-      />
-    )
+    const form: Form | undefined = _.find(forms, o => o.value === value)
+    if (form) {
+      const Component = form.component
+      return (
+        <Component
+          parentNamespace={namespace}
+          replySed={replySed}
+          setReplySed={setReplySed}
+          updateReplySed={updateReplySed}
+          seeKontoopplysninger={() => {
+            if (setViewKontoopplysninger) {
+              setViewKontoopplysninger(true)
+              document.dispatchEvent(new CustomEvent('switch', {detail: namespace + '-kontoopplysninger'}))
+            }
+          }}
+        />
+      )
+    }
+    return null
   }
 
   const changeMenu = (menu: string) => {
@@ -230,7 +231,7 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const currentMenu = menuRef.current
-      if (newMenu === 'kontoopplysninger') {
+      if (newMenu === 'kontoopplysninger' && setViewKontoopplysninger) {
         setViewKontoopplysninger(true)
       }
       if (newMenu !== currentMenu) {
@@ -252,7 +253,7 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
     if (namespaceBits[0] === namespace) {
       const newMenu = namespaceBits[1]
       const currentMenu = menuRef.current
-      if (newMenu === 'kontoopplysninger') {
+      if (newMenu === 'kontoopplysninger' && setViewKontoopplysninger) {
         setViewKontoopplysninger(true)
       }
       if (newMenu !== currentMenu) {
@@ -270,45 +271,27 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
     }
   }, [])
 
-  const menus: Array<string> = [];
-  ((replySed as FSed)?.formaal).forEach(f => {
-    if (Object.keys(options).indexOf(f) >= 0) {
-      menus.push(f)
-    }
-  })
-
-  if (_viewKontoopplysninger) {
-    menus.push('kontoopplysninger')
-  }
-
   return (
-    <PileDiv>
-      <Heading size='small'>
-        {t('label:BottomForm')}
-      </Heading>
-      <VerticalSeparatorDiv />
-      <WithErrorPanel border className={classNames({ error: validation[namespace]?.feilmelding })}>
-        <FlexCenterSpacedDiv>
-          <LeftDiv>
-            {menus.map((menu) => (
-              <PileDiv key={menu}>
-                <MenuDiv>
-                  <MenuLabelDiv
+    <WithErrorPanel border className={classNames({ error: validation[namespace]?.feilmelding })}>
+      <FlexCenterSpacedDiv>
+        <LeftDiv>
+          {forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
+            const selected: boolean = currentMenu === form.value
+            return (
+              <NameAndOptionsDiv className={classNames({ whiteborder: selected })}>
+                <NameDiv>
+                  <NameLabelDiv
                     onClick={() => {
-                      changeMenu(menu)
+                      changeMenu(form.value)
                       return false
                     }}
-                    className={classNames({
-                      selected: currentMenu === menu
-                    })}
+                    className={classNames({selected})}
                   >
-                    <NextFilled />
-                    <HorizontalSeparatorDiv size='0.5' />
                     {viewValidation && (
-                      validation[namespace + '-' + menu]
+                      validation[namespace + '-' + form.value]
                         ? (
                           <>
-                            <ErrorFilled color='red' />
+                            <ErrorFilled height={20}  color='red' />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
@@ -320,44 +303,47 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
                           )
                     )}
                     <>
-                      <MenuLabelText className={classNames({ selected: currentMenu === menu })}>
-                        {t('label:' + menu.replaceAll('_', '-'))}
+                      <MenuLabelText className={classNames({ selected })}>
+                        {t('label:' + form.value.replaceAll('_', '-'))}
                       </MenuLabelText>
                     </>
-                  </MenuLabelDiv>
-                </MenuDiv>
-              </PileDiv>
-            ))}
-            <VerticalSeparatorDiv />
-          </LeftDiv>
-          <RightDiv className='mainright'>
-            {!currentMenu && (
-              <PileCenterDiv style={{ height: '100%' }}>
-                <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>
-                  {t('label:velg-formål')}
-                </FlexCenterDiv>
-              </PileCenterDiv>
+                  </NameLabelDiv>
+                  <MenuArrowDiv>
+                    <NextFilled />
+                  </MenuArrowDiv>
+                </NameDiv>
+              </NameAndOptionsDiv>
             )}
-            {previousMenu && (
-              <PreviousFormDiv
-                className={classNames({ animating: animatingMenus })}
-                key={previousMenu}
-              >
-                {getForm(previousMenu)}
-              </PreviousFormDiv>
-            )}
-            {currentMenu && (
-              <ActiveFormDiv
-                className={classNames({ animating: animatingMenus })}
-                key={currentMenu + '-' + currentMenu}
-              >
-                {getForm(currentMenu)}
-              </ActiveFormDiv>
-            )}
-          </RightDiv>
-        </FlexCenterSpacedDiv>
-      </WithErrorPanel>
-    </PileDiv>
+          )}
+          <VerticalSeparatorDiv />
+        </LeftDiv>
+        <RightDiv className='mainright'>
+          {!currentMenu && (
+            <PileCenterDiv style={{ height: '100%' }}>
+              <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>
+                {t('label:velg-formål')}
+              </FlexCenterDiv>
+            </PileCenterDiv>
+          )}
+          {previousMenu && (
+            <PreviousFormDiv
+              className={classNames({ animating: animatingMenus })}
+              key={previousMenu}
+            >
+              {getForm(previousMenu)}
+            </PreviousFormDiv>
+          )}
+          {currentMenu && (
+            <ActiveFormDiv
+              className={classNames({ animating: animatingMenus })}
+              key={currentMenu + '-' + currentMenu}
+            >
+              {getForm(currentMenu)}
+            </ActiveFormDiv>
+          )}
+        </RightDiv>
+      </FlexCenterSpacedDiv>
+    </WithErrorPanel>
   )
 }
 

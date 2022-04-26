@@ -2,7 +2,7 @@ import { Validation } from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import { validateKravOmRefusjon } from './validation'
 
-describe('applications/SvarSed/BottomForm/KravOmRefusjon/validation', () => {
+describe('applications/SvarSed/MainForm/KravOmRefusjon/validation', () => {
   const { t } = useTranslation()
 
   it('Empty form: failed validation', () => {

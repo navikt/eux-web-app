@@ -15,7 +15,7 @@ import {
   validateVedtakVedtaksperiode,
   ValidationVedtakPeriodeProps,
   ValidationVedtakVedtaksperiodeProps
-} from 'applications/SvarSed/BottomForm/Vedtak/validation'
+} from 'applications/SvarSed/MainForm/Vedtak/validation'
 import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'

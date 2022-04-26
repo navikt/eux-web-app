@@ -21,7 +21,6 @@ import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
 import {
   AnmodningSvarType,
   Barn,

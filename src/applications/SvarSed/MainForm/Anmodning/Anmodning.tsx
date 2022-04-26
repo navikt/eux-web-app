@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import TextArea from 'components/Forms/TextArea'
@@ -6,7 +6,6 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Svar, ReplySed } from 'declarations/sed'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -51,14 +50,6 @@ const Anmodning: React.FC<TwoLevelFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow>
-        <Column>
-          <Heading size='small'>
-            {t('label:anmodning-om-informasjon')}
-          </Heading>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <TextAreaDiv>

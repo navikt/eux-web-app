@@ -1,8 +1,8 @@
-import { validateKontoopplysning } from 'applications/SvarSed/BottomForm/Kontoopplysning/validation'
-import { validateKravOmRefusjon } from 'applications/SvarSed/BottomForm/KravOmRefusjon/validation'
-import { validateMotregninger } from 'applications/SvarSed/BottomForm/Motregning/validation'
-import { validateProsedyreVedUenighet } from 'applications/SvarSed/BottomForm/ProsedyreVedUenighet/validation'
-import { validateVedtak } from 'applications/SvarSed/BottomForm/Vedtak/validation'
+import { validateKontoopplysning } from 'applications/SvarSed/MainForm/Kontoopplysning/validation'
+import { validateKravOmRefusjon } from 'applications/SvarSed/MainForm/KravOmRefusjon/validation'
+import { validateMotregninger } from 'applications/SvarSed/MainForm/Motregning/validation'
+import { validateProsedyreVedUenighet } from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/validation'
+import { validateVedtak } from 'applications/SvarSed/MainForm/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/MainForm/Adresser/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/MainForm/BeløpNavnOgValuta/validation'
 import { validateAnmodning } from 'applications/SvarSed/MainForm/Anmodning/validation'
@@ -70,7 +70,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
       _error = validateMotregninger(v, t, {
         replySed,
-        namespace: 'BottomForm-motregning',
+        namespace: 'MainForm-motregning',
         formalName: t('label:motregning').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -78,7 +78,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
       _error = validateVedtak(v, t, {
         vedtak: _.get(replySed, 'vedtak'),
-        namespace: 'BottomForm-vedtak',
+        namespace: 'MainForm-vedtak',
         formalName: t('label:vedtak').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -86,7 +86,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
       _error = validateProsedyreVedUenighet(v, t, {
         prosedyreVedUenighet: _.get(replySed, 'uenighet'),
-        namespace: 'BottomForm-prosedyre_ved_uenighet',
+        namespace: 'MainForm-prosedyre_ved_uenighet',
         formalName: t('label:prosedyre-ved-uenighet').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -94,7 +94,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
       _error = validateKravOmRefusjon(v, t, {
         kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
-        namespace: 'BottomForm-refusjonskrav',
+        namespace: 'MainForm-refusjonskrav',
         formalName: t('label:krav-om-refusjon').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -102,7 +102,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
       _error = validateKontoopplysning(v, t, {
         uti: _.get(replySed, 'utbetalingTilInstitusjon'),
-        namespace: 'BottomForm-kontoopplysninger',
+        namespace: 'MainForm-kontoopplysninger',
         formalName: t('label:kontoopplysninger').toLowerCase()
       })
       hasErrors = hasErrors || _error
