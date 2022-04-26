@@ -1,4 +1,12 @@
-import { AddCircle, Child, ErrorFilled, ExpandFilled, EllipsisCircleH, NextFilled, SuccessFilled } from '@navikt/ds-icons'
+import {
+  AddCircle,
+  Child,
+  EllipsisCircleH,
+  ErrorFilled,
+  ExpandFilled,
+  NextFilled,
+  SuccessFilled
+} from '@navikt/ds-icons'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
@@ -7,8 +15,7 @@ import {
   HorizontalSeparatorDiv,
   PaddedHorizontallyDiv,
   PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
+  PileDiv
 } from '@navikt/hoykontrast'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import AddPersonModal from 'applications/SvarSed/MainForm/AddPersonModal/AddPersonModal'
@@ -31,13 +38,10 @@ const transitionTime = 0.3
 
 const LeftDiv = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid var(--navds-panel-color-border);
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 `
@@ -51,12 +55,12 @@ const RightDiv = styled.div`
 const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
-  border-left-width: 0;
   border-color: var(--navds-panel-color-border);
   background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   height: 100%;
+  margin-left: -1px;
 `
 const slideIn = keyframes`
   0% {
@@ -99,10 +103,15 @@ const PreviousFormDiv = styled(RightActiveDiv)`
 `
 const NameAndOptionsDiv = styled(PileDiv)`
  &.whiteborder {
-    border-right: 1px solid var(--navds-panel-color-background);
-    margin-right: -1px;
+   border-right: 1px solid var(--navds-panel-color-background);
  }
- border-bottom: 1px solid var(--navds-panel-color-border);
+ background-color: var(--navds-semantic-color-canvas-background-light);
+ border-top: 1px solid var(--navds-panel-color-border);
+ border-right: 1px solid var(--navds-panel-color-border);
+ border-width: 1px;
+ border-bottom-width: 0px;
+ border-style: solid;
+ border-color: var(--navds-panel-color-border);
 `
 
 const NameDiv = styled.div`
@@ -119,8 +128,6 @@ const NameDiv = styled.div`
 const NameLabelDiv = styled(FlexCenterDiv)`
   flex: 1;
 `
-
-
 const OptionDiv = styled.div`
   transition: all 0.2s ease-in-out;
   padding: 0.5rem;
@@ -146,8 +153,12 @@ const OptionDiv = styled.div`
     margin-top: -1px;
   }
 `
-const MarginDiv = styled.div`
+const LastDiv = styled.div`
+  flex: 1;
   padding: 1rem 0.5rem;
+  border-top: 1px solid var(--navds-panel-color-border);
+  border-right: 1px solid var(--navds-panel-color-border);
+  border-right-width: ${(props: any) => props['data-empty-right-div'] === true ? '0px' : '1px'};
 `
 const LandSpan = styled.span`
   color: grey;
@@ -223,12 +234,11 @@ const TwoLevelForm = <T extends StorageTypes>({
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const initialMenuOption = 'personopplysninger'
-  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
+  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(undefined)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
   useEffect(() => {
-    dispatch(startMenuStatistic('TwoLevelForm', initialMenuOption))
+    dispatch(startMenuStatistic('TwoLevelForm', undefined))
     return () => {
       dispatch(finishMenuStatistic('TwoLevelForm'))
     }
@@ -493,7 +503,7 @@ const TwoLevelForm = <T extends StorageTypes>({
             {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`))}
             {isFSed(replySed) && renderMenu(replySed!, 'familie')}
             {isFSed(replySed) && (
-              <MarginDiv>
+              <LastDiv data-empty-right-div={_.isNil(currentMenuOption)}>
                 <Button
                   variant='tertiary'
                   onClick={onAddNewPerson}
@@ -501,9 +511,8 @@ const TwoLevelForm = <T extends StorageTypes>({
                   <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:person') })}
                 </Button>
-              </MarginDiv>
+              </LastDiv>
             )}
-            <VerticalSeparatorDiv />
           </LeftDiv>
           <RightDiv className='mainright'>
             {!currentMenu && (

@@ -191,7 +191,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   }
 
   return (
-    <div key={namespace + '-div'}>
+    <>
       <PaddedDiv>
         <AlignCenterRow>
           {!_seeNorskPinForm
@@ -398,7 +398,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
         namespace={namespace + '-foedested'}
         validation={validation}
       />
-    </div>
+    </>
   )
 }
 

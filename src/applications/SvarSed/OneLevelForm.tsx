@@ -1,14 +1,7 @@
 import { ErrorFilled, NextFilled, SuccessFilled } from '@navikt/ds-icons'
 import { BodyLong } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import {
-  FlexCenterDiv,
-  FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { FlexCenterDiv, FlexCenterSpacedDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv } from '@navikt/hoykontrast'
 import { finishMenuStatistic, logMenuStatistic, startMenuStatistic } from 'actions/statistics'
 import { Form } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
@@ -27,13 +20,10 @@ const transitionTime = 0.3
 
 const LeftDiv = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   align-self: stretch;
   min-width: 300px;
-  border-right: 1px solid var(--navds-panel-color-border);
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 `
@@ -47,12 +37,12 @@ const RightDiv = styled.div`
 const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
-  border-left-width: 0;
   border-color: var(--navds-panel-color-border);
   background-color: var(--navds-semantic-color-canvas-background-light);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   height: 100%;
+  margin-left: -1px;
 `
 const slideIn = keyframes`
   0% {
@@ -100,7 +90,13 @@ const NameAndOptionsDiv = styled(PileDiv)`
     border-right: 1px solid var(--navds-panel-color-background);
     margin-right: -1px;
  }
- border-bottom: 1px solid var(--navds-panel-color-border);
+ background-color: var(--navds-semantic-color-canvas-background-light);
+ border-top: 1px solid var(--navds-panel-color-border);
+ border-right: 1px solid var(--navds-panel-color-border);
+ border-width: 1px;
+ border-bottom-width: 0px;
+ border-style: solid;
+ border-color: var(--navds-panel-color-border);
 `
 const MenuLabelText = styled(BodyLong)`
   font-weight: bold;
@@ -122,7 +118,11 @@ const NameLabelDiv = styled(FlexCenterDiv)`
 const MenuArrowDiv = styled.div`
  padding: 0rem 0.5rem;
 `
-
+const LastDiv = styled.div`
+  flex: 1;
+  border-top: 1px solid var(--navds-panel-color-border);
+  border-right: 1px solid var(--navds-panel-color-border);
+`
 export interface _OneLevelFormProps {
   forms: Array<Form>
   replySed: ReplySed | null | undefined
@@ -300,7 +300,7 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
               </NameAndOptionsDiv>
             )}
           )}
-          <VerticalSeparatorDiv />
+          <LastDiv/>
         </LeftDiv>
         <RightDiv className='mainright'>
           {!currentMenu && (
