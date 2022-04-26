@@ -26,7 +26,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { arbeidsperioderFraAAToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
@@ -57,8 +57,8 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
     arbeidsperioder,
     inntekter,
     validation
-  } = useSelector<State, InntektFormSelector>(mapState)
-  const dispatch = useDispatch()
+  } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'loennsopplysninger'
   const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-inntekt`

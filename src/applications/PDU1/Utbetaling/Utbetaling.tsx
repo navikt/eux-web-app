@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -21,8 +21,8 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 } :TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'andreMottatteUtbetalinger'
   const andreMottatteUtbetalinger: AndreMottatteUtbetalinger = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-utbetaling`

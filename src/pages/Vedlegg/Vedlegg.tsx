@@ -12,8 +12,8 @@ import { AlignStartRow, Column, Container, Content, FlexDiv, HorizontalSeparator
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
 
@@ -52,10 +52,10 @@ export const MyContent = styled(Content)`
 `
 
 const Vedlegg: React.FC = (): JSX.Element => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const location = useLocation()
   const { t } = useTranslation()
-  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useSelector<State, VedleggSelector>(mapState)
+  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
   const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg)
   const namespace = 'vedlegg'
 

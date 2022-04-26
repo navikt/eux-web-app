@@ -17,7 +17,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { isUSed } from 'utils/sed'
 import { validateNasjonalitet, ValidationNasjonalitetProps } from './validation'
@@ -34,10 +34,8 @@ const Nasjonaliteter: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    validation
-  } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`

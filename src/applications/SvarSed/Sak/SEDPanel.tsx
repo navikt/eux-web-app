@@ -12,7 +12,7 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 const MyPanel = styled(Panel)`
@@ -53,9 +53,9 @@ const SEDPanel = ({
   changeMode
 }: SEDPanelProps) => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
-  const { entries, editingSed, replyingToSed, replySed, sedStatus }: any = useSelector<State, any>(mapState)
+  const { entries, editingSed, replyingToSed, replySed, sedStatus }: any = useAppSelector(mapState)
   const [_replySedRequested, _setReplySedRequested] = useState<boolean>(false)
   const [_buttonClickedId, _setButtonClickedId] = useState<string | undefined>(undefined)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)

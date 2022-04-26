@@ -29,7 +29,7 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
 
@@ -67,7 +67,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
 }: PDU1Props): JSX.Element => {
   const { t } = useTranslation()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     fagsaker,
     gettingFagsaker,
@@ -76,7 +76,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     PDU1,
     pdu1results,
     fnrParam
-  }: PDU1SearchSelector = useSelector<State, PDU1SearchSelector>(mapState)
+  }: PDU1SearchSelector = useAppSelector(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string | undefined>(fnrParam)
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
   const [tema, setTema] = useState<string | undefined>(undefined)

@@ -295,10 +295,10 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
       if (replySed.sedType === 'U002') {
         if (
-          _.find(perioder?.perioderAnsattMedForsikring, (p => !_.isEmpty(p.sluttdato))) ||
-          _.find(perioder?.perioderSelvstendigMedForsikring, (p => !_.isEmpty(p.sluttdato))) ||
-          _.find(perioder?.perioderAnsattUtenForsikring, (p => !_.isEmpty(p.sluttdato))) ||
-          _.find(perioder?.perioderSelvstendigUtenForsikring, (p => !_.isEmpty(p.sluttdato)))
+          _.find(perioder?.perioderAnsattMedForsikring, p => !_.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderSelvstendigMedForsikring, p => !_.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderAnsattUtenForsikring, p => !_.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderSelvstendigUtenForsikring, p => !_.isEmpty(p.sluttdato))
         ) {
           allArbeidsPerioderOK = false
         }

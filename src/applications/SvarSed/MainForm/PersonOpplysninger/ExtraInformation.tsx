@@ -10,16 +10,15 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import { mapState, TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { mapState, TwoLevelFormProps } from 'applications/SvarSed/TwoLevelForm'
 import Select from 'components/Forms/Select'
 import { RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
-import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 
 const ExtraInformation: React.FC<TwoLevelFormProps> = ({
@@ -28,8 +27,8 @@ const ExtraInformation: React.FC<TwoLevelFormProps> = ({
   replySed,
   updateReplySed
 }: TwoLevelFormProps): JSX.Element => {
-  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const target = `${personID}.personInfo.pin`
   const pins: Array<Pin> | undefined = _.get(replySed, target)

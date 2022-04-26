@@ -2,7 +2,7 @@ import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
 import React, { useCallback } from 'react'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'store'
 
 interface SakSidebarSelector {
   person: Person |null |undefined
@@ -13,7 +13,7 @@ const mapState = (state: State):SakSidebarSelector => ({
 })
 
 const SakSidebar = () => {
-  const { person }: SakSidebarSelector = useSelector<State, SakSidebarSelector>(mapState)
+  const { person }: SakSidebarSelector = useAppSelector(mapState)
   const isPersonValid = useCallback((person: Person) =>
     person?.fornavn?.length !== undefined && person?.fnr !== undefined,
   []

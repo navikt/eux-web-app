@@ -3,10 +3,10 @@ import { Container, Content, Margin, VerticalSeparatorDiv } from '@navikt/hoykon
 import TopContainer from 'components/TopContainer/TopContainer'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { LinkPanel } from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
+import { useAppSelector } from 'store'
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -19,7 +19,7 @@ const mapState = (state: State): ForsideSelector => ({
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { featureToggles }: ForsideSelector = useSelector<State, ForsideSelector>(mapState)
+  const { featureToggles }: ForsideSelector = useAppSelector(mapState)
   return (
     <TopContainer title={t('app:page-title-forside')}>
       <Container>

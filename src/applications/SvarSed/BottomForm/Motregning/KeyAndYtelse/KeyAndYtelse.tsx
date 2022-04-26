@@ -13,7 +13,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { BarnaNameKeyMap } from '../Motregning'
@@ -52,7 +52,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   validation
 }: KeyAndYtelseProps): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-keyandytelse`
 
   const [_newBarnaKey, _setNewBarnaKey] = useState<string | undefined>(undefined)

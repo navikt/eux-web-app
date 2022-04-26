@@ -9,7 +9,7 @@ import { Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 export interface DocumentSearchSelector {
   dokument: Array<Dokument> | null | undefined
@@ -35,8 +35,8 @@ const mapState = (state: State): DocumentSearchSelector => ({
 const DocumentSearch: React.FC<DocumentSearchProps> = ({
   className, parentNamespace, resetValidation, validation = {}
 }: DocumentSearchProps): JSX.Element => {
-  const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useSelector<State, DocumentSearchSelector>(mapState)
-  const dispatch = useDispatch()
+  const { dokument, gettingDokument, rinasaksnummer, rinadokumentID }: DocumentSearchSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = parentNamespace + '-documentSearch'
 

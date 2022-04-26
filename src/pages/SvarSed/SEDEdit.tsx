@@ -57,7 +57,7 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isSed } from 'utils/sed'
@@ -84,6 +84,7 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
+  currentEntry: state.localStorage.svarsed.currentEntry,
   updatingSvarSed: state.loading.updatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   previewFile: state.svarsed.previewFile,
@@ -98,11 +99,12 @@ const mapState = (state: State): any => ({
 
 const SEDEdit: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     alertType,
     alertMessage,
     creatingSvarSed,
+    currentEntry,
     updatingSvarSed,
     gettingPreviewFile,
     previewFile,
@@ -113,11 +115,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
     sedSendResponse,
     validation,
     view
-  }: SEDEditSelector = useSelector<State, SEDEditSelector>(mapState)
-
-  const currentEntry = useSelector<State, LocalStorageEntry<ReplySed> | undefined>(
-    (state) => state.localStorage.svarsed.currentEntry)
-
+  }: SEDEditSelector = useAppSelector(mapState)
   const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 

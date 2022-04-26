@@ -9,7 +9,6 @@ import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
-import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -17,20 +16,20 @@ import SEDEdit from 'pages/SvarSed/SEDEdit'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'store'
 
 export const SvarSedPage = (): JSX.Element => {
   const [mounted, setMounted] = useState<boolean>(false)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const location = useLocation()
   const { t } = useTranslation()
   const [_currentPage, _setCurrentPage] = useState<string>('A')
   const params: URLSearchParams = new URLSearchParams(location.search)
   const entries: Array<LocalStorageEntry<ReplySed>> | null | undefined =
-    useSelector<State, Array<LocalStorageEntry<ReplySed>> | null | undefined>(state => state.localStorage.svarsed.entries)
-  const replySedChanged: boolean = useSelector<State, boolean>(state => state.svarsed.replySedChanged)
-  const currentSak: Sak | undefined = useSelector<State, Sak | undefined>(state => state.svarsed.currentSak)
+    useAppSelector(state => state.localStorage.svarsed.entries)
+  const replySedChanged: boolean = useAppSelector(state => state.svarsed.replySedChanged)
+  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
 
   const changeMode = (newPage: string) => {
     _setCurrentPage(newPage)

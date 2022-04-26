@@ -37,7 +37,7 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import KeyAndYtelseFC, { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
 import { validateMotregning, ValidationMotregningProps } from './validation'
 
@@ -52,8 +52,8 @@ const Motregning: React.FC<OneLevelFormProps> = ({
   seeKontoopplysninger
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useSelector<State, OneLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')
 

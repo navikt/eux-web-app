@@ -5,7 +5,7 @@ import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import Modal from 'components/Modal/Modal'
 import { BodyLong, Button } from '@navikt/ds-react'
@@ -50,10 +50,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const [diff, setDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
   const [saveAndRenew, setSaveAndRenew] = useState<boolean>(false)
-  const { pdu1, replySed }: SessionMonitorSelector = useSelector<State, SessionMonitorSelector>(mapState)
+  const { pdu1, replySed }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const getDiff = (expirationTime: any, now: any) => {
     const _now: Date = now || new Date()

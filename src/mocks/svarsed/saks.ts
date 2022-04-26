@@ -129,6 +129,12 @@ export default (saksnummer: string) => {
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
           svarsedId: '8edd012b62d84a768cbd4a734929076d_2'
+        }, {
+          sedTittel: 'Horizontal',
+          sedType: 'H001',
+          sedId: '8edd012b62d84a768cbd4a734929076e',
+          status: 'new',
+          sistEndretDato: '2021-02-19'
         }
       ]
     },

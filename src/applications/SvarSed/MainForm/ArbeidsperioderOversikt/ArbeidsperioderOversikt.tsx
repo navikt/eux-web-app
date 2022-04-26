@@ -31,7 +31,7 @@ import moment from 'moment'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { generateIdentifikatorKey, getOrgnr, sanitizePeriodeMedForsikring } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import makeRenderPlan, { PlanItem } from 'utils/renderPlan'
@@ -72,8 +72,8 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     arbeidsperioder,
     inntekter,
     gettingInntekter
-  } = useSelector<State, ArbeidsforholdSelector>(mapState)
-  const dispatch = useDispatch()
+  } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const includeAddress = true
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)

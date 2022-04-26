@@ -24,7 +24,7 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 
@@ -50,9 +50,9 @@ const LoadSave = <T extends StorageTypes>({
   namespace,
   setReplySed
 }: LoadSaveProps<T>) => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { entries, sedStatus }: LoadSaveSelector =
-    useSelector<State, LoadSaveSelector>((state: State) => ({
+    useAppSelector((state: State) => ({
       entries: state.localStorage[namespace].entries,
       sedStatus: state.svarsed.sedStatus
     }))

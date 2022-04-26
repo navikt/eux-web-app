@@ -4,12 +4,11 @@ import { resetValidation } from 'actions/validation'
 import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
 import { F002Sed } from 'declarations/sed'
 import { buttonLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
   parentNamespace,
@@ -18,8 +17,8 @@ const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
   seeKontoopplysninger
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useSelector<State, OneLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'refusjonskrav'
   const refusjonIHenholdTilArtikkel58IForordningen: string | undefined = (replySed as F002Sed).refusjonskrav
   const namespace = `${parentNamespace}-refusjonskrav`

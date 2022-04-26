@@ -17,7 +17,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 
@@ -33,8 +33,8 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const perioder: {[k in SedCategory]: Array<Periode | PensjonPeriode>} = {
     perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
     perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),

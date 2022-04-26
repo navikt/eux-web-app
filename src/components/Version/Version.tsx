@@ -2,7 +2,7 @@ import { Button, Heading, Modal } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import { ServerInfo } from 'declarations/types'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'store'
 import styled from 'styled-components'
 import Clipboard from './Clipboard'
 
@@ -36,7 +36,7 @@ const ModalDiv = styled.div`
 
 const Version = () => {
   const [visVersjonDetaljer, setVisVersjonDetaljer] = useState(false)
-  const { serverInfo } = useSelector<State, VersjonSelector>(mapState)
+  const { serverInfo } = useAppSelector(mapState)
   const toggleVersjon = () => {
     setVisVersjonDetaljer(!visVersjonDetaljer)
   }

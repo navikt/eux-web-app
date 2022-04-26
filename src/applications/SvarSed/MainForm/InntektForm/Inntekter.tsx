@@ -15,7 +15,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
@@ -32,7 +32,7 @@ const Inntekter: React.FC<any> = ({
 }:any): JSX.Element => {
   const { t } = useTranslation()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-inntekt`
 

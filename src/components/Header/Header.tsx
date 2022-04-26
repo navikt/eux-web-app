@@ -6,9 +6,9 @@ import { Saksbehandler } from 'declarations/types'
 import { Button, Heading, Link } from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link as DomLink } from 'react-router-dom'
 import NEESSILogo from 'assets/logos/nEESSI'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
 import { cleanData } from 'actions/app'
@@ -63,9 +63,9 @@ const Header: React.FC<HeaderProps> = ({
   title,
   unsavedDoc = false
 }: HeaderProps): JSX.Element => {
-  const { saksbehandler }: HeaderSelector = useSelector<State, HeaderSelector>(mapState)
+  const { saksbehandler }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleHighContrastToggle = (): void => {
     dispatch(toggleHighContrast())

@@ -12,8 +12,8 @@ import { Loader, Button } from '@navikt/ds-react'
 import { Column, FlexBaseDiv, HorizontalSeparatorDiv, Row } from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import { Edit } from '@navikt/ds-icons'
 
@@ -40,8 +40,8 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
     validation,
     gettingFagsaker,
     fagsaker
-  }: any = useSelector<State, TemaSelector>(mapState)
-  const dispatch = useDispatch()
+  }: any = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const namespace: string = 'editor-tema'
   const [_tema, setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
   const [_fagsak, setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)

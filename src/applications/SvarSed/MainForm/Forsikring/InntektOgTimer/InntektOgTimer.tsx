@@ -16,7 +16,7 @@ import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
 import { validateInntektOgTime, ValidationInntektOgTimeProps } from './validation'
@@ -41,7 +41,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   validation
 }: InntektOgTimerProps): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-inntektOgTimer`
 
   const [_newArbeidstimer, _setNewArbeidstimer] = useState<string | undefined>(undefined)

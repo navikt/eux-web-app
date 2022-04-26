@@ -21,7 +21,7 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateStatsborgerskap, ValidationStatsborgerskapProps } from './validation'
 
@@ -36,10 +36,8 @@ const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    validation
-  } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = `${personID}.statsborgerskap`
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-statsborgerskap`

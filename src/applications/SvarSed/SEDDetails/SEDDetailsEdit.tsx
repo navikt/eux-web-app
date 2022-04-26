@@ -2,6 +2,7 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { resetValidation } from 'actions/validation'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
+import { useAppDispatch } from 'store'
 import { validateSakseier, validateSEDDetail, ValidationSakseierProps, ValidationSEDDetailsProps } from './validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -24,7 +25,6 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import { isF002Sed, isFSed, isHSed, isUSed } from 'utils/sed'
 import { AddCircle } from '@navikt/ds-icons'
@@ -40,7 +40,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 }: SEDDetailsEditProps): JSX.Element => {
   const { t } = useTranslation()
   const validation: Validation = {}
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
 

@@ -15,7 +15,7 @@ import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 export interface PreviewPDU1Selector {
   pdu1: PDU1
@@ -31,12 +31,12 @@ const mapState = (state: State): any => ({
 
 const PreviewPDU1: React.FC = () => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     pdu1,
     gettingPreviewPdu1,
     previewPdu1file
-  }: PreviewPDU1Selector = useSelector<State, PreviewPDU1Selector>(mapState)
+  }: PreviewPDU1Selector = useAppSelector(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)

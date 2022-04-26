@@ -22,7 +22,7 @@ import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
@@ -46,8 +46,8 @@ const Ansatt: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { arbeidsperioder, validation } = useSelector<State, AnsattSelector>(mapState)
-  const dispatch = useDispatch()
+  const { arbeidsperioder, validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)

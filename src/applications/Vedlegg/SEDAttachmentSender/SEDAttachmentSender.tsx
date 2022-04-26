@@ -17,7 +17,7 @@ import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'store'
 import styled from 'styled-components'
 
 const SEDAttachmentSenderDiv = styled.div`
@@ -49,7 +49,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
   onCancel, onFinished, onSaved, payload, sendAttachmentToSed
 }: SEDAttachmentSenderProps): JSX.Element => {
   const [_status, setStatus] = useState<ProgressBarStatus>(initialStatus)
-  const { savingAttachmentsJob }: SEDAttachmentSelector = useSelector<State, SEDAttachmentSelector>(mapState)
+  const { savingAttachmentsJob }: SEDAttachmentSelector = useAppSelector(mapState)
   const { t } = useTranslation()
 
   useEffect(() => {

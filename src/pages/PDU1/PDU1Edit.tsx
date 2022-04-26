@@ -25,11 +25,12 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
+  currentEntry: LocalStorageEntry<PDU1> | undefined
   pdu1: PDU1 | null | undefined
   savingPdu1: boolean
   jornalførePdu1Response: any
@@ -39,6 +40,7 @@ export interface PDU1EditSelector {
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
+  currentEntry: state.localStorage.pdu1.currentEntry,
   pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
@@ -47,16 +49,15 @@ const mapState = (state: State): any => ({
 
 const PDU1Edit: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     completingPdu1,
+    currentEntry,
     pdu1,
     jornalførePdu1Response,
     validation,
     view
-  }: PDU1EditSelector = useSelector<State, PDU1EditSelector>(mapState)
-  const currentEntry = useSelector<State, LocalStorageEntry<PDU1> | undefined>(
-    (state) => state.localStorage.pdu1.currentEntry)
+  }: PDU1EditSelector = useAppSelector(mapState)
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)

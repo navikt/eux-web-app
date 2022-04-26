@@ -8,12 +8,11 @@ import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { PDU1 } from 'declarations/pd'
-import { State } from 'declarations/reducers'
 import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
 
@@ -23,9 +22,9 @@ export const PDU1Page = (): JSX.Element => {
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [mounted, setMounted] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<string>('A')
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const entries: Array<LocalStorageEntry<PDU1>> | null | undefined =
-    useSelector<State, Array<LocalStorageEntry<PDU1>> | null | undefined>(state => state.localStorage.pdu1.entries)
+    useAppSelector(state => state.localStorage.pdu1.entries)
 
   const changeMode = (newPage: string, newDirection: string, newCallback?: () => void) => {
     if (changeModeFunc.current !== null) {

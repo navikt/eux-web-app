@@ -24,7 +24,7 @@ import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled, { keyframes } from 'styled-components'
 
 const transitionTime = 0.3
@@ -158,11 +158,9 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
   viewValidation
 }: _OneLevelFormProps) => {
   const { t } = useTranslation()
-  const {
-    validation
-  }: any = useSelector<State, OneLevelFormSelector>(mapState)
+  const { validation }: any = useAppSelector(mapState)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const namespace = 'BottomForm'
   const target = 'formaal'
   const initialSelectedMenus: Array<string> = _.get(replySed, target)

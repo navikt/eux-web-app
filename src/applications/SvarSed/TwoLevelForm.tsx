@@ -23,7 +23,7 @@ import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/ty
 import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled, { keyframes } from 'styled-components'
 import { isFSed } from 'utils/sed'
 
@@ -201,10 +201,10 @@ const TwoLevelForm = <T extends StorageTypes>({
   viewValidation
 }: _TwoLevelFormProps<T>) => {
   const { t } = useTranslation()
-  const { validation }: any = useSelector<State, TwoLevelFormSelector>(mapState)
+  const { validation }: any = useAppSelector(mapState)
   const namespace = 'TwoLevelForm'
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const brukerNr = 1
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)

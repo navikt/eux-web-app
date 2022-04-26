@@ -5,12 +5,11 @@ import { copyToClipboard } from 'actions/app'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import kvinne from 'assets/icons/Woman.png'
-import { State } from 'declarations/reducers'
 import { Kodeverk, Sak } from 'declarations/types'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 interface SakProps {
@@ -26,8 +25,8 @@ const Panel = styled(FullWidthDiv)`
 
 const SakBanner = ({ sak }: SakProps) => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const sektor : Array<Kodeverk> | undefined = useSelector<State, Array<Kodeverk> | undefined>(state => state.app.sektor)
+  const dispatch = useAppDispatch()
+  const sektor : Array<Kodeverk> | undefined = useAppSelector(state => state.app.sektor)
 
   let thisSektor = sak.sakType.split('_')[0]
   if (thisSektor === 'H') { thisSektor = 'HZ' }

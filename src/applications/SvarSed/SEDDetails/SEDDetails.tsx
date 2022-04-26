@@ -18,7 +18,7 @@ import { UpdateReplySedPayload } from 'declarations/types'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'store'
 import { isFSed, isHSed, isUSed } from 'utils/sed'
 import SEDDetailsEdit from './SEDDetailsEdit'
 import SEDDetailsView from './SEDDetailsView'
@@ -31,7 +31,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
   updateReplySed
 }: SEDDetailsProps) => {
   const { t } = useTranslation()
-  const replySed: ReplySed | null | undefined = useSelector<State, ReplySed | null | undefined>((state: State) => state.svarsed.replySed)
+  const replySed: ReplySed | null | undefined = useAppSelector((state: State) => state.svarsed.replySed)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const namespace = 'sidebar'
 

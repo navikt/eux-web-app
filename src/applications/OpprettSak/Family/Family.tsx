@@ -7,9 +7,9 @@ import _ from 'lodash'
 import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAppDispatch } from 'store'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
-import { useDispatch } from 'react-redux'
 
 export interface FamilyProps {
   abroadPersonFormAlertTypesWatched: Array<string> | undefined
@@ -54,7 +54,7 @@ const Family: React.FC<FamilyProps> = ({
   const [_viewAbroadPersonForm, setViewAbroadPersonForm] = useState<boolean>(false)
   const [_viewTPSRelatedForm, setViewTPSRelatedForm] = useState<boolean>(false)
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const remainingRelationsFromTPS: Array<OldFamilieRelasjon> = _.filter(person!.relasjoner, (relation: OldFamilieRelasjon) =>
     _.find(valgteFamilieRelasjoner, (valgteRelasjon: OldFamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined

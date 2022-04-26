@@ -23,7 +23,7 @@ import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 export const FlexRadioGroup = styled(RadioGroup)`
@@ -55,7 +55,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   changeMode
 }: SvarSedProps): JSX.Element => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     entries,
     alertMessage,
@@ -66,7 +66,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     saks,
     sedStatus,
     currentSak
-  }: any = useSelector<State, any>(mapState)
+  }: any = useAppSelector(mapState)
 
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)

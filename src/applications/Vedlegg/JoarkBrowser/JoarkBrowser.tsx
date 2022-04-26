@@ -17,7 +17,7 @@ import { Button, Loader, Label } from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import Table, { RenderOptions } from '@navikt/tabell'
 import md5 from 'md5'
@@ -73,8 +73,8 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 }: JoarkBrowserProps): JSX.Element => {
   const {
     list, gettingJoarkList, gettingJoarkFile, previewFileRaw
-  }: JoarkBrowserSelector = useSelector<State, JoarkBrowserSelector>(mapState)
-  const dispatch = useDispatch()
+  }: JoarkBrowserSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
   const [_clickedPreviewItem, setClickedPreviewItem] = useState<JoarkBrowserItem | undefined>(undefined)

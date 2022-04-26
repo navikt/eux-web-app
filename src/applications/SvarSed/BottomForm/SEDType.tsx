@@ -17,9 +17,9 @@ import { Button } from '@navikt/ds-react'
 import { Column, FlexCenterDiv, HorizontalSeparatorDiv, Row } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
 import { Edit } from '@navikt/ds-icons'
+import { useAppDispatch, useAppSelector } from 'store'
 
 interface SEDTypeProps {
   replySed: ReplySed | null | undefined
@@ -39,8 +39,8 @@ const SEDType: React.FC<SEDTypeProps> = ({
   setReplySed
 }: SEDTypeProps) => {
   const { t } = useTranslation()
-  const { validation }: any = useSelector<State, SEDTypeSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: any = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const namespace: string = 'editor-sedtype'
   const [_sedType, setSedType] = useState<string>(() => (replySed as USed).sedType)
   const [editMode, setEditMode] = useState<boolean>(() => false)

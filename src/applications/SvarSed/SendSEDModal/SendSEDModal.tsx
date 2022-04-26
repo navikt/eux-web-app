@@ -29,7 +29,7 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 const MinimalModalDiv = styled.div`
@@ -106,8 +106,8 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     sendingSed,
     sedCreatedResponse,
     sedSendResponse
-  }: SendSEDSelector = useSelector<State, SendSEDSelector>(mapState)
-  const dispatch = useDispatch()
+  }: SendSEDSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const [_attachmentsSent, setAttachmentsSent] = useState<boolean>(false)
   const [_sendingAttachments, setSendingAttachments] = useState<boolean>(initialSendingAttachments)

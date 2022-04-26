@@ -16,7 +16,7 @@ import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './notAnsattValidation'
 
@@ -40,10 +40,8 @@ const NotAnsatt: React.FC<TwoLevelFormProps & {arbeidsforhold: string}> = ({
   updateReplySed
 }:TwoLevelFormProps & {arbeidsforhold: string}): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    validation
-  } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
 
   const periodeType: string = type[arbeidsforhold]
   const target: string = `${personID}.${periodeType}`

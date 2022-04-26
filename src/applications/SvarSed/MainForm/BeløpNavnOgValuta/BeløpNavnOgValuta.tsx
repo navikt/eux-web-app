@@ -28,7 +28,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
 
@@ -44,8 +44,8 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target: string = `${personID}.ytelser`
   const ytelser: Array<Ytelse> = _.get(replySed, target)
   const namespace: string = `${parentNamespace}-${personID}-` + (personID === 'familie' ? 'familieytelser' : 'beløpnavnogvaluta')

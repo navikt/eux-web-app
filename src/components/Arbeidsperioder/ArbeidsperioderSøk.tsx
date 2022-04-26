@@ -10,9 +10,9 @@ import { Button, BodyLong, Loader } from '@navikt/ds-react'
 import { AlignEndRow, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { useAppDispatch, useAppSelector } from 'store'
 import { validateArbeidsperioderSøk, ValidationArbeidsperioderSøkProps } from './validation'
 import { Search } from '@navikt/ds-icons'
 
@@ -38,8 +38,8 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   fillOutFnr
 }: ArbeidsperioderSøkProps): JSX.Element => {
   const { t } = useTranslation()
-  const { gettingArbeidsperioder }: ArbeidsperioderSøkSelector = useSelector<State, ArbeidsperioderSøkSelector>(mapState)
-  const dispatch = useDispatch()
+  const { gettingArbeidsperioder }: ArbeidsperioderSøkSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('2015-01')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))

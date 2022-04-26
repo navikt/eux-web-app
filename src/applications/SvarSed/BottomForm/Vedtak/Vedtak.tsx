@@ -36,7 +36,7 @@ import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 
@@ -50,8 +50,8 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
   updateReplySed
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useSelector<State, OneLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'vedtak'
   const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
   const namespace = `${parentNamespace}-vedtak`

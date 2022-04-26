@@ -10,8 +10,8 @@ import { Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import { Option } from 'declarations/app.d'
+import { useAppDispatch, useAppSelector } from 'store'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -24,8 +24,8 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'grunntilopphor'
   const grunntilopphor: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
@@ -88,14 +88,14 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
           />
         </Column>
         <Column>
-          <div style={{paddingTop: '2rem'}}>
-          <Button
-            variant='tertiary'
-            onClick={() => setTypeGrunnOpphoerAnsatt('')}
-          >
-            <Delete/>
-            {t('el:button-clear')}
-          </Button>
+          <div style={{ paddingTop: '2rem' }}>
+            <Button
+              variant='tertiary'
+              onClick={() => setTypeGrunnOpphoerAnsatt('')}
+            >
+              <Delete />
+              {t('el:button-clear')}
+            </Button>
           </div>
         </Column>
 

@@ -27,7 +27,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validatePeriodeDagpenger, ValidationPeriodeDagpengerProps } from './validationPeriodeDagpenger'
 
@@ -50,8 +50,8 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
   const { t } = useTranslation()
   const {
     validation
-  } = useSelector<State, PeriodeForDagpengerSelector>(mapState)
-  const dispatch = useDispatch()
+  } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'perioderDagpenger'
   const perioder: Array<PeriodeDagpenger> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`

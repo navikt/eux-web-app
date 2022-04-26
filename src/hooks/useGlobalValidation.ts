@@ -2,7 +2,7 @@ import { setAllValidation } from 'actions/validation'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'store'
 
 const useGlobalValidation = <ValidationData extends any>(
   validateFunction: (
@@ -12,7 +12,7 @@ const useGlobalValidation = <ValidationData extends any>(
   ) => boolean
 ): (validationData: ValidationData) => boolean => {
   const { t } = useTranslation()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const performValidation = (validationData: ValidationData): boolean => {
     const newValidation: Validation = {}

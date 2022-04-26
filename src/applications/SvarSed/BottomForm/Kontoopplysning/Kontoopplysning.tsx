@@ -4,14 +4,13 @@ import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
 import _ from 'lodash'
 import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 
 const Kontoopplysning: React.FC<OneLevelFormProps> = ({
   parentNamespace,
@@ -19,8 +18,8 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
   updateReplySed
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useSelector<State, OneLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
   const namespace: string = `${parentNamespace}-kontoopplysninger`

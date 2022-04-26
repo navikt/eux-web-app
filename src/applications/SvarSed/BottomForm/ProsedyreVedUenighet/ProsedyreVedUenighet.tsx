@@ -18,7 +18,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 
 const mapState = (state: State): OneLevelFormSelector => ({
@@ -31,8 +31,8 @@ const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
   updateReplySed
 }: OneLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: any = useSelector<State, OneLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: any = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = 'uenighet'
   const prosedyreVedUenighet: IProsedyreVedUenighet | undefined = (replySed as F002Sed).uenighet
   const namespace = `${parentNamespace}-prosedyre_ved_uenighet`

@@ -4,8 +4,8 @@ import { State } from 'declarations/reducers'
 import { Adresse as IAdresse } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
+import { useAppDispatch, useAppSelector } from 'store'
 
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
@@ -17,8 +17,8 @@ const Adresse: React.FC<TwoLevelFormProps> = ({
   replySed,
   updateReplySed
 }: TwoLevelFormProps): JSX.Element => {
-  const { validation }: TwoLevelFormSelector = useSelector<State, TwoLevelFormSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const target = `${personID}.adresse`
   const adresse: IAdresse = _.get(replySed, target)
   const namespace = `${parentNamespace}-adresse`

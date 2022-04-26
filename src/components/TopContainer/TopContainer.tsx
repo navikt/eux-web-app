@@ -18,7 +18,7 @@ import Error from 'pages/Error'
 import PT from 'prop-types'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled, { createGlobalStyle } from 'styled-components'
 import * as Sentry from '@sentry/browser'
 
@@ -115,8 +115,8 @@ export const TopContainer: React.FC<TopContainerProps> = ({
 }: TopContainerProps): JSX.Element => {
   const {
     bannerStatus, bannerMessage, error, expirationTime, highContrast
-  }: TopContainerSelector = useSelector<State, TopContainerSelector>(mapState)
-  const dispatch = useDispatch()
+  }: TopContainerSelector = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
 
   const onClear = (): void => {
     dispatch(alertClear())

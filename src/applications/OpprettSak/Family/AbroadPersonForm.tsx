@@ -13,7 +13,7 @@ import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from 'store'
 import { AbroadPersonFormValidationProps, validateAbroadPersonForm } from './validation'
 
 export interface AbroadPersonFormSelector {
@@ -58,7 +58,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   person
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { kjoennList }: AbroadPersonFormSelector = useSelector<State, AbroadPersonFormSelector>(mapState)
+  const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, resetValidation, performValidation] = useValidation<AbroadPersonFormValidationProps>({}, validateAbroadPersonForm)
   const namespace = 'familierelasjoner'

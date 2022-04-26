@@ -7,8 +7,8 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Container, Content, fadeIn, fadeOut, Margin } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { MutableRefObject, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 
 const transition = 500
@@ -114,7 +114,7 @@ export const SlidePage: React.FC<SlidePageProps> = ({
   divB1,
   divB2
 }: SlidePageProps): JSX.Element => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const location = useLocation()
   const [_mounted, setMounted] = useState<boolean>(!waitForMount)

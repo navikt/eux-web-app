@@ -28,7 +28,7 @@ import {
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 
 const ModalDiv = styled(NavModal)`
@@ -68,7 +68,7 @@ const AddPersonModal = <T extends StorageTypes>({
 }: AddPersonModalProps<T>) => {
   const { t } = useTranslation()
   const namespace = `${parentNamespace}-addpersonmodal`
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
   const [_newPersonName, _setNewPersonName] = useState<string>('')

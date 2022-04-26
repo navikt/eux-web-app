@@ -7,8 +7,8 @@ import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import { standardLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
 import Stack from 'components/Stack/Stack'
+import { useAppDispatch, useAppSelector } from 'store'
 
 interface FormaalProps {
   parentNamespace: string
@@ -30,8 +30,8 @@ const Formaal: React.FC<FormaalProps> = ({
   updateReplySed
 }: FormaalProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: any = useSelector<State, FormaalSelector>(mapState)
-  const dispatch = useDispatch()
+  const { validation }: any = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
   const formaal: Array<string> = (replySed as FSed)?.formaal
   const namespace: string = `${parentNamespace}-formål`
 
