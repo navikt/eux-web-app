@@ -158,7 +158,7 @@ const LastDiv = styled.div`
   padding: 1rem 0.5rem;
   border-top: 1px solid var(--navds-panel-color-border);
   border-right: 1px solid var(--navds-panel-color-border);
-  border-right-width: ${(props: any) => props['data-empty-right-div'] === true ? '0px' : '1px'};
+  border-right-width: 1px;
 `
 const LandSpan = styled.span`
   color: grey;
@@ -170,7 +170,21 @@ const MenuLabelText = styled(BodyLong)`
 const MenuArrowDiv = styled.div`
  padding: 0rem 0.5rem;
 `
-
+const BlankDiv = styled(PileCenterDiv)`
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--navds-panel-color-border);
+  background-color: var(--navds-semantic-color-canvas-background-light);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-left: -1px;
+  height: 100%;
+`
+const BlankContentDiv = styled(FlexCenterDiv)`
+  flex: 1;
+  align-self: center;
+  background-color: var(--navds-semantic-color-canvas-background-light);
+`
 export interface _TwoLevelFormProps<T> {
   forms: Array<Form>
   replySed: T | null | undefined
@@ -505,7 +519,7 @@ const TwoLevelForm = <T extends StorageTypes>({
             {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson')}
             {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`))}
             {isFSed(replySed) && renderMenu(replySed!, 'familie')}
-            <LastDiv data-empty-right-div={_.isNil(currentMenuOption)}>
+            <LastDiv>
               {isFSed(replySed) && (
                 <Button
                   variant='tertiary'
@@ -519,11 +533,11 @@ const TwoLevelForm = <T extends StorageTypes>({
           </LeftDiv>
           <RightDiv className='mainright'>
             {!currentMenu && (
-              <PileCenterDiv style={{ height: '100%' }}>
-                <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>
+              <BlankDiv>
+                <BlankContentDiv>
                   {t('label:velg-personer')}
-                </FlexCenterDiv>
-              </PileCenterDiv>
+                </BlankContentDiv>
+              </BlankDiv>
             )}
             {previousMenuOption && (
               <PreviousFormDiv

@@ -123,6 +123,20 @@ const LastDiv = styled.div`
   border-top: 1px solid var(--navds-panel-color-border);
   border-right: 1px solid var(--navds-panel-color-border);
 `
+const BlankDiv = styled(PileCenterDiv)`
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--navds-panel-color-border);
+  background-color: var(--navds-semantic-color-canvas-background-light);
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-left: -1px;
+  height: 100%;
+`
+const BlankContentDiv = styled(FlexCenterDiv)`
+  flex: 1;
+  align-self: center;
+`
 export interface _OneLevelFormProps {
   forms: Array<Form>
   replySed: ReplySed | null | undefined
@@ -308,11 +322,11 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
         </LeftDiv>
         <RightDiv className='mainright'>
           {!currentMenu && (
-            <PileCenterDiv style={{ height: '100%' }}>
-              <FlexCenterDiv style={{ flex: '1', alignSelf: 'center' }}>
+            <BlankDiv>
+              <BlankContentDiv>
                 {t('label:velg-formål')}
-              </FlexCenterDiv>
-            </PileCenterDiv>
+              </BlankContentDiv>
+            </BlankDiv>
           )}
           {previousMenu && (
             <PreviousFormDiv
