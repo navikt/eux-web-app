@@ -1,5 +1,4 @@
 import JoarkBrowser from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
-import Document from 'assets/icons/Document'
 import Modal from 'components/Modal/Modal'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import PT from 'prop-types'
@@ -30,16 +29,12 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
     onModalClose()
   }
 
-  const onCancelButtonClick = (): void => {
-    onModalClose()
-  }
-
   return (
     <Modal
       open={open}
-      icon={<Document />}
       modal={{
         closeButton: true,
+        modalTitle: t('label:velg-vedlegg-til-sed'),
         modalContent: (
           <>
             <JoarkBrowser
@@ -54,11 +49,8 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
         ),
         modalButtons: [{
           main: true,
-          text: t('el:button-add-selected-attachments'),
+          text: t('el:button-close-attachments'),
           onClick: onAddAttachmentsButtonClick
-        }, {
-          text: t('el:button-cancel'),
-          onClick: onCancelButtonClick
         }]
       }}
       onModalClose={onModalClose}

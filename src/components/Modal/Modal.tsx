@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { Button, Modal, Heading } from '@navikt/ds-react'
+import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { ModalContent } from 'declarations/components'
 import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
@@ -39,9 +40,6 @@ const ContentDiv = styled.div`
     margin-top: 3rem;
   }
 `
-const ModalHeading = styled(Heading)`
-  text-align: center;
-`
 
 export interface ModalProps {
   appElementId?: string
@@ -74,12 +72,15 @@ const ModalFC: React.FC<ModalProps> = ({
         {icon && (
           <IconDiv>{icon}</IconDiv>
         )}
-        <ContentDiv className={classNames({ icon: !!icon })}>
-          {modal?.modalTitle && (
-            <ModalHeading size='medium' data-testid='modal__title-id'>
+        {modal?.modalTitle && (
+          <>
+            <Heading size='small' data-testid='modal__title-id'>
               {modal?.modalTitle}
-            </ModalHeading>
-          )}
+            </Heading>
+            <VerticalSeparatorDiv/>
+          </>
+        )}
+        <ContentDiv className={classNames({ icon: !!icon })}>
           {modal?.modalContent || (
             <ModalText data-testid='modal__text-id'>
               {modal?.modalText}

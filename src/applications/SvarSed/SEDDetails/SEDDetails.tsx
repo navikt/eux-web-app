@@ -1,40 +1,35 @@
-import { Close, Edit, Email, ExternalLink, Send, Star } from '@navikt/ds-icons'
-import { Button, Detail, Heading, Label, Link, Panel } from '@navikt/ds-react'
+import { Close, Edit, Email, Send, Star } from '@navikt/ds-icons'
+import { Button, Detail, Label, Panel } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import {
-  FlexBaseDiv,
-  FlexCenterSpacedDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setReplySed } from 'actions/svarsed'
 import SEDType from 'applications/SvarSed/MainForm/SEDType'
 import Tema from 'applications/SvarSed/MainForm/Tema'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
+import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
-import { Sak, UpdateReplySedPayload } from 'declarations/types'
+import { UpdateReplySedPayload } from 'declarations/types'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppSelector } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
+import { getFnr } from 'utils/fnr'
 import { isHSed, isUSed } from 'utils/sed'
-import SEDDetailsView from './SEDDetailsView'
 
 export interface SEDDetailsProps {
   unsavedDoc?: boolean
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
-  sak?: Sak | undefined
 }
 
 const SEDDetails: React.FC<SEDDetailsProps> = ({
   unsavedDoc,
-  updateReplySed,
-  sak
+  updateReplySed
 }: SEDDetailsProps) => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const replySed: ReplySed | null | undefined = useAppSelector((state: State) => state.svarsed.replySed)
+  const fnr = getFnr(replySed, 'bruker')
 
   if (!replySed) {
     return <div />
@@ -54,14 +49,14 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
       <VerticalSeparatorDiv />
       <FlexBaseDiv>
         <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
-          {replySed?.status === 'received' && <Email width='20' height='20' />}
-          {replySed?.status === 'sent' && <Send width='20' height='20' />}
-          {replySed?.status === 'new' && <Star width='20' height='20' />}
-          {replySed?.status === 'active' && <Edit width='20' height='20' />}
-          {replySed?.status === 'cancelled' && <Close  width='20' height='20'/>}
+          {replySed?.sed?.status === 'received' && <Email width='20' height='20' />}
+          {replySed?.sed?.status === 'sent' && <Send width='20' height='20' />}
+          {(_.isNil(replySed?.sed) || replySed?.sed?.status === 'new') && <Star width='20' height='20' />}
+          {replySed?.sed?.status === 'active' && <Edit width='20' height='20' />}
+          {replySed?.sed?.status === 'cancelled' && <Close width='20' height='20' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
-            {t('app:status-received-' + replySed?.status?.toLowerCase())}
+            {t('app:status-received-' + (replySed?.sed?.status?.toLowerCase() ?? 'new'))}
           </Detail>
         </PileCenterDiv>
         <HorizontalSeparatorDiv />
@@ -70,52 +65,44 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
         </Label>
       </FlexBaseDiv>
 
-      <VerticalSeparatorDiv/>
-      <Panel border>
-        <PileDiv>
-          {isUSed(replySed) && (
-            <SEDType
-              replySed={replySed}
-              setReplySed={setReplySed}
-            />
-          )}
-          {isHSed(replySed) && (
-            <Tema
-              updateReplySed={updateReplySed}
-              replySed={replySed}
-            />
-          )}
-        </PileDiv>
-      </Panel>
       <VerticalSeparatorDiv />
+      {(isUSed(replySed) || isHSed(replySed)) && (
+        <>
+          <Panel border>
+            <PileDiv>
+              {isUSed(replySed) && (
+                <SEDType
+                  replySed={replySed}
+                  setReplySed={setReplySed}
+                />
+              )}
+              {isHSed(replySed) && (
+                <Tema
+                  updateReplySed={updateReplySed}
+                  replySed={replySed}
+                />
+              )}
+            </PileDiv>
+          </Panel>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {replySed.sak && (
+        <>
+          <Saksopplysninger sak={replySed.sak} />
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      <Attachments
+        fnr={fnr}
+        onAttachmentsChanged={(attachments) => {
+          dispatch(setReplySed({
+            ...replySed,
+            attachments
+          }))
+        }}
+      />
 
-      {sak && <Saksopplysninger sak={sak} />}
-
-      <Panel border>
-        <VerticalSeparatorDiv />
-        <FlexCenterSpacedDiv>
-          <Heading size='small'>
-            <FlexCenterSpacedDiv>
-              {t('label:rina-saksnummer') + ':'}
-              <HorizontalSeparatorDiv size='0.35' />
-              <Link target='_blank' href={replySed.sakUrl} rel='noreferrer'>
-                <span>
-                  {replySed.saksnummer}
-                </span>
-                <HorizontalSeparatorDiv size='0.35' />
-                <ExternalLink />
-              </Link>
-            </FlexCenterSpacedDiv>
-          </Heading>
-
-        </FlexCenterSpacedDiv>
-        <VerticalSeparatorDiv />
-
-        <SEDDetailsView
-          replySed={replySed}
-        />
-
-      </Panel>
     </>
   )
 }

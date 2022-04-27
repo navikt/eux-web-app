@@ -2,7 +2,7 @@ import * as svarsedActions from 'actions/svarsed'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed } from 'declarations/types'
+import { Sak, Sed } from 'declarations/types'
 import { call as originalCall } from '@navikt/fetch'
 
 const sprintf = require('sprintf-js').sprintf
@@ -22,8 +22,10 @@ describe('actions/svarsed', () => {
 
   it('createSed()', () => {
     const replySed: ReplySed = {
-      saksnummer: '123',
-      sakUrl: 'url'
+      sak: {
+        sakId: '123',
+        sakUrl: 'url'
+      }
     } as ReplySed
     svarsedActions.createSed(replySed)
     expect(call)
@@ -34,7 +36,7 @@ describe('actions/svarsed', () => {
           failure: types.SVARSED_SED_CREATE_FAILURE
         },
         method: 'POST',
-        url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.saksnummer })
+        url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId })
       }))
   })
 
@@ -57,8 +59,10 @@ describe('actions/svarsed', () => {
   it('getPreviewFile()', () => {
     const rinaSakId = '123'
     const replySed = {
-      saksnummer: '123',
-      sakUrl: 'url'
+      sak: {
+        sakId: '123',
+        sakUrl: 'url'
+      }
     } as ReplySed
     svarsedActions.getPreviewFile(rinaSakId, replySed)
     expect(call)
@@ -68,7 +72,7 @@ describe('actions/svarsed', () => {
           success: types.SVARSED_PREVIEW_SUCCESS,
           failure: types.SVARSED_PREVIEW_FAILURE
         },
-        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId })
+        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: replySed.sak?.sakId })
       }))
   })
 
@@ -150,9 +154,11 @@ describe('actions/svarsed', () => {
       svarsedId: '123',
       sedType: 'U001'
     } as Sed
-    const saksnummer = '456'
-    const sakUrl = 'mockSakurl'
-    svarsedActions.replyToSed(connectedSed, saksnummer, sakUrl)
+    const sak = {
+      sakId: '456',
+      sakUrl: 'mockSakurl'
+    } as Sak
+    svarsedActions.replyToSed(connectedSed, sak)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -161,12 +167,11 @@ describe('actions/svarsed', () => {
           failure: types.SVARSED_REPLYTOSED_FAILURE
         },
         context: {
-          saksnummer,
-          sakUrl,
-          sedId: '123'
+          sak,
+          connectedSed
         },
         url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-          rinaSakId: saksnummer,
+          rinaSakId: sak.sakId,
           sedId: connectedSed.sedId,
           sedType: connectedSed.svarsedType
         })

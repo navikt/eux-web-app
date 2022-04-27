@@ -122,41 +122,43 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
           ? (
             <FlexBaseDiv>
               <Label>{t('label:tema') + ': '}</Label>
-              <HorizontalSeparatorDiv/>
+              <HorizontalSeparatorDiv />
               <BodyLong>{_tema
                 ? t('tema:' + (replySed as HSed).tema)
-                : t('label:ukjent')
-              }</BodyLong>
+                : t('label:ukjent')}
+              </BodyLong>
             </FlexBaseDiv>
-          ): (
+            )
+          : (
             <>
-            <Select
-              defaultValue={_.find(temaOptions, { value: _tema })}
-              error={validation[namespace]?.feilmelding}
-              key={namespace + '-' + _tema + '-select'}
-              id={namespace + '-select'}
-              onChange={onTemaChanged}
-              options={temaOptions}
-              label={t('label:tema')}
-              value={_.find(temaOptions, { value: _tema })}
-              style={{ minWidth: '300px' }}
-            />
-            <VerticalSeparatorDiv size='0.5'/>
+              <Select
+                defaultValue={_.find(temaOptions, { value: _tema })}
+                error={validation[namespace]?.feilmelding}
+                key={namespace + '-' + _tema + '-select'}
+                id={namespace + '-select'}
+                onChange={onTemaChanged}
+                options={temaOptions}
+                label={t('label:tema')}
+                value={_.find(temaOptions, { value: _tema })}
+                style={{ minWidth: '300px' }}
+              />
+              <VerticalSeparatorDiv size='0.5' />
             </>
-        )}
-          <VerticalSeparatorDiv size='0.5'/>
-          {!editMode
-            ? (
-              <FlexBaseDiv>
-                <Label>{t('label:fagsak') + ': '}</Label>
-                <HorizontalSeparatorDiv/>
-                <BodyLong>{_fagsak
-                  ? _.find(fagsakIdOptions, { value: _fagsak })?.label ?? _fagsak
-                  : t('label:ukjent')
-                }</BodyLong>
-              </FlexBaseDiv>
-            ) : (
-              <>
+            )}
+        <VerticalSeparatorDiv size='0.5' />
+        {!editMode
+          ? (
+            <FlexBaseDiv>
+              <Label>{t('label:fagsak') + ': '}</Label>
+              <HorizontalSeparatorDiv />
+              <BodyLong>{_fagsak
+                ? _.find(fagsakIdOptions, { value: _fagsak })?.label ?? _fagsak
+                : t('label:ukjent')}
+              </BodyLong>
+            </FlexBaseDiv>
+            )
+          : (
+            <>
               <Select
                 defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
                 error={validation[namespace + '-fagsak']?.feilmelding}
@@ -170,53 +172,55 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
                 value={_.find(fagsakIdOptions, { value: _fagsak })}
                 style={{ minWidth: '300px' }}
               />
-                <VerticalSeparatorDiv size='0.5'/>
+              <VerticalSeparatorDiv size='0.5' />
 
-              </>
-            )}
-          {!editMode && validation[namespace]?.feilmelding && (
-            <>
-              <HorizontalSeparatorDiv />
-              <label className='navds-error-message navds-error-message--medium navds-label' style={{ marginTop: '0px' }}>
-                {validation[namespace].feilmelding}
-              </label>
             </>
-          )}
-
-         <VerticalSeparatorDiv size='0.5'/>
-      </PileDiv>
-      <PileDiv style={{paddingLeft: '1rem'}}>
-        {editMode ? (
-        <PileDiv className='nolabel'>
-          <Button
-            variant='primary'
-            onClick={onSaveChangesClicked}
-          >
-            <SuccessStroke />
-            {t('el:button-save')}
-          </Button>
-          <VerticalSeparatorDiv/>
-          <Button
-            variant='secondary'
-            onClick={onCancelChangesClicked}
-          >
-            <Cancel/>
-            {t('el:button-cancel')}
-          </Button>
-        </PileDiv>
-      ) : (
-        <PileDiv style={{minWidth: '120px'}}>
-          <div className={classNames({'hide': !viewButton})}>
-          <Button
-            variant='tertiary'
-            onClick={onEditModeClicked}
-          >
-            <Edit />
-            {t('el:button-edit')}
-          </Button>
-          </div>
-        </PileDiv>
+            )}
+        {!editMode && validation[namespace]?.feilmelding && (
+          <>
+            <HorizontalSeparatorDiv />
+            <label className='navds-error-message navds-error-message--medium navds-label' style={{ marginTop: '0px' }}>
+              {validation[namespace].feilmelding}
+            </label>
+          </>
         )}
+
+        <VerticalSeparatorDiv size='0.5' />
+      </PileDiv>
+      <PileDiv style={{ paddingLeft: '1rem' }}>
+        {editMode
+          ? (
+            <PileDiv className='nolabel'>
+              <Button
+                variant='primary'
+                onClick={onSaveChangesClicked}
+              >
+                <SuccessStroke />
+                {t('el:button-save')}
+              </Button>
+              <VerticalSeparatorDiv />
+              <Button
+                variant='secondary'
+                onClick={onCancelChangesClicked}
+              >
+                <Cancel />
+                {t('el:button-cancel')}
+              </Button>
+            </PileDiv>
+            )
+          : (
+            <PileDiv style={{ minWidth: '120px' }}>
+              <div className={classNames({ hide: !viewButton })}>
+                <Button
+                  variant='tertiary'
+                  onClick={onEditModeClicked}
+                >
+                  <Edit />
+                  {t('el:button-edit')}
+                </Button>
+              </div>
+            </PileDiv>
+            )}
       </PileDiv>
     </FlexDiv>
   )

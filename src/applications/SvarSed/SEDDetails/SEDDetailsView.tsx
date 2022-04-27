@@ -19,22 +19,22 @@ const SEDDetailsView: React.FC<SEDDetailsViewProps> = ({
   const countryData = CountryData.getCountryInstance('nb')
   return (
     <>
+      {isUSed(replySed) && (
+        <>
+          <Dt>
+            {t('label:periode')}
+          </Dt>
+          <Dd>
+            {(replySed as USed).anmodningsperiode && (
+              <Detail>
+                {(replySed as USed).anmodningsperiode.startdato} -
+                {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
+              </Detail>
+            )}
+          </Dd>
+        </>
+      )}
       <Dl>
-        {!isUSed(replySed) && (
-          <>
-            <Dt>
-              {t('label:periode')}
-            </Dt>
-            <Dd>
-              {(replySed as USed).anmodningsperiode && (
-                <Detail>
-                  {(replySed as USed).anmodningsperiode.startdato} -
-                  {(replySed as USed).anmodningsperiode.sluttdato ? (replySed as USed).anmodningsperiode.sluttdato : '...'}
-                </Detail>
-              )}
-            </Dd>
-          </>
-        )}
         <Dt>{t('label:søker')}</Dt>
         <Dd>
           <FlexDiv>

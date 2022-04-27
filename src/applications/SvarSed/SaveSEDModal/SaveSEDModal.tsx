@@ -51,7 +51,7 @@ const SaveSEDModal = ({
   onCancelled
 }: SaveSEDModalProps): JSX.Element => {
   const { t } = useTranslation()
-  const [_name, setName] = useState<string>(saveName ?? replySed.saksnummer + '-' + replySed.sedType)
+  const [_name, setName] = useState<string>(saveName ?? (replySed.sak?.sakId ?? 'unknown') + '-' + replySed.sedType)
   const [_message, setMessage] = useState<string>('')
   const [_validation, setValidation] = useState<Validation>({})
   const [_saved, setSaved] = useState<boolean>(false)
@@ -77,7 +77,7 @@ const SaveSEDModal = ({
       const newItem: LocalStorageEntry<ReplySed> = {
         // replySed.sedId is undefined if we are dealing with a besvar SED, but since the ID is only for local storage purposes
         // only, generate a random one
-        id: replySed.sedId ?? 'id-' + new Date().getTime(),
+        id: replySed.sed?.sedId ?? 'id-' + new Date().getTime(),
         name,
         date: dateString,
         content: replySed

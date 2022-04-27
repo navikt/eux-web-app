@@ -34,6 +34,11 @@ export const FlexRadioGroup = styled(RadioGroup)`
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
 `
+export const MyRadioPanelGroup = styled(RadioPanelGroup)`
+  .navds-radio-buttons {
+    margin-top: 0rem !important;
+  }
+`
 
 const mapState = (state: State): any => ({
   entries: state.localStorage.svarsed.entries,
@@ -171,7 +176,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             )}
           </>
         )}
-        <VerticalSeparatorDiv />
         <AlignStartRow>
           {!!currentSak && (
             <Column>
@@ -179,7 +183,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             </Column>
           )}
           <Column flex='2'>
-            <RadioPanelGroup>
+            <MyRadioPanelGroup className='xxx'>
               {!currentSak
                 ? filteredSaks.map((sak: Sak) => (
                     _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
@@ -204,7 +208,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                     <VerticalSeparatorDiv />
                   </div>
                 ))}
-            </RadioPanelGroup>
+            </MyRadioPanelGroup>
 
           </Column>
         </AlignStartRow>

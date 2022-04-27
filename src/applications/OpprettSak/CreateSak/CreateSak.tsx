@@ -14,8 +14,8 @@ import * as types from 'constants/actionTypes'
 import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import {
+  Sak,
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
   BucTyper,
@@ -29,10 +29,12 @@ import {
   OldFamilieRelasjon,
   OpprettetSak,
   Person,
+  Sed,
   ServerInfo,
   Tema,
   Validation
 } from 'declarations/types'
+import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import * as EKV from '@navikt/eessi-kodeverk'
 import { useAppDispatch, useAppSelector } from 'store'
 import useGlobalValidation from 'hooks/useGlobalValidation'
@@ -223,7 +225,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
 
   _sedtyper = _sedtyper?.reduce((acc: any, curr: any) => {
-    const kode = sedtyper?.find((elem: any) => elem.kode === curr)
+    const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
     acc.push(kode)
     return acc
   }, []) ?? []
@@ -353,9 +355,13 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const createH001Sed = (opprettetSak: OpprettetSak): ReplySed => {
     const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
-    h001sed.sedId = opprettetSak.sedId
-    h001sed.saksnummer = opprettetSak.sakId
-    h001sed.status = 'new'
+    h001sed.sed = {
+      sedId: opprettetSak.sedId,
+      status: 'new'
+    } as Sed
+    h001sed.sak = {
+      sakId: opprettetSak.sakId
+    } as Sak
     h001sed.tema = tempInfoForEdit.tema
     h001sed.fagsakId = tempInfoForEdit.fagsak
     h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn

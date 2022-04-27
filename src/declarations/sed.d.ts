@@ -1,3 +1,6 @@
+import { JoarkBrowserItems } from 'declarations/attachments'
+import { Sak, Sed } from 'declarations/types'
+
 export type AdresseType = 'bosted' | 'opphold' | 'kontakt' | 'annet'
 
 export type BarnRelasjon = '01' | '02' | '03' | '04'
@@ -357,11 +360,10 @@ export interface BaseReplySed {
   sedVersjon: string
 
   // added
-  saksnummer ?: string
-  sakUrl ?: string
-  status ?: string
+  sak?: Sak | undefined
   // this will identify if we will create the ReplySed (if undefined) or edit the ReplySed
-  sedId ?: string
+  sed?: Sed | undefined
+  attachments?: JoarkBrowserItems | undefined
 }
 
 export interface LokaleSakId {

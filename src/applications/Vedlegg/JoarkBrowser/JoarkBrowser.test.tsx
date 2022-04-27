@@ -31,7 +31,6 @@ describe('components/JoarkBrowser/JoarkBrowser', () => {
     fnr: '123',
     onRowSelectChange: jest.fn(),
     onPreviewFile: jest.fn(),
-    onRowViewDelete: jest.fn(),
     mode: 'view',
     tableId: 'test-table-id'
   }

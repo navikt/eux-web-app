@@ -1,5 +1,7 @@
+import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
+import FileFC, { File } from '@navikt/forhandsvisningsfil'
+import Table, { RenderOptions } from '@navikt/tabell'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
-import { Delete, Sight } from '@navikt/ds-icons'
 import Modal from 'components/Modal/Modal'
 import {
   JoarkBrowserContext,
@@ -11,16 +13,13 @@ import {
 } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import _ from 'lodash'
-import { Button, Loader, Label } from '@navikt/ds-react'
+import md5 from 'md5'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import Table, { RenderOptions } from '@navikt/tabell'
-import md5 from 'md5'
 import { blobToBase64 } from 'utils/blob'
 
 const ButtonsDiv = styled.div`
@@ -57,7 +56,6 @@ export interface JoarkBrowserProps {
   fnr: string | undefined
   onRowSelectChange?: (f: JoarkBrowserItems) => void
   onPreviewFile?: (f: File) => void
-  onRowViewDelete?: (f: JoarkBrowserItems) => void
   mode: JoarkBrowserMode
   tableId: string
 }
@@ -67,7 +65,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   fnr,
   mode,
   onRowSelectChange = () => {},
-  onRowViewDelete = () => {},
   onPreviewFile,
   tableId
 }: JoarkBrowserProps): JSX.Element => {
@@ -104,19 +101,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     dispatch(getJoarkItemPreview(clickedItem))
   }
 
-  const handleDelete = (itemToDelete: JoarkBrowserItem, contextFiles: JoarkBrowserItems | undefined): void => {
-    const newExistingItems: JoarkBrowserItems = _.reject(contextFiles, (item: JoarkBrowserItem) => {
-      return itemToDelete.journalpostId === item.journalpostId &&
-        itemToDelete.dokumentInfoId === item.dokumentInfoId
-    })
-    if (_.isFunction(onRowViewDelete)) {
-      onRowViewDelete(newExistingItems)
-    }
-  }
-
-  const renderButtonsCell = ({ item, context }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext>): JSX.Element => {
+  const renderTittel = ({ item, value, context }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
     if (item.hasSubrows) {
-      return <div />
+      return <BodyLong>{value}</BodyLong>
     }
     const previewing = context?.gettingJoarkFile
     const spinner = previewing && _.isEqual(item as JoarkBrowserItem, context?.clickedPreviewItem)
@@ -124,27 +111,16 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       <ButtonsDiv>
         {item.journalpostId && item.dokumentInfoId && (
           <Button
-            variant='secondary'
+            variant='tertiary'
+            size='small'
             data-tip={t('label:preview')}
             disabled={previewing}
             id={'tablesorter__preview-button-' + item.journalpostId + '-' + item.dokumentInfoId}
             className='tablesorter__preview-button'
             onClick={() => onPreviewItem(item as JoarkBrowserItem)}
           >
-            {spinner ? <Loader /> : <Sight />}
-          </Button>
-        )}
-
-        {mode === 'view' && item.type === 'joark' && (
-          <Button
-            variant='secondary'
-            onClick={(e: any) => {
-              e.preventDefault()
-              e.stopPropagation()
-              handleDelete(item as JoarkBrowserItem, context?.existingItems)
-            }}
-          >
-            <Delete />
+            {value}
+            {spinner && <Loader />}
           </Button>
         )}
       </ButtonsDiv>
@@ -288,7 +264,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       items = getItemsForViewMode(list, existingItems)
     }
     setItems(items)
-    setTableKey(md5(JSON.stringify(list) + JSON.stringify(existingItems)))
+    setTableKey('' + md5(JSON.stringify(list) + JSON.stringify(existingItems)))
   }, [existingItems, list, mode])
 
   useEffect(() => {
@@ -370,9 +346,11 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         searchable={mode === 'select'}
         selectable={mode === 'select'}
         sortable={mode === 'select'}
-        summary
+        summary={mode === 'select'}
+        showHeader={mode === 'select'}
+        striped={mode === 'select'}
         loading={gettingJoarkList}
-        columns={[
+        columns={mode === 'select' ? [
           {
             id: 'tema',
             label: t('label:tema'),
@@ -381,19 +359,22 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           }, {
             id: 'title',
             label: t('label:tittel'),
-            type: 'string'
+            type: 'string',
+            render: renderTittel
           }, {
             id: 'date',
             label: t('label:dato'),
             type: 'date',
             dateFormat: 'DD.MM.YYYY'
-          }, {
-            id: 'buttons',
-            label: '',
-            type: 'object',
-            render: renderButtonsCell
           }
-        ]}
+        ] : [
+          {
+            id: 'title',
+            label: t('label:tittel'),
+            type: 'string',
+            render: renderTittel
+          }
+        ] }
         onRowSelectChange={onRowSelectChange}
       />
     </div>
@@ -404,7 +385,6 @@ JoarkBrowser.propTypes = {
   // existingItems: PT.arrayOf(JoarkBrowserItemFileType.isRequired).isRequired,
   onRowSelectChange: PT.func,
   onPreviewFile: PT.func,
-  onRowViewDelete: PT.func,
   mode: PT.oneOf<JoarkBrowserMode>(['select', 'view']).isRequired,
   tableId: PT.string.isRequired
 }

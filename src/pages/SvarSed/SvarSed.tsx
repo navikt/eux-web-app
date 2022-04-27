@@ -125,7 +125,6 @@ export const SvarSedPage = (): JSX.Element => {
               <SEDDetails
                 unsavedDoc={replySedChanged}
                 updateReplySed={updateReplySed}
-                sak={currentSak}
               />
             )}
           </Content>

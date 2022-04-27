@@ -79,7 +79,7 @@ const LoadSave = <T extends StorageTypes>({
     if ((savedEntry.content as ReplySed).sedType) {
       buttonLogger(e, { type: (savedEntry.content as ReplySed).sedType })
       setSedStatusRequested(savedEntry.id)
-      dispatch(getSedStatus((savedEntry.content as ReplySed).saksnummer!, savedEntry.id))
+      dispatch(getSedStatus((savedEntry.content as ReplySed).sak!.sakId!, savedEntry.id))
     } else {
       // no need to chevk for status on PDU1 for now
       buttonLogger(e, { type: 'pdu1' })
@@ -180,7 +180,7 @@ const LoadSave = <T extends StorageTypes>({
                     </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
                     <BodyLong>
-                      {(savedEntry.content as any).saksnummer}
+                      {(savedEntry.content as any).sak.sakId}
                     </BodyLong>
                   </FlexBaseSpacedDiv>
                   <HorizontalSeparatorDiv />

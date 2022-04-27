@@ -1,7 +1,7 @@
 import { Sight } from '@navikt/ds-icons'
 import { Alert, Button, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import { Row, FlexDiv, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv, PaddedDiv } from '@navikt/hoykontrast'
+import { Column, FlexDiv, HorizontalSeparatorDiv, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
 import { saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -15,45 +15,43 @@ import {
   updateSed
 } from 'actions/svarsed'
 import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
-import Kontoopplysning from 'applications/SvarSed/MainForm/Kontoopplysning/Kontoopplysning'
-import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/MainForm/Motregning/Motregning'
-import ProsedyreVedUenighet from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
-import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
 import Adresser from 'applications/SvarSed/MainForm/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/MainForm/Anmodning/Anmodning'
 import ArbeidsperioderOversikt from 'applications/SvarSed/MainForm/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
 import BeløpNavnOgValuta from 'applications/SvarSed/MainForm/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import EndredeForhold from 'applications/SvarSed/MainForm/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/MainForm/Familierelasjon/Familierelasjon'
+import Formål from 'applications/SvarSed/MainForm/Formål/Formål'
 import Forsikring from 'applications/SvarSed/MainForm/Forsikring/Forsikring'
 import GrunnlagForBosetting from 'applications/SvarSed/MainForm/GrunnlagForBosetting/GrunnlagForBosetting'
 import GrunnTilOpphør from 'applications/SvarSed/MainForm/GrunnTilOpphør/GrunnTilOpphør'
 import InntektForm from 'applications/SvarSed/MainForm/InntektForm/InntektForm'
 import Kontaktinformasjon from 'applications/SvarSed/MainForm/Kontaktinformasjon/Kontaktinformasjon'
+import Kontoopplysning from 'applications/SvarSed/MainForm/Kontoopplysning/Kontoopplysning'
+import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/MainForm/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/MainForm/Nasjonaliteter/Nasjonaliteter'
+import Periode from 'applications/SvarSed/MainForm/Periode/Periode'
 import PeriodeForDagpenger from 'applications/SvarSed/MainForm/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/MainForm/PersonensStatus/PersonensStatus'
 import PersonOpplysninger from 'applications/SvarSed/MainForm/PersonOpplysninger/PersonOpplysninger'
+import ProsedyreVedUenighet from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import Referanseperiode from 'applications/SvarSed/MainForm/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/MainForm/Relasjon/Relasjon'
 import RettTilYtelser from 'applications/SvarSed/MainForm/RettTilYtelser/RettTilYtelser'
 import SisteAnsettelsesForhold from 'applications/SvarSed/MainForm/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
 import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
-import Formål from 'applications/SvarSed/MainForm/Formål/Formål'
-import Periode from 'applications/SvarSed/MainForm/Periode/Periode'
+import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
 import OneLevelForm from 'applications/SvarSed/OneLevelForm'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
-import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
-import { JoarkBrowserItems } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
@@ -125,7 +123,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 
-  const [_attachments, setAttachments] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
@@ -166,7 +163,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
       dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
-        if (!_.isEmpty(newReplySed?.sedId)) {
+        if (!_.isEmpty(newReplySed?.sed)) {
           dispatch(updateSed(newReplySed))
         } else {
           dispatch(createSed(newReplySed))
@@ -193,9 +190,9 @@ const SEDEdit: React.FC = (): JSX.Element => {
   }
 
   const onSendSedClick = () => {
-    if (replySed?.saksnummer && sedCreatedResponse?.sedId) {
+    if (replySed?.sak?.sakId && sedCreatedResponse?.sedId) {
       _setSendButtonClicked(true)
-      dispatch(sendSedInRina(replySed.saksnummer!, sedCreatedResponse.sedId!))
+      dispatch(sendSedInRina(replySed.sak!.sakId!, sedCreatedResponse.sedId!))
       standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
     }
   }
@@ -239,10 +236,10 @@ const SEDEdit: React.FC = (): JSX.Element => {
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)
       cleanReplySed(newReplySed)
-      const rinaSakId = newReplySed.saksnummer
-      delete newReplySed.saksnummer
-      delete newReplySed.sakUrl
-      delete newReplySed.status
+      const rinaSakId = newReplySed.sak!.sakId
+      delete newReplySed.sak
+      delete newReplySed.sed
+      delete newReplySed.attachments
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
       buttonLogger(e)
     }
@@ -283,8 +280,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         <SendSEDModal
           fnr={fnr!}
           open={_viewSendSedModal}
-          goToRinaUrl={replySed?.sakUrl}
-          attachments={_attachments}
+          goToRinaUrl={replySed?.sak?.sakUrl}
           replySed={replySed}
           onModalClose={() => setViewSendSedModal(false)}
         />
@@ -423,10 +419,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
         </>
       )}
       <VerticalSeparatorDiv size='2' />
-      <Attachments
-        fnr={fnr}
-        onAttachmentsChanged={(attachments) => setAttachments(attachments)}
-      />
       <Button
         variant='tertiary'
         disabled={gettingPreviewFile}
@@ -445,7 +437,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         <div>
           <Button
             variant='primary'
-            data-amplitude={_.isEmpty(replySed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
+            data-amplitude={_.isEmpty(replySed?.sed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
             onClick={sendReplySed}
             disabled={creatingSvarSed || updatingSvarSed}
           >
@@ -453,7 +445,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
               ? t('message:loading-opprette-sed')
               : updatingSvarSed
                 ? t('message:loading-oppdatering-sed')
-                : _.isEmpty(replySed?.sedId)
+                : _.isEmpty(replySed?.sed?.sedId)
                   ? t('label:opprett-sed')
                   : _.isEmpty(sedCreatedResponse)
                     ? t('label:oppdatere-sende-sed')

@@ -72,7 +72,6 @@ interface SendSEDSelector {
 interface SendSEDModalProps {
   fnr: string
   goToRinaUrl: string | undefined
-  attachments?: JoarkBrowserItems
   initialSendingAttachments?: boolean
   onModalClose: () => void
   open: boolean
@@ -92,7 +91,6 @@ const mapState = (state: State): SendSEDSelector => ({
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
   goToRinaUrl,
-  attachments = [],
   initialSendingAttachments = false,
   onModalClose,
   open,
@@ -111,7 +109,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   const { t } = useTranslation()
   const [_attachmentsSent, setAttachmentsSent] = useState<boolean>(false)
   const [_sendingAttachments, setSendingAttachments] = useState<boolean>(initialSendingAttachments)
-  const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(attachments)
+  const [_sedAttachments, setSedAttachments] = useState<JoarkBrowserItems>(replySed?.attachments ?? [])
   const [_sedSent, setSedSent] = useState<boolean>(false)
   const [_finished, setFinished] = useState<string | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
@@ -140,9 +138,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }
 
   const onSendSedClick = () => {
-    if (replySed?.saksnummer && sedCreatedResponse?.sedId) {
+    if (replySed?.sak?.sakId && sedCreatedResponse?.sedId) {
       _setSendButtonClicked(true)
-      dispatch(sendSedInRina(replySed?.saksnummer, sedCreatedResponse?.sedId))
+      dispatch(sendSedInRina(replySed?.sak?.sakId, sedCreatedResponse?.sedId))
       standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
     }
   }
@@ -301,7 +299,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                         attachmentsError={undefined}
                         payload={{
                           fnr,
-                          rinaId: replySed!.saksnummer,
+                          rinaId: replySed!.sak?.sakId,
                           rinaDokumentId: sedCreatedResponse?.sedId
                         } as SEDAttachmentPayload}
                         onSaved={_onSaved}

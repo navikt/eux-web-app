@@ -106,6 +106,7 @@ export const Dt = styled.dt`
   .typo-element {
     margin-left: 0.5rem;
   }
+  font-weight: bold;
 `
 export const Dl = styled.dl`
   display: flex;

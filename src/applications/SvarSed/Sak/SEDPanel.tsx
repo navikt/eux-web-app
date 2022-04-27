@@ -101,14 +101,14 @@ const SEDPanel = ({
     dispatch(getSedStatus(sakId, svarsedId))
   }
 
-  const onEditSedClick = (sedId: string, sedType: string, saksnummer: string, status: string) => {
+  const onEditSedClick = (connectedSed: Sed, sak: Sak) => {
     _setReplySedRequested(true)
-    dispatch(editSed(sedId, sedType, saksnummer, status))
+    dispatch(editSed(connectedSed, sak))
   }
 
-  const onReplySedClick = (connectedSed: Sed, saksnummer: string, sakUrl: string) => {
+  const onReplySedClick = (connectedSed: Sed, sak: Sak) => {
     _setReplySedRequested(true)
-    dispatch(replyToSed(connectedSed, saksnummer, sakUrl))
+    dispatch(replyToSed(connectedSed, sak))
   }
 
   return (
@@ -196,7 +196,7 @@ const SEDPanel = ({
                             type: connectedSed.sedType
                           })
                           _setButtonClickedId('edit-' + connectedSed.sedId)
-                          onEditSedClick(connectedSed.sedId, connectedSed.sedType, currentSak.sakId, connectedSed.status)
+                          onEditSedClick(connectedSed, currentSak)
                         }}
                       >
                         {(editingSed && _buttonClickedId === 'edit-' + connectedSed.sedId)
@@ -225,7 +225,7 @@ const SEDPanel = ({
                           parenttype: connectedSed.sedType
                         })
                         _setButtonClickedId('reply-' + connectedSed.sedId)
-                        onReplySedClick(connectedSed, currentSak.sakId, currentSak.sakUrl)
+                        onReplySedClick(connectedSed, currentSak)
                       }}
                     >
                       {(replyingToSed && _buttonClickedId === 'reply-' + connectedSed.sedId)

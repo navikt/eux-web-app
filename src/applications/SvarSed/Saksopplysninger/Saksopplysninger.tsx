@@ -1,48 +1,54 @@
-import { Heading, Panel } from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { ExternalLink } from '@navikt/ds-icons'
+import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
+import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
+import _ from 'lodash'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface SaksopplysningerProps {
-  sak: Sak | undefined
+  sak: Sak
 }
 
 const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
-  console.log(sak?.sakId)
+  const { t } = useTranslation()
   return (
-    <Panel border style={{ margin: '0.1rem' }}>
-      <Heading size='small'>Saksopplysninger</Heading>
+    <Panel border>
+      <Heading size='small'>
+        {t('label:saksopplysninger')}
+      </Heading>
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       <Dl>
         <Dt>
-          Vår rolle:
+          {t('label:rina-saksnr') + ':'}
         </Dt>
         <Dd>
-          Sakseier
+          <Link target='_blank' href={sak?.sakUrl} rel='noreferrer'>
+            <span>
+              {sak?.sakId}
+            </span>
+            <HorizontalSeparatorDiv size='0.35' />
+            <ExternalLink />
+          </Link>
         </Dd>
         <Dt>
-          Andre deltakere:
+          {t('label:vår-rolle')}:
         </Dt>
         <Dd>
-          XXX
+          {sak.erSakseier === 'nei' && t('label:sakeier')}
+          {sak.erSakseier === 'ja' && t('label:deltaker')}
+          {_.isNil(sak.erSakseier) && t('label:unknown')}
         </Dd>
         <Dt>
-          Parter i saken:
+          {t('label:andre-deltakere')}:
         </Dt>
         <Dd>
-          XXX
-        </Dd>
-        <Dt>
-          Periode:
-        </Dt>
-        <Dd>
-          01.01.1970 - 01.01.1970
+          {sak.motpart?.map(m => <BodyLong key={m}>{m}</BodyLong>)}
         </Dd>
       </Dl>
-
     </Panel>
   )
 }

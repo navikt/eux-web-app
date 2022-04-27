@@ -15,22 +15,20 @@ const sprintf = require('sprintf-js').sprintf
 export const createSed = (
   replySed: ReplySed
 ): ActionWithPayload => {
-  const rinaSakId = replySed.saksnummer
   const copyReplySed = _.cloneDeep(replySed)
-  delete copyReplySed.saksnummer
-  delete copyReplySed.sakUrl
-  delete copyReplySed.status
-  delete copyReplySed.sedId
+  delete copyReplySed.sak
+  delete copyReplySed.sed
+  delete copyReplySed.attachments
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId }),
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: replySed.sak?.sakId }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '123'
     } as CreateSedResponse,
     context: {
       sedType: replySed.sedType,
-      sakUrl: replySed.sakUrl
+      sakUrl: replySed.sak?.sakUrl
     },
     type: {
       request: types.SVARSED_SED_CREATE_REQUEST,
@@ -44,23 +42,20 @@ export const createSed = (
 export const updateSed = (
   replySed: ReplySed
 ): ActionWithPayload => {
-  const rinaSakId = replySed.saksnummer
-  const sedId = replySed.sedId
   const copyReplySed = _.cloneDeep(replySed)
-  delete copyReplySed.saksnummer
-  delete copyReplySed.sakUrl
-  delete copyReplySed.status
-  delete copyReplySed.sedId
+  delete copyReplySed.sak
+  delete copyReplySed.sed
+  delete copyReplySed.attachments
   return call({
     method: 'PUT',
-    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId, sedId }),
+    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: replySed.sak?.sakId, sedId: replySed.sed?.sedId }),
     cascadeFailureError: true,
     expectedPayload: {
       sedId: '456'
     } as CreateSedResponse,
     context: {
       sedType: replySed.sedType,
-      sakUrl: replySed.sakUrl
+      sakUrl: replySed.sak?.sakUrl
     },
     type: {
       request: types.SVARSED_SED_UPDATE_REQUEST,
@@ -85,7 +80,7 @@ export const getFagsaker = (
   })
 }
 
-export const getPreviewFile = (rinaSakId: string, replySed: ReplySed) => {
+export const getPreviewFile = (rinaSakId: string, replySed: ReplySed): ActionWithPayload => {
   return call({
     method: 'POST',
     url: sprintf(urls.API_PREVIEW_URL, { rinaSakId }),
@@ -149,20 +144,19 @@ export const querySaksnummerOrFnr = (
   })
 }
 
+/*
+sedId: string, sedType: string, status: string
+rinaSakId: string,
+ */
 export const editSed = (
-  sedId: string, sedType: string, rinaSakId: string, status: string
+  connectedSed: Sed, sak: Sak
 ): ActionWithPayload<ReplySed> => {
-  const mockSed = mockReplySed(sedType)
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId, sedId }),
-    expectedPayload: {
-      ...mockSed,
-      saksnummer: rinaSakId
-    },
+    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId }),
+    expectedPayload: mockReplySed(connectedSed.sedType),
     context: {
-      saksnummer: rinaSakId,
-      sedId,
-      status
+      sak,
+      sed: connectedSed
     },
     type: {
       request: types.SVARSED_EDIT_REQUEST,
@@ -173,29 +167,22 @@ export const editSed = (
 }
 
 export const replyToSed = (
-  connectedSed: Sed, saksnummer: string, sakUrl: string
+  connectedSed: Sed, sak: Sak
 ): ActionWithPayload<ReplySed> => {
-  const mockSed = mockReplySed(connectedSed.svarsedType)
-
   const sedId = connectedSed.sedType === 'F002' && connectedSed.svarsedType === 'F002' && !_.isEmpty(connectedSed.sedIdParent)
     ? connectedSed.sedIdParent
     : connectedSed.sedId
 
   return call({
     url: sprintf(urls.API_RINASAK_SVARSED_QUERY_URL, {
-      rinaSakId: saksnummer,
+      rinaSakId: sak.sakId,
       sedId,
       sedType: connectedSed.svarsedType
     }),
-    expectedPayload: {
-      ...mockSed,
-      saksnummer
-    },
+    expectedPayload: mockReplySed(connectedSed.svarsedType),
     context: {
-      saksnummer,
-      sakUrl,
-      sedId: connectedSed.svarsedId,
-      status: 'new'
+      sak,
+      sed: undefined
     },
     type: {
       request: types.SVARSED_REPLYTOSED_REQUEST,

@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ReplySed } from 'declarations/sed.d'
-import { CreateSedResponse, FagSaker, Sak, Saks } from 'declarations/types.d'
+import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -72,10 +72,8 @@ const svarsedReducer = (
         ...state,
         replySed: {
           ...(action as ActionWithPayload).payload,
-          saksnummer: (action as ActionWithPayload).context.saksnummer,
-          sakUrl: (action as ActionWithPayload).context.sakUrl,
-          sedId: undefined, // so we can signal this SED as a SED that needs to be created, not updated
-          status: (action as ActionWithPayload).context.status
+          sak: (action as ActionWithPayload).context.sak,
+          sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
         },
         replySedChanged: false
       }
@@ -99,9 +97,8 @@ const svarsedReducer = (
         ...state,
         replySed: {
           ...(action as ActionWithPayload).payload,
-          saksnummer: (action as ActionWithPayload).context.saksnummer,
-          sedId: (action as ActionWithPayload).context.sedId,
-          status: (action as ActionWithPayload).context.status
+          sak: (action as ActionWithPayload).context.sak,
+          sed: (action as ActionWithPayload).context.sed
         },
         replySedChanged: false
       }
@@ -160,18 +157,25 @@ const svarsedReducer = (
       }
     }
 
-    case types.SVARSED_SED_CREATE_SUCCESS:
+    case types.SVARSED_SED_CREATE_SUCCESS: {
+      let sed = state.replySed?.sed
+      if (_.isNil(sed)) {
+        sed = {} as Sed
+      }
+      sed.sedId = (action as ActionWithPayload).payload.sedId
+
       standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
         // now I can restore sedId to the replySed, so it can be updated later
         replySed: {
           ...state.replySed,
-          sedId: (action as ActionWithPayload).payload.sedId
+          sed
         } as ReplySed,
         sedCreatedResponse: (action as ActionWithPayload).payload,
         replySedChanged: false
       }
+    }
 
     case types.SVARSED_SED_CREATE_FAILURE:
       standardLogger('svarsed.create.failure', { type: (action as ActionWithPayload).context.sedType })
@@ -262,8 +266,11 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_SED_SEND_SUCCESS: {
-      const newReplySed = _.cloneDeep(state.replySed)
-      newReplySed!.status = 'sent'
+      const newReplySed: ReplySed = _.cloneDeep(state.replySed) as ReplySed
+      if (_.isNil(newReplySed.sed)) {
+        newReplySed.sed = {} as Sed
+      }
+      newReplySed.sed.status = 'sent'
       return {
         ...state,
         replySed: newReplySed,

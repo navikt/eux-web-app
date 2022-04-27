@@ -5,7 +5,7 @@ import React from 'react'
 
 const Sakshandlinger = () => {
   return (
-    <Panel border style={{ margin: '0.1rem', marginTop: '0.5rem' }}>
+    <Panel border>
       <Heading size='small'>Sakshandlinger</Heading>
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />

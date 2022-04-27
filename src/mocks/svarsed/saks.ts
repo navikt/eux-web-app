@@ -13,6 +13,7 @@ export default (saksnummer: string) => {
       sakId: '1166592',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      erSakseier: 'ja',
       motpart: [
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
@@ -51,6 +52,7 @@ export default (saksnummer: string) => {
       sakId: '1166593',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
+      erSakseier: 'nei',
       motpart: [
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
@@ -105,6 +107,7 @@ export default (saksnummer: string) => {
       sakId: '398793',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
+      erSakseier: 'ja',
       motpart: [
         'NAV ACCEPTANCE TEST 07 (Norge)'
       ],
@@ -154,6 +157,7 @@ export default (saksnummer: string) => {
       motpart: [
         'NAV ACCEPTANCE TEST 07 (Norge)'
       ],
+      erSakseier: 'nei',
       sedListe: [
         {
           sedTittel: 'Anmodning om trygdehistorikk',

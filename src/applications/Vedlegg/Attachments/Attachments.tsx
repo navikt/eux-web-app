@@ -1,13 +1,11 @@
+import { BodyLong, Button, Heading, Panel } from '@navikt/ds-react'
+import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { JoarkBrowser } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal'
-import {
-  JoarkBrowserItem,
-  JoarkBrowserItems
-} from 'declarations/attachments'
+import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
+import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import { Button } from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -37,17 +35,42 @@ const Attachments: React.FC<AttachmentsProps> = ({
     onAttachmentsChanged(newAttachments)
   }
 
-  const onRowViewDelete = (newItems: JoarkBrowserItems): void => {
-    setItems(newItems)
-    onAttachmentsChanged(newItems)
-  }
-
   return (
-    <>
-      <VerticalSeparatorDiv size='2' />
-      <label className='navds-text-field__label navds-label'>
+    <Panel border>
+      <Heading size='small'>
         {t('label:vedlegg')}
-      </label>
+      </Heading>
+      <VerticalSeparatorDiv />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      <SEDAttachmentModal
+        open={_attachmentsTableVisible}
+        fnr={fnr!}
+        onModalClose={() => setAttachmentsTableVisible(false)}
+        onFinishedSelection={onJoarkAttachmentsChanged}
+        sedAttachments={_items}
+        tableId='vedlegg-modal'
+      />
+      {_.isEmpty(_items)
+        ? (
+          <>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-attachments')}
+            </BodyLong>
+            <SpacedHr />
+          </>
+          )
+        : (
+          <>
+            <JoarkBrowser
+              existingItems={_items}
+              fnr={fnr}
+              mode='view'
+              tableId='vedlegg-view'
+            />
+          </>
+          )}
       <VerticalSeparatorDiv />
       <Button
         variant='secondary'
@@ -60,28 +83,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       >
         {t('label:vis-vedlegg-tabell')}
       </Button>
-      <VerticalSeparatorDiv />
-      <SEDAttachmentModal
-        open={_attachmentsTableVisible}
-        fnr={fnr!}
-        onModalClose={() => setAttachmentsTableVisible(false)}
-        onFinishedSelection={onJoarkAttachmentsChanged}
-        sedAttachments={_items}
-        tableId='vedlegg-modal'
-      />
-      {!_.isEmpty(_items) && (
-        <>
-          <VerticalSeparatorDiv />
-          <JoarkBrowser
-            existingItems={_items}
-            fnr={fnr}
-            mode='view'
-            onRowViewDelete={onRowViewDelete}
-            tableId='vedlegg-view'
-          />
-        </>
-      )}
-    </>
+    </Panel>
   )
 }
 
