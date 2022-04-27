@@ -15,7 +15,7 @@ import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Modal as NavModal, BodyLong, Heading, Button } from '@navikt/ds-react'
+import { Modal as NavModal, BodyLong, Heading, Button, Panel } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -50,10 +50,13 @@ const GreySpan = styled.span`
   color: grey;
   white-space: nowrap;
 `
+const GrayPanel = styled(Panel)`
+  background-color: var(--navds-semantic-color-canvas-background);
+`
 
 interface AddPersonModalProps<T> {
   appElement?: any
-  onModalClose?: () => void
+  onModalClose: () => void
   closeButton?: boolean
   parentNamespace: string
   replySed: T | null | undefined
@@ -61,7 +64,7 @@ interface AddPersonModalProps<T> {
 }
 
 const AddPersonModal = <T extends StorageTypes>({
-  onModalClose = () => {},
+  onModalClose,
   parentNamespace,
   replySed,
   setReplySed
@@ -291,62 +294,66 @@ const AddPersonModal = <T extends StorageTypes>({
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
           <VerticalSeparatorDiv size='2' />
-          <Heading size='small'>
-            {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
-          </Heading>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <Input
-                error={_validation[namespace + '-fnr']?.feilmelding}
-                id='fnr'
-                label={t('label:fnr-dnr')}
-                namespace={namespace}
-                onChanged={onNewPersonFnrChange}
-                required
-                value={_newPersonFnr}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <Input
-                error={_validation[namespace + '-navn']?.feilmelding}
-                id='navn'
-                namespace={namespace}
-                label={t('label:navn')}
-                onChanged={onNewPersonNameChange}
-                required
-                value={_newPersonName}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <Select
-                aria-label={t('label:familierelasjon')}
-                key={namespace + '-relasjon-' + _newPersonRelation}
-                data-testid={namespace + '-relasjon'}
-                error={_validation[namespace + '-relasjon']?.feilmelding}
-                id={namespace + '-relasjon'}
-                label={t('label:familierelasjon')}
-                onChange={onNewPersonRelationChange}
-                options={relationOptions}
-                value={_.find(relationOptions, o => o.value === _newPersonRelation)}
-                defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <div className='nolabel'>
-                <Button
-                  variant='secondary'
-                  onClick={onAdd}
-                >
-                  <AddCircle width={20} />
-                  {t('el:button-add')}
-                </Button>
-              </div>
-            </Column>
-          </AlignStartRow>
+          <GrayPanel>
+            <Heading size='small'>
+              {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
+            </Heading>
+            <VerticalSeparatorDiv />
+            <HorizontalLineSeparator/>
+            <VerticalSeparatorDiv />
+            <AlignStartRow>
+              <Column>
+                <Input
+                  error={_validation[namespace + '-fnr']?.feilmelding}
+                  id='fnr'
+                  label={t('label:fnr-dnr')}
+                  namespace={namespace}
+                  onChanged={onNewPersonFnrChange}
+                  required
+                  value={_newPersonFnr}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
+              <Column>
+                <Input
+                  error={_validation[namespace + '-navn']?.feilmelding}
+                  id='navn'
+                  namespace={namespace}
+                  label={t('label:navn')}
+                  onChanged={onNewPersonNameChange}
+                  required
+                  value={_newPersonName}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
+              <Column>
+                <Select
+                  aria-label={t('label:familierelasjon')}
+                  key={namespace + '-relasjon-' + _newPersonRelation}
+                  data-testid={namespace + '-relasjon'}
+                  error={_validation[namespace + '-relasjon']?.feilmelding}
+                  id={namespace + '-relasjon'}
+                  label={t('label:familierelasjon')}
+                  onChange={onNewPersonRelationChange}
+                  options={relationOptions}
+                  value={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                  defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
+              <Column>
+                <div className='nolabel'>
+                  <Button
+                    variant='secondary'
+                    onClick={onAdd}
+                  >
+                    <AddCircle width={20} />
+                    {t('el:button-add')}
+                  </Button>
+                </div>
+              </Column>
+            </AlignStartRow>
+          </GrayPanel>
           <VerticalSeparatorDiv />
         </>
         <ModalButtons>

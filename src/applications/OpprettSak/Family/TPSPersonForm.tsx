@@ -130,9 +130,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             required
             value={_query}
             disabled={searchingRelatertPerson}
-            onSearch={sokEtterFnr}
           >
-            <Search.Button>
+            <Search.Button onClick={sokEtterFnr}>
               {t('el:button-search')}
               {searchingRelatertPerson && <Loader />}
             </Search.Button>

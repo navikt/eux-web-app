@@ -1,10 +1,8 @@
-
+import { Container, Content, fadeIn, fadeOut, Margin } from '@navikt/hoykontrast'
 import { finishPageStatistic, logPageStatistics, startPageStatistic } from 'actions/statistics'
 
 import classNames from 'classnames'
-import { FadingLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Container, Content, fadeIn, fadeOut, Margin } from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { MutableRefObject, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -283,29 +281,26 @@ export const SlidePage: React.FC<SlidePageProps> = ({
         </ContainerDiv>
       </Content>
       {withSidebar && (
-        <>
-          <FadingLineSeparator className='fadeIn'>
-          &nbsp;
-          </FadingLineSeparator>
-          <Content style={{ width: sidebarWidth + 'rem' }}>
-            <ContainerDiv>
-              <WindowDiv>
-                <AnimatableDiv
-                  key='animatableDivA'
-                  className={classNames(cls(positionSidebarA))}
-                >
-                  {sidebarA}
-                </AnimatableDiv>
-                <AnimatableDiv
-                  key='animatableDivB'
-                  className={classNames(cls(positionSidebarB))}
-                >
-                  {sidebarB}
-                </AnimatableDiv>
-              </WindowDiv>
-            </ContainerDiv>
-          </Content>
-        </>
+
+        <Content style={{ width: sidebarWidth + 'rem' }}>
+          <ContainerDiv>
+            <WindowDiv>
+              <AnimatableDiv
+                key='animatableDivA'
+                className={classNames(cls(positionSidebarA))}
+              >
+                {sidebarA}
+              </AnimatableDiv>
+              <AnimatableDiv
+                key='animatableDivB'
+                className={classNames(cls(positionSidebarB))}
+              >
+                {sidebarB}
+              </AnimatableDiv>
+            </WindowDiv>
+          </ContainerDiv>
+        </Content>
+
       )}
       <Margin />
     </Container>

@@ -89,9 +89,8 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                 hideLabel={false}
                 value={_saksnummerOrFnr}
                 disabled={querying}
-                onSearch={onSaksnummerOrFnrClick}
               >
-                <Search.Button>
+                <Search.Button onClick={onSaksnummerOrFnrClick}>
                   {querying
                     ? t('message:loading-searching')
                     : t('el:button-search')}

@@ -62,7 +62,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     }
   }, [person])
 
-  const onSearch = (fnr: string | number | readonly string[]) => {
+  const onSearch = () => {
     if (!fnr) {
       setLocalValidation(t('validation:noFnr'))
       return
@@ -100,9 +100,9 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         hideLabel={false}
         value={fnr || ''}
         disabled={searchingPerson}
-        onSearch={onSearch}
+
       >
-        <Search.Button>
+        <Search.Button onClick={onSearch}>
           {searchingPerson ? t('message:loading-searching') : t('el:button-search')}
           {searchingPerson && <Loader />}
         </Search.Button>

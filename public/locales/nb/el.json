@@ -46,10 +46,10 @@
   "checkbox-pdu1-6.2.1": "Det er ingen rett til stønad i henhold til landets lovgivning",
   "checkbox-pdu1-6.2.2": "Innehaveren søkte ikke om eksport av dagpenger",
 
-  "option-familierelasjon-bruker": "bruker",
-  "option-familierelasjon-ektefelle": "ektefelle",
-  "option-familierelasjon-annenPerson" : "annenPerson",
-  "option-familierelasjon-barn": "barn",
+  "option-familierelasjon-bruker": "Bruker",
+  "option-familierelasjon-ektefelle": "Ektefelle",
+  "option-familierelasjon-annenPerson" : "Annen person",
+  "option-familierelasjon-barn": "Barn",
 
   "option-familierelasjon-gift" : "Gift",
   "option-familierelasjon-samboer" : "Samboer",

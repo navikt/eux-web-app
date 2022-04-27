@@ -7,7 +7,7 @@ import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
-import { FadingLineSeparator, SideBarDiv } from 'components/StyledComponents'
+import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Sak } from 'declarations/types'
@@ -98,9 +98,6 @@ export const SvarSedPage = (): JSX.Element => {
               <SEDEdit />
             )}
           </Content>
-          <FadingLineSeparator className='fadeIn'>
-            &nbsp;
-          </FadingLineSeparator>
           <Content style={{ width: '23.5rem' }}>
             <SideBarDiv>
               {_currentPage === 'A' && (

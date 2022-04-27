@@ -80,9 +80,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           hideLabel={false}
           onChange={setRinaSaksnummer}
           value={rinasaksnummer}
-          disabled={gettingDokument} onSearch={sokEtterDokument}
+          disabled={gettingDokument}
         >
-          <Search.Button>
+          <Search.Button  onClick={sokEtterDokument}>
             {gettingDokument ? t('message:loading-searching') : t('el:button-search')}
             {gettingDokument && <Loader />}
           </Search.Button>

@@ -322,6 +322,8 @@ const SEDEdit: React.FC = (): JSX.Element => {
       {showTwoLevelForm() && (
         <>
           <TwoLevelForm<ReplySed>
+            namespace='svarsed'
+            loggingNamespace='personmanager'
             forms={[
               { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], barn: true },
               { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },

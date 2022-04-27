@@ -154,25 +154,27 @@ const PDU1Edit: React.FC = (): JSX.Element => {
       />
       <VerticalSeparatorDiv size='2' />
       <TwoLevelForm<PDU1>
+        namespace='pdu1'
+        loggingNamespace='personmanager'
         forms={[
-          { label: t('el:option-TwoLevelForm-person'), value: 'person', component: Person, type: 'PD' },
-          { label: t('el:option-TwoLevelForm-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
+          { label: t('el:option-mainform-person'), value: 'person', component: Person, type: 'PD' },
+          { label: t('el:option-mainform-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           {
-            label: t('el:option-TwoLevelForm-sisteansettelseinfo'),
+            label: t('el:option-mainform-sisteansettelseinfo'),
             value: 'sisteansettelseinfo',
             component: SisteAnsettelseInfo,
             type: 'PD'
           },
-          { label: t('el:option-TwoLevelForm-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
-          { label: t('el:option-TwoLevelForm-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
+          { label: t('el:option-mainform-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
+          { label: t('el:option-mainform-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           {
-            label: t('el:option-TwoLevelForm-retttildagpenger'),
+            label: t('el:option-mainform-retttildagpenger'),
             value: 'retttildagpenger',
             component: RettTilDagpenger,
             type: 'PD'
           },
-          { label: t('el:option-TwoLevelForm-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
-          { label: t('el:option-TwoLevelForm-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
+          { label: t('el:option-mainform-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
+          { label: t('el:option-mainform-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={pdu1}
         setReplySed={setPdu1}

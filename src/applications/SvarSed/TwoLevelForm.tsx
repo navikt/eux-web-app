@@ -177,6 +177,8 @@ export interface _TwoLevelFormProps<T> {
   viewValidation: boolean
   setReplySed: (replySed: T) => ActionWithPayload<T>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
+  namespace: string
+  loggingNamespace: string
 }
 
 export interface TwoLevelFormProps {
@@ -211,11 +213,12 @@ const TwoLevelForm = <T extends StorageTypes>({
   replySed,
   setReplySed,
   updateReplySed,
-  viewValidation
+  viewValidation,
+  namespace,
+  loggingNamespace
 }: _TwoLevelFormProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
-  const namespace = 'TwoLevelForm'
 
   const dispatch = useAppDispatch()
   const brukerNr = 1
@@ -238,14 +241,14 @@ const TwoLevelForm = <T extends StorageTypes>({
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
   useEffect(() => {
-    dispatch(startMenuStatistic('TwoLevelForm', undefined))
+    dispatch(startMenuStatistic(loggingNamespace, undefined))
     return () => {
-      dispatch(finishMenuStatistic('TwoLevelForm'))
+      dispatch(finishMenuStatistic(loggingNamespace))
     }
   }, [])
 
   const setCurrentMenuOption = (newMenu: string | undefined) => {
-    dispatch(logMenuStatistic('TwoLevelForm', currentMenuOption, newMenu))
+    dispatch(logMenuStatistic(loggingNamespace, currentMenuOption, newMenu))
     _setCurrentMenuOption(newMenu)
   }
 
@@ -502,17 +505,17 @@ const TwoLevelForm = <T extends StorageTypes>({
             {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson')}
             {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`))}
             {isFSed(replySed) && renderMenu(replySed!, 'familie')}
-            {isFSed(replySed) && (
-              <LastDiv data-empty-right-div={_.isNil(currentMenuOption)}>
+            <LastDiv data-empty-right-div={_.isNil(currentMenuOption)}>
+              {isFSed(replySed) && (
                 <Button
-                  variant='tertiary'
-                  onClick={onAddNewPerson}
-                >
-                  <AddCircle />
+                variant='tertiary'
+                onClick={onAddNewPerson}
+              >
+                <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:person') })}
                 </Button>
-              </LastDiv>
-            )}
+              )}
+            </LastDiv>
           </LeftDiv>
           <RightDiv className='mainright'>
             {!currentMenu && (
