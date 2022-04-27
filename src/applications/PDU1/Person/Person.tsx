@@ -1,17 +1,13 @@
-import { Search } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Loader } from '@navikt/ds-react'
+import { BodyLong, Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
-  FlexCenterDiv,
   FlexRadioPanels,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetPerson, searchPerson } from 'actions/person'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
@@ -21,23 +17,15 @@ import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Pin, ReplySed } from 'declarations/sed'
-import { Person as IPerson } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 
-interface PersonOpplysningerSelector extends TwoLevelFormSelector {
-  searchingPerson: boolean
-  searchedPerson: IPerson | null | undefined
-}
 
-const mapState = (state: State): PersonOpplysningerSelector => ({
-  searchedPerson: state.person.person,
-  searchingPerson: state.loading.searchingPerson,
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
@@ -49,11 +37,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    searchedPerson,
-    searchingPerson,
-    validation
-  } = useAppSelector(mapState)
+  const {validation} = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string | undefined = personID
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target!) // undefined for a brief time when switching to 'familie'
@@ -98,21 +82,6 @@ const Person: React.FC<TwoLevelFormProps> = ({
     dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.land + ' ' + pin.identifikator)))
     if (whatChanged && validation[whatChanged]) {
       dispatch(resetValidation(whatChanged))
-    }
-  }
-
-  const onFillOutPerson = (searchedPerson: IPerson) => {
-    onFodselsdatoChange(searchedPerson.fdato!)
-    onFornavnChange(searchedPerson.fornavn!)
-    onEtternavnChange(searchedPerson.etternavn!)
-    onKjoennChange(searchedPerson.kjoenn!)
-    dispatch(resetPerson())
-  }
-
-  const onSearchUser = (e: any) => {
-    if (!_.isNil(pdu1Person?.fnr)) {
-      buttonLogger(e)
-      dispatch(searchPerson(pdu1Person!.fnr))
     }
   }
 
@@ -222,56 +191,12 @@ const Person: React.FC<TwoLevelFormProps> = ({
               key={namespace + '-fnr-' + pdu1Person?.fnr}
               label={t('label:norsk-fnr')}
               namespace={namespace}
+              disabled
               onChanged={onFnrChange}
               value={pdu1Person?.fnr}
             />
           </Column>
-          <Column>
-            <Button
-              className='nolabel'
-              variant='secondary'
-              disabled={searchingPerson}
-              data-amplitude='pdu1.editor.person.fnr.search'
-              onClick={onSearchUser}
-            >
-              <Search />
-              {searchingPerson
-                ? t('message:loading-searching')
-                : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-              {searchingPerson && <Loader />}
-            </Button>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            {searchedPerson
-              ? (
-                <FlexCenterDiv>
-                  <BodyLong>
-                    {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-                  </BodyLong>
-                  <HorizontalSeparatorDiv />
-                  <Button
-                    variant='secondary'
-                    data-amplitude='pdu1.editor.person.norskpin.fill'
-                    onClick={(e) => {
-                      buttonLogger(e)
-                      onFillOutPerson(searchedPerson)
-                    }}
-                  >
-                    {t('label:fill-in-person-data')}
-                  </Button>
-                </FlexCenterDiv>
-                )
-              : _.isEmpty(pdu1Person?.fnr)
-                ? (
-                  <BodyLong>
-                    {t('label:norsk-fnr-beskrivelse')}
-                  </BodyLong>
-                  )
-                : <div />}
-          </Column>
+          <Column/>
         </AlignStartRow>
       </PaddedDiv>
       {(replySed as ReplySed).sedType === 'H001' && (
