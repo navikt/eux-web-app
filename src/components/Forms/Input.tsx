@@ -50,7 +50,7 @@ const Input: React.FC<InputProps> = ({
       error={error}
       id={namespace + '-' + id}
       hideLabel={hideLabel}
-      label={label}
+      label={label + (required ? ' *' : '')}
       onBlur={() => {
         if (_dirty) {
           onChanged(_value)

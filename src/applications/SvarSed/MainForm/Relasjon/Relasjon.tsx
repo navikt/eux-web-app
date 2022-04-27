@@ -281,10 +281,11 @@ const Relasjon: React.FC<TwoLevelFormProps> = ({
               error={getErrorFor(index, 'relasjonType')}
               id={namespace + idx + '-relasjonType'}
               key={namespace + idx + '-relasjonType' + (index < 0 ? _newRelasjonType : _.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType))}
-              label={t('label:type') + ' *'}
+              label={t('label:type')}
               menuPortalTarget={document.body}
               onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
               options={relasjonTypeOptions}
+              required
               value={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
               defaultValue={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
             />

@@ -203,10 +203,11 @@ const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
               error={getErrorFor('person')}
               id={namespace + idx + '-person'}
               key={namespace + idx + '-person-' + (grunn === null ? _newPerson : grunn?.person)}
-              label={t('label:personen-det-gjelder') + ' *'}
+              label={t('label:personen-det-gjelder')}
               menuPortalTarget={document.body}
               onChange={(o: unknown) => setPerson((o as Option).value, index, (grunn === null ? _newGrunn : grunn?.grunn))}
               options={personOptions}
+              required
               value={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
               defaultValue={_.find(personOptions, b => b.value === (grunn === null ? _newPerson : grunn?.person))}
             />

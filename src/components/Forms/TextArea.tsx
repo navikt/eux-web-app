@@ -39,7 +39,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       description={description}
       error={error}
       id={namespace + '-' + id}
-      label={label}
+      label={label + (required ? ' *' : '')}
       maxLength={maxLength}
       onBlur={() => {
         if (_dirty) {

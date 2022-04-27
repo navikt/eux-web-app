@@ -142,10 +142,11 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               error={getErrorFor('type')}
               id={namespace + idx + '-type'}
               key={namespace + idx + '-type-' + _type}
-              label={t('label:type') + ' *'}
+              label={t('label:type')}
               menuPortalTarget={document.body}
               onChange={(e: any) => setType(e.value, index)}
               options={allTypeOptions}
+              required
               value={_.find(allTypeOptions, b => b.value === _type)}
               defaultValue={_.find(allTypeOptions, b => b.value === _type)}
             />
@@ -155,9 +156,10 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               error={getErrorFor('id')}
               id='id'
               key={namespace + idx + '-id-' + (index < 0 ? _newId : identifikator?.id)}
-              label={t('label:inst-id') + ' *'}
+              label={t('label:inst-id')}
               namespace={namespace + idx}
               onChanged={(value: string) => setId(value, index)}
+              required
               value={index < 0 ? _newId : identifikator?.id}
             />
           </Column>

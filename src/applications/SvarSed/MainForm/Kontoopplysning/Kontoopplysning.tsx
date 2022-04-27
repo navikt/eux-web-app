@@ -162,7 +162,7 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
             error={validation[namespace + '-id']?.feilmelding}
             key={namespace + '-id-' + (utbetalingTilInstitusjon?.id ?? '')}
             id='id'
-            label={t('label:institusjonens-id') + ' *'}
+            label={t('label:institusjonens-id')}
             namespace={namespace}
             onChanged={setId}
             required
@@ -174,7 +174,7 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
             error={validation[namespace + '-navn']?.feilmelding}
             key={namespace + '-navn-' + (utbetalingTilInstitusjon?.navn ?? '')}
             id='navn'
-            label={t('label:institusjonens-navn') + ' *'}
+            label={t('label:institusjonens-navn')}
             namespace={namespace}
             onChanged={setNavn}
             required
@@ -214,9 +214,10 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
                 error={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
                 id='kontoOrdinaer-bankensNavn'
                 key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
-                label={t('label:bankens-navn') + ' *'}
+                label={t('label:bankens-navn')}
                 namespace={namespace}
                 onChanged={setOrdinaerBankensNavn}
+                required
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
               />
             </Column>
@@ -225,9 +226,10 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
                 error={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
                 id='kontoOrdinaer-kontonummer'
                 key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
-                label={t('label:kontonummer') + ' *'}
+                label={t('label:kontonummer')}
                 namespace={namespace}
                 onChanged={setOrdinaerKontonummer}
+                required
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
               />
             </Column>
@@ -260,9 +262,10 @@ const Kontoopplysning: React.FC<OneLevelFormProps> = ({
                 error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
                 key={namespace + '-kontoSepa-iban-' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
-                label={t('label:iban') + ' *'}
+                label={t('label:iban')}
                 namespace={namespace}
                 onChanged={setSepaIban}
+                required
                 value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
               />
             </Column>

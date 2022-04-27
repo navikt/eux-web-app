@@ -192,8 +192,9 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               namespace={namespace + idx}
               key={namespace + idx + '-arbeidstimer-' + (index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
               id='arbeidstimer'
-              label={t('label:arbeidstimer') + ' *'}
+              label={t('label:arbeidstimer')}
               onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
+              required
               value={(index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
             />
           </Column>
@@ -206,8 +207,9 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               namespace={namespace + idx}
               key={namespace + idx + '-bruttoinntekt-' + (index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
               id='bruttoinntekt'
-              label={t('label:brutto-inntekt') + ' *'}
+              label={t('label:brutto-inntekt')}
               onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
+              required
               value={(index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
             />
           </Column>

@@ -372,7 +372,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const fillOutSed = (opprettetSak: OpprettetSak) => {
     const replySed = createH001Sed(opprettetSak)
-    dispatch(setReplySed(replySed))
+    dispatch(setReplySed(replySed, false))
     changeMode('B', 'forward')
   }
 

@@ -5,11 +5,12 @@ import {
   ValidationAddPersonModalProps
 } from 'applications/SvarSed/MainForm/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
-import { F002Sed, PersonInfo } from 'declarations/sed'
+import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
@@ -21,9 +22,9 @@ import {
   Column,
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
-  FlexDiv,
+  FlexDiv, FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedDiv,
+  PaddedDiv, RadioPanel, RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
@@ -36,7 +37,7 @@ const ModalDiv = styled(NavModal)`
   height: auto !important;
 `
 const ModalButtons = styled.div`
-  text-align: center;
+  text-align: left;
 `
 const CheckboxDiv = styled.div`
   display: flex;
@@ -60,7 +61,7 @@ interface AddPersonModalProps<T> {
   closeButton?: boolean
   parentNamespace: string
   replySed: T | null | undefined
-  setReplySed: (replySed: T) => ActionWithPayload<T>
+  setReplySed: (replySed: T, flagItAsUnsaved?: boolean) => ActionWithPayload<T>
 }
 
 const AddPersonModal = <T extends StorageTypes>({
@@ -74,7 +75,10 @@ const AddPersonModal = <T extends StorageTypes>({
   const dispatch = useAppDispatch()
 
   const [_newPersonFnr, _setNewPersonFnr] = useState<string>('')
-  const [_newPersonName, _setNewPersonName] = useState<string>('')
+  const [_newPersonFornavn, _setNewPersonFornavn] = useState<string>('')
+  const [_newPersonEtternavn, _setNewPersonEtternavn] = useState<string>('')
+  const [_newPersonFodselsdato, _setNewPersonFodselsdato] = useState<string>('')
+  const [_newPersonKjoenn, _setNewPersonKjoenn] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
   const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
@@ -95,9 +99,24 @@ const AddPersonModal = <T extends StorageTypes>({
     _setNewPersonFnr(fnr.trim())
   }
 
-  const onNewPersonNameChange = (navn: string) => {
-    _resetValidation(namespace + '-navn')
-    _setNewPersonName(navn.trim())
+  const onNewPersonFornavnChange = (navn: string) => {
+    _resetValidation(namespace + '-fornavn')
+    _setNewPersonFornavn(navn.trim())
+  }
+
+  const onNewPersonEtternavnChange = (navn: string) => {
+    _resetValidation(namespace + '-etternavn')
+    _setNewPersonEtternavn(navn.trim())
+  }
+
+  const onNewPersonFodselsdatoChange = (fdato: string) => {
+    _resetValidation(namespace + '-fdato')
+    _setNewPersonFodselsdato(fdato.trim())
+  }
+
+  const onNewPersonKjoennChange = (kjoenn: string) => {
+    _resetValidation(namespace + '-kjoenn')
+    _setNewPersonKjoenn(kjoenn.trim())
   }
 
   const onNewPersonRelationChange = (o: unknown) => {
@@ -107,30 +126,36 @@ const AddPersonModal = <T extends StorageTypes>({
 
   const resetForm = () => {
     _setNewPersonFnr('')
-    _setNewPersonName('')
+    _setNewPersonFornavn('')
+    _setNewPersonEtternavn('')
+    _setNewPersonFodselsdato('')
+    _setNewPersonKjoenn('')
     _setNewPersonRelation('')
     _resetValidation()
   }
 
   const onAdd = () => {
     const valid: boolean = performValidation({
-      fnr: _newPersonFnr,
-      navn: _newPersonName,
-      relasjon: _newPersonRelation,
+      fnr: _newPersonFnr.trim(),
+      fornavn: _newPersonFornavn.trim(),
+      etternavn: _newPersonEtternavn.trim(),
+      fdato: _newPersonFodselsdato.trim(),
+      kjoenn: _newPersonKjoenn.trim(),
+      relasjon: _newPersonRelation?.trim(),
       namespace
     })
     if (valid) {
       const newReplySed = _.cloneDeep(_replySed)
       const personInfo: PersonInfo = {
-        fornavn: _newPersonName.trim(),
-        etternavn: '',
-        foedselsdato: '',
-        kjoenn: 'U',
+        fornavn: _newPersonFornavn.trim(),
+        etternavn: _newPersonEtternavn.trim(),
+        foedselsdato: _newPersonFodselsdato.trim(),
+        kjoenn: _newPersonKjoenn.trim() as Kjoenn,
         statsborgerskap: [],
         pin: [{
           identifikator: _newPersonFnr.trim()
         }]
-      }
+      } as PersonInfo
       if (_newPersonRelation === 'barn') {
         if (!Object.prototype.hasOwnProperty.call(newReplySed, 'barn')) {
           (newReplySed as F002Sed).barn = [{
@@ -299,9 +324,45 @@ const AddPersonModal = <T extends StorageTypes>({
               {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
             </Heading>
             <VerticalSeparatorDiv />
-            <HorizontalLineSeparator/>
+            <HorizontalLineSeparator />
             <VerticalSeparatorDiv />
             <AlignStartRow>
+              <Column>
+                <Input
+                  error={_validation[namespace + '-fornavn']?.feilmelding}
+                  id='fornavn'
+                  namespace={namespace}
+                  label={t('label:fornavn')}
+                  onChanged={onNewPersonFornavnChange}
+                  required
+                  value={_newPersonFornavn}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
+              <Column>
+                <Input
+                  error={_validation[namespace + '-etternavn']?.feilmelding}
+                  id='etternavn'
+                  namespace={namespace}
+                  label={t('label:etternavn')}
+                  onChanged={onNewPersonEtternavnChange}
+                  required
+                  value={_newPersonEtternavn}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
+              <Column>
+                <DateInput
+                  error={_validation[namespace + '-fdato']?.feilmelding}
+                  id='fdato'
+                  namespace={namespace}
+                  label={t('label:fødselsdato')}
+                  onChanged={onNewPersonFodselsdatoChange}
+                  required
+                  value={_newPersonFodselsdato}
+                />
+                <HorizontalSeparatorDiv />
+              </Column>
               <Column>
                 <Input
                   error={_validation[namespace + '-fnr']?.feilmelding}
@@ -314,19 +375,34 @@ const AddPersonModal = <T extends StorageTypes>({
                 />
                 <HorizontalSeparatorDiv />
               </Column>
-              <Column>
-                <Input
-                  error={_validation[namespace + '-navn']?.feilmelding}
-                  id='navn'
-                  namespace={namespace}
-                  label={t('label:navn')}
-                  onChanged={onNewPersonNameChange}
-                  required
-                  value={_newPersonName}
-                />
-                <HorizontalSeparatorDiv />
+            </AlignStartRow>
+            <AlignStartRow>
+              <Column flex='1.5'>
+                <RadioPanelGroup
+                  value={_newPersonKjoenn}
+                  data-no-border
+                  data-testid={namespace + '-kjoenn'}
+                  error={_validation[namespace + '-kjoenn']?.feilmelding}
+                  id={namespace + '-kjoenn'}
+                  key={namespace + '-kjoenn-' + (_newPersonKjoenn ?? '')}
+                  legend={t('label:kjønn') + ' *'}
+                  name={namespace + '-kjoenn'}
+                  onChange={onNewPersonKjoennChange}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='M'>
+                      {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+                    </RadioPanel>
+                    <RadioPanel value='K'>
+                      {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+                    </RadioPanel>
+                    <RadioPanel value='U'>
+                      {t('label:ukjent')}
+                    </RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
               </Column>
-              <Column>
+              <Column flex='1'>
                 <Select
                   aria-label={t('label:familierelasjon')}
                   key={namespace + '-relasjon-' + _newPersonRelation}
@@ -336,12 +412,13 @@ const AddPersonModal = <T extends StorageTypes>({
                   label={t('label:familierelasjon')}
                   onChange={onNewPersonRelationChange}
                   options={relationOptions}
+                  required
                   value={_.find(relationOptions, o => o.value === _newPersonRelation)}
                   defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
                 />
                 <HorizontalSeparatorDiv />
               </Column>
-              <Column>
+              <Column flex='0.5'>
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
@@ -364,14 +441,7 @@ const AddPersonModal = <T extends StorageTypes>({
               onModalClose()
             }}
           >
-            {t('el:button-save')}
-          </Button>
-          <HorizontalSeparatorDiv />
-          <Button
-            variant='secondary'
-            onClick={onModalClose}
-          >
-            {t('el:button-cancel')}
+            {t('el:button-close-person-modal')}
           </Button>
         </ModalButtons>
       </PaddedDiv>

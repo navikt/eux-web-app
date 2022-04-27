@@ -93,10 +93,11 @@ const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
             data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
             error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
             id={namespace + '-typeGrunnOpphoerAnsatt'}
-            label={t('label:grunn-type') + ' *'}
+            label={t('label:grunn-type')}
             menuPortalTarget={document.body}
             onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
             options={årsakOptions}
+            required
             value={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt) ?? null}
             defaultValue={_.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt)}
           />

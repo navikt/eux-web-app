@@ -124,7 +124,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-gate']?.feilmelding}
             namespace={namespace}
             id='gate'
-            label={t('label:gateadresse') + (required.indexOf('gate') >= 0 ? ' *' : '')}
+            label={t('label:gateadresse')}
             onChanged={setGate}
             required={required.indexOf('gate') >= 0}
             value={adresse?.gate}
@@ -137,7 +137,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-bygning']?.feilmelding}
               namespace={namespace}
               id='bygning'
-              label={t('label:bygning') + (required.indexOf('bygning') >= 0 ? ' *' : '')}
+              label={t('label:bygning')}
               onChanged={setBygning}
               required={required.indexOf('bygning') >= 0}
               value={adresse?.bygning}
@@ -153,7 +153,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-postnummer']?.feilmelding}
             namespace={namespace}
             id='postnummer'
-            label={t('label:' + labelforZipCode) + (required.indexOf('postnummer') >= 0 ? ' *' : '')}
+            label={t('label:' + labelforZipCode)}
             onChanged={setPostnummer}
             required={required.indexOf('postnummer') >= 0}
             value={_.get(adresse, keyforZipCode)}
@@ -165,7 +165,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             error={validation[namespace + '-by']?.feilmelding}
             namespace={namespace}
             id='by'
-            label={t('label:' + keyForCity) + (required.indexOf('by') >= 0 ? ' *' : '')}
+            label={t('label:' + keyForCity)}
             onChanged={setBy}
             required={required.indexOf('by') >= 0}
             value={_.get(adresse, keyForCity)}
@@ -178,7 +178,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               error={validation[namespace + '-region']?.feilmelding}
               namespace={namespace}
               id='region'
-              label={t('label:region') + (required.indexOf('region') >= 0 ? ' *' : '')}
+              label={t('label:region')}
               onChanged={setRegion}
               required={required.indexOf('region') >= 0}
               value={adresse?.region}
@@ -196,7 +196,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               includeList={CountryFilter.STANDARD({ useUK })}
               flagWave
               id={namespace + '-land'}
-              label={t('label:land') + (required.indexOf('land') >= 0 ? ' *' : '')}
+              label={t('label:land')}
               menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setLand(e.value)}
               required={required.indexOf('land') >= 0}

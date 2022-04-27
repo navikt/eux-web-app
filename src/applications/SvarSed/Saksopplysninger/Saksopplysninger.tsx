@@ -5,11 +5,11 @@ import { Sak } from 'declarations/types'
 import React from 'react'
 
 interface SaksopplysningerProps {
-  sak: Sak
+  sak: Sak | undefined
 }
 
 const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
-  console.log(sak.sakId)
+  console.log(sak?.sakId)
   return (
     <Panel border style={{ margin: '0.1rem' }}>
       <Heading size='small'>Saksopplysninger</Heading>

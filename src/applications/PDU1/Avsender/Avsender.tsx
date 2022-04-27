@@ -93,8 +93,9 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
             error={validation[namespace + '-enhetNavn']?.feilmelding}
             namespace={namespace}
             id='enhetNavn'
-            label={t('label:enhet-navn') + ' *'}
+            label={t('label:enhet-navn')}
             onChanged={setEnhetNavn}
+            required
             value={nav?.enhetNavn}
           />
         </Column>
@@ -107,8 +108,9 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
             error={validation[namespace + '-enhetId']?.feilmelding}
             namespace={namespace}
             id='enhetId'
-            label={t('label:enhet-id') + ' *'}
+            label={t('label:enhet-id')}
             onChanged={setEnhetId}
+            required
             value={nav?.enhetId}
           />
         </Column>
@@ -118,8 +120,9 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
             error={validation[namespace + '-tlf']?.feilmelding}
             namespace={namespace}
             id='tlf'
-            label={t('label:telefonnummer') + ' *'}
+            label={t('label:telefonnummer')}
             onChanged={setTlf}
+            required
             value={nav?.tlf}
           />
         </Column>
@@ -132,8 +135,9 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
             error={validation[namespace + '-saksbehandler-navn']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-navn'
-            label={t('label:saksbehandlers-navn') + ' *'}
+            label={t('label:saksbehandlers-navn')}
             onChanged={setSaksbehandlerNavn}
+            required
             value={nav?.saksbehandler?.navn}
           />
         </Column>
@@ -143,8 +147,9 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
             error={validation[namespace + '-saksbehandler-enhet']?.feilmelding}
             namespace={namespace}
             id='saksbehandler-enhet'
-            label={t('label:saksbehandlers-enhet') + ' *'}
+            label={t('label:saksbehandlers-enhet')}
             onChanged={setSaksbehandlerEnhet}
+            required
             value={nav?.saksbehandler?.enhet}
           />
         </Column>

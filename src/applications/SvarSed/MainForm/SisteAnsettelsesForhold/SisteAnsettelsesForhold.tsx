@@ -259,8 +259,9 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
               namespace={namespace}
               id='beloep'
               key={'beloep-' + (index < 0 ? _newBeloep : utbetaling?.beloep ?? '')}
-              label={t('label:beløp') + ' *'}
+              label={t('label:beløp')}
               onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+              required
               value={index < 0 ? _newBeloep : utbetaling?.beloep ?? ''}
             />
           </Column>
@@ -301,8 +302,9 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
                 error={getErrorFor(index, 'feriedagerTilGode')}
                 namespace={namespace}
                 id='feriedagerTilGode'
-                label={t('label:feriedager-til-gode') + ' *'}
+                label={t('label:feriedager-til-gode')}
                 onChanged={(value) => setFeriedagerTilGode(value, index)}
+                required
                 value={utbetaling?.feriedagerTilGode ?? ''}
               />
             )}

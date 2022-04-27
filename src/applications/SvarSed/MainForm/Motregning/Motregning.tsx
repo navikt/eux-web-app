@@ -693,9 +693,10 @@ const Motregning: React.FC<OneLevelFormProps> = ({
                   error={getErrorFor('ytelseNavn')}
                   id='ytelseNavn'
                   key={namespace + idx + '-ytelseNavn-' + (motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
-                  label={t('label:betegnelse-på-ytelse') + ' *'}
+                  label={t('label:betegnelse-på-ytelse')}
                   namespace={namespace + idx}
                   onChanged={(newYtelseNavn: string) => setYtelseNavn(newYtelseNavn, motregningKey)}
+                  required
                   value={(motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
                 />
               </Column>
@@ -714,7 +715,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
               error={getErrorFor('vedtaksdato')}
               id='vedtaksdato'
               key={namespace + '-vedtaksdato-' + (motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
-              label={t('label:vedtaksdato') + ' *'}
+              label={t('label:vedtaksdato')}
               namespace={namespace}
               onChanged={(newVedtaksdato) => { return setVedtaksDato(newVedtaksdato, motregningKey) }}
               required
@@ -730,9 +731,10 @@ const Motregning: React.FC<OneLevelFormProps> = ({
               error={getErrorFor('beloep')}
               id='beloep'
               key={namespace + idx + '-beloep-' + (motregningKey === 'new-motregning' ? _newBeløp : motregning?.beloep)}
-              label={t('label:beløp') + ' *'}
+              label={t('label:beløp')}
               namespace={namespace + idx}
               onChanged={(newBeløp: string) => setBeløp(newBeløp, motregningKey)}
+              required
               value={(motregningKey === 'new-motregning' ? _newBeløp : motregning?.beloep)}
             />
           </Column>
@@ -807,7 +809,7 @@ const Motregning: React.FC<OneLevelFormProps> = ({
               namespace={namespace + idx}
               id='mottakersNavn'
               key={namespace + idx + '-mottakersnavn-' + (motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}
-              label={t('label:mottakers-navn') + ' *'}
+              label={t('label:mottakers-navn')}
               onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, motregningKey)}
               required
               value={(motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}

@@ -515,10 +515,11 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
             error={validation[namespace + '-vedtakstype']?.feilmelding}
             key={namespace + '-vedtakstype-' + vedtak?.vedtakstype}
             id={namespace + '-vedtakstype'}
-            label={t('label:vedtak-type') + ' *'}
+            label={t('label:vedtak-type')}
             menuPortalTarget={document.body}
             onChange={(e: unknown) => setVedtakstype((e as Option).value)}
             options={vedtakTypeOptions}
+            required
             defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
             value={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
           />
@@ -529,7 +530,7 @@ const VedtakFC: React.FC<OneLevelFormProps> = ({
             namespace={namespace}
             id='vedtaksdato'
             key={namespace + '-vedtaksdato-' + vedtak?.vedtaksdato}
-            label={t('label:vedtaksdato') + ' *'}
+            label={t('label:vedtaksdato')}
             onChanged={setVedtaksdato}
             required
             value={vedtak?.vedtaksdato}

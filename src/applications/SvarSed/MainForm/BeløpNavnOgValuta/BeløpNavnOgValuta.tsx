@@ -250,10 +250,11 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
               error={getErrorFor(index, 'ytelseNavn')}
               id={namespace + '-ytelseNavn'}
               key={namespace + '-ytelseNavn-' + (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn)}
-              label={t('label:betegnelse-på-ytelse') + ' *'}
+              label={t('label:betegnelse-på-ytelse')}
               menuPortalTarget={document.body}
               onChange={(e: any) => setYtelseNavn(e.value, index)}
               options={ytelseNavnOptions}
+              required
               value={_.find(ytelseNavnOptions, b => b.value === (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn))}
               defaultValue={_.find(ytelseNavnOptions, b => b.value === (index < 0 ? _newYtelsesNavn : ytelse?.ytelseNavn as YtelseNavn))}
             />
@@ -267,8 +268,9 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
                 key={'antall-innvilges-' + (index < 0 ? _newAntallPersoner : ytelse?.antallPersoner)}
                 namespace={namespace}
                 id='antallPersoner'
-                label={t('label:antall-innvilges') + ' *'}
+                label={t('label:antall-innvilges')}
                 onChanged={(newAntallPersoner: string) => setAntallPersoner(newAntallPersoner, index)}
+                required
                 value={(index < 0 ? _newAntallPersoner : ytelse?.antallPersoner) ?? ''}
               />
             </Column>
@@ -282,9 +284,10 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
               namespace={namespace}
               id='beloep'
               description={personID === 'familie' ? t('message:help-familieytelser-beløp') : undefined}
-              label={t('label:beløp') + ' *'}
+              label={t('label:beløp')}
               key={namespace + '-beløp-' + (index < 0 ? _newBeløp : (ytelse?.beloep ?? ''))}
               onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+              required
               value={index < 0 ? _newBeløp : (ytelse?.beloep ?? '')}
             />
           </Column>
@@ -333,8 +336,9 @@ const BeløpNavnOgValuta: React.FC<TwoLevelFormProps> = ({
               namespace={namespace}
               id='mottakersNavn'
               key={namespace + '-mottakersNavn' + (index < 0 ? _newMottakersNavn : (ytelse?.mottakersNavn ?? ''))}
-              label={t('label:mottakers-navn') + ' *'}
+              label={t('label:mottakers-navn')}
               onChanged={(newNavn: string) => setMottakersNavn(newNavn, index)}
+              required
               value={(index < 0 ? _newMottakersNavn : (ytelse?.mottakersNavn ?? ''))}
             />
           </Column>

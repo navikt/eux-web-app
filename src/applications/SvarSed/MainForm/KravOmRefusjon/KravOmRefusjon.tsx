@@ -41,7 +41,7 @@ const KravOmRefusjon: React.FC<OneLevelFormProps> = ({
               error={validation[namespace + '-krav']?.feilmelding}
               key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
               id='krav'
-              label={t('label:krav-om-refusjon-under-artikkel') + ' *'}
+              label={t('label:krav-om-refusjon-under-artikkel')}
               namespace={namespace}
               onChanged={setKrav}
               required

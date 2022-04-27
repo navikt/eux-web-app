@@ -133,7 +133,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
 
   const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
 
-  const showTopForm =  (): boolean => isFSed(replySed)
+  const showTopForm = (): boolean => isFSed(replySed)
   const showTwoLevelForm = (): boolean => isSed(replySed)
   const showBottomForm = (): boolean =>
     isFSed(replySed) && (
@@ -307,8 +307,8 @@ const SEDEdit: React.FC = (): JSX.Element => {
         <>
           <OneLevelForm
             forms={[
-              { label: t('el:option-mainform-formål'), value: 'formål', component: Formål},
-              { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode}
+              { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
+              { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode }
             ]}
             replySed={replySed}
             viewValidation={view}
@@ -360,16 +360,36 @@ const SEDEdit: React.FC = (): JSX.Element => {
         <>
           <OneLevelForm
             forms={[
-              { label: t('el:option-mainform-vedtak'), value: 'vedtak', component: Vedtak,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
-              { label: t('el:option-mainform-motregning'), value: 'motregning', component: Motregning,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false  },
-              { label: t('el:option-mainform-prosedyre'), value: 'prosedyre_ved_uenighet', component: ProsedyreVedUenighet,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false  },
-              { label: t('el:option-mainform-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen', component: KravOmRefusjon,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false  },
-              { label: t('el:option-mainform-kontoopplysninger'), value: 'kontoopplysninger', component: Kontoopplysning,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0}
+              {
+                label: t('el:option-mainform-vedtak'),
+                value: 'vedtak',
+                component: Vedtak,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
+              },
+              {
+                label: t('el:option-mainform-motregning'),
+                value: 'motregning',
+                component: Motregning,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false
+              },
+              {
+                label: t('el:option-mainform-prosedyre'),
+                value: 'prosedyre_ved_uenighet',
+                component: ProsedyreVedUenighet,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false
+              },
+              {
+                label: t('el:option-mainform-refusjon'),
+                value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
+                component: KravOmRefusjon,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false
+              },
+              {
+                label: t('el:option-mainform-kontoopplysninger'),
+                value: 'kontoopplysninger',
+                component: Kontoopplysning,
+                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+              }
             ]}
             replySed={replySed}
             viewValidation={view}

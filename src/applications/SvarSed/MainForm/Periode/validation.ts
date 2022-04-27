@@ -38,8 +38,7 @@ export const validateAnmodningsPerioder = (
     namespace
   }: ValidationAnmodningsPerioderProps
 ): boolean => {
-  let hasErrors: Array<boolean> = []
-
+  const hasErrors: Array<boolean> = []
 
   anmodningsperioder?.forEach((p: Periode, i: number) => {
     hasErrors.push(validateAnmodningsPeriode(v, t, {

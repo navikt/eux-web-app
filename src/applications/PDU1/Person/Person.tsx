@@ -24,7 +24,6 @@ import { useAppDispatch, useAppSelector } from 'store'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 
-
 const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
@@ -37,7 +36,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {validation} = useAppSelector(mapState)
+  const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string | undefined = personID
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target!) // undefined for a brief time when switching to 'familie'
@@ -98,7 +97,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-fornavn']?.feilmelding}
               id='fornavn'
               key={namespace + '-fornavn-' + (pdu1Person?.fornavn ?? '')}
-              label={t('label:fornavn') + ' *'}
+              label={t('label:fornavn')}
               namespace={namespace}
               onChanged={onFornavnChange}
               required
@@ -110,7 +109,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-etternavn']?.feilmelding}
               id='etternavn'
               key={namespace + '-fornavn-' + (pdu1Person?.etternavn ?? '')}
-              label={t('label:etternavn') + ' *'}
+              label={t('label:etternavn')}
               namespace={namespace}
               onChanged={onEtternavnChange}
               required
@@ -124,7 +123,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               key={namespace + '-foedselsdato-' + (pdu1Person?.foedselsdato ?? '')}
-              label={t('label:fødselsdato') + ' *'}
+              label={t('label:fødselsdato')}
               namespace={namespace}
               onChanged={onFodselsdatoChange}
               required
@@ -196,7 +195,7 @@ const Person: React.FC<TwoLevelFormProps> = ({
               value={pdu1Person?.fnr}
             />
           </Column>
-          <Column/>
+          <Column />
         </AlignStartRow>
       </PaddedDiv>
       {(replySed as ReplySed).sedType === 'H001' && (

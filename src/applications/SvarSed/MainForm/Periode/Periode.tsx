@@ -117,7 +117,6 @@ const PeriodeFC: React.FC<OneLevelFormProps> = ({
     }
   }
 
-
   const renderPeriode = (periode: Periode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const idx = (index >= 0 ? '[' + index + ']' : '')
@@ -160,7 +159,7 @@ const PeriodeFC: React.FC<OneLevelFormProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       {isFSed(replySed) && (
         <>
           {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
@@ -181,88 +180,88 @@ const PeriodeFC: React.FC<OneLevelFormProps> = ({
                   </Button>
                 </Column>
               </Row>
-            )}
+              )}
           <VerticalSeparatorDiv />
         </>
       )}
-    <VerticalSeparatorDiv/>
-    <PaddedDiv>
-      <Row>
-        <Column>
-          <div>
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <Row>
+          <Column>
+            <div>
+              <RadioGroup
+                legend={t('label:type-krav')}
+                data-testid='seddetails-typeKrav'
+                error={validation['seddetails-typeKrav']?.feilmelding}
+                id='seddetails-kravType'
+                onChange={(e: string | number | boolean) => setKravType(e as string)}
+                value={(replySed as F002Sed).krav?.kravType}
+              >
+                <Radio
+                  value='nytt_krav'
+                >
+                  {t('label:kravType-nytt_krav')}
+                </Radio>
+                <Radio
+                  value='endrede_omstendigheter'
+                >
+                  {t('label:kravType-endrede_omstendigheter')}
+                </Radio>
+              </RadioGroup>
+
+              <VerticalSeparatorDiv />
+              <DateInput
+                error={validation[namespace + '-kravMottattDato']?.feilmelding}
+                namespace={namespace}
+                key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
+                id='kravMottattDato'
+                label={t('label:krav-mottatt-dato')}
+                onChanged={setKravMottattDato}
+                value={(replySed as F002Sed).krav?.kravMottattDato}
+              />
+              <VerticalSeparatorDiv />
+            </div>
+          </Column>
+          <Column>
             <RadioGroup
-              legend={t('label:type-krav')}
-              data-testid='seddetails-typeKrav'
-              error={validation['seddetails-typeKrav']?.feilmelding}
-              id='seddetails-kravType'
-              onChange={(e: string | number | boolean) => setKravType(e as string)}
-              value={(replySed as F002Sed).krav?.kravType}
+              legend={t('label:informasjon-om-søknaden')}
+              data-testid='seddetails-informasjon'
+              error={validation['seddetails-informasjon']?.feilmelding}
+              id='seddetails-informasjon'
+              value={(replySed as F002Sed).krav?.infoType}
+              onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
               <Radio
-                value='nytt_krav'
+                value='vi_bekrefter_leverte_opplysninger'
               >
-                {t('label:kravType-nytt_krav')}
+                {t('label:info-confirm-information')}
               </Radio>
               <Radio
-                value='endrede_omstendigheter'
+                value='gi_oss_punktvise_opplysninger'
               >
-                {t('label:kravType-endrede_omstendigheter')}
+                {t('label:info-point-information')}
               </Radio>
+              {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
+                <div>
+                  <VerticalSeparatorDiv />
+                  <TextAreaDiv>
+                    <TextArea
+                      error={validation['seddetails-opplysninger']?.feilmelding}
+                      id='opplysninger'
+                      namespace='seddetails'
+                      label={t('label:opplysninger')}
+                      maxLength={500}
+                      onChanged={setInfoPresisering}
+                      value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
+                    />
+                  </TextAreaDiv>
+                </div>
+              )}
             </RadioGroup>
-
-          <VerticalSeparatorDiv />
-          <DateInput
-            error={validation[namespace + '-kravMottattDato']?.feilmelding}
-            namespace={namespace}
-            key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
-            id='kravMottattDato'
-            label={t('label:krav-mottatt-dato')}
-            onChanged={setKravMottattDato}
-            value={(replySed as F002Sed).krav?.kravMottattDato}
-          />
-          <VerticalSeparatorDiv />
-          </div>
-        </Column>
-        <Column>
-        <RadioGroup
-          legend={t('label:informasjon-om-søknaden')}
-          data-testid='seddetails-informasjon'
-          error={validation['seddetails-informasjon']?.feilmelding}
-          id='seddetails-informasjon'
-          value={(replySed as F002Sed).krav?.infoType}
-          onChange={(e: string | number | boolean) => setInfoType(e as string)}
-        >
-          <Radio
-            value='vi_bekrefter_leverte_opplysninger'
-          >
-            {t('label:info-confirm-information')}
-          </Radio>
-          <Radio
-            value='gi_oss_punktvise_opplysninger'
-          >
-            {t('label:info-point-information')}
-          </Radio>
-          {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
-            <div>
-              <VerticalSeparatorDiv />
-              <TextAreaDiv>
-                <TextArea
-                  error={validation['seddetails-opplysninger']?.feilmelding}
-                  id='opplysninger'
-                  namespace='seddetails'
-                  label={t('label:opplysninger')}
-                  maxLength={500}
-                  onChanged={setInfoPresisering}
-                  value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
-                />
-              </TextAreaDiv>
-            </div>
-          )}
-        </RadioGroup>
-        </Column>
-      </Row>
-    </PaddedDiv>
-      </>
+          </Column>
+        </Row>
+      </PaddedDiv>
+    </>
   )
 }
 

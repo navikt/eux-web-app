@@ -109,8 +109,9 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
                 error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
                 namespace={namespace}
                 id='annenGrunnOpphoerAnsatt'
-                label={t('label:annet-opphør') + ' *'}
+                label={t('label:annet-opphør')}
                 onChanged={setAnnenGrunnOpphoerAnsatt}
+                required
                 value={grunntilopphor?.annenGrunnOpphoerAnsatt ?? ''}
               />
             </Column>
@@ -122,8 +123,9 @@ const GrunnTilOpphør: React.FC<TwoLevelFormProps> = ({
                 error={validation[namespace + '-årsakselvstendig']?.feilmelding}
                 namespace={namespace}
                 id='grunnOpphoerSelvstendig'
-                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet') + ' *'}
+                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
                 onChanged={setGrunnOpphoerSelvstendig}
+                required
                 value={grunntilopphor?.grunnOpphoerSelvstendig ?? ''}
               />
             </Column>

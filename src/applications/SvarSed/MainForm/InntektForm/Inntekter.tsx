@@ -181,10 +181,11 @@ const Inntekter: React.FC<any> = ({
               error={validation[namespace + '-type']?.feilmelding}
               id={namespace + '-type'}
               key={namespace + '-type-' + (index < 0 ? _newInntektType : inntekt?.type ?? '')}
-              label={t('label:type') + ' *'}
+              label={t('label:type')}
               menuPortalTarget={document.body}
               onChange={(e: any) => onInntektTypeChanged(e.value, index)}
               options={inntektTypeOptions}
+              required
               value={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
               defaultValue={_.find(inntektTypeOptions, b => b.value === (index < 0 ? _newInntektType : inntekt?.type ?? ''))}
             />
@@ -195,8 +196,9 @@ const Inntekter: React.FC<any> = ({
               namespace={namespace}
               key={namespace + idx + '-beloep-' + (index < 0 ? _newBeløp : inntekt?.beloep ?? '')}
               id='beloep'
-              label={t('label:beløp') + ' *'}
+              label={t('label:beløp')}
               onChanged={(beløp: string) => setBeløp(beløp, index)}
+              required
               value={index < 0 ? _newBeløp : inntekt?.beloep ?? ''}
             />
           </Column>

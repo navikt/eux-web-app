@@ -149,10 +149,11 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
               error={getErrorFor('key')}
               id={namespace + idx + '-key'}
               key={namespace + idx + '-key-' + barnaKey}
-              label={t('label:barnets-navn') + ' *'}
+              label={t('label:barnets-navn')}
               menuPortalTarget={document.body}
               onChange={(e: any) => setKey(e.value, index)}
               options={allBarnaNameOptions}
+              required
               value={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
               defaultValue={_.find(allBarnaNameOptions, b => b.value === barnaKey)}
             />
@@ -162,9 +163,10 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
               error={getErrorFor('ytelseNavn')}
               id='ytelseNavn'
               key={namespace + idx + '-ytelseNavn-' + ytelseNavn}
-              label={t('label:betegnelse-på-ytelse') + ' *'}
+              label={t('label:betegnelse-på-ytelse')}
               namespace={namespace + idx}
               onChanged={(value: string) => setYtelseNavn(value, index)}
+              required
               value={ytelseNavn}
             />
           </Column>

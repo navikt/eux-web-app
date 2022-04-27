@@ -274,8 +274,8 @@ const svarsedReducer = (
     case types.SVARSED_REPLYSED_SET:
       return {
         ...state,
-        replySed: (action as ActionWithPayload).payload,
-        replySedChanged: true
+        replySed: (action as ActionWithPayload).payload.replySed,
+        replySedChanged: (action as ActionWithPayload).payload.flagItAsUnsaved
       }
 
     case types.SVARSED_REPLYSED_UPDATE: {

@@ -48,7 +48,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierLand = (land: string, index: number) => {
     if (index < 0) {
       _setNewSakseierLand(land.trim())
-//      _resetValidation(namespace + '-lokaleSakIder-land')
+      //      _resetValidation(namespace + '-lokaleSakIder-land')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].land`, land.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-land']) {
@@ -60,7 +60,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierInstitusjonsid = (institusjonsid: string, index: number) => {
     if (index < 0) {
       _setNewSakseierInstitusjonsid(institusjonsid.trim())
-  //    _resetValidation(namespace + '-lokaleSakIder-institusjonsid')
+      //    _resetValidation(namespace + '-lokaleSakIder-institusjonsid')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].institusjonsid`, institusjonsid.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-institusjonsid']) {
@@ -84,7 +84,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const setSakseierSaksnummer = (saksnummer: string, index: number) => {
     if (index < 0) {
       _setNewSakseierSaksnummer(saksnummer.trim())
-   //   _resetValidation(namespace + '-lokaleSakIder-saksnummer')
+      //   _resetValidation(namespace + '-lokaleSakIder-saksnummer')
     } else {
       dispatch(updateReplySed(`lokaleSakIder[${index}].saksnummer`, saksnummer.trim()))
       if (validation[namespace + '-lokaleSakIder' + getIdx(index) + '-saksnummer']) {
@@ -92,7 +92,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
       }
     }
   }
-
 
   const setBrukerFornavn = (fornavn: string) => {
     dispatch(updateReplySed('bruker.personInfo.fornavn', fornavn.trim()))
@@ -140,7 +139,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     _sakseierResetValidation()
   }
 
-
   const onSakeierCancel = () => {
     _setSakseierSeeNewForm(false)
     sakseierResetForm()
@@ -154,7 +152,6 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     }
     dispatch(updateReplySed('lokaleSakIder', newLokaleSaksIds))
   }
-
 
   const onSakseierAdd = () => {
     const newLokaleSaksId: LokaleSakId = {
@@ -197,8 +194,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               namespace={namespace}
               key={namespace + '-lokaleSakIder-saksnummer' + (index < 0 ? _newSakseierSaksnummer : lokaleSakId?.saksnummer)}
               id='-saksnummer'
-              label={t('label:saksnummer') + ' *'}
+              label={t('label:saksnummer')}
               onChanged={(saksnummer: string) => setSakseierSaksnummer(saksnummer, index)}
+              required
               value={(index < 0 ? _newSakseierSaksnummer : lokaleSakId?.saksnummer) ?? ''}
             />
           </Column>
@@ -228,8 +226,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               namespace={namespace}
               key={namespace + '-lokaleSakIder-institusjonsid' + lokaleSakId?.institusjonsid}
               id='-institusjonsid'
-              label={t('label:institusjonens-id') + ' *'}
+              label={t('label:institusjonens-id')}
               onChanged={(institusjonsid: string) => setSakseierInstitusjonsid(institusjonsid, index)}
+              required
               value={lokaleSakId?.institusjonsid ?? ''}
             />
           </Column>
@@ -239,8 +238,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
               namespace={namespace}
               key={namespace + '-lokaleSakIder-institusjonsnavn' + lokaleSakId?.institusjonsnavn}
               id='-institusjonsnavn'
-              label={t('label:institusjonens-navn') + ' *'}
+              label={t('label:institusjonens-navn')}
               onChanged={(institusjonsnavn: string) => setSakseierInstitusjonsnavn(institusjonsnavn, index)}
+              required
               value={lokaleSakId?.institusjonsnavn ?? ''}
             />
           </Column>
@@ -306,8 +306,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             namespace={namespace}
             key={namespace + '-søker-fornavn' + replySed.bruker.personInfo.fornavn}
             id='-søker-fornavn'
-            label={t('label:fornavn') + ' *'}
+            label={t('label:fornavn')}
             onChanged={setBrukerFornavn}
+            required
             value={replySed.bruker.personInfo.fornavn ?? ''}
           />
         </Column>
@@ -318,8 +319,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
             namespace={namespace}
             key={namespace + '-søker-etternavn' + replySed.bruker.personInfo.etternavn}
             id='-søker-etternavn'
-            label={t('label:etternavn') + ' *'}
+            label={t('label:etternavn')}
             onChanged={setBrukerEtternavn}
+            required
             value={replySed.bruker.personInfo.etternavn ?? ''}
           />
         </Column>
@@ -366,8 +368,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 namespace={namespace}
                 key={namespace + '-ektefelle-fornavn' + (replySed as F002Sed).ektefelle?.personInfo?.fornavn ?? ''}
                 id='-ektefelle-fornavn'
-                label={t('label:fornavn') + ' *'}
+                label={t('label:fornavn')}
                 onChanged={setEktefelleFornavn}
+                required
                 value={(replySed as F002Sed).ektefelle?.personInfo?.fornavn ?? ''}
               />
             </Column>
@@ -378,8 +381,9 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
                 namespace={namespace}
                 key={namespace + '-ektefelle-etternavn' + (replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? ''}
                 id='-ektefelle-etternavn'
-                label={t('label:etternavn') + ' *'}
+                label={t('label:etternavn')}
                 onChanged={setEktefelleEtternavn}
+                required
                 value={(replySed as F002Sed).ektefelle?.personInfo?.etternavn ?? ''}
               />
             </Column>

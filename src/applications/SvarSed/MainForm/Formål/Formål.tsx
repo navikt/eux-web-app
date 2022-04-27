@@ -60,32 +60,32 @@ const Formål: React.FC<FormålProps> = ({
       newFormaals = []
     }
     if (checked) {
-       newFormaals.push(item)
+      newFormaals.push(item)
     } else {
-      newFormaals = _.reject(newFormaals, f => f == item)
+      newFormaals = _.reject(newFormaals, f => f === item)
     }
     dispatch(updateReplySed('formaal', newFormaals))
-    standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item: item })
+    standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item })
     dispatch(resetValidation(namespace))
   }
 
   return (
-    <PaddedDiv style={{columns: '2'}}>
+    <PaddedDiv style={{ columns: '2' }}>
       {formaalOptions.map(f => (
-        <CheckboxDiv >
+        <CheckboxDiv key={f.value}>
           <Checkbox
-          checked={formaal.indexOf(f.value) >= 0}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onItemsChanged(f.value, e.target.checked)}
-        >
-          {f.label}
-        </Checkbox>
+            checked={formaal.indexOf(f.value) >= 0}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onItemsChanged(f.value, e.target.checked)}
+          >
+            {f.label}
+          </Checkbox>
         </CheckboxDiv>
       ))}
       {validation[namespace]?.feilmelding && (
-      <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-        {validation[namespace]?.feilmelding}
-      </div>
-    )}
+        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+          {validation[namespace]?.feilmelding}
+        </div>
+      )}
     </PaddedDiv>
   )
 }

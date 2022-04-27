@@ -232,10 +232,13 @@ export const setCurrentSak = (currentSak: Sak | undefined) => ({
 })
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
-  replySed: ReplySed
+  replySed: ReplySed, flagItAsUnsaved: boolean = true
 ): ActionWithPayload<ReplySed> => ({
   type: types.SVARSED_REPLYSED_SET,
-  payload: replySed
+  payload: {
+    replySed,
+    flagItAsUnsaved
+  }
 })
 
 export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (

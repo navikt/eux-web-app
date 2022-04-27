@@ -8,6 +8,7 @@ interface SelectProps extends Props {
   label?: string | undefined
   noMarginTop?: boolean
   size?: 'medium' | 'small'
+  required?: boolean
   style ?: any
   'data-testid'?: string
 }
@@ -19,7 +20,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
       data-testid={props['data-testid'] || props.id}
       style={props.style}
     >
-      {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}</label>)}
+      {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}{props.required && ' *'}</label>)}
       <ReactSelect
         placeholder=''
         inputId={props.id}

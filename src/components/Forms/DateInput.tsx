@@ -48,7 +48,7 @@ const DateInput = ({
       data-testid={namespace + ''}
       error={error}
       id={namespace + '-' + id}
-      label={(label ?? t('label:dato')) + ' (' + t('el:placeholder-date-default') + ')'}
+      label={(label ?? t('label:dato')) + ' (' + t('el:placeholder-date-default') + ')' + (required ? ' *' : '')}
       onBlur={() => {
         if (_dirty) {
           onDatoBlur()

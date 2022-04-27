@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 
 interface SEDTypeProps {
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
+  setReplySed: (replySed: ReplySed, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed>
 }
 
 interface SEDTypeSelector {

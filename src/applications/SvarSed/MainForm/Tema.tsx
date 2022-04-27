@@ -1,21 +1,22 @@
+import { Cancel, Edit, SuccessStroke } from '@navikt/ds-icons'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
+import { FlexBaseDiv, FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { getFagsaker } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
+import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
 import { FagSak, FagSaker, UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Loader, Button } from '@navikt/ds-react'
-import { Column, FlexBaseDiv, HorizontalSeparatorDiv, Row } from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Option } from 'declarations/app.d'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
-import { Edit } from '@navikt/ds-icons'
+import classNames from 'classnames'
 
 interface TemaProps {
   replySed: ReplySed | null | undefined
@@ -47,6 +48,10 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
   const [_fagsak, setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)
   const [editMode, setEditMode] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
+
+  const [viewButton, setViewButton] = useState<boolean>(false)
+  const onMouseEnter = () => setViewButton(true)
+  const onMouseLeave = () => setViewButton(false)
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -111,82 +116,64 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
 
   return (
 
-    <Row>
-      <Column>
-        <FlexBaseDiv id='editor-tema' className={namespace}>
-          <label
-            htmlFor={namespace}
-            className='navds-text-field__label navds-label'
-            style={{ margin: '0px' }}
-          >
-            {t('label:tema')}:
-          </label>
-          <HorizontalSeparatorDiv size='0.35' />
-          {!editMode
-            ? _tema
+    <FlexDiv onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <PileDiv>
+        {!editMode
+          ? (
+            <FlexBaseDiv>
+              <Label>{t('label:tema') + ': '}</Label>
+              <HorizontalSeparatorDiv/>
+              <BodyLong>{_tema
                 ? t('tema:' + (replySed as HSed).tema)
                 : t('label:ukjent')
-            : (
+              }</BodyLong>
+            </FlexBaseDiv>
+          ): (
+            <>
+            <Select
+              defaultValue={_.find(temaOptions, { value: _tema })}
+              error={validation[namespace]?.feilmelding}
+              key={namespace + '-' + _tema + '-select'}
+              id={namespace + '-select'}
+              onChange={onTemaChanged}
+              options={temaOptions}
+              label={t('label:tema')}
+              value={_.find(temaOptions, { value: _tema })}
+              style={{ minWidth: '300px' }}
+            />
+            <VerticalSeparatorDiv size='0.5'/>
+            </>
+        )}
+          <VerticalSeparatorDiv size='0.5'/>
+          {!editMode
+            ? (
+              <FlexBaseDiv>
+                <Label>{t('label:fagsak') + ': '}</Label>
+                <HorizontalSeparatorDiv/>
+                <BodyLong>{_fagsak
+                  ? _.find(fagsakIdOptions, { value: _fagsak })?.label ?? _fagsak
+                  : t('label:ukjent')
+                }</BodyLong>
+              </FlexBaseDiv>
+            ) : (
+              <>
               <Select
-                defaultValue={_.find(temaOptions, { value: _tema })}
-                error={validation[namespace]?.feilmelding}
-                key={namespace + '-' + _tema + '-select'}
-                id={namespace + '-select'}
-                onChange={onTemaChanged}
-                options={temaOptions}
-                value={_.find(temaOptions, { value: _tema })}
+                defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
+                error={validation[namespace + '-fagsak']?.feilmelding}
+                key={namespace + '-' + _fagsak + '-select'}
+                id={namespace + '-fagsak-select'}
+                onChange={onSakIDChange}
+                isLoading={gettingFagsaker}
+                isDisabled={gettingFagsaker}
+                label={t('label:fagsak')}
+                options={fagsakIdOptions}
+                value={_.find(fagsakIdOptions, { value: _fagsak })}
                 style={{ minWidth: '300px' }}
               />
-              )}
-          <HorizontalSeparatorDiv size='0.5' />
-          <label
-            htmlFor={namespace}
-            className='navds-text-field__label navds-label'
-            style={{ margin: '0px' }}
-          >
-            {t('label:fagsak')}:
-          </label>
-          <HorizontalSeparatorDiv size='0.35' />
-          {!editMode
-            ? _fagsak
-                ? _.find(fagsakIdOptions, { value: _fagsak })?.label ?? _fagsak
-                : t('label:ukjent')
-            : (
-              <>
-                {gettingFagsaker
-                  ? <Loader />
-                  : (
-                    <Select
-                      defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
-                      error={validation[namespace + '-fagsak']?.feilmelding}
-                      key={namespace + '-' + _fagsak + '-select'}
-                      id={namespace + '-fagsak-select'}
-                      onChange={onSakIDChange}
-                      options={fagsakIdOptions}
-                      value={_.find(fagsakIdOptions, { value: _fagsak })}
-                      style={{ minWidth: '300px' }}
-                    />
-                    )}
+                <VerticalSeparatorDiv size='0.5'/>
+
               </>
-              )}
-          {editMode && (
-            <>
-              <HorizontalSeparatorDiv size='0.5' />
-              <Button
-                variant='tertiary'
-                onClick={onSaveChangesClicked}
-              >
-                {t('el:button-save')}
-              </Button>
-              <HorizontalSeparatorDiv size='0.5' />
-              <Button
-                variant='tertiary'
-                onClick={onCancelChangesClicked}
-              >
-                {t('el:button-cancel')}
-              </Button>
-            </>
-          )}
+            )}
           {!editMode && validation[namespace]?.feilmelding && (
             <>
               <HorizontalSeparatorDiv />
@@ -195,20 +182,43 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               </label>
             </>
           )}
-          <HorizontalSeparatorDiv />
-          {!editMode && (
-            <Button
-              variant='tertiary'
-              onClick={onEditModeClicked}
-            >
-              <Edit />
-              {t('el:button-edit')}
-            </Button>
-          )}
-        </FlexBaseDiv>
-      </Column>
-    </Row>
 
+         <VerticalSeparatorDiv size='0.5'/>
+      </PileDiv>
+      <PileDiv style={{paddingLeft: '1rem'}}>
+        {editMode ? (
+        <PileDiv className='nolabel'>
+          <Button
+            variant='primary'
+            onClick={onSaveChangesClicked}
+          >
+            <SuccessStroke />
+            {t('el:button-save')}
+          </Button>
+          <VerticalSeparatorDiv/>
+          <Button
+            variant='secondary'
+            onClick={onCancelChangesClicked}
+          >
+            <Cancel/>
+            {t('el:button-cancel')}
+          </Button>
+        </PileDiv>
+      ) : (
+        <PileDiv style={{minWidth: '120px'}}>
+          <div className={classNames({'hide': !viewButton})}>
+          <Button
+            variant='tertiary'
+            onClick={onEditModeClicked}
+          >
+            <Edit />
+            {t('el:button-edit')}
+          </Button>
+          </div>
+        </PileDiv>
+        )}
+      </PileDiv>
+    </FlexDiv>
   )
 }
 

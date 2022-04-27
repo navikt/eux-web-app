@@ -312,7 +312,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-fornavn']?.feilmelding}
               id='fornavn'
               key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
-              label={t('label:fornavn') + ' *'}
+              label={t('label:fornavn')}
               namespace={namespace}
               onChanged={onFornavnChange}
               required
@@ -324,7 +324,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-etternavn']?.feilmelding}
               id='etternavn'
               key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
-              label={t('label:etternavn') + ' *'}
+              label={t('label:etternavn')}
               namespace={namespace}
               onChanged={onEtternavnChange}
               required
@@ -336,7 +336,7 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
-              label={t('label:fødselsdato') + ' *'}
+              label={t('label:fødselsdato')}
               namespace={namespace}
               onChanged={onFodselsdatoChange}
               required

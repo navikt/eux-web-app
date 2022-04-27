@@ -238,10 +238,11 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
                 error={validation[namespace + '-periodetype']?.feilmelding}
                 id={namespace + '-periodetype'}
                 key={namespace + '-periodetype-' + loennsopplysning?.periodetype}
-                label={t('label:type-periode') + ' *'}
+                label={t('label:type-periode')}
                 menuPortalTarget={document.body}
                 onChange={(e: any) => setPeriodeType(e.value, index)}
                 options={periodeTypeOptions}
+                required
                 value={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
                 defaultValue={_.find(periodeTypeOptions, b => b.value === loennsopplysning?.periodetype)}
               />

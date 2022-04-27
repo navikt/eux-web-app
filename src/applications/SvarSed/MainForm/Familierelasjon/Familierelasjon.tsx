@@ -225,10 +225,11 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
               error={getErrorFor(index, 'relasjonType')}
               key={namespace + idx + '-relasjonType-' + _relasjonType}
               id={namespace + idx + '-relasjonType'}
-              label={t('label:type') + ' *'}
+              label={t('label:type')}
               menuPortalTarget={document.body}
               onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
               options={relasjonTypeOptions}
+              required
               defaultValue={_.find(relasjonTypeOptions, r => r.value === _relasjonType)}
               value={_.find(relasjonTypeOptions, r => r.value === _relasjonType)}
             />
@@ -265,7 +266,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
                   namespace={namespace + idx}
                   key={namespace + idx + '-annenRelasjonType-' + (index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType)}
                   id='annenRelasjonType'
-                  label={t('label:annen-relasjon') + ' *'}
+                  label={t('label:annen-relasjon')}
                   onChanged={(value: string) => setAnnenRelasjonType(value, index)}
                   required
                   value={index < 0 ? _newAnnenRelasjonType : familierelasjon?.annenRelasjonType}
@@ -281,7 +282,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
                   namespace={namespace + idx}
                   key={namespace + idx + '-annenRelasjonPersonNavn-' + (index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn)}
                   id='annenRelasjonPersonNavn'
-                  label={t('label:person-navn') + ' *'}
+                  label={t('label:person-navn')}
                   onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
                   required
                   value={index < 0 ? _newAnnenRelasjonPersonNavn : familierelasjon?.annenRelasjonPersonNavn}
@@ -293,7 +294,7 @@ const Familierelasjon: React.FC<TwoLevelFormProps> = ({
                   namespace={namespace + idx}
                   id='annenRelasjonDato'
                   key={namespace + idx + '-annenRelasjonDato-' + (index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato)}
-                  label={t('label:dato-for-relasjon') + ' *'}
+                  label={t('label:dato-for-relasjon')}
                   onChanged={(dato: string) => setAnnenRelasjonDato(dato, index)}
                   required
                   value={index < 0 ? _newAnnenRelasjonDato : familierelasjon?.annenRelasjonDato}

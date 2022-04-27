@@ -7,8 +7,8 @@ import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
-import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
+import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -19,6 +19,18 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 
+interface SvarSedSelector {
+  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+  replySedChanged: boolean
+  currentSak: Sak | undefined
+}
+
+const mapState = (state: State) => ({
+  entries: state.localStorage.svarsed.entries,
+  replySedChanged: state.svarsed.replySedChanged,
+  currentSak: state.svarsed.currentSak
+})
+
 export const SvarSedPage = (): JSX.Element => {
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
@@ -26,10 +38,7 @@ export const SvarSedPage = (): JSX.Element => {
   const { t } = useTranslation()
   const [_currentPage, _setCurrentPage] = useState<string>('A')
   const params: URLSearchParams = new URLSearchParams(location.search)
-  const entries: Array<LocalStorageEntry<ReplySed>> | null | undefined =
-    useAppSelector(state => state.localStorage.svarsed.entries)
-  const replySedChanged: boolean = useAppSelector(state => state.svarsed.replySedChanged)
-  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
+  const { entries, replySedChanged, currentSak }: SvarSedSelector = useAppSelector(mapState)
 
   const changeMode = (newPage: string) => {
     _setCurrentPage(newPage)
@@ -67,7 +76,7 @@ export const SvarSedPage = (): JSX.Element => {
             _.find(entries, (e: LocalStorageEntry<ReplySed>) => e.name === name)
           if (entry) {
             dispatch(setCurrentEntry('svarsed', entry))
-            dispatch(setReplySed(entry.content))
+            dispatch(setReplySed(entry.content, false))
             changeMode('B')
             dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
@@ -90,7 +99,7 @@ export const SvarSedPage = (): JSX.Element => {
         )}
         <Container>
           <Margin />
-          <Content style={{ flex: 6, maxWidth: '1200px' }}>
+          <Content style={{ flex: 6 }}>
             {_currentPage === 'A' && (
               <SEDSearch changeMode={changeMode} />
             )}
@@ -98,26 +107,27 @@ export const SvarSedPage = (): JSX.Element => {
               <SEDEdit />
             )}
           </Content>
-          <Content style={{ width: '23.5rem' }}>
-            <SideBarDiv>
-              {_currentPage === 'A' && (
-                currentSak === undefined
-                  ? (
-                    <LoadSave<ReplySed>
-                      namespace='svarsed'
-                      changeMode={changeMode}
-                      setReplySed={setReplySed}
-                    />
-                    )
-                  : (
-                    <Saksopplysninger sak={currentSak} />
-                    )
-              )}
-
-              {_currentPage === 'B' && (
-                <SEDDetails updateReplySed={updateReplySed} />
-              )}
-            </SideBarDiv>
+          <Content style={{ flex: 2 }}>
+            {_currentPage === 'A' && (
+              currentSak === undefined
+                ? (
+                  <LoadSave<ReplySed>
+                    namespace='svarsed'
+                    changeMode={changeMode}
+                    setReplySed={setReplySed}
+                  />
+                  )
+                : (
+                  <Saksopplysninger sak={currentSak} />
+                  )
+            )}
+            {_currentPage === 'B' && (
+              <SEDDetails
+                unsavedDoc={replySedChanged}
+                updateReplySed={updateReplySed}
+                sak={currentSak}
+              />
+            )}
           </Content>
           <Margin />
         </Container>

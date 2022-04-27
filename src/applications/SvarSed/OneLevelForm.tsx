@@ -126,7 +126,7 @@ const LastDiv = styled.div`
 export interface _OneLevelFormProps {
   forms: Array<Form>
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
+  setReplySed: (replySed: ReplySed, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   viewValidation: boolean
   target?: string
@@ -140,7 +140,7 @@ export interface OneLevelFormSelector {
 export interface OneLevelFormProps {
   parentNamespace: string
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
+  setReplySed: (replySed: ReplySed, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
@@ -263,20 +263,23 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
           {forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
             const selected: boolean = currentMenu === form.value
             return (
-              <NameAndOptionsDiv className={classNames({ whiteborder: selected })}>
+              <NameAndOptionsDiv
+                key={form.value}
+                className={classNames({ whiteborder: selected })}
+              >
                 <NameDiv>
                   <NameLabelDiv
                     onClick={() => {
                       changeMenu(form.value)
                       return false
                     }}
-                    className={classNames({selected})}
+                    className={classNames({ selected })}
                   >
                     {viewValidation && (
                       validation[namespace + '-' + form.value]
                         ? (
                           <>
-                            <ErrorFilled height={20}  color='red' />
+                            <ErrorFilled height={20} color='red' />
                             <HorizontalSeparatorDiv size='0.5' />
                           </>
                           )
@@ -298,9 +301,10 @@ const OneLevelForm: React.FC<_OneLevelFormProps> = ({
                   </MenuArrowDiv>
                 </NameDiv>
               </NameAndOptionsDiv>
-            )}
+            )
+          }
           )}
-          <LastDiv/>
+          <LastDiv />
         </LeftDiv>
         <RightDiv className='mainright'>
           {!currentMenu && (

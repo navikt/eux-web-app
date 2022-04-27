@@ -4,7 +4,10 @@ import { TFunction } from 'react-i18next'
 
 export interface ValidationAddPersonModalProps {
   fnr: string
-  navn: string
+  fornavn: string
+  etternavn: string
+  fdato: string
+  kjoenn: string
   relasjon: string | undefined
   namespace: string
 }
@@ -14,7 +17,10 @@ export const validateAddPersonModal = (
   t: TFunction,
   {
     fnr,
-    navn,
+    fornavn,
+    etternavn,
+    fdato,
+    kjoenn,
     relasjon,
     namespace
   }: ValidationAddPersonModalProps
@@ -35,10 +41,31 @@ export const validateAddPersonModal = (
     }
     hasErrors = true
   }
-  if (_.isEmpty(navn?.trim())) {
-    v[namespace + '-navn'] = {
-      feilmelding: t('validation:noNavn'),
-      skjemaelementId: namespace + '-navn'
+  if (_.isEmpty(fornavn?.trim())) {
+    v[namespace + '-fornavn'] = {
+      feilmelding: t('validation:noFornavn'),
+      skjemaelementId: namespace + '-fornavn'
+    }
+    hasErrors = true
+  }
+  if (_.isEmpty(etternavn?.trim())) {
+    v[namespace + '-etternavn'] = {
+      feilmelding: t('validation:noEtternavn'),
+      skjemaelementId: namespace + '-etternavn'
+    }
+    hasErrors = true
+  }
+  if (_.isEmpty(kjoenn?.trim())) {
+    v[namespace + '-kjoenn'] = {
+      feilmelding: t('validation:noKjoenn'),
+      skjemaelementId: namespace + '-kjoenn'
+    }
+    hasErrors = true
+  }
+  if (_.isEmpty(fdato?.trim())) {
+    v[namespace + '-fdato'] = {
+      feilmelding: t('validation:noFoedselsdato'),
+      skjemaelementId: namespace + '-fdato'
     }
     hasErrors = true
   }
