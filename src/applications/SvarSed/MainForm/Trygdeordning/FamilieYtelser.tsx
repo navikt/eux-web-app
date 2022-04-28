@@ -213,7 +213,7 @@ const FamilieYtelser: React.FC<TwoLevelFormProps> = ({
       <RepeatableRow>
         <AlignStartRow>
           <PeriodeInput
-            showLabel={false}
+            hideLabel={true}
             namespace={namespace + idx}
             error={{
               startdato: getErrorFor(index, 'startdato'),

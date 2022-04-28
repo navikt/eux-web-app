@@ -213,7 +213,7 @@ U002
       #neessi.svarsed.editor.periode.add, {type: 'perioderDagpenger'} - periode added
       #neessi.svarsed.editor.periode.remove, {type: 'perioderDagpenger'} - periode removed
 
-  4.19: SisteAnsettelsesForhold
+  4.19: sisteAnsettelseInfo
       #neessi.svarsed.editor.utbetaling.add - utbetaling added
       #neessi.svarsed.editor.utbetaling.remove - utbetaling removed
 

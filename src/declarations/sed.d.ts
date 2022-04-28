@@ -296,7 +296,7 @@ export interface Utbetaling {
   beloep: string
 }
 
-export interface SisteAnsettelsesForhold {
+export interface SisteAnsettelseInfo {
   opphoerRettighet: string // Avkall
   opphoerRettighetGrunn: string // grunn
   opphoerYtelse: string // annenYtelser
@@ -454,7 +454,7 @@ export interface U002Sed extends USed {
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
   perioderDagpenger?:Array<PeriodeDagpenger>
   grunntilopphor?: GrunnTilOpphør
-  sisteAnsettelsesForhold?: SisteAnsettelsesForhold
+  sisteAnsettelseInfo?: SisteAnsettelseInfo
 }
 
 export interface U004Sed extends USed {

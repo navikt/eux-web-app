@@ -29,7 +29,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validatePeriodeDagpenger, ValidationPeriodeDagpengerProps } from './validationPeriodeDagpenger'
+import { validatePeriodeDagpenger, ValidationPeriodeDagpengerProps } from './validation'
 
 interface PeriodeForDagpengerSelector extends TwoLevelFormSelector {
   landkoderList: Array<Kodeverk> | undefined

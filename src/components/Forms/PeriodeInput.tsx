@@ -34,7 +34,7 @@ export interface PeriodeProps<T> {
   requiredSluttDato?: boolean
   namespace: string
   setPeriode: (periode: T, id: string) => void
-  showLabel?: boolean
+  hideLabel?: boolean
   value: T | null | undefined
   uiFormat ?: string
   finalFormat ?: string
@@ -71,7 +71,7 @@ const PeriodeInput = <T extends Periode>({
   requiredStartDato = true,
   requiredSluttDato = false,
   setPeriode,
-  showLabel = true,
+  hideLabel = true,
   value,
   finalFormat = 'YYYY-MM-DD',
   uiFormat = 'DD.MM.YYYY'
@@ -112,10 +112,8 @@ const PeriodeInput = <T extends Periode>({
           error={error.startdato}
           id='startdato'
           key={namespace + '-startdato-' + value?.startdato}
-          label={showLabel
-            ? (label?.startdato ?? t('label:startdato') + (requiredStartDato ? ' *' : '')) +
-            ' (' + t('el:placeholder-date-default') + ')'
-            : ''}
+          label={label?.startdato ?? t('label:startdato') + ' (' + t('el:placeholder-date-default') + ')'}
+          hideLabel={hideLabel}
           namespace={namespace}
           onChanged={onStartDatoChanged}
           required={requiredStartDato}
@@ -128,10 +126,8 @@ const PeriodeInput = <T extends Periode>({
           error={error.sluttdato}
           id='sluttdato'
           key={namespace + '-sluttdato-' + value?.sluttdato}
-          label={showLabel
-            ? (label?.sluttdato ?? t('label:sluttdato') + (requiredSluttDato ? ' *' : '')) +
-              ' (' + t('el:placeholder-date-default') + ')'
-            : ''}
+          hideLabel={hideLabel}
+          label={label?.sluttdato ?? t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
           namespace={namespace}
           onChanged={onEndDatoChanged}
           required={requiredSluttDato}
@@ -140,7 +136,7 @@ const PeriodeInput = <T extends Periode>({
       </Column>
       {breakInTwo && <div />}
       {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
-        <WrapperDiv className={classNames({ nolabel: showLabel })}>
+        <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
           {_.isEmpty(value?.sluttdato) && (
             <Checkbox
               error={!!error.aapenPeriodeType}

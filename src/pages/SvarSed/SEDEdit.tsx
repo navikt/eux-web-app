@@ -39,7 +39,7 @@ import ProsedyreVedUenighet from 'applications/SvarSed/MainForm/ProsedyreVedUeni
 import Referanseperiode from 'applications/SvarSed/MainForm/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/MainForm/Relasjon/Relasjon'
 import RettTilYtelser from 'applications/SvarSed/MainForm/RettTilYtelser/RettTilYtelser'
-import SisteAnsettelsesForhold from 'applications/SvarSed/MainForm/SisteAnsettelsesForhold/SisteAnsettelsesForhold'
+import SisteAnsettelseInfo from 'applications/SvarSed/MainForm/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
 import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
@@ -337,7 +337,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
               { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
               { label: t('el:option-mainform-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-              { label: t('el:option-mainform-sisteansettelsesforhold'), value: 'sisteansettelsesforhold', component: SisteAnsettelsesForhold, type: ['U002', 'U017'] },
+              { label: t('el:option-mainform-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: ['U002', 'U017'] },
               { label: t('el:option-mainform-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
               { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
               { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },

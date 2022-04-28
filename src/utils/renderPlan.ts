@@ -64,7 +64,7 @@ export default <T extends Periode | PeriodeMedForsikring>({
 
   // 2nd step: go through all arbeidsperioder. If they match periods, pair then, otherwise just append them in the end
 
-  arbeidsperioder?.arbeidsperioder.forEach((arbeidsgiver: ArbeidsperiodeFraAA) => {
+  arbeidsperioder?.arbeidsperioder?.forEach((arbeidsgiver: ArbeidsperiodeFraAA) => {
     const arbeidsgiverAsPeriodeMedForsikring: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsgiver)
 
     const foundIndex: number = _.findIndex(plan, p =>
@@ -98,7 +98,7 @@ export default <T extends Periode | PeriodeMedForsikring>({
   // 3nd step: same as step 2, but with addedArbeidsperioder (which are PeriodeMedForsikring),
   // and match against existing periods and existing periodeMedForsikring.
 
-  addedArbeidsperioder.forEach((arbeidsgiver: PeriodeMedForsikring) => {
+  addedArbeidsperioder?.forEach((arbeidsgiver: PeriodeMedForsikring) => {
     const foundPeriodeIndex: number = _.findIndex(plan, (item: PlanItem<T>) => {
       return item.type === 'periode'
         ? getStartDato(item.item as T) === arbeidsgiver.startdato && getSluttDato(item.item as T) === arbeidsgiver.sluttdato

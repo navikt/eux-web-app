@@ -35,7 +35,7 @@
     "@navikt/fnrvalidator": "^1.1.4",
     "@navikt/forhandsvisningsfil": "^3.0.4",
     "@navikt/fremdriftslinje": "^3.0.2",
-    "@navikt/hoykontrast": "^3.0.7",
+    "@navikt/hoykontrast": "^3.0.8",
     "@navikt/land-verktoy": "^3.0.3",
     "@navikt/landvelger": "^3.0.4",
     "@navikt/paginering": "^3.0.1",
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.2",
+  "_id": "neessi@6.99.3",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

@@ -21,7 +21,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
+import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useValidation from 'hooks/useValidation'
 import _ from 'lodash'
@@ -36,7 +36,7 @@ const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
+const SisteAnsettelseInfoFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   personID,
   replySed,
@@ -45,9 +45,9 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'sisteAnsettelsesForhold'
-  const sisteAnsettelsesForhold: SisteAnsettelsesForhold = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-sisteansettelsesforhold`
+  const target = 'sisteAnsettelseInfo'
+  const sisteAnsettelseInfo: SisteAnsettelseInfo = _.get(replySed, target)
+  const namespace = `${parentNamespace}-${personID}-sisteansettelseinfo`
 
   const [_newUtbetalingType, _setNewUtbetalingType] = useState<string | undefined>(undefined)
   const [_newLoennTilDato, _setNewLoennTilDato] = useState<string | undefined>(undefined)
@@ -74,7 +74,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
         dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
       }
 
-      if (_.isNil(sisteAnsettelsesForhold.utbetalinger[index]?.valuta)) {
+      if (_.isNil(sisteAnsettelseInfo.utbetalinger[index]?.valuta)) {
         setValuta({ value: 'NOK' } as Currency, index)
       }
     }
@@ -115,7 +115,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
       }
       _resetValidation(namespace + '-utbetalingType')
     } else {
-      const newUtbetaling = _.get(sisteAnsettelsesForhold, `utbetalinger[${index}]`)
+      const newUtbetaling = _.get(sisteAnsettelseInfo, `utbetalinger[${index}]`)
       newUtbetaling.utbetalingType = newUtbetalingType
       if (newUtbetalingType !== 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet') {
         delete newUtbetaling.loennTilDato
@@ -178,7 +178,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold?.utbetalinger)
+    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger)
     const deletedUtbetalinger: Array<Utbetaling> = newUtbetalinger.splice(index, 1)
     if (deletedUtbetalinger && deletedUtbetalinger.length > 0) {
       removeFromDeletion(deletedUtbetalinger[0])
@@ -201,7 +201,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
       namespace
     })
     if (valid) {
-      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelsesForhold?.utbetalinger)
+      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger)
       if (_.isNil(newUtbetalinger)) {
         newUtbetalinger = []
       }
@@ -337,13 +337,13 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_.isEmpty(sisteAnsettelsesForhold?.utbetalinger)
+      {_.isEmpty(sisteAnsettelseInfo?.utbetalinger)
         ? (
           <BodyLong>
             {t('message:warning-no-utbetaling')}
           </BodyLong>
           )
-        : sisteAnsettelsesForhold?.utbetalinger?.map(renderRow)}
+        : sisteAnsettelseInfo?.utbetalinger?.map(renderRow)}
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
@@ -376,7 +376,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
               id='avkall'
               label={t('label:opphoer-rettighet')}
               onChanged={setOpphoerRettighet}
-              value={sisteAnsettelsesForhold?.opphoerRettighet}
+              value={sisteAnsettelseInfo?.opphoerRettighet}
             />
           </TextAreaDiv>
         </Column>
@@ -391,7 +391,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
               id='opphoerRettighetGrunn'
               label={t('label:opphoer-rettighet-grunn')}
               onChanged={setOpphoerRettighetGrunn}
-              value={sisteAnsettelsesForhold?.opphoerRettighetGrunn}
+              value={sisteAnsettelseInfo?.opphoerRettighetGrunn}
             />
           </TextAreaDiv>
         </Column>
@@ -406,7 +406,7 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
               id='opphoerYtelse'
               label={t('label:opphoer-ytelse')}
               onChanged={setOpphoerYtelse}
-              value={sisteAnsettelsesForhold?.opphoerYtelse}
+              value={sisteAnsettelseInfo?.opphoerYtelse}
             />
           </TextAreaDiv>
         </Column>
@@ -415,4 +415,4 @@ const SisteAnsettelsesForholdFC: React.FC<TwoLevelFormProps> = ({
   )
 }
 
-export default SisteAnsettelsesForholdFC
+export default SisteAnsettelseInfoFC

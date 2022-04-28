@@ -250,9 +250,8 @@ const Relasjon: React.FC<TwoLevelFormProps> = ({
         <Row>
           <Column flex='3'>
             <RadioPanelGroup
-              value={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
+              defaultValue={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
               data-no-border
-              key={namespace + idx + '-relasjonTilPerson1-' + (index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson)}
               data-testid={namespace + idx + '-relasjonTilPerson'}
               error={getErrorFor(index, 'relasjonTilPerson')}
               id={namespace + idx + '-relasjonTilPerson'}

@@ -1,4 +1,4 @@
-import { SisteAnsettelsesForhold, Utbetaling } from 'declarations/sed'
+import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
@@ -94,21 +94,21 @@ export const validateUtbetalinger = (
   return hasErrors
 }
 
-interface ValidateSisteansettelsesforholdProps {
-  sisteansettelsesforhold: SisteAnsettelsesForhold |undefined
+interface ValidateSisteAnsettelseInfoProps {
+  sisteansettelseinfo: SisteAnsettelseInfo |undefined
   namespace: string
 }
 
-export const validateSisteansettelsesforhold = (
+export const validateSisteAnsettelseInfo = (
   v: Validation,
   t: TFunction,
   {
-    sisteansettelsesforhold,
+    sisteansettelseinfo,
     namespace
-  }: ValidateSisteansettelsesforholdProps
+  }: ValidateSisteAnsettelseInfoProps
 ) => {
   let hasErrors: boolean = false
-  const _errors = validateUtbetalinger(v, t, sisteansettelsesforhold?.utbetalinger, namespace)
+  const _errors = validateUtbetalinger(v, t, sisteansettelseinfo?.utbetalinger, namespace)
   hasErrors = hasErrors || _errors
 
   if (hasErrors) {

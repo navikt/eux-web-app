@@ -370,7 +370,7 @@ const Forsikring: React.FC<TwoLevelFormProps> = ({
                 startdato: _v[namespace + '-startdato']?.feilmelding,
                 sluttdato: _v[namespace + '-sluttdato']?.feilmelding
               }}
-              showLabel={index < 0}
+              hideLabel={index >= 0}
               setPeriode={(p: ForsikringPeriode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
               value={_periode}
             />

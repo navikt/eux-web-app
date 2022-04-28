@@ -97,7 +97,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
           delete (newReplySed as U002Sed).perioderMilitaertjeneste
           delete (newReplySed as U002Sed).perioderAnnenForsikring
           delete (newReplySed as U002Sed).perioderDagpenger
-          delete (newReplySed as U002Sed).sisteAnsettelsesForhold
+          delete (newReplySed as U002Sed).sisteAnsettelseInfo
           delete (newReplySed as U002Sed).grunntilopphor
         }
         if (newSedType !== 'U017' && oldSedType === 'U017') {

@@ -17,7 +17,7 @@ import {
   validateKontaktsinformasjonTelefoner
 } from 'applications/SvarSed/MainForm/Kontaktinformasjon/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/MainForm/Nasjonaliteter/validation'
-import { validatePerioderDagpenger } from 'applications/SvarSed/MainForm/PeriodeForDagpenger/validationPeriodeDagpenger'
+import { validatePerioderDagpenger } from 'applications/SvarSed/MainForm/PeriodeForDagpenger/validation'
 import { validateAnsattPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/ansattValidation'
 import { validateAvsenderlandetPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/avsenderlandetValidation'
 import { validateNotAnsattPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/notAnsattValidation'
@@ -26,7 +26,7 @@ import { validatePersonOpplysninger } from 'applications/SvarSed/MainForm/Person
 import { validateReferanseperiode } from 'applications/SvarSed/MainForm/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/MainForm/Relasjon/validation'
 import { validateRettTilYtelse } from 'applications/SvarSed/MainForm/RettTilYtelser/validation'
-import { validateSisteansettelsesforhold } from 'applications/SvarSed/MainForm/SisteAnsettelsesForhold/validation'
+import { validateSisteAnsettelseInfo } from 'applications/SvarSed/MainForm/SisteAnsettelseInfo/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/MainForm/SvarPåForespørsel/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/MainForm/Trygdeordning/validation'
 import { ErrorElement } from 'declarations/app.d'
@@ -290,30 +290,30 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
         (perioder?.perioderSelvstendigUtenForsikring?.length ?? 0)
       )
 
-      let allArbeidsPerioderOK = true
+      let allArbeidsPerioderHaveSluttdato = true
 
       // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
       if (replySed.sedType === 'U002') {
         if (
-          _.find(perioder?.perioderAnsattMedForsikring, p => !_.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderSelvstendigMedForsikring, p => !_.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderAnsattUtenForsikring, p => !_.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderSelvstendigUtenForsikring, p => !_.isEmpty(p.sluttdato))
+          _.find(perioder?.perioderAnsattMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderSelvstendigMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderAnsattUtenForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find(perioder?.perioderSelvstendigUtenForsikring, p => _.isEmpty(p.sluttdato))
         ) {
-          allArbeidsPerioderOK = false
+          allArbeidsPerioderHaveSluttdato = false
         }
       }
 
-      if (nrArbeidsperioder > 0 && allArbeidsPerioderOK) {
+      if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
         _error = validateGrunnTilOpphor(v, t, {
           grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
           namespace: `TwoLevelForm-${personID}-grunntilopphør`
         })
         hasErrors = hasErrors || _error
       }
-      _error = validateSisteansettelsesforhold(v, t, {
-        sisteansettelsesforhold: (replySed as U002Sed)?.sisteAnsettelsesForhold,
-        namespace: `TwoLevelForm-${personID}-sisteAnsettelsesForhold`
+      _error = validateSisteAnsettelseInfo(v, t, {
+        sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo,
+        namespace: `TwoLevelForm-${personID}-sisteAnsettelseInfo`
       })
       hasErrors = hasErrors || _error
     }

@@ -52,24 +52,34 @@ export const validatePeriodeDagpenger = (
     }
   }
 
-  if (_.isEmpty(periodeDagpenger?.institusjon.id.trim())) {
-    v[namespace + idx + '-institusjon-id'] = {
-      feilmelding: t('validation:noInstitusjonsID'),
-      skjemaelementId: namespace + idx + '-institusjon-id'
-    } as ErrorElement
-    hasErrors = true
-  }
 
-  if (_.isEmpty(periodeDagpenger?.institusjon.navn.trim())) {
-    v[namespace + idx + '-institusjon-navn'] = {
-      feilmelding: t('validation:noInstitusjonensNavn'),
-      skjemaelementId: namespace + idx + '-institusjon-navn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  const idmangler = (
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.navn?.trim()) && periodeDagpenger.institusjon.idmangler?.navn?.trim() !== '-') ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.gate?.trim()) ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.postnummer?.trim()) ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.bygning?.trim()) ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.by?.trim()) ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.region?.trim()) ||
+    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.land?.trim())
 
-  if (!_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim())) {
-    if (periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
+  if (!idmangler) {
+    if (_.isEmpty(periodeDagpenger?.institusjon.id.trim())) {
+      v[namespace + idx + '-institusjon-id'] = {
+        feilmelding: t('validation:noInstitusjonsID'),
+        skjemaelementId: namespace + idx + '-institusjon-id'
+      } as ErrorElement
+      hasErrors = true
+    }
+
+    if (_.isEmpty(periodeDagpenger?.institusjon.navn.trim())) {
+      v[namespace + idx + '-institusjon-navn'] = {
+        feilmelding: t('validation:noInstitusjonensNavn'),
+        skjemaelementId: namespace + idx + '-institusjon-navn'
+      } as ErrorElement
+      hasErrors = true
+    }
+  } else {
+    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim()) || periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
       v[namespace + idx + '-institusjon-idmangler-navn'] = {
         feilmelding: t('validation:noName'),
         skjemaelementId: namespace + idx + '-institusjon-idmangler-navn'
