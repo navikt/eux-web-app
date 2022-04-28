@@ -77,7 +77,7 @@ const ModalFC: React.FC<ModalProps> = ({
             <Heading size='small' data-testid='modal__title-id'>
               {modal?.modalTitle}
             </Heading>
-            <VerticalSeparatorDiv/>
+            <VerticalSeparatorDiv />
           </>
         )}
         <ContentDiv className={classNames({ icon: !!icon })}>

@@ -52,7 +52,6 @@ export const validatePeriodeDagpenger = (
     }
   }
 
-
   const idmangler = (
     !_.isEmpty(periodeDagpenger.institusjon.idmangler?.navn?.trim()) && periodeDagpenger.institusjon.idmangler?.navn?.trim() !== '-') ||
     !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.gate?.trim()) ||

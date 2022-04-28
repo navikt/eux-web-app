@@ -350,31 +350,33 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         showHeader={mode === 'select'}
         striped={mode === 'select'}
         loading={gettingJoarkList}
-        columns={mode === 'select' ? [
-          {
-            id: 'tema',
-            label: t('label:tema'),
-            type: 'string',
-            render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => <Label>{value}</Label>
-          }, {
-            id: 'title',
-            label: t('label:tittel'),
-            type: 'string',
-            render: renderTittel
-          }, {
-            id: 'date',
-            label: t('label:dato'),
-            type: 'date',
-            dateFormat: 'DD.MM.YYYY'
-          }
-        ] : [
-          {
-            id: 'title',
-            label: t('label:tittel'),
-            type: 'string',
-            render: renderTittel
-          }
-        ] }
+        columns={mode === 'select'
+          ? [
+              {
+                id: 'tema',
+                label: t('label:tema'),
+                type: 'string',
+                render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => <Label>{value}</Label>
+              }, {
+                id: 'title',
+                label: t('label:tittel'),
+                type: 'string',
+                render: renderTittel
+              }, {
+                id: 'date',
+                label: t('label:dato'),
+                type: 'date',
+                dateFormat: 'DD.MM.YYYY'
+              }
+            ]
+          : [
+              {
+                id: 'title',
+                label: t('label:tittel'),
+                type: 'string',
+                render: renderTittel
+              }
+            ]}
         onRowSelectChange={onRowSelectChange}
       />
     </div>

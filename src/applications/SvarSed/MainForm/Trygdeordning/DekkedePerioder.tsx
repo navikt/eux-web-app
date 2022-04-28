@@ -117,7 +117,7 @@ const DekkedePerioder: React.FC<TwoLevelFormProps> = ({
         <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx}
-            hideLabel={true}
+            hideLabel
             error={{
               startdato: getErrorFor(index, 'startdato'),
               sluttdato: getErrorFor(index, 'sluttdato')

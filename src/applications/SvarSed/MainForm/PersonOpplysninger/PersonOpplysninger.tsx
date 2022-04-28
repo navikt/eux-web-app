@@ -1,13 +1,15 @@
 import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
-import { RadioGroup, Radio, BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import {
   AlignCenterRow,
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  FlexEndDiv,
+  FlexEndDiv, FlexRadioPanels,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetPerson, searchPerson } from 'actions/person'
@@ -60,8 +62,6 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
 
-  const [_x, _setX] = useState<string>(() => personInfo?.kjoenn!)
-
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
     if (validation[namespace + '-fornavn']) {
@@ -84,12 +84,10 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
   }
 
   const onKjoennChange = (newKjoenn: string) => {
-    console.log('new kjonn ' + newKjoenn)
-    _setX(newKjoenn)
-    /*dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
+    dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       dispatch(resetValidation(namespace + '-kjoenn'))
-    }*/
+    }
   }
 
   const onFillOutPerson = (searchedPerson: Person) => {
@@ -347,31 +345,30 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
-          {console.log('render ' + _x)}
           <Column>
-            <RadioGroup
-              value={_x}
+            <RadioPanelGroup
+              value={personInfo?.kjoenn}
               data-no-border
-              key={namespace + '-kjoenn' + _x}
               data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
+              id={namespace + '-kjoenn'}
+              key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
               legend={t('label:kjønn') + ' *'}
               name={namespace + '-kjoenn'}
-              onChange={(e) => {
-                onKjoennChange(e)
-              }}
+              onChange={onKjoennChange}
             >
-                <Radio value='M'>
+              <FlexRadioPanels>
+                <RadioPanel value='M'>
                   {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                </Radio>
-                <Radio value='K'>
+                </RadioPanel>
+                <RadioPanel value='K'>
                   {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                </Radio>
-                <Radio value='U'>
+                </RadioPanel>
+                <RadioPanel value='U'>
                   {t('label:ukjent')}
-                </Radio>
-
-            </RadioGroup>
+                </RadioPanel>
+              </FlexRadioPanels>
+            </RadioPanelGroup>
           </Column>
         </AlignStartRow>
         <VerticalSeparatorDiv />
