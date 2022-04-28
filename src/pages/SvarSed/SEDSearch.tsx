@@ -189,7 +189,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                     _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
                       ? <div />
                       : (
-                        <div key={'sak-' + sak.sakId}>
+                        <div key={'sak-' + sak?.sakId}>
                           <SakPanel
                             sak={sak}
                             onSelected={() => dispatch(setCurrentSak(sak))}

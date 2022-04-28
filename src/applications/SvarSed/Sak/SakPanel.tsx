@@ -72,7 +72,7 @@ const SakPanel = ({
             <HorizontalSeparatorDiv />
             <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>
               <span>
-                {sak.sakId}
+                {sak?.sakId}
               </span>
               <HorizontalSeparatorDiv size='0.35' />
               <ExternalLink />

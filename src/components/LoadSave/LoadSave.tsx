@@ -180,7 +180,7 @@ const LoadSave = <T extends StorageTypes>({
                     </Detail>
                     <HorizontalSeparatorDiv size='0.5' />
                     <BodyLong>
-                      {(savedEntry.content as any).sak.sakId}
+                      {(savedEntry.content as any).sak?.sakId}
                     </BodyLong>
                   </FlexBaseSpacedDiv>
                   <HorizontalSeparatorDiv />
