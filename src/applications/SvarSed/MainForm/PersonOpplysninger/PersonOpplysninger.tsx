@@ -5,12 +5,13 @@ import {
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  FlexEndDiv, FlexRadioPanels,
+  FlexEndDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  RadioPanel,
+  VerticalSeparatorDiv,
   RadioPanelGroup,
-  VerticalSeparatorDiv
+  FlexRadioPanels,
+  RadioPanel
 } from '@navikt/hoykontrast'
 import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
@@ -352,7 +353,6 @@ const PersonOpplysninger: React.FC<TwoLevelFormProps> = ({
               data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
               id={namespace + '-kjoenn'}
-              key={namespace + '-kjoenn-' + (personInfo?.kjoenn ?? '')}
               legend={t('label:kjønn') + ' *'}
               name={namespace + '-kjoenn'}
               onChange={onKjoennChange}

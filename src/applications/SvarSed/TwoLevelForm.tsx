@@ -249,7 +249,6 @@ const TwoLevelForm = <T extends StorageTypes>({
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
-  const [currentMenuLabel, setCurrentMenuLabel] = useState<string | undefined>(undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
   const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(undefined)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
@@ -268,15 +267,22 @@ const TwoLevelForm = <T extends StorageTypes>({
 
   const menuRef = useRef(currentMenu + '|' + currentMenuOption)
 
-  const getForm = (value: string): JSX.Element | null => {
-    const form: Form | undefined = _.find(forms, o => o.value === value)
+  const getForm = (menu: string, menuOption: string): JSX.Element | null => {
+    let personName
+    if (menu !== 'familie') {
+      personName = getPersonName(replySed, menu)
+    } else {
+      personName = t('label:hele-familien')
+    }
+
+    const form: Form | undefined = _.find(forms, o => o.value === menuOption)
     if (form) {
       const Component = form.component
       return (
         <Component
           parentNamespace={namespace}
           personID={currentMenu!}
-          personName={currentMenuLabel!}
+          personName={personName}
           replySed={replySed}
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
@@ -325,13 +331,6 @@ const TwoLevelForm = <T extends StorageTypes>({
         if (!alreadyOpenMenu(menu)) {
           setOpenMenus(openMenus.concat(menu))
         }
-      }
-
-      if (menu !== 'familie') {
-        const personName = getPersonName(replySed, menu)
-        setCurrentMenuLabel(personName)
-      } else {
-        setCurrentMenuLabel(t('label:hele-familien'))
       }
 
       setPreviousMenuOption(currentMenuOption)
@@ -484,7 +483,6 @@ const TwoLevelForm = <T extends StorageTypes>({
     setPreviousMenu(undefined)
     setCurrentMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
     setFocusedMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
-    setCurrentMenuLabel(undefined)
     setPreviousMenuOption(undefined)
     setCurrentMenuOption(undefined)
   }
@@ -539,20 +537,20 @@ const TwoLevelForm = <T extends StorageTypes>({
                 </BlankContentDiv>
               </BlankDiv>
             )}
-            {previousMenuOption && (
+            {previousMenu && previousMenuOption && (
               <PreviousFormDiv
-                className={classNames('right', { animating: animatingMenus })}
+                className={classNames(`previous-${previousMenu}-${previousMenuOption}`, 'right', { animating: animatingMenus })}
                 key={previousMenu + '-' + previousMenuOption}
               >
-                {getForm(previousMenuOption)}
+                {getForm(previousMenu, previousMenuOption)}
               </PreviousFormDiv>
             )}
-            {currentMenuOption && (
+            {currentMenu && currentMenuOption && (
               <ActiveFormDiv
-                className={classNames('right', { animating: animatingMenus })}
+                className={classNames(`active-${currentMenu}-${currentMenuOption}`, 'right', { animating: animatingMenus })}
                 key={currentMenu + '-' + currentMenuOption}
               >
-                {getForm(currentMenuOption)}
+                {getForm(currentMenu, currentMenuOption)}
               </ActiveFormDiv>
             )}
           </RightDiv>
