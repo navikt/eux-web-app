@@ -47,6 +47,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
           }),
           menu: (styles: any) => ({
             ...styles,
+            width: 'auto',
             zIndex: 500
           }),
           menuList: (styles: any) => ({

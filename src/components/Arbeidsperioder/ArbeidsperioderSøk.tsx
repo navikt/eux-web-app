@@ -97,7 +97,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
             id='startdato'
-            label={t('label:fra') + '(ÅÅÅÅ-MM)'}
+            label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
             onChanged={setArbeidssøkStartDato}
             value={_arbeidssøkStartDato}
           />
@@ -107,7 +107,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
             namespace={namespace + '-arbeidssok'}
             error={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
             id='sluttdato'
-            label={t('label:til') + '(ÅÅÅÅ-MM)'}
+            label={t('label:til') + ' (ÅÅÅÅ-MM)'}
             onChanged={setArbeidssøkSluttDato}
             value={_arbeidssøkSluttDato}
           />
