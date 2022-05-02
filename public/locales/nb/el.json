@@ -22,6 +22,7 @@
   "button-ok" : "Ok",
   "button-remove" : "Fjern",
   "button-remove-all" : "Fjern alle",
+  "button-reset-form" : "Nullstill skjema",
   "button-generate-preview-x" : "Lage en forhåndsvisningskopi av {{x}}",
   "button-preview-x" : "Forhåndsvis kopien av {{x}}",
   "button-save" : "Lagre",

@@ -1,13 +1,13 @@
 import { ErrorFilled } from '@navikt/ds-icons'
 import classNames from 'classnames'
-import { fadeIn } from '@navikt/hoykontrast'
+import { fadeIn, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { AlertError, AlertVariant } from 'declarations/components'
-import { AlertErrorPropType } from 'declarations/components.pt'
 import _ from 'lodash'
 import { Alert } from '@navikt/ds-react'
-import PT from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import PT from 'prop-types'
+import {AlertErrorPropType} from 'declarations/components.pt'
 
 export const AlertDiv = styled(Alert)`
   opacity: 0;
@@ -16,18 +16,15 @@ export const AlertDiv = styled(Alert)`
   top: 0;
   z-index: 10;
   width: 100%;
+  display: flex;
   border-radius: 0px !important;
   border: 0px !important;
   .alertstripe__tekst {
     display: flex !important;
-    justify-content: space-between;
     max-width: none !important;
   }
 `
 export const CloseIcon = styled(ErrorFilled)`
-  position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
   cursor: pointer;
 `
 
@@ -86,10 +83,14 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
     >
       {_message}
       {onClose && (
-        <CloseIcon
+        <div>
+          <HorizontalSeparatorDiv/>
+          <CloseIcon
+            height='30'
           data-testid='c-BannerAlert__CloseIcon'
           onClick={onCloseIconClicked}
         />
+        </div>
       )}
     </AlertDiv>
   )

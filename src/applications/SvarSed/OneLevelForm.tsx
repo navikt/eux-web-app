@@ -140,7 +140,7 @@ const BlankContentDiv = styled(FlexCenterDiv)`
 export interface _OneLevelFormProps {
   forms: Array<Form>
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed>
+  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   viewValidation: boolean
   target?: string
@@ -154,7 +154,7 @@ export interface OneLevelFormSelector {
 export interface OneLevelFormProps {
   parentNamespace: string
   replySed: ReplySed | null | undefined
-  setReplySed: (replySed: ReplySed, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed>
+  setReplySed: (replySed: ReplySed) => ActionWithPayload<ReplySed>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 

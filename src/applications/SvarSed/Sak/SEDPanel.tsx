@@ -2,9 +2,9 @@ import { Close, Edit, Download, Send, Star } from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
-import { editSed, getSedStatus, replyToSed, setReplySed } from 'actions/svarsed'
+import { editSed, getSedStatus, invalidatingSed, replyToSed, setReplySed } from 'actions/svarsed'
 import { resetAllValidation } from 'actions/validation'
-import { canEditSed, findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
+import { canEditSed, canUpdateSed, findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Sak, Sed } from 'declarations/types'
@@ -41,8 +41,6 @@ interface SEDPanelProps {
 
 const mapState = (state: State): any => ({
   entries: state.localStorage.svarsed.entries,
-  editingSed: state.loading.editingSed,
-  replyingToSed: state.loading.replyingToSed,
   replySed: state.svarsed.replySed,
   sedStatus: state.svarsed.sedStatus
 })
@@ -55,76 +53,82 @@ const SEDPanel = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const { entries, editingSed, replyingToSed, replySed, sedStatus }: any = useAppSelector(mapState)
-  const [_replySedRequested, _setReplySedRequested] = useState<boolean>(false)
-  const [_buttonClickedId, _setButtonClickedId] = useState<string | undefined>(undefined)
+
+  const { entries, replySed, sedStatus }: any = useAppSelector(mapState)
+
+  const [_editingSed, _setEditingSed] = useState<boolean>(false)
+  const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
+  const [_replyingToSed, _setReplyingToSed] = useState<boolean>(false)
+  const [_invalidatingSed, _setInvalidatingSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
 
-  /** if we have a reply sed, let's go to edit mode */
+  /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
-    if (!_.isEmpty(replySed) && _replySedRequested) {
-      _setReplySedRequested(false)
-      _setButtonClickedId('')
+    if (!_.isUndefined(replySed) && _replyingToSed) {
+      _setReplyingToSed(false)
       dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
   }, [replySed])
 
-  /** if we have received SEDS, and we have searched for saksnummer, add it as the currentSak */
+  /** if we have received an OK from update on SED Status, and it is on local storage, load it  */
   useEffect(() => {
-    if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
+    if (!_.isUndefined(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
       const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested, entries)
       if (entry && !hasSentStatus(entry.id, sedStatus)) {
         dispatch(setCurrentEntry('svarsed', entry))
         dispatch(setReplySed(entry.content))
-        _setReplySedRequested(true)
       }
       _setSedStatusRequested(undefined)
     }
   }, [_sedStatusRequested, sedStatus])
 
-  /** if we have a saved entry, let's load it */
-  useEffect(() => {
-    if (!_.isNil(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
-      const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested, entries)
-      if (entry && !hasSentStatus(entry.id, sedStatus)) {
-        dispatch(setCurrentEntry('svarsed', entry))
-        dispatch(setReplySed(entry.content))
-        _setReplySedRequested(true)
-      }
-      _setSedStatusRequested(undefined)
-    }
-  }, [_sedStatusRequested, sedStatus])
-
+  /** before loading the SED, let's check if the status is OK */
   const loadDraft = (sakId: string, svarsedId: string) => {
     _setSedStatusRequested(svarsedId)
     dispatch(getSedStatus(sakId, svarsedId))
   }
 
   const onEditSedClick = (connectedSed: Sed, sak: Sak) => {
-    _setReplySedRequested(true)
+    _setEditingSed(true)
     dispatch(editSed(connectedSed, sak))
   }
 
+  const onUpdatingSedClick = (connectedSed: Sed, sak: Sak) => {
+    _setUpdatingSed(true)
+    dispatch(editSed(connectedSed, sak))
+  }
+
+  const onInvalidatingSedClick = (connectedSed: Sed, sak: Sak) => {
+    _setInvalidatingSed(true)
+    dispatch(invalidatingSed(connectedSed, sak))
+  }
+
   const onReplySedClick = (connectedSed: Sed, sak: Sak) => {
-    _setReplySedRequested(true)
+    _setReplyingToSed(true)
     dispatch(replyToSed(connectedSed, sak))
   }
+
+  const showJournalfoingButton = connectedSed.lenkeHvisForrigeSedMaaJournalfoeres
+  const showDraftButton = hasDraft(connectedSed, entries)
+  const showEditButton = !showDraftButton && connectedSed.status === 'new' && canEditSed(connectedSed.sedType)
+  const showUpdateButton = !showDraftButton && connectedSed.status === 'sent' && canUpdateSed(connectedSed.sedType)
+  const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType
+  const showInvalidateButton = connectedSed.status === 'sent'
 
   return (
     <MyPanel border>
       <FlexDiv>
         <IconDiv>
-          {connectedSed.status === 'received' && <Download width='32' height='32' />}
-          {connectedSed.status === 'sent' && <Send width='32' height='32' />}
-          {connectedSed.status === 'new' && <Star width='32' height='32' />}
+          {connectedSed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
+          {connectedSed.status === 'sent' && <Send color='green' width='32' height='32' />}
+          {connectedSed.status === 'new' && <Star color='orange' width='32' height='32' />}
           {connectedSed.status === 'active' && <Edit width='32' height='32' />}
-          {connectedSed.status === 'cancelled' && <Close width='32' height='32' />}
+          {connectedSed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
             {t('app:status-received-' + connectedSed.status.toLowerCase())}
           </Detail>
-
           <Detail>
             {connectedSed.sistEndretDato}
           </Detail>
@@ -136,7 +140,7 @@ const SEDPanel = ({
           </Heading>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
-            {connectedSed.lenkeHvisForrigeSedMaaJournalfoeres && (
+            {showJournalfoingButton && (
               <>
                 <Button
                   variant='secondary'
@@ -152,96 +156,144 @@ const SEDPanel = ({
                     sedtype: connectedSed.sedType
                   })}
                 </Button>
-                <VerticalSeparatorDiv size='0.5' />
+                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-            {hasDraft(connectedSed, entries)
-              ? (
+            {showDraftButton && (
+              <Button
+                variant='secondary'
+                disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId, sedStatus)}
+                data-amplitude='svarsed.selection.loaddraft'
+                onClick={(e: any) => {
+                  buttonLogger(e, {
+                    type: connectedSed.svarsedType
+                  })
+                  loadDraft(currentSak.sakId, connectedSed.svarsedId)
+                }}
+              >
+                <Edit/>
+                {(_sedStatusRequested === connectedSed.svarsedId)
+                  ? (
+                    <>
+                      {t('message:loading-checking-sed-status')}
+                      <Loader/>
+                    </>
+                  )
+                  : (hasSentStatus(connectedSed.svarsedId, sedStatus)
+                    ? t('label:sed-already-sent', {sed: connectedSed.svarsedType})
+                    : t('label:gå-til-draft'))}
+              </Button>
+            )}
+            {showEditButton && (
+              <>
                 <Button
                   variant='secondary'
-                  disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId, sedStatus)}
-                  data-amplitude='svarsed.selection.loaddraft'
+                  disabled={_editingSed}
+                  data-amplitude='svarsed.selection.editsed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.svarsedType
+                      type: connectedSed.sedType
                     })
-                    _setButtonClickedId('draft-' + connectedSed.sedId)
-                    loadDraft(currentSak.sakId, connectedSed.svarsedId)
+                    onEditSedClick(connectedSed, currentSak)
                   }}
                 >
-                  <Edit />
-                  <HorizontalSeparatorDiv size='0.35' />
-                  {(_sedStatusRequested === connectedSed.svarsedId && _buttonClickedId === 'draft-' + connectedSed.sedId)
+                  {_editingSed
                     ? (
                       <>
-                        {t('message:loading-checking-sed-status')}
+                        {t('message:loading-editing')}
                         <Loader />
                       </>
                       )
-                    : (hasSentStatus(connectedSed.svarsedId, sedStatus)
-                        ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
-                        : t('label:gå-til-draft'))}
+                    : t('label:edit-sed-x', {
+                      x: connectedSed.sedType
+                    })}
                 </Button>
-                )
-              : (
-                <>
-                  {connectedSed.status === 'new' && canEditSed(connectedSed.sedType) && (
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showUpdateButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_editingSed}
+                  data-amplitude='svarsed.selection.updatesed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.sedType
+                    })
+                    onUpdatingSedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_updatingSed
+                    ? (
+                      <>
+                        {t('message:loading-updating')}
+                        <Loader />
+                      </>
+                    )
+                    : t('label:oppdater-sed-x', {
+                      x: connectedSed.sedType
+                    })}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showInvalidateButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_invalidatingSed}
+                  data-amplitude='svarsed.selection.invalidatesed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.sedType
+                    })
+                    onInvalidatingSedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_invalidatingSed
+                    ? (
+                      <>
+                        {t('message:loading-invalidating')}
+                        <Loader />
+                      </>
+                    )
+                    : t('label:invalidate-sed-x', {
+                      x: connectedSed.sedType
+                    })}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showReplyToSedButton && (
+              <>
+              <Button
+                variant='primary'
+                disabled={_replyingToSed || !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                data-amplitude='svarsed.selection.replysed'
+                title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                onClick={(e: any) => {
+                  buttonLogger(e, {
+                    type: connectedSed.svarsedType,
+                    parenttype: connectedSed.sedType
+                  })
+                  onReplySedClick(connectedSed, currentSak)
+                }}
+              >
+                {_replyingToSed
+                  ? (
                     <>
-                      <Button
-                        variant='secondary'
-                        disabled={editingSed}
-                        data-amplitude='svarsed.selection.editsed'
-                        onClick={(e: any) => {
-                          buttonLogger(e, {
-                            type: connectedSed.sedType
-                          })
-                          _setButtonClickedId('edit-' + connectedSed.sedId)
-                          onEditSedClick(connectedSed, currentSak)
-                        }}
-                      >
-                        {(editingSed && _buttonClickedId === 'edit-' + connectedSed.sedId)
-                          ? (
-                            <>
-                              {t('message:loading-editing')}
-                              <Loader />
-                            </>
-                            )
-                          : t('label:edit-sed-x', {
-                            x: connectedSed.sedType
-                          })}
-                      </Button>
-                      <VerticalSeparatorDiv size='0.5' />
+                      {t('message:loading-replying')}
+                      <Loader />
                     </>
-                  )}
-                  {connectedSed.svarsedType && (
-                    <Button
-                      variant='primary'
-                      disabled={replyingToSed || connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                      data-amplitude='svarsed.selection.replysed'
-                      title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                      onClick={(e: any) => {
-                        buttonLogger(e, {
-                          type: connectedSed.svarsedType,
-                          parenttype: connectedSed.sedType
-                        })
-                        _setButtonClickedId('reply-' + connectedSed.sedId)
-                        onReplySedClick(connectedSed, currentSak)
-                      }}
-                    >
-                      {(replyingToSed && _buttonClickedId === 'reply-' + connectedSed.sedId)
-                        ? (
-                          <>
-                            {t('message:loading-replying')}
-                            <Loader />
-                          </>
-                          )
-                        : t('label:besvar-med', {
-                          sedtype: connectedSed.svarsedType
-                        })}
-                    </Button>
-                  )}
-                </>
-                )}
+                    )
+                  : t('label:besvar-med', {
+                    sedtype: connectedSed.svarsedType
+                  })}
+              </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
           </FlexDiv>
         </PileDiv>
       </FlexDiv>

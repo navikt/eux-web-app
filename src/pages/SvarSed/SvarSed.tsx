@@ -1,7 +1,7 @@
 import { Container, Content, Margin } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
-import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed } from 'actions/svarsed'
+import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed, loadReplySed } from 'actions/svarsed'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
@@ -114,7 +114,7 @@ export const SvarSedPage = (): JSX.Element => {
                   <LoadSave<ReplySed>
                     namespace='svarsed'
                     changeMode={changeMode}
-                    setReplySed={setReplySed}
+                    loadReplySed={loadReplySed}
                   />
                   )
                 : (
@@ -123,7 +123,6 @@ export const SvarSedPage = (): JSX.Element => {
             )}
             {_currentPage === 'B' && (
               <SEDDetails
-                unsavedDoc={replySedChanged}
                 updateReplySed={updateReplySed}
               />
             )}

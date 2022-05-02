@@ -112,6 +112,13 @@ export const setPdu1 = (
   payload: PDU1
 })
 
+export const loadPdu1 = (
+  PDU1: PDU1
+): ActionWithPayload<PDU1> => ({
+  type: types.PDU1_LOAD,
+  payload: PDU1
+})
+
 export const updatePdu1: ActionCreator<ActionWithPayload<UpdatePdu1Payload>> = (
   needle: string, value: any
 ): ActionWithPayload<UpdatePdu1Payload> => ({

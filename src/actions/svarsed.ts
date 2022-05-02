@@ -6,7 +6,7 @@ import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
-import { ActionCreator } from 'redux'
+import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
@@ -112,6 +112,14 @@ export const getSedStatus = (rinaSakId: string, sedId: string): ActionWithPayloa
   })
 }
 
+// TODO implement
+export const invalidatingSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: '',
+  payload: {connectedSed, sak}
+})
+
 export const querySaksnummerOrFnr = (
   saksnummerOrFnr: string
 ): ActionWithPayload<Sed> => {
@@ -166,6 +174,13 @@ export const editSed = (
   })
 }
 
+export const loadReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
+  replySed: ReplySed
+): ActionWithPayload<ReplySed> => ({
+  type: types.SVARSED_REPLYSED_LOAD,
+  payload: replySed
+})
+
 export const replyToSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<ReplySed> => {
@@ -191,6 +206,10 @@ export const replyToSed = (
     }
   })
 }
+
+export const restoreReplySed: ActionCreator<Action> = (): Action => ({
+  type: types.SVARSED_REPLYSED_RESTORE
+})
 
 export const resetPreviewSvarSed = () => ({
   type: types.SVARSED_PREVIEW_RESET
@@ -219,13 +238,10 @@ export const setCurrentSak = (currentSak: Sak | undefined) => ({
 })
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
-  replySed: ReplySed, flagItAsUnsaved: boolean = true
+  replySed: ReplySed
 ): ActionWithPayload<ReplySed> => ({
   type: types.SVARSED_REPLYSED_SET,
-  payload: {
-    replySed,
-    flagItAsUnsaved
-  }
+  payload: replySed
 })
 
 export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPayload>> = (

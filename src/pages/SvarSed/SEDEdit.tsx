@@ -7,7 +7,7 @@ import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
   getPreviewFile,
-  resetPreviewSvarSed,
+  resetPreviewSvarSed, restoreReplySed,
   sendSedInRina,
   setReplySed,
   updateReplySed,
@@ -174,6 +174,12 @@ const SEDEdit: React.FC = (): JSX.Element => {
       _setSendButtonClicked(true)
       dispatch(sendSedInRina(replySed.sak!.sakId!, sedCreatedResponse.sedId!))
       standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
+    }
+  }
+
+  const onRestoreSedClick = () => {
+    if (window.confirm(t('label:er-du-sikker'))) {
+      dispatch(restoreReplySed())
     }
   }
 
@@ -398,7 +404,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
           <div>
             <Button
               variant='primary'
-              data-amplitude={_.isEmpty(replySed?.sed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
+              data-amplitude='svarsed.editor.lagresvarsed'
               onClick={sendReplySed}
               disabled={creatingSvarSed || updatingSvarSed}
             >
@@ -406,33 +412,36 @@ const SEDEdit: React.FC = (): JSX.Element => {
                 ? t('message:loading-opprette-sed')
                 : updatingSvarSed
                   ? t('message:loading-oppdatering-sed')
-                  : _.isEmpty(replySed?.sed?.sedId)
-                    ? t('label:opprett-sed')
-                    : _.isEmpty(sedCreatedResponse)
-                      ? t('label:oppdatere-sende-sed')
-                      : t('label:oppdatere-sed')}
+                  : t('label:lagre-sed')}
               {(creatingSvarSed || updatingSvarSed) && <Loader />}
             </Button>
             <VerticalSeparatorDiv size='0.5' />
           </div>
           <HorizontalSeparatorDiv />
-          {!_.isEmpty(sedCreatedResponse) && (
-            <>
-              <div>
-                <Button
-                  variant='primary'
-                // amplitude is dealt on SendSedClick
-                  title={t('message:help-send-sed')}
-                  disabled={sendingSed || !_.isNil(sedSendResponse)}
-                  onClick={onSendSedClick}
-                >
-                  {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-                </Button>
-              </div>
-              <HorizontalSeparatorDiv />
-            </>
-          )}
-
+          <div>
+            <Button
+              variant='primary'
+              // amplitude is dealt on SendSedClick
+              title={t('message:help-send-sed')}
+              disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
+              onClick={onSendSedClick}
+            >
+              {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+            </Button>
+            <VerticalSeparatorDiv size='0.5' />
+          </div>
+          <HorizontalSeparatorDiv />
+          <div>
+            <Button
+              variant='tertiary'
+              // amplitude is dealt on SendSedClick
+              title={t('message:help-reset-sed')}
+              onClick={onRestoreSedClick}
+            >
+              {t('el:button-reset-form')}
+            </Button>
+            <VerticalSeparatorDiv size='0.5' />
+          </div>
         </FlexDiv>
       <VerticalSeparatorDiv />
       {_sendButtonClicked && alertMessage &&

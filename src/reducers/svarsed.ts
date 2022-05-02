@@ -11,6 +11,7 @@ export interface SvarsedState {
   personRelatert: any
   previewFile: any
   replySed: ReplySed | null | undefined
+  originalReplySed: ReplySed | null | undefined
   replySedChanged: boolean
   saks: Saks | null | undefined
   currentSak: Sak | undefined
@@ -23,7 +24,11 @@ export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   personRelatert: undefined,
   previewFile: undefined,
+  // the working reply sed
   replySed: undefined,
+  // the original reply sed, to be restored when <nullstill> button is clicked
+  originalReplySed: undefined,
+  // keep tracking if reply sed has changed
   replySedChanged: false,
   saks: undefined,
   currentSak: undefined,
@@ -64,25 +69,32 @@ const svarsedReducer = (
         ...state,
         sedCreatedResponse: undefined,
         sedSendResponse: undefined,
-        replySedChanged: false
+        replySedChanged: false,
+        replySed: undefined,
+        originalReplySed: undefined
       }
 
-    case types.SVARSED_REPLYTOSED_SUCCESS:
+    case types.SVARSED_REPLYTOSED_SUCCESS: {
+
+      const newReplySed: ReplySed | null | undefined = {
+        ...(action as ActionWithPayload).payload,
+        sak: (action as ActionWithPayload).context.sak,
+        sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
+      }
       return {
         ...state,
-        replySed: {
-          ...(action as ActionWithPayload).payload,
-          sak: (action as ActionWithPayload).context.sak,
-          sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
-        },
-        replySedChanged: false
+        replySed: newReplySed,
+        originalReplySed: newReplySed,
+        replySedChanged: false,
       }
+    }
 
     case types.SVARSED_REPLYTOSED_FAILURE:
       return {
         ...state,
         replySedChanged: false,
-        replySed: null
+        replySed: null,
+        originalReplySed: null
       }
 
     case types.SVARSED_EDIT_REQUEST:
@@ -93,13 +105,16 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_EDIT_SUCCESS:
+
+      const newReplySed = {
+        ...(action as ActionWithPayload).payload,
+        sak: (action as ActionWithPayload).context.sak,
+        sed: (action as ActionWithPayload).context.sed
+      }
       return {
         ...state,
-        replySed: {
-          ...(action as ActionWithPayload).payload,
-          sak: (action as ActionWithPayload).context.sak,
-          sed: (action as ActionWithPayload).context.sed
-        },
+        replySed: newReplySed,
+        originalReplySed: newReplySed,
         replySedChanged: false
       }
 
@@ -107,6 +122,7 @@ const svarsedReducer = (
       return {
         ...state,
         replySed: null,
+        originalReplySed: null,
         replySedChanged: false
       }
 
@@ -165,13 +181,15 @@ const svarsedReducer = (
       sed.sedId = (action as ActionWithPayload).payload.sedId
 
       standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
+      const newReplySed =  {
+          ...state.replySed,
+          sed
+        } as ReplySed
       return {
         ...state,
         // now I can restore sedId to the replySed, so it can be updated later
-        replySed: {
-          ...state.replySed,
-          sed
-        } as ReplySed,
+        replySed: newReplySed,
+        originalReplySed: newReplySed,
         sedCreatedResponse: (action as ActionWithPayload).payload,
         replySedChanged: false
       }
@@ -278,11 +296,25 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_REPLYSED_LOAD:
+      return {
+        ...state,
+        replySed: (action as ActionWithPayload).payload,
+        originalReplySed: (action as ActionWithPayload).payload,
+        replySedChanged: false
+      }
+
     case types.SVARSED_REPLYSED_SET:
       return {
         ...state,
-        replySed: (action as ActionWithPayload).payload.replySed,
-        replySedChanged: (action as ActionWithPayload).payload.flagItAsUnsaved
+        replySed: (action as ActionWithPayload).payload,
+        replySedChanged: true
+      }
+
+    case types.SVARSED_REPLYSED_RESTORE:
+      return {
+        ...state,
+        replySed: state.originalReplySed
       }
 
     case types.SVARSED_REPLYSED_UPDATE: {

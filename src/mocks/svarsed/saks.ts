@@ -22,21 +22,39 @@ export default (saksnummer: string) => {
           sedTittel: 'Description for F001',
           status: 'received',
           sedType: 'F001',
-          sedId: '603e18ebd5b549b1b5c0f53c58558115',
+          sedId: 'f001received',
           sistEndretDato: '2020-01-02',
           svarsedType: 'F002',
           svarsedDisplay: 'Description for F002',
-          svarsedId: '603e18ebd5b549b1b5c0f53c58558115_2'
+          svarsedId: 'f001receivedSvar'
         }, {
           sedTittel: 'Description for F002',
+          status: 'new',
+          sedType: 'F002',
+          sedId: 'f002new',
+          sistEndretDato: '2020-01-01'
+        }, {
+          sedTittel: 'Description for F002 with sedIdParent',
           status: 'received',
           sedType: 'F002',
-          sedId: '603e18ebd5b549b1b5c0f53c58558116',
-          sedIdParent: '603e18ebd5b549b1b5c0f53c58558117',
-          sistEndretDato: '2020-01-02',
+          sedId: 'f002received',
+          sedIdParent: 'f002receivedParent',
+          sistEndretDato: '2020-01-03',
           svarsedType: 'F002',
           svarsedDisplay: 'Description for F002',
-          svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
+          svarsedId: 'f002receivedSvar'
+        }, {
+          sedTittel: 'Description for F002',
+          status: 'cancelled',
+          sedType: 'F002',
+          sedId: 'f002cancelled',
+          sistEndretDato: '2020-01-04'
+        },  {
+          sedTittel: 'Description for F002',
+          status: 'active',
+          sedType: 'F002',
+          sedId: 'f002active',
+          sistEndretDato: '2020-01-05'
         }
       ]
     }, {
@@ -116,29 +134,35 @@ export default (saksnummer: string) => {
         {
           sedTittel: 'Horizontal',
           sedType: 'H001',
-          sedId: '8edd012b62d84a768cbd4a734929076f',
+          sedId: 'h001new',
+          status: 'new',
+          sistEndretDato: '2021-02-19'
+        }, {
+          sedTittel: 'Horizontal',
+          sedType: 'H001',
+          sedId: 'h001cancelled',
+          status: 'cancelled',
+          sistEndretDato: '2021-02-19'
+        }, {
+          sedTittel: 'Horizontal With Link',
+          sedType: 'H001',
+          sedId: 'h001received',
           status: 'received',
           sistEndretDato: '2021-02-18',
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
           lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
-          svarsedId: '8edd012b62d84a768cbd4a734929076f_2'
+          svarsedId: 'h002received'
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
-          sedId: '8edd012b62d84a768cbd4a734929076d',
+          sedId: 'h001received2',
           status: 'received',
           sistEndretDato: '2021-02-19',
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
-          svarsedId: '8edd012b62d84a768cbd4a734929076d_2'
-        }, {
-          sedTittel: 'Horizontal',
-          sedType: 'H001',
-          sedId: '8edd012b62d84a768cbd4a734929076e',
-          status: 'new',
-          sistEndretDato: '2021-02-19'
-        }
+          svarsedId: 'h002received2'
+        },
       ]
     },
     {

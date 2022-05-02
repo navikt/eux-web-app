@@ -25,6 +25,8 @@ export const hasDraft = (
 
 export const canEditSed = (sedType: string) => ['F002', 'H001', 'H002', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
 
+export const canUpdateSed = (sedType: string) => ['F002', 'H001', 'H002', 'U001', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
+
 export const isSedEditable = (
   connectedSed: Sed,
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined,

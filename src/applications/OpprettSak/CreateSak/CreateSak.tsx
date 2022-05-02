@@ -5,7 +5,7 @@ import { cleanPersons } from 'actions/person'
 import * as personActions from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { cleanData, resetSentSed } from 'actions/sak'
-import { setReplySed } from 'actions/svarsed'
+import { loadReplySed } from 'actions/svarsed'
 import { resetAllValidation, resetValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
@@ -378,7 +378,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const fillOutSed = (opprettetSak: OpprettetSak) => {
     const replySed = createH001Sed(opprettetSak)
-    dispatch(setReplySed(replySed, false))
+    dispatch(loadReplySed(replySed))
     changeMode('B', 'forward')
   }
 

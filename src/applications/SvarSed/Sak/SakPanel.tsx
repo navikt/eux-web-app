@@ -5,8 +5,8 @@ import {
   FlexCenterSpacedDiv,
   FlexDiv,
   HorizontalSeparatorDiv,
-  PileDiv, RadioPanelBorder,
-  VerticalSeparatorDiv
+  PileDiv,
+  RadioPanelBorder
 } from '@navikt/hoykontrast'
 
 import { Sak } from 'declarations/types'
@@ -60,7 +60,6 @@ const SakPanel = ({
             {sak?.motpart?.join(', ') ?? '-'}
           </BodyLong>
         </FlexDiv>
-        <VerticalSeparatorDiv size='0.3' />
         <FlexCenterSpacedDiv style={{ width: '100%' }}>
           <BodyLong>
             {t('label:siste-oppdatert') + ': ' + sak.sistEndretDato}

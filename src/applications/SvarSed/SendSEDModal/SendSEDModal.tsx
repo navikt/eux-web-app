@@ -1,6 +1,5 @@
 import { alertClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
-import { sendSedInRina } from 'actions/svarsed'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import { SuccessFilled } from '@navikt/ds-icons'
 import Modal from 'components/Modal/Modal'
@@ -18,7 +17,7 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
+import { buttonLogger } from 'metrics/loggers'
 import { Alert, Button, Loader, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
@@ -137,14 +136,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     setSedAttachments(newAttachments)
   }
 
-  const onSendSedClick = () => {
-    if (replySed?.sak?.sakId && sedCreatedResponse?.sedId) {
-      _setSendButtonClicked(true)
-      dispatch(sendSedInRina(replySed?.sak?.sakId, sedCreatedResponse?.sedId))
-      standardLogger('svarsed.editor.sendsvarsed.button', { type: 'modal' })
-    }
-  }
-
   const _onFinished = (summary: any) => {
     if (!_finished) {
       if (_.isString(summary)) {
@@ -192,7 +183,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
         modalContent: (
           <MinimalModalDiv>
             <Heading size='small'>
-              {_.isEmpty(sedCreatedResponse) ? t('label:opprette-ny-sed') : t('label:oppdatere-sed')}
+              {t('label:lagre-sed')}
             </Heading>
             <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE, types.SVARSED_SED_UPDATE_FAILURE].indexOf(alertType) >= 0 && (
@@ -250,7 +241,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       <FlexCenterSpacedDiv>
                         <SuccessFilled color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
-                        <span>{t('message:loading-sed-created-updated')}</span>
+                        <span>{t('message:loading-sed-lagret')}</span>
                       </FlexCenterSpacedDiv>
                     )}
                   </div>
@@ -320,20 +311,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       {t('el:button-close')}
                     </Button>
 
-                    {!_.isEmpty(sedCreatedResponse) && (
-                      <>
-                        <HorizontalSeparatorDiv />
-                        <Button
-                          variant='primary'
-                          // amplitude is dealt on SendSedClick
-                          title={t('message:help-send-sed')}
-                          disabled={sendingSed || !_.isNil(sedSendResponse)}
-                          onClick={onSendSedClick}
-                        >
-                          {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-                        </Button>
-                      </>
-                    )}
+
                     <HorizontalSeparatorDiv />
                     {goToRinaUrl && (
                       <Button

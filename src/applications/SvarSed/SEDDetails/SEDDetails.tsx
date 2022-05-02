@@ -27,7 +27,6 @@ import { getFnr } from 'utils/fnr'
 import { isHSed, isUSed } from 'utils/sed'
 
 export interface SEDDetailsProps {
-  unsavedDoc?: boolean
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
 }
 
@@ -44,7 +43,6 @@ const mapState = (state: State): SEDDetailsSelector => ({
 })
 
 const SEDDetails: React.FC<SEDDetailsProps> = ({
-  unsavedDoc,
   updateReplySed
 }: SEDDetailsProps) => {
   const { t } = useTranslation()
@@ -87,7 +85,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
         variant='secondary'
         data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
         onClick={onSaveSedClick}
-        disabled={!unsavedDoc || savingSed}
+        disabled={savingSed}
       >
         {_.isNil(currentEntry)
           ? t('el:button-save-draft-x', { x: t('label:sed') })

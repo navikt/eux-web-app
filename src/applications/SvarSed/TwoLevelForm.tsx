@@ -190,7 +190,7 @@ export interface _TwoLevelFormProps<T> {
   firstForm: string
   replySed: T | null | undefined
   viewValidation: boolean
-  setReplySed: (replySed: T, flagItAsUnsaved?: boolean) => ActionWithPayload<T>
+  setReplySed: (replySed: T) => ActionWithPayload<T>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   namespace: string
   loggingNamespace: string
@@ -201,7 +201,7 @@ export interface TwoLevelFormProps {
   parentNamespace: string
   personID: string | undefined
   personName: string
-  setReplySed: (replySed: ReplySed | PDU1, flagItAsUnsaved?: boolean) => ActionWithPayload<ReplySed | PDU1>
+  setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
 }

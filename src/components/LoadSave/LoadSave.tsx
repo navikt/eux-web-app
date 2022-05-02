@@ -37,7 +37,7 @@ const LoadSaveDiv = styled(FlexDiv)`
 interface LoadSaveProps<T> {
   changeMode: ChangeModeFunction
   namespace: LocalStorageNamespaces
-  setReplySed: (payload: T, flagItAsUnsaved?: boolean) => ActionWithPayload<T>
+  loadReplySed: (payload: T) => ActionWithPayload<T>
 }
 
 interface LoadSaveSelector {
@@ -48,7 +48,7 @@ interface LoadSaveSelector {
 const LoadSave = <T extends StorageTypes>({
   changeMode,
   namespace,
-  setReplySed
+  loadReplySed
 }: LoadSaveProps<T>) => {
   const dispatch = useAppDispatch()
   const { entries, sedStatus }: LoadSaveSelector =
@@ -86,7 +86,7 @@ const LoadSave = <T extends StorageTypes>({
       const entry: LocalStorageEntry<T> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
-        dispatch(setReplySed(entry.content, false))
+        dispatch(loadReplySed(entry.content))
         changeMode('B', 'forward')
       }
       setSedStatusRequested(undefined)
@@ -112,7 +112,7 @@ const LoadSave = <T extends StorageTypes>({
       const entry: LocalStorageEntry<T> | undefined = findSavedEntry(_sedStatusRequested)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
-        dispatch(setReplySed(entry.content as T, false))
+        dispatch(loadReplySed(entry.content as T))
         changeMode('B', 'forward')
       }
       setSedStatusRequested(undefined)

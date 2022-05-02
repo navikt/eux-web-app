@@ -124,6 +124,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       }
 
     case types.PDU1_SET:
+    case types.PDU1_LOAD:
       return {
         ...state,
         pdu1: (action as ActionWithPayload).payload

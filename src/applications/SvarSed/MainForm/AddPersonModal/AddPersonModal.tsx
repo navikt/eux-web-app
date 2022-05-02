@@ -61,7 +61,7 @@ interface AddPersonModalProps<T> {
   closeButton?: boolean
   parentNamespace: string
   replySed: T | null | undefined
-  setReplySed: (replySed: T, flagItAsUnsaved?: boolean) => ActionWithPayload<T>
+  setReplySed: (replySed: T) => ActionWithPayload<T>
 }
 
 const AddPersonModal = <T extends StorageTypes>({

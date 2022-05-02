@@ -1,7 +1,7 @@
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import { fetchPdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
+import { fetchPdu1, loadPdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
 import SlidePage, { ChangeModeFunction } from 'components/SlidePage/SlidePage'
@@ -88,7 +88,7 @@ export const PDU1Page = (): JSX.Element => {
             <LoadSave<PDU1>
               namespace='pdu1'
               changeMode={changeMode}
-              setReplySed={setPdu1}
+              loadReplySed={loadPdu1}
             />
           </SideBarDiv>
         )}
