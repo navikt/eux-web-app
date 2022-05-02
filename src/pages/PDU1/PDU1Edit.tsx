@@ -156,11 +156,12 @@ const PDU1Edit: React.FC = (): JSX.Element => {
       <TwoLevelForm<PDU1>
         namespace='pdu1'
         loggingNamespace='personmanager'
+        firstForm='person'
         forms={[
           { label: t('el:option-mainform-person'), value: 'person', component: Person, type: 'PD' },
           { label: t('el:option-mainform-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           {
-            label: t('el:option-mainform-sisteansettelseinfo'),
+            label: t('el:option-mainform-arsak-til-avsluttet'),
             value: 'sisteansettelseinfo',
             component: SisteAnsettelseInfo,
             type: 'PD'

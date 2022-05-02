@@ -366,6 +366,11 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
                 id: 'date',
                 label: t('label:dato'),
                 type: 'date',
+                render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
+                  return (
+                    <Label>{value ?? '-'}</Label>
+                  )
+                },
                 dateFormat: 'DD.MM.YYYY'
               }
             ]

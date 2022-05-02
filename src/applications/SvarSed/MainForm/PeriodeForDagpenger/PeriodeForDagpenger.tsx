@@ -274,6 +274,7 @@ const PeriodeForDagpenger: React.FC<TwoLevelFormProps> = ({
         <AlignStartRow>
           <PeriodeInput
             namespace={namespace + idx}
+            hideLabel={index >= 0}
             error={{
               startdato: getErrorFor(index, 'periode-startdato'),
               sluttdato: getErrorFor(index, 'periode-sluttdato')

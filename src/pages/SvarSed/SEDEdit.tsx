@@ -1,9 +1,8 @@
 import { Sight } from '@navikt/ds-icons'
-import { Alert, Button, Loader } from '@navikt/ds-react'
+import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import { Column, FlexDiv, HorizontalSeparatorDiv, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
-import { saveEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
@@ -44,7 +43,6 @@ import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørs
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
 import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
 import OneLevelForm from 'applications/SvarSed/OneLevelForm'
-import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import TextArea from 'components/Forms/TextArea'
@@ -55,7 +53,7 @@ import * as types from 'constants/actionTypes'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
-import { CreateSedResponse, LocalStorageEntry, Validation } from 'declarations/types'
+import { CreateSedResponse, Validation } from 'declarations/types'
 import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -75,8 +73,6 @@ export interface SEDEditSelector {
   gettingPreviewFile: boolean
   previewFile: any,
   replySed: ReplySed | null | undefined
-  currentEntry: LocalStorageEntry<ReplySed> | undefined
-  savingSed: boolean
   sendingSed: boolean
   sedCreatedResponse: CreateSedResponse
   sedSendResponse: any
@@ -88,12 +84,10 @@ const mapState = (state: State): any => ({
   alertType: state.alert.type,
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
-  currentEntry: state.localStorage.svarsed.currentEntry,
   updatingSvarSed: state.loading.updatingSvarSed,
   gettingPreviewFile: state.loading.gettingPreviewFile,
   previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
-  savingSed: state.loading.savingSed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
@@ -108,27 +102,23 @@ const SEDEdit: React.FC = (): JSX.Element => {
     alertType,
     alertMessage,
     creatingSvarSed,
-    currentEntry,
     updatingSvarSed,
     gettingPreviewFile,
     previewFile,
     replySed,
-    savingSed,
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
     validation,
     view
   }: SEDEditSelector = useAppSelector(mapState)
-  const fnr = getFnr(replySed, 'bruker')
   const namespace = 'editor'
 
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
-  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
-
+  const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
+  const fnr = getFnr(replySed, 'bruker')
 
   const showTopForm = (): boolean => isFSed(replySed)
   const showTwoLevelForm = (): boolean => isSed(replySed)
@@ -171,16 +161,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
         dispatch(resetAllValidation())
         buttonLogger(e)
       }
-    }
-  }
-
-  const onSaveSedClick = () => {
-    if (_.isNil(currentEntry)) {
-      setViewSaveSedModal(true)
-    } else {
-      const newCurrentEntry: LocalStorageEntry<ReplySed> = _.cloneDeep(currentEntry)
-      newCurrentEntry.content = _.cloneDeep(replySed!)
-      dispatch(saveEntry('svarsed', newCurrentEntry))
     }
   }
 
@@ -276,28 +256,12 @@ const SEDEdit: React.FC = (): JSX.Element => {
         modal={_modal}
         onModalClose={resetPreview}
       />
-      {_viewSendSedModal && (
-        <SendSEDModal
-          fnr={fnr!}
-          open={_viewSendSedModal}
-          goToRinaUrl={replySed?.sak?.sakUrl}
-          replySed={replySed}
-          onModalClose={() => setViewSendSedModal(false)}
-        />
-      )}
-      <Modal
-        open={_viewSaveSedModal}
-        onModalClose={() => setViewSaveSedModal(false)}
-        modal={{
-          closeButton: false,
-          modalContent: (
-            <SaveSEDModal
-              replySed={replySed!}
-              onSaved={() => setViewSaveSedModal(false)}
-              onCancelled={() => setViewSaveSedModal(false)}
-            />
-          )
-        }}
+      <SendSEDModal
+        fnr={fnr!}
+        open={_viewSendSedModal}
+        goToRinaUrl={replySed?.sak?.sakUrl}
+        replySed={replySed}
+        onModalClose={() => setViewSendSedModal(false)}
       />
       {showTopForm() && (
         <>
@@ -320,6 +284,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
           <TwoLevelForm<ReplySed>
             namespace='svarsed'
             loggingNamespace='personmanager'
+            firstForm='personopplysninger'
             forms={[
               { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], barn: true },
               { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F'], barn: true },
@@ -400,92 +365,75 @@ const SEDEdit: React.FC = (): JSX.Element => {
       {!isH001Sed(replySed) && (
         <>
           <VerticalSeparatorDiv />
-          <Row>
-            <Column flex='2'>
-              <TextAreaDiv>
-                <TextArea
-                  namespace={namespace}
-                  error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                  key={namespace + '-' + replySed?.sedType}
-                  id='ytterligereInfo'
-                  label={t('label:ytterligere-informasjon-til-sed')}
-                  onChanged={setComment}
-                  value={isH002Sed(replySed) ? (replySed as H002Sed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
-                />
-              </TextAreaDiv>
-            </Column>
-            <Column />
-          </Row>
+          <TextAreaDiv>
+            <TextArea
+              namespace={namespace}
+              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              key={namespace + '-' + replySed?.sedType}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-informasjon-til-sed')}
+              onChanged={setComment}
+              value={isH002Sed(replySed) ? (replySed as H002Sed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
+            />
+          </TextAreaDiv>
         </>
       )}
       <VerticalSeparatorDiv size='2' />
-      <Button
-        variant='tertiary'
-        disabled={gettingPreviewFile}
-        data-amplitude='svarsed.editor.preview'
-        onClick={onPreviewSed}
-      >
-        <Sight />
-        <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-        {gettingPreviewFile && <Loader />}
-      </Button>
-      <VerticalSeparatorDiv size='2' />
-      <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-      <VerticalSeparatorDiv size='2' />
-      <FlexDiv>
-        <div>
-          <Button
-            variant='primary'
-            data-amplitude={_.isEmpty(replySed?.sed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
-            onClick={sendReplySed}
-            disabled={creatingSvarSed || updatingSvarSed}
-          >
-            {creatingSvarSed
-              ? t('message:loading-opprette-sed')
-              : updatingSvarSed
-                ? t('message:loading-oppdatering-sed')
-                : _.isEmpty(replySed?.sed?.sedId)
-                  ? t('label:opprett-sed')
-                  : _.isEmpty(sedCreatedResponse)
-                    ? t('label:oppdatere-sende-sed')
-                    : t('label:oppdatere-sed')}
-            {(creatingSvarSed || updatingSvarSed) && <Loader />}
-          </Button>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-        <HorizontalSeparatorDiv />
-        {!_.isEmpty(sedCreatedResponse) && (
-          <>
-            <div>
-              <Button
-                variant='primary'
+      <Panel border>
+        <Button
+          variant='tertiary'
+          disabled={gettingPreviewFile}
+          data-amplitude='svarsed.editor.preview'
+          onClick={onPreviewSed}
+        >
+          <Sight />
+          <HorizontalSeparatorDiv size='0.5' />
+          {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
+          {gettingPreviewFile && <Loader />}
+        </Button>
+        <VerticalSeparatorDiv />
+        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+        <VerticalSeparatorDiv/>
+        <FlexDiv>
+          <div>
+            <Button
+              variant='primary'
+              data-amplitude={_.isEmpty(replySed?.sed?.sedId) ? 'svarsed.editor.opprettsvarsed' : 'svarsed.editor.oppdattersvarsed'}
+              onClick={sendReplySed}
+              disabled={creatingSvarSed || updatingSvarSed}
+            >
+              {creatingSvarSed
+                ? t('message:loading-opprette-sed')
+                : updatingSvarSed
+                  ? t('message:loading-oppdatering-sed')
+                  : _.isEmpty(replySed?.sed?.sedId)
+                    ? t('label:opprett-sed')
+                    : _.isEmpty(sedCreatedResponse)
+                      ? t('label:oppdatere-sende-sed')
+                      : t('label:oppdatere-sed')}
+              {(creatingSvarSed || updatingSvarSed) && <Loader />}
+            </Button>
+            <VerticalSeparatorDiv size='0.5' />
+          </div>
+          <HorizontalSeparatorDiv />
+          {!_.isEmpty(sedCreatedResponse) && (
+            <>
+              <div>
+                <Button
+                  variant='primary'
                 // amplitude is dealt on SendSedClick
-                title={t('message:help-send-sed')}
-                disabled={sendingSed || !_.isNil(sedSendResponse)}
-                onClick={onSendSedClick}
-              >
-                {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-              </Button>
-            </div>
-            <HorizontalSeparatorDiv />
-          </>
-        )}
-        <div>
-          <Button
-            variant='secondary'
-            data-amplitude={_.isNil(currentEntry) ? 'svarsed.editor.savedraft' : 'svarsed.editor.updatedraft'}
-            onClick={onSaveSedClick}
-            disabled={savingSed}
-          >
-            {_.isNil(currentEntry)
-              ? t('el:button-save-draft-x', { x: t('label:sed') })
-              : t('el:button-update-draft-x', { x: t('label:sed') })}
-            {savingSed && <Loader />}
-          </Button>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-      </FlexDiv>
+                  title={t('message:help-send-sed')}
+                  disabled={sendingSed || !_.isNil(sedSendResponse)}
+                  onClick={onSendSedClick}
+                >
+                  {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+                </Button>
+              </div>
+              <HorizontalSeparatorDiv />
+            </>
+          )}
+
+        </FlexDiv>
       <VerticalSeparatorDiv />
       {_sendButtonClicked && alertMessage &&
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
@@ -508,6 +456,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
           <VerticalSeparatorDiv />
         </>
       )}
+      </Panel>
     </PaddedDiv>
   )
 }

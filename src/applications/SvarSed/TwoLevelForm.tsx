@@ -187,6 +187,7 @@ const BlankContentDiv = styled(FlexCenterDiv)`
 `
 export interface _TwoLevelFormProps<T> {
   forms: Array<Form>
+  firstForm: string
   replySed: T | null | undefined
   viewValidation: boolean
   setReplySed: (replySed: T, flagItAsUnsaved?: boolean) => ActionWithPayload<T>
@@ -224,6 +225,7 @@ export const mapState = (state: State): TwoLevelFormSelector => ({
 
 const TwoLevelForm = <T extends StorageTypes>({
   forms,
+  firstForm,
   replySed,
   setReplySed,
   updateReplySed,
@@ -250,7 +252,7 @@ const TwoLevelForm = <T extends StorageTypes>({
   const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(undefined)
+  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1 ? firstForm : undefined)
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
   useEffect(() => {

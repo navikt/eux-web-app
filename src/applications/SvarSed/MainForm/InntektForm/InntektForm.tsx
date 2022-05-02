@@ -229,8 +229,8 @@ const InntektForm: React.FC<TwoLevelFormProps> = ({
             }}
             hideLabel={false}
             label={{
-               startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
-               sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
+              startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
+              sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
             }}
             setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
             value={_periode}
