@@ -16,12 +16,10 @@ export const AlertDiv = styled(Alert)`
   top: 0;
   z-index: 10;
   width: 100%;
-  display: flex;
   border-radius: 0px !important;
   border: 0px !important;
-  .alertstripe__tekst {
+  .navds-alert__wrapper {
     display: flex !important;
-    max-width: none !important;
   }
 `
 export const CloseIcon = styled(ErrorFilled)`
@@ -86,10 +84,11 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
         <div>
           <HorizontalSeparatorDiv/>
           <CloseIcon
-            height='30'
-          data-testid='c-BannerAlert__CloseIcon'
-          onClick={onCloseIconClicked}
-        />
+            height='24'
+            width='24'
+            data-testid='c-BannerAlert__CloseIcon'
+            onClick={onCloseIconClicked}
+          />
         </div>
       )}
     </AlertDiv>

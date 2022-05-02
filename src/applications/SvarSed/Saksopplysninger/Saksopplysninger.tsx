@@ -1,6 +1,5 @@
-import { ExternalLink } from '@navikt/ds-icons'
-import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
-import { HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Heading, Panel } from '@navikt/ds-react'
+import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -22,18 +21,6 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       <Dl>
-        <Dt>
-          {t('label:rina-saksnr') + ':'}
-        </Dt>
-        <Dd>
-          <Link target='_blank' href={sak?.sakUrl} rel='noreferrer'>
-            <span>
-              {sak?.sakId}
-            </span>
-            <HorizontalSeparatorDiv size='0.35' />
-            <ExternalLink />
-          </Link>
-        </Dd>
         <Dt>
           {t('label:vår-rolle')}:
         </Dt>

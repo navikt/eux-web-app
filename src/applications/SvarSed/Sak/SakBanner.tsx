@@ -1,5 +1,5 @@
 import { ExternalLink, Copy, InformationFilled } from '@navikt/ds-icons'
-import { BodyLong, Label, Heading, Link } from '@navikt/ds-react'
+import { BodyLong, Label, Heading, Link, Popover } from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
 import mann from 'assets/icons/Man.png'
@@ -7,7 +7,7 @@ import ukjent from 'assets/icons/Unknown.png'
 import kvinne from 'assets/icons/Woman.png'
 import { Kodeverk, Sak } from 'declarations/types'
 import _ from 'lodash'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -27,6 +27,8 @@ const SakBanner = ({ sak }: SakProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const sektor : Array<Kodeverk> | undefined = useAppSelector(state => state.app.sektor)
+  const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
+  const iconRef = useRef(null)
 
   let thisSektor = sak.sakType.split('_')[0]
   if (thisSektor === 'H') { thisSektor = 'HZ' }
@@ -104,7 +106,36 @@ const SakBanner = ({ sak }: SakProps) => {
             <Copy />
           </Link>
           <HorizontalSeparatorDiv />
-          <InformationFilled />
+          <Popover
+            open={popoverOpen}
+            onClose={() => setPopoverOpen(false)}
+            arrow
+            anchorEl={iconRef.current}
+            placement='auto'
+          >
+            <Popover.Content style={{maxWidth: '600px'}}>
+              <Heading size='small'>
+                {t('label:international-id')}:
+                <HorizontalSeparatorDiv />
+                <Link
+                  title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(sak.sakId))
+                }}
+                >
+                  {sak.sakId + ' '}
+                  <Copy />
+                </Link>
+              </Heading>
+              {t('message:help-international-id')}
+            </Popover.Content>
+          </Popover>
+          <InformationFilled
+            style={{cursor: 'pointer'}}
+            ref={iconRef}
+            onClick={() => setPopoverOpen(!popoverOpen)}
+          />
         </FlexDiv>
         <FlexDiv>
           <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>

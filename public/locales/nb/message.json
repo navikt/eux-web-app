@@ -30,6 +30,7 @@
   "help-journalpostID": "Journalpost ID finner du ved å åpne journalposten i Gosys",
   "help-send-sed": "Sender avgårde en Sed som allerede fins i Rina.",
   "help-restore-sed": "Nullstill SED",
+  "help-international-id": "Internasjonal ID er et felles globalt saksnummer for alle deltakere i \nsaken, og kan brukes til å identifisere saken hos den/de andre \ninstitusjonen(e) i saken. \nLokal ID er et RINA-saksnummer som kun benyttes av egen \ninstitusjon, og som vi benytter til å søke etter saken i nEESSI.",
 
   "loading-checking-sed-status": "Kontrollerer SED status...",
   "loading-editing" : "Rediger...",
@@ -78,6 +79,8 @@
   "warning-no-utbetaling": "Ingen utbetalinger",
   "warning-no-utenlandskepin": "Ingen utenlandske PIN",
   "warning-no-ytelse": "Ingen ytelser",
+  "warning-sed-not-saved": "SEDen er ikke lagret!",
+  "warning-sed-save": "Ønsker du å lagre en kopi av SEDen før du fortsetter?",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført",
   "warning-unknown-address": "Ukjent adresse"
 }
