@@ -7,18 +7,17 @@ export interface ValidationVedleggProps {
   dokumentID: string | undefined
   rinasaksnummer: string | undefined
   rinadokumentID: string | undefined
-  namespace: string
 }
 
 export const validateVedlegg = (
   v: Validation,
   t: TFunction,
+  namespace: string,
   {
     journalpostID,
     dokumentID,
     rinasaksnummer,
-    rinadokumentID,
-    namespace
+    rinadokumentID
   }: ValidationVedleggProps
 ): boolean => {
   const hasErrors: Array<boolean> = []

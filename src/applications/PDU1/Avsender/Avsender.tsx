@@ -1,7 +1,7 @@
 import { Heading, Switch } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { NavInfo } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -12,15 +12,15 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Avsender: React.FC<TwoLevelFormProps> = ({
+const Avsender: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}:TwoLevelFormProps): JSX.Element => {
+}: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()

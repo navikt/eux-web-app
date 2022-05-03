@@ -12,7 +12,7 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { F002Sed, LokaleSakId, Periode, ReplySed, USed } from 'declarations/sed'
 import { UpdateReplySedPayload, Validation } from 'declarations/types'
 import useAddRemove from 'hooks/useAddRemove'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -41,7 +41,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 
   const [sakseierAddToDeletion, sakseierRemoveFromDeletion, sakseierIsInDeletion] = useAddRemove<LokaleSakId>((id: LokaleSakId): string => id.institusjonsid)
   const [_sakseierSeeNewForm, _setSakseierSeeNewForm] = useState<boolean>(false)
-  const [_sakseierValidation, _sakseierResetValidation, sakseierPerformValidation] = useValidation<ValidationSakseierProps>({}, validateSakseier)
+  const [_sakseierValidation, _sakseierResetValidation, sakseierPerformValidation] = useLocalValidation<ValidationSakseierProps>({}, validateSakseier)
 
   const namespace = 'seddetails'
 

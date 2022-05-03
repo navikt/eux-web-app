@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { useState } from 'react'
 import { TextField } from '@navikt/ds-react'
 
@@ -12,8 +13,8 @@ export interface InputProps {
   id: string
   label: React.ReactNode
   min ?: string
-  onContentChange?: (e: string) => void
-  onChanged?: (e: string) => void
+  onContentChange ?: (e: string) => void
+  onChanged ?: (e: string) => void
   required ?: boolean
   type?: 'number' | 'text' | 'tel' | 'url' | 'email' | 'password' | undefined
   style ?: any
@@ -50,15 +51,17 @@ const Input: React.FC<InputProps> = ({
       error={error}
       id={namespace + '-' + id}
       hideLabel={hideLabel}
-      label={label + (required ? ' *' : '')}
+      label={_.isString(label)
+        ? label + (required ? ' *' : '')
+        : label}
       onBlur={() => {
         if (_dirty) {
-          onChanged(_value)
+          onChanged!(_value)
           _setDirty(false)
         }
       }}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        onContentChange(e.target.value)
+        onContentChange!(e.target.value)
         _setValue(e.target.value)
         _setDirty(true)
       }}

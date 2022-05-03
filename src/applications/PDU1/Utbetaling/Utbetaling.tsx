@@ -1,6 +1,6 @@
 import { Checkbox, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -10,15 +10,15 @@ import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
+const UtbetalingFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-} :TwoLevelFormProps): JSX.Element => {
+} :MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()

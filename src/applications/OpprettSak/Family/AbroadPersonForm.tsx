@@ -5,7 +5,7 @@ import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
@@ -60,7 +60,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const { t } = useTranslation()
   const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
-  const [_validation, resetValidation, performValidation] = useValidation<AbroadPersonFormValidationProps>({}, validateAbroadPersonForm)
+  const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>({}, validateAbroadPersonForm)
   const namespace = 'familierelasjoner'
 
   useEffect(() => {

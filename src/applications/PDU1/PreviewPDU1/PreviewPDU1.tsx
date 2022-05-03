@@ -1,21 +1,22 @@
 import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
-import { resetAllValidation, viewValidation } from 'actions/validation'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { saveAs } from 'file-saver'
-import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+
+export interface PreviewPDU1Props {
+  performValidation: any
+}
 
 export interface PreviewPDU1Selector {
   pdu1: PDU1
@@ -29,7 +30,9 @@ const mapState = (state: State): any => ({
   previewPdu1file: state.pdu1.previewPdu1
 })
 
-const PreviewPDU1: React.FC = () => {
+const PreviewPDU1: React.FC<PreviewPDU1Props> = ({
+  performValidation
+}: PreviewPDU1Props) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
@@ -39,7 +42,6 @@ const PreviewPDU1: React.FC = () => {
   }: PreviewPDU1Selector = useAppSelector(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
-  const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
 
   const onResetPdu1Clicked = () => {
     dispatch(resetPreviewPdu1())
@@ -51,7 +53,7 @@ const PreviewPDU1: React.FC = () => {
       const valid = performValidation({
         pdu1: newPdu1
       })
-      dispatch(viewValidation())
+
       if (valid) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
@@ -62,7 +64,6 @@ const PreviewPDU1: React.FC = () => {
         }
 
         dispatch(previewPdu1(newPdu1))
-        dispatch(resetAllValidation())
         buttonLogger(e)
       }
     }

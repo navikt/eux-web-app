@@ -80,17 +80,3 @@ export const checkIfNotGB = (v: Validation, {
   }
   return false
 }
-
-export const propagateError = (v: Validation, namespace: string) => {
-  const namespaceBits = namespace.split('-')
-  const mainNamespace = namespaceBits[0]
-  const personNamespace = mainNamespace + '-' + namespaceBits[1]
-  let categoryNamespace = personNamespace + '-' + namespaceBits[2]
-  // clean up category names, like forsikring[periodeSyk][1] to forsikring
-  if (categoryNamespace.indexOf('[') >= 0) {
-    categoryNamespace = categoryNamespace.substring(0, categoryNamespace.indexOf('['))
-  }
-  v[mainNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-  v[personNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-  v[categoryNamespace] = { feilmelding: 'notnull', skjemaelementId: '' } as ErrorElement
-}

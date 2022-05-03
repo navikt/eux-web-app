@@ -1,13 +1,13 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import useAddRemove from 'hooks/useAddRemove'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
@@ -25,15 +25,15 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateStatsborgerskap, ValidationStatsborgerskapProps } from './validation'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
+const StatsborgerskapFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}:TwoLevelFormProps): JSX.Element => {
+}:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -45,7 +45,7 @@ const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((s: string): string => s)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationStatsborgerskapProps>({}, validateStatsborgerskap)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationStatsborgerskapProps>({}, validateStatsborgerskap)
 
   const onStatsborgerskapSelected = (newStatsborgerskap: string, index: number) => {
     if (index < 0) {

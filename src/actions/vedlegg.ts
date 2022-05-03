@@ -31,7 +31,6 @@ export const sendVedlegg = (payload: VedleggPayload): ActionWithPayload => {
     url: urls.API_VEDLEGG_POST_URL,
     method: 'POST',
     payload,
-    expectedErrorRate: { 500: 0.5 },
     expectedPayload: mockSendVedlegg,
     type: {
       request: types.VEDLEGG_POST_REQUEST,

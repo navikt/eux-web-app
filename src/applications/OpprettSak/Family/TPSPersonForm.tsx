@@ -2,7 +2,7 @@ import { Alert, Loader, Search } from '@navikt/ds-react'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
@@ -43,7 +43,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   const [_query, setQuery] = useState<string>('')
   const [_personRelatert, setPersonRelatert] = useState<OldFamilieRelasjon | undefined>(undefined)
   const [_tpsperson, setTpsPerson] = useState<OldFamilieRelasjon | undefined>(undefined)
-  const [validation, resetValidation, performValidation] = useValidation<TPSPersonFormValidationProps>({}, validateTPSPersonForm)
+  const [validation, resetValidation, performValidation] = useLocalValidation<TPSPersonFormValidationProps>({}, validateTPSPersonForm)
   const { t } = useTranslation()
   const namespace = 'tpspersonform'
 

@@ -3,7 +3,6 @@ import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
 import { editSed, getSedStatus, invalidatingSed, replyToSed, setReplySed } from 'actions/svarsed'
-import { resetAllValidation } from 'actions/validation'
 import { canEditSed, canUpdateSed, findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -65,7 +64,6 @@ const SEDPanel = ({
   useEffect(() => {
     if (!_.isUndefined(replySed) && _replyingToSed) {
       _setReplyingToSed(false)
-      dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
   }, [replySed])

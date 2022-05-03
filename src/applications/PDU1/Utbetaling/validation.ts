@@ -2,9 +2,9 @@ import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { TFunction } from 'react-i18next'
-import { addError, propagateError } from 'utils/validation'
+import { addError } from 'utils/validation'
 
-export interface ValidationUbetalingProps {
+export interface ValidationUtbetalingProps {
   utbetaling: AndreMottatteUtbetalinger
   namespace: string
 }
@@ -15,7 +15,7 @@ export const validateUtbetaling = (
   {
     utbetaling,
     namespace
-  }: ValidationUbetalingProps
+  }: ValidationUtbetalingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
@@ -51,7 +51,5 @@ export const validateUtbetaling = (
     hasErrors.push(true)
   }
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }

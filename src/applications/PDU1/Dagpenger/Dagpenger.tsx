@@ -1,14 +1,14 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import { RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import useAddRemove from 'hooks/useAddRemove'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import {
@@ -26,15 +26,15 @@ import { getIdx } from 'utils/namespace'
 import { validateDagpengerPeriode, ValidationDagpengerPeriodeProps } from './validation'
 import { PDPeriode } from 'declarations/pd'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Dagpenger: React.FC<TwoLevelFormProps> = ({
+const Dagpenger: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}: TwoLevelFormProps): JSX.Element => {
+}: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -48,7 +48,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>((p: PDPeriode): string => p.startdato + '-' + (p.sluttdato ?? ''))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationDagpengerPeriodeProps>({}, validateDagpengerPeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>({}, validateDagpengerPeriode)
 
   const onStartdatoChange = (newStartdato: string, index: number) => {
     if (index < 0) {

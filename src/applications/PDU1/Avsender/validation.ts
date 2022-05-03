@@ -2,7 +2,7 @@ import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
 import { NavInfo } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, propagateError } from 'utils/validation'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAvsenderProps {
   nav: NavInfo
@@ -60,7 +60,5 @@ export const validateAvsender = (
     message: 'validation:noEnhet'
   }))
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }

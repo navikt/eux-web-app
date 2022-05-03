@@ -3,7 +3,6 @@ import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, PileDiv, VerticalSeparatorD
 import { saveEntry } from 'actions/localStorage'
 import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetAllValidation, viewValidation } from 'actions/validation'
 import Avsender from 'applications/PDU1/Avsender/Avsender'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
@@ -13,7 +12,7 @@ import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenge
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
-import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
+import MainForm from 'applications/SvarSed/MainForm'
 import Modal from 'components/Modal/Modal'
 import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
@@ -35,7 +34,6 @@ export interface PDU1EditSelector {
   savingPdu1: boolean
   jornalførePdu1Response: any
   validation: Validation
-  view: boolean
 }
 
 const mapState = (state: State): any => ({
@@ -43,8 +41,7 @@ const mapState = (state: State): any => ({
   currentEntry: state.localStorage.pdu1.currentEntry,
   pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
-  validation: state.validation.status,
-  view: state.validation.view
+  validation: state.validation.status
 })
 
 const PDU1Edit: React.FC = (): JSX.Element => {
@@ -55,12 +52,13 @@ const PDU1Edit: React.FC = (): JSX.Element => {
     currentEntry,
     pdu1,
     jornalførePdu1Response,
-    validation,
-    view
+    validation
   }: PDU1EditSelector = useAppSelector(mapState)
+  const namespace = 'pdu1'
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit)
+  const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit, namespace)
+
 
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
@@ -68,7 +66,6 @@ const PDU1Edit: React.FC = (): JSX.Element => {
       const valid = performValidation({
         pdu1: newPdu1
       })
-      dispatch(viewValidation())
       if (valid) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
@@ -77,9 +74,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
-
         dispatch(jornalførePdu1(newPdu1))
-        dispatch(resetAllValidation())
         buttonLogger(e)
       }
     }
@@ -153,9 +148,9 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         }}
       />
       <VerticalSeparatorDiv size='2' />
-      <TwoLevelForm<PDU1>
+      <MainForm<PDU1>
         type='onelevel'
-        namespace='pdu1'
+        namespace={namespace}
         loggingNamespace='personmanager'
         firstForm='person'
         forms={[
@@ -181,10 +176,9 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         replySed={pdu1}
         setReplySed={setPdu1}
         updateReplySed={updatePdu1}
-        viewValidation={view}
       />
       <VerticalSeparatorDiv size='2' />
-      <PreviewPDU1 />
+      <PreviewPDU1 performValidation={performValidation}/>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
       <VerticalSeparatorDiv size='2' />

@@ -1,14 +1,13 @@
 import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
+import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface ValidationState {
-  view: boolean
   status: any
 }
 
 export const initialValidationState: ValidationState = {
-  view: false,
   status: {}
 }
 
@@ -17,33 +16,26 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
     case types.APP_CLEAN:
       return initialValidationState
 
-    case types.VALIDATION_ALL_SET:
-      return {
-        ...state,
-        status: (action as ActionWithPayload).payload
-      }
+    case types.VALIDATION_RESET: {
 
-    case types.VALIDATION_SET: {
-      const { key, value } = (action as ActionWithPayload).payload
+      const {key} = (action as ActionWithPayload).payload
       if (!key) {
         return {
           ...state,
           status: {}
         }
       }
+
       return {
         ...state,
-        status: {
-          ...state.status,
-          [key]: value
-        }
+        status: _.omit(state.status, key)
       }
     }
 
-    case types.VALIDATION_VIEW:
+    case types.VALIDATION_SET:
       return {
         ...state,
-        view: true
+        status: (action as ActionWithPayload).payload
       }
 
     default:

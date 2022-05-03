@@ -20,7 +20,7 @@ import Input from 'components/Forms/Input'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
@@ -53,7 +53,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 
   const [_editing, _setEditing] = useState<Array<number>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
     if (index < 0) {

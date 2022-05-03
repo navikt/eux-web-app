@@ -4,7 +4,7 @@ import { Pdu1Person } from 'declarations/pd'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, propagateError } from 'utils/validation'
+import { checkIfNotEmpty } from 'utils/validation'
 import { validateStatsborgerskaper } from './Statsborgerskap/validation'
 
 export interface ValidationPersonProps {
@@ -61,7 +61,5 @@ export const validatePerson = (
 
   hasErrors.push(validateAdresse(v, t, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: namespace + '-adresse' }))
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }

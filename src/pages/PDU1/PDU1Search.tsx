@@ -3,7 +3,7 @@ import validator from '@navikt/fnrvalidator'
 import * as appActions from 'actions/app'
 import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetValidation, resetAllValidation } from 'actions/validation'
+import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -14,7 +14,7 @@ import { Option, Options } from 'declarations/app'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { FagSak, FagSaker } from 'declarations/types'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import {
   AlignStartRow,
@@ -86,7 +86,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
   const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
 
-  const [validation, _resetValidation, performValidation] = useValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
+  const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
 
   const temaOptions: Options = [
@@ -195,7 +195,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
   useEffect(() => {
     if (PDU1 && pdu1Request) {
       setPdu1Request(false)
-      dispatch(resetAllValidation())
       changeMode('B', 'forward')
     }
   }, [PDU1])

@@ -13,37 +13,37 @@ import {
   updateReplySed,
   updateSed
 } from 'actions/svarsed'
-import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
-import Adresser from 'applications/SvarSed/MainForm/Adresser/Adresser'
-import Anmodning from 'applications/SvarSed/MainForm/Anmodning/Anmodning'
-import ArbeidsperioderOversikt from 'applications/SvarSed/MainForm/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
-import BeløpNavnOgValuta from 'applications/SvarSed/MainForm/BeløpNavnOgValuta/BeløpNavnOgValuta'
-import EndredeForhold from 'applications/SvarSed/MainForm/EndredeForhold/EndredeForhold'
-import Familierelasjon from 'applications/SvarSed/MainForm/Familierelasjon/Familierelasjon'
-import Formål from 'applications/SvarSed/MainForm/Formål/Formål'
-import Forsikring from 'applications/SvarSed/MainForm/Forsikring/Forsikring'
-import GrunnlagForBosetting from 'applications/SvarSed/MainForm/GrunnlagForBosetting/GrunnlagForBosetting'
-import GrunnTilOpphør from 'applications/SvarSed/MainForm/GrunnTilOpphør/GrunnTilOpphør'
-import InntektForm from 'applications/SvarSed/MainForm/InntektForm/InntektForm'
-import Kontaktinformasjon from 'applications/SvarSed/MainForm/Kontaktinformasjon/Kontaktinformasjon'
-import Kontoopplysning from 'applications/SvarSed/MainForm/Kontoopplysning/Kontoopplysning'
-import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
-import Motregning from 'applications/SvarSed/MainForm/Motregning/Motregning'
-import Nasjonaliteter from 'applications/SvarSed/MainForm/Nasjonaliteter/Nasjonaliteter'
-import Periode from 'applications/SvarSed/MainForm/Periode/Periode'
-import PeriodeForDagpenger from 'applications/SvarSed/MainForm/PeriodeForDagpenger/PeriodeForDagpenger'
-import PersonensStatus from 'applications/SvarSed/MainForm/PersonensStatus/PersonensStatus'
-import PersonOpplysninger from 'applications/SvarSed/MainForm/PersonOpplysninger/PersonOpplysninger'
-import ProsedyreVedUenighet from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/ProsedyreVedUenighet'
-import Referanseperiode from 'applications/SvarSed/MainForm/Referanseperiode/Referanseperiode'
-import Relasjon from 'applications/SvarSed/MainForm/Relasjon/Relasjon'
-import RettTilYtelser from 'applications/SvarSed/MainForm/RettTilYtelser/RettTilYtelser'
-import SisteAnsettelseInfo from 'applications/SvarSed/MainForm/SisteAnsettelseInfo/SisteAnsettelseInfo'
-import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
-import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
-import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
+import { resetValidation } from 'actions/validation'
+import Adresser from 'applications/SvarSed/Adresser/Adresser'
+import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
+import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
+import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
+import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
+import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
+import Formål from 'applications/SvarSed/Formål/Formål'
+import Forsikring from 'applications/SvarSed/Forsikring/Forsikring'
+import GrunnlagForBosetting from 'applications/SvarSed/GrunnlagForBosetting/GrunnlagForBosetting'
+import GrunnTilOpphør from 'applications/SvarSed/GrunnTilOpphør/GrunnTilOpphør'
+import InntektForm from 'applications/SvarSed/InntektForm/InntektForm'
+import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontaktinformasjon'
+import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
+import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
+import Motregning from 'applications/SvarSed/Motregning/Motregning'
+import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
+import Periode from 'applications/SvarSed/Periode/Periode'
+import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
+import PersonensStatus from 'applications/SvarSed/PersonensStatus/PersonensStatus'
+import PersonOpplysninger from 'applications/SvarSed/PersonOpplysninger/PersonOpplysninger'
+import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import Referanseperiode from 'applications/SvarSed/Referanseperiode/Referanseperiode'
+import Relasjon from 'applications/SvarSed/Relasjon/Relasjon'
+import RettTilYtelser from 'applications/SvarSed/RettTilYtelser/RettTilYtelser'
+import SisteAnsettelseInfo from 'applications/SvarSed/SisteAnsettelseInfo/SisteAnsettelseInfo'
+import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel'
+import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
+import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
+import MainForm from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -76,7 +76,6 @@ export interface SEDEditSelector {
   sedCreatedResponse: CreateSedResponse
   sedSendResponse: any
   validation: Validation
-  view: boolean
 }
 
 const mapState = (state: State): any => ({
@@ -90,8 +89,7 @@ const mapState = (state: State): any => ({
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
-  validation: state.validation.status,
-  view: state.validation.view
+  validation: state.validation.status
 })
 
 const SEDEdit: React.FC = (): JSX.Element => {
@@ -108,19 +106,18 @@ const SEDEdit: React.FC = (): JSX.Element => {
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
-    validation,
-    view
+    validation
   }: SEDEditSelector = useAppSelector(mapState)
   const namespace = 'editor'
 
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit)
+  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit, '')  // empty namespace means that all validation messages will be wiped before one validation run
   const fnr = getFnr(replySed, 'bruker')
 
   const showTopForm = (): boolean => isFSed(replySed)
-  const showTwoLevelForm = (): boolean => isSed(replySed)
+  const showMainForm = (): boolean => isSed(replySed)
   const showBottomForm = (): boolean =>
     isFSed(replySed) && (
       (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
@@ -149,7 +146,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
       const valid = performValidation({
         replySed: newReplySed
       })
-      dispatch(viewValidation())
       if (valid) {
         setViewSendSedModal(true)
         if (!_.isEmpty(newReplySed?.sed)) {
@@ -157,7 +153,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
         } else {
           dispatch(createSed(newReplySed))
         }
-        dispatch(resetAllValidation())
         buttonLogger(e)
       }
     }
@@ -270,16 +265,15 @@ const SEDEdit: React.FC = (): JSX.Element => {
       />
       {showTopForm() && (
         <>
-          <TwoLevelForm
+          <MainForm
             type='onelevel'
-            namespace='formål'
+            namespace='formål1'
             loggingNamespace='formalmanager'
             forms={[
               { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
               { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode }
             ]}
             replySed={replySed}
-            viewValidation={view}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
           />
@@ -287,9 +281,9 @@ const SEDEdit: React.FC = (): JSX.Element => {
         </>
       )}
 
-      {showTwoLevelForm() && (
+      {showMainForm() && (
         <>
-          <TwoLevelForm<ReplySed>
+          <MainForm<ReplySed>
             type='twolevel'
             namespace='svarsed'
             loggingNamespace='personmanager'
@@ -318,7 +312,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
               { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' }
             ]}
-            viewValidation={view}
             replySed={replySed}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
@@ -328,9 +321,9 @@ const SEDEdit: React.FC = (): JSX.Element => {
       )}
       {showBottomForm() && (
         <>
-          <TwoLevelForm
+          <MainForm
             type='onelevel'
-            namespace='formål'
+            namespace='formål2'
             forms={[
               {
                 label: t('el:option-mainform-vedtak'),
@@ -364,7 +357,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
               }
             ]}
             replySed={replySed}
-            viewValidation={view}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
             loggingNamespace='formalmanager'

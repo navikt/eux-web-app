@@ -10,7 +10,6 @@ export interface ValidationOpprettSakProps {
   sedtype: string
   landkode: string
   institusjon: string
-  namespace: string
   tema: string
   saksId: string
   visEnheter: boolean
@@ -20,6 +19,7 @@ export interface ValidationOpprettSakProps {
 export const validateOpprettSak = (
   v: Validation,
   t: TFunction,
+  namespace: string,
   {
     fnr,
     isFnrValid,
@@ -28,7 +28,6 @@ export const validateOpprettSak = (
     sedtype,
     landkode,
     institusjon,
-    namespace,
     tema,
     saksId,
     visEnheter,

@@ -4,7 +4,7 @@ import {
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty, propagateError } from 'utils/validation'
+import { addError, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPDPeriodeProps {
   periode: PDPeriode
@@ -51,9 +51,7 @@ export const validatePDPeriode = (
     message: 'validation:noStartdato'
   }))
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validatePDPerioder = (

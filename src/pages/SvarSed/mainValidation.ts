@@ -1,34 +1,35 @@
-import { validateKontoopplysning } from 'applications/SvarSed/MainForm/Kontoopplysning/validation'
-import { validateKravOmRefusjon } from 'applications/SvarSed/MainForm/KravOmRefusjon/validation'
-import { validateMotregninger } from 'applications/SvarSed/MainForm/Motregning/validation'
-import { validateProsedyreVedUenighet } from 'applications/SvarSed/MainForm/ProsedyreVedUenighet/validation'
-import { validateVedtak } from 'applications/SvarSed/MainForm/Vedtak/validation'
-import { validateAdresser } from 'applications/SvarSed/MainForm/Adresser/validation'
-import { validateBeløpNavnOgValutas } from 'applications/SvarSed/MainForm/BeløpNavnOgValuta/validation'
-import { validateAnmodning } from 'applications/SvarSed/MainForm/Anmodning/validation'
-import { validateEndredeForhold } from 'applications/SvarSed/MainForm/EndredeForhold/validation'
-import { validateFamilierelasjoner } from 'applications/SvarSed/MainForm/Familierelasjon/validation'
-import { validateAlleForsikringPerioder } from 'applications/SvarSed/MainForm/Forsikring/validation'
-import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/MainForm/GrunnlagForBosetting/validation'
-import { validateGrunnTilOpphor } from 'applications/SvarSed/MainForm/GrunnTilOpphør/validation'
-import { validateLoennsopplysninger } from 'applications/SvarSed/MainForm/InntektForm/validationInntektForm'
+import { validateFormål } from 'applications/SvarSed/Formål/validation'
+import { validateKontoopplysning } from 'applications/SvarSed/Kontoopplysning/validation'
+import { validateKravOmRefusjon } from 'applications/SvarSed/KravOmRefusjon/validation'
+import { validateMotregninger } from 'applications/SvarSed/Motregning/validation'
+import { validateProsedyreVedUenighet } from 'applications/SvarSed/ProsedyreVedUenighet/validation'
+import { validateVedtak } from 'applications/SvarSed/Vedtak/validation'
+import { validateAdresser } from 'applications/SvarSed/Adresser/validation'
+import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
+import { validateAnmodning } from 'applications/SvarSed/Anmodning/validation'
+import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/validation'
+import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
+import { validateAlleForsikringPerioder } from 'applications/SvarSed/Forsikring/validation'
+import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
+import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
+import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validationInntektForm'
 import {
   validateKontaktsinformasjonEposter,
   validateKontaktsinformasjonTelefoner
-} from 'applications/SvarSed/MainForm/Kontaktinformasjon/validation'
-import { validateNasjonaliteter } from 'applications/SvarSed/MainForm/Nasjonaliteter/validation'
-import { validatePerioderDagpenger } from 'applications/SvarSed/MainForm/PeriodeForDagpenger/validation'
-import { validateAnsattPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/ansattValidation'
-import { validateAvsenderlandetPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/avsenderlandetValidation'
-import { validateNotAnsattPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/notAnsattValidation'
-import { validateWithSubsidiesPerioder } from 'applications/SvarSed/MainForm/PersonensStatus/withSubsidiesValidation'
-import { validatePersonOpplysninger } from 'applications/SvarSed/MainForm/PersonOpplysninger/validation'
-import { validateReferanseperiode } from 'applications/SvarSed/MainForm/Referanseperiode/validation'
-import { validateBarnetilhoerigheter } from 'applications/SvarSed/MainForm/Relasjon/validation'
-import { validateRettTilYtelse } from 'applications/SvarSed/MainForm/RettTilYtelser/validation'
-import { validateSisteAnsettelseInfo } from 'applications/SvarSed/MainForm/SisteAnsettelseInfo/validation'
-import { validateSvarPåForespørsel } from 'applications/SvarSed/MainForm/SvarPåForespørsel/validation'
-import { validateTrygdeordninger } from 'applications/SvarSed/MainForm/Trygdeordning/validation'
+} from 'applications/SvarSed/Kontaktinformasjon/validation'
+import { validateNasjonaliteter } from 'applications/SvarSed/Nasjonaliteter/validation'
+import { validatePerioderDagpenger } from 'applications/SvarSed/PeriodeForDagpenger/validation'
+import { validateAnsattPerioder } from 'applications/SvarSed/PersonensStatus/ansattValidation'
+import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/avsenderlandetValidation'
+import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/notAnsattValidation'
+import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/withSubsidiesValidation'
+import { validatePersonOpplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
+import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
+import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
+import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/validation'
+import { validateSisteAnsettelseInfo } from 'applications/SvarSed/SisteAnsettelseInfo/validation'
+import { validateSvarPåForespørsel } from 'applications/SvarSed/SvarPåForespørsel/validation'
+import { validateTrygdeordninger } from 'applications/SvarSed/Trygdeordning/validation'
 import { ErrorElement } from 'declarations/app.d'
 import {
   Adresse,
@@ -111,7 +112,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
   return hasErrors
 }
 
-export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: ReplySed, personID: string): boolean => {
+export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed, personID: string): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
@@ -122,19 +123,19 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
   if (isFSed(replySed)) {
     if (personID !== 'familie') {
       _error = validatePersonOpplysninger(v, t, {
-        personInfo, namespace: `TwoLevelForm-${personID}-personopplysninger`, personName
+        personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
       })
       hasErrors = hasErrors || _error
 
       const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       _error = validateNasjonaliteter(v, t, {
-        statsborgerskaper, namespace: `TwoLevelForm-${personID}-nasjonaliteter`, personName
+        statsborgerskaper, namespace: `svarsed-${personID}-nasjonaliteter`, personName
       })
       hasErrors = hasErrors || _error
 
       const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
       _error = validateAdresser(v, t, {
-        adresser, checkAdresseType: true, namespace: `TwoLevelForm-${personID}-adresser`, personName
+        adresser, checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
       })
       hasErrors = hasErrors || _error
     }
@@ -143,18 +144,18 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       if (personID === 'familie') {
         const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
         _error = validateBeløpNavnOgValutas(v, t, {
-          ytelser, namespace: `TwoLevelForm-${personID}-familieytelser`, personID, personName
+          ytelser, namespace: `svarsed-${personID}-familieytelser`, personID, personName
         })
         hasErrors = hasErrors || _error
       } else {
         const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
         _error = validateKontaktsinformasjonTelefoner(v, t, {
-          telefoner, namespace: `TwoLevelForm-${personID}-kontaktinformasjon-telefon`, personName
+          telefoner, namespace: `svarsed-${personID}-kontaktinformasjon-telefon`, personName
         })
         hasErrors = hasErrors || _error
         const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
         _error = validateKontaktsinformasjonEposter(v, t, {
-          eposter, namespace: `TwoLevelForm-${personID}-kontaktinformasjon-epost`, personName
+          eposter, namespace: `svarsed-${personID}-kontaktinformasjon-epost`, personName
         })
         hasErrors = hasErrors || _error
         const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
@@ -166,77 +167,77 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
           perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
         }
         _error = validateTrygdeordninger(v, t, {
-          perioder, namespace: `TwoLevelForm-${personID}-trygdeordninger`, personName
+          perioder, namespace: `svarsed-${personID}-trygdeordninger`, personName
         })
         hasErrors = hasErrors || _error
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
         _error = validateFamilierelasjoner(v, t, {
-          familierelasjoner, namespace: `TwoLevelForm-${personID}-familierelasjon`, personName
+          familierelasjoner, namespace: `svarsed-${personID}-familierelasjon`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomAnsatt: Array<Periode> = _.get(replySed, `${personID}.perioderSomAnsatt`)
         _error = validateAnsattPerioder(v, t, {
-          perioder: perioderSomAnsatt, namespace: `TwoLevelForm-${personID}-personensstatus-ansatt`, personName
+          perioder: perioderSomAnsatt, namespace: `svarsed-${personID}-personensstatus-ansatt`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
         _error = validateNotAnsattPerioder(v, t, {
-          perioder: perioderSomSelvstendig, namespace: `TwoLevelForm-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, personName
+          perioder: perioderSomSelvstendig, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomSykMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomSykMedLoenn`)
         _error = validateNotAnsattPerioder(v, t, {
-          perioder: perioderSomSykMedLoenn, namespace: `TwoLevelForm-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, personName
+          perioder: perioderSomSykMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, personName
         })
         hasErrors = hasErrors || _error
         const perioderSomPermittertMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertMedLoenn`)
         _error = validateNotAnsattPerioder(v, t, {
-          perioder: perioderSomPermittertMedLoenn, namespace: `TwoLevelForm-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName
+          perioder: perioderSomPermittertMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomPermittertUtenLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertUtenLoenn`)
         _error = validateNotAnsattPerioder(v, t, {
-          perioder: perioderSomPermittertUtenLoenn, namespace: `TwoLevelForm-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName
+          perioder: perioderSomPermittertUtenLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
         _error = validateAvsenderlandetPerioder(v, t, {
-          perioder: perioderMedTrygd, namespace: `TwoLevelForm-${personID}-personensstatus-avsenderlandet`, personName
+          perioder: perioderMedTrygd, namespace: `svarsed-${personID}-personensstatus-avsenderlandet`, personName
         })
         hasErrors = hasErrors || _error
 
         const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
         _error = validateAllGrunnlagForBosetting(v, t, {
-          flyttegrunn, namespace: `TwoLevelForm-${personID}-personensstatus-grunnlagforbosetting`, personName
+          flyttegrunn, namespace: `svarsed-${personID}-personensstatus-grunnlagforbosetting`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
         _error = validateWithSubsidiesPerioder(v, t, {
-          perioder: perioderMedPensjon, namespace: `TwoLevelForm-${personID}-personensstatus-withsubsidies`, personName
+          perioder: perioderMedPensjon, namespace: `svarsed-${personID}-personensstatus-withsubsidies`, personName
         })
         hasErrors = hasErrors || _error
       }
     } else {
       const barnetilhorigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
       _error = validateBarnetilhoerigheter(v, t, {
-        barnetilhorigheter, namespace: `TwoLevelForm-${personID}-relasjon`, personName
+        barnetilhorigheter, namespace: `svarsed-${personID}-relasjon`, personName
       })
       hasErrors = hasErrors || _error
       const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
       _error = validateAllGrunnlagForBosetting(v, t, {
-        flyttegrunn, namespace: `TwoLevelForm-${personID}-grunnlagforbosetting`, personName
+        flyttegrunn, namespace: `svarsed-${personID}-grunnlagforbosetting`, personName
       })
       hasErrors = hasErrors || _error
       const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
       if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
         _error = validateBeløpNavnOgValutas(v, t, {
-          ytelser, namespace: `TwoLevelForm-${personID}-beløpnavnogvaluta`, personID, personName
+          ytelser, namespace: `svarsed-${personID}-beløpnavnogvaluta`, personID, personName
         })
         hasErrors = hasErrors || _error
       }
@@ -245,12 +246,12 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
 
   if (isUSed(replySed)) {
     _error = validatePersonOpplysninger(v, t, {
-      personInfo, namespace: `TwoLevelForm-${personID}-personopplysninger`, personName
+      personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
     })
     hasErrors = hasErrors || _error
 
     _error = validateReferanseperiode(v, t, {
-      anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `TwoLevelForm-${personID}-referanseperiode`, personName
+      anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `svarsed-${personID}-referanseperiode`, personName
     })
     hasErrors = hasErrors || _error
 
@@ -272,13 +273,13 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       }
 
       _error = validateAlleForsikringPerioder(v, t, {
-        perioder, namespace: `TwoLevelForm-${personID}-forsikring`, personName
+        perioder, namespace: `svarsed-${personID}-forsikring`, personName
       })
       hasErrors = hasErrors || _error
 
       _error = validatePerioderDagpenger(v, t, {
         perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
-        namespace: `TwoLevelForm-${personID}-periodefordagpenger`,
+        namespace: `svarsed-${personID}-periodefordagpenger`,
         personName
       })
       hasErrors = hasErrors || _error
@@ -307,13 +308,13 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
       if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
         _error = validateGrunnTilOpphor(v, t, {
           grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
-          namespace: `TwoLevelForm-${personID}-grunntilopphør`
+          namespace: `svarsed-${personID}-grunntilopphør`
         })
         hasErrors = hasErrors || _error
       }
       _error = validateSisteAnsettelseInfo(v, t, {
         sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo,
-        namespace: `TwoLevelForm-${personID}-sisteAnsettelseInfo`
+        namespace: `svarsed-${personID}-sisteAnsettelseInfo`
       })
       hasErrors = hasErrors || _error
     }
@@ -321,7 +322,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
     if (replySed.sedType === 'U004') {
       _error = validateLoennsopplysninger(v, t, {
         loennsopplysninger: (replySed as U004Sed)?.loennsopplysninger,
-        namespace: `TwoLevelForm-${personID}-inntekt`
+        namespace: `svarsed-${personID}-inntekt`
 
       })
       hasErrors = hasErrors || _error
@@ -330,7 +331,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
     if (replySed.sedType === 'U017') {
       _error = validateRettTilYtelse(v, t, {
         rettTilTytelse: (replySed as U017Sed)?.rettTilYtelse,
-        namespace: `TwoLevelForm-${personID}-retttilytelser`
+        namespace: `svarsed-${personID}-retttilytelser`
       })
       hasErrors = hasErrors || _error
     }
@@ -338,19 +339,19 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
 
   if (isHSed(replySed)) {
     _error = validatePersonOpplysninger(v, t, {
-      personInfo, namespace: `TwoLevelForm-${personID}-personopplysninger`, personName
+      personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
     })
     hasErrors = hasErrors || _error
 
     _error = validateAdresser(v, t, {
-      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, namespace: `TwoLevelForm-${personID}-adresser`, personName
+      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
     })
     hasErrors = hasErrors || _error
 
     if (isH002Sed(replySed)) {
       _error = validateSvarPåForespørsel(v, t, {
         replySed,
-        namespace: `TwoLevelForm-${personID}-svarpåforespørsel`,
+        namespace: `svarsed-${personID}-svarpåforespørsel`,
         personName: t('label:svar-på-forespørsel').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -359,14 +360,14 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
     if (isH001Sed(replySed)) {
       _error = validateAnmodning(v, t, {
         replySed,
-        namespace: `TwoLevelForm-${personID}-anmodning`,
+        namespace: `svarsed-${personID}-anmodning`,
         personName: t('label:anmodning-om-informasjon').toLowerCase()
       })
       hasErrors = hasErrors || _error
 
       _error = validateEndredeForhold(v, t, {
         replySed,
-        namespace: `TwoLevelForm-${personID}-endredeforhold`,
+        namespace: `svarsed-${personID}-endredeforhold`,
         personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
       })
       hasErrors = hasErrors || _error
@@ -379,6 +380,7 @@ export const validateTwoLevelForm = (v: Validation, t: TFunction, replySed: Repl
 export const validateSEDEdit = (
   v: Validation,
   t: TFunction,
+  namespace: string,
   {
     replySed
   }: ValidationSEDEditProps
@@ -387,32 +389,29 @@ export const validateSEDEdit = (
   let _error: boolean
 
   // this is common to all seds
-  _error = validateTwoLevelForm(v, t, replySed, 'bruker')
+  _error = validateMainForm(v, t, replySed, 'bruker')
   hasErrors = hasErrors || _error
 
   if (isFSed(replySed)) {
-    if (_.isEmpty((replySed as F002Sed).formaal)) {
-      v['editor-formål'] = {
-        feilmelding: t('validation:noFormaal'),
-        skjemaelementId: 'editor-formål'
-      } as ErrorElement
-      hasErrors = true
-    }
+    _error = validateFormål(v, t, 'formål1-formål', {
+      formaal: (replySed as FSed).formaal
+    })
+    hasErrors = hasErrors || _error
 
     if ((replySed as F002Sed).ektefelle) {
-      _error = validateTwoLevelForm(v, t, replySed, 'ektefelle')
+      _error = validateMainForm(v, t, replySed, 'ektefelle')
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).annenPerson) {
-      _error = validateTwoLevelForm(v, t, replySed, 'annenPerson')
+      _error = validateMainForm(v, t, replySed, 'annenPerson')
       hasErrors = hasErrors || _error
     }
     (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
-      _error = validateTwoLevelForm(v, t, replySed, `barn[${i}]`)
+      _error = validateMainForm(v, t, replySed, `barn[${i}]`)
       hasErrors = hasErrors || _error
     })
     if ((replySed as F002Sed).familie) {
-      _error = validateTwoLevelForm(v, t, replySed, 'familie')
+      _error = validateMainForm(v, t, replySed, 'familie')
       hasErrors = hasErrors || _error
     }
 

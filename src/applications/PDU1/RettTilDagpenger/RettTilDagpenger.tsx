@@ -1,6 +1,6 @@
 import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { IkkeRettTilDagpenger, PDU1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -12,15 +12,15 @@ import { useAppDispatch, useAppSelector } from 'store'
 
 type RettTilDagpengerRadio = 'rettTilDagpenger' | 'ikkeRettTilDagpenger' | undefined
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const RettTilDagpengerFC: React.FC<TwoLevelFormProps> = ({
+const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   setReplySed
-}: TwoLevelFormProps): JSX.Element => {
+}: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()

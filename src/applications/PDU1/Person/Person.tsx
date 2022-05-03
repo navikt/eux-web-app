@@ -10,7 +10,7 @@ import {
 } from '@navikt/hoykontrast'
 import { setReplySed } from 'actions/svarsed'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
@@ -24,16 +24,16 @@ import { useAppDispatch, useAppSelector } from 'store'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Person: React.FC<TwoLevelFormProps> = ({
+const Person: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   personName,
   updateReplySed
-}:TwoLevelFormProps): JSX.Element => {
+}:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()

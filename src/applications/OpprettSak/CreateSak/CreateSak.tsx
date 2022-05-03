@@ -6,7 +6,7 @@ import * as personActions from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { cleanData, resetSentSed } from 'actions/sak'
 import { loadReplySed } from 'actions/svarsed'
-import { resetAllValidation, resetValidation } from 'actions/validation'
+import { resetValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
@@ -212,7 +212,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const { t } = useTranslation()
   const namespace = 'opprettsak'
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationOpprettSakProps>(validateOpprettSak)
+  const performValidation = useGlobalValidation<ValidationOpprettSakProps>(validateOpprettSak, namespace)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
@@ -239,7 +239,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
       sedtype: valgtSedType,
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
-      namespace,
       tema: valgtTema,
       saksId: valgtSaksId,
       visEnheter,
@@ -404,7 +403,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 if (isFnrValid) {
                   setIsFnrValid(false)
                   dispatch(appActions.cleanData()) // cleans person and sak reducer
-                  dispatch(resetAllValidation())
                 }
               }}
               onPersonFound={() => setIsFnrValid(true)}

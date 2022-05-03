@@ -1,14 +1,14 @@
 import { SaveFile, Close, Delete, Edit, Office1 } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Detail, Ingress, Panel } from '@navikt/ds-react'
-import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
-import IdentifikatorFC from 'applications/SvarSed/MainForm/Identifikator/Identifikator'
+import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
+import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import classNames from 'classnames'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import Input from 'components/Forms/Input'
 import PeriodeInput, { toDateFormat } from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Adresse as IAdresse, ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed.d'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import {
   AlignStartRow,
@@ -100,7 +100,7 @@ const ArbeidsperioderBox = ({
 
   // for includeAddress
   const [_adresse, _setAdresse] = useState<IAdresse | undefined>(arbeidsgiver.arbeidsgiver.adresse ?? undefined)
-  const [_validation, resetValidation, performValidation] = useValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+  const [_validation, resetValidation, performValidation] = useLocalValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
 
   const setAdresse = (adresse: IAdresse) => {
     _setAdresse(adresse)

@@ -2,7 +2,7 @@ import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { TFunction } from 'react-i18next'
-import { checkIfNotEmpty, checkIfNotGB, checkIfValidLand, propagateError } from 'utils/validation'
+import { checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
 
 export interface ValidationAdresseProps {
   adresse: Adresse | undefined
@@ -60,7 +60,5 @@ export const validateAdresse = (
     }))
   }
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }

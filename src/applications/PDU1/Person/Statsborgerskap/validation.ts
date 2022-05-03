@@ -1,7 +1,7 @@
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty, propagateError } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationStatsborgerskapProps {
   statsborgerskap: string | undefined
@@ -38,9 +38,7 @@ export const validateStatsborgerskap = (
     message: 'validation:duplicateBirthCountry'
   }))
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }
 
 interface ValidateStatsborgerskaperProps {

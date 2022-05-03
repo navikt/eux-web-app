@@ -2,7 +2,7 @@ import { PDPeriode } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty, checkLength, propagateError } from 'utils/validation'
+import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationDagpengerPeriodeProps {
   startdato: string | undefined
@@ -85,7 +85,5 @@ export const validateDagpenger = (
     hasErrors.push(true)
   }
 
-  const hasError: boolean = hasErrors.find(value => value) !== undefined
-  if (hasError) propagateError(v, namespace)
-  return hasError
+  return hasErrors.find(value => value) !== undefined
 }

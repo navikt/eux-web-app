@@ -3,7 +3,7 @@ import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Button, BodyLong, Loader } from '@navikt/ds-react'
@@ -45,7 +45,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))
   const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
 
-  const [_validation, _resetValidation, performValidation] = useValidation<ValidationArbeidsperioderSøkProps>({}, validateArbeidsperioderSøk)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>({}, validateArbeidsperioderSøk)
 
   const inntektslistetypeOptions : Options = [
     { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },

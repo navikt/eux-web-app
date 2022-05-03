@@ -10,7 +10,7 @@ import {
 } from '@navikt/hoykontrast'
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
-import useValidation from 'hooks/useValidation'
+import useLocalValidation from 'hooks/useLocalValidation'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +18,7 @@ import { validateSEDQuery } from './validation'
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit }: any) => {
   const { t } = useTranslation()
-  const [_validation, _resetValidation, _performValidation] = useValidation({}, validateSEDQuery)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation({}, validateSEDQuery)
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(initialQuery ?? '')
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)

@@ -1,5 +1,5 @@
 import { Alert, Button, Checkbox, HelpText, Link, Loader } from '@navikt/ds-react'
-import { resetAllValidation, resetValidation, viewValidation } from 'actions/validation'
+import { resetValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
 import Input from 'components/Forms/Input'
@@ -54,10 +54,10 @@ export const MyContent = styled(Content)`
 const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const location = useLocation()
+  const namespace = 'vedlegg'
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
-  const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg)
-  const namespace = 'vedlegg'
+  const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg, namespace)
 
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(location.search)
@@ -72,10 +72,8 @@ const Vedlegg: React.FC = (): JSX.Element => {
       journalpostID,
       dokumentID,
       rinasaksnummer,
-      rinadokumentID,
-      namespace
+      rinadokumentID
     })
-    dispatch(viewValidation())
     if (valid) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID,
@@ -84,7 +82,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
         rinadokumentID,
         sensitivt
       } as VedleggPayload))
-      dispatch(resetAllValidation())
     }
   }
 
@@ -123,7 +120,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
                 value={journalpostID}
                 label={(
                   <FlexDiv>
-                    {t('label:journalpost-id')}
+                    {t('label:journalpost-id') + ' *'}
                     <HorizontalSeparatorDiv size='0.35' />
                     <HelpText id='journalPostID'>
                       {t('message:help-journalpostID')}
@@ -143,7 +140,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
                 value={dokumentID}
                 label={(
                   <FlexDiv>
-                    {t('label:dokument-id')}
+                    {t('label:dokument-id') + ' *'}
                     <HorizontalSeparatorDiv size='0.35' />
                     <HelpText id={namespace + '-dokumentID-help'}>
                       {t('message:help-dokumentID')}

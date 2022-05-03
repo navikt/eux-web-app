@@ -2,11 +2,11 @@ import * as validationActions from 'actions/validation'
 import * as types from 'constants/actionTypes'
 
 describe('actions/validation', () => {
-  it('resetAllValidation()', () => {
-    const generatedResult = validationActions.resetAllValidation()
+  it('resetValidation()', () => {
+    const generatedResult = validationActions.resetValidation()
     expect(generatedResult)
       .toMatchObject({
-        type: types.VALIDATION_SET,
+        type: types.VALIDATION_RESET,
         payload: {}
       })
   })
@@ -16,29 +16,20 @@ describe('actions/validation', () => {
     const generatedResult = validationActions.resetValidation(key)
     expect(generatedResult)
       .toMatchObject({
-        type: types.VALIDATION_SET,
+        type: types.VALIDATION_RESET,
         payload: {
-          key,
-          value: undefined
+          namespace: key
         }
       })
   })
 
-  it('setAllValidation()', () => {
+  it('setValidation()', () => {
     const newValidation = { foo: 'bar' }
-    const generatedResult = validationActions.setAllValidation(newValidation)
+    const generatedResult = validationActions.setValidation(newValidation)
     expect(generatedResult)
       .toMatchObject({
-        type: types.VALIDATION_ALL_SET,
+        type: types.VALIDATION_SET,
         payload: newValidation
-      })
-  })
-
-  it('viewValidation()', () => {
-    const generatedResult = validationActions.viewValidation()
-    expect(generatedResult)
-      .toMatchObject({
-        type: types.VALIDATION_VIEW
       })
   })
 })

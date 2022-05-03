@@ -1,7 +1,7 @@
 import { Delete } from '@navikt/ds-icons'
 import { Button, Heading } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
-import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -15,16 +15,16 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-const mapState = (state: State): TwoLevelFormSelector => ({
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
+const SisteAnsettelseInfo: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   setReplySed,
   updateReplySed
-}:TwoLevelFormProps): JSX.Element => {
+}:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
