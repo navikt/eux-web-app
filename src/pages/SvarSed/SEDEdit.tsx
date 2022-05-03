@@ -30,7 +30,7 @@ import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysnin
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
-import Periode from 'applications/SvarSed/Periode/Periode'
+import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/PersonensStatus/PersonensStatus'
 import PersonOpplysninger from 'applications/SvarSed/PersonOpplysninger/PersonOpplysninger'
@@ -271,7 +271,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
             loggingNamespace='formalmanager'
             forms={[
               { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
-              { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode }
+              { label: t('el:option-mainform-periode'), value: 'anmodningsperiode', component: AnmodningsPeriode }
             ]}
             replySed={replySed}
             updateReplySed={updateReplySed}

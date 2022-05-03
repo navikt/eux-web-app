@@ -1,3 +1,4 @@
+import { validateAnmodningsPerioder } from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { validateFormål } from 'applications/SvarSed/Formål/validation'
 import { validateKontoopplysning } from 'applications/SvarSed/Kontoopplysning/validation'
 import { validateKravOmRefusjon } from 'applications/SvarSed/KravOmRefusjon/validation'
@@ -393,8 +394,14 @@ export const validateSEDEdit = (
   hasErrors = hasErrors || _error
 
   if (isFSed(replySed)) {
+
     _error = validateFormål(v, t, 'formål1-formål', {
       formaal: (replySed as FSed).formaal
+    })
+    hasErrors = hasErrors || _error
+
+    _error = validateAnmodningsPerioder(v, t, 'formål1-anmodningsperiode', {
+      anmodningsperioder: (replySed as FSed).anmodningsperioder
     })
     hasErrors = hasErrors || _error
 

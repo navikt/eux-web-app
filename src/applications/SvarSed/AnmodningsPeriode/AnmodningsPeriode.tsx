@@ -1,11 +1,13 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Button, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { AlignStartRow, PaddedHorizontallyDiv, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
+import useGlobalValidation from 'hooks/useGlobalValidation'
 import {
-  validateAnmodningsPeriode,
-  ValidationAnmodningsPeriodeProps
-} from 'applications/SvarSed/Periode/validation'
+  validateAnmodningsPeriode, validateAnmodningsPerioder,
+  ValidationAnmodningsPeriodeProps,
+  ValidationAnmodningsPerioderProps
+} from './validation'
 import { mapState, MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -17,7 +19,7 @@ import { F002Sed, FSed, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
@@ -31,13 +33,22 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-periode`
+  const namespace = `${parentNamespace}-anmodningsperiode`
 
   const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
+  const performValidation = useGlobalValidation<ValidationAnmodningsPerioderProps>(validateAnmodningsPerioder, namespace)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>({}, validateAnmodningsPeriode)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>({}, validateAnmodningsPeriode)
+
+  useEffect(() => {
+    return () => {
+      performValidation({
+        anmodningsperioder: (replySed as FSed).anmodningsperioder
+      })
+    }
+  }, [])
 
   const resetForm = () => {
     _setNewAnmodningsperioder({ startdato: '' })
@@ -59,7 +70,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   }
 
   const onAdd = () => {
-    const valid: boolean = performValidation({
+    const valid: boolean = _performValidation({
       anmodningsperiode: _newAnmodningsperioder,
       namespace
     })
@@ -77,15 +88,15 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
     if (index < 0) {
       _setNewAnmodningsperioder(newPeriode)
-      _resetValidation(namespace + '-anmodningsperioder-stardato')
-      _resetValidation(namespace + '-anmodningsperioder-sluttdato')
+      _resetValidation(namespace + '-perioder-stardato')
+      _resetValidation(namespace + '-perioder-sluttdato')
     } else {
       dispatch(updateReplySed(`anmodningsperioder[${index}]`, newPeriode))
-      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-stardato']) {
-        dispatch(resetValidation(namespace + '-anmodningsperiode' + getIdx(index) + '-stardato'))
+      if (validation[namespace + '-perioder' + getIdx(index) + '-stardato']) {
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-stardato'))
       }
       if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato'))
+        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
       }
     }
   }
@@ -122,8 +133,8 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     const idx = (index >= 0 ? '[' + index + ']' : '')
     const getErrorFor = (index: number, el: string): string | undefined => {
       return index < 0
-        ? _validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
-        : validation[namespace + '-anmodningsperioder' + idx + '-' + el]?.feilmelding
+        ? _validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
+        : validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
     }
     const _periode = index < 0 ? _newAnmodningsperioder : periode
     return (
@@ -136,6 +147,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               sluttdato: getErrorFor(index, 'sluttdato')
             }}
             breakInTwo
+            hideLabel={index >= 0}
             setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
             value={_periode}
           />
@@ -143,7 +155,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
             <AddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
-              marginTop
+              marginTop={index < 0}
               onBeginRemove={() => addToDeletion(periode)}
               onConfirmRemove={() => onRemove(index)}
               onCancelRemove={() => removeFromDeletion(periode)}
@@ -162,6 +174,21 @@ const PeriodeFC: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv />
       {isFSed(replySed) && (
         <>
+          <PaddedHorizontallyDiv>
+            <Row>
+            <Column>
+              <label className='navds-text-field__label navds-label'>
+                {t('label:startdato') + ' (' + t('el:placeholder-date-default') + ') *'}
+              </label>
+            </Column>
+            <Column>
+              <label className='navds-text-field__label navds-label'>
+                {t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
+              </label>
+            </Column>
+            <Column flex='1.4'/>
+          </Row>
+          </PaddedHorizontallyDiv>
           {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
@@ -191,24 +218,19 @@ const PeriodeFC: React.FC<MainFormProps> = ({
             <div>
               <RadioGroup
                 legend={t('label:type-krav')}
-                data-testid='seddetails-typeKrav'
-                error={validation['seddetails-typeKrav']?.feilmelding}
-                id='seddetails-kravType'
+                data-testid={namespace + '-typeKrav'}
+                error={validation[namespace + '-typeKrav']?.feilmelding}
+                id={namespace + '-kravType'}
                 onChange={(e: string | number | boolean) => setKravType(e as string)}
                 value={(replySed as F002Sed).krav?.kravType}
               >
-                <Radio
-                  value='nytt_krav'
-                >
+                <Radio value='nytt_krav'>
                   {t('label:kravType-nytt_krav')}
                 </Radio>
-                <Radio
-                  value='endrede_omstendigheter'
-                >
+                <Radio value='endrede_omstendigheter'>
                   {t('label:kravType-endrede_omstendigheter')}
                 </Radio>
               </RadioGroup>
-
               <VerticalSeparatorDiv />
               <DateInput
                 error={validation[namespace + '-kravMottattDato']?.feilmelding}
@@ -225,20 +247,16 @@ const PeriodeFC: React.FC<MainFormProps> = ({
           <Column>
             <RadioGroup
               legend={t('label:informasjon-om-søknaden')}
-              data-testid='seddetails-informasjon'
-              error={validation['seddetails-informasjon']?.feilmelding}
-              id='seddetails-informasjon'
+              data-testid={namespace + '-informasjon'}
+              error={validation[namespace + '-informasjon']?.feilmelding}
+              id={namespace + '-informasjon'}
               value={(replySed as F002Sed).krav?.infoType}
               onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
-              <Radio
-                value='vi_bekrefter_leverte_opplysninger'
-              >
+              <Radio value='vi_bekrefter_leverte_opplysninger'>
                 {t('label:info-confirm-information')}
               </Radio>
-              <Radio
-                value='gi_oss_punktvise_opplysninger'
-              >
+              <Radio value='gi_oss_punktvise_opplysninger'>
                 {t('label:info-point-information')}
               </Radio>
               {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
@@ -246,9 +264,9 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                   <VerticalSeparatorDiv />
                   <TextAreaDiv>
                     <TextArea
-                      error={validation['seddetails-opplysninger']?.feilmelding}
+                      error={validation[namespace + '-opplysninger']?.feilmelding}
                       id='opplysninger'
-                      namespace='seddetails'
+                      namespace={namespace}
                       label={t('label:opplysninger')}
                       maxLength={500}
                       onChanged={setInfoPresisering}

@@ -12,7 +12,7 @@ import styled from 'styled-components'
 const WrapperDiv = styled.div`
   display: flex;
   flex-direction: row;
-  height: 2.3rem;
+  height: 3rem;
   min-width: 5rem;
   align-items: center;
 `

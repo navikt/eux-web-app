@@ -71,7 +71,8 @@ export const WithErrorPanel = styled(Panel)`
   background-color: transparent;
   border: none;
   &.error {
-    border: 3px solid var(--navds-select-color-border-error) !important;
+    margin: -4px;
+    border: 4px solid var(--navds-error-summary-color-border) !important;
   }
 `
 export const AlertstripeDiv = styled.div`

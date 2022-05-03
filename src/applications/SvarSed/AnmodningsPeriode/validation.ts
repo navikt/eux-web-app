@@ -5,7 +5,6 @@ import { TFunction } from 'react-i18next'
 
 export interface ValidationAnmodningsPerioderProps {
   anmodningsperioder: Array<Periode> | undefined
-  namespace: string
 }
 
 export interface ValidationAnmodningsPeriodeProps {
@@ -24,7 +23,7 @@ export const validateAnmodningsPeriode = (
 ): boolean => {
   return validatePeriode(v, t, {
     periode: anmodningsperiode!,
-    namespace: namespace + '-periode',
+    namespace: namespace + '-perioder',
     index
   })
 }
@@ -32,9 +31,9 @@ export const validateAnmodningsPeriode = (
 export const validateAnmodningsPerioder = (
   v: Validation,
   t: TFunction,
+  namespace: string,
   {
-    anmodningsperioder,
-    namespace
+    anmodningsperioder
   }: ValidationAnmodningsPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []

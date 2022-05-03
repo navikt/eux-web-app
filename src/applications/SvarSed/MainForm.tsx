@@ -339,7 +339,7 @@ const MainForm = <T extends StorageTypes>({
         setCurrentMenu(menu)
         setAnimatingMenus(true)
         setTimeout(() => {
-          setPreviousMenu(menu)
+          setPreviousMenu(undefined)
           setAnimatingMenus(false)
         }, transitionTime * 1000)
       }
@@ -377,7 +377,7 @@ const MainForm = <T extends StorageTypes>({
       setPreviousMenuOption(currentMenuOption)
       setAnimatingMenus(true)
       setTimeout(() => {
-        setPreviousMenuOption(menuOption)
+        setPreviousMenuOption(undefined)
         setAnimatingMenus(false)
       }, transitionTime * 1000)
       if (menuOption) {
@@ -432,7 +432,7 @@ const MainForm = <T extends StorageTypes>({
   const renderOneLevelMenu = (forms: Array<Form>) => {
     return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
       const selected: boolean = currentMenu === form.value
-      const fading: boolean = previousMenu === form.value
+      //const fading: boolean = previousMenu === form.value
       const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + form.value))
       const isValidated = validationKeys.length > 0
       const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
@@ -452,16 +452,14 @@ const MainForm = <T extends StorageTypes>({
             >
               {!isValidated
                 ? null
-                : animatingMenus && fading
-                  ? <EllipsisCircleH height={20} />
-                  : validationHasErrors
+                : validationHasErrors
                     ? <ErrorFilled height={20} color='red' />
                     : <SuccessFilled color='green' height={20} />
               }
               <>
                 <HorizontalSeparatorDiv size='0.5' />
                 <MenuLabelText className={classNames({ selected })}>
-                  {t('label:' + form.value.replaceAll('_', '-'))}
+                  {t('label:' + form.label)}
                 </MenuLabelText>
               </>
             </NameLabelDiv>
@@ -648,16 +646,16 @@ const MainForm = <T extends StorageTypes>({
             )}
             {previousMenu && (
               <PreviousFormDiv
+                key={`previous-${previousMenu}${previousMenuOption ? '-' + previousMenuOption : ''}`}
                 className={classNames(`previous-${previousMenu}${previousMenuOption ? '-' + previousMenuOption : ''}`, 'right', { animating: animatingMenus })}
-                key={previousMenu + (previousMenuOption ? '-' + previousMenuOption : '')}
               >
                 {getForm(previousMenu, previousMenuOption)}
               </PreviousFormDiv>
             )}
             {currentMenu && (
               <ActiveFormDiv
+                key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption: ''}`}
                 className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption: ''}`, 'right', { animating: animatingMenus })}
-                key={currentMenu + (currentMenuOption ? '-' + currentMenuOption : '')}
               >
                 {getForm(currentMenu, currentMenuOption)}
               </ActiveFormDiv>
