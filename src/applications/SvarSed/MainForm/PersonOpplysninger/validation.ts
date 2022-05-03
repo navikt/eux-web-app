@@ -10,7 +10,7 @@ import validator from '@navikt/fnrvalidator'
 export interface ValidationPersonOpplysningProps {
   personInfo: PersonInfo
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export interface ValidationPinProps {
@@ -18,14 +18,14 @@ export interface ValidationPinProps {
   pins: Array<Pin>
   index ?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export interface ValidationExtraInformationProps {
   status: string
   index ?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/

@@ -11,7 +11,7 @@ export interface ValidationAvsenderlandetProps {
   perioder: Array<Periode>
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateAvsenderlandetPeriode = (
@@ -57,7 +57,7 @@ export const validateAvsenderlandetPeriode = (
 interface ValidateAvsenderlandetPerioderProps {
   perioder: Array<Periode>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateAvsenderlandetPerioder = (

@@ -10,7 +10,7 @@ export interface ValidationBarnetilhoerigheterProps {
   barnetilhorigheter: Array<Barnetilhoerighet>,
   index?: number
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateBarnetilhoerighet = (
@@ -73,7 +73,7 @@ export const validateBarnetilhoerighet = (
 interface ValidadeBarnetilhoerigheterProps {
   barnetilhorigheter: Array<Barnetilhoerighet>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateBarnetilhoerigheter = (

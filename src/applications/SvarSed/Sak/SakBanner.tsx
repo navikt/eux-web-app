@@ -113,16 +113,16 @@ const SakBanner = ({ sak }: SakProps) => {
             anchorEl={iconRef.current}
             placement='auto'
           >
-            <Popover.Content style={{maxWidth: '600px'}}>
+            <Popover.Content style={{ maxWidth: '600px' }}>
               <Heading size='small'>
                 {t('label:international-id')}:
                 <HorizontalSeparatorDiv />
                 <Link
                   title={t('label:kopiere')} onClick={(e: any) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  dispatch(copyToClipboard(sak.sakId))
-                }}
+                    e.preventDefault()
+                    e.stopPropagation()
+                    dispatch(copyToClipboard(sak.sakId))
+                  }}
                 >
                   {sak.sakId + ' '}
                   <Copy />
@@ -132,7 +132,7 @@ const SakBanner = ({ sak }: SakProps) => {
             </Popover.Content>
           </Popover>
           <InformationFilled
-            style={{cursor: 'pointer'}}
+            style={{ cursor: 'pointer' }}
             ref={iconRef}
             onClick={() => setPopoverOpen(!popoverOpen)}
           />

@@ -7,7 +7,7 @@ import { Alert } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
 import PT from 'prop-types'
-import {AlertErrorPropType} from 'declarations/components.pt'
+import { AlertErrorPropType } from 'declarations/components.pt'
 
 export const AlertDiv = styled(Alert)`
   opacity: 0;
@@ -82,7 +82,7 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
       {_message}
       {onClose && (
         <div>
-          <HorizontalSeparatorDiv/>
+          <HorizontalSeparatorDiv />
           <CloseIcon
             height='24'
             width='24'

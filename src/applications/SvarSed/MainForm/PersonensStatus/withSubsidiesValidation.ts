@@ -11,7 +11,7 @@ export interface ValidationWithSubsidiesProps {
   perioder: Array<PensjonPeriode>
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateWithSubsidiesPeriode = (
@@ -61,7 +61,7 @@ export const validateWithSubsidiesPeriode = (
 interface ValidateWithSubsidiesPerioderProps {
   perioder: Array<PensjonPeriode>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateWithSubsidiesPerioder = (

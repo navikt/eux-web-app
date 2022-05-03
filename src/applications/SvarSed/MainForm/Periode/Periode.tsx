@@ -6,7 +6,7 @@ import {
   validateAnmodningsPeriode,
   ValidationAnmodningsPeriodeProps
 } from 'applications/SvarSed/MainForm/Periode/validation'
-import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
+import { mapState, TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -23,13 +23,13 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { isFSed } from 'utils/sed'
 
-const PeriodeFC: React.FC<OneLevelFormProps> = ({
+const PeriodeFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}: OneLevelFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-periode`
 

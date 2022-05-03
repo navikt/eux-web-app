@@ -1,5 +1,5 @@
 import { resetValidation } from 'actions/validation'
-import { OneLevelFormProps, OneLevelFormSelector, mapState } from 'applications/SvarSed/OneLevelForm'
+import { TwoLevelFormProps, TwoLevelFormSelector, mapState } from 'applications/SvarSed/TwoLevelForm'
 import AdresseForm from 'applications/SvarSed/MainForm/Adresser/AdresseForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
@@ -12,13 +12,13 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-const Kontoopplysning: React.FC<OneLevelFormProps> = ({
+const Kontoopplysning: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}: OneLevelFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string = 'utbetalingTilInstitusjon'
   const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon

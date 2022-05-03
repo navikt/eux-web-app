@@ -6,7 +6,7 @@ import { TFunction } from 'react-i18next'
 export interface ValidationReferanseperiodeProps {
   anmodningsperiode: Periode
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateReferanseperiode = (

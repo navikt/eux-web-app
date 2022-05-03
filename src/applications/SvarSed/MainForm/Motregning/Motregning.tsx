@@ -13,7 +13,7 @@ import {
 import CountryData, { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
-import { mapState, OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
+import { mapState, TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -43,14 +43,14 @@ import { validateMotregning, ValidationMotregningProps } from './validation'
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 type KeyAndYtelseMap = {[motregningKey in string]: Array<KeyAndYtelse>}
 
-const Motregning: React.FC<OneLevelFormProps> = ({
+const Motregning: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   setReplySed,
   replySed,
   updateReplySed
-}: OneLevelFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-motregning`
   const _currencyData = CountryData.getCurrencyInstance('nb')

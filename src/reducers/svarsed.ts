@@ -75,7 +75,6 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_REPLYTOSED_SUCCESS: {
-
       const newReplySed: ReplySed | null | undefined = {
         ...(action as ActionWithPayload).payload,
         sak: (action as ActionWithPayload).context.sak,
@@ -85,7 +84,7 @@ const svarsedReducer = (
         ...state,
         replySed: newReplySed,
         originalReplySed: newReplySed,
-        replySedChanged: false,
+        replySedChanged: false
       }
     }
 
@@ -181,10 +180,10 @@ const svarsedReducer = (
       sed.sedId = (action as ActionWithPayload).payload.sedId
 
       standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
-      const newReplySed =  {
-          ...state.replySed,
-          sed
-        } as ReplySed
+      const newReplySed = {
+        ...state.replySed,
+        sed
+      } as ReplySed
       return {
         ...state,
         // now I can restore sedId to the replySed, so it can be updated later

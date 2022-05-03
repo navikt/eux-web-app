@@ -49,7 +49,7 @@ export default (saksnummer: string) => {
           sedType: 'F002',
           sedId: 'f002cancelled',
           sistEndretDato: '2020-01-04'
-        },  {
+        }, {
           sedTittel: 'Description for F002',
           status: 'active',
           sedType: 'F002',
@@ -162,7 +162,7 @@ export default (saksnummer: string) => {
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
           svarsedId: 'h002received2'
-        },
+        }
       ]
     },
     {

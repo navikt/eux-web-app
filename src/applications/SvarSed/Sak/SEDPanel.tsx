@@ -53,7 +53,6 @@ const SEDPanel = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-
   const { entries, replySed, sedStatus }: any = useAppSelector(mapState)
 
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
@@ -171,17 +170,17 @@ const SEDPanel = ({
                   loadDraft(currentSak.sakId, connectedSed.svarsedId)
                 }}
               >
-                <Edit/>
+                <Edit />
                 {(_sedStatusRequested === connectedSed.svarsedId)
                   ? (
                     <>
                       {t('message:loading-checking-sed-status')}
-                      <Loader/>
+                      <Loader />
                     </>
-                  )
+                    )
                   : (hasSentStatus(connectedSed.svarsedId, sedStatus)
-                    ? t('label:sed-already-sent', {sed: connectedSed.svarsedType})
-                    : t('label:gå-til-draft'))}
+                      ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
+                      : t('label:gå-til-draft'))}
               </Button>
             )}
             {showEditButton && (
@@ -230,7 +229,7 @@ const SEDPanel = ({
                         {t('message:loading-updating')}
                         <Loader />
                       </>
-                    )
+                      )
                     : t('label:oppdater-sed-x', {
                       x: connectedSed.sedType
                     })}
@@ -257,7 +256,7 @@ const SEDPanel = ({
                         {t('message:loading-invalidating')}
                         <Loader />
                       </>
-                    )
+                      )
                     : t('label:invalidate-sed-x', {
                       x: connectedSed.sedType
                     })}
@@ -267,30 +266,30 @@ const SEDPanel = ({
             )}
             {showReplyToSedButton && (
               <>
-              <Button
-                variant='primary'
-                disabled={_replyingToSed || !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
-                data-amplitude='svarsed.selection.replysed'
-                title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
-                onClick={(e: any) => {
-                  buttonLogger(e, {
-                    type: connectedSed.svarsedType,
-                    parenttype: connectedSed.sedType
-                  })
-                  onReplySedClick(connectedSed, currentSak)
-                }}
-              >
-                {_replyingToSed
-                  ? (
-                    <>
-                      {t('message:loading-replying')}
-                      <Loader />
-                    </>
-                    )
-                  : t('label:besvar-med', {
-                    sedtype: connectedSed.svarsedType
-                  })}
-              </Button>
+                <Button
+                  variant='primary'
+                  disabled={_replyingToSed || !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                  data-amplitude='svarsed.selection.replysed'
+                  title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.svarsedType,
+                      parenttype: connectedSed.sedType
+                    })
+                    onReplySedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_replyingToSed
+                    ? (
+                      <>
+                        {t('message:loading-replying')}
+                        <Loader />
+                      </>
+                      )
+                    : t('label:besvar-med', {
+                      sedtype: connectedSed.svarsedType
+                    })}
+                </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
             )}

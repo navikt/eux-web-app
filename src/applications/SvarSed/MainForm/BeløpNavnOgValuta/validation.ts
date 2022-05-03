@@ -11,7 +11,7 @@ export interface ValidationBeløpNavnOgValutaProps {
   index?: number
   namespace: string
   personID: string | undefined
-  personName: string
+  personName?: string
 }
 
 export const validateBeløpNavnOgValuta = (
@@ -109,7 +109,7 @@ interface ValidationBeløpNavnOgValutasProps {
   ytelser: Array<Ytelse>
   namespace: string
   personID: string | undefined
-  personName: string
+  personName?: string
 }
 
 export const validateBeløpNavnOgValutas = (

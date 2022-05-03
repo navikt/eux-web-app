@@ -29,7 +29,7 @@ export interface InntektOgTimerProps {
   inntektOgTimer: Array<InntektOgTime> | undefined
   onInntektOgTimeChanged: (inntektOgTimer: Array<InntektOgTime>, whatChanged: string) => void
   parentNamespace: string
-  personName: string
+  personName?: string
   validation: Validation
 }
 

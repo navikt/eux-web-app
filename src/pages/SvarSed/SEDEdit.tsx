@@ -42,7 +42,6 @@ import SisteAnsettelseInfo from 'applications/SvarSed/MainForm/SisteAnsettelseIn
 import SvarPåForespørsel from 'applications/SvarSed/MainForm/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/MainForm/Trygdeordning/Trygdeordning'
 import Vedtak from 'applications/SvarSed/MainForm/Vedtak/Vedtak'
-import OneLevelForm from 'applications/SvarSed/OneLevelForm'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import TwoLevelForm from 'applications/SvarSed/TwoLevelForm'
 import TextArea from 'components/Forms/TextArea'
@@ -271,7 +270,10 @@ const SEDEdit: React.FC = (): JSX.Element => {
       />
       {showTopForm() && (
         <>
-          <OneLevelForm
+          <TwoLevelForm
+            type='onelevel'
+            namespace='formål'
+            loggingNamespace='formalmanager'
             forms={[
               { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
               { label: t('el:option-mainform-motregning'), value: 'periode', component: Periode }
@@ -288,6 +290,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
       {showTwoLevelForm() && (
         <>
           <TwoLevelForm<ReplySed>
+            type='twolevel'
             namespace='svarsed'
             loggingNamespace='personmanager'
             firstForm='personopplysninger'
@@ -325,7 +328,9 @@ const SEDEdit: React.FC = (): JSX.Element => {
       )}
       {showBottomForm() && (
         <>
-          <OneLevelForm
+          <TwoLevelForm
+            type='onelevel'
+            namespace='formål'
             forms={[
               {
                 label: t('el:option-mainform-vedtak'),
@@ -362,7 +367,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
             viewValidation={view}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
-            loggingTarget='formalmanager'
+            loggingNamespace='formalmanager'
           />
           <VerticalSeparatorDiv size='2' />
         </>
@@ -399,7 +404,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         </Button>
         <VerticalSeparatorDiv />
         <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-        <VerticalSeparatorDiv/>
+        <VerticalSeparatorDiv />
         <FlexDiv>
           <div>
             <Button
@@ -443,8 +448,8 @@ const SEDEdit: React.FC = (): JSX.Element => {
             <VerticalSeparatorDiv size='0.5' />
           </div>
         </FlexDiv>
-      <VerticalSeparatorDiv />
-      {_sendButtonClicked && alertMessage &&
+        <VerticalSeparatorDiv />
+        {_sendButtonClicked && alertMessage &&
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>
           <FlexDiv>
@@ -464,7 +469,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
           </FlexDiv>
           <VerticalSeparatorDiv />
         </>
-      )}
+        )}
       </Panel>
     </PaddedDiv>
   )

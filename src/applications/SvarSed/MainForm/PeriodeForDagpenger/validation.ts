@@ -12,7 +12,7 @@ export interface ValidationPeriodeDagpengerProps {
   perioderDagpenger: Array<PeriodeDagpenger>,
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validatePeriodeDagpenger = (
@@ -110,7 +110,7 @@ export const validatePeriodeDagpenger = (
 interface ValidatePerioderDagpengerProps {
   perioderDagpenger: Array<PeriodeDagpenger> | undefined
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validatePerioderDagpenger = (

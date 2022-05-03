@@ -17,7 +17,7 @@ export interface AdresseFromPDLSelector {
 }
 
 export interface AdresseFromPDLProps {
-  personName: string
+  personName?: string
   fnr: string
   selectedAdresser: Array<Adresse>
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void

@@ -11,7 +11,7 @@ export interface ValidationNotAnsattProps {
   perioder: Array<Periode> | undefined,
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateNotAnsattPeriode = (
@@ -55,7 +55,7 @@ export const validateNotAnsattPeriode = (
 interface ValidateNotAnsattPerioderProps {
   perioder: Array<Periode>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateNotAnsattPerioder = (

@@ -10,7 +10,7 @@ export interface ValidationGrunnlagForBosettingProps {
   perioder: Array<Periode> | undefined
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
@@ -46,7 +46,7 @@ export const validateGrunnlagForBosetting = (
 interface ValidateAllGrunnlagForBosettingProps {
   flyttegrunn: Flyttegrunn
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateAllGrunnlagForBosetting = (

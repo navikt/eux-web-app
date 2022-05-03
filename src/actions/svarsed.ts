@@ -117,7 +117,7 @@ export const invalidatingSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<any> => ({
   type: '',
-  payload: {connectedSed, sak}
+  payload: { connectedSed, sak }
 })
 
 export const querySaksnummerOrFnr = (

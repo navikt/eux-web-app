@@ -10,7 +10,7 @@ export interface ValidationNasjonalitetProps {
   statsborgerskaper: Array<Statsborgerskap>
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
@@ -77,7 +77,7 @@ export const validateNasjonalitet = (
 interface ValidateNasjonaliteterProps {
   statsborgerskaper: Array<Statsborgerskap>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateNasjonaliteter = (

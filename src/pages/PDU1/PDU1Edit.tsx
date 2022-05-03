@@ -154,6 +154,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
       />
       <VerticalSeparatorDiv size='2' />
       <TwoLevelForm<PDU1>
+        type='onelevel'
         namespace='pdu1'
         loggingNamespace='personmanager'
         firstForm='person'

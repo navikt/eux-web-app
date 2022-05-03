@@ -1,4 +1,4 @@
-import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import KravOmRefusjon from 'applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon'
 import { render } from '@testing-library/react'
 import getReplySed from 'mocks/svarsed/replySed'
@@ -14,14 +14,14 @@ jest.mock('actions/validation', () => ({
 
 const mockReplySed = getReplySed('F002')
 
-const defaultSelector: OneLevelFormSelector = {
+const defaultSelector: TwoLevelFormSelector = {
   validation: {}
 }
 
 describe('applications/SvarSed/MainForm/KravOmRefusjon/KravOmRefusjon', () => {
   let wrapper: any
 
-  const initialMockProps: OneLevelFormProps = {
+  const initialMockProps: TwoLevelFormProps = {
     parentNamespace: 'test',
     replySed: mockReplySed,
     updateReplySed: jest.fn(),

@@ -10,7 +10,7 @@ export interface ValidationIdentifikatorProps {
   identifikator: ArbeidsgiverIdentifikator
   index?: number,
   namespace: string
-  personName: string
+  personName?: string
 }
 
 const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' + it?.id

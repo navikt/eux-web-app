@@ -57,6 +57,7 @@ const GrayPanel = styled(Panel)`
 
 interface AddPersonModalProps<T> {
   appElement?: any
+  open: boolean
   onModalClose: () => void
   closeButton?: boolean
   parentNamespace: string
@@ -65,6 +66,7 @@ interface AddPersonModalProps<T> {
 }
 
 const AddPersonModal = <T extends StorageTypes>({
+  open,
   onModalClose,
   parentNamespace,
   replySed,
@@ -303,7 +305,7 @@ const AddPersonModal = <T extends StorageTypes>({
 
   return (
     <ModalDiv
-      open
+      open={open}
       onClose={onModalClose}
     >
       <PaddedDiv id='add-person-modal-id'>

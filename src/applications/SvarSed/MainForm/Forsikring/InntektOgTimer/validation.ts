@@ -10,13 +10,13 @@ export interface ValidationInntektOgTimeProps {
   inntektOgTime: InntektOgTime
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 interface ValidationInntektOgTimerProps {
   inntektOgTimer: Array<InntektOgTime> | undefined
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateInntektOgTime = (

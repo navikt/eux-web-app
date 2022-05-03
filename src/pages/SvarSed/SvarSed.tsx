@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react'
-import { Container, Content, Margin, VerticalSeparatorDiv, HorizontalSeparatorDiv, FlexDiv  } from '@navikt/hoykontrast'
+import { Container, Content, Margin, VerticalSeparatorDiv, HorizontalSeparatorDiv, FlexDiv } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed, loadReplySed } from 'actions/svarsed'
@@ -56,7 +56,7 @@ export const SvarSedPage = (): JSX.Element => {
     if (_currentPage === 'B') {
       changeMode('A')
       dispatch(resetCurrentEntry('svarsed'))
-      document.dispatchEvent(new CustomEvent('tilbake', {detail: {}}))
+      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
     dispatch(setCurrentSak(undefined))
   }
@@ -114,35 +114,39 @@ export const SvarSedPage = (): JSX.Element => {
           open={_showSaveModal}
           onModalClose={() => _setShowSaveModal(false)}
           modal={{
-          modalTitle: t('message:warning-sed-not-saved'),
-          modalContent: (
-            <>
-              <div>
-                {t('message:warning-sed-save')}
-              </div>
-              <VerticalSeparatorDiv/>
-              <FlexDiv>
-              <Button variant='primary' onClick={() => {
-                _setShowSaveModal(false)
-                _setShowSaveSedModal(true)
-              }}>
-                {t('el:button-save-draft-x', {x: t('label:sed')})}
-              </Button>
-                <HorizontalSeparatorDiv/>
-              <Button variant='secondary' onClick={() => {
-                _setShowSaveModal(false)
-                backToPageA()
-              }}>
-                {t('el:button-discard-changes')}
-              </Button>
-                <HorizontalSeparatorDiv/>
-              <Button variant='tertiary' onClick={() => _setShowSaveModal(false)}>
-                {t('el:button-cancel')}
-              </Button>
-              </FlexDiv>
-            </>
-          )
-        }}
+            modalTitle: t('message:warning-sed-not-saved'),
+            modalContent: (
+              <>
+                <div>
+                  {t('message:warning-sed-save')}
+                </div>
+                <VerticalSeparatorDiv />
+                <FlexDiv>
+                  <Button
+                    variant='primary' onClick={() => {
+                      _setShowSaveModal(false)
+                      _setShowSaveSedModal(true)
+                    }}
+                  >
+                    {t('el:button-save-draft-x', { x: t('label:sed') })}
+                  </Button>
+                  <HorizontalSeparatorDiv />
+                  <Button
+                    variant='secondary' onClick={() => {
+                      _setShowSaveModal(false)
+                      backToPageA()
+                    }}
+                  >
+                    {t('el:button-discard-changes')}
+                  </Button>
+                  <HorizontalSeparatorDiv />
+                  <Button variant='tertiary' onClick={() => _setShowSaveModal(false)}>
+                    {t('el:button-cancel')}
+                  </Button>
+                </FlexDiv>
+              </>
+            )
+          }}
         />
         <Modal
           open={_showSaveSedModal}

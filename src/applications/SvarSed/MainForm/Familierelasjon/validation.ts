@@ -9,7 +9,7 @@ export interface ValidationFamilierelasjonProps {
   familierelasjon: FamilieRelasjon
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateFamilierelasjon = (
@@ -48,7 +48,7 @@ export const validateFamilierelasjon = (
 interface ValidateFamilierelasjonerProps {
   familierelasjoner: Array<FamilieRelasjon>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateFamilierelasjoner = (

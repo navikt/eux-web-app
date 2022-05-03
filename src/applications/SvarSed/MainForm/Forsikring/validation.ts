@@ -17,20 +17,20 @@ export interface ValidationForsikringPeriodeProps {
   type: string | undefined
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 interface ValidateForsikringPerioderProps {
   perioder: Array<ForsikringPeriode> |undefined
   type: string
   namespace: string
-  personName: string
+  personName?: string
 }
 
 interface ValidateAlleForsikringPerioderProps {
   perioder: {[k in string]: Array<ForsikringPeriode> | undefined}
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateForsikringPeriode = (

@@ -311,7 +311,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                       {t('el:button-close')}
                     </Button>
 
-
                     <HorizontalSeparatorDiv />
                     {goToRinaUrl && (
                       <Button

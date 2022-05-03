@@ -26,7 +26,7 @@ export interface IdentifikatorProps {
   identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
   onIdentifikatorerChanged: (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => void
   namespace: string
-  personName: string
+  personName?: string
   validation: Validation
 }
 

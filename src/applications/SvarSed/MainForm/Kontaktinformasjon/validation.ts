@@ -10,7 +10,7 @@ export interface ValidationKontaktsinformasjonTelefonProps {
   telefoner: Array<Telefon>
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export interface ValidationKontaktsinformasjonEpostProps {
@@ -18,7 +18,7 @@ export interface ValidationKontaktsinformasjonEpostProps {
   eposter: Array<Epost>,
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -139,7 +139,7 @@ export const validateKontaktsinformasjonEpost = (
 interface ValidateTelefonerProps {
   telefoner: Array<Telefon>,
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateKontaktsinformasjonTelefoner = (
@@ -162,7 +162,7 @@ export const validateKontaktsinformasjonTelefoner = (
 interface ValidateEposterProps {
   eposter: Array<Epost>,
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateKontaktsinformasjonEposter = (

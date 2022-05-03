@@ -7,7 +7,7 @@ import { checkIfNotTrue, checkLength, propagateError } from 'utils/validation'
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateSvarPåForespørsel = (

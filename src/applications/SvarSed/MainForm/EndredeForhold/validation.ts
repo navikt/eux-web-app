@@ -7,7 +7,7 @@ import { checkLength, propagateError } from 'utils/validation'
 export interface ValidationEndredeForholdProps {
   replySed: ReplySed
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateEndredeForhold = (

@@ -11,7 +11,7 @@ export interface ValidationArbeidsperiodeProps {
   perioder: Array<Periode> | undefined,
   index?: number
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateAnsattPeriode = (
@@ -55,7 +55,7 @@ export const validateAnsattPeriode = (
 interface ValidateAnsattPerioderProps {
   perioder: Array<Periode>
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateAnsattPerioder = (

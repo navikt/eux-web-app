@@ -25,7 +25,7 @@ import { Option } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1, Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, PersonInfo, ReplySed } from 'declarations/sed'
+import { F002Sed, PersonInfo, ReplySed } from 'declarations/sed'
 import { StorageTypes, UpdateReplySedPayload, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
@@ -153,12 +153,17 @@ const OptionDiv = styled.div`
     margin-top: -1px;
   }
 `
-const LastDiv = styled.div`
+const LastDivWithButton = styled.div`
   flex: 1;
   padding: 1rem 0.5rem;
   border-top: 1px solid var(--navds-panel-color-border);
   border-right: 1px solid var(--navds-panel-color-border);
   border-right-width: 1px;
+`
+const LastDiv = styled.div`
+  flex: 1;
+  border-top: 1px solid var(--navds-panel-color-border);
+  border-right: 1px solid var(--navds-panel-color-border);
 `
 const LandSpan = styled.span`
   color: grey;
@@ -185,9 +190,10 @@ const BlankContentDiv = styled(FlexCenterDiv)`
   align-self: center;
   background-color: var(--navds-semantic-color-canvas-background-light);
 `
-export interface _TwoLevelFormProps<T> {
+export interface TwoLevelFormFCProps<T> {
   forms: Array<Form>
-  firstForm: string
+  type: 'onelevel' | 'twolevel'
+  firstForm?: string
   replySed: T | null | undefined
   viewValidation: boolean
   setReplySed: (replySed: T) => ActionWithPayload<T>
@@ -199,8 +205,8 @@ export interface _TwoLevelFormProps<T> {
 export interface TwoLevelFormProps {
   replySed: ReplySed | PDU1 | null | undefined
   parentNamespace: string
-  personID: string | undefined
-  personName: string
+  personID?: string | undefined
+  personName?: string
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
@@ -226,33 +232,42 @@ export const mapState = (state: State): TwoLevelFormSelector => ({
 const TwoLevelForm = <T extends StorageTypes>({
   forms,
   firstForm,
+  type,
   replySed,
   setReplySed,
   updateReplySed,
   viewValidation,
   namespace,
   loggingNamespace
-}: _TwoLevelFormProps<T>) => {
+}: TwoLevelFormFCProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
 
   const dispatch = useAppDispatch()
+
   const brukerNr = 1
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
   const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0)
 
-  // list of open menus (= persons). If SED only has one person (bruker), open it by default
+  // list of open menus (= persons, on two-level menus).
+  // If SED only has one person (bruker), open it by default
   const [openMenus, setOpenMenus] = useState<Array<string>>(() => totalPeopleNr === 1 ? ['bruker'] : [])
+
+  const initialMenu = type === 'twolevel'
+    ? totalPeopleNr === 1 ? 'bruker' : undefined
+    : forms.length === 1 ? forms[0].value : undefined
+  const initialMenuOption = (type === 'twolevel' && totalPeopleNr === 1) ? firstForm : undefined
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)
   const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
 
   const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
-  const [currentMenu, setCurrentMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
-  const [focusedMenu, setFocusedMenu] = useState<string | undefined>(totalPeopleNr === 1 ? 'bruker' : undefined)
+  const [currentMenu, _setCurrentMenu] = useState<string | undefined>(initialMenu)
+  const [focusedMenu, setFocusedMenu] = useState<string | undefined>(initialMenu)
   const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
-  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(totalPeopleNr === 1 ? firstForm : undefined)
+  const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
+
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
   useEffect(() => {
@@ -267,17 +282,29 @@ const TwoLevelForm = <T extends StorageTypes>({
     _setCurrentMenuOption(newMenu)
   }
 
-  const menuRef = useRef(currentMenu + '|' + currentMenuOption)
+  const setCurrentMenu = (newMenu: string | undefined) => {
+    dispatch(logMenuStatistic(loggingNamespace, currentMenu, newMenu))
+    _setCurrentMenu(newMenu)
+  }
 
-  const getForm = (menu: string, menuOption: string): JSX.Element | null => {
+  const menuRef = useRef(currentMenu + (currentMenuOption ? '|' + currentMenuOption : ''))
+
+  const getForm = (menu: string, menuOption: string | undefined): JSX.Element | null => {
     let personName
-    if (menu !== 'familie') {
-      personName = getPersonName(replySed, menu)
-    } else {
-      personName = t('label:hele-familien')
+    if (type === 'twolevel') {
+      if (menu !== 'familie') {
+        personName = getPersonName(replySed, menu)
+      } else {
+        personName = t('label:hele-familien')
+      }
     }
 
-    const form: Form | undefined = _.find(forms, o => o.value === menuOption)
+    let form: Form | undefined
+    if (type === 'twolevel') {
+      form = _.find(forms, o => o.value === menuOption)
+    } else {
+      form = _.find(forms, o => o.value === menu)
+    }
     if (form) {
       const Component = form.component
       return (
@@ -308,6 +335,20 @@ const TwoLevelForm = <T extends StorageTypes>({
   }
 
   const changeMenu = (menu: string, menuOption: string | undefined, from: 'event' | 'click') => {
+    if (type === 'onelevel') {
+      if (currentMenu !== menu) {
+        setPreviousMenu(currentMenu)
+        setCurrentMenu(menu)
+        setAnimatingMenus(true)
+        setTimeout(() => {
+          setPreviousMenu(menu)
+          setAnimatingMenus(false)
+        }, transitionTime * 1000)
+      }
+      menuRef.current = menu
+      return
+    }
+
     const changedMenu: boolean = currentMenu !== menu
     const changedMenuOption: boolean =
       !_.isNil(menuOption)
@@ -353,11 +394,86 @@ const TwoLevelForm = <T extends StorageTypes>({
     menuRef.current = menu + '|' + menuOption
   }
 
+  const handleFeilLenke = (e: any) => {
+    const error: ErrorElement = e.detail
+    const namespaceBits = error.skjemaelementId.split('-')
+    if (namespaceBits[0] === namespace) {
+      const newMenu = namespaceBits[1]
+      const newOption = namespaceBits[2]?.split('[')?.[0]
+      const [currentMenu, currentMenuOption] = menuRef.current.split('|')
+      if (!(newMenu === currentMenu && newOption === currentMenuOption)) {
+        changeMenu(newMenu, newOption, 'event')
+      }
+      setTimeout(() => {
+        const element = document.getElementById(error.skjemaelementId)
+        element?.focus()
+        element?.closest('.mainright')?.scrollIntoView({
+          behavior: 'smooth'
+        })
+        element?.focus()
+      }, 200)
+    }
+  }
+
+  const handleTilbake = () => {
+    setPreviousMenu(undefined)
+    setCurrentMenu(initialMenu)
+    setFocusedMenu(initialMenu)
+    setPreviousMenuOption(undefined)
+    setCurrentMenuOption(undefined)
+  }
+
   const onAddNewPerson = () => {
     setSeeNewPersonModal(true)
   }
 
-  const renderMenu = (replySed: ReplySed | PDU1, personId: string) => {
+  const renderOneLevelMenu = (forms: Array<Form>) => {
+    return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
+      const selected: boolean = currentMenu === form.value
+      return (
+        <NameAndOptionsDiv
+          key={form.value}
+          className={classNames({ whiteborder: selected })}
+        >
+          <NameDiv>
+            <NameLabelDiv
+              onClick={() => {
+                changeMenu(form.value, undefined, 'click')
+                return false
+              }}
+              className={classNames({ selected })}
+            >
+              {viewValidation && (
+                validation[namespace + '-' + form.value]
+                  ? (
+                    <>
+                      <ErrorFilled height={20} color='red' />
+                      <HorizontalSeparatorDiv size='0.5' />
+                    </>
+                    )
+                  : (
+                    <>
+                      <SuccessFilled color='green' height={20} />
+                      <HorizontalSeparatorDiv size='0.5' />
+                    </>
+                    )
+              )}
+              <>
+                <MenuLabelText className={classNames({ selected })}>
+                  {t('label:' + form.value.replaceAll('_', '-'))}
+                </MenuLabelText>
+              </>
+            </NameLabelDiv>
+            <MenuArrowDiv>
+              <NextFilled />
+            </MenuArrowDiv>
+          </NameDiv>
+        </NameAndOptionsDiv>
+      )
+    })
+  }
+
+  const renderTwoLevelMenu = (replySed: ReplySed | PDU1, personId: string) => {
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
     const personName = personId === 'familie'
       ? t('label:hele-familien')
@@ -461,34 +577,6 @@ const TwoLevelForm = <T extends StorageTypes>({
     )
   }
 
-  const handleFeilLenke = (e: any) => {
-    const error: ErrorElement = e.detail
-    const namespaceBits = error.skjemaelementId.split('-')
-    if (namespaceBits[0] === namespace) {
-      const newMenu = namespaceBits[1]
-      const newOption = namespaceBits[2].split('[')[0]
-      const [currentMenu, currentMenuOption] = menuRef.current.split('|')
-      if (!(newMenu === currentMenu && newOption === currentMenuOption)) {
-        changeMenu(newMenu, newOption, 'event')
-      }
-      setTimeout(() => {
-        const element = document.getElementById(error.skjemaelementId)
-        element?.focus()
-        element?.closest('.mainright')?.scrollIntoView({
-          behavior: 'smooth'
-        })
-      }, 200)
-    }
-  }
-
-  const handleTilbake = () => {
-    setPreviousMenu(undefined)
-    setCurrentMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
-    setFocusedMenu(totalPeopleNr === 1 ? 'bruker' : undefined)
-    setPreviousMenuOption(undefined)
-    setCurrentMenuOption(undefined)
-  }
-
   useEffect(() => {
     document.addEventListener('feillenke', handleFeilLenke)
     document.addEventListener('tilbake', handleTilbake)
@@ -499,47 +587,56 @@ const TwoLevelForm = <T extends StorageTypes>({
   }, [])
 
   return (
-    <PileDiv key={(replySed as ReplySed)?.sedType + '-' + ((replySed as FSed)?.formaal?.join(',') ?? '')}>
-      {_seeNewPersonModal && (
-        <AddPersonModal<T>
-          replySed={replySed}
-          setReplySed={setReplySed!}
-          parentNamespace={namespace}
-          onModalClose={() => setSeeNewPersonModal(false)}
-        />
-      )}
+    <PileDiv>
+      <AddPersonModal<T>
+        open={_seeNewPersonModal}
+        replySed={replySed}
+        setReplySed={setReplySed!}
+        parentNamespace={namespace}
+        onModalClose={() => setSeeNewPersonModal(false)}
+      />
       <WithErrorPanel
         border
         className={classNames({ error: validation[namespace]?.feilmelding })}
       >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>
-            {replySed?.bruker && renderMenu(replySed, 'bruker')}
-            {(replySed as F002Sed)?.ektefelle && renderMenu(replySed!, 'ektefelle')}
-            {(replySed as F002Sed)?.annenPerson && renderMenu(replySed!, 'annenPerson')}
-            {(replySed as F002Sed)?.barn?.map((b: any, i: number) => renderMenu(replySed!, `barn[${i}]`))}
-            {isFSed(replySed) && renderMenu(replySed!, 'familie')}
-            <LastDiv>
-              {isFSed(replySed) && (
-                <Button
-                  variant='tertiary'
-                  onClick={onAddNewPerson}
-                >
-                  <AddCircle />
-                  {t('el:button-add-new-x', { x: t('label:person') })}
-                </Button>
-              )}
-            </LastDiv>
+            {type === 'twolevel' && (
+              <>
+                {type === 'twolevel' && replySed?.bruker && renderTwoLevelMenu(replySed, 'bruker')}
+                {type === 'twolevel' && (replySed as F002Sed)?.ektefelle && renderTwoLevelMenu(replySed!, 'ektefelle')}
+                {type === 'twolevel' && (replySed as F002Sed)?.annenPerson && renderTwoLevelMenu(replySed!, 'annenPerson')}
+                {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
+                {type === 'twolevel' && isFSed(replySed) && renderTwoLevelMenu(replySed!, 'familie')}
+                <LastDivWithButton>
+                  {isFSed(replySed) && (
+                    <Button
+                      variant='tertiary'
+                      onClick={onAddNewPerson}
+                    >
+                      <AddCircle />
+                      {t('el:button-add-new-x', { x: t('label:person') })}
+                    </Button>
+                  )}
+                </LastDivWithButton>
+              </>
+            )}
+            {type === 'onelevel' && (
+              <>
+                {renderOneLevelMenu(forms)}
+                <LastDiv />
+              </>
+            )}
           </LeftDiv>
           <RightDiv className='mainright'>
             {!currentMenu && (
               <BlankDiv>
                 <BlankContentDiv>
-                  {t('label:velg-personer')}
+                  {t('label:velg-meny')}
                 </BlankContentDiv>
               </BlankDiv>
             )}
-            {previousMenu && previousMenuOption && (
+            {previousMenu && (
               <PreviousFormDiv
                 className={classNames(`previous-${previousMenu}-${previousMenuOption}`, 'right', { animating: animatingMenus })}
                 key={previousMenu + '-' + previousMenuOption}
@@ -547,7 +644,7 @@ const TwoLevelForm = <T extends StorageTypes>({
                 {getForm(previousMenu, previousMenuOption)}
               </PreviousFormDiv>
             )}
-            {currentMenu && currentMenuOption && (
+            {currentMenu && (
               <ActiveFormDiv
                 className={classNames(`active-${currentMenu}-${currentMenuOption}`, 'right', { animating: animatingMenus })}
                 key={currentMenu + '-' + currentMenuOption}

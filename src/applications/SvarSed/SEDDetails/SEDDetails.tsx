@@ -47,7 +47,7 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
 }: SEDDetailsProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const {currentEntry, savingSed, replySed}: SEDDetailsSelector = useAppSelector(mapState)
+  const { currentEntry, savingSed, replySed }: SEDDetailsSelector = useAppSelector(mapState)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
 

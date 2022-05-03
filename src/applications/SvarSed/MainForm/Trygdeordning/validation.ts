@@ -11,7 +11,7 @@ export interface ValidationDekkedePeriodeProps {
   perioder: Array<Periode>,
   index?: number,
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export interface ValidationUdekkedePeriodeProps {
@@ -19,7 +19,7 @@ export interface ValidationUdekkedePeriodeProps {
   perioder: Array<Periode>,
   index?: number,
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export interface ValidationFamilieytelsePeriodeProps {
@@ -28,7 +28,7 @@ export interface ValidationFamilieytelsePeriodeProps {
   index?: number,
   namespace: string,
   sedCategory: string,
-  personName: string
+  personName?: string
 }
 
 const validateGenericPeriode = (
@@ -224,7 +224,7 @@ export const validatePerioder = (
   pageCategory: string,
   perioder: Array<Periode | PensjonPeriode>,
   namespace: string,
-  personName: string
+  personName?: string
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
@@ -242,7 +242,7 @@ export const validatePerioder = (
 interface ValidateTrygdeordningerProps {
   perioder: {[k in string]: Array<Periode | PensjonPeriode>}
   namespace: string
-  personName: string
+  personName?: string
 }
 
 export const validateTrygdeordninger = (

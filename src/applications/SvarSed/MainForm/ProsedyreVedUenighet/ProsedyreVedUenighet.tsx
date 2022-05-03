@@ -2,7 +2,7 @@ import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Select from 'components/Forms/Select'
@@ -21,15 +21,15 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { validateProsedyreVedUenighetGrunn, ValidationProsedyreVedUenighetGrunnProps } from './validation'
 
-const mapState = (state: State): OneLevelFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const ProsedyreVedUenighet: React.FC<OneLevelFormProps> = ({
+const ProsedyreVedUenighet: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}: OneLevelFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()

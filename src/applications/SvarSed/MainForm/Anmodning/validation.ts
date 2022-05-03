@@ -6,7 +6,7 @@ import { checkLength, propagateError } from 'utils/validation'
 export interface ValidationAnmodningProps {
   replySed: ReplySed
   namespace: string,
-  personName: string
+  personName?: string
 }
 
 export const validateAnmodning = (

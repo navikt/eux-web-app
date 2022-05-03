@@ -16,7 +16,7 @@ import {
   ValidationVedtakPeriodeProps,
   ValidationVedtakVedtaksperiodeProps
 } from 'applications/SvarSed/MainForm/Vedtak/validation'
-import { OneLevelFormProps, OneLevelFormSelector } from 'applications/SvarSed/OneLevelForm'
+import { TwoLevelFormProps, TwoLevelFormSelector } from 'applications/SvarSed/TwoLevelForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -40,17 +40,17 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { validateVedtakPeriode } from './validation'
 
-const mapState = (state: State): OneLevelFormSelector => ({
+const mapState = (state: State): TwoLevelFormSelector => ({
   validation: state.validation.status
 })
 
-const VedtakFC: React.FC<OneLevelFormProps> = ({
+const VedtakFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
-}: OneLevelFormProps): JSX.Element => {
+}: TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation }: OneLevelFormSelector = useAppSelector(mapState)
+  const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'vedtak'
   const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
