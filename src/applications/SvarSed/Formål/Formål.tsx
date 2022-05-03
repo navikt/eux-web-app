@@ -81,7 +81,7 @@ const Formål: React.FC<FormålProps> = ({
   }
 
   return (
-    <PaddedDiv style={{ columns: '2' }}>
+    <PaddedDiv tabIndex={0} id={namespace + '-checkbox'} style={{ columns: '2' }}>
       {formaalOptions.map(f => (
         <CheckboxDiv key={f.value}>
           <Checkbox

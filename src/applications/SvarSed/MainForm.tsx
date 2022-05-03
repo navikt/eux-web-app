@@ -404,11 +404,15 @@ const MainForm = <T extends StorageTypes>({
       }
       setTimeout(() => {
         const element = document.getElementById(error.skjemaelementId)
-        element?.focus()
-        element?.closest('.mainright')?.scrollIntoView({
-          behavior: 'smooth'
-        })
-        element?.focus()
+        if (element) {
+          element?.focus()
+          element?.closest('.mainform')?.scrollIntoView({
+            block: "start",
+            inline: "start",
+            behavior: 'smooth'
+          })
+          element?.focus()
+        }
       }, 200)
     }
   }
@@ -428,38 +432,34 @@ const MainForm = <T extends StorageTypes>({
   const renderOneLevelMenu = (forms: Array<Form>) => {
     return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
       const selected: boolean = currentMenu === form.value
+      const fading: boolean = previousMenu === form.value
       const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + form.value))
-      const validationHasErrors = _.find(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+      const isValidated = validationKeys.length > 0
+      const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
       return (
         <NameAndOptionsDiv
           key={form.value}
           className={classNames({ whiteborder: selected })}
         >
-          <NameDiv>
+          <NameDiv
+            onClick={() => {
+              changeMenu(form.value, undefined, 'click')
+              return false
+            }}
+          >
             <NameLabelDiv
-              onClick={() => {
-                changeMenu(form.value, undefined, 'click')
-                return false
-              }}
               className={classNames({ selected })}
             >
-              {validationKeys.length > 0
-                ? validationHasErrors
-                  ? (
-                    <>
-                      <ErrorFilled height={20} color='red' />
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                    )
-                  : (
-                    <>
-                      <SuccessFilled color='green' height={20} />
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                    )
-                : null
+              {!isValidated
+                ? null
+                : animatingMenus && fading
+                  ? <EllipsisCircleH height={20} />
+                  : validationHasErrors
+                    ? <ErrorFilled height={20} color='red' />
+                    : <SuccessFilled color='green' height={20} />
               }
               <>
+                <HorizontalSeparatorDiv size='0.5' />
                 <MenuLabelText className={classNames({ selected })}>
                   {t('label:' + form.value.replaceAll('_', '-'))}
                 </MenuLabelText>
@@ -484,21 +484,22 @@ const MainForm = <T extends StorageTypes>({
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined
     const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId))
-    const validationHasErrors = _.find(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+    const isValidated = validationKeys.length > 0
+    const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
     return (
       <NameAndOptionsDiv className={classNames({ whiteborder: !open && currentMenu === personId })}>
-        <NameDiv>
+        <NameDiv
+          onClick={() => {
+          changeMenu(personId, undefined, 'click')
+          return false
+        }}>
           <NameLabelDiv
-            onClick={() => {
-              changeMenu(personId, undefined, 'click')
-              return false
-            }}
             className={classNames({
               selected: focusedMenu === personId
             })}
           >
-            {validationKeys.length > 0
+            {isValidated
               ? validationHasErrors
                 ? (
                   <>
@@ -554,7 +555,8 @@ const MainForm = <T extends StorageTypes>({
           .map((o, i) => {
 
             const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))
-            const validationHasErrors = _.find(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+            const isValidated = validationKeys.length > 0
+            const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
             return (
               <OptionDiv
@@ -567,7 +569,7 @@ const MainForm = <T extends StorageTypes>({
                 onClick={() => changeMenu(personId, o.value, 'click')}
                 role='button'
               >
-                {validationKeys.length > 0
+                {isValidated
                   ? validationHasErrors
                     ? <SuccessFilled color='green' height={20} />
                     : <ErrorFilled color='red' height={20} />
@@ -592,10 +594,10 @@ const MainForm = <T extends StorageTypes>({
   }, [])
 
 
-  const panelError = Object.keys(validation).filter(k => k.startsWith(namespace) && validation[k]?.feilmelding !== 'ok').length === 0
+  const panelError = _.some(Object.keys(validation), k => k.startsWith(namespace) && validation[k]?.feilmelding !== 'ok')
 
   return (
-    <PileDiv>
+    <PileDiv className='mainform'>
       <AddPersonModal<T>
         open={_seeNewPersonModal}
         replySed={replySed}
@@ -636,7 +638,7 @@ const MainForm = <T extends StorageTypes>({
               </>
             )}
           </LeftDiv>
-          <RightDiv className='mainright'>
+          <RightDiv>
             {!currentMenu && (
               <BlankDiv>
                 <BlankContentDiv>

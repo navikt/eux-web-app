@@ -69,20 +69,9 @@ export const MyTag = styled(Tag)`
 export const WithErrorPanel = styled(Panel)`
   padding: 0rem;
   background-color: transparent;
+  border: none;
   &.error {
-    border-color: var(--navds-select-color-border-error);
-    border-width: 3px;
-    .left {
-       border-top: none;
-       border-left: none;
-       border-bottom: none;
-    }
-    .right {
-       border: none;
-    }
-  }
-  &:not(.error) {
-    border: none;
+    border: 3px solid var(--navds-select-color-border-error) !important;
   }
 `
 export const AlertstripeDiv = styled.div`

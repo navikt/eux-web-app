@@ -31,18 +31,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
             <ErrorSummary.Item
               key={item!.skjemaelementId}
               href={`#${item!.skjemaelementId}`}
-              onClick={(e) => {
-                e.preventDefault()
-                const element = document.getElementById(item!.skjemaelementId)
-                if (element) {
-                  element?.focus()
-                  element?.scrollIntoView({
-                    behavior: 'smooth'
-                  })
-                } else {
-                  document.dispatchEvent(new CustomEvent(eventName!, { detail: item }))
-                }
-              }}
+              onClick={() => document.dispatchEvent(new CustomEvent(eventName!, { detail: item }))}
             >
               {item!.feilmelding}
             </ErrorSummary.Item>
