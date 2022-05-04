@@ -31,10 +31,8 @@ import _ from 'lodash'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { isFSed } from 'utils/sed'
-
-const transitionTime = 0.3
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -61,45 +59,6 @@ const RightActiveDiv = styled.div`
   border-bottom-right-radius: 4px;
   height: 100%;
   margin-left: -1px;
-`
-const slideIn = keyframes`
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-`
-const slideOut = keyframes`
-  100% {
-    left: -100%;
-    right: 100%;
-  }
-  0% {
-    left: 0%;
-    right: 0%;
-  }
-`
-const ActiveFormDiv = styled(RightActiveDiv)`
-  &.animating {
-    will-change: transform;
-    position: relative;
-    transform: translateX(-100%);
-    animation: ${slideIn} ${transitionTime}s forwards;
-  }
-`
-const PreviousFormDiv = styled(RightActiveDiv)`
-  &.animating {
-    will-change: left, right;
-    position: absolute;
-    top: 0px;
-    left: 0%;
-    right: 0%;
-    animation: ${slideOut} ${transitionTime}s forwards;
-  }
-  &:not(.animating) {
-    display: none;
-  }
 `
 const NameAndOptionsDiv = styled(PileDiv)`
  &.whiteborder {
@@ -258,12 +217,9 @@ const MainForm = <T extends StorageTypes>({
   const initialMenuOption = (type === 'twolevel' && totalPeopleNr === 1) ? firstForm : undefined
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)
-  const [animatingMenus, setAnimatingMenus] = useState<boolean>(false)
 
-  const [previousMenu, setPreviousMenu] = useState<string | undefined>(undefined)
   const [currentMenu, _setCurrentMenu] = useState<string | undefined>(initialMenu)
   const [focusedMenu, setFocusedMenu] = useState<string | undefined>(initialMenu)
-  const [previousMenuOption, setPreviousMenuOption] = useState<string | undefined>(undefined)
   const [currentMenuOption, _setCurrentMenuOption] = useState<string | undefined>(initialMenuOption)
 
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
@@ -335,13 +291,7 @@ const MainForm = <T extends StorageTypes>({
   const changeMenu = (menu: string, menuOption: string | undefined, from: 'event' | 'click') => {
     if (type === 'onelevel') {
       if (currentMenu !== menu) {
-        setPreviousMenu(currentMenu)
         setCurrentMenu(menu)
-        setAnimatingMenus(true)
-        setTimeout(() => {
-          setPreviousMenu(undefined)
-          setAnimatingMenus(false)
-        }, transitionTime * 1000)
       }
       menuRef.current = menu
       return
@@ -356,7 +306,6 @@ const MainForm = <T extends StorageTypes>({
     if (changedMenu) {
       setFocusedMenu(menu)
       if (changedMenuOption) {
-        setPreviousMenu(currentMenu)
         setCurrentMenu(menu)
       }
     }
@@ -374,12 +323,6 @@ const MainForm = <T extends StorageTypes>({
         }
       }
 
-      setPreviousMenuOption(currentMenuOption)
-      setAnimatingMenus(true)
-      setTimeout(() => {
-        setPreviousMenuOption(undefined)
-        setAnimatingMenus(false)
-      }, transitionTime * 1000)
       if (menuOption) {
         setCurrentMenuOption(menuOption)
       } else {
@@ -418,10 +361,8 @@ const MainForm = <T extends StorageTypes>({
   }
 
   const handleTilbake = () => {
-    setPreviousMenu(undefined)
     setCurrentMenu(initialMenu)
     setFocusedMenu(initialMenu)
-    setPreviousMenuOption(undefined)
     setCurrentMenuOption(undefined)
   }
 
@@ -432,7 +373,6 @@ const MainForm = <T extends StorageTypes>({
   const renderOneLevelMenu = (forms: Array<Form>) => {
     return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
       const selected: boolean = currentMenu === form.value
-      // const fading: boolean = previousMenu === form.value
       const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + form.value))
       const isValidated = validationKeys.length > 0
       const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
@@ -631,21 +571,13 @@ const MainForm = <T extends StorageTypes>({
                 </BlankContentDiv>
               </BlankDiv>
             )}
-            {previousMenu && (
-              <PreviousFormDiv
-                key={`previous-${previousMenu}${previousMenuOption ? '-' + previousMenuOption : ''}`}
-                className={classNames(`previous-${previousMenu}${previousMenuOption ? '-' + previousMenuOption : ''}`, 'right', { animating: animatingMenus })}
-              >
-                {getForm(previousMenu, previousMenuOption)}
-              </PreviousFormDiv>
-            )}
             {currentMenu && (
-              <ActiveFormDiv
+              <RightActiveDiv
                 key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
-                className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right', { animating: animatingMenus })}
+                className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
               >
                 {getForm(currentMenu, currentMenuOption)}
-              </ActiveFormDiv>
+              </RightActiveDiv>
             )}
           </RightDiv>
         </FlexCenterSpacedDiv>
