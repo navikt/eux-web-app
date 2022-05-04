@@ -59,7 +59,6 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
   const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit, namespace)
 
-
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
@@ -178,7 +177,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         updateReplySed={updatePdu1}
       />
       <VerticalSeparatorDiv size='2' />
-      <PreviewPDU1 performValidation={performValidation}/>
+      <PreviewPDU1 performValidation={performValidation} />
       <VerticalSeparatorDiv size='2' />
       <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
       <VerticalSeparatorDiv size='2' />

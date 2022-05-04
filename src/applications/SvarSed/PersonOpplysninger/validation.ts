@@ -1,196 +1,94 @@
-import { ErrorElement } from 'declarations/app'
+import { validateUtenlandskPin } from 'components/UtenlandskPins/validation'
 import { PersonInfo, Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { TFunction } from 'react-i18next'
-import { getIdx } from 'utils/namespace'
-import { checkIfNotEmpty } from 'utils/validation'
 import validator from '@navikt/fnrvalidator'
+import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationPersonOpplysningProps {
-  personInfo: PersonInfo
-  namespace: string
+export interface ValidationPersonopplysningerProps {
+  personInfo: PersonInfo | undefined
   personName?: string
 }
 
-export interface ValidationPinProps {
-  pin: Pin
-  pins: Array<Pin>
-  index ?: number
-  namespace: string
-  personName?: string
-}
-
-export interface ValidationExtraInformationProps {
-  status: string
-  index ?: number
-  namespace: string
-  personName?: string
-}
-
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
-
-export const validateExtraInformation = (
+export const validatePersonopplysninger = (
   v: Validation,
   t: TFunction,
-  {
-    status,
-    index,
-    namespace,
-    personName
-  }: ValidationExtraInformationProps
-): boolean => {
-  let hasErrors: boolean = false
-  const idx = getIdx(index)
-
-  hasErrors ||= checkIfNotEmpty(v, {
-    needle: status,
-    id: namespace + idx + '-status',
-    message: 'validation:noStatus',
-    personName
-  })
-  return hasErrors
-}
-
-export const validatePin = (
-  v: Validation,
-  t: TFunction,
-  {
-    pin,
-    pins,
-    index,
-    namespace,
-    personName
-  }: ValidationPinProps
-): boolean => {
-  let hasErrors: boolean = false
-  const idx = getIdx(index)
-
-  hasErrors ||= checkIfNotEmpty(v, {
-    needle: pin.identifikator,
-    id: namespace + idx + '-identifikator',
-    message: 'validation:noId',
-    personName
-  })
-
-  if (_.isEmpty(pin.land?.trim())) {
-    v[namespace + idx + '-land'] = {
-      feilmelding: t('validation:noLand') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-land'
-    } as ErrorElement
-    hasErrors = true
-  }
-
-  let duplicate: boolean
-
-  if (!_.isEmpty(pin.land)) {
-    if (_.isNil(index)) {
-      duplicate = _.find(pins, { land: pin.land }) !== undefined
-    } else {
-      const otherPins: Array<Pin> = _.filter(pins, (p, i) => i !== index)
-      duplicate = _.find(otherPins, { land: pin.land }) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-land'] = {
-        feilmelding: t('validation:duplicateLand') + (personName ? t('validation:til-person', { person: personName }) : ''),
-        skjemaelementId: namespace + idx + '-land'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
-  return hasErrors
-}
-export const validatePersonOpplysninger = (
-  v: Validation,
-  t: TFunction,
+  namespace: string,
   {
     personInfo,
-    namespace,
     personName
-  }: ValidationPersonOpplysningProps
+  }: ValidationPersonopplysningerProps
 ): boolean => {
-  let hasErrors: boolean = false
 
-  if (_.isEmpty(personInfo?.fornavn?.trim())) {
-    v[namespace + '-fornavn'] = {
-      feilmelding: t('validation:noFornavn') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-fornavn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(personInfo?.etternavn?.trim())) {
-    v[namespace + '-etternavn'] = {
-      feilmelding: t('validation:noEtternavn') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-etternavn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: personInfo?.fornavn?.trim(),
+    id: namespace + '-fornavn',
+    message: 'validation:noFornavn',
+    personName
+  }))
 
-  if (_.isEmpty(personInfo?.foedselsdato?.trim())) {
-    v[namespace + '-foedselsdato'] = {
-      feilmelding: t('validation:noFoedselsdato') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-foedselsdato'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: personInfo?.etternavn?.trim(),
+    id: namespace + '-etternavn',
+    message: 'validation:noEtternavn',
+    personName
+  }))
 
-  if (!personInfo?.foedselsdato?.trim().match(datePattern)) {
-    v[namespace + '-foedselsdato'] = {
-      feilmelding: t('validation:invalidFoedselsdato') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-foedselsdato'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: personInfo?.foedselsdato?.trim(),
+    id: namespace + '-foedselsdato',
+    message: 'validation:noFoedselsdato',
+    personName
+  }))
 
-  if (_.isEmpty(personInfo?.kjoenn?.trim())) {
-    v[namespace + '-kjoenn'] = {
-      feilmelding: t('validation:noKjoenn') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-kjoenn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotDate(v, {
+    needle: personInfo?.foedselsdato?.trim(),
+    id: namespace + '-foedselsdato',
+    message: 'validation:invalidFoedselsdato',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: personInfo?.kjoenn?.trim(),
+    id: namespace + '-kjoenn',
+    message: 'validation:noKjoenn',
+    personName
+  }))
+
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
-  const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
+  const utenlandskePins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
-  if (norwegianPin === undefined && _.isEmpty(utenlandskPins)) {
-    v[namespace + '-norskpin-nummer'] = {
-      feilmelding: t('validation:noId') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + '-norskpin-nummer'
-    } as ErrorElement
-    hasErrors = true
+  if (norwegianPin === undefined && _.isEmpty(utenlandskePins)) {
+    hasErrors.push(addError(v, {
+      id: namespace + '-norskpin-nummer',
+      message:'validation:noId',
+      personName
+    }))
   }
 
   if (!_.isEmpty(norwegianPin?.identifikator)) {
     const result = validator.idnr(norwegianPin!.identifikator!)
     if (result.status !== 'valid') {
-      v[namespace + '-norskpin-nummer'] = {
-        feilmelding: t('validation:badId') + (personName ? t('validation:til-person', { person: personName }) : ''),
-        skjemaelementId: namespace + '-norskpin-nummer'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + '-norskpin-nummer',
+        message: 'validation:badId',
+        personName
+      }))
     }
   }
 
-  utenlandskPins?.forEach((pin: Pin, index: number) => {
-    const _errors = validatePin(v, t, {
-      index,
+  utenlandskePins?.forEach((pin: Pin, index: number) => {
+    hasErrors.push(validateUtenlandskPin(v, t, {
       pin,
-      pins: utenlandskPins,
+      utenlandskePins,
       namespace: namespace + '-pin',
+      index,
       personName
-    })
-    hasErrors = hasErrors || _errors
+    }))
   })
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

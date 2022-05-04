@@ -214,6 +214,7 @@ const Person: React.FC<MainFormProps> = ({
         onPinsChanged={onUtenlandskPinChange}
         namespace={namespace + '-utenlandskePin'}
         validation={validation}
+        personName={personName}
       />
     </div>
   )

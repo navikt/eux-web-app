@@ -10,11 +10,13 @@ export interface ValidationUtenlandskPinProps {
   utenlandskePins: Array<Pin> | undefined
   index ?: number
   namespace: string
+  personName?: string
 }
 
 export interface ValidationUtenlandskPinsProps {
   utenlandskePins: Array<Pin> | undefined
   namespace: string
+  personName ?: string
 }
 
 export const validateUtenlandskPin = (
@@ -24,7 +26,8 @@ export const validateUtenlandskPin = (
     pin,
     utenlandskePins,
     index,
-    namespace
+    namespace,
+    personName
   }: ValidationUtenlandskPinProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -33,13 +36,15 @@ export const validateUtenlandskPin = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: pin.identifikator,
     id: namespace + idx + '-identifikator',
-    message: 'validation:noId'
+    message: 'validation:noId',
+    personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: pin.land,
     id: namespace + idx + '-land',
-    message: 'validation:noLand'
+    message: 'validation:noLand',
+    personName
   }))
 
   if (!_.isEmpty(pin?.land)) {
@@ -51,7 +56,8 @@ export const validateUtenlandskPin = (
     hasErrors.push(checkIfNotGB(v, {
       needle: pin.land,
       id: namespace + idx + '-land',
-      message: 'validation:invalidLand'
+      message: 'validation:invalidLand',
+      personName
     }))
   }
 
@@ -61,7 +67,8 @@ export const validateUtenlandskPin = (
     matchFn: (_pin: Pin) => _pin.land === pin.land,
     index,
     id: namespace + idx + '-land',
-    message: 'validation:duplicateLand'
+    message: 'validation:duplicateLand',
+    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
@@ -72,7 +79,8 @@ export const validateUtenlandskPins = (
   t: TFunction,
   {
     namespace,
-    utenlandskePins
+    utenlandskePins,
+    personName
   }: ValidationUtenlandskPinsProps
 ): boolean => {
   const hasErrors: Array<boolean> = utenlandskePins?.map((pin: Pin, index: number) => {
@@ -80,7 +88,8 @@ export const validateUtenlandskPins = (
       index,
       pin,
       utenlandskePins,
-      namespace
+      namespace,
+      personName
     })
   }) ?? []
   return hasErrors.find(value => value) !== undefined

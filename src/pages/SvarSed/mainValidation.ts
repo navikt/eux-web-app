@@ -24,7 +24,7 @@ import { validateAnsattPerioder } from 'applications/SvarSed/PersonensStatus/ans
 import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/avsenderlandetValidation'
 import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/notAnsattValidation'
 import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/withSubsidiesValidation'
-import { validatePersonOpplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
+import { validatePersonopplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
 import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
 import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/validation'
@@ -123,8 +123,8 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
 
   if (isFSed(replySed)) {
     if (personID !== 'familie') {
-      _error = validatePersonOpplysninger(v, t, {
-        personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
+      _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+        personInfo, personName
       })
       hasErrors = hasErrors || _error
 
@@ -246,8 +246,8 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
   }
 
   if (isUSed(replySed)) {
-    _error = validatePersonOpplysninger(v, t, {
-      personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
+    _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+      personInfo, personName
     })
     hasErrors = hasErrors || _error
 
@@ -339,8 +339,8 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
   }
 
   if (isHSed(replySed)) {
-    _error = validatePersonOpplysninger(v, t, {
-      personInfo, namespace: `svarsed-${personID}-personopplysninger`, personName
+    _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+      personInfo,  personName
     })
     hasErrors = hasErrors || _error
 
@@ -394,7 +394,6 @@ export const validateSEDEdit = (
   hasErrors = hasErrors || _error
 
   if (isFSed(replySed)) {
-
     _error = validateFormål(v, t, 'formål1-formål', {
       formaal: (replySed as FSed).formaal
     })

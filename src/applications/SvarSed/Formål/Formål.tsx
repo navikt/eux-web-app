@@ -48,7 +48,6 @@ const Formål: React.FC<FormålProps> = ({
 
   useEffect(() => {
     return () => {
-      console.log('w4e54453453345345345345')
       performValidation({
         formaal: (replySed as FSed).formaal
       })

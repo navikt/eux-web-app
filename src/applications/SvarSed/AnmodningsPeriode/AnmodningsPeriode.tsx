@@ -176,18 +176,18 @@ const PeriodeFC: React.FC<MainFormProps> = ({
         <>
           <PaddedHorizontallyDiv>
             <Row>
-            <Column>
-              <label className='navds-text-field__label navds-label'>
-                {t('label:startdato') + ' (' + t('el:placeholder-date-default') + ') *'}
-              </label>
-            </Column>
-            <Column>
-              <label className='navds-text-field__label navds-label'>
-                {t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
-              </label>
-            </Column>
-            <Column flex='1.4'/>
-          </Row>
+              <Column>
+                <label className='navds-text-field__label navds-label'>
+                  {t('label:startdato') + ' (' + t('el:placeholder-date-default') + ') *'}
+                </label>
+              </Column>
+              <Column>
+                <label className='navds-text-field__label navds-label'>
+                  {t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
+                </label>
+              </Column>
+              <Column flex='1.4' />
+            </Row>
           </PaddedHorizontallyDiv>
           {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
           <VerticalSeparatorDiv />

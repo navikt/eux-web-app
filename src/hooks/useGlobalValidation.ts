@@ -20,7 +20,6 @@ const useGlobalValidation = <ValidationData extends any>(
   const validation = useAppSelector(state => state.validation.status)
 
   const performValidation = (validationData: ValidationData): boolean => {
-
     let newValidation: Validation = _.cloneDeep(validation) as Validation
 
     // clean up the namespace before performing the validation
@@ -32,7 +31,7 @@ const useGlobalValidation = <ValidationData extends any>(
       namespace,
       validationData
     )
-    newValidation[namespace] = {feilmelding: hasErrors ? 'error' : 'ok'} as ErrorElement
+    newValidation[namespace] = { feilmelding: hasErrors ? 'error' : 'ok' } as ErrorElement
     dispatch(setValidation(newValidation))
     return !hasErrors
   }

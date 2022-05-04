@@ -7,7 +7,7 @@ export const resetValidation: ActionCreator<ActionWithPayload> = (
   key?: string
 ): ActionWithPayload => ({
   type: types.VALIDATION_RESET,
-  payload: !!key ? { key } : {}
+  payload: key ? { key } : {}
 })
 
 export const setValidation: ActionCreator<ActionWithPayload<Validation>> = (

@@ -407,8 +407,8 @@ const MainForm = <T extends StorageTypes>({
         if (element) {
           element?.focus()
           element?.closest('.mainform')?.scrollIntoView({
-            block: "start",
-            inline: "start",
+            block: 'start',
+            inline: 'start',
             behavior: 'smooth'
           })
           element?.focus()
@@ -432,7 +432,7 @@ const MainForm = <T extends StorageTypes>({
   const renderOneLevelMenu = (forms: Array<Form>) => {
     return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
       const selected: boolean = currentMenu === form.value
-      //const fading: boolean = previousMenu === form.value
+      // const fading: boolean = previousMenu === form.value
       const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + form.value))
       const isValidated = validationKeys.length > 0
       const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
@@ -453,13 +453,12 @@ const MainForm = <T extends StorageTypes>({
               {!isValidated
                 ? null
                 : validationHasErrors
-                    ? <ErrorFilled height={20} color='red' />
-                    : <SuccessFilled color='green' height={20} />
-              }
+                  ? <ErrorFilled height={20} color='red' />
+                  : <SuccessFilled color='green' height={20} />}
               <>
                 <HorizontalSeparatorDiv size='0.5' />
                 <MenuLabelText className={classNames({ selected })}>
-                  {t('label:' + form.label)}
+                  {form.label}
                 </MenuLabelText>
               </>
             </NameLabelDiv>
@@ -489,9 +488,10 @@ const MainForm = <T extends StorageTypes>({
       <NameAndOptionsDiv className={classNames({ whiteborder: !open && currentMenu === personId })}>
         <NameDiv
           onClick={() => {
-          changeMenu(personId, undefined, 'click')
-          return false
-        }}>
+            changeMenu(personId, undefined, 'click')
+            return false
+          }}
+        >
           <NameLabelDiv
             className={classNames({
               selected: focusedMenu === personId
@@ -499,21 +499,11 @@ const MainForm = <T extends StorageTypes>({
           >
             {isValidated
               ? validationHasErrors
-                ? (
-                  <>
-                    <ErrorFilled height={20} color='red' />
-                    <HorizontalSeparatorDiv size='0.5' />
-                  </>
-                  )
-                : (
-                  <>
-                    <SuccessFilled color='green' height={20} />
-                    <HorizontalSeparatorDiv size='0.5' />
-                  </>
-                )
-              : null
-            }
+                ? <ErrorFilled height={20} color='red' />
+                : <SuccessFilled color='green' height={20} />
+              : null}
             <>
+              <HorizontalSeparatorDiv size='0.5' />
               <MenuLabelText>
                 {personName}
               </MenuLabelText>
@@ -551,7 +541,6 @@ const MainForm = <T extends StorageTypes>({
           )
           .filter(o => _.isFunction(o.condition) ? o.condition() : true)
           .map((o, i) => {
-
             const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
@@ -569,10 +558,9 @@ const MainForm = <T extends StorageTypes>({
               >
                 {isValidated
                   ? validationHasErrors
-                    ? <SuccessFilled color='green' height={20} />
-                    : <ErrorFilled color='red' height={20} />
-                  : <EllipsisCircleH height={20} />
-                }
+                      ? <ErrorFilled color='red' height={20} />
+                      : <SuccessFilled color='green' height={20} />
+                  : <EllipsisCircleH height={20} />}
                 <HorizontalSeparatorDiv size='0.5' />
                 {o.label}
               </OptionDiv>
@@ -591,7 +579,6 @@ const MainForm = <T extends StorageTypes>({
     }
   }, [])
 
-
   const panelError = _.some(Object.keys(validation), k => k.startsWith(namespace) && validation[k]?.feilmelding !== 'ok')
 
   return (
@@ -605,7 +592,7 @@ const MainForm = <T extends StorageTypes>({
       />
       <WithErrorPanel
         border
-        className={classNames({ error: panelError})}
+        className={classNames({ error: panelError })}
       >
         <FlexCenterSpacedDiv>
           <LeftDiv className='left'>
@@ -654,8 +641,8 @@ const MainForm = <T extends StorageTypes>({
             )}
             {currentMenu && (
               <ActiveFormDiv
-                key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption: ''}`}
-                className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption: ''}`, 'right', { animating: animatingMenus })}
+                key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
+                className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right', { animating: animatingMenus })}
               >
                 {getForm(currentMenu, currentMenuOption)}
               </ActiveFormDiv>

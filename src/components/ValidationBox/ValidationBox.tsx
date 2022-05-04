@@ -14,10 +14,9 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
   heading,
   eventName = 'feillenke'
 }: ValidationBoxProps): JSX.Element => {
-
   const errors = Object.values(validation).filter(v => v !== undefined && v?.feilmelding !== 'error' && v?.feilmelding !== 'ok')
 
-  if ( _.isEmpty(errors)) {
+  if (_.isEmpty(errors)) {
     return <div />
   }
   return (
@@ -39,7 +38,7 @@ const ValidationBox: React.FC<ValidationBoxProps> = ({
           : (
             <BodyLong> {item!.feilmelding}</BodyLong>
             )
-        ))}
+      ))}
     </ErrorSummary>
   )
 }

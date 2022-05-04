@@ -75,6 +75,11 @@ export const WithErrorPanel = styled(Panel)`
     border: 4px solid var(--navds-error-summary-color-border) !important;
   }
 `
+
+export const ShadowPanel = styled(Panel)`
+ background-color: var(--navds-semantic-color-component-background-alternate);
+`
+
 export const AlertstripeDiv = styled.div`
   margin: 0.5rem;
   min-width: 50%;

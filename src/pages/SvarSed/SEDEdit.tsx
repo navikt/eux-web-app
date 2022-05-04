@@ -113,7 +113,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit, '')  // empty namespace means that all validation messages will be wiped before one validation run
+  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit, '') // empty namespace means that all validation messages will be wiped before one validation run
   const fnr = getFnr(replySed, 'bruker')
 
   const showTopForm = (): boolean => isFSed(replySed)

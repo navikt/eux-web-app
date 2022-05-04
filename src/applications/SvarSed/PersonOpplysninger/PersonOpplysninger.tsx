@@ -1,67 +1,64 @@
-import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import {
-  AlignCenterRow,
   AlignStartRow,
   Column,
-  FlexCenterDiv,
-  FlexEndDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  VerticalSeparatorDiv,
-  RadioPanelGroup,
   FlexRadioPanels,
-  RadioPanel
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetPerson, searchPerson } from 'actions/person'
 import { resetValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import {
+  validatePersonopplysninger,
+  ValidationPersonopplysningerProps
+} from 'applications/SvarSed/PersonOpplysninger/validation'
 import FoedestedFC from 'components/Foedested/Foedested'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
+import NorskPin from 'components/NorskPin/NorskPin'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
 import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
+import useGlobalValidation from 'hooks/useGlobalValidation'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-interface PersonOpplysningerSelector extends MainFormSelector {
-  searchingPerson: boolean
-  searchedPerson: Person | null | undefined
-}
-
-const mapState = (state: State): PersonOpplysningerSelector => ({
-  searchedPerson: state.person.person,
-  searchingPerson: state.loading.searchingPerson,
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
 const PersonOpplysninger: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    searchedPerson,
-    searchingPerson,
-    validation
-  } = useAppSelector(mapState)
+  const {validation} = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
+  const performValidation = useGlobalValidation<ValidationPersonopplysningerProps>(validatePersonopplysninger, namespace)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
-  const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
-  const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
+  useEffect(() => {
+    return () => {
+      performValidation({
+        personInfo,
+        personName
+      })
+    }
+  }, [])
+
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
@@ -128,8 +125,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (validation[namespace + '-norskpin-nummer']) {
       dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
-    dispatch(resetPerson())
-    _setSeeNorskPinForm(false)
   }
 
   const onUtenlandskPinChange = (newPins: Array<Pin>, whatChanged: string | undefined) => {
@@ -158,21 +153,18 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
   }
 
-  const onNorwegianPinChange = (newPin: string) => {
-    _setTempNorwegianPin(newPin)
-  }
 
-  const onNorwegianPinSave = () => {
+  const onNorwegianPinSave = (newPin: string) => {
     let pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
     if (_.isNil(pins)) {
       pins = []
     }
     const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
     if (norwegianPinIndex >= 0) {
-      pins[norwegianPinIndex].identifikator = _tempNorwegianPin!.trim()
+      pins[norwegianPinIndex].identifikator = newPin!.trim()
     } else {
       pins.push({
-        identifikator: _tempNorwegianPin!.trim(),
+        identifikator: newPin!.trim(),
         land: 'NO'
       })
     }
@@ -180,131 +172,18 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (validation[namespace + '-norskpin-nummer']) {
       dispatch(resetValidation(namespace + '-norskpin-nummer'))
     }
-    _setSeeNorskPinForm(false)
-  }
-
-  const onSearchUser = (e: any) => {
-    if (norwegianPin && norwegianPin.identifikator) {
-      buttonLogger(e)
-      dispatch(searchPerson(norwegianPin.identifikator))
-    }
   }
 
   return (
     <>
       <PaddedDiv>
-        <AlignCenterRow>
-          {!_seeNorskPinForm
-            ? (
-              <>
-                <Column>
-                  <FlexCenterDiv>
-                    <Label>
-                      {t('label:fnr-eller-dnr')}
-                    </Label>
-                    <HorizontalSeparatorDiv />
-                    <BodyLong>
-                      {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-                    </BodyLong>
-                  </FlexCenterDiv>
-                </Column>
-                <Column>
-                  <Button
-                    variant='secondary'
-                    onClick={() => {
-                      _setTempNorwegianPin(norwegianPin?.identifikator)
-                      _setSeeNorskPinForm(true)
-                    }}
-                  >
-                    <Edit />
-                    {t('label:endre')}
-                  </Button>
-                </Column>
-                <Column />
-              </>
-              )
-            : (
-              <>
-                <Column>
-                  <Input
-                    error={validation[namespace + '-norskpin-nummer']?.feilmelding}
-                    id='norskpin-nummer'
-                    key={namespace + '-norskpin-nummer-' + _tempNorwegianPin}
-                    label={t('label:fnr-eller-dnr')}
-                    hideLabel
-                    namespace={namespace}
-                    onChanged={onNorwegianPinChange}
-                    value={_tempNorwegianPin}
-                  />
-                </Column>
-                <Column>
-                  <FlexEndDiv>
-                    <Button
-                      variant='secondary'
-                      disabled={_.isEmpty(_tempNorwegianPin?.trim())}
-                      data-amplitude='svarsed.editor.personopplysning.norskpin.save'
-                      onClick={onNorwegianPinSave}
-                    >
-                      <SuccessStroke />
-                      {t('el:button-save')}
-                    </Button>
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <Button
-                      variant='secondary'
-                      disabled={searchingPerson}
-                      data-amplitude='svarsed.editor.personopplysning.norskpin.search'
-                      onClick={onSearchUser}
-                    >
-                      <Search />
-                      {searchingPerson
-                        ? t('message:loading-searching')
-                        : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                      {searchingPerson && <Loader />}
-                    </Button>
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <Button
-                      variant='tertiary'
-                      onClick={() => _setSeeNorskPinForm(false)}
-                    >
-                      <Cancel />
-                      {t('el:button-cancel')}
-                    </Button>
-                  </FlexEndDiv>
-                </Column>
-              </>
-              )}
-        </AlignCenterRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            {searchedPerson
-              ? (
-                <FlexCenterDiv>
-                  <BodyLong>
-                    {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
-                  </BodyLong>
-                  <HorizontalSeparatorDiv />
-                  <Button
-                    variant='secondary'
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
-                    onClick={(e) => {
-                      buttonLogger(e)
-                      onFillOutPerson(searchedPerson!)
-                    }}
-                  >
-                    {t('label:fill-in-person-data')}
-                  </Button>
-                </FlexCenterDiv>
-                )
-              : _.isEmpty(norwegianPin?.identifikator)
-                ? (
-                  <BodyLong>
-                    {t('label:norsk-fnr-beskrivelse')}
-                  </BodyLong>
-                  )
-                : <div />}
-          </Column>
-        </AlignStartRow>
+        <NorskPin
+          norwegianPin={norwegianPin}
+          validation={validation}
+          namespace={namespace}
+          onNorwegianPinSave={onNorwegianPinSave}
+          onFillOutPerson={onFillOutPerson}
+        />
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
@@ -383,6 +262,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         onPinsChanged={onUtenlandskPinChange}
         namespace={namespace + '-pin'}
         validation={validation}
+        personName={personName}
       />
       <PaddedDiv>
         <VerticalSeparatorDiv />

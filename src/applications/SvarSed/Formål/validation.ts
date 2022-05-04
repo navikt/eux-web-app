@@ -14,7 +14,7 @@ export const validateFormål = (
     formaal
   }: ValidationFormålProps
 ): boolean => {
-  let hasErrors: Array<boolean> = []
+  const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: formaal,

@@ -31,8 +31,9 @@ import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validatio
 export interface UtenlandskPinProps {
   pins: Array<Pin> | undefined
   onPinsChanged: (newPins: Array<Pin>, whatChanged: string | undefined) => void
-  namespace: string,
-  loggingNamespace: string,
+  namespace: string
+  personName?: string
+  loggingNamespace: string
   limit?: number
   validation: Validation
 }
@@ -42,6 +43,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   onPinsChanged,
   namespace,
   loggingNamespace,
+  personName,
   limit = 99,
   validation
 }: UtenlandskPinProps): JSX.Element => {
@@ -53,7 +55,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 
   const [_editing, _setEditing] = useState<Array<number>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
     if (index < 0) {
@@ -100,10 +102,11 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       identifikator: _newIdentifikator
     }
 
-    const valid: boolean = performValidation({
+    const valid: boolean = _performValidation({
       pin: newPin,
       utenlandskePins: pins,
-      namespace
+      namespace,
+      personName
     })
     if (valid) {
       let newUtenlandskePins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
@@ -154,11 +157,18 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 />
                 )
               : (
-                <FlexCenterDiv>
-                  <Flag size='S' country={utenlandskePin?.land!} />
-                  <HorizontalSeparatorDiv />
-                  {countryData.findByValue(utenlandskePin?.land)?.label ?? utenlandskePin?.land}
-                </FlexCenterDiv>
+                <PileDiv>
+                  <FlexCenterDiv>
+                    <Flag size='S' country={utenlandskePin?.land!} />
+                    <HorizontalSeparatorDiv />
+                    {countryData.findByValue(utenlandskePin?.land)?.label ?? utenlandskePin?.land}
+                  </FlexCenterDiv>
+                  {getErrorFor(index, 'land') && (
+                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+                      {getErrorFor(index, 'land')}
+                    </div>
+                  )}
+                </PileDiv>
                 )}
           </Column>
           <Column>
@@ -225,12 +235,12 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               <AlignStartRow>
                 <Column>
                   <Label>
-                    {t('label:pin')}
+                    {t('label:land')}
                   </Label>
                 </Column>
                 <Column>
                   <Label>
-                    {t('label:land')}
+                    {t('label:pin')}
                   </Label>
                 </Column>
                 <Column />
