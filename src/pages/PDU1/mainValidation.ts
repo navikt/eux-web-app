@@ -4,15 +4,14 @@ import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger, PDPeriode } from 
 import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { validatePerson } from 'applications/PDU1/Person/validation'
 import { validateSisteAnsettelseinfo } from 'applications/PDU1/SisteAnsettelseInfo/validation'
 import { validateAvsender } from 'applications/PDU1/Avsender/validation'
 import { validateUtbetaling } from 'applications/PDU1/Utbetaling/validation'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPdu1SearchProps {
   fagsak: string | undefined
-  namespace: string
   fnrOrDnr: string | undefined
 }
 
@@ -27,49 +26,46 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 
   const personID = 'bruker'
   const person : Pdu1Person = _.get(pdu1, personID)
-  hasErrors.push(validatePerson(v, { person, namespace: `${namespace}-${personID}-person` }))
+  hasErrors.push(validatePerson(v, `${namespace}-${personID}-person`, { person }))
 
-  hasErrors.push(validateAllePDPerioder(v, { pdu1, namespace: `${namespace}-${personID}-perioder` }))
+  hasErrors.push(validateAllePDPerioder(v, `${namespace}-${personID}-perioder`, { pdu1 }))
 
   const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(pdu1, 'opphoer')
-  hasErrors.push(validateSisteAnsettelseinfo(v, { sisteAnsettelseInfo, namespace: `${namespace}-${personID}-sisteansettelseinfo` }))
+  hasErrors.push(validateSisteAnsettelseinfo(v, `${namespace}-${personID}-sisteansettelseinfo`, { sisteAnsettelseInfo }))
 
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')
-  hasErrors.push(validateUtbetaling(v, { utbetaling, namespace: `${namespace}-${personID}-utbetaling` }))
+  hasErrors.push(validateUtbetaling(v, `${namespace}-${personID}-utbetaling`, { utbetaling }))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
-  hasErrors.push(validateDagpenger(v, { dagpenger, namespace: `${namespace}-${personID}-dagpenger` }))
+  hasErrors.push(validateDagpenger(v, `${namespace}-${personID}-dagpenger`, { dagpenger }))
 
   const nav: NavInfo = _.get(pdu1, 'nav')
-  hasErrors.push(validateAvsender(v, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: `${namespace}-${personID}-avsender` }))
+  hasErrors.push(validateAvsender(v, `${namespace}-${personID}-avsender`, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
 
   return hasErrors.find(value => value) !== undefined
 }
 
 export const validatePdu1Search = (
   v: Validation,
+  namespace: string,
   {
     fagsak,
-    namespace,
     fnrOrDnr
   }: ValidationPdu1SearchProps
 ): boolean => {
-  let hasErrors: boolean = false
-  if (_.isEmpty(fagsak)) {
-    v[namespace + '-fagsak'] = {
-      skjemaelementId: namespace + '-fagsak',
-      feilmelding: t('validation:noFagsak')
-    } as ErrorElement
-    hasErrors = true
-  }
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(fnrOrDnr)) {
-    v[namespace + '-fnrOrDnr'] = {
-      skjemaelementId: namespace + '-fnrOrDnr',
-      feilmelding: t('validation:noFnr')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: fagsak,
+    id: namespace + '-fagsak',
+    message: 'validation:noFagsak'
+  }))
 
-  return hasErrors
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: fnrOrDnr,
+    id: namespace + '-fnrOrDnr',
+    message: 'validation:noFnr'
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }

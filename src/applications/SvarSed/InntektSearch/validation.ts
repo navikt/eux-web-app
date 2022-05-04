@@ -1,86 +1,83 @@
-
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { ErrorElement } from 'declarations/app.d'
+import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationInntektSearchProps {
-  fom: string
-  tom: string
+  fom: string | undefined
+  tom: string | undefined
   inntektsliste: string | undefined
-  namespace: string
 }
 
-const datePattern = /^\d{4}-\d{2}$/
+const monthPattern = /^\d{4}-\d{2}$/
 
 export const validateInntektSearch = (
   v: Validation,
+  namespace: string,
   {
     fom,
     tom,
-    inntektsliste,
-    namespace
+    inntektsliste
   }: ValidationInntektSearchProps
 ): boolean => {
-  let hasErrors: boolean = false
-  if (_.isEmpty(fom.trim())) {
-    v[namespace + '-startdato'] = {
-      skjemaelementId: namespace + '-startdato',
-      feilmelding: t('validation:noDate')
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (!fom?.trim().match(datePattern)) {
-      v[namespace + '-startdato'] = {
-        feilmelding: t('validation:invalidDate'),
-        skjemaelementId: namespace + '-startdato'
-      } as ErrorElement
-      hasErrors = true
-    } else {
+  const hasErrors: Array<boolean> = []
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: fom,
+    id: namespace + '-startdato',
+    message: 'validation:noDate'
+  }))
+
+  if (!_.isEmpty(fom?.trim())) {
+    hasErrors.push(checkIfNotDate(v, {
+      needle: fom,
+      pattern: monthPattern,
+      id: namespace + '-startdato',
+      message: 'validation:invalidDate'
+    }))
+
+    if (fom?.trim()?.match(monthPattern)) {
       const fomDate = moment(fom, 'YYYY-MM')
       if (fomDate.isBefore(new Date(2015, 0, 1))) {
-        v[namespace + '-startdato'] = {
-          feilmelding: t('validation:invalidDate2015'),
-          skjemaelementId: namespace + '-startdato'
-        } as ErrorElement
-        hasErrors = true
+        hasErrors.push(addError(v, {
+          id: namespace + '-startdato',
+          message: 'validation:invalidDate2015'
+        }))
       }
     }
   }
 
-  if (_.isEmpty(tom.trim())) {
-    v[namespace + '-sluttdato'] = {
-      skjemaelementId: namespace + '-sluttdato',
-      feilmelding: t('validation:noDate')
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (!(tom.trim().match(datePattern))) {
-      v[namespace + '-sluttdato'] = {
-        skjemaelementId: namespace + '-sluttdato',
-        feilmelding: t('validation:invalidDate')
-      } as ErrorElement
-      hasErrors = true
-    } else {
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: tom,
+    id: namespace + '-sluttdato',
+    message: 'validation:noDate'
+  }))
+
+  if (!_.isEmpty(tom?.trim())) {
+    hasErrors.push(checkIfNotDate(v, {
+      needle: tom,
+      pattern: monthPattern,
+      id: namespace + '-sluttdato',
+      message: 'validation:invalidDate'
+    }))
+
+    if (tom?.trim()?.match(monthPattern)) {
       const fomDate = moment(fom, 'YYYY-MM')
       const tomDate = moment(tom, 'YYYY-MM')
       if (tomDate.isBefore(fomDate)) {
-        v[namespace + '-sluttdato'] = {
-          feilmelding: t('validation:invalidDateFomTom'),
-          skjemaelementId: namespace + '-sluttdato'
-        } as ErrorElement
-        hasErrors = true
+        hasErrors.push(addError(v, {
+          id: namespace + '-sluttdato',
+          message: 'validation:invalidDateFomTom'
+        }))
       }
     }
   }
 
-  if (_.isEmpty(inntektsliste?.trim())) {
-    v[namespace + '-inntektsliste'] = {
-      skjemaelementId: namespace + '-inntektsliste',
-      feilmelding: t('validation:noInntektsliste')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: inntektsliste,
+    id: namespace + '-inntektsliste',
+    message: 'validation:noInntektsliste'
+  }))
 
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

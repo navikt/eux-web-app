@@ -18,12 +18,12 @@ import { validateSEDQuery } from './validation'
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit }: any) => {
   const { t } = useTranslation()
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation({}, validateSEDQuery)
+  const namespace = parentNamespace + '-sedquery'
+
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation(validateSEDQuery, namespace)
   const [_validMessage, _setValidMessage] = useState<string>('')
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(initialQuery ?? '')
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
-
-  const namespace = parentNamespace + '-sedquery'
 
   const onSaksnummerOrFnrChange = (query: string) => {
     const q: string = query.trim()
@@ -59,8 +59,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
 
   const onSaksnummerOrFnrClick = () => {
     const valid: boolean = _performValidation({
-      saksnummerOrFnr: _saksnummerOrFnr.trim(),
-      namespace
+      saksnummerOrFnr: _saksnummerOrFnr.trim()
     })
     if (valid) {
       standardLogger('svarsed.selection.query', {

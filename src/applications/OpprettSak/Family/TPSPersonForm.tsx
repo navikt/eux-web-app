@@ -40,17 +40,16 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   searchingRelatertPerson,
   rolleList
 }: TPSPersonFormProps): JSX.Element => {
+  const { t } = useTranslation()
+  const namespace = 'tpspersonform'
   const [_query, setQuery] = useState<string>('')
   const [_personRelatert, setPersonRelatert] = useState<OldFamilieRelasjon | undefined>(undefined)
   const [_tpsperson, setTpsPerson] = useState<OldFamilieRelasjon | undefined>(undefined)
-  const [validation, resetValidation, performValidation] = useLocalValidation<TPSPersonFormValidationProps>({}, validateTPSPersonForm)
-  const { t } = useTranslation()
-  const namespace = 'tpspersonform'
+  const [validation, resetValidation, performValidation] = useLocalValidation<TPSPersonFormValidationProps>(validateTPSPersonForm, namespace)
 
   const sokEtterFnr = () => {
     const valid = performValidation({
       person,
-      namespace,
       fnr: _query,
       tpsperson: _tpsperson
     })

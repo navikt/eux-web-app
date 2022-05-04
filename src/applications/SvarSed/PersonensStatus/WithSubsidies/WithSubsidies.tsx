@@ -19,7 +19,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './withSubsidiesValidation'
+import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -43,10 +43,10 @@ const WithSubsidies: React.FC<MainFormProps> = ({
   const [_newPensjonType, _setNewPensjonType] = useState<string>('')
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PensjonPeriode>((p: PensjonPeriode): string => {
-    return p?.periode.startdato // assume startdato is unique
+    return p.periode.startdato // assume startdato is unique
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationWithSubsidiesProps>({}, validateWithSubsidiesPeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationWithSubsidiesProps>(validateWithSubsidiesPeriode, namespace)
 
   const selectPensjonTypeOptions: Options = [{
     label: t('el:option-trygdeordning-alderspensjon'), value: 'alderspensjon'
@@ -118,7 +118,6 @@ const WithSubsidies: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       pensjonPeriode: newPensjonPeriode,
       perioder: perioderMedPensjon,
-      namespace,
       personName
     })
 

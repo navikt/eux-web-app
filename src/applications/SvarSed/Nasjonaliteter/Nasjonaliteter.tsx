@@ -45,7 +45,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Statsborgerskap>((s: Statsborgerskap): string => s.land)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationNasjonalitetProps>({}, validateNasjonalitet)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   const onFradatoChanged = (fraDato: string, index: number) => {
     if (index < 0) {
@@ -100,7 +100,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap,
       statsborgerskaper,
-      namespace,
       personName
     })
     if (valid) {

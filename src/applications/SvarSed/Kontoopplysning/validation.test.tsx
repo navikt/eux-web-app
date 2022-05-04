@@ -1,10 +1,7 @@
-
 import { Validation } from 'declarations/types'
-import { useTranslation } from 'react-i18next'
 import { validateKontoopplysning } from './validation'
 
 describe('applications/SvarSed/Kontoopplysning/validation', () => {
-  const { t } = useTranslation()
   /*
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
@@ -102,7 +99,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 */
   it('invalid form: invalid kontoSepa swift', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, {
+    const hasErrors: boolean = validateKontoopplysning(validation, 'test-mock', {
       uti: {
         begrunnelse: '123',
         id: '123@abc',
@@ -112,7 +109,6 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
           swift: 'ABC'
         }
       },
-      namespace: 'test-mock',
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
@@ -123,7 +119,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, {
+    const hasErrors: boolean = validateKontoopplysning(validation, 'test-mock', {
       uti: {
         begrunnelse: 'begrunnelse',
         id: 'id',
@@ -137,7 +133,6 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
           }
         }
       },
-      namespace: 'test-mock',
       formalName: 'name'
     })
     expect(hasErrors).toBeFalsy()

@@ -45,7 +45,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))
   const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
 
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>({}, validateArbeidsperioderSøk)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>(validateArbeidsperioderSøk, namespace + '-arbeidssok')
 
   const inntektslistetypeOptions : Options = [
     { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
@@ -72,8 +72,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
     const valid = performValidation({
       fom: _arbeidssøkStartDato,
       tom: _arbeidssøkSluttDato,
-      inntektslistetype: _arbeidssøkInntektslistetype,
-      namespace: namespace + '-arbeidssok'
+      inntektslistetype: _arbeidssøkInntektslistetype
     })
     if (valid) {
       const options:GetArbeidsperiodeOptions = {
@@ -152,7 +151,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
               <HorizontalSeparatorDiv size='0.35' />
               <Link
                 to='#' onClick={() => {
-                  if (_.isFunction(fillOutFnr())) {
+                  if (_.isFunction(fillOutFnr)) {
                     fillOutFnr()
                   }
                 }}

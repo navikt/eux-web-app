@@ -5,18 +5,17 @@ import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAvsenderProps {
   nav: NavInfo
-  namespace: string
   keyForCity?: string
   keyforZipCode?: string
 }
 
 export const validateAvsender = (
   v: Validation,
+  namespace: string,
   {
     nav,
     keyForCity = 'by',
-    keyforZipCode = 'postnummer',
-    namespace
+    keyforZipCode = 'postnummer'
   }: ValidationAvsenderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -33,8 +32,7 @@ export const validateAvsender = (
     message: 'validation:noEnhetId'
   }))
 
-  hasErrors.push(validateAdresse(v, {
-    namespace: namespace + '-adresse',
+  hasErrors.push(validateAdresse(v, namespace + '-adresse', {
     adresse: nav?.adresse,
     keyforZipCode,
     keyForCity

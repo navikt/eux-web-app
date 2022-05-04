@@ -3,14 +3,13 @@ import { Validation } from 'declarations/types'
 
 interface SisteAnsettelseinfoProps {
   sisteAnsettelseInfo: GrunnTilOpphør | undefined
-  namespace: string
 }
 
 export const validateSisteAnsettelseinfo = (
   v: Validation,
+  namespace: string,
   {
-    sisteAnsettelseInfo,
-    namespace
+    sisteAnsettelseInfo
   }: SisteAnsettelseinfoProps
 ): boolean => {
   const hasErrors: Array<boolean> = []

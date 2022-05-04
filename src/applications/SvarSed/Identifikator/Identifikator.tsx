@@ -45,7 +45,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' + it?.id
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<ArbeidsgiverIdentifikator>(getId)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationIdentifikatorProps>({}, validateIdentifikator)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationIdentifikatorProps>(validateIdentifikator, namespace)
 
   const allTypeOptions: Array<Option> = [
     { label: t('el:option-identifikator-organisasjonsnummer'), value: 'organisasjonsnummer' },
@@ -105,7 +105,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     const valid: boolean = _performValidation({
       identifikatorer,
       identifikator: newIdentifikator,
-      namespace,
       personName
     })
     if (valid) {

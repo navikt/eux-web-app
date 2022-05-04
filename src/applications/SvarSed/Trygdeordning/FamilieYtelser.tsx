@@ -55,7 +55,7 @@ const FamilieYtelser: React.FC<MainFormProps> = ({
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation, _setValidation] =
-    useLocalValidation<ValidationFamilieytelsePeriodeProps>({}, validateFamilieytelserPeriode)
+    useLocalValidation<ValidationFamilieytelsePeriodeProps>(validateFamilieytelserPeriode, namespace)
 
   const selectCategoryOptions: Array<Option> = [{
     label: t('el:option-trygdeordning-perioderMedArbeid'), value: 'perioderMedArbeid'
@@ -173,7 +173,6 @@ const FamilieYtelser: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       periode: newPeriode,
       perioder: perioder[_newCategory],
-      namespace,
       sedCategory: _newCategory,
       personName
     })

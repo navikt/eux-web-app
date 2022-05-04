@@ -47,7 +47,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationGrunnlagForBosettingProps>({}, validateGrunnlagForBosetting)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationGrunnlagForBosettingProps>(validateGrunnlagForBosetting, namespace)
 
   const setAvsenderDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim()))
@@ -114,7 +114,6 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     const valid: boolean = performValidation({
       periode: _newPeriode,
       perioder: flyttegrunn?.perioder,
-      namespace: namespace + '-perioder',
       personName
     })
 

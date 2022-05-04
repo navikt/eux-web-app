@@ -63,7 +63,7 @@ const Perioder: React.FC<MainFormProps> = ({
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<{p: PDPeriode, i: number}>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<Sort>('group')
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPDPeriodeProps>({}, validatePDPeriode)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPDPeriodeProps>(validatePDPeriode, namespace)
 
   const periodeOptions: Options = [
     { label: t('el:option-perioder-perioderAnsattMedForsikring'), value: 'perioderAnsattMedForsikring' },
@@ -166,8 +166,7 @@ const Perioder: React.FC<MainFormProps> = ({
     }
     const valid: boolean = _performValidation({
       periode: _newPeriode as PDPeriode,
-      type: _newType,
-      namespace
+      type: _newType
     })
     if (valid && _newType) {
       newPeriodes = newPeriodes.concat(_newPeriode!)

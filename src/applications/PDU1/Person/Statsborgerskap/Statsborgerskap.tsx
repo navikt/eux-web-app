@@ -45,7 +45,7 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((s: string): string => s)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationStatsborgerskapProps>({}, validateStatsborgerskap)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
 
   const onStatsborgerskapSelected = (newStatsborgerskap: string, index: number) => {
     if (index < 0) {
@@ -82,8 +82,7 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
   const onAdd = () => {
     const valid = performValidation({
       statsborgerskap: newStatsborgerskap!,
-      statsborgerskaper,
-      namespace
+      statsborgerskaper
     })
     if (valid) {
       let newStatsborgerskaper : Array<string> | undefined = _.cloneDeep(statsborgerskaper)

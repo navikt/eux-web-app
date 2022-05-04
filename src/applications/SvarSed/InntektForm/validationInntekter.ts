@@ -1,83 +1,77 @@
 import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
 export interface ValidationInntekterProps {
+  inntekter: Array<Inntekt>
+}
+
+export interface ValidationInntektProps {
   inntekt: Inntekt,
   index?: number
-  namespace: string
 }
 
 export const validateInntekt = (
   v: Validation,
+  namespace: string,
   {
     inntekt,
-    index,
-    namespace
-  }: ValidationInntekterProps
+    index
+  }: ValidationInntektProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(inntekt?.type?.trim())) {
-    v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noType'),
-      skjemaelementId: namespace + idx + '-type'
-    } as ErrorElement
-    hasErrors = true
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: inntekt?.type,
+    id: namespace + idx + '-type',
+    message: 'validation:noType'
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: inntekt?.beloep,
+    id: namespace + idx + '-beloep',
+    message: 'validation:noBeløp'
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: inntekt?.beloep,
+    id: namespace + idx + '-beloep',
+    message: 'validation:noBeløp'
+  }))
+
+  if (!_.isEmpty(inntekt?.beloep?.trim())) {
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: inntekt?.beloep,
+      id: namespace + idx + '-beloep',
+      message: 'validation:invalidBeløp'
+    }))
   }
 
-  if (_.isEmpty(inntekt?.beloep?.trim())) {
-    v[namespace + '-beloep'] = {
-      skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:noBeløp')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: inntekt?.valuta,
+    id: namespace + idx + '-valuta',
+    message: 'validation:noValuta'
+  }))
 
-  if (!_.isEmpty(inntekt?.beloep?.trim()) && !inntekt?.beloep?.trim().match(/^[\d.,]+$/)) {
-    v[namespace + '-beloep'] = {
-      skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:invalidBeløp')
-    } as ErrorElement
-    hasErrors = true
-  }
-
-  if (_.isEmpty(inntekt?.valuta?.trim())) {
-    v[namespace + '-valuta'] = {
-      skjemaelementId: namespace + '-valuta',
-      feilmelding: t('validation:noValuta')
-    } as ErrorElement
-    hasErrors = true
-  }
-
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateInntekter = (
   validation: Validation,
-  inntekter: Array<Inntekt>,
-  namespace: string
+  namespace: string,
+  {
+    inntekter
+  }: ValidationInntekterProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   inntekter?.forEach((inntekt: Inntekt, index: number) => {
-    const _errors: boolean = validateInntekt(validation, {
+    hasErrors.push(validateInntekt(validation, namespace, {
       inntekt,
-      index,
-      namespace
-    })
-    hasErrors = hasErrors || _errors
+      index
+    }))
   })
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

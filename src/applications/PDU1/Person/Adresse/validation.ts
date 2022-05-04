@@ -7,16 +7,15 @@ export interface ValidationAdresseProps {
   adresse: Adresse | undefined
   keyForCity?: string
   keyforZipCode?: string
-  namespace: string
 }
 
 export const validateAdresse = (
   v: Validation,
+  namespace: string,
   {
     adresse,
     keyForCity = 'by',
-    keyforZipCode = 'postnummer',
-    namespace
+    keyforZipCode = 'postnummer'
   }: ValidationAdresseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []

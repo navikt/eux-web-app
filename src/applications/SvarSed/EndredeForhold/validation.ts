@@ -5,15 +5,14 @@ import { checkLength } from 'utils/validation'
 
 export interface ValidationEndredeForholdProps {
   replySed: ReplySed
-  namespace: string,
   personName?: string
 }
 
 export const validateEndredeForhold = (
   v: Validation,
+  namespace: string,
   {
     replySed,
-    namespace,
     personName
   }: ValidationEndredeForholdProps
 ): boolean => {

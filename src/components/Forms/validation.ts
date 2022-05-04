@@ -2,84 +2,82 @@ import { Periode, PeriodeInputType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeProps {
-  periode: Periode
+  periode: Periode | undefined
   index?: number | undefined
   mandatoryStartdato ?: boolean
   mandatorySluttdato ?: boolean
   periodeType ?: PeriodeInputType
-  namespace: string,
   personName?: string
 }
 
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
-
 export const validatePeriode = (
   v: Validation,
+  namespace: string,
   {
     periode,
     index = undefined,
-    namespace,
     mandatoryStartdato = true,
     mandatorySluttdato = false,
     periodeType = 'withcheckbox',
     personName
   }: ValidationPeriodeProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
-  if (mandatoryStartdato && _.isEmpty(periode?.startdato?.trim())) {
-    v[namespace + idx + '-startdato'] = {
-      skjemaelementId: namespace + idx + '-startdato',
-      feilmelding: t('validation:noDate') + (personName ? t('validation:til-person', { person: personName }) : '')
-    } as ErrorElement
-    hasErrors = true
+
+  if (mandatoryStartdato) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periode?.startdato,
+      id: namespace + idx + '-startdato',
+      message: 'validation:noDate',
+      personName
+    }))
   }
 
-  if (!_.isEmpty(periode?.startdato?.trim()) && !(periode.startdato!.trim().match(datePattern))) {
-    v[namespace + idx + '-startdato'] = {
-      skjemaelementId: namespace + idx + '-startdato',
-      feilmelding: t('validation:invalidDate') + (personName ? t('validation:til-person', { person: personName }) : '')
-    } as ErrorElement
-    hasErrors = true
+  hasErrors.push(checkIfNotDate(v, {
+    needle: periode?.startdato,
+    id: namespace + idx + '-startdato',
+    message: 'validation:invalidDate',
+    personName
+  }))
+
+  if (mandatorySluttdato) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periode?.sluttdato,
+      id: namespace + idx + '-sluttdato',
+      message: 'validation:noDate',
+      personName
+    }))
   }
 
-  if (mandatorySluttdato && _.isEmpty(periode?.sluttdato?.trim())) {
-    v[namespace + idx + '-sluttdato'] = {
-      skjemaelementId: namespace + idx + '-sluttdato',
-      feilmelding: t('validation:noDate') + (personName ? t('validation:til-person', { person: personName }) : '')
-    } as ErrorElement
-    hasErrors = true
-  }
-
-  if (!_.isEmpty(periode?.sluttdato?.trim()) && !(periode.sluttdato!.trim().match(datePattern))) {
-    v[namespace + idx + '-sluttdato'] = {
-      skjemaelementId: namespace + idx + '-sluttdato',
-      feilmelding: t('validation:invalidDate') + (personName ? t('validation:til-person', { person: personName }) : '')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotDate(v, {
+    needle: periode?.sluttdato,
+    id: namespace + idx + '-sluttdato',
+    message: 'validation:invalidDate',
+    personName
+  }))
 
   if (!_.isEmpty(periode?.startdato?.trim()) && !_.isEmpty(periode?.sluttdato?.trim()) &&
-    moment(periode.startdato.trim(), 'YYYY-MM-DD')
-      .isAfter(moment(periode.sluttdato?.trim(), 'YYYY-MM-DD'))) {
-    v[namespace + idx + '-sluttdato'] = {
-      skjemaelementId: namespace + idx + '-sluttdato',
-      feilmelding: t('validation:endDateBeforeStartDate')
-    } as ErrorElement
-    hasErrors = true
+    moment(periode!.startdato.trim(), 'YYYY-MM-DD')
+      .isAfter(moment(periode!.sluttdato?.trim(), 'YYYY-MM-DD'))) {
+    hasErrors.push(addError(v, {
+      id: namespace + idx + '-sluttdato',
+      message: 'validation:endDateBeforeStartDate',
+      personName
+    }))
   }
 
   if (periodeType === 'withcheckbox' && _.isEmpty(periode?.sluttdato?.trim()) && _.isEmpty(periode?.aapenPeriodeType)) {
-    v[namespace + idx + '-aapenPeriodeType'] = {
-      skjemaelementId: namespace + idx + '-aapenPeriodeType',
-      feilmelding: t('validation:noAapenPeriodeType')
-    } as ErrorElement
-    hasErrors = true
+    hasErrors.push(addError(v, {
+      id: namespace + idx + '-aapenPeriodeType',
+      message: 'validation:noAapenPeriodeType',
+      personName
+    }))
   }
 
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

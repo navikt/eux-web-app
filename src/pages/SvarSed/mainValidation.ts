@@ -20,10 +20,10 @@ import {
 } from 'applications/SvarSed/Kontaktinformasjon/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/Nasjonaliteter/validation'
 import { validatePerioderDagpenger } from 'applications/SvarSed/PeriodeForDagpenger/validation'
-import { validateAnsattPerioder } from 'applications/SvarSed/PersonensStatus/ansattValidation'
-import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/avsenderlandetValidation'
-import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/notAnsattValidation'
-import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/withSubsidiesValidation'
+import { validateAnsattPerioder } from 'applications/SvarSed/PersonensStatus/Ansatt/validation'
+import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/Avsenderlandet/validation'
+import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/NotAnsatt/validation'
+import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/WithSubsidies/validation'
 import { validatePersonopplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
 import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
@@ -31,7 +31,6 @@ import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/valid
 import { validateSisteAnsettelseInfo } from 'applications/SvarSed/SisteAnsettelseInfo/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/Trygdeordning/validation'
-import { ErrorElement } from 'declarations/app.d'
 import {
   Adresse,
   Barnetilhoerighet,
@@ -40,7 +39,7 @@ import {
   FamilieRelasjon,
   Flyttegrunn,
   ForsikringPeriode,
-  FSed,
+  FSed, H001Sed,
   HSed,
   PensjonPeriode,
   Periode,
@@ -58,106 +57,91 @@ import {
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
+import i18n from 'i18n'
+import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
 }
 
 export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
-  let hasErrors: boolean = false
-  let _error: boolean
+  const hasErrors: Array<boolean> = []
 
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregninger(v, {
+      hasErrors.push(validateMotregninger(v, 'formål2-motregning', {
         replySed,
-        namespace: 'MainForm-motregning',
-        formalName: t('label:motregning').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        formalName: i18n.t('label:motregning').toLowerCase()
+      }))
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, {
+      hasErrors.push(validateVedtak(v, 'formål2-vedtak', {
         vedtak: _.get(replySed, 'vedtak'),
-        namespace: 'MainForm-vedtak',
-        formalName: t('label:vedtak').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        formalName: i18n.t('label:vedtak').toLowerCase()
+      }))
     }
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, {
+      hasErrors.push(validateProsedyreVedUenighet(v, 'formål2-prosedyre_ved_uenighet', {
         prosedyreVedUenighet: _.get(replySed, 'uenighet'),
-        namespace: 'MainForm-prosedyre_ved_uenighet',
-        formalName: t('label:prosedyre-ved-uenighet').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        formalName: i18n.t('label:prosedyre-ved-uenighet').toLowerCase()
+      }))
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, {
+      hasErrors.push(validateKravOmRefusjon(v, 'formål2-refusjonskrav', {
         kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
-        namespace: 'MainForm-refusjonskrav',
-        formalName: t('label:krav-om-refusjon').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+      }))
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
-      _error = validateKontoopplysning(v, {
+      hasErrors.push(validateKontoopplysning(v, 'formål2-kontoopplysninger', {
         uti: _.get(replySed, 'utbetalingTilInstitusjon'),
-        namespace: 'MainForm-kontoopplysninger',
-        formalName: t('label:kontoopplysninger').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        formalName: i18n.t('label:kontoopplysninger').toLowerCase()
+      }))
     }
   }
-  return hasErrors
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateMainForm = (v: Validation, replySed: ReplySed, personID: string): boolean => {
-  let hasErrors: boolean = false
-  let _error: boolean
+  const hasErrors: Array<boolean> = []
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const personName: string = personID === 'familie'
-    ? t('label:familien').toLowerCase()
+    ? i18n.t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + (personInfo.etternavn ?? '')
 
   if (isFSed(replySed)) {
     if (personID !== 'familie') {
-      _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
+      hasErrors.push(validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
         personInfo, personName
-      })
-      hasErrors = hasErrors || _error
+      }))
 
       const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
-      _error = validateNasjonaliteter(v, {
-        statsborgerskaper, namespace: `svarsed-${personID}-nasjonaliteter`, personName
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateNasjonaliteter(v, `svarsed-${personID}-nasjonaliteter`, {
+        statsborgerskaper, personName
+      }))
 
       const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
-      _error = validateAdresser(v, {
-        adresser, checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateAdresser(v, `svarsed-${personID}-adresser`, {
+        adresser, checkAdresseType: true, personName
+      }))
     }
 
     if (!personID.startsWith('barn')) {
       if (personID === 'familie') {
         const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
-        _error = validateBeløpNavnOgValutas(v, {
-          ytelser, namespace: `svarsed-${personID}-familieytelser`, personID, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateBeløpNavnOgValutas(v, `svarsed-${personID}-familieytelser`, {
+          ytelser, personID, personName
+        }))
       } else {
         const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
-        _error = validateKontaktsinformasjonTelefoner(v, {
-          telefoner, namespace: `svarsed-${personID}-kontaktinformasjon-telefon`, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateKontaktsinformasjonTelefoner(v, `svarsed-${personID}-kontaktinformasjon-telefon`, {
+          telefoner, personName
+        }))
         const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
-        _error = validateKontaktsinformasjonEposter(v, {
-          eposter, namespace: `svarsed-${personID}-kontaktinformasjon-epost`, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateKontaktsinformasjonEposter(v, `svarsed-${personID}-kontaktinformasjon-epost`, {
+          eposter, personName
+        }))
         const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
           perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
           perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),
@@ -166,95 +150,71 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
           perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
           perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
         }
-        _error = validateTrygdeordninger(v, {
-          perioder, namespace: `svarsed-${personID}-trygdeordninger`, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateTrygdeordninger(v, `svarsed-${personID}-trygdeordninger`, {
+          perioder, personName
+        }))
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
-        _error = validateFamilierelasjoner(v, {
-          familierelasjoner, namespace: `svarsed-${personID}-familierelasjon`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateFamilierelasjoner(v, `svarsed-${personID}-familierelasjon`, {
+          familierelasjoner, personName
+        }))
         const perioderSomAnsatt: Array<Periode> = _.get(replySed, `${personID}.perioderSomAnsatt`)
-        _error = validateAnsattPerioder(v, {
-          perioder: perioderSomAnsatt, namespace: `svarsed-${personID}-personensstatus-ansatt`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateAnsattPerioder(v, `svarsed-${personID}-personensstatus-ansatt`, {
+          perioder: perioderSomAnsatt, personName
+        }))
         const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
-        _error = validateNotAnsattPerioder(v, {
-          perioder: perioderSomSelvstendig, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, {
+          perioder: perioderSomSelvstendig, personName
+        }))
         const perioderSomSykMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomSykMedLoenn`)
-        _error = validateNotAnsattPerioder(v, {
-          perioder: perioderSomSykMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, {
+          perioder: perioderSomSykMedLoenn, personName
+        }))
         const perioderSomPermittertMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertMedLoenn`)
-        _error = validateNotAnsattPerioder(v, {
-          perioder: perioderSomPermittertMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, {
+          perioder: perioderSomPermittertMedLoenn, personName
+        }))
         const perioderSomPermittertUtenLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertUtenLoenn`)
-        _error = validateNotAnsattPerioder(v, {
-          perioder: perioderSomPermittertUtenLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, {
+          perioder: perioderSomPermittertUtenLoenn, personName
+        }))
         const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
-        _error = validateAvsenderlandetPerioder(v, {
-          perioder: perioderMedTrygd, namespace: `svarsed-${personID}-personensstatus-avsenderlandet`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateAvsenderlandetPerioder(v, `svarsed-${personID}-personensstatus-avsenderlandet`, {
+          perioder: perioderMedTrygd, personName
+        }))
         const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-        _error = validateAllGrunnlagForBosetting(v, {
-          flyttegrunn, namespace: `svarsed-${personID}-personensstatus-grunnlagforbosetting`, personName
-        })
-        hasErrors = hasErrors || _error
-
+        hasErrors.push(validateAllGrunnlagForBosetting(v, `svarsed-${personID}-personensstatus-grunnlagforbosetting`, {
+          flyttegrunn, personName
+        }))
         const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
-        _error = validateWithSubsidiesPerioder(v, {
-          perioder: perioderMedPensjon, namespace: `svarsed-${personID}-personensstatus-withsubsidies`, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateWithSubsidiesPerioder(v, `svarsed-${personID}-personensstatus-withsubsidies`, {
+          perioder: perioderMedPensjon, personName
+        }))
       }
     } else {
       const barnetilhorigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
-      _error = validateBarnetilhoerigheter(v, {
-        barnetilhorigheter, namespace: `svarsed-${personID}-relasjon`, personName
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateBarnetilhoerigheter(v, `svarsed-${personID}-relasjon`, {
+        barnetilhorigheter, personName
+      }))
       const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-      _error = validateAllGrunnlagForBosetting(v, {
-        flyttegrunn, namespace: `svarsed-${personID}-grunnlagforbosetting`, personName
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateAllGrunnlagForBosetting(v, `svarsed-${personID}-grunnlagforbosetting`, {
+        flyttegrunn, personName
+      }))
       const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
       if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
-        _error = validateBeløpNavnOgValutas(v, {
-          ytelser, namespace: `svarsed-${personID}-beløpnavnogvaluta`, personID, personName
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateBeløpNavnOgValutas(v, `svarsed-${personID}-beløpnavnogvaluta`, {
+          ytelser, personID, personName
+        }))
       }
     }
   }
 
   if (isUSed(replySed)) {
-    _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
+    hasErrors.push(validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
       personInfo, personName
-    })
-    hasErrors = hasErrors || _error
-
-    _error = validateReferanseperiode(v, {
-      anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `svarsed-${personID}-referanseperiode`, personName
-    })
-    hasErrors = hasErrors || _error
-
+    }))
+    hasErrors.push(validateReferanseperiode(v, `svarsed-${personID}-referanseperiode`, {
+      anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
+    }))
     if (replySed.sedType === 'U002' || replySed.sedType === 'U017') {
       //
       const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
@@ -271,19 +231,13 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         perioderKompensertFerie: (replySed as U002Sed)?.perioderKompensertFerie,
         perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
       }
-
-      _error = validateAlleForsikringPerioder(v, {
-        perioder, namespace: `svarsed-${personID}-forsikring`, personName
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validatePerioderDagpenger(v, {
+      hasErrors.push(validateAlleForsikringPerioder(v, `svarsed-${personID}-forsikring`, {
+        perioder, personName
+      }))
+      hasErrors.push(validatePerioderDagpenger(v, `svarsed-${personID}-periodefordagpenger`, {
         perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
-        namespace: `svarsed-${personID}-periodefordagpenger`,
         personName
-      })
-      hasErrors = hasErrors || _error
-
+      }))
       const nrArbeidsperioder = (
         (perioder?.perioderAnsattMedForsikring?.length ?? 0) +
         (perioder?.perioderSelvstendigMedForsikring?.length ?? 0) +
@@ -306,75 +260,54 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
       }
 
       if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
-        _error = validateGrunnTilOpphor(v, {
-          grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
-          namespace: `svarsed-${personID}-grunntilopphør`
-        })
-        hasErrors = hasErrors || _error
+        hasErrors.push(validateGrunnTilOpphor(v, `svarsed-${personID}-grunntilopphør`, {
+          grunntilopphor: (replySed as U002Sed)?.grunntilopphor
+        }))
       }
-      _error = validateSisteAnsettelseInfo(v, {
-        sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo,
-        namespace: `svarsed-${personID}-sisteAnsettelseInfo`
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateSisteAnsettelseInfo(v, `svarsed-${personID}-sisteAnsettelseInfo`, {
+        sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo
+      }))
     }
 
     if (replySed.sedType === 'U004') {
-      _error = validateLoennsopplysninger(v, {
-        loennsopplysninger: (replySed as U004Sed)?.loennsopplysninger,
-        namespace: `svarsed-${personID}-inntekt`
-
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateLoennsopplysninger(v, `svarsed-${personID}-inntekt`, {
+        loennsopplysninger: (replySed as U004Sed)?.loennsopplysninger
+      }))
     }
 
     if (replySed.sedType === 'U017') {
-      _error = validateRettTilYtelse(v, {
-        rettTilTytelse: (replySed as U017Sed)?.rettTilYtelse,
-        namespace: `svarsed-${personID}-retttilytelser`
-      })
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateRettTilYtelse(v, `svarsed-${personID}-retttilytelser`, {
+        rettTilTytelse: (replySed as U017Sed)?.rettTilYtelse
+      }))
     }
   }
 
   if (isHSed(replySed)) {
-    _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
-      personInfo,  personName
-    })
-    hasErrors = hasErrors || _error
-
-    _error = validateAdresser(v, {
-      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
-    })
-    hasErrors = hasErrors || _error
-
+    hasErrors.push(validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
+      personInfo, personName
+    }))
+    hasErrors.push(validateAdresser(v, `svarsed-${personID}-adresser`, {
+      adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, personName
+    }))
     if (isH002Sed(replySed)) {
-      _error = validateSvarPåForespørsel(v, {
+      hasErrors.push(validateSvarPåForespørsel(v, `svarsed-${personID}-svarpåforespørsel`, {
         replySed,
-        namespace: `svarsed-${personID}-svarpåforespørsel`,
-        personName: t('label:svar-på-forespørsel').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        personName: i18n.t('label:svar-på-forespørsel').toLowerCase()
+      }))
     }
-
     if (isH001Sed(replySed)) {
-      _error = validateAnmodning(v, {
+      hasErrors.push(validateAnmodning(v, `svarsed-${personID}-anmodning`, {
         replySed,
-        namespace: `svarsed-${personID}-anmodning`,
-        personName: t('label:anmodning-om-informasjon').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
-
-      _error = validateEndredeForhold(v, {
+        personName: i18n.t('label:anmodning-om-informasjon').toLowerCase()
+      }))
+      hasErrors.push(validateEndredeForhold(v, `svarsed-${personID}-endredeforhold`, {
         replySed,
-        namespace: `svarsed-${personID}-endredeforhold`,
-        personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
-      })
-      hasErrors = hasErrors || _error
+        personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      }))
     }
   }
 
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateSEDEdit = (
@@ -384,72 +317,57 @@ export const validateSEDEdit = (
     replySed
   }: ValidationSEDEditProps
 ): boolean => {
-  let hasErrors: boolean = false
-  let _error: boolean
+  const hasErrors: Array<boolean> = []
 
   // this is common to all seds
-  _error = validateMainForm(v, replySed, 'bruker')
-  hasErrors = hasErrors || _error
+  hasErrors.push(validateMainForm(v, replySed, 'bruker'))
 
   if (isFSed(replySed)) {
-    _error = validateFormål(v, 'formål1-formål', {
+    hasErrors.push(validateFormål(v, 'formål1-formål', {
       formaal: (replySed as FSed).formaal
-    })
-    hasErrors = hasErrors || _error
-
-    _error = validateAnmodningsPerioder(v, 'formål1-anmodningsperiode', {
+    }))
+    hasErrors.push(validateAnmodningsPerioder(v, 'formål1-anmodningsperiode', {
       anmodningsperioder: (replySed as FSed).anmodningsperioder
-    })
-    hasErrors = hasErrors || _error
-
+    }))
     if ((replySed as F002Sed).ektefelle) {
-      _error = validateMainForm(v, replySed, 'ektefelle')
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateMainForm(v, replySed, 'ektefelle'))
     }
     if ((replySed as F002Sed).annenPerson) {
-      _error = validateMainForm(v, replySed, 'annenPerson')
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
     (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
-      _error = validateMainForm(v, replySed, `barn[${i}]`)
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
     })
     if ((replySed as F002Sed).familie) {
-      _error = validateMainForm(v, replySed, 'familie')
-      hasErrors = hasErrors || _error
+      hasErrors.push(validateMainForm(v, replySed, 'familie'))
     }
-
-    _error = validateBottomForm(v, replySed)
-    hasErrors = hasErrors || _error
+    hasErrors.push(validateBottomForm(v, replySed))
   }
 
   if (isHSed(replySed)) {
-    if (_.isEmpty((replySed as HSed).tema)) {
-      v['editor-tema'] = {
-        feilmelding: t('validation:noTema'),
-        skjemaelementId: 'editor-tema'
-      } as ErrorElement
-      hasErrors = true
-    } else {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: (replySed as HSed).tema,
+      id: 'editor-tema',
+      message: 'validation:noTema'
+    }))
+
+    if (!_.isEmpty((replySed as HSed).tema)) {
       if ((replySed as HSed).tema === 'GEN') {
-        v['editor-tema'] = {
-          feilmelding: t('validation:invalidTema'),
-          skjemaelementId: 'editor-tema'
-        } as ErrorElement
-        hasErrors = true
+        hasErrors.push(addError(v, {
+          id: 'editor-tema',
+          message: 'validation:invalidTema'
+        }))
       }
     }
   }
   if (!isH001Sed(replySed)) {
-    // @ts-ignore
-    if (!_.isEmpty(replySed?.ytterligereInfo?.trim()) && replySed?.ytterligereInfo?.trim().length > 500) {
-      v['editor-ytterligereInfo'] = {
-        feilmelding: t('validation:textOverX', { x: 500 }) + t('validation:til-person', { person: 'SED' }),
-        skjemaelementId: 'editor-ytterligereInfo'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkLength(v, {
+      needle: (replySed as H001Sed)?.ytterligereInfo,
+      max: 500,
+      id: 'editor-ytterligereInfo',
+      message: 'validation:textOverX'
+    }))
   }
 
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

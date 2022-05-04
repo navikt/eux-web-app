@@ -5,15 +5,14 @@ import { checkIfNotTrue, checkLength } from 'utils/validation'
 
 export interface ValidationSvarPåForespørselProps {
   replySed: ReplySed
-  namespace: string,
   personName?: string
 }
 
 export const validateSvarPåForespørsel = (
   v: Validation,
+  namespace: string,
   {
     replySed,
-    namespace,
     personName
   }: ValidationSvarPåForespørselProps
 ): boolean => {

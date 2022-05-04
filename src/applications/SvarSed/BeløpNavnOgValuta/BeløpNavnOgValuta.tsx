@@ -60,7 +60,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Ytelse>((y: Ytelse): string => y.ytelseNavn + '-' + y.startdato + '-' + y.sluttdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationBeløpNavnOgValutaProps>({}, validateBeløpNavnOgValuta)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationBeløpNavnOgValutaProps>(validateBeløpNavnOgValuta, namespace)
 
   const ytelseNavnOptions: Options = [{
     label: t('el:option-familieytelser-barnetrygd'), value: 'Barnetrygd'
@@ -215,7 +215,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
 
     const valid = performValidation({
       ytelse: newYtelse,
-      namespace,
       personID,
       personName
     })

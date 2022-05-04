@@ -28,15 +28,13 @@ const InntektSearch = ({
   gettingInntekter
 }: InntektSearchProps) => {
   const { t } = useTranslation()
-
+  const namespace = 'inntekt-search'
   const [_searchPeriode, _setSearchPeriode] = useState<Periode>(() => ({
     startdato: '2015-01',
     sluttdato: moment(new Date()).format('YYYY-MM')
   }))
   const [_filter, _setFilter] = useState<string>('DAGPENGER')
-  const [_validation, _resetValidation, performValidation] =
-    useLocalValidation<ValidationInntektSearchProps>({}, validateInntektSearch)
-  const namespace = 'inntekt-search'
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationInntektSearchProps>(validateInntektSearch, namespace)
 
   const filterOptions : Options = [
     { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
@@ -68,8 +66,7 @@ const InntektSearch = ({
     const valid = performValidation({
       fom: _searchPeriode?.startdato,
       tom: _searchPeriode?.sluttdato ?? '',
-      inntektsliste: _filter,
-      namespace
+      inntektsliste: _filter
     })
     if (valid) {
       onInntektSearch(fnr, _searchPeriode?.startdato ?? '2015-01', _searchPeriode?.sluttdato ?? '', _filter ?? '')

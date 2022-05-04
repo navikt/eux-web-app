@@ -45,7 +45,7 @@ const ProsedyreVedUenighet: React.FC<MainFormProps> = ({
     return grunn.grunn
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationProsedyreVedUenighetGrunnProps>({}, validateProsedyreVedUenighetGrunn)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationProsedyreVedUenighetGrunnProps>(validateProsedyreVedUenighetGrunn, namespace)
 
   const availableGrunns: Array<string> = ['ansettelse', 'pensjon', 'medlemsperiode', 'oppholdetsVarighet', 'bosted', 'personligSituasjon']
 
@@ -146,8 +146,7 @@ const ProsedyreVedUenighet: React.FC<MainFormProps> = ({
 
     const valid: boolean = performValidation({
       grunn: newGrunn,
-      prosedyreVedUenighet,
-      namespace
+      prosedyreVedUenighet
     })
 
     if (valid) {

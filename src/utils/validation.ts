@@ -3,7 +3,7 @@ import _ from 'lodash'
 import i18n from 'i18n'
 import { Validation } from 'declarations/types'
 
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
+export const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const addError = (v: Validation, { id, personName, message, extra = {} }: any) => {
   v[id] = {
@@ -28,16 +28,38 @@ export const checkIfNotEmpty = (v: Validation, { needle, id, personName, message
   return false
 }
 
-export const checkIfNotDate = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
-  if (!needle.match(datePattern)) {
+export const checkIfNotDate = (v: Validation, { needle, id, pattern = datePattern, personName, message, extra }: any): boolean => {
+  if (!_.isEmpty(needle) && !needle.match(pattern)) {
     return addError(v, { id, personName, message, extra })
   }
   return false
 }
 
+export const checkIfNotEmail = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
+  const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+  if (!_.isEmpty(needle) && !needle.match(emailPattern)) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
+
+export const checkIfNotNumber = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
+  if (!_.isEmpty(needle) && !needle.match(/^[\d.,]+$/)) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
 
 export const checkIfNotTrue = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
   if (!needle) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
+
+export const checkIfValidFnr = (v: Validation, { needle, id, personName, message, extra }: any): boolean => {
+  if (!needle.match(/^\d{11}$/)) {
     return addError(v, { id, personName, message, extra })
   }
   return false

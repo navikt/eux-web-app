@@ -84,7 +84,7 @@ const AddPersonModal = <T extends StorageTypes>({
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
   const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddPersonModalProps>({}, validateAddPersonModal)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddPersonModalProps>(validateAddPersonModal, namespace)
 
   const onRemovePerson = (personID: string) => {
     const newReplySed = _.cloneDeep(_replySed)
@@ -143,8 +143,7 @@ const AddPersonModal = <T extends StorageTypes>({
       etternavn: _newPersonEtternavn.trim(),
       fdato: _newPersonFodselsdato.trim(),
       kjoenn: _newPersonKjoenn.trim(),
-      relasjon: _newPersonRelation?.trim(),
-      namespace
+      relasjon: _newPersonRelation?.trim()
     })
     if (valid) {
       const newReplySed = _.cloneDeep(_replySed)

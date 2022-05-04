@@ -59,7 +59,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<FamilieRelasjon>((f: FamilieRelasjon): string => f.relasjonType + '-' + f.periode?.startdato ?? '')
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationFamilierelasjonProps>({}, validateFamilierelasjon)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationFamilierelasjonProps>(validateFamilierelasjon, namespace)
 
   const relasjonTypeOptions: Options = [
     { label: t('el:option-familierelasjon-gift'), value: 'gift' },
@@ -191,7 +191,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
 
     const valid: boolean = performValidation({
       familierelasjon: newFamilierelasjon,
-      namespace,
       personName
     })
 

@@ -94,7 +94,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<Sort>('time')
   const [_visible, _setVisible] = useState<{[k in string]: Array<number>| undefined}>({})
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeProps>({}, validateForsikringPeriode)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeProps>(validateForsikringPeriode, namespace)
 
   const isVisible = (type: string, index: number): boolean => Object.prototype.hasOwnProperty.call(_visible, type) && _visible[type]!.indexOf(index) >= 0
 
@@ -287,7 +287,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     const valid: boolean = _performValidation({
       periode: _newPeriode as ForsikringPeriode,
       type: _newType,
-      namespace,
       personName
     })
     if (valid && _newType) {

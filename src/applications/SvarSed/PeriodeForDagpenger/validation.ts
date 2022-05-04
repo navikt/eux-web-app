@@ -3,51 +3,41 @@ import { validatePeriode } from 'components/Forms/validation'
 import { PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { addError, checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeDagpengerProps {
   periodeDagpenger: PeriodeDagpenger,
-  perioderDagpenger: Array<PeriodeDagpenger>,
+  perioderDagpenger: Array<PeriodeDagpenger> | undefined,
   index?: number
-  namespace: string
   personName?: string
 }
 
 export const validatePeriodeDagpenger = (
   v: Validation,
+  namespace: string,
   {
     periodeDagpenger,
     perioderDagpenger,
     index,
-    namespace,
     personName
   }: ValidationPeriodeDagpengerProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  const periodeError: boolean = validatePeriode(v, {
-    periode: periodeDagpenger?.periode,
-    namespace: namespace + '-periode'
-  })
-  hasErrors = hasErrors || periodeError
+  hasErrors.push(validatePeriode(v, namespace + '-periode', {
+    periode: periodeDagpenger?.periode
+  }))
 
   if (!_.isEmpty(periodeDagpenger?.periode?.startdato)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(perioderDagpenger, p => p.periode.startdato === periodeDagpenger?.periode.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato) !== undefined
-    } else {
-      const otherPerioder: Array<PeriodeDagpenger> = _.filter(perioderDagpenger, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === periodeDagpenger?.periode?.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + idx + '-periode-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato'),
-        skjemaelementId: namespace + idx + '-periode-startdato'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfDuplicate(v, {
+      needle: periodeDagpenger,
+      haystack: perioderDagpenger,
+      matchFn: (p: PeriodeDagpenger) => p.periode.startdato === periodeDagpenger?.periode.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato,
+      id: namespace + idx + '-periode-startdato',
+      message: 'validation:duplicateStartdato'
+    }))
   }
 
   const idmangler = (
@@ -60,75 +50,59 @@ export const validatePeriodeDagpenger = (
     !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.land?.trim())
 
   if (!idmangler) {
-    if (_.isEmpty(periodeDagpenger?.institusjon.id.trim())) {
-      v[namespace + idx + '-institusjon-id'] = {
-        feilmelding: t('validation:noInstitusjonsID'),
-        skjemaelementId: namespace + idx + '-institusjon-id'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeDagpenger?.institusjon.id,
+      id: namespace + idx + '-institusjon-id',
+      message: 'validation:noInstitusjonsID',
+      personName
+    }))
 
-    if (_.isEmpty(periodeDagpenger?.institusjon.navn.trim())) {
-      v[namespace + idx + '-institusjon-navn'] = {
-        feilmelding: t('validation:noInstitusjonensNavn'),
-        skjemaelementId: namespace + idx + '-institusjon-navn'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeDagpenger?.institusjon.navn,
+      id: namespace + idx + '-institusjon-navn',
+      message: 'validation:noInstitusjonensNavn',
+      personName
+    }))
   } else {
     if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim()) || periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
-      v[namespace + idx + '-institusjon-idmangler-navn'] = {
-        feilmelding: t('validation:noName'),
-        skjemaelementId: namespace + idx + '-institusjon-idmangler-navn'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-institusjon-idmangler-navn',
+        message: 'validation:noName',
+        personName
+      }))
     }
 
-    const _error: boolean = validateAdresse(v, {
+    hasErrors.push(validateAdresse(v, namespace + idx + '-institusjon-idmangler-adresse', {
       adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
-      namespace: namespace + idx + '-institusjon-idmangler-adresse',
       checkAdresseType: true,
       personName
-    })
-    hasErrors = hasErrors || _error
+    }))
   }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 interface ValidatePerioderDagpengerProps {
   perioderDagpenger: Array<PeriodeDagpenger> | undefined
-  namespace: string
   personName?: string
 }
 
 export const validatePerioderDagpenger = (
   validation: Validation,
+  namespace: string,
   {
     perioderDagpenger,
-    namespace,
     personName
   }: ValidatePerioderDagpengerProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   perioderDagpenger?.forEach((periodeDagpenger: PeriodeDagpenger, index: number) => {
-    const _errors: boolean = validatePeriodeDagpenger(validation, {
+    hasErrors.push(validatePeriodeDagpenger(validation, namespace, {
       periodeDagpenger,
       perioderDagpenger,
       index,
-      namespace,
       personName
-    })
-    hasErrors = hasErrors || _errors
+    }))
   })
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

@@ -51,7 +51,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const [_newAdresseMessage, _setNewAdresseMessage] = useState<string | undefined>(undefined)
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddressProps>({}, validateAdresse)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddressProps>(validateAdresse, namespace)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Adresse>(getId)
 
   const setAdresse = (adresse: Adresse, id: string | undefined, index: number) => {
@@ -92,7 +92,6 @@ const Adresser: React.FC<MainFormProps> = ({
   const onAdd = () => {
     const valid: boolean = performValidation({
       adresse: _newAdresse,
-      namespace,
       checkAdresseType: true,
       personName
     })

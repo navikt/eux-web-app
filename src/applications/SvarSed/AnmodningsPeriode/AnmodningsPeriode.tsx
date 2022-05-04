@@ -40,7 +40,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>({}, validateAnmodningsPeriode)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace)
 
   useEffect(() => {
     return () => {
@@ -71,8 +71,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
 
   const onAdd = () => {
     const valid: boolean = _performValidation({
-      anmodningsperiode: _newAnmodningsperioder,
-      namespace
+      anmodningsperiode: _newAnmodningsperioder
     })
     if (valid) {
       let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)

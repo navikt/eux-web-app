@@ -58,10 +58,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   person
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const namespace = 'familierelasjoner'
   const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
-  const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>({}, validateAbroadPersonForm)
-  const namespace = 'familierelasjoner'
+  const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
 
   useEffect(() => {
     setRelation(emptyFamilieRelasjon)

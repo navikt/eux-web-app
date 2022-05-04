@@ -1,45 +1,39 @@
 import { validatePeriode } from 'components/Forms/validation'
-import { ErrorElement } from 'declarations/app'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeMedForsikringProps {
   periodeMedForsikring: PeriodeMedForsikring,
-  namespace: string
   includeAddress ?: boolean
 }
 
 export const validatePeriodeMedForsikring = (
   v: Validation,
+  namespace: string,
   {
     periodeMedForsikring,
-    namespace,
     includeAddress
   }: ValidationPeriodeMedForsikringProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.navn?.trim())) {
-    v[namespace + '-navn'] = {
-      skjemaelementId: namespace + '-navn',
-      feilmelding: t('validation:noNavn')
-    } as ErrorElement
-    hasErrors = true
-  }
-  if (_.isEmpty(periodeMedForsikring.arbeidsgiver?.identifikatorer?.[0]?.id)) {
-    v[namespace + '-identifikatorer'] = {
-      skjemaelementId: namespace + '-identifikatorer',
-      feilmelding: t('validation:noOrgnr')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periodeMedForsikring.arbeidsgiver?.navn,
+    id: namespace + '-navn',
+    message: 'validation:noNavn'
+  }))
 
-  const periodeError: boolean = validatePeriode(v, {
-    periode: periodeMedForsikring,
-    namespace
-  })
-  hasErrors = hasErrors || periodeError
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periodeMedForsikring.arbeidsgiver?.identifikatorer?.[0]?.id,
+    id: namespace + '-identifikatorer',
+    message: 'validation:noOrgnr'
+  }))
+
+  hasErrors.push(validatePeriode(v, namespace, {
+    periode: periodeMedForsikring
+  }))
 
   // allow duplicates
 
@@ -49,70 +43,53 @@ export const validatePeriodeMedForsikring = (
     !_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.by) ||
     !_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)
   )) {
-    if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.gate)) {
-      v[namespace + '-adresse-gate'] = {
-        skjemaelementId: namespace + '-adresse-gate',
-        feilmelding: t('validation:noAddressStreet')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.postnummer)) {
-      v[namespace + '-adresse-postnummer'] = {
-        skjemaelementId: namespace + '-adresse-postnummer',
-        feilmelding: t('validation:noAddressPostnummer')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.by)) {
-      v[namespace + '-adresse-by'] = {
-        skjemaelementId: namespace + '-adresse-by',
-        feilmelding: t('validation:noAddressCity')
-      } as ErrorElement
-      hasErrors = true
-    }
-    if (_.isEmpty(periodeMedForsikring.arbeidsgiver.adresse?.land)) {
-      v[namespace + '-adresse-land'] = {
-        skjemaelementId: namespace + '-adresse-land',
-        feilmelding: t('validation:noAddressCountry')
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeMedForsikring.arbeidsgiver.adresse?.gate,
+      id: namespace + '-adresse-gate',
+      message: 'validation:noAddressStreet'
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeMedForsikring.arbeidsgiver.adresse?.postnummer,
+      id: namespace + '-adresse-postnummer',
+      message: 'validation:noAddressPostnummer'
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeMedForsikring.arbeidsgiver.adresse?.by,
+      id: namespace + '-adresse-by',
+      message: 'validation:noAddressCity'
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periodeMedForsikring.arbeidsgiver.adresse?.land,
+      id: namespace + '-adresse-land',
+      message: 'validation:noAddressCountry'
+    }))
   }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 interface ValidatePerioderMedForsikringProps {
   perioderMedForsikring: Array<PeriodeMedForsikring> | undefined
-  namespace: string
   includeAddress: boolean
 }
 
 export const validatePerioderMedForsikring = (
   validation: Validation,
+  namespace: string,
   {
     perioderMedForsikring,
-    namespace,
     includeAddress
   }: ValidatePerioderMedForsikringProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   perioderMedForsikring?.forEach((periodeMedForsikring: PeriodeMedForsikring) => {
-    const _errors: boolean = validatePeriodeMedForsikring(validation, {
+    hasErrors.push(validatePeriodeMedForsikring(validation, namespace, {
       periodeMedForsikring,
-      namespace,
       includeAddress
-    })
-    hasErrors = hasErrors || _errors
+    }))
   })
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

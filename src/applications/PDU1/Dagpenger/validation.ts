@@ -2,28 +2,27 @@ import { PDPeriode } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import i18n from 'i18n'
 
 export interface ValidationDagpengerPeriodeProps {
   startdato: string | undefined
   sluttdato: string |undefined
   info: string |undefined
   index ? : number
-  namespace: string
 }
 
 export interface ValidationDagpengerProps {
   dagpenger: Array<PDPeriode> | undefined
-  namespace: string
 }
 
 export const validateDagpengerPeriode = (
   v: Validation,
+  namespace: string,
   {
     startdato,
     sluttdato,
     info,
-    index,
-    namespace
+    index
   }: ValidationDagpengerPeriodeProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -53,20 +52,19 @@ export const validateDagpengerPeriode = (
 
 export const validateDagpenger = (
   v: Validation,
+  namespace: string,
   {
-    dagpenger,
-    namespace
+    dagpenger
   }: ValidationDagpengerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   dagpenger?.forEach((periode: PDPeriode, index: number) => {
-    hasErrors.push(validateDagpengerPeriode(v, {
+    hasErrors.push(validateDagpengerPeriode(v, namespace + '-perioder', {
       startdato: periode.startdato,
       sluttdato: periode.sluttdato,
       info: periode.info,
-      index,
-      namespace: namespace + '-perioder'
+      index
     }))
   })
 
@@ -75,7 +73,7 @@ export const validateDagpenger = (
       id: namespace + '-generic',
       message: 'validation:tooManyPeriodsMaxIs',
       extra: {
-        type: t('label:dagpenger'),
+        type: i18n.t('label:dagpenger'),
         max: '40'
       }
     })

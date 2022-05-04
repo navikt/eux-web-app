@@ -27,7 +27,7 @@ import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
-import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './ansattValidation'
+import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './validation'
 
 interface AnsattSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -62,13 +62,13 @@ const Ansatt: React.FC<MainFormProps> = ({
   const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
   const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
   const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
-  const [_validationArbeidsperiode, _resetValidationArbeidsperiode, performValidationArbeidsperiode] = useLocalValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+  const [_validationArbeidsperiode, _resetValidationArbeidsperiode, performValidationArbeidsperiode] = useLocalValidation<ValidationArbeidsgiverProps>(validateArbeidsgiver, namespace + '-arbeidsgiver')
 
   // fields for new periode (not connected to arbeidsgiver)
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
   const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
-  const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] = useLocalValidation<ValidationArbeidsperiodeProps>({}, validateAnsattPeriode)
+  const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] = useLocalValidation<ValidationArbeidsperiodeProps>(validateAnsattPeriode, namespace)
 
   const addPeriode = (newPeriode: Periode) => {
     let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
@@ -221,7 +221,6 @@ const Ansatt: React.FC<MainFormProps> = ({
 
     const valid: boolean = performValidationArbeidsperiode({
       arbeidsgiver: newArbeidsgiver,
-      namespace: namespace + '-arbeidsgiver',
       includeAddress
     })
 
@@ -238,7 +237,6 @@ const Ansatt: React.FC<MainFormProps> = ({
     const valid: boolean = performValidationPeriode({
       periode: _newPeriode,
       perioder: perioderSomAnsatt,
-      namespace,
       personName
     })
     if (valid) {

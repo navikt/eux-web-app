@@ -4,15 +4,14 @@ import { checkLength } from 'utils/validation'
 
 export interface ValidationAnmodningProps {
   replySed: ReplySed
-  namespace: string,
   personName?: string
 }
 
 export const validateAnmodning = (
   v: Validation,
+  namespace: string,
   {
     replySed,
-    namespace,
     personName
   }: ValidationAnmodningProps
 ): boolean => {

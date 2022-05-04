@@ -1,14 +1,13 @@
 import { ArbeidsgiverIdentifikator } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationIdentifikatorProps {
   identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
   identifikator: ArbeidsgiverIdentifikator
-  index?: number,
-  namespace: string
+  index?: number
   personName?: string
 }
 
@@ -16,59 +15,41 @@ const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' +
 
 export const validateIdentifikator = (
   v: Validation,
+  namespace: string,
   {
     identifikatorer,
     identifikator,
     index,
-    namespace,
     personName
   }: ValidationIdentifikatorProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(identifikator?.type)) {
-    v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noType') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-type'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: identifikator?.type,
+    id: namespace + idx + '-type',
+    message: 'validation:noType',
+    personName
+  }))
 
-  if (_.isEmpty(identifikator?.id)) {
-    v[namespace + idx + '-id'] = {
-      feilmelding: t('validation:noId') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-id'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: identifikator?.id,
+    id: namespace + idx + '-id',
+    message: 'validation:noId',
+    personName
+  }))
 
   if (!_.isEmpty(identifikator?.id) && _.isEmpty(identifikator?.type)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(identifikatorer, id => getId(id) === getId(identifikator)) !== undefined
-    } else {
-      const otherIentifikatorer: Array<ArbeidsgiverIdentifikator> = _.filter(identifikatorer, (p, i) => i !== index)
-      duplicate = _.find(otherIentifikatorer, id => getId(id) === getId(identifikator)) !== undefined
-    }
-
-    if (duplicate) {
-      v[namespace + idx + '-id'] = {
-        feilmelding: t('validation:duplicateId') + (personName ? t('validation:til-person', { person: personName }) : ''),
-        skjemaelementId: namespace + idx + '-id'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfDuplicate(v, {
+      needle: identifikator,
+      haystack: identifikatorer,
+      matchFn: (id: ArbeidsgiverIdentifikator) => getId(id) === getId(identifikator),
+      index,
+      id: namespace + idx + '-id',
+      message: 'validation:duplicateId'
+    }))
   }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

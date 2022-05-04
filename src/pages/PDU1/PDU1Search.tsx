@@ -66,7 +66,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
   changeMode
 }: PDU1Props): JSX.Element => {
   const { t } = useTranslation()
-
   const dispatch = useAppDispatch()
   const {
     fagsaker,
@@ -86,8 +85,8 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
   const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
 
-  const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>({}, validatePdu1Search)
   const namespace = 'pdu1search'
+  const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -158,8 +157,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const onGetPdu1Clicked = () => {
     const valid = performValidation({
       fnrOrDnr,
-      fagsak,
-      namespace
+      fagsak
     })
 
     if (valid) {
@@ -171,8 +169,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const onEditingPdu1Clicked = () => {
     const valid = performValidation({
       fnrOrDnr,
-      fagsak,
-      namespace
+      fagsak
     })
 
     if (valid) {

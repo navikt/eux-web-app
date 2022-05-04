@@ -91,7 +91,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     (p: PeriodeMedForsikring) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
 
   const [_validationPeriodeMedForsikring, _resetValidationPeriodeMedForsikring, performValidationPeriodeMedForsikring] =
-    useLocalValidation<ValidationPeriodeMedForsikringProps>({}, validatePeriodeMedForsikring)
+    useLocalValidation<ValidationPeriodeMedForsikringProps>(validatePeriodeMedForsikring, namespace)
 
   const [_addedPeriodeMedForsikring, setAddedPeriodeMedForsikring] = useState<Array<PeriodeMedForsikring>>([])
 
@@ -245,7 +245,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
     const valid: boolean = performValidationPeriodeMedForsikring({
       periodeMedForsikring: newPeriodeMedForsikring,
-      namespace,
       includeAddress: true
     })
 

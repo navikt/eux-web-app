@@ -7,15 +7,14 @@ import { checkIfNotEmpty } from 'utils/validation'
 import { validateStatsborgerskaper } from './Statsborgerskap/validation'
 
 export interface ValidationPersonProps {
-  person: Pdu1Person,
-  namespace: string
+  person: Pdu1Person
 }
 
 export const validatePerson = (
   v: Validation,
+  namespace: string,
   {
-    person,
-    namespace
+    person
   }: ValidationPersonProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -44,8 +43,7 @@ export const validatePerson = (
     message: 'validation:noKjoenn'
   }))
 
-  hasErrors.push(validateUtenlandskPins(v, {
-    namespace: namespace + '-utenlandskePin',
+  hasErrors.push(validateUtenlandskPins(v, namespace + '-utenlandskePin', {
     utenlandskePins: person?.utenlandskePin?.map((pin: string) => {
       const els = pin.split(/\s+/)
       return {
@@ -55,9 +53,9 @@ export const validatePerson = (
     })
   }))
 
-  hasErrors.push(validateStatsborgerskaper(v, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))
+  hasErrors.push(validateStatsborgerskaper(v, namespace + '-statsborgerskap', { statsborgerskaper: person.statsborgerskap }))
 
-  hasErrors.push(validateAdresse(v, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: namespace + '-adresse' }))
+  hasErrors.push(validateAdresse(v, namespace + '-adresse', { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
 
   return hasErrors.find(value => value) !== undefined
 }

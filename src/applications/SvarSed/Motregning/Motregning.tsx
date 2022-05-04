@@ -74,7 +74,7 @@ const Motregning: React.FC<MainFormProps> = ({
   const getMotregningId = (m: IMotregning | null): string => m ? m?.startdato + '-' + (m?.sluttdato ?? '') : 'new-motregning'
   const [_addToDeletion, _removeFromDeletion, _isInDeletion] = useAddRemove<IMotregning>(getMotregningId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationMotregningProps>({}, validateMotregning)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationMotregningProps>(validateMotregning, namespace)
 
   const [_allBarnaNameKeys, _setAllBarnaNameKeys] = useState<BarnaNameKeyMap>({})
   const [_keyAndYtelseMap, _setKeyAndYtelseMap] = useState<KeyAndYtelseMap>({})
@@ -554,7 +554,6 @@ const Motregning: React.FC<MainFormProps> = ({
       motregning: newMotregning,
       keyAndYtelses: _newKeyAndYtelses,
       type: _newBarnaEllerFamilie as BarnaEllerFamilie,
-      namespace,
       formalName: t('label:motregning').toLowerCase()
     })
 

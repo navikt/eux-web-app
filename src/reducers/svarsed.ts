@@ -103,8 +103,7 @@ const svarsedReducer = (
         sedSendResponse: undefined
       }
 
-    case types.SVARSED_EDIT_SUCCESS:
-
+    case types.SVARSED_EDIT_SUCCESS: {
       const newReplySed = {
         ...(action as ActionWithPayload).payload,
         sak: (action as ActionWithPayload).context.sak,
@@ -116,6 +115,7 @@ const svarsedReducer = (
         originalReplySed: newReplySed,
         replySedChanged: false
       }
+    }
 
     case types.SVARSED_EDIT_FAILURE:
       return {

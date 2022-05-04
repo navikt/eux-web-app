@@ -2,219 +2,177 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { checkIfDuplicate, checkIfNotDate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationVedtakPeriodeProps {
   periode: Periode
   perioder: Array<Periode>
   index?: number
-  namespace: string
   formalName?: string
 }
 
 export interface ValidationVedtakVedtaksperiodeProps {
   vedtaksperiode: VedtakPeriode
-  vedtaksperioder: Array<VedtakPeriode>
+  vedtaksperioder: Array<VedtakPeriode> | undefined
   vedtaktype: string
   index?: number
-  namespace: string
   formalName?: string
 }
 
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
-
 export const validateVedtakPeriode = (
   v: Validation,
+  namespace: string,
   {
     periode,
     perioder,
     index,
-    namespace,
     formalName
   }: ValidationVedtakPeriodeProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
-  const periodeError: boolean = validatePeriode(
-    v, {
-      periode,
-      namespace: namespace + '-perioder' + idx,
-      personName: formalName
-    }
-  )
-  hasErrors = hasErrors || periodeError
 
-  if (!_.isEmpty(periode?.startdato)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(perioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
-    } else {
-      const otherPerioder: Array<Periode> = _.filter(perioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + '-perioder' + idx + '-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + '-perioder' + idx + '-startdato'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
-  return hasErrors
+  hasErrors.push(validatePeriode(v, namespace + '-perioder' + idx, {
+    periode,
+    personName: formalName
+  }))
+
+  hasErrors.push(checkIfDuplicate(v, {
+    needle: periode,
+    haystack: perioder,
+    matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
+    id: namespace + '-perioder' + idx + '-startdato',
+    message: 'validation:duplicateStartdato',
+    personName: formalName
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateVedtakVedtaksperiode = (
   v: Validation,
+  namespace: string,
   {
     vedtaksperiode,
     vedtaksperioder,
     vedtaktype,
     index,
-    namespace,
     formalName
   }:ValidationVedtakVedtaksperiodeProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   let idx = getIdx(index)
+
   if (!_.isEmpty(idx)) {
     idx = '-' + vedtaktype + idx
   }
-  const periodeError: boolean = validatePeriode(
-    v, {
-      periode: vedtaksperiode?.periode,
-      namespace: namespace + '-vedtaksperioder' + idx + '-periode',
-      personName: formalName
-    }
-  )
-  hasErrors = hasErrors || periodeError
+  hasErrors.push(validatePeriode(v, namespace + '-vedtaksperioder' + idx + '-periode', {
+    periode: vedtaksperiode?.periode,
+    personName: formalName
+  }))
 
-  if (!_.isEmpty(vedtaksperiode?.periode.startdato)) {
-    let duplicate: boolean
-    if (_.isNil(index)) {
-      duplicate = _.find(vedtaksperioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato && p.periode.sluttdato === vedtaksperiode?.periode.sluttdato) !== undefined
-    } else {
-      const otherPerioder: Array<VedtakPeriode> = _.filter(vedtaksperioder, (p, i) => i !== index)
-      duplicate = _.find(otherPerioder, p => p.periode.startdato === vedtaksperiode?.periode.startdato && p.periode.sluttdato === vedtaksperiode?.periode.sluttdato) !== undefined
-    }
-    if (duplicate) {
-      v[namespace + '-vedtaksperioder' + idx + '-periode-startdato'] = {
-        feilmelding: t('validation:duplicateStartdato') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + '-vedtaksperioder' + idx + '-periode-startdato'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
+  hasErrors.push(checkIfDuplicate(v, {
+    needle: vedtaksperiode?.periode,
+    haystack: vedtaksperioder,
+    matchFn: (p: VedtakPeriode) => p.periode.startdato === vedtaksperiode?.periode?.startdato && p.periode.sluttdato === vedtaksperiode?.periode?.sluttdato,
+    id: namespace + '-vedtaksperioder' + idx + '-periode-startdato',
+    message: 'validation:duplicateStartdato',
+    personName: formalName
+  }))
 
-  if (_.isEmpty(vedtaksperiode?.skalYtelseUtbetales?.trim())) {
-    v[namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'] = {
-      feilmelding: t('validation:noSkalYtelseUtbetales') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales'
-    } as ErrorElement
-    hasErrors = true
-  }
-  return hasErrors
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtaksperiode?.skalYtelseUtbetales,
+    id: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales',
+    message: 'validation:noSkalYtelseUtbetales',
+    personName: formalName
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 interface ValidateVedtakProps {
   vedtak: Vedtak
-  namespace: string
   formalName: string
 }
 
 export const validateVedtak = (
   v: Validation,
+  namespace: string,
   {
     vedtak,
-    namespace,
     formalName
   }: ValidateVedtakProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(vedtak?.gjelderAlleBarn)) {
-    v[namespace + '-gjelderAlleBarn'] = {
-      feilmelding: t('validation:noBarnValgt') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-gjelderAlleBarn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtak?.gjelderAlleBarn,
+    id: namespace + '-gjelderAlleBarn',
+    message: 'validation:noBarnValgt',
+    personName: formalName
+  }))
 
   vedtak?.vedtaksperioder?.forEach((vedtaksperioder, index) => {
-    const _error: boolean = validateVedtakPeriode(v, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, namespace, formalName })
-    hasErrors = hasErrors || _error
+    hasErrors.push(validateVedtakPeriode(v, namespace, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, formalName }))
   })
 
-  if (_.isEmpty(vedtak?.vedtakstype?.trim())) {
-    v[namespace + '-vedtakstype'] = {
-      feilmelding: t('validation:noVedtakType') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-vedtakstype'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtak?.vedtakstype,
+    id: namespace + '-vedtakstype',
+    message: 'validation:noVedtakType',
+    personName: formalName
+  }))
 
-  if (_.isEmpty(vedtak?.vedtaksdato?.trim())) {
-    v[namespace + '-vedtaksdato'] = {
-      feilmelding: t('validation:noDate') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-vedtaksdato'
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (!vedtak?.vedtaksdato?.trim().match(datePattern)) {
-      v[namespace + '-vedtaksdato'] = {
-        skjemaelementId: namespace + '-vedtaksdato',
-        feilmelding: t('validation:invalidDate') + (formalName ? t('validation:til-person', { person: formalName }) : '')
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtak?.vedtaksdato,
+    id: namespace + '-vedtaksdato',
+    message: 'validation:noDate',
+    personName: formalName
+  }))
 
-  if (_.isEmpty(vedtak?.begrunnelse?.trim())) {
-    v[namespace + '-begrunnelse'] = {
-      feilmelding: t('validation:noBegrunnelse') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-begrunnelse'
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (vedtak?.begrunnelse?.trim()?.length > 500) {
-      v[namespace + '-begrunnelse'] = {
-        feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + '-begrunnelse'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
+  hasErrors.push(checkIfNotDate(v, {
+    needle: vedtak?.vedtaksdato,
+    id: namespace + '-vedtaksdato',
+    message: 'validation:invalidDate',
+    personName: formalName
+  }))
 
-  if (vedtak?.ytterligereInfo?.trim()?.length > 500) {
-    v[namespace + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-ytterligereInfo'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtak?.begrunnelse,
+    id: namespace + '-begrunnelse',
+    message: 'validation:noBegrunnelse',
+    personName: formalName
+  }))
 
-  let _error: boolean
+  hasErrors.push(checkLength(v, {
+    needle: vedtak?.begrunnelse,
+    max: 500,
+    id: namespace + '-begrunnelse',
+    message: 'validation:textOverX',
+    personName: formalName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: vedtak?.ytterligereInfo,
+    max: 500,
+    id: namespace + '-ytterligereInfo',
+    message: 'validation:textOverX',
+    personName: formalName
+  }));
+
   ['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].forEach(vedtaktype => {
-    const vedtaksperioder: Array<VedtakPeriode> | undefined = _.get(vedtak, vedtaktype)
+    const vedtaksperioder: Array<VedtakPeriode> | undefined = _.get(vedtak, vedtaktype) as Array<VedtakPeriode> | undefined
     vedtaksperioder?.forEach((vp: VedtakPeriode, index: number) => {
-      _error = validateVedtakVedtaksperiode(v, {
+      hasErrors.push(validateVedtakVedtaksperiode(v, namespace, {
         vedtaksperiode: vp,
         vedtaksperioder,
         vedtaktype,
         index,
-        namespace,
         formalName
-      })
-      hasErrors = hasErrors || _error
+      }))
     })
   })
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[formaalNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

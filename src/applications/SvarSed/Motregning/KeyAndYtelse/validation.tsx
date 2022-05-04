@@ -1,40 +1,35 @@
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { checkIfNotEmpty } from 'utils/validation'
 import { KeyAndYtelse } from './KeyAndYtelse'
 
 export interface ValidationKeyAndYtelseProps {
   keyAndYtelse: KeyAndYtelse
   index?: number
-  namespace: string
 }
 
 export const validateKeyAndYtelse = (
   v: Validation,
+  namespace: string,
   {
     keyAndYtelse,
-    index,
-    namespace
+    index
   }: ValidationKeyAndYtelseProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(keyAndYtelse?.fullKey?.trim())) {
-    v[namespace + '-keyandytelse' + idx + '-key'] = {
-      feilmelding: t('validation:noNavn'),
-      skjemaelementId: namespace + '-keyandytelse' + idx + '-key'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: keyAndYtelse?.fullKey,
+    id: namespace + '-keyandytelse' + idx + '-key',
+    message: 'validation:noNavn'
+  }))
 
-  if (_.isEmpty(keyAndYtelse?.ytelseNavn?.trim())) {
-    v[namespace + '-keyandytelse' + idx + '-ytelseNavn'] = {
-      feilmelding: t('validation:noBetegnelsePåYtelse'),
-      skjemaelementId: namespace + '-keyandytelse' + idx + '-ytelseNavn'
-    } as ErrorElement
-    hasErrors = true
-  }
-  return hasErrors
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: keyAndYtelse?.ytelseNavn,
+    id: namespace + '-keyandytelse' + idx + '-ytelseNavn',
+    message: 'validation:noBetegnelsePåYtelse'
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }

@@ -33,6 +33,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
   const { t } = useTranslation()
   const validation: Validation = {}
   const dispatch = useAppDispatch()
+  const namespace = 'seddetails'
 
   const [_newSakseierSaksnummer, _setNewSakseierSaksnummer] = useState<string>('')
   const [_newSakseierInstitusjonsnavn, _setNewSakseierInstitusjonsnavn] = useState<string>('')
@@ -41,9 +42,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
 
   const [sakseierAddToDeletion, sakseierRemoveFromDeletion, sakseierIsInDeletion] = useAddRemove<LokaleSakId>((id: LokaleSakId): string => id.institusjonsid)
   const [_sakseierSeeNewForm, _setSakseierSeeNewForm] = useState<boolean>(false)
-  const [_sakseierValidation, _sakseierResetValidation, sakseierPerformValidation] = useLocalValidation<ValidationSakseierProps>({}, validateSakseier)
-
-  const namespace = 'seddetails'
+  const [_sakseierValidation, _sakseierResetValidation, sakseierPerformValidation] = useLocalValidation<ValidationSakseierProps>(validateSakseier, namespace)
 
   const setSakseierLand = (land: string, index: number) => {
     if (index < 0) {
@@ -162,8 +161,7 @@ const SEDDetailsEdit: React.FC<SEDDetailsEditProps> = ({
     }
 
     const valid: boolean = sakseierPerformValidation({
-      lokaleSakId: newLokaleSaksId,
-      namespace
+      lokaleSakId: newLokaleSaksId
     })
     if (valid) {
       let newLokaleSaksIder: Array<LokaleSakId> = _.cloneDeep((replySed as USed).lokaleSakIder)

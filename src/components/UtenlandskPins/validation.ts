@@ -8,23 +8,21 @@ export interface ValidationUtenlandskPinProps {
   pin: Pin
   utenlandskePins: Array<Pin> | undefined
   index ?: number
-  namespace: string
   personName?: string
 }
 
 export interface ValidationUtenlandskPinsProps {
   utenlandskePins: Array<Pin> | undefined
-  namespace: string
   personName ?: string
 }
 
 export const validateUtenlandskPin = (
   v: Validation,
+  namespace: string,
   {
     pin,
     utenlandskePins,
     index,
-    namespace,
     personName
   }: ValidationUtenlandskPinProps
 ): boolean => {
@@ -74,18 +72,17 @@ export const validateUtenlandskPin = (
 
 export const validateUtenlandskPins = (
   v: Validation,
+  namespace: string,
   {
-    namespace,
     utenlandskePins,
     personName
   }: ValidationUtenlandskPinsProps
 ): boolean => {
   const hasErrors: Array<boolean> = utenlandskePins?.map((pin: Pin, index: number) => {
-    return validateUtenlandskPin(v, {
+    return validateUtenlandskPin(v, namespace, {
       index,
       pin,
       utenlandskePins,
-      namespace,
       personName
     })
   }) ?? []

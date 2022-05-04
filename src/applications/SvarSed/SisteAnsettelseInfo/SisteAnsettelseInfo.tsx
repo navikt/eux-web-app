@@ -57,7 +57,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Utbetaling>((a: Utbetaling): string => a.utbetalingType + '-' + a.loennTilDato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUtbetalingProps>({}, validateUtbetaling)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUtbetalingProps>(validateUtbetaling, namespace)
 
   const _currencyData = CountryData.getCurrencyInstance('nb')
 
@@ -178,7 +178,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger)
+    const newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger) as Array<Utbetaling>
     const deletedUtbetalinger: Array<Utbetaling> = newUtbetalinger.splice(index, 1)
     if (deletedUtbetalinger && deletedUtbetalinger.length > 0) {
       removeFromDeletion(deletedUtbetalinger[0])
@@ -197,11 +197,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     }
 
     const valid: boolean = performValidation({
-      utbetaling: newUtbetaling,
-      namespace
+      utbetaling: newUtbetaling
     })
     if (valid) {
-      let newUtbetalinger: Array<Utbetaling> = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger)
+      let newUtbetalinger: Array<Utbetaling> | undefined = _.cloneDeep(sisteAnsettelseInfo?.utbetalinger)
       if (_.isNil(newUtbetalinger)) {
         newUtbetalinger = []
       }

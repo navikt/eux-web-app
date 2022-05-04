@@ -4,49 +4,59 @@ import _ from 'lodash'
 import { addError } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
-  utbetaling: AndreMottatteUtbetalinger
-  namespace: string
+  utbetaling: AndreMottatteUtbetalinger | undefined
 }
 
 export const validateUtbetaling = (
   v: Validation,
+  namespace: string,
   {
-    utbetaling,
-    namespace
+    utbetaling
   }: ValidationUtbetalingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   if (utbetaling?._utbetalingEtterEndtArbeidsforholdCheckbox && _.isEmpty(utbetaling?.utbetalingEtterEndtArbeidsforhold)) {
-    addError(v, { id: namespace + '-utbetalingEtterEndtArbeidsforhold', message: t('validation:emptyField') })
-    hasErrors.push(true)
+    hasErrors.push(addError(v, {
+      id: namespace + '-utbetalingEtterEndtArbeidsforhold',
+      message: 'validation:emptyField'
+    }))
   }
 
   if (utbetaling?._kompensasjonForEndtArbeidsforholdCheckbox && _.isEmpty(utbetaling?.kompensasjonForEndtArbeidsforhold)) {
-    addError(v, { id: namespace + '-kompensasjonForEndtArbeidsforhold', message: t('validation:emptyField') })
-    hasErrors.push(true)
+    hasErrors.push(addError(v, {
+      id: namespace + '-kompensasjonForEndtArbeidsforhold',
+      message: 'validation:emptyField'
+    }))
   }
 
   if (utbetaling?._kompensasjonForFeriedagerCheckbox) {
     if (_.isEmpty(utbetaling?.kompensasjonForFeriedager?.antallDager)) {
-      addError(v, { id: namespace + '-kompensasjonForFeriedager-antallDager', message: t('validation:emptyField') })
-      hasErrors.push(true)
+      hasErrors.push(addError(v, {
+        id: namespace + '-kompensasjonForFeriedager-antallDager',
+        message: 'validation:emptyField'
+      }))
     }
 
     if (_.isEmpty(utbetaling?.kompensasjonForFeriedager?.beloep)) {
-      addError(v, { id: namespace + '-kompensasjonForFeriedager-beloep', message: t('validation:emptyField') })
-      hasErrors.push(true)
+      hasErrors.push(addError(v, {
+        id: namespace + '-kompensasjonForFeriedager-beloep',
+        message: 'validation:emptyField'
+      }))
     }
   }
 
   if (utbetaling?._avkallKompensasjonBegrunnelseCheckbox && _.isEmpty(utbetaling?.avkallKompensasjonBegrunnelse)) {
-    addError(v, { id: namespace + '-avkallKompensasjonBegrunnelse', message: t('validation:emptyField') })
-    hasErrors.push(true)
+    hasErrors.push(addError(v, {
+      id: namespace + '-avkallKompensasjonBegrunnelse', message: 'validation:emptyField'
+    }))
   }
 
   if (utbetaling?._andreYtelserSomMottasForTidenCheckbox && _.isEmpty(utbetaling?.andreYtelserSomMottasForTiden)) {
-    addError(v, { id: namespace + '-andreYtelserSomMottasForTiden', message: t('validation:emptyField') })
-    hasErrors.push(true)
+    hasErrors.push(addError(v, {
+      id: namespace + '-andreYtelserSomMottasForTiden',
+      message: 'validation:emptyField'
+    }))
   }
 
   return hasErrors.find(value => value) !== undefined

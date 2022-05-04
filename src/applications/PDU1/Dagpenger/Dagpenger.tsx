@@ -48,7 +48,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>((p: PDPeriode): string => p.startdato + '-' + (p.sluttdato ?? ''))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>({}, validateDagpengerPeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>(validateDagpengerPeriode, namespace)
 
   const onStartdatoChange = (newStartdato: string, index: number) => {
     if (index < 0) {
@@ -112,8 +112,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       startdato: _newStartdato,
       sluttdato: _newSluttdato,
-      info: _newInfo,
-      namespace
+      info: _newInfo
     })
     if (valid) {
       let newPerioder: Array<PDPeriode> | undefined = _.cloneDeep(perioderDagpengerMottatt)

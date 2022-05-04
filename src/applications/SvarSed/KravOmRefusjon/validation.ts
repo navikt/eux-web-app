@@ -1,45 +1,38 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 interface ValidateKravOmRefusjonProps {
   kravOmRefusjon: string | undefined,
-  namespace: string
   formalName: string
 }
 
 export const validateKravOmRefusjon = (
   v: Validation,
+  namespace: string,
   {
     kravOmRefusjon,
-    namespace,
     formalName
   }: ValidateKravOmRefusjonProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(kravOmRefusjon?.trim())) {
-    v[namespace + '-krav'] = {
-      feilmelding: t('validation:noKrav') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + '-krav'
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (kravOmRefusjon && kravOmRefusjon.length > 500) {
-      v[namespace + '-krav'] = {
-        feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + '-krav'
-      } as ErrorElement
-      hasErrors = true
-    }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: kravOmRefusjon,
+    id: namespace + '-krav',
+    message: 'validation:noKrav',
+    personName: formalName
+  }))
+
+  if (!_.isEmpty(kravOmRefusjon?.trim())) {
+    hasErrors.push(checkLength(v, {
+      needle: kravOmRefusjon,
+      max: 500,
+      id: namespace + '-krav',
+      message: 'validation:textOverX',
+      personName: formalName
+    }))
   }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[formaalNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

@@ -1,15 +1,11 @@
 import { Validation } from 'declarations/types'
-import { useTranslation } from 'react-i18next'
 import { validateKravOmRefusjon } from './validation'
 
 describe('applications/SvarSed/KravOmRefusjon/validation', () => {
-  const { t } = useTranslation()
-
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, 'test-mock', {
       kravOmRefusjon: '',
-      namespace: 'test-mock',
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
@@ -21,14 +17,13 @@ describe('applications/SvarSed/KravOmRefusjon/validation', () => {
 
   it('invalid form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, 'test-mock', {
       kravOmRefusjon: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '123',
-      namespace: 'test-mock',
       formalName: 'name'
     })
     expect(hasErrors).toBeTruthy()
@@ -39,9 +34,8 @@ describe('applications/SvarSed/KravOmRefusjon/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, 'test-mock', {
       kravOmRefusjon: 'kravOmRefusjon',
-      namespace: 'test-mock',
       formalName: 'name'
     })
     expect(hasErrors).toBeFalsy()

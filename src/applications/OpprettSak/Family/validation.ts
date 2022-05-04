@@ -8,9 +8,9 @@ export interface AbroadPersonFormValidationProps {
 
 export const validateAbroadPersonForm = (
   v: Validation,
+  namespace: string,
   {
-    relation,
-    namespace
+    relation
   }: AbroadPersonFormValidationProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -68,17 +68,16 @@ export const validateAbroadPersonForm = (
 
 export interface TPSPersonFormValidationProps {
   fnr: string,
-  namespace: string
   tpsperson: OldFamilieRelasjon | undefined
   person: Person
 }
 
 export const validateTPSPersonForm = (
   v: Validation,
+  namespace: string,
   {
     person,
-    fnr,
-    namespace
+    fnr
   }: TPSPersonFormValidationProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -93,7 +92,8 @@ export const validateTPSPersonForm = (
     hasErrors.push(true)
     addError(v, {
       id: namespace + '-fnr-dnr',
-      message: t('message:error-fnr-is-user', { sok: fnr })
+      message: 'message:error-fnr-is-user',
+      extra: { sok: fnr }
     })
   }
 

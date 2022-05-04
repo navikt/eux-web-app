@@ -59,9 +59,9 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     return (it as Telefon).type + '-' + (it as Telefon).nummer
   })
   const [_validationTelefon, resetValidationTelefon, performValidationTelefon] =
-    useLocalValidation<ValidationKontaktsinformasjonTelefonProps>({}, validateKontaktsinformasjonTelefon)
+    useLocalValidation<ValidationKontaktsinformasjonTelefonProps>(validateKontaktsinformasjonTelefon, namespaceTelefon)
   const [_validationEpost, resetValidationEpost, performValidationEpost] =
-    useLocalValidation<ValidationKontaktsinformasjonEpostProps>({}, validateKontaktsinformasjonEpost)
+    useLocalValidation<ValidationKontaktsinformasjonEpostProps>(validateKontaktsinformasjonEpost, namespaceEpost)
 
   const telefonTypeOptions: Options = [{
     label: t('el:option-telefon-type-work'), value: 'arbeid'
@@ -149,12 +149,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const newTelefon: Telefon = {
       type: _newType?.trim() as TelefonType,
       nummer: _newNummer?.trim()
-    }
+    } as Telefon
 
     const valid: boolean = performValidationTelefon({
       telefon: newTelefon,
       telefoner,
-      namespace: namespaceTelefon,
       personName
     })
 
@@ -173,12 +172,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const onEpostAdd = () => {
     const newEpost: Epost = {
       adresse: _newAdresse?.trim()
-    }
+    } as Epost
 
     const valid: boolean = performValidationEpost({
       epost: newEpost,
       eposter,
-      namespace: namespaceEpost,
       personName
     })
 

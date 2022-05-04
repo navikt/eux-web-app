@@ -20,26 +20,26 @@ describe('hooks/useLocalValidation', () => {
   const validationFunc = jest.fn()
 
   it('useLocalValidation: Initial state set', () => {
-    const [validation] = useLocalValidation<Item>(initialValidation, validationFunc)
+    const [validation] = useLocalValidation<Item>(validationFunc, 'text-mock', initialValidation)
     expect(validation).toEqual(initialValidation)
   })
 
   it('useLocalValidation: reset validation to set empty validation', () => {
     (mockSetState).mockReset()
-    const [, resetValidation] = useLocalValidation<Item>(initialValidation, validationFunc)
+    const [, resetValidation] = useLocalValidation<Item>(validationFunc, 'text-mock', initialValidation)
     resetValidation()
     expect(mockSetState).toBeCalledWith({})
   })
 
   it('useLocalValidation: reset validation to set one validation', () => {
     (mockSetState).mockReset()
-    const [, resetValidation] = useLocalValidation<Item>(initialValidation, validationFunc)
+    const [, resetValidation] = useLocalValidation<Item>(validationFunc, 'text-mock', initialValidation)
     resetValidation('a')
     expect(mockSetState).toBeCalledWith({ a: undefined, b: '2' })
   })
 
   it('useLocalValidation: perform validation', () => {
-    const [, , performValidation] = useLocalValidation<Item>(initialValidation, validationFunc)
+    const [, , performValidation] = useLocalValidation<Item>(validationFunc, 'text-mock', initialValidation)
     performValidation({
       value1: 'a',
       value2: 'b'
@@ -56,7 +56,7 @@ describe('hooks/useLocalValidation', () => {
       skjemaelementId: 'skjemaelementId'
     };
     (mockSetState).mockReset()
-    const [, , , setValidation] = useLocalValidation<Item>(initialValidation, validationFunc)
+    const [, , , setValidation] = useLocalValidation<Item>(validationFunc, 'text-mock', initialValidation)
     setValidation({ c: error })
     expect(mockSetState).toBeCalledWith({ c: error })
   })

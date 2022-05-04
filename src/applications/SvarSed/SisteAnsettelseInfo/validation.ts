@@ -1,90 +1,84 @@
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { addError, checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
   utbetaling: Utbetaling
   index?: number
-  namespace: string
+}
+
+export interface ValidationUtbetalingerProps {
+  utbetalinger: Array<Utbetaling> | undefined
 }
 
 export const validateUtbetaling = (
   v: Validation,
+  namespace: string,
   {
     utbetaling,
-    index,
-    namespace
+    index
   }: ValidationUtbetalingProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(utbetaling?.utbetalingType?.trim())) {
-    v[namespace + idx + '-utbetalingType'] = {
-      feilmelding: t('validation:noUtbetalingType'),
-      skjemaelementId: namespace + idx + '-utbetalingType'
-    } as ErrorElement
-    hasErrors = true
-  } else {
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: utbetaling?.utbetalingType,
+    id: namespace + idx + '-utbetalingType',
+    message: 'validation:noUtbetalingType'
+  }))
+
+  if (!_.isEmpty(utbetaling?.utbetalingType?.trim())) {
     if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
       _.isEmpty(utbetaling?.loennTilDato?.trim())) {
-      v[namespace + idx + '-loennTilDato'] = {
-        feilmelding: t('validation:noLoennTilDato'),
-        skjemaelementId: namespace + idx + '-loennTilDato'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-loennTilDato',
+        message: 'validation:noLoennTilDato'
+      }))
     }
 
     if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' &&
       _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
-      v[namespace + idx + '-feriedagerTilGode'] = {
-        feilmelding: t('validation:noFeriedagerTilGode'),
-        skjemaelementId: namespace + idx + '-feriedagerTilGode'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-feriedagerTilGode',
+        message: 'validation:noFeriedagerTilGode'
+      }))
     }
   }
 
-  if (_.isEmpty(utbetaling?.beloep?.trim())) {
-    v[namespace + '-beloep'] = {
-      skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:noBeløp')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: utbetaling?.beloep,
+    id: namespace + '-beloep',
+    message: 'validation:noBeløp'
+  }))
 
-  if (!_.isEmpty(utbetaling?.beloep?.trim()) && !utbetaling?.beloep?.trim().match(/^[\d.,]+$/)) {
-    v[namespace + '-beloep'] = {
-      skjemaelementId: namespace + '-beloep',
-      feilmelding: t('validation:invalidBeløp')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotNumber(v, {
+    needle: utbetaling?.beloep,
+    id: namespace + '-beloep',
+    message: 'validation:invalidBeløp'
+  }))
 
-  if (_.isEmpty(utbetaling?.valuta?.trim())) {
-    v[namespace + idx + '-valuta'] = {
-      feilmelding: t('validation:noValuta'),
-      skjemaelementId: namespace + idx + '-valuta'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: utbetaling?.valuta,
+    id: namespace + '-valuta',
+    message: 'validation:noValuta'
+  }))
 
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateUtbetalinger = (
   validation: Validation,
-  utbetalinger: Array<Utbetaling> | undefined,
-  namespace: string
+  namespace: string,
+  { utbetalinger }: ValidationUtbetalingerProps
 ): boolean => {
   let hasErrors: boolean = false
   utbetalinger?.forEach((utbetaling: Utbetaling, index: number) => {
-    const _errors: boolean = validateUtbetaling(validation, {
+    const _errors: boolean = validateUtbetaling(validation, namespace, {
       utbetaling,
-      index,
-      namespace
+      index
     })
     hasErrors = hasErrors || _errors
   })
@@ -93,28 +87,18 @@ export const validateUtbetalinger = (
 
 interface ValidateSisteAnsettelseInfoProps {
   sisteansettelseinfo: SisteAnsettelseInfo |undefined
-  namespace: string
 }
 
 export const validateSisteAnsettelseInfo = (
   v: Validation,
+  namespace: string,
   {
-    sisteansettelseinfo,
-    namespace
+    sisteansettelseinfo
   }: ValidateSisteAnsettelseInfoProps
 ) => {
-  let hasErrors: boolean = false
-  const _errors = validateUtbetalinger(v, sisteansettelseinfo?.utbetalinger, namespace)
-  hasErrors = hasErrors || _errors
-
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  const hasErrors: Array<boolean> = []
+  hasErrors.push(validateUtbetalinger(v, namespace, {
+    utbetalinger: sisteansettelseinfo?.utbetalinger
+  }))
+  return hasErrors.find(value => value) !== undefined
 }

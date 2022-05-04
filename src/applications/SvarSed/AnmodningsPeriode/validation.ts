@@ -8,20 +8,18 @@ export interface ValidationAnmodningsPerioderProps {
 
 export interface ValidationAnmodningsPeriodeProps {
   anmodningsperiode: Periode | undefined
-  namespace: string
   index ?: number
 }
 export const validateAnmodningsPeriode = (
   v: Validation,
+  namespace: string,
   {
     anmodningsperiode,
-    namespace,
     index
   }: ValidationAnmodningsPeriodeProps
 ): boolean => {
-  return validatePeriode(v, {
+  return validatePeriode(v, namespace + '-perioder', {
     periode: anmodningsperiode!,
-    namespace: namespace + '-perioder',
     index
   })
 }
@@ -35,11 +33,10 @@ export const validateAnmodningsPerioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  anmodningsperioder?.forEach((p: Periode, i: number) => {
-    hasErrors.push(validateAnmodningsPeriode(v, {
-      anmodningsperiode: p,
-      index: i,
-      namespace
+  anmodningsperioder?.forEach((anmodningsperiode: Periode, index: number) => {
+    hasErrors.push(validateAnmodningsPeriode(v, namespace, {
+      anmodningsperiode,
+      index
     }))
   })
   return hasErrors.find(value => value) !== undefined

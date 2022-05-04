@@ -100,7 +100,7 @@ const ArbeidsperioderBox = ({
 
   // for includeAddress
   const [_adresse, _setAdresse] = useState<IAdresse | undefined>(arbeidsgiver.arbeidsgiver.adresse ?? undefined)
-  const [_validation, resetValidation, performValidation] = useLocalValidation<ValidationArbeidsgiverProps>({}, validateArbeidsgiver)
+  const [_validation, resetValidation, performValidation] = useLocalValidation<ValidationArbeidsgiverProps>(validateArbeidsgiver, namespace)
 
   const setAdresse = (adresse: IAdresse) => {
     _setAdresse(adresse)
@@ -144,12 +144,11 @@ const ArbeidsperioderBox = ({
 
     const valid: boolean = performValidation({
       arbeidsgiver: newArbeidsgiver,
-      includeAddress,
-      namespace: _namespace
+      includeAddress: includeAddress!
     })
     if (valid) {
       if (_.isFunction(onArbeidsgiverEdit)) {
-        onArbeidsgiverEdit(newArbeidsgiver, _beforeEditingVersion!, selected)
+        onArbeidsgiverEdit(newArbeidsgiver, _beforeEditingVersion!, selected!)
       }
       setIsEditing(false)
       setBeforeEditingVersion(undefined)

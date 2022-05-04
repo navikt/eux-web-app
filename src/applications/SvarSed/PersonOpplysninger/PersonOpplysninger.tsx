@@ -40,7 +40,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   updateReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {validation} = useAppSelector(mapState)
+  const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
@@ -58,7 +58,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       })
     }
   }, [])
-
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
@@ -152,7 +151,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       dispatch(resetValidation(namespace + '-foedested-' + whatChanged))
     }
   }
-
 
   const onNorwegianPinSave = (newPin: string) => {
     let pins: Array<Pin> = _.cloneDeep(personInfo!.pin)

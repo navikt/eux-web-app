@@ -1,5 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -18,25 +18,35 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateAvsenderlandetPeriode, ValidationAvsenderlandetProps } from './avsenderlandetValidation'
+import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Avsenderlandet: React.FC<MainFormProps> = ({
+const type: any = {
+  'arbeidsforhold-2': 'perioderSomSelvstendig',
+  'arbeidsforhold-3': 'perioderSomSykMedLoenn',
+  'arbeidsforhold-4': 'perioderSomPermittertMedLoenn',
+  'arbeidsforhold-5': 'perioderSomPermittertUtenLoenn'
+}
+
+const NotAnsatt: React.FC<MainFormProps & {arbeidsforhold: string}> = ({
+  arbeidsforhold,
   parentNamespace,
   personID,
   personName,
   replySed,
   updateReplySed
-}:MainFormProps): JSX.Element => {
+}:MainFormProps & {arbeidsforhold: string}): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target: string = `${personID}.perioderMedTrygd`
-  const perioderMedTrygd: Array<Periode> = _.get(replySed, target)
-  const namespace = `${parentNamespace}-avsenderlandet`
+
+  const periodeType: string = type[arbeidsforhold]
+  const target: string = `${personID}.${periodeType}`
+  const replySedPerioder: Array<Periode> = _.get(replySed, target)
+  const namespace = `${parentNamespace}-notansatt-${periodeType}`
 
   const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
 
@@ -44,7 +54,7 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
     return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAvsenderlandetProps>({}, validateAvsenderlandetPeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationNotAnsattProps>(validateNotAnsattPeriode, namespace)
 
   const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
@@ -77,31 +87,30 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
+    const newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
     const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
     if (deletedPeriods && deletedPeriods.length > 0) {
       removeFromDeletion(deletedPeriods[0])
     }
     dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderMedTrygd' })
+    standardLogger('svarsed.editor.periode.remove', { type: periodeType })
   }
 
   const onAdd = () => {
     const valid: boolean = performValidation({
       periode: _newPeriode,
-      perioder: perioderMedTrygd,
-      namespace,
+      perioder: replySedPerioder,
       personName
     })
 
     if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep(perioderMedTrygd)
+      let newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
       newPerioder = newPerioder.concat(_newPeriode)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderMedTrygd' })
+      standardLogger('svarsed.editor.periode.add', { type: periodeType })
       onCancel()
     }
   }
@@ -148,24 +157,22 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   return (
     <>
       <Heading size='small'>
-        {t('label:periods-in-sender-country')}
+        {t('label:ansettelsesperioder')}
       </Heading>
       <VerticalSeparatorDiv size={2} />
-      <Detail>
-        {t('label:medlemsperiode')}
-      </Detail>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(perioderMedTrygd)
+      {_.isEmpty(replySedPerioder)
         ? (
           <BodyLong>
             {t('message:warning-no-periods')}
           </BodyLong>
           )
-        : perioderMedTrygd.sort((a, b) =>
-          moment(a.startdato, 'YYYY-MM-DD').isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
-            ? -1
-            : 1
-        )
+        : replySedPerioder
+          ?.sort((a, b) =>
+            moment(a.startdato, 'YYYY-MM-DD')
+              .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
+              ? -1
+              : 1
+          )
           ?.map(renderRow)}
       <VerticalSeparatorDiv size={2} />
       <HorizontalLineSeparator />
@@ -180,7 +187,7 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
                 onClick={() => _setSeeNewForm(true)}
               >
                 <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:trygdeperiode-i-avsenderlandet').toLowerCase() })}
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
               </Button>
             </Column>
           </Row>
@@ -190,4 +197,4 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   )
 }
 
-export default Avsenderlandet
+export default NotAnsatt

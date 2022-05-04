@@ -1,17 +1,13 @@
 import { KeyAndYtelse } from 'applications/SvarSed/Motregning/KeyAndYtelse/KeyAndYtelse'
 import { Validation } from 'declarations/types'
-import { useTranslation } from 'react-i18next'
 import { validateKeyAndYtelse } from './validation'
 
 describe('applications/SvarSed/Motregning/KeyAndYtelse/validation', () => {
-  const { t } = useTranslation()
-
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKeyAndYtelse(validation, {
+    const hasErrors: boolean = validateKeyAndYtelse(validation, 'test-mock', {
       keyAndYtelse: {} as KeyAndYtelse,
-      index: 99,
-      namespace: 'test-mock'
+      index: 99
     })
     expect(hasErrors).toBeTruthy()
 
@@ -21,12 +17,11 @@ describe('applications/SvarSed/Motregning/KeyAndYtelse/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKeyAndYtelse(validation, {
+    const hasErrors: boolean = validateKeyAndYtelse(validation, 'test-mock', {
       keyAndYtelse: {
         fullKey: 'key',
         ytelseNavn: 'ytelseNavn'
-      } as KeyAndYtelse,
-      namespace: 'test-mock'
+      } as KeyAndYtelse
     })
     expect(hasErrors).toBeFalsy()
     expect(validation).toEqual({})

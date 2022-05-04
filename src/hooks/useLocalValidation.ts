@@ -1,13 +1,14 @@
 import { Validation } from 'declarations/types'
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 const useLocalValidation = <ValidationData extends any>(
-  initialValue: any,
   validateFunction: (
     newValidation: Validation,
+    namespace: string,
     validationData: ValidationData
-  ) => boolean
+  ) => boolean,
+  namespace: string,
+  initialValue: any = {}
 ): [
     Validation,
     (key?: string | undefined) => void,
@@ -24,7 +25,6 @@ const useLocalValidation = <ValidationData extends any>(
         ..._validation,
         [key!]: undefined
       }
-
       setValidation(newValidation)
     }
   }
@@ -33,6 +33,7 @@ const useLocalValidation = <ValidationData extends any>(
     const newValidation: Validation = {}
     const hasErrors: boolean = validateFunction(
       newValidation,
+      namespace,
       validationData
     )
     setValidation(newValidation)

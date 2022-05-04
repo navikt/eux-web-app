@@ -50,12 +50,12 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const { t } = useTranslation()
   const countryData = CountryData.getCountryInstance('nb')
   const landUtenNorge = CountryFilter.STANDARD({ useUK: true })?.filter((it: string) => it !== 'NO')
+
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
-
   const [_editing, _setEditing] = useState<Array<number>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>({}, validateUtenlandskPin)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>(validateUtenlandskPin, namespace)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
     if (index < 0) {
@@ -105,7 +105,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const valid: boolean = _performValidation({
       pin: newPin,
       utenlandskePins: pins,
-      namespace,
       personName
     })
     if (valid) {

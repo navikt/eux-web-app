@@ -468,12 +468,12 @@ export interface U017Sed extends U002Sed {
 export interface HSed extends BaseReplySed {
   tema?: string
   fagsakId?: string
+  ytterligereInfo?: string
 }
 
 export interface H001Sed extends HSed {
   anmodning?: H001Svar
   ytterligereInfoType?: YtterligereInfoType
-  ytterligereInfo?: string
 }
 
 export interface H002Sed extends HSed {
@@ -483,5 +483,4 @@ export interface H002Sed extends HSed {
   }
   positivtSvar?: H002Svar
   negativeSvar?: H002Svar
-  ytterligereInfo: string
 }

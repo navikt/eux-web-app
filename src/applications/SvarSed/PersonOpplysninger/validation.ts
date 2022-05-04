@@ -18,7 +18,6 @@ export const validatePersonopplysninger = (
     personName
   }: ValidationPersonopplysningerProps
 ): boolean => {
-
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
@@ -62,7 +61,7 @@ export const validatePersonopplysninger = (
   if (norwegianPin === undefined && _.isEmpty(utenlandskePins)) {
     hasErrors.push(addError(v, {
       id: namespace + '-norskpin-nummer',
-      message:'validation:noId',
+      message: 'validation:noId',
       personName
     }))
   }
@@ -79,10 +78,9 @@ export const validatePersonopplysninger = (
   }
 
   utenlandskePins?.forEach((pin: Pin, index: number) => {
-    hasErrors.push(validateUtenlandskPin(v, {
+    hasErrors.push(validateUtenlandskPin(v, namespace + '-pin', {
       pin,
       utenlandskePins,
-      namespace: namespace + '-pin',
       index,
       personName
     }))

@@ -74,7 +74,7 @@ const InntektForm: React.FC<MainFormProps> = ({
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Loennsopplysning>((l: Loennsopplysning) => l.periode.startdato)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
-    useLocalValidation<ValidationLoennsopplysningProps>({}, validateLoennsopplysning)
+    useLocalValidation<ValidationLoennsopplysningProps>(validateLoennsopplysning, namespace)
 
   const fnr: string | undefined = getFnr(replySed, personID)
 
@@ -192,8 +192,7 @@ const InntektForm: React.FC<MainFormProps> = ({
 
     const valid: boolean = performValidation({
       loennsopplysning: newLoennsopplysning,
-      loennsopplysninger: loennsopplysninger ?? [],
-      namespace
+      loennsopplysninger: loennsopplysninger ?? []
     })
     if (valid) {
       let newLoennsopplysninger: Array<Loennsopplysning> | undefined = _.cloneDeep(loennsopplysninger)

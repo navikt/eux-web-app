@@ -77,8 +77,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const [_seeNewPerioderForm, _setSeeNewPerioderForm] = useState<boolean>(false)
   const [_seeNewVedtaksperioderForm, _setSeeNewVedtaksperioderForm] = useState<boolean>(false)
 
-  const [_perioderValidation, _perioderResetValidation, perioderPerformValidation] = useLocalValidation<ValidationVedtakPeriodeProps>({}, validateVedtakPeriode)
-  const [_vedtaksperioderValidation, _vedtaksperioderResetValidation, vedtaksperioderPerformValidation, _setVedtaksperioderValidation] = useLocalValidation<ValidationVedtakVedtaksperiodeProps>({}, validateVedtakVedtaksperiode)
+  const [_perioderValidation, _perioderResetValidation, perioderPerformValidation] = useLocalValidation<ValidationVedtakPeriodeProps>(validateVedtakPeriode, namespace)
+  const [_vedtaksperioderValidation, _vedtaksperioderResetValidation, vedtaksperioderPerformValidation, _setVedtaksperioderValidation] = useLocalValidation<ValidationVedtakVedtaksperiodeProps>(validateVedtakVedtaksperiode, namespace)
 
   const vedtakTypeOptions: Options = [
     { label: t('el:option-vedtaktype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
@@ -245,8 +245,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const onPeriodeAdd = () => {
     const valid = perioderPerformValidation({
       periode: _newPeriode,
-      perioder: vedtak?.vedtaksperioder ?? [],
-      namespace
+      perioder: vedtak?.vedtaksperioder ?? []
     })
 
     if (valid) {
@@ -280,8 +279,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const valid: boolean = vedtaksperioderPerformValidation({
       vedtaksperiode: newVedtaksperiode,
       vedtaksperioder: _.get(vedtak, _newVedtaksperioderVedtak) ?? [],
-      vedtaktype: _newVedtaksperioderVedtak,
-      namespace
+      vedtaktype: _newVedtaksperioderVedtak
     })
 
     if (valid) {

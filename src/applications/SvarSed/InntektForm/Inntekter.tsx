@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
-import { validateInntekt, ValidationInntekterProps } from './validationInntekter'
+import { validateInntekt, ValidationInntektProps } from './validationInntekter'
 
 const MyPaddedDiv = styled.div`
   padding: 0.5rem 0.5rem 0.5rem 2rem;
@@ -43,7 +43,7 @@ const Inntekter: React.FC<any> = ({
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Inntekt>((it: Inntekt): string => it.type + '-' + it.beloep)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationInntekterProps>({}, validateInntekt)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationInntektProps>(validateInntekt, namespace)
 
   const inntektTypeOptions = [
     { label: t('el:option-inntekttype-nettoinntekt'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
@@ -108,7 +108,7 @@ const Inntekter: React.FC<any> = ({
       _resetValidation(namespace + '-valuta')
     } else {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter)
-      newInntekter[index].valuta = newValuta?.value
+      newInntekter[index].valuta = newValuta?.value!
       onInntekterChanged(newInntekter)
       if (validation[namespace + '-valuta']) {
         dispatch(resetValidation(namespace + '-valuta'))
@@ -147,8 +147,7 @@ const Inntekter: React.FC<any> = ({
     }
 
     const valid: boolean = performValidation({
-      inntekt: newInntekt,
-      namespace
+      inntekt: newInntekt
     })
 
     if (valid) {

@@ -41,7 +41,7 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDekkedePeriodeProps>({}, validateDekkedePeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDekkedePeriodeProps>(validateDekkedePeriode, namespace)
 
   const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
@@ -87,7 +87,6 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       periode: _newPeriode,
       perioder: perioderMedITrygdeordning,
-      namespace,
       personName
     })
 

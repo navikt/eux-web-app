@@ -1,92 +1,77 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
 import { getIdx } from 'utils/namespace'
+import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAddressProps {
   adresse: Adresse | undefined
   index?: number
   checkAdresseType: boolean
-  namespace: string
   personName?: string
 }
 
 interface ValidateAdresserProps {
   adresser: Array<Adresse>
   checkAdresseType: boolean
-  namespace: string
   personName?: string
 }
 
 export const validateAdresse = (
   v: Validation,
+  namespace: string,
   {
     adresse,
     index,
     checkAdresseType,
-    namespace,
     personName
   }: ValidationAddressProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (checkAdresseType && _.isEmpty(adresse?.type?.trim())) {
-    v[namespace + idx + '-type'] = {
-      feilmelding: t('validation:noAddressType') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-type'
-    } as ErrorElement
-    hasErrors = true
+  if (checkAdresseType) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: adresse?.type,
+      id: namespace + idx + '-fnr',
+      message: 'validation:noAddressType',
+      personName
+    }))
   }
 
-  if (_.isEmpty(adresse?.land?.trim())) {
-    v[namespace + idx + '-land'] = {
-      feilmelding: t('validation:noAddressCountry') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-land'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: adresse?.land,
+    id: namespace + idx + '-land',
+    message: 'validation:noAddressCountry',
+    personName
+  }))
 
-  if (_.isEmpty(adresse?.by?.trim())) {
-    v[namespace + idx + '-by'] = {
-      feilmelding: t('validation:noAddressCity') + (personName ? t('validation:til-person', { person: personName }) : ''),
-      skjemaelementId: namespace + idx + '-by'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: adresse?.by,
+    id: namespace + idx + '-by',
+    message: 'validation:noAddressCity',
+    personName
+  }))
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateAdresser = (
   validation: Validation,
+  namespace: string,
   {
     adresser,
     checkAdresseType,
-    namespace,
     personName
   }: ValidateAdresserProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   adresser?.forEach((adresse: Adresse, index: number) => {
-    const _errors: boolean = validateAdresse(validation, {
+    hasErrors.push(validateAdresse(validation, namespace, {
       adresse,
       index,
       checkAdresseType,
-      namespace,
       personName
-    })
-    hasErrors = hasErrors || _errors
+    }))
   })
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

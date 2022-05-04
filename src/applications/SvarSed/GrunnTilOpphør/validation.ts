@@ -1,39 +1,25 @@
-
 import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { ErrorElement } from 'declarations/app.d'
+import { checkIfNotEmpty } from 'utils/validation'
 
 interface ValidateGrunnTilOpphørProps {
   grunntilopphor: GrunnTilOpphør | undefined
-  namespace: string
 }
 
 export const validateGrunnTilOpphor = (
   v: Validation,
+  namespace: string,
   {
-    grunntilopphor,
-    namespace
+    grunntilopphor
   }: ValidateGrunnTilOpphørProps
 ): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
 
-  if (_.isEmpty(grunntilopphor?.typeGrunnOpphoerAnsatt)) {
-    v[namespace + '-typeGrunnOpphoerAnsatt'] = {
-      skjemaelementId: namespace + '-typeGrunnOpphoerAnsatt',
-      feilmelding: t('validation:noType')
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: grunntilopphor?.typeGrunnOpphoerAnsatt,
+    id: namespace + '-typeGrunnOpphoerAnsatt',
+    message: 'validation:noType'
+  }))
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const personNamespace = mainNamespace + '-' + namespaceBits[1]
-    const categoryNamespace = personNamespace + '-' + namespaceBits[2]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[personNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[categoryNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

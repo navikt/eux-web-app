@@ -66,7 +66,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     (p: PeriodeDagpenger) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, performValidation] =
-    useLocalValidation<ValidationPeriodeDagpengerProps>({}, validatePeriodeDagpenger)
+    useLocalValidation<ValidationPeriodeDagpengerProps>(validatePeriodeDagpenger, namespace)
 
   const [cacheForIdMangler, setCacheForIdMangler] = useState<any>({})
 
@@ -238,7 +238,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       periodeDagpenger: newPeriodeDagpenger,
       perioderDagpenger: perioder ?? [],
-      namespace,
       personName
     })
     if (valid) {

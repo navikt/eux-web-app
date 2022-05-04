@@ -61,7 +61,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const getId = (it: KeyAndYtelse | null): string => it ? it.fullKey : 'new-keyandyelse'
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<KeyAndYtelse>(getId)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationKeyAndYtelseProps>({}, validateKeyAndYtelse)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationKeyAndYtelseProps>(validateKeyAndYtelse, namespace)
 
   const setKey = (newBarnaKey: string, index: number) => {
     if (index < 0) {
@@ -109,8 +109,7 @@ const KeyAndYtelseFC: React.FC<KeyAndYtelseProps> = ({
       ytelseNavn: _newYtelseNavn?.trim() as string
     }
     const valid: boolean = _performValidation({
-      keyAndYtelse: newKeyAndYtelse,
-      namespace
+      keyAndYtelse: newKeyAndYtelse
     })
     if (valid) {
       onAdded(_newBarnaKey!.trim(), _newYtelseNavn!.trim())

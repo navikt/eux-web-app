@@ -439,8 +439,8 @@ const MainForm = <T extends StorageTypes>({
           >
             {isValidated
               ? validationHasErrors
-                ? <ErrorFilled height={20} color='red' />
-                : <SuccessFilled color='green' height={20} />
+                  ? <ErrorFilled height={20} color='red' />
+                  : <SuccessFilled color='green' height={20} />
               : null}
             <>
               <HorizontalSeparatorDiv size='0.5' />
@@ -567,20 +567,22 @@ const MainForm = <T extends StorageTypes>({
             )}
           </LeftDiv>
           <RightDiv>
-            {!currentMenu ? (
-              <BlankDiv>
-                <BlankContentDiv>
-                  {t('label:velg-meny')}
-                </BlankContentDiv>
-              </BlankDiv>
-            ) : (
-              <RightActiveDiv
-                key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
-                className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
-              >
-                {getForm(currentMenu, currentMenuOption)}
-              </RightActiveDiv>
-            )}
+            {!currentMenu
+              ? (
+                <BlankDiv>
+                  <BlankContentDiv>
+                    {t('label:velg-meny')}
+                  </BlankContentDiv>
+                </BlankDiv>
+                )
+              : (
+                <RightActiveDiv
+                  key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
+                  className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
+                >
+                  {getForm(currentMenu, currentMenuOption)}
+                </RightActiveDiv>
+                )}
           </RightDiv>
         </FlexCenterSpacedDiv>
       </WithErrorPanel>

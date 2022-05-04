@@ -46,7 +46,7 @@ const UdekkedePerioder: React.FC<MainFormProps> = ({
     return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
   })
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUdekkedePeriodeProps>({}, validateUdekkedePeriode)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationUdekkedePeriodeProps>(validateUdekkedePeriode, namespace)
 
   const setPeriode = (periode: Periode, id: string, index: number) => {
     if (index < 0) {
@@ -92,7 +92,6 @@ const UdekkedePerioder: React.FC<MainFormProps> = ({
     const valid: boolean = performValidation({
       periode: _newPeriode,
       perioder: perioderUtenforTrygdeordning,
-      namespace,
       personName
     })
 

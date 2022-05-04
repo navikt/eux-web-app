@@ -6,16 +6,15 @@ export interface ValidationStatsborgerskapProps {
   statsborgerskap: string | undefined
   statsborgerskaper: Array<string> |undefined
   index?: number
-  namespace: string
 }
 
 export const validateStatsborgerskap = (
   v: Validation,
+  namespace: string,
   {
     statsborgerskap,
     statsborgerskaper,
-    index,
-    namespace
+    index
   }: ValidationStatsborgerskapProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -41,18 +40,17 @@ export const validateStatsborgerskap = (
 
 interface ValidateStatsborgerskaperProps {
   statsborgerskaper: Array<string> | undefined
-  namespace: string
 }
 
 export const validateStatsborgerskaper = (
   validation: Validation,
+  namespace: string,
   {
-    statsborgerskaper,
-    namespace
+    statsborgerskaper
   }: ValidateStatsborgerskaperProps
 ): boolean => {
   const hasErrors: Array<boolean> = statsborgerskaper?.map((statsborgerskap: string, index: number) =>
-    validateStatsborgerskap(validation, { statsborgerskap, statsborgerskaper, index, namespace })
+    validateStatsborgerskap(validation, namespace, { statsborgerskap, statsborgerskaper, index })
   ) ?? []
   return hasErrors.find(value => value) !== undefined
 }

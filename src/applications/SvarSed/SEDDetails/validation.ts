@@ -5,36 +5,33 @@ import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationSEDDetailsProps {
-  anmodningsperiode: Periode,
-  namespace: string
+  anmodningsperiode: Periode
 }
 
 export interface ValidationSakseierProps {
   lokaleSakId: LokaleSakId,
   index?: number
-  namespace: string
 }
 
 export const validateSEDDetail = (
   v: Validation,
+  namespace: string,
   {
-    anmodningsperiode,
-    namespace
+    anmodningsperiode
   }: ValidationSEDDetailsProps
 ): boolean => {
-  const hasErrors = validatePeriode(v, {
-    periode: anmodningsperiode,
-    namespace
+  const hasErrors = validatePeriode(v, namespace, {
+    periode: anmodningsperiode
   })
   return hasErrors
 }
 
 export const validateSakseier = (
   v: Validation,
+  namespace: string,
   {
     lokaleSakId,
-    index,
-    namespace
+    index
   }: ValidationSakseierProps
 ): boolean => {
   let hasErrors = false

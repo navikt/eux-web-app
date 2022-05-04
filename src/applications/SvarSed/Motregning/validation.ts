@@ -1,8 +1,8 @@
+import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 import { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
 import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { ErrorElement } from 'declarations/app.d'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 
@@ -11,183 +11,164 @@ export interface ValidationMotregningProps {
   keyAndYtelses?: Array<KeyAndYtelse> | undefined // only used for the new-motregning
   type: BarnaEllerFamilie
   index ?: number
-  namespace: string
   formalName: string
 }
 
 export interface ValidationMotregningerProps {
   replySed: ReplySed
-  namespace: string
   formalName: string
 }
 
 export const validateMotregning = (
   v: Validation,
+  namespace: string,
   {
     motregning,
     keyAndYtelses,
     index,
     type,
-    namespace,
     formalName
   }: ValidationMotregningProps): boolean => {
-  let hasErrors: boolean = false
+  const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  if (_.isEmpty(motregning?.svarType?.trim())) {
-    v[namespace + idx + '-svarType'] = {
-      feilmelding: t('validation:noAnswer') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-svarType'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: motregning?.svarType,
+    id: namespace + idx + '-svarType',
+    message: 'validation:noAnswer',
+    personName: formalName
+  }))
 
   // if we are validation a new motregning and it has barnas, then
   // ytelseNavn comes through keyAndYtelsNavns (Array<IKeyAndYtelsNavn>)
   if (_.isNil(index)) {
     if (type === undefined && _.isEmpty(keyAndYtelses)) {
-      v[namespace + idx + '-barnaEllerFamilie'] = {
-        feilmelding: t('validation:noBarnaEllerFamilie'),
-        skjemaelementId: namespace + idx + '-barnaEllerFamilie'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-barnaEllerFamilie',
+        message: 'validation:noBarnaEllerFamilie',
+        personName: formalName
+      }))
     }
+
     if (type === 'barna' && _.isEmpty(keyAndYtelses)) {
-      v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('validation:noYtelse') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + idx + '-ytelseNavn'
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-ytelseNavn',
+        message: 'validation:noYtelse',
+        personName: formalName
+      }))
     }
   // on other cases, ytelseNavn comes on the motregning (new motregning as familie, or all existing motregning)
   } else {
-    if (_.isEmpty(motregning?.ytelseNavn?.trim())) {
-      v[namespace + idx + '-ytelseNavn'] = {
-        feilmelding: t('validation:noYtelse') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + idx + '-ytelseNavn'
-      } as ErrorElement
-      hasErrors = true
-    }
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: motregning?.ytelseNavn,
+      id: namespace + idx + '-ytelseNavn',
+      message: 'validation:noYtelse',
+      personName: formalName
+    }))
   }
 
   if (_.isEmpty(motregning?.beloep?.trim())) {
-    v[namespace + idx + '-beloep'] = {
-      feilmelding: t('validation:noBeløp') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-beloep'
-    } as ErrorElement
-    hasErrors = true
+    hasErrors.push(addError(v, {
+      id: namespace + idx + '-beloep',
+      message: 'validation:noBeløp',
+      personName: formalName
+    }))
   } else {
     if (!motregning?.beloep?.trim().match(/^[\d.,]+$/)) {
-      v[namespace + idx + '-beloep'] = {
-        skjemaelementId: namespace + idx + '-beloep',
-        feilmelding: t('validation:invalidBeløp') + (formalName ? t('validation:til-person', { person: formalName }) : '')
-      } as ErrorElement
-      hasErrors = true
+      hasErrors.push(addError(v, {
+        id: namespace + idx + '-beloep',
+        message: 'validation:invalidBeløp',
+        personName: formalName
+      }))
     }
   }
 
-  if (_.isEmpty(motregning?.valuta?.trim())) {
-    v[namespace + idx + '-valuta'] = {
-      feilmelding: t('validation:noValuta') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-valuta'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: motregning?.valuta,
+    id: namespace + idx + '-valuta',
+    message: 'validation:noValuta',
+    personName: formalName
+  }))
 
-  const periodError: boolean = validatePeriode(v, {
+  hasErrors.push(validatePeriode(v, namespace + idx, {
     periode: {
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
     },
-    namespace: namespace + idx,
     personName: formalName
-  })
-  hasErrors = hasErrors || periodError
+  }))
 
-  if (_.isEmpty(motregning?.utbetalingshyppighet?.trim())) {
-    v[namespace + idx + '-utbetalingshyppighet'] = {
-      feilmelding: t('validation:noAvgrensing') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-utbetalingshyppighet'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: motregning?.utbetalingshyppighet,
+    id: namespace + idx + '-utbetalingshyppighet',
+    message: 'validation:noAvgrensing',
+    personName: formalName
+  }))
 
-  if (_.isEmpty(motregning?.mottakersNavn?.trim())) {
-    v[namespace + idx + '-mottakersNavn'] = {
-      feilmelding: t('validation:noMottakersNavn') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-mottakersNavn'
-    } as ErrorElement
-    hasErrors = true
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: motregning?.mottakersNavn,
+    id: namespace + idx + '-mottakersNavn',
+    message: 'validation:noMottakersNavn',
+    personName: formalName
+  }))
 
-  if (_.isEmpty(motregning?.begrunnelse?.trim())) {
-    v[namespace + idx + '-begrunnelse'] = {
-      feilmelding: t('validation:noGrunn') + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-begrunnelse'
-    } as ErrorElement
-    hasErrors = true
-  } else {
-    if (motregning?.begrunnelse.trim().length > 500) {
-      v[namespace + idx + '-begrunnelse'] = {
-        feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-        skjemaelementId: namespace + idx + '-begrunnelse'
-      } as ErrorElement
-      hasErrors = true
-    }
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: motregning?.begrunnelse,
+    id: namespace + idx + '-begrunnelse',
+    message: 'validation:noGrunn',
+    personName: formalName
+  }))
 
-  if (motregning?.ytterligereInfo?.trim()?.length > 500) {
-    v[namespace + idx + '-ytterligereInfo'] = {
-      feilmelding: t('validation:textOverX', { x: 500 }) + (formalName ? t('validation:til-person', { person: formalName }) : ''),
-      skjemaelementId: namespace + idx + '-ytterligereInfo'
-    } as ErrorElement
-    hasErrors = true
-  }
-  return hasErrors
+  hasErrors.push(checkLength(v, {
+    needle: motregning?.begrunnelse,
+    max: 500,
+    id: namespace + idx + '-begrunnelse',
+    message: 'validation:textOverX',
+    personName: formalName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: motregning?.ytterligereInfo,
+    max: 500,
+    id: namespace + idx + '-ytterligereInfo',
+    message: 'validation:textOverX',
+    personName: formalName
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateMotregninger = (
   v: Validation,
+  namespace: string,
   {
     replySed,
-    namespace,
     formalName
   }: ValidationMotregningerProps
 ): boolean => {
-  let hasErrors: boolean = false;
+  const hasErrors: Array<boolean> = [];
 
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
     b.motregninger?.forEach((motregning: IMotregning, index: number) => {
-      const answer = validateMotregning(v, {
+      hasErrors.push(validateMotregning(v, namespace, {
         motregning,
         type: 'barna',
         index,
-        namespace,
         formalName
-      })
-      hasErrors = hasErrors || answer
+      }))
     })
   })
 
   if (!_.isNil((replySed as F002Sed).familie?.motregninger)) {
     (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, index: number) => {
-      const answer = validateMotregning(v, {
+      hasErrors.push(validateMotregning(v, namespace, {
         motregning,
         type: 'familie',
         index,
-        namespace,
         formalName
-      })
-      hasErrors = hasErrors || answer
+      }))
     })
   }
 
-  if (hasErrors) {
-    const namespaceBits = namespace.split('-')
-    const mainNamespace = namespaceBits[0]
-    const formaalNamespace = mainNamespace + '-' + namespaceBits[1]
-    v[mainNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-    v[formaalNamespace] = { feilmelding: 'error', skjemaelementId: '' } as ErrorElement
-  }
-  return hasErrors
+  return hasErrors.find(value => value) !== undefined
 }

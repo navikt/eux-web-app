@@ -59,7 +59,7 @@ const Relasjon: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Barnetilhoerighet>((b: Barnetilhoerighet): string => b.relasjonType + '-' + b.relasjonTilPerson)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationBarnetilhoerigheterProps>({}, validateBarnetilhoerighet)
+  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationBarnetilhoerigheterProps>(validateBarnetilhoerighet, namespace)
 
   const relasjonTypeOptions: Options = [
     { label: t('el:option-relasjon-1'), value: '01' },
@@ -214,12 +214,11 @@ const Relasjon: React.FC<MainFormProps> = ({
       relasjonTilPerson: _newRelasjon, // @ts-ignore
       relasjonType: _newRelasjonType,
       periode: _newPeriode
-    }
+    } as Barnetilhoerighet
 
     const valid: boolean = performValidation({
       barnetilhorighet: newBarnetilhoerighet,
       barnetilhorigheter: barnetilhoerigheter ?? [],
-      namespace,
       personName
     })
 

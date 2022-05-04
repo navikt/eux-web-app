@@ -51,7 +51,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<InntektOgTime>((it: InntektOgTime): string => it.inntektsperiode.startdato + '-' + it.bruttoinntekt)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektOgTimeProps>({}, validateInntektOgTime)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektOgTimeProps>(validateInntektOgTime, namespace)
 
   const setArbeidstimer = (arbeidstimer: string, index: number) => {
     if (index < 0) {
@@ -109,7 +109,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
       resetValidation(namespace + '-valuta')
     } else {
       const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-      newInntektOgTimer[index].bruttoinntekt = newValuta?.value
+      newInntektOgTimer[index].bruttoinntekt = newValuta?.value as string
       onInntektOgTimeChanged(newInntektOgTimer, 'valuta')
       if (validation[namespace + getIdx(index) + '-valuta']) {
         dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
@@ -149,7 +149,6 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
 
     const valid: boolean = _performValidation({
       inntektOgTime: newInntektOgTime,
-      namespace,
       personName
     })
 

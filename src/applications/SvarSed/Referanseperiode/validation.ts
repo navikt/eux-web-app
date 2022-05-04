@@ -3,22 +3,20 @@ import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 
 export interface ValidationReferanseperiodeProps {
-  anmodningsperiode: Periode
-  namespace: string
+  anmodningsperiode: Periode | undefined
   personName?: string
 }
 
 export const validateReferanseperiode = (
   v: Validation,
+  namespace: string,
   {
     anmodningsperiode,
-    namespace,
     personName
   }: ValidationReferanseperiodeProps
 ): boolean => {
-  const hasErrors = validatePeriode(v, {
+  const hasErrors = validatePeriode(v, namespace, {
     periode: anmodningsperiode,
-    namespace,
     personName
   })
   return hasErrors
