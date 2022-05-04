@@ -2,7 +2,6 @@ import { UtbetalingTilInstitusjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 
 interface ValidateKontoopplysningProps {
   uti: UtbetalingTilInstitusjon
@@ -12,7 +11,6 @@ interface ValidateKontoopplysningProps {
 
 export const validateKontoopplysning = (
   v: Validation,
-  t: TFunction,
   {
     uti,
     namespace,

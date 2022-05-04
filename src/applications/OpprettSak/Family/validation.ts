@@ -1,5 +1,4 @@
 import { OldFamilieRelasjon, Person, Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { addError, checkIfNotEmpty } from 'utils/validation'
 
 export interface AbroadPersonFormValidationProps {
@@ -9,7 +8,6 @@ export interface AbroadPersonFormValidationProps {
 
 export const validateAbroadPersonForm = (
   v: Validation,
-  t: TFunction,
   {
     relation,
     namespace
@@ -77,7 +75,6 @@ export interface TPSPersonFormValidationProps {
 
 export const validateTPSPersonForm = (
   v: Validation,
-  t: TFunction,
   {
     person,
     fnr,

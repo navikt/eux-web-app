@@ -1,7 +1,6 @@
 import { H001Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { checkLength } from 'utils/validation'
 
 export interface ValidationEndredeForholdProps {
@@ -12,7 +11,6 @@ export interface ValidationEndredeForholdProps {
 
 export const validateEndredeForhold = (
   v: Validation,
-  t: TFunction,
   {
     replySed,
     namespace,

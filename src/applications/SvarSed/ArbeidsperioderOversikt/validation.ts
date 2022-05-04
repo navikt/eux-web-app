@@ -3,7 +3,6 @@ import { ErrorElement } from 'declarations/app'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationPeriodeMedForsikringProps {
   periodeMedForsikring: PeriodeMedForsikring,
@@ -13,7 +12,6 @@ export interface ValidationPeriodeMedForsikringProps {
 
 export const validatePeriodeMedForsikring = (
   v: Validation,
-  t: TFunction,
   {
     periodeMedForsikring,
     namespace,
@@ -37,7 +35,7 @@ export const validatePeriodeMedForsikring = (
     hasErrors = true
   }
 
-  const periodeError: boolean = validatePeriode(v, t, {
+  const periodeError: boolean = validatePeriode(v, {
     periode: periodeMedForsikring,
     namespace
   })
@@ -101,7 +99,6 @@ interface ValidatePerioderMedForsikringProps {
 
 export const validatePerioderMedForsikring = (
   validation: Validation,
-  t: TFunction,
   {
     perioderMedForsikring,
     namespace,
@@ -110,7 +107,7 @@ export const validatePerioderMedForsikring = (
 ): boolean => {
   let hasErrors: boolean = false
   perioderMedForsikring?.forEach((periodeMedForsikring: PeriodeMedForsikring) => {
-    const _errors: boolean = validatePeriodeMedForsikring(validation, t, {
+    const _errors: boolean = validatePeriodeMedForsikring(validation, {
       periodeMedForsikring,
       namespace,
       includeAddress

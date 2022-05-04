@@ -3,7 +3,6 @@ import { ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declaratio
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationProsedyreVedUenighetGrunnProps {
   grunn: Grunn
@@ -15,7 +14,6 @@ export interface ValidationProsedyreVedUenighetGrunnProps {
 
 export const validateProsedyreVedUenighetGrunn = (
   v: Validation,
-  t: TFunction,
   {
     grunn,
     prosedyreVedUenighet = {} as any,
@@ -60,7 +58,7 @@ interface ValidateProsedyreVedUenighetProps {
 
 export const validateProsedyreVedUenighet = (
   v: Validation,
-  t: TFunction, {
+  {
     prosedyreVedUenighet = {},
     namespace,
     formalName

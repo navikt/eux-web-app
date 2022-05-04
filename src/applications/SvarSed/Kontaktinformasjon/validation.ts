@@ -2,7 +2,6 @@ import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
@@ -25,7 +24,6 @@ const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+")
 
 export const validateKontaktsinformasjonTelefon = (
   v: Validation,
-  t: TFunction,
   {
     telefon,
     telefoner,
@@ -81,7 +79,6 @@ export const validateKontaktsinformasjonTelefon = (
 
 export const validateKontaktsinformasjonEpost = (
   v: Validation,
-  t: TFunction,
   {
     epost,
     eposter,
@@ -144,7 +141,6 @@ interface ValidateTelefonerProps {
 
 export const validateKontaktsinformasjonTelefoner = (
   validation: Validation,
-  t: TFunction,
   {
     telefoner,
     namespace,
@@ -153,7 +149,7 @@ export const validateKontaktsinformasjonTelefoner = (
 ): boolean => {
   let hasErrors: boolean = false
   telefoner?.forEach((telefon: Telefon, index: number) => {
-    const _error: boolean = validateKontaktsinformasjonTelefon(validation, t, { telefon, telefoner, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonTelefon(validation, { telefon, telefoner, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors
@@ -167,7 +163,6 @@ interface ValidateEposterProps {
 
 export const validateKontaktsinformasjonEposter = (
   validation: Validation,
-  t: TFunction,
   {
     eposter,
     namespace,
@@ -176,7 +171,7 @@ export const validateKontaktsinformasjonEposter = (
 ): boolean => {
   let hasErrors: boolean = false
   eposter?.forEach((epost: Epost, index: number) => {
-    const _error: boolean = validateKontaktsinformasjonEpost(validation, t, { epost, eposter, index, namespace, personName })
+    const _error: boolean = validateKontaktsinformasjonEpost(validation, { epost, eposter, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

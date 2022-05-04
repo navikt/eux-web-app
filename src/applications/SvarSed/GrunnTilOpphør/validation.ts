@@ -3,7 +3,6 @@ import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 
 interface ValidateGrunnTilOpphørProps {
   grunntilopphor: GrunnTilOpphør | undefined
@@ -12,7 +11,6 @@ interface ValidateGrunnTilOpphørProps {
 
 export const validateGrunnTilOpphor = (
   v: Validation,
-  t: TFunction,
   {
     grunntilopphor,
     namespace

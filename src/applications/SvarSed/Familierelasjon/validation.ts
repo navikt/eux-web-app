@@ -2,7 +2,6 @@ import { validatePeriode } from 'components/Forms/validation'
 import { FamilieRelasjon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationFamilierelasjonProps {
@@ -14,7 +13,6 @@ export interface ValidationFamilierelasjonProps {
 
 export const validateFamilierelasjon = (
   v: Validation,
-  t: TFunction,
   {
     familierelasjon,
     index,
@@ -25,7 +23,7 @@ export const validateFamilierelasjon = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  const periodErrors : boolean = validatePeriode(v, t, {
+  const periodErrors : boolean = validatePeriode(v, {
     periode: familierelasjon.periode,
     namespace: namespace + idx + '-periode',
     mandatoryStartdato: false,
@@ -53,7 +51,6 @@ interface ValidateFamilierelasjonerProps {
 
 export const validateFamilierelasjoner = (
   validation: Validation,
-  t: TFunction,
   {
     familierelasjoner,
     namespace,
@@ -62,7 +59,7 @@ export const validateFamilierelasjoner = (
 ): boolean => {
   let hasErrors: boolean = false
   familierelasjoner?.forEach((familierelasjon: FamilieRelasjon, index: number) => {
-    const _errors : boolean = validateFamilierelasjon(validation, t, {
+    const _errors : boolean = validateFamilierelasjon(validation, {
       familierelasjon,
       index,
       namespace,

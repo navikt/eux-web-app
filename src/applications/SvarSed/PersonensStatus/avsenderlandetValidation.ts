@@ -3,7 +3,6 @@ import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationAvsenderlandetProps {
@@ -16,7 +15,6 @@ export interface ValidationAvsenderlandetProps {
 
 export const validateAvsenderlandetPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -27,7 +25,7 @@ export const validateAvsenderlandetPeriode = (
 ): boolean => {
   const idx = getIdx(index)
 
-  let hasErrors: boolean = validatePeriode(v, t, {
+  let hasErrors: boolean = validatePeriode(v, {
     periode,
     index,
     namespace,
@@ -62,7 +60,6 @@ interface ValidateAvsenderlandetPerioderProps {
 
 export const validateAvsenderlandetPerioder = (
   v: Validation,
-  t: TFunction,
   {
     perioder,
     namespace,
@@ -71,7 +68,7 @@ export const validateAvsenderlandetPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
-    const _error = validateAvsenderlandetPeriode(v, t, { periode: (periode as Periode), perioder, index, namespace, personName })
+    const _error = validateAvsenderlandetPeriode(v, { periode: (periode as Periode), perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 

@@ -484,7 +484,10 @@ const MainForm = <T extends StorageTypes>({
             const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
-
+            if (o.value === 'personopplysninger') {
+              console.log(validation)
+              console.log('rendering ' + namespace + '-' + personId + '-' + o.value, isValidated, validationHasErrors)
+            }
             return (
               <OptionDiv
                 className={classNames({
@@ -492,7 +495,7 @@ const MainForm = <T extends StorageTypes>({
                   whiteborder: currentMenu === personId && currentMenuOption === o.value,
                   first: i === 0
                 })}
-                key={o.value}
+                key={namespace + '-' + personId + '-' + o.value}
                 onClick={() => changeMenu(personId, o.value, 'click')}
                 role='button'
               >
@@ -564,14 +567,13 @@ const MainForm = <T extends StorageTypes>({
             )}
           </LeftDiv>
           <RightDiv>
-            {!currentMenu && (
+            {!currentMenu ? (
               <BlankDiv>
                 <BlankContentDiv>
                   {t('label:velg-meny')}
                 </BlankContentDiv>
               </BlankDiv>
-            )}
-            {currentMenu && (
+            ) : (
               <RightActiveDiv
                 key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
                 className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}

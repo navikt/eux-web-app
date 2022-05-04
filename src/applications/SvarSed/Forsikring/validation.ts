@@ -8,7 +8,6 @@ import {
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { validateInntektOgTimer } from './InntektOgTimer/validation'
 
@@ -35,7 +34,6 @@ interface ValidateAlleForsikringPerioderProps {
 
 export const validateForsikringPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     type,
@@ -55,7 +53,7 @@ export const validateForsikringPeriode = (
     hasErrors = true
   }
 
-  const _error: boolean = validatePeriode(v, t, {
+  const _error: boolean = validatePeriode(v, {
     periode,
     namespace: namespace + idx,
     personName
@@ -75,7 +73,7 @@ export const validateForsikringPeriode = (
   if (type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
     .indexOf(type) >= 0) {
     /*  Address is not mandatory
-    const _error: boolean = validateAdresse(v, t, {
+    const _error: boolean = validateAdresse(v, {
       adresse: (periode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false,
       namespace: namespace + idx + '-arbeidsgiver-adresse',
@@ -102,7 +100,7 @@ export const validateForsikringPeriode = (
   }
 
   if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {
-    const _error = validateInntektOgTimer(v, t, {
+    const _error = validateInntektOgTimer(v, {
       inntektOgTimer: (periode as PeriodeUtenForsikring)?.inntektOgTimer,
       namespace: namespace + idx + '-inntektOgTimer',
       personName
@@ -136,7 +134,7 @@ export const validateForsikringPeriode = (
 
 export const validateForsikringPerioder = (
   validation: Validation,
-  t: TFunction,
+
   {
     type,
     perioder,
@@ -146,7 +144,7 @@ export const validateForsikringPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode, index: number) => {
-    const _errors: boolean = validateForsikringPeriode(validation, t, {
+    const _errors: boolean = validateForsikringPeriode(validation, {
       periode,
       type,
       index,
@@ -160,7 +158,6 @@ export const validateForsikringPerioder = (
 
 export const validateAlleForsikringPerioder = (
   v: Validation,
-  t: TFunction,
   {
     perioder,
     namespace,
@@ -169,29 +166,29 @@ export const validateAlleForsikringPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  _error = validateForsikringPerioder(v, t, { type: 'perioderAnsattMedForsikring', perioder: perioder.perioderAnsattMedForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderAnsattMedForsikring', perioder: perioder.perioderAnsattMedForsikring, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderSelvstendigMedForsikring', perioder: perioder.perioderSelvstendigMedForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderSelvstendigMedForsikring', perioder: perioder.perioderSelvstendigMedForsikring, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderAnsattUtenForsikring', perioder: perioder.perioderAnsattUtenForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderAnsattUtenForsikring', perioder: perioder.perioderAnsattUtenForsikring, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderSelvstendigUtenForsikring', perioder: perioder.perioderSelvstendigUtenForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderSelvstendigUtenForsikring', perioder: perioder.perioderSelvstendigUtenForsikring, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderSyk', perioder: perioder.perioderSyk, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderSyk', perioder: perioder.perioderSyk, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderSvangerskapBarn', perioder: perioder.perioderSvangerskapBarn, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderSvangerskapBarn', perioder: perioder.perioderSvangerskapBarn, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderUtdanning', perioder: perioder.perioderUtdanning, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderUtdanning', perioder: perioder.perioderUtdanning, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderMilitaertjeneste', perioder: perioder.perioderMilitaertjeneste, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderMilitaertjeneste', perioder: perioder.perioderMilitaertjeneste, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderFrihetsberoevet', perioder: perioder.perioderFrihetsberoevet, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderFrihetsberoevet', perioder: perioder.perioderFrihetsberoevet, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderFrivilligForsikring', perioder: perioder.perioderFrivilligForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderFrivilligForsikring', perioder: perioder.perioderFrivilligForsikring, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderKompensertFerie', perioder: perioder.perioderKompensertFerie, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderKompensertFerie', perioder: perioder.perioderKompensertFerie, namespace, personName })
   hasErrors = hasErrors || _error
-  _error = validateForsikringPerioder(v, t, { type: 'perioderAnnenForsikring', perioder: perioder.perioderAnnenForsikring, namespace, personName })
+  _error = validateForsikringPerioder(v, { type: 'perioderAnnenForsikring', perioder: perioder.perioderAnnenForsikring, namespace, personName })
   hasErrors = hasErrors || _error
   return hasErrors
 }

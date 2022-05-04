@@ -2,7 +2,6 @@ import { validateUtenlandskPin } from 'components/UtenlandskPins/validation'
 import { PersonInfo, Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import validator from '@navikt/fnrvalidator'
 import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
@@ -13,7 +12,6 @@ export interface ValidationPersonopplysningerProps {
 
 export const validatePersonopplysninger = (
   v: Validation,
-  t: TFunction,
   namespace: string,
   {
     personInfo,
@@ -81,7 +79,7 @@ export const validatePersonopplysninger = (
   }
 
   utenlandskePins?.forEach((pin: Pin, index: number) => {
-    hasErrors.push(validateUtenlandskPin(v, t, {
+    hasErrors.push(validateUtenlandskPin(v, {
       pin,
       utenlandskePins,
       namespace: namespace + '-pin',

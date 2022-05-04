@@ -1,5 +1,4 @@
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
@@ -12,7 +11,6 @@ export interface ValidationStatsborgerskapProps {
 
 export const validateStatsborgerskap = (
   v: Validation,
-  t: TFunction,
   {
     statsborgerskap,
     statsborgerskaper,
@@ -48,14 +46,13 @@ interface ValidateStatsborgerskaperProps {
 
 export const validateStatsborgerskaper = (
   validation: Validation,
-  t: TFunction,
   {
     statsborgerskaper,
     namespace
   }: ValidateStatsborgerskaperProps
 ): boolean => {
   const hasErrors: Array<boolean> = statsborgerskaper?.map((statsborgerskap: string, index: number) =>
-    validateStatsborgerskap(validation, t, { statsborgerskap, statsborgerskaper, index, namespace })
+    validateStatsborgerskap(validation, { statsborgerskap, statsborgerskaper, index, namespace })
   ) ?? []
   return hasErrors.find(value => value) !== undefined
 }

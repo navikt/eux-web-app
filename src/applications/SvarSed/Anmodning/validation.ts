@@ -1,6 +1,5 @@
 import { H001Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkLength } from 'utils/validation'
 
 export interface ValidationAnmodningProps {
@@ -11,7 +10,6 @@ export interface ValidationAnmodningProps {
 
 export const validateAnmodning = (
   v: Validation,
-  t: TFunction,
   {
     replySed,
     namespace,

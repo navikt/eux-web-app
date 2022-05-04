@@ -1,7 +1,6 @@
 import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { addError } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
@@ -11,7 +10,6 @@ export interface ValidationUtbetalingProps {
 
 export const validateUtbetaling = (
   v: Validation,
-  t: TFunction,
   {
     utbetaling,
     namespace

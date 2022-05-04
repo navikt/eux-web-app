@@ -3,7 +3,6 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getOrgnr } from 'utils/arbeidsperioder'
 
 export interface ValidationArbeidsgiverProps {
@@ -25,7 +24,6 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateArbeidsperioderSøk = (
   v: Validation,
-  t: TFunction,
   {
     fom,
     tom,
@@ -98,7 +96,6 @@ export const validateArbeidsperioderSøk = (
 
 export const validateArbeidsgiver = (
   v: Validation,
-  t: TFunction,
   {
     arbeidsgiver,
     namespace,

@@ -3,7 +3,6 @@ import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationVedtakPeriodeProps {
@@ -27,7 +26,6 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateVedtakPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -39,7 +37,7 @@ export const validateVedtakPeriode = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
   const periodeError: boolean = validatePeriode(
-    v, t, {
+    v, {
       periode,
       namespace: namespace + '-perioder' + idx,
       personName: formalName
@@ -68,7 +66,6 @@ export const validateVedtakPeriode = (
 
 export const validateVedtakVedtaksperiode = (
   v: Validation,
-  t: TFunction,
   {
     vedtaksperiode,
     vedtaksperioder,
@@ -84,7 +81,7 @@ export const validateVedtakVedtaksperiode = (
     idx = '-' + vedtaktype + idx
   }
   const periodeError: boolean = validatePeriode(
-    v, t, {
+    v, {
       periode: vedtaksperiode?.periode,
       namespace: namespace + '-vedtaksperioder' + idx + '-periode',
       personName: formalName
@@ -127,7 +124,6 @@ interface ValidateVedtakProps {
 
 export const validateVedtak = (
   v: Validation,
-  t: TFunction,
   {
     vedtak,
     namespace,
@@ -145,7 +141,7 @@ export const validateVedtak = (
   }
 
   vedtak?.vedtaksperioder?.forEach((vedtaksperioder, index) => {
-    const _error: boolean = validateVedtakPeriode(v, t, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, namespace, formalName })
+    const _error: boolean = validateVedtakPeriode(v, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, namespace, formalName })
     hasErrors = hasErrors || _error
   })
 
@@ -201,7 +197,7 @@ export const validateVedtak = (
   ['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].forEach(vedtaktype => {
     const vedtaksperioder: Array<VedtakPeriode> | undefined = _.get(vedtak, vedtaktype)
     vedtaksperioder?.forEach((vp: VedtakPeriode, index: number) => {
-      _error = validateVedtakVedtaksperiode(v, t, {
+      _error = validateVedtakVedtaksperiode(v, {
         vedtaksperiode: vp,
         vedtaksperioder,
         vedtaktype,

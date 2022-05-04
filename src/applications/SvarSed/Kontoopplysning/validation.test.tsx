@@ -8,7 +8,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
   /*
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation,  {
       uti: {
         begrunnelse: '', id: '', navn: ''
       },
@@ -26,7 +26,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 
   it('invalid form: failed validation - too big begrunnelse', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation, {
       uti: {
         begrunnelse: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
           '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
@@ -56,7 +56,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 
   it('invalid form: invalid kontoOrdinaer swift', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation, {
       uti: {
         begrunnelse: '123',
         id: '123@abc',
@@ -81,7 +81,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 
   it('invalid form: invalid kontoSepa IBAN', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation, {
       uti: {
         begrunnelse: '123',
         id: '123@abc',
@@ -102,7 +102,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 */
   it('invalid form: invalid kontoSepa swift', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation, {
       uti: {
         begrunnelse: '123',
         id: '123@abc',
@@ -123,7 +123,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKontoopplysning(validation, t, {
+    const hasErrors: boolean = validateKontoopplysning(validation, {
       uti: {
         begrunnelse: 'begrunnelse',
         id: 'id',

@@ -7,7 +7,7 @@ describe('applications/SvarSed/KravOmRefusjon/validation', () => {
 
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, t, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, {
       kravOmRefusjon: '',
       namespace: 'test-mock',
       formalName: 'name'
@@ -21,7 +21,7 @@ describe('applications/SvarSed/KravOmRefusjon/validation', () => {
 
   it('invalid form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, t, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, {
       kravOmRefusjon: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
         '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890' +
@@ -39,7 +39,7 @@ describe('applications/SvarSed/KravOmRefusjon/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKravOmRefusjon(validation, t, {
+    const hasErrors: boolean = validateKravOmRefusjon(validation, {
       kravOmRefusjon: 'kravOmRefusjon',
       namespace: 'test-mock',
       formalName: 'name'

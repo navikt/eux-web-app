@@ -1,7 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { KeyAndYtelse } from './KeyAndYtelse'
 
@@ -13,7 +12,6 @@ export interface ValidationKeyAndYtelseProps {
 
 export const validateKeyAndYtelse = (
   v: Validation,
-  t: TFunction,
   {
     keyAndYtelse,
     index,

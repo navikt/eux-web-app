@@ -3,7 +3,6 @@ import { validateUtenlandskPins } from 'components/UtenlandskPins/validation'
 import { Pdu1Person } from 'declarations/pd'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty } from 'utils/validation'
 import { validateStatsborgerskaper } from './Statsborgerskap/validation'
 
@@ -14,7 +13,6 @@ export interface ValidationPersonProps {
 
 export const validatePerson = (
   v: Validation,
-  t: TFunction,
   {
     person,
     namespace
@@ -46,7 +44,7 @@ export const validatePerson = (
     message: 'validation:noKjoenn'
   }))
 
-  hasErrors.push(validateUtenlandskPins(v, t, {
+  hasErrors.push(validateUtenlandskPins(v, {
     namespace: namespace + '-utenlandskePin',
     utenlandskePins: person?.utenlandskePin?.map((pin: string) => {
       const els = pin.split(/\s+/)
@@ -57,9 +55,9 @@ export const validatePerson = (
     })
   }))
 
-  hasErrors.push(validateStatsborgerskaper(v, t, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))
+  hasErrors.push(validateStatsborgerskaper(v, { statsborgerskaper: person.statsborgerskap, namespace: namespace + '-statsborgerskap' }))
 
-  hasErrors.push(validateAdresse(v, t, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: namespace + '-adresse' }))
+  hasErrors.push(validateAdresse(v, { adresse: person.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr', namespace: namespace + '-adresse' }))
 
   return hasErrors.find(value => value) !== undefined
 }

@@ -1,5 +1,4 @@
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationVedleggProps {
@@ -11,7 +10,6 @@ export interface ValidationVedleggProps {
 
 export const validateVedlegg = (
   v: Validation,
-  t: TFunction,
   namespace: string,
   {
     journalpostID,

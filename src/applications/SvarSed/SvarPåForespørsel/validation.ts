@@ -1,7 +1,6 @@
 import { H002Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { checkIfNotTrue, checkLength } from 'utils/validation'
 
 export interface ValidationSvarPåForespørselProps {
@@ -12,7 +11,6 @@ export interface ValidationSvarPåForespørselProps {
 
 export const validateSvarPåForespørsel = (
   v: Validation,
-  t: TFunction,
   {
     replySed,
     namespace,

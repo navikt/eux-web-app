@@ -2,7 +2,6 @@ import { ArbeidsgiverIdentifikator } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationIdentifikatorProps {
@@ -17,7 +16,6 @@ const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' +
 
 export const validateIdentifikator = (
   v: Validation,
-  t: TFunction,
   {
     identifikatorer,
     identifikator,

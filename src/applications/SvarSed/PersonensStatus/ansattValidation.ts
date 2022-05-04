@@ -3,7 +3,6 @@ import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationArbeidsperiodeProps {
@@ -16,7 +15,6 @@ export interface ValidationArbeidsperiodeProps {
 
 export const validateAnsattPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -25,7 +23,7 @@ export const validateAnsattPeriode = (
     personName
   }: ValidationArbeidsperiodeProps
 ): boolean => {
-  let hasErrors: boolean = validatePeriode(v, t, {
+  let hasErrors: boolean = validatePeriode(v, {
     periode,
     namespace: namespace + '-periode',
     index,
@@ -60,7 +58,6 @@ interface ValidateAnsattPerioderProps {
 
 export const validateAnsattPerioder = (
   v: Validation,
-  t: TFunction,
   {
     perioder,
     namespace,
@@ -69,7 +66,7 @@ export const validateAnsattPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
-    const _error = validateAnsattPeriode(v, t, { periode: (periode as Periode), perioder, index, namespace, personName })
+    const _error = validateAnsattPeriode(v, { periode: (periode as Periode), perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 

@@ -2,7 +2,6 @@ import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationAddressProps {
@@ -22,7 +21,6 @@ interface ValidateAdresserProps {
 
 export const validateAdresse = (
   v: Validation,
-  t: TFunction,
   {
     adresse,
     index,
@@ -72,7 +70,6 @@ export const validateAdresse = (
 
 export const validateAdresser = (
   validation: Validation,
-  t: TFunction,
   {
     adresser,
     checkAdresseType,
@@ -82,7 +79,7 @@ export const validateAdresser = (
 ): boolean => {
   let hasErrors: boolean = false
   adresser?.forEach((adresse: Adresse, index: number) => {
-    const _errors: boolean = validateAdresse(validation, t, {
+    const _errors: boolean = validateAdresse(validation, {
       adresse,
       index,
       checkAdresseType,

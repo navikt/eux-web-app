@@ -3,7 +3,6 @@ import { PensjonPeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationWithSubsidiesProps {
@@ -16,7 +15,6 @@ export interface ValidationWithSubsidiesProps {
 
 export const validateWithSubsidiesPeriode = (
   v: Validation,
-  t: TFunction,
   {
     pensjonPeriode,
     perioder,
@@ -27,7 +25,7 @@ export const validateWithSubsidiesPeriode = (
 ): boolean => {
   const idx = getIdx(index)
 
-  let hasErrors: boolean = validatePeriode(v, t, {
+  let hasErrors: boolean = validatePeriode(v, {
     periode: pensjonPeriode.periode,
     namespace: namespace + '-periode' + idx,
     personName
@@ -66,7 +64,6 @@ interface ValidateWithSubsidiesPerioderProps {
 
 export const validateWithSubsidiesPerioder = (
   v: Validation,
-  t: TFunction,
   {
     perioder,
     namespace,
@@ -75,7 +72,7 @@ export const validateWithSubsidiesPerioder = (
 ): boolean => {
   let hasErrors: boolean = false
   perioder?.forEach((pensjonPeriode: PensjonPeriode, index: number) => {
-    const _error = validateWithSubsidiesPeriode(v, t, { pensjonPeriode, perioder, index, namespace, personName })
+    const _error = validateWithSubsidiesPeriode(v, { pensjonPeriode, perioder, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
 

@@ -1,7 +1,6 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app'
-import { TFunction } from 'react-i18next'
 
 interface ValidateKravOmRefusjonProps {
   kravOmRefusjon: string | undefined,
@@ -11,7 +10,6 @@ interface ValidateKravOmRefusjonProps {
 
 export const validateKravOmRefusjon = (
   v: Validation,
-  t: TFunction,
   {
     kravOmRefusjon,
     namespace,

@@ -1,7 +1,6 @@
 import { ErrorElement } from 'declarations/app'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 
 interface ValidationSEDQueryProps {
   saksnummerOrFnr: string
@@ -10,7 +9,6 @@ interface ValidationSEDQueryProps {
 
 export const validateSEDQuery = (
   v: Validation,
-  t: TFunction,
   {
     saksnummerOrFnr,
     namespace

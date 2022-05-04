@@ -1,5 +1,4 @@
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, checkIfNotTrue } from 'utils/validation'
 
 export interface ValidationOpprettSakProps {
@@ -18,7 +17,6 @@ export interface ValidationOpprettSakProps {
 
 export const validateOpprettSak = (
   v: Validation,
-  t: TFunction,
   namespace: string,
   {
     fnr,

@@ -1,5 +1,4 @@
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationFormålProps {
@@ -8,7 +7,6 @@ export interface ValidationFormålProps {
 
 export const validateFormål = (
   v: Validation,
-  t: TFunction,
   namespace: string,
   {
     formaal
@@ -19,7 +17,7 @@ export const validateFormål = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: formaal,
     id: namespace + '-checkbox',
-    message: t('validation:noFormaal')
+    message: 'validation:noFormaal'
   }))
 
   return hasErrors.find(value => value) !== undefined

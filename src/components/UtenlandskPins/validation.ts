@@ -1,7 +1,6 @@
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
 
@@ -21,7 +20,6 @@ export interface ValidationUtenlandskPinsProps {
 
 export const validateUtenlandskPin = (
   v: Validation,
-  t: TFunction,
   {
     pin,
     utenlandskePins,
@@ -76,7 +74,6 @@ export const validateUtenlandskPin = (
 
 export const validateUtenlandskPins = (
   v: Validation,
-  t: TFunction,
   {
     namespace,
     utenlandskePins,
@@ -84,7 +81,7 @@ export const validateUtenlandskPins = (
   }: ValidationUtenlandskPinsProps
 ): boolean => {
   const hasErrors: Array<boolean> = utenlandskePins?.map((pin: Pin, index: number) => {
-    return validateUtenlandskPin(v, t, {
+    return validateUtenlandskPin(v, {
       index,
       pin,
       utenlandskePins,

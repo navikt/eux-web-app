@@ -2,7 +2,6 @@ import { validatePeriode } from 'components/Forms/validation'
 import { RettTilYtelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationvalidateRettTilYtelseProps {
   rettTilTytelse: RettTilYtelse | undefined
@@ -11,7 +10,6 @@ export interface ValidationvalidateRettTilYtelseProps {
 
 export const validateRettTilYtelse = (
   v: Validation,
-  t: TFunction,
   {
     rettTilTytelse,
     namespace
@@ -20,7 +18,7 @@ export const validateRettTilYtelse = (
   let hasErrors = false
 
   if (rettTilTytelse?.periode) {
-    const _error = validatePeriode(v, t, {
+    const _error = validatePeriode(v, {
       periode: rettTilTytelse.periode,
       namespace: namespace + '-periode'
     })

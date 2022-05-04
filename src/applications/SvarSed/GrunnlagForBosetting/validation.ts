@@ -3,7 +3,6 @@ import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationGrunnlagForBosettingProps {
   periode: Periode
@@ -17,7 +16,6 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateGrunnlagForBosetting = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -25,7 +23,7 @@ export const validateGrunnlagForBosetting = (
     personName
   }: ValidationGrunnlagForBosettingProps
 ): boolean => {
-  let hasErrors = validatePeriode(v, t, {
+  let hasErrors = validatePeriode(v, {
     periode,
     namespace,
     personName
@@ -51,7 +49,6 @@ interface ValidateAllGrunnlagForBosettingProps {
 
 export const validateAllGrunnlagForBosetting = (
   v: Validation,
-  t: TFunction,
   {
     flyttegrunn,
     namespace,
@@ -61,7 +58,7 @@ export const validateAllGrunnlagForBosetting = (
   let hasErrors: boolean = false
 
   flyttegrunn?.perioder?.forEach((periode: Periode, index: number) => {
-    const periodErrors : boolean = validatePeriode(v, t, {
+    const periodErrors : boolean = validatePeriode(v, {
       periode,
       index,
       namespace: namespace + '-perioder',

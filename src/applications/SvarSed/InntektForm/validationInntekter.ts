@@ -2,7 +2,6 @@ import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationInntekterProps {
@@ -13,7 +12,6 @@ export interface ValidationInntekterProps {
 
 export const validateInntekt = (
   v: Validation,
-  t: TFunction,
   {
     inntekt,
     index,
@@ -69,13 +67,12 @@ export const validateInntekt = (
 
 export const validateInntekter = (
   validation: Validation,
-  t: TFunction,
   inntekter: Array<Inntekt>,
   namespace: string
 ): boolean => {
   let hasErrors: boolean = false
   inntekter?.forEach((inntekt: Inntekt, index: number) => {
-    const _errors: boolean = validateInntekt(validation, t, {
+    const _errors: boolean = validateInntekt(validation, {
       inntekt,
       index,
       namespace

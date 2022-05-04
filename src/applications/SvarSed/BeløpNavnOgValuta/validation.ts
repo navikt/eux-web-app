@@ -3,7 +3,6 @@ import { Ytelse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationBeløpNavnOgValutaProps {
@@ -16,7 +15,6 @@ export interface ValidationBeløpNavnOgValutaProps {
 
 export const validateBeløpNavnOgValuta = (
   v: Validation,
-  t: TFunction,
   {
     ytelse,
     index,
@@ -68,7 +66,7 @@ export const validateBeløpNavnOgValuta = (
     hasErrors = true
   }
 
-  const periodErrors: boolean = validatePeriode(v, t, {
+  const periodErrors: boolean = validatePeriode(v, {
     periode: {
       startdato: ytelse?.startdato,
       sluttdato: ytelse?.sluttdato
@@ -114,7 +112,6 @@ interface ValidationBeløpNavnOgValutasProps {
 
 export const validateBeløpNavnOgValutas = (
   validation: Validation,
-  t: TFunction,
   {
     ytelser,
     namespace,
@@ -124,7 +121,7 @@ export const validateBeløpNavnOgValutas = (
 ): boolean => {
   let hasErrors: boolean = false
   ytelser?.forEach((ytelse: Ytelse, index: number) => {
-    const _error: boolean = validateBeløpNavnOgValuta(validation, t, { ytelse, index, namespace, personID, personName })
+    const _error: boolean = validateBeløpNavnOgValuta(validation, { ytelse, index, namespace, personID, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

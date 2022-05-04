@@ -1,6 +1,5 @@
 import { PDPeriode } from 'declarations/pd'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
@@ -19,7 +18,6 @@ export interface ValidationDagpengerProps {
 
 export const validateDagpengerPeriode = (
   v: Validation,
-  t: TFunction,
   {
     startdato,
     sluttdato,
@@ -55,7 +53,6 @@ export const validateDagpengerPeriode = (
 
 export const validateDagpenger = (
   v: Validation,
-  t: TFunction,
   {
     dagpenger,
     namespace
@@ -64,7 +61,7 @@ export const validateDagpenger = (
   const hasErrors: Array<boolean> = []
 
   dagpenger?.forEach((periode: PDPeriode, index: number) => {
-    hasErrors.push(validateDagpengerPeriode(v, t, {
+    hasErrors.push(validateDagpengerPeriode(v, {
       startdato: periode.startdato,
       sluttdato: periode.sluttdato,
       info: periode.info,

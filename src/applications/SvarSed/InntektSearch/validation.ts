@@ -3,7 +3,6 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationInntektSearchProps {
   fom: string
@@ -16,7 +15,6 @@ const datePattern = /^\d{4}-\d{2}$/
 
 export const validateInntektSearch = (
   v: Validation,
-  t: TFunction,
   {
     fom,
     tom,

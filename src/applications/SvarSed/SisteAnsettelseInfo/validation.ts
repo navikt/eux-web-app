@@ -2,7 +2,6 @@ import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationUtbetalingProps {
@@ -13,7 +12,6 @@ export interface ValidationUtbetalingProps {
 
 export const validateUtbetaling = (
   v: Validation,
-  t: TFunction,
   {
     utbetaling,
     index,
@@ -78,13 +76,12 @@ export const validateUtbetaling = (
 
 export const validateUtbetalinger = (
   validation: Validation,
-  t: TFunction,
   utbetalinger: Array<Utbetaling> | undefined,
   namespace: string
 ): boolean => {
   let hasErrors: boolean = false
   utbetalinger?.forEach((utbetaling: Utbetaling, index: number) => {
-    const _errors: boolean = validateUtbetaling(validation, t, {
+    const _errors: boolean = validateUtbetaling(validation, {
       utbetaling,
       index,
       namespace
@@ -101,14 +98,13 @@ interface ValidateSisteAnsettelseInfoProps {
 
 export const validateSisteAnsettelseInfo = (
   v: Validation,
-  t: TFunction,
   {
     sisteansettelseinfo,
     namespace
   }: ValidateSisteAnsettelseInfoProps
 ) => {
   let hasErrors: boolean = false
-  const _errors = validateUtbetalinger(v, t, sisteansettelseinfo?.utbetalinger, namespace)
+  const _errors = validateUtbetalinger(v, sisteansettelseinfo?.utbetalinger, namespace)
   hasErrors = hasErrors || _errors
 
   if (hasErrors) {

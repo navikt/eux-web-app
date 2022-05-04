@@ -1,7 +1,6 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
 
 export interface ValidationAdresseProps {
@@ -13,7 +12,6 @@ export interface ValidationAdresseProps {
 
 export const validateAdresse = (
   v: Validation,
-  t: TFunction,
   {
     adresse,
     keyForCity = 'by',

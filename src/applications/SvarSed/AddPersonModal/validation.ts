@@ -1,6 +1,5 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 
 export interface ValidationAddPersonModalProps {
   fnr: string
@@ -14,7 +13,6 @@ export interface ValidationAddPersonModalProps {
 
 export const validateAddPersonModal = (
   v: Validation,
-  t: TFunction,
   {
     fnr,
     fornavn,

@@ -1,7 +1,6 @@
 import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
 import { NavInfo } from 'declarations/pd'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAvsenderProps {
@@ -13,7 +12,6 @@ export interface ValidationAvsenderProps {
 
 export const validateAvsender = (
   v: Validation,
-  t: TFunction,
   {
     nav,
     keyForCity = 'by',
@@ -35,7 +33,7 @@ export const validateAvsender = (
     message: 'validation:noEnhetId'
   }))
 
-  hasErrors.push(validateAdresse(v, t, {
+  hasErrors.push(validateAdresse(v, {
     namespace: namespace + '-adresse',
     adresse: nav?.adresse,
     keyforZipCode,

@@ -2,7 +2,6 @@ import { Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationNasjonalitetProps {
@@ -17,7 +16,6 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validateNasjonalitet = (
   v: Validation,
-  t: TFunction,
   {
     statsborgerskap,
     statsborgerskaper,
@@ -82,7 +80,6 @@ interface ValidateNasjonaliteterProps {
 
 export const validateNasjonaliteter = (
   validation: Validation,
-  t: TFunction,
   {
     statsborgerskaper,
     namespace,
@@ -91,7 +88,7 @@ export const validateNasjonaliteter = (
 ): boolean => {
   let hasErrors: boolean = false
   statsborgerskaper?.forEach((statsborgerskap: Statsborgerskap, index: number) => {
-    const _error: boolean = validateNasjonalitet(validation, t, { statsborgerskap, statsborgerskaper, index, namespace, personName })
+    const _error: boolean = validateNasjonalitet(validation, { statsborgerskap, statsborgerskaper, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

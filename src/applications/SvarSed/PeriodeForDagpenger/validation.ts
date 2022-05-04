@@ -4,7 +4,6 @@ import { PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodeDagpengerProps {
@@ -17,7 +16,6 @@ export interface ValidationPeriodeDagpengerProps {
 
 export const validatePeriodeDagpenger = (
   v: Validation,
-  t: TFunction,
   {
     periodeDagpenger,
     perioderDagpenger,
@@ -29,7 +27,7 @@ export const validatePeriodeDagpenger = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  const periodeError: boolean = validatePeriode(v, t, {
+  const periodeError: boolean = validatePeriode(v, {
     periode: periodeDagpenger?.periode,
     namespace: namespace + '-periode'
   })
@@ -86,7 +84,7 @@ export const validatePeriodeDagpenger = (
       hasErrors = true
     }
 
-    const _error: boolean = validateAdresse(v, t, {
+    const _error: boolean = validateAdresse(v, {
       adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
       namespace: namespace + idx + '-institusjon-idmangler-adresse',
       checkAdresseType: true,
@@ -115,7 +113,6 @@ interface ValidatePerioderDagpengerProps {
 
 export const validatePerioderDagpenger = (
   validation: Validation,
-  t: TFunction,
   {
     perioderDagpenger,
     namespace,
@@ -124,7 +121,7 @@ export const validatePerioderDagpenger = (
 ): boolean => {
   let hasErrors: boolean = false
   perioderDagpenger?.forEach((periodeDagpenger: PeriodeDagpenger, index: number) => {
-    const _errors: boolean = validatePeriodeDagpenger(validation, t, {
+    const _errors: boolean = validatePeriodeDagpenger(validation, {
       periodeDagpenger,
       perioderDagpenger,
       index,

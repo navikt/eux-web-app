@@ -57,20 +57,19 @@ import {
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
 }
 
-export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplySed): boolean => {
+export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
 
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
-      _error = validateMotregninger(v, t, {
+      _error = validateMotregninger(v, {
         replySed,
         namespace: 'MainForm-motregning',
         formalName: t('label:motregning').toLowerCase()
@@ -78,7 +77,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
-      _error = validateVedtak(v, t, {
+      _error = validateVedtak(v, {
         vedtak: _.get(replySed, 'vedtak'),
         namespace: 'MainForm-vedtak',
         formalName: t('label:vedtak').toLowerCase()
@@ -86,7 +85,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('prosedyre_ved_uenighet') >= 0) {
-      _error = validateProsedyreVedUenighet(v, t, {
+      _error = validateProsedyreVedUenighet(v, {
         prosedyreVedUenighet: _.get(replySed, 'uenighet'),
         namespace: 'MainForm-prosedyre_ved_uenighet',
         formalName: t('label:prosedyre-ved-uenighet').toLowerCase()
@@ -94,7 +93,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      _error = validateKravOmRefusjon(v, t, {
+      _error = validateKravOmRefusjon(v, {
         kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
         namespace: 'MainForm-refusjonskrav',
         formalName: t('label:krav-om-refusjon').toLowerCase()
@@ -102,7 +101,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
       hasErrors = hasErrors || _error
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
-      _error = validateKontoopplysning(v, t, {
+      _error = validateKontoopplysning(v, {
         uti: _.get(replySed, 'utbetalingTilInstitusjon'),
         namespace: 'MainForm-kontoopplysninger',
         formalName: t('label:kontoopplysninger').toLowerCase()
@@ -113,7 +112,7 @@ export const validateBottomForm = (v: Validation, t: TFunction, replySed: ReplyS
   return hasErrors
 }
 
-export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed, personID: string): boolean => {
+export const validateMainForm = (v: Validation, replySed: ReplySed, personID: string): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
@@ -123,19 +122,19 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
 
   if (isFSed(replySed)) {
     if (personID !== 'familie') {
-      _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+      _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
         personInfo, personName
       })
       hasErrors = hasErrors || _error
 
       const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
-      _error = validateNasjonaliteter(v, t, {
+      _error = validateNasjonaliteter(v, {
         statsborgerskaper, namespace: `svarsed-${personID}-nasjonaliteter`, personName
       })
       hasErrors = hasErrors || _error
 
       const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
-      _error = validateAdresser(v, t, {
+      _error = validateAdresser(v, {
         adresser, checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
       })
       hasErrors = hasErrors || _error
@@ -144,18 +143,18 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
     if (!personID.startsWith('barn')) {
       if (personID === 'familie') {
         const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
-        _error = validateBeløpNavnOgValutas(v, t, {
+        _error = validateBeløpNavnOgValutas(v, {
           ytelser, namespace: `svarsed-${personID}-familieytelser`, personID, personName
         })
         hasErrors = hasErrors || _error
       } else {
         const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
-        _error = validateKontaktsinformasjonTelefoner(v, t, {
+        _error = validateKontaktsinformasjonTelefoner(v, {
           telefoner, namespace: `svarsed-${personID}-kontaktinformasjon-telefon`, personName
         })
         hasErrors = hasErrors || _error
         const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
-        _error = validateKontaktsinformasjonEposter(v, t, {
+        _error = validateKontaktsinformasjonEposter(v, {
           eposter, namespace: `svarsed-${personID}-kontaktinformasjon-epost`, personName
         })
         hasErrors = hasErrors || _error
@@ -167,77 +166,77 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
           perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
           perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
         }
-        _error = validateTrygdeordninger(v, t, {
+        _error = validateTrygdeordninger(v, {
           perioder, namespace: `svarsed-${personID}-trygdeordninger`, personName
         })
         hasErrors = hasErrors || _error
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
-        _error = validateFamilierelasjoner(v, t, {
+        _error = validateFamilierelasjoner(v, {
           familierelasjoner, namespace: `svarsed-${personID}-familierelasjon`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomAnsatt: Array<Periode> = _.get(replySed, `${personID}.perioderSomAnsatt`)
-        _error = validateAnsattPerioder(v, t, {
+        _error = validateAnsattPerioder(v, {
           perioder: perioderSomAnsatt, namespace: `svarsed-${personID}-personensstatus-ansatt`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
-        _error = validateNotAnsattPerioder(v, t, {
+        _error = validateNotAnsattPerioder(v, {
           perioder: perioderSomSelvstendig, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomSykMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomSykMedLoenn`)
-        _error = validateNotAnsattPerioder(v, t, {
+        _error = validateNotAnsattPerioder(v, {
           perioder: perioderSomSykMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, personName
         })
         hasErrors = hasErrors || _error
         const perioderSomPermittertMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertMedLoenn`)
-        _error = validateNotAnsattPerioder(v, t, {
+        _error = validateNotAnsattPerioder(v, {
           perioder: perioderSomPermittertMedLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderSomPermittertUtenLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertUtenLoenn`)
-        _error = validateNotAnsattPerioder(v, t, {
+        _error = validateNotAnsattPerioder(v, {
           perioder: perioderSomPermittertUtenLoenn, namespace: `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
-        _error = validateAvsenderlandetPerioder(v, t, {
+        _error = validateAvsenderlandetPerioder(v, {
           perioder: perioderMedTrygd, namespace: `svarsed-${personID}-personensstatus-avsenderlandet`, personName
         })
         hasErrors = hasErrors || _error
 
         const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-        _error = validateAllGrunnlagForBosetting(v, t, {
+        _error = validateAllGrunnlagForBosetting(v, {
           flyttegrunn, namespace: `svarsed-${personID}-personensstatus-grunnlagforbosetting`, personName
         })
         hasErrors = hasErrors || _error
 
         const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
-        _error = validateWithSubsidiesPerioder(v, t, {
+        _error = validateWithSubsidiesPerioder(v, {
           perioder: perioderMedPensjon, namespace: `svarsed-${personID}-personensstatus-withsubsidies`, personName
         })
         hasErrors = hasErrors || _error
       }
     } else {
       const barnetilhorigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
-      _error = validateBarnetilhoerigheter(v, t, {
+      _error = validateBarnetilhoerigheter(v, {
         barnetilhorigheter, namespace: `svarsed-${personID}-relasjon`, personName
       })
       hasErrors = hasErrors || _error
       const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-      _error = validateAllGrunnlagForBosetting(v, t, {
+      _error = validateAllGrunnlagForBosetting(v, {
         flyttegrunn, namespace: `svarsed-${personID}-grunnlagforbosetting`, personName
       })
       hasErrors = hasErrors || _error
       const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
       if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
-        _error = validateBeløpNavnOgValutas(v, t, {
+        _error = validateBeløpNavnOgValutas(v, {
           ytelser, namespace: `svarsed-${personID}-beløpnavnogvaluta`, personID, personName
         })
         hasErrors = hasErrors || _error
@@ -246,12 +245,12 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
   }
 
   if (isUSed(replySed)) {
-    _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+    _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
       personInfo, personName
     })
     hasErrors = hasErrors || _error
 
-    _error = validateReferanseperiode(v, t, {
+    _error = validateReferanseperiode(v, {
       anmodningsperiode: (replySed as USed)?.anmodningsperiode, namespace: `svarsed-${personID}-referanseperiode`, personName
     })
     hasErrors = hasErrors || _error
@@ -273,12 +272,12 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
         perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
       }
 
-      _error = validateAlleForsikringPerioder(v, t, {
+      _error = validateAlleForsikringPerioder(v, {
         perioder, namespace: `svarsed-${personID}-forsikring`, personName
       })
       hasErrors = hasErrors || _error
 
-      _error = validatePerioderDagpenger(v, t, {
+      _error = validatePerioderDagpenger(v, {
         perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
         namespace: `svarsed-${personID}-periodefordagpenger`,
         personName
@@ -307,13 +306,13 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
       }
 
       if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
-        _error = validateGrunnTilOpphor(v, t, {
+        _error = validateGrunnTilOpphor(v, {
           grunntilopphor: (replySed as U002Sed)?.grunntilopphor,
           namespace: `svarsed-${personID}-grunntilopphør`
         })
         hasErrors = hasErrors || _error
       }
-      _error = validateSisteAnsettelseInfo(v, t, {
+      _error = validateSisteAnsettelseInfo(v, {
         sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo,
         namespace: `svarsed-${personID}-sisteAnsettelseInfo`
       })
@@ -321,7 +320,7 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
     }
 
     if (replySed.sedType === 'U004') {
-      _error = validateLoennsopplysninger(v, t, {
+      _error = validateLoennsopplysninger(v, {
         loennsopplysninger: (replySed as U004Sed)?.loennsopplysninger,
         namespace: `svarsed-${personID}-inntekt`
 
@@ -330,7 +329,7 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
     }
 
     if (replySed.sedType === 'U017') {
-      _error = validateRettTilYtelse(v, t, {
+      _error = validateRettTilYtelse(v, {
         rettTilTytelse: (replySed as U017Sed)?.rettTilYtelse,
         namespace: `svarsed-${personID}-retttilytelser`
       })
@@ -339,18 +338,18 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
   }
 
   if (isHSed(replySed)) {
-    _error = validatePersonopplysninger(v, t, `svarsed-${personID}-personopplysninger`, {
+    _error = validatePersonopplysninger(v, `svarsed-${personID}-personopplysninger`, {
       personInfo,  personName
     })
     hasErrors = hasErrors || _error
 
-    _error = validateAdresser(v, t, {
+    _error = validateAdresser(v, {
       adresser: _.get(replySed, `${personID}.adresser`), checkAdresseType: true, namespace: `svarsed-${personID}-adresser`, personName
     })
     hasErrors = hasErrors || _error
 
     if (isH002Sed(replySed)) {
-      _error = validateSvarPåForespørsel(v, t, {
+      _error = validateSvarPåForespørsel(v, {
         replySed,
         namespace: `svarsed-${personID}-svarpåforespørsel`,
         personName: t('label:svar-på-forespørsel').toLowerCase()
@@ -359,14 +358,14 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
     }
 
     if (isH001Sed(replySed)) {
-      _error = validateAnmodning(v, t, {
+      _error = validateAnmodning(v, {
         replySed,
         namespace: `svarsed-${personID}-anmodning`,
         personName: t('label:anmodning-om-informasjon').toLowerCase()
       })
       hasErrors = hasErrors || _error
 
-      _error = validateEndredeForhold(v, t, {
+      _error = validateEndredeForhold(v, {
         replySed,
         namespace: `svarsed-${personID}-endredeforhold`,
         personName: t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
@@ -380,7 +379,6 @@ export const validateMainForm = (v: Validation, t: TFunction, replySed: ReplySed
 
 export const validateSEDEdit = (
   v: Validation,
-  t: TFunction,
   namespace: string,
   {
     replySed
@@ -390,38 +388,38 @@ export const validateSEDEdit = (
   let _error: boolean
 
   // this is common to all seds
-  _error = validateMainForm(v, t, replySed, 'bruker')
+  _error = validateMainForm(v, replySed, 'bruker')
   hasErrors = hasErrors || _error
 
   if (isFSed(replySed)) {
-    _error = validateFormål(v, t, 'formål1-formål', {
+    _error = validateFormål(v, 'formål1-formål', {
       formaal: (replySed as FSed).formaal
     })
     hasErrors = hasErrors || _error
 
-    _error = validateAnmodningsPerioder(v, t, 'formål1-anmodningsperiode', {
+    _error = validateAnmodningsPerioder(v, 'formål1-anmodningsperiode', {
       anmodningsperioder: (replySed as FSed).anmodningsperioder
     })
     hasErrors = hasErrors || _error
 
     if ((replySed as F002Sed).ektefelle) {
-      _error = validateMainForm(v, t, replySed, 'ektefelle')
+      _error = validateMainForm(v, replySed, 'ektefelle')
       hasErrors = hasErrors || _error
     }
     if ((replySed as F002Sed).annenPerson) {
-      _error = validateMainForm(v, t, replySed, 'annenPerson')
+      _error = validateMainForm(v, replySed, 'annenPerson')
       hasErrors = hasErrors || _error
     }
     (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
-      _error = validateMainForm(v, t, replySed, `barn[${i}]`)
+      _error = validateMainForm(v, replySed, `barn[${i}]`)
       hasErrors = hasErrors || _error
     })
     if ((replySed as F002Sed).familie) {
-      _error = validateMainForm(v, t, replySed, 'familie')
+      _error = validateMainForm(v, replySed, 'familie')
       hasErrors = hasErrors || _error
     }
 
-    _error = validateBottomForm(v, t, replySed)
+    _error = validateBottomForm(v, replySed)
     hasErrors = hasErrors || _error
   }
 

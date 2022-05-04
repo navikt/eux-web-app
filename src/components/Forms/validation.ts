@@ -3,7 +3,6 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationPeriodeProps {
@@ -20,7 +19,6 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
 export const validatePeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     index = undefined,

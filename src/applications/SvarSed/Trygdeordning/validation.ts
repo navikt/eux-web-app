@@ -3,7 +3,6 @@ import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationDekkedePeriodeProps {
@@ -33,7 +32,6 @@ export interface ValidationFamilieytelsePeriodeProps {
 
 const validateGenericPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -48,9 +46,7 @@ const validateGenericPeriode = (
   const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : pageCategory)
 
   const periodError: boolean = validatePeriode(
-    v,
-    t,
-    {
+    v, {
       periode,
       index,
       namespace: extraNamespace,
@@ -91,7 +87,6 @@ const validateGenericPeriode = (
 
 export const validateDekkedePeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -100,7 +95,7 @@ export const validateDekkedePeriode = (
     personName
   }: ValidationDekkedePeriodeProps
 ): boolean => {
-  return validateGenericPeriode(v, t, {
+  return validateGenericPeriode(v, {
     periode,
     perioder,
     index,
@@ -112,7 +107,6 @@ export const validateDekkedePeriode = (
 
 export const validateUdekkedePeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -121,7 +115,7 @@ export const validateUdekkedePeriode = (
     personName
   }: ValidationDekkedePeriodeProps
 ): boolean => {
-  return validateGenericPeriode(v, t, {
+  return validateGenericPeriode(v, {
     periode,
     perioder,
     index,
@@ -133,7 +127,6 @@ export const validateUdekkedePeriode = (
 
 export const validateFamilieytelserPeriode = (
   v: Validation,
-  t: TFunction,
   {
     periode,
     perioder,
@@ -153,9 +146,7 @@ export const validateFamilieytelserPeriode = (
   const _periode = sedCategory === 'perioderMedPensjon' ? (periode as PensjonPeriode).periode : (periode as Periode)
 
   const periodError: boolean = validatePeriode(
-    v,
-    t,
-    {
+    v, {
       periode: _periode,
       namespace: extraperiodeNamespace,
       personName
@@ -219,7 +210,6 @@ export const validateFamilieytelserPeriode = (
 
 export const validatePerioder = (
   v: Validation,
-  t: TFunction,
   sedCategory: string,
   pageCategory: string,
   perioder: Array<Periode | PensjonPeriode>,
@@ -230,9 +220,9 @@ export const validatePerioder = (
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
     let _error: boolean
     if (sedCategory === 'perioderMedPensjon') {
-      _error = validateFamilieytelserPeriode(v, t, { periode: (periode as PensjonPeriode), perioder: (perioder as Array<PensjonPeriode>), index, namespace, sedCategory, personName })
+      _error = validateFamilieytelserPeriode(v, { periode: (periode as PensjonPeriode), perioder: (perioder as Array<PensjonPeriode>), index, namespace, sedCategory, personName })
     } else {
-      _error = validateGenericPeriode(v, t, { periode: (periode as Periode), perioder: (perioder as Array<Periode>), index, namespace, personName }, pageCategory, sedCategory)
+      _error = validateGenericPeriode(v, { periode: (periode as Periode), perioder: (perioder as Array<Periode>), index, namespace, personName }, pageCategory, sedCategory)
     }
     hasErrors = hasErrors || _error
   })
@@ -247,7 +237,6 @@ interface ValidateTrygdeordningerProps {
 
 export const validateTrygdeordninger = (
   v: Validation,
-  t: TFunction,
   {
     perioder,
     namespace,
@@ -256,17 +245,17 @@ export const validateTrygdeordninger = (
 ): boolean => {
   let hasErrors: boolean = false
   let _error: boolean
-  _error = validatePerioder(v, t, 'perioderMedITrygdeordning', 'dekkede', perioder.perioderMedITrygdeordning, namespace, personName)
+  _error = validatePerioder(v, 'perioderMedITrygdeordning', 'dekkede', perioder.perioderMedITrygdeordning, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderUtenforTrygdeordning', 'udekkede', perioder.perioderUtenforTrygdeordning, namespace, personName)
+  _error = validatePerioder(v, 'perioderUtenforTrygdeordning', 'udekkede', perioder.perioderUtenforTrygdeordning, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedArbeid', 'familieYtelse', perioder.perioderMedArbeid, namespace, personName)
+  _error = validatePerioder(v, 'perioderMedArbeid', 'familieYtelse', perioder.perioderMedArbeid, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedTrygd', 'familieYtelse', perioder.perioderMedTrygd, namespace, personName)
+  _error = validatePerioder(v, 'perioderMedTrygd', 'familieYtelse', perioder.perioderMedTrygd, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedYtelser', 'familieYtelse', perioder.perioderMedYtelser, namespace, personName)
+  _error = validatePerioder(v, 'perioderMedYtelser', 'familieYtelse', perioder.perioderMedYtelser, namespace, personName)
   hasErrors = hasErrors || _error
-  _error = validatePerioder(v, t, 'perioderMedPensjon', 'familieYtelse', perioder.perioderMedPensjon, namespace, personName)
+  _error = validatePerioder(v, 'perioderMedPensjon', 'familieYtelse', perioder.perioderMedPensjon, namespace, personName)
   hasErrors = hasErrors || _error
   return hasErrors
 }

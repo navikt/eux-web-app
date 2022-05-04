@@ -2,7 +2,6 @@ import { validatePeriode } from 'components/Forms/validation'
 import { LokaleSakId, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationSEDDetailsProps {
@@ -18,13 +17,12 @@ export interface ValidationSakseierProps {
 
 export const validateSEDDetail = (
   v: Validation,
-  t: TFunction,
   {
     anmodningsperiode,
     namespace
   }: ValidationSEDDetailsProps
 ): boolean => {
-  const hasErrors = validatePeriode(v, t, {
+  const hasErrors = validatePeriode(v, {
     periode: anmodningsperiode,
     namespace
   })
@@ -33,7 +31,6 @@ export const validateSEDDetail = (
 
 export const validateSakseier = (
   v: Validation,
-  t: TFunction,
   {
     lokaleSakId,
     index,

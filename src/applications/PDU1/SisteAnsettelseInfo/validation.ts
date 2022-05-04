@@ -1,6 +1,5 @@
 import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'react-i18next'
 
 interface SisteAnsettelseinfoProps {
   sisteAnsettelseInfo: GrunnTilOpphør | undefined
@@ -9,7 +8,6 @@ interface SisteAnsettelseinfoProps {
 
 export const validateSisteAnsettelseinfo = (
   v: Validation,
-  t: TFunction,
   {
     sisteAnsettelseInfo,
     namespace

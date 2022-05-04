@@ -1,7 +1,6 @@
 import { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
 import { validatePeriode } from 'components/Forms/validation'
 import { Motregning as IMotregning, ReplySed, Barn, F002Sed, BarnaEllerFamilie } from 'declarations/sed'
-import { TFunction } from 'react-i18next'
 import { Validation } from 'declarations/types'
 import { ErrorElement } from 'declarations/app.d'
 import _ from 'lodash'
@@ -24,7 +23,6 @@ export interface ValidationMotregningerProps {
 
 export const validateMotregning = (
   v: Validation,
-  t: TFunction,
   {
     motregning,
     keyAndYtelses,
@@ -96,7 +94,7 @@ export const validateMotregning = (
     hasErrors = true
   }
 
-  const periodError: boolean = validatePeriode(v, t, {
+  const periodError: boolean = validatePeriode(v, {
     periode: {
       startdato: motregning.startdato,
       sluttdato: motregning.sluttdato
@@ -150,7 +148,6 @@ export const validateMotregning = (
 
 export const validateMotregninger = (
   v: Validation,
-  t: TFunction,
   {
     replySed,
     namespace,
@@ -161,7 +158,7 @@ export const validateMotregninger = (
 
   (replySed as F002Sed).barn?.forEach((b: Barn) => {
     b.motregninger?.forEach((motregning: IMotregning, index: number) => {
-      const answer = validateMotregning(v, t, {
+      const answer = validateMotregning(v, {
         motregning,
         type: 'barna',
         index,
@@ -174,7 +171,7 @@ export const validateMotregninger = (
 
   if (!_.isNil((replySed as F002Sed).familie?.motregninger)) {
     (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, index: number) => {
-      const answer = validateMotregning(v, t, {
+      const answer = validateMotregning(v, {
         motregning,
         type: 'familie',
         index,

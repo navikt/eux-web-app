@@ -3,7 +3,6 @@ import { Loennsopplysning } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationLoennsopplysningProps {
@@ -15,7 +14,6 @@ export interface ValidationLoennsopplysningProps {
 
 export const validateLoennsopplysning = (
   v: Validation,
-  t: TFunction,
   {
     loennsopplysning,
     loennsopplysninger,
@@ -26,7 +24,7 @@ export const validateLoennsopplysning = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  const periodeError: boolean = validatePeriode(v, t, {
+  const periodeError: boolean = validatePeriode(v, {
     periode: loennsopplysning?.periode,
     namespace: namespace + '-periode'
   })
@@ -76,7 +74,6 @@ export interface ValidationLoennsopplysningerProps {
 
 export const validateLoennsopplysninger = (
   validation: Validation,
-  t: TFunction,
   {
     loennsopplysninger,
     namespace
@@ -84,7 +81,7 @@ export const validateLoennsopplysninger = (
 ): boolean => {
   let hasErrors: boolean = false
   loennsopplysninger?.forEach((loennsopplysning: Loennsopplysning, index: number) => {
-    const _errors: boolean = validateLoennsopplysning(validation, t, {
+    const _errors: boolean = validateLoennsopplysning(validation, {
       loennsopplysning,
       loennsopplysninger,
       index,

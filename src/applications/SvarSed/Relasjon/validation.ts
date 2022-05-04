@@ -2,7 +2,6 @@ import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationBarnetilhoerigheterProps {
@@ -15,7 +14,6 @@ export interface ValidationBarnetilhoerigheterProps {
 
 export const validateBarnetilhoerighet = (
   v: Validation,
-  t: TFunction,
   {
     barnetilhorighet,
     barnetilhorigheter,
@@ -78,7 +76,6 @@ interface ValidadeBarnetilhoerigheterProps {
 
 export const validateBarnetilhoerigheter = (
   validation: Validation,
-  t: TFunction,
   {
     barnetilhorigheter,
     namespace,
@@ -87,7 +84,7 @@ export const validateBarnetilhoerigheter = (
 ): boolean => {
   let hasErrors: boolean = false
   barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index) => {
-    const _error: boolean = validateBarnetilhoerighet(validation, t, { barnetilhorighet, barnetilhorigheter, index, namespace, personName })
+    const _error: boolean = validateBarnetilhoerighet(validation, { barnetilhorighet, barnetilhorigheter, index, namespace, personName })
     hasErrors = hasErrors || _error
   })
   return hasErrors

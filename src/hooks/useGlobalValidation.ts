@@ -1,21 +1,17 @@
 import { setValidation } from 'actions/validation'
 import { ErrorElement } from 'declarations/app'
 import { Validation } from 'declarations/types'
-import { TFunction } from 'i18next'
 import _ from 'lodash'
-import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
 const useGlobalValidation = <ValidationData extends any>(
   validateFunction: (
     newValidation: Validation,
-    t: TFunction,
     namespace: string,
     validationData: ValidationData
   ) => boolean,
   namespace: string
 ): (validationData: ValidationData) => boolean => {
-  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const validation = useAppSelector(state => state.validation.status)
 
@@ -27,7 +23,6 @@ const useGlobalValidation = <ValidationData extends any>(
 
     const hasErrors: boolean = validateFunction(
       newValidation,
-      t,
       namespace,
       validationData
     )

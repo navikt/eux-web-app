@@ -8,7 +8,7 @@ describe('applications/SvarSed/Motregning/KeyAndYtelse/validation', () => {
 
   it('Empty form: failed validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKeyAndYtelse(validation, t, {
+    const hasErrors: boolean = validateKeyAndYtelse(validation, {
       keyAndYtelse: {} as KeyAndYtelse,
       index: 99,
       namespace: 'test-mock'
@@ -21,7 +21,7 @@ describe('applications/SvarSed/Motregning/KeyAndYtelse/validation', () => {
 
   it('valid form: success validation', () => {
     const validation: Validation = {}
-    const hasErrors: boolean = validateKeyAndYtelse(validation, t, {
+    const hasErrors: boolean = validateKeyAndYtelse(validation, {
       keyAndYtelse: {
         fullKey: 'key',
         ytelseNavn: 'ytelseNavn'

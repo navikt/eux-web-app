@@ -3,7 +3,6 @@ import { InntektOgTime } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { ErrorElement } from 'declarations/app.d'
-import { TFunction } from 'react-i18next'
 import { getIdx } from 'utils/namespace'
 
 export interface ValidationInntektOgTimeProps {
@@ -21,7 +20,6 @@ interface ValidationInntektOgTimerProps {
 
 export const validateInntektOgTime = (
   v: Validation,
-  t: TFunction,
   {
     inntektOgTime,
     index,
@@ -32,7 +30,7 @@ export const validateInntektOgTime = (
   let hasErrors: boolean = false
   const idx = getIdx(index)
 
-  const periodeError: boolean = validatePeriode(v, t, {
+  const periodeError: boolean = validatePeriode(v, {
     periode: inntektOgTime.inntektsperiode,
     namespace: namespace + idx + '-inntektsperiode'
   })
@@ -76,7 +74,6 @@ export const validateInntektOgTime = (
 
 export const validateInntektOgTimer = (
   validation: Validation,
-  t: TFunction,
   {
     inntektOgTimer,
     namespace,
@@ -85,7 +82,7 @@ export const validateInntektOgTimer = (
 ): boolean => {
   let hasErrors: boolean = false
   inntektOgTimer?.forEach((inntektOgTime: InntektOgTime, index: number) => {
-    const _errors: boolean = validateInntektOgTime(validation, t, {
+    const _errors: boolean = validateInntektOgTime(validation, {
       inntektOgTime,
       index,
       namespace,
