@@ -484,10 +484,6 @@ const MainForm = <T extends StorageTypes>({
             const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
-            if (o.value === 'personopplysninger') {
-              console.log(validation)
-              console.log('rendering ' + namespace + '-' + personId + '-' + o.value, isValidated, validationHasErrors)
-            }
             return (
               <OptionDiv
                 className={classNames({

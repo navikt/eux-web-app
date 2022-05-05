@@ -1,21 +1,26 @@
 import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
+import { setValidation } from 'actions/validation'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
 import { saveAs } from 'file-saver'
+import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
 export interface PreviewPDU1Props {
-  performValidation: any
+  validation: Validation
+  namespace: string
 }
 
 export interface PreviewPDU1Selector {
@@ -30,9 +35,7 @@ const mapState = (state: State): any => ({
   previewPdu1file: state.pdu1.previewPdu1
 })
 
-const PreviewPDU1: React.FC<PreviewPDU1Props> = ({
-  performValidation
-}: PreviewPDU1Props) => {
+const PreviewPDU1: React.FC<PreviewPDU1Props> = ({validation, namespace}: PreviewPDU1Props) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
@@ -50,10 +53,10 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({
   const onPreviewPdu1Clicked = (e: any) => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
-      const valid = performValidation({
+      const [valid, newValidation] = performValidation<ValidationPDU1EditProps>(validation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
       })
-
+      dispatch(setValidation(newValidation))
       if (valid) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox

@@ -3,23 +3,24 @@ import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, PileDiv, VerticalSeparatorD
 import { saveEntry } from 'actions/localStorage'
 import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
+import { setValidation } from 'actions/validation'
 import Avsender from 'applications/PDU1/Avsender/Avsender'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
+import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import MainForm from 'applications/SvarSed/MainForm'
 import Modal from 'components/Modal/Modal'
-import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
-import useGlobalValidation from 'hooks/useGlobalValidation'
+import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -57,14 +58,14 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   const namespace = 'pdu1'
   const [completeModal, setCompleteModal] = useState<boolean>(false)
   const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationPDU1EditProps>(validatePDU1Edit, namespace)
 
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
-      const valid = performValidation({
+      const [valid, newValidation] = performValidation<ValidationPDU1EditProps>(validation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
       })
+      dispatch(setValidation(newValidation))
       if (valid) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
@@ -177,7 +178,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         updateReplySed={updatePdu1}
       />
       <VerticalSeparatorDiv size='2' />
-      <PreviewPDU1 performValidation={performValidation} />
+      <PreviewPDU1 validation={validation} namespace={namespace}/>
       <VerticalSeparatorDiv size='2' />
       <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
       <VerticalSeparatorDiv size='2' />

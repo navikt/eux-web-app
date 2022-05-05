@@ -1,14 +1,8 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Button, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, PaddedHorizontallyDiv, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
-import useGlobalValidation from 'hooks/useGlobalValidation'
-import {
-  validateAnmodningsPeriode, validateAnmodningsPerioder,
-  ValidationAnmodningsPeriodeProps,
-  ValidationAnmodningsPerioderProps
-} from './validation'
-import { mapState, MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { AlignStartRow, Column, PaddedDiv, PaddedHorizontallyDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
@@ -17,13 +11,21 @@ import TextArea from 'components/Forms/TextArea'
 import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, Periode } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
+import performValidation from 'utils/performValidation'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import { isFSed } from 'utils/sed'
+import {
+  validateAnmodningsPeriode,
+  validateAnmodningsPerioder,
+  ValidationAnmodningsPeriodeProps,
+  ValidationAnmodningsPerioderProps
+} from './validation'
 
 const PeriodeFC: React.FC<MainFormProps> = ({
   parentNamespace,
@@ -36,19 +38,17 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-anmodningsperiode`
 
   const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
-  const performValidation = useGlobalValidation<ValidationAnmodningsPerioderProps>(validateAnmodningsPerioder, namespace)
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace)
 
-  useEffect(() => {
-    return () => {
-      performValidation({
-        anmodningsperioder: (replySed as FSed).anmodningsperioder
-      })
-    }
-  }, [])
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationAnmodningsPerioderProps>(validation, namespace, validateAnmodningsPerioder, {
+      anmodningsperioder: (replySed as FSed).anmodningsperioder
+    })
+    dispatch(setValidation(newValidation))
+  })
 
   const resetForm = () => {
     _setNewAnmodningsperioder({ startdato: '' })

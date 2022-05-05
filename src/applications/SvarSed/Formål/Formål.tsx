@@ -1,16 +1,17 @@
 import { Checkbox } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { PaddedDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { validateFormål, ValidationFormålProps } from 'applications/SvarSed/Formål/validation'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { FSed, ReplySed } from 'declarations/sed'
 import { UpdateReplySedPayload, Validation } from 'declarations/types'
-import useGlobalValidation from 'hooks/useGlobalValidation'
+import performValidation from 'utils/performValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -44,15 +45,13 @@ const Formål: React.FC<FormålProps> = ({
   const dispatch = useAppDispatch()
   const formaal: Array<string> | undefined = (replySed as FSed)?.formaal
   const namespace: string = `${parentNamespace}-formål`
-  const performValidation = useGlobalValidation<ValidationFormålProps>(validateFormål, namespace)
 
-  useEffect(() => {
-    return () => {
-      performValidation({
-        formaal: (replySed as FSed).formaal
-      })
-    }
-  }, [])
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationFormålProps>(validation, namespace, validateFormål, {
+      formaal: (replySed as FSed).formaal
+    })
+    dispatch(setValidation(newValidation))
+  })
 
   const formaalOptions: Options = [
     { label: t('el:option-formaal-mottak'), value: 'mottak_av_søknad_om_familieytelser' },

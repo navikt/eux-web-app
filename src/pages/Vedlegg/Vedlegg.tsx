@@ -1,15 +1,24 @@
 import { Alert, Button, Checkbox, HelpText, Link, Loader } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import {
+  AlignStartRow,
+  Column,
+  Container,
+  Content,
+  FlexDiv,
+  HorizontalSeparatorDiv,
+  Margin,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
 import Input from 'components/Forms/Input'
 import TopContainer from 'components/TopContainer/TopContainer'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/types'
-import useGlobalValidation from 'hooks/useGlobalValidation'
-import { AlignStartRow, Column, Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import ValidationBox from 'components/ValidationBox/ValidationBox'
+import performValidation from 'utils/performValidation'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
@@ -57,7 +66,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const namespace = 'vedlegg'
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
-  const performValidation = useGlobalValidation<ValidationVedleggProps>(validateVedlegg, namespace)
 
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(location.search)
@@ -68,12 +76,13 @@ const Vedlegg: React.FC = (): JSX.Element => {
   }, [])
 
   const sendSkjema = (): void => {
-    const valid = performValidation({
+    const [valid, newValidation] = performValidation<ValidationVedleggProps>(validation, namespace, validateVedlegg, {
       journalpostID,
       dokumentID,
       rinasaksnummer,
       rinadokumentID
     })
+    dispatch(setValidation(newValidation))
     if (valid) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID,

@@ -8,7 +8,7 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
   validatePersonopplysninger,
@@ -22,7 +22,7 @@ import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
 import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
-import useGlobalValidation from 'hooks/useGlobalValidation'
+import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -45,17 +45,17 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
-  const performValidation = useGlobalValidation<ValidationPersonopplysningerProps>(validatePersonopplysninger, namespace)
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
   useEffect(() => {
     return () => {
-      performValidation({
+      const [, newValidation] = performValidation<ValidationPersonopplysningerProps>(validation, namespace, validatePersonopplysninger, {
         personInfo,
         personName
       })
+      dispatch(setValidation(newValidation))
     }
   }, [])
 

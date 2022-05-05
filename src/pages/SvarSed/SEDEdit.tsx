@@ -13,7 +13,7 @@ import {
   updateReplySed,
   updateSed
 } from 'actions/svarsed'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import Adresser from 'applications/SvarSed/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
 import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
@@ -53,7 +53,7 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, Validation } from 'declarations/types'
-import useGlobalValidation from 'hooks/useGlobalValidation'
+import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -113,7 +113,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationSEDEditProps>(validateSEDEdit, '') // empty namespace means that all validation messages will be wiped before one validation run
   const fnr = getFnr(replySed, 'bruker')
 
   const showTopForm = (): boolean => isFSed(replySed)
@@ -140,12 +139,14 @@ const SEDEdit: React.FC = (): JSX.Element => {
     return newReplySed
   }
 
+
   const sendReplySed = (e: any): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
-      const valid = performValidation({
+      const [valid, newValidation] = performValidation<ValidationSEDEditProps>(validation, '', validateSEDEdit, {
         replySed: newReplySed
       })
+      dispatch(setValidation(newValidation))
       if (valid) {
         setViewSendSedModal(true)
         if (!_.isEmpty(newReplySed?.sed)) {

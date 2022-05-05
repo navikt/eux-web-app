@@ -1,7 +1,11 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
+import {
+  validateAnmodningsPerioder,
+  ValidationAnmodningsPerioderProps
+} from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -10,18 +14,20 @@ import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { Epost, Telefon, TelefonType } from 'declarations/sed'
+import { Epost, FSed, Telefon, TelefonType } from 'declarations/sed'
 import useAddRemove from 'hooks/useAddRemove'
+import performValidation from 'utils/performValidation'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import {
-  validateKontaktsinformasjonEpost,
-  validateKontaktsinformasjonTelefon,
+  ValidateEposterProps,
+  validateKontaktsinformasjonEpost, validateKontaktsinformasjonEposter,
+  validateKontaktsinformasjonTelefon, validateKontaktsinformasjonTelefoner, ValidateTelefonerProps,
   ValidationKontaktsinformasjonEpostProps,
   ValidationKontaktsinformasjonTelefonProps
 } from './validation'
@@ -58,10 +64,23 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     if ((it as Epost).adresse) return (it as Epost).adresse
     return (it as Telefon).type + '-' + (it as Telefon).nummer
   })
-  const [_validationTelefon, resetValidationTelefon, performValidationTelefon] =
+  const [_validationTelefon, resetValidationTelefon, _performValidationTelefon] =
     useLocalValidation<ValidationKontaktsinformasjonTelefonProps>(validateKontaktsinformasjonTelefon, namespaceTelefon)
-  const [_validationEpost, resetValidationEpost, performValidationEpost] =
+  const [_validationEpost, resetValidationEpost, _performValidationEpost] =
     useLocalValidation<ValidationKontaktsinformasjonEpostProps>(validateKontaktsinformasjonEpost, namespaceEpost)
+
+  useEffect(() => {
+    return () => {
+      const [, newValidation] = performValidation<ValidateTelefonerProps>(validation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
+        telefoner, personName
+      })
+      const [, newValidation2] = performValidation<ValidateEposterProps>(newValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
+        eposter, personName
+      })
+      dispatch(setValidation(newValidation2))
+    }
+  }, [])
+
 
   const telefonTypeOptions: Options = [{
     label: t('el:option-telefon-type-work'), value: 'arbeid'
@@ -151,7 +170,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       nummer: _newNummer?.trim()
     } as Telefon
 
-    const valid: boolean = performValidationTelefon({
+    const valid: boolean = _performValidationTelefon({
       telefon: newTelefon,
       telefoner,
       personName
@@ -174,7 +193,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       adresse: _newAdresse?.trim()
     } as Epost
 
-    const valid: boolean = performValidationEpost({
+    const valid: boolean = _performValidationEpost({
       epost: newEpost,
       eposter,
       personName

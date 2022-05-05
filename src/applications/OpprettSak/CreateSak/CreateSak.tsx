@@ -6,7 +6,7 @@ import * as personActions from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { cleanData, resetSentSed } from 'actions/sak'
 import { loadReplySed } from 'actions/svarsed'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
@@ -37,7 +37,7 @@ import {
 import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
 import * as EKV from '@navikt/eessi-kodeverk'
 import { useAppDispatch, useAppSelector } from 'store'
-import useGlobalValidation from 'hooks/useGlobalValidation'
+import performValidation from 'utils/performValidation'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
@@ -212,7 +212,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
   const { t } = useTranslation()
   const namespace = 'opprettsak'
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const performValidation = useGlobalValidation<ValidationOpprettSakProps>(validateOpprettSak, namespace)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
@@ -231,7 +230,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }, []) ?? []
 
   const skjemaSubmit = (): void => {
-    const valid: boolean = performValidation({
+
+    const [valid, newValidation] = performValidation<ValidationOpprettSakProps>(validation, namespace, validateOpprettSak, {
       fnr: valgtFnr,
       isFnrValid,
       sektor: valgtSektor,
@@ -244,7 +244,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
       visEnheter,
       unit: valgtUnit
     } as ValidationOpprettSakProps)
-
+    dispatch(setValidation(newValidation))
     if (valid) {
       setTempInfoForEdit({
         person: _.cloneDeep(person),
