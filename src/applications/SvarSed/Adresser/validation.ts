@@ -3,14 +3,14 @@ import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationAddressProps {
+export interface ValidationAdresseProps {
   adresse: Adresse | undefined
   index?: number
   checkAdresseType: boolean
   personName?: string
 }
 
-interface ValidateAdresserProps {
+export interface ValidationAdresserProps {
   adresser: Array<Adresse>
   checkAdresseType: boolean
   personName?: string
@@ -24,7 +24,7 @@ export const validateAdresse = (
     index,
     checkAdresseType,
     personName
-  }: ValidationAddressProps
+  }: ValidationAdresseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
@@ -32,7 +32,7 @@ export const validateAdresse = (
   if (checkAdresseType) {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: adresse?.type,
-      id: namespace + idx + '-fnr',
+      id: namespace + idx + '-type',
       message: 'validation:noAddressType',
       personName
     }))
@@ -62,7 +62,7 @@ export const validateAdresser = (
     adresser,
     checkAdresseType,
     personName
-  }: ValidateAdresserProps
+  }: ValidationAdresserProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   adresser?.forEach((adresse: Adresse, index: number) => {

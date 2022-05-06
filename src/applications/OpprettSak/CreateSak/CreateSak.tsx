@@ -230,7 +230,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }, []) ?? []
 
   const skjemaSubmit = (): void => {
-
     const [valid, newValidation] = performValidation<ValidationOpprettSakProps>(validation, namespace, validateOpprettSak, {
       fnr: valgtFnr,
       isFnrValid,

@@ -22,9 +22,10 @@ import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
 import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
+import useUnmount from 'hooks/useUnmount'
 import performValidation from 'utils/performValidation'
 import _ from 'lodash'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
@@ -49,15 +50,13 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
-  useEffect(() => {
-    return () => {
-      const [, newValidation] = performValidation<ValidationPersonopplysningerProps>(validation, namespace, validatePersonopplysninger, {
-        personInfo,
-        personName
-      })
-      dispatch(setValidation(newValidation))
-    }
-  }, [])
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationPersonopplysningerProps>(validation, namespace, validatePersonopplysninger, {
+      personInfo,
+      personName
+    })
+    dispatch(setValidation(newValidation))
+  })
 
   const onFornavnChange = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))

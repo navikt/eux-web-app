@@ -94,7 +94,7 @@ const OptionDiv = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  &:hover {
+  &:hover:not(.selected) {
     color: var(--navds-semantic-color-text-inverted);
     background-color: var(--navds-semantic-color-interaction-primary-hover);
   }
@@ -102,7 +102,7 @@ const OptionDiv = styled.div`
     font-weight: bold;
     border-top: 1px solid var(--navds-panel-color-border);
     border-bottom: 1px solid var(--navds-panel-color-border);
-    border-left: 6px solid var(--navds-semantic-color-interaction-primary-selected);
+    background-image: linear-gradient(to right, var(--navds-semantic-color-canvas-background), var(--navds-semantic-color-canvas-background-light));
   }
   &.whiteborder {
     border-right: 1px solid var(--navds-panel-color-background);

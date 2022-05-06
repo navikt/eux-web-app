@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 export interface AddRemovePanelProps<T> {
-
   getId: (item: T) => string
   item: T | null
   index: number
@@ -21,13 +20,13 @@ export interface AddRemovePanelProps<T> {
   onEditing: (item: T, index: number) => void
   onCancelEditing: (item: T, index: number) => void
   onCancelNew: () => void
+  seeEditButton: boolean
   onRemove: (item: T) => void
 }
 
 const InlineFlexDiv = styled.div`
   display: inline-flex;
   align-items: flex-end;
-  margin-top: 0.5rem;
 `
 
 const AddRemovePanel2 = <T extends any>({
@@ -42,9 +41,9 @@ const AddRemovePanel2 = <T extends any>({
   onCancelEditing,
   onRemove,
   onAddNew,
-  onCancelNew
-
-}: AddRemovePanelProps<T>): JSX.Element => {
+  onCancelNew,
+  seeEditButton
+}: AddRemovePanelProps<T>): JSX.Element | null => {
   const { t } = useTranslation()
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<T>(getId)
@@ -135,6 +134,10 @@ const AddRemovePanel2 = <T extends any>({
         </Button>
       </InlineFlexDiv>
     )
+  }
+
+  if (!seeEditButton) {
+    return null
   }
 
   return (

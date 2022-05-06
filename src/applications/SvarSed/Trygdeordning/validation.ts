@@ -61,6 +61,7 @@ const validateGenericPeriode = (
     matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
     id: namespace + idx + '-startdato',
     message: 'validation:duplicateStartdato',
+    index,
     personName
   }))
 

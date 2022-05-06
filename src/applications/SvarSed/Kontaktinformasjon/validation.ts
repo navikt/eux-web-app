@@ -1,6 +1,5 @@
 import { Epost, Telefon } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmail, checkIfNotEmpty } from 'utils/validation'
 
@@ -60,6 +59,7 @@ export const validateKontaktsinformasjonTelefon = (
     haystack: telefoner,
     matchFn: (t: Telefon) => t.nummer === telefon.nummer,
     id: namespace + idx + '-nummer',
+    index,
     message: 'validation:duplicateTelephoneNumber',
     personName
   }))
@@ -87,20 +87,19 @@ export const validateKontaktsinformasjonEpost = (
     personName
   }))
 
-  if (!_.isEmpty(epost?.adresse?.trim())) {
-    hasErrors.push(checkIfNotEmail(v, {
-      needle: epost?.adresse,
-      id: namespace + idx + '-invalidEpost',
-      message: 'validation:noEpost',
-      personName
-    }))
-  }
+  hasErrors.push(checkIfNotEmail(v, {
+    needle: epost?.adresse,
+    id: namespace + idx + '-adresse',
+    message: 'validation:invalidEpost',
+    personName
+  }))
 
   hasErrors.push(checkIfDuplicate(v, {
     needle: epost,
     haystack: eposter,
     matchFn: (e : Epost) => e.adresse === epost?.adresse,
     id: namespace + idx + '-adresse',
+    index,
     message: 'validation:duplicateEpostAdresse',
     personName
   }))

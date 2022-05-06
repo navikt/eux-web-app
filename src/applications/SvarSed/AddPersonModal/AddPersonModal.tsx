@@ -1,14 +1,25 @@
 import { AddCircle, Child } from '@navikt/ds-icons'
+import { BodyLong, Button, Heading, Modal as NavModal } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
-  validateAddPersonModal,
-  ValidationAddPersonModalProps
-} from 'applications/SvarSed/AddPersonModal/validation'
+  AlignStartRow,
+  Column,
+  FlexBaseSpacedDiv,
+  FlexCenterSpacedDiv,
+  FlexDiv,
+  FlexRadioPanels,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  RadioPanel,
+  RadioPanelGroup,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
+import { GrayPanel, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
@@ -16,17 +27,6 @@ import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Modal as NavModal, BodyLong, Heading, Button, Panel } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexBaseSpacedDiv,
-  FlexCenterSpacedDiv,
-  FlexDiv, FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv, RadioPanel, RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
@@ -50,9 +50,6 @@ const CheckboxDiv = styled.div`
 const GreySpan = styled.span`
   color: grey;
   white-space: nowrap;
-`
-const GrayPanel = styled(Panel)`
-  background-color: var(--navds-semantic-color-canvas-background);
 `
 
 interface AddPersonModalProps<T> {

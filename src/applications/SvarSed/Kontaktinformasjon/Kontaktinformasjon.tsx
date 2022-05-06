@@ -1,33 +1,32 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { AlignStartRow, AlignEndColumn, Column, PaddedDiv, PaddedHorizontallyDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
-import {
-  validateAnmodningsPerioder,
-  ValidationAnmodningsPerioderProps
-} from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { Epost, FSed, Telefon, TelefonType } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
-import performValidation from 'utils/performValidation'
+import { Epost, Telefon, TelefonType } from 'declarations/sed'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import {
   ValidateEposterProps,
-  validateKontaktsinformasjonEpost, validateKontaktsinformasjonEposter,
-  validateKontaktsinformasjonTelefon, validateKontaktsinformasjonTelefoner, ValidateTelefonerProps,
+  validateKontaktsinformasjonEpost,
+  validateKontaktsinformasjonEposter,
+  validateKontaktsinformasjonTelefon,
+  validateKontaktsinformasjonTelefoner,
+  ValidateTelefonerProps,
   ValidationKontaktsinformasjonEpostProps,
   ValidationKontaktsinformasjonTelefonProps
 } from './validation'
@@ -50,8 +49,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const targetEpost = `${personID}.epost`
   const telefoner: Array<Telefon> = _.get(replySed, targetTelefon)
   const eposter: Array<Epost> = _.get(replySed, targetEpost)
-  const namespaceTelefon = `${parentNamespace}-${personID}-kontaktinformasjon-telefon`
-  const namespaceEpost = `${parentNamespace}-${personID}-kontaktinformasjon-epost`
+  const namespace = `${parentNamespace}-${personID}-kontaktinformasjon`
+  const namespaceTelefon = `${namespace}-telefon`
+  const namespaceEpost = `${namespace}-epost`
+  const getTelefonId = (t: Telefon) => t.nummer
+  const getEpostId = (e: Epost) => e.adresse
 
   const [_newNummer, _setNewNummer] = useState<string>('')
   const [_newType, _setNewType] = useState<TelefonType | undefined>(undefined)
@@ -60,35 +62,31 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const [_newAdresse, _setNewAdresse] = useState<string>('')
   const [_seeNewEpostForm, _setSeeNewEpostForm] = useState<boolean>(false)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Telefon | Epost>((it: Telefon | Epost): string => {
-    if ((it as Epost).adresse) return (it as Epost).adresse
-    return (it as Telefon).type + '-' + (it as Telefon).nummer
-  })
+  const [_telefonEditing, _setTelefonEditing] = useState<Array<number>>([])
+  const [_seeTelefonEditButton, _setSeeTelefonEditButton] = useState<number | undefined>(undefined)
+  const [_epostEditing, _setEpostEditing] = useState<Array<number>>([])
+  const [_seeEpostEditButton, _setSeeEpostEditButton] = useState<number | undefined>(undefined)
+
   const [_validationTelefon, resetValidationTelefon, _performValidationTelefon] =
     useLocalValidation<ValidationKontaktsinformasjonTelefonProps>(validateKontaktsinformasjonTelefon, namespaceTelefon)
   const [_validationEpost, resetValidationEpost, _performValidationEpost] =
     useLocalValidation<ValidationKontaktsinformasjonEpostProps>(validateKontaktsinformasjonEpost, namespaceEpost)
 
-  useEffect(() => {
-    return () => {
-      const [, newValidation] = performValidation<ValidateTelefonerProps>(validation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
-        telefoner, personName
-      })
-      const [, newValidation2] = performValidation<ValidateEposterProps>(newValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
-        eposter, personName
-      })
-      dispatch(setValidation(newValidation2))
-    }
-  }, [])
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidateTelefonerProps>(validation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
+      telefoner, personName
+    })
+    const [, moreNewValidation] = performValidation<ValidateEposterProps>(newValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
+      eposter, personName
+    })
+    dispatch(setValidation(moreNewValidation))
+  })
 
-
-  const telefonTypeOptions: Options = [{
-    label: t('el:option-telefon-type-work'), value: 'arbeid'
-  }, {
-    label: t('el:option-telefon-type-home'), value: 'hjem'
-  }, {
-    label: t('el:option-telefon-type-mobile'), value: 'mobil'
-  }]
+  const telefonTypeOptions: Options = [
+    {label: t('el:option-telefon-type-arbeid'), value: 'arbeid'},
+    {label: t('el:option-telefon-type-hjem'), value: 'hjem'},
+    {label: t('el:option-telefon-type-mobil'), value: 'mobil'}
+  ]
 
   const onTypeChanged = (type: TelefonType, index: number) => {
     if (index < 0) {
@@ -144,34 +142,26 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     resetForm(what)
   }
 
-  const onTelefonRemoved = (index: number) => {
-    const newTelefoner = _.cloneDeep(telefoner)
-    const deletedTelefoner: Array<Telefon> = newTelefoner.splice(index, 1)
-    if (deletedTelefoner && deletedTelefoner.length > 0) {
-      removeFromDeletion(deletedTelefoner[0])
-    }
+  const onTelefonRemove = (removedTelefon: Telefon) => {
+    const newTelefoner: Array<Telefon> = _.reject(telefoner, (t: Telefon) => _.isEqual(removedTelefon, t))
     dispatch(updateReplySed(targetTelefon, newTelefoner))
     standardLogger('svarsed.editor.telefon.remove')
   }
 
-  const onEpostRemoved = (i: number) => {
-    const newEposter = _.cloneDeep(eposter)
-    const deletedEposter: Array<Epost> = newEposter.splice(i, 1)
-    if (deletedEposter && deletedEposter.length > 0) {
-      removeFromDeletion(deletedEposter[0])
-    }
+  const onEpostRemove = (removedEpost: Epost) => {
+    const newEposter: Array<Epost> = _.reject(eposter, (e: Epost) => _.isEqual(removedEpost, e))
     dispatch(updateReplySed(targetEpost, newEposter))
     standardLogger('svarsed.editor.epost.remove')
   }
 
   const onTelefonAdd = () => {
-    const newTelefon: Telefon = {
+    const telefon: Telefon = {
       type: _newType?.trim() as TelefonType,
       nummer: _newNummer?.trim()
     } as Telefon
 
     const valid: boolean = _performValidationTelefon({
-      telefon: newTelefon,
+      telefon,
       telefoner,
       personName
     })
@@ -181,7 +171,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       if (_.isNil(newTelefoner)) {
         newTelefoner = []
       }
-      newTelefoner.push(newTelefon)
+      newTelefoner.push(telefon)
       dispatch(updateReplySed(targetTelefon, newTelefoner))
       standardLogger('svarsed.editor.telefon.add')
       onCancel('telefon')
@@ -189,12 +179,12 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   }
 
   const onEpostAdd = () => {
-    const newEpost: Epost = {
+    const epost: Epost = {
       adresse: _newAdresse?.trim()
     } as Epost
 
     const valid: boolean = _performValidationEpost({
-      epost: newEpost,
+      epost,
       eposter,
       personName
     })
@@ -205,7 +195,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       if (_.isNil(newEposter)) {
         newEposter = []
       }
-      newEposter.push(newEpost)
+      newEposter.push(epost)
       dispatch(updateReplySed(targetEpost, newEposter))
       standardLogger('svarsed.editor.epost.add')
       onCancel('epost')
@@ -223,130 +213,176 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
 
   const renderTelefonRow = (telefon: Telefon | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(telefon)
     const idx = getIdx(index)
+    const editing: boolean = telefon === null || _.find(_telefonEditing, i => i === index) !== undefined
+    const _nummer = index < 0 ? _newNummer : telefon?.nummer
+    const _type = index < 0 ? _newType : telefon?.type
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        onMouseEnter={() => _setSeeTelefonEditButton(index)}
+        onMouseLeave={() => _setSeeTelefonEditButton(undefined)}
+        className={classNames({ new: index < 0 })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
-            <Input
-              ariaLabel={t('label:telefonnummer')}
-              error={getErrorFor(index, 'telefon', 'nummer')}
-              key={namespaceTelefon + idx + '-nummer-' + (index < 0 ? _newNummer : telefon?.nummer)}
-              id='nummer'
-              label=''
-              namespace={namespaceTelefon + idx}
-              onChanged={(value: string) => onNummerChanged(value, index)}
-              required
-              value={index < 0 ? _newNummer : telefon?.nummer}
-            />
+            {editing
+              ? (
+                <Input
+                  ariaLabel={t('label:telefonnummer')}
+                  error={getErrorFor(index, 'telefon', 'nummer')}
+                  key={namespaceTelefon + idx + '-nummer-' + _nummer}
+                  id='nummer'
+                  label={t('label:telefonnummer')}
+                  hideLabel={index >= 0}
+                  namespace={namespaceTelefon + idx}
+                  onChanged={(value: string) => onNummerChanged(value, index)}
+                  required
+                  value={_nummer}
+                />
+              ) : (
+                <BodyLong>{_nummer}</BodyLong>
+              )}
           </Column>
           <Column>
-            <Select
-              data-testid={namespaceTelefon + idx + '-type'}
-              error={getErrorFor(index, 'telefon', 'type')}
-              id={namespaceTelefon + idx + '-type'}
-              key={namespaceTelefon + idx + '-type-' + (index < 0 ? _newType : telefon?.type)}
-              menuPortalTarget={document.body}
-              onChange={(e: unknown) => onTypeChanged((e as Option).value as TelefonType, index)}
-              options={telefonTypeOptions}
-              value={getTypeOption(index < 0 ? _newType : telefon?.type)}
-              defaultValue={getTypeOption(index < 0 ? _newType : telefon?.type)}
-            />
+            {editing
+              ? (
+                <Select
+                  data-testid={namespaceTelefon + idx + '-type'}
+                  error={getErrorFor(index, 'telefon', 'type')}
+                  id={namespaceTelefon + idx + '-type'}
+                  key={namespaceTelefon + idx + '-type-' + _type}
+                  menuPortalTarget={document.body}
+                  onChange={(e: unknown) => onTypeChanged((e as Option).value as TelefonType, index)}
+                  options={telefonTypeOptions}
+                  label={t('label:type')}
+                  hideLabel={index >= 0}
+                  required
+                  noMarginTop={index >= 0}
+                  value={getTypeOption(_type)}
+                  defaultValue={getTypeOption(_type)}
+                />
+              ) : (
+                <BodyLong>{t('el:option-telefon-type-'  + _type)}</BodyLong>
+              )}
           </Column>
           <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop={false}
-              onBeginRemove={() => addToDeletion(telefon)}
-              onConfirmRemove={() => onTelefonRemoved(index)}
-              onCancelRemove={() => removeFromDeletion(telefon)}
+            <AddRemovePanel2<Telefon>
+              getId={getTelefonId}
+              item={telefon}
+              marginTop={index < 0}
+              index={index}
+              editing={editing}
+              namespace={namespaceTelefon}
+              onRemove={onTelefonRemove}
               onAddNew={onTelefonAdd}
               onCancelNew={() => onCancel('telefon')}
+              seeEditButton={_seeTelefonEditButton === index}
+              onEditing={(s, index) => _setTelefonEditing(_telefonEditing.concat(index))}
+              onCancelEditing={(s, index) => _setTelefonEditing(_.filter(_telefonEditing, i => i !== index))}
             />
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   const renderEpostRow = (epost: Epost | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(epost)
     const idx = getIdx(index)
+    const editing: boolean = epost === null || _.find(_epostEditing, i => i === index) !== undefined
+    const _adresse = index < 0 ? _newAdresse : epost?.adresse
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        onMouseEnter={() => _setSeeEpostEditButton(index)}
+        onMouseLeave={() => _setSeeEpostEditButton(undefined)}
+        className={classNames({ new: index < 0 })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column flex='2'>
-            <Input
-              ariaLabel={t('label:epost')}
-              error={getErrorFor(index, 'epost', 'adresse')}
-              namespace={namespaceEpost + idx}
-              key={namespaceEpost + idx + '-adresse-' + (index < 0 ? _newAdresse : epost?.adresse)}
-              id='adresse'
-              label=''
-              onChanged={(value: string) => onAdresseChanged(value, index)}
-              required
-              value={index < 0 ? _newAdresse : epost?.adresse}
-            />
+            {editing
+              ? (
+                <Input
+                  label={t('label:epost')}
+                  ariaLabel={t('label:epost')}
+                  error={getErrorFor(index, 'epost', 'adresse')}
+                  namespace={namespaceEpost + idx}
+                  key={namespaceEpost + idx + '-adresse-' + _adresse}
+                  id='adresse'
+                  hideLabel={index >= 0}
+                  onChanged={(value: string) => onAdresseChanged(value, index)}
+                  required
+                  value={_adresse}
+                />
+              ) : (
+                <BodyLong>
+                  {_adresse}
+                </BodyLong>
+              )}
           </Column>
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop={false}
-              onBeginRemove={() => addToDeletion(epost)}
-              onConfirmRemove={() => onEpostRemoved(index)}
-              onCancelRemove={() => removeFromDeletion(epost)}
+          <AlignEndColumn>
+            <AddRemovePanel2<Epost>
+              getId={getEpostId}
+              item={epost}
+              marginTop={index < 0}
+              index={index}
+              editing={editing}
+              namespace={namespaceEpost}
+              onRemove={onEpostRemove}
               onAddNew={onEpostAdd}
               onCancelNew={() => onCancel('epost')}
+              seeEditButton={_seeEpostEditButton === index}
+              onEditing={(s, index) => _setEpostEditing(_epostEditing.concat(index))}
+              onCancelEditing={(s, index) => _setEpostEditing(_.filter(_epostEditing, i => i !== index))}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:kontaktinformasjon')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <Row>
-        <Column>
-          {!_.isEmpty(telefoner)
-            ? (
-              <Detail>
-                {t('label:telefonnummer') + ' *'}
-              </Detail>
-              )
-            : (
-              <BodyLong>
-                {t('message:warning-no-telephone')}
-              </BodyLong>
-              )}
-        </Column>
-        <Column>
-          {!_.isEmpty(telefoner) && (
-            <Detail>
-              {t('label:type') + ' *'}
-            </Detail>
-          )}
-        </Column>
-        <Column />
-      </Row>
-      <VerticalSeparatorDiv />
-      {telefoner?.map(renderTelefonRow)}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
+    <>
+      <VerticalSeparatorDiv size='2'/>
+      {_.isEmpty(telefoner)
+        ? (
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-telephone')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
+        )
+        : (
+          <>
+            <PaddedHorizontallyDiv>
+              <AlignStartRow>
+                <Column>
+                  <Label>
+                    {t('label:telefonnummer') + ' *'}
+                  </Label>
+                </Column>
+                <Column>
+                  <Label>
+                    {t('label:type') + ' *'}
+                  </Label>
+                </Column>
+                <Column/>
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8' />
+            {telefoner?.map(renderTelefonRow)}
+          </>
+        )}
       <VerticalSeparatorDiv />
       {_seeNewTelefonForm
         ? renderTelefonRow(null, -1)
         : (
-          <Row>
+          <PaddedDiv>
+            <AlignStartRow>
             <Column>
               <Button
                 variant='tertiary'
@@ -356,46 +392,53 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
               </Button>
             </Column>
-          </Row>
+          </AlignStartRow>
+          </PaddedDiv>
           )}
+
       <VerticalSeparatorDiv size='3' />
-      <Row>
-        <Column>
-          {!_.isEmpty(eposter)
-            ? (
-              <Detail>
+
+      {_.isEmpty(eposter)
+        ? (
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-email')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
+        )
+        : (
+          <>
+          <PaddedHorizontallyDiv>
+            <AlignStartRow>
+              <Column>
+                <Label>
                 {t('label:epost') + ' *'}
-              </Detail>
-              )
-            : (
-              <BodyLong>
-                {t('message:warning-no-email')}
-              </BodyLong>
-              )}
-        </Column>
-        <Column />
-      </Row>
-      <VerticalSeparatorDiv />
-      {eposter?.map(renderEpostRow)}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
+                </Label>
+              </Column>
+              <Column />
+            </AlignStartRow>
+           </PaddedHorizontallyDiv>
+           <VerticalSeparatorDiv size='0.8' />
+           {eposter?.map(renderEpostRow)}
+        </>
+        )}
       <VerticalSeparatorDiv />
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewEpostForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setSeeNewEpostForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-    </PaddedDiv>
+    </>
   )
 }
 

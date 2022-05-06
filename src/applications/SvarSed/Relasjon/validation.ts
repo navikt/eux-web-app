@@ -1,7 +1,7 @@
 import { Barnetilhoerighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 interface ValidadeBarnetilhoerigheterProps {
   barnetilhorigheter: Array<Barnetilhoerighet>
@@ -35,12 +35,13 @@ export const validateBarnetilhoerighet = (
     personName
   }))
 
-  hasErrors.push(checkLength(v, {
+  hasErrors.push(checkIfDuplicate(v, {
     needle: barnetilhorighet,
     haystack: barnetilhorigheter,
     matchFn: (b: Barnetilhoerighet) => b.relasjonTilPerson === barnetilhorighet.relasjonTilPerson,
     id: namespace + idx + '-relasjonTilPerson',
     message: 'validation:duplicateRelation',
+    index,
     personName
   }))
 

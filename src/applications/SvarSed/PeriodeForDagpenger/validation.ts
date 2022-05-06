@@ -36,6 +36,7 @@ export const validatePeriodeDagpenger = (
       haystack: perioderDagpenger,
       matchFn: (p: PeriodeDagpenger) => p.periode.startdato === periodeDagpenger?.periode.startdato && p.periode.sluttdato === periodeDagpenger.periode?.sluttdato,
       id: namespace + idx + '-periode-startdato',
+      index,
       message: 'validation:duplicateStartdato'
     }))
   }

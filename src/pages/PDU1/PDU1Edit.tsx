@@ -178,7 +178,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         updateReplySed={updatePdu1}
       />
       <VerticalSeparatorDiv size='2' />
-      <PreviewPDU1 validation={validation} namespace={namespace}/>
+      <PreviewPDU1 validation={validation} namespace={namespace} />
       <VerticalSeparatorDiv size='2' />
       <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
       <VerticalSeparatorDiv size='2' />

@@ -44,6 +44,7 @@ export const validateVedtakPeriode = (
     matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
     id: namespace + '-perioder' + idx + '-startdato',
     message: 'validation:duplicateStartdato',
+    index,
     personName: formalName
   }))
 
@@ -78,6 +79,7 @@ export const validateVedtakVedtaksperiode = (
     matchFn: (p: VedtakPeriode) => p.periode.startdato === vedtaksperiode?.periode?.startdato && p.periode.sluttdato === vedtaksperiode?.periode?.sluttdato,
     id: namespace + '-vedtaksperioder' + idx + '-periode-startdato',
     message: 'validation:duplicateStartdato',
+    index,
     personName: formalName
   }))
 

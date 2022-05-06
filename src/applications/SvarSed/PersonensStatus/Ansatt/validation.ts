@@ -37,6 +37,7 @@ export const validateAnsattPeriode = (
       haystack: perioder,
       matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
       id: namespace + '-periode' + idx + '-startdato',
+      index,
       message: 'validation:duplicateStartdato',
       personName
     }))

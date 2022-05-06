@@ -50,39 +50,42 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const { t } = useTranslation()
   const countryData = CountryData.getCountryInstance('nb')
   const landUtenNorge = CountryFilter.STANDARD({ useUK: true })?.filter((it: string) => it !== 'NO')
+  const getId = (p: Pin): string => p.land + '-' + p.identifikator
 
   const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
   const [_newLand, _setNewLand] = useState<string>('')
+
   const [_editing, _setEditing] = useState<Array<number>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_seeEditButton, _setSeeEditButton] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>(validateUtenlandskPin, namespace)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
     if (index < 0) {
       _setNewIdentifikator(newIdentifikator.trim())
       _resetValidation(namespace + '-identifikator')
-    } else {
-      const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
-      newPins[index].identifikator = newIdentifikator.trim()
-      onPinsChanged(newPins, namespace + '[' + index + ']-identifikator')
+      return
     }
+    const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+    newPins[index].identifikator = newIdentifikator.trim()
+    onPinsChanged(newPins, namespace + '[' + index + ']-identifikator')
   }
 
   const onUtenlandskeLandChange = (newLand: string, index: number) => {
     if (index < 0) {
       _setNewLand(newLand.trim())
       _resetValidation(namespace + '-land')
-    } else {
-      const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
-      newPins[index].land = newLand.trim()
-      onPinsChanged(newPins, namespace + '[' + index + ']-land')
+      return
     }
+    const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+    newPins[index].land = newLand.trim()
+    onPinsChanged(newPins, namespace + '[' + index + ']-land')
   }
 
   const onRemove = (removedPin: Pin) => {
     const newUtenlandskePins: Array<Pin> = _.reject(pins, (pin: Pin) => _.isEqual(removedPin, pin))
-    standardLogger(loggingNamespace + '.utenlandskpin.remove')
     onPinsChanged(newUtenlandskePins, undefined)
+    standardLogger(loggingNamespace + '.utenlandskpin.remove')
   }
 
   const resetForm = () => {
@@ -126,11 +129,12 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         ? _validation[namespace + '-' + el]?.feilmelding
         : validation[namespace + idx + '-' + el]?.feilmelding
     )
-
     const editing: boolean = utenlandskePin === null || _.find(_editing, i => i === index) !== undefined
-
     return (
-      <RepeatableRow className={classNames({
+      <RepeatableRow
+        onMouseEnter={() => _setSeeEditButton(index)}
+        onMouseLeave={() => _setSeeEditButton(undefined)}
+        className={classNames({
         new: index < 0,
         error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
       })}
@@ -197,7 +201,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           </Column>
           <AlignEndColumn>
             <AddRemovePanel2<Pin>
-              getId={(p): string => p.land + '-' + p.identifikator}
+              getId={getId}
               item={utenlandskePin}
               marginTop={index < 0}
               index={index}
@@ -206,6 +210,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
+              seeEditButton={_seeEditButton === index}
               onEditing={(p, index) => _setEditing(_editing.concat(index))}
               onCancelEditing={(p, index) => _setEditing(_.filter(_editing, i => i !== index))}
             />

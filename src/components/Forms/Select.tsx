@@ -1,4 +1,5 @@
 
+import { Label } from '@navikt/ds-react'
 import classNames from 'classnames'
 import React from 'react'
 import ReactSelect, { Props } from 'react-select'
@@ -6,6 +7,7 @@ import ReactSelect, { Props } from 'react-select'
 interface SelectProps extends Props {
   error?: string
   label?: string | undefined
+  hideLabel ?: boolean
   noMarginTop?: boolean
   size?: 'medium' | 'small'
   required?: boolean
@@ -20,7 +22,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
       data-testid={props['data-testid'] || props.id}
       style={props.style}
     >
-      {props.label && (<label className='navds-text-field__label navds-label'>{props.label ?? ''}{props.required && ' *'}</label>)}
+      {props.label && !props.hideLabel && (<Label>{props.label ?? ''}{props.required && ' *'}</Label>)}
       <ReactSelect
         placeholder=''
         inputId={props.id}
@@ -34,7 +36,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
           control: (styles: any, { isDisabled }) => ({
             ...styles,
             minHeight: props.size === 'small' ? '35px' : '48px',
-            borderWidth: '1px',
+            borderWidth: props.error ? '3px' : '1px',
             borderStyle: 'solid',
             borderColor: props.error ? 'var(--navds-select-color-border-error)' : 'var(--navds-select-color-border)',
             borderRadius: '4px',

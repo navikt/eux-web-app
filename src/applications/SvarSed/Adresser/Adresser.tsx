@@ -7,16 +7,18 @@ import {
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetAdresse } from 'actions/adresse'
+import { resetValidation, setValidation } from 'actions/validation'
 import AdresseFromPDL from 'applications/SvarSed/Adresser/AdresseFromPDL'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AdresseBox from 'components/AdresseBox/AdresseBox'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
@@ -24,8 +26,9 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import AdresseForm from './AdresseForm'
-import { validateAdresse, ValidationAddressProps } from './validation'
+import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -44,15 +47,28 @@ const Adresser: React.FC<MainFormProps> = ({
   const target = `${personID}.adresser`
   const adresser: Array<Adresse> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
+  const checkAdresseType: boolean = true
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '')
 
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
-  const [_newAdresseMessage, _setNewAdresseMessage] = useState<string | undefined>(undefined)
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddressProps>(validateAdresse, namespace)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Adresse>(getId)
+  const [_editing, _setEditing] = useState<Array<number>>([])
+  const [_seeEditButton, _setSeeEditButton] = useState<number | undefined>(undefined)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseProps>(validateAdresse, namespace)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationAdresserProps>(
+      validation, namespace, validateAdresser, {
+        adresser,
+        checkAdresseType,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+    dispatch(resetAdresse())
+  })
 
   const setAdresse = (adresse: Adresse, id: string | undefined, index: number) => {
     if (index < 0) {
@@ -70,7 +86,6 @@ const Adresser: React.FC<MainFormProps> = ({
 
   const resetForm = () => {
     _setNewAdresse(undefined)
-    _setNewAdresseMessage(undefined)
     _resetValidation()
   }
 
@@ -79,20 +94,16 @@ const Adresser: React.FC<MainFormProps> = ({
     resetForm()
   }
 
-  const onRemove = (index: number) => {
-    const newAdresser: Array<Adresse> = _.cloneDeep(adresser)
-    const deletedAddresses: Array<Adresse> = newAdresser.splice(index, 1)
-    if (deletedAddresses && deletedAddresses.length > 0) {
-      removeFromDeletion(deletedAddresses[0])
-    }
+  const onRemove = (removedAdresse: Adresse) => {
+    const newAdresser: Array<Adresse> = _.reject(adresser, (a: Adresse) => _.isEqual(removedAdresse, a))
     dispatch(updateReplySed(target, newAdresser))
     standardLogger('svarsed.editor.adresse.remove')
   }
 
   const onAdd = () => {
-    const valid: boolean = performValidation({
+    const valid: boolean = _performValidation({
       adresse: _newAdresse,
-      checkAdresseType: true,
+      checkAdresseType,
       personName
     })
     if (valid) {
@@ -111,41 +122,49 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(target, selectedAdresser))
   }
 
-  const renderRow = (_adresse: Adresse | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(_adresse)
+  const renderRow = (adresse: Adresse | null, index: number) => {
+
     const idx = getIdx(index)
+    const editing: boolean = adresse === null || _.find(_editing, i => i === index) !== undefined
+    const _adresse = index < 0 ? _newAdresse : adresse
     return (
-      <>
-        <RepeatableRow className={classNames({ new: index < 0 })}>
-          {index < 0 && _newAdresseMessage && (
-            <div>
-              <BodyLong>{_newAdresseMessage}</BodyLong>
-              <VerticalSeparatorDiv />
-            </div>
-          )}
-          <AdresseForm
-            key={namespace + idx + getId(index < 0 ? _newAdresse : _adresse)}
-            namespace={namespace + idx}
-            adresse={index < 0 ? _newAdresse : _adresse}
-            onAdressChanged={(a: Adresse, type: string | undefined) => setAdresse(a, type, index)}
-            validation={index < 0 ? _validation : validation}
-          />
-          <AlignStartRow>
-            <AlignEndColumn>
-              <AddRemovePanel
-                candidateForDeletion={candidateForDeletion}
-                existingItem={(index >= 0)}
-                onBeginRemove={() => addToDeletion(_adresse)}
-                onConfirmRemove={() => onRemove(index)}
-                onCancelRemove={() => removeFromDeletion(_adresse)}
-                onAddNew={onAdd}
-                onCancelNew={onCancel}
-              />
-            </AlignEndColumn>
-          </AlignStartRow>
-          <VerticalSeparatorDiv size='2' />
-        </RepeatableRow>
-      </>
+      <RepeatableRow
+        onMouseEnter={() => _setSeeEditButton(index)}
+        onMouseLeave={() => _setSeeEditButton(undefined)}
+        className={classNames({ new: index < 0 })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
+        {editing ? (
+        <AdresseForm
+          key={namespace + idx + getId(_adresse)}
+          namespace={namespace + idx}
+          adresse={_adresse}
+          onAdressChanged={(a: Adresse, type: string | undefined) => setAdresse(a, type, index)}
+          validation={index < 0 ? _validation : validation}
+        />
+        ) : (
+          <AdresseBox adresse={_adresse} seeType/>
+        )}
+        <VerticalSeparatorDiv size='0.5' />
+        <AlignStartRow>
+          <AlignEndColumn>
+            <AddRemovePanel2<Adresse>
+              getId={getId}
+              item={adresse}
+              index={index}
+              editing={editing}
+              namespace={namespace}
+              onRemove={onRemove}
+              onAddNew={onAdd}
+              onCancelNew={onCancel}
+              seeEditButton={_seeEditButton === index}
+              onEditing={(s, index) => _setEditing(_editing.concat(index))}
+              onCancelEditing={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
+            />
+          </AlignEndColumn>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
+      </RepeatableRow>
     )
   }
 
@@ -159,7 +178,7 @@ const Adresser: React.FC<MainFormProps> = ({
           onAdresserChanged={onAdresserChanged}
         />
       </PaddedDiv>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       {_.isEmpty(adresser)
         ? (
           <PaddedHorizontallyDiv>

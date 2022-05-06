@@ -208,6 +208,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
+              seeEditButton={true}
               onEditing={() => _setEditMode(true)}
               onCancelEditing={() => _setEditMode(false)}
             />

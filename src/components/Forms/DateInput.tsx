@@ -7,6 +7,7 @@ export interface DateInputProps {
   ariaLabel ?: string
   className ?: string
   error: string | null | undefined
+  hideLabel ?: boolean
   id: string
   index?: number
   label: string
@@ -24,6 +25,7 @@ const DateInput = ({
   error,
   id,
   label,
+  hideLabel = false,
   namespace,
   onChanged,
   required = false,
@@ -31,12 +33,12 @@ const DateInput = ({
   finalFormat = 'YYYY-MM-DD',
   value
 }: DateInputProps) => {
-  const [_dato, _setDato] = useState<string>(() => toDateFormat(value, uiFormat) ?? '')
+  const [_dato, _setDato] = useState<string>(() => toDateFormat(value, uiFormat!) ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
   const { t } = useTranslation()
 
   const onDatoBlur = () => {
-    const date = toDateFormat(_dato, finalFormat)
+    const date = toDateFormat(_dato, finalFormat!)
     onChanged(date)
   }
 
@@ -48,6 +50,7 @@ const DateInput = ({
       data-testid={namespace + ''}
       error={error}
       id={namespace + '-' + id}
+      hideLabel={hideLabel}
       label={(label ?? t('label:dato')) + ' (' + t('el:placeholder-date-default') + ')' + (required ? ' *' : '')}
       onBlur={() => {
         if (_dirty) {

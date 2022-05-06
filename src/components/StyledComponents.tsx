@@ -114,6 +114,7 @@ export const Dl = styled.dl`
 export const RepeatableRow = styled(PaddedHorizontallyDiv)`
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
+  min-height: 3.6rem;
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
   };
@@ -124,5 +125,10 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
     background-color: var(--navds-global-color-gray-100);
   }
 `
-
+export const GrayPanel = styled(Panel)`
+  background-color: var(--navds-semantic-color-canvas-background);
+`
+export const TransparentPanel = styled(Panel)`
+  background-color: transparent;
+`
 export const CustomLabel = (props: any) => (<label className='navds-text-field__label navds-label'>{props.children}</label>)

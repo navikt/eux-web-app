@@ -35,7 +35,7 @@ const mapState = (state: State): any => ({
   previewPdu1file: state.pdu1.previewPdu1
 })
 
-const PreviewPDU1: React.FC<PreviewPDU1Props> = ({validation, namespace}: PreviewPDU1Props) => {
+const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: PreviewPDU1Props) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {

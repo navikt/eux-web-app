@@ -31,13 +31,12 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
       }
     }
 
-    case types.VALIDATION_SET: {
-      console.log('reducer: VALIDATION_SET ', Object.keys((action as ActionWithPayload).payload))
+    case types.VALIDATION_SET:
       return {
         ...state,
         status: (action as ActionWithPayload).payload
       }
-    }
+
     default:
       return state
   }

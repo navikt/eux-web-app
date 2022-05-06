@@ -1,9 +1,9 @@
 import { Eye, EyeScreened, Search } from '@navikt/ds-icons'
-import { Button, Checkbox, Ingress, Label, Loader, Panel, Tag } from '@navikt/ds-react'
+import { Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import { SpacedHr } from 'components/StyledComponents'
+import { GrayPanel, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, AdresseType } from 'declarations/sed'
 import _ from 'lodash'
@@ -62,7 +62,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
     }
   }
 
-  const renderAdresses = (key: AdresseType, label: string, adresser: Array<Adresse>) => (
+  const renderAdresses = (key: AdresseType, type: AdresseType, adresser: Array<Adresse>) => (
     <>
       {adresser?.map(adresse => (
         <Checkbox
@@ -71,9 +71,16 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
           checked={hasAddress(adresse)}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(adresse, e.target.checked)}
         >
-          <Tag size='small' variant='info'>{label}</Tag>
-          <HorizontalSeparatorDiv size='0.5' />
-          <AdresseBox border={false} adresse={adresse} padding='0' oneLine />
+          <AdresseBox
+            border={false}
+            seeType={true}
+            adresse={{
+              ...adresse,
+              type
+            }}
+            padding='0'
+            oneLine
+          />
         </Checkbox>
       ))}
     </>
@@ -128,7 +135,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
       </AlignStartRow>
       <VerticalSeparatorDiv />
       {_open && (
-        <Panel border>
+        <GrayPanel border>
           <Label>
             {t('label:pdl-adresse-til', { person: personName })}
           </Label>
@@ -141,7 +148,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
           {adresseMap.opphold && renderAdresses('opphold', t('label:oppholdsadresse'), adresseMap.opphold)}
           {adresseMap.kontakt && renderAdresses('kontakt', t('label:kontaktadresse'), adresseMap.kontakt)}
           {adresseMap.annet && renderAdresses('annet', t('label:annet'), adresseMap.annet)}
-        </Panel>
+        </GrayPanel>
       )}
     </>
   )

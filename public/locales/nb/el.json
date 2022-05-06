@@ -198,9 +198,9 @@
   "option-svar-1": "Positivt svar på etterspurt informasjon",
   "option-svar-2": "Negativt svar på etterspurt informasjon",
 
-  "option-telefon-type-work": "Arbeid",
-  "option-telefon-type-home": "Hjem",
-  "option-telefon-type-mobile": "Mobile",
+  "option-telefon-type-arbeid": "Arbeid",
+  "option-telefon-type-hjem": "Hjem",
+  "option-telefon-type-mobil": "Mobile",
 
   "option-trygdeordning-perioderMedArbeid": "Arbeid",
   "option-trygdeordning-perioderMedTrygd": "Trygd",

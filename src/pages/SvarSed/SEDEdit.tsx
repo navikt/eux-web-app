@@ -139,7 +139,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
     return newReplySed
   }
 
-
   const sendReplySed = (e: any): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
@@ -433,7 +432,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
             <Button
               variant='tertiary'
               // amplitude is dealt on SendSedClick
-              title={t('message:help-reset-sed')}
+              title={t('message:help-restore-sed')}
               onClick={onRestoreSedClick}
             >
               {t('el:button-reset-form')}

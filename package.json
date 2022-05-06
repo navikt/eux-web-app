@@ -37,7 +37,7 @@
     "@navikt/fremdriftslinje": "^3.0.2",
     "@navikt/hoykontrast": "^3.0.8",
     "@navikt/land-verktoy": "^3.0.3",
-    "@navikt/landvelger": "^3.0.4",
+    "@navikt/landvelger": "^3.0.5",
     "@navikt/paginering": "^3.0.1",
     "@navikt/tabell": "^3.5.0",
     "@reduxjs/toolkit": "^1.8.1",
