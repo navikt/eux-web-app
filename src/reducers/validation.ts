@@ -27,7 +27,7 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
 
       return {
         ...state,
-        status: _.omit(state.status, key)
+        status: _.omitBy(state.status, (value, k) => k.startsWith(key))
       }
     }
 

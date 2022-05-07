@@ -73,7 +73,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         >
           <AdresseBox
             border={false}
-            seeType={true}
+            seeType
             adresse={{
               ...adresse,
               type

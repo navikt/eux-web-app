@@ -55,7 +55,6 @@ const Adresser: React.FC<MainFormProps> = ({
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_editing, _setEditing] = useState<Array<number>>([])
-  const [_seeEditButton, _setSeeEditButton] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseProps>(validateAdresse, namespace)
 
   useUnmount(() => {
@@ -123,43 +122,38 @@ const Adresser: React.FC<MainFormProps> = ({
   }
 
   const renderRow = (adresse: Adresse | null, index: number) => {
-
     const idx = getIdx(index)
     const editing: boolean = adresse === null || _.find(_editing, i => i === index) !== undefined
     const _adresse = index < 0 ? _newAdresse : adresse
     return (
       <RepeatableRow
-        onMouseEnter={() => _setSeeEditButton(index)}
-        onMouseLeave={() => _setSeeEditButton(undefined)}
         className={classNames({ new: index < 0 })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {editing ? (
-        <AdresseForm
-          key={namespace + idx + getId(_adresse)}
-          namespace={namespace + idx}
-          adresse={_adresse}
-          onAdressChanged={(a: Adresse, type: string | undefined) => setAdresse(a, type, index)}
-          validation={index < 0 ? _validation : validation}
-        />
-        ) : (
-          <AdresseBox adresse={_adresse} seeType/>
-        )}
+        {editing
+          ? (
+            <AdresseForm
+              key={namespace + idx + getId(_adresse)}
+              namespace={namespace + idx}
+              adresse={_adresse}
+              onAdressChanged={(a: Adresse, type: string | undefined) => setAdresse(a, type, index)}
+              validation={index < 0 ? _validation : validation}
+            />
+            )
+          : (
+            <AdresseBox adresse={_adresse} seeType />
+            )}
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <AlignEndColumn>
             <AddRemovePanel2<Adresse>
-              getId={getId}
               item={adresse}
               index={index}
-              editing={editing}
-              namespace={namespace}
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              seeEditButton={_seeEditButton === index}
-              onEditing={(s, index) => _setEditing(_editing.concat(index))}
-              onCancelEditing={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onStartEdit={(s, index) => _setEditing(_editing.concat(index))}
+              onCancelEdit={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
             />
           </AlignEndColumn>
         </AlignStartRow>

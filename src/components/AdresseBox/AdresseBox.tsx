@@ -21,16 +21,18 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
     return null
   }
   return (
-    <TransparentPanel border={border} style={{
-      padding: padding + 'rem',
-      display: oneLine ? 'inline-flex' : 'flex',
-      flexDirection: oneLine ? 'row' : 'column',
-      alignItems: 'flex-start'
-    }}>
+    <TransparentPanel
+      border={border} style={{
+        padding: padding + 'rem',
+        display: oneLine ? 'inline-flex' : 'flex',
+        flexDirection: oneLine ? 'row' : 'column',
+        alignItems: 'flex-start'
+      }}
+    >
       {seeType && (
         <>
           <Tag size='small' variant='info'>{t('label:' + adresse.type)}</Tag>
-          <HorizontalSeparatorDiv size='0.5'/>
+          <HorizontalSeparatorDiv size='0.5' />
         </>
       )}
       <BodyLong>

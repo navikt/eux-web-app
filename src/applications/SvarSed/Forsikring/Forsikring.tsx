@@ -14,7 +14,7 @@ import {
   Stroller,
   Vacation
 } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Detail, Heading, Label } from '@navikt/ds-react'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import InntektOgTimerFC from 'applications/SvarSed/Forsikring/InntektOgTimer/InntektOgTimer'
@@ -40,7 +40,7 @@ import {
   InntektOgTime,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring,
+  PeriodeMedForsikring, PeriodeSort,
   PeriodeUtenForsikring,
   U002Sed
 } from 'declarations/sed'
@@ -69,8 +69,6 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-type Sort = 'time' | 'group'
-
 const Forsikring: React.FC<MainFormProps> = ({
   options,
   parentNamespace,
@@ -84,7 +82,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-forsikring`
 
-  const getId = (p: ForsikringPeriode | null): string => p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
+  const getId = (p: ForsikringPeriode | null): string => p ? p.__type + '[' + p.__index + ']' : 'new-forsikring'
 
   const [_newType, _setNewType] = useState<string | undefined>(undefined)
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
@@ -92,7 +90,7 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>(getId)
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_sort, _setSort] = useState<Sort>('time')
+  const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_visible, _setVisible] = useState<{[k in string]: Array<number>| undefined}>({})
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeProps>(validateForsikringPeriode, namespace)
 
@@ -254,6 +252,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     } else {
       delete periode.__type
       delete periode.__index
+      delete periode.__edit
       dispatch(updateReplySed(`${type}[${index}]`, periode))
       if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
@@ -273,16 +272,16 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   const onRemove = (periode: ForsikringPeriode) => {
     removeFromDeletion(periode)
-    const newPeriodes: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
-    newPeriodes.splice(periode.__index!, 1)
-    dispatch(updateReplySed(periode.__type!, newPeriodes))
+    const newPerioder: Array<ForsikringPeriode> = _.get(replySed, periode.__type!) as Array<ForsikringPeriode>
+    newPerioder.splice(periode.__index!, 1)
+    dispatch(updateReplySed(periode.__type!, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: periode.__type! })
   }
 
   const onAdd = () => {
-    let newPeriodes: Array<ForsikringPeriode> | undefined = _.get(replySed, _newType!)
-    if (_.isNil(newPeriodes)) {
-      newPeriodes = []
+    let newPerioder: Array<ForsikringPeriode> | undefined = _.get(replySed, _newType!)
+    if (_.isNil(newPerioder)) {
+      newPerioder = []
     }
     const valid: boolean = _performValidation({
       periode: _newPeriode as ForsikringPeriode,
@@ -290,8 +289,8 @@ const Forsikring: React.FC<MainFormProps> = ({
       personName
     })
     if (valid && _newType) {
-      newPeriodes = newPeriodes.concat(_newPeriode!)
-      dispatch(updateReplySed(_newType, newPeriodes))
+      newPerioder = newPerioder.concat(_newPeriode!)
+      dispatch(updateReplySed(_newType, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: _newType })
       onCancel()
     }
@@ -317,9 +316,9 @@ const Forsikring: React.FC<MainFormProps> = ({
   const renderRow = (periode: ForsikringPeriode | null, index: number) => {
     const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
     const _type: string = index < 0 ? _newType! : periode!.__type!
-    const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real replySed index
-    // namespace for index < 0: MainForm-bruker-forsikring-arbeidsgiver-adresse-gate
-    // namespace for index >= 0: MainForm-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
+    const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real index from replySed
+    // namespace for index < 0: svarsed-bruker-forsikring-arbeidsgiver-adresse-gate
+    // namespace for index >= 0: svarsed-bruker-forsikring[perioderSyk][2]-arbeidsgiver-adresse-gate
     const idx = getNSIdx(_type, _index)
 
     const _v: Validation = index < 0 ? _validation : validation
@@ -563,14 +562,14 @@ const Forsikring: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column style={{ maxWidth: '40px' }} />
                 <Column>
-                  <label className='navds-text-field__label navds-label'>
+                  <Label>
                     {t('label:startdato')}
-                  </label>
+                  </Label>
                 </Column>
                 <Column>
-                  <label className='navds-text-field__label navds-label'>
+                  <Label>
                     {t('label:sluttdato')}
-                  </label>
+                  </Label>
                 </Column>
                 <Column flex='2' />
               </AlignStartRow>

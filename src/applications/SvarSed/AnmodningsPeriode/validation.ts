@@ -18,8 +18,8 @@ export const validateAnmodningsPeriode = (
     index
   }: ValidationAnmodningsPeriodeProps
 ): boolean => {
-  return validatePeriode(v, namespace + '-perioder', {
-    periode: anmodningsperiode!,
+  return validatePeriode(v, namespace, {
+    periode: anmodningsperiode,
     index
   })
 }
@@ -32,7 +32,6 @@ export const validateAnmodningsPerioder = (
   }: ValidationAnmodningsPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-
   anmodningsperioder?.forEach((anmodningsperiode: Periode, index: number) => {
     hasErrors.push(validateAnmodningsPeriode(v, namespace, {
       anmodningsperiode,

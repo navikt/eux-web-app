@@ -57,7 +57,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 
   const [_editing, _setEditing] = useState<Array<number>>([])
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_seeEditButton, _setSeeEditButton] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>(validateUtenlandskPin, namespace)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
@@ -132,12 +131,10 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const editing: boolean = utenlandskePin === null || _.find(_editing, i => i === index) !== undefined
     return (
       <RepeatableRow
-        onMouseEnter={() => _setSeeEditButton(index)}
-        onMouseLeave={() => _setSeeEditButton(undefined)}
         className={classNames({
-        new: index < 0,
-        error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
-      })}
+          new: index < 0,
+          error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
+        })}
       >
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
@@ -201,18 +198,14 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           </Column>
           <AlignEndColumn>
             <AddRemovePanel2<Pin>
-              getId={getId}
               item={utenlandskePin}
               marginTop={index < 0}
               index={index}
-              editing={editing}
-              namespace={namespace}
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              seeEditButton={_seeEditButton === index}
-              onEditing={(p, index) => _setEditing(_editing.concat(index))}
-              onCancelEditing={(p, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onStartEdit={(p, index) => _setEditing(_editing.concat(index))}
+              onCancelEdit={(p, index) => _setEditing(_.filter(_editing, i => i !== index))}
             />
           </AlignEndColumn>
         </AlignStartRow>

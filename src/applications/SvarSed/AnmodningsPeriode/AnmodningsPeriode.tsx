@@ -1,17 +1,25 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { Button, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, PaddedHorizontallyDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  Column,
+  PaddedDiv,
+  PaddedHorizontallyDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import DateInput from 'components/Forms/DateInput'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed, FSed, Periode } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
-import performValidation from 'utils/performValidation'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -19,6 +27,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import { isFSed } from 'utils/sed'
 import {
   validateAnmodningsPeriode,
@@ -35,12 +44,14 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-anmodningsperiode`
+  const namespace: string = `${parentNamespace}-anmodningsperiode`
+  const target: string = 'anmodningsperioder'
 
-  const [_newAnmodningsperioder, _setNewAnmodningsperioder] = useState<Periode>({ startdato: '' })
+  const [_newAnmodningsperiode, _setNewAnmodningsperiode] = useState<Periode | undefined>(undefined)
+  const [_editAnmodningsperiode, _setEditAnmodningsperiode] = useState<Periode | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace)
 
   useUnmount(() => {
@@ -50,53 +61,66 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const resetForm = () => {
-    _setNewAnmodningsperioder({ startdato: '' })
+  const onCloseEdit = (namespace: string) => {
+    _setEditAnmodningsperiode(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewAnmodningsperiode(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (periode: Periode, index: number) => {
+    _setEditAnmodningsperiode(periode)
+    _setEditIndex(index)
   }
 
-  const onRemove = (index: number) => {
-    const newAnmodningsperioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
-    const deletedAnmodningsperioder: Array<Periode> = newAnmodningsperioder.splice(index, 1)
-    if (deletedAnmodningsperioder && deletedAnmodningsperioder.length > 0) {
-      removeFromDeletion(deletedAnmodningsperioder[0])
-    }
-    dispatch(updateReplySed('anmodningsperioder', newAnmodningsperioder))
-  }
-
-  const onAdd = () => {
-    const valid: boolean = _performValidation({
-      anmodningsperiode: _newAnmodningsperioder
-    })
+  const onSaveEdit = () => {
+    const editNamespace = namespace + '-perioder' + getIdx(_editIndex)
+    const [valid, newValidation] = performValidation<ValidationAnmodningsPeriodeProps>(
+      validation, editNamespace, validateAnmodningsPeriode, {
+        anmodningsperiode: _editAnmodningsperiode
+      })
     if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAnmodningsperiode))
+      onCloseEdit(editNamespace)
+    } else {
+      dispatch(setValidation(newValidation))
+    }
+  }
+
+  const onRemove = (removedPeriode: Periode) => {
+    const newAnmodningsperioder: Array<Periode> = _.reject((replySed as FSed).anmodningsperioder,
+      (p: Periode) => _.isEqual(removedPeriode, p))
+    dispatch(updateReplySed(target, newAnmodningsperioder))
+  }
+
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      anmodningsperiode: _newAnmodningsperiode
+    })
+    if (!!_newAnmodningsperiode && valid) {
       let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(_newAnmodningsperioder)
+      newPerioder = newPerioder.concat(_newAnmodningsperiode)
       dispatch(updateReplySed('anmodningsperioder', newPerioder))
-      onCancel()
+      onCloseNew()
     }
   }
 
   const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
     if (index < 0) {
-      _setNewAnmodningsperioder(newPeriode)
+      _setNewAnmodningsperiode(newPeriode)
       _resetValidation(namespace + '-perioder-stardato')
       _resetValidation(namespace + '-perioder-sluttdato')
     } else {
-      dispatch(updateReplySed(`anmodningsperioder[${index}]`, newPeriode))
-      if (validation[namespace + '-perioder' + getIdx(index) + '-stardato']) {
-        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-stardato'))
-      }
-      if (validation[namespace + '-anmodningsperioder' + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
-      }
+      _setEditAnmodningsperiode(newPeriode)
+      dispatch(resetValidation(namespace + '-perioder' + getIdx(index)))
     }
   }
 
@@ -128,40 +152,52 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   }
 
   const renderPeriode = (periode: Periode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
-    const idx = (index >= 0 ? '[' + index + ']' : '')
-    const getErrorFor = (index: number, el: string): string | undefined => {
-      return index < 0
-        ? _validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
-        : validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
-    }
-    const _periode = index < 0 ? _newAnmodningsperioder : periode
+    const idx = getIdx(index)
+    const _namespace = namespace + '-perioder' + idx
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
     return (
       <RepeatableRow className={classNames({ new: index < 0 })}>
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + '-perioder' + getIdx(index)}
-            error={{
-              startdato: getErrorFor(index, 'startdato'),
-              sluttdato: getErrorFor(index, 'sluttdato')
-            }}
-            breakInTwo
-            hideLabel={index >= 0}
-            setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
-            value={_periode}
-          />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop={index < 0}
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                breakInTwo
+                hideLabel={false}
+                setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
+                value={_periode}
+              />
+              )
+            : (
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                periode={_periode}
+              />
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel2<Periode>
+              item={periode}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
@@ -174,38 +210,35 @@ const PeriodeFC: React.FC<MainFormProps> = ({
       {isFSed(replySed) && (
         <>
           <PaddedHorizontallyDiv>
-            <Row>
-              <Column>
-                <label className='navds-text-field__label navds-label'>
-                  {t('label:startdato') + ' (' + t('el:placeholder-date-default') + ') *'}
-                </label>
-              </Column>
-              <Column>
-                <label className='navds-text-field__label navds-label'>
-                  {t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
-                </label>
-              </Column>
-              <Column flex='1.4' />
-            </Row>
+            <Heading size='small'>
+              {t('label:anmodningsperioder')}
+            </Heading>
           </PaddedHorizontallyDiv>
-          {(replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
           <VerticalSeparatorDiv />
-          <HorizontalLineSeparator />
+          {_.isEmpty((replySed as FSed)?.anmodningsperioder)
+            ? (
+              <PaddedHorizontallyDiv>
+                <SpacedHr />
+                <BodyLong>
+                  {t('message:warning-no-periods')}
+                </BodyLong>
+                <SpacedHr />
+              </PaddedHorizontallyDiv>
+              )
+            : (replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
           <VerticalSeparatorDiv />
-          {_seeNewForm
+          {_newForm
             ? renderPeriode(null, -1)
             : (
-              <Row>
-                <Column>
-                  <Button
-                    variant='tertiary'
-                    onClick={() => _setSeeNewForm(true)}
-                  >
-                    <AddCircle />
-                    {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                  </Button>
-                </Column>
-              </Row>
+              <PaddedDiv>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setNewForm(true)}
+                >
+                  <AddCircle />
+                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                </Button>
+              </PaddedDiv>
               )}
           <VerticalSeparatorDiv />
         </>

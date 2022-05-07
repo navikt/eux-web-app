@@ -3,24 +3,21 @@ import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Button, BodyLong } from '@navikt/ds-react'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import useAddRemove from 'hooks/useAddRemove'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 export interface AddRemovePanelProps<T> {
-  getId: (item: T) => string
   item: T | null
   index: number
   labels?: Labels
   marginTop?: boolean
-  namespace?: string
   onAddNew: () => void
-  editing: boolean
-  onEditing: (item: T, index: number) => void
-  onCancelEditing: (item: T, index: number) => void
+  inEditMode?: boolean
+  onStartEdit: (item: T, index: number) => void
+  onConfirmEdit?: (item: T, index: number) => void
+  onCancelEdit: (item: T, index: number) => void
   onCancelNew: () => void
-  seeEditButton: boolean
   onRemove: (item: T) => void
 }
 
@@ -31,26 +28,24 @@ const InlineFlexDiv = styled.div`
 
 const AddRemovePanel2 = <T extends any>({
   labels = {},
-  getId,
   item,
   index,
   marginTop = undefined,
-  namespace = '',
-  editing,
-  onEditing,
-  onCancelEditing,
+  inEditMode = false,
+  onStartEdit,
+  onConfirmEdit,
+  onCancelEdit,
   onRemove,
   onAddNew,
-  onCancelNew,
-  seeEditButton
+  onCancelNew
 }: AddRemovePanelProps<T>): JSX.Element | null => {
   const { t } = useTranslation()
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<T>(getId)
+  const [inDeleteMode, setInDeleteMode] = useState<boolean>(false)
 
-  const isNew = index < 0
-  const candidateForDeletion = isNew ? false : isInDeletion(item)
-  const candidateForEdition = isNew ? false : editing
+  const isNew = item === null
+  const candidateForDeletion = isNew ? false : inDeleteMode
+  const candidateForEdition = isNew ? false : inEditMode
 
   if (candidateForDeletion) {
     return (
@@ -62,7 +57,6 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-delete-yes'}
           onClick={() => onRemove(item!)}
         >
           {labels?.yes ?? t('label:ja')}
@@ -71,8 +65,7 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-delete-no'}
-          onClick={() => removeFromDeletion(item)}
+          onClick={() => setInDeleteMode(false)}
         >
           {labels?.no ?? t('label:nei')}
         </Button>
@@ -87,9 +80,8 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-edit-ok'}
           onClick={() => {
-            onCancelEditing(item!, index)
+            onConfirmEdit!(item!, index)
           }}
         >
           <SuccessStroke />
@@ -99,13 +91,13 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-edit-remove'}
-          onClick={() => addToDeletion(item)}
+          onClick={() => {
+            onCancelEdit(item!, index)
+          }}
         >
-          <Delete />
-          {labels?.remove ?? t('el:button-remove')}
+          <Cancel />
+          {labels?.cancel ?? t('el:button-cancel')}
         </Button>
-
       </InlineFlexDiv>
     )
   }
@@ -116,7 +108,6 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-add'}
           onClick={onAddNew}
         >
           <AddCircle />
@@ -126,7 +117,6 @@ const AddRemovePanel2 = <T extends any>({
         <Button
           size='small'
           variant='tertiary'
-          data-testid={namespace + '-addremove-cancel'}
           onClick={() => onCancelNew()}
         >
           <Cancel />
@@ -136,22 +126,26 @@ const AddRemovePanel2 = <T extends any>({
     )
   }
 
-  if (!seeEditButton) {
-    return null
-  }
-
   return (
-    <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
+    <InlineFlexDiv className={classNames('addremovepanel-buttons', { nolabel: marginTop })}>
       <Button
         size='small'
         variant='tertiary'
-        data-testid={namespace + '-addremove-edit'}
         onClick={() => {
-          onEditing(item!, index)
+          onStartEdit(item!, index)
         }}
       >
         <Edit />
         {labels?.edit ?? t('el:button-edit')}
+      </Button>
+      <HorizontalSeparatorDiv />
+      <Button
+        size='small'
+        variant='tertiary'
+        onClick={() => setInDeleteMode(true)}
+      >
+        <Delete />
+        {labels?.remove ?? t('el:button-remove')}
       </Button>
     </InlineFlexDiv>
   )

@@ -3,23 +3,16 @@ import { PensjonPeriode, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfDuplicate } from 'utils/validation'
+import { addError } from 'utils/validation'
 
 export interface ValidationDekkedePeriodeProps {
-  periode: Periode,
-  perioder: Array<Periode>,
-  index?: number,
-  personName?: string
+  periode: Periode | undefined
+  type: string | undefined
+  index?: number
+  personName?: string | undefined
 }
 
-export interface ValidationUdekkedePeriodeProps {
-  periode: Periode,
-  perioder: Array<Periode>,
-  index?: number,
-  personName?: string
-}
-
-interface ValidateTrygdeordningerProps {
+export interface ValidateTrygdeordningerProps {
   perioder: {[k in string]: Array<Periode | PensjonPeriode>}
   personName?: string
 }
@@ -32,78 +25,33 @@ export interface ValidationFamilieytelsePeriodeProps {
   personName?: string
 }
 
-const validateGenericPeriode = (
-  v: Validation,
-  namespace: string,
-  {
-    periode,
-    perioder,
-    index,
-    personName
-  }: ValidationDekkedePeriodeProps,
-  pageCategory: string,
-  sedCategory: string
-): boolean => {
-  const hasErrors: Array<boolean> = []
-  const idx = getIdx(index)
-
-  const extraNamespace = namespace + '-' + (!_.isNil(index) && index >= 0 ? sedCategory : pageCategory)
-
-  hasErrors.push(validatePeriode(v, extraNamespace, {
-    periode,
-    index,
-    personName
-  }))
-
-  hasErrors.push(checkIfDuplicate(v, {
-    needle: periode,
-    haystack: perioder,
-    matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
-    id: namespace + idx + '-startdato',
-    message: 'validation:duplicateStartdato',
-    index,
-    personName
-  }))
-
-  return hasErrors.find(value => value) !== undefined
-}
-
 export const validateDekkedePeriode = (
   v: Validation,
   namespace: string,
   {
     periode,
-    perioder,
+    type,
     index,
     personName
   }: ValidationDekkedePeriodeProps
 ): boolean => {
-  return validateGenericPeriode(v, namespace, {
-    periode,
-    perioder,
-    index,
-    personName
-  },
-  'dekkede', 'perioderMedITrygdeordning')
-}
+  const hasErrors: Array<boolean> = []
+  const idx = getIdx(index)
 
-export const validateUdekkedePeriode = (
-  v: Validation,
-  namespace: string,
-  {
+  if (_.isNil(index) && _.isEmpty(type)) {
+    hasErrors.push(addError(v, {
+      id: namespace + '-type',
+      message: 'validation:noType',
+      personName
+    }))
+  }
+
+  hasErrors.push(validatePeriode(v, namespace + idx, {
     periode,
-    perioder,
-    index,
     personName
-  }: ValidationDekkedePeriodeProps
-): boolean => {
-  return validateGenericPeriode(v, namespace, {
-    periode,
-    perioder,
-    index,
-    personName
-  },
-  'udekkede', 'perioderUtenforTrygdeordning')
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateFamilieytelserPeriode = (
@@ -179,17 +127,17 @@ export const validateFamilieytelserPeriode = (
 export const validatePerioder = (
   v: Validation,
   namespace: string,
-  sedCategory: string,
+  type: string,
   pageCategory: string,
   perioder: Array<Periode | PensjonPeriode>,
   personName?: string
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
-    if (sedCategory === 'perioderMedPensjon') {
-      hasErrors.push(validateFamilieytelserPeriode(v, namespace, { periode: (periode as PensjonPeriode), perioder: (perioder as Array<PensjonPeriode>), index, sedCategory, personName }))
+    if (type === 'perioderMedPensjon') {
+      hasErrors.push(validateFamilieytelserPeriode(v, namespace, { periode: (periode as PensjonPeriode), perioder: (perioder as Array<PensjonPeriode>), index, sedCategory: type, personName }))
     } else {
-      hasErrors.push(validateGenericPeriode(v, namespace, { periode: (periode as Periode), perioder: (perioder as Array<Periode>), index, personName }, pageCategory, sedCategory))
+      hasErrors.push(validateDekkedePeriode(v, namespace, { periode: (periode as Periode), type, index, personName }))
     }
   })
   return hasErrors.find(value => value) !== undefined
@@ -205,7 +153,7 @@ export const validateTrygdeordninger = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   hasErrors.push(validatePerioder(v, namespace, 'perioderMedITrygdeordning', 'dekkede', perioder.perioderMedITrygdeordning, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderUtenforTrygdeordning', 'udekkede', perioder.perioderUtenforTrygdeordning, personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderUtenforTrygdeordning', 'dekkede', perioder.perioderUtenforTrygdeordning, personName))
   hasErrors.push(validatePerioder(v, namespace, 'perioderMedArbeid', 'familieYtelse', perioder.perioderMedArbeid, personName))
   hasErrors.push(validatePerioder(v, namespace, 'perioderMedTrygd', 'familieYtelse', perioder.perioderMedTrygd, personName))
   hasErrors.push(validatePerioder(v, namespace, 'perioderMedYtelser', 'familieYtelse', perioder.perioderMedYtelser, personName))

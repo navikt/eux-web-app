@@ -45,6 +45,8 @@ export type KontoType = 'sepa' | 'ordinaer'
 
 export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'admodning_om_mer_informasjon'
 
+export type PeriodeSort = 'time' | 'group'
+
 // periode: simple period. arbeidsperiode: period as arbeidsperioderBox. addedArbeidsperiode: period as arbeidsperioderBox that was added by the user
 export type PlanItemType = 'periode' | 'arbeidsperiode' | 'addedArbeidsperiode'
 
@@ -65,6 +67,7 @@ export interface Periode {
   // internal use, for periode labeling
   __type ?: string
   __index ?: number
+  __edit ?: boolean
 }
 
 export interface PensjonPeriode {

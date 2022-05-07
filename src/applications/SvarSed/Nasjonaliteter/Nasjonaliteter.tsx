@@ -55,14 +55,12 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
-  const getId = (s: Statsborgerskap): string => s.land
 
   const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
   const [_newFradato, _setNewFradato] = useState<string>('')
 
   const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
   const [_editing, _setEditing] = useState<Array<number>>([])
-  const [_seeEditButton, _setSeeEditButton] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   useUnmount(() => {
@@ -138,7 +136,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   }
 
   const renderRow = (statsborgerskap: Statsborgerskap | null, index: number) => {
-
     const idx = getIdx(index)
     const getErrorFor = (index: number, el: string): string | undefined => (
       index < 0
@@ -149,8 +146,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const _land: string | undefined = index < 0 ? _newLand : statsborgerskap?.land
     return (
       <RepeatableRow
-        onMouseEnter={() => _setSeeEditButton(index)}
-        onMouseLeave={() => _setSeeEditButton(undefined)}
         className={classNames({ new: index < 0 })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -174,7 +169,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   required
                   values={_land}
                 />
-              )
+                )
               : (
                 <PileDiv>
                   <FlexCenterDiv>
@@ -188,7 +183,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                     </div>
                   )}
                 </PileDiv>
-              )}
+                )}
           </Column>
           {isUSed(replySed!) && (
             <Column>
@@ -208,18 +203,14 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           )}
           <AlignEndColumn>
             <AddRemovePanel2<Statsborgerskap>
-              getId={getId}
               item={statsborgerskap}
               marginTop={index < 0}
               index={index}
-              editing={editing}
-              namespace={namespace}
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              seeEditButton={_seeEditButton === index}
-              onEditing={(s, index) => _setEditing(_editing.concat(index))}
-              onCancelEditing={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onStartEdit={(s, index) => _setEditing(_editing.concat(index))}
+              onCancelEdit={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
             />
           </AlignEndColumn>
         </AlignStartRow>

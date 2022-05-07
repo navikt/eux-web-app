@@ -63,9 +63,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const [_seeNewEpostForm, _setSeeNewEpostForm] = useState<boolean>(false)
 
   const [_telefonEditing, _setTelefonEditing] = useState<Array<number>>([])
-  const [_seeTelefonEditButton, _setSeeTelefonEditButton] = useState<number | undefined>(undefined)
   const [_epostEditing, _setEpostEditing] = useState<Array<number>>([])
-  const [_seeEpostEditButton, _setSeeEpostEditButton] = useState<number | undefined>(undefined)
 
   const [_validationTelefon, resetValidationTelefon, _performValidationTelefon] =
     useLocalValidation<ValidationKontaktsinformasjonTelefonProps>(validateKontaktsinformasjonTelefon, namespaceTelefon)
@@ -83,9 +81,9 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   })
 
   const telefonTypeOptions: Options = [
-    {label: t('el:option-telefon-type-arbeid'), value: 'arbeid'},
-    {label: t('el:option-telefon-type-hjem'), value: 'hjem'},
-    {label: t('el:option-telefon-type-mobil'), value: 'mobil'}
+    { label: t('el:option-telefon-type-arbeid'), value: 'arbeid' },
+    { label: t('el:option-telefon-type-hjem'), value: 'hjem' },
+    { label: t('el:option-telefon-type-mobil'), value: 'mobil' }
   ]
 
   const onTypeChanged = (type: TelefonType, index: number) => {
@@ -219,8 +217,6 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const _type = index < 0 ? _newType : telefon?.type
     return (
       <RepeatableRow
-        onMouseEnter={() => _setSeeTelefonEditButton(index)}
-        onMouseLeave={() => _setSeeTelefonEditButton(undefined)}
         className={classNames({ new: index < 0 })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -240,9 +236,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   required
                   value={_nummer}
                 />
-              ) : (
+                )
+              : (
                 <BodyLong>{_nummer}</BodyLong>
-              )}
+                )}
           </Column>
           <Column>
             {editing
@@ -262,24 +259,21 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   value={getTypeOption(_type)}
                   defaultValue={getTypeOption(_type)}
                 />
-              ) : (
-                <BodyLong>{t('el:option-telefon-type-'  + _type)}</BodyLong>
-              )}
+                )
+              : (
+                <BodyLong>{t('el:option-telefon-type-' + _type)}</BodyLong>
+                )}
           </Column>
           <Column>
             <AddRemovePanel2<Telefon>
-              getId={getTelefonId}
               item={telefon}
               marginTop={index < 0}
               index={index}
-              editing={editing}
-              namespace={namespaceTelefon}
               onRemove={onTelefonRemove}
               onAddNew={onTelefonAdd}
               onCancelNew={() => onCancel('telefon')}
-              seeEditButton={_seeTelefonEditButton === index}
-              onEditing={(s, index) => _setTelefonEditing(_telefonEditing.concat(index))}
-              onCancelEditing={(s, index) => _setTelefonEditing(_.filter(_telefonEditing, i => i !== index))}
+              onStartEdit={(s, index) => _setTelefonEditing(_telefonEditing.concat(index))}
+              onCancelEdit={(s, index) => _setTelefonEditing(_.filter(_telefonEditing, i => i !== index))}
             />
           </Column>
         </AlignStartRow>
@@ -294,8 +288,6 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const _adresse = index < 0 ? _newAdresse : epost?.adresse
     return (
       <RepeatableRow
-        onMouseEnter={() => _setSeeEpostEditButton(index)}
-        onMouseLeave={() => _setSeeEpostEditButton(undefined)}
         className={classNames({ new: index < 0 })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -315,26 +307,23 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   required
                   value={_adresse}
                 />
-              ) : (
+                )
+              : (
                 <BodyLong>
                   {_adresse}
                 </BodyLong>
-              )}
+                )}
           </Column>
           <AlignEndColumn>
             <AddRemovePanel2<Epost>
-              getId={getEpostId}
               item={epost}
               marginTop={index < 0}
               index={index}
-              editing={editing}
-              namespace={namespaceEpost}
               onRemove={onEpostRemove}
               onAddNew={onEpostAdd}
               onCancelNew={() => onCancel('epost')}
-              seeEditButton={_seeEpostEditButton === index}
-              onEditing={(s, index) => _setEpostEditing(_epostEditing.concat(index))}
-              onCancelEditing={(s, index) => _setEpostEditing(_.filter(_epostEditing, i => i !== index))}
+              onStartEdit={(s, index) => _setEpostEditing(_epostEditing.concat(index))}
+              onCancelEdit={(s, index) => _setEpostEditing(_.filter(_epostEditing, i => i !== index))}
             />
           </AlignEndColumn>
         </AlignStartRow>
@@ -345,7 +334,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv size='2'/>
+      <VerticalSeparatorDiv size='2' />
       {_.isEmpty(telefoner)
         ? (
           <PaddedHorizontallyDiv>
@@ -355,7 +344,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
             </BodyLong>
             <SpacedHr />
           </PaddedHorizontallyDiv>
-        )
+          )
         : (
           <>
             <PaddedHorizontallyDiv>
@@ -370,29 +359,29 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                     {t('label:type') + ' *'}
                   </Label>
                 </Column>
-                <Column/>
+                <Column />
               </AlignStartRow>
             </PaddedHorizontallyDiv>
             <VerticalSeparatorDiv size='0.8' />
             {telefoner?.map(renderTelefonRow)}
           </>
-        )}
+          )}
       <VerticalSeparatorDiv />
       {_seeNewTelefonForm
         ? renderTelefonRow(null, -1)
         : (
           <PaddedDiv>
             <AlignStartRow>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewTelefonForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
-              </Button>
-            </Column>
-          </AlignStartRow>
+              <Column>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setSeeNewTelefonForm(true)}
+                >
+                  <AddCircle />
+                  {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
+                </Button>
+              </Column>
+            </AlignStartRow>
           </PaddedDiv>
           )}
 
@@ -407,23 +396,23 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
             </BodyLong>
             <SpacedHr />
           </PaddedHorizontallyDiv>
-        )
+          )
         : (
           <>
-          <PaddedHorizontallyDiv>
-            <AlignStartRow>
-              <Column>
-                <Label>
-                {t('label:epost') + ' *'}
-                </Label>
-              </Column>
-              <Column />
-            </AlignStartRow>
-           </PaddedHorizontallyDiv>
-           <VerticalSeparatorDiv size='0.8' />
-           {eposter?.map(renderEpostRow)}
-        </>
-        )}
+            <PaddedHorizontallyDiv>
+              <AlignStartRow>
+                <Column>
+                  <Label>
+                    {t('label:epost') + ' *'}
+                  </Label>
+                </Column>
+                <Column />
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv size='0.8' />
+            {eposter?.map(renderEpostRow)}
+          </>
+          )}
       <VerticalSeparatorDiv />
       {_seeNewEpostForm
         ? renderEpostRow(null, -1)

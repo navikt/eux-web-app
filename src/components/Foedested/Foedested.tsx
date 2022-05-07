@@ -200,17 +200,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         <PaddedRow size='0.5'>
           <AlignEndColumn>
             <AddRemovePanel2<Foedested>
-              getId={(foedested): string => foedested.by + '-' + foedested.region + '-' + foedested.land}
               item={foedested}
               index={index}
-              editing={_editMode}
-              namespace={namespace}
               onRemove={onRemove}
               onAddNew={onAdd}
               onCancelNew={onCancel}
-              seeEditButton={true}
-              onEditing={() => _setEditMode(true)}
-              onCancelEditing={() => _setEditMode(false)}
+              onStartEdit={() => _setEditMode(true)}
+              onCancelEdit={() => _setEditMode(false)}
             />
           </AlignEndColumn>
         </PaddedRow>
