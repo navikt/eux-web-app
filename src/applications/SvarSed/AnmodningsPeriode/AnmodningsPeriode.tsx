@@ -61,67 +61,15 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const onCloseEdit = (namespace: string) => {
-    _setEditAnmodningsperiode(undefined)
-    _setEditIndex(undefined)
-    dispatch(resetValidation(namespace))
-  }
-
-  const onCloseNew = () => {
-    _setNewAnmodningsperiode(undefined)
-    _setNewForm(false)
-    _resetValidation()
-  }
-
-  const onStartEdit = (periode: Periode, index: number) => {
-    _setEditAnmodningsperiode(periode)
-    _setEditIndex(index)
-  }
-
-  const onSaveEdit = () => {
-    const editNamespace = namespace + '-perioder' + getIdx(_editIndex)
-    const [valid, newValidation] = performValidation<ValidationAnmodningsPeriodeProps>(
-      validation, editNamespace, validateAnmodningsPeriode, {
-        anmodningsperiode: _editAnmodningsperiode
-      })
-    if (valid) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAnmodningsperiode))
-      onCloseEdit(editNamespace)
-    } else {
-      dispatch(setValidation(newValidation))
-    }
-  }
-
-  const onRemove = (removedPeriode: Periode) => {
-    const newAnmodningsperioder: Array<Periode> = _.reject((replySed as FSed).anmodningsperioder,
-      (p: Periode) => _.isEqual(removedPeriode, p))
-    dispatch(updateReplySed(target, newAnmodningsperioder))
-  }
-
-  const onAddNew = () => {
-    const valid: boolean = _performValidation({
-      anmodningsperiode: _newAnmodningsperiode
-    })
-    if (!!_newAnmodningsperiode && valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
-      if (_.isNil(newPerioder)) {
-        newPerioder = []
-      }
-      newPerioder = newPerioder.concat(_newAnmodningsperiode)
-      dispatch(updateReplySed('anmodningsperioder', newPerioder))
-      onCloseNew()
-    }
-  }
-
   const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
     if (index < 0) {
       _setNewAnmodningsperiode(newPeriode)
       _resetValidation(namespace + '-perioder-stardato')
       _resetValidation(namespace + '-perioder-sluttdato')
-    } else {
-      _setEditAnmodningsperiode(newPeriode)
-      dispatch(resetValidation(namespace + '-perioder' + getIdx(index)))
+      return
     }
+    _setEditAnmodningsperiode(newPeriode)
+    dispatch(resetValidation(namespace + '-perioder' + getIdx(index)))
   }
 
   const setInfoPresisering = (infoPresisering: string) => {
@@ -151,14 +99,75 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderPeriode = (periode: Periode | null, index: number) => {
+  const onCloseEdit = () => {
+    _setEditAnmodningsperiode(undefined)
+    _setEditIndex(undefined)
+  }
+
+  const onCloseNew = () => {
+    _setNewAnmodningsperiode(undefined)
+    _setNewForm(false)
+    _resetValidation()
+  }
+
+  const onStartEdit = (periode: Periode, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + '-perioder' + getIdx(_editIndex)))
+    }
+    _setEditAnmodningsperiode(periode)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationAnmodningsPeriodeProps>(
+      validation, namespace + '-perioder', validateAnmodningsPeriode, {
+        anmodningsperiode: _editAnmodningsperiode,
+        index: _editIndex
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAnmodningsperiode))
+      dispatch(resetValidation(namespace + '-perioder' + getIdx(_editIndex)))
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(newValidation))
+    }
+  }
+
+  const onRemove = (removedPeriode: Periode) => {
+    const newAnmodningsperioder: Array<Periode> = _.reject((replySed as FSed).anmodningsperioder,
+      (p: Periode) => _.isEqual(removedPeriode, p))
+    dispatch(updateReplySed(target, newAnmodningsperioder))
+  }
+
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      anmodningsperiode: _newAnmodningsperiode
+    })
+    if (!!_newAnmodningsperiode && valid) {
+      let newPerioder: Array<Periode> = _.cloneDeep((replySed as FSed).anmodningsperioder)
+      if (_.isNil(newPerioder)) {
+        newPerioder = []
+      }
+      newPerioder.push(_newAnmodningsperiode)
+      dispatch(updateReplySed('anmodningsperioder', newPerioder))
+      onCloseNew()
+    }
+  }
+
+  const renderRow = (periode: Periode | null, index: number) => {
     const idx = getIdx(index)
     const _namespace = namespace + '-perioder' + idx
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        className={classNames({
+          new: index < 0,
+          error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
+        })}
+      >
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           {inEditMode
@@ -178,8 +187,8 @@ const PeriodeFC: React.FC<MainFormProps> = ({
             : (
               <PeriodeText
                 error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  startdato: _v[_namespace + '-startdato'],
+                  sluttdato: _v[_namespace + '-sluttdato']
                 }}
                 periode={_periode}
               />
@@ -195,7 +204,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(namespace)}
+              onCancelEdit={onCloseEdit}
             />
           </AlignEndColumn>
         </AlignStartRow>
@@ -225,10 +234,10 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                 <SpacedHr />
               </PaddedHorizontallyDiv>
               )
-            : (replySed as FSed)?.anmodningsperioder?.map(renderPeriode)}
+            : (replySed as FSed)?.anmodningsperioder?.map(renderRow)}
           <VerticalSeparatorDiv />
           {_newForm
-            ? renderPeriode(null, -1)
+            ? renderRow(null, -1)
             : (
               <PaddedDiv>
                 <Button

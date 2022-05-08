@@ -10,7 +10,7 @@ const PeriodeText = ({
     <Column>
       <FlexCenterDiv>
         <PileDiv>
-          <BodyLong>
+          <BodyLong id={error?.startdato?.skjemaelementId}>
             {periode?.startdato}
           </BodyLong>
           {error?.startdato?.feilmelding && (
@@ -22,7 +22,7 @@ const PeriodeText = ({
         <HorizontalSeparatorDiv />-
         <HorizontalSeparatorDiv />
         <PileDiv>
-          <BodyLong>
+          <BodyLong id={error?.sluttdato?.skjemaelementId}>
             {periode?.sluttdato}
           </BodyLong>
           {error?.sluttdato?.feilmelding && (

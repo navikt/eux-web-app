@@ -23,11 +23,11 @@ import { State } from 'declarations/reducers'
 import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
-import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status

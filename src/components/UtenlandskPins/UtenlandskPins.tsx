@@ -9,13 +9,14 @@ import {
   HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
-  PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
+import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
@@ -25,7 +26,9 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAppDispatch } from 'store'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
 
 export interface UtenlandskPinProps {
@@ -48,37 +51,85 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   validation
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
   const landUtenNorge = CountryFilter.STANDARD({ useUK: true })?.filter((it: string) => it !== 'NO')
-  const getId = (p: Pin): string => p.land + '-' + p.identifikator
 
-  const [_newIdentifikator, _setNewIdentifikator] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+  const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)
+  const [_editPin, _setEditPin] = useState<Pin | undefined>(undefined)
 
-  const [_editing, _setEditing] = useState<Array<number>>([])
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>(validateUtenlandskPin, namespace)
 
   const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
     if (index < 0) {
-      _setNewIdentifikator(newIdentifikator.trim())
+      _setNewPin({
+        ..._newPin,
+        identifikator: newIdentifikator.trim()
+      })
       _resetValidation(namespace + '-identifikator')
       return
     }
-    const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
-    newPins[index].identifikator = newIdentifikator.trim()
-    onPinsChanged(newPins, namespace + '[' + index + ']-identifikator')
+    _setEditPin({
+      ..._editPin,
+      identifikator: newIdentifikator.trim()
+    })
+    dispatch(resetValidation(namespace + getIdx(index) + '-identifikator'))
   }
 
   const onUtenlandskeLandChange = (newLand: string, index: number) => {
     if (index < 0) {
-      _setNewLand(newLand.trim())
+      _setNewPin({
+        ..._newPin,
+        land: newLand.trim()
+      })
       _resetValidation(namespace + '-land')
       return
     }
-    const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
-    newPins[index].land = newLand.trim()
-    onPinsChanged(newPins, namespace + '[' + index + ']-land')
+    _setEditPin({
+      ..._editPin,
+      land: newLand.trim()
+    })
+    dispatch(resetValidation(namespace + getIdx(index) + '-land'))
+  }
+
+  const onCloseEdit = () => {
+    _setEditPin(undefined)
+    _setEditIndex(undefined)
+  }
+
+  const onCloseNew = () => {
+    _setNewPin(undefined)
+    _setNewForm(false)
+    _resetValidation()
+  }
+
+  const onStartEdit = (pin: Pin, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditPin(pin)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationUtenlandskPinProps>(
+      validation, namespace, validateUtenlandskPin, {
+        pin: _editPin,
+        utenlandskePins: pins,
+        index: _editIndex,
+        personName
+      })
+    if (_editIndex !== undefined && !!_editPin && valid) {
+      const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
+      newPins[_editIndex] = _editPin
+      onPinsChanged(newPins, namespace + getIdx(_editIndex))
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(newValidation))
+    }
   }
 
   const onRemove = (removedPin: Pin) => {
@@ -87,125 +138,99 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     standardLogger(loggingNamespace + '.utenlandskpin.remove')
   }
 
-  const resetForm = () => {
-    _setNewIdentifikator('')
-    _setNewLand('')
-    _resetValidation()
-  }
-
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
-
-  const onAdd = () => {
-    const newPin: Pin = {
-      land: _newLand,
-      identifikator: _newIdentifikator
-    }
-
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
-      pin: newPin,
+      pin: _newPin,
       utenlandskePins: pins,
       personName
     })
-    if (valid) {
+    if (!!_newPin && valid) {
       let newUtenlandskePins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
       if (_.isNil(newUtenlandskePins)) {
         newUtenlandskePins = []
       }
-      newUtenlandskePins = newUtenlandskePins.concat(newPin)
+      newUtenlandskePins = newUtenlandskePins.concat(_newPin)
       onPinsChanged(newUtenlandskePins, undefined)
       standardLogger(loggingNamespace + '.utenlandskpin.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
-  const renderRow = (utenlandskePin: Pin | null, index: number) => {
+  const renderRow = (pin: Pin | null, index: number) => {
     const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    )
-    const editing: boolean = utenlandskePin === null || _.find(_editing, i => i === index) !== undefined
+    const _namespace = namespace + idx
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
     return (
       <RepeatableRow
         className={classNames({
           new: index < 0,
-          error: getErrorFor(index, 'identifikator') || getErrorFor(index, 'land')
+          error: _v[_namespace + '-identifikator'] || _v[_namespace + '-land']
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
-            {editing
+            {inEditMode
               ? (
                 <CountrySelect
                   closeMenuOnSelect
-                  data-testid={namespace + idx + '-land'}
-                  error={getErrorFor(index, 'land')}
+                  data-testid={_namespace + '-land'}
+                  error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
-                  id={namespace + idx + '-land'}
+                  id={_namespace + '-land'}
                   includeList={landUtenNorge}
-                  hideLabel={index >= 0}
-                  key={namespace + idx + '-land-' + (index < 0 ? _newLand : utenlandskePin?.land)}
+                  hideLabel={false}
+                  key={_namespace + '-land-' + _pin?.land}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onUtenlandskeLandChange(e.value, index)}
-                  values={index < 0 ? _newLand : utenlandskePin?.land}
+                  values={_pin?.land}
                 />
                 )
               : (
-                <PileDiv>
+                <FormText error={_v[_namespace + '-land']}>
                   <FlexCenterDiv>
-                    <Flag size='S' country={utenlandskePin?.land!} />
+                    <Flag size='S' country={_pin?.land!} />
                     <HorizontalSeparatorDiv />
-                    {countryData.findByValue(utenlandskePin?.land)?.label ?? utenlandskePin?.land}
+                    {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
                   </FlexCenterDiv>
-                  {getErrorFor(index, 'land') && (
-                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                      {getErrorFor(index, 'land')}
-                    </div>
-                  )}
-                </PileDiv>
+                </FormText>
                 )}
           </Column>
           <Column>
-            {editing
+            {inEditMode
               ? (
                 <Input
-                  error={getErrorFor(index, 'identifikator')}
+                  error={_v[_namespace + '-identifikator']?.feilmelding}
                   id='identifikator'
-                  key={namespace + idx + '-identifikator-' + (index < 0 ? _newIdentifikator : utenlandskePin?.identifikator)}
+                  key={_namespace + '-identifikator-' + _pin?.identifikator}
                   label={t('label:utenlandsk-pin')}
-                  hideLabel={index >= 0}
-                  namespace={namespace}
+                  hideLabel={false}
+                  namespace={_namespace}
                   onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
-                  value={index < 0 ? _newIdentifikator : utenlandskePin?.identifikator}
+                  value={_pin?.identifikator}
                 />
                 )
               : (
-                <PileDiv id={namespace + idx + '-identifikator'}>
-                  <BodyLong>{utenlandskePin?.identifikator}</BodyLong>
-                  {getErrorFor(index, 'identifikator') && (
-                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                      {getErrorFor(index, 'identifikator')}
-                    </div>
-                  )}
-                </PileDiv>
+                <FormText error={_v[_namespace + '-identifikator']}>
+                  <BodyLong>{_pin?.identifikator}</BodyLong>
+                </FormText>
                 )}
           </Column>
           <AlignEndColumn>
             <AddRemovePanel2<Pin>
-              item={utenlandskePin}
-              marginTop={index < 0}
+              item={pin}
+              marginTop={inEditMode}
               index={index}
+              inEditMode={inEditMode}
               onRemove={onRemove}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-              onStartEdit={(p, index) => _setEditing(_editing.concat(index))}
-              onCancelEdit={(p, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={onCloseEdit}
             />
           </AlignEndColumn>
         </AlignStartRow>
@@ -248,7 +273,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           </>
           )}
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
           <>
@@ -256,7 +281,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               <PaddedDiv>
                 <Button
                   variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
+                  onClick={() => _setNewForm(true)}
                 >
                   <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}

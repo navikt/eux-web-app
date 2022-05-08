@@ -4,10 +4,11 @@ import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
   AlignStartRow,
-  Column, FlexCenterDiv, HorizontalSeparatorDiv,
+  Column,
+  FlexCenterDiv,
+  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
-  PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
@@ -17,9 +18,11 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import DateInput from 'components/Forms/DateInput'
+import FormText from 'components/Forms/FormText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -52,15 +55,15 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
+  const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
 
-  const [_newLand, _setNewLand] = useState<string | undefined>(undefined)
-  const [_newFradato, _setNewFradato] = useState<string>('')
+  const [_newStatsborgerskap, _setNewStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
+  const [_editStatsborgerskap, _setEditStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
 
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_editing, _setEditing] = useState<Array<number>>([])
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_seeNewForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   useUnmount(() => {
@@ -73,37 +76,75 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
 
   const onLandSelected = (land: string, index: number) => {
     if (index < 0) {
-      _setNewLand(land.trim())
+      _setNewStatsborgerskap({
+        ..._newStatsborgerskap,
+        land: land.trim()
+      })
       _resetValidation(namespace + '-land')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].land`, land.trim()))
-      if (validation[namespace + getIdx(index) + '-land']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-land'))
-      }
+      return
+    }
+    _setEditStatsborgerskap({
+      ..._editStatsborgerskap,
+      land: land.trim()
+    })
+    if (validation[namespace + getIdx(index) + '-land']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-land'))
     }
   }
 
   const onFradatoChanged = (fraDato: string, index: number) => {
     if (index < 0) {
-      _setNewFradato(fraDato.trim())
+      _setNewStatsborgerskap({
+        ..._newStatsborgerskap,
+        fraDato: fraDato.trim()
+      } as Statsborgerskap)
       _resetValidation(namespace + '-fraDato')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].fraDato`, fraDato.trim()))
-      if (validation[namespace + getIdx(index) + '-fraDato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
-      }
+      return
+    }
+    _setEditStatsborgerskap({
+      ..._editStatsborgerskap,
+      fraDato: fraDato.trim()
+    } as Statsborgerskap)
+    if (validation[namespace + getIdx(index) + '-fraDato']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
     }
   }
 
-  const resetForm = () => {
-    _setNewLand(undefined)
-    _setNewFradato('')
+  const onCloseEdit = () => {
+    _setEditStatsborgerskap(undefined)
+    _setEditIndex(undefined)
+  }
+
+  const onCloseNew = () => {
+    _setNewStatsborgerskap(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (s: Statsborgerskap, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditStatsborgerskap(s)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationNasjonalitetProps>(
+      validation, namespace, validateNasjonalitet, {
+        statsborgerskap: _editStatsborgerskap,
+        statsborgerskaper,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editStatsborgerskap))
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(newValidation))
+    }
   }
 
   const onRemove = (removedStatsborgerskap: Statsborgerskap) => {
@@ -113,104 +154,97 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     standardLogger('svarsed.editor.nasjonaliteter.remove')
   }
 
-  const onAdd = () => {
-    const statsborgerskap: Statsborgerskap = {
-      land: _newLand,
-      fraDato: _newFradato
-    } as Statsborgerskap
+  const onAddNew = () => {
     const valid = _performValidation({
-      statsborgerskap,
+      statsborgerskap: _newStatsborgerskap,
       statsborgerskaper,
       personName
     })
-    if (valid) {
+    if (!!_newStatsborgerskap && valid) {
       let newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
       if (_.isNil(newStatsborgerskaper)) {
         newStatsborgerskaper = []
       }
-      newStatsborgerskaper.push(statsborgerskap)
+      newStatsborgerskaper.push(_newStatsborgerskap)
       dispatch(updateReplySed(target, newStatsborgerskaper))
       standardLogger('svarsed.editor.nasjonaliteter.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
   const renderRow = (statsborgerskap: Statsborgerskap | null, index: number) => {
     const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    )
-    const editing: boolean = statsborgerskap === null || _.find(_editing, i => i === index) !== undefined
-    const _land: string | undefined = index < 0 ? _newLand : statsborgerskap?.land
+    const _namespace = namespace + idx
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
       <RepeatableRow
-        className={classNames({ new: index < 0 })}
+        className={classNames({
+          new: index < 0,
+          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+        })}
       >
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
-            {editing
+            {inEditMode
               ? (
                 <CountrySelect
                   ariaLabel={t('label:land')}
                   label={t('label:land')}
-                  hideLabel={index >= 0}
+                  hideLabel={false}
                   closeMenuOnSelect
-                  data-testid={namespace + idx + '-land'}
-                  error={getErrorFor(index, 'land')}
+                  data-testid={_namespace + '-land'}
+                  error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
-                  key={namespace + idx + '-land' + _land}
-                  id={namespace + idx + '-land'}
+                  key={_namespace + '-land' + _statsborgerskap?.land}
+                  id={_namespace + '-land'}
                   includeList={CountryFilter.STANDARD({})}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
                   required
-                  values={_land}
+                  values={_statsborgerskap?.land}
                 />
                 )
               : (
-                <PileDiv>
+                <FormText error={_v[_namespace + '-land']}>
                   <FlexCenterDiv>
-                    {!!_land && <Flag size='S' country={_land} />}
+                    <Flag size='S' country={_statsborgerskap?.land!} />
                     <HorizontalSeparatorDiv />
-                    {countryData.findByValue(_land)?.label ?? _land}
+                    {countryData.findByValue(_statsborgerskap?.land)?.label ?? _statsborgerskap?.land}
                   </FlexCenterDiv>
-                  {getErrorFor(index, 'land') && (
-                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                      {getErrorFor(index, 'land')}
-                    </div>
-                  )}
-                </PileDiv>
+                </FormText>
                 )}
           </Column>
           {isUSed(replySed!) && (
             <Column>
               <DateInput
                 ariaLabel={t('label:fra-dato')}
-                error={getErrorFor(index, 'fraDato')}
+                error={_v[_namespace + 'fraDato']?.feilmelding}
                 id='fraDato'
-                key={index < 0 ? _newFradato : statsborgerskap?.fraDato}
+                key={_statsborgerskap?.fraDato}
                 label={t('label:fra-dato')}
-                hideLabel={index >= 0}
+                hideLabel={false}
                 namespace={namespace + idx}
                 onChanged={(date: string) => onFradatoChanged(date, index)}
                 required
-                value={index < 0 ? _newFradato : statsborgerskap?.fraDato}
+                value={_statsborgerskap?.fraDato}
               />
             </Column>
           )}
           <AlignEndColumn>
             <AddRemovePanel2<Statsborgerskap>
               item={statsborgerskap}
-              marginTop={index < 0}
+              marginTop={inEditMode}
               index={index}
+              inEditMode={inEditMode}
               onRemove={onRemove}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-              onStartEdit={(s, index) => _setEditing(_editing.concat(index))}
-              onCancelEdit={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={onCloseEdit}
             />
           </AlignEndColumn>
         </AlignStartRow>
@@ -264,7 +298,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setSeeNewForm(true)}
+              onClick={() => _setNewForm(true)}
             >
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}

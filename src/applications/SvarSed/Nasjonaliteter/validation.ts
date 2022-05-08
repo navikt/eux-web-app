@@ -4,7 +4,7 @@ import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationNasjonalitetProps {
-  statsborgerskap: Statsborgerskap
+  statsborgerskap: Statsborgerskap | undefined
   statsborgerskaper: Array<Statsborgerskap> | undefined
   index?: number
   personName?: string
@@ -38,7 +38,7 @@ export const validateNasjonalitet = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: statsborgerskap,
     haystack: statsborgerskaper,
-    matchFn: (s: Statsborgerskap) => s.land === statsborgerskap.land,
+    matchFn: (s: Statsborgerskap) => s.land === statsborgerskap?.land,
     id: namespace + idx + '-land',
     index,
     message: 'validation:duplicateBirthCountry',
