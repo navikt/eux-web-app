@@ -1,8 +1,8 @@
 import { validatePeriode } from 'components/Forms/validation'
-import { PensjonPeriode, Periode } from 'declarations/sed'
+import { PensjonPeriode, Periode, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { getIdx } from 'utils/namespace'
+import { getIdx, getNSIdx } from 'utils/namespace'
 import { addError } from 'utils/validation'
 
 export interface ValidationDekkedePeriodeProps {
@@ -13,8 +13,9 @@ export interface ValidationDekkedePeriodeProps {
 }
 
 export interface ValidateTrygdeordningerProps {
-  perioder: {[k in string]: Array<Periode | PensjonPeriode>}
-  personName?: string
+  replySed: ReplySed
+  personID: string
+  personName: string | undefined
 }
 
 export interface ValidationFamilieytelsePeriodeProps {
@@ -36,7 +37,7 @@ export const validateDekkedePeriode = (
   }: ValidationDekkedePeriodeProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  const idx = getIdx(index)
+  const idx = getNSIdx(type, index)
 
   if (_.isNil(index) && _.isEmpty(type)) {
     hasErrors.push(addError(v, {
@@ -147,16 +148,17 @@ export const validateTrygdeordninger = (
   v: Validation,
   namespace: string,
   {
-    perioder,
+    replySed,
+    personID,
     personName
   } : ValidateTrygdeordningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(validatePerioder(v, namespace, 'perioderMedITrygdeordning', 'dekkede', perioder.perioderMedITrygdeordning, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderUtenforTrygdeordning', 'dekkede', perioder.perioderUtenforTrygdeordning, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderMedArbeid', 'familieYtelse', perioder.perioderMedArbeid, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderMedTrygd', 'familieYtelse', perioder.perioderMedTrygd, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderMedYtelser', 'familieYtelse', perioder.perioderMedYtelser, personName))
-  hasErrors.push(validatePerioder(v, namespace, 'perioderMedPensjon', 'familieYtelse', perioder.perioderMedPensjon, personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderMedITrygdeordning', 'dekkede', _.get(replySed, `${personID}.perioderMedITrygdeordning`), personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderUtenforTrygdeordning', 'dekkede', _.get(replySed, `${personID}.perioderUtenforTrygdeordning`), personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderMedArbeid', 'familieYtelse', _.get(replySed, `${personID}.perioderMedArbeid`), personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderMedTrygd', 'familieYtelse', _.get(replySed, `${personID}.perioderMedTrygd`), personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderMedYtelser', 'familieYtelse', _.get(replySed, `${personID}.perioderMedYtelser`), personName))
+  hasErrors.push(validatePerioder(v, namespace, 'perioderMedPensjon', 'familieYtelse', _.get(replySed, `${personID}.perioderMedPensjon`), personName))
   return hasErrors.find(value => value) !== undefined
 }

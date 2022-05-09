@@ -142,16 +142,8 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         hasErrors.push(validateKontaktsinformasjonEposter(v, `svarsed-${personID}-kontaktinformasjon-epost`, {
           eposter, personName
         }))
-        const perioder: {[k in string]: Array<Periode | PensjonPeriode>} = {
-          perioderMedArbeid: _.get(replySed, `${personID}.perioderMedArbeid`),
-          perioderMedTrygd: _.get(replySed, `${personID}.perioderMedTrygd`),
-          perioderMedITrygdeordning: _.get(replySed, `${personID}.perioderMedITrygdeordning`),
-          perioderUtenforTrygdeordning: _.get(replySed, `${personID}.perioderUtenforTrygdeordning`),
-          perioderMedYtelser: _.get(replySed, `${personID}.perioderMedYtelser`),
-          perioderMedPensjon: _.get(replySed, `${personID}.perioderMedPensjon`)
-        }
         hasErrors.push(validateTrygdeordninger(v, `svarsed-${personID}-trygdeordninger`, {
-          perioder, personName
+          replySed, personID, personName
         }))
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
         hasErrors.push(validateFamilierelasjoner(v, `svarsed-${personID}-familierelasjon`, {

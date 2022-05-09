@@ -1,8 +1,19 @@
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { MainFormProps } from 'applications/SvarSed/MainForm'
+import { setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DekkedePerioder from 'applications/SvarSed/Trygdeordning/DekkedePerioder'
 import FamilieYtelser from 'applications/SvarSed/Trygdeordning/FamilieYtelser'
+import { validateTrygdeordninger, ValidateTrygdeordningerProps } from 'applications/SvarSed/Trygdeordning/validation'
+import { State } from 'declarations/reducers'
+import useUnmount from 'hooks/useUnmount'
 import React from 'react'
+import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
+import { ReplySed } from 'declarations/sed'
+
+const mapState = (state: State): MainFormSelector => ({
+  validation: state.validation.status
+})
 
 const Trygdeordning: React.FC<MainFormProps> = ({
   parentNamespace,
@@ -12,21 +23,36 @@ const Trygdeordning: React.FC<MainFormProps> = ({
   updateReplySed,
   setReplySed
 }: MainFormProps): JSX.Element => {
+  const namespace = `${parentNamespace}-${personID}-trygdeordning`
+  const { validation } = useAppSelector(mapState)
+  const dispatch = useAppDispatch()
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidateTrygdeordningerProps>(
+      validation, namespace, validateTrygdeordninger, {
+        replySed: (replySed as ReplySed),
+        personID: personID!,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
   return (
     <>
       <DekkedePerioder
-        parentNamespace={parentNamespace}
+        parentNamespace={namespace}
         personID={personID}
         personName={personName}
         replySed={replySed}
         updateReplySed={updateReplySed}
         setReplySed={setReplySed}
+        validation={validation}
       />
 
       <VerticalSeparatorDiv size={2} />
 
       <FamilieYtelser
-        parentNamespace={parentNamespace}
+        parentNamespace={namespace}
         personID={personID}
         personName={personName}
         replySed={replySed}

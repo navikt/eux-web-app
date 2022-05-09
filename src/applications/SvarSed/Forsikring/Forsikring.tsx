@@ -252,7 +252,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     } else {
       delete periode.__type
       delete periode.__index
-      delete periode.__edit
       dispatch(updateReplySed(`${type}[${index}]`, periode))
       if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
         dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))

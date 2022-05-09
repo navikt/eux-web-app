@@ -28,9 +28,7 @@ export interface ValidateDuplicateParams extends ValidateValueParams {
   haystack: Array<any> | undefined
 }
 
-
-export const addError = (v: Validation, {
-  id, personName, message, extra = {} }: ValidateParams
+export const addError = (v: Validation, { id, personName, message, extra = {} }: ValidateParams
 ) => {
   v[id] = {
     feilmelding: i18n.t(message, extra) + (personName ? i18n.t('validation:til-person', { person: personName }) : ''),
@@ -63,8 +61,7 @@ export const checkIfNotDate = (v: Validation, { needle, id, pattern = datePatter
   return false
 }
 
-export const checkIfNotEmail = (v: Validation, {
-  needle, id, personName, message, extra }: ValidateValueParams
+export const checkIfNotEmail = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams
 ): boolean => {
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 

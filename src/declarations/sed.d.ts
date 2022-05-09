@@ -67,7 +67,6 @@ export interface Periode {
   // internal use, for periode labeling
   __type ?: string
   __index ?: number
-  __edit ?: boolean
 }
 
 export interface PensjonPeriode {

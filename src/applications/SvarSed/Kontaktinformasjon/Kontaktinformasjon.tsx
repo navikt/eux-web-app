@@ -82,12 +82,12 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateTelefonerProps>(
       validation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
-      telefoner, personName
-    })
+        telefoner, personName
+      })
     const [, moreNewValidation] = performValidation<ValidateEposterProps>(
       newValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
-      eposter, personName
-    })
+        eposter, personName
+      })
     dispatch(setValidation(moreNewValidation))
   })
 

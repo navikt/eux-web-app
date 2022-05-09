@@ -12,13 +12,12 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeSort, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -27,39 +26,41 @@ import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch, useAppSelector } from 'store'
+import { useAppDispatch } from 'store'
 import { getNSIdx, readNSIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import { validateDekkedePeriode, ValidationDekkedePeriodeProps } from './validation'
 
-const mapState = (state: State): MainFormSelector => ({
-  validation: state.validation.status
-})
+interface DekkedePerioderProps extends MainFormProps {
+  validation: Validation
+}
 
-const DekkedePerioder: React.FC<MainFormProps> = ({
+const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   parentNamespace,
   personID,
   personName,
   replySed,
-  updateReplySed
-}:MainFormProps): JSX.Element => {
+  updateReplySed,
+  validation
+}: DekkedePerioderProps): JSX.Element => {
   const { t } = useTranslation()
-  const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = `${personID}`
+  const namespace = `${parentNamespace}-dekkede`
   const person: Person = _.get(replySed, target)
 
-  const namespace = `${parentNamespace}-${personID}-trygdeordning-dekkede`
   const getId = (p: Periode | null) => p ? p.__type + '[' + p.__index + ']' : 'new-periode'
 
-  const [_newType, _setNewType] = useState<string | undefined>(undefined)
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
-  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
 
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_sort, _setSort] = useState<PeriodeSort>('time')
-  const [_editing, _setEditing] = useState<Array<string>>([])
+  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
+  const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
+
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_editTypeAndIndex, _setEditTypeAndIndex] = useState<string | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationDekkedePeriodeProps>(validateDekkedePeriode, namespace)
 
+  const [_sort, _setSort] = useState<PeriodeSort>('time')
   const periodeSort = (a: Periode, b: Periode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
 
   useEffect(() => {
@@ -69,115 +70,119 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
     _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
-  const setType = (newType: string, oldType: string, index: number) => {
+  // oldType is undefined when we have a new entry
+  const setType = (newType: string, oldType: string | undefined, index: number) => {
     if (index < 0) {
-      _setNewType(newType)
+      _setNewPeriode({
+        ..._newPeriode,
+        __type: newType
+      } as Periode)
       _resetValidation(namespace + '-type')
-    } else {
-      const _newEditing: Array<string> = []
-
-      // we have to clone the get result, or we can get errors by sorting arrays that are still tied to state
-      let oldPeriods: Array<Periode> = _.cloneDeep(_.get(person, oldType))
-      let newPeriods = _.cloneDeep(_.get(person, newType))
-
-      // we have to track the curently editing peroids, as they will switch from one list to another, thus type/index change
-      _editing.forEach((editIndex) => {
-        const [t, i] = readNSIdx(editIndex)
-        if (t === 'perioderMedITrygdeordning') {
-          oldPeriods[i].__edit = true
-        }
-        if (t === 'perioderUtenforTrygdeordning') {
-          newPeriods[i].__edit = true
-        }
-      })
-
-      // oldPeriods is already sorted, no need to re-sort
-      const switchingPeriod: Array<Periode> = oldPeriods.splice(index, 1)
-      newPeriods.push(switchingPeriod[0])
-      newPeriods = newPeriods.sort(periodeSort)
-
-      // restore editing, remove editing flag
-      oldPeriods = oldPeriods.map((p: Periode, i: number) => {
-        if (Object.prototype.hasOwnProperty.call(p, '__edit')) {
-          if (p.__edit) {
-            _newEditing.push(getNSIdx('perioderMedITrygdeordning', i))
-          }
-          delete p.__edit
-        }
-        return p
-      })
-
-      // restore editing, remove editing flag
-      newPeriods = newPeriods.map((p: Periode, i: number) => {
-        if (Object.prototype.hasOwnProperty.call(p, '__edit')) {
-          if (p.__edit) {
-            _newEditing.push(getNSIdx('perioderUtenforTrygdeordning', i))
-          }
-          delete p.__edit
-        }
-        return p
-      })
-
-      const newPerson = _.cloneDeep(person)
-      _.set(newPerson, oldType, oldPeriods)
-      _.set(newPerson, newType, newPeriods)
-
-      if (validation[namespace + getNSIdx(oldType, index) + '-type']) {
-        dispatch(resetValidation(namespace + getNSIdx(oldType, index) + '-type'))
-      }
-
-      dispatch(updateReplySed(target, newPerson))
-      _setEditing(_newEditing)
+      return
     }
+    _setEditPeriode({
+      ..._editPeriode,
+      __type: newType
+    } as Periode)
+    dispatch(resetValidation(namespace + getNSIdx(oldType, index) + '-type'))
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string, type: string, index: number) => {
+  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
       _resetValidation(namespace + '-' + whatChanged)
-    } else {
-      delete periode.__type
-      delete periode.__index
-      delete periode.__edit
-      dispatch(updateReplySed(`${type}[${index}]`, periode))
-      if (validation[namespace + getNSIdx(type, index) + '-' + whatChanged]) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-' + whatChanged))
-      }
+      return
     }
+    _setEditPeriode(periode)
+    dispatch(resetValidation(namespace + getNSIdx(periode.__type!, periode.__index)))
   }
 
-  const resetForm = () => {
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriode(undefined)
+    _setEditTypeAndIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
     _setNewPeriode(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (periode: Periode) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editTypeAndIndex !== undefined) {
+      dispatch(resetValidation(namespace + _editTypeAndIndex))
+    }
+    _setEditPeriode(periode)
+    _setEditTypeAndIndex(getNSIdx(periode.__type!, periode.__index))
+  }
+
+  const onSaveEdit = () => {
+    const [type, index] = readNSIdx(_editTypeAndIndex!)
+    const [valid, newValidation] = performValidation<ValidationDekkedePeriodeProps>(
+      validation, namespace, validateDekkedePeriode, {
+        periode: _editPeriode,
+        type,
+        index
+      })
+    if (!!_editPeriode && valid) {
+      // if we switched period types, then we have to remove it from the old array, and add it to the new one
+      if (type !== _editPeriode?.__type) {
+        const oldPeriods: Array<Periode> = _.cloneDeep(_.get(person, type))
+        let newPeriods: Array<Periode> | undefined = _.cloneDeep(_.get(person, _editPeriode.__type!)) as Array<Periode> | undefined
+        if (_.isUndefined(newPeriods)) {
+          newPeriods = []
+        }
+        const switchingPeriod: Array<Periode> = oldPeriods.splice(index, 1)
+        delete switchingPeriod[0].__type
+        delete switchingPeriod[0].__index
+        newPeriods.push(switchingPeriod[0])
+        newPeriods = newPeriods.sort(periodeSort)
+
+        const newPerson = _.cloneDeep(person)
+        _.set(newPerson, type, oldPeriods)
+        _.set(newPerson, _editPeriode.__type!, newPeriods)
+
+        dispatch(updateReplySed(target, newPerson))
+      } else {
+        delete _editPeriode.__type
+        delete _editPeriode.__index
+        dispatch(updateReplySed(`${target}[${type}][${index}]`, _editPeriode))
+      }
+      onCloseEdit(namespace + _editTypeAndIndex)
+    } else {
+      dispatch(setValidation(newValidation))
+    }
   }
 
   const onRemove = (periode: Periode) => {
-    const newPerioder: Array<Periode> = _.get(replySed, periode.__type!) as Array<Periode>
+    const newPerioder: Array<Periode> = _.cloneDeep(_.get(person, periode.__type!)) as Array<Periode>
     newPerioder.splice(periode.__index!, 1)
-    dispatch(updateReplySed(periode.__type!, newPerioder))
+    dispatch(updateReplySed(`${target}[${periode.__type}][${periode.__index}]`, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: periode.__type! })
   }
 
-  const onAdd = () => {
-    let newPerioder: Array<Periode> | undefined = _.get(replySed, _newType!)
-    if (_.isNil(newPerioder)) {
-      newPerioder = []
-    }
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
       periode: _newPeriode,
-      type: _newType,
+      type: _newPeriode?.__type,
       personName
     })
-    if (valid && _newType) {
-      newPerioder = newPerioder.concat(_newPeriode!)
-      dispatch(updateReplySed(_newType, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: _newType })
-      onCancel()
+    if (!!_newPeriode && valid) {
+      const type = _newPeriode.__type
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(person, _newPeriode.__type!))
+      if (_.isNil(newPerioder)) {
+        newPerioder = []
+      }
+
+      delete _newPeriode.__type
+      delete _newPeriode.__index
+      newPerioder.push(_newPeriode!)
+      newPerioder = newPerioder.sort(periodeSort)
+      dispatch(updateReplySed(`${target}[${type}]`, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type })
+      onCloseNew()
     }
   }
 
@@ -186,46 +191,51 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
   )
 
   const renderRow = (periode: Periode | null, index: number) => {
-    const _type: string = index < 0 ? _newType! : periode!.__type!
-    const _index: number = index < 0 ? index : periode!.__index! // replace index order from map (which is "ruined" by a sort) with real index from replySed
+    // replace index order from map (which is "ruined" by a sort) with real index from replySed
     // namespace for index < 0: svarsed-bruker-trygdeordning-dekkede-startdato
     // namespace for index >= 0: svarsed-bruker-trygdeordning-dekkede[perioderMedITrygdeordning][2]-startdato
-    const idx = getNSIdx(_type, _index)
-    const editing: boolean = periode === null || _.find(_editing, i => i === idx) !== undefined
+    const idx = getNSIdx(periode?.__type, periode?.__index)
+    const _namespace = namespace + idx
     const _v: Validation = index < 0 ? _validation : validation
-    const _periode = index < 0 ? _newPeriode : periode
+    const inEditMode = index < 0 || _editTypeAndIndex === idx
+    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
 
     const addremovepanel = (
       <AddRemovePanel2<Periode>
         item={periode}
-        marginTop={index < 0}
+        marginTop={inEditMode}
         index={index}
+        inEditMode={inEditMode}
         onRemove={onRemove}
-        onAddNew={onAdd}
-        onCancelNew={onCancel}
-        onStartEdit={() => _setEditing(_editing.concat(idx))}
-        onCancelEdit={() => _setEditing(_.filter(_editing, i => i !== idx))}
+        onAddNew={onAddNew}
+        onCancelNew={onCloseNew}
+        onStartEdit={onStartEdit}
+        onConfirmEdit={onSaveEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
       />
     )
 
     return (
       <RepeatableRow
-        className={classNames({ new: index < 0 })}
+        className={classNames({
+          new: index < 0,
+          error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
+        })}
         key={getId(periode)}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {editing
+        {inEditMode
           ? (
             <>
               <AlignStartRow>
                 <PeriodeInput
-                  namespace={namespace + idx}
-                  hideLabel={index >= 0}
+                  namespace={_namespace}
+                  hideLabel={false}
                   error={{
-                    startdato: _v[namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[namespace + '-sluttdato']?.feilmelding
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
-                  setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, _type, _index)}
+                  setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
                   value={_periode}
                 />
                 <Column>
@@ -235,15 +245,15 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column>
                   <RadioPanelGroup
-                    value={_type}
+                    value={_periode?.__type}
                     data-no-border
-                    data-testid={namespace + idx + '-type'}
-                    error={_v[namespace + idx + '-type']?.feilmelding}
-                    id={namespace + idx + '-type'}
+                    data-testid={_namespace + '-type'}
+                    error={_v[_namespace + '-type']?.feilmelding}
+                    id={_namespace + '-type'}
                     legend=''
                     hideLabel
-                    name={namespace + idx + '-type'}
-                    onChange={(newType: string) => setType(newType, _type, _index)}
+                    name={_namespace + '-type'}
+                    onChange={(newType: string) => setType(newType, periode?.__type, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='perioderMedITrygdeordning'>
@@ -286,7 +296,7 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
                 </FlexCenterDiv>
               </Column>
               <Column>
-                {getTag(_type)}
+                {getTag(periode?.__type!)}
               </Column>
               <Column>
                 {addremovepanel}
@@ -340,13 +350,13 @@ const DekkedePerioder: React.FC<MainFormProps> = ({
               </>
               ))}
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setSeeNewForm(true)}
+              onClick={() => _setNewForm(true)}
             >
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:dekkede-periode').toLowerCase() })}

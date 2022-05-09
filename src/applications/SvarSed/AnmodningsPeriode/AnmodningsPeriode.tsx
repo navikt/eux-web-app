@@ -156,7 +156,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
-    const _namespace = namespace + '-perioder' +  getIdx(index)
+    const _namespace = namespace + '-perioder' + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
