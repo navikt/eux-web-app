@@ -67,10 +67,12 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationNasjonaliteterProps>(validation, namespace, validateNasjonaliteter, {
-      statsborgerskaper,
-      personName
-    })
+    const [, newValidation] = performValidation<ValidationNasjonaliteterProps>(
+      validation, namespace, validateNasjonaliteter, {
+        statsborgerskaper,
+        personName
+      }
+    )
     dispatch(setValidation(newValidation))
   })
 
@@ -110,9 +112,10 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     }
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditStatsborgerskap(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -140,8 +143,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
       })
     if (valid) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editStatsborgerskap))
-      dispatch(resetValidation(namespace + getIdx(_editIndex)))
-      onCloseEdit()
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -161,7 +163,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
       personName
     })
     if (!!_newStatsborgerskap && valid) {
-      let newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
+      let newStatsborgerskaper: Array<Statsborgerskap> | undefined = _.cloneDeep(statsborgerskaper)
       if (_.isNil(newStatsborgerskaper)) {
         newStatsborgerskaper = []
       }
@@ -173,8 +175,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   }
 
   const renderRow = (statsborgerskap: Statsborgerskap | null, index: number) => {
-    const idx = getIdx(index)
-    const _namespace = namespace + idx
+    const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
@@ -226,7 +227,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                 key={_statsborgerskap?.fraDato}
                 label={t('label:fra-dato')}
                 hideLabel={false}
-                namespace={namespace + idx}
+                namespace={_namespace}
                 onChanged={(date: string) => onFradatoChanged(date, index)}
                 required
                 value={_statsborgerskap?.fraDato}
@@ -244,7 +245,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={onCloseEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
           </AlignEndColumn>
         </AlignStartRow>

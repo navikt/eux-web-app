@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
-import _ from 'lodash'
 import { AnyAction } from 'redux'
+import { filterAllWithNamespace } from 'utils/validation'
 
 export interface ValidationState {
   status: any
@@ -27,7 +27,7 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
 
       return {
         ...state,
-        status: _.omitBy(state.status, (value, k) => k.startsWith(key))
+        status: filterAllWithNamespace(state.status, key)
       }
     }
 

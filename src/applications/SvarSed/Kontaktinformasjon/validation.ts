@@ -4,15 +4,15 @@ import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmail, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationKontaktsinformasjonTelefonProps {
-  telefon: Telefon
-  telefoner: Array<Telefon>
+  telefon: Telefon | undefined
+  telefoner: Array<Telefon> | undefined
   index?: number
   personName?: string
 }
 
 export interface ValidationKontaktsinformasjonEpostProps {
-  epost: Epost,
-  eposter: Array<Epost>,
+  epost: Epost | undefined
+  eposter: Array<Epost> | undefined
   index?: number
   personName?: string
 }
@@ -57,7 +57,7 @@ export const validateKontaktsinformasjonTelefon = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: telefon,
     haystack: telefoner,
-    matchFn: (t: Telefon) => t.nummer === telefon.nummer,
+    matchFn: (t: Telefon) => t.nummer === telefon?.nummer,
     id: namespace + idx + '-nummer',
     index,
     message: 'validation:duplicateTelephoneNumber',

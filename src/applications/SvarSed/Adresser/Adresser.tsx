@@ -17,6 +17,7 @@ import AdresseBox from 'components/AdresseBox/AdresseBox'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -27,6 +28,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { hasNamespace } from 'utils/validation'
 import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
 
@@ -47,14 +49,16 @@ const Adresser: React.FC<MainFormProps> = ({
   const target = `${personID}.adresser`
   const adresser: Array<Adresse> = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
+
   const checkAdresseType: boolean = true
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '')
 
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
+  const [_editAdresse, _setEditAdresse] = useState<Adresse | undefined>(undefined)
 
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_editing, _setEditing] = useState<Array<number>>([])
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_seeNewForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseProps>(validateAdresse, namespace)
 
   useUnmount(() => {
@@ -69,28 +73,51 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(resetAdresse())
   })
 
-  const setAdresse = (adresse: Adresse, id: string | undefined, index: number) => {
+  const onAdressChanged = (adresse: Adresse, whatChanged: string | undefined, index: number) => {
     if (index < 0) {
       _setNewAdresse(adresse)
-      if (id) {
-        _resetValidation(namespace + '-' + id)
-      }
+      _resetValidation(namespace + '-' + whatChanged)
       return
     }
-    dispatch(updateReplySed(`${target}[${index}]`, adresse))
-    if (id && validation[namespace + getIdx(index) + '-' + id]) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-' + id))
-    }
+    _setEditAdresse(adresse)
+    dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const resetForm = () => {
+  const onCloseEdit = () => {
+    _setEditAdresse(undefined)
+    _setEditIndex(undefined)
+  }
+
+  const onCloseNew = () => {
     _setNewAdresse(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (a: Adresse, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditAdresse(a)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationAdresseProps>(
+      validation, namespace, validateAdresse, {
+        adresse: _editAdresse,
+        checkAdresseType,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAdresse))
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(newValidation))
+    }
   }
 
   const onRemove = (removedAdresse: Adresse) => {
@@ -99,45 +126,49 @@ const Adresser: React.FC<MainFormProps> = ({
     standardLogger('svarsed.editor.adresse.remove')
   }
 
-  const onAdd = () => {
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
       adresse: _newAdresse,
       checkAdresseType,
       personName
     })
-    if (valid) {
+    if (!!_newAdresse && valid) {
       let newAdresser: Array<Adresse> = _.cloneDeep(adresser)
       if (_.isNil(newAdresser)) {
         newAdresser = []
       }
-      newAdresser = newAdresser.concat(_newAdresse!)
+      newAdresser.push(_newAdresse!)
       dispatch(updateReplySed(target, newAdresser))
       standardLogger('svarsed.editor.adresse.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
-  const onAdresserChanged = (selectedAdresser: Array<Adresse>) => {
+  const onPDLAdresserChanged = (selectedAdresser: Array<Adresse>) => {
     dispatch(updateReplySed(target, selectedAdresser))
   }
 
   const renderRow = (adresse: Adresse | null, index: number) => {
-    const idx = getIdx(index)
-    const editing: boolean = adresse === null || _.find(_editing, i => i === index) !== undefined
-    const _adresse = index < 0 ? _newAdresse : adresse
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _adresse = index < 0 ? _newAdresse : (inEditMode ? _editAdresse : adresse)
     return (
       <RepeatableRow
-        className={classNames({ new: index < 0 })}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {editing
+        {inEditMode
           ? (
             <AdresseForm
-              key={namespace + idx + getId(_adresse)}
-              namespace={namespace + idx}
+              key={_namespace + getId(_adresse)}
+              namespace={_namespace}
               adresse={_adresse}
-              onAdressChanged={(a: Adresse, type: string | undefined) => setAdresse(a, type, index)}
-              validation={index < 0 ? _validation : validation}
+              onAdressChanged={(a: Adresse, whatChanged: string | undefined) => onAdressChanged(a, whatChanged, index)}
+              validation={_v}
             />
             )
           : (
@@ -148,12 +179,15 @@ const Adresser: React.FC<MainFormProps> = ({
           <AlignEndColumn>
             <AddRemovePanel2<Adresse>
               item={adresse}
+              marginTop={false}
               index={index}
+              inEditMode={inEditMode}
               onRemove={onRemove}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-              onStartEdit={(s, index) => _setEditing(_editing.concat(index))}
-              onCancelEdit={(s, index) => _setEditing(_.filter(_editing, i => i !== index))}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={onCloseEdit}
             />
           </AlignEndColumn>
         </AlignStartRow>
@@ -169,7 +203,7 @@ const Adresser: React.FC<MainFormProps> = ({
           fnr={fnr!}
           selectedAdresser={adresser}
           personName={personName}
-          onAdresserChanged={onAdresserChanged}
+          onAdresserChanged={onPDLAdresserChanged}
         />
       </PaddedDiv>
       <VerticalSeparatorDiv />
@@ -191,7 +225,7 @@ const Adresser: React.FC<MainFormProps> = ({
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setSeeNewForm(true)}
+              onClick={() => _setNewForm(true)}
             >
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}

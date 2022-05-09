@@ -99,9 +99,10 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     }
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditAnmodningsperiode(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -127,8 +128,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
       })
     if (valid) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAnmodningsperiode))
-      dispatch(resetValidation(namespace + '-perioder' + getIdx(_editIndex)))
-      onCloseEdit()
+      onCloseEdit(namespace + '-perioder' + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -156,8 +156,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
-    const idx = getIdx(index)
-    const _namespace = namespace + '-perioder' + idx
+    const _namespace = namespace + '-perioder' +  getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
@@ -204,7 +203,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={onCloseEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
           </AlignEndColumn>
         </AlignStartRow>

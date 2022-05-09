@@ -94,9 +94,10 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-land'))
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditPin(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -126,7 +127,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
       newPins[_editIndex] = _editPin
       onPinsChanged(newPins, namespace + getIdx(_editIndex))
-      onCloseEdit()
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -157,8 +158,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   }
 
   const renderRow = (pin: Pin | null, index: number) => {
-    const idx = getIdx(index)
-    const _namespace = namespace + idx
+    const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
@@ -230,7 +230,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={onCloseEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
           </AlignEndColumn>
         </AlignStartRow>
