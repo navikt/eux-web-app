@@ -64,7 +64,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const [_editStatsborgerskap, _setEditStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
-  const [_seeNewForm, _setNewForm] = useState<boolean>(false)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   useUnmount(() => {
@@ -158,7 +158,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = () => {
-    const valid = _performValidation({
+    const valid: boolean = _performValidation({
       statsborgerskap: _newStatsborgerskap,
       statsborgerskaper,
       personName
@@ -296,7 +296,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           </>
           )}
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
