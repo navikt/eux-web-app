@@ -1,6 +1,8 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { Sak, Sed } from 'declarations/types'
 
+export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'
+
 export type AdresseType = 'bosted' | 'opphold' | 'kontakt' | 'annet'
 
 export type BarnRelasjon = '01' | '02' | '03' | '04'
@@ -63,7 +65,7 @@ export interface Adresse {
 export interface Periode {
   startdato: string
   sluttdato?: string
-  aapenPeriodeType?: 'ukjent_sluttdato' | 'åpen_sluttdato'
+  aapenPeriodeType?: AapenPeriodeType
   // internal use, for periode labeling
   __type ?: string
   __index ?: number

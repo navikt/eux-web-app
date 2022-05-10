@@ -102,14 +102,14 @@ export const checkIfDuplicate = (v: Validation, {
   needle, haystack, index, matchFn, id, personName, message, extra
 }: any): boolean => {
   let duplicate: boolean
-
+  let _h
   if (!_.isEmpty(needle)) {
     if (_.isNil(index)) {
-      duplicate = _.find(haystack, matchFn) !== undefined
+      _h = haystack
     } else {
-      const otherHaystack: Array<string> = _.filter(haystack, (p, i) => i !== index)
-      duplicate = _.find(otherHaystack, matchFn) !== undefined
+      _h = _.filter(haystack, (p, i) => i !== index)
     }
+    duplicate = _.find(_h, matchFn) !== undefined
     if (duplicate) {
       return addError(v, { id, personName, message, extra })
     }

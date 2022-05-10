@@ -52,7 +52,7 @@ const Adresser: React.FC<MainFormProps> = ({
 
   const checkAdresseType: boolean = true
   const fnr = getFnr(replySed, personID)
-  const getId = (a: Adresse | null | undefined): string => (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '')
+  const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '') : 'new'
 
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
   const [_editAdresse, _setEditAdresse] = useState<Adresse | undefined>(undefined)
@@ -155,6 +155,8 @@ const Adresser: React.FC<MainFormProps> = ({
     const _adresse = index < 0 ? _newAdresse : (inEditMode ? _editAdresse : adresse)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(adresse)}
         className={classNames({
           new: index < 0,
           error: hasNamespace(_v, _namespace)

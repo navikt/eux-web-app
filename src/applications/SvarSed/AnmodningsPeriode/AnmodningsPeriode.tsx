@@ -46,6 +46,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace: string = `${parentNamespace}-anmodningsperiode`
   const target: string = 'anmodningsperioder'
+  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
   const [_newAnmodningsperiode, _setNewAnmodningsperiode] = useState<Periode | undefined>(undefined)
   const [_editAnmodningsperiode, _setEditAnmodningsperiode] = useState<Periode | undefined>(undefined)
@@ -162,6 +163,8 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periode)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']

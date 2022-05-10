@@ -58,6 +58,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, target)
+  const getId = (s: Statsborgerskap | null): string => s ? s.land : 'new'
 
   const [_newStatsborgerskap, _setNewStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
   const [_editStatsborgerskap, _setEditStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
@@ -181,6 +182,8 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(statsborgerskap)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']

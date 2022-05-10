@@ -54,6 +54,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
   const landUtenNorge = CountryFilter.STANDARD({ useUK: true })?.filter((it: string) => it !== 'NO')
+  const getId = (p: Pin | null): string => p ? p.land + '-' + p.identifikator : 'new'
 
   const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)
   const [_editPin, _setEditPin] = useState<Pin | undefined>(undefined)
@@ -164,6 +165,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(pin)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-identifikator'] || _v[_namespace + '-land']

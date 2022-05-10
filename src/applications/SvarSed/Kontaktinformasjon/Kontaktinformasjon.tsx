@@ -61,6 +61,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-kontaktinformasjon`
   const namespaceTelefon = `${namespace}-telefon`
   const namespaceEpost = `${namespace}-epost`
+  const getTelefonId = (t: Telefon | null) => t ? t.nummer : 'new'
+  const getEpostId = (e: Epost | null) => e ? e.adresse : 'new'
 
   const [_newTelefon, _setNewTelefon] = useState<Telefon | undefined>(undefined)
   const [_editTelefon, _setEditTelefon] = useState<Telefon | undefined>(undefined)
@@ -282,6 +284,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getTelefonId(telefon)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-nummer'] || _v[_namespace + '-type']
@@ -363,6 +367,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const _epost = index < 0 ? _newEpost : (inEditMode ? _editEpost : epost)
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getEpostId(epost)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-adresse']

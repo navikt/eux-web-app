@@ -1,4 +1,5 @@
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Heading } from '@navikt/ds-react'
+import { PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DekkedePerioder from 'applications/SvarSed/Trygdeordning/DekkedePerioder'
@@ -7,6 +8,7 @@ import { validateTrygdeordninger, ValidateTrygdeordningerProps } from 'applicati
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { ReplySed } from 'declarations/sed'
@@ -25,6 +27,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
 }: MainFormProps): JSX.Element => {
   const namespace = `${parentNamespace}-${personID}-trygdeordning`
   const { validation } = useAppSelector(mapState)
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateTrygdeordningerProps>(
@@ -39,6 +42,12 @@ const Trygdeordning: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:dekning-trygdeordningen')}
+        </Heading>
+      </PaddedDiv>
+      <VerticalSeparatorDiv />
       <DekkedePerioder
         parentNamespace={namespace}
         personID={personID}
@@ -51,6 +60,12 @@ const Trygdeordning: React.FC<MainFormProps> = ({
 
       <VerticalSeparatorDiv size={2} />
 
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:trygdeordningen-familieYtelse')}
+        </Heading>
+      </PaddedDiv>
+      <VerticalSeparatorDiv />
       <FamilieYtelser
         parentNamespace={namespace}
         personID={personID}
@@ -58,6 +73,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         replySed={replySed}
         updateReplySed={updateReplySed}
         setReplySed={setReplySed}
+        validation={validation}
       />
     </>
   )

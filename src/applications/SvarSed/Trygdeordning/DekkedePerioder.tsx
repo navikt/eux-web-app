@@ -1,13 +1,12 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Heading, Tag } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Label, Tag } from '@navikt/ds-react'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
-  FlexCenterDiv,
   FlexRadioPanels,
   PaddedDiv,
   PaddedHorizontallyDiv,
-  PileDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -17,6 +16,7 @@ import { MainFormProps } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { ForsikringPeriode, Periode, PeriodeSort, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -48,11 +48,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   const target = `${personID}`
   const namespace = `${parentNamespace}-dekkede`
   const person: Person = _.get(replySed, target)
-
-  const getId = (p: Periode | null) => p ? p.__type + '[' + p.__index + ']' : 'new-periode'
+  const getId = (p: Periode | null): string => p ? '[' + (p.__type ?? '') + ']-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
-
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
   const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 
@@ -123,8 +121,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     const [valid, newValidation] = performValidation<ValidationDekkedePeriodeProps>(
       validation, namespace, validateDekkedePeriode, {
         periode: _editPeriode,
-        type,
-        index
+        perioder: _allPeriods,
+        nsIndex: _editTypeAndIndex,
+        personName
       })
     if (!!_editPeriode && valid) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
@@ -157,20 +156,23 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   }
 
   const onRemove = (periode: Periode) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(_.get(person, periode.__type!)) as Array<Periode>
-    newPerioder.splice(periode.__index!, 1)
-    dispatch(updateReplySed(`${target}[${periode.__type}][${periode.__index}]`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: periode.__type! })
+    const type: string = periode.__type!
+    const index: number = periode.__index!
+    const perioder : Array<Periode> = _.cloneDeep(_.get(person, type)) as Array<Periode>
+    perioder.splice(index, 1)
+    dispatch(updateReplySed(`${target}.${type}`, perioder))
+    standardLogger('svarsed.editor.periode.remove', { type })
   }
 
   const onAddNew = () => {
     const valid: boolean = _performValidation({
       periode: _newPeriode,
-      type: _newPeriode?.__type,
+      perioder: _allPeriods,
       personName
     })
     if (!!_newPeriode && valid) {
       const type = _newPeriode.__type
+
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(person, _newPeriode.__type!))
       if (_.isNil(newPerioder)) {
         newPerioder = []
@@ -187,7 +189,10 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   }
 
   const getTag = (type: string) => (
-    <Tag size='small' variant='info'>{t('label:' + type)}</Tag>
+    <Tag size='small' variant='info'>
+      {type === 'perioderMedITrygdeordning' && t('label:dekkede')}
+      {type === 'perioderUtenforTrygdeordning' && t('label:udekkede')}
+    </Tag>
   )
 
   const renderRow = (periode: Periode | null, index: number) => {
@@ -217,11 +222,12 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
     return (
       <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periode)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
         })}
-        key={getId(periode)}
       >
         <VerticalSeparatorDiv size='0.5' />
         {inEditMode
@@ -238,10 +244,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                   setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
                   value={_periode}
                 />
-                <Column>
-                  {addremovepanel}
-                </Column>
+                <Column />
               </AlignStartRow>
+              <VerticalSeparatorDiv size='0.5' />
               <AlignStartRow>
                 <Column>
                   <RadioPanelGroup
@@ -265,42 +270,24 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     </FlexRadioPanels>
                   </RadioPanelGroup>
                 </Column>
-                <Column />
+                <AlignEndColumn>
+                  {addremovepanel}
+                </AlignEndColumn>
               </AlignStartRow>
             </>
             )
           : (
             <AlignStartRow>
-              <Column>
-                <FlexCenterDiv>
-                  <PileDiv>
-                    <BodyLong>
-                      {periode?.startdato}
-                    </BodyLong>
-                    {_v[namespace + '-startdato']?.feilmelding && (
-                      <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                        {_v[namespace + '-startdato']?.feilmelding}
-                      </div>
-                    )}
-                  </PileDiv>
-                  <PileDiv>
-                    <BodyLong>
-                      {periode?.sluttdato}
-                    </BodyLong>
-                    {_v[namespace + '-sluttdato']?.feilmelding && (
-                      <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                        {_v[namespace + '-sluttdato']?.feilmelding}
-                      </div>
-                    )}
-                  </PileDiv>
-                </FlexCenterDiv>
-              </Column>
-              <Column>
-                {getTag(periode?.__type!)}
-              </Column>
-              <Column>
+              <PeriodeText
+                periode={periode} error={{
+                  startdato: _v[_namespace + '-startdato'],
+                  sluttdato: _v[_namespace + '-sluttdato']
+                }}
+              />
+              {_sort === 'time' && getTag(periode?.__type!)}
+              <AlignEndColumn>
                 {addremovepanel}
-              </Column>
+              </AlignEndColumn>
             </AlignStartRow>
             )}
         <VerticalSeparatorDiv size='0.5' />
@@ -310,19 +297,17 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   return (
     <>
-      <Heading size='small'>
-        {t('label:dekning-trygdeordningen')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
       {!_.isEmpty(_allPeriods) && (
         <>
-          <Checkbox
-            checked={_sort === 'group'}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-          >
-            {t('label:group-by-dekkede')}
-          </Checkbox>
-          <VerticalSeparatorDiv size='2' />
+          <PaddedHorizontallyDiv>
+            <Checkbox
+              checked={_sort === 'group'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+            >
+              {t('label:group-by-dekkede')}
+            </Checkbox>
+          </PaddedHorizontallyDiv>
+          <VerticalSeparatorDiv />
         </>
       )}
       {_.isEmpty(_allPeriods)
@@ -339,11 +324,23 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
             ? _allPeriods?.map(renderRow)
             : (
               <>
-                {getTag('perioderMedITrygdeordning')}
+                {!_.isEmpty(person?.perioderMedITrygdeordning) && (
+                  <PaddedDiv>
+                    <Label>
+                      {t('label:dekkede')}
+                    </Label>
+                  </PaddedDiv>
+                )}
                 {person?.perioderMedITrygdeordning?.map((p: Periode, i: number) =>
                   ({ ...p, __type: 'perioderMedITrygdeordning', __index: i }))
                   .sort(periodeSort).map(renderRow)}
-                {getTag('perioderUtenforTrygdeordning')}
+                {!_.isEmpty(person?.perioderUtenforTrygdeordning) && (
+                  <PaddedDiv>
+                    <Label>
+                      {t('label:udekkede')}
+                    </Label>
+                  </PaddedDiv>
+                )}
                 {person?.perioderUtenforTrygdeordning?.map((p: Periode, i: number) =>
                   ({ ...p, __type: 'perioderUtenforTrygdeordning', __index: i }))
                   .sort(periodeSort).map(renderRow)}
@@ -359,7 +356,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
               onClick={() => _setNewForm(true)}
             >
               <AddCircle />
-              {t('el:button-add-new-x', { x: t('label:dekkede-periode').toLowerCase() })}
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>
           )}
