@@ -1,5 +1,5 @@
 import { validateAnsattPerioder } from './Ansatt/validation'
-import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
+import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/Avsenderlandet/validation'
 import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/NotAnsatt/validation'
 import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/WithSubsidies/validation'
@@ -46,7 +46,7 @@ export const validatePersonensStatusPerioder = (
     perioder: perioderMedTrygd, personName
   }))
   const flyttegrunn: Flyttegrunn | undefined = _.get(person, 'flyttegrunn')
-  hasErrors.push(validateAllGrunnlagForBosetting(v, `${namespace}-grunnlagforbosetting`, {
+  hasErrors.push(validateGrunnlagForBosetting(v, `${namespace}-grunnlagforbosetting`, {
     flyttegrunn, personName
   }))
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(person, 'perioderMedPensjon')

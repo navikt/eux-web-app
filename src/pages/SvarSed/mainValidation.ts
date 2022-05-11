@@ -6,7 +6,7 @@ import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/vali
 import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
 import { validateFormål } from 'applications/SvarSed/Formål/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/Forsikring/validation'
-import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
+import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
 import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validationInntektForm'
 import {
@@ -156,7 +156,7 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         barnetilhorigheter, personName
       }))
       const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-      hasErrors.push(validateAllGrunnlagForBosetting(v, `svarsed-${personID}-grunnlagforbosetting`, {
+      hasErrors.push(validateGrunnlagForBosetting(v, `svarsed-${personID}-grunnlagforbosetting`, {
         flyttegrunn, personName
       }))
       const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)

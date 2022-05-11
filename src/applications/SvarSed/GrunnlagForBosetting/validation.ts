@@ -1,64 +1,67 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { addError, checkIfNotDate, checkLength } from 'utils/validation'
+import { getIdx } from 'utils/namespace'
+import { checkIfDuplicate, checkIfNotDate, checkLength } from 'utils/validation'
 
-export interface ValidationGrunnlagForBosettingProps {
+export interface ValidationGrunnlagForBosettingPeriodeProps {
   periode: Periode | undefined
   perioder: Array<Periode> | undefined
   index?: number
   personName?: string
 }
 
-export interface ValidateAllGrunnlagForBosettingProps {
+export interface ValidateGrunnlagForBosettingProps {
   flyttegrunn: Flyttegrunn | undefined
   personName?: string
+}
+
+export const validateGrunnlagForBosettingPeriode = (
+  v: Validation,
+  namespace: string,
+  {
+    periode,
+    perioder,
+    index,
+    personName
+  }: ValidationGrunnlagForBosettingPeriodeProps
+): boolean => {
+  const hasErrors: Array<boolean> = []
+  const idx = getIdx(index)
+
+  hasErrors.push(validatePeriode(v, namespace, {
+    periode,
+    personName,
+    index
+  }))
+
+  hasErrors.push(checkIfDuplicate(v, {
+    needle: periode,
+    haystack: perioder,
+    matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
+    message: 'validation:duplicateStartdato',
+    id: namespace + idx + '-startdato',
+    index,
+    personName
+  }))
+
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateGrunnlagForBosetting = (
   v: Validation,
   namespace: string,
   {
-    periode,
-    perioder,
-    personName
-  }: ValidationGrunnlagForBosettingProps
-): boolean => {
-  const hasErrors: Array<boolean> = []
-
-  hasErrors.push(validatePeriode(v, namespace + '-perioder', {
-    periode,
-    personName
-  }))
-
-  if (!_.isEmpty(periode?.startdato)) {
-    const duplicate: boolean = _.find(perioder, p => p.startdato === periode?.startdato) !== undefined
-    if (duplicate) {
-      hasErrors.push(addError(v, {
-        message: 'validation:duplicateStartdato',
-        id: namespace + 'perioder-startdato',
-        personName
-      }))
-    }
-  }
-
-  return hasErrors.find(value => value) !== undefined
-}
-
-export const validateAllGrunnlagForBosetting = (
-  v: Validation,
-  namespace: string,
-  {
     flyttegrunn,
     personName
-  }: ValidateAllGrunnlagForBosettingProps
+  }: ValidateGrunnlagForBosettingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   flyttegrunn?.perioder?.forEach((periode: Periode, index: number) => {
-    hasErrors.push(validatePeriode(v, namespace + '-perioder', {
+    hasErrors.push(validateGrunnlagForBosettingPeriode(v, namespace, {
       periode,
+      perioder: flyttegrunn?.perioder,
       index,
       personName
     }))

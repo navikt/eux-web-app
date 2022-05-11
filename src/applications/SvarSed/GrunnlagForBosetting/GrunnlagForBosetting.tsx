@@ -1,26 +1,36 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  Column,
+  PaddedDiv,
+  PaddedHorizontallyDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import DateInput from 'components/Forms/DateInput'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateGrunnlagForBosetting, ValidationGrunnlagForBosettingProps } from './validation'
+import performValidation from 'utils/performValidation'
+import { periodeSort } from 'utils/sort'
+import { hasNamespace } from 'utils/validation'
+import { validateGrunnlagForBosettingPeriode, ValidationGrunnlagForBosettingPeriodeProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -37,17 +47,18 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
+  const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
   const target = `${personID}.flyttegrunn`
   const flyttegrunn: Flyttegrunn | undefined = _.get(replySed, target)
-  const namespace = standalone ? `${parentNamespace}-${personID}-grunnlagforbosetting` : `${parentNamespace}-grunnlagforbosetting`
+  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
-  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
+  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
+  const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
-    return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
-  })
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationGrunnlagForBosettingProps>(validateGrunnlagForBosetting, namespace)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationGrunnlagForBosettingPeriodeProps>(validateGrunnlagForBosettingPeriode, namespace)
 
   const setAvsenderDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim()))
@@ -63,24 +74,14 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     }
   }
 
-  const setPeriode = (periode: Periode, id: string, index: number) => {
+  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-perioder-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-perioder-sluttdato')
-      }
-    } else {
-      dispatch(updateReplySed(`${target}.perioder[${index}]`, periode))
-      if (id === 'startdato' && validation[namespace + '-perioder' + getIdx(index) + '-startdato']) {
-        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + '-perioder' + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + '-perioder' + getIdx(index) + '-sluttdato'))
-      }
+      _resetValidation(namespace + '-' + whatChanged)
+      return
     }
+    _setEditPeriode(periode)
+    dispatch(resetValidation(namespace + getIdx(index)))
   }
 
   const setPersonligSituasjon = (personligSituasjon: string) => {
@@ -90,184 +91,210 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     }
   }
 
-  const resetForm = () => {
-    _setNewPeriode({ startdato: '' })
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriode(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewPeriode(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (periode: Periode, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditPeriode(periode)
+    _setEditIndex(index)
   }
 
-  const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(flyttegrunn!.perioder)
-    const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
-    if (deletedPeriods && deletedPeriods.length > 0) {
-      removeFromDeletion(deletedPeriods[0])
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationGrunnlagForBosettingPeriodeProps>(
+      validation, namespace, validateGrunnlagForBosettingPeriode, {
+        periode: _editPeriode,
+        perioder: flyttegrunn?.perioder,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}.perioder[${_editIndex}]`, _editPeriode))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
+
+  const onRemove = (removedPeriode: Periode) => {
+    const newPerioder: Array<Periode> = _.reject(flyttegrunn?.perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(`${target}.perioder`, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: 'flyttegrunn' })
   }
 
-  const onAdd = () => {
-    const valid: boolean = performValidation({
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
       periode: _newPeriode,
       perioder: flyttegrunn?.perioder,
       personName
     })
 
-    if (valid) {
+    if (!!_newPeriode && valid) {
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(flyttegrunn?.perioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(_newPeriode)
+      newPerioder.push(_newPeriode)
+      newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(`${target}.perioder`, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'flyttegrunn' })
-      onCancel()
+      onCloseNew()
     }
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | null | undefined => (
-      index < 0
-        ? _validation[namespace + '-perioder-' + el]?.feilmelding
-        : validation[namespace + '-perioder' + idx + '-' + el]?.feilmelding
-    )
-    const _periode = index < 0 ? _newPeriode : periode
-
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periode)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + '-perioder' + idx}
-            error={{
-              startdato: getErrorFor(index, 'startdato'),
-              sluttdato: getErrorFor(index, 'sluttdato')
-            }}
-            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
-            value={_periode}
-          />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                breakInTwo
+                hideLabel={false}
+                setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                value={_periode}
+              />
+              )
+            : (
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato'],
+                  sluttdato: _v[_namespace + '-sluttdato']
+                }}
+                periode={_periode}
+              />
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel2<Periode>
+              item={periode}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
-  const render = () => (
+  return (
     <>
-      <Detail>
-        {t('label:oppholdets-varighet')}
-      </Detail>
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:grunnlag-for-bosetting')}
+        </Heading>
+        <VerticalSeparatorDiv />
+        <Detail>
+          {t('label:oppholdets-varighet')}
+        </Detail>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(flyttegrunn?.perioder)
         ? (
-          <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
-        : flyttegrunn?.perioder.sort((a, b) =>
-          moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
-        )
-          ?.map(renderRow)}
-      <VerticalSeparatorDiv size={2} />
-      <HorizontalLineSeparator />
+        : flyttegrunn?.perioder?.map(renderRow)}
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <DateInput
-            error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
-            namespace={namespace}
-            id='datoFlyttetTilAvsenderlandet'
-            key={'' + flyttegrunn?.datoFlyttetTilAvsenderlandet}
-            label={t('label:flyttedato-til-avsenderlandet')}
-            onChanged={setAvsenderDato}
-            value={flyttegrunn?.datoFlyttetTilAvsenderlandet}
-          />
-        </Column>
-        <Column>
-          <DateInput
-            error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
-            namespace={namespace}
-            id='datoFlyttetTilMottakerlandet'
-            key={'' + flyttegrunn?.datoFlyttetTilMottakerlandet}
-            label={t('label:flyttedato-til-mottakerslandet')}
-            onChanged={setMottakerDato}
-            value={flyttegrunn?.datoFlyttetTilMottakerlandet}
-          />
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column flex='2'>
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-personligSituasjon']?.feilmelding}
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <AlignStartRow>
+          <Column>
+            <DateInput
+              error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
               namespace={namespace}
-              id='personligSituasjon'
-              label={t('label:elementter-i-personlig-situasjon')}
-              onChanged={setPersonligSituasjon}
-              value={flyttegrunn?.personligSituasjon ?? ''}
+              id='datoFlyttetTilAvsenderlandet'
+              key={'' + flyttegrunn?.datoFlyttetTilAvsenderlandet}
+              label={t('label:flyttedato-til-avsenderlandet')}
+              onChanged={setAvsenderDato}
+              value={flyttegrunn?.datoFlyttetTilAvsenderlandet}
             />
-          </TextAreaDiv>
-        </Column>
-        <Column />
-      </AlignStartRow>
+          </Column>
+          <Column>
+            <DateInput
+              error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
+              namespace={namespace}
+              id='datoFlyttetTilMottakerlandet'
+              key={'' + flyttegrunn?.datoFlyttetTilMottakerlandet}
+              label={t('label:flyttedato-til-mottakerslandet')}
+              onChanged={setMottakerDato}
+              value={flyttegrunn?.datoFlyttetTilMottakerlandet}
+            />
+          </Column>
+          <Column />
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column flex='2'>
+            <TextAreaDiv>
+              <TextArea
+                error={validation[namespace + '-personligSituasjon']?.feilmelding}
+                namespace={namespace}
+                id='personligSituasjon'
+                label={t('label:elementter-i-personlig-situasjon')}
+                onChanged={setPersonligSituasjon}
+                value={flyttegrunn?.personligSituasjon ?? ''}
+              />
+            </TextAreaDiv>
+          </Column>
+          <Column />
+        </AlignStartRow>
+      </PaddedDiv>
     </>
-  )
-
-  return (
-    standalone
-      ? (
-        <PaddedDiv>
-          <Heading size='small'>
-            {t('label:grunnlag-for-bosetting')}
-          </Heading>
-          <VerticalSeparatorDiv size={2} />
-          {render()}
-        </PaddedDiv>
-        )
-      : (
-        <>
-          <Heading size='small'>
-            {t('label:grunnlag-for-bosetting')}
-          </Heading>
-          <VerticalSeparatorDiv />
-          {render()}
-        </>
-        )
   )
 }
 

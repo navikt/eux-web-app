@@ -29,7 +29,7 @@ export const validateWithSubsidiesPeriode = (
   const idx = getIdx(index)
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(validatePeriode(v, namespace + '-periode' + idx, {
+  hasErrors.push(validatePeriode(v, namespace + idx, {
     periode: pensjonPeriode?.periode,
     personName
   }))
@@ -39,7 +39,7 @@ export const validateWithSubsidiesPeriode = (
     haystack: perioder,
     matchFn: (p: PensjonPeriode) => p.periode.startdato === pensjonPeriode?.periode?.startdato && p.periode.sluttdato === pensjonPeriode.periode?.sluttdato,
     message: 'validation:duplicateStartdato',
-    id: namespace + idx + '-periode-startdato',
+    id: namespace + idx + '-startdato',
     index,
     personName
   }))
