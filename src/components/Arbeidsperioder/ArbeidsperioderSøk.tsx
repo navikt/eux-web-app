@@ -134,7 +134,7 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
             <Search />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
-              : t('el:button-search-for-x', { x: t('label:arbeidsperioder') })}
+              : t('el:button-get-x', { x: t('label:arbeidsperioder') })}
             {gettingArbeidsperioder && <Loader />}
           </Button>
         </Column>

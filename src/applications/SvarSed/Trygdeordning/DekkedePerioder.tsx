@@ -18,7 +18,7 @@ import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
-import { ForsikringPeriode, Periode, PeriodeSort, Person } from 'declarations/sed'
+import { Periode, PeriodeSort, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -50,7 +50,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   const person: Person = _.get(replySed, target)
   const getId = (p: Periode | null): string => p ? '[' + (p.__type ?? '') + ']-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
-  const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
+  const [_allPeriods, _setAllPeriods] = useState<Array<Periode>>([])
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
   const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 

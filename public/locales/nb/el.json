@@ -15,6 +15,7 @@
   "button-discard-changes": "Glemt endringer",
   "button-edit": "Rediger",
   "button-edit-x": "Rediger {{x}}",
+  "button-get-x": "Hent {{x}}",
   "button-fill-sed": "Fyll ut SED",
   "button-hide": "Skjul",
   "button-load": "Last inn",
@@ -180,11 +181,9 @@
 
   "option-personensstatus-1": "Ansatt",
   "option-personensstatus-2": "Selvstendig næringsdrivende",
-  "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon",
-  "option-personensstatus-3-more": "Mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
+  "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
   "option-personensstatus-4": "Personen har permisjon med lønn, er i streik eller lockout",
-  "option-personensstatus-5": "Personen har permisjon uten lønn",
-  "option-personensstatus-5-more": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
+  "option-personensstatus-5": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
   "option-relasjon-1": "Daglig omsorg for barnet",
   "option-relasjon-2": "Barn født i ekteskap",

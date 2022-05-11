@@ -67,7 +67,7 @@ export interface Periode {
   sluttdato?: string
   aapenPeriodeType?: AapenPeriodeType
   // internal use, for periode labeling
-  __type ?: string
+  __type ?: any
   __index ?: number
 }
 

@@ -1,36 +1,49 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Ingress } from '@navikt/ds-react'
-import { AlignStartRow, Column, FlexCenterDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  Column,
+  PaddedDiv,
+  PaddedHorizontallyDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import classNames from 'classnames'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
-import { validateArbeidsgiver, ValidationArbeidsgiverProps } from 'components/Arbeidsperioder/validation'
-import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import PeriodeText from 'components/Forms/PeriodeText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring } from 'declarations/sed'
-import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
+import { Periode, PeriodeMedForsikring, PeriodeSort } from 'declarations/sed'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { generateIdentifikatorKey, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
-import { validateAnsattPeriode, ValidationArbeidsperiodeProps } from './validation'
+import { hasNamespace } from 'utils/validation'
+import {
+  validateAnsattPeriode,
+  validateAnsattPerioder,
+  ValidationAnsattPeriodeProps,
+  ValidationAnsattPerioderProps
+} from './validation'
 
 interface AnsattSelector extends MainFormSelector {
-  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
+  arbeidsperioder: ArbeidsperioderFraAA | null | undefined,
 }
 
 const mapState = (state: State): AnsattSelector => ({
@@ -53,433 +66,291 @@ const Ansatt: React.FC<MainFormProps> = ({
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
   const includeAddress = false
   const fnr = getFnr(replySed, personID)
+  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
-  // added arbeidsperioder list
-  const [_addedArbeidsperioder, setAddedArbeidsperioder] = useState<Array<PeriodeMedForsikring>>([])
+  const [_plan, _setPlan] = useState<Array<PlanItem<Periode>> | undefined>(undefined)
+  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
+  const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 
-  // fields for new arbeidsperiode
-  const [_newArbeidsgiverPeriode, _setNewArbeidsgiverPeriode] = useState<Periode>({ startdato: '' })
-  const [_newArbeidsgiversOrgnr, _setNewArbeidsgiversOrgnr] = useState<string>('')
-  const [_newArbeidsgiversNavn, _setNewArbeidsgiversNavn] = useState<string>('')
-  const [_seeNewArbeidsgiver, _setSeeNewArbeidsgiver] = useState<boolean>(false)
-  const [_validationArbeidsperiode, _resetValidationArbeidsperiode, performValidationArbeidsperiode] = useLocalValidation<ValidationArbeidsgiverProps>(validateArbeidsgiver, namespace + '-arbeidsgiver')
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnsattPeriodeProps>(validateAnsattPeriode, namespace)
 
-  // fields for new periode (not connected to arbeidsgiver)
-  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
-  const [_seeNewPeriode, _setSeeNewPeriode] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode) => p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType))
-  const [_validationPeriode, _resetValidationPeriode, performValidationPeriode] = useLocalValidation<ValidationArbeidsperiodeProps>(validateAnsattPeriode, namespace)
+  const [_sort, _setSort] = useState<PeriodeSort>('time')
 
-  const addPeriode = (newPeriode: Periode) => {
-    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-    if (!newPerioder) {
-      newPerioder = []
+  useEffect(() => {
+    const spikedPeriods: Array<Periode> | undefined = perioderSomAnsatt?.map((p, index) => ({ ...p, __index: index }))
+    const plan: Array<PlanItem<Periode>> = makeRenderPlan<Periode>({
+      perioder: spikedPeriods,
+      arbeidsperioder,
+      addedArbeidsperioder: [],
+      sort: _sort
+    } as RenderPlanProps<Periode>)
+    _setPlan(plan)
+  }, [replySed, _sort, arbeidsperioder])
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationAnsattPerioderProps>(
+      validation, namespace, validateAnsattPerioder, {
+        perioder: perioderSomAnsatt,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
+  const onPeriodeChanged = (periode: Periode, index: number) => {
+    if (index < 0) {
+      _setNewPeriode(periode)
+      _resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-sluttdato')
+      return
     }
-    newPerioder = newPerioder.concat(newPeriode).sort((a, b) =>
-      moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
+    _setEditPeriode(periode)
+    if (hasNamespace(validation, namespace + getIdx(index))) {
+      dispatch(resetValidation(namespace + getIdx(index)))
+    }
+  }
+
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriode(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewPeriode(undefined)
+    _setNewForm(false)
+    _resetValidation()
+  }
+
+  const onStartEdit = (p: Periode, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditPeriode(p)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationAnsattPeriodeProps>(
+      validation, namespace, validateAnsattPeriode, {
+        periode: _editPeriode,
+        perioder: perioderSomAnsatt,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
+    }
+  }
+
+  const onRemove = (deletedPeriode: Periode) => {
+    const index: number | undefined = deletedPeriode.__index
+    if (index !== undefined && index >= 0) {
+      const newPerioder = _.cloneDeep(perioderSomAnsatt) as Array<Periode>
+      newPerioder.splice(index, 1)
+      dispatch(updateReplySed(target, newPerioder))
+      standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
+    }
+  }
+
+  const onAddNew = (newPeriode?: Periode) => {
+    // if newPeriode is not null, it comes from arbeidsgiver; if not, fronm newly typed periode
+
+    const __newPeriode = !_.isUndefined(newPeriode) ? newPeriode : _newPeriode
+    const valid: boolean = _performValidation({
+      periode: __newPeriode,
+      perioder: perioderSomAnsatt,
+      personName
+    })
+
+    if (!!__newPeriode && valid) {
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
+      if (_.isNil(newPerioder)) {
+        newPerioder = []
+      }
+      delete __newPeriode.__index
+      delete __newPeriode.__type
+      newPerioder.push(__newPeriode)
+      newPerioder = newPerioder.sort((a, b) =>
+        moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
+      )
+      dispatch(updateReplySed(target, newPerioder))
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
+      onCloseNew()
+    }
+  }
+
+  const onRemoveFromArbeidsgiver = (deletedArbeidsgiver: PeriodeMedForsikring) => {
+    const newPerioder: Array<Periode> = _.reject(perioderSomAnsatt,
+      (p: Periode) => (p.startdato === deletedArbeidsgiver.startdato && p.sluttdato === deletedArbeidsgiver.sluttdato)
     )
     dispatch(updateReplySed(target, newPerioder))
-  }
-
-  const addPeriodeFromArbeidsgiver = (selectedArbeidsgiver: PeriodeMedForsikring) => {
-    addPeriode({
-      startdato: selectedArbeidsgiver.startdato,
-      sluttdato: selectedArbeidsgiver.sluttdato,
-      aapenPeriodeType: selectedArbeidsgiver.aapenPeriodeType
-    })
-    standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
-  }
-
-  const removePeriode = (deletedPeriode: Periode) => {
-    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-    if (!newPerioder) {
-      newPerioder = []
-    }
-    newPerioder = _.filter(newPerioder, p =>
-      p.startdato !== deletedPeriode.startdato && p.sluttdato !== deletedPeriode.sluttdato)
-    dispatch(updateReplySed(target, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
   }
 
-  const removePeriodeFromArbeidsgiver = (deletedArbeidsgiver: PeriodeMedForsikring) => {
-    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-    if (!newPerioder) {
-      newPerioder = []
-    }
-    newPerioder = _.filter(newPerioder, p =>
-      p.startdato !== deletedArbeidsgiver.startdato && p.sluttdato !== deletedArbeidsgiver.sluttdato)
-    dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
+  const onAddFromArbeidsgiverNew = (selectedArbeidsgiver: PeriodeMedForsikring) => {
+    const newPeriode = selectedArbeidsgiver.sluttdato
+      ? {
+          startdato: selectedArbeidsgiver.startdato,
+          sluttdato: selectedArbeidsgiver.sluttdato
+        }
+      : {
+          startdato: selectedArbeidsgiver.startdato,
+          aapenPeriodeType: selectedArbeidsgiver.aapenPeriodeType
+        }
+    onAddNew(newPeriode)
   }
 
   const onArbeidsgiverSelect = (arbeidsgiver: PeriodeMedForsikring, checked: boolean) => {
     if (checked) {
-      addPeriodeFromArbeidsgiver(arbeidsgiver)
+      onAddFromArbeidsgiverNew(arbeidsgiver)
     } else {
-      removePeriodeFromArbeidsgiver(arbeidsgiver)
+      onRemoveFromArbeidsgiver(arbeidsgiver)
     }
   }
-
-  const onRegisteredArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
-    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-    if (!newPerioder) {
-      newPerioder = []
+  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
+    // if selected, let's find the same period.
+    let selectedIndex: number | undefined
+    if (selected) {
+      selectedIndex = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
     }
-    const newArbeidsgivere: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
-    const needleId: string | undefined = getOrgnr(newArbeidsgiver, 'organisasjonsnummer')
 
-    if (needleId) {
-      const indexArbeidsgiver = _.findIndex(newArbeidsgivere, (p: ArbeidsperiodeFraAA) => p.arbeidsgiversOrgnr === needleId)
-      if (indexArbeidsgiver >= 0) {
-        newArbeidsgivere[indexArbeidsgiver].fraDato = newArbeidsgiver.startdato
-        newArbeidsgivere[indexArbeidsgiver].tilDato = newArbeidsgiver.sluttdato
-        dispatch(updateArbeidsperioder(newArbeidsgivere))
-      }
+    // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
+    // it is stored in __type, as the __index is already busy with the one above
+    const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
 
-      if (selected) {
-        const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
-          return oldArbeidsgiver.startdato === p.startdato && oldArbeidsgiver.sluttdato === p.sluttdato
-        })
-        if (indexPerioder >= 0) {
-          newPerioder[indexPerioder] = {
-            startdato: newArbeidsgiver.startdato,
-            sluttdato: newArbeidsgiver.sluttdato,
-            aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
-          }
-          dispatch(updateReplySed(target, newPerioder))
-        }
+    if (selected && selectedIndex !== undefined && selectedIndex >= 0) {
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
+      if (!newPerioder) {
+        newPerioder = []
       }
+      newPerioder[selectedIndex!] = {
+        startdato: newArbeidsgiver.startdato,
+        sluttdato: newArbeidsgiver.sluttdato,
+        aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
+      }
+      dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.arbeidsgiver.fromAA.edit')
     }
+
+    const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
+    newArbeidsperioder[changedArbeidsgiverIndex].fraDato = newArbeidsgiver.startdato
+    newArbeidsperioder[changedArbeidsgiverIndex].tilDato = newArbeidsgiver.sluttdato
+    dispatch(updateArbeidsperioder({
+      ...arbeidsperioder,
+      arbeidsperioder: newArbeidsperioder
+    }))
   }
 
-  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
-    let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-    if (!newPerioder) {
-      newPerioder = []
-    }
-    const newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-    const needleId : string | undefined = generateIdentifikatorKey(newArbeidsgiver.arbeidsgiver.identifikatorer)
-
-    if (newAddedArbeidsperioder && needleId) {
-      const index = _.findIndex(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => generateIdentifikatorKey(p.arbeidsgiver.identifikatorer) === needleId)
-      if (index >= 0) {
-        newAddedArbeidsperioder[index] = newArbeidsgiver
-        setAddedArbeidsperioder(newAddedArbeidsperioder)
-      }
-
-      if (selected) {
-        const indexPerioder = _.findIndex(newPerioder, (p: Periode) => {
-          return oldArbeidsgiver.startdato === p.startdato && oldArbeidsgiver.sluttdato === p.sluttdato
-        })
-        if (indexPerioder >= 0) {
-          newPerioder[indexPerioder] = {
-            startdato: newArbeidsgiver.startdato,
-            sluttdato: newArbeidsgiver.sluttdato,
-            aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
-          }
-          dispatch(updateReplySed(target, newPerioder))
-        }
-      }
-      standardLogger('svarsed.editor.arbeidsgiver.added.edit')
-    }
-  }
-
-  const onArbeidsgiverDelete = (deletedArbeidsgiver: PeriodeMedForsikring) => {
-    let newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-    const needleId : string | undefined = generateIdentifikatorKey(deletedArbeidsgiver.arbeidsgiver.identifikatorer)
-    if (newAddedArbeidsperioder && needleId) {
-      newAddedArbeidsperioder = _.filter(newAddedArbeidsperioder, (p: PeriodeMedForsikring) => generateIdentifikatorKey(p.arbeidsgiver.identifikatorer) !== needleId)
-      setAddedArbeidsperioder(newAddedArbeidsperioder)
-      standardLogger('svarsed.editor.arbeidsgiver.added.remove')
-    }
-  }
-
-  const resetArbeidsgiverForm = () => {
-    _setNewArbeidsgiversNavn('')
-    _setNewArbeidsgiversOrgnr('')
-    _setNewArbeidsgiverPeriode({ startdato: '' })
-    _resetValidationArbeidsperiode()
-  }
-
-  const resetPeriodeForm = () => {
-    _setNewPeriode({ startdato: '' })
-    _resetValidationPeriode()
-  }
-
-  const onArbeidsgiverAdd = () => {
-    const newArbeidsgiver: PeriodeMedForsikring = {
-      ..._newArbeidsgiverPeriode,
-      arbeidsgiver: {
-        navn: _newArbeidsgiversNavn,
-        identifikatorer: [{
-          type: 'organisasjonsnummer',
-          id: _newArbeidsgiversOrgnr
-        }]
-      }
-    }
-
-    const valid: boolean = performValidationArbeidsperiode({
-      arbeidsgiver: newArbeidsgiver,
-      includeAddress
-    })
-
-    if (valid) {
-      let newAddedArbeidsperioder: Array<PeriodeMedForsikring> = _.cloneDeep(_addedArbeidsperioder)
-      newAddedArbeidsperioder = newAddedArbeidsperioder.concat(newArbeidsgiver)
-      setAddedArbeidsperioder(newAddedArbeidsperioder)
-      standardLogger('svarsed.editor.arbeidsgiver.added.add')
-      resetArbeidsgiverForm()
-    }
-  }
-
-  const onPeriodeAdd = () => {
-    const valid: boolean = performValidationPeriode({
-      periode: _newPeriode,
-      perioder: perioderSomAnsatt,
-      personName
-    })
-    if (valid) {
-      addPeriode(_newPeriode)
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
-      resetPeriodeForm()
-    }
-  }
-
-  const onCancelArbeidsgiverClicked = () => {
-    resetArbeidsgiverForm()
-    _setSeeNewArbeidsgiver(!_seeNewArbeidsgiver)
-  }
-
-  const onCancelPeriodeClicked = () => {
-    resetPeriodeForm()
-    _setSeeNewPeriode(!_seeNewPeriode)
-  }
-
-  const onArbeidsgiverPeriodeChanged = (periode: Periode) => {
-    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-startdato')
-    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-sluttdato')
-    _setNewArbeidsgiverPeriode(periode)
-  }
-
-  const onArbeidsgiversOrgnrChanged = (newOrg: string) => {
-    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-orgnr')
-    _setNewArbeidsgiversOrgnr(newOrg)
-  }
-
-  const onArbeidsgiversNavnChanged = (newName: string) => {
-    _resetValidationArbeidsperiode(namespace + '-arbeidsgiver-navn')
-    _setNewArbeidsgiversNavn(newName)
-  }
-
-  const setPeriode = (periode: Periode, index: number) => {
-    if (index < 0) {
-      _setNewPeriode(periode)
-      _resetValidationPeriode(namespace + '-periode-startdato')
-      _resetValidationPeriode(namespace + '-periode-sluttdato')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}]`, periode))
-      if (validation[namespace + getIdx(index) + '-periode-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
-      }
-      if (validation[namespace + getIdx(index) + '-periode-luttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
-      }
-    }
-  }
-
-  const renderNewArbeidsgiver = () => (
-    <RepeatableRow className='new'>
-      <Heading size='small'>
-        {t('label:legg-til-arbeidsperiode')}
-      </Heading>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <PeriodeInput
-          namespace={namespace}
-          error={{
-            startdato: _validationArbeidsperiode[namespace + '-arbeidsgiver-startdato']?.feilmelding,
-            sluttdato: _validationArbeidsperiode[namespace + '-arbeidsgiver-sluttdato']?.feilmelding
-          }}
-          setPeriode={onArbeidsgiverPeriodeChanged}
-          value={_newArbeidsgiverPeriode}
-        />
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='0.5' />
-      <AlignStartRow>
-        <Column>
-          <Input
-            error={_validationArbeidsperiode[namespace + '-arbeidsgiver-orgnr']?.feilmelding}
-            namespace={namespace + '-arbeidsgiver'}
-            id='orgnr'
-            key={namespace + '-arbeidsgiver-orgnr-' + _newArbeidsgiversOrgnr}
-            label={t('label:orgnr')}
-            onChanged={onArbeidsgiversOrgnrChanged}
-            value={_newArbeidsgiversOrgnr}
-          />
-        </Column>
-        <Column>
-          <Input
-            error={_validationArbeidsperiode[namespace + '-arbeidsgiver-navn']?.feilmelding}
-            namespace={namespace + '-arbeidsgiver'}
-            key={namespace + '-arbeidsgiver-navn-' + _newArbeidsgiversNavn}
-            id='navn'
-            label={t('label:navn')}
-            onChanged={onArbeidsgiversNavnChanged}
-            value={_newArbeidsgiversNavn}
-          />
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Button
-            variant='secondary'
-            onClick={onArbeidsgiverAdd}
-          >
-            <AddCircle />
-            {t('el:button-add')}
-          </Button>
-          <HorizontalSeparatorDiv size='0.5' />
-          <Button
-            variant='tertiary'
-            onClick={onCancelArbeidsgiverClicked}
-          >
-            {t('el:button-cancel')}
-          </Button>
-        </Column>
-      </AlignStartRow>
-    </RepeatableRow>
-  )
-
-  const renderNewPeriode = () => (
-    <RepeatableRow className='new'>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <PeriodeInput
-          namespace={namespace}
-          error={{
-            startdato: _validationPeriode[namespace + '-periode-startdato']?.feilmelding,
-            sluttdato: _validationPeriode[namespace + '-periode-sluttdato']?.feilmelding
-          }}
-          setPeriode={(p: Periode) => setPeriode(p, -1)}
-          value={_newPeriode}
-        />
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Button
-            variant='secondary'
-            onClick={onPeriodeAdd}
-          >
-            <AddCircle />
-            {t('el:button-add')}
-          </Button>
-          <HorizontalSeparatorDiv size='0.5' />
-          <Button
-            variant='tertiary'
-            onClick={onCancelPeriodeClicked}
-          >
-            {t('el:button-cancel')}
-          </Button>
-        </Column>
-      </AlignStartRow>
-    </RepeatableRow>
-  )
-
-  const renderPlanItem = (item: any) => {
-    if (item.type === 'periode') {
-      const idx = getIdx(item.index)
-      const candidateForDeletion = !_.isNil(item.index) && item.index >= 0 ? isInDeletion(item.item as Periode) : false
-      const getErrorFor = (el: string): string | undefined => (
-        !_.isNil(item.index) && item.index >= 0
-          ? validation[namespace + '-periode' + idx + '-' + el]?.feilmelding
-          : _validationPeriode[namespace + '-periode-' + el]?.feilmelding
-      )
-      return (
-        <>
-          <PeriodeInput
-            namespace={namespace + '-periode' + idx}
-            error={{
-              startdato: getErrorFor('startdato'),
-              sluttdato: getErrorFor('sluttdato'),
-              aapenPeriodeType: getErrorFor('aapenPeriodeType')
-            }}
-            setPeriode={(p: Periode) => setPeriode(p, item.index!)}
-            value={(item.item as Periode)}
-          />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem
-              marginTop
-              onBeginRemove={() => addToDeletion(item.item as Periode)}
-              onConfirmRemove={() => removePeriode(item.item as Periode)}
-              onCancelRemove={() => removeFromDeletion(item.item as Periode)}
-            />
-          </Column>
-        </>
-      )
-    }
-
-    if (item.type === 'arbeidsperiode') {
-      return (
-        <Column>
-          <ArbeidsperioderBox
-            arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-            editable='only_period'
-            newArbeidsgiver={false}
-            includeAddress={includeAddress}
-            selected={!_.isNil(item.index) && item.index >= 0}
-            key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
-            onArbeidsgiverSelect={onArbeidsgiverSelect}
-            onArbeidsgiverEdit={onRegisteredArbeidsgiverEdit}
-            namespace={namespace}
-          />
-        </Column>
-      )
-    }
-
-    if (item.type === 'addedArbeidsperiode') {
-      return (
-        <Column>
-          <ArbeidsperioderBox
-            arbeidsgiver={item.item as unknown as PeriodeMedForsikring}
-            editable='full'
-            error={item.duplicate}
-            newArbeidsgiver
-            includeAddress={includeAddress}
-            selected={!_.isNil(item.index) && item.index >= 0}
-            key={getOrgnr(item.item as unknown as PeriodeMedForsikring, 'organisasjonsnummer')}
-            onArbeidsgiverSelect={onArbeidsgiverSelect}
-            onArbeidsgiverDelete={onArbeidsgiverDelete}
-            onArbeidsgiverEdit={onArbeidsgiverEdit}
-            namespace={namespace}
-          />
-        </Column>
-      )
-    }
-  }
-
-  const renderPlan = () => {
-    const plan = makeRenderPlan<Periode>({
-      perioder: perioderSomAnsatt,
-      arbeidsperioder,
-      addedArbeidsperioder: _addedArbeidsperioder
-    } as RenderPlanProps<Periode>)
-
-    return plan?.map((item: PlanItem<Periode>) => (
-      <div key={item.type + '-' + item.item.startdato + '-' + item.item.sluttdato}>
-        <AlignStartRow>
+  const renderPlan = (item: PlanItem<Periode | PeriodeMedForsikring>, index: number, previousItem: PlanItem<Periode | PeriodeMedForsikring> | undefined) => {
+    return (
+      <>
+        {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
+          <Label>{t('label:' + item.type)}</Label>
+        )}
+        <div key={item.type + '-' + item.item.startdato + '-' + item.item.sluttdato}>
           {renderPlanItem(item)}
+          <VerticalSeparatorDiv />
+        </div>
+      </>
+    )
+  }
+
+  const renderPlanItem = (item: PlanItem<Periode | PeriodeMedForsikring> | null) => {
+    if (item === null) {
+      return renderRowPeriode(null)
+    }
+    if (item.type === 'periode') {
+      return renderRowPeriode(item.item as Periode)
+    }
+    if (item.type === 'arbeidsperiode') {
+      return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
+    }
+  }
+
+  const renderRowArbeidsperiode = (a: PeriodeMedForsikring) => {
+    const index: number = a ? a.__index! : -1
+    return (
+      <Column>
+        <ArbeidsperioderBox
+          arbeidsgiver={a}
+          editable='only_period'
+          newArbeidsgiver={false}
+          includeAddress={includeAddress}
+          selected={!_.isNil(index) && index >= 0}
+          onArbeidsgiverSelect={onArbeidsgiverSelect}
+          onArbeidsgiverEdit={onArbeidsgiverEdit}
+          namespace={namespace}
+        />
+      </Column>
+    )
+  }
+
+  const renderRowPeriode = (p: Periode | null) => {
+    const index: number = p ? p.__index! : -1
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : p)
+
+    return (
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(p)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
+        <AlignStartRow>
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding,
+                  aapenPeriodeType: _v[_namespace + '-aapenPeriodeType']?.feilmelding
+                }}
+                hideLabel={false}
+                setPeriode={(p: Periode) => onPeriodeChanged(p, index!)}
+                value={_periode}
+              />
+              )
+            : (
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato'],
+                  sluttdato: _v[_namespace + '-sluttdato']
+                }}
+                periode={_periode}
+              />
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel2<Periode>
+              item={p}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={() => onAddNew()}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
+            />
+          </AlignEndColumn>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </div>
-    ))
+        <VerticalSeparatorDiv size='0.5' />
+      </RepeatableRow>
+    )
   }
 
   return (
@@ -506,44 +377,44 @@ const Ansatt: React.FC<MainFormProps> = ({
         namespace={namespace}
       />
       <VerticalSeparatorDiv size='2' />
-      {_.isEmpty(perioderSomAnsatt) && (
-        <>
-          <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {renderPlan()}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv size='2' />
-      {_seeNewArbeidsgiver && renderNewArbeidsgiver()}
-      {_seeNewPeriode && renderNewPeriode()}
-      {!_seeNewPeriode && !_seeNewArbeidsgiver && (
-        <FlexCenterDiv>
-          <span>{t('label:du-kan')}</span>
-          <Button
-            variant='tertiary'
-            onClick={() => _setSeeNewArbeidsgiver(true)}
-          >
-            <AddCircle />
-            {t('el:button-add-new-x', {
-              x: t('label:arbeidperioder').toLowerCase()
-            })}
-          </Button>
-          <span>&nbsp;{t('label:eller')}&nbsp;</span>
-          <Button
-            variant='tertiary'
-            onClick={() => _setSeeNewPeriode(true)}
-          >
-            <AddCircle />
-            {t('el:button-add-new-x', {
-              x: t('label:periode').toLowerCase()
-            })}
-          </Button>
-        </FlexCenterDiv>
-      )}
+      {_.isEmpty(_plan)
+        ? (
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
+          )
+        : (
+          <>
+            <PaddedHorizontallyDiv>
+              <Checkbox
+                checked={_sort === 'group'}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+              >
+                {t('label:group-by-type')}
+              </Checkbox>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv />
+            {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
+          </>
+          )}
+      <VerticalSeparatorDiv />
+      {_newForm
+        ? renderPlanItem(null)
+        : (
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
+          )}
     </>
   )
 }

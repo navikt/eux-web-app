@@ -5,10 +5,15 @@ import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate } from 'utils/validation'
 
-export interface ValidationArbeidsperiodeProps {
-  periode: Periode,
+export interface ValidationAnsattPeriodeProps {
+  periode: Periode | undefined,
   perioder: Array<Periode> | undefined,
   index?: number
+  personName?: string
+}
+
+export interface ValidationAnsattPerioderProps {
+  perioder: Array<Periode> | undefined
   personName?: string
 }
 
@@ -20,12 +25,12 @@ export const validateAnsattPeriode = (
     perioder,
     index,
     personName
-  }: ValidationArbeidsperiodeProps
+  }: ValidationAnsattPeriodeProps
 ): boolean => {
   const idx = getIdx(index)
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(validatePeriode(v, namespace + '-periode', {
+  hasErrors.push(validatePeriode(v, namespace, {
     periode,
     index,
     personName
@@ -36,7 +41,7 @@ export const validateAnsattPeriode = (
       needle: periode,
       haystack: perioder,
       matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
-      id: namespace + '-periode' + idx + '-startdato',
+      id: namespace + idx + '-startdato',
       index,
       message: 'validation:duplicateStartdato',
       personName
@@ -46,18 +51,13 @@ export const validateAnsattPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-interface ValidateAnsattPerioderProps {
-  perioder: Array<Periode>
-  personName?: string
-}
-
 export const validateAnsattPerioder = (
   v: Validation,
   namespace: string,
   {
     perioder,
     personName
-  }: ValidateAnsattPerioderProps
+  }: ValidationAnsattPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {

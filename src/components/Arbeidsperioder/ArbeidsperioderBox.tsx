@@ -95,7 +95,9 @@ const ArbeidsperioderBox = ({
   const [_arbeidsgiverPeriode, setArbeidsgiversPeriode] = useState<Periode>({
     startdato: arbeidsgiver.startdato,
     sluttdato: arbeidsgiver.sluttdato,
-    aapenPeriodeType: arbeidsgiver.aapenPeriodeType
+    aapenPeriodeType: arbeidsgiver.aapenPeriodeType,
+    __type: arbeidsgiver.__type,
+    __index: arbeidsgiver.__index
   })
 
   // for includeAddress
@@ -173,7 +175,9 @@ const ArbeidsperioderBox = ({
     setArbeidsgiversPeriode({
       startdato: _beforeEditingVersion?.startdato!,
       sluttdato: _beforeEditingVersion?.sluttdato,
-      aapenPeriodeType: _beforeEditingVersion?.aapenPeriodeType
+      aapenPeriodeType: _beforeEditingVersion?.aapenPeriodeType,
+      __type: _beforeEditingVersion?.__type,
+      __index: _beforeEditingVersion?.__index
     })
     setBeforeEditingVersion(undefined)
   }

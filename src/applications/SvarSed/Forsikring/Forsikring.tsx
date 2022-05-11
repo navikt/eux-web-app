@@ -543,7 +543,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               checked={_sort === 'group'}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
             >
-              {t('label:group-by-type')}
+              {t('label:group-by-periodetype')}
             </Checkbox>
             <VerticalSeparatorDiv size='2' />
           </>

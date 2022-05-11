@@ -384,34 +384,33 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 {addremovepanel}
               </AlignStartRow>
               {_familierelasjon?.relasjonType === 'annet' && (
-                <>
-                  <VerticalSeparatorDiv />
-                  <AlignStartRow>
-                    <Column>
-                      {_familierelasjon?.annenRelasjonType && (
-                        <FlexDiv>
-                          <Label>{t('label:annenRelasjonType')}:</Label>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          {_familierelasjon?.annenRelasjonType}
-                        </FlexDiv>
-                      )}
-                      {_familierelasjon?.annenRelasjonPersonNavn && (
-                        <FlexDiv>
-                          <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          {_familierelasjon?.annenRelasjonPersonNavn}
-                        </FlexDiv>
-                      )}
-                      {_familierelasjon?.borSammen && (
-                        <FlexDiv>
-                          <Label>{t('label:borSammen')}:</Label>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          {_familierelasjon?.borSammen}
-                        </FlexDiv>
-                      )}
-                    </Column>
-                  </AlignStartRow>
-                </>
+
+                <AlignStartRow>
+                  <Column>
+                    {_familierelasjon?.annenRelasjonType && (
+                      <FlexDiv>
+                        <Label>{t('label:annenRelasjonType')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_familierelasjon?.annenRelasjonType}
+                      </FlexDiv>
+                    )}
+                    {_familierelasjon?.annenRelasjonPersonNavn && (
+                      <FlexDiv>
+                        <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_familierelasjon?.annenRelasjonPersonNavn}
+                      </FlexDiv>
+                    )}
+                    {_familierelasjon?.borSammen && (
+                      <FlexDiv>
+                        <Label>{t('label:borSammen')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_familierelasjon?.borSammen}
+                      </FlexDiv>
+                    )}
+                  </Column>
+                </AlignStartRow>
+
               )}
             </>
             )}
