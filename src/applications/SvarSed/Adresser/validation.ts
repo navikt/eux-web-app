@@ -11,7 +11,7 @@ export interface ValidationAdresseProps {
 }
 
 export interface ValidationAdresserProps {
-  adresser: Array<Adresse>
+  adresser: Array<Adresse> | undefined
   checkAdresseType: boolean
   personName?: string
 }

@@ -1,15 +1,10 @@
-import { validateAnmodningsPerioder } from 'applications/SvarSed/AnmodningsPeriode/validation'
-import { validateFormål } from 'applications/SvarSed/Formål/validation'
-import { validateKontoopplysning } from 'applications/SvarSed/Kontoopplysning/validation'
-import { validateKravOmRefusjon } from 'applications/SvarSed/KravOmRefusjon/validation'
-import { validateMotregninger } from 'applications/SvarSed/Motregning/validation'
-import { validateProsedyreVedUenighet } from 'applications/SvarSed/ProsedyreVedUenighet/validation'
-import { validateVedtak } from 'applications/SvarSed/Vedtak/validation'
 import { validateAdresser } from 'applications/SvarSed/Adresser/validation'
-import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateAnmodning } from 'applications/SvarSed/Anmodning/validation'
+import { validateAnmodningsPerioder } from 'applications/SvarSed/AnmodningsPeriode/validation'
+import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
+import { validateFormål } from 'applications/SvarSed/Formål/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/Forsikring/validation'
 import { validateAllGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
@@ -18,19 +13,21 @@ import {
   validateKontaktsinformasjonEposter,
   validateKontaktsinformasjonTelefoner
 } from 'applications/SvarSed/Kontaktinformasjon/validation'
+import { validateKontoopplysning } from 'applications/SvarSed/Kontoopplysning/validation'
+import { validateKravOmRefusjon } from 'applications/SvarSed/KravOmRefusjon/validation'
+import { validateMotregninger } from 'applications/SvarSed/Motregning/validation'
 import { validateNasjonaliteter } from 'applications/SvarSed/Nasjonaliteter/validation'
 import { validatePerioderDagpenger } from 'applications/SvarSed/PeriodeForDagpenger/validation'
-import { validateAnsattPerioder } from 'applications/SvarSed/PersonensStatus/Ansatt/validation'
-import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/Avsenderlandet/validation'
-import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/NotAnsatt/validation'
-import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/WithSubsidies/validation'
+import { validatePersonensStatusPerioder } from 'applications/SvarSed/PersonensStatus/validation'
 import { validatePersonopplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
+import { validateProsedyreVedUenighet } from 'applications/SvarSed/ProsedyreVedUenighet/validation'
 import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
 import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/validation'
 import { validateSisteAnsettelseInfo } from 'applications/SvarSed/SisteAnsettelseInfo/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/Trygdeordning/validation'
+import { validateVedtak } from 'applications/SvarSed/Vedtak/validation'
 import {
   Adresse,
   Barnetilhoerighet,
@@ -39,10 +36,9 @@ import {
   FamilieRelasjon,
   Flyttegrunn,
   ForsikringPeriode,
-  FSed, H001Sed,
+  FSed,
+  H001Sed,
   HSed,
-  PensjonPeriode,
-  Periode,
   Person,
   PersonInfo,
   ReplySed,
@@ -55,9 +51,9 @@ import {
   Ytelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
+import i18n from 'i18n'
 import _ from 'lodash'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
-import i18n from 'i18n'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationSEDEditProps {
@@ -149,37 +145,9 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         hasErrors.push(validateFamilierelasjoner(v, `svarsed-${personID}-familierelasjon`, {
           familierelasjoner, personName
         }))
-        const perioderSomAnsatt: Array<Periode> = _.get(replySed, `${personID}.perioderSomAnsatt`)
-        hasErrors.push(validateAnsattPerioder(v, `svarsed-${personID}-personensstatus-ansatt`, {
-          perioder: perioderSomAnsatt, personName
-        }))
-        const perioderSomSelvstendig: Array<Periode> = _.get(replySed, `${personID}.perioderSomSelvstendig`)
-        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomSelvstendig`, {
-          perioder: perioderSomSelvstendig, personName
-        }))
-        const perioderSomSykMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomSykMedLoenn`)
-        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomSykMedLoenn`, {
-          perioder: perioderSomSykMedLoenn, personName
-        }))
-        const perioderSomPermittertMedLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertMedLoenn`)
-        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertMedLoenn`, {
-          perioder: perioderSomPermittertMedLoenn, personName
-        }))
-        const perioderSomPermittertUtenLoenn: Array<Periode> = _.get(replySed, `${personID}.perioderSomPermittertUtenLoenn`)
-        hasErrors.push(validateNotAnsattPerioder(v, `svarsed-${personID}-personensstatus-notansatt-perioderSomPermittertUtenLoenn`, {
-          perioder: perioderSomPermittertUtenLoenn, personName
-        }))
-        const perioderMedTrygd: Array<Periode> = _.get(replySed, `${personID}.perioderMedTrygd`)
-        hasErrors.push(validateAvsenderlandetPerioder(v, `svarsed-${personID}-personensstatus-avsenderlandet`, {
-          perioder: perioderMedTrygd, personName
-        }))
-        const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
-        hasErrors.push(validateAllGrunnlagForBosetting(v, `svarsed-${personID}-personensstatus-grunnlagforbosetting`, {
-          flyttegrunn, personName
-        }))
-        const perioderMedPensjon: Array<PensjonPeriode> = _.get(replySed, `${personID}.perioderMedPensjon`)
-        hasErrors.push(validateWithSubsidiesPerioder(v, `svarsed-${personID}-personensstatus-withsubsidies`, {
-          perioder: perioderMedPensjon, personName
+        const person: Person = _.get(replySed, `${personID}`)
+        hasErrors.push(validatePersonensStatusPerioder(v, `svarsed-${personID}-personensstatus`, {
+          person, personName
         }))
       }
     } else {

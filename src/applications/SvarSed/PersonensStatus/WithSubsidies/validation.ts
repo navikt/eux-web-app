@@ -5,9 +5,14 @@ import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationWithSubsidiesProps {
-  pensjonPeriode: PensjonPeriode
-  perioder: Array<PensjonPeriode>
+  pensjonPeriode: PensjonPeriode | undefined
+  perioder: Array<PensjonPeriode> | undefined
   index?: number
+  personName?: string
+}
+
+export interface ValidateWithSubsidiesPerioderProps {
+  perioder: Array<PensjonPeriode> | undefined
   personName?: string
 }
 
@@ -25,14 +30,14 @@ export const validateWithSubsidiesPeriode = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(validatePeriode(v, namespace + '-periode' + idx, {
-    periode: pensjonPeriode.periode,
+    periode: pensjonPeriode?.periode,
     personName
   }))
 
   hasErrors.push(checkIfDuplicate(v, {
     needle: pensjonPeriode,
     haystack: perioder,
-    matchFn: (p: PensjonPeriode) => p.periode.startdato === pensjonPeriode.periode?.startdato && p.periode.sluttdato === pensjonPeriode.periode?.sluttdato,
+    matchFn: (p: PensjonPeriode) => p.periode.startdato === pensjonPeriode?.periode?.startdato && p.periode.sluttdato === pensjonPeriode.periode?.sluttdato,
     message: 'validation:duplicateStartdato',
     id: namespace + idx + '-periode-startdato',
     index,
@@ -40,18 +45,13 @@ export const validateWithSubsidiesPeriode = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: pensjonPeriode.pensjonstype,
+    needle: pensjonPeriode?.pensjonstype,
     id: namespace + idx + '-pensjontype',
     message: 'validation:noPensjonType',
     personName
   }))
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidateWithSubsidiesPerioderProps {
-  perioder: Array<PensjonPeriode>
-  personName?: string
 }
 
 export const validateWithSubsidiesPerioder = (

@@ -23,10 +23,8 @@ import { State } from 'declarations/reducers'
 import { Periode, PeriodeMedForsikring, PeriodeSort } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
-import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -34,13 +32,9 @@ import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
+import { periodeSort } from 'utils/sort'
 import { hasNamespace } from 'utils/validation'
-import {
-  validateAnsattPeriode,
-  validateAnsattPerioder,
-  ValidationAnsattPeriodeProps,
-  ValidationAnsattPerioderProps
-} from './validation'
+import { validateAnsattPeriode, ValidationAnsattPeriodeProps } from './validation'
 
 interface AnsattSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined,
@@ -66,7 +60,9 @@ const Ansatt: React.FC<MainFormProps> = ({
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
   const includeAddress = false
   const fnr = getFnr(replySed, personID)
-  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
+  const getId = (item: PlanItem<Periode | PeriodeMedForsikring> | null): string => (item
+    ? item.type + '-' + (item.item as Periode | PeriodeMedForsikring)?.startdato + '-' + (item.item as Periode | PeriodeMedForsikring).sluttdato
+    : 'new')
 
   const [_plan, _setPlan] = useState<Array<PlanItem<Periode>> | undefined>(undefined)
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
@@ -88,16 +84,6 @@ const Ansatt: React.FC<MainFormProps> = ({
     } as RenderPlanProps<Periode>)
     _setPlan(plan)
   }, [replySed, _sort, arbeidsperioder])
-
-  useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAnsattPerioderProps>(
-      validation, namespace, validateAnsattPerioder, {
-        perioder: perioderSomAnsatt,
-        personName
-      }
-    )
-    dispatch(setValidation(newValidation))
-  })
 
   const onPeriodeChanged = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -177,9 +163,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       delete __newPeriode.__index
       delete __newPeriode.__type
       newPerioder.push(__newPeriode)
-      newPerioder = newPerioder.sort((a, b) =>
-        moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
-      )
+      newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
       onCloseNew()
@@ -250,15 +234,16 @@ const Ansatt: React.FC<MainFormProps> = ({
 
   const renderPlan = (item: PlanItem<Periode | PeriodeMedForsikring>, index: number, previousItem: PlanItem<Periode | PeriodeMedForsikring> | undefined) => {
     return (
-      <>
+      <div key={getId(item)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <Label>{t('label:' + item.type)}</Label>
+          <PaddedHorizontallyDiv>
+            <Label>{t('label:' + item.type)}</Label>
+          </PaddedHorizontallyDiv>
         )}
-        <div key={item.type + '-' + item.item.startdato + '-' + item.item.sluttdato}>
-          {renderPlanItem(item)}
-          <VerticalSeparatorDiv />
-        </div>
-      </>
+
+        {renderPlanItem(item)}
+        <VerticalSeparatorDiv />
+      </div>
     )
   }
 
@@ -302,7 +287,6 @@ const Ansatt: React.FC<MainFormProps> = ({
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
-        key={getId(p)}
         className={classNames({
           new: index < 0,
           error: hasNamespace(_v, _namespace)
@@ -355,27 +339,29 @@ const Ansatt: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <Heading size='small'>
-        {t('label:oversikt-brukers-arbeidsperioder')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <Ingress>
-        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-      </Ingress>
-      <VerticalSeparatorDiv />
-      <ArbeidsperioderSøk
-        amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
-        fnr={fnr}
-        fillOutFnr={() => {
-          document.dispatchEvent(new CustomEvent('feillenke', {
-            detail: {
-              skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin-nummer`,
-              feilmelding: ''
-            } as ErrorElement
-          }))
-        }}
-        namespace={namespace}
-      />
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:oversikt-brukers-arbeidsperioder')}
+        </Heading>
+        <VerticalSeparatorDiv size='2' />
+        <Ingress>
+          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+        </Ingress>
+        <VerticalSeparatorDiv />
+        <ArbeidsperioderSøk
+          amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
+          fnr={fnr}
+          fillOutFnr={() => {
+            document.dispatchEvent(new CustomEvent('feillenke', {
+              detail: {
+                skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin-nummer`,
+                feilmelding: ''
+              } as ErrorElement
+            }))
+          }}
+          namespace={namespace}
+        />
+      </PaddedDiv>
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(_plan)
         ? (

@@ -23,12 +23,12 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import { getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { periodeSort } from 'utils/sort'
 import { validateDekkedePeriode, ValidationDekkedePeriodeProps } from './validation'
 
 interface DekkedePerioderProps extends MainFormProps {
@@ -59,7 +59,6 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationDekkedePeriodeProps>(validateDekkedePeriode, namespace)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
-  const periodeSort = (a: Periode, b: Periode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
 
   useEffect(() => {
     const periodes: Array<Periode> = []

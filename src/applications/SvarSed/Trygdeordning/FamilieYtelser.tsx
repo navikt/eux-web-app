@@ -73,6 +73,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     : 'new'
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
+
   const periodeSort = (a: Periode | PensjonPeriode, b: Periode | PensjonPeriode) => (
     moment(isPensjonPeriode(a) ? (a as PensjonPeriode).periode!.startdato : (a as Periode)?.startdato)
       .isSameOrBefore(moment(isPensjonPeriode(b) ? (b as PensjonPeriode).periode!.startdato : (b as Periode)?.startdato))

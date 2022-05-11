@@ -6,9 +6,14 @@ import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate } from 'utils/validation'
 
 export interface ValidationAvsenderlandetProps {
-  periode: Periode
-  perioder: Array<Periode>
+  periode: Periode | undefined
+  perioder: Array<Periode> | undefined
   index?: number
+  personName?: string
+}
+
+export interface ValidateAvsenderlandetPerioderProps {
+  perioder: Array<Periode> | undefined
   personName?: string
 }
 
@@ -44,11 +49,6 @@ export const validateAvsenderlandetPeriode = (
   }
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidateAvsenderlandetPerioderProps {
-  perioder: Array<Periode>
-  personName?: string
 }
 
 export const validateAvsenderlandetPerioder = (

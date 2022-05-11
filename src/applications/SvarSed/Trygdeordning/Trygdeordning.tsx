@@ -29,6 +29,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateTrygdeordningerProps>(
       validation, namespace, validateTrygdeordninger, {
@@ -57,9 +58,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         validation={validation}
       />
-
       <VerticalSeparatorDiv size={2} />
-
       <PaddedDiv>
         <Heading size='small'>
           {t('label:trygdeordningen-familieYtelse')}

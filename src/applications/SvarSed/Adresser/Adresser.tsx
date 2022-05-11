@@ -47,7 +47,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = `${personID}.adresser`
-  const adresser: Array<Adresse> = _.get(replySed, target)
+  const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
 
   const checkAdresseType: boolean = true
@@ -133,7 +133,7 @@ const Adresser: React.FC<MainFormProps> = ({
       personName
     })
     if (!!_newAdresse && valid) {
-      let newAdresser: Array<Adresse> = _.cloneDeep(adresser)
+      let newAdresser: Array<Adresse> | undefined = _.cloneDeep(adresser)
       if (_.isNil(newAdresser)) {
         newAdresser = []
       }
@@ -203,7 +203,7 @@ const Adresser: React.FC<MainFormProps> = ({
       <PaddedDiv key={namespace + '-div'}>
         <AdresseFromPDL
           fnr={fnr!}
-          selectedAdresser={adresser}
+          selectedAdresser={adresser ?? []}
           personName={personName}
           onAdresserChanged={onPDLAdresserChanged}
         />

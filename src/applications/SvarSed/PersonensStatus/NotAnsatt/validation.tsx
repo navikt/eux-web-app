@@ -5,10 +5,15 @@ import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate } from 'utils/validation'
 
-export interface ValidationNotAnsattProps {
-  periode: Periode
+export interface ValidationNotAnsattPeriodeProps {
+  periode: Periode | undefined
   perioder: Array<Periode> | undefined,
   index?: number
+  personName?: string
+}
+
+export interface ValidationNotAnsattPerioderProps {
+  perioder: Array<Periode> | undefined
   personName?: string
 }
 
@@ -20,7 +25,7 @@ export const validateNotAnsattPeriode = (
     perioder,
     index,
     personName
-  }: ValidationNotAnsattProps
+  }: ValidationNotAnsattPeriodeProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
@@ -46,18 +51,13 @@ export const validateNotAnsattPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-interface ValidateNotAnsattPerioderProps {
-  perioder: Array<Periode>
-  personName?: string
-}
-
 export const validateNotAnsattPerioder = (
   v: Validation,
   namespace: string,
   {
     perioder,
     personName
-  }: ValidateNotAnsattPerioderProps
+  }: ValidationNotAnsattPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode, index: number) => {

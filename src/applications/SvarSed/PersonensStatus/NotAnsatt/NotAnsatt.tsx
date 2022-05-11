@@ -1,24 +1,33 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  PaddedDiv,
+  PaddedHorizontallyDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import PeriodeInput from 'components/Forms/PeriodeInput'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import PeriodeText from 'components/Forms/PeriodeText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateNotAnsattPeriode, ValidationNotAnsattProps } from './validation'
+import performValidation from 'utils/performValidation'
+import { periodeSort } from 'utils/sort'
+import { hasNamespace } from 'utils/validation'
+import { validateNotAnsattPeriode, ValidationNotAnsattPeriodeProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -44,153 +53,182 @@ const NotAnsatt: React.FC<MainFormProps & {arbeidsforhold: string}> = ({
   const dispatch = useAppDispatch()
 
   const periodeType: string = type[arbeidsforhold]
-  const target: string = `${personID}.${periodeType}`
-  const replySedPerioder: Array<Periode> = _.get(replySed, target)
   const namespace = `${parentNamespace}-notansatt-${periodeType}`
+  const target: string = `${personID}.${periodeType}`
+  const perioder: Array<Periode> | undefined = _.get(replySed, target)
+  const getId = (p: Periode | null): string => p ? periodeType + '-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
-  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
+  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
+  const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Periode>((p: Periode): string => {
-    return p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType)
-  })
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationNotAnsattProps>(validateNotAnsattPeriode, namespace)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNotAnsattPeriodeProps>(validateNotAnsattPeriode, namespace)
 
-  const setPeriode = (periode: Periode, id: string, index: number) => {
+  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-sluttdato')
-      }
-    } else {
-      dispatch(updateReplySed(`${target}[${index}]`, periode))
-      if (id === 'startdato' && validation[namespace + getIdx(index) + '-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
-      }
+      _resetValidation(namespace + '-' + whatChanged)
+      return
     }
+    _setEditPeriode(periode)
+    dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const resetForm = () => {
-    _setNewPeriode({ startdato: '' })
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriode(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewPeriode(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (periode: Periode, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditPeriode(periode)
+    _setEditIndex(index)
   }
 
-  const onRemove = (index: number) => {
-    const newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
-    const deletedPeriods: Array<Periode> = newPerioder.splice(index, 1)
-    if (deletedPeriods && deletedPeriods.length > 0) {
-      removeFromDeletion(deletedPeriods[0])
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationNotAnsattPeriodeProps>(
+      validation, namespace, validateNotAnsattPeriode, {
+        periode: _editPeriode,
+        perioder,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
+
+  const onRemove = (removedPeriode: Periode) => {
+    const newPerioder: Array<Periode> = _.reject(perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(target, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: periodeType })
   }
 
-  const onAdd = () => {
-    const valid: boolean = performValidation({
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
       periode: _newPeriode,
-      perioder: replySedPerioder,
+      perioder,
       personName
     })
 
-    if (valid) {
-      let newPerioder: Array<Periode> = _.cloneDeep(replySedPerioder)
+    if (!!_newPeriode && valid) {
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat(_newPeriode)
+      newPerioder.push(_newPeriode)
+      newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type: periodeType })
-      onCancel()
+      onCloseNew()
     }
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periode)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | null | undefined => {
-      return index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    }
-    const _periode = index < 0 ? _newPeriode : periode
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periode)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + idx}
-            error={{
-              startdato: getErrorFor(index, 'startdato'),
-              sluttdato: getErrorFor(index, 'sluttdato')
-            }}
-            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
-            value={_periode}
-          />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(periode)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periode)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                breakInTwo
+                hideLabel={false}
+                setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                value={_periode}
+              />
+              )
+            : (
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato'],
+                  sluttdato: _v[_namespace + '-sluttdato']
+                }}
+                periode={_periode}
+              />
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel2<Periode>
+              item={periode}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   return (
     <>
-      <Heading size='small'>
-        {t('label:ansettelsesperioder')}
-      </Heading>
-      <VerticalSeparatorDiv size={2} />
-      {_.isEmpty(replySedPerioder)
-        ? (
-          <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
-          )
-        : replySedPerioder
-          ?.sort((a, b) =>
-            moment(a.startdato, 'YYYY-MM-DD')
-              .isSameOrBefore(moment(b.startdato, 'YYYY-MM-DD'))
-              ? -1
-              : 1
-          )
-          ?.map(renderRow)}
-      <VerticalSeparatorDiv size={2} />
-      <HorizontalLineSeparator />
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:ansettelsesperioder')}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_.isEmpty(perioder)
+        ? (
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
+          )
+        : perioder?.map(renderRow)}
+      <VerticalSeparatorDiv />
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
       <VerticalSeparatorDiv />
     </>

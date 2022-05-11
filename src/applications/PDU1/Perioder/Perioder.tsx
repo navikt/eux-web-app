@@ -1,24 +1,5 @@
 import { AddCircle, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Input from 'components/Forms/Input'
-import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
-import {
-  PDU1,
-  PDPeriode
-} from 'declarations/pd'
-import { State } from 'declarations/reducers'
-import { Validation } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
-import useLocalValidation from 'hooks/useLocalValidation'
-import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
 import {
   AlignStartRow,
   Column,
@@ -30,10 +11,26 @@ import {
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import classNames from 'classnames'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
+import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { Options } from 'declarations/app'
+import { PDPeriode, PDU1 } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import useLocalValidation from 'hooks/useLocalValidation'
+import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getNSIdx } from 'utils/namespace'
+import { periodeSort } from 'utils/sort'
 import { validatePDPeriode, ValidationPDPeriodeProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
@@ -75,8 +72,6 @@ const Perioder: React.FC<MainFormProps> = ({
     { label: t('el:option-perioder-perioderLoennSomAnsatt'), value: 'perioderLoennSomAnsatt' },
     { label: t('el:option-perioder-perioderInntektSomSelvstendig'), value: 'perioderInntektSomSelvstendig' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
-
-  const periodeSort = (a: PDPeriode, b: PDPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
 
   useEffect(() => {
     const periodes: Array<PDPeriode> = [];

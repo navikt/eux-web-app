@@ -15,13 +15,20 @@ import {
   Vacation
 } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Detail, Heading, Label } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  FlexCenterDiv,
+  FlexEndDiv,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import InntektOgTimerFC from 'applications/SvarSed/Forsikring/InntektOgTimer/InntektOgTimer'
-import {
-  validateForsikringPeriode,
-  ValidationForsikringPeriodeProps
-} from 'applications/SvarSed/Forsikring/validation'
+import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'applications/SvarSed/Forsikring/validation'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Military from 'assets/icons/Military'
@@ -40,7 +47,8 @@ import {
   InntektOgTime,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring, PeriodeSort,
+  PeriodeMedForsikring,
+  PeriodeSort,
   PeriodeUtenForsikring,
   U002Sed
 } from 'declarations/sed'
@@ -49,21 +57,11 @@ import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import moment from 'moment'
-import {
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  FlexEndDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getNSIdx } from 'utils/namespace'
+import { periodeSort } from 'utils/sort'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -121,8 +119,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     { label: t('el:option-forsikring-FRIVILLIG'), value: 'perioderFrivilligForsikring' },
     { label: t('el:option-forsikring-FERIE'), value: 'perioderKompensertFerie' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
-
-  const periodeSort = (a: ForsikringPeriode, b: ForsikringPeriode) => moment(a.startdato).isSameOrBefore(moment(b.startdato)) ? -1 : 1
 
   useEffect(() => {
     const periodes: Array<ForsikringPeriode> = [];

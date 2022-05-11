@@ -5,9 +5,14 @@ import _ from 'lodash'
 import { addError, checkIfNotDate, checkLength } from 'utils/validation'
 
 export interface ValidationGrunnlagForBosettingProps {
-  periode: Periode
+  periode: Periode | undefined
   perioder: Array<Periode> | undefined
   index?: number
+  personName?: string
+}
+
+export interface ValidateAllGrunnlagForBosettingProps {
+  flyttegrunn: Flyttegrunn | undefined
   personName?: string
 }
 
@@ -39,11 +44,6 @@ export const validateGrunnlagForBosetting = (
   }
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidateAllGrunnlagForBosettingProps {
-  flyttegrunn: Flyttegrunn
-  personName?: string
 }
 
 export const validateAllGrunnlagForBosetting = (

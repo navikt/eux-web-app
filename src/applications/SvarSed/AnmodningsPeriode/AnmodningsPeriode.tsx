@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { isFSed } from 'utils/sed'
+import { hasNamespace } from 'utils/validation'
 import {
   validateAnmodningsPeriode,
   validateAnmodningsPerioder,
@@ -167,7 +168,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
+          error: hasNamespace(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
