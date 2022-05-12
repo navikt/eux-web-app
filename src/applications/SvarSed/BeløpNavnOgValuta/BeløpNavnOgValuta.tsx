@@ -431,19 +431,17 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     </FlexDiv>
                   </FormText>
                 </Column>
-                {personID === 'familie'
-                  ? (
-                    <Column>
-                      <FormText error={_v[_namespace + '-antallPersoner']}>
-                        <FlexDiv>
-                          <Label>{t('label:antall-innvilges') + ':'}</Label>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          {_ytelse?.antallPersoner}
-                        </FlexDiv>
-                      </FormText>
-                    </Column>
-                    )
-                  : <Column />}
+                {personID === 'familie' && (
+                  <Column>
+                    <FormText error={_v[_namespace + '-antallPersoner']}>
+                      <FlexDiv>
+                        <Label>{t('label:antall-innvilges') + ':'}</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_ytelse?.antallPersoner}
+                      </FlexDiv>
+                    </FormText>
+                  </Column>
+                  )}
                 <Column>
                   <FlexDiv>
                     <Label>{t('label:beløp') + ':'}</Label>

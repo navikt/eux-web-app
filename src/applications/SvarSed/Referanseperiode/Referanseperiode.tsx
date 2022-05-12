@@ -4,10 +4,8 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import _ from 'lodash'
-import { Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
 const mapState = (state: State): MainFormSelector => ({
@@ -20,7 +18,6 @@ const Referanseperiode: React.FC<MainFormProps> = ({
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
-  const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'anmodningsperiode'
@@ -39,10 +36,7 @@ const Referanseperiode: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small'>
-        {t('label:referanseperiode')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv/>
       <AlignStartRow>
         <PeriodeInput
           namespace={namespace}
@@ -50,6 +44,7 @@ const Referanseperiode: React.FC<MainFormProps> = ({
             startdato: validation[namespace + '-startdato']?.feilmelding,
             sluttdato: validation[namespace + '-sluttdato']?.feilmelding
           }}
+          hideLabel={false}
           periodeType='simple'
           setPeriode={setPeriode}
           value={anmodningsperiode}

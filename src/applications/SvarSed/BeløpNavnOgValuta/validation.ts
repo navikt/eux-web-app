@@ -42,21 +42,21 @@ export const validateBeløpNavnOgValuta = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.ytelseNavn,
-    id: namespace + '-ytelseNavn',
+    id: namespace + idx + '-ytelseNavn',
     message: 'validation:noBetegnelsePåYtelse',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.beloep,
-    id: namespace + '-beloep',
+    id: namespace + idx + '-beloep',
     message: 'validation:noBeløp',
     personName
   }))
 
   if (!_.isEmpty(ytelse?.beloep?.trim()) && !ytelse?.beloep?.trim().match(/^[\d.,]+$/)) {
     hasErrors.push(addError(v, {
-      id: namespace + '-beloep',
+      id: namespace + idx + '-beloep',
       message: 'validation:invalidBeløp',
       personName
     }))
@@ -64,7 +64,7 @@ export const validateBeløpNavnOgValuta = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.valuta,
-    id: namespace + '-valuta',
+    id: namespace + idx + '-valuta',
     message: 'validation:noValuta',
     personName
   }))
@@ -75,19 +75,20 @@ export const validateBeløpNavnOgValuta = (
       sluttdato: ytelse?.sluttdato
     } as Periode,
     periodeType: 'simple',
+    index,
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.mottakersNavn,
-    id: namespace + '-mottakersNavn',
+    id: namespace + idx + '-mottakersNavn',
     message: 'validation:noNavn',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.utbetalingshyppighet,
-    id: namespace + '-utbetalingshyppighet',
+    id: namespace + idx + '-utbetalingshyppighet',
     message: 'validation:noUtbetalingshyppighet',
     personName
   }))
