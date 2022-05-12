@@ -464,8 +464,8 @@
           "borIAnnenPersonsHushold": "ja",
           "borPaaInstitusjon": "ja",
           "erDeltForeldreansvar": "ja",
-          "relasjonTilPerson": "søker",
-          "relasjonType": "eget_barn",
+          "relasjonTilPerson": "01",
+          "relasjonType": "03",
           "periode": {
             "startdato": "2037-01-01",
             "aapenPeriodeType": "åpen_sluttdato"
@@ -572,8 +572,8 @@
           "borIAnnenPersonsHushold": "ja",
           "borPaaInstitusjon": "ja",
           "erDeltForeldreansvar": "ja",
-          "relasjonTilPerson": "søker",
-          "relasjonType": "eget_barn",
+          "relasjonTilPerson": "01",
+          "relasjonType": "03",
           "periode": {
             "startdato": "2037-01-01",
             "aapenPeriodeType": "åpen_sluttdato"

@@ -3,7 +3,7 @@ import {
   fadeIn,
   fadeOut, PaddedHorizontallyDiv
 } from '@navikt/hoykontrast'
-import { Panel, Tag } from '@navikt/ds-react'
+import { Panel } from '@navikt/ds-react'
 
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;
@@ -55,15 +55,6 @@ export const TextAreaDiv = styled.div`
   textarea {
     width: 100%;
   }
-`
-export const MyTag = styled(Tag)`
-  padding: 0.25rem 0.5rem;
-  margin-left: -0.15rem;
-  color: var(--navds-semantic-color-text) !important;
-  background-color: var(--navds-semantic-color-component-background-alternate);
-  border: ${(props: any) => props['data-border'] === true ? '1px solid var(--navds-semantic-color-border)' : 'none'};
-  border-radius: 5px;
-  display: inline-block;
 `
 
 export const WithErrorPanel = styled(Panel)`

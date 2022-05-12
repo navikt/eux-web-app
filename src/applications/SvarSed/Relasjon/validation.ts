@@ -3,14 +3,14 @@ import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
-interface ValidadeBarnetilhoerigheterProps {
-  barnetilhorigheter: Array<Barnetilhoerighet>
+export interface ValidationBarnetilhoerigheterProps {
+  barnetilhoerigheter: Array<Barnetilhoerighet> | undefined
   personName?: string
 }
 
-export interface ValidationBarnetilhoerigheterProps {
-  barnetilhorighet: Barnetilhoerighet,
-  barnetilhorigheter: Array<Barnetilhoerighet>,
+export interface ValidationBarnetilhoerighetProps {
+  barnetilhoerighet: Barnetilhoerighet | undefined,
+  barnetilhoerigheter: Array<Barnetilhoerighet> | undefined,
   index?: number
   personName?: string
 }
@@ -19,26 +19,26 @@ export const validateBarnetilhoerighet = (
   v: Validation,
   namespace: string,
   {
-    barnetilhorighet,
-    barnetilhorigheter,
+    barnetilhoerighet,
+    barnetilhoerigheter,
     index,
     personName
-  }: ValidationBarnetilhoerigheterProps
+  }: ValidationBarnetilhoerighetProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: barnetilhorighet.relasjonTilPerson,
+    needle: barnetilhoerighet?.relasjonTilPerson,
     id: namespace + idx + '-relasjonTilPerson',
     message: 'validation:noRelation',
     personName
   }))
 
   hasErrors.push(checkIfDuplicate(v, {
-    needle: barnetilhorighet,
-    haystack: barnetilhorigheter,
-    matchFn: (b: Barnetilhoerighet) => b.relasjonTilPerson === barnetilhorighet.relasjonTilPerson,
+    needle: barnetilhoerighet,
+    haystack: barnetilhoerigheter,
+    matchFn: (b: Barnetilhoerighet) => b.relasjonTilPerson === barnetilhoerighet?.relasjonTilPerson,
     id: namespace + idx + '-relasjonTilPerson',
     message: 'validation:duplicateRelation',
     index,
@@ -46,7 +46,7 @@ export const validateBarnetilhoerighet = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: barnetilhorighet.relasjonType,
+    needle: barnetilhoerighet?.relasjonType,
     id: namespace + idx + '-relasjonType',
     message: 'validation:noRelationType',
     personName
@@ -59,13 +59,13 @@ export const validateBarnetilhoerigheter = (
   validation: Validation,
   namespace: string,
   {
-    barnetilhorigheter,
+    barnetilhoerigheter,
     personName
-  }: ValidadeBarnetilhoerigheterProps
+  }: ValidationBarnetilhoerigheterProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  barnetilhorigheter?.forEach((barnetilhorighet: Barnetilhoerighet, index) => {
-    hasErrors.push(validateBarnetilhoerighet(validation, namespace, { barnetilhorighet, barnetilhorigheter, index, personName }))
+  barnetilhoerigheter?.forEach((barnetilhoerighet: Barnetilhoerighet, index) => {
+    hasErrors.push(validateBarnetilhoerighet(validation, namespace, { barnetilhoerighet, barnetilhoerigheter, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

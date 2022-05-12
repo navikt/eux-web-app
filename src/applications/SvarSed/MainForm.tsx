@@ -179,6 +179,7 @@ export interface Form extends Option {
   type?: string | Array<string>
   barn?: boolean
   family?: boolean
+  adult?: boolean
   condition ?: () => void
   options?: any
 }
@@ -473,12 +474,24 @@ const MainForm = <T extends StorageTypes>({
               ? _type.startsWith(o.type)
               : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
           })
-          .filter(o => personId.startsWith('barn')
-            ? !!o.barn
-            : personId === 'familie'
-              ? !!o.family
-              : true
-          )
+          .filter(o => {
+            // if we are in F SED, check restritions for kind of person
+            if (
+              Object.prototype.hasOwnProperty.call(o, 'adult') ||
+              Object.prototype.hasOwnProperty.call(o, 'barn') ||
+              Object.prototype.hasOwnProperty.call(o, 'family')
+            ) {
+              if (personId.startsWith('barn')) {
+                return !!o.barn
+              }
+              if (personId === 'familie') {
+                return !!o.family
+              }
+              return !!o.adult
+            } else {
+              return true
+            }
+          })
           .filter(o => _.isFunction(o.condition) ? o.condition() : true)
           .map((o, i) => {
             const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + personId + '-' + o.value))

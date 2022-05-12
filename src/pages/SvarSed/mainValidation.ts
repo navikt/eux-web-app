@@ -151,9 +151,9 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         }))
       }
     } else {
-      const barnetilhorigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
+      const barnetilhoerigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
       hasErrors.push(validateBarnetilhoerigheter(v, `svarsed-${personID}-relasjon`, {
-        barnetilhorigheter, personName
+        barnetilhoerigheter, personName
       }))
       const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
       hasErrors.push(validateGrunnlagForBosetting(v, `svarsed-${personID}-grunnlagforbosetting`, {

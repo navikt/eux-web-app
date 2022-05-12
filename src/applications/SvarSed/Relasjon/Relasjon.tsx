@@ -1,26 +1,33 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
 import {
   AlignCenterRow,
+  AlignEndColumn,
+  AlignStartRow,
   Column,
+  FlexDiv,
   FlexRadioPanels,
+  HorizontalSeparatorDiv,
   PaddedDiv,
+  PaddedHorizontallyDiv,
+  PileDiv,
   RadioPanel,
   RadioPanelGroup,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import FormText from 'components/Forms/FormText'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, Periode } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -28,7 +35,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateBarnetilhoerighet, ValidationBarnetilhoerigheterProps } from './validation'
+import performValidation from 'utils/performValidation'
+import { hasNamespace } from 'utils/validation'
+import { validateBarnetilhoerighet, ValidationBarnetilhoerighetProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -44,448 +53,450 @@ const Relasjon: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
   const target: string = `${personID}.barnetilhoerigheter`
   const barnetilhoerigheter: Array<Barnetilhoerighet> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-relasjon`
+  const getId = (b: Barnetilhoerighet | null | undefined): string => b ? b.relasjonType + '-' + (b?.periode.startdato ?? '') : 'new'
 
-  const [_newRelasjon, _setNewRelasjon] = useState<BarnRelasjon | undefined>(undefined)
-  const [_newRelasjonType, _setNewRelasjonType] = useState<BarnRelasjonType | undefined>(undefined)
-  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
-  const [_newErDeltForeldreansvar, _setNewErDeltForeldreansvar] = useState<JaNei | undefined>(undefined)
-  const [_newQuestion1, _setNewQuestion1] = useState<JaNei | undefined>(undefined)
-  const [_newQuestion2, _setNewQuestion2] = useState<JaNei | undefined>(undefined)
-  const [_newQuestion3, _setNewQuestion3] = useState<JaNei | undefined>(undefined)
-  const [_newQuestion4, _setNewQuestion4] = useState<JaNei | undefined>(undefined)
+  const [_newBarnetilhoerighet, _setNewBarnetilhoerighet] = useState<Barnetilhoerighet | undefined>(undefined)
+  const [_editBarnetilhoerighet, _setEditBarnetilhoerighet] = useState<Barnetilhoerighet | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<Barnetilhoerighet>((b: Barnetilhoerighet): string => b.relasjonType + '-' + b.relasjonTilPerson)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationBarnetilhoerigheterProps>(validateBarnetilhoerighet, namespace)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_seeNewForm, _setNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationBarnetilhoerighetProps>(validateBarnetilhoerighet, namespace)
 
   const relasjonTypeOptions: Options = [
-    { label: t('el:option-relasjon-1'), value: '01' },
-    { label: t('el:option-relasjon-2'), value: '02' },
-    { label: t('el:option-relasjon-3'), value: '03' },
-    { label: t('el:option-relasjon-4'), value: '04' },
-    { label: t('el:option-relasjon-5'), value: '05' },
-    { label: t('el:option-relasjon-6'), value: '06' },
-    { label: t('el:option-relasjon-7'), value: '07' },
-    { label: t('el:option-relasjon-8'), value: '08' }
+    { label: t('el:option-relasjon-01'), value: '01' },
+    { label: t('el:option-relasjon-02'), value: '02' },
+    { label: t('el:option-relasjon-03'), value: '03' },
+    { label: t('el:option-relasjon-04'), value: '04' },
+    { label: t('el:option-relasjon-05'), value: '05' },
+    { label: t('el:option-relasjon-06'), value: '06' },
+    { label: t('el:option-relasjon-07'), value: '07' },
+    { label: t('el:option-relasjon-08'), value: '08' }
   ]
 
-  const setRelasjon = (barnRelasjon: BarnRelasjon, index: number) => {
+  const setRelasjon = (relasjonTilPerson: BarnRelasjon, index: number) => {
     if (index < 0) {
-      _setNewRelasjon(barnRelasjon.trim() as BarnRelasjon)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        relasjonTilPerson: relasjonTilPerson as BarnRelasjon
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-relasjonTilPerson')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].relasjonTilPerson`, barnRelasjon))
-      if (validation[namespace + getIdx(index) + '-relasjonTilPerson']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-relasjonTilPerson'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      relasjonTilPerson: relasjonTilPerson as BarnRelasjon
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-relasjonTilPerson'))
   }
 
   const setRelasjonType = (barnRelasjonType: BarnRelasjonType, index: number) => {
     if (index < 0) {
-      _setNewRelasjonType(barnRelasjonType.trim() as BarnRelasjonType)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        relasjonType: barnRelasjonType as BarnRelasjonType
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-relasjonType')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].relasjonType`, barnRelasjonType))
-      if (validation[namespace + getIdx(index) + '-relasjonType']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      relasjonType: barnRelasjonType as BarnRelasjonType
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
   }
 
-  const setPeriode = (periode: Periode, id: string, index: number) => {
+  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
     if (index < 0) {
-      _setNewPeriode(periode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-periode-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-periode-sluttdato')
-      }
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
-      if (id === 'startdato' && validation[namespace + getIdx(index) + '-periode-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-periode-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
-      }
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        periode
+      } as Barnetilhoerighet)
+      _resetValidation(namespace + '-periode')
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      periode
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
   }
 
   const setErDeltForeldreansvar = (erDeltForeldreansvar: JaNei, index: number) => {
     if (index < 0) {
-      _setNewErDeltForeldreansvar(erDeltForeldreansvar.trim() as JaNei)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        erDeltForeldreansvar
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-erDeltForeldreansvar')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].erDeltForeldreansvar`, erDeltForeldreansvar))
-      if (validation[namespace + getIdx(index) + '-erDeltForeldreansvar']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-erDeltForeldreansvar'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      erDeltForeldreansvar
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-erDeltForeldreansvar'))
   }
 
-  const setQuestion1 = (svar: JaNei, index: number) => {
+  const setQuestion1 = (svar: boolean, index: number) => {
     if (index < 0) {
-      _setNewQuestion1(svar.trim() as JaNei)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        borIBrukersHushold: svar ? 'ja' : 'nei'
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-borIBrukersHushold')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].borIBrukersHushold`, svar))
-      if (validation[namespace + getIdx(index) + '-borIBrukersHushold']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-borIBrukersHushold'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      borIBrukersHushold: svar ? 'ja' : 'nei'
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-borIBrukersHushold'))
   }
 
-  const setQuestion2 = (svar: JaNei, index: number) => {
+  const setQuestion2 = (svar: boolean, index: number) => {
     if (index < 0) {
-      _setNewQuestion2(svar.trim() as JaNei)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        borIEktefellesHushold: svar ? 'ja' : 'nei'
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-borIEktefellesHushold')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].borIEktefellesHushold`, svar))
-      if (validation[namespace + getIdx(index) + '-borIEktefellesHushold']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-borIEktefellesHushold'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      borIEktefellesHushold: svar ? 'ja' : 'nei'
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-borIEktefellesHushold'))
   }
 
-  const setQuestion3 = (svar: JaNei, index: number) => {
+  const setQuestion3 = (svar: boolean, index: number) => {
     if (index < 0) {
-      _setNewQuestion3(svar.trim() as JaNei)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        borIAnnenPersonsHushold: svar ? 'ja' : 'nei'
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-borIAnnenPersonsHushold')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].borIAnnenPersonsHushold`, svar))
-      if (validation[namespace + getIdx(index) + '-borIAnnenPersonsHushold']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-borIAnnenPersonsHushold'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      borIAnnenPersonsHushold: svar ? 'ja' : 'nei'
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-borIAnnenPersonsHushold'))
   }
 
-  const setQuestion4 = (svar: JaNei, index: number) => {
+  const setQuestion4 = (svar: boolean, index: number) => {
     if (index < 0) {
-      _setNewQuestion4(svar.trim() as JaNei)
+      _setNewBarnetilhoerighet({
+        ..._newBarnetilhoerighet,
+        borPaaInstitusjon: svar ? 'ja' : 'nei'
+      } as Barnetilhoerighet)
       _resetValidation(namespace + '-borPaaInstitusjon')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].borPaaInstitusjon`, svar))
-      if (validation[namespace + getIdx(index) + '-borPaaInstitusjon']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-borPaaInstitusjon'))
-      }
+      return
     }
+    _setEditBarnetilhoerighet({
+      ..._editBarnetilhoerighet,
+      borPaaInstitusjon: svar ? 'ja' : 'nei'
+    } as Barnetilhoerighet)
+    dispatch(resetValidation(namespace + getIdx(index) + '-borPaaInstitusjon'))
   }
 
-  const resetForm = () => {
-    _setNewRelasjon(undefined)
-    _setNewRelasjonType(undefined)
-    _setNewPeriode({ startdato: '' })
-    _setNewErDeltForeldreansvar(undefined)
-    _setNewQuestion1(undefined)
-    _setNewQuestion2(undefined)
-    _setNewQuestion3(undefined)
-    _setNewQuestion4(undefined)
+  const onCloseEdit = () => {
+    _setEditBarnetilhoerighet(undefined)
+    _setEditIndex(undefined)
+  }
+
+  const onCloseNew = () => {
+    _setNewBarnetilhoerighet(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (b: Barnetilhoerighet, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditBarnetilhoerighet(b)
+    _setEditIndex(index)
   }
 
-  const onRemove = (i: number) => {
-    const newBarnetilhoerighet = _.cloneDeep(barnetilhoerigheter) as Array<Barnetilhoerighet>
-    const deletedBarnetilhoerighet: Array<Barnetilhoerighet> = newBarnetilhoerighet.splice(i, 1)
-    if (deletedBarnetilhoerighet && deletedBarnetilhoerighet.length > 0) {
-      removeFromDeletion(deletedBarnetilhoerighet[0])
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationBarnetilhoerighetProps>(
+      validation, namespace, validateBarnetilhoerighet, {
+        barnetilhoerighet: _editBarnetilhoerighet,
+        barnetilhoerigheter,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editBarnetilhoerighet))
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
+
+  const onRemove = (removed: Barnetilhoerighet) => {
+    const newBarnetilhoerighet: Array<Barnetilhoerighet> = _.reject(barnetilhoerigheter, (b: Barnetilhoerighet) => _.isEqual(removed, b))
     dispatch(updateReplySed(target, newBarnetilhoerighet))
     standardLogger('svarsed.editor.relasjon.remove')
   }
 
-  const onAdd = () => {
-    const newBarnetilhoerighet: Barnetilhoerighet = {
-      // @ts-ignore
-      borIBrukersHushold: _newQuestion1, // @ts-ignore
-      borIEktefellesHushold: _newQuestion2, // @ts-ignore
-      borIAnnenPersonsHushold: _newQuestion3, // @ts-ignore
-      borPaaInstitusjon: _newQuestion4, // @ts-ignore
-      erDeltForeldreansvar: _newErDeltForeldreansvar, // @ts-ignore
-      relasjonTilPerson: _newRelasjon, // @ts-ignore
-      relasjonType: _newRelasjonType,
-      periode: _newPeriode
-    } as Barnetilhoerighet
-
-    const valid: boolean = performValidation({
-      barnetilhorighet: newBarnetilhoerighet,
-      barnetilhorigheter: barnetilhoerigheter ?? [],
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      barnetilhoerighet: _newBarnetilhoerighet,
+      barnetilhoerigheter,
       personName
     })
 
-    if (valid) {
+    if (!!_newBarnetilhoerighet && valid) {
       let newBarnetilhoerigheter = _.cloneDeep(barnetilhoerigheter)
       if (_.isNil(newBarnetilhoerigheter)) {
         newBarnetilhoerigheter = []
       }
-      newBarnetilhoerigheter.push(newBarnetilhoerighet)
+      newBarnetilhoerigheter.push(_newBarnetilhoerighet)
       dispatch(updateReplySed(target, newBarnetilhoerigheter))
       standardLogger('svarsed.editor.relasjon.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
   const renderRow = (barnetilhoerighet: Barnetilhoerighet | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(barnetilhoerighet)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    )
-    const _periode = index < 0 ? _newPeriode : barnetilhoerighet?.periode
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _barnetilhoerighet = index < 0 ? _newBarnetilhoerighet : (inEditMode ? _editBarnetilhoerighet : barnetilhoerighet)
 
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <Row>
-          <Column flex='3'>
-            <RadioPanelGroup
-              defaultValue={index < 0 ? _newRelasjon : barnetilhoerighet?.relasjonTilPerson}
-              data-no-border
-              data-testid={namespace + idx + '-relasjonTilPerson'}
-              error={getErrorFor(index, 'relasjonTilPerson')}
-              id={namespace + idx + '-relasjonTilPerson'}
-              legend={t('label:relasjon-med') + ' *'}
-              name={namespace + idx + '-relasjonTilPerson'}
-              onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='01'>{t('label:søker')}</RadioPanel>
-                <RadioPanel value='02'>{t('label:avdød')}</RadioPanel>
-              </FlexRadioPanels>
-              <VerticalSeparatorDiv size='0.3' />
-              <FlexRadioPanels>
-                <RadioPanel value='03'>{t('label:partner')}</RadioPanel>
-                <RadioPanel value='04'>{t('label:annen-person')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column flex='3'>
-            <Select
-              closeMenuOnSelect
-              data-testid={namespace + idx + '-relasjonType'}
-              error={getErrorFor(index, 'relasjonType')}
-              id={namespace + idx + '-relasjonType'}
-              key={namespace + idx + '-relasjonType' + (index < 0 ? _newRelasjonType : _.find(relasjonTypeOptions, b => b.value === barnetilhoerighet?.relasjonType))}
-              label={t('label:type')}
-              menuPortalTarget={document.body}
-              onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
-              options={relasjonTypeOptions}
-              required
-              value={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
-              defaultValue={_.find(relasjonTypeOptions, b => b.value === (index < 0 ? _newRelasjonType : barnetilhoerighet?.relasjonType))}
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(barnetilhoerighet)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
+        {inEditMode
+          ? (
+            <>
+              <AlignStartRow>
+                <Column>
+                  <RadioPanelGroup
+                    defaultValue={_barnetilhoerighet?.relasjonTilPerson}
+                    data-no-border
+                    data-testid={_namespace + '-relasjonTilPerson'}
+                    error={_v[_namespace + '-relasjonTilPerson']?.feilmelding}
+                    id={_namespace + '-relasjonTilPerson'}
+                    legend={t('label:relasjon-med') + ' *'}
+                    name={_namespace + '-relasjonTilPerson'}
+                    onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
+                  >
+                    <FlexRadioPanels>
+                      <RadioPanel value='01'>{t('label:søker')}</RadioPanel>
+                      <RadioPanel value='02'>{t('label:avdød')}</RadioPanel>
+                      <RadioPanel value='03'>{t('label:partner')}</RadioPanel>
+                      <RadioPanel value='04'>{t('label:annen-person')}</RadioPanel>
+                    </FlexRadioPanels>
+                  </RadioPanelGroup>
+                </Column>
+              </AlignStartRow>
+              <AlignStartRow>
+                <Column>
+                  <Select
+                    closeMenuOnSelect
+                    data-testid={_namespace + '-relasjonType'}
+                    error={_v[_namespace + '-relasjonType']?.feilmelding}
+                    id={_namespace + '-relasjonType'}
+                    key={_namespace + '-relasjonType' + _.find(relasjonTypeOptions, b => b.value === _barnetilhoerighet?.relasjonType)}
+                    label={t('label:type')}
+                    menuPortalTarget={document.body}
+                    onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
+                    options={relasjonTypeOptions}
+                    required
+                    value={_.find(relasjonTypeOptions, b => b.value === _barnetilhoerighet?.relasjonType)}
+                    defaultValue={_.find(relasjonTypeOptions, b => b.value === _barnetilhoerighet?.relasjonType)}
+                  />
+                </Column>
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  hideLabel={false}
+                  setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
+                  value={_barnetilhoerighet?.periode}
+                  requiredStartDato={false}
+                />
+                <Column />
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <AlignStartRow>
+                <Column flex={2}>
+                  <RadioPanelGroup
+                    value={_barnetilhoerighet?.erDeltForeldreansvar}
+                    data-no-border
+                    data-testid={_namespace + '-erDeltForeldreansvar'}
+                    error={_v[_namespace + '-erDeltForeldreansvar']?.feilmelding}
+                    id={_namespace + '-erDeltForeldreansvar'}
+                    key={_namespace + '-erDeltForeldreansvar-' + _barnetilhoerighet?.erDeltForeldreansvar}
+                    legend={t('label:delt-foreldreansvar')}
+                    name={_namespace + '-erDeltForeldreansvar'}
+                    onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
+                  >
+                    <FlexRadioPanels>
+                      <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                      <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                    </FlexRadioPanels>
+                  </RadioPanelGroup>
+                </Column>
+                <Column />
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <Label>
+                {t('label:hvor-bor-barnet')}
+              </Label>
+              <PileDiv>
+                <Checkbox
+                  checked={_barnetilhoerighet?.borIBrukersHushold === 'ja'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.checked, index)}
+                >
+                  {t('label:barn-i-hustand-spørsmål-1')}
+                </Checkbox>
+                <Checkbox
+                  checked={_barnetilhoerighet?.borIEktefellesHushold === 'ja'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.checked, index)}
+                >
+                  {t('label:barn-i-hustand-spørsmål-2')}
+                </Checkbox>
+                <Checkbox
+                  checked={_barnetilhoerighet?.borIAnnenPersonsHushold === 'ja'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.checked, index)}
+                >
+                  {t('label:barn-i-hustand-spørsmål-3')}
+                </Checkbox>
+                <Checkbox
+                  checked={_barnetilhoerighet?.borPaaInstitusjon === 'ja'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.checked, index)}
+                >
+                  {t('label:barn-i-hustand-spørsmål-4')}
+                </Checkbox>
+              </PileDiv>
+            </>
+            )
+          : (
+            <>
+              <AlignStartRow>
+                <Column>
+                  <FormText error={_v[_namespace + '-relasjonTilPerson']}>
+                    {t('label:relasjon-med')}
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_barnetilhoerighet?.relasjonTilPerson === '01' && t('label:søker').toLowerCase()}
+                    {_barnetilhoerighet?.relasjonTilPerson === '02' && t('label:avdød').toLowerCase()}
+                    {_barnetilhoerighet?.relasjonTilPerson === '03' && t('label:partner').toLowerCase()}
+                    {_barnetilhoerighet?.relasjonTilPerson === '04' && t('label:annen-person').toLowerCase()}
+                  </FormText>
+                </Column>
+                <Column>
+                  <FormText error={_v[_namespace + '-relasjonType']}>
+                    {t('el:option-relasjon-' + barnetilhoerighet?.relasjonType)}
+                  </FormText>
+                </Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                  periode={barnetilhoerighet?.periode}
+                />
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <PileDiv>
+                <FlexDiv>
+                  <Label>{t('label:barn-i-hustand-spørsmål-1')}:</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {barnetilhoerighet?.borIBrukersHushold}
+                </FlexDiv>
+                <FlexDiv>
+                  <Label>{t('label:barn-i-hustand-spørsmål-2')}:</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {barnetilhoerighet?.borIEktefellesHushold}
+                </FlexDiv>
+                <FlexDiv>
+                  <Label>{t('label:barn-i-hustand-spørsmål-3')}:</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {barnetilhoerighet?.borIAnnenPersonsHushold}
+                </FlexDiv>
+                <FlexDiv>
+                  <Label>{t('label:barn-i-hustand-spørsmål-4')}:</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {barnetilhoerighet?.borPaaInstitusjon}
+                </FlexDiv>
+              </PileDiv>
+            </>
+            )}
+        <AlignCenterRow>
+          <AlignEndColumn>
+            <AddRemovePanel2<Barnetilhoerighet>
+              item={barnetilhoerighet}
+              marginTop={false}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={onCloseEdit}
             />
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv size='2' />
-        <Heading size='small'>
-          {t('label:relasjonens-varighet')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <Row>
-          <PeriodeInput
-            namespace={namespace + idx + '-periode'}
-            error={{
-              startdato: getErrorFor(index, 'periode-startdato'),
-              sluttdato: getErrorFor(index, 'periode-sluttdato')
-            }}
-            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
-            value={_periode}
-            requiredStartDato={false}
-          />
-          <Column />
-        </Row>
-        <VerticalSeparatorDiv size='2' />
-        <Row>
-          <Column flex={2}>
-            <RadioPanelGroup
-              value={index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar}
-              data-no-border
-              data-testid={namespace + idx + '-erDeltForeldreansvar'}
-              error={getErrorFor(index, 'erDeltForeldreansvar')}
-              id={namespace + idx + '-erDeltForeldreansvar'}
-              key={namespace + idx + '-erDeltForeldreansvar-' + (index < 0 ? _newErDeltForeldreansvar : barnetilhoerighet?.erDeltForeldreansvar)}
-              legend={t('label:delt-foreldreansvar')}
-              name={namespace + '-erDeltForeldreansvar'}
-              onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </Row>
-        <VerticalSeparatorDiv />
-        <Heading size='small'>
-          {t('label:barn-i-hustand-spørsmål')}
-        </Heading>
-        <AlignCenterRow>
-          <Column flex='2'>
-            <BodyLong>
-              {t('label:barn-i-hustand-spørsmål-1')}
-            </BodyLong>
-          </Column>
-          <Column>
-            <RadioPanelGroup
-              value={index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold}
-              data-no-border
-              data-testid={namespace + idx + '-borIBrukersHushold'}
-              error={getErrorFor(index, 'borIBrukersHushold')}
-              id={namespace + idx + '-borIBrukersHushold'}
-              key={namespace + idx + '-borIBrukersHushold-' + (index < 0 ? _newQuestion1 : barnetilhoerighet?.borIBrukersHushold)}
-              name={namespace + idx + '-borIBrukersHushold'}
-              onChange={(e: string) => setQuestion1(e as JaNei, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
+          </AlignEndColumn>
         </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2' />
-        <AlignCenterRow>
-          <Column flex='2'>
-            <BodyLong>
-              {t('label:barn-i-hustand-spørsmål-2')}
-            </BodyLong>
-          </Column>
-          <Column>
-            <RadioPanelGroup
-              value={index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold}
-              data-no-border
-              data-testid={namespace + idx + '-borIEktefellesHushold'}
-              error={getErrorFor(index, 'borIEktefellesHushold')}
-              id={namespace + idx + '-borIEktefellesHushold'}
-              key={namespace + idx + '-borIEktefellesHushold-' + (index < 0 ? _newQuestion2 : barnetilhoerighet?.borIEktefellesHushold)}
-              name={namespace + idx + '-borIEktefellesHushold'}
-              onChange={(e: string) => setQuestion2(e as JaNei, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2' />
-        <AlignCenterRow>
-          <Column flex='2'>
-            <BodyLong>
-              {t('label:barn-i-hustand-spørsmål-3')}
-            </BodyLong>
-          </Column>
-          <Column>
-            <RadioPanelGroup
-              value={index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold}
-              data-no-border
-              data-testid={namespace + idx + '-borIAnnenPersonsHushold'}
-              error={getErrorFor(index, 'borIAnnenPersonsHushold')}
-              id={namespace + idx + '-borIAnnenPersonsHushold'}
-              key={namespace + idx + '-borIAnnenPersonsHushold-' + (index < 0 ? _newQuestion3 : barnetilhoerighet?.borIAnnenPersonsHushold)}
-              name={namespace + idx + '-borIAnnenPersonsHushold'}
-              onChange={(e: string) => setQuestion3(e as JaNei, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignCenterRow>
-        <VerticalSeparatorDiv size='0.2' />
-        <AlignCenterRow>
-          <Column flex='2'>
-            <BodyLong>
-              {t('label:barn-i-hustand-spørsmål-4')}
-            </BodyLong>
-          </Column>
-          <Column>
-            <RadioPanelGroup
-              value={index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon}
-              data-no-border
-              data-testid={namespace + idx + '-borPaaInstitusjon'}
-              error={getErrorFor(index, 'borPaaInstitusjon')}
-              key={namespace + idx + '-borPaaInstitusjon-' + (index < 0 ? _newQuestion4 : barnetilhoerighet?.borPaaInstitusjon)}
-              id={namespace + idx + '-borPaaInstitusjon'}
-              name={namespace + idx + '-borPaaInstitusjon'}
-              onChange={(e: string) => setQuestion4(e as JaNei, index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignCenterRow>
-        <VerticalSeparatorDiv />
-        <AlignCenterRow>
-          <Column flex='2' />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(barnetilhoerighet)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(barnetilhoerighet)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignCenterRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:relasjon-til-barn')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
+    <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:relasjon-til-barn')}
+        </Heading>
+      </PaddedDiv>
+      <VerticalSeparatorDiv />
       {_.isEmpty(barnetilhoerigheter)
         ? (
-          <BodyLong>
-            {t('message:warning-no-relasjon')}
-          </BodyLong>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-relasjon')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
         : barnetilhoerigheter?.map(renderRow)}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_seeNewForm
         ? renderRow(null, -1)
         : (
-          <Row>
-
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:relasjon').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:relasjon').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-    </PaddedDiv>
+    </>
   )
 }
 

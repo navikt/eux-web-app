@@ -1,19 +1,5 @@
+import { BodyLong, Button, Detail, Loader, Panel } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import { setCurrentEntry } from 'actions/localStorage'
-import * as localStorageActions from 'actions/localStorage'
-import { getSedStatus } from 'actions/svarsed'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
-import { MyTag } from 'components/StyledComponents'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { PDU1 } from 'declarations/pd'
-import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry, StorageTypes } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
-import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
-import { Button, Panel, BodyLong, Detail, Loader } from '@navikt/ds-react'
 import {
   FlexBaseSpacedDiv,
   FlexCenterSpacedDiv,
@@ -22,11 +8,25 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import * as localStorageActions from 'actions/localStorage'
+import { setCurrentEntry } from 'actions/localStorage'
+import { getSedStatus } from 'actions/svarsed'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
+import { GrayPanel } from 'components/StyledComponents'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { PDU1 } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import { LocalStorageEntry, StorageTypes } from 'declarations/types'
+import useAddRemove from 'hooks/useAddRemove'
+import _ from 'lodash'
+import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { LocalStorageNamespaces } from 'reducers/localStorage'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import { LocalStorageNamespaces } from 'reducers/localStorage'
 
 const LoadSaveDiv = styled(FlexDiv)`
   width: 100%;
@@ -150,7 +150,7 @@ const LoadSave = <T extends StorageTypes>({
         <VerticalSeparatorDiv />
         {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>) => (
           <div key={savedEntry.id}>
-            <MyTag variant='info'>
+            <GrayPanel>
               <PileDiv flex='1'>
                 <FlexCenterSpacedDiv>
                   <FlexBaseSpacedDiv>
@@ -218,7 +218,7 @@ const LoadSave = <T extends StorageTypes>({
                   />
                 </FlexBaseSpacedDiv>
               </PileDiv>
-            </MyTag>
+            </GrayPanel>
             <VerticalSeparatorDiv />
           </div>
         ))}
