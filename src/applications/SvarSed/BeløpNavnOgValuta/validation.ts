@@ -6,8 +6,14 @@ import { getIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationBeløpNavnOgValutaProps {
-  ytelse: Ytelse
+  ytelse: Ytelse | undefined
   index?: number
+  personID: string | undefined
+  personName?: string
+}
+
+export interface ValidationBeløpNavnOgValutasProps {
+  ytelser: Array<Ytelse> | undefined
   personID: string | undefined
   personName?: string
 }
@@ -68,6 +74,7 @@ export const validateBeløpNavnOgValuta = (
       startdato: ytelse?.startdato,
       sluttdato: ytelse?.sluttdato
     } as Periode,
+    periodeType: 'simple',
     personName
   }))
 
@@ -86,12 +93,6 @@ export const validateBeløpNavnOgValuta = (
   }))
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidationBeløpNavnOgValutasProps {
-  ytelser: Array<Ytelse>
-  personID: string | undefined
-  personName?: string
 }
 
 export const validateBeløpNavnOgValutas = (

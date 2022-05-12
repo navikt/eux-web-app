@@ -179,24 +179,20 @@ export interface Telefon {
   nummer: string
 }
 
-export interface Ytelse {
+export interface Ytelse extends Periode {
   antallPersoner?: string
   beloep: string
   mottakersNavn: string
-  sluttdato: string
-  startdato: string
   utbetalingshyppighet: Utbetalingshyppighet
   valuta: string
   ytelseNavn: string
 }
 
-export interface Motregning {
+export interface Motregning extends Periode {
   begrunnelse: string
   beloep: string
   mottakersNavn: string
   svarType?: AnmodningSvarType
-  sluttdato: string
-  startdato: string
   utbetalingshyppighet: Utbetalingshyppighet
   valuta: string
   vedtaksdato: string

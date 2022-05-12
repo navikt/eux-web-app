@@ -67,14 +67,14 @@ const Relasjon: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationBarnetilhoerighetProps>(validateBarnetilhoerighet, namespace)
 
   const relasjonTypeOptions: Options = [
-    { label: t('el:option-relasjon-01'), value: '01' },
-    { label: t('el:option-relasjon-02'), value: '02' },
-    { label: t('el:option-relasjon-03'), value: '03' },
-    { label: t('el:option-relasjon-04'), value: '04' },
-    { label: t('el:option-relasjon-05'), value: '05' },
-    { label: t('el:option-relasjon-06'), value: '06' },
-    { label: t('el:option-relasjon-07'), value: '07' },
-    { label: t('el:option-relasjon-08'), value: '08' }
+    { label: t('el:option-relasjon-daglig_omsorg'), value: 'daglig_omsorg' },
+    { label: t('el:option-relasjon-født_i_ekteskap'), value: 'født_i_ekteskap' },
+    { label: t('el:option-relasjon-eget_barn'), value: 'eget_barn' },
+    { label: t('el:option-relasjon-adoptert_barn'), value: 'adoptert_barn' },
+    { label: t('el:option-relasjon-født_utenfor_ekteskap'), value: 'født_utenfor_ekteskap' },
+    { label: t('el:option-relasjon-barn_av_ektefelle'), value: 'barn_av_ektefelle' },
+    { label: t('el:option-relasjon-barnebarn_bror_søster_nevø_niese'), value: 'barnebarn_bror_søster_nevø_niese' },
+    { label: t('el:option-relasjon-fosterbarn'), value: 'fosterbarn' }
   ]
 
   const setRelasjon = (relasjonTilPerson: BarnRelasjon, index: number) => {
@@ -299,10 +299,10 @@ const Relasjon: React.FC<MainFormProps> = ({
                     onChange={(e: string) => setRelasjon(e as BarnRelasjon, index)}
                   >
                     <FlexRadioPanels>
-                      <RadioPanel value='01'>{t('label:søker')}</RadioPanel>
-                      <RadioPanel value='02'>{t('label:avdød')}</RadioPanel>
-                      <RadioPanel value='03'>{t('label:partner')}</RadioPanel>
-                      <RadioPanel value='04'>{t('label:annen-person')}</RadioPanel>
+                      <RadioPanel value='søker'>{t('label:søker')}</RadioPanel>
+                      <RadioPanel value='ektefelle_partner'>{t('label:partner')}</RadioPanel>
+                      <RadioPanel value='avdød'>{t('label:avdød')}</RadioPanel>
+                      <RadioPanel value='annen_person'>{t('label:annen-person')}</RadioPanel>
                     </FlexRadioPanels>
                   </RadioPanelGroup>
                 </Column>
