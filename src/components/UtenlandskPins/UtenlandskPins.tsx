@@ -33,7 +33,7 @@ import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validatio
 
 export interface UtenlandskPinProps {
   pins: Array<Pin> | undefined
-  onPinsChanged: (newPins: Array<Pin>, whatChanged: string | undefined) => void
+  onPinsChanged: (newPins: Array<Pin>) => void
   namespace: string
   personName?: string
   loggingNamespace: string
@@ -127,7 +127,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     if (_editIndex !== undefined && !!_editPin && valid) {
       const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
       newPins[_editIndex] = _editPin
-      onPinsChanged(newPins, namespace + getIdx(_editIndex))
+      onPinsChanged(newPins)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
@@ -136,7 +136,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 
   const onRemove = (removedPin: Pin) => {
     const newUtenlandskePins: Array<Pin> = _.reject(pins, (pin: Pin) => _.isEqual(removedPin, pin))
-    onPinsChanged(newUtenlandskePins, undefined)
+    onPinsChanged(newUtenlandskePins)
     standardLogger(loggingNamespace + '.utenlandskpin.remove')
   }
 
@@ -152,7 +152,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         newUtenlandskePins = []
       }
       newUtenlandskePins = newUtenlandskePins.concat(_newPin)
-      onPinsChanged(newUtenlandskePins, undefined)
+      onPinsChanged(newUtenlandskePins)
       standardLogger(loggingNamespace + '.utenlandskpin.add')
       onCloseNew()
     }

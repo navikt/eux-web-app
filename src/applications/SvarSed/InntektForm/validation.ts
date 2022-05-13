@@ -7,12 +7,14 @@ import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationLoennsopplysningerProps {
   loennsopplysninger: Array<Loennsopplysning> | undefined
+  personName ?: string
 }
 
 export interface ValidationLoennsopplysningProps {
-  loennsopplysning: Loennsopplysning
-  loennsopplysninger: Array<Loennsopplysning>
+  loennsopplysning: Loennsopplysning | undefined
+  loennsopplysninger: Array<Loennsopplysning> | undefined
   index?: number
+  personName ?: string
 }
 
 export const validateLoennsopplysning = (
@@ -21,14 +23,16 @@ export const validateLoennsopplysning = (
   {
     loennsopplysning,
     loennsopplysninger,
-    index
+    index,
+    personName
   }: ValidationLoennsopplysningProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
   hasErrors.push(validatePeriode(v, namespace + '-periode', {
-    periode: loennsopplysning?.periode
+    periode: loennsopplysning?.periode,
+    personName
   }))
 
   if (!_.isEmpty(loennsopplysning?.periode?.startdato)) {
@@ -38,14 +42,16 @@ export const validateLoennsopplysning = (
       matchFn: (l: Loennsopplysning) => (l.periode.startdato === loennsopplysning?.periode.startdato && l.periode.sluttdato === loennsopplysning.periode?.sluttdato),
       index,
       id: namespace + idx + '-startdato',
-      message: 'validation:duplicateStartdato'
+      message: 'validation:duplicateStartdato',
+      personName
     }))
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: loennsopplysning?.periodetype,
     id: namespace + idx + '-periodetype',
-    message: 'validation:noPeriodeType'
+    message: 'validation:noPeriodeType',
+    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
@@ -55,7 +61,8 @@ export const validateLoennsopplysninger = (
   validation: Validation,
   namespace: string,
   {
-    loennsopplysninger
+    loennsopplysninger,
+    personName
   }: ValidationLoennsopplysningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -63,7 +70,8 @@ export const validateLoennsopplysninger = (
     hasErrors.push(validateLoennsopplysning(validation, namespace, {
       loennsopplysning,
       loennsopplysninger: loennsopplysninger!,
-      index
+      index,
+      personName
     }))
   })
   return hasErrors.find(value => value) !== undefined

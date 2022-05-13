@@ -1,6 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
-import { ActionWithPayload } from '@navikt/fetch'
 import {
   Column,
   FlexCenterSpacedDiv,
@@ -12,20 +11,14 @@ import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
 import InntektSearch from 'applications/SvarSed/InntektSearch/InntektSearch'
-import { MainFormSelector } from 'applications/SvarSed/MainForm'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView, ReplySed } from 'declarations/sed'
-import {
-  ArbeidsperiodeFraAA,
-  ArbeidsperioderFraAA,
-  IInntekter,
-  UpdateReplySedPayload,
-  Validation
-} from 'declarations/types'
+import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -46,39 +39,29 @@ import {
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
-  inntekter: IInntekter | null | undefined
   gettingInntekter: boolean
-  validation: Validation
-}
-
-export interface ArbeidsforholdProps {
-  parentNamespace: string
-  personID: string | undefined
-  personName: string | undefined
-  target: string
-  replySed: ReplySed | null | undefined
-  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
+  inntekter: IInntekter | null | undefined
 }
 
 const mapState = (state: State): ArbeidsforholdSelector => ({
   arbeidsperioder: state.arbeidsperioder,
-  inntekter: state.inntekt.inntekter,
   gettingInntekter: state.loading.gettingInntekter,
+  inntekter: state.inntekt.inntekter,
   validation: state.validation.status
 })
 
-const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
+const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
   personName,
   replySed,
   updateReplySed
-}:ArbeidsforholdProps): JSX.Element => {
+}:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const {
     arbeidsperioder,
-    inntekter,
     gettingInntekter,
+    inntekter,
     validation
   } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -366,4 +349,4 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   )
 }
 
-export default ArbeidsperioderFC
+export default ArbeidsperioderOversikt

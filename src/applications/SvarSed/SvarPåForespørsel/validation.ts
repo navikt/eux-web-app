@@ -2,9 +2,10 @@ import { H002Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkIfNotTrue, checkLength } from 'utils/validation'
+import { PDU1 } from 'declarations/pd'
 
 export interface ValidationSvarPåForespørselProps {
-  replySed: ReplySed
+  replySed: ReplySed | PDU1 | null | undefined
   personName?: string
 }
 

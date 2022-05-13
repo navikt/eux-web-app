@@ -1,42 +1,49 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
+  FlexDiv,
   FlexRadioPanels,
+  HorizontalSeparatorDiv,
   PaddedDiv,
+  PaddedHorizontallyDiv,
   RadioPanel,
   RadioPanelGroup,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AdresseBox from 'components/AdresseBox/AdresseBox'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import PeriodeText from 'components/Forms/PeriodeText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Adresse, Periode, PeriodeDagpenger } from 'declarations/sed'
-import { Kodeverk } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
+import { Adresse, Institusjon, Periode, PeriodeDagpenger } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validatePeriodeDagpenger, ValidationPeriodeDagpengerProps } from './validation'
+import performValidation from 'utils/performValidation'
+import {
+  validatePeriodeDagpenger,
+  validatePerioderDagpenger,
+  ValidatePerioderDagpengerProps,
+  ValidationPeriodeDagpengerProps
+} from './validation'
 
-interface PeriodeForDagpengerSelector extends MainFormSelector {
-  landkoderList: Array<Kodeverk> | undefined
-}
-
-const mapState = (state: State): PeriodeForDagpengerSelector => ({
-  landkoderList: state.app.landkoder,
+const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
@@ -48,329 +55,446 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   updateReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
-  const {
-    validation
-  } = useAppSelector(mapState)
+  const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
+  const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
   const target = 'perioderDagpenger'
   const perioder: Array<PeriodeDagpenger> | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
+  const getId = (p: PeriodeDagpenger | null | undefined) => p ? p.periode?.startdato + '-' + p.institusjon?.id : 'new'
 
-  const [_newPeriode, _setNewPeriode] = useState<Periode>({ startdato: '' })
-  const [_newInstitutionsId, _setNewInstitutionsId] = useState<string>('')
-  const [_newInstitutionsNavn, _setNewInstitutionsNavn] = useState<string>('')
-  const [_newNavn, _setNewNavn] = useState<string>('')
-  const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
+  const [_newPeriodeDagpenger, _setNewPeriodeDagpenger] = useState<PeriodeDagpenger | undefined>(undefined)
+  const [_editPeriodeDagpenger, _setEditPeriodeDagpenger] = useState<PeriodeDagpenger | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PeriodeDagpenger>(
-    (p: PeriodeDagpenger) => p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType))
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] =
-    useLocalValidation<ValidationPeriodeDagpengerProps>(validatePeriodeDagpenger, namespace)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeDagpengerProps>(validatePeriodeDagpenger, namespace)
 
-  const [cacheForIdMangler, setCacheForIdMangler] = useState<any>({})
-
-  const setInstitutionsId = (newInstitutionsId: string, index: number) => {
-    if (index < 0) {
-      _setNewInstitutionsId(newInstitutionsId.trim())
-      _resetValidation(namespace + '-institution-id')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institution.id`, newInstitutionsId.trim()))
-      if (validation[namespace + getIdx(index) + '-institution-id']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institution-id'))
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidatePerioderDagpengerProps>(
+      validation, namespace, validatePerioderDagpenger, {
+        perioderDagpenger: perioder,
+        personName
       }
-    }
-  }
-  const setInstitutionsNavn = (newInstitutionsNavn: string, index: number) => {
+    )
+    dispatch(setValidation(newValidation))
+  })
+
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewInstitutionsNavn(newInstitutionsNavn.trim())
+      _setNewPeriodeDagpenger({
+        ..._newPeriodeDagpenger,
+        periode
+      } as PeriodeDagpenger)
+      _resetValidation(namespace + '-periode')
+      return
+    }
+    _setEditPeriodeDagpenger({
+      ..._editPeriodeDagpenger,
+      periode
+    } as PeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
+  }
+
+  const setInstitutionId = (id: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriodeDagpenger({
+        ..._newPeriodeDagpenger,
+        institusjon: {
+          ..._newPeriodeDagpenger?.institusjon,
+          id
+        }
+      } as PeriodeDagpenger)
+      _resetValidation(namespace + '-institusjon-id')
+      return
+    }
+    _setEditPeriodeDagpenger({
+      ..._editPeriodeDagpenger,
+      institusjon: {
+        ..._editPeriodeDagpenger?.institusjon,
+        id
+      }
+    } as PeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-id'))
+  }
+
+  const setInstitutionNavn = (navn: string, index: number) => {
+    if (index < 0) {
+      _setNewPeriodeDagpenger({
+        ..._newPeriodeDagpenger,
+        institusjon: {
+          ..._newPeriodeDagpenger?.institusjon,
+          navn
+        }
+      } as PeriodeDagpenger)
       _resetValidation(namespace + '-institusjon-navn')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.navn`, newInstitutionsNavn.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-navn']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-navn'))
-      }
+      return
     }
+    _setEditPeriodeDagpenger({
+      ..._editPeriodeDagpenger,
+      institusjon: {
+        ..._editPeriodeDagpenger?.institusjon,
+        navn
+      }
+    } as PeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-navn'))
   }
 
-  const setNewIdMangler = (newIdMangler: boolean, index: number) => {
+  const setInstitutionIdMangler = (newIdMangler: boolean, index: number) => {
     if (index < 0) {
+      let newPeriodeDagpenger: PeriodeDagpenger | undefined = _.cloneDeep(_newPeriodeDagpenger)
       if (!newIdMangler) {
-        setCacheForIdMangler({
-          ...cacheForIdMangler,
-          newitem: {
-            navn: _newNavn,
-            adresse: _newAdresse
-          }
-        })
-        _setNewNavn('')
-        _setNewAdresse(undefined)
+        newPeriodeDagpenger = {
+          ...newPeriodeDagpenger,
+          __cache: newPeriodeDagpenger?.institusjon?.idmangler,
+          institusjon: {
+            id: newPeriodeDagpenger?.institusjon.id,
+            navn: newPeriodeDagpenger?.institusjon.navn
+          } as Institusjon
+        } as PeriodeDagpenger
       } else {
-        if (Object.prototype.hasOwnProperty.call(cacheForIdMangler, 'newitem')) {
-          _setNewNavn(cacheForIdMangler.newitem?.navn ?? '-')
-          _setNewAdresse(cacheForIdMangler.newitem?.adresse)
-          setCacheForIdMangler({
-            ...cacheForIdMangler,
-            newitem: undefined
-          })
-        } else {
-          // this is for telling render that I need to show the form for address
-          _setNewNavn('-')
-        }
+        newPeriodeDagpenger = {
+          ...newPeriodeDagpenger,
+          __cache: newPeriodeDagpenger?.institusjon?.idmangler,
+          institusjon: {
+            ...newPeriodeDagpenger?.institusjon,
+            idmangler: newPeriodeDagpenger?.__cache ?? {}
+          } as Institusjon
+        } as PeriodeDagpenger
       }
-      _resetValidation(namespace + '-idmangler')
-    } else {
-      const _index: string = '' + index
-      if (!newIdMangler) {
-        setCacheForIdMangler({
-          ...cacheForIdMangler,
-          [_index]: {
-            navn: _.get(perioder, `[${index}].institusjon.idmangler.navn`) ?? '',
-            adresse: _.get(perioder, `[${index}].institusjon.idmangler.adresse`) ?? {}
-          }
-        })
-        dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler`, {}))
-      } else {
-        if (Object.prototype.hasOwnProperty.call(cacheForIdMangler, '' + index)) {
-          dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler`, {
-            navn: cacheForIdMangler['' + index].navn,
-            adresse: cacheForIdMangler['' + index].adresse
-          }))
-          setCacheForIdMangler({
-            ...cacheForIdMangler,
-            ['' + index]: undefined
-          })
-        } else {
-          dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler`, {
-            navn: '-',
-            adresse: {}
-          }))
-        }
-      }
-      if (validation[namespace + getIdx(index) + '-idmangler']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-idmangler'))
-      }
+      _setNewPeriodeDagpenger(newPeriodeDagpenger)
+      _resetValidation(namespace + '-institusjon-idmangler')
+      return
     }
+
+    let editPeriodeDagpenger: PeriodeDagpenger | undefined = _.cloneDeep(_editPeriodeDagpenger)
+    if (!newIdMangler) {
+      editPeriodeDagpenger = {
+        ...editPeriodeDagpenger,
+        __cache: editPeriodeDagpenger?.institusjon?.idmangler,
+        institusjon: {
+          id: editPeriodeDagpenger?.institusjon.id,
+          navn: editPeriodeDagpenger?.institusjon.navn
+        } as Institusjon
+      } as PeriodeDagpenger
+    } else {
+      editPeriodeDagpenger = {
+        ...editPeriodeDagpenger,
+        __cache: editPeriodeDagpenger?.institusjon?.idmangler,
+        institusjon: {
+          ...editPeriodeDagpenger?.institusjon,
+          idmangler: editPeriodeDagpenger?.__cache ?? {}
+        } as Institusjon
+      } as PeriodeDagpenger
+    }
+    _setEditPeriodeDagpenger(editPeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler'))
   }
 
-  const setNavn = (newNavn: string, index: number) => {
+  const setInstitutionIdManglerNavn = (navn: string, index: number) => {
     if (index < 0) {
-      _setNewNavn(newNavn.trim())
+      _setNewPeriodeDagpenger({
+        ..._newPeriodeDagpenger,
+        institusjon: {
+          ..._newPeriodeDagpenger?.institusjon,
+          idmangler: {
+            ..._newPeriodeDagpenger?.institusjon.idmangler,
+            navn
+          }
+        }
+      } as PeriodeDagpenger)
       _resetValidation(namespace + '-institusjon-idmangler-navn')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.navn`, newNavn.trim()))
-      if (validation[namespace + getIdx(index) + '-institusjon-idmangler-navn']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-navn'))
-      }
+      return
     }
+    _setEditPeriodeDagpenger({
+      ..._editPeriodeDagpenger,
+      institusjon: {
+        ..._editPeriodeDagpenger?.institusjon,
+        idmangler: {
+          ..._newPeriodeDagpenger?.institusjon.idmangler,
+          navn
+        }
+      }
+    } as PeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-navn'))
   }
 
-  const setPeriode = (periode: Periode, id: string, index: number) => {
+  const setInstitutionIdManglerAdresse = (adresse: Adresse, index: number) => {
     if (index < 0) {
-      _setNewPeriode(periode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-periode-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-periode-sluttdato')
-      }
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].periode`, periode))
-      if (id === 'startdato' && validation[namespace + getIdx(index) + '-periode-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-startdato'))
-      }
-      if (id === 'sluttdato' && validation[namespace + getIdx(index) + '-periode-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-periode-sluttdato'))
-      }
+      _setNewPeriodeDagpenger({
+        ..._newPeriodeDagpenger,
+        institusjon: {
+          ..._newPeriodeDagpenger?.institusjon,
+          idmangler: {
+            ..._newPeriodeDagpenger?.institusjon.idmangler,
+            adresse
+          }
+        }
+      } as PeriodeDagpenger)
+      _resetValidation(namespace + '-institusjon-idmangler-adresse')
+      return
     }
-  }
-  const setAdresse = (adresse: Adresse, id: string | undefined, index: number) => {
-    if (index < 0) {
-      _setNewAdresse(adresse)
-      if (id) {
-        _resetValidation(namespace + '-institusjon-idmangler-adresse-' + id)
+    _setEditPeriodeDagpenger({
+      ..._editPeriodeDagpenger,
+      institusjon: {
+        ..._editPeriodeDagpenger?.institusjon,
+        idmangler: {
+          ..._newPeriodeDagpenger?.institusjon.idmangler,
+          adresse
+        }
       }
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].institusjon.idmangler.adresse`, adresse))
-      if (id && validation[namespace + getIdx(index) + '-institusjon-idmangler-adresse-' + id]) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-adresse-' + id))
-      }
-    }
+    } as PeriodeDagpenger)
+    dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-idmangler-adresse'))
   }
 
-  const resetForm = () => {
-    _setNewInstitutionsNavn('')
-    _setNewInstitutionsId('')
-    _setNewNavn('')
-    _setNewPeriode({ startdato: '' })
-    _setNewAdresse(undefined)
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriodeDagpenger(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewPeriodeDagpenger(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (p: PeriodeDagpenger, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditPeriodeDagpenger(p)
+    _setEditIndex(index)
   }
 
-  const onRemove = (index: number) => {
-    const newPerioder: Array<PeriodeDagpenger> = _.cloneDeep(perioder) as Array<PeriodeDagpenger>
-    const deletedPerioder: Array<PeriodeDagpenger> = newPerioder.splice(index, 1)
-    if (deletedPerioder && deletedPerioder.length > 0) {
-      removeFromDeletion(deletedPerioder[0])
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationPeriodeDagpengerProps>(
+      validation, namespace, validatePeriodeDagpenger, {
+        periodeDagpenger: _editPeriodeDagpenger,
+        perioderDagpenger: perioder,
+        index: _editIndex,
+        personName
+      })
+    if (valid) {
+      delete _editPeriodeDagpenger?.__cache
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriodeDagpenger))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
+
+  const onRemove = (removed: PeriodeDagpenger) => {
+    const newPerioder: Array<PeriodeDagpenger> = _.reject(perioder,
+      (p: PeriodeDagpenger) => _.isEqual(removed, p))
     dispatch(updateReplySed(target, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type: 'perioderDagpenger' })
   }
 
-  const onAdd = () => {
-    const newPeriodeDagpenger: PeriodeDagpenger = {
-      periode: _newPeriode,
-      institusjon: {
-        navn: _newInstitutionsNavn.trim(),
-        id: _newInstitutionsId.trim(),
-        idmangler: {
-          navn: _newNavn.trim(),
-          adresse: _newAdresse ?? {} as Adresse
-        }
-      }
-    }
-
-    const valid: boolean = performValidation({
-      periodeDagpenger: newPeriodeDagpenger,
-      perioderDagpenger: perioder ?? [],
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      periodeDagpenger: _newPeriodeDagpenger,
+      perioderDagpenger: perioder,
       personName
     })
-    if (valid) {
+    if (!!_newPeriodeDagpenger && valid) {
       let newPerioderDagpenger: Array<PeriodeDagpenger> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioderDagpenger)) {
         newPerioderDagpenger = []
       }
-      newPerioderDagpenger = newPerioderDagpenger.concat(newPeriodeDagpenger)
+      delete _newPeriodeDagpenger.__cache
+      newPerioderDagpenger.push(_newPeriodeDagpenger)
       dispatch(updateReplySed(target, newPerioderDagpenger))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderDagpenger' })
-      onCancel()
+      standardLogger('svarsed.editor.newPerioderDagpenger.add', { type: 'perioderDagpenger' })
+      onCloseNew()
     }
   }
 
   const renderRow = (periodeDagpenger: PeriodeDagpenger | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(periodeDagpenger)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    )
-    const _periode = index < 0 ? _newPeriode : periodeDagpenger?.periode
-
-    const idmangler = index < 0
-      ? !_.isEmpty(_newNavn.trim()) || !_.isEmpty(_newAdresse?.gate?.trim()) || !_.isEmpty(_newAdresse?.postnummer?.trim()) ||
-        !_.isEmpty(_newAdresse?.bygning?.trim()) || !_.isEmpty(_newAdresse?.by?.trim()) || !_.isEmpty(_newAdresse?.region?.trim()) || !_.isEmpty(_newAdresse?.land)
-      : !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn) || !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse)
-
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periodeDagpenger = index < 0 ? _newPeriodeDagpenger : (inEditMode ? _editPeriodeDagpenger : periodeDagpenger)
+    const idmangler = !!_periodeDagpenger && Object.prototype.hasOwnProperty.call(_periodeDagpenger?.institusjon, 'idmangler')
     const institusjonKjent = !idmangler
+
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + idx}
-            hideLabel={index >= 0}
-            error={{
-              startdato: getErrorFor(index, 'periode-startdato'),
-              sluttdato: getErrorFor(index, 'periode-sluttdato')
-            }}
-            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
-            value={_periode}
-          />
-          <Column />
-        </AlignStartRow>
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periodeDagpenger)}
+        className={classNames({
+          new: index < 0,
+          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+        })}
+      >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={getErrorFor(index, 'institusjon-id')}
-              namespace={namespace + idx}
-              id='institusjon-id'
-              key={'institusjon-id-' + (index < 0 ? _newInstitutionsId : periodeDagpenger?.institusjon.id ?? '')}
-              label={t('label:institusjonens-id')}
-              onChanged={(institusjonsid: string) => setInstitutionsId(institusjonsid, index)}
-              value={index < 0 ? _newInstitutionsId : periodeDagpenger?.institusjon.id ?? ''}
+        {inEditMode
+          ? (
+            <AlignStartRow>
+              <PeriodeInput
+                namespace={_namespace + '-periode'}
+                hideLabel={index >= 0}
+                error={{
+                  startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                }}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
+                value={_periodeDagpenger?.periode}
+              />
+              <Column />
+            </AlignStartRow>
+            )
+          : (
+            <PeriodeText
+              error={{
+                startdato: _v[_namespace + '-periode-startdato'],
+                sluttdato: _v[_namespace + '-periode-sluttdato']
+              }}
+              periode={_periodeDagpenger?.periode}
             />
-          </Column>
-          <Column>
-            <Input
-              error={getErrorFor(index, 'institusjon-navn')}
-              namespace={namespace + idx}
-              id='institusjon-navn'
-              key={'institusjon-navn-' + (index < 0 ? _newInstitutionsNavn : periodeDagpenger?.institusjon.navn ?? '')}
-              label={t('label:institusjonens-navn')}
-              onChanged={(institusjonsnavn: string) => setInstitutionsNavn(institusjonsnavn, index)}
-              value={index < 0 ? _newInstitutionsNavn : periodeDagpenger?.institusjon.navn ?? ''}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <RadioPanelGroup
-              value={institusjonKjent ? 'ja' : 'nei'}
-              data-testid={namespace + idx + '-idmangler'}
-              data-no-border
-              id={namespace + idx + '-idmangler'}
-              error={getErrorFor(index, 'idmangler')}
-              legend={t('label:institusjonens-id-er-kjent') + ' *'}
-              name={namespace + idx + '-idmangler'}
-              onChange={(e: string) => setNewIdMangler(e === 'nei', index)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        {idmangler && (
-          <>
+            )}
+        {inEditMode
+          ? (
             <AlignStartRow>
               <Column>
                 <Input
-                  error={getErrorFor(index, 'institusjon-idmangler-navn')}
-                  namespace={namespace + idx}
-                  id='institusjon-idmangler-navn'
-                  key={'institusjon-idmangler-navn-' + (index < 0 ? _newNavn : periodeDagpenger?.institusjon.idmangler?.navn ?? '')}
-                  label={t('label:navn')}
-                  onChanged={(navn: string) => setNavn(navn, index)}
-                  value={index < 0 ? _newNavn : periodeDagpenger?.institusjon.idmangler?.navn ?? ''}
+                  error={_v[_namespace + '-institusjon-id']?.feilmelding}
+                  namespace={_namespace}
+                  id='institusjon-id'
+                  key={'institusjon-id-' + _periodeDagpenger?.institusjon?.id}
+                  label={t('label:institusjonens-id')}
+                  onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
+                  value={_periodeDagpenger?.institusjon?.id}
+                />
+              </Column>
+              <Column>
+                <Input
+                  error={_v[_namespace + '-institusjon-navn']?.feilmelding}
+                  namespace={_namespace}
+                  id='institusjon-navn'
+                  key={'institusjon-navn-' + _periodeDagpenger?.institusjon?.navn}
+                  label={t('label:institusjonens-navn')}
+                  onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
+                  value={_periodeDagpenger?.institusjon?.navn}
                 />
               </Column>
               <Column />
             </AlignStartRow>
+            )
+          : (
+            <AlignStartRow>
+              <Column>
+                <FlexDiv>
+                  <Label>{t('label:institusjon') + ':'}</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <FlexDiv>
+                    <FormText error={_v[_namespace + '-institusjon-id']}>
+                      {_periodeDagpenger?.institusjon?.id}
+                    </FormText>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <FormText error={_v[_namespace + '-institusjon-navn']}>
+                      {_periodeDagpenger?.institusjon?.navn}
+                    </FormText>
+                  </FlexDiv>
+                </FlexDiv>
+              </Column>
+            </AlignStartRow>
+            )}
+        <VerticalSeparatorDiv />
+        {inEditMode
+          ? (
+            <AlignStartRow>
+              <Column>
+                <RadioPanelGroup
+                  value={institusjonKjent ? 'ja' : 'nei'}
+                  data-testid={_namespace + '-institusjon-idmangler'}
+                  data-no-border
+                  id={_namespace + '-institusjon-idmangler'}
+                  error={_v[_namespace + '-institusjon-idmangler']}
+                  legend={t('label:institusjonens-id-er-kjent') + ' *'}
+                  name={_namespace + '-idmangler'}
+                  onChange={(e: string) => setInstitutionIdMangler(e === 'nei', index)}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                    <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
+              </Column>
+              <Column />
+            </AlignStartRow>
+            )
+          : (
+            <FormText error={_v[_namespace + '-institusjon-idmangler']}>
+              <FlexDiv>
+                <Label>{t('label:institusjonens-id-er-kjent') + ':'}</Label>
+                <HorizontalSeparatorDiv size='0.5' />
+                {institusjonKjent ? 'ja' : 'nei'}
+              </FlexDiv>
+            </FormText>
+            )}
+        <VerticalSeparatorDiv />
+        {idmangler && (
+          <>
+            {inEditMode
+              ? (
+                <AlignStartRow>
+                  <Column>
+                    <Input
+                      error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
+                      namespace={_namespace}
+                      id='institusjon-idmangler-navn'
+                      key={'institusjon-idmangler-navn-' + _periodeDagpenger?.institusjon.idmangler?.navn}
+                      label={t('label:navn')}
+                      onChanged={(navn: string) => setInstitutionIdManglerNavn(navn, index)}
+                      value={_periodeDagpenger?.institusjon.idmangler?.navn}
+                    />
+                  </Column>
+                  <Column />
+                </AlignStartRow>
+                )
+              : (
+                <FormText error={_v[_namespace + '-institusjon-idmangler-navn']}>
+                  <FlexDiv>
+                    <Label>{t('label:navn') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_periodeDagpenger?.institusjon.idmangler?.navn}
+                  </FlexDiv>
+                </FormText>
+                )}
             <VerticalSeparatorDiv />
-            <AdresseForm
-              adresse={(index < 0 ? _newAdresse : periodeDagpenger?.institusjon.idmangler?.adresse)}
-              onAdressChanged={(a, type: string) => setAdresse(a, type, index)}
-              namespace={namespace + idx + '-institusjon-idmangler-adresse'}
-              validation={index < 0 ? _validation : validation}
-            />
+            {inEditMode
+              ? (
+                <AdresseForm
+                  adresse={_periodeDagpenger?.institusjon.idmangler?.adresse}
+                  onAdressChanged={(a) => setInstitutionIdManglerAdresse(a, index)}
+                  namespace={_namespace + '-institusjon-idmangler-adresse'}
+                  validation={_v}
+                />
+                )
+              : (
+                <AdresseBox adresse={_periodeDagpenger?.institusjon.idmangler?.adresse} seeType />
+                )}
           </>
         )}
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2' />
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(periodeDagpenger)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(periodeDagpenger)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          <AlignEndColumn>
+            <AddRemovePanel2<PeriodeDagpenger>
+              item={periodeDagpenger}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv />
       </RepeatableRow>
@@ -378,37 +502,34 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:periode-for-dagpenger')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
+    <>
+      <VerticalSeparatorDiv />
       {_.isEmpty(perioder)
         ? (
-          <BodyLong>
-            {t('message:warning-no-periods')}
-          </BodyLong>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-periods')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
         : perioder?.map(renderRow)}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv size='2' />
-      {_seeNewForm
+      <VerticalSeparatorDiv />
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-    </PaddedDiv>
+    </>
   )
 }
 

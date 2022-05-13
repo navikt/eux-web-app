@@ -5,12 +5,14 @@ import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
 export interface ValidationInntekterProps {
-  inntekter: Array<Inntekt>
+  inntekter: Array<Inntekt> | undefined
+  personName ?: string
 }
 
 export interface ValidationInntektProps {
-  inntekt: Inntekt,
-  index?: number
+  inntekt: Inntekt | undefined,
+  index?: number,
+  personName ?: string
 }
 
 export const validateInntekt = (
@@ -18,7 +20,8 @@ export const validateInntekt = (
   namespace: string,
   {
     inntekt,
-    index
+    index,
+    personName
   }: ValidationInntektProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -27,33 +30,38 @@ export const validateInntekt = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntekt?.type,
     id: namespace + idx + '-type',
-    message: 'validation:noType'
+    message: 'validation:noType',
+    personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntekt?.beloep,
     id: namespace + idx + '-beloep',
-    message: 'validation:noBeløp'
+    message: 'validation:noBeløp',
+    personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntekt?.beloep,
     id: namespace + idx + '-beloep',
-    message: 'validation:noBeløp'
+    message: 'validation:noBeløp',
+    personName
   }))
 
   if (!_.isEmpty(inntekt?.beloep?.trim())) {
     hasErrors.push(checkIfNotNumber(v, {
       needle: inntekt?.beloep,
       id: namespace + idx + '-beloep',
-      message: 'validation:invalidBeløp'
+      message: 'validation:invalidBeløp',
+      personName
     }))
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntekt?.valuta,
     id: namespace + idx + '-valuta',
-    message: 'validation:noValuta'
+    message: 'validation:noValuta',
+    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
@@ -63,14 +71,16 @@ export const validateInntekter = (
   validation: Validation,
   namespace: string,
   {
-    inntekter
+    inntekter,
+    personName
   }: ValidationInntekterProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   inntekter?.forEach((inntekt: Inntekt, index: number) => {
     hasErrors.push(validateInntekt(validation, namespace, {
       inntekt,
-      index
+      index,
+      personName
     }))
   })
   return hasErrors.find(value => value) !== undefined

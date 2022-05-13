@@ -41,6 +41,7 @@ body {
   margin-top: 2rem !important;
 }
 .hide {
+  position: absolute;
   margin-left: -10000px;
 }
 .fadeIn {

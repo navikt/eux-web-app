@@ -319,8 +319,8 @@ export interface Barn {
 }
 
 export interface Institusjon {
-  navn: string
   id: string
+  navn: string
   idmangler?: {
     navn: string
     adresse: Adresse
@@ -330,6 +330,8 @@ export interface Institusjon {
 export interface PeriodeDagpenger {
   periode: Periode,
   institusjon: Institusjon
+  // added:
+  __cache?: any
 }
 
 export interface Inntekt {

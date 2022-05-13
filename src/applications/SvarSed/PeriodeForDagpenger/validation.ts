@@ -7,9 +7,14 @@ import { getIdx } from 'utils/namespace'
 import { addError, checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeDagpengerProps {
-  periodeDagpenger: PeriodeDagpenger,
-  perioderDagpenger: Array<PeriodeDagpenger> | undefined,
+  periodeDagpenger: PeriodeDagpenger | undefined
+  perioderDagpenger: Array<PeriodeDagpenger> | undefined
   index?: number
+  personName?: string
+}
+
+export interface ValidatePerioderDagpengerProps {
+  perioderDagpenger: Array<PeriodeDagpenger> | undefined
   personName?: string
 }
 
@@ -42,13 +47,13 @@ export const validatePeriodeDagpenger = (
   }
 
   const idmangler = (
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.navn?.trim()) && periodeDagpenger.institusjon.idmangler?.navn?.trim() !== '-') ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.gate?.trim()) ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.postnummer?.trim()) ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.bygning?.trim()) ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.by?.trim()) ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.region?.trim()) ||
-    !_.isEmpty(periodeDagpenger.institusjon.idmangler?.adresse?.land?.trim())
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim()) && periodeDagpenger?.institusjon.idmangler?.navn?.trim() !== '-') ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.gate?.trim()) ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.postnummer?.trim()) ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.bygning?.trim()) ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.by?.trim()) ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.region?.trim()) ||
+    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.land?.trim())
 
   if (!idmangler) {
     hasErrors.push(checkIfNotEmpty(v, {
@@ -81,11 +86,6 @@ export const validatePeriodeDagpenger = (
   }
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidatePerioderDagpengerProps {
-  perioderDagpenger: Array<PeriodeDagpenger> | undefined
-  personName?: string
 }
 
 export const validatePerioderDagpenger = (

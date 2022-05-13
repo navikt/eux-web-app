@@ -3,19 +3,22 @@ import {
   Column,
   FlexRadioPanels,
   PaddedDiv,
-  RadioPanelGroup,
   RadioPanel,
+  RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { H001Sed, YtterligereInfoType } from 'declarations/sed'
+import { H001Sed, ReplySed, YtterligereInfoType } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -24,6 +27,7 @@ const mapState = (state: State): MainFormSelector => ({
 const EndredeForhold: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
@@ -31,6 +35,16 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-endredeforhold`
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationEndredeForholdProps>(
+      validation, namespace, validateEndredeForhold, {
+        replySed: (replySed as ReplySed),
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
     dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType))

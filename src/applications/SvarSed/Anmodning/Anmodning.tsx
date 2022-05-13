@@ -1,14 +1,17 @@
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Svar, ReplySed } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -17,6 +20,7 @@ const mapState = (state: State): MainFormSelector => ({
 const Anmodning: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }: MainFormProps): JSX.Element => {
@@ -26,6 +30,16 @@ const Anmodning: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-anmodning`
   const target = 'anmodning'
   const anmodning: H001Svar | undefined = _.get(replySed, target)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationAnmodningProps>(
+      validation, namespace, validateAnmodning, {
+        replySed: (replySed as ReplySed),
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const setDokument = (newDokument: string) => {
     dispatch(updateReplySed(`${target}.dokumentasjon.dokument`, newDokument))

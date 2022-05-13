@@ -125,7 +125,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
   }
 
-  const onUtenlandskPinChange = (newPins: Array<Pin>, whatChanged: string | undefined) => {
+  const onUtenlandskPinChange = (newPins: Array<Pin>) => {
     let pins: Array<Pin> = _.cloneDeep(newPins)
     if (_.isNil(pins)) {
       pins = []
@@ -135,9 +135,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       pins.unshift(norwegianPin!)
     }
     dispatch(updateReplySed(`${target}.pin`, pins))
-    if (whatChanged && validation[whatChanged]) {
-      dispatch(resetValidation(whatChanged))
-    }
+    dispatch(resetValidation(namespace + '-pin'))
   }
 
   const onFoedestedChange = (newFoedested: Foedested | undefined, whatChanged: string | undefined) => {

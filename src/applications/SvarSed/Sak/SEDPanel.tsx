@@ -62,8 +62,9 @@ const SEDPanel = ({
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
-    if (!_.isUndefined(replySed) && _replyingToSed) {
+    if (!_.isUndefined(replySed) && (_replyingToSed || _editingSed)) {
       _setReplyingToSed(false)
+      _setEditingSed(false)
       changeMode('B', 'forward')
     }
   }, [replySed])

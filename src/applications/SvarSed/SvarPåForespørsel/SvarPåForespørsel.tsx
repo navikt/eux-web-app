@@ -1,11 +1,3 @@
-import { Heading } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
-import _ from 'lodash'
 import {
   AlignStartRow,
   Column,
@@ -15,9 +7,22 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import {
+  validateSvarPåForespørsel,
+  ValidationSvarPåForespørselProps
+} from 'applications/SvarSed/SvarPåForespørsel/validation'
+import TextArea from 'components/Forms/TextArea'
+import { TextAreaDiv } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -26,12 +31,23 @@ const mapState = (state: State): MainFormSelector => ({
 const SvarPåForespørsel: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   setReplySed
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationSvarPåForespørselProps>(
+      validation, namespace, validateSvarPåForespørsel, {
+        replySed,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const doWeHavePositive: boolean = !_.isEmpty((replySed as H002Sed)?.positivtSvar?.informasjon) ||
     !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
@@ -133,14 +149,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <AlignStartRow>
-        <Column>
-          <Heading size='small'>
-            {t('label:svar-på-forespørsel')}
-          </Heading>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
           <label className='navds-text-field__label navds-label'>

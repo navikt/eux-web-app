@@ -76,11 +76,9 @@ const Person: React.FC<MainFormProps> = ({
     }
   }
 
-  const onUtenlandskPinChange = (newUtenlandskPins: Array<Pin>, whatChanged: string | undefined) => {
+  const onUtenlandskPinChange = (newUtenlandskPins: Array<Pin>) => {
     dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.land + ' ' + pin.identifikator)))
-    if (whatChanged && validation[whatChanged]) {
-      dispatch(resetValidation(whatChanged))
-    }
+    dispatch(resetValidation(namespace + '-utenlandskePin'))
   }
 
   return (

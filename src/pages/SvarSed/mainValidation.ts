@@ -8,7 +8,7 @@ import { validateFormål } from 'applications/SvarSed/Formål/validation'
 import { validateAlleForsikringPerioder } from 'applications/SvarSed/Forsikring/validation'
 import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
-import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validationInntektForm'
+import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validation'
 import {
   validateKontaktsinformasjonEposter,
   validateKontaktsinformasjonTelefoner
