@@ -31,14 +31,13 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const StatsborgerskapFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = `${personID}.statsborgerskap`
+  const target = `bruker.statsborgerskap`
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-statsborgerskap`
 

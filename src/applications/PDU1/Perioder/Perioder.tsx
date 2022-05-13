@@ -45,14 +45,13 @@ type Sort = 'time' | 'group'
 const Perioder: React.FC<TwoLevelFormProps> = ({
   options,
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-perioder`
+  const namespace = `${parentNamespace}-perioder`
 
   const getId = ({ p, i }: {p: PDPeriode | null, i: number | undefined}): string =>
     p ? (p.__type + '-' + p?.startdato ?? '') + '[' + i + ']-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'

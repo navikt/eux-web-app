@@ -13,13 +13,12 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const Adresse: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 }: TwoLevelFormProps): JSX.Element => {
   const { validation }: TwoLevelFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = `${personID}.adresse`
+  const target = `bruker.adresse`
   const adresse: IAdresse = _.get(replySed, target)
   const namespace = `${parentNamespace}-adresse`
 

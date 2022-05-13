@@ -21,7 +21,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   setReplySed,
   updateReplySed
@@ -31,7 +30,7 @@ const SisteAnsettelseInfo: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const target = 'opphoer'
   const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-sisteansettelseinfo`
+  const namespace = `${parentNamespace}-sisteansettelseinfo`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
 

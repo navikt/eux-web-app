@@ -18,7 +18,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const Avsender: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
@@ -27,7 +26,7 @@ const Avsender: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const target = 'nav'
   const nav: NavInfo = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-avsender`
+  const namespace = `${parentNamespace}-avsender`
 
   const [allowEdit, setAllowEdit] = useState<boolean>(false)
 

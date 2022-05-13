@@ -32,7 +32,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const Dagpenger: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 }: TwoLevelFormProps): JSX.Element => {
@@ -41,7 +40,7 @@ const Dagpenger: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const target: string = 'perioderDagpengerMottatt'
   const perioderDagpengerMottatt: Array<PDPeriode> | undefined = _.get(replySed, target)
-  const namespace: string = `${parentNamespace}-${personID}-dagpenger`
+  const namespace: string = `${parentNamespace}-dagpenger`
 
   const [_newStartdato, _setNewStartdato] = useState<string |undefined>(undefined)
   const [_newSluttdato, _setNewSluttdato] = useState<string |undefined>(undefined)

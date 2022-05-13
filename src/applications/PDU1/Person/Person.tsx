@@ -31,16 +31,15 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 const Person: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
   replySed,
-  personID,
   personName,
   updateReplySed
 }:TwoLevelFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target: string | undefined = personID
+  const target: string = 'bruker'
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target!) // undefined for a brief time when switching to 'familie'
-  const namespace: string = `${parentNamespace}-${personID}-person`
+  const namespace: string = `${parentNamespace}-person`
 
   const onFnrChange = (newFnr: string) => {
     dispatch(updateReplySed(`${target}.fnr`, newFnr.trim()))
@@ -163,7 +162,6 @@ const Person: React.FC<TwoLevelFormProps> = ({
       <StatsborgerskapFC
         replySed={replySed}
         parentNamespace={namespace}
-        personID={personID}
         personName={personName}
         setReplySed={setReplySed}
         updateReplySed={updateReplySed}
@@ -174,7 +172,6 @@ const Person: React.FC<TwoLevelFormProps> = ({
         <Adresse
           replySed={replySed}
           parentNamespace={namespace}
-          personID={personID}
           personName={personName}
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}

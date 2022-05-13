@@ -16,7 +16,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const CoverLetter: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 } :TwoLevelFormProps): JSX.Element => {
@@ -25,7 +24,7 @@ const CoverLetter: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const target = 'info'
   const info: string | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-coverletter`
+  const namespace = `${parentNamespace}-coverletter`
 
   const setInfo = (newInfo: string) => {
     dispatch(updateReplySed(`${target}`, newInfo.trim()))

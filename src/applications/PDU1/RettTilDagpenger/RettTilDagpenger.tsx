@@ -18,7 +18,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const RettTilDagpengerFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   setReplySed
 }: TwoLevelFormProps): JSX.Element => {
@@ -27,7 +26,7 @@ const RettTilDagpengerFC: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const rettTilDagpenger: RettTilDagpenger | undefined = _.get(replySed, 'rettTilDagpenger')
   const ikkeRettTilDagpenger: IkkeRettTilDagpenger | undefined = _.get(replySed, 'ikkeRettTilDagpenger')
-  const namespace = `${parentNamespace}-${personID}-rettTilDagpenger`
+  const namespace = `${parentNamespace}-rettTilDagpenger`
 
   const [rettTilDagpengerRadio, setRettTilDagpengerRadio] = useState<RettTilDagpengerRadio>(() =>
     !_.isEmpty(rettTilDagpenger) ? 'rettTilDagpenger' : !_.isEmpty(ikkeRettTilDagpenger) ? 'ikkeRettTilDagpenger' : undefined

@@ -16,7 +16,6 @@ const mapState = (state: State): TwoLevelFormSelector => ({
 
 const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
   parentNamespace,
-  personID,
   replySed,
   updateReplySed
 } :TwoLevelFormProps): JSX.Element => {
@@ -25,7 +24,7 @@ const UtbetalingFC: React.FC<TwoLevelFormProps> = ({
   const dispatch = useAppDispatch()
   const target = 'andreMottatteUtbetalinger'
   const andreMottatteUtbetalinger: AndreMottatteUtbetalinger = _.get(replySed, target)
-  const namespace = `${parentNamespace}-${personID}-utbetaling`
+  const namespace = `${parentNamespace}-utbetaling`
 
   useEffect(() => {
     const newAndreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.cloneDeep(andreMottatteUtbetalinger)
