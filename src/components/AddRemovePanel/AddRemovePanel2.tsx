@@ -13,14 +13,14 @@ export interface AddRemovePanelProps<T> {
   index: number
   labels?: Labels
   marginTop?: boolean
+  allowDelete?: boolean
   onAddNew?: () => void
   inEditMode?: boolean
   onStartEdit: (item: T, index: number) => void
-  onConfirmEdit?: (item: T, index: number) => void
-  onCancelEdit: (item: T, index: number) => void
+  onConfirmEdit?: () => void
+  onCancelEdit: () => void
   onCancelNew?: () => void
   onRemove: (item: T) => void
-  shortButtons ?: boolean
 }
 
 const InlineFlexDiv = styled.div`
@@ -32,6 +32,7 @@ const AddRemovePanel2 = <T extends any>({
   labels = {},
   item,
   index,
+  allowDelete = true,
   marginTop = undefined,
   inEditMode = false,
   onStartEdit,
@@ -39,8 +40,7 @@ const AddRemovePanel2 = <T extends any>({
   onCancelEdit,
   onRemove,
   onAddNew,
-  onCancelNew,
-  shortButtons = false
+  onCancelNew
 }: AddRemovePanelProps<T>): JSX.Element | null => {
   const { t } = useTranslation()
 
@@ -84,22 +84,22 @@ const AddRemovePanel2 = <T extends any>({
           size='small'
           variant='tertiary'
           onClick={() => {
-            onConfirmEdit!(item!, index)
+            onConfirmEdit!()
           }}
         >
           <SuccessStroke />
-          {!shortButtons && (labels?.ok ?? t('el:button-save'))}
+          {labels?.ok ?? t('el:button-save')}
         </Button>
         <HorizontalSeparatorDiv />
         <Button
           size='small'
           variant='tertiary'
           onClick={() => {
-            onCancelEdit(item!, index)
+            onCancelEdit()
           }}
         >
           <Cancel />
-          {!shortButtons && (labels?.cancel ?? t('el:button-cancel'))}
+          {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>
     )
@@ -118,7 +118,7 @@ const AddRemovePanel2 = <T extends any>({
           }}
         >
           <AddCircle />
-          {!shortButtons && (labels?.add ?? t('el:button-add'))}
+          {labels?.add ?? t('el:button-add')}
         </Button>
         <HorizontalSeparatorDiv />
         <Button
@@ -131,7 +131,7 @@ const AddRemovePanel2 = <T extends any>({
           }}
         >
           <Cancel />
-          {!shortButtons && (labels?.cancel ?? t('el:button-cancel'))}
+          {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>
     )
@@ -145,17 +145,21 @@ const AddRemovePanel2 = <T extends any>({
         onClick={() => onStartEdit(item!, index)}
       >
         <Edit />
-        {!shortButtons && (labels?.edit ?? t('el:button-edit'))}
+        {labels?.edit ?? t('el:button-edit')}
       </Button>
-      <HorizontalSeparatorDiv />
-      <Button
-        size='small'
-        variant='tertiary'
-        onClick={() => setInDeleteMode(true)}
-      >
-        <Delete />
-        {!shortButtons && (labels?.remove ?? t('el:button-remove'))}
-      </Button>
+      {allowDelete && (
+        <>
+          <HorizontalSeparatorDiv />
+        <Button
+          size='small'
+          variant='tertiary'
+          onClick={() => setInDeleteMode(true)}
+        >
+          <Delete />
+          {labels?.remove ?? t('el:button-remove')}
+        </Button>
+          </>
+      )}
     </InlineFlexDiv>
   )
 }

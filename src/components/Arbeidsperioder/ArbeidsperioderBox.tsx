@@ -15,6 +15,7 @@ import {
 } from '@navikt/hoykontrast'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
+import classNames from 'classnames'
 import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import FormText from 'components/Forms/FormText'
@@ -39,11 +40,17 @@ import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } fro
 const ArbeidsgiverPanel = styled(Panel)`
   padding: 0rem !important;
   max-width: 800px;
+  &.new {
+    background-color: rgba(236, 243, 153, 0.5);
+  }
+  &.original {
+    background-color: var(--navds-global-color-blue-100);
+  }
 `
 export type Editable = 'no' | 'only_period' | 'full'
 
 export interface ArbeidsgiverBoxProps {
-  periodeMedForsikring: PeriodeMedForsikring
+  periodeMedForsikring: PeriodeMedForsikring | null
   editable?: Editable
   error?: boolean,
   includeAddress ?: boolean
@@ -51,8 +58,12 @@ export interface ArbeidsgiverBoxProps {
   onPeriodeMedForsikringSelect?: (a: PeriodeMedForsikring, checked: boolean) => void
   onPeriodeMedForsikringEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onPeriodeMedForsikringDelete?: (a: PeriodeMedForsikring) => void
+  onPeriodeMedForsikringNew?: (a: PeriodeMedForsikring) => void
+  onPeriodeMedForsikringNewClose ?: () => void
   selected?: boolean
   selectable?: boolean
+  newMode ?: boolean
+  style ?: string
 }
 
 const ArbeidsperioderBox = ({
@@ -64,8 +75,12 @@ const ArbeidsperioderBox = ({
   onPeriodeMedForsikringSelect,
   onPeriodeMedForsikringDelete,
   onPeriodeMedForsikringEdit,
+  onPeriodeMedForsikringNew,
+  onPeriodeMedForsikringNewClose,
   selected = false,
-  selectable = true
+  selectable = true,
+  newMode = false,
+  style
 }: ArbeidsgiverBoxProps): JSX.Element => {
   const { t } = useTranslation()
 
@@ -132,8 +147,11 @@ const ArbeidsperioderBox = ({
       includeAddress: includeAddress!
     })
     if (!!_editPeriodeMedForsikring && valid) {
-      if (_.isFunction(onPeriodeMedForsikringEdit)) {
-        onPeriodeMedForsikringEdit(_editPeriodeMedForsikring, periodeMedForsikring, selected!)
+      if (newMode && _.isFunction(onPeriodeMedForsikringNew)) {
+        onPeriodeMedForsikringNew(_editPeriodeMedForsikring)
+      }
+      if (!newMode && _.isFunction(onPeriodeMedForsikringEdit)) {
+        onPeriodeMedForsikringEdit(_editPeriodeMedForsikring, periodeMedForsikring!, selected!)
       }
       onCloseEdit(namespace)
     }
@@ -141,21 +159,21 @@ const ArbeidsperioderBox = ({
 
   const onRemove = () => {
     if (_.isFunction(onPeriodeMedForsikringDelete)) {
-      onPeriodeMedForsikringDelete(periodeMedForsikring)
+      onPeriodeMedForsikringDelete(periodeMedForsikring!)
     }
   }
 
   const onSelectCheckboxClicked = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (_.isFunction(onPeriodeMedForsikringSelect)) {
-      onPeriodeMedForsikringSelect(periodeMedForsikring, e.target.checked)
+      onPeriodeMedForsikringSelect(periodeMedForsikring!, e.target.checked)
     }
   }
 
-  const _periodeMedForsikring: PeriodeMedForsikring | undefined = _inEditMode ? _editPeriodeMedForsikring : periodeMedForsikring
+  const _periodeMedForsikring: PeriodeMedForsikring | null | undefined = (_inEditMode || newMode) ? _editPeriodeMedForsikring : periodeMedForsikring
 
   const addremove = (
     <PileEndDiv>
-      {!_inEditMode && selectable && (
+      {!(_inEditMode || newMode) && selectable && (
         <Checkbox
           checked={selected}
           onChange={onSelectCheckboxClicked}
@@ -165,12 +183,13 @@ const ArbeidsperioderBox = ({
       {editable !== 'no' && (
         <AddRemovePanel2
           item={periodeMedForsikring}
-          index={0}
+          index={newMode ? -1 : 0}
+          allowDelete={false}
           inEditMode={_inEditMode}
-          shortButtons
           onStartEdit={onStartEdit}
           onConfirmEdit={onSaveEdit}
           onCancelEdit={() => onCloseEdit(namespace)}
+          onCancelNew={onPeriodeMedForsikringNewClose}
           onRemove={onRemove}
         />
       )}
@@ -180,8 +199,8 @@ const ArbeidsperioderBox = ({
   return (
     <div>
       <VerticalSeparatorDiv size='0.5' />
-      <ArbeidsgiverPanel border>
-        {_inEditMode
+      <ArbeidsgiverPanel border className={classNames(style)}>
+        {(_inEditMode || newMode)
           ? (
             <PaddedDiv>
               <AlignStartRow>
@@ -213,21 +232,24 @@ const ArbeidsperioderBox = ({
               {periodeMedForsikring?.extra?.fraInntektsregisteret === 'ja' && (
                 <BodyLong>{t('label:fra-inntektsregisteret')}</BodyLong>
               )}
+              {periodeMedForsikring?.extra?.fraSed === 'ja' && (
+                <BodyLong>{t('label:fra-sed')}</BodyLong>
+              )}
             </FlexEndDiv>
             )}
         <VerticalSeparatorDiv size='0.3' />
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv size='0.3' />
-        {_inEditMode && editable === 'full'
+        {(_inEditMode || newMode) && editable === 'full'
           ? (
             <>
               <PaddedDiv>
                 <AlignStartRow>
                   <Column>
                     <Input
-                      namespace={namespace}
+                      namespace={namespace + '-arbeidsgiver'}
                       error={_validation[namespace + '-arbeidsgiver-navn']?.feilmelding}
-                      id='arbeidsgiver-navn'
+                      id='navn'
                       label={t('label:navn')}
                       onChanged={setNavn}
                       value={_periodeMedForsikring?.arbeidsgiver.navn}
@@ -281,7 +303,7 @@ const ArbeidsperioderBox = ({
                       </BodyLong>
                       )
                     : (
-                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver.adresse} padding='0' />
+                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver.adresse} padding='0' seeType/>
                       )}
                 </PileDiv>
               </FlexDiv>

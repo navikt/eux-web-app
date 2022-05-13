@@ -2,11 +2,8 @@ import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
-  AlignEndColumn,
-  AlignStartRow,
   Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
+  FlexCenterSpacedDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
@@ -14,28 +11,17 @@ import {
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
-import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
-import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import InntektSearch from 'applications/SvarSed/InntektSearch/InntektSearch'
 import { MainFormSelector } from 'applications/SvarSed/MainForm'
-import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
-import AdresseBox from 'components/AdresseBox/AdresseBox'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
-import FormText from 'components/Forms/FormText'
-import Input from 'components/Forms/Input'
-import PeriodeInput from 'components/Forms/PeriodeInput'
-import PeriodeText from 'components/Forms/PeriodeText'
 import Inntekt from 'components/Inntekt/Inntekt'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {
-  Adresse,
-  ArbeidsgiverIdentifikator,
   Periode,
   PeriodeMedForsikring,
-  PeriodeSort,
+  PeriodeSort, PeriodeView,
   ReplySed
 } from 'declarations/sed'
 import {
@@ -45,7 +31,6 @@ import {
   UpdateReplySedPayload,
   Validation
 } from 'declarations/types'
-import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -56,7 +41,6 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { periodeSort } from 'utils/sort'
-import { hasNamespace } from 'utils/validation'
 import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validation'
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
@@ -111,9 +95,10 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeMedForsikringProps>(validatePeriodeMedForsikring, namespace)
+  //const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeMedForsikringProps>(validatePeriodeMedForsikring, namespace)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
+  const [_view, _setView] = useState<PeriodeView>('all')
 
   const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
@@ -130,90 +115,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     _setPlan(plan)
   }, [replySed, _sort, arbeidsperioder])
 
-  const onPeriodeChanged = (p: Periode, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeMedForsikring({
-        ..._newPeriodeMedForsikring,
-        ...p
-      } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
-      return
-    }
-    _setEditPeriodeMedForsikring({
-      ..._editPeriodeMedForsikring,
-      ...p
-    } as PeriodeMedForsikring)
-    dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
-    dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
-  }
-
-  const onNavnChanged = (navn: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeMedForsikring({
-        ..._newPeriodeMedForsikring,
-        arbeidsgiver: {
-          ..._newPeriodeMedForsikring?.arbeidsgiver,
-          navn
-        }
-      } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-navn')
-      return
-    }
-    _setEditPeriodeMedForsikring({
-      ..._editPeriodeMedForsikring,
-      arbeidsgiver: {
-        ..._newPeriodeMedForsikring?.arbeidsgiver,
-        navn
-      }
-    } as PeriodeMedForsikring)
-    dispatch(resetValidation(namespace + getIdx(index) + '-arbeidsgiver-navn'))
-  }
-
-  const onIdentifikatorerChanged = (identifikatorer: Array<ArbeidsgiverIdentifikator>, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeMedForsikring({
-        ..._newPeriodeMedForsikring,
-        arbeidsgiver: {
-          ..._newPeriodeMedForsikring?.arbeidsgiver,
-          identifikatorer
-        }
-      } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-identifikatorer')
-      return
-    }
-    _setEditPeriodeMedForsikring({
-      ..._editPeriodeMedForsikring,
-      arbeidsgiver: {
-        ..._newPeriodeMedForsikring?.arbeidsgiver,
-        identifikatorer
-      }
-    } as PeriodeMedForsikring)
-    dispatch(resetValidation(namespace + getIdx(index) + '-arbeidsgiver-identifikatorer'))
-  }
-
-  const onAdresseChanged = (adresse: Adresse, index: number) => {
-    if (index < 0) {
-      _setNewPeriodeMedForsikring({
-        ..._newPeriodeMedForsikring,
-        arbeidsgiver: {
-          ..._newPeriodeMedForsikring?.arbeidsgiver,
-          adresse
-        }
-      } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-adresse')
-      return
-    }
-    _setEditPeriodeMedForsikring({
-      ..._editPeriodeMedForsikring,
-      arbeidsgiver: {
-        ..._newPeriodeMedForsikring?.arbeidsgiver,
-        adresse
-      }
-    } as PeriodeMedForsikring)
-    dispatch(resetValidation(namespace + getIdx(index) + '-arbeidsgiver-adresse'))
-  }
-
   const onCloseEdit = (namespace: string) => {
     _setEditPeriodeMedForsikring(undefined)
     _setEditIndex(undefined)
@@ -223,17 +124,17 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   const onCloseNew = () => {
     _setNewPeriodeMedForsikring(undefined)
     _setNewForm(false)
-    _resetValidation()
+   // _resetValidation()
   }
 
-  const onStartEdit = (p: PeriodeMedForsikring, index: number) => {
+  /*const onStartEdit = (p: PeriodeMedForsikring, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
     _setEditPeriodeMedForsikring(p)
     _setEditIndex(index)
-  }
+  }*/
 
   const onSaveEdit = (editPeriodeMedForsikring ?: PeriodeMedForsikring, editIndex ?: number) => {
     // if editPeriode is not null, it comes from arbeidsgiver; if not, from existing typed periode
@@ -268,11 +169,12 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     // if newPeriode is not null, it comes from arbeidsgiver; if not, from newly typed periode
 
     const __newPeriodeMedForsikring = !_.isUndefined(newPeriodeMedForsikring) ? newPeriodeMedForsikring : _newPeriodeMedForsikring
-    const valid: boolean = _performValidation({
+    /*const valid: boolean = _performValidation({
       periodeMedForsikring: __newPeriodeMedForsikring,
       personName
     })
-
+*/
+    const valid = true
     if (!!__newPeriodeMedForsikring && valid) {
       let newPerioderMedforsikring: Array<PeriodeMedForsikring> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioderMedforsikring)) {
@@ -288,19 +190,11 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     }
   }
 
-  const onRemoveFromArbeidsgiver = (deletedArbeidsgiver: PeriodeMedForsikring) => {
-    onRemove(deletedArbeidsgiver)
-  }
-
-  const onAddNewFromArbeidsgiver = (selectedArbeidsgiver: PeriodeMedForsikring) => {
-    onAddNew(selectedArbeidsgiver)
-  }
-
   const onArbeidsgiverSelect = (arbeidsgiver: PeriodeMedForsikring, checked: boolean) => {
     if (checked) {
-      onAddNewFromArbeidsgiver(arbeidsgiver)
+      onAddNew(arbeidsgiver)
     } else {
-      onRemoveFromArbeidsgiver(arbeidsgiver)
+      onRemove(arbeidsgiver)
     }
   }
 
@@ -346,155 +240,76 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const renderPlanItem = (item: PlanItem<PeriodeMedForsikring> | null) => {
     if (item === null) {
-      return renderRowPeriodeMedForsikring(null)
+      return(
+        <Column>
+          <ArbeidsperioderBox
+            periodeMedForsikring={null}
+            editable='full'
+            selectable={false}
+            newMode={true}
+            style='new'
+            includeAddress={includeAddress}
+            onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+            onPeriodeMedForsikringNew={() => {}}
+            onPeriodeMedForsikringNewClose={onCloseNew}
+            namespace={namespace}
+          />
+        </Column>
+      )
     }
     if (item.type === 'periode') {
-      return renderRowPeriodeMedForsikring(item.item)
+      item.item.extra = { fraSed: 'ja'}
+      return (
+        <Column>
+          <ArbeidsperioderBox
+            periodeMedForsikring={item.item}
+            editable='full'
+            selectable={false}
+            style='original'
+            includeAddress={includeAddress}
+            onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+            onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+            namespace={namespace}
+          />
+        </Column>
+      )
+
     }
     if (item.type === 'arbeidsperiode') {
-      return renderRowArbeidsperiode(item.item)
-    }
-  }
-
-  const renderRowArbeidsperiode = (a: PeriodeMedForsikring) => {
-    const index: number = a ? a.__index! : -1
-    return (
-      <Column>
-        <ArbeidsperioderBox
-          periodeMedForsikring={a}
+      const index: number = item.item ? item.item.__index! : -1
+      if (_view === 'all') {
+        return (
+          <Column>
+            <ArbeidsperioderBox
+              periodeMedForsikring={item.item}
+              editable='full'
+              includeAddress={includeAddress}
+              selected={!_.isNil(index) && index >= 0}
+              onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+              onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+              namespace={namespace}
+            />
+          </Column>
+        )
+      }
+      if (!_.isNil(index) && index >= 0) {
+        return (
+          <Column>
+            <ArbeidsperioderBox
+          periodeMedForsikring={item.item}
           editable='full'
+          selectable={false}
+          style='original'
           includeAddress={includeAddress}
-          selected={!_.isNil(index) && index >= 0}
           onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
           onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
           namespace={namespace}
         />
-      </Column>
-    )
-  }
-
-  const renderRowPeriodeMedForsikring = (p: PeriodeMedForsikring | null) => {
-    const index: number = p ? p.__index! : -1
-    const _namespace = namespace + getIdx(index)
-    const _v: Validation = index < 0 ? _validation : validation
-    const inEditMode = index < 0 || _editIndex === index
-    const _periodeMedForsikring = index < 0 ? _newPeriodeMedForsikring : (inEditMode ? _editPeriodeMedForsikring : p)
-
-    return (
-      <RepeatableRow
-        id={'repeatablerow-' + _namespace}
-        className={classNames({
-          new: index < 0,
-          error: hasNamespace(_v, _namespace)
-        })}
-      >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          {inEditMode
-            ? (
-              <PeriodeInput
-                namespace={_namespace}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding,
-                  aapenPeriodeType: _v[_namespace + '-aapenPeriodeType']?.feilmelding
-                }}
-                hideLabel={false}
-                setPeriode={(p: Periode) => onPeriodeChanged(p, index!)}
-                value={_periodeMedForsikring}
-              />
-              )
-            : (
-              <>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
-                  }}
-                  periode={_periodeMedForsikring}
-                />
-                <FormText error={_v[_namespace + '-arbeidsgiver-navn']}>
-                  <FlexDiv>
-                    <Label>{t('label:institusjonens-navn') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_periodeMedForsikring?.arbeidsgiver.navn}
-                  </FlexDiv>
-                </FormText>
-              </>
-              )}
-        </AlignStartRow>
-        {inEditMode && (
-          <AlignStartRow>
-            <Column>
-
-              <Input
-                error={_v[_namespace + '-arbeidsgiver-navn']?.feilmelding}
-                namespace={_namespace + '-arbeidsgiver'}
-                id='navn'
-                key={_namespace + '-arbeidsgiver-navn' + _periodeMedForsikring?.arbeidsgiver.navn}
-                label={t('label:institusjonens-navn')}
-                onChanged={(navn: string) => onNavnChanged(navn, index)}
-                value={_periodeMedForsikring?.arbeidsgiver.navn}
-              />
-
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
-        {inEditMode
-          ? (
-            <IdentifikatorFC
-              identifikatorer={_periodeMedForsikring?.arbeidsgiver.identifikatorer}
-              onIdentifikatorerChanged={(identifikatorer: Array<ArbeidsgiverIdentifikator>) => onIdentifikatorerChanged(identifikatorer, index)}
-              namespace={namespace + '-arbeidsgiver-identifikatorer'}
-              validation={_v}
-              personName={personName}
-            />
-            )
-          : _periodeMedForsikring?.arbeidsgiver.identifikatorer?.map((id, i) => {
-            const idx = getIdx(i)
-            return (
-              <FormText key={id.type} error={_v[_namespace + idx + '-identifikatorer']}>
-                <FlexDiv>
-                  <Label>{t('label:' + id.type) + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {id?.id}
-                </FlexDiv>
-              </FormText>
-            )
-          })}
-        <VerticalSeparatorDiv />
-        {inEditMode
-          ? (
-            <AdresseForm
-              adresse={_periodeMedForsikring?.arbeidsgiver.adresse}
-              onAdressChanged={(a: Adresse) => onAdresseChanged(a, index)}
-              namespace={namespace + '-arbeidsgiver-adresse'}
-              validation={_v}
-            />
-            )
-          : (
-            <AdresseBox adresse={_periodeMedForsikring?.arbeidsgiver.adresse} seeType />
-            )}
-        <AlignStartRow>
-          <AlignEndColumn>
-            <AddRemovePanel2<PeriodeMedForsikring>
-              item={p}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={() => onAddNew()}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
-    )
+          </Column>
+        )
+      }
+      return null
+    }
   }
 
   return (
@@ -528,12 +343,20 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         : (
           <>
             <PaddedHorizontallyDiv>
-              <Checkbox
-                checked={_sort === 'group'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-              >
-                {t('label:group-by-type')}
-              </Checkbox>
+              <FlexCenterSpacedDiv>
+                <Checkbox
+                  checked={_sort === 'group'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+                >
+                  {t('label:group-by-type')}
+                </Checkbox>
+                <Checkbox
+                  checked={_view === 'periods'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
+                >
+                  {t('label:se-kun-perioder')}
+                </Checkbox>
+              </FlexCenterSpacedDiv>
             </PaddedHorizontallyDiv>
             <VerticalSeparatorDiv />
             {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}

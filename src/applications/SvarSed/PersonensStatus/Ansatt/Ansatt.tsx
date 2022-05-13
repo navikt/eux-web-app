@@ -4,6 +4,7 @@ import {
   AlignEndColumn,
   AlignStartRow,
   Column,
+  FlexCenterSpacedDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
@@ -20,7 +21,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring, PeriodeSort } from 'declarations/sed'
+import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -73,6 +74,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnsattPeriodeProps>(validateAnsattPeriode, namespace)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
+  const [_view, _setView] = useState<PeriodeView>('all')
 
   useEffect(() => {
     const spikedPeriods: Array<Periode> | undefined = perioderSomAnsatt?.map((p, index) => ({ ...p, __index: index }))
@@ -123,7 +125,8 @@ const Ansatt: React.FC<MainFormProps> = ({
     // if editPeriode is not null, it comes from arbeidsgiver; if not, from existing typed periode
     const __editPeriode = !_.isUndefined(editPeriode) ? editPeriode : _editPeriode
     const __editIndex = !_.isUndefined(editIndex) ? editIndex : _editIndex
-
+    delete __editPeriode?.__index
+    delete __editPeriode?.__type
     const [valid, newValidation] = performValidation<ValidationAnsattPeriodeProps>(
       validation, namespace, validateAnsattPeriode, {
         periode: __editPeriode,
@@ -249,7 +252,15 @@ const Ansatt: React.FC<MainFormProps> = ({
       return renderRowPeriode(item.item as Periode)
     }
     if (item.type === 'arbeidsperiode') {
-      return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
+      if (_view === 'all') {
+        return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
+      }
+        // show the arbeidsperiode as periode, but only if it is selected (i.e., there is a real period associated)
+      const index: number = item.item ? item.item.__index! : -1
+      if (!_.isNil(index) && index >= 0) {
+        return renderRowPeriode(item.item as Periode)
+      }
+      return null
     }
   }
 
@@ -369,12 +380,20 @@ const Ansatt: React.FC<MainFormProps> = ({
         : (
           <>
             <PaddedHorizontallyDiv>
-              <Checkbox
+              <FlexCenterSpacedDiv>
+                <Checkbox
                 checked={_sort === 'group'}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
               >
                 {t('label:group-by-type')}
               </Checkbox>
+                <Checkbox
+                  checked={_view === 'periods'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
+                >
+                  {t('label:se-kun-perioder')}
+                </Checkbox>
+              </FlexCenterSpacedDiv>
             </PaddedHorizontallyDiv>
             <VerticalSeparatorDiv />
             {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}

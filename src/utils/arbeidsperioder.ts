@@ -23,15 +23,10 @@ export const arbeidsperioderFraAAToPeriodeMedForsikring = (a: ArbeidsperiodeFraA
     },
     extra: {
       fraArbeidsgiverregisteret: a.fraArbeidsgiverregisteret,
-      fraInntektsregisteret: a.fraInntektsregisteret
+      fraInntektsregisteret: a.fraInntektsregisteret,
+      fraSed: 'nei'
     }
   }
-}
-
-export const sanitizePeriodeMedForsikring = (a: PeriodeMedForsikring): PeriodeMedForsikring => {
-  const _a = _.cloneDeep(a)
-  delete _a.extra
-  return _a
 }
 
 export const periodeMedForsikringToArbeidsperioderFraAA = (a: PeriodeMedForsikring): ArbeidsperiodeFraAA => {
