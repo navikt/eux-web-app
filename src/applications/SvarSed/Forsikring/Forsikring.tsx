@@ -160,7 +160,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     }
   }
 
-  const setIdentifikatorer = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string, type: string, index: number) => {
+  const setIdentifikatorer = (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, type: string, index: number) => {
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
@@ -169,12 +169,10 @@ const Forsikring: React.FC<MainFormProps> = ({
           identifikatorer: newIdentifikatorer
         }
       } as PeriodeMedForsikring)
-      _resetValidation(namespace + '-arbeidsgiver-identifikatorer-' + whatChanged)
+      _resetValidation(namespace + '-arbeidsgiver-identifikatorer')
     } else {
       dispatch(updateReplySed(`${type}[${index}].arbeidsgiver.identifikatorer`, newIdentifikatorer))
-      if (validation[namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikatorer-' + whatChanged]) {
-        dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikatorer-' + whatChanged))
-      }
+      dispatch(resetValidation(namespace + getNSIdx(type, index) + '-arbeidsgiver-identifikatorer'))
     }
   }
 
@@ -429,7 +427,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               <Column>
                 <IdentifikatorFC
                   identifikatorer={(_periode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
-                  onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => setIdentifikatorer(newIdentifikatorer, whatChanged, _type, _index)}
+                  onIdentifikatorerChanged={(newIdentifikatorer: Array<ArbeidsgiverIdentifikator>) => setIdentifikatorer(newIdentifikatorer, _type, _index)}
                   namespace={namespace + idx + '-arbeidsgiver-identifikatorer'}
                   validation={_v}
                   personName={personName}

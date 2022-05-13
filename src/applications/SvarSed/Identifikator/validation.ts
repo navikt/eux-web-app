@@ -6,12 +6,17 @@ import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationIdentifikatorProps {
   identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
-  identifikator: ArbeidsgiverIdentifikator
+  identifikator: ArbeidsgiverIdentifikator | undefined
   index?: number
   personName?: string
 }
 
-const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' + it?.id
+export interface ValidationIdentifikatorerProps {
+  identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
+  personName?: string
+}
+
+const getId = (it: ArbeidsgiverIdentifikator | null | undefined): string => it?.type + '-' + it?.id
 
 export const validateIdentifikator = (
   v: Validation,
@@ -51,5 +56,25 @@ export const validateIdentifikator = (
     }))
   }
 
+  return hasErrors.find(value => value) !== undefined
+}
+
+export const validateIdentifikatorer = (
+  validation: Validation,
+  namespace: string,
+  {
+    identifikatorer,
+    personName
+  }: ValidationIdentifikatorerProps
+): boolean => {
+  const hasErrors: Array<boolean> = []
+  identifikatorer?.forEach((identifikator: ArbeidsgiverIdentifikator, index: number) => {
+    hasErrors.push(validateIdentifikator(validation, namespace, {
+      identifikator,
+      identifikatorer,
+      index,
+      personName
+    }))
+  })
   return hasErrors.find(value => value) !== undefined
 }

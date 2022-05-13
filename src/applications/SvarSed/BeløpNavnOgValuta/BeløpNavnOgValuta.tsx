@@ -63,7 +63,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   const [_editYtelse, _setEditYtelse] = useState<Ytelse | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
-  const [_seeNewForm, _setNewForm] = useState<boolean>(false)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationBeløpNavnOgValutaProps>(validateBeløpNavnOgValuta, namespace)
 
   const setAntallPersoner = (newAntallPersoner: string, index: number) => {
@@ -185,9 +185,10 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-utbetalingshyppighet'))
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditYtelse(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -219,8 +220,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
         delete __editYtelse?.antallPersoner
       }
       dispatch(updateReplySed(`${target}[${_editIndex}]`, __editYtelse))
-      dispatch(resetValidation(namespace + getIdx(_editIndex)))
-      onCloseEdit()
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -273,7 +273,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
         onCancelNew={onCloseNew}
         onStartEdit={onStartEdit}
         onConfirmEdit={onSaveEdit}
-        onCancelEdit={onCloseEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
       />
     )
 
@@ -441,7 +441,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                       </FlexDiv>
                     </FormText>
                   </Column>
-                  )}
+                )}
                 <Column>
                   <FlexDiv>
                     <Label>{t('label:beløp') + ':'}</Label>
@@ -519,7 +519,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
           )
         : ytelser?.map(renderRow)}
       <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>

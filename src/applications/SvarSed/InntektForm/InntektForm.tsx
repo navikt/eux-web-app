@@ -408,10 +408,9 @@ const InntektForm: React.FC<MainFormProps> = ({
             const period: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(a)
             return (
               <ArbeidsperioderBox
-                arbeidsgiver={period}
+                periodeMedForsikring={period}
                 editable='no'
                 includeAddress={false}
-                orphanArbeidsgiver
                 key={getOrgnr(period, 'organisasjonsnummer')}
                 namespace={namespace}
                 selectable={false}

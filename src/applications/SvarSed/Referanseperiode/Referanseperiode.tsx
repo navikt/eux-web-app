@@ -36,7 +36,7 @@ const Referanseperiode: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <PeriodeInput
           namespace={namespace}

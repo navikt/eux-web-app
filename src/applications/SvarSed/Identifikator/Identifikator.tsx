@@ -1,30 +1,37 @@
 import { AddCircle } from '@navikt/ds-icons'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  Column,
+  FlexDiv,
+  HorizontalSeparatorDiv,
+  PaddedHorizontallyDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ArbeidsgiverIdentifikator, ArbeidsgiverIdentifikatorType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { Button, BodyLong, Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
+import { hasNamespace } from 'utils/validation'
 import { validateIdentifikator, ValidationIdentifikatorProps } from './validation'
 
 export interface IdentifikatorProps {
   identifikatorer: Array<ArbeidsgiverIdentifikator> | undefined
-  onIdentifikatorerChanged: (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>, whatChanged: string) => void
+  onIdentifikatorerChanged: (newIdentifikatorer: Array<ArbeidsgiverIdentifikator>) => void
   namespace: string
   personName?: string
   validation: Validation
@@ -38,13 +45,14 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   validation
 }: IdentifikatorProps): JSX.Element => {
   const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const getId = (it: ArbeidsgiverIdentifikator | null | undefined): string => it?.type + '-' + it?.id
 
-  const [_newType, _setNewType] = useState<ArbeidsgiverIdentifikatorType | undefined>(undefined)
-  const [_newId, _setNewId] = useState<string | undefined>(undefined)
+  const [_newIdentifikator, _setNewIdentifikator] = useState<ArbeidsgiverIdentifikator | undefined>(undefined)
+  const [_editIdentifikator, _setEditIdentifikator] = useState<ArbeidsgiverIdentifikator | undefined>(undefined)
 
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const getId = (it: ArbeidsgiverIdentifikator | null): string => it?.type + '-' + it?.id
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<ArbeidsgiverIdentifikator>(getId)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationIdentifikatorProps>(validateIdentifikator, namespace)
 
   const allTypeOptions: Array<Option> = [
@@ -56,126 +64,178 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
 
   const setId = (newId: string, index: number) => {
     if (index < 0) {
-      _setNewId(newId.trim())
+      _setNewIdentifikator({
+        ..._newIdentifikator,
+        id: newId.trim()
+      } as ArbeidsgiverIdentifikator)
       _resetValidation(namespace + '-id')
-    } else {
-      const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
-      newIdentifikatorer[index].id = newId.trim()
-      onIdentifikatorerChanged(newIdentifikatorer, 'id')
+      return
     }
+    _setEditIdentifikator({
+      ..._editIdentifikator,
+      id: newId.trim()
+    } as ArbeidsgiverIdentifikator)
+    dispatch(resetValidation(namespace + getIdx(index) + '-id'))
   }
 
   const setType = (newType: ArbeidsgiverIdentifikatorType, index: number) => {
     if (index < 0) {
-      _setNewType(newType.trim() as ArbeidsgiverIdentifikatorType)
+      _setNewIdentifikator({
+        ..._newIdentifikator,
+        type: newType.trim() as ArbeidsgiverIdentifikatorType
+      } as ArbeidsgiverIdentifikator)
       _resetValidation(namespace + '-type')
-    } else {
-      const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
-      newIdentifikatorer[index].type = newType
-      onIdentifikatorerChanged(newIdentifikatorer, 'type')
+      return
     }
+    _setEditIdentifikator({
+      ..._editIdentifikator,
+      type: newType.trim() as ArbeidsgiverIdentifikatorType
+    } as ArbeidsgiverIdentifikator)
+    dispatch(resetValidation(namespace + getIdx(index) + '-type'))
+  }
+  const onCloseEdit = (namespace: string) => {
+    _setEditIdentifikator(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
-  const resetForm = () => {
-    _setNewId(undefined)
-    _setNewType(undefined)
+  const onCloseNew = () => {
+    _setNewIdentifikator(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
-
-  const onRemove = (index: number) => {
-    const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
-    const deletedIdentifikatorer: Array<ArbeidsgiverIdentifikator> = newIdentifikatorer.splice(index, 1)
-    if (deletedIdentifikatorer && deletedIdentifikatorer.length > 0) {
-      removeFromDeletion(deletedIdentifikatorer[0])
+  const onStartEdit = (ai: ArbeidsgiverIdentifikator, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
-    onIdentifikatorerChanged(newIdentifikatorer, 'remove')
+    _setEditIdentifikator(ai)
+    _setEditIndex(index)
   }
 
-  const onAdd = () => {
-    const newIdentifikator: ArbeidsgiverIdentifikator = {
-      id: _newId?.trim(),
-      type: _newType
-    } as ArbeidsgiverIdentifikator
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationIdentifikatorProps>(
+      validation, namespace, validateIdentifikator, {
+        identifikator: _editIdentifikator,
+        identifikatorer,
+        index: _editIndex,
+        personName
+      })
+    if (!!_editIdentifikator && valid) {
+      const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
+      newIdentifikatorer[_editIndex!] = _editIdentifikator
+      onIdentifikatorerChanged(newIdentifikatorer)
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
+    }
+  }
 
+  const onRemove = (removed: ArbeidsgiverIdentifikator) => {
+    const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.reject(identifikatorer, (ai: ArbeidsgiverIdentifikator) => _.isEqual(removed, ai))
+    onIdentifikatorerChanged(newIdentifikatorer)
+  }
+
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
       identifikatorer,
-      identifikator: newIdentifikator,
+      identifikator: _newIdentifikator,
       personName
     })
-    if (valid) {
+    if (!!_newIdentifikator && valid) {
       let newIdentifikatorer: Array<ArbeidsgiverIdentifikator> | undefined = _.cloneDeep(identifikatorer)
       if (_.isNil(newIdentifikatorer)) {
         newIdentifikatorer = []
       }
-      newIdentifikatorer.push(newIdentifikator)
-      onIdentifikatorerChanged(newIdentifikatorer, 'add')
-      onCancel()
+      newIdentifikatorer.push(_newIdentifikator)
+      onIdentifikatorerChanged(newIdentifikatorer)
+      onCloseNew()
     }
   }
 
   const renderRow = (identifikator: ArbeidsgiverIdentifikator | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(identifikator)
-    const idx = getIdx(index)
-    const getErrorFor = (el: string): string | undefined => {
-      return index < 0
-        ? _validation[namespace + idx + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    }
-
-    const _type = index < 0 ? _newType : identifikator?.type
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _identifikator = index < 0 ? _newIdentifikator : (inEditMode ? _editIdentifikator : identifikator)
     return (
       <RepeatableRow
-        className={classNames({ new: index < 0 })}
+        id={'repeatablerow-' + _namespace}
         key={getId(identifikator)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespace(_v, _namespace)
+        })}
       >
         <AlignStartRow>
+          <VerticalSeparatorDiv size='0.5' />
           <Column>
-            <Select
-              closeMenuOnSelect
-              data-testid={namespace + idx + '-type'}
-              error={getErrorFor('type')}
-              id={namespace + idx + '-type'}
-              key={namespace + idx + '-type-' + _type}
-              label={t('label:type')}
-              menuPortalTarget={document.body}
-              onChange={(e: any) => setType(e.value, index)}
-              options={allTypeOptions}
-              required
-              value={_.find(allTypeOptions, b => b.value === _type)}
-              defaultValue={_.find(allTypeOptions, b => b.value === _type)}
-            />
+            {inEditMode
+              ? (
+                <Select
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-type'}
+                  error={_v[_namespace + '-type']?.feilmelding}
+                  id={_namespace + '-type'}
+                  key={_namespace + '-type-' + _identifikator?.type}
+                  label={t('label:type')}
+                  menuPortalTarget={document.body}
+                  onChange={(e: any) => setType(e.value, index)}
+                  options={allTypeOptions}
+                  required
+                  value={_.find(allTypeOptions, b => b.value === _identifikator?.type)}
+                  defaultValue={_.find(allTypeOptions, b => b.value === _identifikator?.type)}
+                />
+                )
+              : (
+                <FormText error={_v[_namespace + '-type']}>
+                  <FlexDiv>
+                    <Label>{t('label:type') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_identifikator?.type}
+                  </FlexDiv>
+                </FormText>
+                )}
           </Column>
           <Column>
-            <Input
-              error={getErrorFor('id')}
-              id='id'
-              key={namespace + idx + '-id-' + (index < 0 ? _newId : identifikator?.id)}
-              label={t('label:inst-id')}
-              namespace={namespace + idx}
-              onChanged={(value: string) => setId(value, index)}
-              required
-              value={index < 0 ? _newId : identifikator?.id}
-            />
+            {inEditMode
+              ? (
+                <Input
+                  error={_v[_namespace + '-id']?.feilmelding}
+                  id='id'
+                  key={_namespace + '-id-' + _identifikator?.id}
+                  label={t('label:inst-id')}
+                  namespace={_namespace}
+                  onChanged={(value: string) => setId(value, index)}
+                  required
+                  value={_identifikator?.id}
+                />
+                )
+              : (
+                <FormText error={_v[_namespace + '-id']}>
+                  <FlexDiv>
+                    <Label>{t('label:inst-id') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_identifikator?.id}
+                  </FlexDiv>
+                </FormText>
+                )}
           </Column>
-
-          <Column>
-            <AddRemovePanel
-              namespace={namespace + idx}
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(identifikator)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(identifikator)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          <AlignEndColumn>
+            <AddRemovePanel2<ArbeidsgiverIdentifikator>
+              item={identifikator}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
@@ -185,47 +245,41 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   const hasError = validation[namespace]?.feilmelding
 
   return (
-    <div>
-      <Heading size='small'>
-        {t('label:institusjonens-id')}
-      </Heading>
-      <VerticalSeparatorDiv />
+    <>
       {_.isEmpty(identifikatorer)
         ? (
-          <BodyLong>
-            {t('message:warning-no-ids')}
-          </BodyLong>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-ids')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
         : identifikatorer?.map(renderRow)}
-      <VerticalSeparatorDiv />
       {hasError && (
         <>
           <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
             {hasError}
           </div>
-
           <VerticalSeparatorDiv />
         </>
       )}
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                data-testid={namespace + '-new'}
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedHorizontallyDiv>
+            <Button
+              variant='tertiary'
+              data-testid={namespace + '-new'}
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
+            </Button>
+          </PaddedHorizontallyDiv>
           )}
-    </div>
+    </>
   )
 }
 

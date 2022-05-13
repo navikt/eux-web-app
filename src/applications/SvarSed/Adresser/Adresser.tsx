@@ -83,9 +83,10 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditAdresse(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -113,8 +114,7 @@ const Adresser: React.FC<MainFormProps> = ({
       })
     if (valid) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAdresse))
-      dispatch(resetValidation(namespace + getIdx(_editIndex)))
-      onCloseEdit()
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -189,7 +189,7 @@ const Adresser: React.FC<MainFormProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={onCloseEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
           </AlignEndColumn>
         </AlignStartRow>

@@ -1,12 +1,11 @@
+import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import moment from 'moment'
-import { getOrgnr } from 'utils/arbeidsperioder'
 import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationArbeidsgiverProps {
-  arbeidsgiver: PeriodeMedForsikring
+export interface ValidationPeriodeMedForsikringProps {
+  periodeMedForsikring: PeriodeMedForsikring | undefined
   includeAddress: boolean
 }
 
@@ -85,74 +84,50 @@ export const validateArbeidsperioderSøk = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateArbeidsgiver = (
+export const validatePeriodeMedForsikring = (
   v: Validation,
   namespace: string,
   {
-    arbeidsgiver,
+    periodeMedForsikring,
     includeAddress
-  }: ValidationArbeidsgiverProps
+  }: ValidationPeriodeMedForsikringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: arbeidsgiver.arbeidsgiver?.navn,
-    id: namespace + '-navn',
+    needle: periodeMedForsikring?.arbeidsgiver?.navn,
+    id: namespace + '-arbeidsgiver-navn',
     message: 'validation:noNavn'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: getOrgnr(arbeidsgiver, 'organisasjonsnummer'),
-    id: namespace + '-orgnr',
+    needle: periodeMedForsikring?.arbeidsgiver?.identifikatorer,
+    id: namespace + '-arbeidsgiver-identifikatorer',
     message: 'validation:noOrgnr'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: arbeidsgiver.startdato,
+    needle: periodeMedForsikring?.startdato,
     id: namespace + '-startdato',
     message: 'validation:noDate'
   }))
 
   hasErrors.push(checkIfNotDate(v, {
-    needle: arbeidsgiver.startdato,
+    needle: periodeMedForsikring?.startdato,
     id: namespace + '-startdato',
     message: 'validation:invalidDate'
   }))
 
   hasErrors.push(checkIfNotDate(v, {
-    needle: arbeidsgiver.sluttdato,
+    needle: periodeMedForsikring?.sluttdato,
     id: namespace + '-sluttdato',
     message: 'validation:invalidDate'
   }))
 
-  if (includeAddress && (
-    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.gate) ||
-    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.postnummer) ||
-    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.by) ||
-    !_.isEmpty((arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.land)
-  )) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.gate,
-      id: namespace + '-gate',
-      message: 'validation:noAddressStreet'
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.postnummer,
-      id: namespace + '-postnummer',
-      message: 'validation:noAddressPostnummer'
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.by,
-      id: namespace + '-by',
-      message: 'validation:noAddressCity'
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (arbeidsgiver as PeriodeMedForsikring).arbeidsgiver.adresse?.land,
-      id: namespace + '-land',
-      message: 'validation:noAddressCountry'
+  if (includeAddress) {
+    hasErrors.push(validateAdresse(v, namespace + '-arbeidsgiver-adresse', {
+      adresse: periodeMedForsikring?.arbeidsgiver.adresse,
+      checkAdresseType: false
     }))
   }
   return hasErrors.find(value => value) !== undefined

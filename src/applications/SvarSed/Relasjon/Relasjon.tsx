@@ -205,9 +205,10 @@ const Relasjon: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-borPaaInstitusjon'))
   }
 
-  const onCloseEdit = () => {
+  const onCloseEdit = (namespace: string) => {
     _setEditBarnetilhoerighet(undefined)
     _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
@@ -235,8 +236,7 @@ const Relasjon: React.FC<MainFormProps> = ({
       })
     if (valid) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editBarnetilhoerighet))
-      dispatch(resetValidation(namespace + getIdx(_editIndex)))
-      onCloseEdit()
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -454,7 +454,7 @@ const Relasjon: React.FC<MainFormProps> = ({
               onCancelNew={onCloseNew}
               onStartEdit={onStartEdit}
               onConfirmEdit={onSaveEdit}
-              onCancelEdit={onCloseEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
           </AlignEndColumn>
         </AlignCenterRow>

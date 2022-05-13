@@ -14,7 +14,6 @@ export interface ArbeidsperioderListProps {
   editable?: Editable
   fnr: string | undefined
   namespace: string
-  personFnr?: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
@@ -27,7 +26,6 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
   editable = 'no',
   fnr,
   namespace,
-  personFnr,
   onArbeidsgiverSelect,
   onArbeidsgiverEdit = () => {},
   onArbeidsgiverDelete = () => {},
@@ -59,15 +57,14 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
             const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
             return (
               <ArbeidsperioderBox
-                arbeidsgiver={arbeidsgiverAsPeriodeMedForsikring}
+                periodeMedForsikring={arbeidsgiverAsPeriodeMedForsikring}
                 editable={editable}
                 selected={selected}
                 key={arbeidsperiode.arbeidsgiversOrgnr + '-' + arbeidsperiode.fraDato + '-' + arbeidsperiode.tilDato}
-                onArbeidsgiverSelect={onArbeidsgiverSelect}
-                onArbeidsgiverDelete={onArbeidsgiverDelete}
-                onArbeidsgiverEdit={onArbeidsgiverEdit}
+                onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+                onPeriodeMedForsikringDelete={onArbeidsgiverDelete}
+                onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
                 namespace={namespace}
-                personFnr={personFnr}
               />
             )
           }

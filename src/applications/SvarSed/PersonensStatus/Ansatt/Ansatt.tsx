@@ -119,17 +119,21 @@ const Ansatt: React.FC<MainFormProps> = ({
     _setEditIndex(index)
   }
 
-  const onSaveEdit = () => {
+  const onSaveEdit = (editPeriode ?: Periode, editIndex ?: number) => {
+    // if editPeriode is not null, it comes from arbeidsgiver; if not, from existing typed periode
+    const __editPeriode = !_.isUndefined(editPeriode) ? editPeriode : _editPeriode
+    const __editIndex = !_.isUndefined(editIndex) ? editIndex : _editIndex
+
     const [valid, newValidation] = performValidation<ValidationAnsattPeriodeProps>(
       validation, namespace, validateAnsattPeriode, {
-        periode: _editPeriode,
+        periode: __editPeriode,
         perioder: perioderSomAnsatt,
-        index: _editIndex,
+        index: __editIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
-      onCloseEdit(namespace + getIdx(_editIndex))
+      dispatch(updateReplySed(`${target}[${__editIndex}]`, __editPeriode))
+      onCloseEdit(namespace + getIdx(__editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -146,7 +150,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = (newPeriode?: Periode) => {
-    // if newPeriode is not null, it comes from arbeidsgiver; if not, fronm newly typed periode
+    // if newPeriode is not null, it comes from arbeidsgiver; if not, from newly typed periode
 
     const __newPeriode = !_.isUndefined(newPeriode) ? newPeriode : _newPeriode
     const valid: boolean = _performValidation({
@@ -171,14 +175,10 @@ const Ansatt: React.FC<MainFormProps> = ({
   }
 
   const onRemoveFromArbeidsgiver = (deletedArbeidsgiver: PeriodeMedForsikring) => {
-    const newPerioder: Array<Periode> = _.reject(perioderSomAnsatt,
-      (p: Periode) => (p.startdato === deletedArbeidsgiver.startdato && p.sluttdato === deletedArbeidsgiver.sluttdato)
-    )
-    dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
+    onRemove(deletedArbeidsgiver)
   }
 
-  const onAddFromArbeidsgiverNew = (selectedArbeidsgiver: PeriodeMedForsikring) => {
+  const onAddNewFromArbeidsgiver = (selectedArbeidsgiver: PeriodeMedForsikring) => {
     const newPeriode = selectedArbeidsgiver.sluttdato
       ? {
           startdato: selectedArbeidsgiver.startdato,
@@ -193,11 +193,12 @@ const Ansatt: React.FC<MainFormProps> = ({
 
   const onArbeidsgiverSelect = (arbeidsgiver: PeriodeMedForsikring, checked: boolean) => {
     if (checked) {
-      onAddFromArbeidsgiverNew(arbeidsgiver)
+      onAddNewFromArbeidsgiver(arbeidsgiver)
     } else {
       onRemoveFromArbeidsgiver(arbeidsgiver)
     }
   }
+
   const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
     // if selected, let's find the same period.
     let selectedIndex: number | undefined
@@ -205,23 +206,17 @@ const Ansatt: React.FC<MainFormProps> = ({
       selectedIndex = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
     }
 
-    // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
-    // it is stored in __type, as the __index is already busy with the one above
-    const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
-
     if (selected && selectedIndex !== undefined && selectedIndex >= 0) {
-      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
-      if (!newPerioder) {
-        newPerioder = []
-      }
-      newPerioder[selectedIndex!] = {
+      onSaveEdit({
         startdato: newArbeidsgiver.startdato,
         sluttdato: newArbeidsgiver.sluttdato,
         aapenPeriodeType: newArbeidsgiver.aapenPeriodeType
-      }
-      dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.arbeidsgiver.fromAA.edit')
+      }, selectedIndex)
     }
+
+    // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
+    // it is stored in __type, as the __index is already busy with the one above
+    const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
 
     const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
     newArbeidsperioder[changedArbeidsgiverIndex].fraDato = newArbeidsgiver.startdato
@@ -240,7 +235,6 @@ const Ansatt: React.FC<MainFormProps> = ({
             <Label>{t('label:' + item.type)}</Label>
           </PaddedHorizontallyDiv>
         )}
-
         {renderPlanItem(item)}
         <VerticalSeparatorDiv />
       </div>
@@ -264,13 +258,12 @@ const Ansatt: React.FC<MainFormProps> = ({
     return (
       <Column>
         <ArbeidsperioderBox
-          arbeidsgiver={a}
+          periodeMedForsikring={a}
           editable='only_period'
-          newArbeidsgiver={false}
           includeAddress={includeAddress}
           selected={!_.isNil(index) && index >= 0}
-          onArbeidsgiverSelect={onArbeidsgiverSelect}
-          onArbeidsgiverEdit={onArbeidsgiverEdit}
+          onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+          onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
           namespace={namespace}
         />
       </Column>
