@@ -142,8 +142,8 @@ export const checkIfNotGB = (v: Validation, {
   }
   return false
 }
-export const hasNamespace = (v: Validation, namespace: string): boolean =>
-  _.some(v, (value, key) => key.startsWith(namespace))
+export const hasNamespaceWithErrors = (v: Validation, namespace: string): boolean =>
+  _.some(v, (value, key) => (key.startsWith(namespace) && v[key]?.feilmelding !== 'ok'))
 
 export const filterAllWithNamespace = (v: Validation, namespace: string): Validation =>
   _.omitBy(v, (value, key) => key.startsWith(namespace)) as Validation

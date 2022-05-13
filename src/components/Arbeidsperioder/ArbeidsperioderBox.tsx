@@ -62,6 +62,8 @@ export interface ArbeidsgiverBoxProps {
   onPeriodeMedForsikringNewClose ?: () => void
   selectable?: boolean
   newMode ?: boolean
+  editMode ?: boolean
+  allowDelete ?: boolean
   style ?: string
 }
 
@@ -78,6 +80,8 @@ const ArbeidsperioderBox = ({
   onPeriodeMedForsikringNewClose,
   selectable = true,
   newMode = false,
+  editMode = false,
+  allowDelete = false,
   style
 }: ArbeidsgiverBoxProps): JSX.Element => {
   const { t } = useTranslation()
@@ -177,12 +181,12 @@ const ArbeidsperioderBox = ({
     }
   }
 
-  const _periodeMedForsikring: PeriodeMedForsikring | null | undefined = (_inEditMode || newMode) ? _editPeriodeMedForsikring : periodeMedForsikring
+  const _periodeMedForsikring: PeriodeMedForsikring | null | undefined = (_inEditMode || newMode || editMode) ? _editPeriodeMedForsikring : periodeMedForsikring
   const selected: boolean = !_.isNil(_periodeMedForsikring?.__index) && _periodeMedForsikring!.__index >= 0
 
   const addremove = (
     <PileEndDiv>
-      {!(_inEditMode || newMode) && selectable && (
+      {!(_inEditMode || newMode || editMode) && selectable && (
         <Checkbox
           checked={selected}
           onChange={onSelectCheckboxClicked}
@@ -193,8 +197,8 @@ const ArbeidsperioderBox = ({
         <AddRemovePanel2
           item={periodeMedForsikring}
           index={newMode ? -1 : 0}
-          allowDelete={false}
-          inEditMode={_inEditMode}
+          allowDelete={allowDelete}
+          inEditMode={_inEditMode || editMode}
           onStartEdit={onStartEdit}
           onConfirmEdit={onSaveEdit}
           onAddNew={newMode ? onAddNew : () => {}}
@@ -210,7 +214,7 @@ const ArbeidsperioderBox = ({
     <div>
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel border className={classNames(style)}>
-        {(_inEditMode || newMode)
+        {(_inEditMode || newMode || editMode) && editable !== 'no'
           ? (
             <PaddedDiv>
               <AlignStartRow>
@@ -251,7 +255,7 @@ const ArbeidsperioderBox = ({
         <VerticalSeparatorDiv size='0.3' />
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv size='0.3' />
-        {(_inEditMode || newMode) && editable === 'full'
+        {(_inEditMode || newMode || editMode) && editable === 'full'
           ? (
             <>
               <PaddedDiv>

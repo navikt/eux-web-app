@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
-import { hasNamespace } from 'utils/validation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateIdentifikator, ValidationIdentifikatorProps } from './validation'
 
 export interface IdentifikatorProps {
@@ -165,7 +165,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
         key={getId(identifikator)}
         className={classNames({
           new: index < 0,
-          error: hasNamespace(_v, _namespace)
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <AlignStartRow>

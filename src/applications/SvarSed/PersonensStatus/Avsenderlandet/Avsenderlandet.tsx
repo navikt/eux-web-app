@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
-import { hasNamespace } from 'utils/validation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateAvsenderlandetPeriode, ValidationAvsenderlandetProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
@@ -140,7 +140,7 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: hasNamespace(_v, _namespace)
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />

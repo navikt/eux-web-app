@@ -3,18 +3,17 @@ import {
   ForsikringPeriode,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring, PeriodeUtenForsikring
+  PeriodeMedForsikring,
+  PeriodeUtenForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
-import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty } from 'utils/validation'
+import { getNSIdx } from 'utils/namespace'
+import { checkIfNotEmpty } from 'utils/validation'
 import { validateInntektOgTimer } from './InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
-  periode: ForsikringPeriode
-  type: string | undefined
-  index?: number
+  periode: ForsikringPeriode | undefined
+  nsIndex?: string
   personName?: string
 }
 
@@ -34,56 +33,53 @@ export const validateForsikringPeriode = (
   namespace: string,
   {
     periode,
-    type,
-    index,
+    nsIndex,
     personName
   }: ValidationForsikringPeriodeProps
 ): boolean => {
-  const idx = getIdx(index)
   const hasErrors: Array<boolean> = []
 
-  if (_.isNil(index) && _.isEmpty(type)) {
-    hasErrors.push(addError(v, {
-      id: namespace + '-type',
-      message: 'validation:noType',
-      personName
-    }))
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periode?.__type,
+    id: namespace + (nsIndex ?? '') + '-type',
+    message: 'validation:noType',
+    personName
+  }))
 
-  hasErrors.push(validatePeriode(v, namespace + idx, {
+  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? ''), {
     periode,
     personName
   }))
 
-  if (type === 'perioderAnnenForsikring') {
+  if (periode?.__type === 'perioderAnnenForsikring') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode,
-      id: namespace + idx + '-annenTypeForsikringsperiode',
+      id: namespace + (nsIndex ?? '') + '-annenTypeForsikringsperiode',
       message: 'validation:noAnnenTypeForsikringsperiode',
       personName
     }))
   }
 
-  if (type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-    .indexOf(type) >= 0) {
+  if (periode?.__type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
+    .indexOf(periode?.__type) >= 0) {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (periode as PeriodeMedForsikring)?.arbeidsgiver?.navn,
-      id: namespace + idx + '-arbeidsgiver-navn',
+      id: namespace + (nsIndex ?? '') + '-arbeidsgiver-navn',
       message: 'validation:noInstitusjonensNavn',
       personName
     }))
     /*  Id is not mandatory */
   }
 
-  if (type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(type) >= 0) {
-    hasErrors.push(validateInntektOgTimer(v, namespace + idx + '-inntektOgTimer', {
+  if (periode?.__type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0) {
+    hasErrors.push(validateInntektOgTimer(v, namespace + (nsIndex ?? '') + '-inntektOgTimer', {
       inntektOgTimer: (periode as PeriodeUtenForsikring)?.inntektOgTimer,
       personName
     }))
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (periode as PeriodeUtenForsikring)?.inntektOgTimerInfo,
-      id: namespace + idx + '-inntektOgTimerInfo',
+      id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
       message: 'validation:noInntektInfo',
       personName
     }))
@@ -102,10 +98,13 @@ export const validateForsikringPerioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode, index: number) => {
-    hasErrors.push(validateForsikringPeriode(validation, namespace + '[' + type + ']', {
+    if (!Object.prototype.hasOwnProperty.call(periode as ForsikringPeriode, '__type')) {
+      periode.__type = type
+      periode.__index = index
+    }
+    hasErrors.push(validateForsikringPeriode(validation, namespace, {
       periode,
-      type,
-      index,
+      nsIndex: getNSIdx(type, index),
       personName
     }))
   })

@@ -66,9 +66,12 @@ export interface Periode {
   startdato: string
   sluttdato?: string
   aapenPeriodeType?: AapenPeriodeType
-  // internal use, for periode labeling
+
+  // internal use, for periode labeling, reference and visual
+  // remove it before sync with ReplySed / PDU1
   __type ?: any
   __index ?: number
+  __visible ?: boolean
 }
 
 export interface PensjonPeriode {

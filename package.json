@@ -26,7 +26,7 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.17.1",
+    "@navikt/ds-css": "^0.17.2",
     "@navikt/ds-icons": "^0.8.12",
     "@navikt/ds-react": "^0.18.6",
     "@navikt/eessi-kodeverk": "^2.0.0",
@@ -40,6 +40,7 @@
     "@navikt/landvelger": "^3.0.5",
     "@navikt/paginering": "^3.0.1",
     "@navikt/tabell": "^3.5.0",
+    "@navikt/tooltip": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/browser": "^6.19.7",
     "amplitude-js": "^8.18.2",
@@ -48,7 +49,7 @@
     "core-js": "^3.22.5",
     "eux-schema": "^0.4.0",
     "file-saver": "^2.0.5",
-    "i18next": "^21.8.1",
+    "i18next": "^21.8.2",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.21",

@@ -84,10 +84,10 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     dispatch(resetValidation(namespace + getNSIdx(oldType, index) + '-type'))
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-' + whatChanged)
+      _resetValidation(namespace)
       return
     }
     _setEditPeriode(periode)
@@ -171,12 +171,10 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     })
     if (!!_newPeriode && valid) {
       const type = _newPeriode.__type
-
-      let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(person, _newPeriode.__type!))
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(person, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-
       delete _newPeriode.__type
       delete _newPeriode.__index
       newPerioder.push(_newPeriode!)
@@ -240,7 +238,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
                     sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
-                  setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_periode}
                 />
                 <Column />
@@ -296,6 +294,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   return (
     <>
+      <VerticalSeparatorDiv />
       {!_.isEmpty(_allPeriods) && (
         <>
           <PaddedHorizontallyDiv>

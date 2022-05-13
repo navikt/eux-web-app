@@ -5,7 +5,7 @@ import moment from 'moment'
 import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeMedForsikringProps {
-  periodeMedForsikring: PeriodeMedForsikring | undefined
+  periodeMedForsikring: PeriodeMedForsikring | null | undefined
   includeAddress: boolean
 }
 

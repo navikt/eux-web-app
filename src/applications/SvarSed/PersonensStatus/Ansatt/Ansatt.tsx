@@ -34,7 +34,7 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { periodeSort } from 'utils/sort'
-import { hasNamespace } from 'utils/validation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateAnsattPeriode, ValidationAnsattPeriodeProps } from './validation'
 
 interface AnsattSelector extends MainFormSelector {
@@ -94,7 +94,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       return
     }
     _setEditPeriode(periode)
-    if (hasNamespace(validation, namespace + getIdx(index))) {
+    if (hasNamespaceWithErrors(validation, namespace + getIdx(index))) {
       dispatch(resetValidation(namespace + getIdx(index)))
     }
   }
@@ -287,7 +287,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         id={'repeatablerow-' + _namespace}
         className={classNames({
           new: index < 0,
-          error: hasNamespace(_v, _namespace)
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
