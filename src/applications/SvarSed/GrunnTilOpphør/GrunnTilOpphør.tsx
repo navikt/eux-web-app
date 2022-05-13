@@ -1,17 +1,20 @@
 import { Delete } from '@navikt/ds-icons'
-import { resetValidation } from 'actions/validation'
+import { Button } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateGrunnTilOpphor, ValidateGrunnTilOpphørProps } from 'applications/SvarSed/GrunnTilOpphør/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
+import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { Button, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Option } from 'declarations/app.d'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -20,6 +23,7 @@ const mapState = (state: State): MainFormSelector => ({
 const GrunnTilOpphør: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
@@ -31,6 +35,16 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidateGrunnTilOpphørProps>(
+      validation, namespace, validateGrunnTilOpphor, {
+        grunntilopphor,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const årsakOptions: Options = [
     { label: t('el:option-grunntilopphør-oppsagt_av_arbeidsgiver'), value: '01' },
@@ -69,10 +83,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small'>
-        {t('label:grunn-til-opphør')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column flex='3'>
           <Select

@@ -259,7 +259,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       {_.isEmpty(statsborgerskaper)
         ? (
           <PaddedHorizontallyDiv>

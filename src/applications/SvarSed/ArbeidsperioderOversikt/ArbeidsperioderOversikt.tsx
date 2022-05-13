@@ -18,12 +18,7 @@ import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import {
-  Periode,
-  PeriodeMedForsikring,
-  PeriodeSort, PeriodeView,
-  ReplySed
-} from 'declarations/sed'
+import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView, ReplySed } from 'declarations/sed'
 import {
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
@@ -31,6 +26,7 @@ import {
   UpdateReplySedPayload,
   Validation
 } from 'declarations/types'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -41,7 +37,12 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { periodeSort } from 'utils/sort'
-import { validatePeriodeMedForsikring, ValidationPeriodeMedForsikringProps } from './validation'
+import {
+  validatePeriodeMedForsikring,
+  validatePerioderMedForsikring,
+  ValidatePerioderMedForsikringProps,
+  ValidationPeriodeMedForsikringProps
+} from './validation'
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -82,7 +83,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-${personID}-arbeidsforhold`
+  const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const includeAddress = true
@@ -90,15 +91,23 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   const getId = (p: PlanItem<PeriodeMedForsikring> | null | undefined) => p ? p.type + '-' + (p.item.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') : 'new'
 
   const [_plan, _setPlan] = useState<Array<PlanItem<PeriodeMedForsikring>> | undefined>(undefined)
-
   const [_newForm, _setNewForm] = useState<boolean>(false)
-
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
 
   const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
   }
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidatePerioderMedForsikringProps>(
+      validation, namespace, validatePerioderMedForsikring, {
+        perioderMedForsikring: perioder,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   useEffect(() => {
     const spikedPeriods: Array<PeriodeMedForsikring> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
@@ -148,13 +157,13 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     if (_.isNil(newPerioderMedforsikring)) {
       newPerioderMedforsikring = []
     }
-    if (!!newPeriodeMedForsikring) {
+    if (newPeriodeMedForsikring) {
       delete newPeriodeMedForsikring.__index
       delete newPeriodeMedForsikring.__type
       newPerioderMedforsikring.push(newPeriodeMedForsikring)
       newPerioderMedforsikring = newPerioderMedforsikring.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioderMedforsikring))
-      standardLogger('svarsed.editor.periode.add', {type: 'perioderAnsattMedForsikring'})
+      standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
       onCloseNew()
     }
   }
@@ -204,13 +213,13 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
 
   const renderPlanItem = (item: PlanItem<PeriodeMedForsikring> | null) => {
     if (item === null) {
-      return(
+      return (
         <Column>
           <ArbeidsperioderBox
             periodeMedForsikring={null}
             editable='full'
             selectable={false}
-            newMode={true}
+            newMode
             style='new'
             includeAddress={includeAddress}
             onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
@@ -222,7 +231,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
       )
     }
     if (item.type === 'periode') {
-      item.item.extra = { fraSed: 'ja'}
+      item.item.extra = { fraSed: 'ja' }
       return (
         <Column>
           <ArbeidsperioderBox
@@ -237,7 +246,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
           />
         </Column>
       )
-
     }
     if (item.type === 'arbeidsperiode') {
       const index: number = item.item ? item.item.__index! : -1
@@ -259,15 +267,15 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
         return (
           <Column>
             <ArbeidsperioderBox
-          periodeMedForsikring={item.item}
-          editable='full'
-          selectable={false}
-          style='original'
-          includeAddress={includeAddress}
-          onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-          onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
-          namespace={namespace}
-        />
+              periodeMedForsikring={item.item}
+              editable='full'
+              selectable={false}
+              style='original'
+              includeAddress={includeAddress}
+              onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
+              onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+              namespace={namespace}
+            />
           </Column>
         )
       }

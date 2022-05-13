@@ -203,7 +203,7 @@ const Ansatt: React.FC<MainFormProps> = ({
 
   const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring) => {
     // if selected, let's find the same period.
-    let selectedIndex: number | undefined = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
+    const selectedIndex: number | undefined = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
 
     if (selectedIndex !== undefined && selectedIndex >= 0) {
       onSaveEdit({
@@ -251,7 +251,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       if (_view === 'all') {
         return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
       }
-        // show the arbeidsperiode as periode, but only if it is selected (i.e., there is a real period associated)
+      // show the arbeidsperiode as periode, but only if it is selected (i.e., there is a real period associated)
       const index: number = item.item ? item.item.__index! : -1
       if (!_.isNil(index) && index >= 0) {
         return renderRowPeriode(item.item as Periode)
@@ -376,11 +376,11 @@ const Ansatt: React.FC<MainFormProps> = ({
             <PaddedHorizontallyDiv>
               <FlexCenterSpacedDiv>
                 <Checkbox
-                checked={_sort === 'group'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-              >
-                {t('label:group-by-type')}
-              </Checkbox>
+                  checked={_sort === 'group'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+                >
+                  {t('label:group-by-type')}
+                </Checkbox>
                 <Checkbox
                   checked={_view === 'periods'}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}

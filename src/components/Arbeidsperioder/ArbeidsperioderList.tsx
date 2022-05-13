@@ -49,7 +49,6 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
         {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2' />}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsperiode: ArbeidsperiodeFraAA) => {
-
             const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
             const orgnr = getOrgnr(arbeidsgiverAsPeriodeMedForsikring, 'organisasjonsnummer')
 

@@ -225,7 +225,7 @@ const ArbeidsperioderBox = ({
                   value={_periodeMedForsikring}
                 />
               </AlignStartRow>
-              <Column/>
+              <Column />
             </PaddedDiv>
             )
           : (
@@ -314,7 +314,7 @@ const ArbeidsperioderBox = ({
                       </BodyLong>
                       )
                     : (
-                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver?.adresse} padding='0' seeType/>
+                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver?.adresse} padding='0' seeType />
                       )}
                 </PileDiv>
               </FlexDiv>

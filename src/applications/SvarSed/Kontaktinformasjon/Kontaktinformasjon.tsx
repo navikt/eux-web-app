@@ -420,7 +420,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       {_.isEmpty(telefoner)
         ? (
           <PaddedHorizontallyDiv>

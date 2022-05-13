@@ -290,8 +290,8 @@ export interface ProsedyreVedUenighet {
 
 export interface Utbetaling {
   utbetalingType: string// typebeløp
-  loennTilDato: string // mottattdato
-  feriedagerTilGode: string // antallDager
+  loennTilDato?: string // mottattdato
+  feriedagerTilGode?: string // antallDager
   valuta: string
   beloep: string
 }

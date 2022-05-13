@@ -1,12 +1,18 @@
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import {
+  validateReferanseperiode,
+  ValidationReferanseperiodeProps
+} from 'applications/SvarSed/Referanseperiode/validation'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -15,6 +21,7 @@ const mapState = (state: State): MainFormSelector => ({
 const Referanseperiode: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
@@ -23,6 +30,16 @@ const Referanseperiode: React.FC<MainFormProps> = ({
   const target = 'anmodningsperiode'
   const anmodningsperiode: Periode = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationReferanseperiodeProps>(
+      validation, namespace, validateReferanseperiode, {
+        anmodningsperiode,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const setPeriode = (periode: Periode, id: string) => {
     dispatch(updateReplySed(`${target}`, periode))

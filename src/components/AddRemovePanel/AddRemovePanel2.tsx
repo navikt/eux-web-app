@@ -150,15 +150,15 @@ const AddRemovePanel2 = <T extends any>({
       {allowDelete && (
         <>
           <HorizontalSeparatorDiv />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => setInDeleteMode(true)}
-        >
-          <Delete />
-          {labels?.remove ?? t('el:button-remove')}
-        </Button>
-          </>
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => setInDeleteMode(true)}
+          >
+            <Delete />
+            {labels?.remove ?? t('el:button-remove')}
+          </Button>
+        </>
       )}
     </InlineFlexDiv>
   )

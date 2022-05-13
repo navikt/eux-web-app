@@ -37,7 +37,7 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = `bruker.statsborgerskap`
+  const target = 'bruker.statsborgerskap'
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-statsborgerskap`
 

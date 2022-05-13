@@ -5,12 +5,19 @@ import { getIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
-  utbetaling: Utbetaling
+  utbetaling: Utbetaling | undefined
   index?: number
+  personName ?: string
 }
 
 export interface ValidationUtbetalingerProps {
   utbetalinger: Array<Utbetaling> | undefined
+  personName ?: string
+}
+
+export interface ValidateSisteAnsettelseInfoProps {
+  sisteAnsettelseInfo: SisteAnsettelseInfo |undefined
+  personName ?: string
 }
 
 export const validateUtbetaling = (
@@ -18,7 +25,8 @@ export const validateUtbetaling = (
   namespace: string,
   {
     utbetaling,
-    index
+    index,
+    personName
   }: ValidationUtbetalingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -27,7 +35,8 @@ export const validateUtbetaling = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: utbetaling?.utbetalingType,
     id: namespace + idx + '-utbetalingType',
-    message: 'validation:noUtbetalingType'
+    message: 'validation:noUtbetalingType',
+    personName
   }))
 
   if (!_.isEmpty(utbetaling?.utbetalingType?.trim())) {
@@ -35,7 +44,8 @@ export const validateUtbetaling = (
       _.isEmpty(utbetaling?.loennTilDato?.trim())) {
       hasErrors.push(addError(v, {
         id: namespace + idx + '-loennTilDato',
-        message: 'validation:noLoennTilDato'
+        message: 'validation:noLoennTilDato',
+        personName
       }))
     }
 
@@ -43,7 +53,8 @@ export const validateUtbetaling = (
       _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
       hasErrors.push(addError(v, {
         id: namespace + idx + '-feriedagerTilGode',
-        message: 'validation:noFeriedagerTilGode'
+        message: 'validation:noFeriedagerTilGode',
+        personName
       }))
     }
   }
@@ -51,19 +62,22 @@ export const validateUtbetaling = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: utbetaling?.beloep,
     id: namespace + '-beloep',
-    message: 'validation:noBeløp'
+    message: 'validation:noBeløp',
+    personName
   }))
 
   hasErrors.push(checkIfNotNumber(v, {
     needle: utbetaling?.beloep,
     id: namespace + '-beloep',
-    message: 'validation:invalidBeløp'
+    message: 'validation:invalidBeløp',
+    personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: utbetaling?.valuta,
     id: namespace + '-valuta',
-    message: 'validation:noValuta'
+    message: 'validation:noValuta',
+    personName
   }))
 
   return hasErrors.find(value => value) !== undefined
@@ -72,33 +86,35 @@ export const validateUtbetaling = (
 export const validateUtbetalinger = (
   validation: Validation,
   namespace: string,
-  { utbetalinger }: ValidationUtbetalingerProps
+  {
+    utbetalinger,
+    personName
+  }: ValidationUtbetalingerProps
 ): boolean => {
   let hasErrors: boolean = false
   utbetalinger?.forEach((utbetaling: Utbetaling, index: number) => {
     const _errors: boolean = validateUtbetaling(validation, namespace, {
       utbetaling,
-      index
+      index,
+      personName
     })
     hasErrors = hasErrors || _errors
   })
   return hasErrors
 }
 
-interface ValidateSisteAnsettelseInfoProps {
-  sisteansettelseinfo: SisteAnsettelseInfo |undefined
-}
-
 export const validateSisteAnsettelseInfo = (
   v: Validation,
   namespace: string,
   {
-    sisteansettelseinfo
+    sisteAnsettelseInfo,
+    personName
   }: ValidateSisteAnsettelseInfoProps
 ) => {
   const hasErrors: Array<boolean> = []
   hasErrors.push(validateUtbetalinger(v, namespace, {
-    utbetalinger: sisteansettelseinfo?.utbetalinger
+    utbetalinger: sisteAnsettelseInfo?.utbetalinger,
+    personName
   }))
   return hasErrors.find(value => value) !== undefined
 }

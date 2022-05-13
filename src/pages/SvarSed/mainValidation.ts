@@ -225,7 +225,7 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
         }))
       }
       hasErrors.push(validateSisteAnsettelseInfo(v, `svarsed-${personID}-sisteAnsettelseInfo`, {
-        sisteansettelseinfo: (replySed as U002Sed)?.sisteAnsettelseInfo
+        sisteAnsettelseInfo: (replySed as U002Sed)?.sisteAnsettelseInfo
       }))
     }
 
@@ -237,7 +237,7 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
 
     if (replySed.sedType === 'U017') {
       hasErrors.push(validateRettTilYtelse(v, `svarsed-${personID}-retttilytelser`, {
-        rettTilTytelse: (replySed as U017Sed)?.rettTilYtelse
+        rettTilYtelse: (replySed as U017Sed)?.rettTilYtelse
       }))
     }
   }

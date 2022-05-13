@@ -1,14 +1,17 @@
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { Radio, RadioGroup } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { validateRettTilYtelse, ValidationRettTilYtelseProps } from 'applications/SvarSed/RettTilYtelser/validation'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -26,6 +29,15 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   const target = 'rettTilYtelse'
   const rettTilYtelse: RettTilYtelse | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-retttilytelser`
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationRettTilYtelseProps>(
+      validation, namespace, validateRettTilYtelse, {
+        rettTilYtelse
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const [_rettTilStonad, _setRettTilStonad] = useState<JaNei | undefined>(() => {
     if (!_.isEmpty(rettTilYtelse?.bekreftelsesgrunn)) {
@@ -84,10 +96,6 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small'>
-        {t('label:rett-til-ytelser')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <RadioGroup

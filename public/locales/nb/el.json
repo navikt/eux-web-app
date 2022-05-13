@@ -208,9 +208,9 @@
   "option-trygdeordning-alderspensjon": "Alderspensjon",
   "option-trygdeordning-uførhet": "Uførhet",
 
-  "option-typebeløp-1" : "Inntekt for periode etter avslutning av arbeidsforhold eller opphør i selvstendig næringsvirksomhet",
-  "option-typebeløp-2" : "Vederlag for ferie som ikke er tatt ut (årlig ferie)",
-  "option-typebeløp-3" : "Annet vederlag eller tilsvarende utbetalinger",
+  "option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet" : "Inntekt for periode etter avslutning av arbeidsforhold eller opphør i selvstendig næringsvirksomhet",
+  "option-typebeløp-vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie" : "Vederlag for ferie som ikke er tatt ut (årlig ferie)",
+  "option-typebeløp-annet_vederlag_eller_tilsvarende_utbetalinger" : "Annet vederlag eller tilsvarende utbetalinger",
 
   "option-vedtaktype-primaerkompetanseArt58": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
   "option-vedtaktype-sekundaerkompetanseArt58": "Vedtak om sekundærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
