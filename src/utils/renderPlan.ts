@@ -13,7 +13,6 @@ export interface PlanItem<T> {
 export interface RenderPlanProps<T> {
   perioder: Array<T> | undefined
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
-  addedArbeidsperioder: Array<PeriodeMedForsikring>
   sort?: 'time' | 'group'
 }
 
@@ -33,11 +32,9 @@ export interface RenderPlanProps<T> {
 const renderPlan = <T extends Periode | PeriodeMedForsikring>({
   perioder,
   arbeidsperioder,
-  addedArbeidsperioder,
   sort = 'time'
 }: RenderPlanProps<T>): Array<PlanItem<T>> => {
   const unmatchedArbeidsgiver: Array<PlanItem<T>> = []
-  const unmatchedAddedArbeidsgiver: Array<PlanItem<T>> = []
 
   // 1st step: add all existing periodes into plan
 
@@ -86,46 +83,7 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
 
   plan = plan.concat(unmatchedArbeidsgiver)
 
-  // 3nd step: same as step 2, but with addedArbeidsperioder (which are PeriodeMedForsikring),
-  // and match against existing periods and existing periodeMedForsikring.
-
-  addedArbeidsperioder?.forEach((arbeidsgiver: PeriodeMedForsikring) => {
-    const foundPlanIndex: number = _.findIndex(plan, (item: PlanItem<T>) => {
-      return item.type === 'periode'
-        ? item.item.startdato === arbeidsgiver.startdato && item.item.sluttdato === arbeidsgiver.sluttdato
-        : false // only match Periods
-    })
-    const foundPlanArbeidsgiver: boolean = _.find(plan, (item: PlanItem<T>) => {
-      return item.type === 'arbeidsperiode'
-        ? (item.item as PeriodeMedForsikring).startdato === arbeidsgiver.startdato && (item.item as PeriodeMedForsikring).sluttdato === arbeidsgiver.sluttdato
-        : false // only match PeriodeMedForsikring
-    }) !== undefined
-
-    if (foundPlanIndex >= 0) {
-      // backup the periode's index in replySed, use it to keep track of what is the real index of period in replySed
-      const periodeIndex = (plan[foundPlanIndex].item as Periode).__index
-
-      plan[foundPlanIndex] = {
-        item: {
-          ...arbeidsgiver as T,
-          __index: periodeIndex
-        },
-        type: 'addedArbeidsperiode',
-        duplicate: false
-      }
-    } else {
-      unmatchedAddedArbeidsgiver.push({
-        item: arbeidsgiver as T,
-        type: 'addedArbeidsperiode',
-        duplicate: foundPlanArbeidsgiver
-      })
-    }
-  })
-
-  plan = plan.concat(unmatchedAddedArbeidsgiver)
-
-  // 4th step: sort all by startdato
-
+  // 3rd step: sort all by startdato
   if (sort === 'time') {
     plan = plan.sort((a: PlanItem<T>, b: PlanItem<T>) =>
       moment((a.item as T)!.startdato, 'YYYY-MM-DD').isSameOrBefore(moment((b.item as T)!.startdato, 'YYYY-MM-DD')) ? -1 : 1

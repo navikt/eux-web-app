@@ -90,12 +90,8 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   const getId = (p: PlanItem<PeriodeMedForsikring> | null | undefined) => p ? p.type + '-' + (p.item.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') : 'new'
 
   const [_plan, _setPlan] = useState<Array<PlanItem<PeriodeMedForsikring>> | undefined>(undefined)
-  const [_newPeriodeMedForsikring, _setNewPeriodeMedForsikring] = useState<PeriodeMedForsikring | undefined>(undefined)
-  const [_editPeriodeMedForsikring, _setEditPeriodeMedForsikring] = useState<PeriodeMedForsikring | undefined>(undefined)
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
-  //const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeMedForsikringProps>(validatePeriodeMedForsikring, namespace)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
@@ -109,47 +105,29 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     const plan: Array<PlanItem<PeriodeMedForsikring>> = makeRenderPlan<PeriodeMedForsikring>({
       perioder: spikedPeriods,
       arbeidsperioder,
-      addedArbeidsperioder: [],
       sort: _sort
     } as RenderPlanProps<PeriodeMedForsikring>)
     _setPlan(plan)
   }, [replySed, _sort, arbeidsperioder])
 
   const onCloseEdit = (namespace: string) => {
-    _setEditPeriodeMedForsikring(undefined)
-    _setEditIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
-    _setNewPeriodeMedForsikring(undefined)
     _setNewForm(false)
-   // _resetValidation()
   }
 
-  /*const onStartEdit = (p: PeriodeMedForsikring, index: number) => {
-    // reset any validation that exists from a cancelled edited item
-    if (_editIndex !== undefined) {
-      dispatch(resetValidation(namespace + getIdx(_editIndex)))
-    }
-    _setEditPeriodeMedForsikring(p)
-    _setEditIndex(index)
-  }*/
-
-  const onSaveEdit = (editPeriodeMedForsikring ?: PeriodeMedForsikring, editIndex ?: number) => {
-    // if editPeriode is not null, it comes from arbeidsgiver; if not, from existing typed periode
-    const __editPeriodeMedForsikring = !_.isUndefined(editPeriodeMedForsikring) ? editPeriodeMedForsikring : _editPeriodeMedForsikring
-    const __editIndex = !_.isUndefined(editIndex) ? editIndex : _editIndex
-
+  const onSaveEdit = (editPeriodeMedForsikring: PeriodeMedForsikring, editIndex: number) => {
     const [valid, newValidation] = performValidation<ValidationPeriodeMedForsikringProps>(
       validation, namespace, validatePeriodeMedForsikring, {
-        periodeMedForsikring: __editPeriodeMedForsikring,
-        index: __editIndex,
+        periodeMedForsikring: editPeriodeMedForsikring,
+        index: editIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${target}[${__editIndex}]`, __editPeriodeMedForsikring))
-      onCloseEdit(namespace + getIdx(__editIndex))
+      dispatch(updateReplySed(`${target}[${editIndex}]`, editPeriodeMedForsikring))
+      onCloseEdit(namespace + getIdx(editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -166,26 +144,17 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
   }
 
   const onAddNew = (newPeriodeMedForsikring?: PeriodeMedForsikring) => {
-    // if newPeriode is not null, it comes from arbeidsgiver; if not, from newly typed periode
-
-    const __newPeriodeMedForsikring = !_.isUndefined(newPeriodeMedForsikring) ? newPeriodeMedForsikring : _newPeriodeMedForsikring
-    /*const valid: boolean = _performValidation({
-      periodeMedForsikring: __newPeriodeMedForsikring,
-      personName
-    })
-*/
-    const valid = true
-    if (!!__newPeriodeMedForsikring && valid) {
-      let newPerioderMedforsikring: Array<PeriodeMedForsikring> | undefined = _.cloneDeep(perioder)
-      if (_.isNil(newPerioderMedforsikring)) {
-        newPerioderMedforsikring = []
-      }
-      delete __newPeriodeMedForsikring.__index
-      delete __newPeriodeMedForsikring.__type
-      newPerioderMedforsikring.push(__newPeriodeMedForsikring)
+    let newPerioderMedforsikring: Array<PeriodeMedForsikring> | undefined = _.cloneDeep(perioder)
+    if (_.isNil(newPerioderMedforsikring)) {
+      newPerioderMedforsikring = []
+    }
+    if (!!newPeriodeMedForsikring) {
+      delete newPeriodeMedForsikring.__index
+      delete newPeriodeMedForsikring.__type
+      newPerioderMedforsikring.push(newPeriodeMedForsikring)
       newPerioderMedforsikring = newPerioderMedforsikring.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioderMedforsikring))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
+      standardLogger('svarsed.editor.periode.add', {type: 'perioderAnsattMedForsikring'})
       onCloseNew()
     }
   }
@@ -198,30 +167,25 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
     }
   }
 
-  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
-    // if selected, let's find the same period.
-    let selectedIndex: number | undefined
-    if (selected) {
-      selectedIndex = _.findIndex(perioder, p =>
-        p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato && p.arbeidsgiver.navn === oldArbeidsgiver.arbeidsgiver.navn)
+  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring) => {
+    if (!_.isNil(newArbeidsgiver.__index) && (newArbeidsgiver.__index) >= 0) {
+      onSaveEdit(newArbeidsgiver, newArbeidsgiver.__index)
     }
-
-    if (selected && selectedIndex !== undefined && selectedIndex >= 0) {
-      onSaveEdit(newArbeidsgiver, selectedIndex)
-    }
-
     // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
     // it is stored in __type, as the __index is already busy with the one above
+    // if it is undefined, then this ArbeidsperiodeOversikt is not paired to a arbeidsperioder?.arbeidsperioder
     const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
 
-    const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
-    newArbeidsperioder[changedArbeidsgiverIndex].fraDato = newArbeidsgiver.startdato
-    newArbeidsperioder[changedArbeidsgiverIndex].tilDato = newArbeidsgiver.sluttdato
-    newArbeidsperioder[changedArbeidsgiverIndex].arbeidsgiversNavn = newArbeidsgiver.arbeidsgiver.navn
-    dispatch(updateArbeidsperioder({
-      ...arbeidsperioder,
-      arbeidsperioder: newArbeidsperioder
-    }))
+    if (!_.isNil(changedArbeidsgiverIndex) && changedArbeidsgiverIndex >= 0) {
+      const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
+      newArbeidsperioder[changedArbeidsgiverIndex].fraDato = newArbeidsgiver.startdato
+      newArbeidsperioder[changedArbeidsgiverIndex].tilDato = newArbeidsgiver.sluttdato
+      newArbeidsperioder[changedArbeidsgiverIndex].arbeidsgiversNavn = newArbeidsgiver.arbeidsgiver.navn
+      dispatch(updateArbeidsperioder({
+        ...arbeidsperioder,
+        arbeidsperioder: newArbeidsperioder
+      }))
+    }
   }
 
   const renderPlan = (item: PlanItem<PeriodeMedForsikring>, index: number, previousItem: PlanItem<Periode | PeriodeMedForsikring> | undefined) => {
@@ -250,7 +214,7 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
             style='new'
             includeAddress={includeAddress}
             onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-            onPeriodeMedForsikringNew={() => {}}
+            onPeriodeMedForsikringNew={onAddNew}
             onPeriodeMedForsikringNewClose={onCloseNew}
             namespace={namespace}
           />
@@ -284,7 +248,6 @@ const ArbeidsperioderFC: React.FC<ArbeidsforholdProps> = ({
               periodeMedForsikring={item.item}
               editable='full'
               includeAddress={includeAddress}
-              selected={!_.isNil(index) && index >= 0}
               onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
               onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
               namespace={namespace}

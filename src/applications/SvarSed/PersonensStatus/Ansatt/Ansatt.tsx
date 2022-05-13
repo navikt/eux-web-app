@@ -81,7 +81,6 @@ const Ansatt: React.FC<MainFormProps> = ({
     const plan: Array<PlanItem<Periode>> = makeRenderPlan<Periode>({
       perioder: spikedPeriods,
       arbeidsperioder,
-      addedArbeidsperioder: [],
       sort: _sort
     } as RenderPlanProps<Periode>)
     _setPlan(plan)
@@ -202,14 +201,11 @@ const Ansatt: React.FC<MainFormProps> = ({
     }
   }
 
-  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring, selected: boolean) => {
+  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring) => {
     // if selected, let's find the same period.
-    let selectedIndex: number | undefined
-    if (selected) {
-      selectedIndex = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
-    }
+    let selectedIndex: number | undefined = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
 
-    if (selected && selectedIndex !== undefined && selectedIndex >= 0) {
+    if (selectedIndex !== undefined && selectedIndex >= 0) {
       onSaveEdit({
         startdato: newArbeidsgiver.startdato,
         sluttdato: newArbeidsgiver.sluttdato,
@@ -265,14 +261,12 @@ const Ansatt: React.FC<MainFormProps> = ({
   }
 
   const renderRowArbeidsperiode = (a: PeriodeMedForsikring) => {
-    const index: number = a ? a.__index! : -1
     return (
       <Column>
         <ArbeidsperioderBox
           periodeMedForsikring={a}
           editable='only_period'
           includeAddress={includeAddress}
-          selected={!_.isNil(index) && index >= 0}
           onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
           onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
           namespace={namespace}

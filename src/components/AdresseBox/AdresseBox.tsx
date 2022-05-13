@@ -29,7 +29,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
         alignItems: 'flex-start'
       }}
     >
-      {seeType && (
+      {seeType && !!adresse.type && (
         <>
           <Tag size='small' variant='info'>{t('label:' + adresse.type)}</Tag>
           <HorizontalSeparatorDiv size='0.5' />

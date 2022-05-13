@@ -56,11 +56,10 @@ export interface ArbeidsgiverBoxProps {
   includeAddress ?: boolean
   namespace: string
   onPeriodeMedForsikringSelect?: (a: PeriodeMedForsikring, checked: boolean) => void
-  onPeriodeMedForsikringEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
+  onPeriodeMedForsikringEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring) => void
   onPeriodeMedForsikringDelete?: (a: PeriodeMedForsikring) => void
   onPeriodeMedForsikringNew?: (a: PeriodeMedForsikring) => void
   onPeriodeMedForsikringNewClose ?: () => void
-  selected?: boolean
   selectable?: boolean
   newMode ?: boolean
   style ?: string
@@ -77,7 +76,6 @@ const ArbeidsperioderBox = ({
   onPeriodeMedForsikringEdit,
   onPeriodeMedForsikringNew,
   onPeriodeMedForsikringNewClose,
-  selected = false,
   selectable = true,
   newMode = false,
   style
@@ -147,14 +145,24 @@ const ArbeidsperioderBox = ({
       includeAddress: includeAddress!
     })
     if (!!_editPeriodeMedForsikring && valid) {
-      if (newMode && _.isFunction(onPeriodeMedForsikringNew)) {
-        onPeriodeMedForsikringNew(_editPeriodeMedForsikring)
-      }
-      if (!newMode && _.isFunction(onPeriodeMedForsikringEdit)) {
-        onPeriodeMedForsikringEdit(_editPeriodeMedForsikring, periodeMedForsikring!, selected!)
+      if (_.isFunction(onPeriodeMedForsikringEdit)) {
+        onPeriodeMedForsikringEdit(_editPeriodeMedForsikring, periodeMedForsikring!)
       }
       onCloseEdit(namespace)
     }
+  }
+
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      periodeMedForsikring: _editPeriodeMedForsikring,
+      includeAddress: includeAddress!
+    })
+    if (!!_editPeriodeMedForsikring && valid) {
+      if (newMode && _.isFunction(onPeriodeMedForsikringNew)) {
+        onPeriodeMedForsikringNew(_editPeriodeMedForsikring)
+      }
+    }
+    onCloseEdit(namespace)
   }
 
   const onRemove = () => {
@@ -170,6 +178,7 @@ const ArbeidsperioderBox = ({
   }
 
   const _periodeMedForsikring: PeriodeMedForsikring | null | undefined = (_inEditMode || newMode) ? _editPeriodeMedForsikring : periodeMedForsikring
+  const selected: boolean = !_.isNil(_periodeMedForsikring?.__index) && _periodeMedForsikring!.__index >= 0
 
   const addremove = (
     <PileEndDiv>
@@ -188,6 +197,7 @@ const ArbeidsperioderBox = ({
           inEditMode={_inEditMode}
           onStartEdit={onStartEdit}
           onConfirmEdit={onSaveEdit}
+          onAddNew={newMode ? onAddNew : () => {}}
           onCancelEdit={() => onCloseEdit(namespace)}
           onCancelNew={onPeriodeMedForsikringNewClose}
           onRemove={onRemove}
@@ -215,6 +225,7 @@ const ArbeidsperioderBox = ({
                   value={_periodeMedForsikring}
                 />
               </AlignStartRow>
+              <Column/>
             </PaddedDiv>
             )
           : (
@@ -252,7 +263,7 @@ const ArbeidsperioderBox = ({
                       id='navn'
                       label={t('label:navn')}
                       onChanged={setNavn}
-                      value={_periodeMedForsikring?.arbeidsgiver.navn}
+                      value={_periodeMedForsikring?.arbeidsgiver?.navn}
                     />
                   </Column>
                 </AlignStartRow>
@@ -263,7 +274,7 @@ const ArbeidsperioderBox = ({
                 </Heading>
               </PaddedDiv>
               <IdentifikatorFC
-                identifikatorer={_periodeMedForsikring?.arbeidsgiver.identifikatorer}
+                identifikatorer={_periodeMedForsikring?.arbeidsgiver?.identifikatorer}
                 onIdentifikatorerChanged={setIdentifikatorer}
                 namespace={namespace + '-arbeidsgiver-identifikatorer'}
                 validation={_validation}
@@ -271,7 +282,7 @@ const ArbeidsperioderBox = ({
               {includeAddress && (
                 <PaddedDiv>
                   <AdresseForm
-                    adresse={_periodeMedForsikring?.arbeidsgiver.adresse}
+                    adresse={_periodeMedForsikring?.arbeidsgiver?.adresse}
                     onAdressChanged={setAdresse}
                     namespace={namespace + '-arbeidsgiver-adresse'}
                     validation={_validation}
@@ -292,27 +303,27 @@ const ArbeidsperioderBox = ({
                 <HorizontalSeparatorDiv />
                 <PileDiv>
                   <Detail>
-                    {_periodeMedForsikring?.arbeidsgiver.navn}
+                    {_periodeMedForsikring?.arbeidsgiver?.navn}
                   </Detail>
                   <HorizontalLineSeparator />
                   <VerticalSeparatorDiv size='0.5' />
-                  {_.isEmpty(_periodeMedForsikring?.arbeidsgiver.adresse)
+                  {_.isEmpty(_periodeMedForsikring?.arbeidsgiver?.adresse)
                     ? (
                       <BodyLong>
                         {t('message:warning-unknown-address')}
                       </BodyLong>
                       )
                     : (
-                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver.adresse} padding='0' seeType/>
+                      <AdresseBox border={false} adresse={_periodeMedForsikring?.arbeidsgiver?.adresse} padding='0' seeType/>
                       )}
                 </PileDiv>
               </FlexDiv>
               <PileDiv>
-                {_.isEmpty(_periodeMedForsikring?.arbeidsgiver.identifikatorer)
+                {_.isEmpty(_periodeMedForsikring?.arbeidsgiver?.identifikatorer)
                   ? (
                     <BodyLong>{t('message:warning-no-ids')}</BodyLong>
                     )
-                  : _periodeMedForsikring?.arbeidsgiver.identifikatorer?.map((id, i) => {
+                  : _periodeMedForsikring?.arbeidsgiver?.identifikatorer?.map((id, i) => {
                     const idx = getIdx(i)
                     return (
                       <FormText key={id.type} error={_validation[namespace + idx + '-identifikatorer']}>

@@ -6,7 +6,7 @@ import { BodyLong } from '@navikt/ds-react'
 import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { arbeidsperioderFraAAToPeriodeMedForsikring } from 'utils/arbeidsperioder'
+import { arbeidsperioderFraAAToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsperioder'
 import ArbeidsperioderBox, { Editable } from './ArbeidsperioderBox'
 
 export interface ArbeidsperioderListProps {
@@ -15,7 +15,7 @@ export interface ArbeidsperioderListProps {
   fnr: string | undefined
   namespace: string
   onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring, checked: boolean) => void
+  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring) => void
   onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
   searchable?: boolean
   valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
@@ -49,17 +49,24 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
         {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2' />}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsperiode: ArbeidsperiodeFraAA) => {
-            const selected: boolean = valgteArbeidsperioder
-              ? valgteArbeidsperioder.find((item: ArbeidsperiodeFraAA) =>
-                  item.arbeidsgiversOrgnr === arbeidsperiode.arbeidsgiversOrgnr &&
-              item.fraDato === arbeidsperiode.fraDato && item.tilDato === arbeidsperiode.tilDato) !== undefined
-              : false
+
             const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
+            const orgnr = getOrgnr(arbeidsgiverAsPeriodeMedForsikring, 'organisasjonsnummer')
+
+            const index = valgteArbeidsperioder?.findIndex((item: ArbeidsperiodeFraAA) => (
+              item.arbeidsgiversOrgnr === orgnr &&
+              item.fraDato === arbeidsgiverAsPeriodeMedForsikring.startdato &&
+              item.tilDato === arbeidsperiode.tilDato
+            ))
+
+            if (!_.isNil(index) && index >= 0) {
+              arbeidsgiverAsPeriodeMedForsikring.__index = index
+            }
+
             return (
               <ArbeidsperioderBox
                 periodeMedForsikring={arbeidsgiverAsPeriodeMedForsikring}
                 editable={editable}
-                selected={selected}
                 key={arbeidsperiode.arbeidsgiversOrgnr + '-' + arbeidsperiode.fraDato + '-' + arbeidsperiode.tilDato}
                 onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
                 onPeriodeMedForsikringDelete={onArbeidsgiverDelete}
