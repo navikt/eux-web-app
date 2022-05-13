@@ -6,7 +6,7 @@ import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeMedForsikringProps {
   periodeMedForsikring: PeriodeMedForsikring | null | undefined
-  includeAddress: boolean
+  showAddress: boolean
 }
 
 export interface ValidationArbeidsperioderSøkProps {
@@ -89,7 +89,7 @@ export const validatePeriodeMedForsikring = (
   namespace: string,
   {
     periodeMedForsikring,
-    includeAddress
+    showAddress
   }: ValidationPeriodeMedForsikringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -124,7 +124,7 @@ export const validatePeriodeMedForsikring = (
     message: 'validation:invalidDate'
   }))
 
-  if (includeAddress) {
+  if (showAddress) {
     hasErrors.push(validateAdresse(v, namespace + '-arbeidsgiver-adresse', {
       adresse: periodeMedForsikring?.arbeidsgiver.adresse,
       checkAdresseType: false

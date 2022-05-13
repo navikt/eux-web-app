@@ -69,7 +69,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
-  const includeAddress = true
+  const showAddress = true
   const fnr = getFnr(replySed, personID)
   const getId = (p: PlanItem<PeriodeMedForsikring> | null | undefined) => p ? p.type + '-' + (p.item.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') : 'new'
 
@@ -204,7 +204,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
             selectable={false}
             newMode
             style='new'
-            includeAddress={includeAddress}
+            showAddress={showAddress}
             onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
             onPeriodeMedForsikringNew={onAddNew}
             onPeriodeMedForsikringNewClose={onCloseNew}
@@ -222,7 +222,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
             editable='full'
             selectable={false}
             style='original'
-            includeAddress={includeAddress}
+            showAddress={showAddress}
             onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
             onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
             namespace={namespace}
@@ -238,7 +238,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
             <ArbeidsperioderBox
               periodeMedForsikring={item.item}
               editable='full'
-              includeAddress={includeAddress}
+              showAddress={showAddress}
               onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
               onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
               namespace={namespace}
@@ -254,7 +254,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
               editable='full'
               selectable={false}
               style='original'
-              includeAddress={includeAddress}
+              showAddress={showAddress}
               onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
               onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
               namespace={namespace}

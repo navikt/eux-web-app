@@ -12,7 +12,7 @@ import {
   Stroller,
   Vacation
 } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Detail, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -383,19 +383,18 @@ const Forsikring: React.FC<MainFormProps> = ({
               : (
                 <>
                   {_sort === 'time' && (
-                    <>
-                      <Column style={{ maxWidth: '40px' }}>
-                        {getIcon(_periode.__type, '32')}
-                      </Column>
-                      <PeriodeText
-                        error={{
-                          startdato: _v[_namespace + '-startdato'],
-                          sluttdato: _v[_namespace + '-sluttdato']
-                        }}
-                        periode={_periode}
-                      />
-                    </>
+                    <Column style={{ maxWidth: '40px' }}>
+                      {getIcon(_periode.__type, '32')}
+                    </Column>
                   )}
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-startdato'],
+                      sluttdato: _v[_namespace + '-sluttdato']
+                    }}
+                    periode={_periode}
+                  />
+
                 </>
                 )}
             <AlignEndColumn>
@@ -416,7 +415,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                   editable={inEditMode ? 'full' : 'no'}
                   editMode={inEditMode}
                   selectable={false}
-                  includeAddress
+                  showAddress
                   onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
                   namespace={namespace}
                 />
@@ -527,25 +526,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           </PaddedHorizontallyDiv>
           )
         : _sort === 'time'
-          ? (
-            <>
-              <AlignStartRow>
-                <Column style={{ maxWidth: '40px' }} />
-                <Column>
-                  <Label>
-                    {t('label:startdato')}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:sluttdato')}
-                  </Label>
-                </Column>
-                <Column flex='2' />
-              </AlignStartRow>
-              {_allPeriods.map(renderRow)}
-            </>
-            )
+          ? _allPeriods.map(renderRow)
           : (
             <>
               {periodeOptions.map(o => {
@@ -555,16 +536,17 @@ const Forsikring: React.FC<MainFormProps> = ({
                 }
                 return (
                   <div key={o.value}>
-                    <FlexEndDiv>
-                      {getIcon(o.value, '20')}
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <Detail>
-                        {o.label}
-                      </Detail>
-                    </FlexEndDiv>
-                    <VerticalSeparatorDiv />
+                    <PaddedDiv>
+                      <FlexEndDiv>
+                        {getIcon(o.value, '20')}
+                        <HorizontalSeparatorDiv size='0.35' />
+                        <Label>
+                          {o.label}
+                        </Label>
+                      </FlexEndDiv>
+                    </PaddedDiv>
                     {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                    <VerticalSeparatorDiv size='2' />
+                    <VerticalSeparatorDiv />
                   </div>
                 )
               })}

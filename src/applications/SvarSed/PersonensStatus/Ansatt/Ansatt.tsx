@@ -59,7 +59,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-ansatt`
   const target = `${personID}.perioderSomAnsatt`
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
-  const includeAddress = false
+  const showAddress = false
   const fnr = getFnr(replySed, personID)
   const getId = (item: PlanItem<Periode | PeriodeMedForsikring> | null): string => (item
     ? item.type + '-' + (item.item as Periode | PeriodeMedForsikring)?.startdato + '-' + (item.item as Periode | PeriodeMedForsikring).sluttdato
@@ -266,7 +266,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         <ArbeidsperioderBox
           periodeMedForsikring={a}
           editable='only_period'
-          includeAddress={includeAddress}
+          showAddress={showAddress}
           onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
           onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
           namespace={namespace}

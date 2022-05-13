@@ -9,6 +9,7 @@ import {
   FlexStartSpacedDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  PaddedHorizontallyDiv,
   PileDiv,
   PileEndDiv,
   VerticalSeparatorDiv
@@ -49,16 +50,16 @@ const ArbeidsgiverPanel = styled(Panel)`
 `
 export type Editable = 'no' | 'only_period' | 'full'
 
-export interface ArbeidsgiverBoxProps {
-  periodeMedForsikring: PeriodeMedForsikring | null
+export interface ArbeidsgiverBoxProps<T> {
+  periodeMedForsikring: T | null
   editable?: Editable
   error?: boolean,
-  includeAddress ?: boolean
+  showAddress ?: boolean
   namespace: string
-  onPeriodeMedForsikringSelect?: (a: PeriodeMedForsikring, checked: boolean) => void
-  onPeriodeMedForsikringEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring) => void
-  onPeriodeMedForsikringDelete?: (a: PeriodeMedForsikring) => void
-  onPeriodeMedForsikringNew?: (a: PeriodeMedForsikring) => void
+  onPeriodeMedForsikringSelect?: (a: T, checked: boolean) => void
+  onPeriodeMedForsikringEdit?: (a: T, old: T) => void
+  onPeriodeMedForsikringDelete?: (a: T) => void
+  onPeriodeMedForsikringNew?: (a: T) => void
   onPeriodeMedForsikringNewClose ?: () => void
   selectable?: boolean
   newMode ?: boolean
@@ -67,11 +68,11 @@ export interface ArbeidsgiverBoxProps {
   style ?: string
 }
 
-const ArbeidsperioderBox = ({
+const ArbeidsperioderBox = <T extends PeriodeMedForsikring>({
   periodeMedForsikring,
   editable = 'no',
   error = false,
-  includeAddress = false,
+  showAddress = false,
   namespace,
   onPeriodeMedForsikringSelect,
   onPeriodeMedForsikringDelete,
@@ -83,18 +84,18 @@ const ArbeidsperioderBox = ({
   editMode = false,
   allowDelete = false,
   style
-}: ArbeidsgiverBoxProps): JSX.Element => {
+}: ArbeidsgiverBoxProps<T>): JSX.Element => {
   const { t } = useTranslation()
 
   const [_inEditMode, _setInEditMode] = useState<boolean>(false)
-  const [_editPeriodeMedForsikring, _setEditPeriodeMedForsikring] = useState<PeriodeMedForsikring | undefined>(undefined)
+  const [_editPeriodeMedForsikring, _setEditPeriodeMedForsikring] = useState<T | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeMedForsikringProps>(validatePeriodeMedForsikring, namespace)
 
   const setPeriode = (periode: Periode) => {
     _setEditPeriodeMedForsikring({
       ..._editPeriodeMedForsikring,
       ...periode
-    } as PeriodeMedForsikring)
+    } as T)
     _resetValidation(namespace + '-startdato')
     _resetValidation(namespace + '-sluttdato')
   }
@@ -106,7 +107,7 @@ const ArbeidsperioderBox = ({
         ..._editPeriodeMedForsikring?.arbeidsgiver,
         adresse
       } as ArbeidsgiverWithAdresse
-    } as PeriodeMedForsikring)
+    } as T)
     _resetValidation(namespace + '-arbeidsgiver-adresse')
   }
 
@@ -117,7 +118,7 @@ const ArbeidsperioderBox = ({
         ..._editPeriodeMedForsikring?.arbeidsgiver,
         navn
       } as ArbeidsgiverWithAdresse
-    } as PeriodeMedForsikring)
+    } as T)
     _resetValidation(namespace + '-arbeidsgiver-navn')
   }
 
@@ -128,7 +129,7 @@ const ArbeidsperioderBox = ({
         ..._editPeriodeMedForsikring?.arbeidsgiver,
         identifikatorer
       } as ArbeidsgiverWithAdresse
-    } as PeriodeMedForsikring)
+    } as T)
     _resetValidation(namespace + '-arbeidsgiver-identifikatorer')
   }
 
@@ -138,7 +139,7 @@ const ArbeidsperioderBox = ({
     _resetValidation(namespace)
   }
 
-  const onStartEdit = (p: PeriodeMedForsikring) => {
+  const onStartEdit = (p: T) => {
     _setInEditMode(true)
     _setEditPeriodeMedForsikring(_.cloneDeep(p))
   }
@@ -146,7 +147,7 @@ const ArbeidsperioderBox = ({
   const onSaveEdit = () => {
     const valid: boolean = _performValidation({
       periodeMedForsikring: _editPeriodeMedForsikring,
-      includeAddress: includeAddress!
+      showAddress: showAddress!
     })
     if (!!_editPeriodeMedForsikring && valid) {
       if (_.isFunction(onPeriodeMedForsikringEdit)) {
@@ -159,7 +160,7 @@ const ArbeidsperioderBox = ({
   const onAddNew = () => {
     const valid: boolean = _performValidation({
       periodeMedForsikring: _editPeriodeMedForsikring,
-      includeAddress: includeAddress!
+      showAddress: showAddress!
     })
     if (!!_editPeriodeMedForsikring && valid) {
       if (newMode && _.isFunction(onPeriodeMedForsikringNew)) {
@@ -181,7 +182,7 @@ const ArbeidsperioderBox = ({
     }
   }
 
-  const _periodeMedForsikring: PeriodeMedForsikring | null | undefined = (_inEditMode || newMode || editMode) ? _editPeriodeMedForsikring : periodeMedForsikring
+  const _periodeMedForsikring: T | null | undefined = (_inEditMode || newMode || editMode) ? _editPeriodeMedForsikring : periodeMedForsikring
   const selected: boolean = !_.isNil(_periodeMedForsikring?.__index) && _periodeMedForsikring!.__index >= 0
 
   const addremove = (
@@ -253,7 +254,9 @@ const ArbeidsperioderBox = ({
             </FlexEndDiv>
             )}
         <VerticalSeparatorDiv size='0.3' />
-        <HorizontalLineSeparator />
+        <PaddedHorizontallyDiv>
+          <HorizontalLineSeparator />
+        </PaddedHorizontallyDiv>
         <VerticalSeparatorDiv size='0.3' />
         {(_inEditMode || newMode || editMode) && editable === 'full'
           ? (
@@ -283,7 +286,7 @@ const ArbeidsperioderBox = ({
                 namespace={namespace + '-arbeidsgiver-identifikatorer'}
                 validation={_validation}
               />
-              {includeAddress && (
+              {showAddress && (
                 <PaddedDiv>
                   <AdresseForm
                     adresse={_periodeMedForsikring?.arbeidsgiver?.adresse}
