@@ -1,14 +1,17 @@
 import { Checkbox, Heading } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateUtbetaling, ValidationUtbetalingProps } from 'applications/PDU1/Utbetaling/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { AndreMottatteUtbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -23,25 +26,37 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'andreMottatteUtbetalinger'
-  const andreMottatteUtbetalinger: AndreMottatteUtbetalinger = _.get(replySed, target)
+  const andreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-utbetaling`
 
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationUtbetalingProps>(
+      validation, namespace, validateUtbetaling, {
+        utbetaling: andreMottatteUtbetalinger
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
   useEffect(() => {
-    const newAndreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.cloneDeep(andreMottatteUtbetalinger)
+    let newAndreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.cloneDeep(andreMottatteUtbetalinger)
+    if (_.isUndefined(newAndreMottatteUtbetalinger)) {
+      newAndreMottatteUtbetalinger = {} as AndreMottatteUtbetalinger
+    }
     if (!_.isEmpty(newAndreMottatteUtbetalinger)) {
-      if (newAndreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox === undefined) {
+      if (newAndreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox === undefined) {
         newAndreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox = !_.isEmpty(newAndreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold)
       }
-      if (newAndreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox === undefined) {
+      if (newAndreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox === undefined) {
         newAndreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox = !_.isEmpty(newAndreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold)
       }
-      if (newAndreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox === undefined) {
+      if (newAndreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox === undefined) {
         newAndreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox = (!_.isEmpty(newAndreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager) || !_.isEmpty(newAndreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep))
       }
-      if (newAndreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox === undefined) {
+      if (newAndreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox === undefined) {
         newAndreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox = !_.isEmpty(newAndreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse)
       }
-      if (newAndreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox === undefined) {
+      if (newAndreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox === undefined) {
         newAndreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox = !_.isEmpty(newAndreMottatteUtbetalinger?.andreYtelserSomMottasForTiden)
       }
       dispatch(updateReplySed(`${target}`, newAndreMottatteUtbetalinger))

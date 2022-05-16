@@ -9,7 +9,8 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { setReplySed } from 'actions/svarsed'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
@@ -17,10 +18,12 @@ import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { Pdu1Person } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Pin, ReplySed } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
 
@@ -40,6 +43,15 @@ const Person: React.FC<MainFormProps> = ({
   const target: string = 'bruker'
   const pdu1Person: Pdu1Person | undefined = _.get(replySed, target!) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-person`
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationPersonProps>(
+      validation, namespace, validatePerson, {
+        person: pdu1Person
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const onFnrChange = (newFnr: string) => {
     dispatch(updateReplySed(`${target}.fnr`, newFnr.trim()))

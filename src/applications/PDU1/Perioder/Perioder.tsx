@@ -28,6 +28,7 @@ import { State } from 'declarations/reducers'
 import { Periode, PeriodeSort } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -37,7 +38,12 @@ import { getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validatePDPeriode, ValidationPDPeriodeProps } from './validation'
+import {
+  validateAllePDPerioder,
+  ValidateAllePDPerioderProps,
+  validatePDPeriode,
+  ValidationPDPeriodeProps
+} from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -78,6 +84,15 @@ const Perioder: React.FC<MainFormProps> = ({
     { label: t('el:option-perioder-perioderLoennSomAnsatt'), value: 'perioderLoennSomAnsatt' },
     { label: t('el:option-perioder-perioderInntektSomSelvstendig'), value: 'perioderInntektSomSelvstendig' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidateAllePDPerioderProps>(
+      validation, namespace, validateAllePDPerioder, {
+        pdu1: replySed as PDU1
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   useEffect(() => {
     const periodes: Array<PDPeriode> = [];

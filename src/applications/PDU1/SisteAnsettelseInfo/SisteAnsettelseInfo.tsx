@@ -1,6 +1,11 @@
 import { Delete } from '@navikt/ds-icons'
 import { Button, Heading } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import {
+  validateSisteAnsettelseinfo,
+  ValidationSisteAnsettelseinfoProps
+} from 'applications/PDU1/SisteAnsettelseInfo/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -9,11 +14,12 @@ import { Option } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { GrunnTilOpphør } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -44,6 +50,15 @@ const SisteAnsettelseInfo: React.FC<MainFormProps> = ({
     { label: t('el:option-grunntilopphør-annet-ansettelsesforhold'), value: 'annet-ansettelsesforhold' },
     { label: t('el:option-grunntilopphør-annet-selvstendig'), value: 'annet-selvstendig' }
   ]
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationSisteAnsettelseinfoProps>(
+      validation, namespace, validateSisteAnsettelseinfo, {
+        sisteAnsettelseInfo
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string | undefined) => {
     _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)

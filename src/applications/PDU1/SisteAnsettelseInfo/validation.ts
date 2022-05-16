@@ -1,7 +1,7 @@
 import { GrunnTilOpphør } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 
-interface SisteAnsettelseinfoProps {
+export interface ValidationSisteAnsettelseinfoProps {
   sisteAnsettelseInfo: GrunnTilOpphør | undefined
 }
 
@@ -10,7 +10,7 @@ export const validateSisteAnsettelseinfo = (
   namespace: string,
   {
     sisteAnsettelseInfo
-  }: SisteAnsettelseinfoProps
+  }: ValidationSisteAnsettelseinfoProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
