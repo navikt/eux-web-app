@@ -280,7 +280,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         ? renderRow(null, -1)
         : (
           <>
-            {(pins?.length ?? 0) <= limit && (
+            {(pins?.length ?? 0) < limit && (
               <PaddedDiv>
                 <Button
                   variant='tertiary'

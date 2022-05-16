@@ -1,35 +1,47 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import useAddRemove from 'hooks/useAddRemove'
-import useLocalValidation from 'hooks/useLocalValidation'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
-import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
+import Flag from '@navikt/flagg-ikoner'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
+  FlexCenterDiv,
+  HorizontalSeparatorDiv,
+  PaddedDiv,
   PaddedHorizontallyDiv,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import classNames from 'classnames'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import FormText from 'components/Forms/FormText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
+import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateStatsborgerskap, ValidationStatsborgerskapProps } from './validation'
+import performValidation from 'utils/performValidation'
+import {
+  validateStatsborgerskap,
+  validateStatsborgerskaper,
+  ValidationStatsborgerskaperProps,
+  ValidationStatsborgerskapProps
+} from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const StatsborgerskapFC: React.FC<MainFormProps> = ({
+const Statsborgerskap: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
@@ -40,104 +52,160 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
   const target = 'bruker.statsborgerskap'
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-statsborgerskap`
+  const countryData = CountryData.getCountryInstance('nb')
 
-  const [newStatsborgerskap, setNewStatsborgerskap] = useState<string | undefined>(undefined)
+  const [_newStatsborgerskap, _setNewStatsborgerskap] = useState<string | undefined>(undefined)
+  const [_editStatsborgerskap, _setEditStatsborgerskap] = useState<string | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<string>((s: string): string => s)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
 
-  const onStatsborgerskapSelected = (newStatsborgerskap: string, index: number) => {
-    if (index < 0) {
-      setNewStatsborgerskap(newStatsborgerskap.trim())
-      _resetValidation(namespace + '-statsborgerskap')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}]`, newStatsborgerskap.trim()))
-      if (validation[namespace + getIdx(index) + '-statsborgerskap']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-statsborgerskap'))
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationStatsborgerskaperProps>(
+      validation, namespace, validateStatsborgerskaper, {
+        statsborgerskaper
       }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
+  const onStatsborgerskapSelected = (land: string, index: number) => {
+    if (index < 0) {
+      _setNewStatsborgerskap(land.trim())
+      _resetValidation(namespace + '-statsborgerskap')
+      return
+    }
+    _setEditStatsborgerskap(land.trim())
+    if (validation[namespace + getIdx(index) + '-statsborgerskap']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-statsborgerskap'))
     }
   }
 
-  const resetForm = () => {
-    setNewStatsborgerskap(undefined)
+  const onCloseEdit = (namespace: string) => {
+    _setEditStatsborgerskap(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewStatsborgerskap(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (s: string, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditStatsborgerskap(s)
+    _setEditIndex(index)
   }
 
-  const onRemove = (i: number) => {
-    const newStatsborgerskaper = _.cloneDeep(statsborgerskaper)
-    const deletedStatsborgerskaper: Array<string> = newStatsborgerskaper!.splice(i, 1)
-    if (deletedStatsborgerskaper && deletedStatsborgerskaper.length > 0) {
-      removeFromDeletion(deletedStatsborgerskaper[0])
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationStatsborgerskapProps>(
+      validation, namespace, validateStatsborgerskap, {
+        statsborgerskap: _editStatsborgerskap,
+        statsborgerskaper,
+        index: _editIndex
+      })
+    if (!!_editStatsborgerskap && valid) {
+      let newStatsborgerskaper: Array<string> = _.cloneDeep(statsborgerskaper) as Array<string>
+      newStatsborgerskaper[_editIndex!] = _editStatsborgerskap
+      newStatsborgerskaper = newStatsborgerskaper.sort()
+      dispatch(updateReplySed(target, newStatsborgerskaper))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
+
+  const onRemove = (removed: string) => {
+    const newStatsborgerskaper: Array<string> = _.reject(statsborgerskaper,
+      (s: string) => removed === s)
     dispatch(updateReplySed(target, newStatsborgerskaper))
     standardLogger('pdu1.editor.statsborgerskap.remove')
   }
 
-  const onAdd = () => {
-    const valid = performValidation({
-      statsborgerskap: newStatsborgerskap!,
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      statsborgerskap: _newStatsborgerskap,
       statsborgerskaper
     })
-    if (valid) {
-      let newStatsborgerskaper : Array<string> | undefined = _.cloneDeep(statsborgerskaper)
+    if (!!_newStatsborgerskap && valid) {
+      let newStatsborgerskaper: Array<string> | undefined = _.cloneDeep(statsborgerskaper)
       if (_.isNil(newStatsborgerskaper)) {
         newStatsborgerskaper = []
       }
-      newStatsborgerskaper.push(newStatsborgerskap!)
+      newStatsborgerskaper.push(_newStatsborgerskap)
+      newStatsborgerskaper = newStatsborgerskaper.sort()
       dispatch(updateReplySed(target, newStatsborgerskaper))
       standardLogger('pdu1.editor.statsborgerskap.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
   const renderRow = (statsborgerskap: string | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(statsborgerskap)
-    const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    )
-
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={statsborgerskap}
+        className={classNames({
+          new: index < 0,
+          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
-            <CountrySelect
-              ariaLabel={t('label:statsborgerskap')}
-              closeMenuOnSelect
-              data-testid={namespace + idx + '-statsborgerskap'}
-              error={getErrorFor(index, 'statsborgerskap')}
-              flagWave
-              key={namespace + idx + '-statsborgerskap' + (index < 0 ? newStatsborgerskap : statsborgerskap)}
-              id={namespace + idx + '-statsborgerskap'}
-              label={t('label:land')}
-              hideLabel={index >= 0}
-              includeList={CountryFilter.STANDARD({ useUK: true })}
-              menuPortalTarget={document.body}
-              onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
-              required
-              values={(index < 0 ? newStatsborgerskap : statsborgerskap)}
-            />
+            {inEditMode
+              ? (
+                <CountrySelect
+                  ariaLabel={t('label:statsborgerskap')}
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-statsborgerskap'}
+                  error={_v[_namespace + '-statsborgerskap']?.feilmelding}
+                  flagWave
+                  key={_namespace + '-statsborgerskap' + _statsborgerskap}
+                  id={_namespace + '-statsborgerskap'}
+                  label={t('label:land')}
+                  hideLabel={false}
+                  includeList={CountryFilter.STANDARD({ useUK: true })}
+                  menuPortalTarget={document.body}
+                  onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
+                  required
+                  values={_statsborgerskap}
+                />
+                )
+              : (
+                <FormText error={_v[_namespace + '-statsborgerskap']}>
+                  <FlexCenterDiv>
+                    <Flag size='S' country={_statsborgerskap ?? ''} />
+                    <HorizontalSeparatorDiv />
+                    {countryData.findByValue(_statsborgerskap)?.label ?? _statsborgerskap}
+                  </FlexCenterDiv>
+                </FormText>
+                )}
           </Column>
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop={index < 0}
-              onBeginRemove={() => addToDeletion(statsborgerskap)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(statsborgerskap)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
+          <AlignEndColumn>
+            <AddRemovePanel2<string>
+              item={statsborgerskap}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv />
       </RepeatableRow>
@@ -145,17 +213,16 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <div key={namespace + '-div'}>
+    <>
+      <VerticalSeparatorDiv />
       {_.isEmpty(statsborgerskaper)
         ? (
           <PaddedHorizontallyDiv>
-            <AlignStartRow>
-              <Column>
-                <BodyLong>
-                  {t('message:warning-no-satsborgerskap')}
-                </BodyLong>
-              </Column>
-            </AlignStartRow>
+            <SpacedHr>
+              <BodyLong>
+                {t('message:warning-no-satsborgerskap')}
+              </BodyLong>
+            </SpacedHr>
             <VerticalSeparatorDiv />
           </PaddedHorizontallyDiv>
           )
@@ -175,28 +242,21 @@ const StatsborgerskapFC: React.FC<MainFormProps> = ({
           </>
           )}
       <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedHorizontallyDiv>
-            <Row>
-              <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
-                >
-                  <AddCircle />
-                  {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
-                </Button>
-
-              </Column>
-            </Row>
-          </PaddedHorizontallyDiv>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-    </div>
+    </>
   )
 }
 
-export default StatsborgerskapFC
+export default Statsborgerskap

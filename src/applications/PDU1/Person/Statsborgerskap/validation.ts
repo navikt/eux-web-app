@@ -4,8 +4,12 @@ import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationStatsborgerskapProps {
   statsborgerskap: string | undefined
-  statsborgerskaper: Array<string> |undefined
+  statsborgerskaper: Array<string> | undefined
   index?: number
+}
+
+export interface ValidationStatsborgerskaperProps {
+  statsborgerskaper: Array<string> | undefined
 }
 
 export const validateStatsborgerskap = (
@@ -38,16 +42,12 @@ export const validateStatsborgerskap = (
   return hasErrors.find(value => value) !== undefined
 }
 
-interface ValidateStatsborgerskaperProps {
-  statsborgerskaper: Array<string> | undefined
-}
-
 export const validateStatsborgerskaper = (
   validation: Validation,
   namespace: string,
   {
     statsborgerskaper
-  }: ValidateStatsborgerskaperProps
+  }: ValidationStatsborgerskaperProps
 ): boolean => {
   const hasErrors: Array<boolean> = statsborgerskaper?.map((statsborgerskap: string, index: number) =>
     validateStatsborgerskap(validation, namespace, { statsborgerskap, statsborgerskaper, index })
