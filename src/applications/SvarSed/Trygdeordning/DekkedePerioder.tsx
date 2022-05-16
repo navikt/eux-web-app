@@ -154,9 +154,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     }
   }
 
-  const onRemove = (periode: Periode) => {
-    const type: string = periode.__type!
-    const index: number = periode.__index!
+  const onRemove = (removedPeriode: Periode) => {
+    const type: string = removedPeriode.__type!
+    const index: number = removedPeriode.__index! as number
     const perioder : Array<Periode> = _.cloneDeep(_.get(person, type)) as Array<Periode>
     perioder.splice(index, 1)
     dispatch(updateReplySed(`${target}.${type}`, perioder))

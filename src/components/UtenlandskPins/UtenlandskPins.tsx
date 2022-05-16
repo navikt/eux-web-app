@@ -151,7 +151,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       if (_.isNil(newUtenlandskePins)) {
         newUtenlandskePins = []
       }
-      newUtenlandskePins = newUtenlandskePins.concat(_newPin)
+      newUtenlandskePins.push(_newPin)
       onPinsChanged(newUtenlandskePins)
       standardLogger(loggingNamespace + '.utenlandskpin.add')
       onCloseNew()

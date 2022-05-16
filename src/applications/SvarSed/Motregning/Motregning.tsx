@@ -1,99 +1,164 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Label } from '@navikt/ds-react'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
+  FlexDiv,
   FlexRadioPanels,
+  HorizontalSeparatorDiv,
   PaddedDiv,
+  PaddedHorizontallyDiv,
   RadioPanel,
   RadioPanelGroup,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Currency } from '@navikt/land-verktoy'
+import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
-import { resetValidation } from 'actions/validation'
-import { mapState, MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
 import DateInput from 'components/Forms/DateInput'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { HorizontalLineSeparator, RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import {
   AnmodningSvarType,
   Barn,
-  BarnaEllerFamilie,
+  BarnEllerFamilie,
   F002Sed,
-  Motregning as IMotregning,
+  Motregning,
   Periode,
+  ReplySed,
   Utbetalingshyppighet
 } from 'declarations/sed'
-import useAddRemove from 'hooks/useAddRemove'
+import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import KeyAndYtelseFC, { KeyAndYtelse } from './KeyAndYtelse/KeyAndYtelse'
+import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
+import { periodeSort } from 'utils/sort'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateMotregning, ValidationMotregningProps } from './validation'
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
-type KeyAndYtelseMap = {[motregningKey in string]: Array<KeyAndYtelse>}
 
-const Motregning: React.FC<MainFormProps> = ({
+export interface KeyAndYtelse {
+  key1: string // it can be barn[0]/barn[1]/familie/etc
+  key2: number | undefined // it is the motregninger array index (0, 1, etc) inside the key1 objecy
+  ytelseNavn: string // used only when motregning is barna
+  isChecked: boolean // boolean to signal that barna is checked (good to check/uncheck entries without cleaning ytelseNavn)
+}
+
+export interface KeyAndYtelseIndexes {
+  index: string
+  values?: Array<KeyAndYtelse>
+}
+
+const MotregningFC: React.FC<MainFormProps> = ({
   parentNamespace,
   setReplySed,
   replySed,
-  updateReplySed
+  personName
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-motregning`
-  const _currencyData = CountryData.getCurrencyInstance('nb')
+  const getId = (m: Motregning | undefined | null): string => m ? '[' + m.__type + ']-' + m?.startdato + '-' + (m?.sluttdato ?? '') : 'new'
 
-  // Motregning
-  const [_newSvarType, _setNewSvarType] = useState<AnmodningSvarType | undefined>(undefined)
-  const [_newBarnaEllerFamilie, _setNewBarnaEllerFamilie] = useState<BarnaEllerFamilie | undefined>(undefined)
-  // ytelseNavn for barnas
-  const [_newKeyAndYtelses, _setNewKeyAndYtelses] = useState<Array<KeyAndYtelse>>([])
-  // ytelseNavn for familie
-  const [_newYtelseNavn, _setNewYtelseNavn] = useState<string | undefined>(undefined)
-  const [_newVedtaksdato, _setNewVedtaksdato] = useState<string | undefined>(undefined)
-  const [_newBeløp, _setNewBeløp] = useState<string | undefined>(undefined)
-  const [_newValuta, _setNewValuta] = useState<Currency | undefined>(undefined)
-  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
-  const [_newUtbetalingshyppighet, _setNewUtbetalingshyppighet] = useState<Utbetalingshyppighet | undefined>(undefined)
-  const [_newMottakersNavn, _setNewMottakersNavn] = useState<string | undefined>(undefined)
-  const [_newBegrunnelse, _setNewBegrunnelse] = useState<string | undefined>(undefined)
-  const [_newYtterligereInfo, _setNewYtterligereInfo] = useState<string | undefined>(undefined)
+  const [_allMotregnings, _setAllMotregnings] = useState<Array<Motregning>>([])
+  const [_newMotregning, _setNewMotregning] = useState<Motregning | undefined>(undefined)
+  const [_editMotregning, _setEditMotregning] = useState<Motregning | undefined>(undefined)
 
-  const getMotregningId = (m: IMotregning | null): string => m ? m?.startdato + '-' + (m?.sluttdato ?? '') : 'new-motregning'
-  const [_addToDeletion, _removeFromDeletion, _isInDeletion] = useAddRemove<IMotregning>(getMotregningId)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_editIndex, _setEditIndex] = useState<KeyAndYtelseIndexes | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationMotregningProps>(validateMotregning, namespace)
 
+  // Dictionary to convert barna keys (barn[0]) into names (Bart Simpson)
   const [_allBarnaNameKeys, _setAllBarnaNameKeys] = useState<BarnaNameKeyMap>({})
-  const [_keyAndYtelseMap, _setKeyAndYtelseMap] = useState<KeyAndYtelseMap>({})
 
   const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + (b.personInfo?.etternavn ?? '')
 
   useEffect(() => {
-    /** sample of a keyAndYtelse map. When fullKey is for familie, we do not have ytelseNavn
-       {
-         '2020-08-01-2020-08-02' : [{fullKey: 'familie.motregninger[0]'}],
-         '2020-08-02-2020-08-03' : [{fullKey: 'familie.motregninger[1]'}],
-         '2020-09-01-2020-09-02' : [{fullKey: 'barn[1].motregninger[0]', ytelseNavn: 'xxx'}],
-         '2020-10-01-2020-10-02' : [{fullKey: 'barn[0].motregninger[0]', ytelseNavn: 'yyy'},
-                                    {fullKey: 'barn[1].motregninger[1]', ytelseNavn: 'zzz'}],
-         '2020-11-01-2020-11-02' : [{fullKey: 'barn[0].motregninger[1]', ytelseNavn: 'zzz'},
-                                    {fullKey: 'barn[1].motregninger[2]', ytelseNavn: 'www'}]
-      } */
-    const newKeyAndYtelseMap: KeyAndYtelseMap = {}
+    /**
+      Structure of __type and __index for this sample ReplySed:
 
+      barn: [{
+        ...,
+        motregning: [{
+          date: 2000-2001,
+          ytelseNavn: 'aaaa'
+        }, {
+          date: 2002-2003,
+          ytelseNavn: 'bbbb'
+        }, {
+          date: 2004-2005,
+          ytelseNavn: 'cccc'
+       }
+     }, {
+       ...,
+       motregning: [{
+          date: 2002-2003,
+          ytelseNavn: 'dddd'
+       }
+     },
+     familie: {
+       ...,
+       motregning: [{
+         date: 2010-2011
+          ytelseNavn: 'yyyy'
+       }, {
+          date: 2012-
+          ytelseNavn: 'zzzz'
+       }]
+     }
+
+     Yields 5 motregnings:
+
+     [{
+       ...,
+       __type: 'barn',
+       __index: {
+        index: 'barn-2000-2001',
+        values: [{key1: barn[0]', key2, isChecked, ytelseNavn: 'aaa'}]
+     }, {
+        ...,
+       __type: 'barn',
+       __index' : {
+         index: 'barn-2002-2003',
+         values: [
+          {key1: barn[0], key2: 1, isChecked, ytelseNavn: 'bbb'},
+          {key1: barn[1], key2: 0, isChecked, ytelseNavn: 'dddd'}
+        ]
+     }, {
+       ...,
+       __type: 'barn',
+       __index',
+         index: 'barn-2004-2005',
+         values: [{key1: barn[0], key2: 2, isChecked, ytelseNavn: 'ccc'}]
+     },  {
+        ...,
+       __type: 'familie',
+       __index' : {
+         index: 'familie-2010-2011',
+         values: [{key1: familie, key2: 0}]
+     }, {
+       __type: 'familie',
+       __index' : {
+         index: 'familie-2012-',
+         values: [{key1: familie, key2: 1}]
+     }]
+     */
+
+    const newKeyAndYtelseMap: {[motregningKey in string]: Motregning} = {}
     /** sample of allBarnaNameKeys
       {
         'barn[0]': 'bart simpson',
@@ -102,803 +167,911 @@ const Motregning: React.FC<MainFormProps> = ({
      */
     const newAllBarnaNameKeys: BarnaNameKeyMap = {};
 
-    (replySed as F002Sed).barn?.forEach((barn: Barn, i: number) => {
-      const barnaKey = 'barn[' + i + ']'
-      newAllBarnaNameKeys[barnaKey] = getPersonName(barn)
+    (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
+      newAllBarnaNameKeys['barn[' + barnIndex + ']'] = getPersonName(barn)
+      barn.motregninger?.forEach((motregning: Motregning, motregningIndex: number) => {
+        const _motregning: Motregning = _.cloneDeep(motregning)
+        const motregningKey = getId({
+          ..._motregning,
+          __type: 'barn'
+        })
 
-      barn.motregninger?.forEach((motregning: IMotregning, j: number) => {
-        const motregningKey = getMotregningId(motregning)
-        const index = { fullKey: `${barnaKey}.motregninger[${j}]`, ytelseNavn: motregning.ytelseNavn ?? '', barnaKey }
+        // ytelseNavn can be different for different barn, so store it on __index.values
+        const ytelseNavn: string = _motregning.ytelseNavn ?? ''
+        delete _motregning.ytelseNavn
+
         if (!Object.prototype.hasOwnProperty.call(newKeyAndYtelseMap, motregningKey)) {
-          newKeyAndYtelseMap[motregningKey] = [index]
+          const values: Array<KeyAndYtelse> = [{
+            key1: 'barn[' + barnIndex + ']',
+            key2: motregningIndex,
+            isChecked: true,
+            ytelseNavn
+          }]
+          newKeyAndYtelseMap[motregningKey] = {
+            ..._motregning,
+            __type: 'barn' as BarnEllerFamilie,
+            __index: {
+              index: motregningKey,
+              values
+            } as KeyAndYtelseIndexes
+          }
         } else {
-          newKeyAndYtelseMap[motregningKey].push(index)
+          // append key
+          const currentIndex: KeyAndYtelseIndexes = newKeyAndYtelseMap[motregningKey].__index
+          currentIndex.values!.push({
+            key1: 'barn[' + barnIndex + ']',
+            key2: motregningIndex,
+            isChecked: true,
+            ytelseNavn
+          })
+          // should be enough to sort by key1, since one motregning only exists at least once on each barn[0]/barn[1]/etc
+          currentIndex.values = currentIndex.values!.sort(
+            (a: KeyAndYtelse, b: KeyAndYtelse) => a.key1.localeCompare(b.key1))
+          newKeyAndYtelseMap[motregningKey] = {
+            ..._motregning,
+            __index: currentIndex
+          }
         }
       })
     });
 
-    (replySed as F002Sed).familie?.motregninger?.forEach((motregning: IMotregning, j: number) => {
-      const motregningKey = getMotregningId(motregning)
-      const index = { fullKey: `familie.motregninger[${j}]`, ytelseNavn: motregning.ytelseNavn ?? '' }
-      if (!Object.prototype.hasOwnProperty.call(newKeyAndYtelseMap, motregningKey)) {
-        newKeyAndYtelseMap[motregningKey] = [index]
-      } else {
-        newKeyAndYtelseMap[motregningKey].push(index)
+    (replySed as F002Sed).familie?.motregninger?.forEach((motregning: Motregning, motregningIndex: number) => {
+      const _motregning: Motregning = _.cloneDeep(motregning)
+      const motregningKey = getId({
+        ...motregning,
+        __type: 'familie' as BarnEllerFamilie
+      })
+
+      newKeyAndYtelseMap[motregningKey] = {
+        ..._motregning,
+        __type: 'familie' as BarnEllerFamilie,
+        __index: {
+          inxex: motregningKey,
+          values: [{
+            key1: 'familie',
+            key2: motregningIndex
+          }]
+        }
       }
     })
 
     _setAllBarnaNameKeys(newAllBarnaNameKeys)
-    _setKeyAndYtelseMap(newKeyAndYtelseMap)
+    const allMotregnings: Array<Motregning> = []
+    Object.keys(newKeyAndYtelseMap).sort(
+      (keyA: string, keyB: string) => periodeSort(newKeyAndYtelseMap[keyA], newKeyAndYtelseMap[keyB])
+    ).forEach(key => {
+      allMotregnings.push(newKeyAndYtelseMap[key])
+    })
+    _setAllMotregnings(allMotregnings)
   }, [replySed])
 
-  const setKeyAndYtelseMap = (newKeyAndYtelseMap: KeyAndYtelseMap) => {
-    _setKeyAndYtelseMap(newKeyAndYtelseMap)
-  }
-
-  const setSvarType = (newSvarType: AnmodningSvarType, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewSvarType(newSvarType)
-      _resetValidation(namespace + '-svarType')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.svarType', newSvarType))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-svarType']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-svarType'))
-      }
-    }
-  }
-
-  const setBarnaEllerFamilie = (newBarnaEllerFamilie: BarnaEllerFamilie, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewBarnaEllerFamilie(newBarnaEllerFamilie)
-      _resetValidation(namespace + '-barnaEllerFamilie')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
-      const _clonedMotregning: IMotregning = _.get(newReplySed, _keyAndYtelseMap[motregningKey][0].fullKey)
-      const _newIndex : Array<KeyAndYtelse> = []
-
-      // switching to barna -- maybe switching from familie
-      if (newBarnaEllerFamilie === 'barna' as BarnaEllerFamilie) {
-        // delete the motregning from familie
-        newReplySed.familie!.motregninger = _.filter(newReplySed.familie!.motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
-        // pre-select all barn, add a copy of the cloned motregning to each barn.
-        newReplySed.barn?.forEach((barn: Barn, i: number) => {
-          let newMotregninger: Array<IMotregning> | undefined = _.cloneDeep(barn.motregninger)
-          if (!newMotregninger) {
-            newMotregninger = []
-          }
-          // newMotregninger.length will be the index when pushed the motregning
-          const fullKey = 'barn[' + i + '].motregninger[' + newMotregninger.length + ']'
-          newMotregninger.push(_clonedMotregning)
-          newReplySed.barn![i].motregninger = newMotregninger
-          // update indexes
-          _newIndex.push({ fullKey, ytelseNavn: _clonedMotregning.ytelseNavn })
-        })
-      }
-
-      // switching to familie -- maybe switching from barna
-      if (newBarnaEllerFamilie === 'familie' as BarnaEllerFamilie) {
-        // delete the motregning from barna
-        newReplySed.barn?.forEach((barn: Barn, i: number) => {
-          newReplySed.barn![i].motregninger = _.filter(newReplySed.barn![i].motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
-        })
-        let newMotregninger: Array<IMotregning> | undefined = _.get(newReplySed, 'familie.motregninger')
-        if (!newMotregninger) {
-          newMotregninger = []
-        }
-        // newMotregninger.length will be the index when pushed the motregning
-        const fullKey = 'familie.motregninger[' + newMotregninger.length + ']'
-        // familie will inherit ytelseNavn from cloned motregning -- up to saksbehandler to check if it is right
-        newMotregninger.push(_clonedMotregning)
-        _.set(newReplySed, 'familie.motregninger', newMotregninger)
-        // update indexes
-        _newIndex.push({ fullKey })
-      }
-      newKeyAndYtelseMap[motregningKey] = _newIndex
-      setKeyAndYtelseMap(newKeyAndYtelseMap)
-      dispatch(setReplySed(newReplySed))
-    }
-  }
-
-  /** this will only be called when barnaEllerFamilie === 'familie, it does not apply to barna (that is handled on onYtelseChanged) */
-  const setYtelseNavn = (newYtelseNavn: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewYtelseNavn(newYtelseNavn.trim())
-      _resetValidation(namespace + '-ytelseNavn')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.ytelseNavn', newYtelseNavn.trim()))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-ytelseNavn']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-ytelseNavn'))
-      }
-    }
-  }
-
-  /** this will only be called when barnaEllerFamilie === 'barna', and for adding a new keyAndYtelse on an existing motregning */
-  const onAdded = (barnKey: string, ytelseNavn: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      let newKeyAndYtelses = _.cloneDeep(_newKeyAndYtelses)
-      newKeyAndYtelses = newKeyAndYtelses.concat({ fullKey: barnKey, ytelseNavn })
-      _setNewKeyAndYtelses(newKeyAndYtelses)
-    } else {
-      const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
-      const _clonedMotregning: IMotregning = _.get(replySed, _keyAndYtelseMap[motregningKey][0].fullKey)
-
-      let newMotregninger: Array<IMotregning> | undefined = _.get(replySed, barnKey + '.motregninger')
-      if (_.isNil(newMotregninger)) {
-        newMotregninger = []
-      }
-      const newFullKey = barnKey + '.motregninger[' + newMotregninger.length + ']'
-      newMotregninger.push({
-        ..._clonedMotregning,
-        ytelseNavn
-      })
-      newKeyAndYtelseMap[motregningKey].push({
-        fullKey: newFullKey, ytelseNavn
-      })
-      setKeyAndYtelseMap(newKeyAndYtelseMap)
-      dispatch(updateReplySed(barnKey + '.motregninger', newMotregninger))
-    }
-  }
-
-  /** this will only be called when barnaEllerFamilie === 'barna', and for removing a keyAndYtelse on an existing motregning */
-  const onRemoved = (fullKey: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      let newKeyAndYtelses = _.cloneDeep(_newKeyAndYtelses)
-      newKeyAndYtelses = _.filter(newKeyAndYtelses, it => it.fullKey !== fullKey)
-      _setNewKeyAndYtelses(newKeyAndYtelses)
-    } else {
-      const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-
-      // if we will remove the last element of an array, them remove the whole motregninger
-      const partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
-      const motregninger = _.get(newReplySed, partialKey)
-      if (motregninger.length === 1) {
-        _.unset(newReplySed, partialKey)
-      } else {
-        _.unset(newReplySed, fullKey)
-      }
-
-      newKeyAndYtelseMap[motregningKey] = _.filter(newKeyAndYtelseMap[motregningKey], keyAndYtelse => keyAndYtelse.fullKey !== fullKey)
-      setKeyAndYtelseMap(newKeyAndYtelseMap)
-      dispatch(setReplySed(newReplySed))
-    }
-  }
-
-  /** this will only be called when barnaEllerFamilie === 'barna', and for switching an existing motregning fom barbn X to barn Y */
-  const onKeyChanged = (fullKey: string, barnKey: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      let newKeyAndYtelses = _.cloneDeep(_newKeyAndYtelses)
-      newKeyAndYtelses = newKeyAndYtelses.map(it => {
-        if (it.fullKey === fullKey) {
-          return {
-            ...it,
-            fullKey: barnKey
-          }
-        }
-        return it
-      })
-      _setNewKeyAndYtelses(newKeyAndYtelses)
-      _resetValidation(namespace + '-key')
-    } else {
-      // basically an operation of remove, and add
-
-      // starting with remove
-      const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      const clonedMotregning: IMotregning = _.get(newReplySed, fullKey) as IMotregning
-
-      // if we will remove the last element of an array, them remove the whole motregninger
-      const partialKey = fullKey.match(/^barn\[\d+\]/)![0] + '.motregninger'
-      const motregninger = _.get(newReplySed, partialKey)
-      if (motregninger.length === 1) {
-        _.unset(newReplySed, partialKey)
-      } else {
-        _.unset(newReplySed, fullKey)
-      }
-
-      newKeyAndYtelseMap[motregningKey] = _.filter(newKeyAndYtelseMap[motregningKey], keyAndYtelse => keyAndYtelse.fullKey !== fullKey)
-
-      // now, adding
-      let newMotregninger: Array<IMotregning> | undefined = _.get(replySed, barnKey + '.motregninger')
-      if (_.isNil(newMotregninger)) {
-        newMotregninger = []
-      }
-      const newFullKey = barnKey + '.motregninger[' + newMotregninger.length + ']'
-      newMotregninger.push(clonedMotregning)
-      newKeyAndYtelseMap[motregningKey].push({
-        fullKey: newFullKey, ytelseNavn: clonedMotregning.ytelseNavn
-      })
-      setKeyAndYtelseMap(newKeyAndYtelseMap)
-      dispatch(setReplySed(newReplySed))
-    }
-  }
-
-  /** this will only be called when barnaEllerFamilie === 'barna', and for switching ytelseNavn for one certain barn */
-  const onYtelseChanged = (fullKey: string, ytelseNavn: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      let newKeyAndYtelses = _.cloneDeep(_newKeyAndYtelses)
-      newKeyAndYtelses = newKeyAndYtelses.map(it => {
-        if (it.fullKey === fullKey) {
-          return {
-            ...it,
-            ytelseNavn
-          }
-        }
-        return it
-      })
-      _setNewKeyAndYtelses(newKeyAndYtelses)
-      _resetValidation(namespace + '-ytelseNavn')
-    } else {
-      const newKeyAndYtelseMap: KeyAndYtelseMap = _.cloneDeep(_keyAndYtelseMap)
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _.set(newReplySed, fullKey + '.ytelseNavn', ytelseNavn)
-      newKeyAndYtelseMap[motregningKey] = newKeyAndYtelseMap[motregningKey].map(keyAndYtelse => {
-        if (keyAndYtelse.fullKey === fullKey) {
-          return {
-            ...keyAndYtelse,
-            ytelseNavn
-          }
-        }
-        return keyAndYtelse
-      })
-      setKeyAndYtelseMap(newKeyAndYtelseMap)
-      dispatch(setReplySed(newReplySed))
-    }
-  }
-
-  const setVedtaksDato = (newDato: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewVedtaksdato(newDato.trim())
-      _resetValidation(namespace + '-vedtaksDato')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.vedtaksDato', newDato.trim()))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-vedtaksDato']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-vedtaksDato'))
-      }
-    }
-  }
-
-  const setBeløp = (newBeløp: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewBeløp(newBeløp.trim())
-      _resetValidation(namespace + '-beloep')
-      if (_.isNil(_newValuta)) {
-        _setNewValuta({ value: 'NOK' } as Currency)
-      }
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => {
-        _.set(newReplySed, index.fullKey + '.beloep', newBeløp.trim())
-        const valuta = _.get(newReplySed, index.fullKey + '.valuta')
-        if (_.isNil(valuta)) {
-          _.set(newReplySed, index.fullKey + '.valuta', 'NOK')
-        }
-      })
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-beloep']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-beloep'))
-      }
-      if (validation[namespace + '[' + motregningKey + ']-valuta']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-valuta'))
-      }
-    }
-  }
-
-  const setValuta = (newValuta: Currency, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewValuta(newValuta)
-      _resetValidation(namespace + '-valuta')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.valuta', newValuta.value))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-valuta']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-valuta'))
-      }
-    }
-  }
-
-  const setPeriode = (newPeriode: Periode, id: string, oldMotregningKey: string): boolean => {
-    if (oldMotregningKey === 'new-motregning') {
-      _setNewPeriode(newPeriode)
-      if (id === 'startdato') {
-        _resetValidation(namespace + '-startdato')
-      }
-      if (id === 'sluttdato') {
-        _resetValidation(namespace + '-sluttdato')
-      }
-      return true
-    } else {
-      const otherKeys: Array<string> = _.filter(Object.keys(_keyAndYtelseMap), key => key !== oldMotregningKey)
-      const newMotregningKey = newPeriode.startdato.trim() + '-' + (newPeriode.sluttdato ?? '')
-      if (otherKeys.indexOf(newMotregningKey) >= 0) {
-        window.alert('startsdato/sluttdato already exists, choose another')
-        return false
-      } else {
-        const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-        _keyAndYtelseMap[oldMotregningKey].forEach(index => {
-          _.set(newReplySed, index.fullKey + '.startdato', newPeriode.startdato)
-          _.set(newReplySed, index.fullKey + '.sluttdato', newPeriode.sluttdato)
-        })
-        dispatch(setReplySed(newReplySed))
-        if (id === 'startdato' && validation[namespace + '[' + oldMotregningKey + ']-startdato']) {
-          dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-startdato'))
-        }
-        if (id === 'sluttdato' && validation[namespace + '[' + oldMotregningKey + ']-sluttdato']) {
-          dispatch(resetValidation(namespace + '[' + oldMotregningKey + ']-sluttdato'))
-        }
-        // we have to update the big index with the new motregningKey
-        const newBigIndexMap = _.cloneDeep(_keyAndYtelseMap)
-        newBigIndexMap[newMotregningKey] = _.cloneDeep(newBigIndexMap[oldMotregningKey])
-        delete newBigIndexMap[oldMotregningKey]
-        setKeyAndYtelseMap(newBigIndexMap)
-        return true
-      }
-    }
-  }
-
-  const setUtbetalingshyppighet = (newUtbetalingshyppighet: Utbetalingshyppighet, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewUtbetalingshyppighet(newUtbetalingshyppighet)
-      _resetValidation(namespace + '-utbetalingshyppighet')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.utbetalingshyppighet', newUtbetalingshyppighet))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-utbetalingshyppighet']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-utbetalingshyppighet'))
-      }
-    }
-  }
-
-  const setMottakersNavn = (mottakersNavn: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewMottakersNavn(mottakersNavn.trim())
-      _resetValidation(namespace + '-mottakersNavn')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.mottakersNavn', mottakersNavn.trim()))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-mottakersNavn']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-mottakersNavn'))
-      }
-    }
-  }
-
-  const setBegrunnelse = (newBegrunnelse: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewBegrunnelse(newBegrunnelse.trim())
+  const setBegrunnelse = (begrunnelse: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        begrunnelse
+      } as Motregning)
       _resetValidation(namespace + '-begrunnelse')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.begrunnelse', newBegrunnelse.trim()))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-begrunnelse']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-begrunnelse'))
-      }
+      return
     }
+    _setEditMotregning({
+      ..._editMotregning,
+      begrunnelse
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-begrunnelse')
   }
 
-  const setYtterligereInfo = (newYtterligereInfo: string, motregningKey: string) => {
-    if (motregningKey === 'new-motregning') {
-      _setNewYtterligereInfo(newYtterligereInfo.trim())
+  const setBeløp = (newBeløp: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        beloep: newBeløp.trim().trim(),
+        valuta: _.isNil(_newMotregning?.valuta) ? 'NOK' : _newMotregning?.valuta
+      } as Motregning)
+      _resetValidation(namespace + '-beloep')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      beloep: newBeløp.trim().trim(),
+      valuta: _.isNil(_editMotregning?.valuta) ? 'NOK' : _editMotregning?.valuta
+    } as Motregning)
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-beloep'))
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-valuta'))
+  }
+
+  const setMottakersNavn = (mottakersNavn: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        mottakersNavn
+      } as Motregning)
+      _resetValidation(namespace + '-mottakersNavn')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      mottakersNavn
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-mottakersNavn')
+  }
+
+  const setSvarType = (svarType: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        svarType
+      } as Motregning)
+      _resetValidation(namespace + '-svarType')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      svarType
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-svarType')
+  }
+
+  const setUtbetalingshyppighet = (utbetalingshyppighet: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        utbetalingshyppighet
+      } as Motregning)
+      _resetValidation(namespace + '-utbetalingshyppighet')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      utbetalingshyppighet
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-utbetalingshyppighet')
+  }
+
+  const setValuta = (valuta: Currency, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        valuta: valuta.value
+      } as Motregning)
+      _resetValidation(namespace + '-valuta')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      valuta: valuta.value
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-valuta')
+  }
+
+  const setVedtaksDato = (vedtaksdato: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        vedtaksdato
+      } as Motregning)
+      _resetValidation(namespace + '-vedtaksdato')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      vedtaksdato
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-vedtaksdato')
+  }
+
+  const setYtterligereInfo = (ytterligereInfo: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        ytterligereInfo
+      } as Motregning)
       _resetValidation(namespace + '-ytterligereInfo')
-    } else {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _keyAndYtelseMap[motregningKey].forEach(index => _.set(newReplySed, index.fullKey + '.ytterligereInfo', newYtterligereInfo.trim()))
-      dispatch(setReplySed(newReplySed))
-      if (validation[namespace + '[' + motregningKey + ']-ytterligereInfo']) {
-        dispatch(resetValidation(namespace + '[' + motregningKey + ']-ytterligereInfo'))
-      }
+      return
     }
+    _setEditMotregning({
+      ..._editMotregning,
+      ytterligereInfo
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-ytterligereInfo')
   }
 
-  const resetForm = () => {
-    _setNewSvarType(undefined)
-    _setNewBarnaEllerFamilie(undefined)
-    _setNewVedtaksdato(undefined)
-    _setNewBeløp(undefined)
-    _setNewValuta(undefined)
-    _setNewPeriode(undefined)
-    _setNewUtbetalingshyppighet(undefined)
-    _setNewMottakersNavn(undefined)
-    _setNewBegrunnelse(undefined)
-    _setNewYtterligereInfo(undefined)
+  const setPeriode = (periode: Motregning, index: number) => {
+    if (index < 0) {
+      _setNewMotregning(periode)
+      _resetValidation(namespace + '-startdato')
+      _resetValidation(namespace + '-sluttdato')
+      return
+    }
+    _setEditMotregning(periode)
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-startdato')
+    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-sluttdato')
+  }
+
+  const setType = (type: BarnEllerFamilie, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        __type: type
+      } as Motregning)
+      _resetValidation(namespace + '-type')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      __type: type
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index + ']-type')
+  }
+
+  const checkKey = (key1: string, checked: boolean, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        __index: {
+          ..._newMotregning?.__index,
+          values: _newMotregning?.__index.values.map((k: KeyAndYtelse) => {
+            if (k.key1 === key1) {
+              return { ...k, isChecked: checked }
+            }
+            return k
+          })
+        }
+      } as Motregning)
+      return
+    }
+
+    _setEditMotregning({
+      ..._editMotregning,
+      __index: {
+        ..._editMotregning?.__index,
+        values: _editMotregning?.__index.values.map((k: KeyAndYtelse) => {
+          if (k.key1 === key1) {
+            return { ...k, isChecked: checked }
+          }
+          return k
+        })
+      }
+    } as Motregning)
+  }
+
+  const setYtelseNavnForBarna = (key1: string, ytelseNavn: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        __index: {
+          ..._newMotregning?.__index,
+          values: _newMotregning?.__index.values.map((k: KeyAndYtelse) => {
+            if (k.key1 === key1) {
+              return { ...k, ytelseNavn }
+            }
+            return k
+          })
+        }
+      } as Motregning)
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      __index: {
+        ..._editMotregning?.__index,
+        values: _editMotregning?.__index.values.map((k: KeyAndYtelse) => {
+          if (k.key1 === key1) {
+            return { ...k, ytelseNavn }
+          }
+          return k
+        })
+      }
+    } as Motregning)
+  }
+
+  const setYtelseNavnForFamilie = (ytelseNavn: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        ytelseNavn
+      } as Motregning)
+      _resetValidation(namespace + '-ytelseNavn')
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      ytelseNavn
+    } as Motregning)
+    _resetValidation(namespace + '[' + _editMotregning?.__index + ']-ytelseNavn')
+  }
+
+  const onCloseEdit = (namespace: string) => {
+    _setEditMotregning(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewMotregning(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (motregning: Motregning) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + _editIndex))
+    }
+    _setEditMotregning(motregning)
+    _setEditIndex(_editMotregning?.__index.index)
   }
 
-  const onRemove = (motregningKey: string) => {
-    const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-    newReplySed.barn?.forEach((barn: Barn, index: number) => {
-      newReplySed.barn![index].motregninger = _.filter(newReplySed.barn![index].motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
+  // in order to remove motregning, check __index.values for all the keys where this motreging "lives" for now,
+  const onRemove = (motregning: Motregning) => {
+    const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
+    motregning?.__index.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
+      const newMotregninger: Array<Motregning> = _.get(newReplySed, keyAndYtelse.key1 + '.motregninger')
+      newMotregninger.splice(keyAndYtelse.key2!, 1)
+      _.set(newReplySed, keyAndYtelse.key1 + '.motregninger', newMotregninger)
     })
-    if (!_.isNil(newReplySed.familie?.motregninger)) {
-      newReplySed.familie!.motregninger = _.filter(newReplySed.familie!.motregninger, (m: IMotregning) => getMotregningId(m) !== motregningKey)
-    }
-    // sync big index
-    const newBigIndexMap = _.cloneDeep(_keyAndYtelseMap)
-    delete newBigIndexMap[motregningKey]
-    setKeyAndYtelseMap(newBigIndexMap)
     dispatch(setReplySed(newReplySed))
-    standardLogger('svarsed.editor.motregning.remove')
   }
 
-  const onAdd = () => {
-    const newMotregning: IMotregning = {
-      begrunnelse: _newBegrunnelse,
-      beloep: _newBeløp,
-      mottakersNavn: _newMottakersNavn,
-      svarType: _newSvarType,
-      sluttdato: _newPeriode?.sluttdato,
-      startdato: _newPeriode?.startdato,
-      utbetalingshyppighet: _newUtbetalingshyppighet,
-      valuta: _newValuta?.value,
-      vedtaksdato: _newVedtaksdato,
-      ytterligereInfo: _newYtterligereInfo,
-      ytelseNavn: _newYtelseNavn // only for familie
-    } as IMotregning
-
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
-      motregning: newMotregning,
-      keyAndYtelses: _newKeyAndYtelses,
-      type: _newBarnaEllerFamilie as BarnaEllerFamilie,
-      formalName: t('label:motregning').toLowerCase()
+      motregning: _newMotregning,
+      formalName: personName
     })
+    if (!!_newMotregning && valid) {
+      // create the version that will be added, with no aux props
+      const newNewMotregning = _.cloneDeep(_newMotregning)
+      delete newNewMotregning.__type
+      delete newNewMotregning.__index
 
-    if (valid && _newBarnaEllerFamilie === 'familie') {
-      let newMotregninger: Array<IMotregning> | undefined = _.get(replySed, 'familie.motregninger')
-      if (!newMotregninger) {
-        newMotregninger = []
-      }
-      newMotregninger.push(newMotregning)
-      dispatch(updateReplySed('familie.motregninger', newMotregninger))
-      standardLogger('svarsed.editor.motregning.add')
-      onCancel()
-    }
+      const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
 
-    if (valid && _newBarnaEllerFamilie === 'barna') {
-      const newReplySed: F002Sed = _.cloneDeep(replySed) as F002Sed
-      _newKeyAndYtelses.forEach(keyAndYtelse => {
-        const barn: Barn = _.get(replySed, keyAndYtelse.fullKey) // on new-motregning, fullKey is used to store barnKey
-        let newMotregninger: Array<IMotregning> | undefined = _.cloneDeep(barn.motregninger)
+      if (_newMotregning?.__type === 'familie') {
+        let newMotregninger: Array<Motregning> | undefined = _.get(newReplySed, 'familie.motregninger')
         if (_.isNil(newMotregninger)) {
           newMotregninger = []
         }
-        newMotregninger.push({
-          ...newMotregning,
-          ytelseNavn: keyAndYtelse.ytelseNavn
+        newMotregninger.push(newNewMotregning)
+        newMotregninger = newMotregninger.sort(periodeSort)
+        _.set(newReplySed, 'familie.motregninger', newMotregninger)
+      }
+      if (_newMotregning?.__type === 'barn') {
+        // I have to iterate through keyAndYtelses to fill up the necessary ytelseNavn, and know where to add it
+
+        _newMotregning?.__index?.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
+          // for new motregnings (we are adding a new one), key2 is undefined
+          if (keyAndYtelse.isChecked) {
+            let newMotregninger: Array<Motregning> | undefined = _.get(newReplySed, keyAndYtelse.key1 + '.motregninger')
+            if (_.isNil(newMotregninger)) {
+              newMotregninger = []
+            }
+            newMotregninger.push({
+              ...newNewMotregning,
+              ytelseNavn: keyAndYtelse.ytelseNavn
+            })
+            newMotregninger = newMotregninger.sort(periodeSort)
+            _.set(newReplySed, keyAndYtelse.key1 + '.motregninger', newMotregninger)
+          }
         })
-        _.set(newReplySed, keyAndYtelse.fullKey + '.motregninger', newMotregninger)
-      })
+      }
       dispatch(setReplySed(newReplySed))
-      standardLogger('svarsed.editor.motregning.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
-  const renderRow = (motregningKey: string) => {
-    let motregning: IMotregning | null
-    const keyAndYtelses: Array<KeyAndYtelse> | undefined = _keyAndYtelseMap[motregningKey]
-    if (motregningKey === 'new-motregning') {
-      motregning = null
-    } else {
-      if (_.isEmpty(keyAndYtelses)) {
-        motregning = {} as IMotregning
-      } else {
-        motregning = _.get(replySed, _keyAndYtelseMap[motregningKey][0].fullKey)
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationMotregningProps>(
+      validation, namespace, validateMotregning, {
+        motregning: _editMotregning,
+        formalName: personName
+      })
+
+    if (!!_editMotregning && valid) {
+      const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
+
+      // the easiest is to:
+      // 1) delete all instances of this motregning, using _editIndex.values (which was set BEFORE editing started)
+      // 2) add all instances of this motregning, using the _editMotregning.__index.values (which was changed DURING editing)
+
+      // 1) delete
+      _editIndex?.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
+        const newMotregninger: Array<Motregning> = _.get(newReplySed, keyAndYtelse.key1 + '.motregninger')
+        newMotregninger.splice(keyAndYtelse.key2!, 1)
+        _.set(newReplySed, keyAndYtelse.key1 + '.motregninger', newMotregninger)
+      })
+
+      // 2) add
+      // create the version that will be added, with no aux props
+      const newEditMotregning = _.cloneDeep(_editMotregning)
+      delete newEditMotregning.__type
+      delete newEditMotregning.__index
+
+      if (_editMotregning?.__type === 'familie') {
+        let newMotregninger: Array<Motregning> | undefined = _.get(newReplySed, 'familie.motregninger')
+        if (_.isNil(newMotregninger)) {
+          newMotregninger = []
+        }
+        newMotregninger.push(newEditMotregning)
+        newMotregninger = newMotregninger.sort(periodeSort)
+        _.set(newReplySed, 'familie.motregninger', newMotregninger)
       }
+      if (_editMotregning?.__type === 'barn') {
+        // I have to iterate through keyAndYtelses to fill up the necessary ytelseNavn, and know where to add it
+
+        _editMotregning?.__index?.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
+          if (keyAndYtelse.isChecked === true) {
+            let newMotregninger: Array<Motregning> | undefined = _.get(newReplySed, keyAndYtelse.key1 + '.motregninger')
+            if (_.isNil(newMotregninger)) {
+              newMotregninger = []
+            }
+            newMotregninger.push({
+              ...newEditMotregning,
+              ytelseNavn: keyAndYtelse.ytelseNavn
+            })
+            newMotregninger = newMotregninger.sort(periodeSort)
+            _.set(newReplySed, keyAndYtelse.key1 + '.motregninger', newMotregninger)
+          }
+        })
+      }
+      dispatch(setReplySed(newReplySed))
+      onCloseEdit(namespace + _editIndex?.index)
+    } else {
+      dispatch(setValidation(newValidation))
     }
+  }
 
-    const candidateForDeletion = motregningKey === 'new-motregning' ? false : _isInDeletion(motregning)
-    const idx = motregningKey === 'new-motregning' ? '' : '[' + motregningKey + ']'
-    const getErrorFor = (el: string): string | undefined => {
-      return motregningKey === 'new-motregning'
-        ? _validation[namespace + idx + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    }
+  const renderRow = (motregning: Motregning | null, index: number) => {
+    // replace index order from map (which is "ruined" by a sort) with real index from motregning.__index.index
+    const idx: string = index < 0 ? '' : motregning?.__index?.index
+    const _namespace = namespace + idx
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex?.index === idx
+    const _motregning = index < 0 ? _newMotregning : (inEditMode ? _editMotregning : motregning)
 
-    const barnaEllerFamilie: BarnaEllerFamilie | undefined = !_.isEmpty(keyAndYtelses)
-      ? (keyAndYtelses[0].fullKey.startsWith('barn') ? 'barna' : 'familie')
-      : undefined
-    const _barnaEllerFamilie = motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie
-    const _keyAndYtelses: Array<KeyAndYtelse> = _barnaEllerFamilie === 'barna'
-      ? (motregningKey === 'new-motregning' ? _newKeyAndYtelses : _keyAndYtelseMap[motregningKey])
-      : []
+    const addremovepanel = (
+      <AddRemovePanel2<Motregning>
+        item={motregning}
+        marginTop={inEditMode}
+        index={index}
+        inEditMode={inEditMode}
+        onRemove={onRemove}
+        onAddNew={onAddNew}
+        onCancelNew={onCloseNew}
+        onStartEdit={onStartEdit}
+        onConfirmEdit={onSaveEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
+      />
+    )
 
-    return (
-      <RepeatableRow className={classNames({ new: motregningKey === 'new-motregning' })}>
-        <AlignStartRow>
-          <Column flex='2'>
-            <RadioPanelGroup
-              value={motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie}
-              data-no-border
-              data-testid={namespace + idx + '-barnaEllerFamilie'}
-              error={getErrorFor('barnaEllerFamilie')}
-              id={namespace + idx + '-barnaEllerFamilie'}
-              key={namespace + idx + '-barnaEllerFamilie-' + (motregningKey === 'new-motregning' ? _newBarnaEllerFamilie : barnaEllerFamilie)}
-              legend={t('label:barna-or-familie') + ' *'}
-              name={namespace + '-barnaEllerFamilie'}
-              onChange={(e: string) => setBarnaEllerFamilie(e as BarnaEllerFamilie, motregningKey)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='barna'>{t('label:barn')}</RadioPanel>
-                <RadioPanel value='familie'>{t('label:familien')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column flex='2'>
-            <RadioPanelGroup
-              value={motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType}
-              data-multiple-line
-              data-no-border
-              data-testid={namespace + idx + '-svarType'}
-              error={getErrorFor('svarType')}
-              id={namespace + idx + '-svarType'}
-              key={namespace + idx + '-svarType-' + (motregningKey === 'new-motregning' ? _newSvarType : motregning?.svarType)}
-              legend={t('label:anmodning-om-motregning')}
-              name={namespace + idx + '-svarType'}
-              onChange={(e: string) => setSvarType(e as AnmodningSvarType, motregningKey)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning-om-motregning-barn')}</RadioPanel>
-                <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-om-motregning-svar-barn')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        {_barnaEllerFamilie === 'barna' && (
-          <>
-            <KeyAndYtelseFC
-              onAdded={(barnKey: string, ytelseNavn: string) => onAdded(barnKey, ytelseNavn, motregningKey)}
-              onRemoved={(fullKey: string) => onRemoved(fullKey, motregningKey)}
-              onKeyChanged={(fullKey: string, barnKey: string) => onKeyChanged(fullKey, barnKey, motregningKey)}
-              onYtelseChanged={(fullKey: string, ytelseNavn: string) => onYtelseChanged(fullKey, ytelseNavn, motregningKey)}
-              keyAndYtelses={_keyAndYtelses}
-              allBarnaNameKeys={_allBarnaNameKeys}
-              parentNamespace={namespace}
-              validation={validation}
-            />
-            {getErrorFor('ytelseNavn') && (
-              <div className='navds-error-message navds-error-message--medium navds-label'>
-                {getErrorFor('ytelseNavn')}
-              </div>
-            )}
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {_barnaEllerFamilie === 'familie' && (
-          <>
+    if (inEditMode) {
+      return (
+        <RepeatableRow
+          id={'repeatablerow-' + _namespace}
+          key={getId(motregning)}
+          className={classNames({
+            new: index < 0,
+            error: hasNamespaceWithErrors(_v, _namespace)
+          })}
+        >
+          <VerticalSeparatorDiv size='0.5' />
+          <AlignStartRow>
+            <Column flex='2'>
+              <RadioPanelGroup
+                value={_motregning?.svarType}
+                data-multiple-line
+                data-no-border
+                data-testid={_namespace + '-svarType'}
+                error={_v[_namespace + '-svarType']?.feilmelding}
+                id={_namespace + '-svarType'}
+                key={_namespace + '-svarType-' + _motregning?.svarType}
+                legend={t('label:anmodning-om-motregning')}
+                name={_namespace + '-svarType'}
+                onChange={(e: string) => setSvarType(e as AnmodningSvarType, index)}
+              >
+                <FlexRadioPanels>
+                  <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning')}</RadioPanel>
+                  <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar')}</RadioPanel>
+                </FlexRadioPanels>
+              </RadioPanelGroup>
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column flex='2'>
+              <RadioPanelGroup
+                value={_motregning?.__type}
+                data-no-border
+                data-testid={_namespace + '-type'}
+                error={_v[_namespace + '-type']?.feilmelding}
+                id={_namespace + '-type'}
+                key={_namespace + '-type-' + _motregning?.__type}
+                legend={t('label:barna-or-familie') + ' *'}
+                name={_namespace + '-type'}
+                onChange={(type: string) => setType(type as BarnEllerFamilie, index)}
+              >
+                <FlexRadioPanels>
+                  <RadioPanel value='barn'>{t('label:barn')}</RadioPanel>
+                  <RadioPanel value='familie'>{t('label:familien')}</RadioPanel>
+                </FlexRadioPanels>
+              </RadioPanelGroup>
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          {_motregning?.__type === 'barna' && (
+            <>
+              <PaddedHorizontallyDiv>
+                <AlignStartRow>
+                  <Column>
+                    <Label>
+                      {t('label:velg-barn-som-motregning')}
+                    </Label>
+                  </Column>
+                  <Column>
+                    <Label>
+                      {t('label:betegnelse-på-ytelse')}
+                    </Label>
+                  </Column>
+                  <Column />
+                </AlignStartRow>
+              </PaddedHorizontallyDiv>
+              <VerticalSeparatorDiv />
+              {Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
+                const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index.values,
+                  (value: KeyAndYtelse) => value.key1 === barnaKey)
+                const matchedKeyAndYtelse: KeyAndYtelse | undefined = matchedKeyAndYtelseIndex < 0
+                  ? undefined
+                  : _motregning?.__index.values[matchedKeyAndYtelseIndex]
+                const ytelseIdx = getIdx(matchedKeyAndYtelseIndex)
+                return (
+                  <PaddedHorizontallyDiv key={barnaKey}>
+                    <AlignStartRow>
+                      <Column>
+                        <Checkbox
+                          checked={!_.isUndefined(matchedKeyAndYtelse) && matchedKeyAndYtelse.isChecked === true}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => checkKey(barnaKey, e.target.checked, index)}
+                        >
+                          {_allBarnaNameKeys[barnaKey]}
+                        </Checkbox>
+                      </Column>
+                      <Column>
+                        <Input
+                          disabled={_.isUndefined(matchedKeyAndYtelse) || matchedKeyAndYtelse.isChecked === false}
+                          error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}
+                          id='ytelseNavn'
+                          key={_namespace + '-ytelseNavn-' + matchedKeyAndYtelse?.ytelseNavn}
+                          label={t('label:betegnelse-på-ytelse')}
+                          namespace={_namespace}
+                          onChanged={(newYtelseNavn: string) => setYtelseNavnForBarna(barnaKey, newYtelseNavn, index)}
+                          required
+                          value={matchedKeyAndYtelse?.ytelseNavn}
+                        />
+                      </Column>
+                      <Column />
+                    </AlignStartRow>
+                  </PaddedHorizontallyDiv>
+                )
+              })}
+            </>
+          )}
+          {_motregning?.__type === 'familie' && (
             <AlignStartRow>
               <Column>
                 <Input
-                  error={getErrorFor('ytelseNavn')}
+                  error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                   id='ytelseNavn'
-                  key={namespace + idx + '-ytelseNavn-' + (motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
+                  key={_namespace + '-ytelseNavn-' + _motregning?.ytelseNavn}
                   label={t('label:betegnelse-på-ytelse')}
-                  namespace={namespace + idx}
-                  onChanged={(newYtelseNavn: string) => setYtelseNavn(newYtelseNavn, motregningKey)}
+                  namespace={_namespace}
+                  onChanged={(newYtelseNavn: string) => setYtelseNavnForFamilie(newYtelseNavn, index)}
                   required
-                  value={(motregningKey === 'new-motregning' ? _newYtelseNavn : motregning?.ytelseNavn)}
+                  value={_motregning?.ytelseNavn}
                 />
               </Column>
             </AlignStartRow>
-            <VerticalSeparatorDiv size='2' />
-          </>
+          )}
+          <VerticalSeparatorDiv />
+          <Label>
+            {t('label:informasjon-om-familieytelser')}
+          </Label>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column>
+              <DateInput
+                error={_v[_namespace + '-vedtaksdato']?.feilmelding}
+                id='vedtaksdato'
+                key={_namespace + '-vedtaksdato-' + _motregning?.vedtaksdato}
+                label={t('label:vedtaksdato')}
+                namespace={_namespace}
+                onChanged={(newVedtaksdato) => setVedtaksDato(newVedtaksdato, index)}
+                required
+                value={_motregning?.vedtaksdato}
+              />
+            </Column>
+            <Column>
+              <Input
+                error={_v[_namespace + '-beloep']?.feilmelding}
+                id='beloep'
+                key={_namespace + '-beloep-' + _motregning?.beloep}
+                label={t('label:beløp')}
+                namespace={_namespace}
+                onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+                required
+                value={_motregning?.beloep}
+              />
+            </Column>
+            <Column>
+              <CountrySelect
+                ariaLabel={t('label:valuta')}
+                closeMenuOnSelect
+                data-testid={_namespace + '-valuta'}
+                error={_v[_namespace + '-valuta']?.feilmelding}
+                id={_namespace + '-valuta'}
+                key={_namespace + '-valuta-' + _motregning?.valuta}
+                label={t('label:valuta') + ' *'}
+                locale='nb'
+                menuPortalTarget={document.body}
+                onOptionSelected={(newValuta: Currency) => setValuta(newValuta, index)}
+                type='currency'
+                values={_motregning?.valuta}
+              />
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <PeriodeInput
+              namespace={_namespace}
+              error={{
+                startdato: _v[_namespace + '-startdato']?.feilmelding,
+                sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+              }}
+              label={{
+                startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *',
+                sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
+              }}
+              periodeType='simple'
+              setPeriode={(newPeriode: Periode) => setPeriode(newPeriode, index)}
+              value={_motregning}
+            />
+            <Column flex='2'>
+              <RadioPanelGroup
+                value={_motregning?.utbetalingshyppighet}
+                data-no-border
+                data-testid={_namespace + '-utbetalingshyppighet'}
+                id={_namespace + '-utbetalingshyppighet'}
+                key={_namespace + '-utbetalingshyppighet-' + _motregning?.utbetalingshyppighet}
+                error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
+                name={_namespace + '-utbetalingshyppighet'}
+                legend={t('label:periode-avgrensing') + ' *'}
+                onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
+              >
+                <FlexRadioPanels>
+                  <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
+                  <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
+                </FlexRadioPanels>
+              </RadioPanelGroup>
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column flex='2'>
+              <Input
+                error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+                namespace={_namespace}
+                id='mottakersNavn'
+                key={_namespace + '-mottakersNavn-' + _motregning?.mottakersNavn}
+                label={t('label:mottakers-navn')}
+                onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, index)}
+                required
+                value={_motregning?.mottakersNavn}
+              />
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column flex='2'>
+              <TextAreaDiv>
+                <TextArea
+                  error={_v[_namespace + '-begrunnelse']?.feilmelding}
+                  namespace={_namespace}
+                  id='begrunnelse'
+                  key={_namespace + '-begrunnelse-' + _motregning?.begrunnelse}
+                  label={t('label:anmodning-grunner')}
+                  onChanged={(newBegrunnelse: string) => setBegrunnelse(newBegrunnelse, index)}
+                  value={_motregning?.begrunnelse}
+                />
+              </TextAreaDiv>
+            </Column>
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column flex='2'>
+              <TextAreaDiv>
+                <TextArea
+                  error={_v[_namespace + '-ytterligereInfo']?.feilmelding}
+                  namespace={_namespace}
+                  id='ytterligereInfo'
+                  key={_namespace + '-ytterligereInfo-' + _motregning?.ytterligereInfo}
+                  label={t('label:ytterligere-informasjon')}
+                  onChanged={(newYtterligereInfo: string) => setYtterligereInfo(newYtterligereInfo, index)}
+                  value={_motregning?.ytterligereInfo}
+                />
+              </TextAreaDiv>
+            </Column>
+            <AlignEndColumn>
+              {addremovepanel}
+            </AlignEndColumn>
+          </AlignStartRow>
+          <VerticalSeparatorDiv size='0.5' />
+        </RepeatableRow>
+      )
+    }
+
+    return (
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(motregning)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespaceWithErrors(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
+        <AlignStartRow>
+          <Column>
+            <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+              {_motregning?.svarType}
+            </FormText>
+          </Column>
+
+          <Column>
+            <FormText error={_v[_namespace + '-type']?.feilmelding}>
+              {t('label:' + _motregning?.__type)}
+            </FormText>
+          </Column>
+        </AlignStartRow>
+        {_motregning?.__type === 'barna' && Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
+          const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index.values,
+            (value: KeyAndYtelse) => value.key1 === barnaKey)
+          const matchedKeyAndYtelse: KeyAndYtelse | undefined = matchedKeyAndYtelseIndex < 0
+            ? undefined
+            : _motregning?.__index.values[matchedKeyAndYtelseIndex]
+          const ytelseIdx = getIdx(matchedKeyAndYtelseIndex)
+          if (!matchedKeyAndYtelse) {
+            return null
+          }
+          return (
+            <PaddedHorizontallyDiv key={barnaKey}>
+              <AlignStartRow>
+                <Column>
+                  <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+                    {_allBarnaNameKeys[barnaKey]}:
+                  </FormText>
+                  <FormText error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}>
+                    {matchedKeyAndYtelse?.ytelseNavn}
+                  </FormText>
+                </Column>
+              </AlignStartRow>
+            </PaddedHorizontallyDiv>
+          )
+        })}
+        {_motregning?.__type === 'familie' && (
+          <AlignStartRow>
+            <Column>
+              <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+                {t('label:familie') + ': '}
+              </FormText>
+              <FormText error={_v[_namespace + '-ytelseNavn']?.feilmelding}>
+                {_motregning?.ytelseNavn}
+              </FormText>
+            </Column>
+          </AlignStartRow>
         )}
-        <VerticalSeparatorDiv size='2' />
-        <Detail>
+        <VerticalSeparatorDiv />
+        <Label>
           {t('label:informasjon-om-familieytelser')}
-        </Detail>
-        <VerticalSeparatorDiv />
+        </Label>
         <AlignStartRow>
           <Column>
-            <DateInput
-              error={getErrorFor('vedtaksdato')}
-              id='vedtaksdato'
-              key={namespace + '-vedtaksdato-' + (motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
-              label={t('label:vedtaksdato')}
-              namespace={namespace}
-              onChanged={(newVedtaksdato) => { return setVedtaksDato(newVedtaksdato, motregningKey) }}
-              required
-              value={(motregningKey === 'new-motregning' ? _newVedtaksdato : motregning?.vedtaksdato)}
-            />
+            <FormText error={_v[_namespace + '-vedtaksdato']?.feilmelding}>
+              {_motregning?.vedtaksdato}
+            </FormText>
           </Column>
-          <Column flex='2' />
+          <Column>
+            <FlexDiv>
+              <Label>{t('label:beløp') + ':'}</Label>
+              <HorizontalSeparatorDiv size='0.5' />
+              <FlexDiv>
+                <FormText error={_v[_namespace + '-beloep']}>
+                  {_motregning?.beloep}
+                </FormText>
+                <HorizontalSeparatorDiv size='0.5' />
+                <FormText error={_v[_namespace + '-valuta']}>
+                  {_motregning?.valuta}
+                </FormText>
+              </FlexDiv>
+            </FlexDiv>
+          </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
         <AlignStartRow>
-          <Column>
-            <Input
-              error={getErrorFor('beloep')}
-              id='beloep'
-              key={namespace + idx + '-beloep-' + (motregningKey === 'new-motregning' ? _newBeløp : motregning?.beloep)}
-              label={t('label:beløp')}
-              namespace={namespace + idx}
-              onChanged={(newBeløp: string) => setBeløp(newBeløp, motregningKey)}
-              required
-              value={(motregningKey === 'new-motregning' ? _newBeløp : motregning?.beloep)}
-            />
-          </Column>
-          <Column>
-            <CountrySelect
-              ariaLabel={t('label:valuta')}
-              closeMenuOnSelect
-              data-testid={namespace + idx + '-valuta'}
-              error={getErrorFor('valuta')}
-              id={namespace + idx + '-valuta'}
-              key={namespace + idx + '-valuta-' + (motregningKey === 'new-motregning' ? _newValuta : _currencyData.findByValue(motregning?.valuta)?.valuta ?? '')}
-              label={t('label:valuta') + ' *'}
-              locale='nb'
-              menuPortalTarget={document.body}
-              onOptionSelected={setValuta}
-              type='currency'
-              values={(motregningKey === 'new-motregning' ? _newValuta : _currencyData.findByValue(motregning?.valuta))}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + idx}
+          <PeriodeText
             error={{
-              startdato: getErrorFor('startdato'),
-              sluttdato: getErrorFor('sluttdato')
+              startdato: _v[_namespace + '-startdato'],
+              sluttdato: _v[_namespace + '-sluttdato']
             }}
-            label={{
-              startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *',
-              sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
-            }}
-            periodeType='simple'
-            setPeriode={(newPeriode: Periode, id: string) => setPeriode(newPeriode, id, motregningKey)}
-            value={motregningKey === 'new-motregning'
-              ? _newPeriode
-              : {
-                startdato: motregning?.startdato,
-                sluttdato: motregning?.sluttdato
-              } as Periode}
+            periode={_motregning}
           />
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <RadioPanelGroup
-              checked={motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet}
-              data-no-border
-              data-testid={namespace + idx + '-utbetalingshyppighet'}
-              id={namespace + idx + '-utbetalingshyppighet'}
-              key={namespace + idx + '-utbetalingshyppighet-' + (motregningKey === 'new-motregning' ? _newUtbetalingshyppighet : motregning?.utbetalingshyppighet)}
-              error={getErrorFor('utbetalingshyppighet')}
-              name={namespace + idx + '-utbetalingshyppighet'}
-              legend={t('label:periode-avgrensing') + ' *'}
-              onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, motregningKey)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
-                <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Input
-              error={getErrorFor('mottakersNavn')}
-              namespace={namespace + idx}
-              id='mottakersNavn'
-              key={namespace + idx + '-mottakersnavn-' + (motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}
-              label={t('label:mottakers-navn')}
-              onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, motregningKey)}
-              required
-              value={(motregningKey === 'new-motregning' ? _newMottakersNavn : motregning?.mottakersNavn)}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={getErrorFor('begrunnelse')}
-                namespace={namespace + idx}
-                id='begrunnelse'
-                key={namespace + idx + '-begrunnelse-' + (motregningKey === 'new-motregning' ? _newBegrunnelse : motregning?.begrunnelse)}
-                label={t('label:anmodning-grunner')}
-                onChanged={(newBegrunnelse: string) => setBegrunnelse(newBegrunnelse, motregningKey)}
-                value={(motregningKey === 'new-motregning' ? _newBegrunnelse : motregning?.begrunnelse)}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={getErrorFor('ytterligereInfo')}
-                namespace={namespace + idx}
-                id='ytterligereInfo'
-                key={namespace + idx + '-ytterligereInfo-' + (motregningKey === 'new-motregning' ? _newYtterligereInfo : motregning?.ytterligereInfo)}
-                label={t('label:ytterligere-informasjon')}
-                onChanged={(newYtterligereInfo: string) => setYtterligereInfo(newYtterligereInfo, motregningKey)}
-                value={(motregningKey === 'new-motregning' ? _newYtterligereInfo : motregning?.ytterligereInfo)}
-              />
-            </TextAreaDiv>
+          <Column>
+            <FormText error={_v[_namespace + '-vedtaksdato']?.feilmelding}>
+              {_motregning?.vedtaksdato}
+            </FormText>
           </Column>
           <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={motregningKey !== 'new-motregning'}
-              marginTop
-              onBeginRemove={() => _addToDeletion(motregning)}
-              onConfirmRemove={() => onRemove(motregningKey)}
-              onCancelRemove={() => _removeFromDeletion(motregning)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
+            <FormText error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}>
+              {_motregning?.utbetalingshyppighet}
+            </FormText>
           </Column>
         </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column>
+            <FormText error={_v[_namespace + '-mottakersNavn']?.feilmelding}>
+              {_motregning?.mottakersNavn}
+            </FormText>
+          </Column>
+          <Column>
+            <FormText error={_v[_namespace + '-begrunnelse']?.feilmelding}>
+              {_motregning?.begrunnelse}
+            </FormText>
+          </Column>
+        </AlignStartRow>
+        <AlignStartRow>
+          <Column>
+            <FormText error={_v[_namespace + '-ytterligereInfo']?.feilmelding}>
+              {_motregning?.ytterligereInfo}
+            </FormText>
+          </Column>
+          <AlignEndColumn>
+            {addremovepanel}
+          </AlignEndColumn>
+        </AlignStartRow>
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
-  return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {t('label:motregning')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
 
-      {_.isEmpty(Object.keys(_keyAndYtelseMap))
+  return (
+    <>
+      {_.isEmpty(_allMotregnings)
         ? (
-          <BodyLong>
-            {t('message:warning-no-motregning')}
-          </BodyLong>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-motregning')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
-        : Object.keys(_keyAndYtelseMap)?.map(renderRow)}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
+        : _allMotregnings?.map(renderRow)}
       <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow('new-motregning')
+      {_newForm
+        ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-      <VerticalSeparatorDiv size='0.5' />
-    </PaddedDiv>
+    </>
   )
 }
 
-export default Motregning
+export default MotregningFC

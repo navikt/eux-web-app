@@ -29,7 +29,7 @@ export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
 export type HSvarType = 'positivt' | 'negative'
 
-export type BarnaEllerFamilie = 'barna' | 'familie'
+export type BarnEllerFamilie = 'barn' | 'familie'
 
 export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
 
@@ -69,9 +69,8 @@ export interface Periode {
 
   // internal use, for periode labeling, reference and visual
   // remove it before sync with ReplySed / PDU1
-  __type ?: any
-  __index ?: number
-  __visible ?: boolean
+  __type ?: string
+  __index ?: any
 }
 
 export interface PensjonPeriode {

@@ -4,7 +4,7 @@ import { checkIfNotEmpty } from 'utils/validation'
 import { KeyAndYtelse } from './KeyAndYtelse'
 
 export interface ValidationKeyAndYtelseProps {
-  keyAndYtelse: KeyAndYtelse
+  keyAndYtelse: KeyAndYtelse | undefined
   index?: number
 }
 
