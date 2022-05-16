@@ -170,7 +170,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       personName
     })
     if (!!_newPeriode && valid) {
-      const type = _newPeriode.__type
+      const type: string = _newPeriode.__type as string
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(person, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []

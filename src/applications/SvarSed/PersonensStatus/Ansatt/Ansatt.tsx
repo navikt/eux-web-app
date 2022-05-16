@@ -215,7 +215,7 @@ const Ansatt: React.FC<MainFormProps> = ({
 
     // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
     // it is stored in __type, as the __index is already busy with the one above
-    const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
+    const changedArbeidsgiverIndex: number = parseInt(newArbeidsgiver.__type!)
 
     const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>
     newArbeidsperioder[changedArbeidsgiverIndex].fraDato = newArbeidsgiver.startdato

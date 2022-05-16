@@ -30,7 +30,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
-import { pensjonPeriodeSort } from 'utils/sort'
+import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './validation'
 
@@ -151,7 +151,7 @@ const WithSubsidies: React.FC<MainFormProps> = ({
         newPensjonPerioder = []
       }
       newPensjonPerioder.push(_newPensjonPeriode)
-      newPensjonPerioder.sort(pensjonPeriodeSort)
+      newPensjonPerioder.sort(periodePeriodeSort)
       dispatch(updateReplySed(target, newPensjonPerioder))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderMedPensjon' })
       onCloseNew()

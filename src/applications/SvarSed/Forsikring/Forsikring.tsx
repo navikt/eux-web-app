@@ -108,29 +108,29 @@ const Forsikring: React.FC<MainFormProps> = ({
   useEffect(() => {
     const periodes: Array<ForsikringPeriode> = [];
     (replySed as U002Sed)?.perioderAnsattMedForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattMedForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattMedForsikring' }));
     (replySed as U002Sed)?.perioderAnsattUtenForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattUtenForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnsattUtenForsikring' }));
     (replySed as U002Sed)?.perioderSelvstendigMedForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigMedForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigMedForsikring' }));
     (replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigUtenForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSelvstendigUtenForsikring' }));
     (replySed as U002Sed)?.perioderFrihetsberoevet?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrihetsberoevet', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrihetsberoevet' }));
     (replySed as U002Sed)?.perioderSyk?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSyk', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSyk' }));
     (replySed as U002Sed)?.perioderSvangerskapBarn?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSvangerskapBarn', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderSvangerskapBarn' }));
     (replySed as U002Sed)?.perioderUtdanning?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderUtdanning', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderUtdanning' }));
     (replySed as U002Sed)?.perioderMilitaertjeneste?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderMilitaertjeneste', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderMilitaertjeneste' }));
     (replySed as U002Sed)?.perioderAnnenForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnnenForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderAnnenForsikring' }));
     (replySed as U002Sed)?.perioderFrivilligForsikring?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrivilligForsikring', __visible: false }));
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderFrivilligForsikring' }));
     (replySed as U002Sed)?.perioderKompensertFerie?.forEach(
-      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderKompensertFerie', __visible: false }))
+      (p, i) => periodes.push({ ...p, __index: i, __type: 'perioderKompensertFerie' }))
     _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
@@ -252,7 +252,6 @@ const Forsikring: React.FC<MainFormProps> = ({
       // we do not switch types
       delete __editPeriode.__type
       delete __editPeriode.__index
-      delete __editPeriode.__visible
       dispatch(updateReplySed(`${__type}[${__index}]`, __editPeriode))
       onCloseEdit(namespace + __editTypeAndIndex)
     } else {
@@ -261,7 +260,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (periode: Periode) => {
-    const type: string = periode.__type!
+    const type: string = periode.__type! as string
     const index: number = periode.__index!
     const perioder : Array<ForsikringPeriode> = _.cloneDeep(_.get(replySed, type)) as Array<ForsikringPeriode>
     perioder.splice(index, 1)
@@ -275,14 +274,13 @@ const Forsikring: React.FC<MainFormProps> = ({
       personName
     })
     if (!!_newPeriode && valid) {
-      const type = _newPeriode.__type
+      const type: string = _newPeriode.__type as string
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(replySed, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
       delete _newPeriode.__type
       delete _newPeriode.__index
-      delete _newPeriode.__visible
       newPerioder.concat(_newPeriode!)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(type, newPerioder))
@@ -363,7 +361,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               <VerticalSeparatorDiv />
             </>
           )}
-        {!!_periode?.__type && (
+        {!_.isUndefined(_periode?.__type) && (
           <AlignStartRow>
             {inEditMode
               ? (
@@ -384,7 +382,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                 <>
                   {_sort === 'time' && (
                     <Column style={{ maxWidth: '40px' }}>
-                      {getIcon(_periode.__type, '32')}
+                      {getIcon(_periode!.__type!, '32')}
                     </Column>
                   )}
                   <PeriodeText
@@ -403,10 +401,10 @@ const Forsikring: React.FC<MainFormProps> = ({
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        {[
+        {!_.isUndefined(_periode?.__type) && [
           'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
           'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
-        ].indexOf(_periode?.__type) >= 0 && (
+        ].indexOf(_periode!.__type!) >= 0 && (
           <>
             <AlignStartRow>
               <Column>
@@ -424,8 +422,8 @@ const Forsikring: React.FC<MainFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-        {['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-          .indexOf(_periode?.__type) >= 0 && (
+        {!_.isUndefined(_periode?.__type) && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
+          .indexOf(_periode!.__type!) >= 0 && (
             <>
               {inEditMode
                 ? (
@@ -464,7 +462,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               </AlignStartRow>
             </>
         )}
-        {_periode?.__type === 'perioderAnnenForsikring' && (
+        {!_.isUndefined(_periode?.__type) && _periode!.__type === 'perioderAnnenForsikring' && (
           <>
             <AlignStartRow>
               <Column>

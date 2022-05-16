@@ -15,6 +15,7 @@ import {
 } from '@navikt/hoykontrast'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
+import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -32,12 +33,12 @@ import {
   BarnEllerFamilie,
   F002Sed,
   Motregning,
-  Periode,
   ReplySed,
   Utbetalingshyppighet
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,7 +47,12 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateMotregning, ValidationMotregningProps } from './validation'
+import {
+  validateMotregning,
+  validateMotregninger,
+  ValidationMotregningerProps,
+  ValidationMotregningProps
+} from './validation'
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -86,6 +92,17 @@ const MotregningFC: React.FC<MainFormProps> = ({
   const [_allBarnaNameKeys, _setAllBarnaNameKeys] = useState<BarnaNameKeyMap>({})
 
   const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + (b.personInfo?.etternavn ?? '')
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationMotregningerProps>(
+      validation, namespace, validateMotregninger, {
+        replySed: replySed as ReplySed,
+        formalName: personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+    dispatch(resetAdresse())
+  })
 
   useEffect(() => {
     /**
@@ -699,7 +716,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
             <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          {_motregning?.__type === 'barna' && (
+          {_motregning?.__type === 'barn' && (
             <>
               <PaddedHorizontallyDiv>
                 <AlignStartRow>
@@ -718,11 +735,11 @@ const MotregningFC: React.FC<MainFormProps> = ({
               </PaddedHorizontallyDiv>
               <VerticalSeparatorDiv />
               {Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
-                const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index.values,
+                const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index?.values,
                   (value: KeyAndYtelse) => value.key1 === barnaKey)
                 const matchedKeyAndYtelse: KeyAndYtelse | undefined = matchedKeyAndYtelseIndex < 0
                   ? undefined
-                  : _motregning?.__index.values[matchedKeyAndYtelseIndex]
+                  : _motregning?.__index?.values[matchedKeyAndYtelseIndex]
                 const ytelseIdx = getIdx(matchedKeyAndYtelseIndex)
                 return (
                   <PaddedHorizontallyDiv key={barnaKey}>
@@ -743,6 +760,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                           key={_namespace + '-ytelseNavn-' + matchedKeyAndYtelse?.ytelseNavn}
                           label={t('label:betegnelse-på-ytelse')}
                           namespace={_namespace}
+                          hideLabel
                           onChanged={(newYtelseNavn: string) => setYtelseNavnForBarna(barnaKey, newYtelseNavn, index)}
                           required
                           value={matchedKeyAndYtelse?.ytelseNavn}
@@ -757,7 +775,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
           )}
           {_motregning?.__type === 'familie' && (
             <AlignStartRow>
-              <Column>
+              <Column size='2'>
                 <Input
                   error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                   id='ytelseNavn'
@@ -769,6 +787,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                   value={_motregning?.ytelseNavn}
                 />
               </Column>
+              <Column />
             </AlignStartRow>
           )}
           <VerticalSeparatorDiv />
@@ -777,7 +796,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
           </Label>
           <VerticalSeparatorDiv />
           <AlignStartRow>
-            <Column>
+            <Column size='2'>
               <DateInput
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
                 id='vedtaksdato'
@@ -817,7 +836,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 values={_motregning?.valuta}
               />
             </Column>
-            <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <AlignStartRow>
@@ -831,8 +849,9 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *',
                 sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
               }}
+              hideLabel={false}
               periodeType='simple'
-              setPeriode={(newPeriode: Periode) => setPeriode(newPeriode, index)}
+              setPeriode={(newPeriode: Motregning) => setPeriode(newPeriode, index)}
               value={_motregning}
             />
             <Column flex='2'>
@@ -853,7 +872,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 </FlexRadioPanels>
               </RadioPanelGroup>
             </Column>
-            <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <AlignStartRow>
@@ -886,6 +904,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 />
               </TextAreaDiv>
             </Column>
+            <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <AlignStartRow>
@@ -934,12 +953,12 @@ const MotregningFC: React.FC<MainFormProps> = ({
             </FormText>
           </Column>
         </AlignStartRow>
-        {_motregning?.__type === 'barna' && Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
-          const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index.values,
+        {_motregning?.__type === 'barn' && Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
+          const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index?.values,
             (value: KeyAndYtelse) => value.key1 === barnaKey)
           const matchedKeyAndYtelse: KeyAndYtelse | undefined = matchedKeyAndYtelseIndex < 0
             ? undefined
-            : _motregning?.__index.values[matchedKeyAndYtelseIndex]
+            : _motregning?.__index?.values[matchedKeyAndYtelseIndex]
           const ytelseIdx = getIdx(matchedKeyAndYtelseIndex)
           if (!matchedKeyAndYtelse) {
             return null

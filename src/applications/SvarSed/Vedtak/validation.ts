@@ -1,22 +1,26 @@
 import { validatePeriode } from 'components/Forms/validation'
-import { Vedtak, VedtakPeriode, Periode } from 'declarations/sed'
+import { Vedtak, Periode, KompetansePeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { getIdx } from 'utils/namespace'
+import { getIdx, getNSIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotDate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationVedtakPeriodeProps {
-  periode: Periode
-  perioder: Array<Periode>
+  periode: Periode | undefined
+  perioder: Array<Periode> | undefined
   index?: number
   formalName?: string
 }
 
-export interface ValidationVedtakVedtaksperiodeProps {
-  vedtaksperiode: VedtakPeriode
-  vedtaksperioder: Array<VedtakPeriode> | undefined
-  vedtaktype: string
-  index?: number
+export interface ValidationKompetansePeriodeProps {
+  kompetanseperiode: KompetansePeriode | undefined
+  kompetanseperioder: Array<KompetansePeriode> | undefined
+  nsIndex?: string
+  formalName?: string
+}
+
+export interface ValidationVedtakProps {
+  vedtak: Vedtak | undefined
   formalName?: string
 }
 
@@ -51,51 +55,41 @@ export const validateVedtakPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateVedtakVedtaksperiode = (
+export const validateKompetansePeriode = (
   v: Validation,
   namespace: string,
   {
-    vedtaksperiode,
-    vedtaksperioder,
-    vedtaktype,
-    index,
+    kompetanseperiode,
+    kompetanseperioder,
+    nsIndex,
     formalName
-  }:ValidationVedtakVedtaksperiodeProps
+  }:ValidationKompetansePeriodeProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  let idx = getIdx(index)
 
-  if (!_.isEmpty(idx)) {
-    idx = '-' + vedtaktype + idx
-  }
-  hasErrors.push(validatePeriode(v, namespace + '-vedtaksperioder' + idx + '-periode', {
-    periode: vedtaksperiode?.periode,
+  hasErrors.push(validatePeriode(v, namespace + '-vedtaksperioder' + nsIndex + '-periode', {
+    periode: kompetanseperiode?.periode,
     personName: formalName
   }))
 
   hasErrors.push(checkIfDuplicate(v, {
-    needle: vedtaksperiode?.periode,
-    haystack: vedtaksperioder,
-    matchFn: (p: VedtakPeriode) => p.periode.startdato === vedtaksperiode?.periode?.startdato && p.periode.sluttdato === vedtaksperiode?.periode?.sluttdato,
-    id: namespace + '-vedtaksperioder' + idx + '-periode-startdato',
+    needle: kompetanseperiode?.periode,
+    haystack: kompetanseperioder,
+    matchFn: (p: KompetansePeriode) => p.periode.startdato === kompetanseperiode?.periode?.startdato && p.periode.sluttdato === kompetanseperiode?.periode?.sluttdato,
+    id: namespace + '-vedtaksperioder' + nsIndex + '-periode-startdato',
     message: 'validation:duplicateStartdato',
-    index,
+    index: nsIndex,
     personName: formalName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: vedtaksperiode?.skalYtelseUtbetales,
-    id: namespace + '-vedtaksperioder' + idx + '-skalYtelseUtbetales',
+    needle: kompetanseperiode?.skalYtelseUtbetales,
+    id: namespace + '-vedtaksperioder' + nsIndex + '-skalYtelseUtbetales',
     message: 'validation:noSkalYtelseUtbetales',
     personName: formalName
   }))
 
   return hasErrors.find(value => value) !== undefined
-}
-
-interface ValidateVedtakProps {
-  vedtak: Vedtak
-  formalName: string
 }
 
 export const validateVedtak = (
@@ -104,7 +98,7 @@ export const validateVedtak = (
   {
     vedtak,
     formalName
-  }: ValidateVedtakProps
+  }: ValidationVedtakProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
@@ -164,13 +158,16 @@ export const validateVedtak = (
   }));
 
   ['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].forEach(vedtaktype => {
-    const vedtaksperioder: Array<VedtakPeriode> | undefined = _.get(vedtak, vedtaktype) as Array<VedtakPeriode> | undefined
-    vedtaksperioder?.forEach((vp: VedtakPeriode, index: number) => {
-      hasErrors.push(validateVedtakVedtaksperiode(v, namespace, {
-        vedtaksperiode: vp,
-        vedtaksperioder,
-        vedtaktype,
-        index,
+    const kompetanseperioder: Array<KompetansePeriode> | undefined = _.get(vedtak, vedtaktype) as Array<KompetansePeriode> | undefined
+
+    kompetanseperioder?.forEach((vp: KompetansePeriode, index: number) => {
+      vp.periode.__type = vedtaktype
+      vp.periode.__index = index
+      const nsIndex = getNSIdx(vedtaktype, index)
+      hasErrors.push(validateKompetansePeriode(v, namespace, {
+        kompetanseperiode: vp,
+        kompetanseperioder,
+        nsIndex,
         formalName
       }))
     })

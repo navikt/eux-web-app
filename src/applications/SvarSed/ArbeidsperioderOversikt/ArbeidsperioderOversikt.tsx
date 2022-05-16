@@ -166,7 +166,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     // this is the index of this arbeidsgiver in the arbeidsperioder?.arbeidsperioder list
     // it is stored in __type, as the __index is already busy with the one above
     // if it is undefined, then this ArbeidsperiodeOversikt is not paired to a arbeidsperioder?.arbeidsperioder
-    const changedArbeidsgiverIndex: number = newArbeidsgiver.__type!
+    const changedArbeidsgiverIndex: number = parseInt(newArbeidsgiver.__type!)
 
     if (!_.isNil(changedArbeidsgiverIndex) && changedArbeidsgiverIndex >= 0) {
       const newArbeidsperioder: Array<ArbeidsperiodeFraAA> | undefined = _.cloneDeep(arbeidsperioder?.arbeidsperioder) as Array<ArbeidsperiodeFraAA>

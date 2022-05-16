@@ -73,9 +73,12 @@ export interface Periode {
   __index ?: any
 }
 
-export interface PensjonPeriode {
-  pensjonstype: string
+export interface PeriodePeriode {
   periode: Periode
+}
+
+export interface PensjonPeriode extends PeriodePeriode {
+  pensjonstype: string
 }
 
 export interface ArbeidsgiverIdentifikator {
@@ -100,12 +103,11 @@ export interface Flyttegrunn {
   personligSituasjon?: string
 }
 
-export interface FamilieRelasjon {
+export interface FamilieRelasjon extends PeriodePeriode {
   annenRelasjonDato?: string
   annenRelasjonPersonNavn?: string
   annenRelasjonType?: string
   borSammen?: JaNei
-  periode: Periode
   relasjonInfo: string
   relasjonType?: RelasjonType
 }
@@ -217,7 +219,7 @@ export interface H002Svar {
   grunn?: string
 }
 
-export interface Barnetilhoerighet {
+export interface Barnetilhoerighet extends PeriodePeriode {
   borIBrukersHushold: JaNei
   borIEktefellesHushold: JaNei
   borIAnnenPersonsHushold: JaNei
@@ -225,7 +227,6 @@ export interface Barnetilhoerighet {
   erDeltForeldreansvar: JaNei
   relasjonTilPerson: BarnRelasjon
   relasjonType?: BarnRelasjonType
-  periode: Periode
 }
 
 export interface KontoOrdinaer {
@@ -253,8 +254,7 @@ export interface Grunn {
   person: string
 }
 
-export interface VedtakPeriode {
-  periode: Periode
+export interface KompetansePeriode extends PeriodePeriode {
   skalYtelseUtbetales?: JaNei
 }
 
@@ -266,18 +266,19 @@ export interface VedtakBarn {
 }
 
 export interface Vedtak {
+  gjelderAlleBarn: JaNei
   innhold: string
   ytterligereInfo: string
   vedtakstype: string
   vedtaksdato: string
   begrunnelse: string
-  primaerkompetanseArt58: Array<VedtakPeriode>
-  sekundaerkompetanseArt58: Array<VedtakPeriode>,
-  primaerkompetanseArt68: Array<VedtakPeriode>,
-  sekundaerkompetanseArt68: Array<VedtakPeriode>,
+  primaerkompetanseArt58: Array<KompetansePeriode>
+  sekundaerkompetanseArt58: Array<KompetansePeriode>,
+  primaerkompetanseArt68: Array<KompetansePeriode>,
+  sekundaerkompetanseArt68: Array<KompetansePeriode>,
   vedtaksperioder: Array<Periode>,
   barnVedtaketOmfatter: Array<VedtakBarn>
-  gjelderAlleBarn: JaNei
+
 }
 
 export interface ProsedyreVedUenighet {
@@ -329,8 +330,7 @@ export interface Institusjon {
   }
 }
 
-export interface PeriodeDagpenger {
-  periode: Periode,
+export interface PeriodeDagpenger extends PeriodePeriode {
   institusjon: Institusjon
   // added:
   __cache?: any
@@ -343,8 +343,7 @@ export interface Inntekt {
   valuta: string
 }
 
-export interface Loennsopplysning {
-  periode: Periode
+export interface Loennsopplysning extends PeriodePeriode {
   periodetype: string
   ansettelsestype?: string
   inntekter: Array<Inntekt>
@@ -352,9 +351,8 @@ export interface Loennsopplysning {
   arbeidstimer?: string
 }
 
-export interface RettTilYtelse {
+export interface RettTilYtelse extends PeriodePeriode {
   bekreftelsesgrunn?: string
-  periode: Periode
   avvisningsgrunn?: string
 }
 

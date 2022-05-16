@@ -64,7 +64,7 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
         item: {
           ...(arbeidsgiverAsPeriodeMedForsikring as T),
           __index: periodeIndex,
-          __type: arbeidsperioderIndex
+          __type: '' + arbeidsperioderIndex
         },
         type: 'arbeidsperiode',
         duplicate: false
@@ -73,7 +73,7 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
       unmatchedArbeidsgiver.push({
         item: {
           ...arbeidsgiverAsPeriodeMedForsikring as T,
-          __type: arbeidsperioderIndex
+          __type: '' + arbeidsperioderIndex
         },
         type: 'arbeidsperiode',
         duplicate: false

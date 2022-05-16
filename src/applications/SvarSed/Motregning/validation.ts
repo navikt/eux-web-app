@@ -36,7 +36,7 @@ export const validateMotregning = (
     personName: formalName
   }))
 
-  if (motregning?.__type === 'barna') {
+  if (motregning?.__type === 'barn') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: motregning?.__index.values,
       id: namespace + nsIndex + '-ytelseNavn',

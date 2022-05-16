@@ -192,6 +192,8 @@
   "journalforing" : "Journalfør {{sedtype}}",
 
   "kjønn" : "Kjønn",
+  "kompetanseperiode" : "Kompetanseperiode",
+  "kompetanseperioder" : "Kompetanseperioder",
   "kontaktadresse": "Kontaktadresse",
   "kontaktinformasjon": "Kontaktinformasjon",
   "konto-type": "Konto type",
@@ -380,6 +382,8 @@
   "vedtak-angående-alle-barn": "Vedtak angående alle barn som er oppgitt i denne SEDen",
   "vedtak-type" : "Vedtak type",
   "vedtaksdato": "Vedtaksdato",
+  "vedtaksperiode": "Vedtaksperiode",
+  "vedtaksperioder": "Vedtaksperioder",
   "vennligst-send-oss-folgende-dokumenter": "Vennligst send oss følgende dokument(er)",
   "vennligst-send-oss-folgende-informasjon": "Vennligst send oss følgende informasjon",
   "vennligst-send-oss-folgende-sed-er": "Vennligst send oss følgende SED-er",
