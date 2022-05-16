@@ -1,7 +1,6 @@
-import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import { mapState, MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { F002Sed } from 'declarations/sed'
@@ -30,26 +29,19 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small'>
-        {t('label:krav-om-refusjon')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-krav']?.feilmelding}
-              key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
-              id='krav'
-              label={t('label:krav-om-refusjon-under-artikkel')}
-              namespace={namespace}
-              onChanged={setKrav}
-              required
-              value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
+      <VerticalSeparatorDiv />
+      <TextAreaDiv>
+        <TextArea
+          error={validation[namespace + '-krav']?.feilmelding}
+          key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
+          id='krav'
+          label={t('label:krav-om-refusjon-under-artikkel')}
+          namespace={namespace}
+          onChanged={setKrav}
+          required
+          value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
+        />
+      </TextAreaDiv>
     </PaddedDiv>
   )
 }

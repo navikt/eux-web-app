@@ -1,13 +1,13 @@
+import { Radio, RadioGroup } from '@navikt/ds-react'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
+import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
 import _ from 'lodash'
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -134,10 +134,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <Heading size='small'>
-        {t('label:kontoopplysninger')}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column>
           <TextAreaDiv>

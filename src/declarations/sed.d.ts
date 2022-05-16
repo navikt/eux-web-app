@@ -252,6 +252,8 @@ export interface UtbetalingTilInstitusjon {
 export interface Grunn {
   grunn: string
   person: string
+  // extra: aux param to help edit
+  __oldGrunn ?: string
 }
 
 export interface KompetansePeriode extends PeriodePeriode {

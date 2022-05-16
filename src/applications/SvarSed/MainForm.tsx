@@ -61,8 +61,9 @@ const RightActiveDiv = styled.div`
   margin-left: -1px;
 `
 const NameAndOptionsDiv = styled(PileDiv)`
- &.whiteborder {
+ &.selected {
    border-right: 1px solid var(--navds-panel-color-background);
+   background-image: linear-gradient(to right, var(--navds-semantic-color-canvas-background), var(--navds-semantic-color-canvas-background-light));
  }
  background-color: var(--navds-semantic-color-canvas-background-light);
  border-top: 1px solid var(--navds-panel-color-border);
@@ -104,7 +105,7 @@ const OptionDiv = styled.div`
     border-bottom: 1px solid var(--navds-panel-color-border);
     background-image: linear-gradient(to right, var(--navds-semantic-color-canvas-background), var(--navds-semantic-color-canvas-background-light));
   }
-  &.whiteborder {
+  &.selected {
     border-right: 1px solid var(--navds-panel-color-background);
     margin-right: -1px;
   }
@@ -380,7 +381,7 @@ const MainForm = <T extends StorageTypes>({
       return (
         <NameAndOptionsDiv
           key={form.value}
-          className={classNames({ whiteborder: selected })}
+          className={classNames({ selected })}
         >
           <NameDiv
             onClick={() => {
@@ -426,7 +427,7 @@ const MainForm = <T extends StorageTypes>({
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
     return (
-      <NameAndOptionsDiv className={classNames({ whiteborder: !open && currentMenu === personId })}>
+      <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === personId })}>
         <NameDiv
           onClick={() => {
             changeMenu(personId, undefined, 'click')
@@ -501,7 +502,6 @@ const MainForm = <T extends StorageTypes>({
               <OptionDiv
                 className={classNames({
                   selected: currentMenu === personId && currentMenuOption === o.value,
-                  whiteborder: currentMenu === personId && currentMenuOption === o.value,
                   first: i === 0
                 })}
                 key={namespace + '-' + personId + '-' + o.value}

@@ -1,22 +1,27 @@
-import { ProsedyreVedUenighet as IProsedyreVedUenighet, Grunn } from 'declarations/sed'
+import { ProsedyreVedUenighet, Grunn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import { addError, checkIfDuplicate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
-export interface ValidationProsedyreVedUenighetGrunnProps {
-  grunn: Grunn
-  prosedyreVedUenighet: IProsedyreVedUenighet | undefined
+export interface ValidationGrunnProps {
+  grunn: Grunn | undefined
+  grunns: Array<Grunn> | undefined
   index?: number
   formalName?: string
 }
 
-export const validateProsedyreVedUenighetGrunn = (
+export interface ValidationProsedyreVedUenighetProps {
+  prosedyreVedUenighet: ProsedyreVedUenighet | undefined
+  formalName?: string
+}
+export const validateGrunn = (
   v: Validation,
   namespace: string,
   {
     grunn,
-    prosedyreVedUenighet = {} as any,
+    grunns,
+    index,
     formalName
-  }: ValidationProsedyreVedUenighetGrunnProps
+  }: ValidationGrunnProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
@@ -34,9 +39,12 @@ export const validateProsedyreVedUenighetGrunn = (
     personName: formalName
   }))
 
-  const duplicate: boolean = Object.prototype.hasOwnProperty.call(prosedyreVedUenighet, grunn.grunn)
-  if (duplicate) {
-    hasErrors.push(addError(v, {
+  if (grunn?.grunn) {
+    hasErrors.push(checkIfDuplicate(v, {
+      needle: grunn,
+      haystack: grunns,
+      index,
+      matchFn: (g: Grunn) => (g.grunn === grunn.grunn && g.person === grunn.person),
       id: namespace + '-grunn',
       message: 'validation:duplicateGrunn',
       personName: formalName
@@ -45,18 +53,13 @@ export const validateProsedyreVedUenighetGrunn = (
   return hasErrors.find(value => value) !== undefined
 }
 
-interface ValidateProsedyreVedUenighetProps {
-  prosedyreVedUenighet: IProsedyreVedUenighet
-  formalName: string
-}
-
 export const validateProsedyreVedUenighet = (
   v: Validation,
   namespace: string,
   {
     prosedyreVedUenighet = {},
     formalName
-  }: ValidateProsedyreVedUenighetProps
+  }: ValidationProsedyreVedUenighetProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
