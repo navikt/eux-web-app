@@ -1,30 +1,44 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
-import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import Input from 'components/Forms/Input'
-import { RepeatableRow } from 'components/StyledComponents'
-import { State } from 'declarations/reducers'
-import useAddRemove from 'hooks/useAddRemove'
-import useLocalValidation from 'hooks/useLocalValidation'
-import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
+  FlexDiv,
+  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
-  Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
+import classNames from 'classnames'
+import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import FormText from 'components/Forms/FormText'
+import Input from 'components/Forms/Input'
+import PeriodeInput from 'components/Forms/PeriodeInput'
+import PeriodeText from 'components/Forms/PeriodeText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { PDPeriode } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { Validation } from 'declarations/types'
+import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
+import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
-import { validateDagpengerPeriode, ValidationDagpengerPeriodeProps } from './validation'
-import { PDPeriode } from 'declarations/pd'
+import performValidation from 'utils/performValidation'
+import { periodeSort } from 'utils/sort'
+import { hasNamespaceWithErrors } from 'utils/validation'
+import {
+  validateDagpengerPeriode,
+  validateDagpengerPerioder,
+  ValidationDagpengerPeriodeProps,
+  ValidationDagpengerPerioderProps
+} from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -38,173 +52,214 @@ const Dagpenger: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
+  const namespace: string = `${parentNamespace}-dagpenger`
   const target: string = 'perioderDagpengerMottatt'
   const perioderDagpengerMottatt: Array<PDPeriode> | undefined = _.get(replySed, target)
-  const namespace: string = `${parentNamespace}-dagpenger`
+  const getId = (p: PDPeriode | null | undefined): string =>
+    !!p ? (p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
-  const [_newStartdato, _setNewStartdato] = useState<string |undefined>(undefined)
-  const [_newSluttdato, _setNewSluttdato] = useState<string |undefined>(undefined)
-  const [_newInfo, _setNewInfo] = useState<string |undefined>(undefined)
+  const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
+  const [_editPeriode, _setEditPeriode] = useState<PDPeriode | undefined>(undefined)
 
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PDPeriode>((p: PDPeriode): string => p.startdato + '-' + (p.sluttdato ?? ''))
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>(validateDagpengerPeriode, namespace)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>(validateDagpengerPeriode, namespace)
 
-  const onStartdatoChange = (newStartdato: string, index: number) => {
-    if (index < 0) {
-      _setNewStartdato(newStartdato.trim())
-      _resetValidation(namespace + '-startdato')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].startdato`, newStartdato.trim()))
-      if (validation[namespace + getIdx(index) + '-startdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationDagpengerPerioderProps>(
+      validation, namespace, validateDagpengerPerioder, {
+        dagpenger: perioderDagpengerMottatt
       }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
+  const setPeriode = (periode: PDPeriode, index: number) => {
+    if (index < 0) {
+      _setNewPeriode(periode)
+      _resetValidation(namespace)
+      return
     }
+    _setEditPeriode(periode)
+    dispatch(resetValidation(namespace + getIdx(index)))
   }
 
-  const onSluttdatoChange = (newSluttdato: string, index: number) => {
+  const setPeriodeInfo = (info: string, index: number) => {
     if (index < 0) {
-      _setNewSluttdato(newSluttdato.trim())
-      _resetValidation(namespace + '-sluttdato')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].sluttdato`, newSluttdato.trim()))
-      if (validation[namespace + getIdx(index) + '-sluttdato']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
-      }
-    }
-  }
-
-  const onInfoChange = (newInfo: string, index: number) => {
-    if (index < 0) {
-      _setNewInfo(newInfo.trim())
+      _setNewPeriode({
+        ..._newPeriode,
+        info
+      } as PDPeriode)
       _resetValidation(namespace + '-info')
-    } else {
-      dispatch(updateReplySed(`${target}[${index}].info`, newInfo.trim()))
-      if (validation[namespace + getIdx(index) + '-info']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-info'))
-      }
+      return
     }
+    _setEditPeriode({
+      ..._editPeriode,
+      info
+    } as PDPeriode)
+    dispatch(resetValidation(namespace + getIdx(index) + '-info'))
   }
 
-  const onRemove = (index: number) => {
-    const newPerioder: Array<PDPeriode> = _.cloneDeep(perioderDagpengerMottatt) as Array<PDPeriode>
-    const deletedPerioder: Array<PDPeriode> = newPerioder.splice(index, 1)
-    if (deletedPerioder && deletedPerioder.length > 0) {
-      removeFromDeletion(deletedPerioder[0])
-    }
-    standardLogger('pdu1.editor.dagpenger.periode.remove')
-    dispatch(updateReplySed(`${target}`, newPerioder))
+  const onCloseEdit = (namespace: string) => {
+    _setEditPeriode(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
   }
 
-  const resetForm = () => {
-    _setNewStartdato('')
-    _setNewSluttdato('')
-    _setNewInfo('')
+  const onCloseNew = () => {
+    _setNewPeriode(undefined)
+    _setNewForm(false)
     _resetValidation()
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
+  const onStartEdit = (periode: PDPeriode, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + _editIndex))
+    }
+    _setEditPeriode(periode)
+    _setEditIndex(index)
   }
 
-  const onAdd = () => {
-    const valid: boolean = performValidation({
-      startdato: _newStartdato,
-      sluttdato: _newSluttdato,
-      info: _newInfo
-    })
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationDagpengerPeriodeProps>(
+      validation, namespace, validateDagpengerPeriode, {
+        periode: _editPeriode,
+        index: _editIndex
+      })
     if (valid) {
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
+      onCloseEdit(namespace + getIdx(_editIndex))
+    } else {
+      dispatch(setValidation(newValidation))
+    }
+  }
+
+  const onRemove = (removed: PDPeriode) => {
+    const newPerioder: Array<PDPeriode> = _.reject(perioderDagpengerMottatt, (p: PDPeriode) => _.isEqual(removed, p))
+    dispatch(updateReplySed(target, newPerioder))
+    standardLogger('pdu1.editor.dagpenger.periode.remove')
+  }
+
+  const onAddNew = () => {
+    const valid: boolean = _performValidation({
+      periode: _newPeriode
+    })
+
+    if (!!_newPeriode && valid) {
       let newPerioder: Array<PDPeriode> | undefined = _.cloneDeep(perioderDagpengerMottatt)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      newPerioder = newPerioder.concat({
-        startdato: _newStartdato!,
-        sluttdato: _newSluttdato!,
-        info: _newInfo ?? ''
-      })
-      dispatch(updateReplySed(`${target}`, newPerioder))
+      newPerioder.push(_newPeriode)
+      newPerioder = newPerioder.sort(periodeSort)
+      dispatch(updateReplySed(target, newPerioder))
       standardLogger('pdu1.editor.dagpenger.perioder.add')
-      onCancel()
+      onCloseNew()
     }
   }
 
-  const renderRow = (p: PDPeriode | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(p)
+  const renderRow = (periode: PDPeriode | null, index: number) => {
     const idx = getIdx(index)
-    const getErrorFor = (index: number, el: string): string | undefined => (
-      index < 0
-        ? _validation[namespace + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
+    const _namespace = namespace + idx
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
+
+
+    const addremovepanel = (
+      <AddRemovePanel2<PDPeriode>
+        item={periode}
+        marginTop={inEditMode}
+        index={index}
+        inEditMode={inEditMode}
+        onRemove={onRemove}
+        onAddNew={onAddNew}
+        onCancelNew={onCloseNew}
+        onStartEdit={onStartEdit}
+        onConfirmEdit={onSaveEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
+      />
     )
-    const startdato = index < 0 ? _newStartdato : p?.startdato
-    const sluttdato = index < 0 ? _newSluttdato : p?.sluttdato
-    const info = index < 0 ? _newInfo : p?.info
+
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <VerticalSeparatorDiv />
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(periode)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespaceWithErrors(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
-          <Column>
-            <Input
-              ariaLabel={t('label:startdato')}
-              error={getErrorFor(index, 'startdato')}
-              id='startdato'
-              key={namespace + idx + '-startdato-' + startdato}
-              hideLabel={index >= 0}
-              label={t('label:startdato')}
-              namespace={namespace + idx}
-              onChanged={(e: string) => onStartdatoChange(e, index)}
-              value={startdato}
-            />
-          </Column>
-          <Column>
-            <Input
-              ariaLabel={t('label:sluttdato')}
-              error={getErrorFor(index, 'sluttdato')}
-              id='sluttdato'
-              key={namespace + idx + '-sluttdato-' + sluttdato}
-              hideLabel={index >= 0}
-              label={t('label:sluttdato')}
-              namespace={namespace + idx}
-              onChanged={(e: string) => onSluttdatoChange(e, index)}
-              value={sluttdato}
-            />
-          </Column>
-          <Column />
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                setPeriode={(p: PDPeriode) => setPeriode(p, index)}
+                value={_periode}
+              />
+            )
+            : (
+              <>
+                <Column>
+                  <FlexDiv>
+                   <HorizontalSeparatorDiv />
+                    <PeriodeText
+                      error={{
+                        startdato: _v[_namespace + '-startdato'],
+                        sluttdato: _v[_namespace + '-sluttdato']
+                      }}
+                      periode={_periode}
+                    />
+                    <HorizontalSeparatorDiv />
+                    <FormText error={_v[_namespace + '-info']}>
+                      {_periode?.info}
+                    </FormText>
+                  </FlexDiv>
+                </Column>
+                <AlignEndColumn>
+                  {addremovepanel}
+                </AlignEndColumn>
+
+              </>
+            )}
         </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Input
-              error={getErrorFor(index, 'info')}
-              namespace={namespace + idx}
-              id='type'
-              key={namespace + idx + '-info-' + info}
-              label={t('label:comment')}
-              onChanged={(newInfo: string) => onInfoChange(newInfo, index)}
-              value={info}
-            />
-          </Column>
-          <Column>
-            <AddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={index >= 0}
-              marginTop
-              onBeginRemove={() => addToDeletion(p)}
-              onConfirmRemove={() => onRemove(index)}
-              onCancelRemove={() => removeFromDeletion(p)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
+        {inEditMode && (
+          <>
+            <VerticalSeparatorDiv />
+            <AlignStartRow>
+              <Column>
+                <Input
+                  error={_v[_namespace + '-info']?.feilmelding}
+                  namespace={_namespace}
+                  id='info'
+                  key={_namespace + '-info-' + _periode?.info}
+                  label={t('label:comment')}
+                  onChanged={(info: string) => setPeriodeInfo(info, index)}
+                  value={_periode?.info}
+                />
+              </Column>
+            </AlignStartRow>
+            <AlignStartRow>
+              <AlignEndColumn>
+                {addremovepanel}
+              </AlignEndColumn>
+            </AlignStartRow>
+          </>
+        )}
+        <VerticalSeparatorDiv size='0.5'/>
       </RepeatableRow>
     )
   }
   return (
-    <div key={namespace + '-div'}>
+    <>
       <PaddedDiv>
         <Heading size='medium'>
           {t('label:mottatte-dagpenger')}
@@ -213,51 +268,31 @@ const Dagpenger: React.FC<MainFormProps> = ({
       </PaddedDiv>
       {_.isEmpty(perioderDagpengerMottatt)
         ? (
-          <PaddedDiv>
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
-          </PaddedDiv>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
           )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:startdato')}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:sluttdato')}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {perioderDagpengerMottatt?.map(renderRow)}
-          </>
-          )}
-      {_seeNewForm
+        : perioderDagpengerMottatt?.map(renderRow)
+      }
+      <VerticalSeparatorDiv />
+      {_newForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
-            <Row>
-              <Column>
                 <Button
                   variant='tertiary'
-                  onClick={() => _setSeeNewForm(true)}
+                  onClick={() => _setNewForm(true)}
                 >
                   <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
                 </Button>
-              </Column>
-            </Row>
           </PaddedDiv>
           )}
-    </div>
+    </>
   )
 }
 

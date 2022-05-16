@@ -1,4 +1,4 @@
-import { validateDagpenger } from 'applications/PDU1/Dagpenger/validation'
+import { validateDagpengerPerioder } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
 import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger, PDPeriode } from 'declarations/pd'
 import { GrunnTilOpphør } from 'declarations/sed'
@@ -37,7 +37,7 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
   hasErrors.push(validateUtbetaling(v, `${namespace}-${personID}-utbetaling`, { utbetaling }))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
-  hasErrors.push(validateDagpenger(v, `${namespace}-${personID}-dagpenger`, { dagpenger }))
+  hasErrors.push(validateDagpengerPerioder(v, `${namespace}-${personID}-dagpenger`, { dagpenger }))
 
   const nav: NavInfo = _.get(pdu1, 'nav')
   hasErrors.push(validateAvsender(v, `${namespace}-${personID}-avsender`, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }))

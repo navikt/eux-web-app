@@ -1,16 +1,19 @@
 import { Heading, Switch } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateAvsender, ValidationAvsenderProps } from 'applications/PDU1/Avsender/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { NavInfo } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -29,6 +32,17 @@ const Avsender: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-avsender`
 
   const [allowEdit, setAllowEdit] = useState<boolean>(false)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationAvsenderProps>(
+      validation, namespace, validateAvsender, {
+        nav,
+        keyForCity: 'poststed',
+        keyforZipCode: 'postnr'
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const setEnhetNavn = (enhetNavn: string) => {
     dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn))

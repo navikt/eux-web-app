@@ -1,14 +1,17 @@
 import { Heading } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import { validateCoverLetter, ValidationCoverLetterProps } from 'applications/PDU1/CoverLetter/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -25,6 +28,16 @@ const CoverLetter: React.FC<MainFormProps> = ({
   const target = 'info'
   const info: string | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-coverletter`
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationCoverLetterProps>(
+      validation, namespace, validateCoverLetter, {
+        info
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
+
 
   const setInfo = (newInfo: string) => {
     dispatch(updateReplySed(`${target}`, newInfo.trim()))

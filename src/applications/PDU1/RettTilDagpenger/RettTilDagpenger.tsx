@@ -1,14 +1,20 @@
 import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import { resetValidation } from 'actions/validation'
+import { AlignStartRow, Column, FlexEndDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { resetValidation, setValidation } from 'actions/validation'
+import {
+  validateRettTilDagpenger,
+  ValidationRettTilDagpengerProps
+} from 'applications/PDU1/RettTilDagpenger/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import { IkkeRettTilDagpenger, PDU1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, FlexEndDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 type RettTilDagpengerRadio = 'rettTilDagpenger' | 'ikkeRettTilDagpenger' | undefined
 
@@ -31,6 +37,16 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   const [rettTilDagpengerRadio, setRettTilDagpengerRadio] = useState<RettTilDagpengerRadio>(() =>
     !_.isEmpty(rettTilDagpenger) ? 'rettTilDagpenger' : !_.isEmpty(ikkeRettTilDagpenger) ? 'ikkeRettTilDagpenger' : undefined
   )
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationRettTilDagpengerProps>(
+      validation, namespace, validateRettTilDagpenger, {
+        rettTilDagpenger,
+        ikkeRettTilDagpenger
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   const onRettTilDagpengerRadioChange = (value: string | number | boolean) => {
     const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1

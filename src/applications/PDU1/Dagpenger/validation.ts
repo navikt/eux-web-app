@@ -5,13 +5,11 @@ import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 import i18n from 'i18n'
 
 export interface ValidationDagpengerPeriodeProps {
-  startdato: string | undefined
-  sluttdato: string |undefined
-  info: string |undefined
-  index ? : number
+  periode: PDPeriode |undefined
+  index? : number
 }
 
-export interface ValidationDagpengerProps {
+export interface ValidationDagpengerPerioderProps {
   dagpenger: Array<PDPeriode> | undefined
 }
 
@@ -19,9 +17,7 @@ export const validateDagpengerPeriode = (
   v: Validation,
   namespace: string,
   {
-    startdato,
-    sluttdato,
-    info,
+    periode,
     index
   }: ValidationDagpengerPeriodeProps
 ): boolean => {
@@ -29,19 +25,19 @@ export const validateDagpengerPeriode = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: startdato,
+    needle: periode?.startdato,
     id: namespace + idx + '-startdato',
     message: 'validation:noStartdato'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: sluttdato,
+    needle: periode?.sluttdato,
     id: namespace + idx + '-sluttdato',
     message: 'validation:noSluttdato'
   }))
 
   hasErrors.push(checkLength(v, {
-    needle: info,
+    needle: periode?.info,
     max: 500,
     id: namespace + idx + '-info',
     message: 'validation:textOverX'
@@ -50,20 +46,18 @@ export const validateDagpengerPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateDagpenger = (
+export const validateDagpengerPerioder = (
   v: Validation,
   namespace: string,
   {
     dagpenger
-  }: ValidationDagpengerProps
+  }: ValidationDagpengerPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   dagpenger?.forEach((periode: PDPeriode, index: number) => {
-    hasErrors.push(validateDagpengerPeriode(v, namespace + '-perioder', {
-      startdato: periode.startdato,
-      sluttdato: periode.sluttdato,
-      info: periode.info,
+    hasErrors.push(validateDagpengerPeriode(v, namespace, {
+      periode,
       index
     }))
   })

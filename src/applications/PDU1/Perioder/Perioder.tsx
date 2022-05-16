@@ -62,7 +62,7 @@ const Perioder: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-perioder`
   const getId = (p: PDPeriode | null | undefined): string =>
-    p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-forsikring'
+    !!p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<PDPeriode>>([])
   const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
@@ -147,7 +147,7 @@ const Perioder: React.FC<MainFormProps> = ({
       ..._editPeriode,
       info
     } as PDPeriode)
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode?.__type!, _editPeriode?.__index) + '-comment'))
+    dispatch(resetValidation(namespace + getNSIdx(_editPeriode?.__type!, _editPeriode?.__index) + '-info'))
   }
 
   const onCloseEdit = (namespace: string) => {
