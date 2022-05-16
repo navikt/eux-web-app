@@ -11,7 +11,7 @@ import {
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -223,7 +223,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 )}
           </Column>
           <AlignEndColumn>
-            <AddRemovePanel2<ArbeidsgiverIdentifikator>
+            <AddRemovePanel<ArbeidsgiverIdentifikator>
               item={identifikator}
               marginTop={inEditMode}
               index={index}

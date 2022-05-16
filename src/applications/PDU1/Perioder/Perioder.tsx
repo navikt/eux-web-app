@@ -15,7 +15,7 @@ import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -62,7 +62,7 @@ const Perioder: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-perioder`
   const getId = (p: PDPeriode | null | undefined): string =>
-    !!p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
+    p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<PDPeriode>>([])
   const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
@@ -259,7 +259,7 @@ const Perioder: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
 
     const addremovepanel = (
-      <AddRemovePanel2<PDPeriode>
+      <AddRemovePanel<PDPeriode>
         item={periode}
         marginTop={inEditMode}
         index={index}

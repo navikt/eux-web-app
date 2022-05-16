@@ -19,7 +19,7 @@ import Inntekter from 'applications/SvarSed/Inntekter/Inntekter'
 import InntektSearch from 'applications/SvarSed/InntektSearch/InntektSearch'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import FormText from 'components/Forms/FormText'
@@ -418,7 +418,7 @@ const InntektForm: React.FC<MainFormProps> = ({
               </>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<Loennsopplysning>
+            <AddRemovePanel<Loennsopplysning>
               item={loennsopplysning}
               marginTop={inEditMode}
               index={index}

@@ -23,7 +23,6 @@ import { GrayPanel, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -79,7 +78,6 @@ const AddPersonModal = <T extends StorageTypes>({
   const [_newPersonFodselsdato, _setNewPersonFodselsdato] = useState<string>('')
   const [_newPersonKjoenn, _setNewPersonKjoenn] = useState<string>('')
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<PersonInfo>((p: PersonInfo) => p?.fornavn + ' ' + (p?.etternavn ?? ''))
   const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddPersonModalProps>(validateAddPersonModal, namespace)
 
@@ -265,7 +263,6 @@ const AddPersonModal = <T extends StorageTypes>({
 
   const renderPerson = (personId: string) => {
     const p: PersonInfo = _.get(_replySed, `${personId}.personInfo`)
-    const candidateForDeletion = isInDeletion(p)
 
     return (
       <FlexDiv key={personId}>
@@ -287,12 +284,11 @@ const AddPersonModal = <T extends StorageTypes>({
               </>
             )}
           </FlexCenterSpacedDiv>
-          <AddRemovePanel
-            existingItem
-            candidateForDeletion={candidateForDeletion}
-            onBeginRemove={() => addToDeletion(p)}
-            onConfirmRemove={() => onRemovePerson(personId)}
-            onCancelRemove={() => removeFromDeletion(p)}
+          <AddRemovePanel<PersonInfo>
+            item={p}
+            index={0}
+            allowEdit={false}
+            onRemove={() => onRemovePerson(personId)}
           />
         </CheckboxDiv>
       </FlexDiv>

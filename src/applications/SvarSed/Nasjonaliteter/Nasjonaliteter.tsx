@@ -16,7 +16,7 @@ import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
@@ -238,7 +238,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
             </Column>
           )}
           <AlignEndColumn>
-            <AddRemovePanel2<Statsborgerskap>
+            <AddRemovePanel<Statsborgerskap>
               item={statsborgerskap}
               marginTop={inEditMode}
               index={index}

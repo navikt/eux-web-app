@@ -13,7 +13,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -57,7 +57,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
   const target: string = 'perioderDagpengerMottatt'
   const perioderDagpengerMottatt: Array<PDPeriode> | undefined = _.get(replySed, target)
   const getId = (p: PDPeriode | null | undefined): string =>
-    !!p ? (p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
+    p ? (p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
   const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)
   const [_editPeriode, _setEditPeriode] = useState<PDPeriode | undefined>(undefined)
@@ -167,9 +167,8 @@ const Dagpenger: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
 
-
     const addremovepanel = (
-      <AddRemovePanel2<PDPeriode>
+      <AddRemovePanel<PDPeriode>
         item={periode}
         marginTop={inEditMode}
         index={index}
@@ -205,12 +204,12 @@ const Dagpenger: React.FC<MainFormProps> = ({
                 setPeriode={(p: PDPeriode) => setPeriode(p, index)}
                 value={_periode}
               />
-            )
+              )
             : (
               <>
                 <Column>
                   <FlexDiv>
-                   <HorizontalSeparatorDiv />
+                    <HorizontalSeparatorDiv />
                     <PeriodeText
                       error={{
                         startdato: _v[_namespace + '-startdato'],
@@ -229,7 +228,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
                 </AlignEndColumn>
 
               </>
-            )}
+              )}
         </AlignStartRow>
         {inEditMode && (
           <>
@@ -254,7 +253,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
             </AlignStartRow>
           </>
         )}
-        <VerticalSeparatorDiv size='0.5'/>
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
@@ -276,20 +275,19 @@ const Dagpenger: React.FC<MainFormProps> = ({
             <SpacedHr />
           </PaddedHorizontallyDiv>
           )
-        : perioderDagpengerMottatt?.map(renderRow)
-      }
+        : perioderDagpengerMottatt?.map(renderRow)}
       <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
           <PaddedDiv>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setNewForm(true)}
-                >
-                  <AddCircle />
-                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                </Button>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
           </PaddedDiv>
           )}
     </>

@@ -13,7 +13,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
@@ -286,7 +286,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
               </Column>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<Grunn>
+            <AddRemovePanel<Grunn>
               item={grunn}
               marginTop={inEditMode}
               index={index}

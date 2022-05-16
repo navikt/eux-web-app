@@ -17,7 +17,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
@@ -484,7 +484,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
         <AlignStartRow>
           <Column flex='2' />
           <AlignEndColumn>
-            <AddRemovePanel2<PeriodeDagpenger>
+            <AddRemovePanel<PeriodeDagpenger>
               item={periodeDagpenger}
               marginTop={inEditMode}
               index={index}

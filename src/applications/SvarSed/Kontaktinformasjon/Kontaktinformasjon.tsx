@@ -11,7 +11,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
@@ -341,7 +341,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 )}
           </Column>
           <Column>
-            <AddRemovePanel2<Telefon>
+            <AddRemovePanel<Telefon>
               item={telefon}
               marginTop={inEditMode}
               index={index}
@@ -399,7 +399,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 )}
           </Column>
           <AlignEndColumn>
-            <AddRemovePanel2<Epost>
+            <AddRemovePanel<Epost>
               item={epost}
               marginTop={inEditMode}
               index={index}

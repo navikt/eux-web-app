@@ -15,7 +15,7 @@ import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
@@ -223,7 +223,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 )}
           </Column>
           <AlignEndColumn>
-            <AddRemovePanel2<Pin>
+            <AddRemovePanel<Pin>
               item={pin}
               marginTop={inEditMode}
               index={index}

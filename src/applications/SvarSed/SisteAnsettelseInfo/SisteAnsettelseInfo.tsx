@@ -17,7 +17,7 @@ import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
@@ -262,7 +262,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
 
     const addremovepanel = (
       <AlignEndColumn>
-        <AddRemovePanel2<Utbetaling>
+        <AddRemovePanel<Utbetaling>
           item={utbetaling}
           marginTop={inEditMode}
           index={index}

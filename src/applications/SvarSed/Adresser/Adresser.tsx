@@ -12,7 +12,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import AdresseFromPDL from 'applications/SvarSed/Adresser/AdresseFromPDL'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -179,7 +179,7 @@ const Adresser: React.FC<MainFormProps> = ({
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <AlignEndColumn>
-            <AddRemovePanel2<Adresse>
+            <AddRemovePanel<Adresse>
               item={adresse}
               marginTop={false}
               index={index}

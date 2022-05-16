@@ -19,7 +19,6 @@ import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, StorageTypes } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -57,8 +56,6 @@ const LoadSave = <T extends StorageTypes>({
       sedStatus: state.svarsed.sedStatus
     }))
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<LocalStorageEntry<ReplySed | PDU1>>(
-    (entry: LocalStorageEntry<ReplySed | PDU1>): string => entry.id)
   const [_sedStatusRequested, setSedStatusRequested] = useState<string | undefined>(undefined)
 
   const { t } = useTranslation()
@@ -148,7 +145,7 @@ const LoadSave = <T extends StorageTypes>({
             </BodyLong>
             )}
         <VerticalSeparatorDiv />
-        {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>) => (
+        {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>, index: number) => (
           <div key={savedEntry.id}>
             <GrayPanel>
               <PileDiv flex='1'>
@@ -195,9 +192,10 @@ const LoadSave = <T extends StorageTypes>({
                   </FlexBaseSpacedDiv>
                 </FlexCenterSpacedDiv>
                 <VerticalSeparatorDiv size='0.5' />
-                <FlexBaseSpacedDiv>
+                <FlexCenterSpacedDiv>
                   <Button
                     variant='tertiary'
+                    size='small'
                     disabled={(savedEntry.id && _sedStatusRequested === savedEntry.id) || hasSentStatus(savedEntry.id)}
                     data-amplitude={namespace + '.sidebar.loaddraft'}
                     onClick={(e: any) => handleLoadDraft(e, savedEntry)}
@@ -209,14 +207,14 @@ const LoadSave = <T extends StorageTypes>({
                           ? t('label:sendt')
                           : t('el:button-load'))}
                   </Button>
-                  <AddRemovePanel
-                    existingItem
-                    candidateForDeletion={isInDeletion(savedEntry)}
-                    onBeginRemove={() => addToDeletion(savedEntry)}
-                    onConfirmRemove={() => onRemove(savedEntry)}
-                    onCancelRemove={() => removeFromDeletion(savedEntry)}
+                  <AddRemovePanel<LocalStorageEntry<PDU1 | ReplySed>>
+                    item={savedEntry}
+                    marginTop={false}
+                    index={index}
+                    allowEdit={false}
+                    onRemove={onRemove}
                   />
-                </FlexBaseSpacedDiv>
+                </FlexCenterSpacedDiv>
               </PileDiv>
             </GrayPanel>
             <VerticalSeparatorDiv />

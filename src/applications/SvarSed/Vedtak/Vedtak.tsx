@@ -26,7 +26,7 @@ import {
   ValidationVedtakProps
 } from 'applications/SvarSed/Vedtak/validation'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -435,7 +435,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
               </Column>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<Periode>
+            <AddRemovePanel<Periode>
               item={periode}
               marginTop={inEditMode}
               index={index}
@@ -559,7 +559,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
               </>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<KompetansePeriode>
+            <AddRemovePanel<KompetansePeriode>
               item={periode}
               marginTop={inEditMode}
               index={index}

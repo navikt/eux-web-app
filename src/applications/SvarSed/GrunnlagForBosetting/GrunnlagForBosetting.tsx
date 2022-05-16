@@ -11,7 +11,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
@@ -196,7 +196,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
               </Column>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<Periode>
+            <AddRemovePanel<Periode>
               item={periode}
               marginTop={inEditMode}
               index={index}

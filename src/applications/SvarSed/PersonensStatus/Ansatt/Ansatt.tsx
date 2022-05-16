@@ -13,7 +13,7 @@ import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -318,7 +318,7 @@ const Ansatt: React.FC<MainFormProps> = ({
               </Column>
               )}
           <AlignEndColumn>
-            <AddRemovePanel2<Periode>
+            <AddRemovePanel<Periode>
               item={p}
               marginTop={inEditMode}
               index={index}

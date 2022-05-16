@@ -18,7 +18,7 @@ import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -263,7 +263,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     const _ytelse = index < 0 ? _newYtelse : (inEditMode ? _editYtelse : ytelse)
 
     const addremovepanel = (
-      <AddRemovePanel2<Ytelse>
+      <AddRemovePanel<Ytelse>
         item={ytelse}
         marginTop={inEditMode}
         index={index}

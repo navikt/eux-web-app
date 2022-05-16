@@ -16,7 +16,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
@@ -340,7 +340,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     const _currentType = _p?.__type
 
     const addremovepanel = (
-      <AddRemovePanel2<Periode | PensjonPeriode>
+      <AddRemovePanel<Periode | PensjonPeriode>
         item={periode}
         marginTop={inEditMode}
         index={index}

@@ -15,7 +15,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
@@ -166,7 +166,7 @@ const WithSubsidies: React.FC<MainFormProps> = ({
 
     const addremovepanel = (
       <AlignEndColumn>
-        <AddRemovePanel2<PensjonPeriode>
+        <AddRemovePanel<PensjonPeriode>
           item={pensjonPeriode}
           marginTop={inEditMode}
           index={index}

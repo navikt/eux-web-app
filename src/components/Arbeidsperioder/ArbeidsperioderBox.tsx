@@ -17,7 +17,7 @@ import {
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
@@ -195,7 +195,7 @@ const ArbeidsperioderBox = <T extends PeriodeMedForsikring>({
         </Checkbox>
       )}
       {editable !== 'no' && (
-        <AddRemovePanel2
+        <AddRemovePanel
           item={periodeMedForsikring}
           index={newMode ? -1 : 0}
           allowDelete={allowDelete}

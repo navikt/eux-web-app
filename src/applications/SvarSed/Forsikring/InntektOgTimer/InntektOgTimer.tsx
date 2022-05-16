@@ -5,7 +5,7 @@ import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import OldAddRemovePanel from 'components/AddRemovePanel/OldAddRemovePanel'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
@@ -229,7 +229,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             />
           </Column>
           <Column>
-            <AddRemovePanel
+            <OldAddRemovePanel
               candidateForDeletion={candidateForDeletion}
               existingItem={(index >= 0)}
               marginTop

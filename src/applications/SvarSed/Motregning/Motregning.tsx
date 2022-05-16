@@ -19,7 +19,7 @@ import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
@@ -646,7 +646,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
     const _motregning = index < 0 ? _newMotregning : (inEditMode ? _editMotregning : motregning)
 
     const addremovepanel = (
-      <AddRemovePanel2<Motregning>
+      <AddRemovePanel<Motregning>
         item={motregning}
         marginTop={inEditMode}
         index={index}

@@ -30,7 +30,7 @@ import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'app
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Military from 'assets/icons/Military'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -318,7 +318,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     const existingPeriod: boolean = !_.isNil(_periode?.__index) && _periode?.__index! >= 0
 
     const addremovepanel = (
-      <AddRemovePanel2<ForsikringPeriode>
+      <AddRemovePanel<ForsikringPeriode>
         item={periode}
         marginTop={inEditMode}
         index={index}

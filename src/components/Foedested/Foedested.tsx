@@ -16,7 +16,7 @@ import {
 import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import classNames from 'classnames'
-import AddRemovePanel2 from 'components/AddRemovePanel/AddRemovePanel2'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Foedested } from 'declarations/sed'
@@ -199,7 +199,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         </Row>
         <PaddedRow size='0.5'>
           <AlignEndColumn>
-            <AddRemovePanel2<Foedested>
+            <AddRemovePanel<Foedested>
               item={foedested}
               index={index}
               onRemove={onRemove}

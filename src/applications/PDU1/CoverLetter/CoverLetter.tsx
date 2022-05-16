@@ -38,7 +38,6 @@ const CoverLetter: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-
   const setInfo = (newInfo: string) => {
     dispatch(updateReplySed(`${target}`, newInfo.trim()))
     if (validation[namespace + 'info']) {
