@@ -346,13 +346,15 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </AlignStartRow>
             )
           : (
-            <PeriodeText
-              error={{
-                startdato: _v[_namespace + '-periode-startdato'],
-                sluttdato: _v[_namespace + '-periode-sluttdato']
-              }}
-              periode={_periodeDagpenger?.periode}
-            />
+            <Column>
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-periode-startdato'],
+                  sluttdato: _v[_namespace + '-periode-sluttdato']
+                }}
+                periode={_periodeDagpenger?.periode}
+              />
+            </Column>
             )}
         {inEditMode
           ? (

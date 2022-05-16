@@ -1017,13 +1017,15 @@ const MotregningFC: React.FC<MainFormProps> = ({
           </Column>
         </AlignStartRow>
         <AlignStartRow>
-          <PeriodeText
-            error={{
-              startdato: _v[_namespace + '-startdato'],
-              sluttdato: _v[_namespace + '-sluttdato']
-            }}
-            periode={_motregning}
-          />
+          <Column>
+            <PeriodeText
+              error={{
+                startdato: _v[_namespace + '-startdato'],
+                sluttdato: _v[_namespace + '-sluttdato']
+              }}
+              periode={_motregning}
+            />
+          </Column>
           <Column>
             <FormText error={_v[_namespace + '-vedtaksdato']?.feilmelding}>
               {_motregning?.vedtaksdato}

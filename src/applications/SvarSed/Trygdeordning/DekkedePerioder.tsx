@@ -275,12 +275,14 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
             )
           : (
             <AlignStartRow>
-              <PeriodeText
-                periode={periode} error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-              />
+              <Column>
+                <PeriodeText
+                  periode={periode} error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                />
+              </Column>
               {_sort === 'time' && getTag(periode?.__type!)}
               <AlignEndColumn>
                 {addremovepanel}

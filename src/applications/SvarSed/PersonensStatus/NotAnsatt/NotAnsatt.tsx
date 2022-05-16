@@ -4,6 +4,7 @@ import {
   AlignEndColumn,
   AlignStartRow,
   PaddedDiv,
+  Column,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
@@ -169,13 +170,15 @@ const NotAnsatt: React.FC<MainFormProps & {arbeidsforhold: string}> = ({
               />
               )
             : (
-              <PeriodeText
-                error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-                periode={_periode}
-              />
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                  periode={_periode}
+                />
+              </Column>
               )}
           <AlignEndColumn>
             <AddRemovePanel2<Periode>

@@ -1,15 +1,12 @@
-import {
-  PDPeriode, PDU1
-} from 'declarations/pd.d'
+import { PDPeriode, PDU1 } from 'declarations/pd.d'
 import { Validation } from 'declarations/types'
-import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty } from 'utils/validation'
 import i18n from 'i18n'
+import { getNSIdx } from 'utils/namespace'
+import { addError, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPDPeriodeProps {
-  periode: PDPeriode
-  type: string | undefined
-  index?: number
+  periode: PDPeriode | undefined
+  nsIndex?: string
 }
 
 export interface ValidatePDPerioderProps {
@@ -26,24 +23,20 @@ export const validatePDPeriode = (
   namespace: string,
   {
     periode,
-    type,
-    index
+    nsIndex
   }: ValidationPDPeriodeProps
 ): boolean => {
-  const idx = getIdx(index)
   const hasErrors: Array<boolean> = []
 
-  if (index === undefined) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: type,
-      id: namespace + '-type',
-      message: 'validation:noType'
-    }))
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periode?.__type,
+    id: namespace + (nsIndex ?? '') + '-type',
+    message: 'validation:noType'
+  }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: periode?.startdato,
-    id: namespace + idx + '-startdato',
+    id: namespace + (nsIndex ?? '') + '-startdato',
     message: 'validation:noStartdato'
   }))
 
@@ -58,12 +51,18 @@ export const validatePDPerioder = (
     perioder
   }: ValidatePDPerioderProps
 ): boolean => {
-  const hasErrors: Array<boolean> = perioder?.map((periode: PDPeriode, index: number) =>
-    validatePDPeriode(validation, namespace + '[' + type + ']', {
+  const hasErrors: Array<boolean> = []
+  perioder?.forEach((periode: PDPeriode, index: number) => {
+    if (!Object.prototype.hasOwnProperty.call(periode, '__type')) {
+      periode.__type = type
+      periode.__index = index
+    }
+
+    hasErrors.push(validatePDPeriode(validation, namespace, {
       periode,
-      type,
-      index
-    })) ?? []
+      nsIndex: getNSIdx(periode.__type, periode.__index)
+    }))
+  })
 
   let max: number = 0
   switch (type) {

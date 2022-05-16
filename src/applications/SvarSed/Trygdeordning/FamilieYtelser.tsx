@@ -445,13 +445,15 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
             )
           : (
             <AlignStartRow>
-              <PeriodeText
-                periode={_p}
-                error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-              />
+              <Column>
+                <PeriodeText
+                  periode={_p}
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                />
+              </Column>
               <Column>
                 <FlexStartDiv>
                   {!!_originalType && _sort === 'time' && getTag(_originalType)}

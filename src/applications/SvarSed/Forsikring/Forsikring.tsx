@@ -385,14 +385,15 @@ const Forsikring: React.FC<MainFormProps> = ({
                       {getIcon(_periode!.__type!, '32')}
                     </Column>
                   )}
-                  <PeriodeText
-                    error={{
-                      startdato: _v[_namespace + '-startdato'],
-                      sluttdato: _v[_namespace + '-sluttdato']
-                    }}
-                    periode={_periode}
-                  />
-
+                  <Column>
+                    <PeriodeText
+                      error={{
+                        startdato: _v[_namespace + '-startdato'],
+                        sluttdato: _v[_namespace + '-sluttdato']
+                      }}
+                      periode={_periode}
+                    />
+                  </Column>
                 </>
                 )}
             <AlignEndColumn>

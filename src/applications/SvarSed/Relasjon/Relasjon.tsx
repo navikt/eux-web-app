@@ -409,13 +409,15 @@ const Relasjon: React.FC<MainFormProps> = ({
                     {t('el:option-relasjon-' + barnetilhoerighet?.relasjonType)}
                   </FormText>
                 </Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
-                  }}
-                  periode={barnetilhoerighet?.periode}
-                />
+                <Column>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-startdato'],
+                      sluttdato: _v[_namespace + '-sluttdato']
+                    }}
+                    periode={barnetilhoerighet?.periode}
+                  />
+                </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <PileDiv>

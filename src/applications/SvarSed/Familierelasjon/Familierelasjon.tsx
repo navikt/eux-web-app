@@ -374,13 +374,15 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 <Column>
                   {t('el:option-familierelasjon-' + _familierelasjon?.relasjonType)}
                 </Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-periode-startdato'],
-                    sluttdato: _v[_namespace + '-periode-sluttdato']
-                  }}
-                  periode={_familierelasjon?.periode}
-                />
+                <Column>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-periode-startdato'],
+                      sluttdato: _v[_namespace + '-periode-sluttdato']
+                    }}
+                    periode={_familierelasjon?.periode}
+                  />
+                </Column>
                 {addremovepanel}
               </AlignStartRow>
               {_familierelasjon?.relasjonType === 'annet' && (

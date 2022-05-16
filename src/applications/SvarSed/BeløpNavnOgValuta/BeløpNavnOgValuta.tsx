@@ -460,13 +460,15 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
-                  }}
-                  periode={_ytelse}
-                />
+                <Column>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-startdato'],
+                      sluttdato: _v[_namespace + '-sluttdato']
+                    }}
+                    periode={_ytelse}
+                  />
+                </Column>
                 <Column>
                   <FormText error={_v[_namespace + '-utbetalingshyppighet']}>
                     <FlexDiv>

@@ -305,13 +305,15 @@ const InntektForm: React.FC<MainFormProps> = ({
               )
             : (
               <>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-periode-startdato'],
-                    sluttdato: _v[_namespace + '-periode-sluttdato']
-                  }}
-                  periode={_loennsopplysning?.periode}
-                />
+                <Column>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-periode-startdato'],
+                      sluttdato: _v[_namespace + '-periode-sluttdato']
+                    }}
+                    periode={_loennsopplysning?.periode}
+                  />
+                </Column>
                 <Column>
                   <FormText error={_v[_namespace + '-periodetype']}>
                     {_loennsopplysning?.periodetype}

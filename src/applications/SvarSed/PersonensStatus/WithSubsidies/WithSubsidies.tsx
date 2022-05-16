@@ -240,13 +240,15 @@ const WithSubsidies: React.FC<MainFormProps> = ({
             )
           : (
             <AlignStartRow>
-              <PeriodeText
-                error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-                periode={_pensjonPeriode?.periode}
-              />
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                  periode={_pensjonPeriode?.periode}
+                />
+              </Column>
               <Column>
                 <FlexStartDiv>
                   <BodyLong>

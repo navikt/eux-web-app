@@ -65,9 +65,10 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+
+  const namespace = `${parentNamespace}-vedtak`
   const target = 'vedtak'
   const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
-  const namespace = `${parentNamespace}-vedtak`
   const getVedtakPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
   const getKompetansePeriodeId = (p: KompetansePeriode | null): string => p ? p.periode?.__type + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new-vedtakperiode'
 
@@ -423,13 +424,15 @@ const VedtakFC: React.FC<MainFormProps> = ({
               />
               )
             : (
-              <PeriodeText
-                error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-                periode={_periode}
-              />
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                  periode={_periode}
+                />
+              </Column>
               )}
           <AlignEndColumn>
             <AddRemovePanel2<Periode>
@@ -474,6 +477,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
+        <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           {inEditMode
             ? (
@@ -488,13 +492,15 @@ const VedtakFC: React.FC<MainFormProps> = ({
               />
               )
             : (
-              <PeriodeText
-                error={{
-                  startdato: _v[_namespace + '-startdato'],
-                  sluttdato: _v[_namespace + '-sluttdato']
-                }}
-                periode={_periode?.periode}
-              />
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-startdato'],
+                    sluttdato: _v[_namespace + '-sluttdato']
+                  }}
+                  periode={_periode?.periode}
+                />
+              </Column>
               )}
         </AlignStartRow>
         <AlignStartRow>
