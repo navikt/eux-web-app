@@ -72,8 +72,16 @@ export const SvarSedPage = (): JSX.Element => {
   useEffect(() => {
     const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
     const fnrParam: string | null = params.get('fnr')
+    const temaParam: string | null = params.get('tema')
+    const dokumenttypeParam: string | null = params.get('dokumenttype')
     if (fnrParam) {
       setStatusParam('fnr', fnrParam)
+    }
+    if (temaParam) {
+      setStatusParam('tema', temaParam)
+    }
+    if (dokumenttypeParam) {
+      setStatusParam('dokumenttype', dokumenttypeParam)
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
       setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam)
@@ -114,11 +122,11 @@ export const SvarSedPage = (): JSX.Element => {
           open={_showSaveModal}
           onModalClose={() => _setShowSaveModal(false)}
           modal={{
-            modalTitle: t('message:warning-not-saved', {x: 'SED'}),
+            modalTitle: t('message:warning-not-saved', { x: 'SED' }),
             modalContent: (
               <>
                 <div>
-                  {t('message:warning-sed-save', {x: 'SEDen'})}
+                  {t('message:warning-sed-save', { x: 'SEDen' })}
                 </div>
                 <VerticalSeparatorDiv />
                 <FlexDiv>

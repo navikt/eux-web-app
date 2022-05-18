@@ -11,9 +11,6 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
-export interface PDU1DetailsProps {
-}
-
 export interface PDU1DetailsSelector {
   currentEntry: LocalStorageEntry<PDU1> | undefined
   savingPdu1: boolean
@@ -26,8 +23,7 @@ const mapState = (state: State): PDU1DetailsSelector => ({
   pdu1: state.pdu1.pdu1
 })
 
-const PDU1Details: React.FC<PDU1DetailsProps> = ({
-}: PDU1DetailsProps) => {
+const PDU1Details: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { currentEntry, savingPdu1, pdu1 }: PDU1DetailsSelector = useAppSelector(mapState)

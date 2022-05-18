@@ -46,7 +46,7 @@ export const PDU1Page = (): JSX.Element => {
   const [_showSavePdu1Modal, _setShowSavePdu1Modal] = useState<boolean>(false)
   const params: URLSearchParams = new URLSearchParams(location.search)
 
-  const { entries, pdu1Changed, pdu1 }: PDU1Selector= useAppSelector(mapState)
+  const { entries, pdu1Changed, pdu1 }: PDU1Selector = useAppSelector(mapState)
 
   const changeMode = (newPage: string) => {
     _setCurrentPage(newPage)
@@ -118,28 +118,28 @@ export const PDU1Page = (): JSX.Element => {
         open={_showSaveModal}
         onModalClose={() => _setShowSaveModal(false)}
         modal={{
-          modalTitle: t('message:warning-not-saved', {x: 'PDU1'}),
+          modalTitle: t('message:warning-not-saved', { x: 'PDU1' }),
           modalContent: (
             <>
               <div>
-                {t('message:warning-x-save', {x: 'PDU1'})}
+                {t('message:warning-x-save', { x: 'PDU1' })}
               </div>
               <VerticalSeparatorDiv />
               <FlexDiv>
                 <Button
                   variant='primary' onClick={() => {
-                  _setShowSaveModal(false)
-                  _setShowSavePdu1Modal(true)
-                }}
+                    _setShowSaveModal(false)
+                    _setShowSavePdu1Modal(true)
+                  }}
                 >
                   {t('el:button-save-draft-x', { x: t('label:pdu1') })}
                 </Button>
                 <HorizontalSeparatorDiv />
                 <Button
                   variant='secondary' onClick={() => {
-                  _setShowSaveModal(false)
-                  backToPageA()
-                }}
+                    _setShowSaveModal(false)
+                    backToPageA()
+                  }}
                 >
                   {t('el:button-discard-changes')}
                 </Button>
@@ -188,7 +188,7 @@ export const PDU1Page = (): JSX.Element => {
             </SideBarDiv>
           )}
           {_currentPage === 'B' && (
-            <PDU1Details/>
+            <PDU1Details />
           )}
         </Content>
         <Margin />

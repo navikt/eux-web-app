@@ -1,5 +1,6 @@
 import { PDU1 } from 'declarations/pd'
-import { ReplySed } from 'declarations/sed'
+import { Barn, F002Sed, FSed, ReplySed } from 'declarations/sed'
+import _ from 'lodash'
 
 export const isSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => !!(replySed as ReplySed)?.sedType
 
@@ -20,3 +21,17 @@ export const isU017Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const isH001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H001'
 
 export const isH002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H002'
+
+export const cleanReplySed = (replySed: ReplySed): ReplySed => {
+  const newReplySed = _.cloneDeep(replySed)
+
+  // if we do not have vedtak, do not have ytelse in barna
+  if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
+    (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
+      if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn?.[i], 'ytelser')) {
+        delete (newReplySed as F002Sed).barn?.[i].ytelser
+      }
+    })
+  }
+  return newReplySed
+}

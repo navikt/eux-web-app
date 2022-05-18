@@ -1,19 +1,8 @@
-import { Sight } from '@navikt/ds-icons'
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import {
-  createSed,
-  getPreviewFile,
-  resetPreviewSvarSed,
-  restoreReplySed,
-  sendSedInRina,
-  setReplySed,
-  updateReplySed,
-  updateSed
-} from 'actions/svarsed'
+import { createSed, restoreReplySed, sendSedInRina, setReplySed, updateReplySed, updateSed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Adresser from 'applications/SvarSed/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
@@ -36,6 +25,7 @@ import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/PersonensStatus/PersonensStatus'
 import PersonOpplysninger from 'applications/SvarSed/PersonOpplysninger/PersonOpplysninger'
+import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
 import Referanseperiode from 'applications/SvarSed/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/Relasjon/Relasjon'
@@ -46,23 +36,20 @@ import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarP�
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import TextArea from 'components/Forms/TextArea'
-import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
-import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
+import { F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import { isFSed, isH001Sed, isH002Sed, isHSed, isSed } from 'utils/sed'
+import { cleanReplySed, isFSed, isH001Sed, isH002Sed, isHSed, isSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -70,8 +57,6 @@ export interface SEDEditSelector {
   alertMessage: JSX.Element | string | undefined
   creatingSvarSed: boolean
   updatingSvarSed: boolean
-  gettingPreviewFile: boolean
-  previewFile: any,
   replySed: ReplySed | null | undefined
   sendingSed: boolean
   sedCreatedResponse: CreateSedResponse
@@ -84,8 +69,6 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
   updatingSvarSed: state.loading.updatingSvarSed,
-  gettingPreviewFile: state.loading.gettingPreviewFile,
-  previewFile: state.svarsed.previewFile,
   replySed: state.svarsed.replySed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
@@ -101,8 +84,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
     alertMessage,
     creatingSvarSed,
     updatingSvarSed,
-    gettingPreviewFile,
-    previewFile,
     replySed,
     sendingSed,
     sedCreatedResponse,
@@ -111,7 +92,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   }: SEDEditSelector = useAppSelector(mapState)
   const namespace = 'editor'
 
-  const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
@@ -125,20 +105,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
       (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
       (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
     )
-
-  const cleanReplySed = (replySed: ReplySed): ReplySed => {
-    const newReplySed = _.cloneDeep(replySed)
-
-    // if we do not have vedtak, do not have ytelse in barna
-    if (Object.prototype.hasOwnProperty.call(replySed, 'formaal') && (replySed as FSed)?.formaal.indexOf('vedtak') < 0) {
-      (newReplySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
-        if (Object.prototype.hasOwnProperty.call((newReplySed as F002Sed).barn?.[i], 'ytelser')) {
-          delete (newReplySed as F002Sed).barn?.[i].ytelser
-        }
-      })
-    }
-    return newReplySed
-  }
 
   const sendReplySed = (e: any): void => {
     if (replySed) {
@@ -159,11 +125,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
     }
   }
 
-  const resetPreview = () => {
-    dispatch(resetPreviewSvarSed())
-    setModal(undefined)
-  }
-
   const onSendSedClick = () => {
     if (replySed?.sak?.sakId && sedCreatedResponse?.sedId) {
       _setSendButtonClicked(true)
@@ -175,54 +136,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   const onRestoreSedClick = () => {
     if (window.confirm(t('label:er-du-sikker'))) {
       dispatch(restoreReplySed())
-    }
-  }
-
-  const showPreviewModal = (previewFile: Blob) => {
-    blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }
-
-      setModal({
-        closeButton: true,
-        modalContent: (
-          <div
-            style={{ cursor: 'pointer' }}
-          >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
-              width={600}
-              height={1200}
-              tema='simple'
-              viewOnePage={false}
-              onContentClick={resetPreview}
-            />
-          </div>
-        )
-      })
-    })
-  }
-
-  const onPreviewSed = (e: any) => {
-    if (replySed) {
-      const newReplySed = _.cloneDeep(replySed)
-      cleanReplySed(newReplySed)
-      const rinaSakId = newReplySed.sak!.sakId
-      delete newReplySed.sak
-      delete newReplySed.sed
-      delete newReplySed.attachments
-      dispatch(getPreviewFile(rinaSakId!, newReplySed))
-      buttonLogger(e)
     }
   }
 
@@ -238,12 +151,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (!_modal && !_.isNil(previewFile)) {
-      showPreviewModal(previewFile)
-    }
-  }, [previewFile])
-
-  useEffect(() => {
     dispatch(startPageStatistic('editor'))
     return () => {
       dispatch(finishPageStatistic('editor'))
@@ -252,11 +159,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
 
   return (
     <>
-      <Modal
-        open={!_.isNil(_modal)}
-        modal={_modal}
-        onModalClose={resetPreview}
-      />
       <SendSEDModal
         fnr={fnr!}
         open={_viewSendSedModal}
@@ -384,17 +286,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
       )}
       <VerticalSeparatorDiv size='2' />
       <Panel border>
-        <Button
-          variant='tertiary'
-          disabled={gettingPreviewFile}
-          data-amplitude='svarsed.editor.preview'
-          onClick={onPreviewSed}
-        >
-          <Sight />
-          <HorizontalSeparatorDiv size='0.5' />
-          {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-          {gettingPreviewFile && <Loader />}
-        </Button>
+        <PreviewSED replySed={replySed} />
         <VerticalSeparatorDiv />
         <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
         <VerticalSeparatorDiv />
@@ -444,7 +336,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         {_sendButtonClicked && alertMessage &&
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>
-          <VerticalSeparatorDiv/>
+          <VerticalSeparatorDiv />
           <FlexDiv>
             <Alert
               variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'info'}

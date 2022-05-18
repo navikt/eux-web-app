@@ -312,6 +312,7 @@
   "save-sed" : "Lagring lokal kopi av SED",
   "save-pdu1" : "Lagring PD U1",
   "se-mindre": "Se mindre",
+  "se-kun-tidligere-journalførte-PD-U1" : "Se kun tidligere journalførte PD-U1",
   "se-kun-perioder": "Se kun perioder",
   "sed": "SED",
   "seds": "SED-er",

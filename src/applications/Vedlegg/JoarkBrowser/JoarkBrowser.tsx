@@ -1,5 +1,6 @@
-import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Label, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
+import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Table, { RenderOptions } from '@navikt/tabell'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
 import Modal from 'components/Modal/Modal'
@@ -15,6 +16,7 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import md5 from 'md5'
+import moment from 'moment'
 import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -74,9 +76,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
+  const [dokumentType, setDokumentType] = useState<string>('')
+
   const [_clickedPreviewItem, setClickedPreviewItem] = useState<JoarkBrowserItem | undefined>(undefined)
   const [_items, setItems] = useState<JoarkBrowserItems | undefined>(undefined)
-  const [_mounted, setMounted] = useState<boolean>(false)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
@@ -268,11 +271,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    if (!_mounted && !_.isNil(fnr) && list === undefined && !gettingJoarkList) {
-      dispatch(listJoarkItems(fnr))
+    if (!_.isNil(fnr)) {
+      dispatch(listJoarkItems(fnr, '', dokumentType))
     }
-    setMounted(true)
-  }, [fnr, dispatch, list, gettingJoarkList, _mounted])
+  }, [fnr, dokumentType])
 
   useEffect(() => {
     if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
@@ -321,12 +323,18 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     }
   }, [_modal, _convertingRawToFile, _previewFile])
 
-  if (!_mounted) {
-    return <div />
-  }
-
   return (
     <div data-testid='joarkBrowser'>
+      <FlexDiv>
+        <HorizontalSeparatorDiv size='0.5' />
+        <Checkbox
+          checked={dokumentType !== ''}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumentType(e.target.checked ? 'DAG_EOS_U1' : '')}
+        >
+          {t('label:se-kun-tidligere-journalførte-PD-U1')}
+        </Checkbox>
+      </FlexDiv>
+      <VerticalSeparatorDiv size='0.5' />
       <Modal
         open={!_.isNil(_modal)}
         modal={_modal}
@@ -368,7 +376,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
                 type: 'date',
                 render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
                   return (
-                    <Label>{value ?? '-'}</Label>
+                    <Label>{moment(value).format('DD.MM.YYYY') ?? '-'}</Label>
                   )
                 },
                 dateFormat: 'DD.MM.YYYY'
