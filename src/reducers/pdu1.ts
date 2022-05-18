@@ -11,6 +11,7 @@ export interface Pdu1State {
   pdu1results: FagSaker | null | undefined
   previewPdu1: any
   jornalførePdu1Response: any
+  pdu1Changed: boolean
 }
 
 export const initialPdu1State: Pdu1State = {
@@ -18,7 +19,8 @@ export const initialPdu1State: Pdu1State = {
   pdu1: undefined,
   pdu1results: undefined,
   previewPdu1: undefined,
-  jornalførePdu1Response: undefined
+  jornalførePdu1Response: undefined,
+  pdu1Changed: false
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
@@ -48,6 +50,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_GET_REQUEST:
       return {
         ...state,
+        pdu1Changed: false,
         pdu1: undefined
       }
 
@@ -127,6 +130,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_LOAD:
       return {
         ...state,
+        pdu1Changed: false,
         pdu1: (action as ActionWithPayload).payload
       }
 
@@ -142,6 +146,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
 
       return {
         ...state,
+        pdu1Changed: true,
         pdu1: newPdu1
       }
     }

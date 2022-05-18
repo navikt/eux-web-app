@@ -1,13 +1,14 @@
 import { Sight } from '@navikt/ds-icons'
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   createSed,
   getPreviewFile,
-  resetPreviewSvarSed, restoreReplySed,
+  resetPreviewSvarSed,
+  restoreReplySed,
   sendSedInRina,
   setReplySed,
   updateReplySed,
@@ -16,6 +17,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import Adresser from 'applications/SvarSed/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
+import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
 import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
@@ -28,9 +30,9 @@ import InntektForm from 'applications/SvarSed/InntektForm/InntektForm'
 import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontaktinformasjon'
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
+import MainForm from 'applications/SvarSed/MainForm'
 import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
-import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/PersonensStatus/PersonensStatus'
 import PersonOpplysninger from 'applications/SvarSed/PersonOpplysninger/PersonOpplysninger'
@@ -38,12 +40,11 @@ import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/Pros
 import Referanseperiode from 'applications/SvarSed/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/Relasjon/Relasjon'
 import RettTilYtelser from 'applications/SvarSed/RettTilYtelser/RettTilYtelser'
+import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import SisteAnsettelseInfo from 'applications/SvarSed/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel'
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
-import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
-import MainForm from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import Modal from 'components/Modal/Modal'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -53,7 +54,6 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { Barn, F002Sed, FSed, H002Sed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, Validation } from 'declarations/types'
-import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -61,6 +61,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'
 import { getFnr } from 'utils/fnr'
+import performValidation from 'utils/performValidation'
 import { isFSed, isH001Sed, isH002Sed, isHSed, isSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
@@ -250,7 +251,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
   }, [])
 
   return (
-    <PaddedDiv size='0.5'>
+    <>
       <Modal
         open={!_.isNil(_modal)}
         modal={_modal}
@@ -440,10 +441,10 @@ const SEDEdit: React.FC = (): JSX.Element => {
             <VerticalSeparatorDiv size='0.5' />
           </div>
         </FlexDiv>
-        <VerticalSeparatorDiv />
         {_sendButtonClicked && alertMessage &&
       (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
         <>
+          <VerticalSeparatorDiv/>
           <FlexDiv>
             <Alert
               variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'info'}
@@ -459,11 +460,10 @@ const SEDEdit: React.FC = (): JSX.Element => {
               OK
             </Button>
           </FlexDiv>
-          <VerticalSeparatorDiv />
         </>
         )}
       </Panel>
-    </PaddedDiv>
+    </>
   )
 }
 

@@ -27,6 +27,8 @@ export const initialLoadingState: LoadingState = {
   gettingServerinfo: false,
   gettingSedStatus: false,
   queryingSaksnummerOrFnr: false,
+  savingPdu1: false,
+  savingSed: false,
   searchingPerson: false,
   searchingRelatertPerson: false,
   sendingVedlegg: false,

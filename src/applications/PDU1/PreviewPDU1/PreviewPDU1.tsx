@@ -86,7 +86,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
       <FlexDiv>
         {pdu1 && (
           <Button
-            variant='secondary'
+            variant='tertiary'
             disabled={gettingPreviewPdu1 || !_.isNil(previewPdu1file)}
             data-amplitude='pdu1.editor.preview'
             onClick={onPreviewPdu1Clicked}

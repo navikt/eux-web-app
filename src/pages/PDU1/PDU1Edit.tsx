@@ -1,5 +1,5 @@
-import { BodyLong, Button, Loader } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PaddedDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Button, Loader, Panel } from '@navikt/ds-react'
+import { FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { saveEntry } from 'actions/localStorage'
 import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -20,12 +20,12 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
-import performValidation from 'utils/performValidation'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
 
 export interface PDU1EditSelector {
@@ -109,7 +109,7 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   }, [])
 
   return (
-    <PaddedDiv size='0.5'>
+    <>
       {jornalførePdu1Response && (
         <Modal
           open={completeModal}
@@ -147,7 +147,6 @@ const PDU1Edit: React.FC = (): JSX.Element => {
           )
         }}
       />
-      <VerticalSeparatorDiv size='2' />
       <MainForm<PDU1>
         type='onelevel'
         namespace={namespace}
@@ -178,42 +177,43 @@ const PDU1Edit: React.FC = (): JSX.Element => {
         updateReplySed={updatePdu1}
       />
       <VerticalSeparatorDiv size='2' />
-      <PreviewPDU1 validation={validation} namespace={namespace} />
-      <VerticalSeparatorDiv size='2' />
-      <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-      <VerticalSeparatorDiv size='2' />
-      <FlexDiv>
-        <div>
-          <Button
-            variant='primary'
-            data-amplitude='pdu1.editor.opprett'
-            onClick={jornalførePdu1Clicked}
-            disabled={completingPdu1 || !_.isEmpty(jornalførePdu1Response)}
-          >
-            {completingPdu1
-              ? t('message:loading-opprette-pdu1')
-              : t('label:opprett-pdu1')}
-            {completingPdu1 && <Loader />}
-          </Button>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-        <HorizontalSeparatorDiv />
+      <Panel border>
+        <PreviewPDU1 validation={validation} namespace={namespace} />
+        <VerticalSeparatorDiv />
+        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+        <VerticalSeparatorDiv/>
+        <FlexDiv>
+          <div>
+            <Button
+              variant='primary'
+              data-amplitude='pdu1.editor.opprett'
+              onClick={jornalførePdu1Clicked}
+              disabled={completingPdu1 || !_.isEmpty(jornalførePdu1Response)}
+            >
+              {completingPdu1
+                ? t('message:loading-opprette-pdu1')
+                : t('label:opprett-pdu1')}
+              {completingPdu1 && <Loader />}
+            </Button>
+            <VerticalSeparatorDiv size='0.5' />
+          </div>
+          <HorizontalSeparatorDiv />
 
-        <div>
-          <Button
-            variant='secondary'
-            data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
-            onClick={onSavePdu1Click}
-          >
-            {_.isNil(currentEntry)
-              ? t('el:button-save-draft-x', { x: 'PD U1' })
-              : t('el:button-update-draft-x', { x: 'PD U1' })}
-          </Button>
-          <VerticalSeparatorDiv size='0.5' />
-        </div>
-      </FlexDiv>
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
+          <div>
+            <Button
+              variant='secondary'
+              data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
+              onClick={onSavePdu1Click}
+            >
+              {_.isNil(currentEntry)
+                ? t('el:button-save-draft-x', { x: 'PD U1' })
+                : t('el:button-update-draft-x', { x: 'PD U1' })}
+            </Button>
+            <VerticalSeparatorDiv size='0.5' />
+          </div>
+        </FlexDiv>
+      </Panel>
+    </>
   )
 }
 

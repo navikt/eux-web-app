@@ -48,14 +48,16 @@ describe('actions/attachments', () => {
 
   it('listJoarkItems()', () => {
     const fnr = '123'
-    attachmentsActions.listJoarkItems(fnr)
+    const tema = 'tema'
+    const dokumenttype = 'dokumenttytype'
+    attachmentsActions.listJoarkItems(fnr, tema, dokumenttype)
     expect(call).toBeCalledWith(expect.objectContaining({
       type: {
         request: types.ATTACHMENT_LIST_REQUEST,
         success: types.ATTACHMENT_LIST_SUCCESS,
         failure: types.ATTACHMENT_LIST_FAILURE
       },
-      url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr })
+      url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr, tema, dokumenttype })
     }))
   })
 

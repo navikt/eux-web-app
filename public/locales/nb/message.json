@@ -80,8 +80,8 @@
   "warning-no-utbetaling": "Ingen utbetalinger",
   "warning-no-utenlandskepin": "Ingen utenlandske PIN",
   "warning-no-ytelse": "Ingen ytelser",
-  "warning-sed-not-saved": "SEDen er ikke lagret!",
-  "warning-sed-save": "Ønsker du å lagre en kopi av SEDen før du fortsetter?",
+  "warning-x-not-saved": "{{x}} er ikke lagret!",
+  "warning-x-save": "Ønsker du å lagre en kopi av {{c}} før du fortsetter?",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført",
   "warning-unknown-address": "Ukjent adresse"
 }

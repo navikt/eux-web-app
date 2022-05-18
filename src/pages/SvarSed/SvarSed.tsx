@@ -1,14 +1,15 @@
 import { Button } from '@navikt/ds-react'
-import { Container, Content, Margin, VerticalSeparatorDiv, HorizontalSeparatorDiv, FlexDiv } from '@navikt/hoykontrast'
+import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
-import { setCurrentSak, querySaksnummerOrFnr, setReplySed, updateReplySed, loadReplySed } from 'actions/svarsed'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
+import { loadReplySed, querySaksnummerOrFnr, setCurrentSak, setReplySed, updateReplySed } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
+import Modal from 'components/Modal/Modal'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -20,7 +21,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import Modal from 'components/Modal/Modal'
 
 interface SvarSedSelector {
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
@@ -114,11 +114,11 @@ export const SvarSedPage = (): JSX.Element => {
           open={_showSaveModal}
           onModalClose={() => _setShowSaveModal(false)}
           modal={{
-            modalTitle: t('message:warning-sed-not-saved'),
+            modalTitle: t('message:warning-not-saved', {x: 'SED'}),
             modalContent: (
               <>
                 <div>
-                  {t('message:warning-sed-save')}
+                  {t('message:warning-sed-save', {x: 'SEDen'})}
                 </div>
                 <VerticalSeparatorDiv />
                 <FlexDiv>

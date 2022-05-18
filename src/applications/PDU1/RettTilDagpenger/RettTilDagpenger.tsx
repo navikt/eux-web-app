@@ -32,7 +32,7 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const rettTilDagpenger: RettTilDagpenger | undefined = _.get(replySed, 'rettTilDagpenger')
   const ikkeRettTilDagpenger: IkkeRettTilDagpenger | undefined = _.get(replySed, 'ikkeRettTilDagpenger')
-  const namespace = `${parentNamespace}-rettTilDagpenger`
+  const namespace = `${parentNamespace}-retttildagpenger`
 
   const [rettTilDagpengerRadio, setRettTilDagpengerRadio] = useState<RettTilDagpengerRadio>(() =>
     !_.isEmpty(rettTilDagpenger) ? 'rettTilDagpenger' : !_.isEmpty(ikkeRettTilDagpenger) ? 'ikkeRettTilDagpenger' : undefined
