@@ -5,11 +5,6 @@ import { JaNei, ReplySed } from 'declarations/sed'
 
 export type StorageTypes = PDU1 | ReplySed
 
-export interface OldPeriod {
-  fom: string
-  tom: string
-}
-
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
   tilDato?: string

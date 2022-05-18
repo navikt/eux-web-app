@@ -1,5 +1,5 @@
 import { Office1 } from '@navikt/ds-icons'
-import { BodyLong, Checkbox, Detail, Heading, Label, Panel } from '@navikt/ds-react'
+import { BodyLong, Checkbox, Heading, Label, Panel } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -30,7 +30,8 @@ import {
   ForsikringPeriode,
   InntektOgTime,
   Periode,
-  PeriodeAnnenForsikring, PeriodeMedForsikring,
+  PeriodeAnnenForsikring,
+  PeriodeMedForsikring,
   PeriodeUtenForsikring
 } from 'declarations/sed.d'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -84,14 +85,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   showAnnen = false,
   showAddress = false,
   showInntekt = false,
-  showArbeidsgiver = true,
+  showArbeidsgiver = false,
   namespace,
   onForsikringPeriodeSelect,
   onForsikringPeriodeDelete,
   onForsikringPeriodeEdit,
   onForsikringPeriodeNew,
   onForsikringPeriodeNewClose,
-  selectable = true,
+  selectable = false,
   newMode = false,
   editMode = false,
   allowDelete = false,
@@ -296,94 +297,102 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
           <HorizontalLineSeparator />
         </PaddedHorizontallyDiv>
         <VerticalSeparatorDiv size='0.3' />
-        {(_inEditMode || newMode || editMode) && editable === 'full'
-          ? (
-            <>
-              <PaddedDiv>
-                <AlignStartRow>
-                  <Column>
-                    <Input
-                      namespace={namespace + '-arbeidsgiver'}
-                      error={_validation[namespace + '-arbeidsgiver-navn']?.feilmelding}
-                      id='navn'
-                      label={t('label:navn')}
-                      onChanged={setNavn}
-                      value={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
-                    />
-                  </Column>
-                </AlignStartRow>
-              </PaddedDiv>
-              <PaddedDiv>
-                <Heading size='small'>
-                  {t('label:institusjonens-id')}
-                </Heading>
-              </PaddedDiv>
-              <IdentifikatorFC
-                identifikatorer={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
-                onIdentifikatorerChanged={setIdentifikatorer}
-                namespace={namespace + '-arbeidsgiver-identifikatorer'}
-                validation={_validation}
-              />
-              {showAddress && (
-                <PaddedDiv>
-                  <AdresseForm
-                    adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
-                    onAdressChanged={setAdresse}
-                    namespace={namespace + '-arbeidsgiver-adresse'}
+        {showArbeidsgiver && (
+          <>
+            {(_inEditMode || newMode || editMode) && editable === 'full'
+              ? (
+                <>
+                  <PaddedDiv>
+                    <AlignStartRow>
+                      <Column>
+                        <Input
+                          namespace={namespace + '-arbeidsgiver'}
+                          error={_validation[namespace + '-arbeidsgiver-navn']?.feilmelding}
+                          id='navn'
+                          label={t('label:navn')}
+                          onChanged={setNavn}
+                          value={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
+                        />
+                      </Column>
+                    </AlignStartRow>
+                  </PaddedDiv>
+                  <PaddedDiv>
+                    <Heading size='small'>
+                      {t('label:institusjonens-id')}
+                    </Heading>
+                  </PaddedDiv>
+                  <IdentifikatorFC
+                    identifikatorer={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
+                    onIdentifikatorerChanged={setIdentifikatorer}
+                    namespace={namespace + '-arbeidsgiver-identifikatorer'}
                     validation={_validation}
                   />
-                </PaddedDiv>
-              )}
-              <AlignStartRow>
-                <AlignEndColumn>
-                  {addremove}
-                </AlignEndColumn>
-              </AlignStartRow>
-            </>
-            )
-          : (
-            <FlexStartSpacedDiv style={{ padding: '1rem' }}>
-              <FlexDiv>
-                {icon ?? <Office1 width='32' height='32' />}
-                <HorizontalSeparatorDiv />
-                <PileDiv>
-                  <Detail>
-                    {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
-                  </Detail>
-                  <HorizontalLineSeparator />
-                  <VerticalSeparatorDiv size='0.5' />
-                  {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
-                    ? (
-                      <BodyLong>
-                        {t('message:warning-unknown-address')}
-                      </BodyLong>
-                      )
-                    : (
-                      <AdresseBox border={false} adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse} padding='0' seeType />
+                  {showAddress && (
+                    <PaddedDiv>
+                      <AdresseForm
+                        adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
+                        onAdressChanged={setAdresse}
+                        namespace={namespace + '-arbeidsgiver-adresse'}
+                        validation={_validation}
+                      />
+                    </PaddedDiv>
+                  )}
+                  <AlignStartRow>
+                    <AlignEndColumn>
+                      {addremove}
+                    </AlignEndColumn>
+                  </AlignStartRow>
+                </>
+                )
+              : (
+                <FlexStartSpacedDiv style={{ padding: '1rem' }}>
+                  <FlexDiv>
+                    {icon ?? <Office1 width='32' height='32' />}
+                    <HorizontalSeparatorDiv />
+                    <PileDiv>
+                      <Label>
+                        {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
+                      </Label>
+                      {showAddress && (
+                        <>
+                          <HorizontalLineSeparator />
+                          <VerticalSeparatorDiv size='0.5' />
+                          {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
+                            ? (
+                              <BodyLong>
+                                {t('message:warning-unknown-address')}
+                              </BodyLong>
+                              )
+                            : (
+                              <AdresseBox border={false} adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse} padding='0' seeType />
+                              )}
+                        </>
                       )}
-                </PileDiv>
-              </FlexDiv>
-              <PileDiv>
-                {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer)
-                  ? (
-                    <BodyLong>{t('message:warning-no-ids')}</BodyLong>
-                    )
-                  : (_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer?.map((id, i) => {
-                      const idx = getIdx(i)
-                      return (
-                        <FormText key={id.type} error={_validation[namespace + idx + '-identifikatorer']}>
-                          <FlexDiv>
-                            <Label>{t('label:' + id.type) + ':'}</Label>
-                            <HorizontalSeparatorDiv size='0.5' />
-                            {id?.id}
-                          </FlexDiv>
-                        </FormText>
-                      )
-                    })}
-              </PileDiv>
-              {addremove}
-            </FlexStartSpacedDiv>
-            )}
+                    </PileDiv>
+                  </FlexDiv>
+                  <PileDiv>
+                    {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer)
+                      ? (
+                        <BodyLong>{t('message:warning-no-ids')}</BodyLong>
+                        )
+                      : (_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer?.map((id, i) => {
+                          const idx = getIdx(i)
+                          return (
+                            <FormText key={id.type} error={_validation[namespace + idx + '-identifikatorer']}>
+                              <FlexDiv>
+                                <Label>{t('label:' + id.type) + ':'}</Label>
+                                <HorizontalSeparatorDiv size='0.5' />
+                                {id?.id}
+                              </FlexDiv>
+                            </FormText>
+                          )
+                        })}
+                  </PileDiv>
+                  {addremove}
+                </FlexStartSpacedDiv>
+                )}
+          </>
+        )}
         {showInntekt && (
           <>
             {(_inEditMode || newMode || editMode) && editable === 'full'

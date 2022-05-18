@@ -29,17 +29,6 @@ export const arbeidsperioderFraAAToForsikringPeriode = (a: ArbeidsperiodeFraAA):
   } as PeriodeMedForsikring
 }
 
-export const forsikringPeriodeToArbeidsperioderFraAA = (a: PeriodeMedForsikring): ArbeidsperiodeFraAA => {
-  return {
-    fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
-    fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',
-    arbeidsgiversOrgnr: getOrgnr(a, 'organisasjonsnummer') ?? '',
-    fraDato: a.startdato,
-    tilDato: a.sluttdato,
-    arbeidsgiversNavn: a.arbeidsgiver.navn
-  }
-}
-
 export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator> | undefined): string | undefined => {
   if (_.isNil(ids)) {
     return undefined

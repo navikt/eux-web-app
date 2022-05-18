@@ -121,6 +121,7 @@
   "formålmanager": "Fyll inn formål",
   "fornavn": "Fornavn",
   "forsikring": "Forsikringsperiode, ansettelsesforhold eller selvstendig næringsdrivende",
+  "forsikringPeriode": "Forsikringsperiode",
   "forsikringsperiode": "Forsikringsperiode",
   "fra" : "Fra",
   "fra-og-med" : "Fra og med",
@@ -259,6 +260,7 @@
   "opprett-sak-i-rina" : "Opprett sak i RINA",
   "ordinær-konto": "Ordinær konto",
   "orgnr": "Org.nr.",
+  "organisasjonsnummer": "Org.nr.",
   "oversikt-brukers-arbeidsperioder": "Oversikt over brukers arbeidsperioder",
 
   "partner": "Ektefelle/partner",

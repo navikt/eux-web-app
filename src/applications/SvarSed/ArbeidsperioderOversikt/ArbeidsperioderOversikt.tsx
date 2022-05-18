@@ -186,9 +186,12 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     return (
       <div key={getId(item)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <PaddedHorizontallyDiv>
-            <Label>{t('label:' + item.type)}</Label>
-          </PaddedHorizontallyDiv>
+          <>
+            <PaddedHorizontallyDiv>
+              <Label>{t('label:' + item.type)}</Label>
+            </PaddedHorizontallyDiv>
+            <VerticalSeparatorDiv />
+          </>
         )}
         {renderPlanItem(item)}
         <VerticalSeparatorDiv />

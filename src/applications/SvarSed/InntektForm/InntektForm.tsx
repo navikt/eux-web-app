@@ -511,11 +511,9 @@ const InntektForm: React.FC<MainFormProps> = ({
               return (
                 <ForsikringPeriodeBox
                   forsikringPeriode={period}
-                  editable='no'
-                  showAddress={false}
+                  showArbeidsgiver
                   key={getOrgnr(period, 'organisasjonsnummer')}
                   namespace={namespace}
-                  selectable={false}
                 />
               )
             })}

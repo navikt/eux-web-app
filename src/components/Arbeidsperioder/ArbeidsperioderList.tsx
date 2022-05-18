@@ -22,7 +22,6 @@ export interface ArbeidsperioderListProps {
 
 const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
   arbeidsperioder,
-  editable = 'no',
   fnr,
   namespace,
   onArbeidsgiverSelect,
@@ -62,7 +61,8 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
             return (
               <ForsikringPeriodeBox
                 forsikringPeriode={arbeidsgiverAsForsikringPeriode}
-                editable={editable}
+                selectable
+                showArbeidsgiver
                 key={arbeidsperiode.arbeidsgiversOrgnr + '-' + arbeidsperiode.fraDato + '-' + arbeidsperiode.tilDato}
                 onForsikringPeriodeSelect={(p: ForsikringPeriode, checked: boolean) => onArbeidsgiverSelect(arbeidsperiode, checked)}
                 namespace={namespace + getIdx(arbeidsgiverAsForsikringPeriode.__index)}

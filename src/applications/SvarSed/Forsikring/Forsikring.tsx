@@ -136,36 +136,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     _resetValidation(namespace + '-type')
   }
 
-  /* const setPeriode = (periode: ForsikringPeriode, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        ...periode
-      })
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
-      return
-    }
-    _setEditPeriode({
-      ..._editPeriode,
-      ...periode
-    })
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-startdato'))
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-sluttdato'))
-  } */
-
-  const onArbeidsgiverEdit = (periode: ForsikringPeriode) => {
-    onSaveEdit(periode)
-  }
-
-  const onArbeidsgiverDelete = (removed: ForsikringPeriode) => {
-    onRemove(removed)
-  }
-
-  const onArbeidsgiverNew = (periode: ForsikringPeriode) => {
-    onAddNew(periode)
-  }
-
   const onCloseEdit = (namespace: string) => {
     _setEditPeriode(undefined)
     _setEditTypeAndIndex(undefined)
@@ -297,7 +267,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                       selectable={false}
                       showAddress
                       icon={getIcon(_periode!.__type!, '32')}
-                      onForsikringPeriodeNew={onArbeidsgiverNew}
+                      onForsikringPeriodeNew={onAddNew}
                       namespace={namespace}
                     />
                   </Column>
@@ -305,46 +275,6 @@ const Forsikring: React.FC<MainFormProps> = ({
               )}
             </>
           )}
-        {/*! _.isUndefined(_periode?.__type) && (
-          <AlignStartRow>
-            {inEditMode
-              ? (
-                <>
-                  <PeriodeInput
-                    namespace={_namespace}
-                    error={{
-                      startdato: _v[_namespace + '-startdato']?.feilmelding,
-                      sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                    }}
-                    hideLabel={false}
-                    setPeriode={(p: ForsikringPeriode) => setPeriode(p, index)}
-                    value={_periode}
-                  />
-                </>
-                )
-              : (
-                <>
-                  {_sort === 'time' && (
-                    <Column style={{ maxWidth: '40px' }}>
-                      {getIcon(_periode!.__type!, '32')}
-                    </Column>
-                  )}
-                  <Column>
-                    <PeriodeText
-                      error={{
-                        startdato: _v[_namespace + '-startdato'],
-                        sluttdato: _v[_namespace + '-sluttdato']
-                      }}
-                      periode={_periode}
-                    />
-                  </Column>
-                </>
-                )}
-            <AlignEndColumn>
-              {addremovepanel}
-            </AlignEndColumn>
-          </AlignStartRow>
-        ) */}
         {!_.isUndefined(_periode?.__type) && [
           'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring'
         ].indexOf(_periode!.__type!) >= 0 && (
@@ -358,8 +288,8 @@ const Forsikring: React.FC<MainFormProps> = ({
                   selectable={false}
                   showAddress
                   icon={getIcon(_periode!.__type!, '32')}
-                  onForsikringPeriodeEdit={onArbeidsgiverEdit}
-                  onForsikringPeriodeDelete={onArbeidsgiverDelete}
+                  onForsikringPeriodeEdit={onSaveEdit}
+                  onForsikringPeriodeDelete={onRemove}
                   namespace={namespace}
                 />
               </Column>
@@ -367,25 +297,26 @@ const Forsikring: React.FC<MainFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-        {!_.isUndefined(_periode?.__type) && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-          .indexOf(_periode!.__type!) >= 0 && (
-            <>
-              <AlignStartRow>
-                <Column>
-                  <ForsikringPeriodeBox
-                    forsikringPeriode={(_periode as PeriodeUtenForsikring)}
-                    editable='full'
-                    showInntekt
-                    selectable={false}
-                    showAddress
-                    icon={getIcon(_periode!.__type!, '32')}
-                    onForsikringPeriodeEdit={onArbeidsgiverEdit}
-                    namespace={namespace}
-                  />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-            </>
+        {!_.isUndefined(_periode?.__type) && [
+          'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
+        ].indexOf(_periode!.__type!) >= 0 && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <ForsikringPeriodeBox
+                  forsikringPeriode={(_periode as PeriodeUtenForsikring)}
+                  editable='full'
+                  showInntekt
+                  selectable={false}
+                  showAddress
+                  icon={getIcon(_periode!.__type!, '32')}
+                  onForsikringPeriodeEdit={onSaveEdit}
+                  namespace={namespace}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+          </>
         )}
         {!_.isUndefined(_periode?.__type) && _periode!.__type === 'perioderAnnenForsikring' && (
           <>
@@ -397,7 +328,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                   icon={getIcon(_periode!.__type!, '32')}
                   selectable={false}
                   showAnnen
-                  onForsikringPeriodeEdit={onArbeidsgiverEdit}
+                  onForsikringPeriodeEdit={onSaveEdit}
                   namespace={namespace}
                 />
               </Column>
@@ -405,6 +336,30 @@ const Forsikring: React.FC<MainFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
+        {!_.isUndefined(_periode?.__type) && [
+          'perioderSyk', 'perioderSvangerskapBarn', 'perioderFrihetsberoevet', 'perioderUtdanning',
+          'perioderMilitaertjeneste', 'perioderFrivilligForsikring', 'perioderKompensertFerie'
+        ].indexOf(_periode!.__type!) >= 0 && (
+          <>
+            <AlignStartRow>
+              <Column>
+                <ForsikringPeriodeBox
+                  forsikringPeriode={(_periode as ForsikringPeriode)}
+                  editable='only_period'
+                  icon={getIcon(_periode!.__type!, '32')}
+                  selectable={false}
+                  showAnnen={false}
+                  showArbeidsgiver={false}
+                  showInntekt={false}
+                  onForsikringPeriodeEdit={onSaveEdit}
+                  namespace={namespace}
+                />
+              </Column>
+            </AlignStartRow>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
