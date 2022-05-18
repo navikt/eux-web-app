@@ -12,12 +12,12 @@ import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
 import InntektSearch from 'applications/SvarSed/InntektSearch/InntektSearch'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
+import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import { ForsikringPeriode, PeriodeSort, PeriodeView, PeriodeMedForsikring } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -31,10 +31,10 @@ import performValidation from 'utils/performValidation'
 import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { periodeSort } from 'utils/sort'
 import {
-  validatePeriodeMedForsikring,
-  validatePerioderMedForsikring,
-  ValidatePerioderMedForsikringProps,
-  ValidationPeriodeMedForsikringProps
+  validateArbeidsperioderOversikt,
+  validateArbeidsperiodeOversikt,
+  ValidationArbeidsperioderOversiktProps,
+  ValidationArbeidsperiodeOversiktProps
 } from './validation'
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
@@ -71,9 +71,11 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const showAddress = true
   const fnr = getFnr(replySed, personID)
-  const getId = (p: PlanItem<PeriodeMedForsikring> | null | undefined) => p ? p.type + '-' + (p.item.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') : 'new'
+  const getId = (p: PlanItem<ForsikringPeriode> | null | undefined) => p
+    ? p.type + '-' + ((p.item as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '')
+    : 'new'
 
-  const [_plan, _setPlan] = useState<Array<PlanItem<PeriodeMedForsikring>> | undefined>(undefined)
+  const [_plan, _setPlan] = useState<Array<PlanItem<ForsikringPeriode>> | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
@@ -83,8 +85,8 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidatePerioderMedForsikringProps>(
-      validation, namespace, validatePerioderMedForsikring, {
+    const [, newValidation] = performValidation<ValidationArbeidsperioderOversiktProps>(
+      validation, namespace, validateArbeidsperioderOversikt, {
         perioderMedForsikring: perioder,
         personName
       }
@@ -93,12 +95,12 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   })
 
   useEffect(() => {
-    const spikedPeriods: Array<PeriodeMedForsikring> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
-    const plan: Array<PlanItem<PeriodeMedForsikring>> = makeRenderPlan<PeriodeMedForsikring>({
+    const spikedPeriods: Array<ForsikringPeriode> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
+    const plan: Array<PlanItem<ForsikringPeriode>> = makeRenderPlan<ForsikringPeriode>({
       perioder: spikedPeriods,
       arbeidsperioder,
       sort: _sort
-    } as RenderPlanProps<PeriodeMedForsikring>)
+    } as RenderPlanProps<ForsikringPeriode>)
     _setPlan(plan)
   }, [replySed, _sort, arbeidsperioder])
 
@@ -110,40 +112,40 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     _setNewForm(false)
   }
 
-  const onSaveEdit = (editPeriodeMedForsikring: PeriodeMedForsikring, editIndex: number) => {
-    const [valid, newValidation] = performValidation<ValidationPeriodeMedForsikringProps>(
-      validation, namespace, validatePeriodeMedForsikring, {
-        periodeMedForsikring: editPeriodeMedForsikring,
+  const onSaveEdit = (editForsikringPeriode: PeriodeMedForsikring, editIndex: number) => {
+    const [valid, newValidation] = performValidation<ValidationArbeidsperiodeOversiktProps>(
+      validation, namespace, validateArbeidsperiodeOversikt, {
+        forsikringPeriode: editForsikringPeriode,
         index: editIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${target}[${editIndex}]`, editPeriodeMedForsikring))
+      dispatch(updateReplySed(`${target}[${editIndex}]`, editForsikringPeriode))
       onCloseEdit(namespace + getIdx(editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
   }
 
-  const onRemove = (removed: PeriodeMedForsikring) => {
+  const onRemove = (removed: ForsikringPeriode) => {
     const index: number | undefined = removed.__index
     if (index !== undefined && index >= 0) {
-      const newPerioder = _.cloneDeep(perioder) as Array<PeriodeMedForsikring>
+      const newPerioder = _.cloneDeep(perioder) as Array<ForsikringPeriode>
       newPerioder.splice(index, 1)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.remove', { type: 'perioderAnsattMedForsikring' })
     }
   }
 
-  const onAddNew = (newPeriodeMedForsikring?: PeriodeMedForsikring) => {
-    let newPerioderMedforsikring: Array<PeriodeMedForsikring> | undefined = _.cloneDeep(perioder)
+  const onAddNew = (newForsikringPeriode?: ForsikringPeriode) => {
+    let newPerioderMedforsikring: Array<ForsikringPeriode> | undefined = _.cloneDeep(perioder)
     if (_.isNil(newPerioderMedforsikring)) {
       newPerioderMedforsikring = []
     }
-    if (newPeriodeMedForsikring) {
-      delete newPeriodeMedForsikring.__index
-      delete newPeriodeMedForsikring.__type
-      newPerioderMedforsikring.push(newPeriodeMedForsikring)
+    if (newForsikringPeriode) {
+      delete newForsikringPeriode.__index
+      delete newForsikringPeriode.__type
+      newPerioderMedforsikring.push(newForsikringPeriode)
       newPerioderMedforsikring = newPerioderMedforsikring.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioderMedforsikring))
       standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
@@ -151,11 +153,11 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     }
   }
 
-  const onArbeidsgiverSelect = (arbeidsgiver: PeriodeMedForsikring, checked: boolean) => {
+  const onArbeidsgiverSelect = (periode: ForsikringPeriode, checked: boolean) => {
     if (checked) {
-      onAddNew(arbeidsgiver)
+      onAddNew(periode as ForsikringPeriode)
     } else {
-      onRemove(arbeidsgiver)
+      onRemove(periode as ForsikringPeriode)
     }
   }
 
@@ -180,7 +182,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderPlan = (item: PlanItem<PeriodeMedForsikring>, index: number, previousItem: PlanItem<Periode | PeriodeMedForsikring> | undefined) => {
+  const renderPlan = (item: PlanItem<ForsikringPeriode>, index: number, previousItem: PlanItem<ForsikringPeriode> | undefined) => {
     return (
       <div key={getId(item)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
@@ -194,53 +196,53 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     )
   }
 
-  const renderPlanItem = (item: PlanItem<PeriodeMedForsikring> | null) => {
+  const renderPlanItem = (item: PlanItem<ForsikringPeriode> | null) => {
     if (item === null) {
       return (
         <Column>
-          <ArbeidsperioderBox
-            periodeMedForsikring={null}
+          <ForsikringPeriodeBox
+            forsikringPeriode={null}
             editable='full'
             selectable={false}
             newMode
             style='new'
             showAddress={showAddress}
-            onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-            onPeriodeMedForsikringNew={onAddNew}
-            onPeriodeMedForsikringNewClose={onCloseNew}
+            onForsikringPeriodeSelect={onArbeidsgiverSelect}
+            onForsikringPeriodeNew={onAddNew}
+            onForsikringPeriodeNewClose={onCloseNew}
             namespace={namespace}
           />
         </Column>
       )
     }
     if (item.type === 'periode') {
-      item.item.extra = { fraSed: 'ja' }
+      (item.item as PeriodeMedForsikring).extra = { fraSed: 'ja' }
       return (
         <Column>
-          <ArbeidsperioderBox
-            periodeMedForsikring={item.item}
+          <ForsikringPeriodeBox<PeriodeMedForsikring>
+            forsikringPeriode={item.item as PeriodeMedForsikring}
             editable='full'
             selectable={false}
             style='original'
             showAddress={showAddress}
-            onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-            onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+            onForsikringPeriodeSelect={onArbeidsgiverSelect}
+            onForsikringPeriodeEdit={onArbeidsgiverEdit}
             namespace={namespace}
           />
         </Column>
       )
     }
-    if (item.type === 'arbeidsperiode') {
+    if (item.type === 'forsikringPeriode') {
       const index: number = item.item ? item.item.__index! : -1
       if (_view === 'all') {
         return (
           <Column>
-            <ArbeidsperioderBox
-              periodeMedForsikring={item.item}
+            <ForsikringPeriodeBox<PeriodeMedForsikring>
+              forsikringPeriode={item.item as PeriodeMedForsikring}
               editable='full'
               showAddress={showAddress}
-              onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-              onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+              onForsikringPeriodeSelect={onArbeidsgiverSelect}
+              onForsikringPeriodeEdit={onArbeidsgiverEdit}
               namespace={namespace}
             />
           </Column>
@@ -249,14 +251,14 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       if (!_.isNil(index) && index >= 0) {
         return (
           <Column>
-            <ArbeidsperioderBox
-              periodeMedForsikring={item.item}
+            <ForsikringPeriodeBox
+              forsikringPeriode={item.item as PeriodeMedForsikring}
               editable='full'
               selectable={false}
               style='original'
               showAddress={showAddress}
-              onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-              onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+              onForsikringPeriodeSelect={onArbeidsgiverSelect}
+              onForsikringPeriodeEdit={onArbeidsgiverEdit}
               namespace={namespace}
             />
           </Column>

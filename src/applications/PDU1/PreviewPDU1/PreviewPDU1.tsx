@@ -26,7 +26,7 @@ export interface PreviewPDU1Props {
 export interface PreviewPDU1Selector {
   pdu1: PDU1
   gettingPreviewPdu1: boolean
-  previewPdu1file: any
+  previewPdu1file: Blob | undefined
 }
 
 const mapState = (state: State): any => ({
@@ -73,7 +73,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
   }
 
   const onDownloadPdu1Clicked = () => {
-    saveAs(previewPdu1file, 'PDU1-' + moment().format('DD.MM.YYYY') + '.pdf')
+    saveAs(previewPdu1file!, 'PDU1-' + moment().format('DD.MM.YYYY') + '.pdf')
   }
 
   return (

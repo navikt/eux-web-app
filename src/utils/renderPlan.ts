@@ -1,8 +1,8 @@
-import { Periode, PeriodeMedForsikring, PlanItemType } from 'declarations/sed'
+import { Periode, ForsikringPeriode, PlanItemType } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import { arbeidsperioderFraAAToPeriodeMedForsikring } from './arbeidsperioder'
+import { arbeidsperioderFraAAToForsikringPeriode } from './arbeidsperioder'
 
 export interface PlanItem<T> {
   type: PlanItemType
@@ -28,8 +28,8 @@ export interface RenderPlanProps<T> {
  what is the correct order of items that should be rendered, and with what component.
 */
 
-// T is either Periode (for Ansatt) or PeriodeMedForsikring (for ArbeidsforholdMedForsikring)
-const renderPlan = <T extends Periode | PeriodeMedForsikring>({
+// T is either Periode (for Ansatt) or ForsikringPeriode (for ArbeidsforholdMedForsikring)
+const renderPlan = <T extends Periode | ForsikringPeriode>({
   perioder,
   arbeidsperioder,
   sort = 'time'
@@ -47,11 +47,11 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
   // 2nd step: go through all arbeidsperioder. If they match periods, pair then, otherwise just append them in the end
 
   arbeidsperioder?.arbeidsperioder?.forEach((arbeidsgiver: ArbeidsperiodeFraAA, arbeidsperioderIndex: number) => {
-    const arbeidsgiverAsPeriodeMedForsikring: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsgiver)
+    const arbeidsgiverAsForsikringPeriode: ForsikringPeriode = arbeidsperioderFraAAToForsikringPeriode(arbeidsgiver)
 
     const foundPlanIndex: number = _.findIndex(plan, p =>
-      p.item.startdato === arbeidsgiverAsPeriodeMedForsikring.startdato &&
-      p.item.sluttdato === arbeidsgiverAsPeriodeMedForsikring.sluttdato
+      p.item.startdato === arbeidsgiverAsForsikringPeriode.startdato &&
+      p.item.sluttdato === arbeidsgiverAsForsikringPeriode.sluttdato
     )
 
     if (foundPlanIndex >= 0) {
@@ -59,23 +59,23 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
       const periodeIndex = (plan[foundPlanIndex].item as Periode).__index
 
       // by having an index in the period, it is marked as selected
-      // set also _type as the index for this  arbeidsgiverAsPeriodeMedForsikring in the arbeidsperioder?.arbeidsperioder list
+      // set also _type as the index for this  arbeidsgiverAsForsikringPeriode in the arbeidsperioder?.arbeidsperioder list
       plan[foundPlanIndex] = {
         item: {
-          ...(arbeidsgiverAsPeriodeMedForsikring as T),
+          ...(arbeidsgiverAsForsikringPeriode as T),
           __index: periodeIndex,
           __type: '' + arbeidsperioderIndex
         },
-        type: 'arbeidsperiode',
+        type: 'forsikringPeriode',
         duplicate: false
       } as PlanItem<T>
     } else {
       unmatchedArbeidsgiver.push({
         item: {
-          ...arbeidsgiverAsPeriodeMedForsikring as T,
+          ...arbeidsgiverAsForsikringPeriode as T,
           __type: '' + arbeidsperioderIndex
         },
-        type: 'arbeidsperiode',
+        type: 'forsikringPeriode',
         duplicate: false
       })
     }
@@ -91,7 +91,7 @@ const renderPlan = <T extends Periode | PeriodeMedForsikring>({
   }
   if (sort === 'group') {
     plan = plan.sort((a: PlanItem<T>, b: PlanItem<T>) => {
-      const typeOrder = ['periode', 'arbeidsperiode', 'addedArbeidsperiode']
+      const typeOrder = ['periode', 'forsikringPeriode']
       if (typeOrder.indexOf(a.type) !== typeOrder.indexOf(b.type)) {
         return typeOrder.indexOf(a.type) - typeOrder.indexOf(b.type)
       }

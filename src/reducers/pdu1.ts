@@ -9,7 +9,7 @@ export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
   pdu1: PDU1 | null | undefined
   pdu1results: FagSaker | null | undefined
-  previewPdu1: any
+  previewPdu1: Blob | null | undefined
   jornalførePdu1Response: any
   pdu1Changed: boolean
 }

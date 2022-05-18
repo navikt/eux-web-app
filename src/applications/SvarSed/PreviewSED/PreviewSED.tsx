@@ -2,7 +2,7 @@ import { Sight } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import { getPreviewFile, resetPreviewSvarSed } from 'actions/svarsed'
+import { getPreviewFile, previewSed, resetPreviewSvarSed } from 'actions/svarsed'
 import Modal from 'components/Modal/Modal'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -16,37 +16,58 @@ import { blobToBase64 } from 'utils/blob'
 import { cleanReplySed } from 'utils/sed'
 
 export interface PreviewSedProps {
-  replySed: ReplySed | null | undefined
+  rinaSakId?: string | undefined
+  sedId?: string | undefined
+  replySed?: ReplySed | null | undefined
+  short ?: boolean
+  size ?: 'medium' | 'small' | 'xsmall' | undefined
 }
 
 export interface PreviewSedSelector {
   gettingPreviewFile: boolean
-  previewFile: any
+  gettingPreviewSed: boolean
+  previewFile: Blob | undefined
+  previewReplySed: ReplySed | null | undefined
 }
 
 const mapState = (state: State): any => ({
   gettingPreviewFile: state.loading.gettingPreviewFile,
-  previewFile: state.svarsed.previewFile
+  gettingPreviewSed: state.loading.gettingPreviewSed,
+  previewFile: state.svarsed.previewFile,
+  previewReplySed: state.svarsed.previewReplySed
 })
 
 const PreviewSED: React.FC<PreviewSedProps> = ({
-  replySed
+  rinaSakId,
+  sedId,
+  replySed,
+  short = false,
+  size = 'medium'
 }: PreviewSedProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
     gettingPreviewFile,
-    previewFile
+    gettingPreviewSed,
+    previewFile,
+    previewReplySed
   }: PreviewSedSelector = useAppSelector(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
-  // const [quickReplySed, setQuickReplySed] = useState<ReplySed | undefined>(undefined)
+  const [requestPreview, setRequestPreview] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!previewModal && !_.isNil(previewFile)) {
+    if (requestPreview && !previewModal && !_.isNil(previewFile)) {
+      setRequestPreview(false)
       showPreviewModal(previewFile)
     }
   }, [previewFile])
+
+  useEffect(() => {
+    if (requestPreview && rinaSakId && sedId && !_.isNil(previewReplySed) && !gettingPreviewSed) {
+      dispatch(getPreviewFile(rinaSakId!, previewReplySed))
+    }
+  }, [previewReplySed])
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
@@ -89,6 +110,10 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
   }
 
   const onPreviewSedClicked = (e: any) => {
+    /* two modes:
+       1) I am alrady editing a SED, so I can use all info from replySed
+       2) I am choosing a SED, therefore I have to fetch it first, then I can preview it
+     */
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)
       cleanReplySed(newReplySed)
@@ -98,7 +123,12 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       delete newReplySed.attachments
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
       buttonLogger(e)
+    } else {
+      if (sedId && rinaSakId) {
+        dispatch(previewSed(sedId, rinaSakId))
+      }
     }
+    setRequestPreview(true)
   }
 
   return (
@@ -110,14 +140,19 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       />
       <Button
         variant='tertiary'
-        disabled={gettingPreviewFile}
+        size={size}
+        disabled={gettingPreviewFile || gettingPreviewSed}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
       >
-        <Sight />
-        <HorizontalSeparatorDiv size='0.5' />
-        {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-        {gettingPreviewFile && <Loader />}
+        {(short && (gettingPreviewFile || gettingPreviewSed)) ? <Loader /> : <Sight />}
+        {!short && (
+          <>
+            <HorizontalSeparatorDiv size='0.5' />
+            {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
+            {gettingPreviewFile && <Loader />}
+          </>
+        )}
       </Button>
 
     </>

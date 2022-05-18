@@ -1,8 +1,9 @@
 import { Close, Edit, Download, Send, Star } from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
 import { editSed, getSedStatus, invalidatingSed, replyToSed, setReplySed } from 'actions/svarsed'
+import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { canEditSed, canUpdateSed, findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -133,9 +134,12 @@ const SEDPanel = ({
         </IconDiv>
         <HorizontalSeparatorDiv />
         <PileDiv>
-          <Heading size='small'>
-            {connectedSed.sedType} - {connectedSed.sedTittel}
-          </Heading>
+          <FlexBaseDiv>
+            <Heading size='small'>
+              {connectedSed.sedType} - {connectedSed.sedTittel}
+            </Heading>
+            <PreviewSED short size='small' rinaSakId={currentSak.sakId} sedId={connectedSed.sedId} />
+          </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
             {showJournalfoingButton && (

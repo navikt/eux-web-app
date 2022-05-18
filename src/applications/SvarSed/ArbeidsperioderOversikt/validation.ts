@@ -6,56 +6,56 @@ import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationPeriodeMedForsikringProps {
-  periodeMedForsikring: PeriodeMedForsikring | undefined,
+export interface ValidationArbeidsperiodeOversiktProps {
+  forsikringPeriode: PeriodeMedForsikring | undefined,
   index ?: number
   personName ?: string
 }
 
-export interface ValidatePerioderMedForsikringProps {
+export interface ValidationArbeidsperioderOversiktProps {
   perioderMedForsikring: Array<PeriodeMedForsikring> | undefined
   personName ?: string
 }
 
-export const validatePeriodeMedForsikring = (
+export const validateArbeidsperiodeOversikt = (
   v: Validation,
   namespace: string,
   {
-    periodeMedForsikring,
+    forsikringPeriode,
     personName,
     index
-  }: ValidationPeriodeMedForsikringProps
+  }: ValidationArbeidsperiodeOversiktProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
   hasErrors.push(validatePeriode(v, namespace, {
-    periode: periodeMedForsikring,
+    periode: forsikringPeriode,
     index,
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: periodeMedForsikring?.arbeidsgiver?.navn,
+    needle: forsikringPeriode?.arbeidsgiver?.navn,
     id: namespace + idx + '-arbeidsgiver-navn',
     message: 'validation:noNavn',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: periodeMedForsikring?.arbeidsgiver?.identifikatorer,
+    needle: forsikringPeriode?.arbeidsgiver?.identifikatorer,
     id: namespace + idx + '-arbeidsgiver-identifikatorer',
     message: 'validation:noIdentifikatorer',
     personName
   }))
 
   hasErrors.push(validateIdentifikatorer(v, namespace + idx + '-arbeidsgiver-identifikatorer', {
-    identifikatorer: periodeMedForsikring?.arbeidsgiver.identifikatorer,
+    identifikatorer: forsikringPeriode?.arbeidsgiver.identifikatorer,
     personName
   }))
 
   hasErrors.push(validateAdresse(v, namespace + idx + '-arbeidsgiver-adresse', {
-    adresse: periodeMedForsikring?.arbeidsgiver.adresse,
+    adresse: forsikringPeriode?.arbeidsgiver.adresse,
     index,
     checkAdresseType: false,
     personName
@@ -64,17 +64,17 @@ export const validatePeriodeMedForsikring = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validatePerioderMedForsikring = (
+export const validateArbeidsperioderOversikt = (
   validation: Validation,
   namespace: string,
   {
     perioderMedForsikring
-  }: ValidatePerioderMedForsikringProps
+  }: ValidationArbeidsperioderOversiktProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  perioderMedForsikring?.forEach((periodeMedForsikring: PeriodeMedForsikring) => {
-    hasErrors.push(validatePeriodeMedForsikring(validation, namespace, {
-      periodeMedForsikring
+  perioderMedForsikring?.forEach((forsikringPeriode: PeriodeMedForsikring) => {
+    hasErrors.push(validateArbeidsperiodeOversikt(validation, namespace, {
+      forsikringPeriode
     }))
   })
   return hasErrors.find(value => value) !== undefined

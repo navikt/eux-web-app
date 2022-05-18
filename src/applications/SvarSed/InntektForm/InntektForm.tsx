@@ -20,13 +20,13 @@ import InntektSearch from 'applications/SvarSed/InntektSearch/InntektSearch'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
+import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import InntektFC from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
@@ -41,7 +41,7 @@ import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { arbeidsperioderFraAAToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsperioder'
+import { arbeidsperioderFraAAToForsikringPeriode, getOrgnr } from 'utils/arbeidsperioder'
 import { getFnr } from 'utils/fnr'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
@@ -507,10 +507,10 @@ const InntektForm: React.FC<MainFormProps> = ({
             </Heading>
             <VerticalSeparatorDiv size='2' />
             {arbeidsperioder?.arbeidsperioder?.map(a => {
-              const period: PeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(a)
+              const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
               return (
-                <ArbeidsperioderBox
-                  periodeMedForsikring={period}
+                <ForsikringPeriodeBox
+                  forsikringPeriode={period}
                   editable='no'
                   showAddress={false}
                   key={getOrgnr(period, 'organisasjonsnummer')}

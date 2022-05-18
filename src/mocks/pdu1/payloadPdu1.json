@@ -134,7 +134,7 @@
   "sisteAnsettelseInfo": {
     "typeGrunnOpphoerAnsatt": "oppsagt_av_arbeidsgiver",
     "annenGrunnOpphoerAnsatt": "æøå",
-    "annenGrunnOpphoerSelvstendig": "æøå"
+    "grunnOpphoerSelvstendig": "æøå"
   },
   "perioderLoennSomAnsatt": [
     {

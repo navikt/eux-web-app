@@ -35,6 +35,10 @@ export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_an
 
 export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
 
+export type TypeGrunn = 'oppsagt_av_arbeidsgiver' | 'arbeidstaker_har_sagt_opp_selv' | 'kontrakten_utløpt' |
+  'avsluttet_etter_felles_overenskomst' | 'avskjediget_av_disiplinære_grunner' | 'overtallighet' |
+  'ukjent' | 'annet'
+
 export type ArbeidsgiverIdentifikatorType = 'organisasjonsnummer' | 'trygd' | 'skattemessig' | 'ukjent'
 
 export type PeriodeInputType = 'simple' | 'withcheckbox'
@@ -49,8 +53,8 @@ export type PeriodeSort = 'time' | 'group'
 
 export type PeriodeView = 'periods' | 'all'
 
-// periode: simple period. arbeidsperiode: period as arbeidsperioderBox. addedArbeidsperiode: period as arbeidsperioderBox that was added by the user
-export type PlanItemType = 'periode' | 'arbeidsperiode' | 'addedArbeidsperiode'
+// periode: simple period. arbeidsperiode: period as ForsikringPeriode
+export type PlanItemType = 'periode' | 'forsikringPeriode'
 
 export interface Adresse {
   by?: string
@@ -309,7 +313,7 @@ export interface SisteAnsettelseInfo {
 }
 
 export interface GrunnTilOpphør {
-  typeGrunnOpphoerAnsatt: string
+  typeGrunnOpphoerAnsatt: TypeGrunn
   annenGrunnOpphoerAnsatt?: string
   grunnOpphoerSelvstendig?: string
 }
@@ -384,9 +388,11 @@ export interface InntektOgTime {
   inntektsperiode: Periode
 }
 
-export interface PeriodeMedForsikring extends Periode {
+export type ForsikringPeriode = Periode
+
+export interface PeriodeMedForsikring extends ForsikringPeriode {
   arbeidsgiver: ArbeidsgiverWithAdresse
-  // this is just to accommodate ArbeidsperiodeFraAA conversion as PeriodeMedForsikring, just for internal use while showing ArbeidsperioderBox
+  // this is just to accommodate ArbeidsperiodeFraAA conversion as PeriodeMedForsikring, just for internal use while showing ForsikringPeriodeBox
   extra ?: {
     fraInntektsregisteret?: string
     fraArbeidsgiverregisteret?: string
@@ -399,11 +405,9 @@ export interface PeriodeUtenForsikring extends PeriodeMedForsikring {
   inntektOgTimerInfo: string
 }
 
-export interface PeriodeAnnenForsikring extends Periode {
+export interface PeriodeAnnenForsikring extends ForsikringPeriode {
   annenTypeForsikringsperiode: string
 }
-
-export type ForsikringPeriode = Periode | PeriodeMedForsikring | PeriodeUtenForsikring | PeriodeAnnenForsikring
 
 export interface UenighetKonklusjon {
   vedtakFraDato: string

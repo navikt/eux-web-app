@@ -47,14 +47,14 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   })
 
   const årsakOptions: Options = [
-    { label: t('el:option-grunntilopphør-oppsagt_av_arbeidsgiver'), value: '01' },
-    { label: t('el:option-grunntilopphør-arbeidstaker_har_sagt_opp_selv'), value: '02' },
-    { label: t('el:option-grunntilopphør-kontrakten_utløpt'), value: '03' },
-    { label: t('el:option-grunntilopphør-avsluttet_etter_felles_overenskomst'), value: '04' },
-    { label: t('el:option-grunntilopphør-avskjediget_av_disiplinære_grunner'), value: '05' },
-    { label: t('el:option-grunntilopphør-overtallighet'), value: '06' },
-    { label: t('el:option-grunntilopphør-ukjent'), value: '98' },
-    { label: t('el:option-grunntilopphør-annet'), value: '99' }
+    { label: t('el:option-grunntilopphør-oppsagt_av_arbeidsgiver'), value: 'oppsagt_av_arbeidsgiver' },
+    { label: t('el:option-grunntilopphør-arbeidstaker_har_sagt_opp_selv'), value: 'arbeidstaker_har_sagt_opp_selv' },
+    { label: t('el:option-grunntilopphør-kontrakten_utløpt'), value: 'kontrakten_utløpt' },
+    { label: t('el:option-grunntilopphør-avsluttet_etter_felles_overenskomst'), value: 'avsluttet_etter_felles_overenskomst' },
+    { label: t('el:option-grunntilopphør-avskjediget_av_disiplinære_grunner'), value: 'avskjediget_av_disiplinære_grunner' },
+    { label: t('el:option-grunntilopphør-overtallighet'), value: 'overtallighet' },
+    { label: t('el:option-grunntilopphør-ukjent'), value: 'ukjent' },
+    { label: t('el:option-grunntilopphør-annet'), value: 'annet' }
   ]
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string) => {

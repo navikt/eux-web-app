@@ -14,7 +14,6 @@ import {
 } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Label } from '@navikt/ds-react'
 import {
-  AlignEndColumn,
   AlignStartRow,
   Column,
   FlexEndDiv,
@@ -25,26 +24,20 @@ import {
 } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
-import InntektOgTimerFC from 'applications/SvarSed/Forsikring/InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'applications/SvarSed/Forsikring/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Military from 'assets/icons/Military'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
-import Input from 'components/Forms/Input'
-import PeriodeInput from 'components/Forms/PeriodeInput'
-import PeriodeText from 'components/Forms/PeriodeText'
+import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
+
 import Select from 'components/Forms/Select'
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import {
-  ForsikringPeriode,
-  InntektOgTime,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring,
+  ForsikringPeriode,
   PeriodeSort,
   PeriodeUtenForsikring,
   U002Sed
@@ -143,7 +136,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     _resetValidation(namespace + '-type')
   }
 
-  const setPeriode = (periode: ForsikringPeriode, index: number) => {
+  /* const setPeriode = (periode: ForsikringPeriode, index: number) => {
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
@@ -159,58 +152,18 @@ const Forsikring: React.FC<MainFormProps> = ({
     })
     dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-startdato'))
     dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-sluttdato'))
+  } */
+
+  const onArbeidsgiverEdit = (periode: ForsikringPeriode) => {
+    onSaveEdit(periode)
   }
 
-  const onArbeidsgiverEdit = (periodeMedForsikring: PeriodeMedForsikring) => {
-    onSaveEdit(periodeMedForsikring)
+  const onArbeidsgiverDelete = (removed: ForsikringPeriode) => {
+    onRemove(removed)
   }
 
-  const setInntektOgTimer = (inntektOgTimer: Array<InntektOgTime>, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        inntektOgTimer
-      } as PeriodeUtenForsikring)
-      _resetValidation(namespace + '-inntektOgTimer')
-      return
-    }
-    _setEditPeriode({
-      ..._editPeriode,
-      inntektOgTimer
-    } as PeriodeUtenForsikring)
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-inntektOgTimer'))
-  }
-
-  const setInntektOgTimerInfo = (inntektOgTimerInfo: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        inntektOgTimerInfo
-      } as PeriodeUtenForsikring)
-      _resetValidation(namespace + '-inntektOgTimerInfo')
-      return
-    }
-    _setEditPeriode({
-      ..._editPeriode,
-      inntektOgTimerInfo
-    } as PeriodeUtenForsikring)
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-inntektOgTimerInfo'))
-  }
-
-  const setAnnenTypeForsikringsperiode = (annenTypeForsikringsperiode: string, index: number) => {
-    if (index < 0) {
-      _setNewPeriode({
-        ..._newPeriode,
-        annenTypeForsikringsperiode
-      } as PeriodeAnnenForsikring)
-      _resetValidation(namespace + '-annenTypeForsikringsperiode')
-      return
-    }
-    _setEditPeriode({
-      ..._editPeriode,
-      annenTypeForsikringsperiode
-    } as PeriodeAnnenForsikring)
-    dispatch(resetValidation(namespace + getNSIdx(_editPeriode!.__type!, _editPeriode!.__index) + '-annenTypeForsikringsperiode'))
+  const onArbeidsgiverNew = (periode: ForsikringPeriode) => {
+    onAddNew(periode)
   }
 
   const onCloseEdit = (namespace: string) => {
@@ -225,17 +178,8 @@ const Forsikring: React.FC<MainFormProps> = ({
     _resetValidation()
   }
 
-  const onStartEdit = (periode: Periode) => {
-    // reset any validation that exists from a cancelled edited item
-    if (_editTypeAndIndex !== undefined) {
-      dispatch(resetValidation(namespace + _editTypeAndIndex))
-    }
-    _setEditPeriode(periode)
-    _setEditTypeAndIndex(getNSIdx(periode.__type!, periode.__index))
-  }
-
   // when editPeriode is not undefined, it comes from ArbeidsgiverBox
-  const onSaveEdit = (editPeriode ?: PeriodeMedForsikring) => {
+  const onSaveEdit = (editPeriode ?: ForsikringPeriode) => {
     const __editPeriode = !_.isUndefined(editPeriode) ? editPeriode : _editPeriode
     const [type, index] = readNSIdx(_editTypeAndIndex!)
     const __type = !_.isUndefined(editPeriode) ? editPeriode.__type : type
@@ -268,20 +212,20 @@ const Forsikring: React.FC<MainFormProps> = ({
     standardLogger('svarsed.editor.periode.remove', { type })
   }
 
-  const onAddNew = () => {
+  const onAddNew = (newPeriode: ForsikringPeriode) => {
     const valid: boolean = _performValidation({
-      periode: _newPeriode,
+      periode: newPeriode,
       personName
     })
-    if (!!_newPeriode && valid) {
-      const type: string = _newPeriode.__type as string
+    if (!!newPeriode && valid) {
+      const type: string = newPeriode.__type as string
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(replySed, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      delete _newPeriode.__type
-      delete _newPeriode.__index
-      newPerioder.concat(_newPeriode!)
+      delete newPeriode.__type
+      delete newPeriode.__index
+      newPerioder.concat(newPeriode!)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(type, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type })
@@ -313,24 +257,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     const idx = getNSIdx(periode?.__type, periode?.__index)
     const _namespace = namespace + idx
     const _v: Validation = index < 0 ? _validation : validation
-    const inEditMode = index < 0 || _editTypeAndIndex === idx
-    const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
-    const existingPeriod: boolean = !_.isNil(_periode?.__index) && _periode?.__index! >= 0
-
-    const addremovepanel = (
-      <AddRemovePanel<ForsikringPeriode>
-        item={periode}
-        marginTop={inEditMode}
-        index={index}
-        inEditMode={inEditMode}
-        onRemove={onRemove}
-        onAddNew={onAddNew}
-        onCancelNew={onCloseNew}
-        onStartEdit={onStartEdit}
-        onConfirmEdit={onSaveEdit}
-        onCancelEdit={() => onCloseEdit(_namespace)}
-      />
-    )
+    const _periode = index < 0 ? _newPeriode : periode
 
     return (
       <RepeatableRow
@@ -342,7 +269,7 @@ const Forsikring: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {inEditMode && !existingPeriod &&
+        {index < 0 &&
           (
             <>
               <Select
@@ -359,9 +286,26 @@ const Forsikring: React.FC<MainFormProps> = ({
                 defaultValue={_.find(periodeOptions, o => o.value === _periode?.__type)}
               />
               <VerticalSeparatorDiv />
+              {_periode?.__type && (
+                <AlignStartRow>
+                  <Column>
+                    <ForsikringPeriodeBox
+                      forsikringPeriode={(_periode as ForsikringPeriode)}
+                      allowDelete
+                      newMode
+                      editable='full'
+                      selectable={false}
+                      showAddress
+                      icon={getIcon(_periode!.__type!, '32')}
+                      onForsikringPeriodeNew={onArbeidsgiverNew}
+                      namespace={namespace}
+                    />
+                  </Column>
+                </AlignStartRow>
+              )}
             </>
           )}
-        {!_.isUndefined(_periode?.__type) && (
+        {/*! _.isUndefined(_periode?.__type) && (
           <AlignStartRow>
             {inEditMode
               ? (
@@ -400,22 +344,22 @@ const Forsikring: React.FC<MainFormProps> = ({
               {addremovepanel}
             </AlignEndColumn>
           </AlignStartRow>
-        )}
-        <VerticalSeparatorDiv />
+        ) */}
         {!_.isUndefined(_periode?.__type) && [
-          'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring',
-          'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
+          'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring'
         ].indexOf(_periode!.__type!) >= 0 && (
           <>
             <AlignStartRow>
               <Column>
-                <ArbeidsperioderBox
-                  periodeMedForsikring={(_periode as PeriodeMedForsikring)}
-                  editable={inEditMode ? 'full' : 'no'}
-                  editMode={inEditMode}
+                <ForsikringPeriodeBox
+                  forsikringPeriode={(_periode as ForsikringPeriode)}
+                  allowDelete
+                  editable='full'
                   selectable={false}
                   showAddress
-                  onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+                  icon={getIcon(_periode!.__type!, '32')}
+                  onForsikringPeriodeEdit={onArbeidsgiverEdit}
+                  onForsikringPeriodeDelete={onArbeidsgiverDelete}
                   namespace={namespace}
                 />
               </Column>
@@ -426,72 +370,40 @@ const Forsikring: React.FC<MainFormProps> = ({
         {!_.isUndefined(_periode?.__type) && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
           .indexOf(_periode!.__type!) >= 0 && (
             <>
-              {inEditMode
-                ? (
-                  <InntektOgTimerFC
-                    validation={validation}
-                    personName={personName}
-                    parentNamespace={_namespace}
-                    inntektOgTimer={(_periode as PeriodeUtenForsikring).inntektOgTimer}
-                    onInntektOgTimeChanged={(newInntektOgTimer: Array<InntektOgTime>) => setInntektOgTimer(newInntektOgTimer, index)}
-                  />
-                  )
-                : (
-                  <BodyLong>{JSON.stringify((_periode as PeriodeUtenForsikring).inntektOgTimer)}</BodyLong>
-                  )}
-              <VerticalSeparatorDiv />
               <AlignStartRow>
                 <Column>
-                  {inEditMode
-                    ? (
-                      <Input
-                        error={_v[_namespace + '-inntektOgTimerInfo']?.feilmelding}
-                        namespace={_namespace}
-                        id='inntektOgTimerInfo'
-                        key={_namespace + '-inntektOgTimerInfo-' + (_periode as PeriodeUtenForsikring).inntektOgTimerInfo}
-                        label={t('label:inntekt-og-time-info')}
-                        onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo, index)}
-                        value={(_periode as PeriodeUtenForsikring).inntektOgTimerInfo}
-                      />
-                      )
-                    : (
-                      <BodyLong>
-                        {JSON.stringify((_periode as PeriodeUtenForsikring).inntektOgTimerInfo)}
-                      </BodyLong>
-                      )}
+                  <ForsikringPeriodeBox
+                    forsikringPeriode={(_periode as PeriodeUtenForsikring)}
+                    editable='full'
+                    showInntekt
+                    selectable={false}
+                    showAddress
+                    icon={getIcon(_periode!.__type!, '32')}
+                    onForsikringPeriodeEdit={onArbeidsgiverEdit}
+                    namespace={namespace}
+                  />
                 </Column>
               </AlignStartRow>
+              <VerticalSeparatorDiv />
             </>
         )}
         {!_.isUndefined(_periode?.__type) && _periode!.__type === 'perioderAnnenForsikring' && (
           <>
             <AlignStartRow>
               <Column>
-                {inEditMode
-                  ? (<Input
-                      error={_v[_namespace + '-annenTypeForsikringsperiode']?.feilmelding}
-                      namespace={_namespace}
-                      id='annenTypeForsikringsperiode'
-                      key={_namespace + '-annenTypeForsikringsperiode-' + (_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
-                      label={t('label:annen-type')}
-                      onChanged={(newAnnenTypeForsikringsperiode: string) => setAnnenTypeForsikringsperiode(newAnnenTypeForsikringsperiode, index)}
-                      value={(_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
-                     />
-                    )
-                  : (
-                    <BodyLong>{JSON.stringify((_periode as PeriodeAnnenForsikring).annenTypeForsikringsperiode)}</BodyLong>
-                    )}
+                <ForsikringPeriodeBox
+                  forsikringPeriode={(_periode as PeriodeAnnenForsikring)}
+                  editable='full'
+                  icon={getIcon(_periode!.__type!, '32')}
+                  selectable={false}
+                  showAnnen
+                  onForsikringPeriodeEdit={onArbeidsgiverEdit}
+                  namespace={namespace}
+                />
               </Column>
             </AlignStartRow>
             <VerticalSeparatorDiv />
           </>
-        )}
-        {index < 0 && (
-          <AlignStartRow>
-            <AlignEndColumn>
-              {addremovepanel}
-            </AlignEndColumn>
-          </AlignStartRow>
         )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>

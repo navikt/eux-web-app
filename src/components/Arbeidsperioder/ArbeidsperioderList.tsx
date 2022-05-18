@@ -1,22 +1,21 @@
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
-import { PeriodeMedForsikring } from 'declarations/sed'
+import { ForsikringPeriode } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types.d'
 import _ from 'lodash'
 import { BodyLong } from '@navikt/ds-react'
 import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { arbeidsperioderFraAAToPeriodeMedForsikring, getOrgnr } from 'utils/arbeidsperioder'
-import ArbeidsperioderBox, { Editable } from './ArbeidsperioderBox'
+import { arbeidsperioderFraAAToForsikringPeriode, getOrgnr } from 'utils/arbeidsperioder'
+import ForsikringPeriodeBox, { Editable } from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
+import { getIdx } from 'utils/namespace'
 
 export interface ArbeidsperioderListProps {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   editable?: Editable
   fnr: string | undefined
   namespace: string
-  onArbeidsgiverSelect: (a: PeriodeMedForsikring, checked: boolean) => void
-  onArbeidsgiverEdit?: (a: PeriodeMedForsikring, old: PeriodeMedForsikring) => void
-  onArbeidsgiverDelete?: (a: PeriodeMedForsikring) => void
+  onArbeidsgiverSelect: (a: ArbeidsperiodeFraAA, checked: boolean) => void
   searchable?: boolean
   valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
 }
@@ -27,8 +26,6 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
   fnr,
   namespace,
   onArbeidsgiverSelect,
-  onArbeidsgiverEdit = () => {},
-  onArbeidsgiverDelete = () => {},
   searchable = false,
   valgteArbeidsperioder
 }: ArbeidsperioderListProps): JSX.Element => {
@@ -49,28 +46,26 @@ const ArbeidsperioderList: React.FC<ArbeidsperioderListProps> = ({
         {!_.isEmpty(arbeidsperioder) && <VerticalSeparatorDiv size='2' />}
         {arbeidsperioder && arbeidsperioder.arbeidsperioder?.map(
           (arbeidsperiode: ArbeidsperiodeFraAA) => {
-            const arbeidsgiverAsPeriodeMedForsikring = arbeidsperioderFraAAToPeriodeMedForsikring(arbeidsperiode)
-            const orgnr = getOrgnr(arbeidsgiverAsPeriodeMedForsikring, 'organisasjonsnummer')
+            const arbeidsgiverAsForsikringPeriode = arbeidsperioderFraAAToForsikringPeriode(arbeidsperiode)
+            const orgnr = getOrgnr(arbeidsgiverAsForsikringPeriode, 'organisasjonsnummer')
 
             const index = valgteArbeidsperioder?.findIndex((item: ArbeidsperiodeFraAA) => (
               item.arbeidsgiversOrgnr === orgnr &&
-              item.fraDato === arbeidsgiverAsPeriodeMedForsikring.startdato &&
-              item.tilDato === arbeidsperiode.tilDato
+              item.fraDato === arbeidsgiverAsForsikringPeriode.startdato &&
+              item.tilDato === arbeidsgiverAsForsikringPeriode.sluttdato
             ))
 
             if (!_.isNil(index) && index >= 0) {
-              arbeidsgiverAsPeriodeMedForsikring.__index = index
+              arbeidsgiverAsForsikringPeriode.__index = index
             }
 
             return (
-              <ArbeidsperioderBox
-                periodeMedForsikring={arbeidsgiverAsPeriodeMedForsikring}
+              <ForsikringPeriodeBox
+                forsikringPeriode={arbeidsgiverAsForsikringPeriode}
                 editable={editable}
                 key={arbeidsperiode.arbeidsgiversOrgnr + '-' + arbeidsperiode.fraDato + '-' + arbeidsperiode.tilDato}
-                onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-                onPeriodeMedForsikringDelete={onArbeidsgiverDelete}
-                onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
-                namespace={namespace}
+                onForsikringPeriodeSelect={(p: ForsikringPeriode, checked: boolean) => onArbeidsgiverSelect(arbeidsperiode, checked)}
+                namespace={namespace + getIdx(arbeidsgiverAsForsikringPeriode.__index)}
               />
             )
           }

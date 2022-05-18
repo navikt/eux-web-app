@@ -2,7 +2,7 @@ import { ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declar
 import { ArbeidsperiodeFraAA } from 'declarations/types'
 import _ from 'lodash'
 
-export const arbeidsperioderFraAAToPeriodeMedForsikring = (a: ArbeidsperiodeFraAA): PeriodeMedForsikring => {
+export const arbeidsperioderFraAAToForsikringPeriode = (a: ArbeidsperiodeFraAA): PeriodeMedForsikring => {
   const newPeriode: Periode = {
     startdato: a.fraDato!
   }
@@ -26,10 +26,10 @@ export const arbeidsperioderFraAAToPeriodeMedForsikring = (a: ArbeidsperiodeFraA
       fraInntektsregisteret: a.fraInntektsregisteret,
       fraSed: 'nei'
     }
-  }
+  } as PeriodeMedForsikring
 }
 
-export const periodeMedForsikringToArbeidsperioderFraAA = (a: PeriodeMedForsikring): ArbeidsperiodeFraAA => {
+export const forsikringPeriodeToArbeidsperioderFraAA = (a: PeriodeMedForsikring): ArbeidsperiodeFraAA => {
   return {
     fraInntektsregisteret: a.extra?.fraInntektsregisteret ?? '',
     fraArbeidsgiverregisteret: a.extra?.fraArbeidsgiverregisteret ?? '',

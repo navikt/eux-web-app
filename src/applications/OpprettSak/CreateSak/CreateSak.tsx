@@ -34,7 +34,7 @@ import {
   Tema,
   Validation
 } from 'declarations/types'
-import { H001Sed, PeriodeMedForsikring, ReplySed } from 'declarations/sed'
+import { H001Sed, ReplySed } from 'declarations/sed'
 import * as EKV from '@navikt/eessi-kodeverk'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -58,7 +58,6 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link as DOMLink } from 'react-router-dom'
-import { periodeMedForsikringToArbeidsperioderFraAA } from 'utils/arbeidsperioder'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 import h001template from 'mocks/seds/h001template.json'
 import styled from 'styled-components'
@@ -709,10 +708,10 @@ const CreateSak: React.FC<CreateSakProps> = ({
             fnr={person?.fnr}
             valgteArbeidsperioder={valgteArbeidsperioder}
             arbeidsperioder={arbeidsperioder}
-            onArbeidsgiverSelect={(a: PeriodeMedForsikring, checked: boolean) => dispatch(
+            onArbeidsgiverSelect={(a: ArbeidsperiodeFraAA, checked: boolean) => dispatch(
               checked
-                ? sakActions.addArbeidsperiode(periodeMedForsikringToArbeidsperioderFraAA(a))
-                : sakActions.removeArbeidsperiode(periodeMedForsikringToArbeidsperioderFraAA(a))
+                ? sakActions.addArbeidsperiode(a)
+                : sakActions.removeArbeidsperiode(a)
             )}
           />
         )}

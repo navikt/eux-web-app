@@ -1,15 +1,14 @@
 import { validatePeriode } from 'components/Forms/validation'
 import {
-  ForsikringPeriode,
   Periode,
   PeriodeAnnenForsikring,
-  PeriodeMedForsikring,
-  PeriodeUtenForsikring
+  ForsikringPeriode,
+  PeriodeUtenForsikring, PeriodeMedForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getNSIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
-import { validateInntektOgTimer } from './InntektOgTimer/validation'
+import { validateInntektOgTimer } from 'components/ForsikringPeriodeBox/InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode | undefined

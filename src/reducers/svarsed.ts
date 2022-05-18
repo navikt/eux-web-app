@@ -9,7 +9,8 @@ import { AnyAction } from 'redux'
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
   personRelatert: any
-  previewFile: any
+  previewReplySed: ReplySed | null | undefined
+  previewFile: Blob | null | undefined
   replySed: ReplySed | null | undefined
   originalReplySed: ReplySed | null | undefined
   replySedChanged: boolean
@@ -23,6 +24,9 @@ export interface SvarsedState {
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   personRelatert: undefined,
+  // replySED used for preview
+  previewReplySed: undefined,
+  // binary PDF file for SED preview,
   previewFile: undefined,
   // the working reply sed
   replySed: undefined,
@@ -128,17 +132,41 @@ const svarsedReducer = (
     case types.SVARSED_PREVIEW_SUCCESS:
       return {
         ...state,
-        previewFile: (action as ActionWithPayload).payload
+        previewReplySed: (action as ActionWithPayload).payload
       }
 
     case types.SVARSED_PREVIEW_FAILURE:
       return {
         ...state,
-        previewFile: null
+        previewReplySed: null
       }
 
     case types.SVARSED_PREVIEW_REQUEST:
+      return {
+        ...state,
+        previewReplySed: undefined
+      }
+
     case types.SVARSED_PREVIEW_RESET:
+      return {
+        ...state,
+        previewReplySed: undefined,
+        previewFile: undefined
+      }
+
+    case types.SVARSED_PREVIEW_FILE_SUCCESS:
+      return {
+        ...state,
+        previewFile: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARSED_PREVIEW_FILE_FAILURE:
+      return {
+        ...state,
+        previewFile: null
+      }
+
+    case types.SVARSED_PREVIEW_FILE_REQUEST:
       return {
         ...state,
         previewFile: undefined

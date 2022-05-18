@@ -14,14 +14,14 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import ArbeidsperioderBox from 'components/Arbeidsperioder/ArbeidsperioderBox'
 import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
+import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -61,8 +61,8 @@ const Ansatt: React.FC<MainFormProps> = ({
   const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
   const showAddress = false
   const fnr = getFnr(replySed, personID)
-  const getId = (item: PlanItem<Periode | PeriodeMedForsikring> | null): string => (item
-    ? item.type + '-' + (item.item as Periode | PeriodeMedForsikring)?.startdato + '-' + (item.item as Periode | PeriodeMedForsikring).sluttdato
+  const getId = (item: PlanItem<Periode | ForsikringPeriode> | null): string => (item
+    ? item.type + '-' + (item.item as Periode | ForsikringPeriode)?.startdato + '-' + (item.item as Periode | ForsikringPeriode).sluttdato
     : 'new')
 
   const [_plan, _setPlan] = useState<Array<PlanItem<Periode>> | undefined>(undefined)
@@ -201,7 +201,7 @@ const Ansatt: React.FC<MainFormProps> = ({
     }
   }
 
-  const onArbeidsgiverEdit = (newArbeidsgiver: PeriodeMedForsikring, oldArbeidsgiver: PeriodeMedForsikring) => {
+  const onArbeidsgiverEdit = (newArbeidsgiver: ForsikringPeriode, oldArbeidsgiver: ForsikringPeriode) => {
     // if selected, let's find the same period.
     const selectedIndex: number | undefined = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
 
@@ -226,7 +226,7 @@ const Ansatt: React.FC<MainFormProps> = ({
     }))
   }
 
-  const renderPlan = (item: PlanItem<Periode | PeriodeMedForsikring>, index: number, previousItem: PlanItem<Periode | PeriodeMedForsikring> | undefined) => {
+  const renderPlan = (item: PlanItem<Periode | ForsikringPeriode>, index: number, previousItem: PlanItem<Periode | ForsikringPeriode> | undefined) => {
     return (
       <div key={getId(item)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
@@ -247,7 +247,7 @@ const Ansatt: React.FC<MainFormProps> = ({
     if (item.type === 'periode') {
       return renderRowPeriode(item.item as Periode)
     }
-    if (item.type === 'arbeidsperiode') {
+    if (item.type === 'forsikringPeriode') {
       if (_view === 'all') {
         return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
       }
@@ -260,15 +260,15 @@ const Ansatt: React.FC<MainFormProps> = ({
     }
   }
 
-  const renderRowArbeidsperiode = (a: PeriodeMedForsikring) => {
+  const renderRowArbeidsperiode = (periode: PeriodeMedForsikring) => {
     return (
       <Column>
-        <ArbeidsperioderBox
-          periodeMedForsikring={a}
+        <ForsikringPeriodeBox
+          forsikringPeriode={periode}
           editable='only_period'
           showAddress={showAddress}
-          onPeriodeMedForsikringSelect={onArbeidsgiverSelect}
-          onPeriodeMedForsikringEdit={onArbeidsgiverEdit}
+          onForsikringPeriodeSelect={onArbeidsgiverSelect}
+          onForsikringPeriodeEdit={onArbeidsgiverEdit}
           namespace={namespace}
         />
       </Column>

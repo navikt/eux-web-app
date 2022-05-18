@@ -1,13 +1,6 @@
-import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
-import { PeriodeMedForsikring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import moment from 'moment'
 import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
-
-export interface ValidationPeriodeMedForsikringProps {
-  periodeMedForsikring: PeriodeMedForsikring | null | undefined
-  showAddress: boolean
-}
 
 export interface ValidationArbeidsperioderSøkProps {
   fom: string
@@ -81,54 +74,5 @@ export const validateArbeidsperioderSøk = (
     message: 'validation:noInntektsliste'
   }))
 
-  return hasErrors.find(value => value) !== undefined
-}
-
-export const validatePeriodeMedForsikring = (
-  v: Validation,
-  namespace: string,
-  {
-    periodeMedForsikring,
-    showAddress
-  }: ValidationPeriodeMedForsikringProps
-): boolean => {
-  const hasErrors: Array<boolean> = []
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periodeMedForsikring?.arbeidsgiver?.navn,
-    id: namespace + '-arbeidsgiver-navn',
-    message: 'validation:noNavn'
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periodeMedForsikring?.arbeidsgiver?.identifikatorer,
-    id: namespace + '-arbeidsgiver-identifikatorer',
-    message: 'validation:noOrgnr'
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: periodeMedForsikring?.startdato,
-    id: namespace + '-startdato',
-    message: 'validation:noDate'
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: periodeMedForsikring?.startdato,
-    id: namespace + '-startdato',
-    message: 'validation:invalidDate'
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: periodeMedForsikring?.sluttdato,
-    id: namespace + '-sluttdato',
-    message: 'validation:invalidDate'
-  }))
-
-  if (showAddress) {
-    hasErrors.push(validateAdresse(v, namespace + '-arbeidsgiver-adresse', {
-      adresse: periodeMedForsikring?.arbeidsgiver.adresse,
-      checkAdresseType: false
-    }))
-  }
   return hasErrors.find(value => value) !== undefined
 }

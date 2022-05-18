@@ -20,6 +20,7 @@ export const initialLoadingState: LoadingState = {
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingLandkoder: false,
+  gettingPreviewSed: false,
   gettingPreviewFile: false,
   gettingPreviewPdu1: false,
   gettingSaksbehandler: false,
@@ -147,11 +148,24 @@ const loadingReducer = (
     case types.SVARSED_PREVIEW_REQUEST:
       return {
         ...state,
-        gettingPreviewFile: true
+        gettingPreviewSed: true
       }
 
     case types.SVARSED_PREVIEW_SUCCESS:
     case types.SVARSED_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingPreviewSed: false
+      }
+
+    case types.SVARSED_PREVIEW_FILE_REQUEST:
+      return {
+        ...state,
+        gettingPreviewFile: true
+      }
+
+    case types.SVARSED_PREVIEW_FILE_SUCCESS:
+    case types.SVARSED_PREVIEW_FILE_FAILURE:
       return {
         ...state,
         gettingPreviewFile: false
