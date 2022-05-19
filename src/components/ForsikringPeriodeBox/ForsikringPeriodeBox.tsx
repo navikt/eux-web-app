@@ -44,7 +44,7 @@ import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from './validation'
 
 const ArbeidsgiverPanel = styled(Panel)`
-  padding: 0rem !important;
+  padding: 0.5rem;
   max-width: 800px;
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
@@ -224,56 +224,27 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const _forsikringPeriode: ForsikringPeriode | null | undefined = (_inEditMode || newMode || editMode) ? _editForsikringPeriode : forsikringPeriode
   const selected: boolean = !_.isNil(_forsikringPeriode?.__index) && _forsikringPeriode!.__index >= 0
 
-  const addremove = (
-    <PileEndDiv>
-      {!(_inEditMode || newMode || editMode) && selectable && (
-        <Checkbox
-          checked={selected}
-          onChange={onSelectCheckboxClicked}
-        >{t('label:velg')}
-        </Checkbox>
-      )}
-      {editable !== 'no' && (
-        <AddRemovePanel
-          item={forsikringPeriode}
-          index={newMode ? -1 : 0}
-          allowDelete={allowDelete}
-          inEditMode={_inEditMode || editMode}
-          onStartEdit={onStartEdit}
-          onConfirmEdit={onSaveEdit}
-          onAddNew={newMode ? onAddNew : () => {}}
-          onCancelEdit={() => onCloseEdit(namespace)}
-          onCancelNew={onForsikringPeriodeNewClose}
-          onRemove={onRemove}
-        />
-      )}
-    </PileEndDiv>
-  )
-
   return (
     <div>
       <VerticalSeparatorDiv size='0.5' />
       <ArbeidsgiverPanel border className={classNames(style)}>
-        {(_inEditMode || newMode || editMode) && editable !== 'no'
-          ? (
-            <PaddedDiv>
-              <AlignStartRow>
-                <PeriodeInput
-                  namespace={namespace}
-                  error={{
-                    startdato: _validation[namespace + '-startdato']?.feilmelding,
-                    sluttdato: _validation[namespace + '-sluttdato']?.feilmelding
-                  }}
-                  hideLabel={false}
-                  setPeriode={setPeriode}
-                  value={_forsikringPeriode}
-                />
-              </AlignStartRow>
-              <Column />
-            </PaddedDiv>
-            )
-          : (
-            <FlexEndDiv style={{ padding: '0.5rem' }}>
+        <AlignStartRow>
+          {(_inEditMode || newMode || editMode) && editable !== 'no'
+            ? (
+              <PeriodeInput
+                namespace={namespace}
+                error={{
+                  startdato: _validation[namespace + '-startdato']?.feilmelding,
+                  sluttdato: _validation[namespace + '-sluttdato']?.feilmelding
+                }}
+                hideLabel={false}
+                setPeriode={setPeriode}
+                value={_forsikringPeriode}
+              />
+          )
+        : (
+            <Column>
+              <FlexEndDiv style={{ padding: '0.5rem' }}>
               <Label>
                 {toDateFormat(_forsikringPeriode?.startdato, 'DD.MM.YYYY')}
                 {_forsikringPeriode?.sluttdato
@@ -291,7 +262,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 <BodyLong>{t('label:fra-sed')}</BodyLong>
               )}
             </FlexEndDiv>
-            )}
+            </Column>
+            )
+          }
+        </AlignStartRow>
         <VerticalSeparatorDiv size='0.3' />
         <PaddedHorizontallyDiv>
           <HorizontalLineSeparator />
@@ -337,11 +311,6 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                       />
                     </PaddedDiv>
                   )}
-                  <AlignStartRow>
-                    <AlignEndColumn>
-                      {addremove}
-                    </AlignEndColumn>
-                  </AlignStartRow>
                 </>
                 )
               : (
@@ -388,7 +357,6 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           )
                         })}
                   </PileDiv>
-                  {addremove}
                 </FlexStartSpacedDiv>
                 )}
           </>
@@ -457,6 +425,33 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             duplicate warning
           </BodyLong>
         )}
+        <AlignStartRow>
+          <AlignEndColumn>
+            <PileEndDiv>
+              {!(_inEditMode || newMode || editMode) && selectable && (
+                <Checkbox
+                  checked={selected}
+                  onChange={onSelectCheckboxClicked}
+                >{t('label:velg')}
+                </Checkbox>
+              )}
+              {editable !== 'no' && (
+                <AddRemovePanel
+                  item={forsikringPeriode}
+                  index={newMode ? -1 : 0}
+                  allowDelete={allowDelete}
+                  inEditMode={_inEditMode || editMode}
+                  onStartEdit={onStartEdit}
+                  onConfirmEdit={onSaveEdit}
+                  onAddNew={newMode ? onAddNew : () => {}}
+                  onCancelEdit={() => onCloseEdit(namespace)}
+                  onCancelNew={onForsikringPeriodeNewClose}
+                  onRemove={onRemove}
+                />
+              )}
+            </PileEndDiv>
+          </AlignEndColumn>
+        </AlignStartRow>
       </ArbeidsgiverPanel>
       <VerticalSeparatorDiv size='0.5' />
     </div>

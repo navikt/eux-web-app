@@ -28,20 +28,13 @@ import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from 'app
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Military from 'assets/icons/Military'
 import classNames from 'classnames'
-import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 
 import Select from 'components/Forms/Select'
+import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import {
-  Periode,
-  PeriodeAnnenForsikring,
-  ForsikringPeriode,
-  PeriodeSort,
-  PeriodeUtenForsikring,
-  U002Sed
-} from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeSort, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -49,7 +42,7 @@ import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getNSIdx, readNSIdx } from 'utils/namespace'
+import { getNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
@@ -74,11 +67,9 @@ const Forsikring: React.FC<MainFormProps> = ({
   const getId = (p: ForsikringPeriode | null | undefined): string => p ? p.__type + '[' + p.__index + ']' : 'new-forsikring'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
-  const [_newPeriode, _setNewPeriode] = useState<ForsikringPeriode | undefined>(undefined)
-  const [_editPeriode, _setEditPeriode] = useState<ForsikringPeriode | undefined>(undefined)
+  const [_newType, _setNewType] = useState<string | undefined>(undefined)
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_editTypeAndIndex, _setEditTypeAndIndex] = useState<string | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeProps>(validateForsikringPeriode, namespace)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
@@ -129,52 +120,38 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   // only for new periods
   const setType = (type: string) => {
-    _setNewPeriode({
-      ..._newPeriode,
-      __type: type
-    } as ForsikringPeriode)
+    _setNewType(type)
     _resetValidation(namespace + '-type')
   }
 
-  const onCloseEdit = (namespace: string) => {
-    _setEditPeriode(undefined)
-    _setEditTypeAndIndex(undefined)
-    dispatch(resetValidation(namespace))
-  }
-
-  const onCloseNew = () => {
-    _setNewPeriode(undefined)
-    _setNewForm(false)
-    _resetValidation()
-  }
+  const onCloseNew = () => {}
 
   // when editPeriode is not undefined, it comes from ArbeidsgiverBox
-  const onSaveEdit = (editPeriode ?: ForsikringPeriode) => {
-    const __editPeriode = !_.isUndefined(editPeriode) ? editPeriode : _editPeriode
-    const [type, index] = readNSIdx(_editTypeAndIndex!)
-    const __type = !_.isUndefined(editPeriode) ? editPeriode.__type : type
-    const __index = !_.isUndefined(editPeriode) ? editPeriode.__index : index
-    const __editTypeAndIndex = getNSIdx(__type, __index)
+  const onSaveEdit = (editPeriode: ForsikringPeriode) => {
+
+    const type = editPeriode.__type
+    const index = editPeriode.__index
+    const _editTypeAndIndex = getNSIdx(editPeriode.__type, editPeriode.__index)
 
     const [valid, newValidation] = performValidation<ValidationForsikringPeriodeProps>(
       validation, namespace, validateForsikringPeriode, {
-        periode: __editPeriode,
+        periode: editPeriode,
         nsIndex: _editTypeAndIndex,
         personName
       })
-    if (!!__editPeriode && valid) {
+    if (!!editPeriode && valid) {
       // we do not switch types
-      delete __editPeriode.__type
-      delete __editPeriode.__index
-      dispatch(updateReplySed(`${__type}[${__index}]`, __editPeriode))
-      onCloseEdit(namespace + __editTypeAndIndex)
+      delete editPeriode.__type
+      delete editPeriode.__index
+      dispatch(updateReplySed(`${type}[${index}]`, editPeriode))
+      dispatch(resetValidation(namespace + _editTypeAndIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
   }
 
   const onRemove = (periode: Periode) => {
-    const type: string = periode.__type! as string
+    const type: string = periode.__type!
     const index: number = periode.__index!
     const perioder : Array<ForsikringPeriode> = _.cloneDeep(_.get(replySed, type)) as Array<ForsikringPeriode>
     perioder.splice(index, 1)
@@ -183,12 +160,12 @@ const Forsikring: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = (newPeriode: ForsikringPeriode) => {
+    const type: string = newPeriode.__type as string
     const valid: boolean = _performValidation({
       periode: newPeriode,
       personName
     })
     if (!!newPeriode && valid) {
-      const type: string = newPeriode.__type as string
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(_.get(replySed, type))
       if (_.isNil(newPerioder)) {
         newPerioder = []
@@ -220,14 +197,22 @@ const Forsikring: React.FC<MainFormProps> = ({
     </Tooltip>
   )
 
+  //const doResetValidation = (namespace: string) => dispatch(resetValidation(namespace))
+
   const renderRow = (periode: ForsikringPeriode | null, index: number) => {
     // replace index order from map (which is "ruined" by a sort) with real index from replySed
     // namespace for index < 0: svarsed-bruker-trygdeordning-dekkede-startdato
     // namespace for index >= 0: svarsed-bruker-trygdeordning-dekkede[perioderMedITrygdeordning][2]-startdato
-    const idx = getNSIdx(periode?.__type, periode?.__index)
+    const idx = index < 0 ? '' : getNSIdx(periode?.__type, periode?.__index)
     const _namespace = namespace + idx
     const _v: Validation = index < 0 ? _validation : validation
-    const _periode = index < 0 ? _newPeriode : periode
+    //const resetValidation = index < 0 ? (namespace: string) => _resetValidation(namespace) : doResetValidation
+    const _type: string | undefined = index < 0 ? _newType : periode?.__type
+
+    const showArbeidsgiver: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring' , 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
+    const showAddress: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring' , 'perioderSelvstendigMedForsikring' , 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
+    const showInntekt: boolean = _.isUndefined(_type) ? false : ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
+    const showAnnen: boolean = _.isUndefined(_type) ? false : ['perioderAnnenForsikring'].indexOf(_type) >= 0
 
     return (
       <RepeatableRow
@@ -239,7 +224,7 @@ const Forsikring: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {index < 0 &&
+        {index < 0 ?
           (
             <>
               <Select
@@ -247,26 +232,31 @@ const Forsikring: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-type'}
                 error={_v[_namespace + '-type']?.feilmelding}
                 id={_namespace + '-type'}
-                key={_namespace + '-type-' + _periode?.__type}
+                key={_namespace + '-type-' + _type}
                 label={t('label:type')}
                 menuPortalTarget={document.body}
                 onChange={(type: any) => setType(type.value)}
                 options={periodeOptions}
-                value={_.find(periodeOptions, o => o.value === _periode?.__type)}
-                defaultValue={_.find(periodeOptions, o => o.value === _periode?.__type)}
+                value={_.find(periodeOptions, o => o.value === _type)}
+                defaultValue={_.find(periodeOptions, o => o.value === _type)}
               />
               <VerticalSeparatorDiv />
-              {_periode?.__type && (
+              {_type && (
                 <AlignStartRow>
                   <Column>
                     <ForsikringPeriodeBox
-                      forsikringPeriode={(_periode as ForsikringPeriode)}
-                      allowDelete
+                      forsikringPeriode={({
+                        ...periode,
+                        __type: _type
+                      } as ForsikringPeriode)}
                       newMode
                       editable='full'
                       selectable={false}
-                      showAddress
-                      icon={getIcon(_periode!.__type!, '32')}
+                      showAddress={showAddress}
+                      showArbeidsgiver={showArbeidsgiver}
+                      showInntekt={showInntekt}
+                      showAnnen={showAnnen}
+                      icon={getIcon(_type, '32')}
                       onForsikringPeriodeNew={onAddNew}
                       namespace={namespace}
                     />
@@ -274,20 +264,21 @@ const Forsikring: React.FC<MainFormProps> = ({
                 </AlignStartRow>
               )}
             </>
-          )}
-        {!_.isUndefined(_periode?.__type) && [
-          'perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring'
-        ].indexOf(_periode!.__type!) >= 0 && (
+          )
+         : (
           <>
             <AlignStartRow>
               <Column>
                 <ForsikringPeriodeBox
-                  forsikringPeriode={(_periode as ForsikringPeriode)}
+                  forsikringPeriode={periode}
                   allowDelete
                   editable='full'
                   selectable={false}
-                  showAddress
-                  icon={getIcon(_periode!.__type!, '32')}
+                  showAddress={showAddress}
+                  showArbeidsgiver={showArbeidsgiver}
+                  showInntekt={showInntekt}
+                  showAnnen={showAnnen}
+                  icon={getIcon(periode!.__type!, '32')}
                   onForsikringPeriodeEdit={onSaveEdit}
                   onForsikringPeriodeDelete={onRemove}
                   namespace={namespace}
@@ -297,69 +288,6 @@ const Forsikring: React.FC<MainFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-        {!_.isUndefined(_periode?.__type) && [
-          'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'
-        ].indexOf(_periode!.__type!) >= 0 && (
-          <>
-            <AlignStartRow>
-              <Column>
-                <ForsikringPeriodeBox
-                  forsikringPeriode={(_periode as PeriodeUtenForsikring)}
-                  editable='full'
-                  showInntekt
-                  selectable={false}
-                  showAddress
-                  icon={getIcon(_periode!.__type!, '32')}
-                  onForsikringPeriodeEdit={onSaveEdit}
-                  namespace={namespace}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        {!_.isUndefined(_periode?.__type) && _periode!.__type === 'perioderAnnenForsikring' && (
-          <>
-            <AlignStartRow>
-              <Column>
-                <ForsikringPeriodeBox
-                  forsikringPeriode={(_periode as PeriodeAnnenForsikring)}
-                  editable='full'
-                  icon={getIcon(_periode!.__type!, '32')}
-                  selectable={false}
-                  showAnnen
-                  onForsikringPeriodeEdit={onSaveEdit}
-                  namespace={namespace}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        {!_.isUndefined(_periode?.__type) && [
-          'perioderSyk', 'perioderSvangerskapBarn', 'perioderFrihetsberoevet', 'perioderUtdanning',
-          'perioderMilitaertjeneste', 'perioderFrivilligForsikring', 'perioderKompensertFerie'
-        ].indexOf(_periode!.__type!) >= 0 && (
-          <>
-            <AlignStartRow>
-              <Column>
-                <ForsikringPeriodeBox
-                  forsikringPeriode={(_periode as ForsikringPeriode)}
-                  editable='only_period'
-                  icon={getIcon(_periode!.__type!, '32')}
-                  selectable={false}
-                  showAnnen={false}
-                  showArbeidsgiver={false}
-                  showInntekt={false}
-                  onForsikringPeriodeEdit={onSaveEdit}
-                  namespace={namespace}
-                />
-              </Column>
-            </AlignStartRow>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )

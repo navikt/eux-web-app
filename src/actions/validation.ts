@@ -3,9 +3,9 @@ import { Validation } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import { ActionCreator } from 'redux'
 
-export const resetValidation: ActionCreator<ActionWithPayload> = (
+export const resetValidation = (
   key?: string
-): ActionWithPayload => ({
+) => ({
   type: types.VALIDATION_RESET,
   payload: key ? { key } : {}
 })
