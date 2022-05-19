@@ -264,6 +264,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       <Column>
         <ForsikringPeriodeBox
           forsikringPeriode={periode}
+          allowEdit
           editable='only_period'
           showArbeidsgiver
           showAddress={false}
