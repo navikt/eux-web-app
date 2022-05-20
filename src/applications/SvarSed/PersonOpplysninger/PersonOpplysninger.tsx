@@ -59,35 +59,35 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const onFornavnChange = (newFornavn: string) => {
+  const setFornavn = (newFornavn: string) => {
     dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
     if (validation[namespace + '-fornavn']) {
       dispatch(resetValidation(namespace + '-fornavn'))
     }
   }
 
-  const onEtternavnChange = (newEtternavn: string) => {
+  const setEtternavn = (newEtternavn: string) => {
     dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
     if (validation[namespace + '-etternavn']) {
       dispatch(resetValidation(namespace + '-etternavn'))
     }
   }
 
-  const onFodselsdatoChange = (dato: string) => {
+  const setFodselsdato = (dato: string) => {
     dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
     if (validation[namespace + '-foedselsdato']) {
       dispatch(resetValidation(namespace + '-foedselsdato'))
     }
   }
 
-  const onKjoennChange = (newKjoenn: string) => {
+  const setKjoenn = (newKjoenn: string) => {
     dispatch(updateReplySed(`${target}.kjoenn`, newKjoenn.trim()))
     if (validation[namespace + '-kjoenn']) {
       dispatch(resetValidation(namespace + '-kjoenn'))
     }
   }
 
-  const onFillOutPerson = (searchedPerson: Person) => {
+  const fillOutPerson = (searchedPerson: Person) => {
     const newPersonInfo = _.cloneDeep(personInfo)
 
     if (searchedPerson.fnr) {
@@ -109,25 +109,17 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       newPersonInfo!.kjoenn = searchedPerson.kjoenn as Kjoenn
     }
     dispatch(updateReplySed(target, newPersonInfo))
-    if (validation[namespace + '-fornavn']) {
-      dispatch(resetValidation(namespace + '-fornavn'))
-    }
-    if (validation[namespace + '-etternavn']) {
-      dispatch(resetValidation(namespace + '-etternavn'))
-    }
-    if (validation[namespace + '-kjoenn']) {
-      dispatch(resetValidation(namespace + '-kjoenn'))
-    }
-    if (validation[namespace + '-foedselsdato']) {
-      dispatch(resetValidation(namespace + '-foedselsdato'))
-    }
-    if (validation[namespace + '-norskpin-nummer']) {
-      dispatch(resetValidation(namespace + '-norskpin-nummer'))
-    }
+    dispatch(resetValidation([
+      namespace + '-fornavn',
+      namespace + '-etternavn',
+      namespace + '-kjoenn',
+      namespace + '-foedselsdato',
+      namespace + '-norskpin'
+    ]))
   }
 
-  const onUtenlandskPinChange = (newPins: Array<Pin>) => {
-    let pins: Array<Pin> = _.cloneDeep(newPins)
+  const setUtenlandskPin = (newPins: Array<Pin>) => {
+    let pins: Array<Pin> | undefined = _.cloneDeep(newPins)
     if (_.isNil(pins)) {
       pins = []
     }
@@ -139,19 +131,12 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + '-pin'))
   }
 
-  const onFoedestedChange = (newFoedested: Foedested | undefined, whatChanged: string | undefined) => {
-    let foedested: Foedested | undefined = _.cloneDeep(newFoedested)
-    if (_.isNil(foedested)) {
-      foedested = {} as Foedested
-    }
-    dispatch(updateReplySed(`${target}.pinMangler.foedested`, foedested))
-    if (whatChanged && validation[namespace + '-foedested-' + whatChanged]) {
-      dispatch(resetValidation(namespace + '-foedested-' + whatChanged))
-    }
+  const setFoedsted = (newFoedested: Foedested) => {
+    dispatch(updateReplySed(`${target}.pinMangler.foedested`, newFoedested))
   }
 
-  const onNorwegianPinSave = (newPin: string) => {
-    let pins: Array<Pin> = _.cloneDeep(personInfo!.pin)
+  const saveNorwegianPin = (newPin: string) => {
+    let pins: Array<Pin> | undefined = _.cloneDeep(personInfo!.pin)
     if (_.isNil(pins)) {
       pins = []
     }
@@ -165,8 +150,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       })
     }
     dispatch(updateReplySed(`${target}.pin`, pins))
-    if (validation[namespace + '-norskpin-nummer']) {
-      dispatch(resetValidation(namespace + '-norskpin-nummer'))
+    if (validation[namespace + '-norskpin']) {
+      dispatch(resetValidation(namespace + '-norskpin'))
     }
   }
 
@@ -176,24 +161,24 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         <Heading size='small'>
           {label}
         </Heading>
-        <VerticalSeparatorDiv />
-        <NorskPin
-          norwegianPin={norwegianPin}
-          validation={validation}
-          namespace={namespace}
-          onNorwegianPinSave={onNorwegianPinSave}
-          onFillOutPerson={onFillOutPerson}
-        />
-        <VerticalSeparatorDiv />
+      </PaddedDiv>
+      <NorskPin
+        norwegianPin={norwegianPin}
+        error={validation[namespace + '-norskpin']?.feilmelding}
+        namespace={namespace}
+        onNorwegianPinSave={saveNorwegianPin}
+        onFillOutPerson={fillOutPerson}
+      />
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
         <AlignStartRow>
           <Column>
             <Input
               error={validation[namespace + '-fornavn']?.feilmelding}
               id='fornavn'
-              key={namespace + '-fornavn-' + (personInfo?.fornavn ?? '')}
               label={t('label:fornavn')}
               namespace={namespace}
-              onChanged={onFornavnChange}
+              onChanged={setFornavn}
               required
               value={personInfo?.fornavn ?? ''}
             />
@@ -202,10 +187,9 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             <Input
               error={validation[namespace + '-etternavn']?.feilmelding}
               id='etternavn'
-              key={namespace + '-fornavn-' + (personInfo?.etternavn ?? '')}
               label={t('label:etternavn')}
               namespace={namespace}
-              onChanged={onEtternavnChange}
+              onChanged={setEtternavn}
               required
               value={personInfo?.etternavn ?? ''}
             />
@@ -214,10 +198,9 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             <DateInput
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
-              key={namespace + '-foedselsdato-' + (personInfo?.foedselsdato ?? '')}
               label={t('label:fødselsdato')}
               namespace={namespace}
-              onChanged={onFodselsdatoChange}
+              onChanged={setFodselsdato}
               required
               value={personInfo?.foedselsdato ?? ''}
             />
@@ -234,7 +217,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               id={namespace + '-kjoenn'}
               legend={t('label:kjønn') + ' *'}
               name={namespace + '-kjoenn'}
-              onChange={onKjoennChange}
+              onChange={setKjoenn}
             >
               <FlexRadioPanels>
                 <RadioPanel value='M'>
@@ -259,7 +242,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         limit={99}
         loggingNamespace='svarsed.editor.personopplysning'
         pins={utenlandskPins}
-        onPinsChanged={onUtenlandskPinChange}
+        onPinsChanged={setUtenlandskPin}
         namespace={namespace + '-pin'}
         validation={validation}
         personName={personName}
@@ -273,7 +256,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       <FoedestedFC
         loggingNamespace='svarsed.editor.fodested'
         foedested={personInfo?.pinMangler?.foedested}
-        onFoedestedChanged={onFoedestedChange}
+        onFoedestedChanged={setFoedsted}
         namespace={namespace + '-foedested'}
         validation={validation}
       />

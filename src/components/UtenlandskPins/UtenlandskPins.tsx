@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
 
 export interface UtenlandskPinProps {
@@ -63,7 +64,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtenlandskPinProps>(validateUtenlandskPin, namespace)
 
-  const onUtenlandskeIdentifikatorChange = (newIdentifikator: string, index: number) => {
+  const setUtenlandskeIdentifikator = (newIdentifikator: string, index: number) => {
     if (index < 0) {
       _setNewPin({
         ..._newPin,
@@ -79,7 +80,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-identifikator'))
   }
 
-  const onUtenlandskeLandChange = (newLand: string, index: number) => {
+  const setUtenlandskeLand = (newLand: string, index: number) => {
     if (index < 0) {
       _setNewPin({
         ..._newPin,
@@ -169,7 +170,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
         key={getId(pin)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-identifikator'] || _v[_namespace + '-land']
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -185,15 +186,17 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   id={_namespace + '-land'}
                   includeList={landUtenNorge}
                   hideLabel={false}
-                  key={_namespace + '-land-' + _pin?.land}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onUtenlandskeLandChange(e.value, index)}
+                  onOptionSelected={(e: Country) => setUtenlandskeLand(e.value, index)}
                   values={_pin?.land}
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-land']}>
+                <FormText
+                  error={_validation[_namespace + '-land']?.feilmelding}
+                  id={_namespace + '-land'}
+                >
                   <FlexCenterDiv>
                     <Flag size='S' country={_pin?.land!} />
                     <HorizontalSeparatorDiv />
@@ -208,16 +211,18 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 <Input
                   error={_v[_namespace + '-identifikator']?.feilmelding}
                   id='identifikator'
-                  key={_namespace + '-identifikator-' + _pin?.identifikator}
                   label={t('label:utenlandsk-pin')}
                   hideLabel={false}
                   namespace={_namespace}
-                  onChanged={(id: string) => onUtenlandskeIdentifikatorChange(id, index)}
+                  onChanged={(id: string) => setUtenlandskeIdentifikator(id, index)}
                   value={_pin?.identifikator}
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-identifikator']}>
+                <FormText
+                  id={_namespace + '-identifikator'}
+                  error={_v[_namespace + '-identifikator']?.feilmelding}
+                >
                   <BodyLong>{_pin?.identifikator}</BodyLong>
                 </FormText>
                 )}

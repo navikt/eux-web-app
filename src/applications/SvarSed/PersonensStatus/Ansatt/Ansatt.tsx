@@ -357,7 +357,7 @@ const Ansatt: React.FC<MainFormProps> = ({
           fillOutFnr={() => {
             document.dispatchEvent(new CustomEvent('feillenke', {
               detail: {
-                skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin-nummer`,
+                skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin`,
                 feilmelding: ''
               } as ErrorElement
             }))

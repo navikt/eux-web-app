@@ -550,7 +550,10 @@ const VedtakFC: React.FC<MainFormProps> = ({
                   {_sort === 'time' && getTag(_periode?.periode.__type!)}
                 </Column>
                 <Column>
-                  <FormText error={_v[_namespace + '-skalYtelseUtbetales']}>
+                  <FormText
+                    error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
+                    id={_namespace + '-skalYtelseUtbetales'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />

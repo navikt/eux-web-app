@@ -60,7 +60,7 @@ export const validatePersonopplysninger = (
 
   if (norwegianPin === undefined && _.isEmpty(utenlandskePins)) {
     hasErrors.push(addError(v, {
-      id: namespace + '-norskpin-nummer',
+      id: namespace + '-norskpin',
       message: 'validation:noId',
       personName
     }))
@@ -70,7 +70,7 @@ export const validatePersonopplysninger = (
     const result = validator.idnr(norwegianPin!.identifikator!)
     if (result.status !== 'valid') {
       hasErrors.push(addError(v, {
-        id: namespace + '-norskpin-nummer',
+        id: namespace + '-norskpin',
         message: 'validation:badId',
         personName
       }))

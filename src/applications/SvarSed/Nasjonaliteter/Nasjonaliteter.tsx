@@ -1,5 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
@@ -33,6 +33,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { isUSed } from 'utils/sed'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateNasjonalitet,
   validateNasjonaliteter,
@@ -45,6 +46,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Nasjonaliteter: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -77,7 +79,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const onLandSelected = (land: string, index: number) => {
+  const setLand = (land: string, index: number) => {
     if (index < 0) {
       _setNewStatsborgerskap({
         ..._newStatsborgerskap,
@@ -186,7 +188,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
         key={getId(statsborgerskap)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -197,22 +199,24 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                 <CountrySelect
                   ariaLabel={t('label:land')}
                   label={t('label:land')}
-                  hideLabel={false}
+                  hideLabel={index >= 0}
                   closeMenuOnSelect
                   data-testid={_namespace + '-land'}
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
-                  key={_namespace + '-land' + _statsborgerskap?.land}
                   id={_namespace + '-land'}
                   includeList={CountryFilter.STANDARD({})}
                   menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onLandSelected(e.value, index)}
+                  onOptionSelected={(e: Country) => setLand(e.value, index)}
                   required
                   values={_statsborgerskap?.land}
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-land']}>
+                <FormText
+                  error={_v[_namespace + '-land']?.feilmelding}
+                  id={_namespace + '-land'}
+                >
                   <FlexCenterDiv>
                     <Flag size='S' country={_statsborgerskap?.land!} />
                     <HorizontalSeparatorDiv />
@@ -223,24 +227,33 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           </Column>
           {isUSed(replySed!) && (
             <Column>
-              <DateInput
-                ariaLabel={t('label:fra-dato')}
-                error={_v[_namespace + 'fraDato']?.feilmelding}
-                id='fraDato'
-                key={_statsborgerskap?.fraDato}
-                label={t('label:fra-dato')}
-                hideLabel={false}
-                namespace={_namespace}
-                onChanged={(date: string) => onFradatoChanged(date, index)}
-                required
-                value={_statsborgerskap?.fraDato}
-              />
+              {inEditMode
+                ? (
+                  <DateInput
+                    ariaLabel={t('label:fra-dato')}
+                    error={_v[_namespace + 'fraDato']?.feilmelding}
+                    id='fraDato'
+                    label={t('label:fra-dato')}
+                    hideLabel={index >= 0}
+                    namespace={_namespace}
+                    onChanged={(date: string) => onFradatoChanged(date, index)}
+                    value={_statsborgerskap?.fraDato}
+                  />
+                  )
+                : (
+                  <FormText
+                    error={_v[_namespace + '-fraDato']?.feilmelding}
+                    id={_namespace + '-fraDato'}
+                  >
+                    {_statsborgerskap?.fraDato}
+                  </FormText>
+                  )}
             </Column>
           )}
           <AlignEndColumn>
             <AddRemovePanel<Statsborgerskap>
               item={statsborgerskap}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onRemove}
@@ -259,6 +272,11 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(statsborgerskaper)
         ? (

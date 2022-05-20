@@ -2,14 +2,14 @@ import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import {
-  AlignStartRow,
-  PaddedRow,
-  Column,
   AlignEndColumn,
+  AlignStartRow,
+  Column,
   FlexCenterDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
+  PaddedRow,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next'
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
-  onFoedestedChanged: (newFoedested: Foedested | undefined, whatChanged: string | undefined) => void
+  onFoedestedChanged: (newFoedested: Foedested) => void
   namespace: string,
   loggingNamespace: string,
   validation: Validation
@@ -43,12 +43,12 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 }: FoedestedProps) => {
   const { t } = useTranslation()
   const countryData = CountryData.getCountryInstance('nb')
-  const [_newBy, _setNewBy] = useState<string>('')
-  const [_newRegion, _setNewRegion] = useState<string>('')
-  const [_newLand, _setNewLand] = useState<string>('')
+
+  const [_newFoedested, _setNewFoedested] = useState<Foedested | undefined>(undefined)
+  const [_editFoedested, _setEditFoedested] = useState<Foedested | undefined>(undefined)
 
   const [_editMode, _setEditMode] = useState<boolean>(false)
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
 
   const emptyFoedsted: boolean = (
     _.isEmpty(foedested?.by?.trim()) &&
@@ -56,87 +56,94 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     _.isEmpty(foedested?.land?.trim())
   )
 
-  const onByChange = (newBy: string, index: number) => {
+  const setBy = (by: string, index: number) => {
     if (index < 0) {
-      _setNewBy(newBy.trim())
+      _setNewFoedested({
+        ..._newFoedested,
+        by
+      })
       return
     }
-    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-    if (_.isEmpty(newFoedested)) {
-      newFoedested = {} as Foedested
-    }
-    newFoedested!.by = newBy.trim()
-    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-by')
+    _setEditFoedested({
+      ..._editFoedested,
+      by
+    })
   }
 
-  const onRegionChange = (newRegion: string, index: number) => {
+  const setRegion = (region: string, index: number) => {
     if (index < 0) {
-      _setNewRegion(newRegion.trim())
+      _setNewFoedested({
+        ..._newFoedested,
+        region
+      })
       return
     }
-    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-    if (_.isEmpty(newFoedested)) {
-      newFoedested = {} as Foedested
-    }
-    newFoedested!.region = newRegion.trim()
-    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-region')
+    _setEditFoedested({
+      ..._editFoedested,
+      region
+    })
   }
 
-  const onLandChange = (newLand: string, index: number) => {
+  const setLand = (land: string, index: number) => {
     if (index < 0) {
-      _setNewLand(newLand.trim())
+      _setNewFoedested({
+        ..._newFoedested,
+        land
+      })
       return
     }
-    let newFoedested: Foedested | undefined = _.cloneDeep(foedested)
-    if (_.isEmpty(newFoedested)) {
-      newFoedested = {} as Foedested
-    }
-    newFoedested!.land = newLand.trim()
-    onFoedestedChanged(newFoedested, namespace + '[' + index + ']-land')
+    _setEditFoedested({
+      ..._editFoedested,
+      land
+    })
+  }
+
+  const onCloseEdit = () => {
+    _setEditFoedested(undefined)
+    _setEditMode(false)
+  }
+
+  const onCloseNew = () => {
+    _setNewFoedested(undefined)
+    _setNewForm(false)
+  }
+
+  const onStartEdit = (f: Foedested) => {
+    _setEditFoedested(f)
+    _setEditMode(true)
+  }
+
+  const onSaveEdit = () => {
+    onFoedestedChanged(_editFoedested ?? {} as Foedested)
+    onCloseEdit()
   }
 
   const onRemove = () => {
     standardLogger(loggingNamespace + '.foedested.remove')
-    onFoedestedChanged(undefined, 'remove')
+    onFoedestedChanged({})
   }
 
-  const resetForm = () => {
-    _setNewBy('')
-    _setNewRegion('')
-    _setNewLand('')
-  }
-
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    _setEditMode(false)
-    resetForm()
-  }
-
-  const onAdd = () => {
-    const newFoedested: Foedested = {
-      land: _newLand,
-      region: _newRegion,
-      by: _newBy
-    }
+  const onAddNew = () => {
     // this one does not have validation.
     standardLogger(loggingNamespace + '.foedested.add')
-    onFoedestedChanged(newFoedested, 'add')
-    onCancel()
+    onFoedestedChanged(_newFoedested ?? {} as Foedested)
+    onCloseNew()
   }
 
-  const renderRow = (foedested: Foedested | null) => {
-    const index = foedested === null ? -1 : 0
-    const isNew = index < 0
-    const displayForms = _editMode || isNew
+  const renderRow = (foedested: Foedested | null, index: number) => {
+    const inEditMode = index < 0 || _editMode
+    const _foedested = index < 0 ? _newFoedested : (inEditMode ? _editFoedested : foedested)
     return (
-      <RepeatableRow className={classNames({
-        new: foedested === null
-      })}
+      <RepeatableRow
+        id={'repeatablerow-' + namespace}
+        className={classNames({
+          new: index < 0
+        })}
       >
         <VerticalSeparatorDiv size='0.5' />
         <Row>
           <Column>
-            {displayForms
+            {inEditMode
               ? (
                 <Input
                   error={validation[namespace + '-by']?.feilmelding}
@@ -144,16 +151,18 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   label={t('label:by')}
                   hideLabel={index >= 0}
                   namespace={namespace}
-                  onChanged={(newBy: string) => onByChange(newBy, index)}
-                  value={foedested?.by ?? ''}
+                  onChanged={(newBy: string) => setBy(newBy, index)}
+                  value={_foedested?.by}
                 />
                 )
               : (
-                <BodyLong>{foedested?.by}</BodyLong>
+                <BodyLong id={namespace + '-by'}>
+                  {_foedested?.by}
+                </BodyLong>
                 )}
           </Column>
           <Column>
-            {displayForms
+            {inEditMode
               ? (
                 <Input
                   error={validation[namespace + '-region']?.feilmelding}
@@ -161,16 +170,16 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   label={t('label:region')}
                   hideLabel={index >= 0}
                   namespace={namespace}
-                  onChanged={(newRegion: string) => onRegionChange(newRegion, index)}
-                  value={foedested?.region ?? ''}
+                  onChanged={(newRegion: string) => setRegion(newRegion, index)}
+                  value={_foedested?.region}
                 />
                 )
               : (
-                <BodyLong>{foedested?.region}</BodyLong>
+                <BodyLong id={namespace + '-region'}>{_foedested?.region}</BodyLong>
                 )}
           </Column>
           <Column>
-            {displayForms
+            {inEditMode
               ? (
                 <CountrySelect
                   data-testid={namespace + '-land'}
@@ -180,33 +189,36 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   label={t('label:land')}
                   hideLabel={index >= 0}
                   menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onLandChange(e.value, index)}
-                  values={foedested?.land ?? ''}
+                  onOptionSelected={(e: Country) => setLand(e.value, index)}
+                  values={_foedested?.land}
                 />
                 )
               : (
-                <FlexCenterDiv>
-                  {foedested?.land && (
+                <FlexCenterDiv id={namespace + '-land'}>
+                  {_foedested?.land && (
                     <>
-                      <Flag size='S' country={foedested?.land!} />
+                      <Flag size='S' country={_foedested?.land!} />
                       <HorizontalSeparatorDiv />
                     </>
                   )}
-                  {countryData.findByValue(foedested?.land)?.label ?? foedested?.land}
+                  {countryData.findByValue(_foedested?.land)?.label ?? _foedested?.land}
                 </FlexCenterDiv>
                 )}
           </Column>
         </Row>
         <PaddedRow size='0.5'>
+          <Column style={{ minHeight: '2.5rem' }} />
           <AlignEndColumn>
             <AddRemovePanel<Foedested>
               item={foedested}
+              inEditMode={inEditMode}
               index={index}
               onRemove={onRemove}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-              onStartEdit={() => _setEditMode(true)}
-              onCancelEdit={() => _setEditMode(false)}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={onCloseEdit}
             />
           </AlignEndColumn>
         </PaddedRow>
@@ -249,28 +261,24 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 </AlignStartRow>
               </PaddedHorizontallyDiv>
               <VerticalSeparatorDiv size='0.8' />
-              {renderRow(foedested!)}
+              {renderRow(foedested!, 0)}
             </>
             )
       }
       <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow(null)
+      {_newForm
+        ? renderRow(null, -1)
         : (
           <>
             {emptyFoedsted && (
               <PaddedDiv>
-                <Row>
-                  <Column>
-                    <Button
-                      variant='tertiary'
-                      onClick={() => _setSeeNewForm(true)}
-                    >
-                      <AddCircle />
-                      {t('el:button-add-new-x', { x: t('label:fødested')?.toLowerCase() })}
-                    </Button>
-                  </Column>
-                </Row>
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setNewForm(true)}
+                >
+                  <AddCircle />
+                  {t('el:button-add-new-x', { x: t('label:fødested')?.toLowerCase() })}
+                </Button>
               </PaddedDiv>
             )}
           </>

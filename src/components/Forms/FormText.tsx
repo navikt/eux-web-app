@@ -1,20 +1,21 @@
-import { Label } from '@navikt/ds-react'
 import { PileDiv } from '@navikt/hoykontrast'
+import ErrorLabel from 'components/Forms/ErrorLabel'
 import React from 'react'
+
+export interface FormTextProps {
+  error: string | undefined
+  id: string
+  children: any
+}
 
 const FormText = ({
   children,
-  error
-}: any) => (
-  <PileDiv>
-    <div id={error?.skjemaelementId}>
-      {children}
-    </div>
-    {error?.feilmelding && (
-      <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
-        {error.feilmelding}
-      </Label>
-    )}
+  error,
+  id
+}: FormTextProps) => (
+  <PileDiv tabIndex={0} id={id}>
+    {children}
+    <ErrorLabel error={error} />
   </PileDiv>
 )
 

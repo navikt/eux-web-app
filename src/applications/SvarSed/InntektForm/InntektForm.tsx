@@ -316,7 +316,10 @@ const InntektForm: React.FC<MainFormProps> = ({
                   />
                 </Column>
                 <Column>
-                  <FormText error={_v[_namespace + '-periodetype']}>
+                  <FormText
+                    error={_v[_namespace + '-periodetype']?.feilmelding}
+                    id={_namespace + '-periodetype'}
+                  >
                     {_loennsopplysning?.periodetype}
                   </FormText>
                 </Column>
@@ -355,11 +358,17 @@ const InntektForm: React.FC<MainFormProps> = ({
                   <Label>{t('label:beløp') + ':'}</Label>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FlexDiv>
-                    <FormText error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']}>
+                    <FormText
+                      error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
+                      id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
+                    >
                       {inntekt?.beloep}
                     </FormText>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <FormText error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']}>
+                    <FormText
+                      error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
+                      id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
+                    >
                       {inntekt?.valuta}
                     </FormText>
                   </FlexDiv>
@@ -399,7 +408,10 @@ const InntektForm: React.FC<MainFormProps> = ({
             : (
               <>
                 <Column>
-                  <FormText error={_v[_namespace + '-arbeidsdager']}>
+                  <FormText
+                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
+                    id={_namespace + '-arbeidsdager'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:arbeidsdager') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
@@ -408,7 +420,10 @@ const InntektForm: React.FC<MainFormProps> = ({
                   </FormText>
                 </Column>
                 <Column>
-                  <FormText error={_v[_namespace + '-arbeidstimer']}>
+                  <FormText
+                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                    id={_namespace + '-arbeidstimer'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:arbeidstimer') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />

@@ -942,13 +942,19 @@ const MotregningFC: React.FC<MainFormProps> = ({
         <VerticalSeparatorDiv size='0.5' />
         <AlignStartRow>
           <Column>
-            <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-svarType']?.feilmelding}
+              id={_namespace + '-svarType'}
+            >
               {_motregning?.svarType}
             </FormText>
           </Column>
 
           <Column>
-            <FormText error={_v[_namespace + '-type']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-type']?.feilmelding}
+              id={_namespace + '-type'}
+            >
               {t('label:' + _motregning?.__type)}
             </FormText>
           </Column>
@@ -967,10 +973,16 @@ const MotregningFC: React.FC<MainFormProps> = ({
             <PaddedHorizontallyDiv key={barnaKey}>
               <AlignStartRow>
                 <Column>
-                  <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+                  <FormText
+                    error={_v[_namespace + '-svarType']?.feilmelding}
+                    id={_namespace + '-svarType'}
+                  >
                     {_allBarnaNameKeys[barnaKey]}:
                   </FormText>
-                  <FormText error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}>
+                  <FormText
+                    error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}
+                    id={_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn'}
+                  >
                     {matchedKeyAndYtelse?.ytelseNavn}
                   </FormText>
                 </Column>
@@ -981,10 +993,16 @@ const MotregningFC: React.FC<MainFormProps> = ({
         {_motregning?.__type === 'familie' && (
           <AlignStartRow>
             <Column>
-              <FormText error={_v[_namespace + '-svarType']?.feilmelding}>
+              <FormText
+                error={_v[_namespace + '-svarType']?.feilmelding}
+                id={_namespace + '-svarType'}
+              >
                 {t('label:familie') + ': '}
               </FormText>
-              <FormText error={_v[_namespace + '-ytelseNavn']?.feilmelding}>
+              <FormText
+                error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                id={_namespace + '-ytelseNavn'}
+              >
                 {_motregning?.ytelseNavn}
               </FormText>
             </Column>
@@ -996,7 +1014,10 @@ const MotregningFC: React.FC<MainFormProps> = ({
         </Label>
         <AlignStartRow>
           <Column>
-            <FormText error={_v[_namespace + '-vedtaksdato']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-vedtaksdato']?.feilmelding}
+              id={_namespace + '-vedtaksdato'}
+            >
               {_motregning?.vedtaksdato}
             </FormText>
           </Column>
@@ -1005,11 +1026,17 @@ const MotregningFC: React.FC<MainFormProps> = ({
               <Label>{t('label:beløp') + ':'}</Label>
               <HorizontalSeparatorDiv size='0.5' />
               <FlexDiv>
-                <FormText error={_v[_namespace + '-beloep']}>
+                <FormText
+                  error={_v[_namespace + '-beloep']?.feilmelding}
+                  id={_namespace + '-beloep'}
+                >
                   {_motregning?.beloep}
                 </FormText>
                 <HorizontalSeparatorDiv size='0.5' />
-                <FormText error={_v[_namespace + '-valuta']}>
+                <FormText
+                  error={_v[_namespace + '-valuta']?.feilmelding}
+                  id={_namespace + '-valuta'}
+                >
                   {_motregning?.valuta}
                 </FormText>
               </FlexDiv>
@@ -1028,31 +1055,46 @@ const MotregningFC: React.FC<MainFormProps> = ({
             />
           </Column>
           <Column>
-            <FormText error={_v[_namespace + '-vedtaksdato']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-vedtaksdato']?.feilmelding}
+              id={_namespace + '-vedtaksdato'}
+            >
               {_motregning?.vedtaksdato}
             </FormText>
           </Column>
           <Column>
-            <FormText error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
+              id={_namespace + '-utbetalingshyppighet'}
+            >
               {_motregning?.utbetalingshyppighet}
             </FormText>
           </Column>
         </AlignStartRow>
         <AlignStartRow>
           <Column>
-            <FormText error={_v[_namespace + '-mottakersNavn']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+              id={_namespace + '-mottakersNavn'}
+            >
               {_motregning?.mottakersNavn}
             </FormText>
           </Column>
           <Column>
-            <FormText error={_v[_namespace + '-begrunnelse']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-begrunnelse']?.feilmelding}
+              id={_namespace + '-begrunnelse'}
+            >
               {_motregning?.begrunnelse}
             </FormText>
           </Column>
         </AlignStartRow>
         <AlignStartRow>
           <Column>
-            <FormText error={_v[_namespace + '-ytterligereInfo']?.feilmelding}>
+            <FormText
+              error={_v[_namespace + '-ytterligereInfo']?.feilmelding}
+              id={_namespace + '-ytterligereInfo'}
+            >
               {_motregning?.ytterligereInfo}
             </FormText>
           </Column>

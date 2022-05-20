@@ -219,7 +219,10 @@ const Dagpenger: React.FC<MainFormProps> = ({
                       periode={_periode}
                     />
                     <HorizontalSeparatorDiv />
-                    <FormText error={_v[_namespace + '-info']}>
+                    <FormText
+                      error={_v[_namespace + '-info']?.feilmelding}
+                      id={_namespace + '-info'}
+                    >
                       {_periode?.info}
                     </FormText>
                   </FlexDiv>

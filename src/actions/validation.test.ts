@@ -23,6 +23,18 @@ describe('actions/validation', () => {
       })
   })
 
+  it('resetValidation()', () => {
+    const key = ['mockkey', 'mockkey2']
+    const generatedResult = validationActions.resetValidation(key)
+    expect(generatedResult)
+      .toMatchObject({
+        type: types.VALIDATION_RESET,
+        payload: {
+          namespace: key
+        }
+      })
+  })
+
   it('setValidation()', () => {
     const newValidation = { foo: 'bar' }
     const generatedResult = validationActions.setValidation(newValidation)

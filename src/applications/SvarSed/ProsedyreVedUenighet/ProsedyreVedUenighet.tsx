@@ -274,12 +274,18 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
             : (
               <Column size='2'>
                 <FlexDiv>
-                  <FormText error={_v[_namespace + '-grunn']}>
+                  <FormText
+                    error={_v[_namespace + '-grunn']?.feilmelding}
+                    id={_namespace + '-grunn'}
+                  >
                     {_.find(thisGrunnOptions, g => g.value === _grunn?.grunn)?.label}
                   </FormText>
                   :
                   <HorizontalSeparatorDiv size='0.5' />
-                  <FormText error={_v[_namespace + '-person']}>
+                  <FormText
+                    error={_v[_namespace + '-person']?.feilmelding}
+                    id={_namespace + '-person'}
+                  >
                     {_.find(personOptions, p => p.value === _grunn?.person)?.label}
                   </FormText>
                 </FlexDiv>
@@ -312,7 +318,10 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
         ? (
           <PaddedHorizontallyDiv>
             <SpacedHr />
-            <FormText error={validation[namespace + '-grunner']}>
+            <FormText
+              error={validation[namespace + '-grunner']?.feilmelding}
+              id={namespace + '-grunner'}
+            >
               <BodyLong>
                 {t('message:warning-no-periods')}
               </BodyLong>

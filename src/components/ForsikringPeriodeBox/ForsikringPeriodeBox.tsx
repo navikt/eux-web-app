@@ -563,9 +563,13 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           <BodyLong>{t('message:warning-no-ids')}</BodyLong>
                           )
                         : (_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer?.map((id, i) => {
-                            const idx = getIdx(i)
+                            const __namespace = _namespace + getIdx(i)
                             return (
-                              <FormText key={id.type} error={_validation[namespace + idx + '-identifikatorer']}>
+                              <FormText
+                                key={id.type}
+                                error={_validation[__namespace + '-identifikatorer']?.feilmelding}
+                                id={__namespace + '-identifikatorer'}
+                              >
                                 <FlexDiv>
                                   <Label>{t('label:' + id.type) + ':'}</Label>
                                   <HorizontalSeparatorDiv size='0.5' />

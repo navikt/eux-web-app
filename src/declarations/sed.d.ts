@@ -130,9 +130,9 @@ export interface Statsborgerskap {
 }
 
 export interface Foedested {
-  by: string
-  region: string
-  land: string
+  by?: string
+  region?: string
+  land?: string
 }
 
 export interface PersonInfo {

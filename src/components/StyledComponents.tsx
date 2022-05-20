@@ -115,8 +115,9 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
   &:hover:not(.new):not(.error) {
     background-color: var(--navds-global-color-gray-100);
   }
-  &:not(:hover) .addremovepanel-buttons {
-    visibility: hidden;
+  &:not(:hover) .control-buttons {
+    position: absolute;
+    margin-left: -10000px;
   }
 `
 export const GrayPanel = styled(Panel)`

@@ -423,7 +423,10 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             <>
               <AlignStartRow>
                 <Column>
-                  <FormText error={_v[_namespace + '-ytelseNavn']}>
+                  <FormText
+                    error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                    id={_namespace + '-ytelseNavn'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:betegnelse-på-ytelse') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
@@ -433,7 +436,10 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                 </Column>
                 {personID === 'familie' && (
                   <Column>
-                    <FormText error={_v[_namespace + '-antallPersoner']}>
+                    <FormText
+                      error={_v[_namespace + '-antallPersoner']?.feilmelding}
+                      id={_namespace + '-antallPersoner'}
+                    >
                       <FlexDiv>
                         <Label>{t('label:antall-innvilges') + ':'}</Label>
                         <HorizontalSeparatorDiv size='0.5' />
@@ -447,11 +453,17 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     <Label>{t('label:beløp') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />
                     <FlexDiv>
-                      <FormText error={_v[_namespace + '-beloep']}>
+                      <FormText
+                        error={_v[_namespace + '-beloep']?.feilmelding}
+                        id={_namespace + '-beloep'}
+                      >
                         {_ytelse?.beloep}
                       </FormText>
                       <HorizontalSeparatorDiv size='0.5' />
-                      <FormText error={_v[_namespace + '-valuta']}>
+                      <FormText
+                        error={_v[_namespace + '-valuta']?.feilmelding}
+                        id={_namespace + '-valuta'}
+                      >
                         {_ytelse?.valuta}
                       </FormText>
                     </FlexDiv>
@@ -471,7 +483,10 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   />
                 </Column>
                 <Column>
-                  <FormText error={_v[_namespace + '-utbetalingshyppighet']}>
+                  <FormText
+                    error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
+                    id={_namespace + '-utbetalingshyppighet'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:periode-avgrensing') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
@@ -483,7 +498,10 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
               <VerticalSeparatorDiv />
               <AlignStartRow>
                 <Column>
-                  <FormText error={_v[_namespace + '-mottakersNavn']}>
+                  <FormText
+                    error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+                    id={_namespace + '-mottakersNavn'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:mottakers-navn') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />

@@ -22,24 +22,23 @@ const PeriodeText = ({
 }: PeriodeTextProps) => {
   const { t } = useTranslation()
   return (
-
     <FlexCenterDiv>
-      <PileDiv>
-        <BodyLong
-          tabIndex={0}
-          id={namespace + '-startdato'}
-        >
+      <PileDiv
+        tabIndex={0}
+        id={namespace + '-startdato'}
+      >
+        <BodyLong>
           {periode?.startdato}
         </BodyLong>
         <ErrorLabel error={error?.startdato} />
       </PileDiv>
       <HorizontalSeparatorDiv />-
       <HorizontalSeparatorDiv />
-      <PileDiv>
-        <BodyLong
-          tabIndex={0}
-          id={namespace + '-sluttdato'}
-        >
+      <PileDiv
+        tabIndex={0}
+        id={namespace + '-sluttdato'}
+      >
+        <BodyLong>
           {!_.isEmpty(periode?.sluttdato)
             ? periode?.sluttdato
             : periode?.aapenPeriodeType === 'åpen_sluttdato'

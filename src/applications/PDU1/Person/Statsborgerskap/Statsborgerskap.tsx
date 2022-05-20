@@ -183,7 +183,10 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-statsborgerskap']}>
+                <FormText
+                  id={_namespace + '-statsborgerskap'}
+                  error={_v[_namespace + '-statsborgerskap']?.feilmelding}
+                >
                   <FlexCenterDiv>
                     <Flag size='S' country={_statsborgerskap ?? ''} />
                     <HorizontalSeparatorDiv />

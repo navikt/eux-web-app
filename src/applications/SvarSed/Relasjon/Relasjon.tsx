@@ -395,7 +395,10 @@ const Relasjon: React.FC<MainFormProps> = ({
             <>
               <AlignStartRow>
                 <Column>
-                  <FormText error={_v[_namespace + '-relasjonTilPerson']}>
+                  <FormText
+                    error={_v[_namespace + '-relasjonTilPerson']?.feilmelding}
+                    id={_namespace + '-relasjonTilPerson'}
+                  >
                     {t('label:relasjon-med')}
                     <HorizontalSeparatorDiv size='0.5' />
                     {_barnetilhoerighet?.relasjonTilPerson === '01' && t('label:søker').toLowerCase()}
@@ -405,7 +408,10 @@ const Relasjon: React.FC<MainFormProps> = ({
                   </FormText>
                 </Column>
                 <Column>
-                  <FormText error={_v[_namespace + '-relasjonType']}>
+                  <FormText
+                    error={_v[_namespace + '-relasjonType']?.feilmelding}
+                    id={_namespace + '-relasjonType'}
+                  >
                     {t('el:option-relasjon-' + barnetilhoerighet?.relasjonType)}
                   </FormText>
                 </Column>

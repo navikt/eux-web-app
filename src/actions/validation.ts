@@ -4,10 +4,10 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { ActionCreator } from 'redux'
 
 export const resetValidation = (
-  key?: string
+  key?: string | Array<string> | undefined
 ) => ({
   type: types.VALIDATION_RESET,
-  payload: key ? { key } : {}
+  payload: key
 })
 
 export const setValidation: ActionCreator<ActionWithPayload<Validation>> = (

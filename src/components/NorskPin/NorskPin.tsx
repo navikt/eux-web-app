@@ -1,6 +1,7 @@
 import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
 import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
 import {
+  AlignEndColumn,
   AlignStartRow,
   Column,
   FlexCenterDiv,
@@ -10,11 +11,12 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetPerson, searchPerson } from 'actions/person'
+import ErrorLabel from 'components/Forms/ErrorLabel'
 import Input from 'components/Forms/Input'
-import { ShadowPanel } from 'components/StyledComponents'
+import { RepeatableRow, ShadowPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
-import { Person, Validation } from 'declarations/types'
+import { Person } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
@@ -23,7 +25,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 
 export interface NorskPinProps {
   norwegianPin: Pin | undefined
-  validation: Validation
+  error: string | undefined
   namespace: string
   onNorwegianPinSave: (fnr: string) => void
   onFillOutPerson: (p: Person) => void
@@ -41,7 +43,7 @@ const mapState = (state: State): NorskPinSelector => ({
 
 const NorskPin: React.FC<NorskPinProps> = ({
   norwegianPin,
-  validation,
+  error,
   namespace,
   onNorwegianPinSave,
   onFillOutPerson
@@ -53,18 +55,25 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const { searchedPerson, searchingPerson } = useAppSelector(mapState)
 
-  const onNorwegianPinChange = (newPin: string) => {
+  const setNorwegianPin = (newPin: string) => {
     _setTempNorwegianPin(newPin)
   }
 
-  const _onNorwegianPinSave = () => {
+  const cleanUp = () => {
+    if (searchedPerson) {
+      dispatch(resetPerson())
+    }
+    _setSeeNorskPinForm(false)
+  }
+
+  const saveNorwegianPin = () => {
     if (_tempNorwegianPin) {
       onNorwegianPinSave(_tempNorwegianPin)
     }
     _setSeeNorskPinForm(false)
   }
 
-  const _onFillOutPerson = () => {
+  const fillOutPerson = () => {
     if (searchedPerson) {
       onFillOutPerson(searchedPerson)
       dispatch(resetPerson())
@@ -72,7 +81,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
     _setSeeNorskPinForm(false)
   }
 
-  const onSearchUser = (e: any) => {
+  const searchUser = (e: any) => {
     if (norwegianPin && norwegianPin.identifikator) {
       buttonLogger(e)
       dispatch(searchPerson(norwegianPin.identifikator))
@@ -81,7 +90,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const { t } = useTranslation()
   return (
-    <>
+    <RepeatableRow>
       <AlignStartRow>
         {!_seeNorskPinForm
           ? (
@@ -94,18 +103,14 @@ const NorskPin: React.FC<NorskPinProps> = ({
                       {t('label:fnr-eller-dnr')}
                     </Label>
                     <HorizontalSeparatorDiv />
-                    <BodyLong>
+                    <BodyLong id={namespace + '-norskpin'}>
                       {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
                     </BodyLong>
                   </FlexCenterDiv>
-                  {validation[namespace + '-norskpin-nummer']?.feilmelding && (
-                    <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-                      {validation[namespace + '-norskpin-nummer']?.feilmelding}
-                    </div>
-                  )}
+                  <ErrorLabel error={error} />
                 </PileDiv>
               </Column>
-              <Column>
+              <AlignEndColumn className='control-buttons'>
                 <Button
                   variant='secondary'
                   onClick={() => {
@@ -116,31 +121,29 @@ const NorskPin: React.FC<NorskPinProps> = ({
                   <Edit />
                   {t('label:endre')}
                 </Button>
-              </Column>
-              <Column />
+              </AlignEndColumn>
             </>
             )
           : (
             <>
               <Column>
                 <Input
-                  error={validation[namespace + '-norskpin-nummer']?.feilmelding}
-                  id='norskpin-nummer'
-                  key={namespace + '-norskpin-nummer-' + _tempNorwegianPin}
+                  error={error}
+                  id='norskpin'
                   label={t('label:fnr-eller-dnr')}
                   hideLabel={false}
                   namespace={namespace}
-                  onChanged={onNorwegianPinChange}
+                  onChanged={setNorwegianPin}
                   value={_tempNorwegianPin}
                 />
               </Column>
-              <Column>
+              <AlignEndColumn className='control-buttons'>
                 <FlexStartDiv className='nolabel'>
                   <Button
                     variant='secondary'
                     disabled={_.isEmpty(_tempNorwegianPin?.trim())}
                     data-amplitude='svarsed.editor.personopplysning.norskpin.save'
-                    onClick={_onNorwegianPinSave}
+                    onClick={saveNorwegianPin}
                   >
                     <SuccessStroke />
                     {t('el:button-save')}
@@ -150,7 +153,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
                     variant='secondary'
                     disabled={searchingPerson}
                     data-amplitude='svarsed.editor.personopplysning.norskpin.search'
-                    onClick={onSearchUser}
+                    onClick={searchUser}
                   >
                     <Search />
                     {searchingPerson
@@ -161,13 +164,13 @@ const NorskPin: React.FC<NorskPinProps> = ({
                   <HorizontalSeparatorDiv size='0.35' />
                   <Button
                     variant='tertiary'
-                    onClick={() => _setSeeNorskPinForm(false)}
+                    onClick={cleanUp}
                   >
                     <Cancel />
                     {t('el:button-cancel')}
                   </Button>
                 </FlexStartDiv>
-              </Column>
+              </AlignEndColumn>
             </>
             )}
       </AlignStartRow>
@@ -185,7 +188,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
                 data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
                 onClick={(e) => {
                   buttonLogger(e)
-                  _onFillOutPerson()
+                  fillOutPerson()
                 }}
               >
                 {t('label:fill-in-person-data')}
@@ -200,7 +203,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
             </BodyLong>
             )
           : <div />}
-    </>
+    </RepeatableRow>
   )
 }
 

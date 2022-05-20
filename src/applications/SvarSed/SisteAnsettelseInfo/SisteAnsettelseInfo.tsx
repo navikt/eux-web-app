@@ -322,7 +322,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                 </>
                 )
               : (
-                <FormText error={_v[_namespace + '-utbetalingType']}>
+                <FormText
+                  error={_v[_namespace + '-utbetalingType']?.feilmelding}
+                  id={_namespace + '-utbetalingType'}
+                >
                   <FlexDiv>
                     <Label>{t('label:utbetaling-type') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />
@@ -407,11 +410,17 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   <Label>{t('label:beløp') + ':'}</Label>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FlexDiv>
-                    <FormText error={_v[_namespace + '-beloep']}>
+                    <FormText
+                      error={_v[_namespace + '-beloep']?.feilmelding}
+                      id={_namespace + '-beloep'}
+                    >
                       {_utbetaling?.beloep}
                     </FormText>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <FormText error={_v[_namespace + '-valuta']}>
+                    <FormText
+                      error={_v[_namespace + '-valuta']?.feilmelding}
+                      id={_namespace + '-valuta'}
+                    >
                       {_utbetaling?.valuta}
                     </FormText>
                   </FlexDiv>
@@ -419,7 +428,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
               </Column>
               <Column>
                 {!!_utbetaling?.feriedagerTilGode && (
-                  <FormText error={_v[_namespace + '-feriedagerTilGode']}>
+                  <FormText
+                    error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
+                    id={_namespace + '-feriedagerTilGode'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:feriedager-til-gode') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
@@ -428,7 +440,10 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   </FormText>
                 )}
                 {!!_utbetaling?.loennTilDato && (
-                  <FormText error={_v[_namespace + '-feriedagerTilGode']}>
+                  <FormText
+                    error={_v[_namespace + '-loennTilDato']?.feilmelding}
+                    id={_namespace + '-loennTilDato'}
+                  >
                     <FlexDiv>
                       <Label>{t('label:loenn-til-dato') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />

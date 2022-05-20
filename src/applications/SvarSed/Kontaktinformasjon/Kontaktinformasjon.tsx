@@ -310,7 +310,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-nummer']}>
+                <FormText
+                  error={_v[_namespace + '-nummer']?.feilmelding}
+                  id={_namespace + '-nummer'}
+                >
                   <BodyLong>{_telefon?.nummer}</BodyLong>
                 </FormText>
                 )}
@@ -335,7 +338,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-type']}>
+                <FormText
+                  error={_v[_namespace + '-type']?.feilmelding}
+                  id={_namespace + '-type'}
+                >
                   <BodyLong>{t('el:option-telefon-type-' + _telefon?.type)}</BodyLong>
                 </FormText>
                 )}
@@ -393,7 +399,10 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-adresse']}>
+                <FormText
+                  error={_v[_namespace + '-adresse']?.feilmelding}
+                  id={_namespace + '-adresse'}
+                >
                   <BodyLong>{_epost?.adresse}</BodyLong>
                 </FormText>
                 )}

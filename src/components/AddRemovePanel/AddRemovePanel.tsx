@@ -142,7 +142,7 @@ const AddRemovePanel = <T extends any>({
   }
 
   return (
-    <InlineFlexDiv className={classNames('addremovepanel-buttons', { nolabel2: marginTop })}>
+    <InlineFlexDiv className={classNames('control-buttons', { nolabel2: marginTop })}>
       {allowEdit && (
         <Button
           size='small'

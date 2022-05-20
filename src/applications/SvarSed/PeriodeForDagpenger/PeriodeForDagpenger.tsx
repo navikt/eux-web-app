@@ -392,11 +392,17 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                   <Label>{t('label:institusjon') + ':'}</Label>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FlexDiv>
-                    <FormText error={_v[_namespace + '-institusjon-id']}>
+                    <FormText
+                      error={_v[_namespace + '-institusjon-id']?.feilmelding}
+                      id={_namespace + '-institusjon-id'}
+                    >
                       {_periodeDagpenger?.institusjon?.id}
                     </FormText>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <FormText error={_v[_namespace + '-institusjon-navn']}>
+                    <FormText
+                      error={_v[_namespace + '-institusjon-navn']?.feilmelding}
+                      id={_namespace + '-institusjon-navn'}
+                    >
                       {_periodeDagpenger?.institusjon?.navn}
                     </FormText>
                   </FlexDiv>
@@ -429,7 +435,10 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </AlignStartRow>
             )
           : (
-            <FormText error={_v[_namespace + '-institusjon-idmangler']}>
+            <FormText
+              error={_v[_namespace + '-institusjon-idmangler']?.feilmelding}
+              id={_namespace + '-institusjon-idmangler'}
+            >
               <FlexDiv>
                 <Label>{t('label:institusjonens-id-er-kjent') + ':'}</Label>
                 <HorizontalSeparatorDiv size='0.5' />
@@ -458,7 +467,10 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                 </AlignStartRow>
                 )
               : (
-                <FormText error={_v[_namespace + '-institusjon-idmangler-navn']}>
+                <FormText
+                  error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
+                  id={_namespace + '-institusjon-idmangler-navn'}
+                >
                   <FlexDiv>
                     <Label>{t('label:navn') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />

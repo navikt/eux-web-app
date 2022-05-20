@@ -17,16 +17,14 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
       return initialValidationState
 
     case types.VALIDATION_RESET: {
-      const { key } = (action as ActionWithPayload).payload
+      const key: Array<string> | string | undefined = (action as ActionWithPayload).payload
       if (!key) {
         return {
-          ...state,
           status: {}
         }
       }
 
       return {
-        ...state,
         status: filterAllWithNamespace(state.status, key)
       }
     }

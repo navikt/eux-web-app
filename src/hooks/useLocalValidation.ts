@@ -12,7 +12,7 @@ const useLocalValidation = <ValidationData extends any>(
   initialValue: any = {}
 ): [
     Validation,
-    (key?: string | undefined) => void,
+    (key?: Array<string> | string | undefined) => void,
     (validationData: ValidationData) => boolean,
     (v: Validation) => void
   ] => {

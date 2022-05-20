@@ -67,8 +67,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
     if (index < 0) {
       _setNewAnmodningsperiode(newPeriode)
-      _resetValidation(namespace + '-perioder-stardato')
-      _resetValidation(namespace + '-perioder-sluttdato')
+      _resetValidation([namespace + '-perioder-stardato', namespace + '-perioder-sluttdato'])
       return
     }
     _setEditAnmodningsperiode(newPeriode)

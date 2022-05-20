@@ -189,7 +189,10 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-type']}>
+                <FormText
+                  error={_v[_namespace + '-type']?.feilmelding}
+                  id={_namespace + '-type'}
+                >
                   <FlexDiv>
                     <Label>{t('label:type') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />
@@ -213,7 +216,10 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 />
                 )
               : (
-                <FormText error={_v[_namespace + '-id']}>
+                <FormText
+                  error={_v[_namespace + '-id']?.feilmelding}
+                  id={_namespace + '-id'}
+                >
                   <FlexDiv>
                     <Label>{t('label:inst-id') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />

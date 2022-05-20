@@ -281,11 +281,17 @@ const Inntekter: React.FC<any> = ({
                       <Label>{t('label:beløp') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FlexDiv>
-                        <FormText error={_v[_namespace + '-beloep']}>
+                        <FormText
+                          error={_v[_namespace + '-beloep']?.feilmelding}
+                          id={_namespace + '-beloep'}
+                        >
                           {_inntekt?.beloep}
                         </FormText>
                         <HorizontalSeparatorDiv size='0.5' />
-                        <FormText error={_v[_namespace + '-valuta']}>
+                        <FormText
+                          error={_v[_namespace + '-valuta']?.feilmelding}
+                          id={_namespace + '-valuta'}
+                        >
                           {_inntekt?.valuta}
                         </FormText>
                       </FlexDiv>
@@ -315,7 +321,10 @@ const Inntekter: React.FC<any> = ({
                   />
                   )
                 : (
-                  <FormText error={_v[_namespace + '-typeAnnen']}>
+                  <FormText
+                    error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                    id={_namespace + '-typeAnnen'}
+                  >
                     <BodyLong>{_inntekt?.typeAnnen}</BodyLong>
                   </FormText>
                   )}
