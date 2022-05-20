@@ -37,9 +37,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-.nolabel2 {
-  margin-top: 2.5rem !important;
-}
 .nolabel {
   margin-top: 2rem !important;
 }

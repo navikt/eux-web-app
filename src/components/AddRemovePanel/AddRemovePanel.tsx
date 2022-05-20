@@ -26,7 +26,14 @@ export interface AddRemovePanelProps<T> {
 
 const InlineFlexDiv = styled.div`
   display: inline-flex;
-  align-items: flex-start;
+  align-items: flex-center;
+  margin-top: 0.5rem;
+  &.marginTop {
+    margin-top: 2.5rem;
+  }
+  &.noMargin {
+    margin-top: 0rem;
+  }
 `
 
 const AddRemovePanel = <T extends any>({
@@ -54,7 +61,7 @@ const AddRemovePanel = <T extends any>({
 
   if (candidateForDeletion) {
     return (
-      <InlineFlexDiv className={classNames('slideInFromRight', { nolabel: marginTop })}>
+      <InlineFlexDiv className={classNames('slideInFromRight', { marginTop })}>
         <BodyLong style={{ whiteSpace: 'nowrap' }}>
           {labels?.areYouSure ?? t('label:er-du-sikker')}
         </BodyLong>
@@ -80,7 +87,7 @@ const AddRemovePanel = <T extends any>({
 
   if (candidateForEdition) {
     return (
-      <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
+      <InlineFlexDiv className={classNames({ marginTop })}>
         <HorizontalSeparatorDiv />
         <Button
           size='small'
@@ -111,7 +118,7 @@ const AddRemovePanel = <T extends any>({
 
   if (isNew) {
     return (
-      <InlineFlexDiv className={classNames({ nolabel2: marginTop })}>
+      <InlineFlexDiv className={classNames({ marginTop })}>
         <Button
           size='small'
           variant='tertiary'
@@ -142,7 +149,7 @@ const AddRemovePanel = <T extends any>({
   }
 
   return (
-    <InlineFlexDiv className={classNames('control-buttons', { nolabel2: marginTop })}>
+    <InlineFlexDiv className={classNames('control-buttons', 'noMargin')}>
       {allowEdit && (
         <Button
           size='small'

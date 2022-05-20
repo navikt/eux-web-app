@@ -182,7 +182,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                   sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
                 breakInTwo
-                hideLabel={false}
+                hideLabel={index >= 0}
                 setPeriode={(periode: Periode) => setAnmodningsperioder(periode, index)}
                 value={_periode}
               />
@@ -202,7 +202,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
           <AlignEndColumn>
             <AddRemovePanel<Periode>
               item={periode}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onRemove}

@@ -185,7 +185,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   flagWave
                   id={_namespace + '-land'}
                   includeList={landUtenNorge}
-                  hideLabel={false}
+                  hideLabel={index >= 0}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => setUtenlandskeLand(e.value, index)}
@@ -212,7 +212,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   error={_v[_namespace + '-identifikator']?.feilmelding}
                   id='identifikator'
                   label={t('label:utenlandsk-pin')}
-                  hideLabel={false}
+                  hideLabel={index >= 0}
                   namespace={_namespace}
                   onChanged={(id: string) => setUtenlandskeIdentifikator(id, index)}
                   value={_pin?.identifikator}
@@ -230,7 +230,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <AlignEndColumn>
             <AddRemovePanel<Pin>
               item={pin}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onRemove}

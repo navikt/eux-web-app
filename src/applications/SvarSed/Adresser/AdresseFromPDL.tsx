@@ -62,7 +62,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
     }
   }
 
-  const renderAdresses = (key: AdresseType, type: AdresseType, adresser: Array<Adresse>) => (
+  const renderAdresses = (key: AdresseType, adresser: Array<Adresse>) => (
     <>
       {adresser?.map(adresse => (
         <Checkbox
@@ -76,7 +76,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
             seeType
             adresse={{
               ...adresse,
-              type
+              type: key
             }}
             padding='0'
             oneLine
@@ -144,10 +144,10 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
           <Ingress>
             {t('label:hvilke-adresser-skal-registreres')}
           </Ingress>
-          {adresseMap.bosted && renderAdresses('bosted', t('label:bostedsadresse'), adresseMap.bosted)}
-          {adresseMap.opphold && renderAdresses('opphold', t('label:oppholdsadresse'), adresseMap.opphold)}
-          {adresseMap.kontakt && renderAdresses('kontakt', t('label:kontaktadresse'), adresseMap.kontakt)}
-          {adresseMap.annet && renderAdresses('annet', t('label:annet'), adresseMap.annet)}
+          {adresseMap.bosted && renderAdresses('bosted', adresseMap.bosted)}
+          {adresseMap.opphold && renderAdresses('opphold', adresseMap.opphold)}
+          {adresseMap.kontakt && renderAdresses('kontakt', adresseMap.kontakt)}
+          {adresseMap.annet && renderAdresses('annet', adresseMap.annet)}
         </GrayPanel>
       )}
     </>

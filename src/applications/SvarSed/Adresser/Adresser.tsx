@@ -1,8 +1,9 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button } from '@navikt/ds-react'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
+  Column,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
@@ -37,6 +38,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Adresser: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -73,10 +75,10 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(resetAdresse())
   })
 
-  const onAdressChanged = (adresse: Adresse, whatChanged: string | undefined, index: number) => {
+  const setAdresse = (adresse: Adresse, index: number) => {
     if (index < 0) {
       _setNewAdresse(adresse)
-      _resetValidation(namespace + '-' + whatChanged)
+      _resetValidation(namespace)
       return
     }
     _setEditAdresse(adresse)
@@ -153,6 +155,22 @@ const Adresser: React.FC<MainFormProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _adresse = index < 0 ? _newAdresse : (inEditMode ? _editAdresse : adresse)
+
+    const addremovepanel = (
+      <AddRemovePanel<Adresse>
+        item={adresse}
+        marginTop={false}
+        index={index}
+        inEditMode={inEditMode}
+        onRemove={onRemove}
+        onAddNew={onAddNew}
+        onCancelNew={onCloseNew}
+        onStartEdit={onStartEdit}
+        onConfirmEdit={onSaveEdit}
+        onCancelEdit={() => onCloseEdit(_namespace)}
+      />
+    )
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -166,33 +184,32 @@ const Adresser: React.FC<MainFormProps> = ({
         {inEditMode
           ? (
             <AdresseForm
-              key={_namespace + getId(_adresse)}
               namespace={_namespace}
               adresse={_adresse}
-              onAdressChanged={(a: Adresse, whatChanged: string | undefined) => onAdressChanged(a, whatChanged, index)}
+              onAdressChanged={(a: Adresse) => setAdresse(a, index)}
               validation={_v}
             />
             )
           : (
-            <AdresseBox adresse={_adresse} seeType />
+            <AlignStartRow>
+              <Column flex='2'>
+                <AdresseBox adresse={_adresse} seeType />
+              </Column>
+              <AlignEndColumn>
+                {addremovepanel}
+              </AlignEndColumn>
+            </AlignStartRow>
             )}
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <AlignEndColumn>
-            <AddRemovePanel<Adresse>
-              item={adresse}
-              marginTop={false}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
+        {inEditMode && (
+          <>
+            <VerticalSeparatorDiv size='0.5' />
+            <AlignStartRow>
+              <AlignEndColumn>
+                {addremovepanel}
+              </AlignEndColumn>
+            </AlignStartRow>
+          </>
+        )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
@@ -200,7 +217,11 @@ const Adresser: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <PaddedDiv key={namespace + '-div'}>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <VerticalSeparatorDiv />
         <AdresseFromPDL
           fnr={fnr!}
           selectedAdresser={adresser ?? []}

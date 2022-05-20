@@ -1,5 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -45,6 +45,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Kontaktinformasjon: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -99,7 +100,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     { label: t('el:option-telefon-type-mobil'), value: 'mobil' }
   ]
 
-  const onTypeChanged = (type: TelefonType, index: number) => {
+  const setTelefonType = (type: TelefonType, index: number) => {
     if (index < 0) {
       _setNewTelefon({
         ..._newTelefon,
@@ -117,7 +118,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     }
   }
 
-  const onNummerChanged = (nummer: string, index: number) => {
+  const setTelefonNummer = (nummer: string, index: number) => {
     if (index < 0) {
       _setNewTelefon({
         ..._newTelefon,
@@ -135,7 +136,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     }
   }
 
-  const onAdresseChanged = (adresse: string, index: number) => {
+  const setEpostAdresse = (adresse: string, index: number) => {
     if (index < 0) {
       _setNewEpost({
         adresse: adresse.trim()
@@ -299,12 +300,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 <Input
                   ariaLabel={t('label:telefonnummer')}
                   error={_v[_namespace + '-nummer']?.feilmelding}
-                  key={_namespace + '-nummer-' + _telefon?.nummer}
                   id='nummer'
                   label={t('label:telefonnummer')}
-                  hideLabel={false}
+                  hideLabel={index >= 0}
                   namespace={_namespace}
-                  onChanged={(value: string) => onNummerChanged(value, index)}
+                  onChanged={(value: string) => setTelefonNummer(value, index)}
                   required
                   value={_telefon?.nummer}
                 />
@@ -325,14 +325,12 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   data-testid={_namespace + '-type'}
                   error={_v[_namespace + '-type']?.feilmelding}
                   id={_namespace + '-type'}
-                  key={_namespace + '-type-' + _telefon?.type}
                   menuPortalTarget={document.body}
-                  onChange={(e: unknown) => onTypeChanged((e as Option).value as TelefonType, index)}
+                  onChange={(e: unknown) => setTelefonType((e as Option).value as TelefonType, index)}
                   options={telefonTypeOptions}
                   label={t('label:type')}
-                  hideLabel={false}
+                  hideLabel={index >= 0}
                   required
-                  noMarginTop={false}
                   value={getTypeOption(_telefon?.type)}
                   defaultValue={getTypeOption(_telefon?.type)}
                 />
@@ -349,7 +347,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
           <Column>
             <AddRemovePanel<Telefon>
               item={telefon}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onTelefonRemove}
@@ -390,10 +388,9 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   ariaLabel={t('label:epost')}
                   error={_v[_namespace + '-adresse']?.feilmelding}
                   namespace={_namespace}
-                  key={_namespace + '-adresse-' + _epost?.adresse}
                   id='adresse'
-                  hideLabel={false}
-                  onChanged={(value: string) => onAdresseChanged(value, index)}
+                  hideLabel={index >= 0}
+                  onChanged={(value: string) => setEpostAdresse(value, index)}
                   required
                   value={_epost?.adresse}
                 />
@@ -410,7 +407,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
           <AlignEndColumn>
             <AddRemovePanel<Epost>
               item={epost}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onEpostRemove}
@@ -429,6 +426,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(telefoner)
         ? (

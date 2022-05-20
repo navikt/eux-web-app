@@ -30,7 +30,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
         styles={{
           container: (styles: any) => ({
             ...styles,
-            marginTop: props.noMarginTop ? '0px' : '8px',
+            marginTop: props.noMarginTop || props.hideLabel ? '0px' : '8px',
             minHeight: props.size === 'small' ? '35px' : '48px'
           }),
           control: (styles: any, { isDisabled }) => ({
