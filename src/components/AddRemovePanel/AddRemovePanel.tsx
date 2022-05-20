@@ -26,7 +26,7 @@ export interface AddRemovePanelProps<T> {
 
 const InlineFlexDiv = styled.div`
   display: inline-flex;
-  align-items: flex-end;
+  align-items: flex-start;
 `
 
 const AddRemovePanel = <T extends any>({
@@ -111,7 +111,7 @@ const AddRemovePanel = <T extends any>({
 
   if (isNew) {
     return (
-      <InlineFlexDiv className={classNames({ nolabel: marginTop })}>
+      <InlineFlexDiv className={classNames({ nolabel2: marginTop })}>
         <Button
           size='small'
           variant='tertiary'
@@ -142,7 +142,7 @@ const AddRemovePanel = <T extends any>({
   }
 
   return (
-    <InlineFlexDiv className={classNames('addremovepanel-buttons', { nolabel: marginTop })}>
+    <InlineFlexDiv className={classNames('addremovepanel-buttons', { nolabel2: marginTop })}>
       {allowEdit && (
         <Button
           size='small'

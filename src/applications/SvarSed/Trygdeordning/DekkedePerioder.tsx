@@ -277,9 +277,11 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
             <AlignStartRow>
               <Column>
                 <PeriodeText
-                  periode={periode} error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
+                  periode={periode}
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
                 />
               </Column>

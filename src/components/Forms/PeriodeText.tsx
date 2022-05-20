@@ -1,42 +1,52 @@
-import { BodyLong, Label } from '@navikt/ds-react'
+import { BodyLong } from '@navikt/ds-react'
 import { HorizontalSeparatorDiv, FlexCenterDiv, PileDiv } from '@navikt/hoykontrast'
+import ErrorLabel from 'components/Forms/ErrorLabel'
+import { Periode } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+export interface PeriodeTextProps {
+  periode: Periode | null | undefined
+  namespace: string
+  error: {
+    startdato: string | undefined
+    sluttdato: string | undefined
+  }
+}
+
 const PeriodeText = ({
   periode,
+  namespace,
   error
-}: any) => {
+}: PeriodeTextProps) => {
   const { t } = useTranslation()
   return (
 
     <FlexCenterDiv>
       <PileDiv>
-        <BodyLong id={error?.startdato?.skjemaelementId}>
+        <BodyLong
+          tabIndex={0}
+          id={namespace + '-startdato'}
+        >
           {periode?.startdato}
         </BodyLong>
-        {error?.startdato?.feilmelding && (
-          <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
-            {error.startdato.feilmelding}
-          </Label>
-        )}
+        <ErrorLabel error={error?.startdato} />
       </PileDiv>
       <HorizontalSeparatorDiv />-
       <HorizontalSeparatorDiv />
       <PileDiv>
-        <BodyLong id={error?.sluttdato?.skjemaelementId}>
-          {!_.isUndefined(periode?.sluttdato)
-            ? periode.sluttdato
-            : periode.aapenPeriodeType === 'åpen_sluttdato'
+        <BodyLong
+          tabIndex={0}
+          id={namespace + '-sluttdato'}
+        >
+          {!_.isEmpty(periode?.sluttdato)
+            ? periode?.sluttdato
+            : periode?.aapenPeriodeType === 'åpen_sluttdato'
               ? t('label:åpen_sluttdato')
               : t('label:ukjent_sluttdato')}
         </BodyLong>
-        {error?.sluttdato?.feilmelding && (
-          <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
-            {error.sluttdato.feilmelding}
-          </Label>
-        )}
+        <ErrorLabel error={error?.sluttdato} />
       </PileDiv>
     </FlexCenterDiv>
   )

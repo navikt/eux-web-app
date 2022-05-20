@@ -226,7 +226,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                         ...periode,
                         __type: _type
                       } as ForsikringPeriode)}
-                      newMode={true}
+                      newMode
                       editable='full'
                       selectable={false}
                       showAddress={showAddress}

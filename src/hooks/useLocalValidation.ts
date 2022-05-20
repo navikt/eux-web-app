@@ -1,4 +1,5 @@
 import { Validation } from 'declarations/types'
+import _ from 'lodash'
 import { useState } from 'react'
 
 const useLocalValidation = <ValidationData extends any>(
@@ -17,15 +18,11 @@ const useLocalValidation = <ValidationData extends any>(
   ] => {
   const [_validation, setValidation] = useState<Validation>(initialValue)
 
-  const resetValidation = (key: string | undefined = undefined): void => {
-    if (!key) {
+  const resetValidation = (key: Array<string> | string | undefined = undefined): void => {
+    if (key === undefined) {
       setValidation({})
     } else {
-      const newValidation = {
-        ..._validation,
-        [key!]: undefined
-      }
-      setValidation(newValidation)
+      setValidation(_.omit(_validation, key))
     }
   }
 

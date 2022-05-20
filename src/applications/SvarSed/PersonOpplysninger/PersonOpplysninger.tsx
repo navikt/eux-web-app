@@ -34,6 +34,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const PersonOpplysninger: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -172,6 +173,10 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   return (
     <>
       <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <VerticalSeparatorDiv />
         <NorskPin
           norwegianPin={norwegianPin}
           validation={validation}

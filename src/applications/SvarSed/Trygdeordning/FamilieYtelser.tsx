@@ -448,9 +448,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
               <Column>
                 <PeriodeText
                   periode={_p}
+                  namespace={_namespace}
                   error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
                 />
               </Column>

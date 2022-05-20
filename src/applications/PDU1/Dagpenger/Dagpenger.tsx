@@ -212,9 +212,10 @@ const Dagpenger: React.FC<MainFormProps> = ({
                     <HorizontalSeparatorDiv />
                     <PeriodeText
                       error={{
-                        startdato: _v[_namespace + '-startdato'],
-                        sluttdato: _v[_namespace + '-sluttdato']
+                        startdato: _v[_namespace + '-startdato']?.feilmelding,
+                        sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                       }}
+                      namespace={_namespace}
                       periode={_periode}
                     />
                     <HorizontalSeparatorDiv />

@@ -596,9 +596,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           <Column>
                             <PeriodeText
                               error={{
-                                startdato: _v[_namespace + '-inntektOgTimer-startdato'],
-                                sluttdato: _v[_namespace + '-inntektOgTimer-sluttdato']
+                                startdato: _v[_namespace + '-inntektOgTimer-startdato']?.feilmelding,
+                                sluttdato: _v[_namespace + '-inntektOgTimer-sluttdato']?.feilmelding
                               }}
+                              namespace={_namespace}
                               periode={inntektOgTime?.inntektsperiode}
                             />
                           </Column>

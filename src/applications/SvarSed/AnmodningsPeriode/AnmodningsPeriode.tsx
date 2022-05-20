@@ -47,19 +47,20 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace: string = `${parentNamespace}-anmodningsperiode`
   const target: string = 'anmodningsperioder'
-  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
+  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
   const [_newAnmodningsperiode, _setNewAnmodningsperiode] = useState<Periode | undefined>(undefined)
   const [_editAnmodningsperiode, _setEditAnmodningsperiode] = useState<Periode | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace + '-perioder')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAnmodningsPerioderProps>(validation, namespace, validateAnmodningsPerioder, {
-      anmodningsperioder: (replySed as FSed).anmodningsperioder
-    })
+    const [, newValidation] = performValidation<ValidationAnmodningsPerioderProps>(
+      validation, namespace, validateAnmodningsPerioder, {
+        anmodningsperioder: (replySed as FSed).anmodningsperioder
+      })
     dispatch(setValidation(newValidation))
   })
 
@@ -152,7 +153,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
         newPerioder = []
       }
       newPerioder.push(_newAnmodningsperiode)
-      dispatch(updateReplySed('anmodningsperioder', newPerioder))
+      dispatch(updateReplySed(target, newPerioder))
       onCloseNew()
     }
   }
@@ -183,7 +184,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                 }}
                 breakInTwo
                 hideLabel={false}
-                setPeriode={(p: Periode) => setAnmodningsperioder(p, index)}
+                setPeriode={(periode: Periode) => setAnmodningsperioder(periode, index)}
                 value={_periode}
               />
               )
@@ -191,9 +192,10 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               <Column>
                 <PeriodeText
                   error={{
-                    startdato: _v[_namespace + '-startdato'],
-                    sluttdato: _v[_namespace + '-sluttdato']
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
+                  namespace={_namespace}
                   periode={_periode}
                 />
               </Column>
@@ -281,7 +283,6 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               <DateInput
                 error={validation[namespace + '-kravMottattDato']?.feilmelding}
                 namespace={namespace}
-                key={(replySed as F002Sed).krav?.kravMottattDato ?? ''}
                 id='kravMottattDato'
                 label={t('label:krav-mottatt-dato')}
                 onChanged={setKravMottattDato}

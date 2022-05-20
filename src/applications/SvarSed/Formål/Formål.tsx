@@ -1,13 +1,13 @@
-import { Checkbox } from '@navikt/ds-react'
-import { ActionWithPayload } from '@navikt/fetch'
+import { Checkbox, Heading } from '@navikt/ds-react'
 import { PaddedDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateFormål, ValidationFormålProps } from 'applications/SvarSed/Formål/validation'
+import { MainFormProps } from 'applications/SvarSed/MainForm'
+import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { FSed, ReplySed } from 'declarations/sed'
-import { UpdateReplySedPayload, Validation } from 'declarations/types'
-import performValidation from 'utils/performValidation'
+import { FSed } from 'declarations/sed'
+import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -15,17 +15,12 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import performValidation from 'utils/performValidation'
 
 const CheckboxDiv = styled.div`
  display: inline-block;
  width: 100%;
 `
-
-interface FormålProps {
-  parentNamespace: string
-  replySed: ReplySed | null | undefined
-  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
-}
 
 interface FormålSelector {
   validation: Validation
@@ -35,11 +30,12 @@ const mapState = (state: State): FormålSelector => ({
   validation: state.validation.status
 })
 
-const Formål: React.FC<FormålProps> = ({
+const Formål: React.FC<MainFormProps> = ({
+  label,
   replySed,
   parentNamespace,
   updateReplySed
-}: FormålProps): JSX.Element => {
+}: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -64,7 +60,7 @@ const Formål: React.FC<FormålProps> = ({
     { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
 
-  const onItemsChanged = (item: string, checked: boolean) => {
+  const setFormal = (item: string, checked: boolean) => {
     let newFormaals: Array<string> | undefined = _.cloneDeep(formaal)
     if (_.isNil(newFormaals)) {
       newFormaals = []
@@ -80,24 +76,31 @@ const Formål: React.FC<FormålProps> = ({
   }
 
   return (
-    <PaddedDiv tabIndex={0} id={namespace + '-checkbox'} style={{ columns: '2' }}>
-      {formaalOptions.map(f => (
-        <CheckboxDiv key={f.value}>
-          <Checkbox
-            error={validation[namespace + '-checkbox']?.feilmelding}
-            checked={formaal?.indexOf(f.value) >= 0}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onItemsChanged(f.value, e.target.checked)}
-          >
-            {f.label}
-          </Checkbox>
-        </CheckboxDiv>
-      ))}
-      {validation[namespace + '-checkbox']?.feilmelding && (
-        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-          {validation[namespace + '-checkbox']?.feilmelding}
-        </div>
-      )}
-    </PaddedDiv>
+    <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
+      <PaddedDiv
+        tabIndex={0}
+        id={namespace + '-checkbox'}
+        style={{ columns: '2' }}
+      >
+        {formaalOptions.map(f => (
+          <CheckboxDiv key={f.value}>
+            <Checkbox
+              error={validation[namespace + '-checkbox']?.feilmelding}
+              checked={formaal?.indexOf(f.value) >= 0}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormal(f.value, e.target.checked)}
+            >
+              {f.label}
+            </Checkbox>
+          </CheckboxDiv>
+        ))}
+        <ErrorLabel error={validation[namespace + '-checkbox']?.feilmelding} />
+      </PaddedDiv>
+    </>
   )
 }
 
