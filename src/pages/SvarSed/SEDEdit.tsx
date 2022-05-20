@@ -196,7 +196,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U'], adult: true, barn: true },
               { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
               { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
-              { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordninger', component: Trygdeordning, type: 'F', adult: true },
+              { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: 'F', adult: true },
               { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F', adult: true },
               { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F', adult: true },
               { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', adult: false, barn: true },

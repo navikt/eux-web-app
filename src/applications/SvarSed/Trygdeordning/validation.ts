@@ -55,14 +55,12 @@ export const validateDekkedePeriode = (
   if (_.isEmpty(nsIndex)) {
     haystack = perioder
   } else {
-    haystack = _.filter(perioder, (p: Periode) => {
-      return getNSIdx(p.__type, p.__index) !== nsIndex
-    })
+    haystack = _.reject(perioder, (p: Periode) => getNSIdx(p.__type, p.__index) === nsIndex)
   }
 
-  const duplicate = _.find(haystack, (p: Periode) => {
-    return p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato
-  }) !== undefined
+  const duplicate = _.find(haystack, (p: Periode) =>
+    p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato
+  ) !== undefined
 
   if (duplicate) {
     hasErrors.push(addError(v, {
@@ -124,9 +122,9 @@ export const validateFamilieytelserPeriode = (
   if (_.isEmpty(nsIndex)) {
     haystack = perioder
   } else {
-    haystack = _.filter(perioder, (p: Periode | PensjonPeriode) => {
+    haystack = _.reject(perioder, (p: Periode | PensjonPeriode) => {
       const _p: Periode = isPensjonPeriode(p) ? (p as PensjonPeriode).periode : (p as Periode)
-      return getNSIdx(_p.__type, _p.__index) !== nsIndex
+      return getNSIdx(_p.__type, _p.__index) === nsIndex
     })
   }
 

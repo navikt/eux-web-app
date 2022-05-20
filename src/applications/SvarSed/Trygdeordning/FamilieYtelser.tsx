@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import { getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } from './validation'
 
 interface FamilieYtelserProps extends MainFormProps {
@@ -66,11 +67,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       : false
   )
 
-  const getId = (p: Periode | PensjonPeriode | null | undefined): string => p
+  const getId = (p: Periode | PensjonPeriode | null | undefined): string => (p
     ? isPensjonPeriode(p)
         ? '[' + ((p as PensjonPeriode).periode.__type ?? '') + ']-' + (p as PensjonPeriode).periode.startdato + '-' + ((p as PensjonPeriode).periode.sluttdato ?? (p as PensjonPeriode).periode.aapenPeriodeType)
         : '[' + ((p as Periode).__type ?? '') + ']-' + (p as Periode).startdato + '-' + ((p as Periode).sluttdato ?? (p as Periode).aapenPeriodeType)
-    : 'new'
+    : 'new-periode')
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
 
@@ -86,22 +87,16 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     person?.perioderMedArbeid?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'perioderMedArbeid' }))
     person?.perioderMedTrygd?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'perioderMedTrygd' }))
     person?.perioderMedYtelser?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'perioderMedYtelser' }))
-    person?.perioderMedPensjon?.forEach((p: PensjonPeriode, i: number) => periodes.push({
-      ...p,
-      periode: {
-        ...p.periode,
-        __index: i,
-        __type: 'perioderMedPensjon'
-      }
-    }))
+    person?.perioderMedPensjon?.forEach((p: PensjonPeriode, i: number) => periodes.push({ ...p, periode: { ...p.periode, __index: i, __type: 'perioderMedPensjon' } }))
     _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
-  // oldType is undefined when we have a new entry
-  const setType = (newType: string, oldType: string | undefined, index: number) => {
+  const setType = (newType: string, index: number) => {
+    let oldType: string | undefined
+    let oldIndex: number
+
     if (index < 0) {
       if (newType === 'perioderMedPensjon') {
-        // oldType is not perioderMedPensjon
         _setNewPeriode({
           periode: {
             ..._newPeriode,
@@ -109,7 +104,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           }
         } as PensjonPeriode)
       } else {
-        if (oldType === 'perioderMedPensjon') {
+        if (isPensjonPeriode(_newPeriode)) {
           _setNewPeriode({
             ...(_newPeriode as PensjonPeriode).periode,
             __type: newType
@@ -126,7 +121,9 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     }
 
     if (newType === 'perioderMedPensjon') {
-      // oldType is not perioderMedPensjon
+      // oldType is not perioderMedPensjon -- we can't trigger setType from perioderMedPensjon to perioderMedPensjon
+      oldType = (_editPeriode as Periode)?.__type
+      oldIndex = (_editPeriode as Periode)?.__index
       _setEditPeriode({
         periode: {
           ..._editPeriode,
@@ -134,24 +131,27 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         }
       } as PensjonPeriode)
     } else {
-      if (oldType === 'perioderMedPensjon') {
+      if (isPensjonPeriode(_editPeriode)) {
+        oldType = (_editPeriode as PensjonPeriode)?.periode?.__type
+        oldIndex = (_editPeriode as PensjonPeriode)?.periode?.__index
         _setEditPeriode({
           ...(_editPeriode as PensjonPeriode).periode,
           __type: newType
         } as Periode)
       } else {
+        oldType = (_editPeriode as Periode)?.__type
+        oldIndex = (_editPeriode as Periode)?.__index
         _setEditPeriode({
           ...(_editPeriode as Periode),
           __type: newType
         } as Periode)
       }
     }
-    dispatch(resetValidation(namespace + getNSIdx(oldType, index) + '-type'))
+    dispatch(resetValidation(namespace + getNSIdx(oldType, oldIndex) + '-type'))
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string | undefined, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      // this is correct even if we are dealing with PensjonPeriode, as we are handling only periods
       if (periode.__type === 'perioderMedPensjon') {
         _setNewPeriode({
           ..._newPeriode,
@@ -160,9 +160,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       } else {
         _setNewPeriode(periode)
       }
-      if (whatChanged) {
-        _resetValidation(namespace + '-' + whatChanged)
-      }
+      _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
       return
     }
 
@@ -175,8 +173,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       _setEditPeriode(periode)
     }
     // keep errors in pensjonstype, if used
-    dispatch(resetValidation(namespace + getNSIdx(periode.__type!, periode.__index) + '-startdato'))
-    dispatch(resetValidation(namespace + getNSIdx(periode.__type!, periode.__index) + '-sluttdato'))
+    dispatch(resetValidation([
+      namespace + getNSIdx(periode.__type!, periode.__index) + '-startdato',
+      namespace + getNSIdx(periode.__type!, periode.__index) + '-sluttdato'
+    ]))
   }
 
   const setPensjonsType = (type: PensjonsType, index: number) => {
@@ -192,7 +192,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       ..._editPeriode,
       pensjonstype: type
     } as PensjonPeriode)
-    dispatch(resetValidation(namespace + getNSIdx((_editPeriode as Periode).__type!, (_editPeriode as Periode).__index)))
+    dispatch(resetValidation(
+      namespace +
+      getNSIdx((_editPeriode as PensjonPeriode).periode?.__type, (_editPeriode as PensjonPeriode).periode?.__index) +
+      '-pensjonstype'
+    ))
   }
 
   const onCloseEdit = (namespace: string) => {
@@ -223,21 +227,16 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       validation, namespace, validateFamilieytelserPeriode, {
         periode: _editPeriode,
         perioder: _allPeriods,
-        personName,
-        nsIndex: _editTypeAndIndex
+        nsIndex: _editTypeAndIndex,
+        personName
       })
 
     if (!!_editPeriode && valid) {
-      // get the new edited periode type
-      const _editType: string = (isPensjonPeriode(_editPeriode)
-        ? (_editPeriode as PensjonPeriode).periode.__type
-        : (_editPeriode as Periode).__type) as string
+      // if we switched period types, then we have to remove it from the old array, and add it to the new one
 
-      // clone it, so we can work it with
-      const __editPeriode: Periode | PensjonPeriode = _.cloneDeep(_editPeriode) as Periode | PensjonPeriode
+      const __editPeriode: Periode | PensjonPeriode = _.cloneDeep(_editPeriode)
 
-      // clean up from aux vars
-      if (_editType === 'perioderMedPensjon') {
+      if (isPensjonPeriode(__editPeriode)) {
         delete (__editPeriode as PensjonPeriode).periode.__type
         delete (__editPeriode as PensjonPeriode).periode.__index
       } else {
@@ -245,15 +244,21 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         delete (__editPeriode as Periode).__index
       }
 
-      // if we switched period types, then we have to remove it from the old array, and add it to the new one
-      // type is the "old type" (comes from the asigned index), _editType is the new type (from current _editPeriode)
+      const _editType: string = (
+        isPensjonPeriode(_editPeriode)
+          ? (_editPeriode as PensjonPeriode).periode.__type
+          : (_editPeriode as Periode).__type
+      ) as string
+
       if (type !== _editType) {
         const oldPeriods: Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type))
-        let newPeriods: Array<Periode | PensjonPeriode> | undefined = _.cloneDeep(_.get(person, _editType)) as Array<Periode | PensjonPeriode> | undefined
+        let newPeriods: Array<Periode | PensjonPeriode> | undefined = _.cloneDeep(_.get(person, _editType))
+
+        oldPeriods.splice(index, 1)
+
         if (_.isUndefined(newPeriods)) {
           newPeriods = []
         }
-        oldPeriods.splice(index, 1)
         newPeriods.push(__editPeriode)
         newPeriods = newPeriods.sort(periodeSort)
 
@@ -274,14 +279,12 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     const type: string = (isPensjonPeriode(periode)
       ? (periode as PensjonPeriode).periode.__type
       : (periode as Periode).__type) as string
-
     const index: number = (isPensjonPeriode(periode)
       ? (periode as PensjonPeriode).periode.__index
       : (periode as Periode).__index) as number
-
-    const perioder : Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type)) as Array<Periode | PensjonPeriode>
-    perioder.splice(index, 1)
-    dispatch(updateReplySed(`${target}.${type}`, perioder))
+    const newPerioder : Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type)) as Array<Periode | PensjonPeriode>
+    newPerioder.splice(index, 1)
+    dispatch(updateReplySed(`${target}.${type}`, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type })
   }
 
@@ -304,7 +307,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
 
       const __newPeriode: Periode | PensjonPeriode = _.cloneDeep(_newPeriode) as Periode | PensjonPeriode
 
-      if (type === 'perioderMedPensjon') {
+      if (isPensjonPeriode(__newPeriode)) {
         delete (__newPeriode as PensjonPeriode).periode.__type
         delete (__newPeriode as PensjonPeriode).periode.__index
       } else {
@@ -329,20 +332,17 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   const renderRow = (periode: Periode | PensjonPeriode | null, index: number) => {
     const _originalType: string | undefined = isPensjonPeriode(periode) ? (periode as PensjonPeriode)?.periode.__type : (periode as Periode)?.__type
     const _originalIndex: number | undefined = isPensjonPeriode(periode) ? (periode as PensjonPeriode)?.periode.__index : (periode as Periode)?.__index
-
     const idx = getNSIdx(_originalType, _originalIndex)
     const _namespace = namespace + idx
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editTypeAndIndex === idx
-
     const _periode: Periode | PensjonPeriode | null | undefined = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     const _p: Periode | null | undefined = isPensjonPeriode(_periode) ? (_periode as PensjonPeriode)?.periode : (_periode as Periode)
-    const _currentType = _p?.__type
 
     const addremovepanel = (
       <AddRemovePanel<Periode | PensjonPeriode>
         item={periode}
-        marginTop={inEditMode}
+        marginTop={index < 0}
         index={index}
         inEditMode={inEditMode}
         onRemove={onRemove}
@@ -360,7 +360,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         key={getId(_periode)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -375,7 +375,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
                     sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
-                  setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_p}
                 />
                 <AlignEndColumn>
@@ -386,7 +386,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
               <AlignStartRow>
                 <Column>
                   <RadioPanelGroup
-                    value={_currentType}
+                    defaultValue={_p?.__type}
                     data-no-border
                     data-testid={_namespace + '-type'}
                     error={_v[_namespace + '-type']?.feilmelding}
@@ -394,7 +394,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                     legend=''
                     hideLabel
                     name={_namespace + '-type'}
-                    onChange={(newType: string) => setType(newType, _originalType, index)}
+                    onChange={(newType: string) => setType(newType, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='perioderMedArbeid'>
@@ -414,7 +414,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv size='0.5' />
-              {_currentType === 'perioderMedPensjon' && (
+              {_p?.__type === 'perioderMedPensjon' && (
                 <AlignStartRow>
                   <Column>
                     <RadioPanelGroup
@@ -457,11 +457,11 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
               </Column>
               <Column>
                 <FlexStartDiv>
-                  {!!_originalType && _sort === 'time' && getTag(_originalType)}
+                  {!!_p?.__type && _sort === 'time' && getTag(_p?.__type)}
                   <HorizontalSeparatorDiv />
-                  {_originalType === 'perioderMedPensjon' && (
+                  {_p?.__type === 'perioderMedPensjon' && (
                     <BodyLong>
-                      {t('el:option-trygdeordning-' + (periode as PensjonPeriode).pensjonstype)}
+                      {t('el:option-trygdeordning-' + (_periode as PensjonPeriode).pensjonstype)}
                     </BodyLong>
                   )}
                 </FlexStartDiv>
@@ -508,7 +508,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 {!_.isEmpty(person?.perioderMedArbeid) && (
                   <PaddedDiv>
                     <Label>
-                      {t('el:option-trygdeordninger-perioderMedArbeid')}
+                      {t('el:option-trygdeordning-perioderMedArbeid')}
                     </Label>
                   </PaddedDiv>
                 )}
@@ -518,7 +518,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 {!_.isEmpty(person?.perioderMedTrygd) && (
                   <PaddedDiv>
                     <Label>
-                      {t('el:option-trygdeordninger-perioderMedTrygd')}
+                      {t('el:option-trygdeordning-perioderMedTrygd')}
                     </Label>
                   </PaddedDiv>
                 )}
@@ -529,7 +529,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 {!_.isEmpty(person?.perioderMedYtelser) && (
                   <PaddedDiv>
                     <Label>
-                      {t('el:option-trygdeordninger-perioderMedYtelser')}
+                      {t('el:option-trygdeordning-perioderMedYtelser')}
                     </Label>
                   </PaddedDiv>
                 )}
@@ -539,19 +539,12 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                 {!_.isEmpty(person?.perioderMedPensjon) && (
                   <PaddedDiv>
                     <Label>
-                      {t('el:option-trygdeordninger-perioderMedPensjon')}
+                      {t('el:option-trygdeordning-perioderMedPensjon')}
                     </Label>
                   </PaddedDiv>
                 )}
                 {person?.perioderMedPensjon?.map((p: PensjonPeriode, i: number) =>
-                  ({
-                    ...p,
-                    periode: {
-                      ...p.periode,
-                      __type: 'perioderMedPensjon',
-                      __index: i
-                    }
-                  }))
+                  ({ ...p, periode: { ...p.periode, __type: 'perioderMedPensjon', __index: i } }))
                   .sort(periodeSort).map(renderRow)}
               </>
               ))}

@@ -29,6 +29,7 @@ import { useAppDispatch } from 'store'
 import { getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateDekkedePeriode, ValidationDekkedePeriodeProps } from './validation'
 
 interface DekkedePerioderProps extends MainFormProps {
@@ -67,8 +68,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
-  // oldType is undefined when we have a new entry
-  const setType = (newType: string, oldType: string | undefined, index: number) => {
+  const setType = (newType: string, index: number) => {
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
@@ -77,11 +77,12 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       _resetValidation(namespace + '-type')
       return
     }
+    const oldType = _editPeriode?.__type
     _setEditPeriode({
       ..._editPeriode,
       __type: newType
     } as Periode)
-    dispatch(resetValidation(namespace + getNSIdx(oldType, index) + '-type'))
+    dispatch(resetValidation(namespace + getNSIdx(oldType, _editPeriode?.__index) + '-type'))
   }
 
   const setPeriode = (periode: Periode, index: number) => {
@@ -91,7 +92,10 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       return
     }
     _setEditPeriode(periode)
-    dispatch(resetValidation(namespace + getNSIdx(periode.__type!, periode.__index)))
+    dispatch(resetValidation([
+      namespace + getNSIdx(periode.__type!, periode.__index) + '-startdato',
+      namespace + getNSIdx(periode.__type!, periode.__index) + '-sluttdato'
+    ]))
   }
 
   const onCloseEdit = (namespace: string) => {
@@ -126,27 +130,29 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       })
     if (!!_editPeriode && valid) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
+
+      const __editPeriode = _.cloneDeep(_editPeriode)
+      delete __editPeriode.__type
+      delete __editPeriode.__index
+
       if (type !== _editPeriode?.__type) {
         const oldPeriods: Array<Periode> = _.cloneDeep(_.get(person, type))
-        let newPeriods: Array<Periode> | undefined = _.cloneDeep(_.get(person, _editPeriode.__type!)) as Array<Periode> | undefined
+        let newPeriods: Array<Periode> | undefined = _.cloneDeep(_.get(person, _editPeriode.__type!))
+
+        oldPeriods.splice(index, 1)
+
         if (_.isUndefined(newPeriods)) {
           newPeriods = []
         }
-        const switchingPeriod: Array<Periode> = oldPeriods.splice(index, 1)
-        delete switchingPeriod[0].__type
-        delete switchingPeriod[0].__index
-        newPeriods.push(switchingPeriod[0])
+        newPeriods.push(__editPeriode)
         newPeriods = newPeriods.sort(periodeSort)
 
         const newPerson = _.cloneDeep(person)
         _.set(newPerson, type, oldPeriods)
         _.set(newPerson, _editPeriode.__type!, newPeriods)
-
         dispatch(updateReplySed(target, newPerson))
       } else {
-        delete _editPeriode.__type
-        delete _editPeriode.__index
-        dispatch(updateReplySed(`${target}[${type}][${index}]`, _editPeriode))
+        dispatch(updateReplySed(`${target}[${type}][${index}]`, __editPeriode))
       }
       onCloseEdit(namespace + _editTypeAndIndex)
     } else {
@@ -157,9 +163,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   const onRemove = (removedPeriode: Periode) => {
     const type: string = removedPeriode.__type!
     const index: number = removedPeriode.__index! as number
-    const perioder : Array<Periode> = _.cloneDeep(_.get(person, type)) as Array<Periode>
-    perioder.splice(index, 1)
-    dispatch(updateReplySed(`${target}.${type}`, perioder))
+    const newPerioder : Array<Periode> = _.cloneDeep(_.get(person, type)) as Array<Periode>
+    newPerioder.splice(index, 1)
+    dispatch(updateReplySed(`${target}.${type}`, newPerioder))
     standardLogger('svarsed.editor.periode.remove', { type })
   }
 
@@ -177,9 +183,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       }
       delete _newPeriode.__type
       delete _newPeriode.__index
-      newPerioder.push(_newPeriode!)
+      newPerioder.push(_newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
-      dispatch(updateReplySed(`${target}[${type}]`, newPerioder))
+      dispatch(updateReplySed(`${target}.${type}`, newPerioder))
       standardLogger('svarsed.editor.periode.add', { type })
       onCloseNew()
     }
@@ -205,7 +211,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     const addremovepanel = (
       <AddRemovePanel<Periode>
         item={periode}
-        marginTop={inEditMode}
+        marginTop={index < 0}
         index={index}
         inEditMode={inEditMode}
         onRemove={onRemove}
@@ -223,7 +229,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-startdato'] || _v[_namespace + '-sluttdato']
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
@@ -255,7 +261,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     legend=''
                     hideLabel
                     name={_namespace + '-type'}
-                    onChange={(newType: string) => setType(newType, periode?.__type, index)}
+                    onChange={(newType: string) => setType(newType, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='perioderMedITrygdeordning'>

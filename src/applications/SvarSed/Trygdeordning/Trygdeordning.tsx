@@ -7,6 +7,7 @@ import FamilieYtelser from 'applications/SvarSed/Trygdeordning/FamilieYtelser'
 import { validateTrygdeordninger, ValidateTrygdeordningerProps } from 'applications/SvarSed/Trygdeordning/validation'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -33,7 +34,8 @@ const Trygdeordning: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateTrygdeordningerProps>(
       validation, namespace, validateTrygdeordninger, {
-        replySed: (replySed as ReplySed),
+        // clone it, or we can have some state inconsistences between dispatches
+        replySed: _.cloneDeep(replySed as ReplySed),
         personID: personID!,
         personName
       }
