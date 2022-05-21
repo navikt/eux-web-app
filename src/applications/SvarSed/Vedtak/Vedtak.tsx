@@ -57,6 +57,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const VedtakFC: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   replySed,
   updateReplySed,
@@ -68,7 +69,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-vedtak`
   const target = 'vedtak'
-  const vedtak: Vedtak | undefined = (replySed as F002Sed).vedtak
+  const vedtak: Vedtak | undefined = _.get(replySed, target)
   const getVedtakPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
   const getKompetansePeriodeId = (p: KompetansePeriode | null): string => p ? p.periode?.__type + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new-vedtakperiode'
 
@@ -99,7 +100,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationVedtakProps>(
       validation, namespace, validateVedtak, {
-        vedtak,
+        vedtak: _.cloneDeep(vedtak),
         formalName: personName
       }
     )
@@ -117,9 +118,17 @@ const VedtakFC: React.FC<MainFormProps> = ({
   }, [replySed])
 
   const setGjelderAlleBarn = (newGjelderAlleBarn: JaNei) => {
-    dispatch(updateReplySed(`${target}.gjelderAlleBarn`, newGjelderAlleBarn.trim()))
+    let newVedtak: Vedtak | undefined = _.cloneDeep(vedtak)
+    if (_.isUndefined(newVedtak)) {
+      newVedtak = {} as Vedtak
+    }
+    _.set(newVedtak, 'gjelderAlleBarn', newGjelderAlleBarn.trim())
+    if (newGjelderAlleBarn.trim() === 'ja') {
+      _.set(newVedtak, 'barnVedtaketOmfatter', [])
+    }
+    dispatch(updateReplySed(target, newVedtak))
     if (validation[namespace + '-gjelderAlleBarn']) {
-      dispatch(resetValidation(namespace + '-gjelderAlleBarn'))
+      dispatch(resetValidation([namespace + '-gjelderAlleBarn', namespace + '-barnVedtaketOmfatter']))
     }
   }
 
@@ -165,28 +174,22 @@ const VedtakFC: React.FC<MainFormProps> = ({
       newBarnVedtaketOmfatter = _.reject(newBarnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn))
     }
     dispatch(updateReplySed(`${target}.barnVedtaketOmfatter`, newBarnVedtaketOmfatter))
-    if (validation[namespace + '-newBarnVedtaketOmfatter']) {
-      dispatch(resetValidation(namespace + '-newBarnVedtaketOmfatter'))
+    if (validation[namespace + '-barnVedtaketOmfatter']) {
+      dispatch(resetValidation(namespace + '-barnVedtaketOmfatter'))
     }
   }
 
   const setVedtakPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewVedtakPeriode({
-        ..._newVedtakPeriode,
-        ...periode
-      } as Periode)
-      _resetValidationVedtakPeriode(namespace + '-vedtakperioder')
+      _setNewVedtakPeriode(periode)
+      _resetValidationVedtakPeriode(namespace + '-vedtaksperioder')
       return
     }
-    _setEditVedtakPeriode({
-      ..._editVedtakPeriode,
-      ...periode
-    } as Periode)
-    dispatch(resetValidation(namespace + getIdx(index) + '-vedtakperioder'))
+    _setEditVedtakPeriode(periode)
+    dispatch(resetValidation(namespace + getIdx(index) + '-vedtaksperioder'))
   }
 
-  const setKompetansePeriodeType = (newType: string, oldType: string | undefined, index: number) => {
+  const setKompetansePeriodeType = (newType: string, index: number) => {
     if (index < 0) {
       _setNewKompetansePeriode({
         ..._newKompetansePeriode,
@@ -198,6 +201,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
       _resetValidationKompetansePeriode(namespace + '-type')
       return
     }
+    const oldType: string | undefined = _editKompetansePeriode?.periode.__type
     _setEditKompetansePeriode({
       ..._editKompetansePeriode,
       periode: {
@@ -279,7 +283,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
       dispatch(resetValidation(namespace + _editKompetansePeriodeTypeAndIndex))
     }
     _setEditKompetansePeriode(periode)
-    _setEditKompetansePeriodeTypeAndIndex(namespace + getNSIdx(periode.periode?.__type, periode.periode?.__index))
+    _setEditKompetansePeriodeTypeAndIndex(getNSIdx(periode.periode?.__type, periode.periode?.__index))
   }
 
   const onSaveVedtakPeriodeEdit = () => {
@@ -310,16 +314,22 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
     if (!!_editKompetansePeriode && valid) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
+
+      const __editKompetansePeriode = _.cloneDeep(_editKompetansePeriode)
+      delete __editKompetansePeriode.periode.__type
+      delete __editKompetansePeriode.periode.__index
+
       if (type !== _editKompetansePeriode?.periode?.__type) {
         const oldPeriods: Array<KompetansePeriode> = _.cloneDeep(_.get(vedtak, type))
-        let newPeriods: Array<KompetansePeriode> | undefined = _.cloneDeep(_.get(vedtak, _editKompetansePeriode?.periode?.__type!)) as Array<KompetansePeriode> | undefined
+        let newPeriods: Array<KompetansePeriode> | undefined = _.cloneDeep(_.get(vedtak, _editKompetansePeriode?.periode?.__type!))
+
+        oldPeriods.splice(index, 1)
+
         if (_.isUndefined(newPeriods)) {
           newPeriods = []
         }
-        const switchingPeriod: Array<KompetansePeriode> = oldPeriods.splice(index, 1)
-        delete switchingPeriod[0].periode.__type
-        delete switchingPeriod[0].periode.__index
-        newPeriods.push(switchingPeriod[0])
+
+        newPeriods.push(__editKompetansePeriode)
         newPeriods = newPeriods.sort(periodePeriodeSort)
 
         const newVedtak: Vedtak = _.cloneDeep(vedtak) as Vedtak
@@ -327,9 +337,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
         _.set(newVedtak, _editKompetansePeriode.periode.__type!, newPeriods)
         dispatch(updateReplySed(target, newVedtak))
       } else {
-        delete _editKompetansePeriode.periode.__type
-        delete _editKompetansePeriode.periode.__index
-        dispatch(updateReplySed(`${target}[${type}][${index}]`, _editKompetansePeriode))
+        dispatch(updateReplySed(`${target}[${type}][${index}]`, __editKompetansePeriode))
       }
       onCloseKompetansePeriodeEdit(namespace + _editKompetansePeriodeTypeAndIndex)
     } else {
@@ -394,7 +402,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
   }
 
   const renderVedtakPeriodeRow = (periode: Periode | null, index: number) => {
-    const _namespace = namespace + getIdx(index)
+    const _namespace = namespace + '-vedtaksperioder' + getIdx(index)
     const _v: Validation = index < 0 ? _validationVedtakPeriode : validation
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
@@ -418,7 +426,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
                   sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
                 breakInTwo
-                hideLabel={false}
+                hideLabel={index >= 0}
                 setPeriode={(p: Periode) => setVedtakPeriode(p, index)}
                 value={_periode}
               />
@@ -438,7 +446,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
           <AlignEndColumn>
             <AddRemovePanel<Periode>
               item={periode}
-              marginTop={inEditMode}
+              marginTop={index < 0}
               index={index}
               inEditMode={inEditMode}
               onRemove={onRemoveVedtakPeriode}
@@ -483,28 +491,58 @@ const VedtakFC: React.FC<MainFormProps> = ({
           {inEditMode
             ? (
               <PeriodeInput
-                namespace={namespace + '-perioder' + getIdx(index)}
+                namespace={_namespace + '-periode'}
                 error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
                 }}
+                hideLabel={index >= 0}
                 setPeriode={(p: Periode) => setKompetansePeriode(p, index)}
                 value={_periode?.periode}
               />
               )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_periode?.periode}
-                />
-              </Column>
+              <>
+                <Column>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                      sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                    }}
+                    namespace={_namespace + '-periode'}
+                    periode={_periode?.periode}
+                  />
+                </Column>
+                <Column>
+                  <FormText
+                    error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
+                    id={_namespace + '-skalYtelseUtbetales'}
+                  >
+                    <FlexDiv>
+                      <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      {t('label:' + _periode?.skalYtelseUtbetales)}
+                    </FlexDiv>
+                  </FormText>
+                </Column>
+              </>
               )}
+          <AlignEndColumn>
+            <AddRemovePanel<KompetansePeriode>
+              item={periode}
+              marginTop={index < 0}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemoveKompetansePeriode}
+              onAddNew={onAddKompetansePeriodeNew}
+              onCancelNew={onCloseKompetansePeriodeNew}
+              onStartEdit={onStartKompetansePeriodeEdit}
+              onConfirmEdit={onSaveKompetansePeriodeEdit}
+              onCancelEdit={() => onCloseKompetansePeriodeEdit(_namespace)}
+            />
+          </AlignEndColumn>
         </AlignStartRow>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           {inEditMode
             ? (
@@ -517,7 +555,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
                     id={_namespace + '-type'}
                     label={t('label:vedtak-type')}
                     menuPortalTarget={document.body}
-                    onChange={(o: unknown) => setKompetansePeriodeType((o as Option).value, _periode?.periode?.__type, index)}
+                    onChange={(o: unknown) => setKompetansePeriodeType((o as Option).value, index)}
                     options={vedtakTypeOptions}
                     defaultValue={_.find(vedtakTypeOptions, v => v.value === _periode?.periode?.__type)}
                     value={_.find(vedtakTypeOptions, v => v.value === _periode?.periode?.__type)}
@@ -544,37 +582,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
               )
             : (
               <>
-                <Column>
+                <Column flex='2'>
                   {_sort === 'time' && getTag(_periode?.periode.__type!)}
-                </Column>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
-                    id={_namespace + '-skalYtelseUtbetales'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_periode?.skalYtelseUtbetales}
-                    </FlexDiv>
-                  </FormText>
                 </Column>
               </>
               )}
-          <AlignEndColumn>
-            <AddRemovePanel<KompetansePeriode>
-              item={periode}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemoveKompetansePeriode}
-              onAddNew={onAddKompetansePeriodeNew}
-              onCancelNew={onCloseKompetansePeriodeNew}
-              onStartEdit={onStartKompetansePeriodeEdit}
-              onConfirmEdit={onSaveKompetansePeriodeEdit}
-              onCancelEdit={() => onCloseKompetansePeriodeEdit(_namespace)}
-            />
-          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
@@ -584,6 +596,10 @@ const VedtakFC: React.FC<MainFormProps> = ({
   return (
     <>
       <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <VerticalSeparatorDiv size='2' />
         <Row>
           <Column flex='2'>
             <RadioPanelGroup
@@ -692,10 +708,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
         </AlignStartRow>
       </PaddedDiv>
       <VerticalSeparatorDiv />
-      <Heading size='small'>
-        {t('label:vedtaksperioder')}
-      </Heading>
-      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:vedtaksperioder')}
+        </Heading>
+      </PaddedDiv>
       {_.isEmpty(vedtak?.vedtaksperioder)
         ? (
           <PaddedHorizontallyDiv>
@@ -722,10 +739,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
           </PaddedDiv>
           )}
       <VerticalSeparatorDiv />
-      <Heading size='small'>
-        {t('label:perioder')}
-      </Heading>
-      <VerticalSeparatorDiv />
+      <PaddedDiv>
+        <Heading size='small'>
+          {t('label:perioder')}
+        </Heading>
+      </PaddedDiv>
       {!_.isEmpty(_allKompetansePeriods) && (
         <>
           <PaddedHorizontallyDiv>
@@ -756,10 +774,19 @@ const VedtakFC: React.FC<MainFormProps> = ({
               <>
                 {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
                   const perioder: Array<KompetansePeriode> | undefined | null = _.get(vedtak, vedtaktype)
-                  return perioder?.map((p: KompetansePeriode, i: number) =>
-                    ({ ...p, periode: { ...p.periode, __type: vedtaktype, __index: i } })
-                  ).sort(periodePeriodeSort)
-                    .map(renderKompetansePeriodeRow)
+                  return (
+                    <div key={vedtaktype}>
+                      {!_.isEmpty(perioder) && (
+                        <PaddedDiv>
+                          <Label>{_.find(vedtakTypeOptions, v => v.value === vedtaktype)?.label}</Label>
+                        </PaddedDiv>
+                      )}
+                      {perioder?.map((p: KompetansePeriode, i: number) =>
+                        ({ ...p, periode: { ...p.periode, __type: vedtaktype, __index: i } })
+                      ).sort(periodePeriodeSort)
+                        .map(renderKompetansePeriodeRow)}
+                    </div>
+                  )
                 })}
               </>
               ))}

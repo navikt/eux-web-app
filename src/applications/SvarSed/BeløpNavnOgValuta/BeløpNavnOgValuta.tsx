@@ -3,6 +3,7 @@ import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
+  AlignEndRow,
   Column,
   FlexDiv,
   FlexRadioPanels,
@@ -105,7 +106,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
         beloep: newBeløp.trim().trim(),
         valuta: _.isNil(_newYtelse?.valuta) ? 'NOK' : _newYtelse?.valuta
       } as Ytelse)
-      _resetValidation(namespace + '-beloep')
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
       return
     }
     _setEditYtelse({
@@ -113,8 +114,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
       beloep: newBeløp.trim().trim(),
       valuta: _.isNil(_editYtelse?.valuta) ? 'NOK' : _editYtelse?.valuta
     } as Ytelse)
-    dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
-    dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
+    dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))
   }
 
   const setValuta = (newValuta: Currency, index: number) => {
@@ -140,8 +140,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
         startdato: newPeriode.startdato,
         sluttdato: newPeriode.sluttdato
       } as Ytelse)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
       return
     }
     _setEditYtelse({
@@ -149,8 +148,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
       startdato: newPeriode.startdato,
       sluttdato: newPeriode.sluttdato
     } as Ytelse)
-    dispatch(resetValidation(namespace + getIdx(index) + '-startdato'))
-    dispatch(resetValidation(namespace + getIdx(index) + '-sluttdato'))
+    dispatch(resetValidation([namespace + getIdx(index) + '-startdato', namespace + getIdx(index) + '-sluttdato']))
   }
 
   const setMottakersNavn = (newMottakersNavn: string, index: number) => {
@@ -308,23 +306,21 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     </FlexRadioPanels>
                   </RadioPanelGroup>
                 </Column>
-                {personID === 'familie'
-                  ? (
-                    <Column>
-                      <Input
-                        type='number'
-                        min='0'
-                        error={_v[_namespace + '-antallPersoner']?.feilmelding}
-                        namespace={_namespace}
-                        id='antallPersoner'
-                        label={t('label:antall-innvilges')}
-                        onChanged={(newAntallPersoner: string) => setAntallPersoner(newAntallPersoner, index)}
-                        required
-                        value={_ytelse?.antallPersoner}
-                      />
-                    </Column>
-                    )
-                  : (<Column />)}
+                <Column>
+                  {personID === 'familie' && (
+                    <Input
+                      type='number'
+                      min='0'
+                      error={_v[_namespace + '-antallPersoner']?.feilmelding}
+                      namespace={_namespace}
+                      id='antallPersoner'
+                      label={t('label:antall-innvilges')}
+                      onChanged={(newAntallPersoner: string) => setAntallPersoner(newAntallPersoner, index)}
+                      required
+                      value={_ytelse?.antallPersoner}
+                    />
+                  )}
+                </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
@@ -396,7 +392,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              <AlignStartRow>
+              <AlignEndRow>
                 <Column>
                   <Input
                     error={_v[_namespace + '-mottakersNavn']?.feilmelding}
@@ -411,13 +407,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                 <AlignEndColumn>
                   {addremovepanel}
                 </AlignEndColumn>
-              </AlignStartRow>
+              </AlignEndRow>
             </>
             )
           : (
             <>
               <AlignStartRow>
                 <Column>
+
                   <FormText
                     error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                     id={_namespace + '-ytelseNavn'}
@@ -428,26 +425,28 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                       {_ytelse?.ytelseNavn}
                     </FlexDiv>
                   </FormText>
+
                 </Column>
-                {personID === 'familie' && (
-                  <Column>
-                    <FormText
-                      error={_v[_namespace + '-antallPersoner']?.feilmelding}
-                      id={_namespace + '-antallPersoner'}
-                    >
-                      <FlexDiv>
-                        <Label>{t('label:antall-innvilges') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        {_ytelse?.antallPersoner}
-                      </FlexDiv>
-                    </FormText>
-                  </Column>
-                )}
                 <Column>
                   <FlexDiv>
-                    <Label>{t('label:beløp') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
+                    {personID === 'familie' && (
+                      <>
+                        <FormText
+                          error={_v[_namespace + '-antallPersoner']?.feilmelding}
+                          id={_namespace + '-antallPersoner'}
+                        >
+                          <FlexDiv>
+                            <Label>{t('label:antall-innvilges') + ':'}</Label>
+                            <HorizontalSeparatorDiv size='0.5' />
+                            {_ytelse?.antallPersoner}
+                          </FlexDiv>
+                        </FormText>
+                        <HorizontalSeparatorDiv size='0.5' />
+                      </>
+                    )}
                     <FlexDiv>
+                      <Label>{t('label:beløp') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
                       <FormText
                         error={_v[_namespace + '-beloep']?.feilmelding}
                         id={_namespace + '-beloep'}
@@ -491,7 +490,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              <AlignStartRow>
+              <AlignEndRow>
                 <Column>
                   <FormText
                     error={_v[_namespace + '-mottakersNavn']?.feilmelding}
@@ -504,10 +503,11 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     </FlexDiv>
                   </FormText>
                 </Column>
+
                 <AlignEndColumn>
                   {addremovepanel}
                 </AlignEndColumn>
-              </AlignStartRow>
+              </AlignEndRow>
             </>
             )}
         <VerticalSeparatorDiv size='0.5' />

@@ -16,6 +16,7 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -30,6 +31,7 @@ import { State } from 'declarations/reducers'
 import { Barnetilhoerighet, BarnRelasjon, BarnRelasjonType, JaNei, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
@@ -38,7 +40,12 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateBarnetilhoerighet, ValidationBarnetilhoerighetProps } from './validation'
+import {
+  validateBarnetilhoerighet,
+  validateBarnetilhoerigheter,
+  ValidationBarnetilhoerigheterProps,
+  ValidationBarnetilhoerighetProps
+} from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -76,6 +83,17 @@ const Relasjon: React.FC<MainFormProps> = ({
     { label: t('el:option-relasjon-barnebarn_bror_søster_nevø_niese'), value: 'barnebarn_bror_søster_nevø_niese' },
     { label: t('el:option-relasjon-fosterbarn'), value: 'fosterbarn' }
   ]
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationBarnetilhoerigheterProps>(
+      validation, namespace, validateBarnetilhoerigheter, {
+        barnetilhoerigheter,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+    dispatch(resetAdresse())
+  })
 
   const setRelasjon = (relasjonTilPerson: BarnRelasjon, index: number) => {
     if (index < 0) {

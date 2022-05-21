@@ -3,7 +3,7 @@ import { Vedtak, Periode, KompetansePeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx, getNSIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotDate, checkIfNotEmpty, checkLength } from 'utils/validation'
+import { addError, checkIfDuplicate, checkIfNotDate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationVedtakPeriodeProps {
   periode: Periode | undefined
@@ -37,7 +37,7 @@ export const validateVedtakPeriode = (
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  hasErrors.push(validatePeriode(v, namespace + '-perioder' + idx, {
+  hasErrors.push(validatePeriode(v, namespace + '-vedtaksperioder' + idx, {
     periode,
     personName: formalName
   }))
@@ -46,7 +46,7 @@ export const validateVedtakPeriode = (
     needle: periode,
     haystack: perioder,
     matchFn: (p: Periode) => p.startdato === periode?.startdato && p.sluttdato === periode?.sluttdato,
-    id: namespace + '-perioder' + idx + '-startdato',
+    id: namespace + '-vedtaksperioder' + idx + '-startdato',
     message: 'validation:duplicateStartdato',
     index,
     personName: formalName
@@ -67,24 +67,37 @@ export const validateKompetansePeriode = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(validatePeriode(v, namespace + '-vedtaksperioder' + nsIndex + '-periode', {
+  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? '') + '-periode', {
     periode: kompetanseperiode?.periode,
     personName: formalName
   }))
 
-  hasErrors.push(checkIfDuplicate(v, {
-    needle: kompetanseperiode?.periode,
-    haystack: kompetanseperioder,
-    matchFn: (p: KompetansePeriode) => p.periode.startdato === kompetanseperiode?.periode?.startdato && p.periode.sluttdato === kompetanseperiode?.periode?.sluttdato,
-    id: namespace + '-vedtaksperioder' + nsIndex + '-periode-startdato',
-    message: 'validation:duplicateStartdato',
-    index: nsIndex,
-    personName: formalName
-  }))
+  let haystack: Array<KompetansePeriode> | undefined
+
+  // check if the item is itself in the list, use a list without it, for proper duplicate check
+  if (_.isEmpty(nsIndex)) {
+    haystack = kompetanseperioder
+  } else {
+    haystack = _.reject(kompetanseperioder, (p: KompetansePeriode) =>
+      getNSIdx(p.periode.__type, p.periode.__index) === nsIndex)
+  }
+
+  const duplicate = _.find(haystack, (p: KompetansePeriode) =>
+    p.periode.startdato === kompetanseperiode?.periode.startdato &&
+    p.periode.sluttdato === kompetanseperiode?.periode.sluttdato
+  ) !== undefined
+
+  if (duplicate) {
+    hasErrors.push(addError(v, {
+      id: namespace + (nsIndex ?? '') + '-periode-startdato',
+      message: 'validation:duplicateStartdato',
+      personName: formalName
+    }))
+  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: kompetanseperiode?.skalYtelseUtbetales,
-    id: namespace + '-vedtaksperioder' + nsIndex + '-skalYtelseUtbetales',
+    id: namespace + (nsIndex ?? '') + '-skalYtelseUtbetales',
     message: 'validation:noSkalYtelseUtbetales',
     personName: formalName
   }))
