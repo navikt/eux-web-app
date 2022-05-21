@@ -512,7 +512,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
                 <Column>
                   <Select
                     closeMenuOnSelect
-                    key={_namespace + '-type' + _periode?.periode.__type}
                     data-testid={_namespace + '-type'}
                     error={_v[_namespace + '-type']?.feilmelding}
                     id={_namespace + '-type'}
@@ -531,7 +530,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
                     data-no-border
                     error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
                     id={_namespace + '-skalYtelseUtbetales'}
-                    key={_namespace + '-skalYtelseUtbetales-' + _periode?.skalYtelseUtbetales}
                     legend={t('label:skal-ytelse-utbetales') + ' *'}
                     name={_namespace + '-borSammen'}
                     onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
@@ -594,7 +592,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
               data-testid={namespace + '-gjelderAlleBarn'}
               error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
               id={namespace + '-gjelderAlleBarn'}
-              key={namespace + '-gjelderAlleBarn-' + vedtak?.gjelderAlleBarn}
               legend={t('label:vedtak-angående-alle-barn') + ' *'}
               name={namespace + '-gjelderAlleBarn'}
               onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
@@ -641,7 +638,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
             <Select
               data-testid={namespace + '-vedtakstype'}
               error={validation[namespace + '-vedtakstype']?.feilmelding}
-              key={namespace + '-vedtakstype-' + vedtak?.vedtakstype}
               id={namespace + '-vedtakstype'}
               label={t('label:vedtak-type')}
               menuPortalTarget={document.body}
@@ -657,7 +653,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
               error={validation[namespace + '-vedtaksdato']?.feilmelding}
               namespace={namespace}
               id='vedtaksdato'
-              key={namespace + '-vedtaksdato-' + vedtak?.vedtaksdato}
               label={t('label:vedtaksdato')}
               onChanged={setVedtaksdato}
               required

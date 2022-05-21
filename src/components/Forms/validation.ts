@@ -71,7 +71,7 @@ export const validatePeriode = (
     }))
   }
 
-  if (periodeType === 'withcheckbox' && _.isEmpty(periode?.sluttdato?.trim()) && _.isEmpty(periode?.aapenPeriodeType)) {
+  if (mandatoryStartdato && periodeType === 'withcheckbox' && _.isEmpty(periode?.sluttdato?.trim()) && _.isEmpty(periode?.aapenPeriodeType)) {
     hasErrors.push(addError(v, {
       id: namespace + idx + '-aapenPeriodeType',
       message: 'validation:noAapenPeriodeType',

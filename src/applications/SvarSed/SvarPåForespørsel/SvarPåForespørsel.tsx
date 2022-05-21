@@ -163,7 +163,6 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
             data-testid={namespace + '-svar'}
             error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
-            key={namespace + '-svar-' + _svar}
             name={namespace + '-svar'}
             onChange={(e: string) => {
               if (e !== _svar) {

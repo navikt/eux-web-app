@@ -209,7 +209,6 @@ const Forsikring: React.FC<MainFormProps> = ({
                 data-testid={namespace + '-type'}
                 error={_newTypeError}
                 id={namespace + '-type'}
-                key={namespace + '-type-' + _type}
                 label={t('label:type')}
                 menuPortalTarget={document.body}
                 onChange={(type: any) => setType(type.value)}

@@ -190,7 +190,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
             <CountrySelect
               isDisabled={disabled}
               closeMenuOnSelect
-              key={adresse?.land}
               data-testid={namespace + '-land'}
               error={validation[namespace + '-land']?.feilmelding}
               includeList={CountryFilter.STANDARD({ useUK })}

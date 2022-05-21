@@ -34,6 +34,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const PersonensStatus: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -62,15 +63,18 @@ const PersonensStatus: React.FC<MainFormProps> = ({
     <>
       <PaddedDiv>
         <Heading size='small'>
-          {t('label:arbeidsforhold-type')}
+          {label}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
+      </PaddedDiv>
+      <VerticalSeparatorDiv />
+      <PaddedDiv>
         <AlignStartRow>
           <Column>
             <RadioPanelGroup
               value={_arbeidsforhold}
               data-multiple-line
               data-no-border
+              legend={t('label:arbeidsforhold-type')}
               data-testid={namespace + '-type'}
               id={namespace + '-type'}
               name={namespace + '-type'}
@@ -84,6 +88,7 @@ const PersonensStatus: React.FC<MainFormProps> = ({
             </RadioPanelGroup>
           </Column>
         </AlignStartRow>
+        <VerticalSeparatorDiv />
         <HorizontalLineSeparator />
       </PaddedDiv>
       <VerticalSeparatorDiv />

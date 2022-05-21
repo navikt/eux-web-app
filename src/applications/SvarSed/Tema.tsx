@@ -44,8 +44,8 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
   }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace: string = 'editor-tema'
-  const [_tema, setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
-  const [_fagsak, setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)
+  const [_tema, _setTema] = useState<string | undefined>(() => (replySed as HSed).tema)
+  const [_fagsak, _setFagsak] = useState<string | undefined>(() => (replySed as HSed).fagsakId)
   const [editMode, setEditMode] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
 
@@ -82,21 +82,21 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
     setEditMode(false)
   }
 
-  const onTemaChanged = (o: unknown) => {
+  const setTema = (o: unknown) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
-    setTema((o as Option).value)
+    _setTema((o as Option).value)
     if (fnr) {
       dispatch(getFagsaker(fnr, 'HZ', (o as Option).value))
     }
   }
 
-  const onSakIDChange = (o: unknown): void => {
+  const setFagsak = (o: unknown): void => {
     if (validation[namespace + '-fagsak']) {
       dispatch(resetValidation(namespace + '-fagsak'))
     }
-    setFagsak((o as Option).value)
+    _setFagsak((o as Option).value)
   }
 
   const onCancelChangesClicked = () => setEditMode(false)
@@ -134,9 +134,8 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               <Select
                 defaultValue={_.find(temaOptions, { value: _tema })}
                 error={validation[namespace]?.feilmelding}
-                key={namespace + '-' + _tema + '-select'}
                 id={namespace + '-select'}
-                onChange={onTemaChanged}
+                onChange={setTema}
                 options={temaOptions}
                 label={t('label:tema')}
                 value={_.find(temaOptions, { value: _tema })}
@@ -162,9 +161,8 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               <Select
                 defaultValue={_.find(fagsakIdOptions, { value: _fagsak })}
                 error={validation[namespace + '-fagsak']?.feilmelding}
-                key={namespace + '-' + _fagsak + '-select'}
                 id={namespace + '-fagsak-select'}
-                onChange={onSakIDChange}
+                onChange={setFagsak}
                 isLoading={gettingFagsaker}
                 isDisabled={gettingFagsaker}
                 label={t('label:fagsak')}

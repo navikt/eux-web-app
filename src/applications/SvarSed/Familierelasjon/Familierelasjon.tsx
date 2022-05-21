@@ -1,5 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -17,6 +17,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
@@ -48,6 +49,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Familierelasjon: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -116,7 +118,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     }
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewFamilierelasjon({
         ..._newFamilierelasjon,
@@ -288,12 +290,12 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 <PeriodeInput
                   namespace={_namespace + '-periode'}
                   error={{
-                    startdato: _v[_namespace + '-periode--startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-periode--sluttdato']?.feilmelding
+                    startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
                   }}
                   hideLabel={false}
                   requiredStartDato={false}
-                  setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_familierelasjon?.periode}
                 />
                 {addremovepanel}
@@ -304,7 +306,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                   <Select
                     data-testid={_namespace + '-relasjonType'}
                     error={_v[_namespace + '-relasjonType']?.feilmelding}
-                    key={_namespace + '-relasjonType-' + _familierelasjon?.relasjonType}
                     id={_namespace + '-relasjonType'}
                     label={t('label:type')}
                     menuPortalTarget={document.body}
@@ -321,7 +322,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                       <Input
                         error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
                         namespace={_namespace}
-                        key={_namespace + '-annenRelasjonType-' + _familierelasjon?.annenRelasjonType}
                         id='annenRelasjonType'
                         label={t('label:annen-relasjon')}
                         onChanged={(value: string) => setAnnenRelasjonType(value, index)}
@@ -339,7 +339,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                       <Input
                         error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
                         namespace={_namespace}
-                        key={_namespace + '-annenRelasjonPersonNavn-' + _familierelasjon?.annenRelasjonPersonNavn}
                         id='annenRelasjonPersonNavn'
                         label={t('label:person-navn')}
                         onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
@@ -380,7 +379,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                       startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
                       sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
                     }}
-                    namespace={_namespace}
+                    namespace={_namespace + '-periode'}
                     periode={_familierelasjon?.periode}
                   />
                 </Column>
@@ -390,30 +389,38 @@ const Familierelasjon: React.FC<MainFormProps> = ({
 
                 <AlignStartRow>
                   <Column>
-                    {_familierelasjon?.annenRelasjonType && (
+                    <FormText
+                      error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
+                      id={_namespace + '-annenRelasjonType'}
+                    >
                       <FlexDiv>
                         <Label>{t('label:annenRelasjonType')}:</Label>
                         <HorizontalSeparatorDiv size='0.5' />
                         {_familierelasjon?.annenRelasjonType}
                       </FlexDiv>
-                    )}
-                    {_familierelasjon?.annenRelasjonPersonNavn && (
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+                      id={_namespace + '-annenRelasjonPersonNavn'}
+                    >
                       <FlexDiv>
                         <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
                         <HorizontalSeparatorDiv size='0.5' />
                         {_familierelasjon?.annenRelasjonPersonNavn}
                       </FlexDiv>
-                    )}
-                    {_familierelasjon?.borSammen && (
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-borSammen']?.feilmelding}
+                      id={_namespace + '-borSammen'}
+                    >
                       <FlexDiv>
                         <Label>{t('label:borSammen')}:</Label>
                         <HorizontalSeparatorDiv size='0.5' />
                         {_familierelasjon?.borSammen}
                       </FlexDiv>
-                    )}
+                    </FormText>
                   </Column>
                 </AlignStartRow>
-
               )}
             </>
             )}
@@ -424,6 +431,11 @@ const Familierelasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(familierelasjoner)
         ? (

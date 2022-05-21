@@ -74,10 +74,10 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     }
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-' + whatChanged)
+      _resetValidation(namespace)
       return
     }
     _setEditPeriode(periode)
@@ -180,7 +180,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
                 }}
                 breakInTwo
                 hideLabel={false}
-                setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periode}
               />
               )
@@ -261,7 +261,6 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
               error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
               namespace={namespace}
               id='datoFlyttetTilAvsenderlandet'
-              key={'' + flyttegrunn?.datoFlyttetTilAvsenderlandet}
               label={t('label:flyttedato-til-avsenderlandet')}
               onChanged={setAvsenderDato}
               value={flyttegrunn?.datoFlyttetTilAvsenderlandet}
@@ -272,7 +271,6 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
               error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
               namespace={namespace}
               id='datoFlyttetTilMottakerlandet'
-              key={'' + flyttegrunn?.datoFlyttetTilMottakerlandet}
               label={t('label:flyttedato-til-mottakerslandet')}
               onChanged={setMottakerDato}
               value={flyttegrunn?.datoFlyttetTilMottakerlandet}

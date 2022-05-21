@@ -42,7 +42,7 @@ const SEDType: React.FC<SEDTypeProps> = ({
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace: string = 'editor-sedtype'
-  const [_sedType, setSedType] = useState<string>(() => (replySed as USed).sedType)
+  const [_sedType, _setSedType] = useState<string>(() => (replySed as USed).sedType)
   const [editMode, setEditMode] = useState<boolean>(() => false)
 
   const sedTypeOptions: Options = [
@@ -115,11 +115,11 @@ const SEDType: React.FC<SEDTypeProps> = ({
     setEditMode(false)
   }
 
-  const onSedTypeChanged = (o: unknown) => {
+  const setSedType = (o: unknown) => {
     if (validation[namespace]) {
       dispatch(resetValidation(namespace))
     }
-    setSedType((o as Option).value)
+    _setSedType((o as Option).value)
   }
 
   const onCancelChangesClicked = () => setEditMode(false)
@@ -148,9 +148,8 @@ const SEDType: React.FC<SEDTypeProps> = ({
                   <Select
                     defaultValue={_.find(sedTypeOptions, s => s.value === _sedType)}
                     error={validation[namespace]?.feilmelding}
-                    key={namespace + '-' + _sedType + '-select'}
                     id={namespace + '-select'}
-                    onChange={onSedTypeChanged}
+                    onChange={setSedType}
                     options={sedTypeOptions}
                     value={_.find(sedTypeOptions, s => s.value === _sedType)}
                     style={{ minWidth: '300px' }}

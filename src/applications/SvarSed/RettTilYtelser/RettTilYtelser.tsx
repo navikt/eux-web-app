@@ -103,7 +103,6 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
             id={namespace + '-retttilstønad'}
             data-testid={namespace + '-retttilstønad'}
             legend={t('label:rett-til-stønad') + ' *'}
-            key={'rett-til-stonad-' + _rettTilStonad}
             error={validation[namespace + '-retttilstønad']?.feilmelding}
             onChange={(e: string | number | boolean) => setRettTilStonad(e as JaNei)}
           >
@@ -153,7 +152,6 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
               id={namespace + '-avvisningsgrunn'}
               data-testid={namespace + '-avvisningsgrunn'}
               legend={t('label:grunn') + ' *'}
-              key={'avvisningsgrunn-' + rettTilYtelse?.avvisningsgrunn}
               value={rettTilYtelse?.avvisningsgrunn}
               error={validation[namespace + '-avvisningsgrunn']?.feilmelding}
               onChange={(e: string | number | boolean) => setAvvisningsGrunn(e as string)}

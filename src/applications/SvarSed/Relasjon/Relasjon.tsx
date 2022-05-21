@@ -1,10 +1,11 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
 import {
-  AlignCenterRow,
   AlignEndColumn,
   AlignStartRow,
+  AlignEndRow,
   Column,
+  FlexBaseDiv,
   FlexDiv,
   FlexRadioPanels,
   HorizontalSeparatorDiv,
@@ -53,11 +54,10 @@ const Relasjon: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-
   const target: string = `${personID}.barnetilhoerigheter`
   const barnetilhoerigheter: Array<Barnetilhoerighet> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-relasjon`
-  const getId = (b: Barnetilhoerighet | null | undefined): string => b ? b.relasjonType + '-' + (b?.periode.startdato ?? '') : 'new'
+  const getId = (b: Barnetilhoerighet | null | undefined): string => b ? b.relasjonType + '-' + (b?.periode?.startdato ?? '') : 'new'
 
   const [_newBarnetilhoerighet, _setNewBarnetilhoerighet] = useState<Barnetilhoerighet | undefined>(undefined)
   const [_editBarnetilhoerighet, _setEditBarnetilhoerighet] = useState<Barnetilhoerighet | undefined>(undefined)
@@ -109,7 +109,7 @@ const Relasjon: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
   }
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewBarnetilhoerighet({
         ..._newBarnetilhoerighet,
@@ -300,21 +300,20 @@ const Relasjon: React.FC<MainFormProps> = ({
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='søker'>{t('label:søker')}</RadioPanel>
-                      <RadioPanel value='ektefelle_partner'>{t('label:partner')}</RadioPanel>
+                      <RadioPanel value='ektefelle_partner'>{t('label:ektefelle_partner')}</RadioPanel>
                       <RadioPanel value='avdød'>{t('label:avdød')}</RadioPanel>
-                      <RadioPanel value='annen_person'>{t('label:annen-person')}</RadioPanel>
+                      <RadioPanel value='annen_person'>{t('label:annen_person')}</RadioPanel>
                     </FlexRadioPanels>
                   </RadioPanelGroup>
                 </Column>
               </AlignStartRow>
               <AlignStartRow>
-                <Column>
+                <Column flex='2'>
                   <Select
                     closeMenuOnSelect
                     data-testid={_namespace + '-relasjonType'}
                     error={_v[_namespace + '-relasjonType']?.feilmelding}
                     id={_namespace + '-relasjonType'}
-                    key={_namespace + '-relasjonType' + _.find(relasjonTypeOptions, b => b.value === _barnetilhoerighet?.relasjonType)}
                     label={t('label:type')}
                     menuPortalTarget={document.body}
                     onChange={(e: unknown) => setRelasjonType((e as Option).value as BarnRelasjonType, index)}
@@ -331,22 +330,20 @@ const Relasjon: React.FC<MainFormProps> = ({
                     sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                   }}
                   hideLabel={false}
-                  setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_barnetilhoerighet?.periode}
                   requiredStartDato={false}
                 />
-                <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
-                <Column flex={2}>
+                <Column>
                   <RadioPanelGroup
                     value={_barnetilhoerighet?.erDeltForeldreansvar}
                     data-no-border
                     data-testid={_namespace + '-erDeltForeldreansvar'}
                     error={_v[_namespace + '-erDeltForeldreansvar']?.feilmelding}
                     id={_namespace + '-erDeltForeldreansvar'}
-                    key={_namespace + '-erDeltForeldreansvar-' + _barnetilhoerighet?.erDeltForeldreansvar}
                     legend={t('label:delt-foreldreansvar')}
                     name={_namespace + '-erDeltForeldreansvar'}
                     onChange={(e: string) => setErDeltForeldreansvar(e as JaNei, index)}
@@ -363,110 +360,159 @@ const Relasjon: React.FC<MainFormProps> = ({
               <Label>
                 {t('label:hvor-bor-barnet')}
               </Label>
-              <PileDiv>
-                <Checkbox
-                  checked={_barnetilhoerighet?.borIBrukersHushold === 'ja'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.checked, index)}
-                >
-                  {t('label:barn-i-hustand-spørsmål-1')}
-                </Checkbox>
-                <Checkbox
-                  checked={_barnetilhoerighet?.borIEktefellesHushold === 'ja'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.checked, index)}
-                >
-                  {t('label:barn-i-hustand-spørsmål-2')}
-                </Checkbox>
-                <Checkbox
-                  checked={_barnetilhoerighet?.borIAnnenPersonsHushold === 'ja'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.checked, index)}
-                >
-                  {t('label:barn-i-hustand-spørsmål-3')}
-                </Checkbox>
-                <Checkbox
-                  checked={_barnetilhoerighet?.borPaaInstitusjon === 'ja'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.checked, index)}
-                >
-                  {t('label:barn-i-hustand-spørsmål-4')}
-                </Checkbox>
-              </PileDiv>
+              <AlignEndRow>
+                <Column flex='2'>
+                  <Checkbox
+                    checked={_barnetilhoerighet?.borIBrukersHushold === 'ja'}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion1(e.target.checked, index)}
+                  >
+                    {t('label:barn-i-hustand-spørsmål-1')}
+                  </Checkbox>
+                  <Checkbox
+                    checked={_barnetilhoerighet?.borIEktefellesHushold === 'ja'}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion2(e.target.checked, index)}
+                  >
+                    {t('label:barn-i-hustand-spørsmål-2')}
+                  </Checkbox>
+                  <Checkbox
+                    checked={_barnetilhoerighet?.borIAnnenPersonsHushold === 'ja'}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion3(e.target.checked, index)}
+                  >
+                    {t('label:barn-i-hustand-spørsmål-3')}
+                  </Checkbox>
+                  <Checkbox
+                    checked={_barnetilhoerighet?.borPaaInstitusjon === 'ja'}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestion4(e.target.checked, index)}
+                  >
+                    {t('label:barn-i-hustand-spørsmål-4')}
+                  </Checkbox>
+                </Column>
+                <AlignEndColumn>
+                  <AddRemovePanel<Barnetilhoerighet>
+                    item={barnetilhoerighet}
+                    marginTop={false}
+                    index={index}
+                    inEditMode={inEditMode}
+                    onRemove={onRemove}
+                    onAddNew={onAddNew}
+                    onCancelNew={onCloseNew}
+                    onStartEdit={onStartEdit}
+                    onConfirmEdit={onSaveEdit}
+                    onCancelEdit={() => onCloseEdit(_namespace)}
+                  />
+                </AlignEndColumn>
+              </AlignEndRow>
             </>
             )
           : (
             <>
-              <AlignStartRow>
+              <AlignEndRow>
                 <Column>
-                  <FormText
-                    error={_v[_namespace + '-relasjonTilPerson']?.feilmelding}
-                    id={_namespace + '-relasjonTilPerson'}
-                  >
-                    {t('label:relasjon-med')}
+                  <FlexBaseDiv>
+                    <FormText
+                      error={_v[_namespace + '-relasjonTilPerson']?.feilmelding}
+                      id={_namespace + '-relasjonTilPerson'}
+                    >
+                      <FlexDiv>
+                        {t('label:relasjon-med')}
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {t('label:' + _barnetilhoerighet?.relasjonTilPerson).toLowerCase()}
+                      </FlexDiv>
+                    </FormText>
+                    ,
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_barnetilhoerighet?.relasjonTilPerson === '01' && t('label:søker').toLowerCase()}
-                    {_barnetilhoerighet?.relasjonTilPerson === '02' && t('label:avdød').toLowerCase()}
-                    {_barnetilhoerighet?.relasjonTilPerson === '03' && t('label:partner').toLowerCase()}
-                    {_barnetilhoerighet?.relasjonTilPerson === '04' && t('label:annen-person').toLowerCase()}
-                  </FormText>
+                    <FormText
+                      error={_v[_namespace + '-relasjonType']?.feilmelding}
+                      id={_namespace + '-relasjonType'}
+                    >
+                      {t('el:option-relasjon-' + _barnetilhoerighet?.relasjonType).toLowerCase()}
+                    </FormText>
+                    ,
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <PeriodeText
+                      error={{
+                        startdato: _v[_namespace + '-startdato']?.feilmelding,
+                        sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                      }}
+                      namespace={_namespace}
+                      periode={barnetilhoerighet?.periode}
+                    />
+                  </FlexBaseDiv>
                 </Column>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-relasjonType']?.feilmelding}
-                    id={_namespace + '-relasjonType'}
-                  >
-                    {t('el:option-relasjon-' + barnetilhoerighet?.relasjonType)}
-                  </FormText>
-                </Column>
-                <Column>
-                  <PeriodeText
-                    error={{
-                      startdato: _v[_namespace + '-startdato']?.feilmelding,
-                      sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                    }}
-                    namespace={_namespace}
-                    periode={barnetilhoerighet?.periode}
-                  />
-                </Column>
-              </AlignStartRow>
+              </AlignEndRow>
               <VerticalSeparatorDiv />
-              <PileDiv>
-                <FlexDiv>
-                  <Label>{t('label:barn-i-hustand-spørsmål-1')}:</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {barnetilhoerighet?.borIBrukersHushold}
-                </FlexDiv>
-                <FlexDiv>
-                  <Label>{t('label:barn-i-hustand-spørsmål-2')}:</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {barnetilhoerighet?.borIEktefellesHushold}
-                </FlexDiv>
-                <FlexDiv>
-                  <Label>{t('label:barn-i-hustand-spørsmål-3')}:</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {barnetilhoerighet?.borIAnnenPersonsHushold}
-                </FlexDiv>
-                <FlexDiv>
-                  <Label>{t('label:barn-i-hustand-spørsmål-4')}:</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {barnetilhoerighet?.borPaaInstitusjon}
-                </FlexDiv>
-              </PileDiv>
+              <AlignEndRow>
+                <Column flex='2'>
+                  <PileDiv>
+                    <FormText
+                      error={_v[_namespace + '-erDeltForeldreansvar']?.feilmelding}
+                      id={_namespace + '-erDeltForeldreansvar'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:delt-foreldreansvar')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {barnetilhoerighet?.erDeltForeldreansvar ? t('label:' + barnetilhoerighet?.erDeltForeldreansvar) : '-'}
+                      </FlexDiv>
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-borIBrukersHushold']?.feilmelding}
+                      id={_namespace + '-borIBrukersHushold'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:barn-i-hustand-spørsmål-1')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {barnetilhoerighet?.borIBrukersHushold ? t('label:' + barnetilhoerighet?.borIBrukersHushold) : '-'}
+                      </FlexDiv>
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-borIEktefellesHushold']?.feilmelding}
+                      id={_namespace + '-borIEktefellesHushold'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:barn-i-hustand-spørsmål-2')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {barnetilhoerighet?.borIEktefellesHushold ? t('label:' + barnetilhoerighet?.borIEktefellesHushold) : '-'}
+                      </FlexDiv>
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-borIAnnenPersonsHushold']?.feilmelding}
+                      id={_namespace + '-borIAnnenPersonsHushold'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:barn-i-hustand-spørsmål-3')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {barnetilhoerighet?.borIAnnenPersonsHushold ? t('label:' + barnetilhoerighet?.borIAnnenPersonsHushold) : '-'}
+                      </FlexDiv>
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-borPaaInstitusjon']?.feilmelding}
+                      id={_namespace + '-borPaaInstitusjon'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:barn-i-hustand-spørsmål-4')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {barnetilhoerighet?.borPaaInstitusjon ? t('label:' + barnetilhoerighet?.borPaaInstitusjon) : '-'}
+                      </FlexDiv>
+                    </FormText>
+                  </PileDiv>
+                </Column>
+                <AlignEndColumn>
+                  <AddRemovePanel<Barnetilhoerighet>
+                    item={barnetilhoerighet}
+                    marginTop={false}
+                    index={index}
+                    inEditMode={inEditMode}
+                    onRemove={onRemove}
+                    onAddNew={onAddNew}
+                    onCancelNew={onCloseNew}
+                    onStartEdit={onStartEdit}
+                    onConfirmEdit={onSaveEdit}
+                    onCancelEdit={() => onCloseEdit(_namespace)}
+                  />
+                </AlignEndColumn>
+              </AlignEndRow>
             </>
             )}
-        <AlignCenterRow>
-          <AlignEndColumn>
-            <AddRemovePanel<Barnetilhoerighet>
-              item={barnetilhoerighet}
-              marginTop={false}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignCenterRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )

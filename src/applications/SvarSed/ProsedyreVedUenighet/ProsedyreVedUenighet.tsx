@@ -244,7 +244,6 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-grunn'}
                     error={_v[_namespace + '-grunn']?.feilmelding}
                     id={_namespace + '-grunn'}
-                    key={_namespace + '-grunn-' + _grunn?.grunn}
                     label={t('label:velg-grunn-til-uenighet')}
                     menuPortalTarget={document.body}
                     onChange={(o: unknown) => setGrunn((o as Option).value, _grunn?.grunn, index)}
@@ -259,7 +258,6 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-person'}
                     error={_v[_namespace + '-person']?.feilmelding}
                     id={_namespace + '-person'}
-                    key={_namespace + '-person-' + _grunn?.person}
                     label={t('label:personen-det-gjelder')}
                     menuPortalTarget={document.body}
                     onChange={(o: unknown) => setPerson((o as Option).value, index)}

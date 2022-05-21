@@ -6,8 +6,7 @@ import { arbeidsperioderFraAAToForsikringPeriode } from './arbeidsperioder'
 
 export interface PlanItem<T> {
   type: PlanItemType
-  item: T,
-  duplicate: boolean | undefined // so I can complain when addedArbeidsgiver conflict with existing ones
+  item: T
 }
 
 export interface RenderPlanProps<T> {
@@ -40,8 +39,7 @@ const renderPlan = <T extends Periode | ForsikringPeriode>({
 
   let plan: Array<PlanItem<T>> = perioder?.map((periode: T) => ({
     item: periode as T,
-    type: 'periode',
-    duplicate: undefined
+    type: 'periode'
   } as PlanItem<T>)) || []
 
   // 2nd step: go through all arbeidsperioder. If they match periods, pair then, otherwise just append them in the end
@@ -66,8 +64,7 @@ const renderPlan = <T extends Periode | ForsikringPeriode>({
           __index: periodeIndex,
           __type: '' + arbeidsperioderIndex
         },
-        type: 'forsikringPeriode',
-        duplicate: false
+        type: 'forsikringPeriode'
       } as PlanItem<T>
     } else {
       unmatchedArbeidsgiver.push({
@@ -75,8 +72,7 @@ const renderPlan = <T extends Periode | ForsikringPeriode>({
           ...arbeidsgiverAsForsikringPeriode as T,
           __type: '' + arbeidsperioderIndex
         },
-        type: 'forsikringPeriode',
-        duplicate: false
+        type: 'forsikringPeriode'
       })
     }
   })

@@ -25,7 +25,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
   const [_saksnummerOrFnr, _setSaksnummerOrFnr] = useState<string>(initialQuery ?? '')
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
 
-  const onSaksnummerOrFnrChange = (query: string) => {
+  const setSaksnummerOrFnr = (query: string) => {
     const q: string = query.trim()
     _resetValidation(namespace + '-saksnummerOrFnr')
     _setSaksnummerOrFnr(q)
@@ -83,7 +83,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                 data-testid={namespace + '-saksnummerOrFnr'}
                 id={namespace + '-saksnummerOrFnr'}
                 onKeyPress={handleKeyPress}
-                onChange={onSaksnummerOrFnrChange}
+                onChange={setSaksnummerOrFnr}
                 required
                 hideLabel={false}
                 value={_saksnummerOrFnr}

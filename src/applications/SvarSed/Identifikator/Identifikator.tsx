@@ -178,7 +178,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                   data-testid={_namespace + '-type'}
                   error={_v[_namespace + '-type']?.feilmelding}
                   id={_namespace + '-type'}
-                  key={_namespace + '-type-' + _identifikator?.type}
                   label={t('label:type')}
                   menuPortalTarget={document.body}
                   onChange={(e: any) => setType(e.value, index)}
@@ -207,7 +206,6 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                 <Input
                   error={_v[_namespace + '-id']?.feilmelding}
                   id='id'
-                  key={_namespace + '-id-' + _identifikator?.id}
                   label={t('label:inst-id')}
                   namespace={_namespace}
                   onChanged={(value: string) => setId(value, index)}

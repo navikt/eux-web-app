@@ -57,10 +57,10 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAvsenderlandetProps>(validateAvsenderlandetPeriode, namespace)
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-' + whatChanged)
+      _resetValidation(namespace)
       return
     }
     _setEditPeriode(periode)
@@ -156,7 +156,7 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
                 }}
                 breakInTwo
                 hideLabel={false}
-                setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periode}
               />
               )

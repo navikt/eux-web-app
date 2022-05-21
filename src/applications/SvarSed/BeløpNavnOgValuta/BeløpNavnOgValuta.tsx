@@ -315,7 +315,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                         type='number'
                         min='0'
                         error={_v[_namespace + '-antallPersoner']?.feilmelding}
-                        key={'antall-innvilges-' + _ytelse?.antallPersoner}
                         namespace={_namespace}
                         id='antallPersoner'
                         label={t('label:antall-innvilges')}
@@ -336,7 +335,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     id='beloep'
                     description={personID === 'familie' ? t('message:help-familieytelser-beløp') : undefined}
                     label={t('label:beløp')}
-                    key={_namespace + '-beløp-' + _ytelse?.beloep}
                     onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
                     required
                     value={_ytelse?.beloep}
@@ -344,7 +342,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                 </Column>
                 <Column style={{ marginTop: personID === 'familie' ? '3rem' : '0rem' }}>
                   <CountrySelect
-                    key={_namespace + '-valuta-' + _ytelse?.valuta}
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
                     data-testid={_namespace + '-valuta'}
@@ -386,7 +383,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     data-no-border
                     data-testid={_namespace + '-utbetalingshyppighet'}
                     id={_namespace + '-utbetalingshyppighet'}
-                    key={_namespace + '-utbetalingshyppighet' + _ytelse?.utbetalingshyppighet}
                     error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
                     name={_namespace + '-utbetalingshyppighet'}
                     legend={t('label:periode-avgrensing') + ' *'}
@@ -406,7 +402,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                     namespace={_namespace}
                     id='mottakersNavn'
-                    key={_namespace + '-mottakersNavn' + _ytelse?.mottakersNavn}
                     label={t('label:mottakers-navn')}
                     onChanged={(newNavn: string) => setMottakersNavn(newNavn, index)}
                     required

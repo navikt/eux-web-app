@@ -291,7 +291,6 @@ const InntektForm: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-periodetype'}
                     error={_v[_namespace + '-periodetype']?.feilmelding}
                     id={_namespace + '-periodetype'}
-                    key={_namespace + '-periodetype-' + _loennsopplysning?.periodetype}
                     label={t('label:type-periode')}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => setPeriodeType(e.value, index)}
@@ -386,7 +385,6 @@ const InntektForm: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-arbeidsdager']?.feilmelding}
                     namespace={namespace}
                     id='arbeidsdager'
-                    key={'arbeidsdager' + _loennsopplysning?.arbeidsdager}
                     label={t('label:arbeidsdager')}
                     onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
                     value={_loennsopplysning?.arbeidsdager}
@@ -397,7 +395,6 @@ const InntektForm: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-arbeidstimer']?.feilmelding}
                     namespace={namespace}
                     id='arbeidstimer'
-                    key={'arbeidstimer' + _loennsopplysning?.arbeidstimer}
                     label={t('label:arbeidstimer')}
                     onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
                     value={_loennsopplysning?.arbeidstimer}

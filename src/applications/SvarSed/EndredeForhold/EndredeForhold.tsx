@@ -65,7 +65,6 @@ const EndredeForhold: React.FC<MainFormProps> = ({
       <RadioPanelGroup
         legend=''
         data-testid={namespace + '-ytterligereInfoType'}
-        key={namespace + '-ytterligereInfoType-' + (replySed as H001Sed).ytterligereInfoType}
         id={namespace + '-ytterligereInfoType'}
         error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
         value={(replySed as H001Sed).ytterligereInfoType}

@@ -33,7 +33,6 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
       <TextAreaDiv>
         <TextArea
           error={validation[namespace + '-krav']?.feilmelding}
-          key={namespace + '-krav-' + (refusjonIHenholdTilArtikkel58IForordningen ?? '')}
           id='krav'
           label={t('label:krav-om-refusjon-under-artikkel')}
           namespace={namespace}

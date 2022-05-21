@@ -140,7 +140,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
           <TextAreaDiv>
             <TextArea
               error={validation[namespace + '-begrunnelse']?.feilmelding}
-              key={namespace + '-begrunnelse-' + (utbetalingTilInstitusjon?.begrunnelse ?? '')}
               id='begrunnelse'
               label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
               namespace={namespace}
@@ -157,7 +156,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         <Column>
           <Input
             error={validation[namespace + '-id']?.feilmelding}
-            key={namespace + '-id-' + (utbetalingTilInstitusjon?.id ?? '')}
             id='id'
             label={t('label:institusjonens-id')}
             namespace={namespace}
@@ -169,7 +167,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         <Column>
           <Input
             error={validation[namespace + '-navn']?.feilmelding}
-            key={namespace + '-navn-' + (utbetalingTilInstitusjon?.navn ?? '')}
             id='navn'
             label={t('label:institusjonens-navn')}
             namespace={namespace}
@@ -210,7 +207,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
                 id='kontoOrdinaer-bankensNavn'
-                key={namespace + '-kontoOrdinaer-bankensNavn-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? '')}
                 label={t('label:bankens-navn')}
                 namespace={namespace}
                 onChanged={setOrdinaerBankensNavn}
@@ -222,7 +218,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
                 id='kontoOrdinaer-kontonummer'
-                key={namespace + '-kontoOrdinaer-kontonummer-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? '')}
                 label={t('label:kontonummer')}
                 namespace={namespace}
                 onChanged={setOrdinaerKontonummer}
@@ -234,7 +229,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
                 id='kontoOrdinaer-swift'
-                key={namespace + '-kontoOrdinaer-swift-' + (utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? '')}
                 label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '') + ' (' + t('el:placeholder-swift') + ')'}
                 namespace={namespace}
                 onChanged={setOrdinaerSwift}
@@ -258,7 +252,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
-                key={namespace + '-kontoSepa-iban-' + (utbetalingTilInstitusjon?.kontoSepa?.iban ?? '')}
                 label={t('label:iban')}
                 namespace={namespace}
                 onChanged={setSepaIban}
@@ -273,7 +266,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 id='kontoSepa-swift'
-                key={namespace + '-kontoSepa-swift-' + (utbetalingTilInstitusjon?.kontoSepa?.swift ?? '')}
                 label={t('label:swift') + (!_.isEmpty(utbetalingTilInstitusjon?.kontoSepa?.iban) ? '' : ' *')}
                 namespace={namespace}
                 onChanged={setSepaSwift}

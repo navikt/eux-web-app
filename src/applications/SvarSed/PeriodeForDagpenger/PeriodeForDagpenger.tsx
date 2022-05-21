@@ -365,7 +365,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-institusjon-id']?.feilmelding}
                   namespace={_namespace}
                   id='institusjon-id'
-                  key={'institusjon-id-' + _periodeDagpenger?.institusjon?.id}
                   label={t('label:institusjonens-id')}
                   onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
                   value={_periodeDagpenger?.institusjon?.id}
@@ -376,7 +375,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-institusjon-navn']?.feilmelding}
                   namespace={_namespace}
                   id='institusjon-navn'
-                  key={'institusjon-navn-' + _periodeDagpenger?.institusjon?.navn}
                   label={t('label:institusjonens-navn')}
                   onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
                   value={_periodeDagpenger?.institusjon?.navn}
@@ -457,7 +455,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
                       namespace={_namespace}
                       id='institusjon-idmangler-navn'
-                      key={'institusjon-idmangler-navn-' + _periodeDagpenger?.institusjon.idmangler?.navn}
                       label={t('label:navn')}
                       onChanged={(navn: string) => setInstitutionIdManglerNavn(navn, index)}
                       value={_periodeDagpenger?.institusjon.idmangler?.navn}

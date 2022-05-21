@@ -228,7 +228,6 @@ const Inntekter: React.FC<any> = ({
                     data-testid={_namespace + '-type'}
                     error={_v[_namespace + '-type']?.feilmelding}
                     id={_namespace + '-type'}
-                    key={_namespace + '-type-' + _inntekt?.type}
                     label={t('label:type')}
                     menuPortalTarget={document.body}
                     onChange={(e: any) => onTypeChanged(e.value, index)}
@@ -242,7 +241,6 @@ const Inntekter: React.FC<any> = ({
                   <Input
                     error={_v[_namespace + '-beloep']?.feilmelding}
                     namespace={_namespace}
-                    key={_namespace + '-beloep-' + _inntekt?.beloep}
                     id='beloep'
                     label={t('label:beløp')}
                     onChanged={(beløp: string) => setBeløp(beløp, index)}
@@ -252,7 +250,6 @@ const Inntekter: React.FC<any> = ({
                 </Column>
                 <Column>
                   <CountrySelect
-                    key={namespace + '-valuta-' + _inntekt?.valuta}
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
                     data-testid={namespace + '-valuta'}
@@ -311,7 +308,6 @@ const Inntekter: React.FC<any> = ({
                   <Input
                     ariaLabel={t('label:informasjon-om-vederlag')}
                     error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                    key={_namespace + '-typeAnnen-' + _inntekt?.typeAnnen}
                     id='informasjonOmVederlag'
                     label={t('label:informasjon-om-vederlag')}
                     namespace={_namespace}

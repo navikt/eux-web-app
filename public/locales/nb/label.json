@@ -17,6 +17,7 @@
   "anmodningsperioder": "Anmodningsperioder",
   "annen-grunn": "Annen grunn",
   "annen-person": "Annet person",
+  "annen_person": "Annen person",
   "annen-relasjon": "Annen relasjon",
   "annen-type": "Annen type",
   "annet": "Annet",
@@ -80,6 +81,7 @@
 
   "edit" : "Rediger",
   "edit-sed-x" : "Rediger {{x}}",
+  "ektefelle_partner": "Ektefelle/partner",
   "elementter-i-personlig-situasjon": "Elementer i personlig situasjon",
   "eller": "eller",
   "endre": "Endre",
@@ -364,6 +366,7 @@
   "udekkede": "Udekkede",
   "udekkede-periode": "Udekkede periode",
   "ukjent": "Ukjent",
+  "ukjent_startdato": "Ukjent startdato",
   "ukjent_sluttdato": "Ukjent sluttdato",
   "ukjent-rolle": "(ukjent rolle)",
   "utbetaling": "Utbetaling",

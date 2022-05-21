@@ -91,32 +91,32 @@ const AddPersonModal = <T extends StorageTypes>({
     _setReplySed(newReplySed)
   }
 
-  const onNewPersonFnrChange = (fnr: string) => {
+  const setFnr = (fnr: string) => {
     _resetValidation(namespace + '-fnr')
     _setNewPersonFnr(fnr.trim())
   }
 
-  const onNewPersonFornavnChange = (navn: string) => {
+  const setFornavn = (navn: string) => {
     _resetValidation(namespace + '-fornavn')
     _setNewPersonFornavn(navn.trim())
   }
 
-  const onNewPersonEtternavnChange = (navn: string) => {
+  const setEtternavn = (navn: string) => {
     _resetValidation(namespace + '-etternavn')
     _setNewPersonEtternavn(navn.trim())
   }
 
-  const onNewPersonFodselsdatoChange = (fdato: string) => {
+  const setFoedselsdato = (fdato: string) => {
     _resetValidation(namespace + '-fdato')
     _setNewPersonFodselsdato(fdato.trim())
   }
 
-  const onNewPersonKjoennChange = (kjoenn: string) => {
+  const setKjoenn = (kjoenn: string) => {
     _resetValidation(namespace + '-kjoenn')
     _setNewPersonKjoenn(kjoenn.trim())
   }
 
-  const onNewPersonRelationChange = (o: unknown) => {
+  const setRelation = (o: unknown) => {
     _resetValidation(namespace + '-relasjon')
     _setNewPersonRelation((o as Option).value.trim())
   }
@@ -327,7 +327,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   id='fornavn'
                   namespace={namespace}
                   label={t('label:fornavn')}
-                  onChanged={onNewPersonFornavnChange}
+                  onChanged={setFornavn}
                   required
                   value={_newPersonFornavn}
                 />
@@ -339,7 +339,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   id='etternavn'
                   namespace={namespace}
                   label={t('label:etternavn')}
-                  onChanged={onNewPersonEtternavnChange}
+                  onChanged={setEtternavn}
                   required
                   value={_newPersonEtternavn}
                 />
@@ -351,7 +351,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   id='fdato'
                   namespace={namespace}
                   label={t('label:fødselsdato')}
-                  onChanged={onNewPersonFodselsdatoChange}
+                  onChanged={setFoedselsdato}
                   required
                   value={_newPersonFodselsdato}
                 />
@@ -363,7 +363,7 @@ const AddPersonModal = <T extends StorageTypes>({
                   id='fnr'
                   label={t('label:fnr-dnr')}
                   namespace={namespace}
-                  onChanged={onNewPersonFnrChange}
+                  onChanged={setFnr}
                   required
                   value={_newPersonFnr}
                 />
@@ -378,10 +378,9 @@ const AddPersonModal = <T extends StorageTypes>({
                   data-testid={namespace + '-kjoenn'}
                   error={_validation[namespace + '-kjoenn']?.feilmelding}
                   id={namespace + '-kjoenn'}
-                  key={namespace + '-kjoenn-' + (_newPersonKjoenn ?? '')}
                   legend={t('label:kjønn') + ' *'}
                   name={namespace + '-kjoenn'}
-                  onChange={onNewPersonKjoennChange}
+                  onChange={setKjoenn}
                 >
                   <FlexRadioPanels>
                     <RadioPanel value='M'>
@@ -399,12 +398,11 @@ const AddPersonModal = <T extends StorageTypes>({
               <Column flex='1'>
                 <Select
                   aria-label={t('label:familierelasjon')}
-                  key={namespace + '-relasjon-' + _newPersonRelation}
                   data-testid={namespace + '-relasjon'}
                   error={_validation[namespace + '-relasjon']?.feilmelding}
                   id={namespace + '-relasjon'}
                   label={t('label:familierelasjon')}
-                  onChange={onNewPersonRelationChange}
+                  onChange={setRelation}
                   options={relationOptions}
                   required
                   value={_.find(relationOptions, o => o.value === _newPersonRelation)}

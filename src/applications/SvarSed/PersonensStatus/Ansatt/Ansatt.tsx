@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { AddCircle, Office1 } from '@navikt/ds-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -62,7 +62,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const fnr = getFnr(replySed, personID)
   const getId = (item: PlanItem<Periode | ForsikringPeriode> | null): string => (item
     ? item.type + '-' + (item.item as Periode | ForsikringPeriode)?.startdato + '-' + (item.item as Periode | ForsikringPeriode).sluttdato
-    : 'new')
+    : 'new-periode')
 
   const [_plan, _setPlan] = useState<Array<PlanItem<Periode>> | undefined>(undefined)
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
@@ -88,8 +88,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const onPeriodeChanged = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      _resetValidation(namespace)
       return
     }
     _setEditPeriode(periode)
@@ -154,6 +153,9 @@ const Ansatt: React.FC<MainFormProps> = ({
     // if newPeriode is not null, it comes from arbeidsgiver; if not, from newly typed periode
 
     const __newPeriode = !_.isUndefined(newPeriode) ? newPeriode : _newPeriode
+    delete __newPeriode?.__index
+    delete __newPeriode?.__type
+
     const valid: boolean = _performValidation({
       periode: __newPeriode,
       perioder: perioderSomAnsatt,
@@ -165,8 +167,6 @@ const Ansatt: React.FC<MainFormProps> = ({
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
-      delete __newPeriode.__index
-      delete __newPeriode.__type
       newPerioder.push(__newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
@@ -231,6 +231,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
           <PaddedHorizontallyDiv>
             <Label>{t('label:' + item.type)}</Label>
+            <VerticalSeparatorDiv />
           </PaddedHorizontallyDiv>
         )}
         {renderPlanItem(item)}
@@ -259,19 +260,31 @@ const Ansatt: React.FC<MainFormProps> = ({
     }
   }
 
+  const doResetValidation = (namespace: string) => dispatch(resetValidation(namespace))
+  const doSetValidation = (validation: Validation) => dispatch(setValidation(validation))
+
   const renderRowArbeidsperiode = (periode: PeriodeMedForsikring) => {
+    // periode.__type! is the index for arbeidsperiode list, periode.__index! is index for perioderMedAnsatt list
+    const _namespace = namespace + '-' +
+      (periode.__type ? 'AA' + getIdx(periode.__type) : '') +
+      (periode.__index ? 'periode' + getIdx(periode.__index) : '')
+
     return (
       <Column>
         <ForsikringPeriodeBox
           forsikringPeriode={periode}
           allowEdit
+          icon={<Office1 width='20' height='20' />}
           editable='only_period'
           showArbeidsgiver
           showAddress={false}
           selectable
           onForsikringPeriodeSelect={onArbeidsgiverSelect}
           onForsikringPeriodeEdit={onArbeidsgiverEdit}
-          namespace={namespace}
+          namespace={_namespace}
+          validation={validation}
+          resetValidation={doResetValidation}
+          setValidation={doSetValidation}
         />
       </Column>
     )
@@ -350,7 +363,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         <Ingress>
           {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
         </Ingress>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='2' />
         <ArbeidsperioderSøk
           amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
           fnr={fnr}

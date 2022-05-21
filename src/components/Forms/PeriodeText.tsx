@@ -28,12 +28,12 @@ const PeriodeText = ({
         id={namespace + '-startdato'}
       >
         <BodyLong>
-          {periode?.startdato}
+          {periode?.startdato ?? t('label:ukjent_startdato')}
         </BodyLong>
         <ErrorLabel error={error?.startdato} />
       </PileDiv>
-      <HorizontalSeparatorDiv />-
-      <HorizontalSeparatorDiv />
+      <HorizontalSeparatorDiv size='0.5' />—
+      <HorizontalSeparatorDiv size='0.5' />
       <PileDiv
         tabIndex={0}
         id={namespace + '-sluttdato'}

@@ -301,7 +301,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                     data-no-border
                     data-testid={_namespace + '-utbetalingType'}
                     error={_v[_namespace + 'utbetalingType']?.skjemaelementId}
-                    key={_namespace + '-utbetalingType-' + _utbetaling?.utbetalingType}
                     id={_namespace + '-utbetalingType'}
                     name={_namespace + '-utbetalingType'}
                     onChange={(e: string) => setUtbetalingType(e, index)}
@@ -350,7 +349,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-beloep']?.feilmelding}
                     namespace={_namespace}
                     id='beloep'
-                    key={'beloep-' + _utbetaling?.beloep}
                     label={t('label:beløp')}
                     onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
                     required
@@ -359,7 +357,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                 </Column>
                 <Column>
                   <CountrySelect
-                    key={'valuta-' + _currencyData.findByValue(_utbetaling?.valuta)}
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
                     data-testid={_namespace + '-valuta'}
@@ -378,7 +375,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                     <DateInput
                       error={_v[_namespace + '-loennTilDato']?.feilmelding}
                       namespace={_namespace}
-                      key={_utbetaling?.loennTilDato}
                       id='loennTilDato'
                       label={t('label:loenn-til-dato')}
                       onChanged={(date: string) => setLoennTilDato(date, index)}

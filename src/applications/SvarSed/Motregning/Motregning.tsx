@@ -680,7 +680,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-svarType'}
                 error={_v[_namespace + '-svarType']?.feilmelding}
                 id={_namespace + '-svarType'}
-                key={_namespace + '-svarType-' + _motregning?.svarType}
                 legend={t('label:anmodning-om-motregning')}
                 name={_namespace + '-svarType'}
                 onChange={(e: string) => setSvarType(e as AnmodningSvarType, index)}
@@ -702,7 +701,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-type'}
                 error={_v[_namespace + '-type']?.feilmelding}
                 id={_namespace + '-type'}
-                key={_namespace + '-type-' + _motregning?.__type}
                 legend={t('label:barna-or-familie') + ' *'}
                 name={_namespace + '-type'}
                 onChange={(type: string) => setType(type as BarnEllerFamilie, index)}
@@ -757,7 +755,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                           disabled={_.isUndefined(matchedKeyAndYtelse) || matchedKeyAndYtelse.isChecked === false}
                           error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}
                           id='ytelseNavn'
-                          key={_namespace + '-ytelseNavn-' + matchedKeyAndYtelse?.ytelseNavn}
                           label={t('label:betegnelse-på-ytelse')}
                           namespace={_namespace}
                           hideLabel
@@ -779,7 +776,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 <Input
                   error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                   id='ytelseNavn'
-                  key={_namespace + '-ytelseNavn-' + _motregning?.ytelseNavn}
                   label={t('label:betegnelse-på-ytelse')}
                   namespace={_namespace}
                   onChanged={(newYtelseNavn: string) => setYtelseNavnForFamilie(newYtelseNavn, index)}
@@ -800,7 +796,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
               <DateInput
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
                 id='vedtaksdato'
-                key={_namespace + '-vedtaksdato-' + _motregning?.vedtaksdato}
                 label={t('label:vedtaksdato')}
                 namespace={_namespace}
                 onChanged={(newVedtaksdato) => setVedtaksDato(newVedtaksdato, index)}
@@ -812,7 +807,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
               <Input
                 error={_v[_namespace + '-beloep']?.feilmelding}
                 id='beloep'
-                key={_namespace + '-beloep-' + _motregning?.beloep}
                 label={t('label:beløp')}
                 namespace={_namespace}
                 onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
@@ -827,7 +821,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-valuta'}
                 error={_v[_namespace + '-valuta']?.feilmelding}
                 id={_namespace + '-valuta'}
-                key={_namespace + '-valuta-' + _motregning?.valuta}
                 label={t('label:valuta') + ' *'}
                 locale='nb'
                 menuPortalTarget={document.body}
@@ -860,7 +853,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-no-border
                 data-testid={_namespace + '-utbetalingshyppighet'}
                 id={_namespace + '-utbetalingshyppighet'}
-                key={_namespace + '-utbetalingshyppighet-' + _motregning?.utbetalingshyppighet}
                 error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
                 name={_namespace + '-utbetalingshyppighet'}
                 legend={t('label:periode-avgrensing') + ' *'}
@@ -880,7 +872,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                 namespace={_namespace}
                 id='mottakersNavn'
-                key={_namespace + '-mottakersNavn-' + _motregning?.mottakersNavn}
                 label={t('label:mottakers-navn')}
                 onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, index)}
                 required
@@ -897,7 +888,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-begrunnelse']?.feilmelding}
                   namespace={_namespace}
                   id='begrunnelse'
-                  key={_namespace + '-begrunnelse-' + _motregning?.begrunnelse}
                   label={t('label:anmodning-grunner')}
                   onChanged={(newBegrunnelse: string) => setBegrunnelse(newBegrunnelse, index)}
                   value={_motregning?.begrunnelse}
@@ -914,7 +904,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-ytterligereInfo']?.feilmelding}
                   namespace={_namespace}
                   id='ytterligereInfo'
-                  key={_namespace + '-ytterligereInfo-' + _motregning?.ytterligereInfo}
                   label={t('label:ytterligere-informasjon')}
                   onChanged={(newYtterligereInfo: string) => setYtterligereInfo(newYtterligereInfo, index)}
                   value={_motregning?.ytterligereInfo}

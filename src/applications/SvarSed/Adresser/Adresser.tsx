@@ -146,7 +146,7 @@ const Adresser: React.FC<MainFormProps> = ({
     }
   }
 
-  const onPDLAdresserChanged = (selectedAdresser: Array<Adresse>) => {
+  const setPDLAdresser = (selectedAdresser: Array<Adresse>) => {
     dispatch(updateReplySed(target, selectedAdresser))
   }
 
@@ -226,7 +226,7 @@ const Adresser: React.FC<MainFormProps> = ({
           fnr={fnr!}
           selectedAdresser={adresser ?? []}
           personName={personName}
-          onAdresserChanged={onPDLAdresserChanged}
+          onAdresserChanged={setPDLAdresser}
         />
       </PaddedDiv>
       <VerticalSeparatorDiv />

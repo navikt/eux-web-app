@@ -61,13 +61,13 @@ const WithSubsidies: React.FC<MainFormProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationWithSubsidiesProps>(validateWithSubsidiesPeriode, namespace)
 
-  const setPeriode = (periode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPensjonPeriode({
         ..._newPensjonPeriode,
         periode
       } as PensjonPeriode)
-      _resetValidation(namespace + '-' + whatChanged)
+      _resetValidation(namespace)
       return
     }
     _setEditPensjonPeriode({
@@ -203,7 +203,7 @@ const WithSubsidies: React.FC<MainFormProps> = ({
                   }}
                   breakInTwo
                   hideLabel={false}
-                  setPeriode={(p: Periode, whatChanged: string) => setPeriode(p, whatChanged, index)}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_pensjonPeriode?.periode}
                 />
                 <AlignEndColumn>
