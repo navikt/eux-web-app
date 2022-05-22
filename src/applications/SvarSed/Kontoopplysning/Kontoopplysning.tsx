@@ -1,27 +1,35 @@
-import { Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
+import {
+  validateKontoopplysning,
+  ValidationKontoopplysningProps
+} from 'applications/SvarSed/Kontoopplysning/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import performValidation from 'utils/performValidation'
 
 const Kontoopplysning: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   replySed,
-  updateReplySed
+  updateReplySed,
+  personName
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target: string = 'utbetalingTilInstitusjon'
-  const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = (replySed as F002Sed).utbetalingTilInstitusjon
+  const utbetalingTilInstitusjon: UtbetalingTilInstitusjon | undefined = _.get((replySed as F002Sed), target)
   const namespace: string = `${parentNamespace}-kontoopplysninger`
 
   const [_kontoType, _setKontoType] = useState<KontoType | undefined>(() => {
@@ -35,6 +43,16 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
       return 'sepa'
     }
     return undefined
+  })
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidationKontoopplysningProps>(
+      validation, namespace, validateKontoopplysning, {
+        uti: utbetalingTilInstitusjon,
+        formalName: personName
+      }
+    )
+    dispatch(setValidation(newValidation))
   })
 
   // caches konto information while switching from konto ordinær to sepa, so that we do not
@@ -134,7 +152,10 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <TextAreaDiv>
@@ -248,7 +269,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
       {_kontoType === 'sepa' && (
         <>
           <AlignStartRow>
-            <Column>
+            <Column flex='2'>
               <Input
                 error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
@@ -259,10 +280,11 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
               />
             </Column>
+            <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
           <AlignStartRow>
-            <Column>
+            <Column flex='2'>
               <Input
                 error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 id='kontoSepa-swift'
@@ -272,6 +294,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
               />
             </Column>
+            <Column />
           </AlignStartRow>
         </>
       )}

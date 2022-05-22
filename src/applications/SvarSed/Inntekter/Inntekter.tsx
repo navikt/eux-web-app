@@ -268,7 +268,7 @@ const Inntekter: React.FC<any> = ({
               )
             : (
               <>
-                <Column size='2'>
+                <Column flex='2'>
                   <PileDiv>
                     <BodyLong>
                       {t('el:option-inntekttype-' + _inntekt?.type)}

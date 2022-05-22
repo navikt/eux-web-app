@@ -1,5 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -34,8 +34,8 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateGrunn,
-  ValidationGrunnProps,
   validateProsedyreVedUenighet,
+  ValidationGrunnProps,
   ValidationProsedyreVedUenighetProps
 } from './validation'
 
@@ -44,6 +44,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   replySed,
   updateReplySed,
@@ -234,7 +235,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <AlignStartRow style={{ minHeight: '2.2rem' }}>
           {inEditMode
             ? (
               <>
@@ -270,7 +271,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
               </>
               )
             : (
-              <Column size='2'>
+              <Column flex='2'>
                 <FlexDiv>
                   <FormText
                     error={_v[_namespace + '-grunn']?.feilmelding}
@@ -311,20 +312,23 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(_allGrunns)
         ? (
           <PaddedHorizontallyDiv>
-            <SpacedHr />
             <FormText
               error={validation[namespace + '-grunner']?.feilmelding}
               id={namespace + '-grunner'}
             >
-              <BodyLong>
-                {t('message:warning-no-periods')}
-              </BodyLong>
+              <SpacedHr />
+              {t('message:warning-no-grunn')}
+              <SpacedHr />
             </FormText>
-            <SpacedHr />
           </PaddedHorizontallyDiv>
           )
         : _allGrunns?.map(renderRow)}
@@ -345,7 +349,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv />
       <PaddedDiv>
         <AlignStartRow>
-          <Column size='2'>
+          <Column flex='2'>
             <TextAreaDiv>
               <TextArea
                 error={validation[namespace + '-ytterligereGrunner']?.feilmelding}

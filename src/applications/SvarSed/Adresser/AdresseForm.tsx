@@ -107,7 +107,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               onChange={(e: string) => setType((e as AdresseType))}
             >
               <FlexRadioPanels>
-                <RadioPanel error={validation[namespace + '-type']?.feilmelding} value='bosted'>{t('label:bostedsadresse')}</RadioPanel>
+                <RadioPanel value='bosted'>{t('label:bosted')}</RadioPanel>
                 <RadioPanel value='opphold'>{t('label:opphold')}</RadioPanel>
                 <RadioPanel value='kontakt'>{t('label:kontakt')}</RadioPanel>
                 <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>

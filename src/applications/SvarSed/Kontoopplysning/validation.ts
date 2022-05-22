@@ -3,9 +3,9 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
-interface ValidateKontoopplysningProps {
-  uti: UtbetalingTilInstitusjon
-  formalName: string
+export interface ValidationKontoopplysningProps {
+  uti: UtbetalingTilInstitusjon | undefined
+  formalName: string | undefined
 }
 
 export const validateKontoopplysning = (
@@ -14,7 +14,7 @@ export const validateKontoopplysning = (
   {
     uti,
     formalName
-  }: ValidateKontoopplysningProps
+  }: ValidationKontoopplysningProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   let kontoType
@@ -92,7 +92,7 @@ export const validateKontoopplysning = (
       }))
     }
 
-    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti.kontoSepa!.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
+    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti!.kontoSepa!.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-iban',
         message: 'validation:invalidIban',
@@ -108,7 +108,7 @@ export const validateKontoopplysning = (
       }))
     }
 
-    if (!_.isEmpty(uti?.kontoSepa?.swift?.trim()) && _.isNil(uti?.kontoSepa?.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
+    if (!_.isEmpty(uti?.kontoSepa?.swift?.trim()) && _.isNil(uti!.kontoSepa!.swift.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-swift',
         message: 'validation:invalidSwift',

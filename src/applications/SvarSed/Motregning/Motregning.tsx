@@ -816,7 +816,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
           )}
           {_motregning?.__type === 'familie' && (
             <AlignStartRow>
-              <Column size='2'>
+              <Column flex='2'>
                 <Input
                   error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                   id='ytelseNavn'
@@ -836,7 +836,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
           </Label>
           <VerticalSeparatorDiv />
           <AlignStartRow>
-            <Column size='2'>
+            <Column>
               <DateInput
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
                 id='vedtaksdato'
@@ -907,7 +907,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 value={_motregning?.mottakersNavn}
               />
             </Column>
-            <Column>
+            <Column flex='2'>
               <RadioPanelGroup
                 value={_motregning?.utbetalingshyppighet}
                 data-no-border

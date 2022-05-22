@@ -2,9 +2,9 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
-interface ValidateKravOmRefusjonProps {
+export interface ValidationKravOmRefusjonProps {
   kravOmRefusjon: string | undefined,
-  formalName: string
+  formalName: string | undefined
 }
 
 export const validateKravOmRefusjon = (
@@ -13,7 +13,7 @@ export const validateKravOmRefusjon = (
   {
     kravOmRefusjon,
     formalName
-  }: ValidateKravOmRefusjonProps
+  }: ValidationKravOmRefusjonProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
