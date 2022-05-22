@@ -98,7 +98,7 @@ const Inntekter: React.FC<any> = ({
         beloep: newBeløp.trim(),
         valuta: _.isNil(_newInntekt?.valuta) ? 'NOK' : _newInntekt?.valuta
       } as Inntekt)
-      _resetValidation(namespace + '-beloep')
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
       return
     }
     _setEditInntekt({
@@ -106,7 +106,7 @@ const Inntekter: React.FC<any> = ({
       beloep: newBeløp.trim(),
       valuta: _.isNil(_editInntekt?.valuta) ? 'NOK' : _editInntekt?.valuta
     } as Inntekt)
-    dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
+    dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))
   }
 
   const setValuta = (newValuta: Currency, index: number) => {

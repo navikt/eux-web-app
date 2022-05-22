@@ -7,6 +7,7 @@ import _ from 'lodash'
 
 export interface ValidationMotregningProps {
   motregning: Motregning |undefined
+  nsIndex ?: string
   formalName?: string
 }
 
@@ -22,16 +23,14 @@ export const validateMotregning = (
   namespace: string,
   {
     motregning,
+    nsIndex,
     formalName
   }: ValidationMotregningProps): boolean => {
   const hasErrors: Array<boolean> = []
 
-  // if we are validation a new motregning and it is for barn, we need to have at least one barn
-  const nsIndex = motregning?.__index.index
-
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.__type,
-    id: namespace + nsIndex + '-BarnEllerFamilie',
+    id: namespace + (nsIndex ?? '') + '-BarnEllerFamilie',
     message: 'validation:noBarnEllerFamilie',
     personName: formalName
   }))
@@ -39,7 +38,7 @@ export const validateMotregning = (
   if (motregning?.__type === 'barn') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: motregning?.__index.values,
-      id: namespace + nsIndex + '-ytelseNavn',
+      id: namespace + (nsIndex ?? '') + '-ytelseNavn',
       message: 'validation:noYtelse',
       personName: formalName
     }))
@@ -47,7 +46,7 @@ export const validateMotregning = (
     motregning?.__index?.values?.forEach((value: KeyAndYtelse, i: number) => {
       hasErrors.push(checkIfNotEmpty(v, {
         needle: value?.ytelseNavn,
-        id: namespace + nsIndex + '-ytelse[' + i + ']-ytelseNavn',
+        id: namespace + (nsIndex ?? '') + '-ytelse[' + i + ']-ytelseNavn',
         message: 'validation:noYtelse',
         personName: formalName
       }))
@@ -56,21 +55,21 @@ export const validateMotregning = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.svarType,
-    id: namespace + nsIndex + '-svarType',
+    id: namespace + (nsIndex ?? '') + '-svarType',
     message: 'validation:noAnswer',
     personName: formalName
   }))
 
   if (_.isEmpty(motregning?.beloep?.trim())) {
     hasErrors.push(addError(v, {
-      id: namespace + nsIndex + '-beloep',
+      id: namespace + (nsIndex ?? '') + '-beloep',
       message: 'validation:noBeløp',
       personName: formalName
     }))
   } else {
     if (!motregning?.beloep?.trim().match(/^[\d.,]+$/)) {
       hasErrors.push(addError(v, {
-        id: namespace + nsIndex + '-beloep',
+        id: namespace + (nsIndex ?? '') + '-beloep',
         message: 'validation:invalidBeløp',
         personName: formalName
       }))
@@ -79,33 +78,34 @@ export const validateMotregning = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.valuta,
-    id: namespace + nsIndex + '-valuta',
+    id: namespace + (nsIndex ?? '') + '-valuta',
     message: 'validation:noValuta',
     personName: formalName
   }))
 
-  hasErrors.push(validatePeriode(v, namespace + nsIndex, {
+  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? ''), {
     periode: motregning,
+    periodeType: 'simple',
     personName: formalName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.utbetalingshyppighet,
-    id: namespace + nsIndex + '-utbetalingshyppighet',
+    id: namespace + (nsIndex ?? '') + '-utbetalingshyppighet',
     message: 'validation:noAvgrensing',
     personName: formalName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.mottakersNavn,
-    id: namespace + nsIndex + '-mottakersNavn',
+    id: namespace + (nsIndex ?? '') + '-mottakersNavn',
     message: 'validation:noMottakersNavn',
     personName: formalName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.begrunnelse,
-    id: namespace + nsIndex + '-begrunnelse',
+    id: namespace + (nsIndex ?? '') + '-begrunnelse',
     message: 'validation:noGrunn',
     personName: formalName
   }))
@@ -113,7 +113,7 @@ export const validateMotregning = (
   hasErrors.push(checkLength(v, {
     needle: motregning?.begrunnelse,
     max: 500,
-    id: namespace + nsIndex + '-begrunnelse',
+    id: namespace + (nsIndex ?? '') + '-begrunnelse',
     message: 'validation:textOverX',
     personName: formalName
   }))
@@ -121,7 +121,7 @@ export const validateMotregning = (
   hasErrors.push(checkLength(v, {
     needle: motregning?.ytterligereInfo,
     max: 500,
-    id: namespace + nsIndex + '-ytterligereInfo',
+    id: namespace + (nsIndex ?? '') + '-ytterligereInfo',
     message: 'validation:textOverX',
     personName: formalName
   }))

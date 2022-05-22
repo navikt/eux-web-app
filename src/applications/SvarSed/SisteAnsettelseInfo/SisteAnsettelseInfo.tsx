@@ -85,7 +85,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
         beloep: newBeløp.trim(),
         valuta: _.isNil(_newUtbetaling?.valuta) ? 'NOK' : _newUtbetaling?.valuta
       } as Utbetaling)
-      _resetValidation(namespace + '-beloep')
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
       return
     }
     _setEditUtbetaling({
@@ -93,7 +93,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
       beloep: newBeløp.trim(),
       valuta: _.isNil(_editUtbetaling?.valuta) ? 'NOK' : _editUtbetaling?.valuta
     } as Utbetaling)
-    dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
+    dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))
   }
 
   const setValuta = (newValuta: Currency, index: number) => {

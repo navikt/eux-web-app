@@ -1,8 +1,9 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
+  AlignEndRow,
   Column,
   FlexDiv,
   FlexRadioPanels,
@@ -59,7 +60,7 @@ export type BarnaNameKeyMap = {[barnaName in string]: string}
 export interface KeyAndYtelse {
   key1: string // it can be barn[0]/barn[1]/familie/etc
   key2: number | undefined // it is the motregninger array index (0, 1, etc) inside the key1 objecy
-  ytelseNavn: string // used only when motregning is barna
+  ytelseNavn: string | undefined // used only when motregning is barna
   isChecked: boolean // boolean to signal that barna is checked (good to check/uncheck entries without cleaning ytelseNavn)
 }
 
@@ -69,6 +70,7 @@ export interface KeyAndYtelseIndexes {
 }
 
 const MotregningFC: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   setReplySed,
   replySed,
@@ -85,7 +87,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
   const [_editMotregning, _setEditMotregning] = useState<Motregning | undefined>(undefined)
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_editIndex, _setEditIndex] = useState<KeyAndYtelseIndexes | undefined>(undefined)
+  const [_editIndex, _setEditIndex] = useState<string | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationMotregningProps>(validateMotregning, namespace)
 
   // Dictionary to convert barna keys (barn[0]) into names (Bart Simpson)
@@ -96,7 +98,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationMotregningerProps>(
       validation, namespace, validateMotregninger, {
-        replySed: replySed as ReplySed,
+        replySed: _.cloneDeep(replySed as ReplySed),
         formalName: personName
       }
     )
@@ -106,6 +108,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
 
   useEffect(() => {
     /**
+
       Structure of __type and __index for this sample ReplySed:
 
       barn: [{
@@ -226,6 +229,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
             (a: KeyAndYtelse, b: KeyAndYtelse) => a.key1.localeCompare(b.key1))
           newKeyAndYtelseMap[motregningKey] = {
             ..._motregning,
+            __type: 'barn' as BarnEllerFamilie,
             __index: currentIndex
           }
         }
@@ -243,7 +247,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
         ..._motregning,
         __type: 'familie' as BarnEllerFamilie,
         __index: {
-          inxex: motregningKey,
+          index: motregningKey,
           values: [{
             key1: 'familie',
             key2: motregningIndex
@@ -266,67 +270,69 @@ const MotregningFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        begrunnelse
+        begrunnelse: begrunnelse.trim()
       } as Motregning)
       _resetValidation(namespace + '-begrunnelse')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      begrunnelse
+      begrunnelse: begrunnelse.trim()
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-begrunnelse')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-begrunnelse'))
   }
 
   const setBeløp = (newBeløp: string, index: number) => {
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        beloep: newBeløp.trim().trim(),
+        beloep: newBeløp.trim(),
         valuta: _.isNil(_newMotregning?.valuta) ? 'NOK' : _newMotregning?.valuta
       } as Motregning)
-      _resetValidation(namespace + '-beloep')
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      beloep: newBeløp.trim().trim(),
+      beloep: newBeløp.trim(),
       valuta: _.isNil(_editMotregning?.valuta) ? 'NOK' : _editMotregning?.valuta
     } as Motregning)
-    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-beloep'))
-    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-valuta'))
+    dispatch(resetValidation([
+      namespace + '[' + _editMotregning?.__index.index + ']-beloep',
+      namespace + '[' + _editMotregning?.__index.index + ']-valuta'
+    ]))
   }
 
   const setMottakersNavn = (mottakersNavn: string, index: number) => {
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        mottakersNavn
+        mottakersNavn: mottakersNavn.trim()
       } as Motregning)
       _resetValidation(namespace + '-mottakersNavn')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      mottakersNavn
+      mottakersNavn: mottakersNavn.trim()
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-mottakersNavn')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-mottakersNavn'))
   }
 
   const setSvarType = (svarType: string, index: number) => {
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        svarType
+        svarType: svarType.trim()
       } as Motregning)
       _resetValidation(namespace + '-svarType')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      svarType
+      svarType: svarType.trim()
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-svarType')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-svarType'))
   }
 
   const setUtbetalingshyppighet = (utbetalingshyppighet: string, index: number) => {
@@ -342,7 +348,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
       ..._editMotregning,
       utbetalingshyppighet
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-utbetalingshyppighet')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-utbetalingshyppighet'))
   }
 
   const setValuta = (valuta: Currency, index: number) => {
@@ -358,96 +364,131 @@ const MotregningFC: React.FC<MainFormProps> = ({
       ..._editMotregning,
       valuta: valuta.value
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-valuta')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-valuta'))
   }
 
   const setVedtaksDato = (vedtaksdato: string, index: number) => {
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        vedtaksdato
+        vedtaksdato: vedtaksdato.trim()
       } as Motregning)
       _resetValidation(namespace + '-vedtaksdato')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      vedtaksdato
+      vedtaksdato: vedtaksdato.trim()
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-vedtaksdato')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-vedtaksdato'))
   }
 
   const setYtterligereInfo = (ytterligereInfo: string, index: number) => {
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        ytterligereInfo
+        ytterligereInfo: ytterligereInfo.trim()
       } as Motregning)
       _resetValidation(namespace + '-ytterligereInfo')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      ytterligereInfo
+      ytterligereInfo: ytterligereInfo.trim()
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-ytterligereInfo')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-ytterligereInfo'))
   }
 
   const setPeriode = (periode: Motregning, index: number) => {
     if (index < 0) {
       _setNewMotregning(periode)
-      _resetValidation(namespace + '-startdato')
-      _resetValidation(namespace + '-sluttdato')
+      _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
       return
     }
     _setEditMotregning(periode)
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-startdato')
-    _resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-sluttdato')
+    dispatch(resetValidation([
+      namespace + '[' + _editMotregning?.__index.index + ']-startdato',
+      namespace + '[' + _editMotregning?.__index.index + ']-sluttdato'
+    ]))
   }
 
   const setType = (type: BarnEllerFamilie, index: number) => {
     if (index < 0) {
+      const oldType: BarnEllerFamilie | undefined = _newMotregning?.__type as BarnEllerFamilie | undefined
+      // clean up index values
+      let newValues: Array<KeyAndYtelse> | undefined = _.cloneDeep(_newMotregning?.__index?.values) ?? []
+      if (oldType) {
+        newValues = _.reject(newValues, (k: KeyAndYtelse) => k.key1.startsWith(oldType))
+      }
       _setNewMotregning({
         ..._newMotregning,
-        __type: type
+        __type: type,
+        __index: {
+          index: _newMotregning?.__index?.index,
+          values: newValues
+        }
       } as Motregning)
       _resetValidation(namespace + '-type')
       return
     }
+    const oldType: BarnEllerFamilie | undefined = _editMotregning?.__type as BarnEllerFamilie | undefined
+    // clean up index values
+    let newValues: Array<KeyAndYtelse> | undefined = _.cloneDeep(_editMotregning?.__index?.values) ?? []
+    if (oldType) {
+      newValues = _.reject(newValues, (k: KeyAndYtelse) => k.key1.startsWith(oldType))
+    }
     _setEditMotregning({
       ..._editMotregning,
-      __type: type
+      __type: type,
+      __index: {
+        index: _editMotregning?.__index?.index,
+        values: newValues
+      }
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index + ']-type')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-type'))
   }
 
   const checkKey = (key1: string, checked: boolean, index: number) => {
     if (index < 0) {
+      const newValues: Array<KeyAndYtelse> = _.cloneDeep(_newMotregning?.__index?.values) ?? []
+      const keyIndex: number = _.findIndex(newValues, (k: KeyAndYtelse) => k.key1 === key1)
+      if (keyIndex >= 0) {
+        newValues[keyIndex].isChecked = checked
+      } else {
+        newValues.push({
+          key1,
+          key2: undefined,
+          isChecked: checked,
+          ytelseNavn: undefined
+        } as KeyAndYtelse)
+      }
       _setNewMotregning({
         ..._newMotregning,
         __index: {
           ..._newMotregning?.__index,
-          values: _newMotregning?.__index.values.map((k: KeyAndYtelse) => {
-            if (k.key1 === key1) {
-              return { ...k, isChecked: checked }
-            }
-            return k
-          })
+          values: newValues
         }
       } as Motregning)
       return
     }
 
+    const newValues: Array<KeyAndYtelse> = _.cloneDeep(_editMotregning?.__index.values) ?? []
+    const keyIndex: number = _.findIndex(newValues, (k: KeyAndYtelse) => k.key1 === key1)
+    if (keyIndex >= 0) {
+      newValues[keyIndex].isChecked = checked
+    } else {
+      newValues.push({
+        key1,
+        key2: undefined,
+        isChecked: checked,
+        ytelseNavn: undefined
+      } as KeyAndYtelse)
+    }
     _setEditMotregning({
       ..._editMotregning,
       __index: {
         ..._editMotregning?.__index,
-        values: _editMotregning?.__index.values.map((k: KeyAndYtelse) => {
-          if (k.key1 === key1) {
-            return { ...k, isChecked: checked }
-          }
-          return k
-        })
+        values: newValues
       }
     } as Motregning)
   }
@@ -495,7 +536,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
       ..._editMotregning,
       ytelseNavn
     } as Motregning)
-    _resetValidation(namespace + '[' + _editMotregning?.__index + ']-ytelseNavn')
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-ytelseNavn'))
   }
 
   const onCloseEdit = (namespace: string) => {
@@ -516,7 +557,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
       dispatch(resetValidation(namespace + _editIndex))
     }
     _setEditMotregning(motregning)
-    _setEditIndex(_editMotregning?.__index.index)
+    _setEditIndex(motregning?.__index?.index)
   }
 
   // in order to remove motregning, check __index.values for all the keys where this motreging "lives" for now,
@@ -580,18 +621,21 @@ const MotregningFC: React.FC<MainFormProps> = ({
     const [valid, newValidation] = performValidation<ValidationMotregningProps>(
       validation, namespace, validateMotregning, {
         motregning: _editMotregning,
+        nsIndex: _editIndex,
         formalName: personName
       })
 
     if (!!_editMotregning && valid) {
       const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
 
+      const oldEditMotregning: Motregning | undefined = _.find(_allMotregnings, (m: Motregning) => m.__index.index === _editIndex)
+
       // the easiest is to:
-      // 1) delete all instances of this motregning, using _editIndex.values (which was set BEFORE editing started)
+      // 1) delete all instances of this motregning, using oldEditMotregning.__index.values (which is the original version)
       // 2) add all instances of this motregning, using the _editMotregning.__index.values (which was changed DURING editing)
 
       // 1) delete
-      _editIndex?.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
+      oldEditMotregning?.__index?.values?.forEach((keyAndYtelse: KeyAndYtelse) => {
         const newMotregninger: Array<Motregning> = _.get(newReplySed, keyAndYtelse.key1 + '.motregninger')
         newMotregninger.splice(keyAndYtelse.key2!, 1)
         _.set(newReplySed, keyAndYtelse.key1 + '.motregninger', newMotregninger)
@@ -631,7 +675,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
         })
       }
       dispatch(setReplySed(newReplySed))
-      onCloseEdit(namespace + _editIndex?.index)
+      onCloseEdit(namespace + oldEditMotregning?.__index?.index)
     } else {
       dispatch(setValidation(newValidation))
     }
@@ -642,7 +686,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
     const idx: string = index < 0 ? '' : motregning?.__index?.index
     const _namespace = namespace + idx
     const _v: Validation = index < 0 ? _validation : validation
-    const inEditMode = index < 0 || _editIndex?.index === idx
+    const inEditMode = index < 0 || _editIndex === idx
     const _motregning = index < 0 ? _newMotregning : (inEditMode ? _editMotregning : motregning)
 
     const addremovepanel = (
@@ -686,7 +730,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
               >
                 <FlexRadioPanels>
                   <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning')}</RadioPanel>
-                  <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar')}</RadioPanel>
+                  <RadioPanel value='svar_om_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar')}</RadioPanel>
                 </FlexRadioPanels>
               </RadioPanelGroup>
             </Column>
@@ -799,7 +843,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 label={t('label:vedtaksdato')}
                 namespace={_namespace}
                 onChanged={(newVedtaksdato) => setVedtaksDato(newVedtaksdato, index)}
-                required
                 value={_motregning?.vedtaksdato}
               />
             </Column>
@@ -839,15 +882,32 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
               }}
               label={{
-                startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *',
-                sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ') *'
+                startdato: t('label:startdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')',
+                sluttdato: t('label:sluttdato') + ' (' + t('label:innvilgelse').toLowerCase() + ')'
               }}
               hideLabel={false}
               periodeType='simple'
+              requiredStartDato
+              requiredSluttDato
               setPeriode={(newPeriode: Motregning) => setPeriode(newPeriode, index)}
               value={_motregning}
             />
-            <Column flex='2'>
+            <Column />
+          </AlignStartRow>
+          <VerticalSeparatorDiv />
+          <AlignStartRow>
+            <Column>
+              <Input
+                error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+                namespace={_namespace}
+                id='mottakersNavn'
+                label={t('label:mottakers-navn')}
+                onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, index)}
+                required
+                value={_motregning?.mottakersNavn}
+              />
+            </Column>
+            <Column>
               <RadioPanelGroup
                 value={_motregning?.utbetalingshyppighet}
                 data-no-border
@@ -868,21 +928,6 @@ const MotregningFC: React.FC<MainFormProps> = ({
           <VerticalSeparatorDiv />
           <AlignStartRow>
             <Column flex='2'>
-              <Input
-                error={_v[_namespace + '-mottakersNavn']?.feilmelding}
-                namespace={_namespace}
-                id='mottakersNavn'
-                label={t('label:mottakers-navn')}
-                onChanged={(newMottakersNavn: string) => setMottakersNavn(newMottakersNavn, index)}
-                required
-                value={_motregning?.mottakersNavn}
-              />
-            </Column>
-            <Column />
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column flex='2'>
               <TextAreaDiv>
                 <TextArea
                   error={_v[_namespace + '-begrunnelse']?.feilmelding}
@@ -897,7 +942,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
             <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow>
+          <AlignEndRow>
             <Column flex='2'>
               <TextAreaDiv>
                 <TextArea
@@ -913,7 +958,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
             <AlignEndColumn>
               {addremovepanel}
             </AlignEndColumn>
-          </AlignStartRow>
+          </AlignEndRow>
           <VerticalSeparatorDiv size='0.5' />
         </RepeatableRow>
       )
@@ -929,90 +974,87 @@ const MotregningFC: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
-            <FormText
-              error={_v[_namespace + '-svarType']?.feilmelding}
-              id={_namespace + '-svarType'}
-            >
-              {_motregning?.svarType}
-            </FormText>
-          </Column>
-
-          <Column>
-            <FormText
-              error={_v[_namespace + '-type']?.feilmelding}
-              id={_namespace + '-type'}
-            >
-              {t('label:' + _motregning?.__type)}
-            </FormText>
-          </Column>
-        </AlignStartRow>
-        {_motregning?.__type === 'barn' && Object.keys(_allBarnaNameKeys)?.map(barnaKey => {
-          const matchedKeyAndYtelseIndex: number = _.findIndex(_motregning?.__index?.values,
-            (value: KeyAndYtelse) => value.key1 === barnaKey)
-          const matchedKeyAndYtelse: KeyAndYtelse | undefined = matchedKeyAndYtelseIndex < 0
-            ? undefined
-            : _motregning?.__index?.values[matchedKeyAndYtelseIndex]
-          const ytelseIdx = getIdx(matchedKeyAndYtelseIndex)
-          if (!matchedKeyAndYtelse) {
-            return null
-          }
-          return (
-            <PaddedHorizontallyDiv key={barnaKey}>
-              <AlignStartRow>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-svarType']?.feilmelding}
-                    id={_namespace + '-svarType'}
-                  >
-                    {_allBarnaNameKeys[barnaKey]}:
-                  </FormText>
-                  <FormText
-                    error={_v[_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn']?.feilmelding}
-                    id={_namespace + '-ytelse' + ytelseIdx + '-ytelseNavn'}
-                  >
-                    {matchedKeyAndYtelse?.ytelseNavn}
-                  </FormText>
-                </Column>
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-          )
-        })}
-        {_motregning?.__type === 'familie' && (
-          <AlignStartRow>
-            <Column>
+        <AlignEndRow>
+          <Column flex='2'>
+            <FlexDiv>
               <FormText
                 error={_v[_namespace + '-svarType']?.feilmelding}
                 id={_namespace + '-svarType'}
               >
-                {t('label:familie') + ': '}
+                <Label>
+                  {_motregning?.svarType === 'anmodning_om_motregning_per_barn' && t('label:anmodning')}
+                  {_motregning?.svarType === 'svar_om_anmodning_om_motregning_per_barn' && t('label:anmodning-svar')}
+                </Label>
               </FormText>
+              <HorizontalSeparatorDiv size='0.3' />
+              <Label>{t('label:til').toLowerCase()}</Label>
+              <HorizontalSeparatorDiv size='0.3' />
               <FormText
-                error={_v[_namespace + '-ytelseNavn']?.feilmelding}
-                id={_namespace + '-ytelseNavn'}
+                error={_v[_namespace + '-type']?.feilmelding}
+                id={_namespace + '-type'}
               >
-                {_motregning?.ytelseNavn}
+                <Label>{t('label:' + _motregning?.__type).toLowerCase()}</Label>
               </FormText>
+              {_motregning?.__type === 'familie' && (
+                <>
+                  <HorizontalSeparatorDiv size='0.3' />
+                  <FormText
+                    error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                    id={_namespace + '-ytelseNavn'}
+                  >
+                    ({_motregning?.ytelseNavn})
+                  </FormText>
+                </>
+              )}
+            </FlexDiv>
+            <VerticalSeparatorDiv size='0.6' />
+          </Column>
+          <AlignEndColumn>
+            {addremovepanel}
+          </AlignEndColumn>
+        </AlignEndRow>
+        {_motregning?.__type === 'barn' && (
+          <AlignStartRow>
+            <Column>
+              <FlexDiv>
+                {_motregning?.__index?.values.map((value: KeyAndYtelse, index: number) => {
+                  return (
+                    <div key={value.key1}>
+                      <FlexDiv>
+                        {_allBarnaNameKeys[value.key1]}:
+                        <HorizontalSeparatorDiv size='0.3' />
+                        <FormText
+                          error={_v[_namespace + '-ytelse' + getIdx(index) + '-ytelseNavn']?.feilmelding}
+                          id={_namespace + '-ytelse' + getIdx(index) + '-ytelseNavn'}
+                        >
+                          {value?.ytelseNavn}
+                        </FormText>
+                      </FlexDiv>
+                      <HorizontalSeparatorDiv />
+                    </div>
+                  )
+                })}
+              </FlexDiv>
             </Column>
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        <Label>
-          {t('label:informasjon-om-familieytelser')}
-        </Label>
         <AlignStartRow>
           <Column>
             <FormText
               error={_v[_namespace + '-vedtaksdato']?.feilmelding}
               id={_namespace + '-vedtaksdato'}
             >
-              {_motregning?.vedtaksdato}
+              <FlexDiv>
+                {t('label:vedtaksdato') + ': '}
+                <HorizontalSeparatorDiv size='0.5' />
+                {_motregning?.vedtaksdato ?? '-'}
+              </FlexDiv>
             </FormText>
           </Column>
           <Column>
             <FlexDiv>
-              <Label>{t('label:beløp') + ':'}</Label>
+              {t('label:beløp') + ': '}
               <HorizontalSeparatorDiv size='0.5' />
               <FlexDiv>
                 <FormText
@@ -1028,10 +1070,18 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 >
                   {_motregning?.valuta}
                 </FormText>
+                <HorizontalSeparatorDiv size='0.5' />
+                <FormText
+                  error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
+                  id={_namespace + '-utbetalingshyppighet'}
+                >
+                  ({_motregning?.utbetalingshyppighet})
+                </FormText>
               </FlexDiv>
             </FlexDiv>
           </Column>
         </AlignStartRow>
+        <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column>
             <PeriodeText
@@ -1045,51 +1095,43 @@ const MotregningFC: React.FC<MainFormProps> = ({
           </Column>
           <Column>
             <FormText
-              error={_v[_namespace + '-vedtaksdato']?.feilmelding}
-              id={_namespace + '-vedtaksdato'}
-            >
-              {_motregning?.vedtaksdato}
-            </FormText>
-          </Column>
-          <Column>
-            <FormText
-              error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
-              id={_namespace + '-utbetalingshyppighet'}
-            >
-              {_motregning?.utbetalingshyppighet}
-            </FormText>
-          </Column>
-        </AlignStartRow>
-        <AlignStartRow>
-          <Column>
-            <FormText
               error={_v[_namespace + '-mottakersNavn']?.feilmelding}
               id={_namespace + '-mottakersNavn'}
             >
-              {_motregning?.mottakersNavn}
+              <FlexDiv>
+                {t('label:mottakers-navn') + ': '}
+                <HorizontalSeparatorDiv size='0.5' />
+                {_motregning?.mottakersNavn ?? '-'}
+              </FlexDiv>
             </FormText>
           </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
           <Column>
             <FormText
               error={_v[_namespace + '-begrunnelse']?.feilmelding}
               id={_namespace + '-begrunnelse'}
             >
-              {_motregning?.begrunnelse}
+              <FlexDiv>
+                {t('label:begrunnelse') + ': '}
+                <HorizontalSeparatorDiv size='0.5' />
+                {_motregning?.begrunnelse ?? '-'}
+              </FlexDiv>
             </FormText>
           </Column>
-        </AlignStartRow>
-        <AlignStartRow>
           <Column>
             <FormText
               error={_v[_namespace + '-ytterligereInfo']?.feilmelding}
               id={_namespace + '-ytterligereInfo'}
             >
-              {_motregning?.ytterligereInfo}
+              <FlexDiv>
+                {t('label:ytterligere-informasjon') + ': '}
+                <HorizontalSeparatorDiv size='0.5' />
+                {_motregning?.ytterligereInfo ?? '-'}
+              </FlexDiv>
             </FormText>
           </Column>
-          <AlignEndColumn>
-            {addremovepanel}
-          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
@@ -1098,6 +1140,12 @@ const MotregningFC: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
+      <VerticalSeparatorDiv />
       {_.isEmpty(_allMotregnings)
         ? (
           <PaddedHorizontallyDiv>

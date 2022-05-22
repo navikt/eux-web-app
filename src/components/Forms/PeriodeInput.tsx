@@ -135,7 +135,7 @@ const PeriodeInput = <T extends Periode>({
         />
       </Column>
       {breakInTwo && <div />}
-      {(periodeType === 'withcheckbox' || requiredSluttDato === true) && (
+      {periodeType === 'withcheckbox' && (
         <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
           {_.isEmpty(value?.sluttdato) && (
             <Checkbox
