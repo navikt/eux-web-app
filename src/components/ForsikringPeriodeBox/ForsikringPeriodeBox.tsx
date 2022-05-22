@@ -47,11 +47,11 @@ const ForsikringPeriodePanel = styled(Panel)`
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
   }
-  &.error {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
   &.original {
     background-color: var(--navds-global-color-blue-100);
+  }
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
   }
   &:hover:not(.new):not(.error) {
     background-color: var(--navds-global-color-gray-100);
@@ -331,7 +331,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     }
   }
 
-  const _forsikringPeriode: ForsikringPeriode | null | undefined = (_inEditMode) ? _editForsikringPeriode : (newMode ? _newForsikringPeriode : forsikringPeriode)
+  const _forsikringPeriode: ForsikringPeriode | null | undefined = newMode ? _newForsikringPeriode : (_inEditMode ? _editForsikringPeriode : forsikringPeriode)
   // if this is a selectable box, then it's selected if we find an index in it
   const selected: boolean = !_.isNil(_forsikringPeriode?.__index) && _forsikringPeriode!.__index >= 0
   const _v: Validation = newMode ? _validation : (validation ?? {})
@@ -440,13 +440,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
           </FlexDiv>
         </AlignEndColumn>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='0.3' />
-      {(showArbeidsgiver || showAnnen || showAddress || showInntekt) && (
-        <>
-          <HorizontalLineSeparator />
-          <VerticalSeparatorDiv />
-        </>
+      {!_inEditMode && (showArbeidsgiver || showAnnen || showAddress || showInntekt) && (
+        <HorizontalLineSeparator />
       )}
+      <VerticalSeparatorDiv />
       {newMode || (_inEditMode && editable === 'full')
         ? (
           <>

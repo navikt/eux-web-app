@@ -95,7 +95,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
         {!_seeNorskPinForm
           ? (
             <>
-              <Column>
+              <Column style={{ minHeight: '3rem' }}>
                 <PileDiv>
                   <VerticalSeparatorDiv />
                   <FlexCenterDiv>

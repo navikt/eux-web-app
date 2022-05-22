@@ -22,7 +22,12 @@ const useLocalValidation = <ValidationData extends any>(
     if (key === undefined) {
       setValidation({})
     } else {
-      setValidation(_.omit(_validation, key))
+      setValidation(
+        _.omitBy(_validation, (value, _key) => {
+          return _.isString(key)
+            ? _key.startsWith(key)
+            : _.find(key as Array<string>, (n: string) => _key.startsWith(n)) !== undefined
+        }))
     }
   }
 

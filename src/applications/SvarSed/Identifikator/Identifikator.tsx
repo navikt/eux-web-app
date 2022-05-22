@@ -6,7 +6,6 @@ import {
   Column,
   FlexDiv,
   HorizontalSeparatorDiv,
-  PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -252,13 +251,13 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     <>
       {_.isEmpty(identifikatorer)
         ? (
-          <PaddedHorizontallyDiv>
+          <>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-ids')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </>
           )
         : identifikatorer?.map(renderRow)}
       {hasError && (
@@ -272,7 +271,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedHorizontallyDiv>
+          <>
             <Button
               variant='tertiary'
               data-testid={namespace + '-new'}
@@ -281,7 +280,7 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
             </Button>
-          </PaddedHorizontallyDiv>
+          </>
           )}
     </>
   )

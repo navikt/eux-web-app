@@ -1,3 +1,4 @@
+import { Heading } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
@@ -19,6 +20,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Referanseperiode: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -53,7 +55,10 @@ const Referanseperiode: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <PeriodeInput
           namespace={namespace}

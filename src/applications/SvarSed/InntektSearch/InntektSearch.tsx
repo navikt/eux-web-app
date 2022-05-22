@@ -1,6 +1,6 @@
 import { Search } from '@navikt/ds-icons'
 import { Button, Loader } from '@navikt/ds-react'
-import { AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { AlignEndColumn, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -111,8 +111,8 @@ const InntektSearch = ({
           defaultValue={_.find(filterOptions, b => b.value === _filter)}
         />
       </Column>
-      <Column>
-        <VerticalSeparatorDiv size='1.8' />
+      <AlignEndColumn>
+        <VerticalSeparatorDiv size='2' />
         <Button
           variant='secondary'
           disabled={gettingInntekter}
@@ -125,7 +125,7 @@ const InntektSearch = ({
             : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
           {gettingInntekter && <Loader />}
         </Button>
-      </Column>
+      </AlignEndColumn>
     </AlignStartRow>
   )
 }
