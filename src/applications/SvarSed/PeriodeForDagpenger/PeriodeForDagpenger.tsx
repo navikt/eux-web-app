@@ -1,7 +1,8 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
+  AlignEndRow,
   AlignStartRow,
   Column,
   FlexDiv,
@@ -36,6 +37,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validatePeriodeDagpenger,
   validatePerioderDagpenger,
@@ -48,6 +50,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const PeriodeForDagpenger: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -316,7 +319,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _periodeDagpenger = index < 0 ? _newPeriodeDagpenger : (inEditMode ? _editPeriodeDagpenger : periodeDagpenger)
-    const idmangler = !!_periodeDagpenger && Object.prototype.hasOwnProperty.call(_periodeDagpenger?.institusjon, 'idmangler')
+    const idmangler = !!_periodeDagpenger && Object.prototype.hasOwnProperty.call(_periodeDagpenger, 'institusjon') && Object.prototype.hasOwnProperty.call(_periodeDagpenger.institusjon, 'idmangler')
     const institusjonKjent = !idmangler
 
     return (
@@ -325,16 +328,16 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
         key={getId(periodeDagpenger)}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        {inEditMode
-          ? (
-            <AlignStartRow>
+        <AlignEndRow style={{ minHeight: '2.2rem' }}>
+          {inEditMode
+            ? (
               <PeriodeInput
                 namespace={_namespace + '-periode'}
-                hideLabel={index >= 0}
+                hideLabel={false}
                 error={{
                   startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
                   sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
@@ -342,46 +345,63 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                 setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periodeDagpenger?.periode}
               />
-              <Column />
-            </AlignStartRow>
-            )
-          : (
-            <Column>
-              <PeriodeText
-                error={{
-                  startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
-                }}
-                namespace={_namespace}
-                periode={_periodeDagpenger?.periode}
-              />
-            </Column>
-            )}
+              )
+            : (
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                  }}
+                  namespace={_namespace}
+                  periode={_periodeDagpenger?.periode}
+                />
+              </Column>
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel<PeriodeDagpenger>
+              item={periodeDagpenger}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
+            />
+          </AlignEndColumn>
+        </AlignEndRow>
+        <VerticalSeparatorDiv />
         {inEditMode
           ? (
-            <AlignStartRow>
-              <Column>
-                <Input
-                  error={_v[_namespace + '-institusjon-id']?.feilmelding}
-                  namespace={_namespace}
-                  id='institusjon-id'
-                  label={t('label:institusjonens-id')}
-                  onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
-                  value={_periodeDagpenger?.institusjon?.id}
-                />
-              </Column>
-              <Column>
-                <Input
-                  error={_v[_namespace + '-institusjon-navn']?.feilmelding}
-                  namespace={_namespace}
-                  id='institusjon-navn'
-                  label={t('label:institusjonens-navn')}
-                  onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
-                  value={_periodeDagpenger?.institusjon?.navn}
-                />
-              </Column>
-              <Column />
-            </AlignStartRow>
+            <>
+              <AlignStartRow>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-institusjon-id']?.feilmelding}
+                    namespace={_namespace}
+                    id='institusjon-id'
+                    label={t('label:institusjonens-id')}
+                    onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
+                    value={_periodeDagpenger?.institusjon?.id}
+                  />
+                </Column>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-institusjon-navn']?.feilmelding}
+                    namespace={_namespace}
+                    id='institusjon-navn'
+                    label={t('label:institusjonens-navn')}
+                    onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
+                    value={_periodeDagpenger?.institusjon?.navn}
+                  />
+                </Column>
+                <Column />
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+            </>
             )
           : (
             <AlignStartRow>
@@ -397,6 +417,8 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                       {_periodeDagpenger?.institusjon?.id}
                     </FormText>
                     <HorizontalSeparatorDiv size='0.5' />
+                    -
+                    <HorizontalSeparatorDiv size='0.5' />
                     <FormText
                       error={_v[_namespace + '-institusjon-navn']?.feilmelding}
                       id={_namespace + '-institusjon-navn'}
@@ -408,7 +430,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
               </Column>
             </AlignStartRow>
             )}
-        <VerticalSeparatorDiv />
         {inEditMode
           ? (
             <AlignStartRow>
@@ -433,48 +454,50 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </AlignStartRow>
             )
           : (
-            <FormText
-              error={_v[_namespace + '-institusjon-idmangler']?.feilmelding}
-              id={_namespace + '-institusjon-idmangler'}
-            >
-              <FlexDiv>
-                <Label>{t('label:institusjonens-id-er-kjent') + ':'}</Label>
-                <HorizontalSeparatorDiv size='0.5' />
-                {institusjonKjent ? 'ja' : 'nei'}
-              </FlexDiv>
-            </FormText>
+            <FlexDiv>
+              <FormText
+                error={_v[_namespace + '-institusjon-idmangler']?.feilmelding}
+                id={_namespace + '-institusjon-idmangler'}
+              >
+                <FlexDiv>
+                  <Label>{t('label:institusjonens-id-er-kjent') + ':'}</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  {t('label:' + (institusjonKjent ? 'ja' : 'nei'))}
+                </FlexDiv>
+              </FormText>
+              <HorizontalSeparatorDiv />
+              {idmangler && (
+                <FormText
+                  error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
+                  id={_namespace + '-institusjon-idmangler-navn'}
+                               >
+                  <FlexDiv>
+                    <Label>{t('label:navn') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_periodeDagpenger?.institusjon.idmangler?.navn ?? '-'}
+                  </FlexDiv>
+                </FormText>
+              )}
+            </FlexDiv>
             )}
         <VerticalSeparatorDiv />
         {idmangler && (
           <>
-            {inEditMode
-              ? (
-                <AlignStartRow>
-                  <Column>
-                    <Input
-                      error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
-                      namespace={_namespace}
-                      id='institusjon-idmangler-navn'
-                      label={t('label:navn')}
-                      onChanged={(navn: string) => setInstitutionIdManglerNavn(navn, index)}
-                      value={_periodeDagpenger?.institusjon.idmangler?.navn}
-                    />
-                  </Column>
-                  <Column />
-                </AlignStartRow>
-                )
-              : (
-                <FormText
-                  error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
-                  id={_namespace + '-institusjon-idmangler-navn'}
-                >
-                  <FlexDiv>
-                    <Label>{t('label:navn') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_periodeDagpenger?.institusjon.idmangler?.navn}
-                  </FlexDiv>
-                </FormText>
-                )}
+            {inEditMode && (
+              <AlignStartRow>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
+                    namespace={_namespace}
+                    id='institusjon-idmangler-navn'
+                    label={t('label:navn')}
+                    onChanged={(navn: string) => setInstitutionIdManglerNavn(navn, index)}
+                    value={_periodeDagpenger?.institusjon.idmangler?.navn}
+                  />
+                </Column>
+                <Column />
+              </AlignStartRow>
+            )}
             <VerticalSeparatorDiv />
             {inEditMode
               ? (
@@ -486,35 +509,27 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <AdresseBox adresse={_periodeDagpenger?.institusjon.idmangler?.adresse} seeType />
+                <AlignStartRow>
+                  <Column flex='2'>
+                    <AdresseBox adresse={_periodeDagpenger?.institusjon.idmangler?.adresse} seeType />
+                  </Column>
+                  <Column />
+                </AlignStartRow>
                 )}
           </>
         )}
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2' />
-          <AlignEndColumn>
-            <AddRemovePanel<PeriodeDagpenger>
-              item={periodeDagpenger}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
+        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(perioder)
         ? (

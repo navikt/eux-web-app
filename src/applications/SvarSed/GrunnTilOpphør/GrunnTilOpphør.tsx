@@ -1,5 +1,5 @@
 import { Delete } from '@navikt/ds-icons'
-import { Button } from '@navikt/ds-react'
+import { Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateGrunnTilOpphor, ValidateGrunnTilOpphørProps } from 'applications/SvarSed/GrunnTilOpphør/validation'
@@ -21,6 +21,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const GrunnTilOpphør: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -83,7 +84,10 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column flex='3'>
           <Select
@@ -112,7 +116,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
 
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_typeGrunnOpphoerAnsatt === '99' && (
+      {_typeGrunnOpphoerAnsatt === 'annet' && (
         <>
           <AlignStartRow>
             <Column>

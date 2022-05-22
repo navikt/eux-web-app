@@ -46,6 +46,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -305,7 +306,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                     name={_namespace + '-utbetalingType'}
                     onChange={(e: string) => setUtbetalingType(e, index)}
                   >
-
                     <RadioPanel value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
                       {t('el:option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet')}
                     </RadioPanel>
@@ -399,9 +399,8 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             </>
             )
           : (
-            <AlignStartRow>
+            <AlignStartRow style={{ minHeight: '2.2rem' }}>
               <Column>
-
                 <FlexDiv>
                   <Label>{t('label:beløp') + ':'}</Label>
                   <HorizontalSeparatorDiv size='0.5' />
@@ -458,6 +457,11 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {_.isEmpty(sisteAnsettelseInfo?.utbetalinger)
         ? (
