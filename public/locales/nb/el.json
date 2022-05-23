@@ -161,6 +161,10 @@
   "option-mainform-kontoopplysninger": "Kontoopplysninger",
   "option-mainform-periode": "Periode",
   "option-mainform-formål": "Formål",
+  "option-mainform-avslutning": "Anmodning om avslutning",
+  "option-mainform-ugyldiggjøre": "Ugyldiggjøre SED",
+  "option-mainform-påminnelse": "Påminnelse/Purring av dokument",
+  "option-mainform-svarpåminnelse": "Svar på påminnelse",
 
   "option-perioder-perioderAnsattMedForsikring" : "Forsikret ansettelsesforhold",
   "option-perioder-perioderSelvstendigMedForsikring" : "Forsikret selvstendig næringsdrivende",

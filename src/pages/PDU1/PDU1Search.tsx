@@ -1,21 +1,5 @@
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
-import * as appActions from 'actions/app'
-import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
-import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetValidation } from 'actions/validation'
-import classNames from 'classnames'
-import Input from 'components/Forms/Input'
-import Select from 'components/Forms/Select'
-import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
-import { HorizontalLineSeparator } from 'components/StyledComponents'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Option, Options } from 'declarations/app'
-import { PDU1 } from 'declarations/pd'
-import { State } from 'declarations/reducers'
-import { FagSak, FagSaker } from 'declarations/types'
-import useLocalValidation from 'hooks/useLocalValidation'
-import _ from 'lodash'
 import {
   AlignStartRow,
   Column,
@@ -27,6 +11,21 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import * as appActions from 'actions/app'
+import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
+import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
+import { resetValidation } from 'actions/validation'
+import classNames from 'classnames'
+import Input from 'components/Forms/Input'
+import Select from 'components/Forms/Select'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
+import { Option, Options } from 'declarations/app'
+import { PDU1 } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { FagSak, FagSaker } from 'declarations/types'
+import useLocalValidation from 'hooks/useLocalValidation'
+import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -59,7 +58,7 @@ const mapState = (state: State): PDU1SearchSelector => ({
 })
 
 export interface PDU1Props {
-  changeMode: ChangeModeFunction
+  changeMode: (newPage: string) => void
 }
 
 const PDU1Search: React.FC<PDU1Props> = ({
@@ -192,7 +191,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   useEffect(() => {
     if (PDU1 && pdu1Request) {
       setPdu1Request(false)
-      changeMode('B', 'forward')
+      changeMode('B')
     }
   }, [PDU1])
 

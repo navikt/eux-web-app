@@ -53,10 +53,12 @@ const mapState = (state: State): any => ({
 })
 
 export interface SvarSedProps {
-  changeMode: (mode: string, from: string, callback?: () => void) => void
+  sak: Sak
+  changeMode: (mode: string) => void
 }
 
 const SEDSearch: React.FC<SvarSedProps> = ({
+  sak,
   changeMode
 }: SvarSedProps): JSX.Element => {
   const { t } = useTranslation()
@@ -179,7 +181,10 @@ const SEDSearch: React.FC<SvarSedProps> = ({
         <AlignStartRow>
           {!!currentSak && (
             <Column>
-              <Sakshandlinger />
+              <Sakshandlinger
+                sak={sak}
+                changeMode={changeMode}
+              />
             </Column>
           )}
           <Column flex='2'>

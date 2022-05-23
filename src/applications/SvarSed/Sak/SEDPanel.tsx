@@ -36,7 +36,7 @@ const IconDiv = styled(PileCenterDiv)`
 interface SEDPanelProps {
   currentSak: Sak
   connectedSed: Sed
-  changeMode: (mode: string, from: string, callback?: () => void) => void
+  changeMode: (mode: string) => void
 }
 
 const mapState = (state: State): any => ({
@@ -66,7 +66,7 @@ const SEDPanel = ({
     if (!_.isUndefined(replySed) && (_replyingToSed || _editingSed)) {
       _setReplyingToSed(false)
       _setEditingSed(false)
-      changeMode('B', 'forward')
+      changeMode('B')
     }
   }, [replySed])
 

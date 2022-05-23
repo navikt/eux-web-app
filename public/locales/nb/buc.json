@@ -148,7 +148,6 @@
   "U009": "Registrering av melding - eksport",
   "U017": "Trygdehistorikk - grensearbeider",
   "U018": "Forespørsel om registreringsinformasjon - grensearbeider",
-  "U020_Master": "U020_Master",
   "A001": "Søknad om unntak",
   "A002": "Delvis eller fullt avslag på søknad om unntak",
   "A003": "Beslutning om lovvalg",
@@ -185,5 +184,10 @@
   "P11000": "Anmodning om pensjonsbeløp",
   "P12000": "Informasjon om pensjonsbeløp",
   "P14000": "Endring i personlige forhold",
-  "P15000": "Overføring av pensjonssaker til EESSI"
+  "P15000": "Overføring av pensjonssaker til EESSI",
+  "X001": "Anmodning om avslutning",
+  "X008": "Ugyldiggjøre SED",
+  "X009": "Påminnelse/Purring av dokument",
+  "X010": "Svar på påminnelse"
+
 }

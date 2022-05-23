@@ -8,6 +8,7 @@ import Adresser from 'applications/SvarSed/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
 import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
+import Avslutning from 'applications/SvarSed/Avslutning/Avslutning'
 import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
@@ -24,16 +25,20 @@ import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonensStatus from 'applications/SvarSed/PersonensStatus/PersonensStatus'
+import PersonLight from 'applications/SvarSed/PersonLight/PersonLight'
 import PersonOpplysninger from 'applications/SvarSed/PersonOpplysninger/PersonOpplysninger'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import ProsedyreVedUenighet from 'applications/SvarSed/ProsedyreVedUenighet/ProsedyreVedUenighet'
+import Påminnelse from 'applications/SvarSed/Påminnelse/Påminnelse'
 import Referanseperiode from 'applications/SvarSed/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/Relasjon/Relasjon'
 import RettTilYtelser from 'applications/SvarSed/RettTilYtelser/RettTilYtelser'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import SisteAnsettelseInfo from 'applications/SvarSed/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel'
+import SvarPåminnelse from 'applications/SvarSed/SvarPåminnelse/SvarPåminnelse'
 import Trygdeordning from 'applications/SvarSed/Trygdeordning/Trygdeordning'
+import Ugyldiggjøre from 'applications/SvarSed/Ugyldiggjøre/Ugyldiggjøre'
 import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
@@ -193,6 +198,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
             firstForm='personopplysninger'
             forms={[
               { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
+              { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
               { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U'], adult: true, barn: true },
               { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
               { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
@@ -213,7 +219,11 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
               { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
               { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
-              { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' }
+              { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+              { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
+              { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
+              { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
+              { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' }
             ]}
             replySed={replySed}
             updateReplySed={updateReplySed}

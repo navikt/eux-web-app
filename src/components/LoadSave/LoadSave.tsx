@@ -12,7 +12,6 @@ import * as localStorageActions from 'actions/localStorage'
 import { setCurrentEntry } from 'actions/localStorage'
 import { getSedStatus } from 'actions/svarsed'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { ChangeModeFunction } from 'components/SlidePage/SlidePage'
 import { GrayPanel } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { PDU1 } from 'declarations/pd'
@@ -34,7 +33,7 @@ const LoadSaveDiv = styled(FlexDiv)`
 `
 
 interface LoadSaveProps<T> {
-  changeMode: ChangeModeFunction
+  changeMode: (newPage: string) => void
   namespace: LocalStorageNamespaces
   loadReplySed: (payload: T) => ActionWithPayload<T>
 }
@@ -84,7 +83,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content))
-        changeMode('B', 'forward')
+        changeMode('B')
       }
       setSedStatusRequested(undefined)
     }
@@ -110,7 +109,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
-        changeMode('B', 'forward')
+        changeMode('B')
       }
       setSedStatusRequested(undefined)
     }
