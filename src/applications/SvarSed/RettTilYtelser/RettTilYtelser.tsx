@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -8,7 +8,7 @@ import { State } from 'declarations/reducers'
 import { JaNei, Periode, RettTilYtelse } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -18,6 +18,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const RettTilYtelser: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   replySed,
@@ -30,6 +31,8 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   const rettTilYtelse: RettTilYtelse | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-retttilytelser`
 
+  const [_rettTilStonad, _setRettTilStonad] = useState<JaNei| undefined>(undefined)
+
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationRettTilYtelseProps>(
       validation, namespace, validateRettTilYtelse, {
@@ -39,26 +42,21 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const [_rettTilStonad, _setRettTilStonad] = useState<JaNei | undefined>(() => {
+  useEffect(() => {
     if (!_.isEmpty(rettTilYtelse?.bekreftelsesgrunn)) {
-      return 'ja'
+      _setRettTilStonad('ja')
+      return
     }
     if (!_.isEmpty(rettTilYtelse?.avvisningsgrunn)) {
-      return 'nei'
+      _setRettTilStonad('nei')
+      return
     }
-    return undefined
-  })
+    return _setRettTilStonad(undefined)
+  }, [replySed])
 
   const setPeriode = (periode: Periode) => {
-    if (rettTilYtelse?.periode.startdato !== periode.startdato &&
-      validation[namespace + '-periode-startdato']) {
-      dispatch(resetValidation(namespace + '-periode-startdato'))
-    }
-    if (rettTilYtelse?.periode.sluttdato !== periode.sluttdato &&
-      validation[namespace + '-periode-sluttdato']) {
-      dispatch(resetValidation(namespace + '-periode-sluttdato'))
-    }
     dispatch(updateReplySed(`${target}.periode`, periode))
+    dispatch(resetValidation(namespace + '-periode'))
   }
 
   const setRettTilStonad = (rettTilStonad: JaNei) => {
@@ -96,6 +94,10 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <RadioGroup
@@ -106,14 +108,10 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
             error={validation[namespace + '-retttilstønad']?.feilmelding}
             onChange={(e: string | number | boolean) => setRettTilStonad(e as JaNei)}
           >
-            <Radio
-              value='ja'
-            >
+            <Radio value='ja'>
               {t('label:ja')}
             </Radio>
-            <Radio
-              value='nei'
-            >
+            <Radio value='nei'>
               {t('label:nei')}
             </Radio>
           </RadioGroup>
@@ -131,14 +129,10 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
               error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
               onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
             >
-              <Radio
-                value='artikkel_64_i_forordningen_EF_nr._883/2004'
-              >
+              <Radio value='artikkel_64_i_forordningen_EF_nr._883/2004'>
                 {t('label:artikkel-64')}
               </Radio>
-              <Radio
-                value='artikkel_65_1_i_forordningen_EF_nr._883/2004'
-              >
+              <Radio value='artikkel_65_1_i_forordningen_EF_nr._883/2004'>
                 {t('label:artikkel-65')}
               </Radio>
             </RadioGroup>
@@ -156,14 +150,10 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
               error={validation[namespace + '-avvisningsgrunn']?.feilmelding}
               onChange={(e: string | number | boolean) => setAvvisningsGrunn(e as string)}
             >
-              <Radio
-                value='ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'
-              >
+              <Radio value='ingen_rett_til_stønad_i_henhold_til_lovgivningen_til_institusjonen_som_utsteder_denne_meldingen'>
                 {t('label:grunn-ingen-rett')}
               </Radio>
-              <Radio
-                value='personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte'
-              >
+              <Radio value='personen_søkte_ikke_om_eksport_av_stønad_på_riktig_måte'>
                 {t('label:grunn-personen')}
               </Radio>
             </RadioGroup>

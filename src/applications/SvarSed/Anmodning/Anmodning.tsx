@@ -1,3 +1,4 @@
+import { Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
@@ -18,6 +19,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Anmodning: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -64,6 +66,10 @@ const Anmodning: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <TextAreaDiv>

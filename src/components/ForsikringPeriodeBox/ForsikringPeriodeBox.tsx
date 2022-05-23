@@ -483,13 +483,16 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             )}
             {showInntekt && (
               <>
+                <Heading size='small'>
+                  {t('label:inntekt-og-time')}
+                </Heading>
                 <InntektOgTimerFC
                   validation={_v}
                   parentNamespace={namespace}
                   inntektOgTimer={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer}
                   onInntektOgTimeChanged={(newInntektOgTimer: Array<InntektOgTime>) => setInntektOgTimer(newInntektOgTimer)}
                 />
-
+                <VerticalSeparatorDiv />
                 <AlignStartRow>
                   <Column>
                     <Input

@@ -1,3 +1,4 @@
+import { Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -25,6 +26,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const EndredeForhold: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -62,6 +64,10 @@ const EndredeForhold: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <RadioPanelGroup
         legend=''
         data-testid={namespace + '-ytterligereInfoType'}

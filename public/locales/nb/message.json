@@ -82,7 +82,7 @@
   "warning-no-utenlandskepin": "Ingen utenlandske PIN",
   "warning-no-ytelse": "Ingen ytelser",
   "warning-x-not-saved": "{{x}} er ikke lagret!",
-  "warning-x-save": "Ønsker du å lagre en kopi av {{c}} før du fortsetter?",
+  "warning-x-save": "Ønsker du å lagre en kopi av {{x}} før du fortsetter?",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført",
   "warning-unknown-address": "Ukjent adresse"
 }

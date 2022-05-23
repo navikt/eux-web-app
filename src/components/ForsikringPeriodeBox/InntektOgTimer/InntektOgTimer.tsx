@@ -1,33 +1,37 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { Button, Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { BodyLong, Button, Label } from '@navikt/ds-react'
+import {
+  AlignEndColumn,
+  AlignStartRow,
+  Column, FlexDiv, HorizontalSeparatorDiv,
+  PaddedDiv, PaddedHorizontallyDiv,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
-import { resetValidation } from 'actions/validation'
+import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
-import OldAddRemovePanel from 'components/AddRemovePanel/OldAddRemovePanel'
+import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
+import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
-import { HorizontalLineSeparator, RepeatableRow } from 'components/StyledComponents'
+import PeriodeText from 'components/Forms/PeriodeText'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { InntektOgTime, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import useAddRemove from 'hooks/useAddRemove'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
-import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
+import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateInntektOgTime, ValidationInntektOgTimeProps } from './validation'
-
-const MyPaddedDiv = styled.div`
-  padding: 0.5rem 0.5rem 0.5rem 2rem;
-`
 
 export interface InntektOgTimerProps {
   inntektOgTimer: Array<InntektOgTime> | undefined
-  onInntektOgTimeChanged: (inntektOgTimer: Array<InntektOgTime>, whatChanged: string) => void
+  onInntektOgTimeChanged: (inntektOgTimer: Array<InntektOgTime>) => void
   parentNamespace: string
   personName?: string
   validation: Validation
@@ -43,235 +47,309 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-inntektOgTimer`
+  const getId = (i: InntektOgTime | null | undefined) => i ? i.inntektsperiode.startdato + '-' + i.bruttoinntekt : 'new-inntekt'
 
-  const [_newArbeidstimer, _setNewArbeidstimer] = useState<string | undefined>(undefined)
-  const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
-  const [_newBruttoinntekt, _setNewBruttoinntekt] = useState<string | undefined>(undefined)
-  const [_newValuta, _setNewValuta] = useState<string | undefined>(undefined)
+  const [_newInntektOgTime, _setNewInntektOgTime] = useState<InntektOgTime | undefined>(undefined)
+  const [_editInntektOgTime, _setEditInntektOgTime] = useState<InntektOgTime | undefined>(undefined)
 
-  const [_seeNewForm, _setSeeNewForm] = useState<boolean>(false)
-  const [addToDeletion, removeFromDeletion, isInDeletion] = useAddRemove<InntektOgTime>((it: InntektOgTime): string => it.inntektsperiode.startdato + '-' + it.bruttoinntekt)
+  const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
+  const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektOgTimeProps>(validateInntektOgTime, namespace)
 
   const setArbeidstimer = (arbeidstimer: string, index: number) => {
     if (index < 0) {
-      _setNewArbeidstimer(arbeidstimer.trim())
+      _setNewInntektOgTime({
+        ..._newInntektOgTime,
+        arbeidstimer: arbeidstimer.trim()
+      } as InntektOgTime)
       _resetValidation(namespace + '-arbeidstimer')
-    } else {
-      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-      newInntektOgTimer[index].arbeidstimer = arbeidstimer.trim()
-      onInntektOgTimeChanged(newInntektOgTimer, 'arbeidstimer')
-      if (validation[namespace + getIdx(index) + '-arbeidstimer']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
-      }
+      return
     }
+    _setEditInntektOgTime({
+      ..._editInntektOgTime,
+      arbeidstimer: arbeidstimer.trim()
+    } as InntektOgTime)
+    dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }
 
-  const setPeriode = (newPeriode: Periode, whatChanged: string, index: number) => {
+  const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
-      _setNewPeriode(newPeriode)
-      _resetValidation(namespace + '-inntektsperiode-' + whatChanged)
-    } else {
-      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-      newInntektOgTimer[index].inntektsperiode = newPeriode
-      onInntektOgTimeChanged(newInntektOgTimer, whatChanged)
-      if (validation[namespace + getIdx(index) + '-inntektsperiode-' + whatChanged]) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-inntektsperiode-' + whatChanged))
-      }
+      _setNewInntektOgTime({
+        ..._newInntektOgTime,
+        inntektsperiode: periode
+      } as InntektOgTime)
+      _resetValidation(namespace + '-inntektsperiode')
+      return
     }
+    _setEditInntektOgTime({
+      ..._editInntektOgTime,
+      inntektsperiode: periode
+    } as InntektOgTime)
+    dispatch(resetValidation(namespace + getIdx(index) + '-inntektsperiode'))
   }
 
   const setBruttoinntekt = (newBeløp: string, index: number) => {
     if (index < 0) {
-      _setNewBruttoinntekt(newBeløp.trim())
-      resetValidation(namespace + '-beloep')
-      if (_.isNil(_newValuta)) {
-        setValuta({ value: 'NOK' } as Currency, index)
-      }
-    } else {
-      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-      newInntektOgTimer[index].bruttoinntekt = newBeløp
-      if (_.isNil(newInntektOgTimer[index].valuta)) {
-        newInntektOgTimer[index].valuta = 'NOK'
-      }
-
-      onInntektOgTimeChanged(newInntektOgTimer, 'bruttoinntekt')
-      if (validation[namespace + getIdx(index) + '-beloep']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-beloep'))
-        dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
-      }
+      _setNewInntektOgTime({
+        ..._newInntektOgTime,
+        bruttoinntekt: newBeløp.trim(),
+        valuta: _.isNil(_newInntektOgTime?.valuta) ? 'NOK' : _newInntektOgTime?.valuta
+      } as InntektOgTime)
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
+      return
     }
+    _setEditInntektOgTime({
+      ..._editInntektOgTime,
+      bruttoinntekt: newBeløp.trim(),
+      valuta: _.isNil(_editInntektOgTime?.valuta) ? 'NOK' : _editInntektOgTime?.valuta
+    } as InntektOgTime)
+    dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + '-beloep', namespace + '-valuta']))
   }
 
   const setValuta = (newValuta: Currency, index: number) => {
     if (index < 0) {
-      _setNewValuta(newValuta.value)
-      resetValidation(namespace + '-valuta')
+      _setNewInntektOgTime({
+        ..._newInntektOgTime,
+        valuta: newValuta.value
+      } as InntektOgTime)
+      _resetValidation([namespace + '-valuta'])
+      return
+    }
+    _setEditInntektOgTime({
+      ..._editInntektOgTime,
+      valuta: newValuta.value
+    } as InntektOgTime)
+    dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
+  }
+
+  const onCloseEdit = (namespace: string) => {
+    _setEditInntektOgTime(undefined)
+    _setEditIndex(undefined)
+    dispatch(resetValidation(namespace))
+  }
+
+  const onCloseNew = () => {
+    _setNewInntektOgTime(undefined)
+    _setNewForm(false)
+    _resetValidation()
+  }
+
+  const onStartEdit = (i: InntektOgTime, index: number) => {
+    // reset any validation that exists from a cancelled edited item
+    if (_editIndex !== undefined) {
+      dispatch(resetValidation(namespace + getIdx(_editIndex)))
+    }
+    _setEditInntektOgTime(i)
+    _setEditIndex(index)
+  }
+
+  const onSaveEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationInntektOgTimeProps>(
+      validation, namespace, validateInntektOgTime, {
+        inntektOgTime: _editInntektOgTime,
+        index: _editIndex,
+        personName
+      })
+    if (_editIndex !== undefined && !!_editInntektOgTime && valid) {
+      const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+      newInntektOgTime[_editIndex] = _editInntektOgTime
+      onInntektOgTimeChanged(newInntektOgTime)
+      onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-      newInntektOgTimer[index].bruttoinntekt = newValuta?.value as string
-      onInntektOgTimeChanged(newInntektOgTimer, 'valuta')
-      if (validation[namespace + getIdx(index) + '-valuta']) {
-        dispatch(resetValidation(namespace + getIdx(index) + '-valuta'))
-      }
+      dispatch(setValidation(newValidation))
     }
   }
 
-  const resetForm = () => {
-    _setNewBruttoinntekt(undefined)
-    _setNewArbeidstimer(undefined)
-    _setNewPeriode(undefined)
-    _setNewValuta('NOK')
-    resetValidation()
+  const onRemove = (removed: InntektOgTime) => {
+    const newInntektOgTimer: Array<InntektOgTime> = _.reject(inntektOgTimer, (i: InntektOgTime) => _.isEqual(removed, i))
+    onInntektOgTimeChanged(newInntektOgTimer)
   }
 
-  const onCancel = () => {
-    _setSeeNewForm(false)
-    resetForm()
-  }
-
-  const onRemoved = (index: number) => {
-    const newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
-    const deletedInntektOgTime: Array<InntektOgTime> = newInntektOgTimer.splice(index, 1)
-    if (deletedInntektOgTime && deletedInntektOgTime.length > 0) {
-      removeFromDeletion(deletedInntektOgTime[0])
-    }
-    onInntektOgTimeChanged(newInntektOgTimer, 'removed')
-  }
-
-  const onAdd = () => {
-    const newInntektOgTime: InntektOgTime = {
-      bruttoinntekt: _newBruttoinntekt?.trim(),
-      inntektsperiode: _newPeriode,
-      arbeidstimer: _newArbeidstimer?.trim(),
-      valuta: _newValuta
-    } as InntektOgTime
-
+  const onAddNew = () => {
     const valid: boolean = _performValidation({
-      inntektOgTime: newInntektOgTime,
+      inntektOgTime: _newInntektOgTime,
       personName
     })
-
-    if (valid) {
-      let newInntektOgTimer: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
+    if (!!_newInntektOgTime && valid) {
+      let newInntektOgTimer: Array<InntektOgTime> | undefined = _.cloneDeep(inntektOgTimer)
       if (_.isNil(newInntektOgTimer)) {
         newInntektOgTimer = []
       }
-      newInntektOgTimer.push(newInntektOgTime)
-      onInntektOgTimeChanged(newInntektOgTimer, 'add')
-      onCancel()
+      newInntektOgTimer.push(_newInntektOgTime)
+      onInntektOgTimeChanged(newInntektOgTimer)
+      onCloseNew()
     }
   }
 
   const renderRow = (inntektOgTime: InntektOgTime | null, index: number) => {
-    const candidateForDeletion = index < 0 ? false : isInDeletion(inntektOgTime)
-    const idx = getIdx(index)
-    const getErrorFor = (el: string): string | undefined => {
-      return index < 0
-        ? _validation[namespace + idx + '-' + el]?.feilmelding
-        : validation[namespace + idx + '-' + el]?.feilmelding
-    }
+    const _namespace = namespace + getIdx(index)
+    const _v: Validation = index < 0 ? _validation : validation
+    const inEditMode = index < 0 || _editIndex === index
+    const _inntektOgTime = index < 0 ? _newInntektOgTime : (inEditMode ? _editInntektOgTime : inntektOgTime)
 
-    const _periode = index < 0 ? _newPeriode : inntektOgTime?.inntektsperiode
     return (
-      <RepeatableRow className={classNames({ new: index < 0 })}>
-        <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + idx + '-inntektsperiode'}
-            error={{
-              startdato: getErrorFor('inntektsperiode-startdato'),
-              sluttdato: getErrorFor('inntektsperiode-sluttdato')
-            }}
-            setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
-            value={_periode}
-          />
-          <Column>
-            <Input
-              error={getErrorFor('arbeidstimer')}
-              namespace={namespace + idx}
-              key={namespace + idx + '-arbeidstimer-' + (index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
-              id='arbeidstimer'
-              label={t('label:arbeidstimer')}
-              onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-              required
-              value={(index < 0 ? _newArbeidstimer : inntektOgTime?.arbeidstimer ?? '')}
+      <RepeatableRow
+        id={'repeatablerow-' + _namespace}
+        key={getId(inntektOgTime)}
+        className={classNames({
+          new: index < 0,
+          error: hasNamespaceWithErrors(_v, _namespace)
+        })}
+      >
+        <VerticalSeparatorDiv size='0.5' />
+        <AlignStartRow style={{ minHeight: '2.2rem' }}>
+          {inEditMode
+            ? (
+              <PeriodeInput
+                namespace={_namespace + '-inntektsperiode'}
+                error={{
+                  startdato: _v[_namespace + '-inntektsperiode-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-inntektsperiode-sluttdato']?.feilmelding
+                }}
+                hideLabel={false}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
+                value={_inntektOgTime?.inntektsperiode}
+              />
+              )
+            : (
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-inntektsperiode-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-inntektsperiode-sluttdato']?.feilmelding
+                  }}
+                  namespace={_namespace}
+                  periode={_inntektOgTime?.inntektsperiode}
+                />
+              </Column>
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel<InntektOgTime>
+              item={inntektOgTime}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </Column>
+          </AlignEndColumn>
         </AlignStartRow>
         <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={getErrorFor('bruttoinntekt')}
-              namespace={namespace + idx}
-              key={namespace + idx + '-bruttoinntekt-' + (index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
-              id='bruttoinntekt'
-              label={t('label:brutto-inntekt')}
-              onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
-              required
-              value={(index < 0 ? _newBruttoinntekt : inntektOgTime?.bruttoinntekt ?? '')}
-            />
-          </Column>
-          <Column>
-            <CountrySelect
-              key={namespace + idx + '-valuta-' + (index < 0 ? _newValuta : inntektOgTime?.valuta ?? '')}
-              closeMenuOnSelect
-              ariaLabel={t('label:valuta')}
-              data-testid={namespace + idx + '-valuta'}
-              error={getErrorFor('valuta')}
-              id={namespace + idx + '-valuta'}
-              label={t('label:valuta') + ' *'}
-              locale='nb'
-              menuPortalTarget={document.body}
-              onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
-              type='currency'
-              values={index < 0 ? _newValuta : inntektOgTime?.valuta ?? ''}
-            />
-          </Column>
-          <Column>
-            <OldAddRemovePanel
-              candidateForDeletion={candidateForDeletion}
-              existingItem={(index >= 0)}
-              marginTop
-              onBeginRemove={() => addToDeletion(inntektOgTime)}
-              onConfirmRemove={() => onRemoved(index)}
-              onCancelRemove={() => removeFromDeletion(inntektOgTime)}
-              onAddNew={onAdd}
-              onCancelNew={onCancel}
-            />
-          </Column>
-        </AlignStartRow>
+        {inEditMode
+          ? (
+            <AlignStartRow>
+              <Column>
+                <Input
+                  error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
+                  namespace={_namespace}
+                  id='bruttoinntekt'
+                  label={t('label:brutto-inntekt')}
+                  onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
+                  required
+                  value={_inntektOgTime?.bruttoinntekt}
+                />
+              </Column>
+              <Column>
+                <CountrySelect
+                  closeMenuOnSelect
+                  ariaLabel={t('label:valuta')}
+                  data-testid={_namespace + '-valuta'}
+                  error={_v[_namespace + '-valuta']?.feilmelding}
+                  id={_namespace + '-valuta'}
+                  label={t('label:valuta') + ' *'}
+                  locale='nb'
+                  menuPortalTarget={document.body}
+                  onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
+                  type='currency'
+                  values={_inntektOgTime?.valuta}
+                />
+              </Column>
+              <Column>
+                <Input
+                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                  namespace={_namespace}
+                  id='arbeidstimer'
+                  label={t('label:arbeidstimer')}
+                  onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
+                  required
+                  value={_inntektOgTime?.arbeidstimer}
+                />
+              </Column>
+            </AlignStartRow>
+            )
+          : (
+            <AlignStartRow>
+              <Column>
+                <FlexDiv>
+                  <Label>{t('label:beløp') + ':'}</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <FormText
+                    error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
+                    id={_namespace + '-bruttoinntekt'}
+                  >
+                    {_inntektOgTime?.bruttoinntekt}
+                  </FormText>
+                  <HorizontalSeparatorDiv size='0.5' />
+                  <FormText
+                    error={_v[_namespace + '-valuta']?.feilmelding}
+                    id={_namespace + '-valuta'}
+                  >
+                    {_inntektOgTime?.valuta}
+                  </FormText>
+                </FlexDiv>
+              </Column>
+              <Column>
+                <FormText
+                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                  id={_namespace + '-arbeidstimer'}
+                >
+                  <FlexDiv>
+                    {t('label:arbeidstimer')}:
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_inntektOgTime?.arbeidstimer}
+                  </FlexDiv>
+                </FormText>
+              </Column>
+            </AlignStartRow>
+            )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
 
   return (
-    <MyPaddedDiv>
-      <Heading size='small'>
-        {t('label:inntekt-og-time')}
-      </Heading>
+    <>
       <VerticalSeparatorDiv />
-      {inntektOgTimer?.map(renderRow)}
+      {_.isEmpty(inntektOgTimer)
+        ? (
+          <PaddedHorizontallyDiv>
+            <SpacedHr />
+            <BodyLong>
+              {t('message:warning-no-inntekt')}
+            </BodyLong>
+            <SpacedHr />
+          </PaddedHorizontallyDiv>
+          )
+        : inntektOgTimer?.map(renderRow)}
       <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {_seeNewForm
+      {_newForm
         ? renderRow(null, -1)
         : (
-          <Row>
-            <Column>
-              <Button
-                variant='tertiary'
-                onClick={() => _setSeeNewForm(true)}
-              >
-                <AddCircle />
-                {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
-              </Button>
-            </Column>
-          </Row>
+          <PaddedDiv>
+            <Button
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
+            </Button>
+          </PaddedDiv>
           )}
-    </MyPaddedDiv>
+    </>
   )
 }
 

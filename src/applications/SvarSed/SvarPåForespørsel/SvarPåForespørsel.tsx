@@ -1,3 +1,4 @@
+import { Heading } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -29,6 +30,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const SvarPåForespørsel: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -149,7 +151,10 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
   return (
     <PaddedDiv>
-      <VerticalSeparatorDiv />
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
           <label className='navds-text-field__label navds-label'>

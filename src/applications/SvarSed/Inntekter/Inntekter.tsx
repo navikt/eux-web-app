@@ -270,10 +270,20 @@ const Inntekter: React.FC<any> = ({
               <>
                 <Column flex='2'>
                   <PileDiv>
-                    <BodyLong>
+                    <FlexDiv>
                       {t('el:option-inntekttype-' + _inntekt?.type)}
-                    </BodyLong>
-
+                      {_inntekt?.type === 'annet_vederlag' && (
+                        <>
+                          <HorizontalSeparatorDiv size='0.5'/>
+                        <FormText
+                        error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                        id={_namespace + '-typeAnnen'}
+                        >
+                        <BodyLong>({_inntekt?.typeAnnen})</BodyLong>
+                        </FormText>
+                        </>
+                      )}
+                    </FlexDiv>
                     <FlexDiv>
                       <Label>{t('label:beløp') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
@@ -303,8 +313,7 @@ const Inntekter: React.FC<any> = ({
         {_inntekt?.type === 'annet_vederlag' && (
           <AlignStartRow>
             <Column>
-              {inEditMode
-                ? (
+              {inEditMode && (
                   <Input
                     ariaLabel={t('label:informasjon-om-vederlag')}
                     error={_v[_namespace + '-typeAnnen']?.feilmelding}
@@ -315,15 +324,7 @@ const Inntekter: React.FC<any> = ({
                     required
                     value={_inntekt?.typeAnnen}
                   />
-                  )
-                : (
-                  <FormText
-                    error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                    id={_namespace + '-typeAnnen'}
-                  >
-                    <BodyLong>{_inntekt?.typeAnnen}</BodyLong>
-                  </FormText>
-                  )}
+              )}
             </Column>
             <Column />
           </AlignStartRow>

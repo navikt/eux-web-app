@@ -118,7 +118,7 @@ export const PDU1Page = (): JSX.Element => {
         open={_showSaveModal}
         onModalClose={() => _setShowSaveModal(false)}
         modal={{
-          modalTitle: t('message:warning-not-saved', { x: 'PDU1' }),
+          modalTitle: t('message:warning-x-not-saved', { x: 'PDU1' }),
           modalContent: (
             <>
               <div>

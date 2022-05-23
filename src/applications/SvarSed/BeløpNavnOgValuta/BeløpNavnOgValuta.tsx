@@ -414,7 +414,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             <>
               <AlignStartRow>
                 <Column>
-
                   <FormText
                     error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                     id={_namespace + '-ytelseNavn'}
@@ -425,7 +424,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                       {_ytelse?.ytelseNavn}
                     </FlexDiv>
                   </FormText>
-
                 </Column>
                 <Column>
                   <FlexDiv>

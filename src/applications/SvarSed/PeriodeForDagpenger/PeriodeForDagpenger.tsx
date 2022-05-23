@@ -470,7 +470,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                 <FormText
                   error={_v[_namespace + '-institusjon-idmangler-navn']?.feilmelding}
                   id={_namespace + '-institusjon-idmangler-navn'}
-                               >
+                >
                   <FlexDiv>
                     <Label>{t('label:navn') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />

@@ -270,9 +270,8 @@ const InntektForm: React.FC<MainFormProps> = ({
         <AlignStartRow>
           {inEditMode
             ? (
-              <>
                 <PeriodeInput
-                  namespace={_namespace}
+                  namespace={_namespace + '-periode'}
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
                     sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
@@ -285,47 +284,116 @@ const InntektForm: React.FC<MainFormProps> = ({
                   setPeriode={(p: Periode) => setPeriode(p, index)}
                   value={_loennsopplysning?.periode}
                 />
-                <Column>
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={_namespace + '-periodetype'}
-                    error={_v[_namespace + '-periodetype']?.feilmelding}
-                    id={_namespace + '-periodetype'}
-                    label={t('label:type-periode')}
-                    menuPortalTarget={document.body}
-                    onChange={(e: any) => setPeriodeType(e.value, index)}
-                    options={periodeTypeOptions}
-                    required
-                    value={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
-                    defaultValue={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
-                  />
-                </Column>
-              </>
               )
             : (
-              <>
                 <Column>
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
                       sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
                     }}
-                    namespace={_namespace}
+                    namespace={_namespace + '-periode'}
                     periode={_loennsopplysning?.periode}
                   />
                 </Column>
+              )}
+          <AlignEndColumn>
+            <AddRemovePanel<Loennsopplysning>
+              item={loennsopplysning}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
+            />
+          </AlignEndColumn>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          {inEditMode
+            ? (
+              <>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
+                    namespace={namespace}
+                    id='arbeidsdager'
+                    label={t('label:arbeidsdager')}
+                    onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
+                    value={_loennsopplysning?.arbeidsdager}
+                  />
+                </Column>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                    namespace={namespace}
+                    id='arbeidstimer'
+                    label={t('label:arbeidstimer')}
+                    onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
+                    value={_loennsopplysning?.arbeidstimer}
+                  />
+                </Column>
+               <Column>
+                 <Select
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-periodetype'}
+                  error={_v[_namespace + '-periodetype']?.feilmelding}
+                  id={_namespace + '-periodetype'}
+                  label={t('label:type-periode')}
+                  menuPortalTarget={document.body}
+                  onChange={(e: any) => setPeriodeType(e.value, index)}
+                  options={periodeTypeOptions}
+                  required
+                  value={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
+                  defaultValue={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
+                />
+              </Column>
+              </>
+              )
+            : (
+              <>
                 <Column>
                   <FormText
-                    error={_v[_namespace + '-periodetype']?.feilmelding}
-                    id={_namespace + '-periodetype'}
+                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
+                    id={_namespace + '-arbeidsdager'}
                   >
-                    {_loennsopplysning?.periodetype}
+                    <FlexDiv>
+                      <Label>{t('label:arbeidsdager') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      {_loennsopplysning?.arbeidsdager}
+                    </FlexDiv>
+                  </FormText>
+                </Column>
+                <Column>
+                  <FormText
+                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                    id={_namespace + '-arbeidstimer'}
+                  >
+                    <FlexDiv>
+                      <Label>{t('label:arbeidstimer') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      {_loennsopplysning?.arbeidstimer}
+                    </FlexDiv>
+                  </FormText>
+                </Column>
+                <Column>
+                <FormText
+                  error={_v[_namespace + '-periodetype']?.feilmelding}
+                  id={_namespace + '-periodetype'}
+                  >
+                  <Label>{t('label:type-periode') + ':'}</Label>
+                  <HorizontalSeparatorDiv size='0.5' />
+                {_loennsopplysning?.periodetype}
                   </FormText>
                 </Column>
               </>
               )}
+          <VerticalSeparatorDiv />
         </AlignStartRow>
-        <VerticalSeparatorDiv />
         {inEditMode
           ? (
             <>
@@ -341,7 +409,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                 personName={personName}
               />
             </>
-            )
+          )
           : _loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => (
             <PileDiv key={getIdInntekt(inntekt)}>
               <FlexCenterSpacedDiv>
@@ -375,76 +443,6 @@ const InntektForm: React.FC<MainFormProps> = ({
               </FlexDiv>
             </PileDiv>
           ))}
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          {inEditMode
-            ? (
-              <>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
-                    namespace={namespace}
-                    id='arbeidsdager'
-                    label={t('label:arbeidsdager')}
-                    onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
-                    value={_loennsopplysning?.arbeidsdager}
-                  />
-                </Column>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                    namespace={namespace}
-                    id='arbeidstimer'
-                    label={t('label:arbeidstimer')}
-                    onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
-                    value={_loennsopplysning?.arbeidstimer}
-                  />
-                </Column>
-              </>
-              )
-            : (
-              <>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
-                    id={_namespace + '-arbeidsdager'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:arbeidsdager') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_loennsopplysning?.arbeidsdager}
-                    </FlexDiv>
-                  </FormText>
-                </Column>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                    id={_namespace + '-arbeidstimer'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:arbeidstimer') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_loennsopplysning?.arbeidstimer}
-                    </FlexDiv>
-                  </FormText>
-                </Column>
-              </>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Loennsopplysning>
-              item={loennsopplysning}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
@@ -522,12 +520,14 @@ const InntektForm: React.FC<MainFormProps> = ({
             {arbeidsperioder?.arbeidsperioder?.map(a => {
               const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
               return (
-                <ForsikringPeriodeBox
-                  forsikringPeriode={period}
-                  showArbeidsgiver
-                  key={getOrgnr(period, 'organisasjonsnummer')}
-                  namespace={namespace}
+                <div key={getOrgnr(period, 'organisasjonsnummer')}>
+                  <ForsikringPeriodeBox
+                    forsikringPeriode={period}
+                    showArbeidsgiver
+                    namespace={namespace}
                 />
+                  <VerticalSeparatorDiv/>
+                  </div>
               )
             })}
           </>

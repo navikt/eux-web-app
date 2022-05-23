@@ -5,12 +5,12 @@ import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationInntektOgTimeProps {
-  inntektOgTime: InntektOgTime
+  inntektOgTime: InntektOgTime | undefined
   index?: number
   personName?: string
 }
 
-interface ValidationInntektOgTimerProps {
+export interface ValidationInntektOgTimerProps {
   inntektOgTimer: Array<InntektOgTime> | undefined
   personName?: string
 }
@@ -28,7 +28,7 @@ export const validateInntektOgTime = (
   const idx = getIdx(index)
 
   hasErrors.push(validatePeriode(v, namespace + idx + '-inntektsperiode', {
-    periode: inntektOgTime.inntektsperiode
+    periode: inntektOgTime?.inntektsperiode
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {

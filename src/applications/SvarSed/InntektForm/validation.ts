@@ -30,7 +30,7 @@ export const validateLoennsopplysning = (
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
-  hasErrors.push(validatePeriode(v, namespace + '-periode', {
+  hasErrors.push(validatePeriode(v, namespace + idx + '-periode', {
     periode: loennsopplysning?.periode,
     personName
   }))

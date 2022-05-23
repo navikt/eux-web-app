@@ -122,11 +122,11 @@ export const SvarSedPage = (): JSX.Element => {
           open={_showSaveModal}
           onModalClose={() => _setShowSaveModal(false)}
           modal={{
-            modalTitle: t('message:warning-not-saved', { x: 'SED' }),
+            modalTitle: t('message:warning-x-not-saved', { x: 'SED' }),
             modalContent: (
               <>
                 <div>
-                  {t('message:warning-sed-save', { x: 'SEDen' })}
+                  {t('message:warning-x-save', { x: 'SEDen' })}
                 </div>
                 <VerticalSeparatorDiv />
                 <FlexDiv>
