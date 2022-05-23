@@ -270,32 +270,32 @@ const InntektForm: React.FC<MainFormProps> = ({
         <AlignStartRow>
           {inEditMode
             ? (
-                <PeriodeInput
-                  namespace={_namespace + '-periode'}
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  hideLabel={false}
-                  label={{
-                    startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
-                    sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
-                  }}
-                  setPeriode={(p: Periode) => setPeriode(p, index)}
-                  value={_loennsopplysning?.periode}
-                />
+              <PeriodeInput
+                namespace={_namespace + '-periode'}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                hideLabel={false}
+                label={{
+                  startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
+                  sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
+                }}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
+                value={_loennsopplysning?.periode}
+              />
               )
             : (
-                <Column>
-                  <PeriodeText
-                    error={{
-                      startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
-                      sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
-                    }}
-                    namespace={_namespace + '-periode'}
-                    periode={_loennsopplysning?.periode}
-                  />
-                </Column>
+              <Column>
+                <PeriodeText
+                  error={{
+                    startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                  }}
+                  namespace={_namespace + '-periode'}
+                  periode={_loennsopplysning?.periode}
+                />
+              </Column>
               )}
           <AlignEndColumn>
             <AddRemovePanel<Loennsopplysning>
@@ -337,21 +337,21 @@ const InntektForm: React.FC<MainFormProps> = ({
                     value={_loennsopplysning?.arbeidstimer}
                   />
                 </Column>
-               <Column>
-                 <Select
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-periodetype'}
-                  error={_v[_namespace + '-periodetype']?.feilmelding}
-                  id={_namespace + '-periodetype'}
-                  label={t('label:type-periode')}
-                  menuPortalTarget={document.body}
-                  onChange={(e: any) => setPeriodeType(e.value, index)}
-                  options={periodeTypeOptions}
-                  required
-                  value={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
-                  defaultValue={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
-                />
-              </Column>
+                <Column>
+                  <Select
+                    closeMenuOnSelect
+                    data-testid={_namespace + '-periodetype'}
+                    error={_v[_namespace + '-periodetype']?.feilmelding}
+                    id={_namespace + '-periodetype'}
+                    label={t('label:type-periode')}
+                    menuPortalTarget={document.body}
+                    onChange={(e: any) => setPeriodeType(e.value, index)}
+                    options={periodeTypeOptions}
+                    required
+                    value={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
+                    defaultValue={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
+                  />
+                </Column>
               </>
               )
             : (
@@ -381,13 +381,13 @@ const InntektForm: React.FC<MainFormProps> = ({
                   </FormText>
                 </Column>
                 <Column>
-                <FormText
-                  error={_v[_namespace + '-periodetype']?.feilmelding}
-                  id={_namespace + '-periodetype'}
+                  <FormText
+                    error={_v[_namespace + '-periodetype']?.feilmelding}
+                    id={_namespace + '-periodetype'}
                   >
-                  <Label>{t('label:type-periode') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                {_loennsopplysning?.periodetype}
+                    <Label>{t('label:type-periode') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    {_loennsopplysning?.periodetype}
                   </FormText>
                 </Column>
               </>
@@ -409,7 +409,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                 personName={personName}
               />
             </>
-          )
+            )
           : _loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => (
             <PileDiv key={getIdInntekt(inntekt)}>
               <FlexCenterSpacedDiv>
@@ -525,9 +525,9 @@ const InntektForm: React.FC<MainFormProps> = ({
                     forsikringPeriode={period}
                     showArbeidsgiver
                     namespace={namespace}
-                />
-                  <VerticalSeparatorDiv/>
-                  </div>
+                  />
+                  <VerticalSeparatorDiv />
+                </div>
               )
             })}
           </>

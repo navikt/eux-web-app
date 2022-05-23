@@ -1,14 +1,8 @@
-import { validatePeriode } from 'components/Forms/validation'
-import {
-  Periode,
-  PeriodeAnnenForsikring,
-  ForsikringPeriode,
-  PeriodeUtenForsikring, PeriodeMedForsikring
-} from 'declarations/sed'
+import { validateForsikringPeriodeBox } from 'components/ForsikringPeriodeBox/validation'
+import { ForsikringPeriode, Periode, ReplySed, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getNSIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
-import { validateInntektOgTimer } from 'components/ForsikringPeriodeBox/InntektOgTimer/validation'
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode | undefined
@@ -22,8 +16,8 @@ interface ValidateForsikringPerioderProps {
   personName?: string
 }
 
-interface ValidateAlleForsikringPerioderProps {
-  perioder: {[k in string]: Array<ForsikringPeriode> | undefined}
+export interface ValidateForsikringProps {
+  replySed: ReplySed
   personName?: string
 }
 
@@ -45,44 +39,20 @@ export const validateForsikringPeriode = (
     personName
   }))
 
-  hasErrors.push(validatePeriode(v, namespace + (nsIndex ?? ''), {
-    periode,
-    personName
+  const showAnnen = periode?.__type === 'perioderAnnenForsikring'
+  const showArbeidsgiver = !!periode?.__type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0
+  const showInntekt = !!periode?.__type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0
+  const showAddress = showArbeidsgiver
+  const showBeløp = periode?.__type === 'perioderKompensertFerie'
+  hasErrors.push(validateForsikringPeriodeBox(v, namespace, {
+    forsikringPeriode: periode,
+    nsIndex,
+    showAddress,
+    showArbeidsgiver,
+    showInntekt,
+    showAnnen,
+    showBeløp
   }))
-
-  if (periode?.__type === 'perioderAnnenForsikring') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode,
-      id: namespace + (nsIndex ?? '') + '-annenTypeForsikringsperiode',
-      message: 'validation:noAnnenTypeForsikringsperiode',
-      personName
-    }))
-  }
-
-  if (periode?.__type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring']
-    .indexOf(periode?.__type) >= 0) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeMedForsikring)?.arbeidsgiver?.navn,
-      id: namespace + (nsIndex ?? '') + '-arbeidsgiver-navn',
-      message: 'validation:noInstitusjonensNavn',
-      personName
-    }))
-    /*  Id is not mandatory */
-  }
-
-  if (periode?.__type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0) {
-    hasErrors.push(validateInntektOgTimer(v, namespace + (nsIndex ?? '') + '-inntektOgTimer', {
-      inntektOgTimer: (periode as PeriodeUtenForsikring)?.inntektOgTimer,
-      personName
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (periode as PeriodeUtenForsikring)?.inntektOgTimerInfo,
-      id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
-      message: 'validation:noInntektInfo',
-      personName
-    }))
-  }
   return hasErrors.find(value => value) !== undefined
 }
 
@@ -110,27 +80,26 @@ export const validateForsikringPerioder = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateAlleForsikringPerioder = (
+export const validateForsikring = (
   v: Validation,
   namespace: string,
   {
-    perioder,
+    replySed,
     personName
-  } : ValidateAlleForsikringPerioderProps
+  } : ValidateForsikringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattMedForsikring', perioder: perioder.perioderAnsattMedForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigMedForsikring', perioder: perioder.perioderSelvstendigMedForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattUtenForsikring', perioder: perioder.perioderAnsattUtenForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigUtenForsikring', perioder: perioder.perioderSelvstendigUtenForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSyk', perioder: perioder.perioderSyk, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSvangerskapBarn', perioder: perioder.perioderSvangerskapBarn, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderUtdanning', perioder: perioder.perioderUtdanning, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderMilitaertjeneste', perioder: perioder.perioderMilitaertjeneste, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrihetsberoevet', perioder: perioder.perioderFrihetsberoevet, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrivilligForsikring', perioder: perioder.perioderFrivilligForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderKompensertFerie', perioder: perioder.perioderKompensertFerie, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnnenForsikring', perioder: perioder.perioderAnnenForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattMedForsikring', perioder: (replySed as U002Sed).perioderAnsattMedForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigMedForsikring', perioder: (replySed as U002Sed).perioderSelvstendigMedForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattUtenForsikring', perioder: (replySed as U002Sed).perioderAnsattUtenForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigUtenForsikring', perioder: (replySed as U002Sed).perioderSelvstendigUtenForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSyk', perioder: (replySed as U002Sed).perioderSyk, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSvangerskapBarn', perioder: (replySed as U002Sed).perioderSvangerskapBarn, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderUtdanning', perioder: (replySed as U002Sed).perioderUtdanning, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderMilitaertjeneste', perioder: (replySed as U002Sed).perioderMilitaertjeneste, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrihetsberoevet', perioder: (replySed as U002Sed).perioderFrihetsberoevet, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrivilligForsikring', perioder: (replySed as U002Sed).perioderFrivilligForsikring, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderKompensertFerie', perioder: (replySed as U002Sed).perioderKompensertFerie, personName }))
+  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnnenForsikring', perioder: (replySed as U002Sed).perioderAnnenForsikring, personName }))
   return hasErrors.find(value => value) !== undefined
 }

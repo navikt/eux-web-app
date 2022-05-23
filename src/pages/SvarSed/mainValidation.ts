@@ -5,7 +5,7 @@ import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgVa
 import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
 import { validateFormål } from 'applications/SvarSed/Formål/validation'
-import { validateAlleForsikringPerioder } from 'applications/SvarSed/Forsikring/validation'
+import { validateForsikring } from 'applications/SvarSed/Forsikring/validation'
 import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
 import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validation'
@@ -35,7 +35,6 @@ import {
   F002Sed,
   FamilieRelasjon,
   Flyttegrunn,
-  ForsikringPeriode,
   FSed,
   H001Sed,
   HSed,
@@ -99,8 +98,9 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateMainForm = (v: Validation, replySed: ReplySed, personID: string): boolean => {
+export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
+  const replySed = _.cloneDeep(_replySed)
   const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
   const personName: string = personID === 'familie'
     ? i18n.t('label:familien').toLowerCase()
@@ -176,33 +176,18 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
       anmodningsperiode: (replySed as USed)?.anmodningsperiode, personName
     }))
     if (replySed.sedType === 'U002' || replySed.sedType === 'U017') {
-      //
-      const perioder: {[k in string]: Array<ForsikringPeriode>| undefined} = {
-        perioderAnsattMedForsikring: (replySed as U002Sed)?.perioderAnsattMedForsikring,
-        perioderSelvstendigMedForsikring: (replySed as U002Sed)?.perioderSelvstendigMedForsikring,
-        perioderAnsattUtenForsikring: (replySed as U002Sed)?.perioderAnsattUtenForsikring,
-        perioderSelvstendigUtenForsikring: (replySed as U002Sed)?.perioderSelvstendigUtenForsikring,
-        perioderSyk: (replySed as U002Sed)?.perioderSyk,
-        perioderSvangerskapBarn: (replySed as U002Sed)?.perioderSvangerskapBarn,
-        perioderUtdanning: (replySed as U002Sed)?.perioderUtdanning,
-        perioderMilitaertjeneste: (replySed as U002Sed)?.perioderMilitaertjeneste,
-        perioderFrihetsberoevet: (replySed as U002Sed)?.perioderFrihetsberoevet,
-        perioderFrivilligForsikring: (replySed as U002Sed)?.perioderFrivilligForsikring,
-        perioderKompensertFerie: (replySed as U002Sed)?.perioderKompensertFerie,
-        perioderAnnenForsikring: (replySed as U002Sed)?.perioderAnnenForsikring
-      }
-      hasErrors.push(validateAlleForsikringPerioder(v, `svarsed-${personID}-forsikring`, {
-        perioder, personName
+      hasErrors.push(validateForsikring(v, `svarsed-${personID}-forsikring`, {
+        replySed: (replySed as USed), personName
       }))
       hasErrors.push(validatePerioderDagpenger(v, `svarsed-${personID}-periodefordagpenger`, {
-        perioderDagpenger: (replySed as U002Sed)?.perioderDagpenger,
+        perioderDagpenger: (replySed as U002Sed)?.dagpengeperioder,
         personName
       }))
       const nrArbeidsperioder = (
-        (perioder?.perioderAnsattMedForsikring?.length ?? 0) +
-        (perioder?.perioderSelvstendigMedForsikring?.length ?? 0) +
-        (perioder?.perioderAnsattUtenForsikring?.length ?? 0) +
-        (perioder?.perioderSelvstendigUtenForsikring?.length ?? 0)
+        ((replySed as U002Sed)?.perioderAnsattMedForsikring?.length ?? 0) +
+        ((replySed as U002Sed)?.perioderSelvstendigMedForsikring?.length ?? 0) +
+        ((replySed as U002Sed)?.perioderAnsattUtenForsikring?.length ?? 0) +
+        ((replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.length ?? 0)
       )
 
       let allArbeidsPerioderHaveSluttdato = true
@@ -210,10 +195,10 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
       // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
       if (replySed.sedType === 'U002') {
         if (
-          _.find(perioder?.perioderAnsattMedForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderSelvstendigMedForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderAnsattUtenForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find(perioder?.perioderSelvstendigUtenForsikring, p => _.isEmpty(p.sluttdato))
+          _.find((replySed as U002Sed)?.perioderAnsattMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find((replySed as U002Sed)?.perioderSelvstendigMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find((replySed as U002Sed)?.perioderAnsattUtenForsikring, p => _.isEmpty(p.sluttdato)) ||
+          _.find((replySed as U002Sed)?.perioderSelvstendigUtenForsikring, p => _.isEmpty(p.sluttdato))
         ) {
           allArbeidsPerioderHaveSluttdato = false
         }
@@ -221,7 +206,7 @@ export const validateMainForm = (v: Validation, replySed: ReplySed, personID: st
 
       if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
         hasErrors.push(validateGrunnTilOpphor(v, `svarsed-${personID}-grunntilopphør`, {
-          grunntilopphor: (replySed as U002Sed)?.grunntilopphor
+          sisteAnsettelseInfo: (replySed as U002Sed)?.sisteAnsettelseInfo
         }))
       }
       hasErrors.push(validateSisteAnsettelseInfo(v, `svarsed-${personID}-sisteAnsettelseInfo`, {

@@ -23,6 +23,7 @@ import {
 } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
+import { validateForsikring, ValidateForsikringProps } from 'applications/SvarSed/Forsikring/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Military from 'assets/icons/Military'
 import classNames from 'classnames'
@@ -31,14 +32,16 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, Periode, PeriodeSort, U002Sed } from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getNSIdx } from 'utils/namespace'
+import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 
@@ -51,6 +54,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   options,
   parentNamespace,
   personID,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
@@ -83,6 +87,16 @@ const Forsikring: React.FC<MainFormProps> = ({
     { label: t('el:option-forsikring-FRIVILLIG'), value: 'perioderFrivilligForsikring' },
     { label: t('el:option-forsikring-FERIE'), value: 'perioderKompensertFerie' }
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
+
+  useUnmount(() => {
+    const [, newValidation] = performValidation<ValidateForsikringProps>(
+      validation, namespace, validateForsikring, {
+        replySed: _.cloneDeep(replySed) as ReplySed,
+        personName
+      }
+    )
+    dispatch(setValidation(newValidation))
+  })
 
   useEffect(() => {
     const periodes: Array<ForsikringPeriode> = [];
@@ -157,14 +171,14 @@ const Forsikring: React.FC<MainFormProps> = ({
     }
     delete newPeriode.__type
     delete newPeriode.__index
-    newPerioder.concat(newPeriode!)
+    newPerioder.push(newPeriode!)
     newPerioder = newPerioder.sort(periodeSort)
     dispatch(updateReplySed(type, newPerioder))
     standardLogger('svarsed.editor.periode.add', { type })
   }
 
   const getIcon = (type: string, size: string = '32') => (
-    <Tooltip label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
+    <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
       {type === 'perioderAnsattMedForsikring' && (<Office1 width={size} height={size} />)}
       {type === 'perioderSelvstendigMedForsikring' && (<PensionBag width={size} height={size} />)}
       {type === 'perioderAnsattUtenForsikring' && (<Office2 width={size} height={size} />)}
@@ -189,6 +203,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     const showArbeidsgiver: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
     const showAddress: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
     const showInntekt: boolean = _.isUndefined(_type) ? false : ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
+    const showBeløp: boolean = _.isUndefined(_type) ? false : ['perioderKompensertFerie'].indexOf(_type) >= 0
     const showAnnen: boolean = _.isUndefined(_type) ? false : ['perioderAnnenForsikring'].indexOf(_type) >= 0
 
     const newMode = index < 0
@@ -235,6 +250,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               showArbeidsgiver={showArbeidsgiver}
               showInntekt={showInntekt}
               showAnnen={showAnnen}
+              showBeløp={showBeløp}
               icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
               onForsikringPeriodeEdit={onSaveEdit}
               onForsikringPeriodeDelete={onRemove}
@@ -297,8 +313,8 @@ const Forsikring: React.FC<MainFormProps> = ({
                         {getIcon(o.value, '20')}
                         <HorizontalSeparatorDiv size='0.35' />
                         <Label>
-                            {o.label}
-                          </Label>
+                          {o.label}
+                        </Label>
                       </FlexCenterDiv>
                     </PaddedDiv>
                     {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
@@ -313,13 +329,15 @@ const Forsikring: React.FC<MainFormProps> = ({
       {_newForm
         ? renderRow(null, -1)
         : (
-          <Button
+          <PaddedDiv>
+            <Button
             variant='tertiary'
             onClick={() => _setNewForm(true)}
           >
             <AddCircle />
             {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
           </Button>
+          </PaddedDiv>
           )}
     </>
   )

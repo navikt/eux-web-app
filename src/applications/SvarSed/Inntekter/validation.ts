@@ -1,6 +1,5 @@
 import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
@@ -41,21 +40,13 @@ export const validateInntekt = (
     personName
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
+
+  hasErrors.push(checkIfNotNumber(v, {
     needle: inntekt?.beloep,
     id: namespace + idx + '-beloep',
-    message: 'validation:noBeløp',
+    message: 'validation:invalidBeløp',
     personName
   }))
-
-  if (!_.isEmpty(inntekt?.beloep?.trim())) {
-    hasErrors.push(checkIfNotNumber(v, {
-      needle: inntekt?.beloep,
-      id: namespace + idx + '-beloep',
-      message: 'validation:invalidBeløp',
-      personName
-    }))
-  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntekt?.valuta,

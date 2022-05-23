@@ -274,13 +274,13 @@ const Inntekter: React.FC<any> = ({
                       {t('el:option-inntekttype-' + _inntekt?.type)}
                       {_inntekt?.type === 'annet_vederlag' && (
                         <>
-                          <HorizontalSeparatorDiv size='0.5'/>
-                        <FormText
-                        error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                        id={_namespace + '-typeAnnen'}
-                        >
-                        <BodyLong>({_inntekt?.typeAnnen})</BodyLong>
-                        </FormText>
+                          <HorizontalSeparatorDiv size='0.5' />
+                          <FormText
+                            error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                            id={_namespace + '-typeAnnen'}
+                          >
+                            <BodyLong>({_inntekt?.typeAnnen})</BodyLong>
+                          </FormText>
                         </>
                       )}
                     </FlexDiv>
@@ -314,16 +314,16 @@ const Inntekter: React.FC<any> = ({
           <AlignStartRow>
             <Column>
               {inEditMode && (
-                  <Input
-                    ariaLabel={t('label:informasjon-om-vederlag')}
-                    error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                    id='informasjonOmVederlag'
-                    label={t('label:informasjon-om-vederlag')}
-                    namespace={_namespace}
-                    onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
-                    required
-                    value={_inntekt?.typeAnnen}
-                  />
+                <Input
+                  ariaLabel={t('label:informasjon-om-vederlag')}
+                  error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                  id='informasjonOmVederlag'
+                  label={t('label:informasjon-om-vederlag')}
+                  namespace={_namespace}
+                  onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
+                  required
+                  value={_inntekt?.typeAnnen}
+                />
               )}
             </Column>
             <Column />

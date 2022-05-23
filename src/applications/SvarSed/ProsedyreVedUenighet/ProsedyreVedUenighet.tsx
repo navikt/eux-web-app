@@ -21,7 +21,7 @@ import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponent
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { Grunn, ProsedyreVedUenighet } from 'declarations/sed'
+import { Grunn, GrunnUenighet, ProsedyreVedUenighet } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
@@ -66,7 +66,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationGrunnProps>(validateGrunn, namespace)
 
-  const availableGrunns: Array<string> = ['ansettelse', 'pensjon', 'medlemsperiode', 'oppholdetsVarighet', 'bosted', 'personligSituasjon']
+  const availableGrunns: Array<GrunnUenighet> = ['ansettelse', 'pensjon', 'medlemsperiode', 'oppholdetsVarighet', 'bosted', 'personligSituasjon']
 
   const grunnOptions: Options = [
     { label: t('el:option-grunn-ansettelse'), value: 'ansettelse' },
@@ -98,7 +98,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     const newGrunns: Array<Grunn> = []
     if (!_.isNil(prosedyreVedUenighet)) {
       Object.keys(prosedyreVedUenighet).forEach(key => {
-        if (availableGrunns.indexOf(key) >= 0) {
+        if (availableGrunns.indexOf(key as GrunnUenighet) >= 0) {
           newGrunns.push({
             grunn: key,
             person: _.get(prosedyreVedUenighet, key)

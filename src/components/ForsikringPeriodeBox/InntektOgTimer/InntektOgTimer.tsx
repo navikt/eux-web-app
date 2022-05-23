@@ -275,7 +275,6 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   id='arbeidstimer'
                   label={t('label:arbeidstimer')}
                   onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-                  required
                   value={_inntektOgTime?.arbeidstimer}
                 />
               </Column>
@@ -310,7 +309,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   <FlexDiv>
                     {t('label:arbeidstimer')}:
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_inntektOgTime?.arbeidstimer}
+                    {_inntektOgTime?.arbeidstimer ?? '-'}
                   </FlexDiv>
                 </FormText>
               </Column>

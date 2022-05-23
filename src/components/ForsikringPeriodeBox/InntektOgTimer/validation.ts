@@ -45,13 +45,6 @@ export const validateInntektOgTime = (
     personName
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: inntektOgTime?.arbeidstimer,
-    id: namespace + idx + '-arbeidstimer',
-    message: 'validation:noArbeidstimer',
-    personName
-  }))
-
   return hasErrors.find(value => value) !== undefined
 }
 

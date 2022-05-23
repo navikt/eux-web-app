@@ -13,7 +13,7 @@ import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { GrunnTilOpphør } from 'declarations/sed'
+import { SisteAnsettelseInfo } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState } from 'react'
@@ -25,7 +25,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const SisteAnsettelseInfo: React.FC<MainFormProps> = ({
+const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   setReplySed,
@@ -35,7 +35,7 @@ const SisteAnsettelseInfo: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'opphoer'
-  const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(replySed, target)
+  const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-sisteansettelseinfo`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
@@ -159,4 +159,4 @@ const SisteAnsettelseInfo: React.FC<MainFormProps> = ({
   )
 }
 
-export default SisteAnsettelseInfo
+export default SisteAnsettelseInfoFC

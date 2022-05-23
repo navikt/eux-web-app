@@ -249,7 +249,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   value={_periode?.info}
                 />
               </Column>
-              <Column/>
+              <Column />
             </AlignStartRow>
           </>
         )}

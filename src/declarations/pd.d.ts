@@ -1,5 +1,5 @@
 import {
-  GrunnTilOpphør,
+  SisteAnsettelseInfo,
   JaNei,
   Periode,
   Adresse
@@ -73,7 +73,7 @@ export interface PDU1 {
   perioderSelvstendigUtenForsikring?: Array<PDPeriode> // Perioder 2.2.2
   perioderLoennSomAnsatt: Array<PDPeriode> // Perioder 2.3.1
   perioderInntektSomSelvstendig: Array<PDPeriode> // Perioder 2.3.2
-  opphoer: GrunnTilOpphør // SisteAnsettelseInfo => 3
+  opphoer: SisteAnsettelseInfo // SisteAnsettelseInfo => 3
   andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
   perioderDagpengerMottatt: Array<PDPeriode> // Dagpenger => 5
   rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6

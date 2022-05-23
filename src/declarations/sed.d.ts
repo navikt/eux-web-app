@@ -310,9 +310,6 @@ export interface SisteAnsettelseInfo {
   opphoerRettighetGrunn: string // grunn
   opphoerYtelse: string // annenYtelser
   utbetalinger: Array<Utbetaling>
-}
-
-export interface GrunnTilOpphør {
   typeGrunnOpphoerAnsatt: TypeGrunn
   annenGrunnOpphoerAnsatt?: string
   grunnOpphoerSelvstendig?: string
@@ -409,6 +406,11 @@ export interface PeriodeAnnenForsikring extends ForsikringPeriode {
   annenTypeForsikringsperiode: string
 }
 
+export interface PeriodeFerieForsikring extends ForsikringPeriode {
+  beloep: string
+  valuta: string
+}
+
 export interface UenighetKonklusjon {
   vedtakFraDato: string
   kommentarTilVedtak: string
@@ -459,10 +461,9 @@ export interface U002Sed extends USed {
   perioderMilitaertjeneste?: Array<Periode>
   perioderFrihetsberoevet?: Array<Periode>
   perioderFrivilligForsikring?: Array<Periode>
-  perioderKompensertFerie?: Array<Periode>
+  perioderKompensertFerie?: Array<PeriodeFerieForsikring>
   perioderAnnenForsikring?: Array<PeriodeAnnenForsikring>
-  perioderDagpenger?:Array<PeriodeDagpenger>
-  grunntilopphor?: GrunnTilOpphør
+  dagpengeperioder?:Array<PeriodeDagpenger>
   sisteAnsettelseInfo?: SisteAnsettelseInfo
 }
 

@@ -31,8 +31,8 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'grunntilopphor'
-  const grunntilopphor: any = _.get(replySed, target)
+  const target = 'SisteAnsettelseInfo'
+  const sisteAnsettelseInfo: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
@@ -40,7 +40,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateGrunnTilOpphørProps>(
       validation, namespace, validateGrunnTilOpphor, {
-        grunntilopphor,
+        sisteAnsettelseInfo,
         personName
       }
     )
@@ -80,7 +80,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
     }
   }
 
-  const value = _.find(årsakOptions, b => b.value === grunntilopphor?.typeGrunnOpphoerAnsatt) || null
+  const value = _.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt) || null
 
   return (
     <PaddedDiv>
@@ -127,7 +127,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
                 label={t('label:annet-opphør')}
                 onChanged={setAnnenGrunnOpphoerAnsatt}
                 required
-                value={grunntilopphor?.annenGrunnOpphoerAnsatt ?? ''}
+                value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
               />
             </Column>
           </AlignStartRow>
@@ -141,7 +141,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
                 label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
                 onChanged={setGrunnOpphoerSelvstendig}
                 required
-                value={grunntilopphor?.grunnOpphoerSelvstendig ?? ''}
+                value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
               />
             </Column>
           </AlignStartRow>

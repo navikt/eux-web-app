@@ -9,6 +9,8 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { Currency } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import IdentifikatorFC from 'applications/SvarSed/Identifikator/Identifikator'
 import classNames from 'classnames'
@@ -27,6 +29,7 @@ import {
   InntektOgTime,
   Periode,
   PeriodeAnnenForsikring,
+  PeriodeFerieForsikring,
   PeriodeMedForsikring,
   PeriodeUtenForsikring
 } from 'declarations/sed.d'
@@ -40,7 +43,7 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
-import { validateForsikringPeriode, ValidationForsikringPeriodeProps } from './validation'
+import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
 
 const ForsikringPeriodePanel = styled(Panel)`
   padding: 1rem;
@@ -79,6 +82,7 @@ export interface ArbeidsgiverBoxProps<T> {
   showAddress ?: boolean
   showInntekt ?: boolean
   showAnnen ?: boolean
+  showBeløp ?: boolean
   newMode ?: boolean
   allowEdit ?: boolean
   allowDelete ?: boolean
@@ -97,6 +101,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   showAddress = false,
   showInntekt = false,
   showArbeidsgiver = false,
+  showBeløp = false,
   namespace,
   onForsikringPeriodeSelect,
   onForsikringPeriodeDelete,
@@ -115,9 +120,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const { t } = useTranslation()
 
   const [_inEditMode, _setInEditMode] = useState<boolean>(newMode)
-  const [_newForsikringPeriode, _setNewForsikringPeriode] = useState<T | undefined>(undefined)
+  const [_newForsikringPeriode, _setNewForsikringPeriode] = useState<T | null | undefined>(newMode ? forsikringPeriode : undefined)
   const [_editForsikringPeriode, _setEditForsikringPeriode] = useState<T | undefined>(undefined)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeProps>(validateForsikringPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeBoxProps>(validateForsikringPeriodeBox, namespace)
 
   const setPeriode = (periode: Periode) => {
     if (newMode) {
@@ -246,6 +251,44 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     }
   }
 
+  const setBeløp = (newBeløp: string) => {
+    if (newMode) {
+      _setNewForsikringPeriode({
+        ..._newForsikringPeriode,
+        beloep: newBeløp.trim(),
+        valuta: _.isNil((_newForsikringPeriode as any)?.valuta) ? 'NOK' : (_newForsikringPeriode as any)?.valuta
+      } as any)
+      _resetValidation([namespace + '-beloep', namespace + '-valuta'])
+      return
+    }
+    _setEditForsikringPeriode({
+      ..._editForsikringPeriode,
+      beloep: newBeløp.trim(),
+      valuta: _.isNil((_editForsikringPeriode as any)?.valuta) ? 'NOK' : (_editForsikringPeriode as any)?.valuta
+    } as any)
+    if (resetValidation) {
+      resetValidation(namespace + '-beloep')
+    }
+  }
+
+  const setValuta = (newValuta: Currency) => {
+    if (newMode) {
+      _setNewForsikringPeriode({
+        ..._newForsikringPeriode,
+        valuta: newValuta.value
+      } as any)
+      _resetValidation(namespace + '-valuta')
+      return
+    }
+    _setEditForsikringPeriode({
+      ..._editForsikringPeriode,
+      valuta: newValuta.value
+    } as any)
+    if (resetValidation) {
+      resetValidation(namespace + '-valuta')
+    }
+  }
+
   const setAnnenTypeForsikringsperiode = (annenTypeForsikringsperiode: string) => {
     if (newMode) {
       _setNewForsikringPeriode({
@@ -285,12 +328,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationForsikringPeriodeProps>(
-      validation!, namespace, validateForsikringPeriode, {
+    const [valid, newValidation] = performValidation<ValidationForsikringPeriodeBoxProps>(
+      validation!, namespace, validateForsikringPeriodeBox, {
         forsikringPeriode: _editForsikringPeriode,
         showAddress,
         showArbeidsgiver,
-        showInntekt
+        showInntekt,
+        showAnnen,
+        showBeløp
       })
     if (!!_editForsikringPeriode && valid) {
       if (_.isFunction(onForsikringPeriodeEdit)) {
@@ -309,7 +354,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
       forsikringPeriode: _newForsikringPeriode,
       showAddress,
       showArbeidsgiver,
-      showInntekt
+      showInntekt,
+      showAnnen,
+      showBeløp
     })
     if (!!_newForsikringPeriode && valid) {
       if (_.isFunction(onForsikringPeriodeNew)) {
@@ -490,16 +537,15 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   validation={_v}
                   parentNamespace={namespace}
                   inntektOgTimer={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer}
-                  onInntektOgTimeChanged={(newInntektOgTimer: Array<InntektOgTime>) => setInntektOgTimer(newInntektOgTimer)}
+                  onInntektOgTimeChanged={setInntektOgTimer}
                 />
                 <VerticalSeparatorDiv />
                 <AlignStartRow>
                   <Column>
                     <Input
-                      error={_validation[namespace + '-inntektOgTimerInfo']?.feilmelding}
+                      error={_v[namespace + '-inntektOgTimerInfo']?.feilmelding}
                       namespace={namespace}
                       id='inntektOgTimerInfo'
-                      key={namespace + '-inntektOgTimerInfo-' + (_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
                       label={t('label:inntekt-og-time-info')}
                       onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo)}
                       value={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
@@ -510,14 +556,44 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             )}
             {showAnnen && (
               <Input
-                error={_validation[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
+                error={_v[namespace + '-annenTypeForsikringsperiode']?.feilmelding}
                 namespace={namespace}
                 id='annenTypeForsikringsperiode'
-                key={namespace + '-annenTypeForsikringsperiode-' + (_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
                 label={t('label:annen-type')}
-                onChanged={(newAnnenTypeForsikringsperiode: string) => setAnnenTypeForsikringsperiode(newAnnenTypeForsikringsperiode)}
+                onChanged={setAnnenTypeForsikringsperiode}
                 value={(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
               />
+            )}
+
+            {showBeløp && (
+              <AlignStartRow>
+                <Column>
+                  <Input
+                    error={_v[namespace + '-beloep']?.feilmelding}
+                    namespace={namespace}
+                    id='beloep'
+                    label={t('label:beløp')}
+                    onChanged={setBeløp}
+                    required
+                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                  />
+                </Column>
+                <Column>
+                  <CountrySelect
+                    closeMenuOnSelect
+                    ariaLabel={t('label:valuta')}
+                    data-testid={namespace + '-valuta'}
+                    error={_v[namespace + '-valuta']?.feilmelding}
+                    id={namespace + '-valuta'}
+                    label={t('label:valuta') + ' *'}
+                    locale='nb'
+                    menuPortalTarget={document.body}
+                    onOptionSelected={setValuta}
+                    type='currency'
+                    values={(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
+                  />
+                </Column>
+              </AlignStartRow>
             )}
           </>
           )
@@ -639,6 +715,32 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     <BodyLong>
                       {(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
                     </BodyLong>
+                  </Column>
+                </AlignStartRow>
+              </>
+            )}
+            {showBeløp && (
+              <>
+                <VerticalSeparatorDiv />
+                <AlignStartRow>
+                  <Column>
+                    <FlexDiv>
+                      <Label>{t('label:beløp') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      <FormText
+                        error={_v[namespace + '-beloep']?.feilmelding}
+                        id={namespace + '-beloep'}
+                      >
+                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                      </FormText>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      <FormText
+                        error={_v[namespace + '-valuta']?.feilmelding}
+                        id={namespace + '-valuta'}
+                      >
+                        {(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
+                      </FormText>
+                    </FlexDiv>
                   </Column>
                 </AlignStartRow>
               </>

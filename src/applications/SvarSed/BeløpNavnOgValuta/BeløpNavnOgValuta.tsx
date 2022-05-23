@@ -103,7 +103,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewYtelse({
         ..._newYtelse,
-        beloep: newBeløp.trim().trim(),
+        beloep: newBeløp.trim(),
         valuta: _.isNil(_newYtelse?.valuta) ? 'NOK' : _newYtelse?.valuta
       } as Ytelse)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -111,7 +111,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     }
     _setEditYtelse({
       ..._editYtelse,
-      beloep: newBeløp.trim().trim(),
+      beloep: newBeløp.trim(),
       valuta: _.isNil(_editYtelse?.valuta) ? 'NOK' : _editYtelse?.valuta
     } as Ytelse)
     dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))

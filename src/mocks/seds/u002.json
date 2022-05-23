@@ -190,7 +190,9 @@
     }],
   "perioderKompensertFerie": [{
       "startdato": "1970-01-01",
-      "sluttdato": "1970-12-31"
+      "sluttdato": "1970-12-31",
+      "beloep": "300000",
+      "valuta": "NOK"
     }],
   "perioderAnnenForsikring": [{
       "startdato": "1971-01-01",
@@ -200,7 +202,7 @@
   "grunntilopphor": {
     "typeGrunnOpphoerAnsatt": "01"
   },
-  "perioderDagpenger": [
+  "dagpengeperioder": [
     {
       "periode": {
         "startdato": "2020-02-02",

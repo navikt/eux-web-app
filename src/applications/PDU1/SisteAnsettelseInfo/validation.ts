@@ -1,8 +1,8 @@
-import { GrunnTilOpphør } from 'declarations/sed'
+import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 
 export interface ValidationSisteAnsettelseinfoProps {
-  sisteAnsettelseInfo: GrunnTilOpphør | undefined
+  sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
 }
 
 export const validateSisteAnsettelseinfo = (

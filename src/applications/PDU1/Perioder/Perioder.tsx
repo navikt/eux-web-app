@@ -240,7 +240,7 @@ const Perioder: React.FC<MainFormProps> = ({
   }
 
   const getIcon = (type: string, size: string = '32') => (
-    <Tooltip label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
+    <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
       {type === 'perioderAnsattMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Office1 width={size} height={size} /></FlexDiv>)}
       {type === 'perioderSelvstendigMedForsikring' && (<FlexDiv><PensionBag width={size} height={size} /><Employer width={size} height={size} /></FlexDiv>)}
       {type === 'perioderAndreForsikringer' && (<PensionBag width={size} height={size} />)}
@@ -288,22 +288,22 @@ const Perioder: React.FC<MainFormProps> = ({
         <AlignStartRow>
           {inEditMode
             ? (
-             <>
-             <PeriodeInput
-                namespace={_namespace}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                }}
-                hideLabel={false}
-                setPeriode={(p: PDPeriode) => setPeriode(p, index)}
-                value={_periode}
-              />
-            </>
+              <>
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  hideLabel={false}
+                  setPeriode={(p: PDPeriode) => setPeriode(p, index)}
+                  value={_periode}
+                />
+              </>
               )
             : (
               <>
-                <Column>
+                <Column flex='2'>
                   <FlexBaseDiv>
                     {_sort === 'time' && _periode?.__type && getIcon(_periode.__type!, '32')}
                     <HorizontalSeparatorDiv />

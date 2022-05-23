@@ -1,7 +1,7 @@
 import { validateDagpengerPerioder } from 'applications/PDU1/Dagpenger/validation'
 import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
 import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger, PDPeriode } from 'declarations/pd'
-import { GrunnTilOpphør } from 'declarations/sed'
+import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
 import { validatePerson } from 'applications/PDU1/Person/validation'
@@ -30,7 +30,7 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 
   hasErrors.push(validateAllePDPerioder(v, `${namespace}-${personID}-perioder`, { pdu1 }))
 
-  const sisteAnsettelseInfo: GrunnTilOpphør | undefined = _.get(pdu1, 'opphoer')
+  const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(pdu1, 'opphoer')
   hasErrors.push(validateSisteAnsettelseinfo(v, `${namespace}-${personID}-sisteansettelseinfo`, { sisteAnsettelseInfo }))
 
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')

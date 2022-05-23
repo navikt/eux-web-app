@@ -62,7 +62,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-${personID}-periodefordagpenger`
-  const target = 'perioderDagpenger'
+  const target = 'dagpengeperioder'
   const perioder: Array<PeriodeDagpenger> | undefined = _.get(replySed, target)
   const getId = (p: PeriodeDagpenger | null | undefined) => p ? p.periode?.startdato + '-' + p.institusjon?.id : 'new'
 

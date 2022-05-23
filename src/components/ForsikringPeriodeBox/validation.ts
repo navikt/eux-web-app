@@ -1,18 +1,25 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import { validateInntektOgTimer } from 'components/ForsikringPeriodeBox/InntektOgTimer/validation'
-import { ForsikringPeriode, PeriodeMedForsikring, PeriodeUtenForsikring } from 'declarations/sed'
+import {
+  ForsikringPeriode,
+  PeriodeAnnenForsikring, PeriodeFerieForsikring,
+  PeriodeMedForsikring,
+  PeriodeUtenForsikring
+} from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfNotDate, checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
 
-export interface ValidationForsikringPeriodeProps {
+export interface ValidationForsikringPeriodeBoxProps {
   forsikringPeriode: ForsikringPeriode | null | undefined
   nsIndex?: string
   showAddress: boolean
   showArbeidsgiver: boolean
   showInntekt: boolean
+  showAnnen: boolean
+  showBeløp: boolean
 }
 
-export const validateForsikringPeriode = (
+export const validateForsikringPeriodeBox = (
   v: Validation,
   namespace: string,
   {
@@ -20,8 +27,10 @@ export const validateForsikringPeriode = (
     nsIndex,
     showAddress,
     showArbeidsgiver,
-    showInntekt
-  }: ValidationForsikringPeriodeProps
+    showInntekt,
+    showAnnen,
+    showBeløp
+  }: ValidationForsikringPeriodeBoxProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
@@ -75,5 +84,34 @@ export const validateForsikringPeriode = (
       message: 'validation:noInntektOgTimerInfo'
     }))
   }
+
+  if (showAnnen) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: (forsikringPeriode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode,
+      id: namespace + (nsIndex ?? '') + '-annenTypeForsikringsperiode',
+      message: 'validation:noAnnenTypeForsikringsperiode'
+    }))
+  }
+
+  if (showBeløp) {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
+      id: namespace +  (nsIndex ?? '') + '-beloep',
+      message: 'validation:noBeløp'
+    }))
+
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
+      id: namespace +  (nsIndex ?? '') + '-beloep',
+      message: 'validation:invalidBeløp'
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: (forsikringPeriode as PeriodeFerieForsikring)?.valuta,
+      id: namespace +  (nsIndex ?? '') + '-valuta',
+      message: 'validation:noValuta'
+    }))
+  }
+
   return hasErrors.find(value => value) !== undefined
 }
