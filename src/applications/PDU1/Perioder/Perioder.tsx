@@ -1,10 +1,11 @@
 import { AddCircle, Employer, Law, Money, Office1, PensionBag } from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Ingress } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
 import {
   AlignStartRow,
   AlignEndColumn,
   Column,
   FlexDiv,
+  FlexBaseDiv,
   FlexEndDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
@@ -50,6 +51,7 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Perioder: React.FC<MainFormProps> = ({
+  label,
   options,
   parentNamespace,
   replySed,
@@ -88,7 +90,7 @@ const Perioder: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidateAllePDPerioderProps>(
       validation, namespace, validateAllePDPerioder, {
-        pdu1: replySed as PDU1
+        pdu1: _.cloneDeep(replySed as PDU1)
       }
     )
     dispatch(setValidation(newValidation))
@@ -286,20 +288,23 @@ const Perioder: React.FC<MainFormProps> = ({
         <AlignStartRow>
           {inEditMode
             ? (
-              <PeriodeInput
+             <>
+             <PeriodeInput
                 namespace={_namespace}
                 error={{
                   startdato: _v[_namespace + '-startdato']?.feilmelding,
                   sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
+                hideLabel={false}
                 setPeriode={(p: PDPeriode) => setPeriode(p, index)}
                 value={_periode}
               />
+            </>
               )
             : (
               <>
                 <Column>
-                  <FlexDiv>
+                  <FlexBaseDiv>
                     {_sort === 'time' && _periode?.__type && getIcon(_periode.__type!, '32')}
                     <HorizontalSeparatorDiv />
                     <PeriodeText
@@ -317,14 +322,13 @@ const Perioder: React.FC<MainFormProps> = ({
                     >
                       {_periode?.info}
                     </FormText>
-                  </FlexDiv>
+                  </FlexBaseDiv>
                 </Column>
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-
               </>
               )}
+          <AlignEndColumn>
+            {addremovepanel}
+          </AlignEndColumn>
         </AlignStartRow>
         {inEditMode && (
           <>
@@ -367,11 +371,6 @@ const Perioder: React.FC<MainFormProps> = ({
                 />
               </Column>
             </AlignStartRow>
-            <AlignStartRow>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
           </>
         )}
         <VerticalSeparatorDiv size='0.5' />
@@ -381,6 +380,11 @@ const Perioder: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <PaddedDiv>
+        <Heading size='small'>
+          {label}
+        </Heading>
+      </PaddedDiv>
       <VerticalSeparatorDiv />
       {!_.isEmpty(_allPeriods) && (
         <>

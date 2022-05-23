@@ -4,7 +4,7 @@ import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  FlexDiv,
+  FlexBaseDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
@@ -201,6 +201,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   startdato: _v[_namespace + '-startdato']?.feilmelding,
                   sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
+                hideLabel={false}
                 setPeriode={(p: PDPeriode) => setPeriode(p, index)}
                 value={_periode}
               />
@@ -208,7 +209,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
             : (
               <>
                 <Column>
-                  <FlexDiv>
+                  <FlexBaseDiv>
                     <HorizontalSeparatorDiv />
                     <PeriodeText
                       error={{
@@ -225,20 +226,19 @@ const Dagpenger: React.FC<MainFormProps> = ({
                     >
                       {_periode?.info}
                     </FormText>
-                  </FlexDiv>
+                  </FlexBaseDiv>
                 </Column>
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-
               </>
               )}
+          <AlignEndColumn>
+            {addremovepanel}
+          </AlignEndColumn>
         </AlignStartRow>
         {inEditMode && (
           <>
             <VerticalSeparatorDiv />
             <AlignStartRow>
-              <Column>
+              <Column flex='2'>
                 <Input
                   error={_v[_namespace + '-info']?.feilmelding}
                   namespace={_namespace}
@@ -249,11 +249,7 @@ const Dagpenger: React.FC<MainFormProps> = ({
                   value={_periode?.info}
                 />
               </Column>
-            </AlignStartRow>
-            <AlignStartRow>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
+              <Column/>
             </AlignStartRow>
           </>
         )}

@@ -94,7 +94,7 @@ const Person: React.FC<MainFormProps> = ({
   }
 
   return (
-    <div key={namespace + '-div'}>
+    <div>
       <PaddedDiv>
         <Heading size='medium'>
           {t('label:personopplysninger')}
