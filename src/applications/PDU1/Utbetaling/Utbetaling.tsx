@@ -186,7 +186,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
             checked={andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
             data-testid={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
             id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
-            key={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox' + andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
             error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUtbetalingEtterEndtArbeidsforholdCheckbox(e.target.checked)}
           >
@@ -195,7 +194,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-utbetalingEtterEndtArbeidsforhold-' + andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
                 id='utbetalingEtterEndtArbeidsforhold'
                 label=''
                 hideLabel
@@ -214,7 +212,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
             data-testid={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
             id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
-            key={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox' + andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForEndtArbeidsforholdCheckbox(e.target.checked)}
           >
             <FlexDiv>
@@ -222,7 +219,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-kompensasjonForEndtArbeidsforhold-' + andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
                 id='kompensasjonForEndtArbeidsforhold'
                 label=''
                 hideLabel
@@ -241,7 +237,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
             data-testid={namespace + '-kompensasjonForFeriedagerCheckbox'}
             error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
             id={namespace + '-kompensasjonForFeriedagerCheckbox'}
-            key={namespace + '-kompensasjonForFeriedagerCheckbox' + andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKompensasjonForFeriedagerCheckbox(e.target.checked)}
           >
             <FlexDiv>
@@ -249,7 +244,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kompensasjonForFeriedager-beloep']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-kompensasjonForFeriedager-beloep-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
                 id='kompensasjonForFeriedager-beloep'
                 label=''
                 hideLabel
@@ -262,7 +256,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kompensasjonForFeriedager-antallDager']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-kompensasjonForFeriedager-antallDager-' + andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
                 id='kompensasjonForFeriedager-antallDager'
                 label=''
                 hideLabel
@@ -283,8 +276,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
             checked={andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
             data-testid={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
             error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
-            id={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
-            key={namespace + '-avkallKompensasjonBegrunnelseCheckbox' + andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)}
           >
             <FlexDiv>
@@ -292,7 +283,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-avkallKompensasjonBegrunnelse']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-avkallKompensasjonBegrunnelse-' + andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
                 id='avkallKompensasjonBegrunnelse'
                 label=''
                 hideLabel
@@ -311,7 +301,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
             data-testid={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
             error={!!validation[namespace + '-andreYtelserSomMottasForTidenCheckbox']?.feilmelding}
             id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
-            key={namespace + '-andreYtelserSomMottasForTidenCheckbox' + andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAndreYtelserSomMottasForTidenCheckbox(e.target.checked)}
           >
             <FlexDiv>
@@ -319,7 +308,6 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-andreYtelserSomMottasForTiden']?.feilmelding}
                 namespace={namespace}
-                key={namespace + '-andreYtelserSomMottasForTiden-' + andreMottatteUtbetalinger?.andreYtelserSomMottasForTiden}
                 id='andreYtelserSomMottasForTiden'
                 label=''
                 hideLabel

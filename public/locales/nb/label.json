@@ -35,8 +35,11 @@
   "artikkel-64": "Artikkel 64 i forordningen (EF nr. 883/2004)",
   "artikkel-65": "Artikkel 65(1) i forordningen (EF nr. 883/2004)",
   "artikkelnummer": "Artikkelnummer",
+  "automatisk": "Automatisk",
   "avdød": "Avdød",
   "avhuk-de-barn-vedtaket": "Avhuk de barn vedtaket gjelder",
+  "avslutningsdato" : "Avslutningsdato",
+  "avslutningstype" : "Avslutningstype",
   "avsender": "Avsender",
 
   "bankens-navn": "Bankens navn",
@@ -75,7 +78,12 @@
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
   "delt-foreldreansvar": "Delt foreldreansvar",
   "deltaker": "Deltaker",
+  "dokument": "Dokument",
   "dokument-id": "Dokument ID",
+  "dokument-ikke-tilgjengelige": "dokument som ikke er tilgjengelig",
+  "dokument-info": "Mer info om dokumentet",
+  "dokument-type": "Dokumenttype",
+  "dokument-til-send": "dokument som sendes senere",
   "draft-address-filled": "Fikk én adresse fra PDL, utkastadresse var fylt med den",
   "du-kan": "Du kan",
 
@@ -134,6 +142,8 @@
   "fyll-inn-adresse": "Fyll inn adresse",
   "fødested": "Fødested",
   "fødselsdato": "Fødselsdato",
+  "følgende-dokument-er-ikke-tilgjengelige": "Følgende dokumenter er ikke tilgjengelige",
+  "følgende-dokumenter-sendes-senere": "Følgende dokumenter sendes senere",
 
   "gateadresse": "Vei-/Gateadresse og nr ",
   "gjennomsnitt": "Gj.snitt/mnd",
@@ -230,6 +240,7 @@
 
   "månedlig": "Månedlig",
   "mann" : "Mann",
+  "manuell" : "Manuell",
   "medlemsperiode": "Medlemsperiode",
   "motpart": "Motpart",
   "motpart-sakseier": "Motpart/Sakseier",

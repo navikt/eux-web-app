@@ -267,7 +267,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
                 label={t('label:tema')}
                 defaultValue={_.find(temaOptions, { value: tema })}
                 error={validation[namespace + '-tema']?.feilmelding}
-                key={namespace + '-tema-' + tema}
                 id={namespace + '-tema'}
                 menuPortalTarget={document.body}
                 onChange={onTemaChanged}

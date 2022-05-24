@@ -146,7 +146,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
         data-testid={namespace + '-rettTilDagpengerRadio'}
         error={!!validation[namespace + '-rettTilDagpengerRadio']?.feilmelding}
         id={namespace + '-rettTilDagpengerRadio'}
-        key={namespace + '-rettTilDagpengerRadio-' + rettTilDagpengerRadio}
         legend={t('label:rett-til-dagpenger')}
         name={namespace + '-rettTilDagpengerRadio'}
         onChange={onRettTilDagpengerRadioChange}
@@ -164,7 +163,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Checkbox
               checked={rettTilDagpenger?.ihhTilArtikkel64 === 'ja'}
               data-testid={namespace + '-ihhTilArtikkel64'}
-              key={namespace + '-ihhTilArtikkel64-' + (rettTilDagpenger?.ihhTilArtikkel64 ?? '')}
               error={!!validation[namespace + '-ihhTilArtikkel64']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onIhhTilArtikkel64Change(e.target.checked)
@@ -180,7 +178,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Checkbox
               checked={rettTilDagpenger?.ihhTilArtikkel65 === 'ja'}
               data-testid={namespace + '-ihhTilArtikkel65'}
-              key={namespace + '-ihhTilArtikkel65-' + (rettTilDagpenger?.ihhTilArtikkel65 ?? '')}
               error={!!validation[namespace + '-ihhTilArtikkel65']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onIhhTilArtikkel65Change(e.target.checked)
@@ -201,7 +198,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
                 ariaLabel={t('label:startdato')}
                 error={validation[namespace + '-startdato']?.feilmelding}
                 id='startdato'
-                key={namespace + '-startdato-' + rettTilDagpenger?.startdato}
                 label={t('label:startdato')}
                 namespace={namespace}
                 onChanged={onStartdatoChange}
@@ -212,7 +208,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
                 ariaLabel={t('label:sluttdato')}
                 error={validation[namespace + '-sluttdato']?.feilmelding}
                 id='sluttdato'
-                key={namespace + '-sluttdato-' + rettTilDagpenger?.sluttdato}
                 label={t('label:sluttdato')}
                 namespace={namespace}
                 onChanged={onSluttdatoChange}
@@ -235,7 +230,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Checkbox
               checked={ikkeRettTilDagpenger?.ihhTilLovgivning === 'ja'}
               data-testid={namespace + '-ihhTilLovgivning'}
-              key={namespace + '-ihhTilLovgivning-' + (ikkeRettTilDagpenger?.ihhTilLovgivning ?? '')}
               error={!!validation[namespace + '-ihhTilLovgivning']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onIhhTilLovgivningChange(e.target.checked)
@@ -251,7 +245,6 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Checkbox
               checked={ikkeRettTilDagpenger?.ikkeSoekt === 'ja'}
               data-testid={namespace + '-ikkeSoekt'}
-              key={namespace + '-ikkeSoekt-' + (ikkeRettTilDagpenger?.ikkeSoekt ?? '')}
               error={!!validation[namespace + '-ikkeSoekt']?.feilmelding}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 onIkkeSoektChange(e.target.checked)

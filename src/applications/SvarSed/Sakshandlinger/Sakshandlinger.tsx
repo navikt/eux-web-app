@@ -2,7 +2,7 @@ import { BodyShort, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { loadReplySed } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { BaseReplySed, Kjoenn } from 'declarations/sed'
+import { XSed, Kjoenn } from 'declarations/sed'
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,13 +17,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   sak,
   changeMode
 }: SakshandlingerProps) => {
-
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const createSed = (sedType: string) => {
-    const replySed: BaseReplySed = {
-      sedType: sedType,
+    const replySed: XSed = {
+      sedType,
       sedVersjon: '1',
       bruker: {
         personInfo: {
@@ -31,7 +30,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
           etternavn: sak.person?.etternavn ?? '',
           kjoenn: (sak.person?.kjoenn ?? 'U') as Kjoenn,
           foedselsdato: sak.person?.foedselsdato ?? '',
-          statsborgerskap: [{land: 'NO'}],
+          statsborgerskap: [{ land: 'NO' }],
           pin: [{
             land: 'NO',
             identifikator: sak.person?.fnr
@@ -62,7 +61,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         X009 - {t('el:option-mainform-påminnelse')}
       </Link>
       <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X009')}>
+      <Link href='#' onClick={() => createSed('X010')}>
         X010 - {t('el:option-mainform-svarpåminnelse')}
       </Link>
       <VerticalSeparatorDiv />

@@ -494,3 +494,42 @@ export interface H002Sed extends HSed {
   positivtSvar?: H002Svar
   negativeSvar?: H002Svar
 }
+
+export interface XSed extends BaseReplySed {}
+
+export type AvslutningsType = 'manuell' | 'automatisk'
+
+export interface X001Sed extends XSed {
+  avslutningsDato: string
+  avslutningsType: AvslutningsType
+  begrunnelse: string
+  begrunnelseAnnen?: string
+}
+
+export interface X008Sed extends XSed {
+  begrunnelse: string
+  begrunnelseAnnen?: string
+}
+
+export interface Dokument {
+  dokumenttype: string
+  dokumentinfo: string
+}
+
+export interface X009Sed extends XSed {
+  dokumenter?: Array<Dokument>
+}
+
+export interface DokumentTilSend extends Dokument {
+  dato?: string
+}
+
+export interface DokumentIkkeTilgjengelige extends Dokument{
+  begrunnelse: string
+  begrunnelseAnnen?: string
+}
+
+export interface X010Sed extends XSed {
+  dokumenter_sendes_senere: Array<DokumentTilSend>
+  dokumenter_ikke_tilgjengelige: Array<DokumentIkkeTilgjengelige>
+}

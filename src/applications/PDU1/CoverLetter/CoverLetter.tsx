@@ -57,7 +57,6 @@ const CoverLetter: React.FC<MainFormProps> = ({
             <TextArea
               style={{ minHeight: '140px' }}
               error={validation[namespace + '-info']?.feilmelding}
-              key={namespace + '-info-' + info}
               id='info'
               label={t('label:informasjon')}
               namespace={namespace}

@@ -44,6 +44,7 @@
   "noBarnValgt": "Ingen barn valgt",
   "noBarnaEllerFamilie": "Velg mellom barna eller familie",
   "noBegrunnelse": "Ingen begrunnelse",
+  "noBegrunnelseAnnen": "Ingen begrunnelse beskrivelse",
   "noBeløp": "Ingen beløp",
   "noBetegnelsePåYtelse": "Ingen betegnelse på ytelse",
   "noBirthCountry": "Ingen statsborgerskaps land",
@@ -70,6 +71,7 @@
 
   "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
   "noId": "Du må skrive identifikatoren",
+  "noInfo": "Ingen informasjon",
   "noInntekt": "Ingen inntekt",
   "noInntektInfo": "Ingen inntekt info",
   "noInntektsliste": "Du må velge en inntektsfilter",

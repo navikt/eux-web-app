@@ -167,7 +167,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <Checkbox
                 checked={sensitivt}
                 data-testid={namespace + '-sensitivt'}
-                key={namespace + '-sensitivt-' + sensitivt}
                 error={!!validation[namespace + '-sensitivt']?.feilmelding}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSensitivt(e.target.checked)}
               >

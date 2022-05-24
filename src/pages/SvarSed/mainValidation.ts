@@ -1,6 +1,7 @@
 import { validateAdresser } from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning } from 'applications/SvarSed/Anmodning/validation'
 import { validateAnmodningsPerioder } from 'applications/SvarSed/AnmodningsPeriode/validation'
+import { validateAvslutning } from 'applications/SvarSed/Avslutning/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
@@ -19,14 +20,18 @@ import { validateMotregninger } from 'applications/SvarSed/Motregning/validation
 import { validateNasjonaliteter } from 'applications/SvarSed/Nasjonaliteter/validation'
 import { validatePerioderDagpenger } from 'applications/SvarSed/PeriodeForDagpenger/validation'
 import { validatePersonensStatusPerioder } from 'applications/SvarSed/PersonensStatus/validation'
+import { validatePersonLight } from 'applications/SvarSed/PersonLight/validation'
 import { validatePersonopplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
 import { validateProsedyreVedUenighet } from 'applications/SvarSed/ProsedyreVedUenighet/validation'
+import { validateDokumenter } from 'applications/SvarSed/Påminnelse/validation'
 import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
 import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/validation'
 import { validateSisteAnsettelseInfo } from 'applications/SvarSed/SisteAnsettelseInfo/validation'
 import { validateSvarPåForespørsel } from 'applications/SvarSed/SvarPåForespørsel/validation'
+import { validateSvarPåminnelse } from 'applications/SvarSed/SvarPåminnelse/validation'
 import { validateTrygdeordninger } from 'applications/SvarSed/Trygdeordning/validation'
+import { validateUgyldiggjøre } from 'applications/SvarSed/Ugyldiggjøre/validation'
 import { validateVedtak } from 'applications/SvarSed/Vedtak/validation'
 import {
   Adresse,
@@ -46,13 +51,24 @@ import {
   U002Sed,
   U004Sed,
   U017Sed,
-  USed,
+  USed, X001Sed, X008Sed, X009Sed, X010Sed,
   Ytelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
 import _ from 'lodash'
-import { isFSed, isH001Sed, isH002Sed, isHSed, isUSed } from 'utils/sed'
+import {
+  isFSed,
+  isH001Sed,
+  isH002Sed,
+  isHSed,
+  isUSed,
+  isX001Sed,
+  isX008Sed,
+  isX009Sed,
+  isX010Sed,
+  isXSed
+} from 'utils/sed'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationSEDEditProps {
@@ -248,6 +264,35 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(validateEndredeForhold(v, `svarsed-${personID}-endredeforhold`, {
         replySed,
         personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      }))
+    }
+  }
+
+  if (isXSed(replySed)) {
+    hasErrors.push(validatePersonLight(v, `svarsed-${personID}-personlight`, {
+      personInfo, personName
+    }))
+
+    if (isX001Sed(replySed)) {
+      hasErrors.push(validateAvslutning(v, `svarsed-${personID}-avslutning`, {
+        replySed: (replySed as X001Sed), personName
+      }))
+    }
+    if (isX008Sed(replySed)) {
+      hasErrors.push(validateUgyldiggjøre(v, `svarsed-${personID}-ugyldiggjøre`, {
+        replySed: (replySed as X008Sed), personName
+      }))
+    }
+    if (isX009Sed(replySed)) {
+      hasErrors.push(validateDokumenter(v, `svarsed-${personID}-påminnelse`, {
+        dokumenter: _.get(replySed as X009Sed, 'dokumenter'), personName
+      }))
+    }
+    if (isX010Sed(replySed)) {
+      hasErrors.push(validateSvarPåminnelse(v, `svarsed-${personID}-svarpåminnelse`, {
+        dokumenterTilSend: _.get(replySed as X010Sed, 'dokumenter_sendes_senere'),
+        dokumenterIkkeTilgjengelige: _.get(replySed as X010Sed, 'dokumenter_ikke_tilgjengelige'),
+        personName
       }))
     }
   }

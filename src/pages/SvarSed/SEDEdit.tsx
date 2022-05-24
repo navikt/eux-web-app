@@ -285,7 +285,6 @@ const SEDEdit: React.FC = (): JSX.Element => {
             <TextArea
               namespace={namespace}
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              key={namespace + '-' + replySed?.sedType}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}

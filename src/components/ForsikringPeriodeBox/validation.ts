@@ -96,19 +96,19 @@ export const validateForsikringPeriodeBox = (
   if (showBeløp) {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
-      id: namespace +  (nsIndex ?? '') + '-beloep',
+      id: namespace + (nsIndex ?? '') + '-beloep',
       message: 'validation:noBeløp'
     }))
 
     hasErrors.push(checkIfNotNumber(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
-      id: namespace +  (nsIndex ?? '') + '-beloep',
+      id: namespace + (nsIndex ?? '') + '-beloep',
       message: 'validation:invalidBeløp'
     }))
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.valuta,
-      id: namespace +  (nsIndex ?? '') + '-valuta',
+      id: namespace + (nsIndex ?? '') + '-valuta',
       message: 'validation:noValuta'
     }))
   }

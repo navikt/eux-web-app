@@ -151,7 +151,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             data-testid={namespace + '-land'}
             error={_validation[namespace + '-land']?.feilmelding}
             label={t('label:land')}
-            key={namespace + '-land-' + _relation.land}
             menuPortalTarget={document.body}
             includeList={CountryFilter.STANDARD({})}
             onOptionSelected={(e: Country) => {
@@ -168,7 +167,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
             includeList={CountryFilter.STANDARD({})}
             label={t('label:statsborgerskap')}
-            key={namespace + '-statsborgerskap-' + _relation.statsborgerskap}
             menuPortalTarget={document.body}
             onOptionSelected={(e: Country) => {
               updateCountry('statsborgerskap', e.value)
@@ -236,7 +234,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <DateInput
             id='fdato'
             data-testid={namespace + '-fdato'}
-            key={namespace + '-fdato-' + _relation.fdato}
             namespace={namespace}
             error={_validation[namespace + '-fdato']?.feilmelding}
             label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}

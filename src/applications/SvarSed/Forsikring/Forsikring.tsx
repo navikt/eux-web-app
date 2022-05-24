@@ -307,7 +307,7 @@ const Forsikring: React.FC<MainFormProps> = ({
                   return null
                 }
                 return (
-                  <div>
+                  <div key={o.value}>
                     <PaddedDiv>
                       <FlexCenterDiv>
                         {getIcon(o.value, '20')}
@@ -331,12 +331,12 @@ const Forsikring: React.FC<MainFormProps> = ({
         : (
           <PaddedDiv>
             <Button
-            variant='tertiary'
-            onClick={() => _setNewForm(true)}
-          >
-            <AddCircle />
-            {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-          </Button>
+              variant='tertiary'
+              onClick={() => _setNewForm(true)}
+            >
+              <AddCircle />
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+            </Button>
           </PaddedDiv>
           )}
     </>

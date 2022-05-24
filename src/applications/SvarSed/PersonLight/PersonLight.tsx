@@ -41,7 +41,7 @@ const PersonLight: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const target: string = `${personID}.personInfo`
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
-  const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
+  const namespace: string = `${parentNamespace}-${personID}-personlight`
 
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
 

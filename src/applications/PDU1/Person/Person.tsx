@@ -105,7 +105,6 @@ const Person: React.FC<MainFormProps> = ({
             <Input
               error={validation[namespace + '-fornavn']?.feilmelding}
               id='fornavn'
-              key={namespace + '-fornavn-' + (pdu1Person?.fornavn ?? '')}
               label={t('label:fornavn')}
               namespace={namespace}
               onChanged={onFornavnChange}
@@ -117,7 +116,6 @@ const Person: React.FC<MainFormProps> = ({
             <Input
               error={validation[namespace + '-etternavn']?.feilmelding}
               id='etternavn'
-              key={namespace + '-fornavn-' + (pdu1Person?.etternavn ?? '')}
               label={t('label:etternavn')}
               namespace={namespace}
               onChanged={onEtternavnChange}
@@ -131,7 +129,6 @@ const Person: React.FC<MainFormProps> = ({
               finalFormat='DD.MM.YYYY'
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
-              key={namespace + '-foedselsdato-' + (pdu1Person?.foedselsdato ?? '')}
               label={t('label:fødselsdato')}
               namespace={namespace}
               onChanged={onFodselsdatoChange}
@@ -149,7 +146,6 @@ const Person: React.FC<MainFormProps> = ({
               data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
               id={namespace + '-kjoenn'}
-              key={namespace + '-kjoenn-' + (pdu1Person?.kjoenn ?? '')}
               legend={t('label:kjønn') + ' *'}
               name={namespace + '-kjoenn'}
               onChange={onKjoennChange}
@@ -194,7 +190,6 @@ const Person: React.FC<MainFormProps> = ({
             <Input
               error={validation[namespace + '-fnr']?.feilmelding}
               id='fnr'
-              key={namespace + '-fnr-' + pdu1Person?.fnr}
               label={t('label:norsk-fnr')}
               namespace={namespace}
               disabled

@@ -537,7 +537,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <FlexCenterDiv>
               <Select
                 data-testid={namespace + '-institusjon'}
-                key={namespace + '-institusjon-' + valgtInstitusjon}
                 disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person)}
                 error={validation[namespace + '-institusjon']?.feilmelding}
                 id={namespace + '-institusjon'}

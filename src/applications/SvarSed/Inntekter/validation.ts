@@ -40,7 +40,6 @@ export const validateInntekt = (
     personName
   }))
 
-
   hasErrors.push(checkIfNotNumber(v, {
     needle: inntekt?.beloep,
     id: namespace + idx + '-beloep',

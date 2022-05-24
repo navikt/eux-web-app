@@ -1,23 +1,51 @@
-import { validatePeriode } from 'components/Forms/validation'
-import { Periode } from 'declarations/sed'
+import { X001Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import { checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationReferanseperiodeProps {
-  anmodningsperiode: Periode | undefined
-  personName?: string
+export interface ValidationAvslutningProps {
+  replySed: X001Sed
+  personName ?: string | undefined
 }
 
-export const validateReferanseperiode = (
+export const validateAvslutning = (
   v: Validation,
   namespace: string,
   {
-    anmodningsperiode,
+    replySed,
     personName
-  }: ValidationReferanseperiodeProps
+  }: ValidationAvslutningProps
 ): boolean => {
-  const hasErrors = validatePeriode(v, namespace, {
-    periode: anmodningsperiode,
+  const hasErrors: Array<boolean> = []
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: replySed.avslutningsDato,
+    id: namespace + '-avslutningsDato',
+    message: 'validation:noDate',
     personName
-  })
-  return hasErrors
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: replySed.avslutningsType,
+    id: namespace + '-avslutningsType',
+    message: 'validation:noType',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: replySed.begrunnelse,
+    id: namespace + '-begrunnelse',
+    message: 'validation:noBegrunnelse',
+    personName
+  }))
+
+  if (replySed.begrunnelse === '99') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: replySed.begrunnelseAnnen,
+      id: namespace + '-begrunnelseAnnen',
+      message: 'validation:noBegrunnelseAnnen',
+      personName
+    }))
+  }
+
+  return hasErrors.find(value => value) !== undefined
 }
