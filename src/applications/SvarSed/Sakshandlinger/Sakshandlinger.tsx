@@ -26,14 +26,14 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       sedVersjon: '1',
       bruker: {
         personInfo: {
-          fornavn: sak.person?.fornavn ?? '',
-          etternavn: sak.person?.etternavn ?? '',
-          kjoenn: (sak.person?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak.person?.foedselsdato ?? '',
+          fornavn: sak?.fornavn ?? '',
+          etternavn: sak?.etternavn ?? '',
+          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+          foedselsdato: sak?.foedselsdato ?? '',
           statsborgerskap: [{ land: 'NO' }],
           pin: [{
             land: 'NO',
-            identifikator: sak.person?.fnr
+            identifikator: sak?.fnr
           }]
         }
       }

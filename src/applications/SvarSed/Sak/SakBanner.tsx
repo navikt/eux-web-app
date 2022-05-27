@@ -36,10 +36,10 @@ const SakBanner = ({ sak }: SakProps) => {
 
   let kind: string = 'nav-unknown-icon'
   let src = ukjent
-  if (sak?.person?.kjoenn === 'K') {
+  if (sak?.kjoenn === 'K') {
     kind = 'nav-woman-icon'
     src = kvinne
-  } else if (sak?.person?.kjoenn === 'M') {
+  } else if (sak?.kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
   }
@@ -55,39 +55,34 @@ const SakBanner = ({ sak }: SakProps) => {
         </BodyLong>
       </PileDiv>
       <PileDiv>
-        {sak.person && (
-          <>
-            <FlexDiv>
-              <img
-                alt={kind}
-                width={24}
-                height={24}
-                src={src}
-              />
-              <HorizontalSeparatorDiv />
-              <Label>
-                {sak.person.etternavn + ', ' + sak.person.fornavn}
-              </Label>
-            </FlexDiv>
-            <FlexDiv>
-              {t('label:fnr.') + ': '}
-              <HorizontalSeparatorDiv size='0.5' />
-              <Link
-                title={t('label:kopiere')} onClick={(e: any) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  dispatch(copyToClipboard(sak.sakId))
-                }}
-              >
-                {' ' + sak.person.fnr + ' '}
-                <Copy />
-              </Link>
-              <HorizontalSeparatorDiv />
-              {sak.person.foedselsdato}
-            </FlexDiv>
-          </>
-
-        )}
+        <FlexDiv>
+          <img
+            alt={kind}
+            width={24}
+            height={24}
+            src={src}
+          />
+          <HorizontalSeparatorDiv />
+          <Label>
+            {sak.etternavn + ', ' + sak.fornavn}
+          </Label>
+        </FlexDiv>
+        <FlexDiv>
+          {t('label:fnr.') + ': '}
+          <HorizontalSeparatorDiv size='0.5' />
+          <Link
+            title={t('label:kopiere')} onClick={(e: any) => {
+              e.preventDefault()
+              e.stopPropagation()
+              dispatch(copyToClipboard(sak.sakId))
+            }}
+          >
+            {' ' + sak.fnr + ' '}
+            <Copy />
+          </Link>
+          <HorizontalSeparatorDiv />
+          {sak.foedselsdato}
+        </FlexDiv>
       </PileDiv>
       <PileDiv>
         <FlexDiv>

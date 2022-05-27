@@ -68,7 +68,7 @@ export const validateForsikringPeriodeBox = (
 
   if (showAddress) {
     hasErrors.push(validateAdresse(v, namespace + (nsIndex ?? '') + '-arbeidsgiver-adresse', {
-      adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver.adresse,
+      adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false
     }))
   }
@@ -81,7 +81,7 @@ export const validateForsikringPeriodeBox = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo,
       id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
-      message: 'validation:noInntektOgTimerInfo'
+      message: 'validation:noInfo'
     }))
   }
 
