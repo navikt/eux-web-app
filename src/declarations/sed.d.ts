@@ -507,8 +507,10 @@ export interface X001Sed extends XSed {
 }
 
 export interface X008Sed extends XSed {
-  begrunnelse: string
+  begrunnelseType: string
   begrunnelseAnnen?: string
+  tilbakekallSedType: string
+  tilbakekallSedUtstedtDato: string
 }
 
 export interface Dokument {

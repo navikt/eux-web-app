@@ -332,6 +332,7 @@
   "sed": "SED",
   "seds": "SED-er",
   "sed-already-sent": "{{sed}} allerede sendt",
+  "sed-type": "SED type",
   "sektor" : "Sektor",
   "send-vedlegg" : "Send vedlegg",
   "sendt" : "Sendt",
@@ -351,7 +352,6 @@
   "statsborgerskap" : "Statsborgerskap",
   "stillingprosent" : "Stillingprosent",
   "svar-på-forespørsel" : "Svar på forespørsel",
-  "sed": "SED",
   "svarsed": "SED",
   "svar-sed-type": "SvarSED type",
   "swift": "SWIFT",
@@ -387,6 +387,7 @@
   "utenlandske-pin" : "Utenlandske PIN",
   "utkast": "Utkast",
   "utvid-alle": "Utvid alle",
+  "utstedelsesdato" : "Utstedelsesdato",
 
   "valgt-familie": "Valgte familierelasjoner",
   "valid-dnr": "Gyldig d.nr.",

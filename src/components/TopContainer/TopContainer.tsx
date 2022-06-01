@@ -138,7 +138,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       extra: {
         error
       },
-      level: Sentry.Severity.Error
+      level: 'error'
     })
     return (
       <Error error={error} resetErrorBoundary={resetErrorBoundary} />

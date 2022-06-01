@@ -18,13 +18,27 @@ export const validateUgyldiggjøre = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.begrunnelse,
-    id: namespace + '-begrunnelse',
+    needle: (replySed as X008Sed).tilbakekallSedType,
+    id: namespace + '-tilbakekallSedType',
+    message: 'validation:noSedtype',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: (replySed as X008Sed).tilbakekallSedUtstedtDato,
+    id: namespace + '-tilbakekallSedUtstedtDato',
+    message: 'validation:noUtstedelsesdato',
+    personName
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: replySed.begrunnelseType,
+    id: namespace + '-begrunnelseType',
     message: 'validation:noBegrunnelse',
     personName
   }))
 
-  if (replySed.begrunnelse === '99') {
+  if (replySed.begrunnelseType === '99') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: replySed.begrunnelseAnnen,
       id: namespace + '-begrunnelseAnnen',

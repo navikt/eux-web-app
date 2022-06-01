@@ -1,13 +1,12 @@
 export default (saksnummer: string) => {
   const saks = [
     {
-      person: {
+
         fornavn: 'Ola',
         etternavn: 'Nordmenn',
         kjoenn: 'M',
         foedselsdato: '1970-01-01',
-        fnr: '12345678901'
-      },
+        fnr: '12345678901',
       sakTittel: 'Beslutte komponent myndighet',
       sakType: 'FB_BUC_01',
       sakId: '1166592',
@@ -58,13 +57,11 @@ export default (saksnummer: string) => {
         }
       ]
     }, {
-      person: {
         fornavn: 'Ola',
         etternavn: 'Nordmenn',
         kjoenn: 'M',
         foedselsdato: '1970-01-01',
-        fnr: '12345678901'
-      },
+        fnr: '12345678901',
       sakTittel: 'Dagpenger',
       sakType: 'UB_BUC_01',
       sakId: '1166593',
@@ -113,13 +110,11 @@ export default (saksnummer: string) => {
       ]
     },
     {
-      person: {
         fornavn: 'Ola',
         etternavn: 'Nordmenn',
         kjoenn: 'M',
         foedselsdato: '1970-01-01',
-        fnr: '12345678901'
-      },
+        fnr: '12345678901',
       sakTittel: 'Horisontal',
       sakType: 'H_BUC_01',
       sakId: '398793',
@@ -166,13 +161,11 @@ export default (saksnummer: string) => {
       ]
     },
     {
-      person: {
         fornavn: 'Ola',
         etternavn: 'Nordmenn',
         kjoenn: 'M',
         foedselsdato: '1970-01-01',
-        fnr: '12345678901'
-      },
+        fnr: '12345678901',
       sakTittel: 'Utveksling av informasjon for å avgjøre et krav for UB',
       sakType: 'UB_BUC_01',
       sakId: '398792',
