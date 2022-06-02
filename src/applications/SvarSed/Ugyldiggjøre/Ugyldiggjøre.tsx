@@ -86,14 +86,14 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-        <Input
-          error={validation[namespace + '-tilbakekallSedType']?.feilmelding}
-          namespace={namespace}
-          id='tilbakekallSedType'
-          label={t('label:sed-type')}
-          onChanged={setTilbakekallSedType}
-          value={(replySed as X008Sed)?.tilbakekallSedType}
-        />
+          <Input
+            error={validation[namespace + '-tilbakekallSedType']?.feilmelding}
+            namespace={namespace}
+            id='tilbakekallSedType'
+            label={t('label:sed-type')}
+            onChanged={setTilbakekallSedType}
+            value={(replySed as X008Sed)?.tilbakekallSedType}
+          />
         </Column>
         <Column>
           <DateInput
@@ -108,9 +108,9 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
             value={(replySed as X008Sed)?.tilbakekallSedUtstedtDato ?? ''}
           />
         </Column>
-        <Column/>
+        <Column />
       </AlignStartRow>
-      <VerticalSeparatorDiv/>
+      <VerticalSeparatorDiv />
       <AlignStartRow>
         <Column flex='2'>
           <RadioPanelGroup

@@ -46,7 +46,7 @@
     "amplitude-js": "^8.18.4",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",
-    "core-js": "^3.22.7",
+    "core-js": "^3.22.8",
     "eux-schema": "^0.4.0",
     "file-saver": "^2.0.5",
     "i18next": "^21.8.5",
@@ -78,7 +78,7 @@
     "@types/amplitude-js": "^8.16.1",
     "@types/classnames": "^2.3.0",
     "@types/file-saver": "^2.0.5",
-    "@types/jest": "^27.5.1",
+    "@types/jest": "^28.1.0",
     "@types/lodash": "^4.14.182",
     "@types/md5": "^2.3.2",
     "@types/node": "^17.0.38",
@@ -229,6 +229,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.11",
+  "_id": "neessi@6.99.12",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

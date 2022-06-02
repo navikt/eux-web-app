@@ -37,14 +37,14 @@ export const validateDokumentTilSend = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumenttype,
+    needle: dokument?.gjelder,
     id: namespace + idx + '-dokumenttype',
     message: 'validation:noType',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumentinfo,
+    needle: dokument?.beskrivelse,
     id: namespace + idx + '-dokumentinfo',
     message: 'validation:noInfo',
     personName
@@ -60,7 +60,7 @@ export const validateDokumentTilSend = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: dokument,
     haystack: dokumenter,
-    matchFn: (s: DokumentTilSend) => s.dokumenttype === dokument?.dokumenttype,
+    matchFn: (s: DokumentTilSend) => s.gjelder === dokument?.gjelder,
     id: namespace + idx + '-dokumenttype',
     index,
     message: 'validation:duplicateType',
@@ -84,27 +84,27 @@ export const validateDokumentIkkeTilgjengelige = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumenttype,
-    id: namespace + idx + '-dokumenttype',
+    needle: dokument?.gjelder,
+    id: namespace + idx + '-gjelder',
     message: 'validation:noType',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumentinfo,
-    id: namespace + idx + '-dokumentinfo',
+    needle: dokument?.beskrivelse,
+    id: namespace + idx + '-beskrivelse',
     message: 'validation:noInfo',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.begrunnelse,
-    id: namespace + idx + '-begrunnelse',
+    needle: dokument?.begrunnelseType,
+    id: namespace + idx + '-begrunnelseType',
     message: 'validation:noBegrunnelse',
     personName
   }))
 
-  if (dokument?.begrunnelse === '99') {
+  if (dokument?.begrunnelseType === '99') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: dokument?.begrunnelseAnnen,
       id: namespace + idx + '-begrunnelseAnnen',
@@ -116,8 +116,8 @@ export const validateDokumentIkkeTilgjengelige = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: dokument,
     haystack: dokumenter,
-    matchFn: (s: DokumentTilSend) => s.dokumenttype === dokument?.dokumenttype,
-    id: namespace + idx + '-dokumenttype',
+    matchFn: (s: DokumentTilSend) => s.gjelder === dokument?.gjelder,
+    id: namespace + idx + '-gjelder',
     index,
     message: 'validation:duplicateType',
     personName

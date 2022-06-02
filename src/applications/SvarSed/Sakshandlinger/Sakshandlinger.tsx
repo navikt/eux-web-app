@@ -25,17 +25,15 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       sedType,
       sedVersjon: '1',
       bruker: {
-        personInfo: {
-          fornavn: sak?.fornavn ?? '',
-          etternavn: sak?.etternavn ?? '',
-          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak?.fnr
-          }]
-        }
+        fornavn: sak?.fornavn ?? '',
+        etternavn: sak?.etternavn ?? '',
+        kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+        foedselsdato: sak?.foedselsdato ?? '',
+        statsborgerskap: [{ land: 'NO' }],
+        pin: [{
+          land: 'NO',
+          identifikator: sak?.fnr
+        }]
       }
     }
 

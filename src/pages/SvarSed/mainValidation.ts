@@ -23,7 +23,7 @@ import { validatePersonensStatusPerioder } from 'applications/SvarSed/PersonensS
 import { validatePersonLight } from 'applications/SvarSed/PersonLight/validation'
 import { validatePersonopplysninger } from 'applications/SvarSed/PersonOpplysninger/validation'
 import { validateProsedyreVedUenighet } from 'applications/SvarSed/ProsedyreVedUenighet/validation'
-import { validateDokumenter } from 'applications/SvarSed/Påminnelse/validation'
+import { validatePurringer } from 'applications/SvarSed/Påminnelse/validation'
 import { validateReferanseperiode } from 'applications/SvarSed/Referanseperiode/validation'
 import { validateBarnetilhoerigheter } from 'applications/SvarSed/Relasjon/validation'
 import { validateRettTilYtelse } from 'applications/SvarSed/RettTilYtelser/validation'
@@ -270,7 +270,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
   if (isXSed(replySed)) {
     hasErrors.push(validatePersonLight(v, `svarsed-${personID}-personlight`, {
-      personInfo, personName
+      personLight: personInfo, personName
     }))
 
     if (isX001Sed(replySed)) {
@@ -284,8 +284,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }))
     }
     if (isX009Sed(replySed)) {
-      hasErrors.push(validateDokumenter(v, `svarsed-${personID}-påminnelse`, {
-        dokumenter: _.get(replySed as X009Sed, 'dokumenter'), personName
+      hasErrors.push(validatePurringer(v, `svarsed-${personID}-påminnelse`, {
+        purringer: _.get(replySed as X009Sed, 'purringer'), personName
       }))
     }
     if (isX010Sed(replySed)) {

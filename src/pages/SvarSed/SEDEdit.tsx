@@ -45,7 +45,7 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, HSed, ReplySed } from 'declarations/sed'
+import { F002Sed, FSed, HSed, Person, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -288,7 +288,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
-              value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : replySed?.bruker?.ytterligereInfo}
+              value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : (replySed?.bruker as Person)?.ytterligereInfo}
             />
           </TextAreaDiv>
         </>

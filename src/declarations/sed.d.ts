@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002'
+export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -180,6 +180,15 @@ export interface Person {
   personInfo: PersonInfo
   telefon ?: Array<Telefon>
   ytterligereInfo ?: string
+}
+
+export interface PersonLight {
+  fornavn: string
+  etternavn: string
+  kjoenn: Kjoenn
+  foedselsdato: string
+  statsborgerskap?: Array<Statsborgerskap>
+  pin?: Array<Pin>
 }
 
 export interface Telefon {
@@ -360,7 +369,6 @@ export interface RettTilYtelse extends PeriodePeriode {
 }
 
 export interface BaseReplySed {
-  bruker: Person
   sedType: string
   sedVersjon: string
 
@@ -419,6 +427,7 @@ export interface UenighetKonklusjon {
 }
 
 export interface FSed extends BaseReplySed {
+  bruker: Person
   anmodningsperioder: Array<Periode>
   formaal: Array<string>
 }
@@ -446,6 +455,7 @@ export interface F002Sed extends FSed {
 }
 
 export interface USed extends BaseReplySed {
+  bruker: Person
   anmodningsperiode: Periode
   lokaleSakIder: Array<LokaleSakId>
 }
@@ -476,6 +486,7 @@ export interface U017Sed extends U002Sed {
 }
 
 export interface HSed extends BaseReplySed {
+  bruker: Person
   tema?: string
   fagsakId?: string
   ytterligereInfo?: string
@@ -495,7 +506,11 @@ export interface H002Sed extends HSed {
   negativeSvar?: H002Svar
 }
 
-export interface XSed extends BaseReplySed {}
+export interface XSed extends BaseReplySed {
+  bruker: PersonLight
+  sedType: string
+  sedVersjon: string
+}
 
 export type AvslutningsType = 'manuell' | 'automatisk'
 
@@ -513,21 +528,21 @@ export interface X008Sed extends XSed {
   tilbakekallSedUtstedtDato: string
 }
 
-export interface Dokument {
-  dokumenttype: string
-  dokumentinfo: string
+export interface Purring {
+  gjelder: string
+  beskrivelse: string
 }
 
 export interface X009Sed extends XSed {
-  dokumenter?: Array<Dokument>
+  purringer?: Array<Purring>
 }
 
-export interface DokumentTilSend extends Dokument {
+export interface DokumentTilSend extends Purring {
   dato?: string
 }
 
-export interface DokumentIkkeTilgjengelige extends Dokument{
-  begrunnelse: string
+export interface DokumentIkkeTilgjengelige extends Purring {
+  begrunnelseType: string
   begrunnelseAnnen?: string
 }
 

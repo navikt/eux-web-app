@@ -1,52 +1,52 @@
-import { Dokument } from 'declarations/sed'
+import { Purring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationDokumentProps {
-  dokument: Dokument | undefined
-  dokumenter: Array<Dokument> | undefined
+export interface ValidationPurringProps {
+  purring: Purring | undefined
+  purringer: Array<Purring> | undefined
   index?: number
   personName?: string
 }
 
-export interface ValidationDokumenterProps {
-  dokumenter: Array<Dokument> | undefined
+export interface ValidationPurringerProps {
+  purringer: Array<Purring> | undefined
   personName?: string
 }
 
-export const validateDokument = (
+export const validatePurring = (
   v: Validation,
   namespace: string,
   {
-    dokument,
-    dokumenter,
+    purring,
+    purringer,
     index,
     personName
-  }: ValidationDokumentProps
+  }: ValidationPurringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumenttype,
-    id: namespace + idx + '-dokumenttype',
+    needle: purring?.gjelder,
+    id: namespace + idx + '-gjelder',
     message: 'validation:noType',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dokumentinfo,
-    id: namespace + idx + '-dokumentinfo',
+    needle: purring?.beskrivelse,
+    id: namespace + idx + '-beskrivelse',
     message: 'validation:noInfo',
     personName
   }))
 
   hasErrors.push(checkIfDuplicate(v, {
-    needle: dokument,
-    haystack: dokumenter,
-    matchFn: (s: Dokument) => s.dokumenttype === dokument?.dokumenttype,
-    id: namespace + idx + '-dokumenttype',
+    needle: purring,
+    haystack: purringer,
+    matchFn: (p: Purring) => p.gjelder === purring?.gjelder,
+    id: namespace + idx + '-gjelder',
     index,
     message: 'validation:duplicateType',
     personName
@@ -55,17 +55,17 @@ export const validateDokument = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateDokumenter = (
+export const validatePurringer = (
   validation: Validation,
   namespace: string,
   {
-    dokumenter,
+    purringer,
     personName
-  }: ValidationDokumenterProps
+  }: ValidationPurringerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  dokumenter?.forEach((dokument: Dokument, index: number) => {
-    hasErrors.push(validateDokument(validation, namespace, { dokument, dokumenter, index, personName }))
+  purringer?.forEach((purring: Purring, index: number) => {
+    hasErrors.push(validatePurring(validation, namespace, { purring, purringer, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

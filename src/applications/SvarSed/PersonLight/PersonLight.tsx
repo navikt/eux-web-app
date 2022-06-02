@@ -14,7 +14,7 @@ import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import NorskPin from 'components/NorskPin/NorskPin'
 import { State } from 'declarations/reducers'
-import { Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
+import { Kjoenn, PersonLight, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -28,7 +28,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const PersonLight: React.FC<MainFormProps> = ({
+const PersonLightFC: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
@@ -39,15 +39,15 @@ const PersonLight: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target: string = `${personID}.personInfo`
-  const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
+  const target: string = `${personID}`
+  const personLight: PersonLight | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personlight`
 
-  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
+  const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
 
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationPersonLightProps>(validation, namespace, validatePersonLight, {
-      personInfo,
+      personLight,
       personName
     })
     dispatch(setValidation(newValidation))
@@ -82,27 +82,30 @@ const PersonLight: React.FC<MainFormProps> = ({
   }
 
   const fillOutPerson = (searchedPerson: Person) => {
-    const newPersonInfo = _.cloneDeep(personInfo)
+    let newPersonLight: PersonLight | undefined = _.cloneDeep(personLight)
+    if (!newPersonLight) {
+      newPersonLight = {} as PersonLight
+    }
 
     if (searchedPerson.fnr) {
-      const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
+      const index = _.findIndex(newPersonLight?.pin, p => p.land === 'NO')
       if (index >= 0) {
-        newPersonInfo!.pin[index].identifikator = searchedPerson.fnr
+        _.set(newPersonLight, `pin[${index}].identifikator`, searchedPerson.fnr)
       }
     }
     if (searchedPerson.fdato) {
-      newPersonInfo!.foedselsdato = searchedPerson.fdato
+      newPersonLight!.foedselsdato = searchedPerson.fdato
     }
     if (searchedPerson.fornavn) {
-      newPersonInfo!.fornavn = searchedPerson.fornavn
+      newPersonLight!.fornavn = searchedPerson.fornavn
     }
     if (searchedPerson.etternavn) {
-      newPersonInfo!.etternavn = searchedPerson.etternavn
+      newPersonLight!.etternavn = searchedPerson.etternavn
     }
     if (searchedPerson.kjoenn) {
-      newPersonInfo!.kjoenn = searchedPerson.kjoenn as Kjoenn
+      newPersonLight!.kjoenn = searchedPerson.kjoenn as Kjoenn
     }
-    dispatch(updateReplySed(target, newPersonInfo))
+    dispatch(updateReplySed(target, newPersonLight))
     dispatch(resetValidation([
       namespace + '-fornavn',
       namespace + '-etternavn',
@@ -113,7 +116,7 @@ const PersonLight: React.FC<MainFormProps> = ({
   }
 
   const saveNorwegianPin = (newPin: string) => {
-    let pins: Array<Pin> | undefined = _.cloneDeep(personInfo!.pin)
+    let pins: Array<Pin> | undefined = _.cloneDeep(personLight!.pin)
     if (_.isNil(pins)) {
       pins = []
     }
@@ -157,7 +160,7 @@ const PersonLight: React.FC<MainFormProps> = ({
               namespace={namespace}
               onChanged={setFornavn}
               required
-              value={personInfo?.fornavn ?? ''}
+              value={personLight?.fornavn ?? ''}
             />
           </Column>
           <Column>
@@ -168,7 +171,7 @@ const PersonLight: React.FC<MainFormProps> = ({
               namespace={namespace}
               onChanged={setEtternavn}
               required
-              value={personInfo?.etternavn ?? ''}
+              value={personLight?.etternavn ?? ''}
             />
           </Column>
           <Column>
@@ -179,7 +182,7 @@ const PersonLight: React.FC<MainFormProps> = ({
               namespace={namespace}
               onChanged={setFodselsdato}
               required
-              value={personInfo?.foedselsdato ?? ''}
+              value={personLight?.foedselsdato ?? ''}
             />
           </Column>
         </AlignStartRow>
@@ -187,7 +190,7 @@ const PersonLight: React.FC<MainFormProps> = ({
         <AlignStartRow>
           <Column>
             <RadioPanelGroup
-              value={personInfo?.kjoenn}
+              value={personLight?.kjoenn}
               data-no-border
               data-testid={namespace + '-kjoenn'}
               error={validation[namespace + '-kjoenn']?.feilmelding}
@@ -216,4 +219,4 @@ const PersonLight: React.FC<MainFormProps> = ({
   )
 }
 
-export default PersonLight
+export default PersonLightFC

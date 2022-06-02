@@ -185,7 +185,7 @@
   "ingen-lagrede-x": "Ingen lagrede {{x}}",
   "inntekt": "Inntekt",
   "inntekt-fra-komponent": "Inntekt (fra inntektskomponent)",
-  "inntekt-og-time": "Inntekt og time",
+  "inntekt-og-time": "Inntekt og arbeidstime",
   "inntekt-og-time-info": "Inntekt og time info",
   "inntekter": "Inntekter",
   "inntektsfilter": "Inntekts filter",
@@ -298,6 +298,8 @@
   "poststed": "Poststed",
   "preview": "Forhåndsvis",
   "prosedyre-ved-uenighet": "Prosedyre ved uenighet",
+  "purring": "Purring",
+  "purringer": "Purringer",
 
   "reason" : "Grunn",
   "rediger-sed-i-rina" : "Rediger SED i Rina",

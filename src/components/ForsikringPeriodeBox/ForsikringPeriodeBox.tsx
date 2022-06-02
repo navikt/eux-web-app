@@ -699,7 +699,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           {inntektOgTime?.bruttoinntekt}  {inntektOgTime?.valuta}
                         </Column>
                         <Column>
-                          {inntektOgTime?.arbeidstimer}
+                          {inntektOgTime?.arbeidstimer} {t('label:arbeidstimer')}
                         </Column>
                       </AlignStartRow>
                     ))}

@@ -64,8 +64,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const dokumenterIkkeTilgjengelige = _.get(replySed, targetDokumentIkkeTilgjengelige)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
 
-  const getDokumentTilSendId = (d: DokumentTilSend | null): string => d ? d.dokumenttype + '-' + d.dokumentinfo + '-' + d.dato : 'new'
-  const getDokumentIkkeTilgjengeligeId = (d: DokumentIkkeTilgjengelige | null): string => d ? d.dokumenttype + '-' + d.begrunnelse : 'new'
+  const getDokumentTilSendId = (d: DokumentTilSend | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.dato : 'new'
+  const getDokumentIkkeTilgjengeligeId = (d: DokumentIkkeTilgjengelige | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
 
   const [_newDokumentTilSend, _setNewDokumentTilSend] = useState<DokumentTilSend | undefined>(undefined)
   const [_editDokumentTilSend, _setEditDokumentTilSend] = useState<DokumentTilSend | undefined>(undefined)
@@ -92,75 +92,75 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const setDokumentTilSendType = (dokumentType: string, index: number) => {
+  const setDokumentTilSendType = (gjelder: string, index: number) => {
     if (index < 0) {
       _setNewDokumentTilSend({
         ..._newDokumentTilSend,
-        dokumenttype: dokumentType.trim()
+        gjelder: gjelder.trim()
       } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-dokumentType')
+      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-gjelder')
       return
     }
     _setEditDokumentTilSend({
       ..._editDokumentTilSend,
-      dokumenttype: dokumentType.trim()
+      gjelder: gjelder.trim()
     } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-dokumentType']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-dokumentType'))
+    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-gjelder']) {
+      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-gjelder'))
     }
   }
 
-  const setDokumentIkkeTilgjengeligeType = (dokumentType: string, index: number) => {
+  const setDokumentIkkeTilgjengeligeType = (gjelder: string, index: number) => {
     if (index < 0) {
       _setNewDokumentIkkeTilgjengelige({
         ..._newDokumentIkkeTilgjengelige,
-        dokumenttype: dokumentType.trim()
+        gjelder: gjelder.trim()
       } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-dokumentType')
+      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-gjelder')
       return
     }
     _setEditDokumentIkkeTilgjengelige({
       ..._editDokumentIkkeTilgjengelige,
-      dokumenttype: dokumentType.trim()
+      gjelder: gjelder.trim()
     } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-dokumentType']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-dokumentType'))
+    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-gjelder']) {
+      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-gjelder'))
     }
   }
 
-  const setDokumentTilSendInfo = (dokumentInfo: string, index: number) => {
+  const setDokumentTilSendInfo = (beskrivelse: string, index: number) => {
     if (index < 0) {
       _setNewDokumentTilSend({
         ..._newDokumentTilSend,
-        dokumentinfo: dokumentInfo.trim()
+        beskrivelse: beskrivelse.trim()
       } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-dokumentInfo')
+      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-beskrivelse')
       return
     }
     _setEditDokumentTilSend({
       ..._editDokumentTilSend,
-      dokumentinfo: dokumentInfo.trim()
+      beskrivelse: beskrivelse.trim()
     } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-dokumentInfo']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-dokumentInfo'))
+    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-beskrivelse']) {
+      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-beskrivelse'))
     }
   }
 
-  const setDokumentIkkeTilgjengeligeInfo = (dokumentInfo: string, index: number) => {
+  const setDokumentIkkeTilgjengeligeInfo = (beskrivelse: string, index: number) => {
     if (index < 0) {
       _setNewDokumentIkkeTilgjengelige({
         ..._newDokumentIkkeTilgjengelige,
-        dokumentinfo: dokumentInfo.trim()
+        beskrivelse: beskrivelse.trim()
       } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-dokumentInfo')
+      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-beskrivelse')
       return
     }
     _setEditDokumentIkkeTilgjengelige({
       ..._editDokumentIkkeTilgjengelige,
-      dokumentinfo: dokumentInfo.trim()
+      beskrivelse: beskrivelse.trim()
     } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-dokumentInfo']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-dokumentInfo'))
+    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-beskrivelse']) {
+      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-beskrivelse'))
     }
   }
 
@@ -182,21 +182,21 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     }
   }
 
-  const setBegrunnelse = (begrunnelse: string, index: number) => {
+  const setBegrunnelseType = (begrunnelseType: string, index: number) => {
     if (index < 0) {
       _setNewDokumentIkkeTilgjengelige({
         ..._newDokumentIkkeTilgjengelige,
-        begrunnelse: begrunnelse.trim()
+        begrunnelseType: begrunnelseType.trim()
       } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentTilSend(namespace + '-dokumentIkkeTilgjengelige-begrunnelse')
+      _resetValidationDokumentTilSend(namespace + '-dokumentIkkeTilgjengelige-begrunnelseType')
       return
     }
     _setEditDokumentIkkeTilgjengelige({
       ..._editDokumentIkkeTilgjengelige,
-      begrunnelse: begrunnelse.trim()
+      begrunnelseType: begrunnelseType.trim()
     } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelse']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelse'))
+    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseType']) {
+      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseType'))
     }
   }
 
@@ -375,13 +375,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentTilSend?.dokumenttype}
+                    value={_dokumentTilSend?.gjelder}
                     data-no-border
-                    data-testid={_namespace + '-dokumenttype'}
-                    error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                    id={_namespace + '-dokumenttype'}
+                    data-testid={_namespace + '-gjelder'}
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
                     legend={t('label:dokument-type') + ' *'}
-                    name={_namespace + '-dokumenttype'}
+                    name={_namespace + '-gjelder'}
                     onChange={(type: string) => setDokumentTilSendType(type, index)}
                   >
                     <FlexRadioPanels>
@@ -406,13 +406,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column flex='2'>
                   <TextAreaDiv>
                     <TextArea
-                      error={_v[_namespace + '-dokumentinfo']?.feilmelding}
+                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='info'
                       maxLength={51}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
                       onChanged={(info: string) => setDokumentTilSendInfo(info, index)}
-                      value={_dokumentTilSend?.dokumentinfo}
+                      value={_dokumentTilSend?.beskrivelse}
                     />
                   </TextAreaDiv>
                 </Column>
@@ -435,10 +435,10 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <Column flex='2'>
                 <FlexDiv>
                   <FormText
-                    error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                    id={_namespace + '-dokumenttype'}
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
                   >
-                    {t('label:' + _dokumentTilSend?.dokumenttype)}
+                    {t('label:' + _dokumentTilSend?.gjelder)}
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
@@ -449,10 +449,10 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
-                    error={_v[_namespace + '-dokumentinfo']?.feilmelding}
-                    id={_namespace + '-dokumentinfo'}
+                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                    id={_namespace + '-beskrivelse'}
                   >
-                    {_dokumentTilSend?.dokumentinfo}
+                    {_dokumentTilSend?.beskrivelse}
                   </FormText>
                 </FlexDiv>
               </Column>
@@ -503,13 +503,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentIkkeTilgjengelige?.dokumenttype}
+                    value={_dokumentIkkeTilgjengelige?.gjelder}
                     data-no-border
-                    data-testid={_namespace + '-dokumenttype'}
-                    error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                    id={_namespace + '-dokumenttype'}
+                    data-testid={_namespace + '-gjelder'}
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
                     legend={t('label:dokument-type') + ' *'}
-                    name={_namespace + '-dokumenttype'}
+                    name={_namespace + '-gjelder'}
                     onChange={(type: string) => setDokumentIkkeTilgjengeligeType(type, index)}
                   >
                     <FlexRadioPanels>
@@ -534,13 +534,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column flex='2'>
                   <TextAreaDiv>
                     <TextArea
-                      error={_v[_namespace + '-dokumentinfo']?.feilmelding}
-                      id='dokumentinfo'
+                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                      id='beskrivelse'
                       maxLength={51}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
                       onChanged={(info: string) => setDokumentIkkeTilgjengeligeInfo(info, index)}
-                      value={_dokumentIkkeTilgjengelige?.dokumentinfo}
+                      value={_dokumentIkkeTilgjengelige?.beskrivelse}
                     />
                   </TextAreaDiv>
                 </Column>
@@ -550,16 +550,16 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentIkkeTilgjengelige?.begrunnelse}
+                    value={_dokumentIkkeTilgjengelige?.begrunnelseType}
                     data-no-border
-                    data-testid={_namespace + '-begrunnelse'}
-                    error={_v[_namespace + '-begrunnelse']?.feilmelding}
-                    id={_namespace + '-begrunnelse'}
+                    data-testid={_namespace + '-begrunnelseType'}
+                    error={_v[_namespace + '-begrunnelseType']?.feilmelding}
+                    id={_namespace + '-begrunnelseType'}
                     legend={t('label:begrunnelse')}
                     hideLabel={false}
                     required
-                    name={_namespace + '-begrunnelse'}
-                    onChange={(begrunnelse: string) => setBegrunnelse(begrunnelse, index)}
+                    name={_namespace + '-begrunnelseType'}
+                    onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
                   >
                     <RadioPanel value='01'>{t('el:option-svarpåminnelse-01')}</RadioPanel>
                     <RadioPanel value='02'>{t('el:option-svarpåminnelse-02')}</RadioPanel>
@@ -570,7 +570,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_dokumentIkkeTilgjengelige?.begrunnelse === '99' && (
+              {_dokumentIkkeTilgjengelige?.begrunnelseType === '99' && (
                 <AlignStartRow>
                   <Column>
                     <Input
@@ -594,17 +594,17 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column flex='2'>
                   <FlexDiv>
                     <FormText
-                      error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                      id={_namespace + '-dokumenttype'}
+                      error={_v[_namespace + '-gjelder']?.feilmelding}
+                      id={_namespace + '-gjelder'}
                     >
-                      {t('label:' + _dokumentIkkeTilgjengelige?.dokumenttype)}
+                      {t('label:' + _dokumentIkkeTilgjengelige?.gjelder)}
                     </FormText>
                     <HorizontalSeparatorDiv />
                     <FormText
-                      error={_v[_namespace + '-dokumentinfo']?.feilmelding}
-                      id={_namespace + '-dokumentinfo'}
+                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                      id={_namespace + '-beskrivelse'}
                     >
-                      {_dokumentIkkeTilgjengelige?.dokumentinfo}
+                      {_dokumentIkkeTilgjengelige?.beskrivelse}
                     </FormText>
                   </FlexDiv>
                 </Column>
@@ -620,9 +620,9 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-begrunnelse']?.feilmelding}
                       id={_namespace + '-begrunnelse'}
                     >
-                      {t('el:option-svarpåminnelse-' + _dokumentIkkeTilgjengelige?.begrunnelse)}
+                      {t('el:option-svarpåminnelse-' + _dokumentIkkeTilgjengelige?.begrunnelseType)}
                     </FormText>
-                    {_dokumentIkkeTilgjengelige?.begrunnelse === '99' && (
+                    {_dokumentIkkeTilgjengelige?.begrunnelseType === '99' && (
                       <>
                         <HorizontalSeparatorDiv />
                         <FormText

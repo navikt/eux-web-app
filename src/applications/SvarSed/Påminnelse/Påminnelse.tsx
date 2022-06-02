@@ -21,7 +21,7 @@ import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Dokument, X009Sed } from 'declarations/sed'
+import { Purring, X009Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
@@ -32,7 +32,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateDokument, validateDokumenter, ValidationDokumenterProps, ValidationDokumentProps } from './validation'
+import { validatePurring, validatePurringer, ValidationPurringerProps, ValidationPurringProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -49,134 +49,134 @@ const Påminnelse: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'dokumenter'
-  const dokumenter = _.get(replySed, target)
+  const target = 'purringer'
+  const purringer = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-påminnelse`
 
-  const getId = (d: Dokument | null): string => d ? d.dokumentinfo + '-' + d.dokumenttype : 'new'
+  const getId = (p: Purring | null): string => p ? p.gjelder + '-' + p.beskrivelse : 'new'
 
-  const [_newDokument, _setNewDokument] = useState<Dokument | undefined>(undefined)
-  const [_editDokument, _setEditDokument] = useState<Dokument | undefined>(undefined)
+  const [_newPurring, _setNewPurring] = useState<Purring | undefined>(undefined)
+  const [_editPurring, _setEditPurring] = useState<Purring | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationDokumentProps>(validateDokument, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPurringProps>(validatePurring, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationDokumenterProps>(
-      validation, namespace, validateDokumenter, {
-        dokumenter: (replySed as X009Sed).dokumenter,
+    const [, newValidation] = performValidation<ValidationPurringerProps>(
+      validation, namespace, validatePurringer, {
+        purringer: (replySed as X009Sed).purringer,
         personName
       }
     )
     dispatch(setValidation(newValidation))
   })
 
-  const setDokumentType = (dokumentType: string, index: number) => {
+  const setPurringGjelder = (gjelder: string, index: number) => {
     if (index < 0) {
-      _setNewDokument({
-        ..._newDokument,
-        dokumenttype: dokumentType.trim()
-      } as Dokument)
-      _resetValidation(namespace + '-dokumentType')
+      _setNewPurring({
+        ..._newPurring,
+        gjelder: gjelder.trim()
+      } as Purring)
+      _resetValidation(namespace + '-gjelder')
       return
     }
-    _setEditDokument({
-      ..._editDokument,
-      dokumenttype: dokumentType.trim()
-    } as Dokument)
-    if (validation[namespace + getIdx(index) + '-dokumentType']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-dokumentType'))
+    _setEditPurring({
+      ..._editPurring,
+      gjelder: gjelder.trim()
+    } as Purring)
+    if (validation[namespace + getIdx(index) + '-gjelder']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-gjelder'))
     }
   }
 
-  const setDokumentInfo = (dokumentInfo: string, index: number) => {
+  const setPurringBeskrivelse = (beskrivelse: string, index: number) => {
     if (index < 0) {
-      _setNewDokument({
-        ..._newDokument,
-        dokumentinfo: dokumentInfo.trim()
-      } as Dokument)
-      _resetValidation(namespace + '-dokumentInfo')
+      _setNewPurring({
+        ..._newPurring,
+        beskrivelse: beskrivelse.trim()
+      } as Purring)
+      _resetValidation(namespace + '-beskrivelse')
       return
     }
-    _setEditDokument({
-      ..._editDokument,
-      dokumentinfo: dokumentInfo.trim()
-    } as Dokument)
-    if (validation[namespace + getIdx(index) + '-dokumentInfo']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-dokumentInfo'))
+    _setEditPurring({
+      ..._editPurring,
+      beskrivelse: beskrivelse.trim()
+    } as Purring)
+    if (validation[namespace + getIdx(index) + '-beskrivelse']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-beskrivelse'))
     }
   }
 
   const onCloseEdit = (namespace: string) => {
-    _setEditDokument(undefined)
+    _setEditPurring(undefined)
     _setEditIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
-    _setNewDokument(undefined)
+    _setNewPurring(undefined)
     _setNewForm(false)
     _resetValidation()
   }
 
-  const onStartEdit = (s: Dokument, index: number) => {
+  const onStartEdit = (s: Purring, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editIndex !== undefined) {
       dispatch(resetValidation(namespace + getIdx(_editIndex)))
     }
-    _setEditDokument(s)
+    _setEditPurring(s)
     _setEditIndex(index)
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationDokumentProps>(
-      validation, namespace, validateDokument, {
-        dokument: _editDokument,
-        dokumenter,
+    const [valid, newValidation] = performValidation<ValidationPurringProps>(
+      validation, namespace, validatePurring, {
+        purring: _editPurring,
+        purringer,
         index: _editIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editDokument))
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPurring))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
   }
 
-  const onRemove = (removedDokument: Dokument) => {
-    const newDokumenter: Array<Dokument> = _.reject(dokumenter,
-      (d: Dokument) => _.isEqual(removedDokument, d))
-    dispatch(updateReplySed(target, newDokumenter))
+  const onRemove = (removedPurring: Purring) => {
+    const newPurringer: Array<Purring> = _.reject(purringer,
+      (d: Purring) => _.isEqual(removedPurring, d))
+    dispatch(updateReplySed(target, newPurringer))
   }
 
   const onAddNew = () => {
     const valid: boolean = _performValidation({
-      dokument: _newDokument,
-      dokumenter,
+      purring: _newPurring,
+      purringer,
       personName
     })
-    if (!!_newDokument && valid) {
-      let newDokumenter: Array<Dokument> | undefined = _.cloneDeep(dokumenter)
-      if (_.isNil(newDokumenter)) {
-        newDokumenter = []
+    if (!!_newPurring && valid) {
+      let newPurringer: Array<Purring> | undefined = _.cloneDeep(purringer)
+      if (_.isNil(newPurringer)) {
+        newPurringer = []
       }
-      newDokumenter.push(_newDokument)
-      dispatch(updateReplySed(target, newDokumenter))
+      newPurringer.push(_newPurring)
+      dispatch(updateReplySed(target, newPurringer))
       onCloseNew()
     }
   }
 
-  const renderRow = (dokument: Dokument | null, index: number) => {
+  const renderRow = (purring: Purring | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
-    const _dokument = index < 0 ? _newDokument : (inEditMode ? _editDokument : dokument)
+    const _purring = index < 0 ? _newPurring : (inEditMode ? _editPurring : purring)
 
     const addremovepanel = (
-      <AddRemovePanel<Dokument>
-        item={dokument}
+      <AddRemovePanel<Purring>
+        item={purring}
         marginTop={inEditMode}
         index={index}
         inEditMode={inEditMode}
@@ -192,7 +192,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
-        key={getId(dokument)}
+        key={getId(purring)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
@@ -205,14 +205,14 @@ const Påminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokument?.dokumenttype}
+                    value={_purring?.gjelder}
                     data-no-border
-                    data-testid={_namespace + '-dokumenttype'}
-                    error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                    id={_namespace + '-dokumenttype'}
+                    data-testid={_namespace + '-gjelder'}
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
                     legend={t('label:dokument-type') + ' *'}
-                    name={_namespace + '-dokumenttype'}
-                    onChange={(type: string) => setDokumentType(type, index)}
+                    name={_namespace + '-gjelder'}
+                    onChange={(gjelder: string) => setPurringGjelder(gjelder, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='dokument'>
@@ -236,13 +236,13 @@ const Påminnelse: React.FC<MainFormProps> = ({
                 <Column>
                   <TextAreaDiv>
                     <TextArea
-                      error={_v[_namespace + '-dokumentinfo']?.feilmelding}
-                      id='info'
+                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                      id='beskrivelse'
                       maxLength={51}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
-                      onChanged={(info: string) => setDokumentInfo(info, index)}
-                      value={_dokument?.dokumentinfo}
+                      onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}
+                      value={_purring?.beskrivelse}
                     />
                   </TextAreaDiv>
                 </Column>
@@ -254,17 +254,17 @@ const Påminnelse: React.FC<MainFormProps> = ({
               <Column flex='2'>
                 <FlexDiv>
                   <FormText
-                    error={_v[_namespace + '-dokumenttype']?.feilmelding}
-                    id={_namespace + '-dokumenttype'}
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
                   >
-                    {t('label:' + _dokument?.dokumenttype)}
+                    {t('label:' + _purring?.gjelder)}
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
-                    error={_v[_namespace + '-dokumentinfo']?.feilmelding}
-                    id={_namespace + '-dokumentinfo'}
+                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                    id={_namespace + '-beskrivelse'}
                   >
-                    {_dokument?.dokumentinfo}
+                    {_purring?.beskrivelse}
                   </FormText>
                 </FlexDiv>
               </Column>
@@ -286,17 +286,17 @@ const Påminnelse: React.FC<MainFormProps> = ({
         </Heading>
       </PaddedDiv>
       <VerticalSeparatorDiv />
-      {_.isEmpty(dokumenter)
+      {_.isEmpty(purringer)
         ? (
           <PaddedHorizontallyDiv>
             <SpacedHr />
             <BodyLong>
-              {t('message:warning-no-dokument')}
+              {t('message:warning-no-påminnelse')}
             </BodyLong>
             <SpacedHr />
           </PaddedHorizontallyDiv>
           )
-        : dokumenter?.map(renderRow)}
+        : purringer?.map(renderRow)}
       <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
@@ -307,7 +307,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
               onClick={() => _setNewForm(true)}
             >
               <AddCircle />
-              {t('el:button-add-new-x', { x: t('label:dokument').toLowerCase() })}
+              {t('el:button-add-new-x', { x: t('label:purring').toLowerCase() })}
             </Button>
           </PaddedDiv>
           )}
