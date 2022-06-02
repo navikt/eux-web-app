@@ -38,21 +38,21 @@ export const validateDokumentTilSend = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: dokument?.gjelder,
-    id: namespace + idx + '-dokumenttype',
+    id: namespace + idx + '-gjelder',
     message: 'validation:noType',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: dokument?.beskrivelse,
-    id: namespace + idx + '-dokumentinfo',
+    id: namespace + idx + '-beskrivelse',
     message: 'validation:noInfo',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: dokument?.dato,
-    id: namespace + idx + '-dato',
+    needle: dokument?.innenDato,
+    id: namespace + idx + '-innenDato',
     message: 'validation:noDate',
     personName
   }))
@@ -61,7 +61,7 @@ export const validateDokumentTilSend = (
     needle: dokument,
     haystack: dokumenter,
     matchFn: (s: DokumentTilSend) => s.gjelder === dokument?.gjelder,
-    id: namespace + idx + '-dokumenttype',
+    id: namespace + idx + '-gjelder',
     index,
     message: 'validation:duplicateType',
     personName

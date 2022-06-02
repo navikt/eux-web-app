@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009'
+export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -538,7 +538,7 @@ export interface X009Sed extends XSed {
 }
 
 export interface DokumentTilSend extends Purring {
-  dato?: string
+  innenDato?: string
 }
 
 export interface DokumentIkkeTilgjengelige extends Purring {
@@ -547,6 +547,6 @@ export interface DokumentIkkeTilgjengelige extends Purring {
 }
 
 export interface X010Sed extends XSed {
-  dokumenter_sendes_senere: Array<DokumentTilSend>
-  dokumenter_ikke_tilgjengelige: Array<DokumentIkkeTilgjengelige>
+  besvarelseKommer: Array<DokumentTilSend>
+  besvarelseUmulig: Array<DokumentIkkeTilgjengelige>
 }

@@ -58,13 +58,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const targetDokumentTilSend = 'dokumenter_sendes_senere'
-  const targetDokumentIkkeTilgjengelige = 'dokumenter_ikke_tilgjengelige'
+  const targetDokumentTilSend = 'besvarelseKommer'
+  const targetDokumentIkkeTilgjengelige = 'besvarelseUmulig'
   const dokumenterTilSend = _.get(replySed, targetDokumentTilSend)
   const dokumenterIkkeTilgjengelige = _.get(replySed, targetDokumentIkkeTilgjengelige)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
 
-  const getDokumentTilSendId = (d: DokumentTilSend | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.dato : 'new'
+  const getDokumentTilSendId = (d: DokumentTilSend | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
   const getDokumentIkkeTilgjengeligeId = (d: DokumentIkkeTilgjengelige | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
 
   const [_newDokumentTilSend, _setNewDokumentTilSend] = useState<DokumentTilSend | undefined>(undefined)
@@ -84,8 +84,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationSvarPåminnelseProps>(
       validation, namespace, validateSvarPåminnelse, {
-        dokumenterTilSend: _.get((replySed as X010Sed), 'dokumenter_sendes_senere'),
-        dokumenterIkkeTilgjengelige: _.get((replySed as X010Sed), 'dokumenter_ikke_tilgjengelige'),
+        dokumenterTilSend: _.get((replySed as X010Sed), targetDokumentTilSend),
+        dokumenterIkkeTilgjengelige: _.get((replySed as X010Sed), targetDokumentIkkeTilgjengelige),
         personName
       }
     )
@@ -164,21 +164,21 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     }
   }
 
-  const setDato = (dato: string, index: number) => {
+  const setInnenDato = (innenDato: string, index: number) => {
     if (index < 0) {
       _setNewDokumentTilSend({
         ..._newDokumentTilSend,
-        dato: dato.trim()
+        innenDato: innenDato.trim()
       } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-dato')
+      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-innenDato')
       return
     }
     _setEditDokumentTilSend({
       ..._editDokumentTilSend,
-      dato: dato.trim()
+      innenDato: innenDato.trim()
     } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-dato']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-dato'))
+    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-innenDato']) {
+      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-innenDato'))
     }
   }
 
@@ -422,9 +422,9 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     id='dato'
                     label={t('label:dato')}
                     namespace={_namespace}
-                    onChanged={(dato: string) => setDato(dato, index)}
+                    onChanged={(innenDato: string) => setInnenDato(innenDato, index)}
                     required
-                    value={_dokumentTilSend?.dato ?? ''}
+                    value={_dokumentTilSend?.innenDato ?? ''}
                   />
                 </Column>
               </AlignStartRow>
@@ -442,10 +442,10 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
-                    error={_v[_namespace + '-dato']?.feilmelding}
-                    id={_namespace + '-dato'}
+                    error={_v[_namespace + '-innenDato']?.feilmelding}
+                    id={_namespace + '-innenDato'}
                   >
-                    {_dokumentTilSend?.dato}
+                    {_dokumentTilSend?.innenDato}
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
