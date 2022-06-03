@@ -113,7 +113,8 @@ const SEDPanel = ({
   const showEditButton = !showDraftButton && connectedSed.status === 'new' && canEditSed(connectedSed.sedType)
   const showUpdateButton = !showDraftButton && connectedSed.status === 'sent' && canUpdateSed(connectedSed.sedType)
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType
-  const showInvalidateButton = connectedSed.status === 'sent'
+  const showInvalidateButton = connectedSed.status === 'sent' && connectedSed.sedType !== 'X008' &&
+    _.find(connectedSed.children, (s: Sed) => (s.sedType === 'X008' && s.status === 'new')) === undefined
 
   return (
     <MyPanel border>

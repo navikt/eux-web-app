@@ -42,21 +42,28 @@ export default (saksnummer: string) => {
           svarsedDisplay: 'Description for F002',
           svarsedId: 'f002receivedSvar'
         }, {
-          sedTittel: 'Description for F002',
-          status: 'cancelled',
+          sedTittel: 'Description for F002 sent with X008',
+          status: 'sent',
           sedType: 'F002',
-          sedId: 'f002cancelled',
+          sedId: 'f002sent',
           sistEndretDato: '2020-01-04'
         }, {
           sedTittel: 'Ugyldiggjøre SED',
           sedType: 'X008',
+          status: 'new',
           sedId: 'x008cancelled',
-          sedIdParent: 'f002cancelled'
+          sedIdParent: 'f002sent'
         }, {
           sedTittel: 'Unntaksfeil',
           sedType: 'X050',
           sedId: 'x050cancelled',
-          sedIdParent: 'f002cancelled'
+          sedIdParent: 'f002sent'
+        }, {
+          sedTittel: 'Description for F002 sent without X008',
+          status: 'sent',
+          sedType: 'F002',
+          sedId: 'f002sent2',
+          sistEndretDato: '2020-01-04'
         }, {
           sedTittel: 'Description for F002',
           status: 'active',
@@ -90,8 +97,7 @@ export default (saksnummer: string) => {
           svarsedType: 'U002',
           svarsedDisplay: 'Description for U002',
           svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
-        },
-        {
+        }, {
           sedTittel: 'Description for U003',
           status: 'new',
           sedType: 'U003',
