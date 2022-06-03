@@ -21,6 +21,7 @@ import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -105,6 +106,36 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const filteredSaks = _.filter(visibleSaks, (s: Sak) => _filter !== 'all' ? s.sakType.startsWith(_filter) : true)
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) !== undefined)?.length ?? 0
 
+  const sedMap: any = []
+
+  if (currentSak) {
+    const tempChildrenSed: Array<Sed> = []
+    const tempSedMap: any = {}
+    const seds: Array<Sed> | undefined = _.cloneDeep(currentSak.sedListe)
+
+    seds?.forEach((connectedSed: Sed) => {
+      // if you have a sedIdParent and no svarsedId, then you are a SED that is connected
+      // to another SED, so let's put it under Children
+      if (!!connectedSed.sedIdParent && !connectedSed.svarsedId) {
+        tempChildrenSed.push(connectedSed)
+      } else {
+        tempSedMap[connectedSed.sedId] = connectedSed
+      }
+    })
+    // Now, let's put all children SED
+    tempChildrenSed.forEach((connectedSed: Sed) => {
+      if (connectedSed.sedIdParent) {
+        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
+           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
+          tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
+        } else {
+          tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
+        }
+      }
+    })
+    Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
+  }
+
   return (
     <PileStartDiv>
       <FullWidthDiv>
@@ -188,22 +219,26 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             </Column>
           )}
           <Column flex='2'>
-            <MyRadioPanelGroup className='xxx'>
-              {!currentSak
-                ? filteredSaks.map((sak: Sak) => (
-                    _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
-                      ? <div />
-                      : (
-                        <div key={'sak-' + sak?.sakId}>
-                          <SakPanel
-                            sak={sak}
-                            onSelected={() => dispatch(setCurrentSak(sak))}
-                            onCopy={() => dispatch(copyToClipboard(sak.sakId))}
-                          />
-                          <VerticalSeparatorDiv />
-                        </div>
-                        )))
-                : currentSak.sedListe.map((connectedSed: Sed) => (
+            <MyRadioPanelGroup>
+              {!currentSak && filteredSaks.map((sak: Sak) => (
+                _onlyEditableSaks &&
+                _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
+                  ? <div />
+                  : (
+                    <div key={'sak-' + sak?.sakId}>
+                      <SakPanel
+                        sak={sak}
+                        onSelected={() => dispatch(setCurrentSak(sak))}
+                        onCopy={() => dispatch(copyToClipboard(sak.sakId))}
+                      />
+                      <VerticalSeparatorDiv />
+                    </div>
+                    )
+              ))}
+              {currentSak && sedMap
+                .sort((a: Sed, b: Sed) => (
+                  moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                )).map((connectedSed: Sed) => (
                   <div key={'sed-' + connectedSed.sedId}>
                     <SEDPanel
                       currentSak={currentSak}
@@ -211,10 +246,21 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                       connectedSed={connectedSed}
                     />
                     <VerticalSeparatorDiv />
+                    {connectedSed.children?.sort((a: Sed, b: Sed) => (
+                      moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                    )).map((connectedSed2: Sed) => (
+                      <div key={'sed-' + connectedSed2.sedId} style={{ marginLeft: '4rem' }}>
+                        <SEDPanel
+                          currentSak={currentSak}
+                          changeMode={changeMode}
+                          connectedSed={connectedSed2}
+                        />
+                        <VerticalSeparatorDiv />
+                      </div>
+                    ))}
                   </div>
                 ))}
             </MyRadioPanelGroup>
-
           </Column>
         </AlignStartRow>
       </FullWidthDiv>

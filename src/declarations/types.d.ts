@@ -60,6 +60,7 @@ export interface Sed {
   svarsedId: string
   svarsedDisplay: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
+  children ?: Array<Sed>
 }
 
 export interface Dokument {

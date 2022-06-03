@@ -22,5 +22,6 @@
   "status-received-received" : "Mottatt",
   "status-received-new" : "Utkast",
   "status-received-active" : "Aktiv",
-  "status-received-cancelled" : "Kansellert"
+  "status-received-cancelled" : "Kansellert",
+  "status-received-unknown" : "Ukjent"
 }

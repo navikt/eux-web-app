@@ -47,13 +47,6 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const setTilbakekallSedType = (tilbakekallSedType: string) => {
-    dispatch(updateReplySed('tilbakekallSedType', tilbakekallSedType.trim()))
-    if (validation[namespace + '-tilbakekallSedType']) {
-      dispatch(resetValidation(namespace + '-tilbakekallSedType'))
-    }
-  }
-
   const setTilbakekallSedUtstedtDato = (tilbakekallSedUtstedtDato: string) => {
     dispatch(updateReplySed('tilbakekallSedUtstedtDato', tilbakekallSedUtstedtDato.trim()))
     if (validation[namespace + '-tilbakekallSedUtstedtDato']) {
@@ -86,14 +79,7 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <Input
-            error={validation[namespace + '-tilbakekallSedType']?.feilmelding}
-            namespace={namespace}
-            id='tilbakekallSedType'
-            label={t('label:sed-type')}
-            onChanged={setTilbakekallSedType}
-            value={(replySed as X008Sed)?.tilbakekallSedType}
-          />
+          {(replySed as X008Sed)?.tilbakekallSedType}
         </Column>
         <Column>
           <DateInput

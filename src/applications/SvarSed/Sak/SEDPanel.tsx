@@ -1,4 +1,4 @@
-import { Close, Edit, Download, Send, Star } from '@navikt/ds-icons'
+import { Close, Edit, Download, Send, Star, Helptext } from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -124,9 +124,10 @@ const SEDPanel = ({
           {connectedSed.status === 'new' && <Star color='orange' width='32' height='32' />}
           {connectedSed.status === 'active' && <Edit width='32' height='32' />}
           {connectedSed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
+          {!connectedSed.status && <Helptext color='black' width='32' height='32' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
-            {t('app:status-received-' + connectedSed.status.toLowerCase())}
+            {t('app:status-received-' + (connectedSed.status?.toLowerCase() ?? 'unknown'))}
           </Detail>
           <Detail>
             {connectedSed.sistEndretDato}

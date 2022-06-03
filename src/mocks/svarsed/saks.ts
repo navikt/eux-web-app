@@ -1,7 +1,6 @@
 export default (saksnummer: string) => {
   const saks = [
     {
-
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -48,6 +47,16 @@ export default (saksnummer: string) => {
           sedType: 'F002',
           sedId: 'f002cancelled',
           sistEndretDato: '2020-01-04'
+        }, {
+          sedTittel: 'Ugyldiggjøre SED',
+          sedType: 'X008',
+          sedId: 'x008cancelled',
+          sedIdParent: 'f002cancelled'
+        }, {
+          sedTittel: 'Unntaksfeil',
+          sedType: 'X050',
+          sedId: 'x050cancelled',
+          sedIdParent: 'f002cancelled'
         }, {
           sedTittel: 'Description for F002',
           status: 'active',
