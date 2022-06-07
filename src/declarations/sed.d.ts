@@ -524,8 +524,7 @@ export interface X001Sed extends XSed {
 export interface X008Sed extends XSed {
   begrunnelseType: string
   begrunnelseAnnen?: string
-  tilbakekallSedType: string
-  tilbakekallSedUtstedtDato: string
+  kansellerSedId: string
 }
 
 export interface Purring {

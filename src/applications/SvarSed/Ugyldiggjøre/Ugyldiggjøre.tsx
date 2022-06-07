@@ -9,7 +9,6 @@ import {
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X008Sed } from 'declarations/sed'
@@ -47,13 +46,6 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const setTilbakekallSedUtstedtDato = (tilbakekallSedUtstedtDato: string) => {
-    dispatch(updateReplySed('tilbakekallSedUtstedtDato', tilbakekallSedUtstedtDato.trim()))
-    if (validation[namespace + '-tilbakekallSedUtstedtDato']) {
-      dispatch(resetValidation(namespace + '-tilbakekallSedUtstedtDato'))
-    }
-  }
-
   const setBegrunnelseType = (begrunnelseType: string) => {
     dispatch(updateReplySed('begrunnelseType', begrunnelseType.trim()))
     if (begrunnelseType !== '99') {
@@ -79,20 +71,7 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          {(replySed as X008Sed)?.tilbakekallSedType}
-        </Column>
-        <Column>
-          <DateInput
-            uiFormat='DD.MM.YYYY'
-            finalFormat='DD.MM.YYYY'
-            error={validation[namespace + '-tilbakekallSedUtstedtDato']?.feilmelding}
-            id='tilbakekallSedUtstedtDato'
-            label={t('label:utstedelsesdato')}
-            namespace={namespace}
-            onChanged={setTilbakekallSedUtstedtDato}
-            required
-            value={(replySed as X008Sed)?.tilbakekallSedUtstedtDato ?? ''}
-          />
+          {(replySed as X008Sed)?.kansellerSedId}
         </Column>
         <Column />
       </AlignStartRow>

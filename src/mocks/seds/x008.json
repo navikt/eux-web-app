@@ -5,8 +5,7 @@
     "kjoenn": "M",
     "foedselsdato": "2002-02-02"
   },
-  "tilbakekallSedType": "F002",
-  "tilbakekallSedUtstedtDato": "2001-01-01",
+  "kansellerSedId": "123123123",
   "begrunnelseType": "annet",
   "begrunnelseAnnen": "æøå",
   "sedType": "X008",

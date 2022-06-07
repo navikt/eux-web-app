@@ -54,6 +54,7 @@ export interface Sed {
   sedType: string
   sedId: string
   sedIdParent?: string
+  gjelderSedId?: string
   status: string
   sistEndretDato: string
   svarsedType: string

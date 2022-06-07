@@ -18,16 +18,9 @@ export const validateUgyldiggjøre = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as X008Sed).tilbakekallSedType,
-    id: namespace + '-tilbakekallSedType',
-    message: 'validation:noSedtype',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as X008Sed).tilbakekallSedUtstedtDato,
-    id: namespace + '-tilbakekallSedUtstedtDato',
-    message: 'validation:noUtstedelsesdato',
+    needle: (replySed as X008Sed).kansellerSedId,
+    id: namespace + '-kansellerSedId',
+    message: 'validation:noId',
     personName
   }))
 

@@ -52,12 +52,12 @@ export default (saksnummer: string) => {
           sedType: 'X008',
           status: 'new',
           sedId: 'x008cancelled',
-          sedIdParent: 'f002sent'
+          gjelderSedId: 'f002sent'
         }, {
           sedTittel: 'Unntaksfeil',
           sedType: 'X050',
           sedId: 'x050cancelled',
-          sedIdParent: 'f002sent'
+          gjelderSedId: 'f002sent'
         }, {
           sedTittel: 'Description for F002 sent without X008',
           status: 'sent',
