@@ -63,23 +63,29 @@ const SakBanner = ({ sak }: SakProps) => {
             src={src}
           />
           <HorizontalSeparatorDiv />
-          <Label>
-            {sak.etternavn + ', ' + sak.fornavn}
-          </Label>
+          {!!sak.fornavn && sak.etternavn && (
+            <Label>
+              {sak.etternavn + ', ' + sak.fornavn}
+            </Label>
+          )}
         </FlexDiv>
         <FlexDiv>
-          {t('label:fnr.') + ': '}
-          <HorizontalSeparatorDiv size='0.5' />
-          <Link
-            title={t('label:kopiere')} onClick={(e: any) => {
-              e.preventDefault()
-              e.stopPropagation()
-              dispatch(copyToClipboard(sak.sakId))
-            }}
-          >
-            {' ' + sak.fnr + ' '}
-            <Copy />
-          </Link>
+          {sak.fnr && (
+            <>
+              {t('label:fnr.') + ': '}
+              <HorizontalSeparatorDiv size='0.5' />
+              <Link
+                title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(sak.sakId))
+                }}
+              >
+                {' ' + sak.fnr + ' '}
+                <Copy />
+              </Link>
+            </>
+          )}
           <HorizontalSeparatorDiv />
           {sak.foedselsdato}
         </FlexDiv>
@@ -100,37 +106,41 @@ const SakBanner = ({ sak }: SakProps) => {
             {sak.sakId + ' '}
             <Copy />
           </Link>
-          <HorizontalSeparatorDiv />
-          <Popover
-            open={popoverOpen}
-            onClose={() => setPopoverOpen(false)}
-            arrow
-            anchorEl={iconRef.current}
-            placement='auto'
-          >
-            <Popover.Content style={{ maxWidth: '600px' }}>
-              <Heading size='small'>
-                {t('label:international-id')}:
-                <HorizontalSeparatorDiv />
-                <Link
-                  title={t('label:kopiere')} onClick={(e: any) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    dispatch(copyToClipboard(sak.sakId))
-                  }}
-                >
-                  {sak.sakId + ' '}
-                  <Copy />
-                </Link>
-              </Heading>
-              {t('message:help-international-id')}
-            </Popover.Content>
-          </Popover>
-          <InformationFilled
-            style={{ cursor: 'pointer' }}
-            ref={iconRef}
-            onClick={() => setPopoverOpen(!popoverOpen)}
-          />
+          {!!sak.sakInternasjonalId && (
+            <>
+              <HorizontalSeparatorDiv />
+              <Popover
+                open={popoverOpen}
+                onClose={() => setPopoverOpen(false)}
+                arrow
+                anchorEl={iconRef.current}
+                placement='auto'
+              >
+                <Popover.Content style={{ maxWidth: '600px' }}>
+                  <Heading size='small'>
+                    {t('label:international-id')}:
+                    <HorizontalSeparatorDiv />
+                    <Link
+                      title={t('label:kopiere')} onClick={(e: any) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        dispatch(copyToClipboard(sak.sakInternasjonalId!))
+                      }}
+                    >
+                      {sak.sakInternasjonalId + ' '}
+                      <Copy />
+                    </Link>
+                  </Heading>
+                  {t('message:help-international-id')}
+                </Popover.Content>
+              </Popover>
+              <InformationFilled
+                style={{ cursor: 'pointer' }}
+                ref={iconRef}
+                onClick={() => setPopoverOpen(!popoverOpen)}
+              />
+            </>
+          )}
         </FlexDiv>
         <FlexDiv>
           <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>

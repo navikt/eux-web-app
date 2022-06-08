@@ -164,6 +164,7 @@ export interface Sak {
   sakType: string
   sakTittel: string
   sakId: string
+  sakInternasjonalId ?: string
   sakUrl: string
   motpart: Array<string>
   motpartInstitusjon: string

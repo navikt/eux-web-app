@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "6.99.13",
+  "version": "6.99.14",
   "private": true,
   "type": "module",
   "scripts": {
@@ -26,9 +26,9 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.17.3",
+    "@navikt/ds-css": "^0.18.1",
     "@navikt/ds-icons": "^0.8.13",
-    "@navikt/ds-react": "^0.18.7",
+    "@navikt/ds-react": "^0.19.1",
     "@navikt/eessi-kodeverk": "^2.0.0",
     "@navikt/fetch": "^2.1.8",
     "@navikt/flagg-ikoner": "^3.2.0",
@@ -42,14 +42,14 @@
     "@navikt/tabell": "^3.5.1",
     "@navikt/tooltip": "^1.1.1",
     "@reduxjs/toolkit": "^1.8.2",
-    "@sentry/browser": "^7.0.0",
+    "@sentry/browser": "^7.1.1",
     "amplitude-js": "^8.18.4",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",
     "core-js": "^3.22.8",
     "eux-schema": "^0.4.0",
     "file-saver": "^2.0.5",
-    "i18next": "^21.8.8",
+    "i18next": "^21.8.9",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.21",
@@ -80,7 +80,7 @@
     "@types/jest": "^28.1.1",
     "@types/lodash": "^4.14.182",
     "@types/md5": "^2.3.2",
-    "@types/node": "^17.0.40",
+    "@types/node": "^17.0.41",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "@types/react-modal": "^3.13.1",
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.12",
+  "_id": "neessi@6.99.13",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

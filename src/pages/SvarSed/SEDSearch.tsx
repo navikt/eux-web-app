@@ -115,7 +115,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
     seds?.forEach((connectedSed: Sed) => {
       // if you have a gjelderSedId, let's put it under Children
-      if (!connectedSed.gjelderSedId) {
+      if (connectedSed.gjelderSedId) {
         tempChildrenSed.push(connectedSed)
       } else {
         tempSedMap[connectedSed.sedId] = connectedSed

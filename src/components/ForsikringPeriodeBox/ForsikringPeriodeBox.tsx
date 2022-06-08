@@ -522,6 +522,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   <AdresseForm
                     adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
                     onAdressChanged={setAdresse}
+                    type={false}
                     namespace={namespace + '-arbeidsgiver-adresse'}
                     validation={_v}
                   />
@@ -631,7 +632,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                                     border={false}
                                     adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
                                     padding='0'
-                                    seeType
+                                    seeType={false}
                                   />
                                   )}
                               {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (

@@ -14,6 +14,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import { isPreviewableSed } from 'utils/sed'
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
@@ -140,7 +141,14 @@ const SEDPanel = ({
             <Heading size='small'>
               {connectedSed.sedType} - {connectedSed.sedTittel}
             </Heading>
-            <PreviewSED short size='small' rinaSakId={currentSak.sakId} sedId={connectedSed.sedId} />
+            {isPreviewableSed(connectedSed.sedType) && (
+              <PreviewSED
+                short
+                size='small'
+                rinaSakId={currentSak.sakId}
+                sedId={connectedSed.sedId}
+              />
+            )}
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>

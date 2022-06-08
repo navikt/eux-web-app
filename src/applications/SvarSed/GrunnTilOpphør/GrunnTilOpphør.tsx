@@ -31,7 +31,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'SisteAnsettelseInfo'
+  const target = 'sisteAnsettelseInfo'
   const sisteAnsettelseInfo: any = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 

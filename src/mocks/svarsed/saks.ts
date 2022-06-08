@@ -9,6 +9,7 @@ export default (saksnummer: string) => {
       sakTittel: 'Beslutte komponent myndighet',
       sakType: 'FB_BUC_01',
       sakId: '1166592',
+      sakInternasjonalId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',

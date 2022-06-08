@@ -54,7 +54,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import { cleanReplySed, isFSed, isH001Sed, isHSed, isSed, isXSed } from 'utils/sed'
+import { cleanReplySed, isFSed, isH001Sed, isHSed, isSed, isU002Sed, isU004Sed, isXSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -278,7 +278,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         </>
       )}
 
-      {!isH001Sed(replySed) && (
+      {!isH001Sed(replySed) && !isU002Sed(replySed) && !isU004Sed(replySed) && (
         <>
           <VerticalSeparatorDiv />
           <TextAreaDiv>
