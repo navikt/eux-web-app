@@ -51,6 +51,7 @@
   "noBuctype": "Du må velge buctype",
 
   "noDate": "Ingen dato valgt",
+  "noDel": "Ingen del",
   "noDokumentID": "Du må taste inn en dokumentID",
 
   "noEpost": "Du må taste inn epost adresse",
@@ -68,6 +69,7 @@
 
   "noGender": "Kjønn er ikke valgt",
   "noGrunn": "Ingen grunn oppgitt",
+  "noGrunnAnnet": "Du må taste inn en beskivelse",
 
   "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
   "noId": "Du må skrive identifikatoren",
@@ -100,6 +102,8 @@
   "noPensjonType": "Ingen type pensjon",
   "noPeriodeType": "Ingen periodetype",
   "noPersonGiven": "Ingen person oppgitt",
+  "noPunkt": "Ingen punkt",
+
   "noRelation": "Ingen relasjon valgt",
   "noRelationType": "Ingen type for relasjon",
   "noRinadokumentID": "Du må velge en SED",

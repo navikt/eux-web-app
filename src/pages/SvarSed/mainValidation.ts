@@ -2,6 +2,7 @@ import { validateAdresser } from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning } from 'applications/SvarSed/Anmodning/validation'
 import { validateAnmodningsPerioder } from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { validateAvslutning } from 'applications/SvarSed/Avslutning/validation'
+import { validateAvvis } from 'applications/SvarSed/Avvis/validation'
 import { validateBeløpNavnOgValutas } from 'applications/SvarSed/BeløpNavnOgValuta/validation'
 import { validateEndredeForhold } from 'applications/SvarSed/EndredeForhold/validation'
 import { validateFamilierelasjoner } from 'applications/SvarSed/Familierelasjon/validation'
@@ -10,6 +11,7 @@ import { validateForsikring } from 'applications/SvarSed/Forsikring/validation'
 import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBosetting/validation'
 import { validateGrunnTilOpphor } from 'applications/SvarSed/GrunnTilOpphør/validation'
 import { validateLoennsopplysninger } from 'applications/SvarSed/InntektForm/validation'
+import { validateKlargjør } from 'applications/SvarSed/Klargjør/validation'
 import {
   validateKontaktsinformasjonEposter,
   validateKontaktsinformasjonTelefoner
@@ -51,7 +53,7 @@ import {
   U002Sed,
   U004Sed,
   U017Sed,
-  USed, X001Sed, X008Sed, X009Sed, X010Sed,
+  USed, X001Sed, X008Sed, X009Sed, X010Sed, X011Sed, X012Sed,
   Ytelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
@@ -66,7 +68,7 @@ import {
   isX001Sed,
   isX008Sed,
   isX009Sed,
-  isX010Sed,
+  isX010Sed, isX011Sed, isX012Sed,
   isXSed
 } from 'utils/sed'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
@@ -290,9 +292,19 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
     }
     if (isX010Sed(replySed)) {
       hasErrors.push(validateSvarPåminnelse(v, `svarsed-${personID}-svarpåminnelse`, {
-        dokumenterTilSend: _.get(replySed as X010Sed, 'dokumenter_sendes_senere'),
-        dokumenterIkkeTilgjengelige: _.get(replySed as X010Sed, 'dokumenter_ikke_tilgjengelige'),
+        besvarelseKommer: _.get(replySed as X010Sed, 'besvarelseKommer'),
+        besvarelseUmulig: _.get(replySed as X010Sed, 'besvarelseUmulig'),
         personName
+      }))
+    }
+    if (isX011Sed(replySed)) {
+      hasErrors.push(validateAvvis(v, `svarsed-${personID}-avvis`, {
+        replySed: (replySed as X011Sed), personName
+      }))
+    }
+    if (isX012Sed(replySed)) {
+      hasErrors.push(validateKlargjør(v, `svarsed-${personID}-klargjør`, {
+        replySed: (replySed as X012Sed), personName
       }))
     }
   }

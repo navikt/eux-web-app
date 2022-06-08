@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "6.99.14",
+  "version": "6.99.15",
   "private": true,
   "type": "module",
   "scripts": {
@@ -26,9 +26,9 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.18.1",
-    "@navikt/ds-icons": "^0.8.13",
-    "@navikt/ds-react": "^0.19.1",
+    "@navikt/ds-css": "^0.18.2",
+    "@navikt/ds-icons": "^0.8.15",
+    "@navikt/ds-react": "^0.19.4",
     "@navikt/eessi-kodeverk": "^2.0.0",
     "@navikt/fetch": "^2.1.8",
     "@navikt/flagg-ikoner": "^3.2.0",
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.13",
+  "_id": "neessi@6.99.14",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

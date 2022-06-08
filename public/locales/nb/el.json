@@ -65,6 +65,11 @@
   "option-avslutting-begrunnelse-12" : "Innkreving, R005 endelig forespørsel om restanser etter 2 måneder",
   "option-avslutting-begrunnelse-99" : "Annet  ( Vennligst gi nærmere opplysninger i eget felt )",
 
+  "option-avvis-01": "Personen finnes ikke i våre registre",
+  "option-avvis-02": "Ikke kompetent institusjon i saken og ikke i stand til å videresende den til en annen institusjon",
+  "option-avvis-03": "Etterspurt obligatorisk informasjon finnes ikke",
+  "option-avvis-99": "Annet",
+
   "option-familierelasjon-bruker": "Bruker",
   "option-familierelasjon-ektefelle": "Ektefelle",
   "option-familierelasjon-annenPerson" : "Annen person",
@@ -119,6 +124,12 @@
   "option-grunntilopphør-annet": "Annet",
   "option-grunntilopphør-annet-ansettelsesforhold": "Annet (ansettelsesforhold)",
   "option-grunntilopphør-annet-selvstendig": "Annet (selvstendig næringsvirksomhet)",
+
+  "option-klargjør-01": "Informasjon påkrevd for vår nasjonale undersøkelse",
+  "option-klargjør-02": "Informasjon påkrevd for beregning av ytelse",
+  "option-klargjør-03": "Motstridende informasjon mottatt",
+  "option-klargjør-04": "Det må vedlegges støttedokumentasjon/belegg",
+  "option-klargjør-99": "Annet",
 
   "option-inntektsfilter-BARNETRYGD": "Barnetrygd",
   "option-inntektsfilter-KONTANTSTOETTE": "Kontantstøtte",
@@ -177,6 +188,8 @@
   "option-mainform-formål": "Formål",
   "option-mainform-avslutning": "Anmodning om avslutning",
   "option-mainform-ugyldiggjøre": "Ugyldiggjøre SED",
+  "option-mainform-avvis": "Avvis SED",
+  "option-mainform-klargjør": "Klargjør innhold",
   "option-mainform-påminnelse": "Påminnelse/Purring av dokument",
   "option-mainform-svarpåminnelse": "Svar på påminnelse",
 

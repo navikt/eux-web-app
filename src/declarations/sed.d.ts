@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed
+export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010'
+export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -336,16 +336,10 @@ export interface Barn {
 export interface Institusjon {
   id: string
   navn: string
-  idmangler?: {
-    navn: string
-    adresse: Adresse
-  }
 }
 
 export interface PeriodeDagpenger extends PeriodePeriode {
   institusjon: Institusjon
-  // added:
-  __cache?: any
 }
 
 export interface Inntekt {
@@ -536,16 +530,25 @@ export interface X009Sed extends XSed {
   purringer?: Array<Purring>
 }
 
-export interface DokumentTilSend extends Purring {
+export interface BesvarelseKommer extends Purring {
   innenDato?: string
 }
 
-export interface DokumentIkkeTilgjengelige extends Purring {
+export interface BesvarelseUmulig extends Purring {
   begrunnelseType: string
   begrunnelseAnnen?: string
 }
 
 export interface X010Sed extends XSed {
-  besvarelseKommer: Array<DokumentTilSend>
-  besvarelseUmulig: Array<DokumentIkkeTilgjengelige>
+  besvarelseKommer: Array<BesvarelseKommer>
+  besvarelseUmulig: Array<BesvarelseUmulig>
+}
+
+export interface X011Sed extends X008Sed {}
+
+export interface X012Sed extends XSed {
+  del: string
+  punkt: string
+  grunn: string
+  grunnAnnet: string
 }

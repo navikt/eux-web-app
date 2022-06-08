@@ -210,18 +210,7 @@
       },
       "institusjon": {
         "navn": "æøå",
-        "id": "ES:3100",
-        "idmangler": {
-          "navn": "æøå",
-          "adresse": {
-            "gate": "æøå",
-            "postnummer": "æøå",
-            "by": "æøå",
-            "land": "NO",
-            "bygning": "æøå",
-            "region": "æøå"
-          }
-        }
+        "id": "ES:3100"
       }
     }
   ]

@@ -9,6 +9,7 @@ import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
 import AnmodningsPeriode from 'applications/SvarSed/AnmodningsPeriode/AnmodningsPeriode'
 import ArbeidsperioderOversikt from 'applications/SvarSed/ArbeidsperioderOversikt/ArbeidsperioderOversikt'
 import Avslutning from 'applications/SvarSed/Avslutning/Avslutning'
+import Avvis from 'applications/SvarSed/Avvis/Avvis'
 import BeløpNavnOgValuta from 'applications/SvarSed/BeløpNavnOgValuta/BeløpNavnOgValuta'
 import EndredeForhold from 'applications/SvarSed/EndredeForhold/EndredeForhold'
 import Familierelasjon from 'applications/SvarSed/Familierelasjon/Familierelasjon'
@@ -17,6 +18,7 @@ import Forsikring from 'applications/SvarSed/Forsikring/Forsikring'
 import GrunnlagForBosetting from 'applications/SvarSed/GrunnlagForBosetting/GrunnlagForBosetting'
 import GrunnTilOpphør from 'applications/SvarSed/GrunnTilOpphør/GrunnTilOpphør'
 import InntektForm from 'applications/SvarSed/InntektForm/InntektForm'
+import Klargjør from 'applications/SvarSed/Klargjør/Klargjør'
 import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontaktinformasjon'
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
@@ -223,7 +225,9 @@ const SEDEdit: React.FC = (): JSX.Element => {
               { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
               { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
               { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
-              { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' }
+              { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
+              { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
+              { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
             ]}
             replySed={replySed}
             updateReplySed={updateReplySed}

@@ -77,6 +77,7 @@
   "dekkede-periode": "Dekkede periode",
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
   "delt-foreldreansvar": "Delt foreldreansvar",
+  "del": "Del",
   "deltaker": "Deltaker",
   "dokument": "Dokument",
   "dokument-id": "Dokument ID",
@@ -190,6 +191,7 @@
   "inntekter": "Inntekter",
   "inntektsfilter": "Inntekts filter",
   "innvilgelse" : "innvilgelse",
+  "institusjon" : "Institusjon",
   "institusjonens-adresse" : "Institusjonens adresse",
   "institusjonens-id" : "Institusjonens ID",
   "inst-id" : "Inst. ID",
@@ -298,6 +300,7 @@
   "poststed": "Poststed",
   "preview": "Forhåndsvis",
   "prosedyre-ved-uenighet": "Prosedyre ved uenighet",
+  "punkt": "Punkt",
   "purring": "Purring",
   "purringer": "Purringer",
 

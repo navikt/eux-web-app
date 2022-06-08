@@ -1,10 +1,9 @@
-import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import { validatePeriode } from 'components/Forms/validation'
 import { PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPeriodeDagpengerProps {
   periodeDagpenger: PeriodeDagpenger | undefined
@@ -46,44 +45,19 @@ export const validatePeriodeDagpenger = (
     }))
   }
 
-  const idmangler = (
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim()) && periodeDagpenger?.institusjon.idmangler?.navn?.trim() !== '-') ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.gate?.trim()) ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.postnummer?.trim()) ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.bygning?.trim()) ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.by?.trim()) ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.region?.trim()) ||
-    !_.isEmpty(periodeDagpenger?.institusjon.idmangler?.adresse?.land?.trim())
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periodeDagpenger?.institusjon.id,
+    id: namespace + idx + '-institusjon-id',
+    message: 'validation:noInstitusjonsID',
+    personName
+  }))
 
-  if (!idmangler) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: periodeDagpenger?.institusjon.id,
-      id: namespace + idx + '-institusjon-id',
-      message: 'validation:noInstitusjonsID',
-      personName
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: periodeDagpenger?.institusjon.navn,
-      id: namespace + idx + '-institusjon-navn',
-      message: 'validation:noInstitusjonensNavn',
-      personName
-    }))
-  } else {
-    if (_.isEmpty(periodeDagpenger?.institusjon.idmangler?.navn?.trim()) || periodeDagpenger?.institusjon.idmangler?.navn?.trim() === '-') {
-      hasErrors.push(addError(v, {
-        id: namespace + idx + '-institusjon-idmangler-navn',
-        message: 'validation:noName',
-        personName
-      }))
-    }
-
-    hasErrors.push(validateAdresse(v, namespace + idx + '-institusjon-idmangler-adresse', {
-      adresse: periodeDagpenger?.institusjon.idmangler?.adresse,
-      checkAdresseType: true,
-      personName
-    }))
-  }
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: periodeDagpenger?.institusjon.navn,
+    id: namespace + idx + '-institusjon-navn',
+    message: 'validation:noInstitusjonensNavn',
+    personName
+  }))
 
   return hasErrors.find(value => value) !== undefined
 }

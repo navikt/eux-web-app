@@ -1,29 +1,29 @@
-import { DokumentTilSend, DokumentIkkeTilgjengelige } from 'declarations/sed'
+import { BesvarelseKommer, BesvarelseUmulig } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationDokumentTilSendProps {
-  dokument: DokumentTilSend | undefined
-  dokumenter: Array<DokumentTilSend> | undefined
+export interface ValidationBesvarelseKommerProps {
+  dokument: BesvarelseKommer | undefined
+  dokumenter: Array<BesvarelseKommer> | undefined
   index?: number
   personName?: string
 }
 
-export interface ValidationDokumentIkkeTilgjengeligeProps {
-  dokument: DokumentIkkeTilgjengelige | undefined
-  dokumenter: Array<DokumentIkkeTilgjengelige> | undefined
+export interface ValidationBesvarelseUmuligProps {
+  dokument: BesvarelseUmulig | undefined
+  dokumenter: Array<BesvarelseUmulig> | undefined
   index?: number
   personName?: string
 }
 
 export interface ValidationSvarPåminnelseProps {
-  dokumenterTilSend: Array<DokumentTilSend> | undefined
-  dokumenterIkkeTilgjengelige: Array<DokumentIkkeTilgjengelige> | undefined
+  besvarelseKommer: Array<BesvarelseKommer> | undefined
+  besvarelseUmulig: Array<BesvarelseUmulig> | undefined
   personName?: string
 }
 
-export const validateDokumentTilSend = (
+export const validateBesvarelseKommer = (
   v: Validation,
   namespace: string,
   {
@@ -31,7 +31,7 @@ export const validateDokumentTilSend = (
     dokumenter,
     index,
     personName
-  }: ValidationDokumentTilSendProps
+  }: ValidationBesvarelseKommerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
@@ -60,7 +60,7 @@ export const validateDokumentTilSend = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: dokument,
     haystack: dokumenter,
-    matchFn: (s: DokumentTilSend) => s.gjelder === dokument?.gjelder,
+    matchFn: (s: BesvarelseKommer) => s.gjelder === dokument?.gjelder,
     id: namespace + idx + '-gjelder',
     index,
     message: 'validation:duplicateType',
@@ -70,7 +70,7 @@ export const validateDokumentTilSend = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateDokumentIkkeTilgjengelige = (
+export const validateBesvarelseUmulig = (
   v: Validation,
   namespace: string,
   {
@@ -78,7 +78,7 @@ export const validateDokumentIkkeTilgjengelige = (
     dokumenter,
     index,
     personName
-  }: ValidationDokumentIkkeTilgjengeligeProps
+  }: ValidationBesvarelseUmuligProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
@@ -116,7 +116,7 @@ export const validateDokumentIkkeTilgjengelige = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: dokument,
     haystack: dokumenter,
-    matchFn: (s: DokumentTilSend) => s.gjelder === dokument?.gjelder,
+    matchFn: (s: BesvarelseKommer) => s.gjelder === dokument?.gjelder,
     id: namespace + idx + '-gjelder',
     index,
     message: 'validation:duplicateType',
@@ -130,19 +130,19 @@ export const validateSvarPåminnelse = (
   validation: Validation,
   namespace: string,
   {
-    dokumenterTilSend,
-    dokumenterIkkeTilgjengelige,
+    besvarelseKommer,
+    besvarelseUmulig,
     personName
   }: ValidationSvarPåminnelseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  dokumenterTilSend?.forEach((dokument: DokumentTilSend, index: number) => {
-    hasErrors.push(validateDokumentTilSend(validation, namespace + '-dokumentTilSend',
-      { dokument, dokumenter: dokumenterTilSend, index, personName }))
+  besvarelseKommer?.forEach((dokument: BesvarelseKommer, index: number) => {
+    hasErrors.push(validateBesvarelseKommer(validation, namespace + '-BesvarelseKommer',
+      { dokument, dokumenter: besvarelseKommer, index, personName }))
   })
-  dokumenterIkkeTilgjengelige?.forEach((dokument: DokumentIkkeTilgjengelige, index: number) => {
-    hasErrors.push(validateDokumentIkkeTilgjengelige(validation, namespace + '-dokumentIkkeTilgjengelige',
-      { dokument, dokumenter: dokumenterIkkeTilgjengelige, index, personName }))
+  besvarelseUmulig?.forEach((dokument: BesvarelseUmulig, index: number) => {
+    hasErrors.push(validateBesvarelseUmulig(validation, namespace + '-BesvarelseUmulig',
+      { dokument, dokumenter: besvarelseUmulig, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

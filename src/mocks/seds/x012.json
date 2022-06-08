@@ -1,0 +1,13 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "del": "Del",
+  "punkt": "Punkt",
+  "grunn": "99",
+  "grunnAnnet": "grunnAnnet",
+  "sedVersjon": "4.2"
+}

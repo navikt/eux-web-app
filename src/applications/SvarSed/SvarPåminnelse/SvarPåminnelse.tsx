@@ -23,7 +23,7 @@ import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { DokumentIkkeTilgjengelige, DokumentTilSend, X010Sed } from 'declarations/sed'
+import { BesvarelseUmulig, BesvarelseKommer, X010Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
@@ -35,11 +35,11 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
-  validateDokumentIkkeTilgjengelige,
-  validateDokumentTilSend,
+  validateBesvarelseUmulig,
+  validateBesvarelseKommer,
   validateSvarPåminnelse,
-  ValidationDokumentIkkeTilgjengeligeProps,
-  ValidationDokumentTilSendProps,
+  ValidationBesvarelseUmuligProps,
+  ValidationBesvarelseKommerProps,
   ValidationSvarPåminnelseProps
 } from './validation'
 
@@ -58,311 +58,311 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const targetDokumentTilSend = 'besvarelseKommer'
-  const targetDokumentIkkeTilgjengelige = 'besvarelseUmulig'
-  const dokumenterTilSend = _.get(replySed, targetDokumentTilSend)
-  const dokumenterIkkeTilgjengelige = _.get(replySed, targetDokumentIkkeTilgjengelige)
+  const targetBesvarelseKommer = 'besvarelseKommer'
+  const targetBesvarelseUmulig = 'besvarelseUmulig'
+  const besvarelseKommer: Array<BesvarelseKommer> | undefined = _.get(replySed, targetBesvarelseKommer)
+  const besvarelseUmulig: Array<BesvarelseUmulig> | undefined = _.get(replySed, targetBesvarelseUmulig)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
 
-  const getDokumentTilSendId = (d: DokumentTilSend | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
-  const getDokumentIkkeTilgjengeligeId = (d: DokumentIkkeTilgjengelige | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
+  const getBesvarelseKommerId = (d: BesvarelseKommer | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
+  const getBesvarelseUmuligId = (d: BesvarelseUmulig | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
 
-  const [_newDokumentTilSend, _setNewDokumentTilSend] = useState<DokumentTilSend | undefined>(undefined)
-  const [_editDokumentTilSend, _setEditDokumentTilSend] = useState<DokumentTilSend | undefined>(undefined)
-  const [_newDokumentIkkeTilgjengelige, _setNewDokumentIkkeTilgjengelige] = useState<DokumentIkkeTilgjengelige | undefined>(undefined)
-  const [_editDokumentIkkeTilgjengelige, _setEditDokumentIkkeTilgjengelige] = useState<DokumentIkkeTilgjengelige | undefined>(undefined)
+  const [_newBesvarelseKommer, _setNewBesvarelseKommer] = useState<BesvarelseKommer | undefined>(undefined)
+  const [_editBesvarelseKommer, _setEditBesvarelseKommer] = useState<BesvarelseKommer | undefined>(undefined)
+  const [_newBesvarelseUmulig, _setNewBesvarelseUmulig] = useState<BesvarelseUmulig | undefined>(undefined)
+  const [_editBesvarelseUmulig, _setEditBesvarelseUmulig] = useState<BesvarelseUmulig | undefined>(undefined)
 
-  const [_editDokumentTilSendIndex, _setEditDokumentTilSendIndex] = useState<number | undefined>(undefined)
-  const [_editDokumentIkkeTilgjengeligeIndex, _setEditDokumentIkkeTilgjengeligeIndex] = useState<number | undefined>(undefined)
-  const [_newDokumentTilSendForm, _setNewDokumentTilSendForm] = useState<boolean>(false)
-  const [_newDokumentIkkeTilgjengeligeForm, _setNewDokumentIkkeTilgjengeligeForm] = useState<boolean>(false)
-  const [_validationDokumentTilSend, _resetValidationDokumentTilSend, _performValidationDokumentTilSend] =
-    useLocalValidation<ValidationDokumentTilSendProps>(validateDokumentTilSend, namespace + '-dokumentTilSend')
-  const [_validationDokumentIkkeTilgjengelige, _resetValidationDokumentIkkeTilgjengelige, _performValidationDokumentIkkeTilgjengelige] =
-    useLocalValidation<ValidationDokumentIkkeTilgjengeligeProps>(validateDokumentIkkeTilgjengelige, namespace + '-dokumentIkkeTilgjengelige')
+  const [_editBesvarelseKommerIndex, _setEditBesvarelseKommerIndex] = useState<number | undefined>(undefined)
+  const [_editBesvarelseUmuligIndex, _setEditBesvarelseUmuligIndex] = useState<number | undefined>(undefined)
+  const [_newBesvarelseKommerForm, _setNewBesvarelseKommerForm] = useState<boolean>(false)
+  const [_newBesvarelseUmuligForm, _setNewBesvarelseUmuligForm] = useState<boolean>(false)
+  const [_validationBesvarelseKommer, _resetValidationBesvarelseKommer, _performValidationBesvarelseKommer] =
+    useLocalValidation<ValidationBesvarelseKommerProps>(validateBesvarelseKommer, namespace + '-BesvarelseKommer')
+  const [_validationBesvarelseUmulig, _resetValidationBesvarelseUmulig, _performValidationBesvarelseUmulig] =
+    useLocalValidation<ValidationBesvarelseUmuligProps>(validateBesvarelseUmulig, namespace + '-BesvarelseUmulig')
 
   useUnmount(() => {
     const [, newValidation] = performValidation<ValidationSvarPåminnelseProps>(
       validation, namespace, validateSvarPåminnelse, {
-        dokumenterTilSend: _.get((replySed as X010Sed), targetDokumentTilSend),
-        dokumenterIkkeTilgjengelige: _.get((replySed as X010Sed), targetDokumentIkkeTilgjengelige),
+        besvarelseKommer: _.get((replySed as X010Sed), targetBesvarelseKommer),
+        besvarelseUmulig: _.get((replySed as X010Sed), targetBesvarelseUmulig),
         personName
       }
     )
     dispatch(setValidation(newValidation))
   })
 
-  const setDokumentTilSendType = (gjelder: string, index: number) => {
+  const setBesvarelseKommerType = (gjelder: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentTilSend({
-        ..._newDokumentTilSend,
+      _setNewBesvarelseKommer({
+        ..._newBesvarelseKommer,
         gjelder: gjelder.trim()
-      } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-gjelder')
+      } as BesvarelseKommer)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-gjelder')
       return
     }
-    _setEditDokumentTilSend({
-      ..._editDokumentTilSend,
+    _setEditBesvarelseKommer({
+      ..._editBesvarelseKommer,
       gjelder: gjelder.trim()
-    } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-gjelder']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-gjelder'))
+    } as BesvarelseKommer)
+    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-gjelder']) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-gjelder'))
     }
   }
 
-  const setDokumentIkkeTilgjengeligeType = (gjelder: string, index: number) => {
+  const setBesvarelseUmuligType = (gjelder: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentIkkeTilgjengelige({
-        ..._newDokumentIkkeTilgjengelige,
+      _setNewBesvarelseUmulig({
+        ..._newBesvarelseUmulig,
         gjelder: gjelder.trim()
-      } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-gjelder')
+      } as BesvarelseUmulig)
+      _resetValidationBesvarelseUmulig(namespace + '-BesvarelseUmulig-gjelder')
       return
     }
-    _setEditDokumentIkkeTilgjengelige({
-      ..._editDokumentIkkeTilgjengelige,
+    _setEditBesvarelseUmulig({
+      ..._editBesvarelseUmulig,
       gjelder: gjelder.trim()
-    } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-gjelder']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-gjelder'))
+    } as BesvarelseUmulig)
+    if (validation[namespace + '-BesvarelseUmulig' + getIdx(index) + '-gjelder']) {
+      dispatch(resetValidation(namespace + '-BesvarelseUmulig' + getIdx(index) + '-gjelder'))
     }
   }
 
-  const setDokumentTilSendInfo = (beskrivelse: string, index: number) => {
+  const setBesvarelseKommerInfo = (beskrivelse: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentTilSend({
-        ..._newDokumentTilSend,
+      _setNewBesvarelseKommer({
+        ..._newBesvarelseKommer,
         beskrivelse: beskrivelse.trim()
-      } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-beskrivelse')
+      } as BesvarelseKommer)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-beskrivelse')
       return
     }
-    _setEditDokumentTilSend({
-      ..._editDokumentTilSend,
+    _setEditBesvarelseKommer({
+      ..._editBesvarelseKommer,
       beskrivelse: beskrivelse.trim()
-    } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-beskrivelse']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-beskrivelse'))
+    } as BesvarelseKommer)
+    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-beskrivelse']) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-beskrivelse'))
     }
   }
 
-  const setDokumentIkkeTilgjengeligeInfo = (beskrivelse: string, index: number) => {
+  const setBesvarelseUmuligInfo = (beskrivelse: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentIkkeTilgjengelige({
-        ..._newDokumentIkkeTilgjengelige,
+      _setNewBesvarelseUmulig({
+        ..._newBesvarelseUmulig,
         beskrivelse: beskrivelse.trim()
-      } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentIkkeTilgjengelige(namespace + '-dokumentIkkeTilgjengelige-beskrivelse')
+      } as BesvarelseUmulig)
+      _resetValidationBesvarelseUmulig(namespace + '-BesvarelseUmulig-beskrivelse')
       return
     }
-    _setEditDokumentIkkeTilgjengelige({
-      ..._editDokumentIkkeTilgjengelige,
+    _setEditBesvarelseUmulig({
+      ..._editBesvarelseUmulig,
       beskrivelse: beskrivelse.trim()
-    } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-beskrivelse']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-beskrivelse'))
+    } as BesvarelseUmulig)
+    if (validation[namespace + '-BesvarelseUmulig' + getIdx(index) + '-beskrivelse']) {
+      dispatch(resetValidation(namespace + '-BesvarelseUmulig' + getIdx(index) + '-beskrivelse'))
     }
   }
 
   const setInnenDato = (innenDato: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentTilSend({
-        ..._newDokumentTilSend,
+      _setNewBesvarelseKommer({
+        ..._newBesvarelseKommer,
         innenDato: innenDato.trim()
-      } as DokumentTilSend)
-      _resetValidationDokumentTilSend(namespace + '-dokumentTilSend-innenDato')
+      } as BesvarelseKommer)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-innenDato')
       return
     }
-    _setEditDokumentTilSend({
-      ..._editDokumentTilSend,
+    _setEditBesvarelseKommer({
+      ..._editBesvarelseKommer,
       innenDato: innenDato.trim()
-    } as DokumentTilSend)
-    if (validation[namespace + '-dokumentTilSend' + getIdx(index) + '-innenDato']) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(index) + '-innenDato'))
+    } as BesvarelseKommer)
+    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato']) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato'))
     }
   }
 
   const setBegrunnelseType = (begrunnelseType: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentIkkeTilgjengelige({
-        ..._newDokumentIkkeTilgjengelige,
+      _setNewBesvarelseUmulig({
+        ..._newBesvarelseUmulig,
         begrunnelseType: begrunnelseType.trim()
-      } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentTilSend(namespace + '-dokumentIkkeTilgjengelige-begrunnelseType')
+      } as BesvarelseUmulig)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseUmulig-begrunnelseType')
       return
     }
-    _setEditDokumentIkkeTilgjengelige({
-      ..._editDokumentIkkeTilgjengelige,
+    _setEditBesvarelseUmulig({
+      ..._editBesvarelseUmulig,
       begrunnelseType: begrunnelseType.trim()
-    } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseType']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseType'))
+    } as BesvarelseUmulig)
+    if (validation[namespace + '-BesvarelseUmulig' + getIdx(index) + '-begrunnelseType']) {
+      dispatch(resetValidation(namespace + '-BesvarelseUmulig' + getIdx(index) + '-begrunnelseType'))
     }
   }
 
   const setBegrunnelseAnnen = (begrunnelseAnnen: string, index: number) => {
     if (index < 0) {
-      _setNewDokumentIkkeTilgjengelige({
-        ..._newDokumentIkkeTilgjengelige,
+      _setNewBesvarelseUmulig({
+        ..._newBesvarelseUmulig,
         begrunnelseAnnen: begrunnelseAnnen.trim()
-      } as DokumentIkkeTilgjengelige)
-      _resetValidationDokumentTilSend(namespace + '-dokumentIkkeTilgjengelige-begrunnelseAnnen')
+      } as BesvarelseUmulig)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseUmulig-begrunnelseAnnen')
       return
     }
-    _setEditDokumentIkkeTilgjengelige({
-      ..._editDokumentIkkeTilgjengelige,
+    _setEditBesvarelseUmulig({
+      ..._editBesvarelseUmulig,
       begrunnelseAnnen: begrunnelseAnnen.trim()
-    } as DokumentIkkeTilgjengelige)
-    if (validation[namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseAnnen']) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(index) + '-begrunnelseAnnen'))
+    } as BesvarelseUmulig)
+    if (validation[namespace + '-BesvarelseUmulig' + getIdx(index) + '-begrunnelseAnnen']) {
+      dispatch(resetValidation(namespace + '-BesvarelseUmulig' + getIdx(index) + '-begrunnelseAnnen'))
     }
   }
 
-  const onCloseDokumentTilSendEdit = (namespace: string) => {
-    _setEditDokumentTilSend(undefined)
-    _setEditDokumentTilSendIndex(undefined)
+  const onCloseBesvarelseKommerEdit = (namespace: string) => {
+    _setEditBesvarelseKommer(undefined)
+    _setEditBesvarelseKommerIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
-  const onCloseDokumentIkkeTilgjengeligeEdit = (namespace: string) => {
-    _setEditDokumentIkkeTilgjengelige(undefined)
-    _setEditDokumentIkkeTilgjengeligeIndex(undefined)
+  const onCloseBesvarelseUmuligEdit = (namespace: string) => {
+    _setEditBesvarelseUmulig(undefined)
+    _setEditBesvarelseUmuligIndex(undefined)
     dispatch(resetValidation(namespace))
   }
 
-  const onCloseDokumentTilSendNew = () => {
-    _setNewDokumentTilSend(undefined)
-    _setNewDokumentTilSendForm(false)
-    _resetValidationDokumentTilSend()
+  const onCloseBesvarelseKommerNew = () => {
+    _setNewBesvarelseKommer(undefined)
+    _setNewBesvarelseKommerForm(false)
+    _resetValidationBesvarelseKommer()
   }
 
-  const onCloseDokumentIkkeTilgjengeligeNew = () => {
-    _setNewDokumentIkkeTilgjengelige(undefined)
-    _setNewDokumentIkkeTilgjengeligeForm(false)
-    _resetValidationDokumentIkkeTilgjengelige()
+  const onCloseBesvarelseUmuligNew = () => {
+    _setNewBesvarelseUmulig(undefined)
+    _setNewBesvarelseUmuligForm(false)
+    _resetValidationBesvarelseUmulig()
   }
 
-  const onStartDokumentTilSendEdit = (s: DokumentTilSend, index: number) => {
+  const onStartBesvarelseKommerEdit = (s: BesvarelseKommer, index: number) => {
     // reset any validation that exists from a cancelled edited item
-    if (_editDokumentTilSendIndex !== undefined) {
-      dispatch(resetValidation(namespace + '-dokumentTilSend' + getIdx(_editDokumentTilSendIndex)))
+    if (_editBesvarelseKommerIndex !== undefined) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(_editBesvarelseKommerIndex)))
     }
-    _setEditDokumentTilSend(s)
-    _setEditDokumentTilSendIndex(index)
+    _setEditBesvarelseKommer(s)
+    _setEditBesvarelseKommerIndex(index)
   }
 
-  const onStartDokumentIkkeTilgjengeligeEdit = (d: DokumentIkkeTilgjengelige, index: number) => {
+  const onStartBesvarelseUmuligEdit = (d: BesvarelseUmulig, index: number) => {
     // reset any validation that exists from a cancelled edited item
-    if (_editDokumentIkkeTilgjengeligeIndex !== undefined) {
-      dispatch(resetValidation(namespace + '-dokumentIkkeTilgjengelige' + getIdx(_editDokumentIkkeTilgjengeligeIndex)))
+    if (_editBesvarelseUmuligIndex !== undefined) {
+      dispatch(resetValidation(namespace + '-BesvarelseUmulig' + getIdx(_editBesvarelseUmuligIndex)))
     }
-    _setEditDokumentIkkeTilgjengelige(d)
-    _setEditDokumentIkkeTilgjengeligeIndex(index)
+    _setEditBesvarelseUmulig(d)
+    _setEditBesvarelseUmuligIndex(index)
   }
 
-  const onSaveDokumentTilSendEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationDokumentTilSendProps>(
-      validation, namespace, validateDokumentTilSend, {
-        dokument: _editDokumentTilSend,
-        dokumenter: dokumenterTilSend,
-        index: _editDokumentTilSendIndex,
+  const onSaveBesvarelseKommerEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationBesvarelseKommerProps>(
+      validation, namespace, validateBesvarelseKommer, {
+        dokument: _editBesvarelseKommer,
+        dokumenter: besvarelseKommer,
+        index: _editBesvarelseKommerIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${targetDokumentTilSend}[${_editDokumentTilSendIndex}]`, _editDokumentTilSend))
-      onCloseDokumentTilSendEdit(namespace + '-dokumentTilSend' + getIdx(_editDokumentTilSendIndex))
+      dispatch(updateReplySed(`${targetBesvarelseKommer}[${_editBesvarelseKommerIndex}]`, _editBesvarelseKommer))
+      onCloseBesvarelseKommerEdit(namespace + '-BesvarelseKommer' + getIdx(_editBesvarelseKommerIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
   }
 
-  const onSaveDokumentIkkeTilgjengeligeEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationDokumentIkkeTilgjengeligeProps>(
-      validation, namespace, validateDokumentIkkeTilgjengelige, {
-        dokument: _editDokumentIkkeTilgjengelige,
-        dokumenter: dokumenterIkkeTilgjengelige,
-        index: _editDokumentIkkeTilgjengeligeIndex,
+  const onSaveBesvarelseUmuligEdit = () => {
+    const [valid, newValidation] = performValidation<ValidationBesvarelseUmuligProps>(
+      validation, namespace, validateBesvarelseUmulig, {
+        dokument: _editBesvarelseUmulig,
+        dokumenter: besvarelseUmulig,
+        index: _editBesvarelseUmuligIndex,
         personName
       })
     if (valid) {
-      dispatch(updateReplySed(`${targetDokumentIkkeTilgjengelige}[${_editDokumentIkkeTilgjengeligeIndex}]`, _editDokumentIkkeTilgjengelige))
-      onCloseDokumentIkkeTilgjengeligeEdit(namespace + '-dokumentIkkeTilgjengelige' + getIdx(_editDokumentIkkeTilgjengeligeIndex))
+      dispatch(updateReplySed(`${targetBesvarelseUmulig}[${_editBesvarelseUmuligIndex}]`, _editBesvarelseUmulig))
+      onCloseBesvarelseUmuligEdit(namespace + '-BesvarelseUmulig' + getIdx(_editBesvarelseUmuligIndex))
     } else {
       dispatch(setValidation(newValidation))
     }
   }
 
-  const onDokumentTilSendRemove = (removedDokument: DokumentTilSend) => {
-    const newDokumenter: Array<DokumentTilSend> = _.reject(dokumenterTilSend,
-      (d: DokumentTilSend) => _.isEqual(removedDokument, d))
-    dispatch(updateReplySed(targetDokumentTilSend, newDokumenter))
+  const onBesvarelseKommerRemove = (removedDokument: BesvarelseKommer) => {
+    const newDokumenter: Array<BesvarelseKommer> = _.reject(besvarelseKommer,
+      (d: BesvarelseKommer) => _.isEqual(removedDokument, d))
+    dispatch(updateReplySed(targetBesvarelseKommer, newDokumenter))
   }
 
-  const onDokumentIkkeTilgjengeligeRemove = (removedDokument: DokumentIkkeTilgjengelige) => {
-    const newDokumenter: Array<DokumentIkkeTilgjengelige> = _.reject(dokumenterIkkeTilgjengelige,
-      (d: DokumentIkkeTilgjengelige) => _.isEqual(removedDokument, d))
-    dispatch(updateReplySed(targetDokumentIkkeTilgjengelige, newDokumenter))
+  const onBesvarelseUmuligRemove = (removedDokument: BesvarelseUmulig) => {
+    const newDokumenter: Array<BesvarelseUmulig> = _.reject(besvarelseUmulig,
+      (d: BesvarelseUmulig) => _.isEqual(removedDokument, d))
+    dispatch(updateReplySed(targetBesvarelseUmulig, newDokumenter))
   }
 
-  const onAddDokumentTilSendNew = () => {
-    const valid: boolean = _performValidationDokumentTilSend({
-      dokument: _newDokumentTilSend,
-      dokumenter: dokumenterTilSend,
+  const onAddBesvarelseKommerNew = () => {
+    const valid: boolean = _performValidationBesvarelseKommer({
+      dokument: _newBesvarelseKommer,
+      dokumenter: besvarelseKommer,
       personName
     })
-    if (!!_newDokumentTilSend && valid) {
-      let newDokumenter: Array<DokumentTilSend> | undefined = _.cloneDeep(dokumenterTilSend)
+    if (!!_newBesvarelseKommer && valid) {
+      let newDokumenter: Array<BesvarelseKommer> | undefined = _.cloneDeep(besvarelseKommer)
       if (_.isNil(newDokumenter)) {
         newDokumenter = []
       }
-      newDokumenter.push(_newDokumentTilSend)
-      dispatch(updateReplySed(targetDokumentTilSend, newDokumenter))
-      onCloseDokumentTilSendNew()
+      newDokumenter.push(_newBesvarelseKommer)
+      dispatch(updateReplySed(targetBesvarelseKommer, newDokumenter))
+      onCloseBesvarelseKommerNew()
     }
   }
 
   const onAddDocumentIkkeTilgjengeligeNew = () => {
-    const valid: boolean = _performValidationDokumentIkkeTilgjengelige({
-      dokument: _newDokumentIkkeTilgjengelige,
-      dokumenter: dokumenterIkkeTilgjengelige,
+    const valid: boolean = _performValidationBesvarelseUmulig({
+      dokument: _newBesvarelseUmulig,
+      dokumenter: besvarelseUmulig,
       personName
     })
-    if (!!_newDokumentIkkeTilgjengelige && valid) {
-      let newDokumenter: Array<DokumentIkkeTilgjengelige> | undefined = _.cloneDeep(dokumenterIkkeTilgjengelige)
+    if (!!_newBesvarelseUmulig && valid) {
+      let newDokumenter: Array<BesvarelseUmulig> | undefined = _.cloneDeep(besvarelseUmulig)
       if (_.isNil(newDokumenter)) {
         newDokumenter = []
       }
-      newDokumenter.push(_newDokumentIkkeTilgjengelige)
-      dispatch(updateReplySed(targetDokumentIkkeTilgjengelige, newDokumenter))
-      onCloseDokumentIkkeTilgjengeligeNew()
+      newDokumenter.push(_newBesvarelseUmulig)
+      dispatch(updateReplySed(targetBesvarelseUmulig, newDokumenter))
+      onCloseBesvarelseUmuligNew()
     }
   }
 
-  const renderDokumentTilSendRow = (dokumentTilSend: DokumentTilSend | null, index: number) => {
-    const _namespace = namespace + '-dokumentTilSend' + getIdx(index)
-    const _v: Validation = index < 0 ? _validationDokumentTilSend : validation
-    const inEditMode = index < 0 || _editDokumentTilSendIndex === index
-    const _dokumentTilSend = index < 0 ? _newDokumentTilSend : (inEditMode ? _editDokumentTilSend : dokumentTilSend)
+  const renderBesvarelseKommerRow = (BesvarelseKommer: BesvarelseKommer | null, index: number) => {
+    const _namespace = namespace + '-BesvarelseKommer' + getIdx(index)
+    const _v: Validation = index < 0 ? _validationBesvarelseKommer : validation
+    const inEditMode = index < 0 || _editBesvarelseKommerIndex === index
+    const _BesvarelseKommer = index < 0 ? _newBesvarelseKommer : (inEditMode ? _editBesvarelseKommer : BesvarelseKommer)
 
     const addremovepanel = (
-      <AddRemovePanel<DokumentTilSend>
-        item={dokumentTilSend}
+      <AddRemovePanel<BesvarelseKommer>
+        item={BesvarelseKommer}
         marginTop={inEditMode}
         index={index}
         inEditMode={inEditMode}
-        onRemove={onDokumentTilSendRemove}
-        onAddNew={onAddDokumentTilSendNew}
-        onCancelNew={onCloseDokumentTilSendNew}
-        onStartEdit={onStartDokumentTilSendEdit}
-        onConfirmEdit={onSaveDokumentTilSendEdit}
-        onCancelEdit={() => onCloseDokumentTilSendEdit(_namespace)}
+        onRemove={onBesvarelseKommerRemove}
+        onAddNew={onAddBesvarelseKommerNew}
+        onCancelNew={onCloseBesvarelseKommerNew}
+        onStartEdit={onStartBesvarelseKommerEdit}
+        onConfirmEdit={onSaveBesvarelseKommerEdit}
+        onCancelEdit={() => onCloseBesvarelseKommerEdit(_namespace)}
       />
     )
 
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
-        key={getDokumentTilSendId(dokumentTilSend)}
+        key={getBesvarelseKommerId(BesvarelseKommer)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
@@ -375,14 +375,14 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentTilSend?.gjelder}
+                    value={_BesvarelseKommer?.gjelder}
                     data-no-border
                     data-testid={_namespace + '-gjelder'}
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
                     legend={t('label:dokument-type') + ' *'}
                     name={_namespace + '-gjelder'}
-                    onChange={(type: string) => setDokumentTilSendType(type, index)}
+                    onChange={(type: string) => setBesvarelseKommerType(type, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='dokument'>
@@ -411,8 +411,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       maxLength={51}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
-                      onChanged={(info: string) => setDokumentTilSendInfo(info, index)}
-                      value={_dokumentTilSend?.beskrivelse}
+                      onChanged={(info: string) => setBesvarelseKommerInfo(info, index)}
+                      value={_BesvarelseKommer?.beskrivelse}
                     />
                   </TextAreaDiv>
                 </Column>
@@ -424,7 +424,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     namespace={_namespace}
                     onChanged={(innenDato: string) => setInnenDato(innenDato, index)}
                     required
-                    value={_dokumentTilSend?.innenDato ?? ''}
+                    value={_BesvarelseKommer?.innenDato ?? ''}
                   />
                 </Column>
               </AlignStartRow>
@@ -438,21 +438,21 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
                   >
-                    {t('label:' + _dokumentTilSend?.gjelder)}
+                    {t('label:' + _BesvarelseKommer?.gjelder)}
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
                     error={_v[_namespace + '-innenDato']?.feilmelding}
                     id={_namespace + '-innenDato'}
                   >
-                    {_dokumentTilSend?.innenDato}
+                    {_BesvarelseKommer?.innenDato}
                   </FormText>
                   <HorizontalSeparatorDiv />
                   <FormText
                     error={_v[_namespace + '-beskrivelse']?.feilmelding}
                     id={_namespace + '-beskrivelse'}
                   >
-                    {_dokumentTilSend?.beskrivelse}
+                    {_BesvarelseKommer?.beskrivelse}
                   </FormText>
                 </FlexDiv>
               </Column>
@@ -466,31 +466,31 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     )
   }
 
-  const renderDokumentIkkeTilgjengeligeRow = (dokumentIkkeTilgjengelige: DokumentIkkeTilgjengelige | null, index: number) => {
-    const _namespace = namespace + '-dokumentIkkeTilgjengelige' + getIdx(index)
-    const _v: Validation = index < 0 ? _validationDokumentIkkeTilgjengelige : validation
-    const inEditMode = index < 0 || _editDokumentIkkeTilgjengeligeIndex === index
-    const _dokumentIkkeTilgjengelige = index < 0 ? _newDokumentIkkeTilgjengelige : (inEditMode ? _editDokumentIkkeTilgjengelige : dokumentIkkeTilgjengelige)
+  const renderBesvarelseUmuligRow = (BesvarelseUmulig: BesvarelseUmulig | null, index: number) => {
+    const _namespace = namespace + '-BesvarelseUmulig' + getIdx(index)
+    const _v: Validation = index < 0 ? _validationBesvarelseUmulig : validation
+    const inEditMode = index < 0 || _editBesvarelseUmuligIndex === index
+    const _BesvarelseUmulig = index < 0 ? _newBesvarelseUmulig : (inEditMode ? _editBesvarelseUmulig : BesvarelseUmulig)
 
     const addremovepanel = (
-      <AddRemovePanel<DokumentIkkeTilgjengelige>
-        item={dokumentIkkeTilgjengelige}
+      <AddRemovePanel<BesvarelseUmulig>
+        item={BesvarelseUmulig}
         marginTop={inEditMode}
         index={index}
         inEditMode={inEditMode}
-        onRemove={onDokumentIkkeTilgjengeligeRemove}
+        onRemove={onBesvarelseUmuligRemove}
         onAddNew={onAddDocumentIkkeTilgjengeligeNew}
-        onCancelNew={onCloseDokumentIkkeTilgjengeligeNew}
-        onStartEdit={onStartDokumentIkkeTilgjengeligeEdit}
-        onConfirmEdit={onSaveDokumentIkkeTilgjengeligeEdit}
-        onCancelEdit={() => onCloseDokumentIkkeTilgjengeligeEdit(_namespace)}
+        onCancelNew={onCloseBesvarelseUmuligNew}
+        onStartEdit={onStartBesvarelseUmuligEdit}
+        onConfirmEdit={onSaveBesvarelseUmuligEdit}
+        onCancelEdit={() => onCloseBesvarelseUmuligEdit(_namespace)}
       />
     )
 
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
-        key={getDokumentIkkeTilgjengeligeId(dokumentIkkeTilgjengelige)}
+        key={getBesvarelseUmuligId(BesvarelseUmulig)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
@@ -503,14 +503,14 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentIkkeTilgjengelige?.gjelder}
+                    value={_BesvarelseUmulig?.gjelder}
                     data-no-border
                     data-testid={_namespace + '-gjelder'}
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
                     legend={t('label:dokument-type') + ' *'}
                     name={_namespace + '-gjelder'}
-                    onChange={(type: string) => setDokumentIkkeTilgjengeligeType(type, index)}
+                    onChange={(type: string) => setBesvarelseUmuligType(type, index)}
                   >
                     <FlexRadioPanels>
                       <RadioPanel value='dokument'>
@@ -539,8 +539,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       maxLength={51}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
-                      onChanged={(info: string) => setDokumentIkkeTilgjengeligeInfo(info, index)}
-                      value={_dokumentIkkeTilgjengelige?.beskrivelse}
+                      onChanged={(info: string) => setBesvarelseUmuligInfo(info, index)}
+                      value={_BesvarelseUmulig?.beskrivelse}
                     />
                   </TextAreaDiv>
                 </Column>
@@ -550,7 +550,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               <AlignStartRow>
                 <Column flex='2'>
                   <RadioPanelGroup
-                    value={_dokumentIkkeTilgjengelige?.begrunnelseType}
+                    value={_BesvarelseUmulig?.begrunnelseType}
                     data-no-border
                     data-testid={_namespace + '-begrunnelseType'}
                     error={_v[_namespace + '-begrunnelseType']?.feilmelding}
@@ -570,7 +570,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_dokumentIkkeTilgjengelige?.begrunnelseType === '99' && (
+              {_BesvarelseUmulig?.begrunnelseType === '99' && (
                 <AlignStartRow>
                   <Column>
                     <Input
@@ -581,7 +581,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       hideLabel
                       onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
                       required
-                      value={_dokumentIkkeTilgjengelige?.begrunnelseAnnen}
+                      value={_BesvarelseUmulig?.begrunnelseAnnen}
                     />
                   </Column>
                 </AlignStartRow>
@@ -597,14 +597,14 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-gjelder']?.feilmelding}
                       id={_namespace + '-gjelder'}
                     >
-                      {t('label:' + _dokumentIkkeTilgjengelige?.gjelder)}
+                      {t('label:' + _BesvarelseUmulig?.gjelder)}
                     </FormText>
                     <HorizontalSeparatorDiv />
                     <FormText
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id={_namespace + '-beskrivelse'}
                     >
-                      {_dokumentIkkeTilgjengelige?.beskrivelse}
+                      {_BesvarelseUmulig?.beskrivelse}
                     </FormText>
                   </FlexDiv>
                 </Column>
@@ -620,16 +620,16 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-begrunnelse']?.feilmelding}
                       id={_namespace + '-begrunnelse'}
                     >
-                      {t('el:option-svarpåminnelse-' + _dokumentIkkeTilgjengelige?.begrunnelseType)}
+                      {t('el:option-svarpåminnelse-' + _BesvarelseUmulig?.begrunnelseType)}
                     </FormText>
-                    {_dokumentIkkeTilgjengelige?.begrunnelseType === '99' && (
+                    {_BesvarelseUmulig?.begrunnelseType === '99' && (
                       <>
                         <HorizontalSeparatorDiv />
                         <FormText
                           error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
                           id={_namespace + '-begrunnelseAnnen'}
                         >
-                          {_dokumentIkkeTilgjengelige?.begrunnelseAnnen}
+                          {_BesvarelseUmulig?.begrunnelseAnnen}
                         </FormText>
                       </>
                     )}
@@ -657,7 +657,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
       </PaddedDiv>
       <VerticalSeparatorDiv />
-      {_.isEmpty(dokumenterTilSend)
+      {_.isEmpty(besvarelseKommer)
         ? (
           <PaddedHorizontallyDiv>
             <SpacedHr />
@@ -667,15 +667,15 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             <SpacedHr />
           </PaddedHorizontallyDiv>
           )
-        : dokumenterTilSend?.map(renderDokumentTilSendRow)}
+        : besvarelseKommer?.map(renderBesvarelseKommerRow)}
       <VerticalSeparatorDiv />
-      {_newDokumentTilSendForm
-        ? renderDokumentTilSendRow(null, -1)
+      {_newBesvarelseKommerForm
+        ? renderBesvarelseKommerRow(null, -1)
         : (
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setNewDokumentTilSendForm(true)}
+              onClick={() => _setNewBesvarelseKommerForm(true)}
             >
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:dokument-til-send').toLowerCase() })}
@@ -689,7 +689,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         </Heading>
       </PaddedDiv>
       <VerticalSeparatorDiv />
-      {_.isEmpty(dokumenterIkkeTilgjengelige)
+      {_.isEmpty(besvarelseUmulig)
         ? (
           <PaddedHorizontallyDiv>
             <SpacedHr />
@@ -699,15 +699,15 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             <SpacedHr />
           </PaddedHorizontallyDiv>
           )
-        : dokumenterIkkeTilgjengelige?.map(renderDokumentIkkeTilgjengeligeRow)}
+        : besvarelseUmulig?.map(renderBesvarelseUmuligRow)}
       <VerticalSeparatorDiv />
-      {_newDokumentIkkeTilgjengeligeForm
-        ? renderDokumentIkkeTilgjengeligeRow(null, -1)
+      {_newBesvarelseUmuligForm
+        ? renderBesvarelseUmuligRow(null, -1)
         : (
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setNewDokumentIkkeTilgjengeligeForm(true)}
+              onClick={() => _setNewBesvarelseUmuligForm(true)}
             >
               <AddCircle />
               {t('el:button-add-new-x', { x: t('label:dokument-ikke-tilgjengelige').toLowerCase() })}
