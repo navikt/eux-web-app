@@ -54,6 +54,13 @@ export const checkIfNotEmpty = (v: Validation, { needle, id, personName, message
   return false
 }
 
+export const checkPattern = (v: Validation, { needle, id, pattern, personName, message, extra }: ValidatePatternParams): boolean => {
+  if (!_.isEmpty(needle) && !(needle!.match(pattern!))) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
+
 export const checkIfNotDate = (v: Validation, { needle, id, pattern = datePattern, personName, message, extra }: ValidatePatternParams): boolean => {
   if (!_.isEmpty(needle) && !(needle!.match(pattern!))) {
     return addError(v, { id, personName, message, extra })

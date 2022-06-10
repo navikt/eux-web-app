@@ -26,16 +26,16 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.18.2",
-    "@navikt/ds-icons": "^0.8.15",
-    "@navikt/ds-react": "^0.19.4",
+    "@navikt/ds-css": "^0.18.7",
+    "@navikt/ds-icons": "^0.8.16",
+    "@navikt/ds-react": "^0.19.7",
     "@navikt/eessi-kodeverk": "^2.0.0",
     "@navikt/fetch": "^2.1.8",
     "@navikt/flagg-ikoner": "^3.2.0",
     "@navikt/fnrvalidator": "^1.3.0",
     "@navikt/forhandsvisningsfil": "^3.0.4",
     "@navikt/fremdriftslinje": "^3.0.2",
-    "@navikt/hoykontrast": "^3.0.9",
+    "@navikt/hoykontrast": "^3.1.0",
     "@navikt/land-verktoy": "^3.0.3",
     "@navikt/landvelger": "^3.0.8",
     "@navikt/paginering": "^3.0.1",
@@ -61,7 +61,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-error-boundary": "^3.1.4",
-    "react-i18next": "^11.17.0",
+    "react-i18next": "^11.17.1",
     "react-modal": "^3.15.1",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.14",
+  "_id": "neessi@6.99.15",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

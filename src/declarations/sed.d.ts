@@ -254,10 +254,8 @@ export interface KontoSepa {
   iban: string
 }
 
-export interface UtbetalingTilInstitusjon {
+export interface UtbetalingTilInstitusjon extends Institusjon {
   begrunnelse: string
-  id: string
-  navn: string
   kontoOrdinaer?: KontoOrdinaer
   kontoSepa?: KontoSepa
 }

@@ -67,6 +67,7 @@ const mapState = (state: State): InntektFormSelector => ({
 })
 
 const InntektForm: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -453,8 +454,11 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   return (
-    <>
-      <VerticalSeparatorDiv />
+    <PaddedDiv>
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       {_.isEmpty(loennsopplysninger)
         ? (
           <PaddedHorizontallyDiv>
@@ -483,57 +487,56 @@ const InntektForm: React.FC<MainFormProps> = ({
           </Row>
           )}
       <VerticalSeparatorDiv size='2' />
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:inntekt-fra-komponent')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <InntektSearch
-          fnr={fnr!}
-          onInntektSearch={onInntektSearch}
-          gettingInntekter={gettingInntekter}
-        />
-        <VerticalSeparatorDiv />
-        {gettingInntekter && <WaitingPanel />}
-        {inntekter && (
-          <InntektFC inntekter={inntekter} />
-        )}
-        <VerticalSeparatorDiv size='2' />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv size='2' />
-        <Ingress>
-          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-        </Ingress>
-        <VerticalSeparatorDiv />
-        <ArbeidsperioderSøk
-          amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
-          fnr={fnr}
-          namespace={namespace}
-        />
-        <VerticalSeparatorDiv size='2' />
-        {arbeidsperioder?.arbeidsperioder && (
-          <>
-            <Heading size='small'>
-              {t('label:arbeidsperioder')}
-            </Heading>
-            <VerticalSeparatorDiv size='2' />
-            {arbeidsperioder?.arbeidsperioder?.map(a => {
-              const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
-              return (
-                <div key={getOrgnr(period, 'organisasjonsnummer')}>
-                  <ForsikringPeriodeBox
-                    forsikringPeriode={period}
-                    showArbeidsgiver
-                    namespace={namespace}
-                  />
-                  <VerticalSeparatorDiv />
-                </div>
-              )
-            })}
-          </>
-        )}
-      </PaddedDiv>
-    </>
+
+      <Heading size='small'>
+        {t('label:inntekt-fra-komponent')}
+      </Heading>
+      <VerticalSeparatorDiv />
+      <InntektSearch
+        fnr={fnr!}
+        onInntektSearch={onInntektSearch}
+        gettingInntekter={gettingInntekter}
+      />
+      <VerticalSeparatorDiv />
+      {gettingInntekter && <WaitingPanel />}
+      {inntekter && (
+        <InntektFC inntekter={inntekter} />
+      )}
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv size='2' />
+      <Ingress>
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+      </Ingress>
+      <VerticalSeparatorDiv />
+      <ArbeidsperioderSøk
+        amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
+        fnr={fnr}
+        namespace={namespace}
+      />
+      <VerticalSeparatorDiv size='2' />
+      {arbeidsperioder?.arbeidsperioder && (
+        <>
+          <Heading size='small'>
+            {t('label:arbeidsperioder')}
+          </Heading>
+          <VerticalSeparatorDiv size='2' />
+          {arbeidsperioder?.arbeidsperioder?.map(a => {
+            const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
+            return (
+              <div key={getOrgnr(period, 'organisasjonsnummer')}>
+                <ForsikringPeriodeBox
+                  forsikringPeriode={period}
+                  showArbeidsgiver
+                  namespace={namespace}
+                />
+                <VerticalSeparatorDiv />
+              </div>
+            )
+          })}
+        </>
+      )}
+    </PaddedDiv>
   )
 }
 

@@ -3,7 +3,7 @@ import { PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty, checkPattern } from 'utils/validation'
 
 export interface ValidationPeriodeDagpengerProps {
   periodeDagpenger: PeriodeDagpenger | undefined
@@ -49,6 +49,14 @@ export const validatePeriodeDagpenger = (
     needle: periodeDagpenger?.institusjon.id,
     id: namespace + idx + '-institusjon-id',
     message: 'validation:noInstitusjonsID',
+    personName
+  }))
+
+  hasErrors.push(checkPattern(v, {
+    needle: periodeDagpenger?.institusjon.id,
+    pattern: /^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}$/,
+    id: namespace + idx + '-institusjon-id',
+    message: 'validation:invalidInstitusjonsID',
     personName
   }))
 
