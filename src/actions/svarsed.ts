@@ -116,7 +116,6 @@ export const getSedStatus = (rinaSakId: string, sedId: string): ActionWithPayloa
   })
 }
 
-// TODO implement
 export const invalidatingSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<any> => ({
@@ -124,7 +123,6 @@ export const invalidatingSed = (
   payload: { connectedSed, sak }
 })
 
-// TODO implement
 export const rejectingSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<any> => ({

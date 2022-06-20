@@ -12,6 +12,8 @@ export const isHSed = (replySed: ReplySed | PDU1 | null | undefined): boolean =>
 
 export const isXSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('X') ?? false
 
+export const isF001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F001'
+
 export const isF002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F002'
 
 export const isU002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U002'

@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -424,7 +424,7 @@ export interface FSed extends BaseReplySed {
   formaal: Array<string>
 }
 
-export interface F002Sed extends FSed {
+export interface F001Sed extends FSed {
   annenPerson?: Person
   barn?: Array<Barn>
   ektefelle?: Person
@@ -441,9 +441,12 @@ export interface F002Sed extends FSed {
   }
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
-  uenighet?: ProsedyreVedUenighet
   uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
+}
+
+export interface F002Sed extends F001Sed {
+  uenighet?: ProsedyreVedUenighet
 }
 
 export interface USed extends BaseReplySed {

@@ -1,5 +1,6 @@
 
 import {
+  F001Sed,
   F002Sed,
   H001Sed,
   H002Sed,
@@ -13,6 +14,7 @@ import {
   X010Sed,
   X011Sed, X012Sed
 } from 'declarations/sed'
+import f001 from '../seds/f001.json'
 import f002 from '../seds/f002.json'
 import u002 from '../seds/u002.json'
 import u004 from '../seds/u004.json'
@@ -26,6 +28,7 @@ import x011 from '../seds/x011.json'
 import x012 from '../seds/x012.json'
 
 const seds: {[k in SedTypes]: ReplySed} = {
+  F001: <F001Sed>f001,
   F002: <F002Sed>f002,
   U002: <U002Sed>u002,
   U004: <U004Sed>u004,

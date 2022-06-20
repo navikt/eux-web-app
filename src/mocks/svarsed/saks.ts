@@ -18,22 +18,34 @@ export default (saksnummer: string) => {
       ],
       sedListe: [
         {
-          sedTittel: 'Description for F001',
-          status: 'received',
+          sedTittel: 'Description for new F001',
+          status: 'new',
           sedType: 'F001',
-          sedId: 'f001received',
+          sedId: 'f001new',
+          sistEndretDato: '2020-01-02'
+        }, {
+          sedTittel: 'Description for sent F001',
+          status: 'sent',
+          sedType: 'F001',
+          sedId: 'f001sent',
           sistEndretDato: '2020-01-02',
           svarsedType: 'F002',
           svarsedDisplay: 'Description for F002',
           svarsedId: 'f001receivedSvar'
         }, {
-          sedTittel: 'Description for F002',
+          sedTittel: 'Description for received F001',
+          status: 'received',
+          sedType: 'F001',
+          sedId: 'f001received',
+          sistEndretDato: '2020-01-02'
+        }, {
+          sedTittel: 'Description for new F002',
           status: 'new',
           sedType: 'F002',
           sedId: 'f002new',
           sistEndretDato: '2020-01-01'
         }, {
-          sedTittel: 'Description for F002 with sedIdParent',
+          sedTittel: 'Description for received F002 with sedIdParent',
           status: 'received',
           sedType: 'F002',
           sedId: 'f002received',
@@ -43,7 +55,7 @@ export default (saksnummer: string) => {
           svarsedDisplay: 'Description for F002',
           svarsedId: 'f002receivedSvar'
         }, {
-          sedTittel: 'Description for F002 sent with X008',
+          sedTittel: 'Description for sent F002 with X008',
           status: 'sent',
           sedType: 'F002',
           sedId: 'f002sent',
@@ -60,13 +72,13 @@ export default (saksnummer: string) => {
           sedId: 'x050cancelled',
           gjelderSedId: 'f002sent'
         }, {
-          sedTittel: 'Description for F002 sent without X008',
+          sedTittel: 'Description for sent F002 without X008',
           status: 'sent',
           sedType: 'F002',
           sedId: 'f002sent2',
           sistEndretDato: '2020-01-04'
         }, {
-          sedTittel: 'Description for F002',
+          sedTittel: 'Description for active F002',
           status: 'active',
           sedType: 'F002',
           sedId: 'f002active',

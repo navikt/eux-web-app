@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
+import { isF001Sed } from 'utils/sed'
 
 const CheckboxDiv = styled.div`
  display: inline-block;
@@ -49,7 +50,7 @@ const Formål: React.FC<MainFormProps> = ({
     dispatch(setValidation(newValidation))
   })
 
-  const formaalOptions: Options = [
+  let formaalOptions: Options = [
     { label: t('el:option-formaal-mottak'), value: 'mottak_av_søknad_om_familieytelser' },
     { label: t('el:option-formaal-informasjon'), value: 'informasjon_om_endrede_forhold' },
     { label: t('el:option-formaal-kontroll'), value: 'svar_på_kontroll_eller_årlig_kontroll' },
@@ -59,6 +60,10 @@ const Formål: React.FC<MainFormProps> = ({
     { label: t('el:option-formaal-prosedyre'), value: 'prosedyre_ved_uenighet' },
     { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
+
+  if (isF001Sed(replySed)) {
+    formaalOptions = _.reject(formaalOptions, { value: 'prosedyre_ved_uenighet' })
+  }
 
   const setFormal = (item: string, checked: boolean) => {
     let newFormaals: Array<string> | undefined = _.cloneDeep(formaal)
