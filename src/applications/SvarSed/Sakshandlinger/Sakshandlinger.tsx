@@ -55,10 +55,6 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         X009 - {t('el:option-mainform-påminnelse')}
       </Link>
       <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X011')}>
-        X011 - {t('buc:X011')}
-      </Link>
-      <VerticalSeparatorDiv />
       <Link href='#' onClick={() => createSed('X012')}>
         X012 - {t('buc:X012')}
       </Link>

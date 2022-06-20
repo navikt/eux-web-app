@@ -120,7 +120,15 @@ export const getSedStatus = (rinaSakId: string, sedId: string): ActionWithPayloa
 export const invalidatingSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<any> => ({
-  type: '',
+  type: types.SVARSED_SED_INVALIDATE,
+  payload: { connectedSed, sak }
+})
+
+// TODO implement
+export const rejectingSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_REJECT,
   payload: { connectedSed, sak }
 })
 

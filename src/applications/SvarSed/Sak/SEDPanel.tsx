@@ -2,7 +2,7 @@ import { Close, Edit, Download, Send, Star, Helptext } from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
-import { editSed, getSedStatus, invalidatingSed, replyToSed, setReplySed } from 'actions/svarsed'
+import { editSed, getSedStatus, invalidatingSed, rejectingSed, replyToSed, setReplySed } from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { canEditSed, canUpdateSed, findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
@@ -60,13 +60,19 @@ const SEDPanel = ({
   const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
   const [_replyingToSed, _setReplyingToSed] = useState<boolean>(false)
   const [_invalidatingSed, _setInvalidatingSed] = useState<boolean>(false)
+  const [_rejectingSed, _setRejectingSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
+
+  const waitingForOperation = _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
-    if (!_.isUndefined(replySed) && (_replyingToSed || _editingSed)) {
+    if (!_.isUndefined(replySed) && waitingForOperation) {
       _setReplyingToSed(false)
       _setEditingSed(false)
+      _setUpdatingSed(false)
+      _setInvalidatingSed(false)
+      _setRejectingSed(false)
       changeMode('B')
     }
   }, [replySed])
@@ -104,6 +110,11 @@ const SEDPanel = ({
     dispatch(invalidatingSed(connectedSed, sak))
   }
 
+  const onRejectingSedClick = (connectedSed: Sed, sak: Sak) => {
+    _setRejectingSed(true)
+    dispatch(rejectingSed(connectedSed, sak))
+  }
+
   const onReplySedClick = (connectedSed: Sed, sak: Sak) => {
     _setReplyingToSed(true)
     dispatch(replyToSed(connectedSed, sak))
@@ -116,6 +127,8 @@ const SEDPanel = ({
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType
   const showInvalidateButton = connectedSed.status === 'sent' && connectedSed.sedType !== 'X008' &&
     _.find(connectedSed.children, (s: Sed) => (s.sedType === 'X008' && s.status === 'new')) === undefined
+  const showRejectButton = connectedSed.status === 'sent' && connectedSed.sedType !== 'X011' &&
+    _.find(connectedSed.children, (s: Sed) => (s.sedType === 'X011' && s.status === 'new')) === undefined
 
   return (
     <MyPanel border>
@@ -271,6 +284,33 @@ const SEDPanel = ({
                       </>
                       )
                     : t('label:invalidate-sed-x', {
+                      x: connectedSed.sedType
+                    })}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showRejectButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_rejectingSed}
+                  data-amplitude='svarsed.selection.rejectsed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.sedType
+                    })
+                    onRejectingSedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_rejectingSed
+                    ? (
+                      <>
+                        {t('message:loading-rejecting')}
+                        <Loader />
+                      </>
+                      )
+                    : t('label:reject-sed-x', {
                       x: connectedSed.sedType
                     })}
                 </Button>

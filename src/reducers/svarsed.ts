@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { ReplySed } from 'declarations/sed.d'
+import { Kjoenn, ReplySed, X008Sed, X011Sed } from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
@@ -197,6 +197,56 @@ const svarsedReducer = (
       return {
         ...state,
         saks
+      }
+    }
+
+    case types.SVARSED_SED_INVALIDATE: {
+      const { connectedSed, sak } = action.payload
+      const replySed: X008Sed = {
+        sedType: 'X008',
+        sedVersjon: '1',
+        bruker: {
+          fornavn: sak?.fornavn ?? '',
+          etternavn: sak?.etternavn ?? '',
+          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+          foedselsdato: sak?.foedselsdato ?? '',
+          statsborgerskap: [{ land: 'NO' }],
+          pin: [{
+            land: 'NO',
+            identifikator: sak?.fnr
+          }]
+        },
+        kansellerSedId: connectedSed.sedType
+      } as X008Sed
+
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_REJECT: {
+      const { connectedSed, sak } = action.payload
+      const replySed: X011Sed = {
+        sedType: 'X011',
+        sedVersjon: '1',
+        bruker: {
+          fornavn: sak?.fornavn ?? '',
+          etternavn: sak?.etternavn ?? '',
+          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+          foedselsdato: sak?.foedselsdato ?? '',
+          statsborgerskap: [{ land: 'NO' }],
+          pin: [{
+            land: 'NO',
+            identifikator: sak?.fnr
+          }]
+        },
+        kansellerSedId: connectedSed.sedType
+      } as X011Sed
+
+      return {
+        ...state,
+        replySed
       }
     }
 

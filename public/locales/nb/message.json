@@ -35,6 +35,7 @@
   "loading-checking-sed-status": "Kontrollerer SED status...",
   "loading-editing" : "Rediger...",
   "loading-invalidating" : "Ugyldiggjørende...",
+  "loading-rejecting" : "Avviser...",
   "loading-updating" : "Oppdatering...",
   "loading-getting-person" : "Hent personinfo...",
   "loading-oppdatering-sed" : "Oppdatering SED...",
