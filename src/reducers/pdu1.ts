@@ -26,6 +26,7 @@ export const initialPdu1State: Pdu1State = {
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
   switch (action.type) {
     case types.APP_CLEAN:
+    case types.PDU1_BACKBUTTON_CLICKED:
       return initialPdu1State
 
     case types.PDU1_FAGSAKER_GET_REQUEST:

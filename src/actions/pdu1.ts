@@ -13,6 +13,10 @@ import File from '@navikt/forhandsvisningsfil'
 
 const sprintf = require('sprintf-js').sprintf
 
+export const cleanUpPDU1 = ():Action => ({
+  type: types.PDU1_BACKBUTTON_CLICKED
+})
+
 export const fetchPdu1 = (
   fnr: string
 ): Action => {

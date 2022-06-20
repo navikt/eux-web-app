@@ -3,7 +3,14 @@ import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSe
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import { loadReplySed, querySaksnummerOrFnr, setCurrentSak, setReplySed, updateReplySed } from 'actions/svarsed'
+import {
+  cleanUpSvarSed,
+  loadReplySed,
+  querySaksnummerOrFnr,
+  setCurrentSak,
+  setReplySed,
+  updateReplySed
+} from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
@@ -56,6 +63,7 @@ export const SvarSedPage = (): JSX.Element => {
     if (_currentPage === 'B') {
       changeMode('A')
       dispatch(resetCurrentEntry('svarsed'))
+      dispatch(cleanUpSvarSed())
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
     dispatch(setCurrentSak(undefined))

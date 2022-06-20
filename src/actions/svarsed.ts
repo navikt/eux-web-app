@@ -12,6 +12,10 @@ import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
+export const cleanUpSvarSed = ():Action => ({
+  type: types.SVARSED_BACKBUTTON_CLICKED
+})
+
 export const createSed = (
   replySed: ReplySed
 ): ActionWithPayload => {

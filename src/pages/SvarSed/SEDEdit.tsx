@@ -282,7 +282,7 @@ const SEDEdit: React.FC = (): JSX.Element => {
         </>
       )}
 
-      {(isFSed(replySed) || isH002Sed(replySed)) &&  (
+      {(isFSed(replySed) || isH002Sed(replySed)) && (
         <>
           <VerticalSeparatorDiv />
           <TextAreaDiv>

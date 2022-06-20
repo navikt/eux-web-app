@@ -3,7 +3,7 @@ import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSe
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import { fetchPdu1, loadPdu1, setPdu1 } from 'actions/pdu1'
+import { cleanUpPDU1, fetchPdu1, loadPdu1, setPdu1 } from 'actions/pdu1'
 import { setCurrentSak } from 'actions/svarsed'
 import PDU1Details from 'applications/PDU1/PDU1Details/PDU1Details'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
@@ -64,6 +64,7 @@ export const PDU1Page = (): JSX.Element => {
   const onGoBackClick = () => {
     if (!pdu1Changed) {
       changeMode('A')
+      dispatch(cleanUpPDU1())
       backToPageA()
     } else {
       _setShowSaveModal(true)

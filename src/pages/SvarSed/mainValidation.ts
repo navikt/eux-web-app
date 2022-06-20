@@ -119,7 +119,10 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
-  const personInfo: PersonInfo = _.get(replySed, `${personID}.personInfo`)
+  const personInfo: PersonInfo =
+    isXSed(replySed)
+      ? _.get(replySed, 'bruker')
+      : _.get(replySed, `${personID}.personInfo`)
   const personName: string = personID === 'familie'
     ? i18n.t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + (personInfo.etternavn ?? '')
@@ -272,7 +275,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
   if (isXSed(replySed)) {
     hasErrors.push(validatePersonLight(v, `svarsed-${personID}-personlight`, {
-      personLight: personInfo, personName
+      personLight: (replySed as X001Sed).bruker, personName
     }))
 
     if (isX001Sed(replySed)) {
