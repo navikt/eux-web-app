@@ -44,21 +44,21 @@ const Anmodning: React.FC<MainFormProps> = ({
   })
 
   const setDokument = (newDokument: string) => {
-    dispatch(updateReplySed(`${target}.dokumentasjon.dokument`, newDokument))
+    dispatch(updateReplySed(`${target}.dokumentasjon.dokument`, newDokument.trim()))
     if (validation[namespace + '-dokument']) {
       dispatch(resetValidation(namespace + '-dokument'))
     }
   }
 
   const setInformasjon = (newInformasjon: string) => {
-    dispatch(updateReplySed(`${target}.dokumentasjon.informasjon`, newInformasjon))
+    dispatch(updateReplySed(`${target}.dokumentasjon.informasjon`, newInformasjon.trim()))
     if (validation[namespace + '-informasjon']) {
       dispatch(resetValidation(namespace + '-informasjon'))
     }
   }
 
   const setSed = (newSed: string) => {
-    dispatch(updateReplySed(`${target}.dokumentasjon.sed`, newSed))
+    dispatch(updateReplySed(`${target}.dokumentasjon.sed`, newSed.trim()))
     if (validation[namespace + '-sed']) {
       dispatch(resetValidation(namespace + '-sed'))
     }

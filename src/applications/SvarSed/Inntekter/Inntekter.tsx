@@ -63,14 +63,14 @@ const Inntekter: React.FC<any> = ({
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,
-        type
+        type: type.trim()
       } as Inntekt)
       _resetValidation(namespace + '-type')
       return
     }
     _setEditInntekt({
       ..._editInntekt,
-      type
+      type: type.trim()
     } as Inntekt)
     dispatch(resetValidation(namespace + getIdx(index) + '-type'))
   }
@@ -79,14 +79,14 @@ const Inntekter: React.FC<any> = ({
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,
-        typeAnnen
+        typeAnnen: typeAnnen.trim()
       } as Inntekt)
       _resetValidation(namespace + '-typeAnnen')
       return
     }
     _setEditInntekt({
       ..._editInntekt,
-      typeAnnen
+      typeAnnen: typeAnnen.trim()
     } as Inntekt)
     dispatch(resetValidation(namespace + getIdx(index) + '-typeAnnen'))
   }

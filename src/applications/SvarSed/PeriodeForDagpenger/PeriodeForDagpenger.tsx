@@ -100,7 +100,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
         ..._newPeriodeDagpenger,
         institusjon: {
           ..._newPeriodeDagpenger?.institusjon,
-          id
+          id: id.trim()
         }
       } as PeriodeDagpenger)
       _resetValidation(namespace + '-institusjon-id')
@@ -110,7 +110,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
       ..._editPeriodeDagpenger,
       institusjon: {
         ..._editPeriodeDagpenger?.institusjon,
-        id
+        id: id.trim()
       }
     } as PeriodeDagpenger)
     dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-id'))
@@ -122,7 +122,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
         ..._newPeriodeDagpenger,
         institusjon: {
           ..._newPeriodeDagpenger?.institusjon,
-          navn
+          navn: navn.trim()
         }
       } as PeriodeDagpenger)
       _resetValidation(namespace + '-institusjon-navn')
@@ -132,7 +132,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
       ..._editPeriodeDagpenger,
       institusjon: {
         ..._editPeriodeDagpenger?.institusjon,
-        navn
+        navn: navn.trim()
       }
     } as PeriodeDagpenger)
     dispatch(resetValidation(namespace + getIdx(index) + '-institusjon-navn'))

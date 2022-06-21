@@ -173,7 +173,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         ..._newForsikringPeriode,
         arbeidsgiver: {
           ...(_newForsikringPeriode as any)?.arbeidsgiver,
-          navn
+          navn: navn.trim()
         } as ArbeidsgiverWithAdresse
       } as any)
       _resetValidation(namespace + '-arbeidsgiver-navn')
@@ -183,7 +183,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
       ..._editForsikringPeriode,
       arbeidsgiver: {
         ...(_editForsikringPeriode as any)?.arbeidsgiver,
-        navn
+        navn: navn.trim()
       } as ArbeidsgiverWithAdresse
     } as any)
     if (resetValidation) {
@@ -237,14 +237,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        inntektOgTimerInfo
+        inntektOgTimerInfo: inntektOgTimerInfo.trim()
       } as any)
       _resetValidation(namespace + '-inntektOgTimerInfo')
       return
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      inntektOgTimerInfo
+      inntektOgTimerInfo: inntektOgTimerInfo.trim()
     } as any)
     if (resetValidation) {
       resetValidation(namespace + '-inntektOgTimerInfo')
@@ -293,14 +293,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        annenTypeForsikringsperiode
+        annenTypeForsikringsperiode: annenTypeForsikringsperiode.trim()
       } as any)
       _resetValidation(namespace + '-annenTypeForsikringsperiode')
       return
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      annenTypeForsikringsperiode
+      annenTypeForsikringsperiode: annenTypeForsikringsperiode.trim()
     } as any)
     if (resetValidation) {
       resetValidation(namespace + '-annenTypeForsikringsperiode')

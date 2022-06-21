@@ -137,16 +137,16 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewYtelse({
         ..._newYtelse,
-        startdato: newPeriode.startdato,
-        sluttdato: newPeriode.sluttdato
+        startdato: newPeriode.startdato.trim(),
+        sluttdato: newPeriode.sluttdato?.trim()
       } as Ytelse)
       _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
       return
     }
     _setEditYtelse({
       ..._editYtelse,
-      startdato: newPeriode.startdato,
-      sluttdato: newPeriode.sluttdato
+      startdato: newPeriode.startdato.trim(),
+      sluttdato: newPeriode.sluttdato?.trim()
     } as Ytelse)
     dispatch(resetValidation([namespace + getIdx(index) + '-startdato', namespace + getIdx(index) + '-sluttdato']))
   }
@@ -155,14 +155,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewYtelse({
         ..._newYtelse,
-        mottakersNavn: newMottakersNavn
+        mottakersNavn: newMottakersNavn.trim()
       } as Ytelse)
       _resetValidation(namespace + '-mottakersNavn')
       return
     }
     _setEditYtelse({
       ..._editYtelse,
-      mottakersNavn: newMottakersNavn
+      mottakersNavn: newMottakersNavn.trim()
     } as Ytelse)
     dispatch(resetValidation(namespace + getIdx(index) + '-mottakersNavn'))
   }

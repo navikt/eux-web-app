@@ -120,28 +120,28 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
   }
 
   const setDokument = (newDokument: string) => {
-    syncWithReplySed('dokument', newDokument)
+    syncWithReplySed('dokument', newDokument.trim())
     if (validation[namespace + '-dokument']) {
       dispatch(resetValidation(namespace + '-dokument'))
     }
   }
 
   const setInformasjon = (newInformasjon: string) => {
-    syncWithReplySed('informasjon', newInformasjon)
+    syncWithReplySed('informasjon', newInformasjon.trim())
     if (validation[namespace + '-informasjon']) {
       dispatch(resetValidation(namespace + '-informasjon'))
     }
   }
 
   const setSed = (newSed: string) => {
-    syncWithReplySed('sed', newSed)
+    syncWithReplySed('sed', newSed.trim())
     if (validation[namespace + '-sed']) {
       dispatch(resetValidation(namespace + '-sed'))
     }
   }
 
   const setGrunn = (newGrunn: string) => {
-    syncWithReplySed('grunn', newGrunn)
+    syncWithReplySed('grunn', newGrunn.trim())
     if (validation[namespace + '-grunn']) {
       dispatch(resetValidation(namespace + '-grunn'))
     }

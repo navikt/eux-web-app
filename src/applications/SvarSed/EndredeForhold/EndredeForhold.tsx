@@ -49,14 +49,14 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   })
 
   const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
-    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType))
+    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType.trim()))
     if (validation[namespace + '-ytterligereInfoType']) {
       dispatch(resetValidation(namespace + '-ytterligereInfoType'))
     }
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo))
+    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereiInfo'))
     }

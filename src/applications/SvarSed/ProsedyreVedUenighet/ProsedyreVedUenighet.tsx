@@ -113,14 +113,14 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewGrunn({
         ..._newGrunn,
-        grunn: newGrunn,
+        grunn: newGrunn.trim(),
         __oldGrunn: oldGrunn
       } as Grunn)
       _resetValidation(namespace + '-grunn')
     }
     _setEditGrunn({
       ..._editGrunn,
-      grunn: newGrunn,
+      grunn: newGrunn.trim(),
       __oldGrunn: oldGrunn
     } as Grunn)
     dispatch(resetValidation(namespace + '-grunn'))
@@ -130,14 +130,14 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewGrunn({
         ..._newGrunn,
-        person
+        person: person.trim()
       } as Grunn)
       _resetValidation(namespace + '-person')
       return
     }
     _setEditGrunn({
       ..._editGrunn,
-      person
+      person: person.trim()
     } as Grunn)
     dispatch(resetValidation(namespace + getIdx(index) + '-person'))
   }

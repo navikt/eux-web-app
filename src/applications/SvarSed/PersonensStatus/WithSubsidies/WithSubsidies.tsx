@@ -82,14 +82,14 @@ const WithSubsidies: React.FC<MainFormProps> = ({
       if (index < 0) {
         _setNewPensjonPeriode({
           ..._newPensjonPeriode,
-          pensjonstype
+          pensjonstype: pensjonstype.trim()
         } as PensjonPeriode)
         _resetValidation(namespace + '-pensjontype')
         return
       }
       _setEditPensjonPeriode({
         ..._editPensjonPeriode,
-        pensjonstype
+        pensjonstype: pensjonstype.trim()
       } as PensjonPeriode)
       dispatch(resetValidation(namespace + getIdx(index) + '-pensjontype'))
     }

@@ -89,14 +89,14 @@ const Dagpenger: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
-        info
+        info: info.trim()
       } as PDPeriode)
       _resetValidation(namespace + '-info')
       return
     }
     _setEditPeriode({
       ..._editPeriode,
-      info
+      info: info.trim()
     } as PDPeriode)
     dispatch(resetValidation(namespace + getIdx(index) + '-info'))
   }

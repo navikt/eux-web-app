@@ -60,13 +60,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     if (index < 0) {
       _setNewFoedested({
         ..._newFoedested,
-        by
+        by: by.trim()
       })
       return
     }
     _setEditFoedested({
       ..._editFoedested,
-      by
+      by: by.trim()
     })
   }
 
@@ -74,13 +74,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     if (index < 0) {
       _setNewFoedested({
         ..._newFoedested,
-        region
+        region: region.trim()
       })
       return
     }
     _setEditFoedested({
       ..._editFoedested,
-      region
+      region: region.trim()
     })
   }
 
@@ -88,13 +88,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     if (index < 0) {
       _setNewFoedested({
         ..._newFoedested,
-        land
+        land: land.trim()
       })
       return
     }
     _setEditFoedested({
       ..._editFoedested,
-      land
+      land: land.trim()
     })
   }
 

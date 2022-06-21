@@ -99,14 +99,14 @@ const Relasjon: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewBarnetilhoerighet({
         ..._newBarnetilhoerighet,
-        relasjonTilPerson: relasjonTilPerson as BarnRelasjon
+        relasjonTilPerson: relasjonTilPerson.trim() as BarnRelasjon
       } as Barnetilhoerighet)
       _resetValidation(namespace + '-relasjonTilPerson')
       return
     }
     _setEditBarnetilhoerighet({
       ..._editBarnetilhoerighet,
-      relasjonTilPerson: relasjonTilPerson as BarnRelasjon
+      relasjonTilPerson: relasjonTilPerson.trim() as BarnRelasjon
     } as Barnetilhoerighet)
     dispatch(resetValidation(namespace + getIdx(index) + '-relasjonTilPerson'))
   }
@@ -115,14 +115,14 @@ const Relasjon: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewBarnetilhoerighet({
         ..._newBarnetilhoerighet,
-        relasjonType: barnRelasjonType as BarnRelasjonType
+        relasjonType: barnRelasjonType.trim() as BarnRelasjonType
       } as Barnetilhoerighet)
       _resetValidation(namespace + '-relasjonType')
       return
     }
     _setEditBarnetilhoerighet({
       ..._editBarnetilhoerighet,
-      relasjonType: barnRelasjonType as BarnRelasjonType
+      relasjonType: barnRelasjonType.trim() as BarnRelasjonType
     } as Barnetilhoerighet)
     dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
   }

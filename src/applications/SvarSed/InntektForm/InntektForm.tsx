@@ -132,14 +132,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        periodetype
+        periodetype: periodetype.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-periodetype')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      periodetype
+      periodetype: periodetype.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-periodetype'))
   }
@@ -164,14 +164,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        arbeidsdager
+        arbeidsdager: arbeidsdager.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-arbeidsdager')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      arbeidsdager
+      arbeidsdager: arbeidsdager.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidsdager'))
   }
@@ -180,14 +180,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        arbeidstimer
+        arbeidstimer: arbeidstimer.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-arbeidstimer')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      arbeidstimer
+      arbeidstimer: arbeidstimer.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }

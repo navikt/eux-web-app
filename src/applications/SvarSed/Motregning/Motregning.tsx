@@ -339,14 +339,14 @@ const MotregningFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        utbetalingshyppighet
+        utbetalingshyppighet: utbetalingshyppighet.trim()
       } as Motregning)
       _resetValidation(namespace + '-utbetalingshyppighet')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      utbetalingshyppighet
+      utbetalingshyppighet: utbetalingshyppighet.trim()
     } as Motregning)
     dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-utbetalingshyppighet'))
   }
@@ -527,14 +527,14 @@ const MotregningFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewMotregning({
         ..._newMotregning,
-        ytelseNavn
+        ytelseNavn: ytelseNavn.trim()
       } as Motregning)
       _resetValidation(namespace + '-ytelseNavn')
       return
     }
     _setEditMotregning({
       ..._editMotregning,
-      ytelseNavn
+      ytelseNavn: ytelseNavn.trim()
     } as Motregning)
     dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-ytelseNavn'))
   }

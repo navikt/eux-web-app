@@ -86,7 +86,6 @@ const PersonLightFC: React.FC<MainFormProps> = ({
     if (!newPersonLight) {
       newPersonLight = {} as PersonLight
     }
-
     if (searchedPerson.fnr) {
       const index = _.findIndex(newPersonLight?.pin, p => p.land === 'NO')
       if (index >= 0) {

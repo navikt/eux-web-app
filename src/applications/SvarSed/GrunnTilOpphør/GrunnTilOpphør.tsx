@@ -60,21 +60,21 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string) => {
     _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
-    dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt))
+    dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt.trim()))
     if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
       dispatch(resetValidation(namespace + '-typeGrunnOpphoerAnsatt'))
     }
   }
 
   const setAnnenGrunnOpphoerAnsatt = (annenGrunnOpphoerAnsatt: string) => {
-    dispatch(updateReplySed(`${target}.annenGrunnOpphoerAnsatt`, annenGrunnOpphoerAnsatt))
+    dispatch(updateReplySed(`${target}.annenGrunnOpphoerAnsatt`, annenGrunnOpphoerAnsatt.trim()))
     if (validation[namespace + '-annenGrunnOpphoerAnsatt']) {
       dispatch(resetValidation(namespace + '-annenGrunnOpphoerAnsatt'))
     }
   }
 
   const setGrunnOpphoerSelvstendig = (grunnOpphoerSelvstendig: string) => {
-    dispatch(updateReplySed(`${target}.grunnOpphoerSelvstendig`, grunnOpphoerSelvstendig))
+    dispatch(updateReplySed(`${target}.grunnOpphoerSelvstendig`, grunnOpphoerSelvstendig.trim()))
     if (validation[namespace + '-grunnOpphoerSelvstendig']) {
       dispatch(resetValidation(namespace + '-grunnOpphoerSelvstendig'))
     }

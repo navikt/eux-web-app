@@ -104,14 +104,14 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewFamilierelasjon({
         ..._newFamilierelasjon,
-        relasjonType
+        relasjonType: relasjonType.trim()
       } as FamilieRelasjon)
       _resetValidation(namespace + '-relasjonType')
       return
     }
     _setEditFamilierelasjon({
       ..._editFamilierelasjon,
-      relasjonType
+      relasjonType: relasjonType.trim()
     } as FamilieRelasjon)
     if (validation[namespace + getIdx(index) + '-relasjonType']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))

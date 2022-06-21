@@ -62,11 +62,11 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string | undefined) => {
     _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
-    if (typeGrunnOpphoerAnsatt === undefined) {
+    if (typeGrunnOpphoerAnsatt === undefined || _.isEmpty(typeGrunnOpphoerAnsatt?.trim())) {
       dispatch(updateReplySed(target, {}))
     } else {
       const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
-      _.set(newReplySed, `${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt)
+      _.set(newReplySed, `${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt.trim())
       if (typeGrunnOpphoerAnsatt !== 'annet-ansettelsesforhold') {
         delete newReplySed[target].annenGrunnOpphoerAnsatt
       }
@@ -81,14 +81,14 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   }
 
   const setAnnenGrunnOpphoerAnsatt = (annenGrunnOpphoerAnsatt: string) => {
-    dispatch(updateReplySed(`${target}.annenGrunnOpphoerAnsatt`, annenGrunnOpphoerAnsatt))
+    dispatch(updateReplySed(`${target}.annenGrunnOpphoerAnsatt`, annenGrunnOpphoerAnsatt.trim()))
     if (validation[namespace + '-annenGrunnOpphoerAnsatt']) {
       dispatch(resetValidation(namespace + '-annenGrunnOpphoerAnsatt'))
     }
   }
 
   const setGrunnOpphoerSelvstendig = (grunnOpphoerSelvstendig: string) => {
-    dispatch(updateReplySed(`${target}.grunnOpphoerSelvstendig`, grunnOpphoerSelvstendig))
+    dispatch(updateReplySed(`${target}.grunnOpphoerSelvstendig`, grunnOpphoerSelvstendig.trim()))
     if (validation[namespace + '-grunnOpphoerSelvstendig']) {
       dispatch(resetValidation(namespace + '-grunnOpphoerSelvstendig'))
     }
@@ -123,7 +123,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
               {t('el:button-remove')}
             </Button>
           </div>
-
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />

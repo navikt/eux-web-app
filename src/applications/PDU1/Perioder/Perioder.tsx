@@ -114,14 +114,14 @@ const Perioder: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
-        __type: newType
+        __type: newType.trim()
       } as PDPeriode)
       _resetValidation(namespace + '-type')
       return
     }
     _setEditPeriode({
       ..._editPeriode,
-      __type: newType
+      __type: newType.trim()
     } as PDPeriode)
     dispatch(resetValidation(namespace + getNSIdx(oldType, _editPeriode?.__index) + '-type'))
   }
@@ -140,14 +140,14 @@ const Perioder: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
-        info
+        info: info.trim()
       } as PDPeriode)
       _resetValidation(namespace + '-info')
       return
     }
     _setEditPeriode({
       ..._editPeriode,
-      info
+      info: info.trim()
     } as PDPeriode)
     dispatch(resetValidation(namespace + getNSIdx(_editPeriode?.__type!, _editPeriode?.__index) + '-info'))
   }
