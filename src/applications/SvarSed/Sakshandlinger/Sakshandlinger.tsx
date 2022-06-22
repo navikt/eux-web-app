@@ -25,12 +25,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     const h001sed: H001Sed = {
       sedType: 'H001',
       sedVersjon: '4.2',
-      sak: sak,
+      sak,
       bruker: {
         personInfo: {
           fornavn: sak.fornavn,
           etternavn: sak.etternavn,
-          kjoenn: sak.kjoenn as Kjoenn,
+          kjoenn: sak.kjoenn.toUpperCase() as Kjoenn,
           foedselsdato: sak.foedselsdato,
           statsborgerskap: [{ land: 'NO' }],
           pin: [{
@@ -47,11 +47,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   const createXSed = (sedType: string) => {
     const replySed: XSed = {
       sedType,
+      sak,
       sedVersjon: '1',
       bruker: {
         fornavn: sak?.fornavn ?? '',
         etternavn: sak?.etternavn ?? '',
-        kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+        kjoenn: (sak?.kjoenn.toUpperCase() ?? 'U') as Kjoenn,
         foedselsdato: sak?.foedselsdato ?? '',
         statsborgerskap: [{ land: 'NO' }],
         pin: [{
@@ -71,33 +72,36 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       <Tooltip label={(
-        <div style={{maxWidth: '400px'}}>
+        <div style={{ maxWidth: '400px' }}>
           {t('message:warning-rina')}
         </div>
-        )}>
+        )}
+      >
         <BodyLong>
-        {t('label:legg-til-deltaker')}
-      </BodyLong>
+          {t('label:legg-til-deltaker')}
+        </BodyLong>
       </Tooltip>
       <VerticalSeparatorDiv />
       <Tooltip label={(
-        <div style={{maxWidth: '400px'}}>
+        <div style={{ maxWidth: '400px' }}>
           {t('message:warning-rina')}
         </div>
-      )}>
+      )}
+      >
         <BodyLong>
-        {t('label:lukk-sak-lokakt')}
-      </BodyLong>
+          {t('label:lukk-sak-lokakt')}
+        </BodyLong>
       </Tooltip>
       <VerticalSeparatorDiv />
       <Tooltip label={(
-        <div style={{maxWidth: '400px'}}>
+        <div style={{ maxWidth: '400px' }}>
           {t('message:warning-rina')}
         </div>
-      )}>
+      )}
+      >
         <BodyLong>
-        {t('label:videresend-sak')}
-      </BodyLong>
+          {t('label:videresend-sak')}
+        </BodyLong>
       </Tooltip>
       <VerticalSeparatorDiv />
       <Link href='#' onClick={() => createH001Sed()}>
@@ -107,11 +111,10 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       <Link href='#' onClick={() => createXSed('X009')}>
         {t('label:create-X009')}
       </Link>
-      {/*<VerticalSeparatorDiv />
+      <VerticalSeparatorDiv />
       <Link href='#' onClick={() => createXSed('X012')}>
-        X012 - {t('buc:X012')}
+        {t('buc:X012')}
       </Link>
-      */}
       <VerticalSeparatorDiv />
     </Panel>
   )

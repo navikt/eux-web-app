@@ -166,7 +166,7 @@ export default (saksnummer: string) => {
           sedId: 'h001cancelled',
           status: 'cancelled',
           sistEndretDato: '2021-02-19'
-        },  {
+        }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
           sedId: 'h001sent',

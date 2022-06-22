@@ -56,7 +56,7 @@ export const validatePurring = (
 }
 
 export const validatePurringer = (
-  validation: Validation,
+  v: Validation,
   namespace: string,
   {
     purringer,
@@ -64,8 +64,16 @@ export const validatePurringer = (
   }: ValidationPurringerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: purringer,
+    id: namespace + '-purringer',
+    message: 'validation:noPurring',
+    personName
+  }))
+
   purringer?.forEach((purring: Purring, index: number) => {
-    hasErrors.push(validatePurring(validation, namespace, { purring, purringer, index, personName }))
+    hasErrors.push(validatePurring(v, namespace, { purring, purringer, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

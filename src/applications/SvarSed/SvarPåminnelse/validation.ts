@@ -1,7 +1,7 @@
 import { BesvarelseKommer, BesvarelseUmulig } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationBesvarelseKommerProps {
   dokument: BesvarelseKommer | undefined
@@ -109,6 +109,14 @@ export const validateBesvarelseUmulig = (
       needle: dokument?.begrunnelseAnnen,
       id: namespace + idx + '-begrunnelseAnnen',
       message: 'validation:noBegrunnelseAnnen',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: dokument.begrunnelseAnnen,
+      max: 255,
+      id: namespace + idx + '-begrunnelseAnnen',
+      message: 'validation:textOverX',
       personName
     }))
   }

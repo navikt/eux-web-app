@@ -26,17 +26,17 @@ export const OpprettSakPage = (): JSX.Element => {
             <CreateSak changeMode={changeMode} />
           )}
           {_currentPage === 'B' && (
-            <SEDEdit changeMode={changeMode}/>
+            <SEDEdit changeMode={changeMode} />
           )}
         </Content>
         <Content style={{ flex: 2 }}>
           {_currentPage === 'A' && (
-              <SakSidebar />
+            <SakSidebar />
           )}
           {_currentPage === 'B' && (
-              <SEDDetails
-                updateReplySed={updateReplySed}
-              />
+            <SEDDetails
+              updateReplySed={updateReplySed}
+            />
           )}
         </Content>
         <Margin />

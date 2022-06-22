@@ -1,6 +1,6 @@
 import { X001Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty } from 'utils/validation'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationAvslutningProps {
   replySed: X001Sed
@@ -43,6 +43,14 @@ export const validateAvslutning = (
       needle: replySed.begrunnelseAnnen,
       id: namespace + '-begrunnelseAnnen',
       message: 'validation:noBegrunnelseAnnen',
+      personName
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: replySed.begrunnelseAnnen,
+      max: 255,
+      id: namespace + '-begrunnelseAnnen',
+      message: 'validation:textOverX',
       personName
     }))
   }

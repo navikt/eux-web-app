@@ -96,7 +96,7 @@ export interface SEDEditProps {
   changeMode: (mode: string) => void
 }
 
-const SEDEdit: React.FC<SEDEditProps> = ({changeMode}: SEDEditProps): JSX.Element => {
+const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
@@ -179,13 +179,13 @@ const SEDEdit: React.FC<SEDEditProps> = ({changeMode}: SEDEditProps): JSX.Elemen
 
   // after successful SED send, go back to SED list
   useEffect(() => {
-     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
-       changeMode('A')
-       dispatch(resetCurrentEntry('svarsed'))
-       dispatch(cleanUpSvarSed())
-       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-     }
-   }, [_sendButtonClicked, sedSendResponse])
+    if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
+      changeMode('A')
+      dispatch(resetCurrentEntry('svarsed'))
+      dispatch(cleanUpSvarSed())
+      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
+    }
+  }, [_sendButtonClicked, sedSendResponse])
 
   return (
     <>
@@ -370,22 +370,22 @@ const SEDEdit: React.FC<SEDEditProps> = ({changeMode}: SEDEditProps): JSX.Elemen
           </div>
         </FlexDiv>
         {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
-        <>
-          <VerticalSeparatorDiv />
-          <FlexDiv>
-            <Alert variant='error'>
-              {alertMessage!}
-            </Alert>
-            <Button
-              variant='tertiary' onClick={() => {
-                _setSendButtonClicked(false)
-                dispatch(alertClear())
-              }}
-            >
-              OK
-            </Button>
-          </FlexDiv>
-        </>
+          <>
+            <VerticalSeparatorDiv />
+            <FlexDiv>
+              <Alert variant='error'>
+                {alertMessage!}
+              </Alert>
+              <Button
+                variant='tertiary' onClick={() => {
+                  _setSendButtonClicked(false)
+                  dispatch(alertClear())
+                }}
+              >
+                OK
+              </Button>
+            </FlexDiv>
+          </>
         )}
       </Panel>
     </>

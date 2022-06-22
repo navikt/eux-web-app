@@ -114,10 +114,13 @@ const Påminnelse: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace))
   }
 
-  const onCloseNew = () => {
+  const onCloseNew = (namespace?: string) => {
     _setNewPurring(undefined)
     _setNewForm(false)
     _resetValidation()
+    if (namespace) {
+      dispatch(resetValidation(namespace))
+    }
   }
 
   const onStartEdit = (s: Purring, index: number) => {
@@ -164,7 +167,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
       }
       newPurringer.push(_newPurring)
       dispatch(updateReplySed(target, newPurringer))
-      onCloseNew()
+      onCloseNew(namespace + '-purringer')
     }
   }
 
@@ -289,11 +292,16 @@ const Påminnelse: React.FC<MainFormProps> = ({
       {_.isEmpty(purringer)
         ? (
           <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-påminnelse')}
-            </BodyLong>
-            <SpacedHr />
+            <FormText
+              error={validation[namespace + '-purringer']?.feilmelding}
+              id={namespace + '-purringer'}
+            >
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-påminnelse')}
+              </BodyLong>
+              <SpacedHr />
+            </FormText>
           </PaddedHorizontallyDiv>
           )
         : purringer?.map(renderRow)}

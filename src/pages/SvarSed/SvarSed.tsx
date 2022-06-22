@@ -190,7 +190,7 @@ export const SvarSedPage = (): JSX.Element => {
               <SEDSearch changeMode={changeMode} sak={currentSak!} />
             )}
             {_currentPage === 'B' && (
-              <SEDEdit changeMode={changeMode}/>
+              <SEDEdit changeMode={changeMode} />
             )}
           </Content>
           <Content style={{ flex: 2 }}>
