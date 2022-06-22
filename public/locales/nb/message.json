@@ -84,6 +84,7 @@
   "warning-no-utbetaling": "Ingen utbetalinger",
   "warning-no-utenlandskepin": "Ingen utenlandske PIN",
   "warning-no-ytelse": "Ingen ytelser",
+  "warning-rina": "Denne sakshandlingen er ikke tilgjengelig i nEESSI. Åpne sak i RINA for andre mulige handlinger.",
   "warning-x-not-saved": "{{x}} er ikke lagret!",
   "warning-x-save": "Ønsker du å lagre en kopi av {{x}} før du fortsetter?",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført",

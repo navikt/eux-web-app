@@ -66,7 +66,9 @@ export const SvarSedPage = (): JSX.Element => {
       dispatch(cleanUpSvarSed())
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
-    dispatch(setCurrentSak(undefined))
+    if (_currentPage === 'A') {
+      dispatch(setCurrentSak(undefined))
+    }
   }
 
   const onGoBackClick = () => {
@@ -188,7 +190,7 @@ export const SvarSedPage = (): JSX.Element => {
               <SEDSearch changeMode={changeMode} sak={currentSak!} />
             )}
             {_currentPage === 'B' && (
-              <SEDEdit />
+              <SEDEdit changeMode={changeMode}/>
             )}
           </Content>
           <Content style={{ flex: 2 }}>

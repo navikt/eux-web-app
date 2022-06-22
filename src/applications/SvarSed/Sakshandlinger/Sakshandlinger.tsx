@@ -1,8 +1,9 @@
-import { BodyShort, Heading, Link, Panel } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import Tooltip from '@navikt/tooltip'
 import { loadReplySed } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { XSed, Kjoenn } from 'declarations/sed'
+import { XSed, Kjoenn, H001Sed } from 'declarations/sed'
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +21,30 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const createSed = (sedType: string) => {
+  const createH001Sed = () => {
+    const h001sed: H001Sed = {
+      sedType: 'H001',
+      sedVersjon: '4.2',
+      sak: sak,
+      bruker: {
+        personInfo: {
+          fornavn: sak.fornavn,
+          etternavn: sak.etternavn,
+          kjoenn: sak.kjoenn as Kjoenn,
+          foedselsdato: sak.foedselsdato,
+          statsborgerskap: [{ land: 'NO' }],
+          pin: [{
+            land: 'NO',
+            identifikator: sak.fnr
+          }]
+        }
+      }
+    }
+    dispatch(loadReplySed(h001sed))
+    changeMode('B')
+  }
+
+  const createXSed = (sedType: string) => {
     const replySed: XSed = {
       sedType,
       sedVersjon: '1',
@@ -36,7 +60,6 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         }]
       }
     }
-
     dispatch(loadReplySed(replySed))
     changeMode('B')
   }
@@ -47,24 +70,49 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X001')}>
-        X001 - {t('el:option-mainform-avslutning')}
+      <Tooltip label={(
+        <div style={{maxWidth: '400px'}}>
+          {t('message:warning-rina')}
+        </div>
+        )}>
+        <BodyLong>
+        {t('label:legg-til-deltaker')}
+      </BodyLong>
+      </Tooltip>
+      <VerticalSeparatorDiv />
+      <Tooltip label={(
+        <div style={{maxWidth: '400px'}}>
+          {t('message:warning-rina')}
+        </div>
+      )}>
+        <BodyLong>
+        {t('label:lukk-sak-lokakt')}
+      </BodyLong>
+      </Tooltip>
+      <VerticalSeparatorDiv />
+      <Tooltip label={(
+        <div style={{maxWidth: '400px'}}>
+          {t('message:warning-rina')}
+        </div>
+      )}>
+        <BodyLong>
+        {t('label:videresend-sak')}
+      </BodyLong>
+      </Tooltip>
+      <VerticalSeparatorDiv />
+      <Link href='#' onClick={() => createH001Sed()}>
+        {t('label:create-H001')}
       </Link>
       <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X009')}>
-        X009 - {t('el:option-mainform-påminnelse')}
+      <Link href='#' onClick={() => createXSed('X009')}>
+        {t('label:create-X009')}
       </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X012')}>
+      {/*<VerticalSeparatorDiv />
+      <Link href='#' onClick={() => createXSed('X012')}>
         X012 - {t('buc:X012')}
       </Link>
+      */}
       <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      <BodyShort>
-        Ingen flere sakshandlinger er tilgjengelige i nEESSI.
-        Åpne sak i RINA for andre mulige handlinger.
-      </BodyShort>
     </Panel>
   )
 }

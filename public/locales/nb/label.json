@@ -67,6 +67,8 @@
 
   "choose": "Velg",
   "comment": "Kommentar",
+  "create-H001": "Opprett H001",
+  "create-X009": "Send påminnelse",
   "cover-letter": "Følgebrev",
 
   "dagpenger": "Dagpenger",
@@ -89,7 +91,7 @@
   "du-kan": "Du kan",
 
   "edit" : "Rediger",
-  "edit-sed-x" : "Rediger {{x}}",
+  "edit-sed" : "Rediger SED",
   "ektefelle_partner": "Ektefelle/partner",
   "elementter-i-personlig-situasjon": "Elementer i personlig situasjon",
   "eller": "eller",
@@ -199,7 +201,7 @@
   "institusjonens-navn" : "Institusjonens navn",
   "institusjonens-orgnr" : "Institusjonens orgnr.",
   "international-id": "International ID",
-  "invalidate-sed-x" : "Ugyldiggjøre {{x}}",
+  "invalidate-sed" : "Ugyldiggjør SED",
 
   "ja": "Ja",
   "jente" : "Jente",
@@ -232,6 +234,7 @@
   "last-ned-pdu1": "Last ned PD U1 kopi",
   "legg-til": "Legg til",
   "legg-til-arbeidsperiode": "Legg til arbeidsperiode",
+  "legg-til-deltaker": "Legg til deltaker",
   "legg-til-fjern-personer": "Legg til/fjern person(er)",
   "legg-til-vedlegg-til-sed" : "Legge til vedlegg til SED",
   "lenke-til-gosys" : "Lenke til Gosys",
@@ -239,6 +242,7 @@
   "loenn-til-dato": "Lønn til dato",
   "loennsopplysninger" : "Lønnsopplysninger",
   "lovvalg" : "Lovvalg",
+  "lukk-sak-lokakt" : "Lukk sak (lokalt)",
 
   "månedlig": "Månedlig",
   "mann" : "Mann",
@@ -261,7 +265,7 @@
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
 
   "only-active-seds": "Vis kun saker som kan behandles i nEESSI",
-  "oppdater-sed-x" : "Oppdater {{x}}",
+  "oppdater-sed" : "Oppdater SED",
   "oppgi-kontoopplysninger" : "Oppgi kontoopplysninger",
   "opphoer": "Opphør",
   "opphoer-rettighet": "Opphør rettighet",
@@ -309,7 +313,7 @@
   "referanseperiode" : "Referanseperiode",
   "refusjon-i-henhold-til-artikkel-58-i-forordningen": "Krav om refusjon",
   "region" : "Region",
-  "reject-sed-x": "Avvis {{x}}",
+  "reject-sed": "Avvis SED",
   "relasjon" : "Relasjon",
   "relasjon-med" : "Relasjon med",
   "relasjon-til-barn" : "Relasjon til det enkelte barn",
@@ -421,6 +425,7 @@
   "velg-vedlegg-til-sed" : "Velg vedlegg til SED",
   "vi-sender-informasjon": "Vi sender følgende informasjon",
   "vi-vedlegger-dokumenter": "Vi vedlegger følgende dokument(er)",
+  "videresend-sak": "Videresend sak",
   "vis-mer": "Ler mer",
   "vis-saker": "Vis saker",
   "vis-skjema": "Vis skjema",

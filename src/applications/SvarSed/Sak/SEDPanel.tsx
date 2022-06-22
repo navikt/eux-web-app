@@ -127,7 +127,7 @@ const SEDPanel = ({
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType
   const showInvalidateButton = connectedSed.status === 'sent' && connectedSed.sedType !== 'X008' &&
     _.find(connectedSed.children, (s: Sed) => (s.sedType === 'X008' && s.status === 'new')) === undefined
-  const showRejectButton = connectedSed.status === 'sent' && connectedSed.sedType !== 'X011' &&
+  const showRejectButton = connectedSed.status === 'received' && connectedSed.sedType !== 'X011' &&
     _.find(connectedSed.children, (s: Sed) => (s.sedType === 'X011' && s.status === 'new')) === undefined
 
   return (
@@ -229,9 +229,7 @@ const SEDPanel = ({
                         <Loader />
                       </>
                       )
-                    : t('label:edit-sed-x', {
-                      x: connectedSed.sedType
-                    })}
+                    : t('label:edit-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
@@ -256,9 +254,7 @@ const SEDPanel = ({
                         <Loader />
                       </>
                       )
-                    : t('label:oppdater-sed-x', {
-                      x: connectedSed.sedType
-                    })}
+                    : t('label:oppdater-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
@@ -283,9 +279,7 @@ const SEDPanel = ({
                         <Loader />
                       </>
                       )
-                    : t('label:invalidate-sed-x', {
-                      x: connectedSed.sedType
-                    })}
+                    : t('label:invalidate-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
@@ -310,9 +304,7 @@ const SEDPanel = ({
                         <Loader />
                       </>
                       )
-                    : t('label:reject-sed-x', {
-                      x: connectedSed.sedType
-                    })}
+                    : t('label:reject-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>

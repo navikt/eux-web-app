@@ -1,8 +1,17 @@
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertClear } from 'actions/alert'
+import { resetCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { createSed, restoreReplySed, sendSedInRina, setReplySed, updateReplySed, updateSed } from 'actions/svarsed'
+import {
+  cleanUpSvarSed,
+  createSed,
+  restoreReplySed,
+  sendSedInRina,
+  setReplySed,
+  updateReplySed,
+  updateSed
+} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Adresser from 'applications/SvarSed/Adresser/Adresser'
 import Anmodning from 'applications/SvarSed/Anmodning/Anmodning'
@@ -83,7 +92,11 @@ const mapState = (state: State): any => ({
   validation: state.validation.status
 })
 
-const SEDEdit: React.FC = (): JSX.Element => {
+export interface SEDEditProps {
+  changeMode: (mode: string) => void
+}
+
+const SEDEdit: React.FC<SEDEditProps> = ({changeMode}: SEDEditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
@@ -163,6 +176,16 @@ const SEDEdit: React.FC = (): JSX.Element => {
       dispatch(finishPageStatistic('editor'))
     }
   }, [])
+
+  // after successful SED send, go back to SED list
+  useEffect(() => {
+     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
+       changeMode('A')
+       dispatch(resetCurrentEntry('svarsed'))
+       dispatch(cleanUpSvarSed())
+       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
+     }
+   }, [_sendButtonClicked, sedSendResponse])
 
   return (
     <>
@@ -346,14 +369,11 @@ const SEDEdit: React.FC = (): JSX.Element => {
             <VerticalSeparatorDiv size='0.5' />
           </div>
         </FlexDiv>
-        {_sendButtonClicked && alertMessage &&
-      (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
+        {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
         <>
           <VerticalSeparatorDiv />
           <FlexDiv>
-            <Alert
-              variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'info'}
-            >
+            <Alert variant='error'>
               {alertMessage!}
             </Alert>
             <Button

@@ -23,6 +23,7 @@ export interface ValidatePatternParams extends ValidateValueParams {
 export interface ValidateLengthParams extends ValidateValueParams {
   max: number
 }
+
 export interface ValidateDuplicateParams extends ValidateValueParams {
   matchFn: () => boolean
   haystack: Array<any> | undefined
