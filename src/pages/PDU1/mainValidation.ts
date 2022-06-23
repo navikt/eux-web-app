@@ -1,13 +1,14 @@
-import { validateDagpengerPerioder } from 'applications/PDU1/Dagpenger/validation'
-import { validateAllePDPerioder } from 'applications/PDU1/Perioder/validation'
+import { validateDagpengerPerioder, ValidationDagpengerPerioderProps } from 'applications/PDU1/Dagpenger/validation'
+import { validateAllePDPerioder, ValidateAllePDPerioderProps } from 'applications/PDU1/Perioder/validation'
 import { NavInfo, Pdu1Person, PDU1, AndreMottatteUtbetalinger, PDPeriode } from 'declarations/pd'
 import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import _ from 'lodash'
-import { validatePerson } from 'applications/PDU1/Person/validation'
-import { validateSisteAnsettelseinfo } from 'applications/PDU1/SisteAnsettelseInfo/validation'
-import { validateAvsender } from 'applications/PDU1/Avsender/validation'
-import { validateUtbetaling } from 'applications/PDU1/Utbetaling/validation'
+import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
+import { validateSisteAnsettelseinfo, ValidationSisteAnsettelseinfoProps } from 'applications/PDU1/SisteAnsettelseInfo/validation'
+import { validateAvsender, ValidationAvsenderProps } from 'applications/PDU1/Avsender/validation'
+import { validateUtbetaling, ValidationUtbetalingProps } from 'applications/PDU1/Utbetaling/validation'
+import performValidation from 'utils/performValidation'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPdu1SearchProps {
@@ -26,21 +27,21 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 
   const personID = 'bruker'
   const person : Pdu1Person = _.get(pdu1, personID)
-  hasErrors.push(validatePerson(v, `${namespace}-${personID}-person`, { person }))
+  hasErrors.push(performValidation<ValidationPersonProps>(v, `${namespace}-${personID}-person`, validatePerson, { person }))
 
-  hasErrors.push(validateAllePDPerioder(v, `${namespace}-${personID}-perioder`, { pdu1 }))
+  hasErrors.push(performValidation<ValidateAllePDPerioderProps>(v, `${namespace}-${personID}-perioder`, validateAllePDPerioder, { pdu1 }))
 
   const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(pdu1, 'opphoer')
-  hasErrors.push(validateSisteAnsettelseinfo(v, `${namespace}-${personID}-sisteansettelseinfo`, { sisteAnsettelseInfo }))
+  hasErrors.push(performValidation<ValidationSisteAnsettelseinfoProps>(v, `${namespace}-${personID}-sisteansettelseinfo`, validateSisteAnsettelseinfo, { sisteAnsettelseInfo }))
 
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')
-  hasErrors.push(validateUtbetaling(v, `${namespace}-${personID}-utbetaling`, { utbetaling }))
+  hasErrors.push(performValidation<ValidationUtbetalingProps>(v, `${namespace}-${personID}-utbetaling`, validateUtbetaling, { utbetaling }))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
-  hasErrors.push(validateDagpengerPerioder(v, `${namespace}-${personID}-dagpenger`, { dagpenger }))
+  hasErrors.push(performValidation<ValidationDagpengerPerioderProps>(v, `${namespace}-${personID}-dagpenger`, validateDagpengerPerioder, { dagpenger }))
 
   const nav: NavInfo = _.get(pdu1, 'nav')
-  hasErrors.push(validateAvsender(v, `${namespace}-${personID}-avsender`, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
+  hasErrors.push(performValidation<ValidationAvsenderProps>(v, `${namespace}-${personID}-avsender`, validateAvsender, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
 
   return hasErrors.find(value => value) !== undefined
 }

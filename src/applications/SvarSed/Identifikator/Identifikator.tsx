@@ -114,20 +114,21 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationIdentifikatorProps>(
-      validation, namespace, validateIdentifikator, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationIdentifikatorProps>(
+      clonedValidation, namespace, validateIdentifikator, {
         identifikator: _editIdentifikator,
         identifikatorer,
         index: _editIndex,
         personName
       })
-    if (!!_editIdentifikator && valid) {
+    if (!!_editIdentifikator && !hasErrors) {
       const newIdentifikatorer: Array<ArbeidsgiverIdentifikator> = _.cloneDeep(identifikatorer) as Array<ArbeidsgiverIdentifikator>
       newIdentifikatorer[_editIndex!] = _editIdentifikator
       onIdentifikatorerChanged(newIdentifikatorer)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

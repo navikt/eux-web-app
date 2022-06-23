@@ -181,6 +181,5 @@ export const validateMotregninger = (
       }))
     })
   }
-
   return hasErrors.find(value => value) !== undefined
 }

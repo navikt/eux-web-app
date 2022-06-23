@@ -38,13 +38,14 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateGrunnTilOpphørProps>(
-      validation, namespace, validateGrunnTilOpphor, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidateGrunnTilOpphørProps>(
+      clonedValidation, namespace, validateGrunnTilOpphor, {
         sisteAnsettelseInfo,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const årsakOptions: Options = [

@@ -53,11 +53,12 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
   const onPreviewPdu1Clicked = (e: any) => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
-      const [valid, newValidation] = performValidation<ValidationPDU1EditProps>(validation, namespace, validatePDU1Edit, {
+      const clonedvalidation = _.cloneDeep(validation)
+      const hasErrors = performValidation<ValidationPDU1EditProps>(clonedvalidation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
       })
-      dispatch(setValidation(newValidation))
-      if (valid) {
+      dispatch(setValidation(clonedvalidation))
+      if (!hasErrors) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox

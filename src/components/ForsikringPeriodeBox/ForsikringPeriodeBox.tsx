@@ -328,8 +328,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationForsikringPeriodeBoxProps>(
-      validation!, namespace, validateForsikringPeriodeBox, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationForsikringPeriodeBoxProps>(
+      clonedValidation!, namespace, validateForsikringPeriodeBox, {
         forsikringPeriode: _editForsikringPeriode,
         showAddress,
         showArbeidsgiver,
@@ -337,14 +338,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         showAnnen,
         showBeløp
       })
-    if (!!_editForsikringPeriode && valid) {
+    if (!!_editForsikringPeriode && !hasErrors) {
       if (_.isFunction(onForsikringPeriodeEdit)) {
         onForsikringPeriodeEdit(_editForsikringPeriode, forsikringPeriode!)
       }
       onCloseEdit(namespace)
     } else {
       if (setValidation) {
-        setValidation(newValidation)
+        setValidation(clonedValidation!)
       }
     }
   }

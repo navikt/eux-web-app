@@ -13,6 +13,7 @@ import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X011Sed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -37,13 +38,14 @@ const Avvis: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-avvis`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAvvisProps>(
-      validation, namespace, validateAvvis, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAvvisProps>(
+      clonedvalidation, namespace, validateAvvis, {
         replySed: (replySed as X011Sed),
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setBegrunnelseType = (begrunnelseType: string) => {

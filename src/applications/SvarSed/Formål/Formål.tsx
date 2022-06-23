@@ -44,10 +44,11 @@ const Formål: React.FC<MainFormProps> = ({
   const namespace: string = `${parentNamespace}-formål`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationFormålProps>(validation, namespace, validateFormål, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationFormålProps>(clonedValidation, namespace, validateFormål, {
       formaal: (replySed as FSed).formaal
-    })
-    dispatch(setValidation(newValidation))
+    }, true)
+    dispatch(setValidation(clonedValidation))
   })
 
   let formaalOptions: Options = [

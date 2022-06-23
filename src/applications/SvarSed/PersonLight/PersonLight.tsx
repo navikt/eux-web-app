@@ -46,11 +46,12 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationPersonLightProps>(validation, namespace, validatePersonLight, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationPersonLightProps>(clonedValidation, namespace, validatePersonLight, {
       personLight,
       personName
     })
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setFornavn = (newFornavn: string) => {

@@ -16,6 +16,7 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Sed, ReplySed, YtterligereInfoType } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -39,13 +40,14 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-endredeforhold`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationEndredeForholdProps>(
-      validation, namespace, validateEndredeForhold, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationEndredeForholdProps>(
+      clonedValidation, namespace, validateEndredeForhold, {
         replySed: (replySed as ReplySed),
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {

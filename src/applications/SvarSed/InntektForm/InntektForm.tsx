@@ -103,13 +103,14 @@ const InntektForm: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationLoennsopplysningerProps>(
-      validation, namespace, validateLoennsopplysninger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationLoennsopplysningerProps>(
+      clonedValidation, namespace, validateLoennsopplysninger, {
         loennsopplysninger,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setPeriode = (periode: Periode, index: number) => {
@@ -214,18 +215,19 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationLoennsopplysningProps>(
-      validation, namespace, validateLoennsopplysning, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationLoennsopplysningProps>(
+      clonedValidation, namespace, validateLoennsopplysning, {
         loennsopplysning: _editLoennsopplysning,
         loennsopplysninger,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editLoennsopplysning))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

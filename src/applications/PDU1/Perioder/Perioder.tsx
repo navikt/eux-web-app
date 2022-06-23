@@ -88,12 +88,13 @@ const Perioder: React.FC<MainFormProps> = ({
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateAllePDPerioderProps>(
-      validation, namespace, validateAllePDPerioder, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidateAllePDPerioderProps>(
+      clonedvalidation, namespace, validateAllePDPerioder, {
         pdu1: _.cloneDeep(replySed as PDU1)
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   useEffect(() => {
@@ -175,12 +176,13 @@ const Perioder: React.FC<MainFormProps> = ({
 
   const onSaveEdit = () => {
     const [type, index] = readNSIdx(_editTypeAndIndex!)
-    const [valid, newValidation] = performValidation<ValidationPDPeriodeProps>(
-      validation, namespace, validatePDPeriode, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationPDPeriodeProps>(
+      clonedvalidation, namespace, validatePDPeriode, {
         periode: _editPeriode,
         nsIndex: _editTypeAndIndex
       })
-    if (!!_editPeriode && valid) {
+    if (!!_editPeriode && !hasErrors) {
       const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
 
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
@@ -206,7 +208,7 @@ const Perioder: React.FC<MainFormProps> = ({
       dispatch(setReplySed(newReplySed))
       onCloseEdit(namespace + _editTypeAndIndex)
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

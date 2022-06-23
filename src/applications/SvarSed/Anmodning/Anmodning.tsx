@@ -34,13 +34,14 @@ const Anmodning: React.FC<MainFormProps> = ({
   const anmodning: H001Svar | undefined = _.get(replySed, target)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAnmodningProps>(
-      validation, namespace, validateAnmodning, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAnmodningProps>(
+      clonedvalidation, namespace, validateAnmodning, {
         replySed: (replySed as ReplySed),
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setDokument = (newDokument: string) => {

@@ -229,7 +229,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }, []) ?? []
 
   const skjemaSubmit = (): void => {
-    const [valid, newValidation] = performValidation<ValidationOpprettSakProps>(validation, namespace, validateOpprettSak, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationOpprettSakProps>(clonedvalidation, namespace, validateOpprettSak, {
       fnr: valgtFnr,
       isFnrValid,
       sektor: valgtSektor,
@@ -242,8 +243,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
       visEnheter,
       unit: valgtUnit
     } as ValidationOpprettSakProps)
-    dispatch(setValidation(newValidation))
-    if (valid) {
+    dispatch(setValidation(clonedvalidation))
+    if (!hasErrors) {
       setTempInfoForEdit({
         person: _.cloneDeep(person),
         tema: valgtTema,

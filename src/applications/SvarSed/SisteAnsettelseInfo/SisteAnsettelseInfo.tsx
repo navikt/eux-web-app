@@ -70,13 +70,14 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationUtbetalingProps>(validateUtbetaling, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateSisteAnsettelseInfoProps>(
-      validation, namespace, validateSisteAnsettelseInfo, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidateSisteAnsettelseInfoProps>(
+      clonedValidation, namespace, validateSisteAnsettelseInfo, {
         sisteAnsettelseInfo,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setBeløp = (newBeløp: string, index: number) => {
@@ -219,17 +220,18 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationUtbetalingProps>(
-      validation, namespace, validateUtbetaling, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationUtbetalingProps>(
+      clonedValidation, namespace, validateUtbetaling, {
         utbetaling: _editUtbetaling,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}.utbetalinger[${_editIndex}]`, _editUtbetaling))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

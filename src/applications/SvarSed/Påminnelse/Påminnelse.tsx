@@ -63,13 +63,14 @@ const Påminnelse: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPurringProps>(validatePurring, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationPurringerProps>(
-      validation, namespace, validatePurringer, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationPurringerProps>(
+      clonedValidation, namespace, validatePurringer, {
         purringer: (replySed as X009Sed).purringer,
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setPurringGjelder = (gjelder: string, index: number) => {
@@ -133,18 +134,19 @@ const Påminnelse: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationPurringProps>(
-      validation, namespace, validatePurring, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationPurringProps>(
+      clonedValidation, namespace, validatePurring, {
         purring: _editPurring,
         purringer,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPurring))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

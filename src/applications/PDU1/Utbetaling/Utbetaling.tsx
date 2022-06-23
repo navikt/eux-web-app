@@ -30,12 +30,13 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-utbetaling`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationUtbetalingProps>(
-      validation, namespace, validateUtbetaling, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationUtbetalingProps>(
+      clonedvalidation, namespace, validateUtbetaling, {
         utbetaling: andreMottatteUtbetalinger
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   useEffect(() => {

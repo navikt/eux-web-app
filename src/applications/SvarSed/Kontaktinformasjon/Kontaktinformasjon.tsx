@@ -83,15 +83,16 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     useLocalValidation<ValidationKontaktsinformasjonEpostProps>(validateKontaktsinformasjonEpost, namespaceEpost)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateTelefonerProps>(
-      validation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidateTelefonerProps>(
+      clonedValidation, namespaceTelefon, validateKontaktsinformasjonTelefoner, {
         telefoner, personName
-      })
-    const [, moreNewValidation] = performValidation<ValidateEposterProps>(
-      newValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
+      }, true)
+    performValidation<ValidateEposterProps>(
+      clonedValidation, namespaceEpost, validateKontaktsinformasjonEposter, {
         eposter, personName
       })
-    dispatch(setValidation(moreNewValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const telefonTypeOptions: Options = [
@@ -196,34 +197,36 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   }
 
   const onSaveTelefonEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationKontaktsinformasjonTelefonProps>(
-      validation, namespaceTelefon, validateKontaktsinformasjonTelefon, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationKontaktsinformasjonTelefonProps>(
+      clonedValidation, namespaceTelefon, validateKontaktsinformasjonTelefon, {
         telefon: _editTelefon,
         telefoner,
         index: _telefonEditIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${targetTelefon}[${_telefonEditIndex}]`, _editTelefon))
       onCloseEdit('telefon', namespaceTelefon + getIdx(_telefonEditIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
   const onSaveEpostEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationKontaktsinformasjonEpostProps>(
-      validation, namespaceEpost, validateKontaktsinformasjonEpost, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationKontaktsinformasjonEpostProps>(
+      clonedValidation, namespaceEpost, validateKontaktsinformasjonEpost, {
         epost: _editEpost,
         eposter,
         index: _epostEditIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${targetEpost}[${_epostEditIndex}]`, _editEpost))
       onCloseEdit('epost', namespaceEpost + getIdx(_epostEditIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

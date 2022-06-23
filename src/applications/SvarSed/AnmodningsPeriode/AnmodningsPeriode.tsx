@@ -57,11 +57,12 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnmodningsPeriodeProps>(validateAnmodningsPeriode, namespace + '-perioder')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAnmodningsPerioderProps>(
-      validation, namespace, validateAnmodningsPerioder, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAnmodningsPerioderProps>(
+      clonedvalidation, namespace, validateAnmodningsPerioder, {
         anmodningsperioder: (replySed as FSed).anmodningsperioder
-      })
-    dispatch(setValidation(newValidation))
+      }, true)
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setAnmodningsperioder = (newPeriode: Periode, index: number) => {
@@ -123,16 +124,17 @@ const PeriodeFC: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationAnmodningsPeriodeProps>(
-      validation, namespace + '-perioder', validateAnmodningsPeriode, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationAnmodningsPeriodeProps>(
+      clonedvalidation, namespace + '-perioder', validateAnmodningsPeriode, {
         anmodningsperiode: _editAnmodningsperiode,
         index: _editIndex
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAnmodningsperiode))
       onCloseEdit(namespace + '-perioder' + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

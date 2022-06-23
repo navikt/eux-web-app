@@ -62,11 +62,12 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
-      const [valid, newValidation] = performValidation<ValidationPDU1EditProps>(validation, namespace, validatePDU1Edit, {
+      const clonedValidation = _.cloneDeep(validation)
+      const hasErrors = performValidation<ValidationPDU1EditProps>(clonedValidation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
       })
-      dispatch(setValidation(newValidation))
-      if (valid) {
+      dispatch(setValidation(clonedValidation))
+      if (!hasErrors) {
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox

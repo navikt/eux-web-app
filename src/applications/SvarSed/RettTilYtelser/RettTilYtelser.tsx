@@ -34,12 +34,13 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   const [_rettTilStonad, _setRettTilStonad] = useState<JaNei| undefined>(undefined)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationRettTilYtelseProps>(
-      validation, namespace, validateRettTilYtelse, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationRettTilYtelseProps>(
+      clonedValidation, namespace, validateRettTilYtelse, {
         rettTilYtelse
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {

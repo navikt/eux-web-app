@@ -13,6 +13,7 @@ import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X012Sed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -37,13 +38,14 @@ const Klargjør: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-klargjør`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationKlargjørProps>(
-      validation, namespace, validateKlargjør, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationKlargjørProps>(
+      clonedValidation, namespace, validateKlargjør, {
         replySed: (replySed as X012Sed),
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setDel = (del: string) => {

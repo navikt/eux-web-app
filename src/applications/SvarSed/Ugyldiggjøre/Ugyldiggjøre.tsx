@@ -13,6 +13,7 @@ import Input from 'components/Forms/Input'
 import { State } from 'declarations/reducers'
 import { X008Sed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -37,13 +38,14 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-ugyldiggjøre`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationUgyldiggjøreProps>(
-      validation, namespace, validateUgyldiggjøre, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationUgyldiggjøreProps>(
+      clonedValidation, namespace, validateUgyldiggjøre, {
         replySed: (replySed as X008Sed),
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setBegrunnelseType = (begrunnelseType: string) => {

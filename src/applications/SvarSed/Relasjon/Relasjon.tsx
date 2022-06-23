@@ -85,13 +85,14 @@ const Relasjon: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationBarnetilhoerigheterProps>(
-      validation, namespace, validateBarnetilhoerigheter, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationBarnetilhoerigheterProps>(
+      clonedValidation, namespace, validateBarnetilhoerigheter, {
         barnetilhoerigheter,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
     dispatch(resetAdresse())
   })
 
@@ -245,18 +246,19 @@ const Relasjon: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationBarnetilhoerighetProps>(
-      validation, namespace, validateBarnetilhoerighet, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationBarnetilhoerighetProps>(
+      clonedValidation, namespace, validateBarnetilhoerighet, {
         barnetilhoerighet: _editBarnetilhoerighet,
         barnetilhoerigheter,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editBarnetilhoerighet))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

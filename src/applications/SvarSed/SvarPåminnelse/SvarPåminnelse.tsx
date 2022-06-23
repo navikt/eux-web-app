@@ -82,14 +82,15 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     useLocalValidation<ValidationBesvarelseUmuligProps>(validateBesvarelseUmulig, namespace + '-BesvarelseUmulig')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationSvarPåminnelseProps>(
-      validation, namespace, validateSvarPåminnelse, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationSvarPåminnelseProps>(
+      clonedValidation, namespace, validateSvarPåminnelse, {
         besvarelseKommer: _.get((replySed as X010Sed), targetBesvarelseKommer),
         besvarelseUmulig: _.get((replySed as X010Sed), targetBesvarelseUmulig),
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setBesvarelseKommerType = (gjelder: string, index: number) => {
@@ -261,34 +262,36 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   }
 
   const onSaveBesvarelseKommerEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationBesvarelseKommerProps>(
-      validation, namespace, validateBesvarelseKommer, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationBesvarelseKommerProps>(
+      clonedValidation, namespace, validateBesvarelseKommer, {
         dokument: _editBesvarelseKommer,
         dokumenter: besvarelseKommer,
         index: _editBesvarelseKommerIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${targetBesvarelseKommer}[${_editBesvarelseKommerIndex}]`, _editBesvarelseKommer))
       onCloseBesvarelseKommerEdit(namespace + '-BesvarelseKommer' + getIdx(_editBesvarelseKommerIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
   const onSaveBesvarelseUmuligEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationBesvarelseUmuligProps>(
-      validation, namespace, validateBesvarelseUmulig, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationBesvarelseUmuligProps>(
+      clonedValidation, namespace, validateBesvarelseUmulig, {
         dokument: _editBesvarelseUmulig,
         dokumenter: besvarelseUmulig,
         index: _editBesvarelseUmuligIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${targetBesvarelseUmulig}[${_editBesvarelseUmuligIndex}]`, _editBesvarelseUmulig))
       onCloseBesvarelseUmuligEdit(namespace + '-BesvarelseUmulig' + getIdx(_editBesvarelseUmuligIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

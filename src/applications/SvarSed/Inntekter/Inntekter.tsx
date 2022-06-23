@@ -147,19 +147,20 @@ const Inntekter: React.FC<any> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationInntektProps>(
-      validation, namespace, validateInntekt, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationInntektProps>(
+      clonedValidation, namespace, validateInntekt, {
         inntekt: _editInntekt,
         index: _editIndex,
         personName
       })
-    if (!!_editInntekt && valid) {
+    if (!!_editInntekt && !hasErrors) {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter) as Array<Inntekt>
       newInntekter[_editIndex!] = _editInntekt
       onInntekterChanged(newInntekter)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

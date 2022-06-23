@@ -18,6 +18,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/types'
+import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -75,15 +76,16 @@ const Vedlegg: React.FC = (): JSX.Element => {
     }
   }, [])
 
-  const sendSkjema = (): void => {
-    const [valid, newValidation] = performValidation<ValidationVedleggProps>(validation, namespace, validateVedlegg, {
+  const sendSkjema = () => {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationVedleggProps>(clonedValidation, namespace, validateVedlegg, {
       journalpostID,
       dokumentID,
       rinasaksnummer,
       rinadokumentID
     })
-    dispatch(setValidation(newValidation))
-    if (valid) {
+    dispatch(setValidation(clonedValidation))
+    if (!hasErrors) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID,
         dokumentID,

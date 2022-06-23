@@ -118,20 +118,21 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationUtenlandskPinProps>(
-      validation, namespace, validateUtenlandskPin, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationUtenlandskPinProps>(
+      clonedValidation, namespace, validateUtenlandskPin, {
         pin: _editPin,
         utenlandskePins: pins,
         index: _editIndex,
         personName
       })
-    if (_editIndex !== undefined && !!_editPin && valid) {
+    if (_editIndex !== undefined && !!_editPin && !hasErrors) {
       const newPins: Array<Pin> = _.cloneDeep(pins) as Array<Pin>
       newPins[_editIndex] = _editPin
       onPinsChanged(newPins)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

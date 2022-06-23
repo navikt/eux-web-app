@@ -153,9 +153,13 @@ export const checkIfNotGB = (v: Validation, {
 export const hasNamespaceWithErrors = (v: Validation, namespace: string): boolean =>
   _.some(v, (value, key) => (key.startsWith(namespace) && v[key]?.feilmelding !== 'ok'))
 
-export const filterAllWithNamespace = (v: Validation, namespace: string | Array<string>): Validation =>
-  _.omitBy(v, (value, key) => {
-    return _.isString(namespace)
-      ? key.startsWith(namespace)
-      : _.find(namespace as Array<string>, (n: string) => key.startsWith(n)) !== undefined
-  }) as Validation
+// note that this function not only returns validation, but CHANGES original object, because we want
+// that to chain-validate
+export const filterAllWithNamespace = (v: Validation, namespace: string | Array<string>): Validation => {
+  let namespaceArray: Array<string> = _.isString(namespace) ? [namespace] : namespace
+  const clonedV = {...v}
+  for (const path of namespaceArray) {
+    _.unset(clonedV, path)
+  }
+  return clonedV
+}

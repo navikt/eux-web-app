@@ -1,6 +1,5 @@
 import { ErrorElement } from 'declarations/app'
 import { Validation } from 'declarations/types'
-import _ from 'lodash'
 import { filterAllWithNamespace } from 'utils/validation'
 
 const performValidation = <ValidationData extends any>(
@@ -11,21 +10,22 @@ const performValidation = <ValidationData extends any>(
     namespace: string,
     validationData: ValidationData
   ) => boolean,
-  validationData: ValidationData
-): [boolean, Validation] => {
-  let newValidation: Validation = _.cloneDeep(validation) as Validation
+  validationData: ValidationData,
+  writeSummary: boolean = false
+): boolean => {
 
   // clean up the namespace before performing the validation
-  newValidation = filterAllWithNamespace(newValidation, namespace)
+   filterAllWithNamespace(validation, namespace)
 
   const hasErrors: boolean = validateFunction(
-    newValidation,
+    validation,
     namespace,
     validationData
   )
-  newValidation[namespace] = { feilmelding: hasErrors ? 'error' : 'ok' } as ErrorElement
-
-  return [!hasErrors, newValidation]
+  if (!!writeSummary) {
+    validation[namespace] = {feilmelding: hasErrors ? 'error' : 'ok'} as ErrorElement
+  }
+  return hasErrors
 }
 
 export default performValidation

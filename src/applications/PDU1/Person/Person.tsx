@@ -45,12 +45,13 @@ const Person: React.FC<MainFormProps> = ({
   const namespace: string = `${parentNamespace}-person`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationPersonProps>(
-      validation, namespace, validatePerson, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationPersonProps>(
+      clonedvalidation, namespace, validatePerson, {
         person: pdu1Person
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const onFnrChange = (newFnr: string) => {

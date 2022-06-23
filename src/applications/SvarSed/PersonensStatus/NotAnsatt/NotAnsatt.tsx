@@ -98,18 +98,19 @@ const NotAnsatt: React.FC<MainFormProps & {arbeidsforhold: string}> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationNotAnsattPeriodeProps>(
-      validation, namespace, validateNotAnsattPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationNotAnsattPeriodeProps>(
+      clonedValidation, namespace, validateNotAnsattPeriode, {
         periode: _editPeriode,
         perioder,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

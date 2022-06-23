@@ -96,13 +96,14 @@ const MotregningFC: React.FC<MainFormProps> = ({
   const getPersonName = (b: Barn): string => b.personInfo.fornavn + ' ' + (b.personInfo?.etternavn ?? '')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationMotregningerProps>(
-      validation, namespace, validateMotregninger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationMotregningerProps>(
+      clonedValidation, namespace, validateMotregninger, {
         replySed: _.cloneDeep(replySed as ReplySed),
         formalName: personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
     dispatch(resetAdresse())
   })
 
@@ -618,14 +619,15 @@ const MotregningFC: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationMotregningProps>(
-      validation, namespace, validateMotregning, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationMotregningProps>(
+      clonedValidation, namespace, validateMotregning, {
         motregning: _editMotregning,
         nsIndex: _editIndex,
         formalName: personName
       })
 
-    if (!!_editMotregning && valid) {
+    if (!!_editMotregning && !hasErrors) {
       const newReplySed: ReplySed = _.cloneDeep(replySed) as ReplySed
 
       const oldEditMotregning: Motregning | undefined = _.find(_allMotregnings, (m: Motregning) => m.__index.index === _editIndex)
@@ -677,7 +679,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
       dispatch(setReplySed(newReplySed))
       onCloseEdit(namespace + oldEditMotregning?.__index?.index)
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

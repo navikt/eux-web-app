@@ -46,13 +46,14 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
   })
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationKontoopplysningProps>(
-      validation, namespace, validateKontoopplysning, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationKontoopplysningProps>(
+      clonedValidation, namespace, validateKontoopplysning, {
         uti: utbetalingTilInstitusjon,
         formalName: personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   // caches konto information while switching from konto ordinær to sepa, so that we do not

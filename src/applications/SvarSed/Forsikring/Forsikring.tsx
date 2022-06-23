@@ -89,13 +89,14 @@ const Forsikring: React.FC<MainFormProps> = ({
   ].filter(it => options && options.include ? options.include.indexOf(it.value) >= 0 : true)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateForsikringProps>(
-      validation, namespace, validateForsikring, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidateForsikringProps>(
+      clonedValidation, namespace, validateForsikring, {
         replySed: _.cloneDeep(replySed) as ReplySed,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {

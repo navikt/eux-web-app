@@ -124,18 +124,19 @@ const Ansatt: React.FC<MainFormProps> = ({
     const __editIndex = !_.isUndefined(editIndex) ? editIndex : _editIndex
     delete __editPeriode?.__index
     delete __editPeriode?.__type
-    const [valid, newValidation] = performValidation<ValidationAnsattPeriodeProps>(
-      validation, namespace, validateAnsattPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationAnsattPeriodeProps>(
+      clonedValidation, namespace, validateAnsattPeriode, {
         periode: __editPeriode,
         perioder: perioderSomAnsatt,
         index: __editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${__editIndex}]`, __editPeriode))
       onCloseEdit(namespace + getIdx(__editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

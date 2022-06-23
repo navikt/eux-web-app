@@ -113,18 +113,19 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationGrunnlagForBosettingPeriodeProps>(
-      validation, namespace, validateGrunnlagForBosettingPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationGrunnlagForBosettingPeriodeProps>(
+      clonedValidation, namespace, validateGrunnlagForBosettingPeriode, {
         periode: _editPeriode,
         perioder: flyttegrunn?.perioder,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}.perioder[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

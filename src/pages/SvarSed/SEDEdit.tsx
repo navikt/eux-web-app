@@ -129,11 +129,12 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
   const sendReplySed = (e: any): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
-      const [valid, newValidation] = performValidation<ValidationSEDEditProps>(validation, '', validateSEDEdit, {
+      const clonedValidation = _.cloneDeep(validation)
+      const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
         replySed: newReplySed
       })
-      dispatch(setValidation(newValidation))
-      if (valid) {
+      dispatch(setValidation(clonedValidation))
+      if (!hasErrors) {
         setViewSendSedModal(true)
         if (!_.isEmpty(newReplySed?.sed)) {
           dispatch(updateSed(newReplySed))

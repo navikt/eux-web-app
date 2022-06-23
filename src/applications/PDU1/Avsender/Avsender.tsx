@@ -34,14 +34,15 @@ const Avsender: React.FC<MainFormProps> = ({
   const [allowEdit, setAllowEdit] = useState<boolean>(false)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAvsenderProps>(
-      validation, namespace, validateAvsender, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAvsenderProps>(
+      clonedvalidation, namespace, validateAvsender, {
         nav,
         keyForCity: 'poststed',
         keyforZipCode: 'postnr'
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setEnhetNavn = (enhetNavn: string) => {

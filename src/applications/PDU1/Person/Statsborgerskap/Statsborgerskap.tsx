@@ -62,12 +62,13 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationStatsborgerskaperProps>(
-      validation, namespace, validateStatsborgerskaper, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationStatsborgerskaperProps>(
+      clonedvalidation, namespace, validateStatsborgerskaper, {
         statsborgerskaper
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const onStatsborgerskapSelected = (land: string, index: number) => {
@@ -104,20 +105,21 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationStatsborgerskapProps>(
-      validation, namespace, validateStatsborgerskap, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationStatsborgerskapProps>(
+      clonedvalidation, namespace, validateStatsborgerskap, {
         statsborgerskap: _editStatsborgerskap,
         statsborgerskaper,
         index: _editIndex
       })
-    if (!!_editStatsborgerskap && valid) {
+    if (!!_editStatsborgerskap && !hasErrors) {
       let newStatsborgerskaper: Array<string> = _.cloneDeep(statsborgerskaper) as Array<string>
       newStatsborgerskaper[_editIndex!] = _editStatsborgerskap
       newStatsborgerskaper = newStatsborgerskaper.sort()
       dispatch(updateReplySed(target, newStatsborgerskaper))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

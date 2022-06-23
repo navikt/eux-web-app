@@ -117,18 +117,19 @@ const WithSubsidies: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationWithSubsidiesProps>(
-      validation, namespace, validateWithSubsidiesPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationWithSubsidiesProps>(
+      clonedValidation, namespace, validateWithSubsidiesPeriode, {
         pensjonPeriode: _editPensjonPeriode,
         perioder: perioderMedPensjon,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPensjonPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

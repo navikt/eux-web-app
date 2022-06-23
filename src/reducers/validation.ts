@@ -1,5 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
+import _ from 'lodash'
 import { AnyAction } from 'redux'
 import { filterAllWithNamespace } from 'utils/validation'
 
@@ -26,8 +27,10 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
         }
       }
 
+      let newStatus = _.cloneDeep(state.status)
+      filterAllWithNamespace(newStatus, key)
       return {
-        status: filterAllWithNamespace(state.status, key)
+        status: newStatus
       }
     }
 

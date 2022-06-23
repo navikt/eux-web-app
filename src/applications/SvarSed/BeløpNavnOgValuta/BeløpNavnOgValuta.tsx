@@ -205,14 +205,15 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationBeløpNavnOgValutaProps>(
-      validation, namespace, validateBeløpNavnOgValuta, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationBeløpNavnOgValutaProps>(
+      clonedValidation, namespace, validateBeløpNavnOgValuta, {
         ytelse: _editYtelse,
         index: _editIndex,
         personID,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       const __editYtelse = _.cloneDeep(_editYtelse)
       if (personID !== 'familie') {
         delete __editYtelse?.antallPersoner
@@ -220,7 +221,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
       dispatch(updateReplySed(`${target}[${_editIndex}]`, __editYtelse))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -64,14 +64,15 @@ const Adresser: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseProps>(validateAdresse, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAdresserProps>(
-      validation, namespace, validateAdresser, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAdresserProps>(
+      clonedvalidation, namespace, validateAdresser, {
         adresser,
         checkAdresseType,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
     dispatch(resetAdresse())
   })
 
@@ -107,18 +108,19 @@ const Adresser: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationAdresseProps>(
-      validation, namespace, validateAdresse, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationAdresseProps>(
+      clonedvalidation, namespace, validateAdresse, {
         adresse: _editAdresse,
         checkAdresseType,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editAdresse))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

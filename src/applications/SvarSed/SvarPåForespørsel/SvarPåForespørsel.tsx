@@ -42,13 +42,14 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationSvarPåForespørselProps>(
-      validation, namespace, validateSvarPåForespørsel, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationSvarPåForespørselProps>(
+      clonedValidation, namespace, validateSvarPåForespørsel, {
         replySed,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const doWeHavePositive: boolean = !_.isEmpty((replySed as H002Sed)?.positivtSvar?.informasjon) ||

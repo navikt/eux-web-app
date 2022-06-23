@@ -58,13 +58,14 @@ const Avslutning: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAvslutningProps>(
-      validation, namespace, validateAvslutning, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAvslutningProps>(
+      clonedvalidation, namespace, validateAvslutning, {
         replySed: (replySed as X001Sed),
         personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setAvslutningsDato = (avslutningsDato: string) => {

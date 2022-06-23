@@ -34,13 +34,14 @@ const Referanseperiode: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationReferanseperiodeProps>(
-      validation, namespace, validateReferanseperiode, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationReferanseperiodeProps>(
+      clonedValidation, namespace, validateReferanseperiode, {
         anmodningsperiode,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setPeriode = (periode: Periode, id: string) => {

@@ -69,13 +69,14 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPeriodeDagpengerProps>(validatePeriodeDagpenger, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidatePerioderDagpengerProps>(
-      validation, namespace, validatePerioderDagpenger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidatePerioderDagpengerProps>(
+      clonedValidation, namespace, validatePerioderDagpenger, {
         perioderDagpenger: perioder,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setPeriode = (periode: Periode, index: number) => {
@@ -160,18 +161,19 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationPeriodeDagpengerProps>(
-      validation, namespace, validatePeriodeDagpenger, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationPeriodeDagpengerProps>(
+      clonedValidation, namespace, validatePeriodeDagpenger, {
         periodeDagpenger: _editPeriodeDagpenger,
         perioderDagpenger: perioder,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriodeDagpenger))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -223,15 +223,16 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
 
   const onSaveEdit = () => {
     const [type, index] = readNSIdx(_editTypeAndIndex!)
-    const [valid, newValidation] = performValidation<ValidationFamilieytelsePeriodeProps>(
-      validation, namespace, validateFamilieytelserPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationFamilieytelsePeriodeProps>(
+      clonedValidation, namespace, validateFamilieytelserPeriode, {
         periode: _editPeriode,
         perioder: _allPeriods,
         nsIndex: _editTypeAndIndex,
         personName
       })
 
-    if (!!_editPeriode && valid) {
+    if (!!_editPeriode && !hasErrors) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
 
       const __editPeriode: Periode | PensjonPeriode = _.cloneDeep(_editPeriode)
@@ -271,7 +272,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       }
       onCloseEdit(namespace + _editTypeAndIndex)
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

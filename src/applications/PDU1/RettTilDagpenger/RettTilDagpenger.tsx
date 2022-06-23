@@ -39,13 +39,14 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   )
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationRettTilDagpengerProps>(
-      validation, namespace, validateRettTilDagpenger, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationRettTilDagpengerProps>(
+      clonedvalidation, namespace, validateRettTilDagpenger, {
         rettTilDagpenger,
         ikkeRettTilDagpenger
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const onRettTilDagpengerRadioChange = (value: string | number | boolean) => {

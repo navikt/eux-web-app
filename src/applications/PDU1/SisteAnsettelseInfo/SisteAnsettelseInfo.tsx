@@ -52,12 +52,13 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationSisteAnsettelseinfoProps>(
-      validation, namespace, validateSisteAnsettelseinfo, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationSisteAnsettelseinfoProps>(
+      clonedvalidation, namespace, validateSisteAnsettelseinfo, {
         sisteAnsettelseInfo
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string | undefined) => {
