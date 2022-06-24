@@ -114,8 +114,8 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     const seds: Array<Sed> | undefined = _.cloneDeep(currentSak.sedListe)
 
     seds?.forEach((connectedSed: Sed) => {
-      // if you have a gjelderSedId, let's put it under Children
-      if (connectedSed.gjelderSedId) {
+      // if you have a sedIdParent (not F002), let's put it under Children
+      if (connectedSed.sedIdParent && connectedSed.sedType !== 'F002') {
         tempChildrenSed.push(connectedSed)
       } else {
         tempSedMap[connectedSed.sedId] = connectedSed
@@ -123,12 +123,12 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     })
     // Now, let's put all children SED
     tempChildrenSed.forEach((connectedSed: Sed) => {
-      if (connectedSed.gjelderSedId) {
-        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.gjelderSedId) &&
-           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.gjelderSedId], 'children')) {
-          tempSedMap[connectedSed.gjelderSedId].children.push(connectedSed)
+      if (connectedSed.sedIdParent) {
+        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
+           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
+          tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
         } else {
-          tempSedMap[connectedSed.gjelderSedId].children = [connectedSed]
+          tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
         }
       }
     })
