@@ -27,7 +27,7 @@ const validationReducer = (state: ValidationState = initialValidationState, acti
         }
       }
 
-      let newStatus = _.cloneDeep(state.status)
+      const newStatus = _.cloneDeep(state.status)
       filterAllWithNamespace(newStatus, key)
       return {
         status: newStatus

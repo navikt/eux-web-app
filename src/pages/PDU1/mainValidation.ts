@@ -27,21 +27,27 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 
   const personID = 'bruker'
   const person : Pdu1Person = _.get(pdu1, personID)
-  hasErrors.push(performValidation<ValidationPersonProps>(v, `${namespace}-${personID}-person`, validatePerson, { person }))
+  hasErrors.push(performValidation<ValidationPersonProps>(v,
+    `${namespace}-${personID}-person`, validatePerson, { person }, true))
 
-  hasErrors.push(performValidation<ValidateAllePDPerioderProps>(v, `${namespace}-${personID}-perioder`, validateAllePDPerioder, { pdu1 }))
+  hasErrors.push(performValidation<ValidateAllePDPerioderProps>(v,
+    `${namespace}-${personID}-perioder`, validateAllePDPerioder, { pdu1 }, true))
 
   const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(pdu1, 'opphoer')
-  hasErrors.push(performValidation<ValidationSisteAnsettelseinfoProps>(v, `${namespace}-${personID}-sisteansettelseinfo`, validateSisteAnsettelseinfo, { sisteAnsettelseInfo }))
+  hasErrors.push(performValidation<ValidationSisteAnsettelseinfoProps>(v,
+    `${namespace}-${personID}-sisteansettelseinfo`, validateSisteAnsettelseinfo, { sisteAnsettelseInfo }, true))
 
   const utbetaling: AndreMottatteUtbetalinger | undefined = _.get(pdu1, 'andreMottatteUtbetalinger')
-  hasErrors.push(performValidation<ValidationUtbetalingProps>(v, `${namespace}-${personID}-utbetaling`, validateUtbetaling, { utbetaling }))
+  hasErrors.push(performValidation<ValidationUtbetalingProps>(v,
+    `${namespace}-${personID}-utbetaling`, validateUtbetaling, { utbetaling }, true))
 
   const dagpenger: Array<PDPeriode> | undefined = _.get(pdu1, 'perioderDagpengerMottatt')
-  hasErrors.push(performValidation<ValidationDagpengerPerioderProps>(v, `${namespace}-${personID}-dagpenger`, validateDagpengerPerioder, { dagpenger }))
+  hasErrors.push(performValidation<ValidationDagpengerPerioderProps>(v,
+    `${namespace}-${personID}-dagpenger`, validateDagpengerPerioder, { dagpenger }, true))
 
   const nav: NavInfo = _.get(pdu1, 'nav')
-  hasErrors.push(performValidation<ValidationAvsenderProps>(v, `${namespace}-${personID}-avsender`, validateAvsender, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
+  hasErrors.push(performValidation<ValidationAvsenderProps>(v,
+    `${namespace}-${personID}-avsender`, validateAvsender, { nav, keyForCity: 'poststed', keyforZipCode: 'postnr' }, true))
 
   return hasErrors.find(value => value) !== undefined
 }
@@ -58,7 +64,7 @@ export const validatePdu1Search = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: fagsak,
-    id: namespace + '-fagsak',
+    id: namespace + '-pdu1results',
     message: 'validation:noFagsak'
   }))
 

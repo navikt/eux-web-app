@@ -25,14 +25,14 @@ export interface PreviewPDU1Props {
 
 export interface PreviewPDU1Selector {
   pdu1: PDU1
-  gettingPreviewPdu1: boolean
+  gettingPreviewDraftPdu1: boolean
   previewPdu1file: Blob | undefined
 }
 
 const mapState = (state: State): any => ({
   pdu1: state.pdu1.pdu1,
-  gettingPreviewPdu1: state.loading.gettingPreviewPdu1,
-  previewPdu1file: state.pdu1.previewPdu1
+  gettingPreviewDraftPdu1: state.loading.gettingPreviewDraftPdu1,
+  previewPdu1file: state.pdu1.previewDraftPdu1
 })
 
 const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: PreviewPDU1Props) => {
@@ -40,7 +40,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
   const dispatch = useAppDispatch()
   const {
     pdu1,
-    gettingPreviewPdu1,
+    gettingPreviewDraftPdu1,
     previewPdu1file
   }: PreviewPDU1Selector = useAppSelector(mapState)
 
@@ -88,17 +88,17 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         {pdu1 && (
           <Button
             variant='tertiary'
-            disabled={gettingPreviewPdu1 || !_.isNil(previewPdu1file)}
+            disabled={gettingPreviewDraftPdu1 || !_.isNil(previewPdu1file)}
             data-amplitude='pdu1.editor.preview'
             onClick={onPreviewPdu1Clicked}
           >
             <Sight />
-            {gettingPreviewPdu1
+            {gettingPreviewDraftPdu1
               ? t('label:laster-ned-filen')
               : _.isNil(previewPdu1)
                 ? t('el:button-generate-preview-x', { x: 'PD U1' })
                 : t('el:button-preview-x', { x: 'PD U1' })}
-            {gettingPreviewPdu1 && <Loader />}
+            {gettingPreviewDraftPdu1 && <Loader />}
           </Button>
         )}
         {pdu1 && previewPdu1file && (
@@ -106,7 +106,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
-              disabled={gettingPreviewPdu1}
+              disabled={gettingPreviewDraftPdu1}
               data-amplitude='pdu1.editor.download'
               onClick={onDownloadPdu1Clicked}
             >
@@ -116,7 +116,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             <HorizontalSeparatorDiv />
             <Button
               variant='tertiary'
-              disabled={gettingPreviewPdu1}
+              disabled={gettingPreviewDraftPdu1}
               data-amplitude='pdu1.editor.reset'
               onClick={onResetPdu1Clicked}
             >

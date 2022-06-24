@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { PDU1 } from 'declarations/pd'
-import { FagSaker } from 'declarations/types'
+import { FagSaker, PDU1SearchResults } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
@@ -8,8 +8,9 @@ import { AnyAction } from 'redux'
 export interface Pdu1State {
   fagsaker: FagSaker | null | undefined
   pdu1: PDU1 | null | undefined
-  pdu1results: FagSaker | null | undefined
-  previewPdu1: Blob | null | undefined
+  pdu1results: PDU1SearchResults | null | undefined
+  previewDraftPdu1: Blob | null | undefined
+  previewStoredPdu1: Blob | null | undefined
   jornalførePdu1Response: any
   pdu1Changed: boolean
 }
@@ -18,7 +19,8 @@ export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
   pdu1: undefined,
   pdu1results: undefined,
-  previewPdu1: undefined,
+  previewDraftPdu1: undefined,
+  previewStoredPdu1: undefined,
   jornalførePdu1Response: undefined,
   pdu1Changed: false
 }
@@ -48,64 +50,45 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
         fagsaker: null
       }
 
-    case types.PDU1_GET_REQUEST:
+    case types.PDU1_GET_ASJSON_REQUEST:
       return {
         ...state,
         pdu1Changed: false,
         pdu1: undefined
       }
 
-    case types.PDU1_GET_SUCCESS: {
+    case types.PDU1_GET_ASJSON_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
-      pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
       return {
         ...state,
         pdu1
       }
     }
 
-    case types.PDU1_GET_FAILURE:
+    case types.PDU1_GET_ASJSON_FAILURE:
       return {
         ...state,
+        pdu1Changed: false,
         pdu1: null
       }
 
-    case types.PDU1_FETCH_REQUEST:
-    case types.PDU1_FETCH_RESET:
+    case types.PDU1_GET_ASPDF_RESET:
+    case types.PDU1_GET_ASPDF_REQUEST:
       return {
         ...state,
-        pdu1results: undefined
+        previewStoredPdu1: undefined
       }
 
-    case types.PDU1_FETCH_SUCCESS:
+    case types.PDU1_GET_ASPDF_SUCCESS:
       return {
         ...state,
-        pdu1results: (action as ActionWithPayload).payload
+        previewStoredPdu1: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_FETCH_FAILURE:
+    case types.PDU1_GET_ASPDF_FAILURE:
       return {
         ...state,
-        pdu1results: null
-      }
-
-    case types.PDU1_PREVIEW_RESET:
-    case types.PDU1_PREVIEW_REQUEST:
-      return {
-        ...state,
-        previewPdu1: undefined
-      }
-
-    case types.PDU1_PREVIEW_SUCCESS:
-      return {
-        ...state,
-        previewPdu1: (action as ActionWithPayload).payload
-      }
-
-    case types.PDU1_PREVIEW_FAILURE:
-      return {
-        ...state,
-        previewPdu1: null
+        previewStoredPdu1: null
       }
 
     case types.PDU1_JOURNALFØRE_RESET:
@@ -127,12 +110,79 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
         jornalførePdu1Response: null
       }
 
-    case types.PDU1_SET:
     case types.PDU1_LOAD:
       return {
         ...state,
         pdu1Changed: false,
         pdu1: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_SET:
+      return {
+        ...state,
+        pdu1Changed: true,
+        pdu1: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_PREVIEW_RESET:
+    case types.PDU1_PREVIEW_REQUEST:
+      return {
+        ...state,
+        previewDraftPdu1: undefined
+      }
+
+    case types.PDU1_PREVIEW_SUCCESS:
+      return {
+        ...state,
+        previewDraftPdu1: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_PREVIEW_FAILURE:
+      return {
+        ...state,
+        previewDraftPdu1: null
+      }
+
+    case types.PDU1_SEARCH_REQUEST:
+    case types.PDU1_SEARCH_RESET:
+      return {
+        ...state,
+        pdu1results: undefined
+      }
+
+    case types.PDU1_SEARCH_SUCCESS:
+      return {
+        ...state,
+        pdu1results: (action as ActionWithPayload).payload
+      }
+
+    case types.PDU1_SEARCH_FAILURE:
+      return {
+        ...state,
+        pdu1results: null
+      }
+
+    case types.PDU1_TEMPLATE_REQUEST:
+      return {
+        ...state,
+        pdu1Changed: false,
+        pdu1: undefined
+      }
+
+    case types.PDU1_TEMPLATE_SUCCESS: {
+      const pdu1: PDU1 = (action as ActionWithPayload).payload
+      pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
+      return {
+        ...state,
+        pdu1
+      }
+    }
+
+    case types.PDU1_TEMPLATE_FAILURE:
+      return {
+        ...state,
+        pdu1Changed: false,
+        pdu1: null
       }
 
     case types.PDU1_UPDATE: {

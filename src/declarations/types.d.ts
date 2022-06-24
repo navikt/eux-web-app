@@ -100,6 +100,18 @@ export interface FagSak {
   status?: string
 }
 
+export interface PDU1SearchResult {
+  datoOpprettet: string
+  journalpostId: string
+  dokumentInfoId: string
+  tema: string
+  brevkode: string
+  tittel: string
+  dokumentvarianter: Array<string>
+}
+
+export type PDU1SearchResults = Array<PDU1SearchResult>
+
 export type FagSaker = Array<FagSak>
 
 export interface OldFamilieRelasjon extends Person {

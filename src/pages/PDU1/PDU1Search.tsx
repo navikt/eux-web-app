@@ -1,9 +1,11 @@
 import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
+import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
   Column,
   FlexBaseDiv,
+  FlexDiv,
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
@@ -12,24 +14,36 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import * as appActions from 'actions/app'
-import { fetchPdu1, getFagsaker, getPdu1, resetFagsaker, resetPdu1results } from 'actions/pdu1'
+import {
+  searchPdu1s,
+  getFagsaker,
+  getStoredPdu1AsJSON,
+  getStoredPdu1AsPDF,
+  resetFagsaker,
+  resetPdu1results,
+  getPdu1Template,
+  resetStoredPdu1AsPDF
+} from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
+import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
+import { ModalContent } from 'declarations/components'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { FagSak, FagSaker } from 'declarations/types'
+import { FagSak, FagSaker, PDU1SearchResult, PDU1SearchResults } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import { blobToBase64 } from 'utils/blob'
 import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
 
 const ContainerDiv = styled(PileCenterDiv)`
@@ -42,9 +56,12 @@ export interface PDU1SearchSelector {
   fagsaker: FagSaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
+  gettingPdu1: boolean
   fetchingPdu1: boolean
+  previewStoredPdu1: Blob | null | undefined
+  gettingPreviewStoredPdu1: boolean
   PDU1: PDU1 | null | undefined
-  pdu1results: FagSaker | null | undefined
+  pdu1results: PDU1SearchResults | null | undefined
 }
 
 const mapState = (state: State): PDU1SearchSelector => ({
@@ -52,7 +69,10 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fagsaker: state.pdu1.fagsaker,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
+  gettingPdu1: state.loading.gettingPdu1,
   fetchingPdu1: state.loading.fetchingPdu1,
+  previewStoredPdu1: state.pdu1.previewStoredPdu1,
+  gettingPreviewStoredPdu1: state.loading.gettingPreviewStoredPdu1,
   PDU1: state.pdu1.pdu1,
   pdu1results: state.pdu1.pdu1results
 })
@@ -70,19 +90,28 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
+    gettingPdu1,
     fetchingPdu1,
     PDU1,
     pdu1results,
+    gettingPreviewStoredPdu1,
+    previewStoredPdu1,
     fnrParam
   }: PDU1SearchSelector = useAppSelector(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string | undefined>(fnrParam)
+
   const [fagsak, setFagsak] = useState<string | undefined>(undefined)
   const [tema, setTema] = useState<string | undefined>(undefined)
-  const [pdu1Request, setPdu1Request] = useState<boolean>(false)
+  const [pdu1SearchResult, setPdu1SearchResult] = useState< PDU1SearchResult | undefined>(undefined)
+
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [validMessage, setValidMessage] = useState<string>('')
-  const [startingPdu1, setStartingPdu1] = useState<boolean>(false)
-  const [searchingPdu1, setSearchingPdu1] = useState<boolean>(false)
+  const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
+
+  const [loadingForEditPdu1Mode, setLoadingForEditPdu1Mode] = useState<boolean>(false)
+  const [newPdu1Mode, setNewPdu1Mode] = useState<boolean>(false)
+  const [searchPdu1Mode, setSearchPdu1Mode] = useState<boolean>(false)
+  const [requestPreview, setRequestPreview] = useState<boolean>(false)
 
   const namespace = 'pdu1search'
   const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
@@ -111,8 +140,8 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   const onFnrDnrChange = (query: string) => {
     dispatch(appActions.cleanData())
-    setStartingPdu1(false)
-    setSearchingPdu1(false)
+    setNewPdu1Mode(false)
+    setSearchPdu1Mode(false)
     _resetValidation(namespace + '-search')
     setFnrOrDnr(query)
     const result = validator.idnr(query)
@@ -147,50 +176,112 @@ const PDU1Search: React.FC<PDU1Props> = ({
     setFagsak(f)
   }
 
-  const onStartPdu1Clicked = () => {
+  const onNewPdu1Mode = () => {
     dispatch(resetPdu1results())
-    setSearchingPdu1(false)
-    setStartingPdu1(true)
+    setSearchPdu1Mode(false)
+    setNewPdu1Mode(true)
   }
 
-  const onGetPdu1Clicked = () => {
-    const valid = performValidation({
-      fnrOrDnr,
-      fagsak
-    })
-
-    if (valid) {
-      setPdu1Request(true)
-      dispatch(getPdu1(fnrOrDnr!, fagsak!))
-    }
-  }
-
-  const onEditingPdu1Clicked = () => {
-    const valid = performValidation({
-      fnrOrDnr,
-      fagsak
-    })
-
-    if (valid) {
-      setPdu1Request(true)
-      dispatch(getPdu1(fnrOrDnr!, fagsak!))
-    }
-  }
-
-  const onSearchPdu1Clicked = () => {
-    setStartingPdu1(false)
-    setSearchingPdu1(true)
-
+  const onSearchPdu1Mode = () => {
+    setNewPdu1Mode(false)
+    setSearchPdu1Mode(true)
     dispatch(resetFagsaker())
     setTema(undefined)
     if (fnrOrDnr) {
-      dispatch(fetchPdu1(fnrOrDnr))
+      dispatch(searchPdu1s(fnrOrDnr))
     }
   }
 
+  const onPdu1SearchResultSelected = (ids: string) => {
+    const _ids = ids.split('-')
+    const pdu1SearchResult = _.find(pdu1results, { journalpostId: _ids[0], dokumentInfoId: _ids[1] })
+    setPdu1SearchResult(pdu1SearchResult)
+  }
+
+  const onCreatingPdu1 = () => {
+    const valid = performValidation({
+      fnrOrDnr,
+      fagsak
+    })
+    if (valid) {
+      setLoadingForEditPdu1Mode(true)
+      dispatch(getPdu1Template(fnrOrDnr!, fagsak!))
+    }
+  }
+
+  const onEditingPdu1 = () => {
+    if (pdu1SearchResult) {
+      setLoadingForEditPdu1Mode(true)
+      dispatch(getStoredPdu1AsJSON(pdu1SearchResult.journalpostId, pdu1SearchResult.dokumentInfoId))
+    }
+  }
+
+  const onPreviewingStoredPdu1 = () => {
+    if (pdu1SearchResult) {
+      setRequestPreview(true)
+      dispatch(getStoredPdu1AsPDF(pdu1SearchResult.journalpostId!, pdu1SearchResult.dokumentInfoId!))
+    }
+  }
+
+  const isPDU1 = (r: PDU1SearchResult) => r.brevkode === 'DAG_EOS_U1'
+
+  const resetPreview = () => {
+    dispatch(resetStoredPdu1AsPDF())
+    setPreviewModal(undefined)
+  }
+
+  const showPreviewModal = (previewFile: Blob) => {
+    blobToBase64(previewFile).then((base64: any) => {
+      const file: File = {
+        id: '' + new Date().getTime(),
+        size: previewFile.size,
+        name: '',
+        mimetype: 'application/pdf',
+        content: {
+          base64: base64.replaceAll('octet-stream', 'pdf')
+        }
+      }
+
+      setPreviewModal({
+        closeButton: true,
+        modalContent: (
+          <div
+            style={{ cursor: 'pointer' }}
+          >
+            <FileFC
+              file={{
+                ...file,
+                mimetype: 'application/pdf'
+              }}
+              width={600}
+              height={1200}
+              tema='simple'
+              viewOnePage={false}
+              onContentClick={resetPreview}
+            />
+          </div>
+        )
+      })
+    })
+  }
+
   useEffect(() => {
-    if (PDU1 && pdu1Request) {
-      setPdu1Request(false)
+    if (requestPreview && !previewModal && !_.isNil(previewStoredPdu1)) {
+      setRequestPreview(false)
+      showPreviewModal(previewStoredPdu1)
+    }
+  }, [previewStoredPdu1])
+
+  useEffect(() => {
+    if (PDU1 && loadingForEditPdu1Mode) {
+      setLoadingForEditPdu1Mode(false)
+      changeMode('B')
+    }
+  }, [PDU1])
+
+  useEffect(() => {
+    if (PDU1 && loadingForEditPdu1Mode) {
+      setLoadingForEditPdu1Mode(false)
       changeMode('B')
     }
   }, [PDU1])
@@ -204,6 +295,11 @@ const PDU1Search: React.FC<PDU1Props> = ({
 
   return (
     <ContainerDiv>
+      <Modal
+        open={!_.isNil(previewModal)}
+        modal={previewModal}
+        onModalClose={() => setPreviewModal(undefined)}
+      />
       <Heading size='medium'>
         {t('app:page-title-pdu1-search')}
       </Heading>
@@ -233,8 +329,8 @@ const PDU1Search: React.FC<PDU1Props> = ({
           <FlexBaseDiv style={{ marginTop: '2rem' }}>
             <Button
               variant='primary'
-              disabled={!validFnr || searchingPdu1}
-              onClick={onSearchPdu1Clicked}
+              disabled={!validFnr || searchPdu1Mode}
+              onClick={onSearchPdu1Mode}
             >
               {fetchingPdu1 && <Loader />}
               {fetchingPdu1 ? t('message:loading-searching') : t('el:button-search-for-x', { x: 'PD U1' })}
@@ -245,14 +341,14 @@ const PDU1Search: React.FC<PDU1Props> = ({
             <Button
               variant='primary'
               disabled={!validFnr}
-              onClick={onStartPdu1Clicked}
+              onClick={onNewPdu1Mode}
             >
               {t('el:button-start-new-x', { x: 'PD U1' })}
             </Button>
           </FlexBaseDiv>
         </Column>
       </AlignStartRow>
-      {startingPdu1 && (
+      {newPdu1Mode && (
         <>
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
@@ -321,14 +417,14 @@ const PDU1Search: React.FC<PDU1Props> = ({
           <Button
             variant='primary'
             disabled={!tema || !fagsak || creatingPdu1}
-            onClick={onGetPdu1Clicked}
+            onClick={onCreatingPdu1}
           >
             {creatingPdu1 && <Loader />}
             {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
           </Button>
         </>
       )}
-      {searchingPdu1 && (
+      {searchPdu1Mode && (
         <>
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
@@ -340,50 +436,72 @@ const PDU1Search: React.FC<PDU1Props> = ({
           {fetchingPdu1 && <Loader />}
           <div style={{ width: '100%' }}>
             <RadioPanelGroup
-              value={fagsak}
-              name={namespace + '-fagsaker'}
-              onChange={(e: string) => onFagsakerSelected(e)}
+              value={pdu1SearchResult ? pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId : ''}
+              name={namespace + '-pdu1searchresult'}
+              onChange={(e: string) => onPdu1SearchResultSelected(e)}
             >
-              {pdu1results?.map((f: FagSak) => (
-                <div key={f.saksID}>
-                  <RadioPanelBorder key={f.saksID} value={f.saksID}>
-                    <PileDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:fagsakNr')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.fagsakNr}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:tema')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.temakode}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:saksnummer')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.saksID}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:siste-oppdatert')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.opprettetTidspunkt}</BodyLong>
-                      </FlexBaseDiv>
-                    </PileDiv>
-                  </RadioPanelBorder>
-                  <VerticalSeparatorDiv />
-                </div>
-              ))}
+              {pdu1results?.filter(isPDU1)
+                .map((r: PDU1SearchResult) => (
+                  <div key={r.journalpostId + '-' + r.dokumentInfoId}>
+                    <RadioPanelBorder key={r.journalpostId + '-' + r.dokumentInfoId} value={r.journalpostId + '-' + r.dokumentInfoId}>
+                      <PileDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:tittel')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.tittel}</BodyLong>
+                        </FlexBaseDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:tema')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.tema}</BodyLong>
+                        </FlexBaseDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:journalpost-id')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.journalpostId}</BodyLong>
+                        </FlexBaseDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:dokument-id')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.dokumentInfoId}</BodyLong>
+                        </FlexBaseDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:variant')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.dokumentvarianter.join(', ')}</BodyLong>
+                        </FlexBaseDiv>
+                        <FlexBaseDiv>
+                          <Label>{t('label:dato-opprettet')}:</Label>
+                          <HorizontalSeparatorDiv size='0.35' />
+                          <BodyLong>{r.datoOpprettet}</BodyLong>
+                        </FlexBaseDiv>
+                      </PileDiv>
+                    </RadioPanelBorder>
+                    <VerticalSeparatorDiv />
+                  </div>
+                ))}
             </RadioPanelGroup>
           </div>
           <VerticalSeparatorDiv size='2' />
-          <Button
-            variant='primary'
-            disabled={!fagsak || creatingPdu1}
-            onClick={onEditingPdu1Clicked}
-          >
-            {creatingPdu1 && <Loader />}
-            {creatingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
-          </Button>
+          <FlexDiv>
+            <Button
+              variant='primary'
+              disabled={!pdu1SearchResult || gettingPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ORIGINAL') < 0}
+              onClick={onEditingPdu1}
+            >
+              {gettingPdu1 && <Loader />}
+              {gettingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
+            </Button>
+            <HorizontalSeparatorDiv />
+            <Button
+              variant='secondary'
+              disabled={!pdu1SearchResult || gettingPreviewStoredPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ARKIV') < 0}
+              onClick={onPreviewingStoredPdu1}
+            >
+              {gettingPreviewStoredPdu1 && <Loader />}
+              {gettingPreviewStoredPdu1 ? t('label:laster') : t('el:button-preview-x', { x: 'PD U1' })}
+            </Button>
+          </FlexDiv>
         </>
       )}
     </ContainerDiv>

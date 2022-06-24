@@ -75,6 +75,7 @@
   "damn-really": "OK \uD83D\uDE1E",
   "dato": "Dato",
   "dato-for-relasjon": "Dato for relasjon",
+  "dato-opprettet": "Dato opprettet",
   "dekkede": "Dekkede",
   "dekkede-periode": "Dekkede periode",
   "dekning-trygdeordningen" : "Dekning av trygdeordningen",
@@ -205,7 +206,7 @@
 
   "ja": "Ja",
   "jente" : "Jente",
-  "journalpost-id": "JournalpostID",
+  "journalpost-id": "Journalpost ID",
   "journalforing" : "Journalfør {{sedtype}}",
 
   "kjønn" : "Kjønn",
@@ -403,6 +404,7 @@
   "valid-dnr": "Gyldig d.nr.",
   "valid-fnr": "Gyldig f.nr.",
   "valuta": "Valuta",
+  "variant" : "Variant",
   "vedlagte" : "Vedlagte",
   "vedlegg" : "Vedlegg",
   "vedlegg-sendt" : "Vedlegg sendt",

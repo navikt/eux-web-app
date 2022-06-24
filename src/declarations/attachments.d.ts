@@ -11,6 +11,7 @@ export interface JoarkDoc {
   tittel?: string | null | undefined
   dokumentvarianter: Array<JoarkFileVariant>
 }
+
 export interface JoarkPoster {
   journalpostId: string
   tittel: string

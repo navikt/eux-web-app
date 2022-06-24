@@ -156,8 +156,8 @@ export const hasNamespaceWithErrors = (v: Validation, namespace: string): boolea
 // note that this function not only returns validation, but CHANGES original object, because we want
 // that to chain-validate
 export const filterAllWithNamespace = (v: Validation, namespace: string | Array<string>): Validation => {
-  let namespaceArray: Array<string> = _.isString(namespace) ? [namespace] : namespace
-  const clonedV = {...v}
+  const namespaceArray: Array<string> = _.isString(namespace) ? [namespace] : namespace
+  const clonedV = { ...v }
   for (const path of namespaceArray) {
     _.unset(clonedV, path)
   }

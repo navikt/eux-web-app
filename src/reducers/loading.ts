@@ -8,8 +8,8 @@ export interface LoadingState {
 
 export const initialLoadingState: LoadingState = {
   completingPdu1: false,
-  creatingPdu1: false,
   creatingSvarSed: false,
+  creatingPdu1: false,
   fetchingPdu1: false,
   gettingAdresser: false,
   gettingArbeidsperioder: false,
@@ -20,9 +20,11 @@ export const initialLoadingState: LoadingState = {
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingLandkoder: false,
+  gettingPdu1: false,
   gettingPreviewSed: false,
   gettingPreviewFile: false,
-  gettingPreviewPdu1: false,
+  gettingPreviewStoredPdu1: false,
+  gettingPreviewDraftPdu1: false,
   gettingSaksbehandler: false,
   gettingSavedItems: false,
   gettingServerinfo: false,
@@ -184,14 +186,40 @@ const loadingReducer = (
         completingPdu1: false
       }
 
-    case types.PDU1_GET_REQUEST:
+    case types.PDU1_GET_ASJSON_REQUEST:
+      return {
+        ...state,
+        gettingPdu1: true
+      }
+
+    case types.PDU1_GET_ASPDF_REQUEST:
+      return {
+        ...state,
+        gettingPreviewStoredPdu1: true
+      }
+
+    case types.PDU1_GET_ASPDF_SUCCESS:
+    case types.PDU1_GET_ASPDF_FAILURE:
+      return {
+        ...state,
+        gettingPreviewStoredPdu1: false
+      }
+
+    case types.PDU1_GET_ASJSON_FAILURE:
+    case types.PDU1_GET_ASJSON_SUCCESS:
+      return {
+        ...state,
+        gettingPdu1: false
+      }
+
+    case types.PDU1_TEMPLATE_REQUEST:
       return {
         ...state,
         creatingPdu1: true
       }
 
-    case types.PDU1_GET_FAILURE:
-    case types.PDU1_GET_SUCCESS:
+    case types.PDU1_TEMPLATE_FAILURE:
+    case types.PDU1_TEMPLATE_SUCCESS:
       return {
         ...state,
         creatingPdu1: false
@@ -200,24 +228,24 @@ const loadingReducer = (
     case types.PDU1_PREVIEW_REQUEST:
       return {
         ...state,
-        gettingPreviewPdu1: true
+        gettingPreviewDraftPdu1: true
       }
 
     case types.PDU1_PREVIEW_SUCCESS:
     case types.PDU1_PREVIEW_FAILURE:
       return {
         ...state,
-        gettingPreviewPdu1: false
+        gettingPreviewDraftPdu1: false
       }
 
-    case types.PDU1_FETCH_REQUEST:
+    case types.PDU1_SEARCH_REQUEST:
       return {
         ...state,
         fetchingPdu1: true
       }
 
-    case types.PDU1_FETCH_FAILURE:
-    case types.PDU1_FETCH_SUCCESS:
+    case types.PDU1_SEARCH_FAILURE:
+    case types.PDU1_SEARCH_SUCCESS:
       return {
         ...state,
         fetchingPdu1: false

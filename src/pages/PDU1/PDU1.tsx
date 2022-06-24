@@ -3,7 +3,7 @@ import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSe
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import { cleanUpPDU1, fetchPdu1, loadPdu1, setPdu1 } from 'actions/pdu1'
+import { cleanUpPDU1, searchPdu1s, loadPdu1 } from 'actions/pdu1'
 import { setCurrentSak } from 'actions/svarsed'
 import PDU1Details from 'applications/PDU1/PDU1Details/PDU1Details'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
@@ -77,7 +77,7 @@ export const PDU1Page = (): JSX.Element => {
     const dokumenttypeParam: string | null = params.get('dokumenttype')
     if (fnrParam) {
       setStatusParam('fnr', fnrParam)
-      dispatch(fetchPdu1(fnrParam))
+      dispatch(searchPdu1s(fnrParam))
     }
     if (temaParam) {
       setStatusParam('tema', temaParam)
@@ -98,7 +98,7 @@ export const PDU1Page = (): JSX.Element => {
             _.find(entries, (e: LocalStorageEntry<PDU1>) => e.name === name) as LocalStorageEntry<PDU1> | undefined
           if (entry) {
             dispatch(setCurrentEntry('pdu1', entry))
-            dispatch(setPdu1(entry.content as PDU1))
+            dispatch(loadPdu1(entry.content as PDU1))
             changeMode('B')
             dispatch(alertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
           }
