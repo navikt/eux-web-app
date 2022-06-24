@@ -1,4 +1,4 @@
-import { BodyLong, Button, Heading, Label, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Heading, Label, Loader, Panel } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
@@ -9,8 +9,6 @@ import {
   HorizontalSeparatorDiv,
   PileCenterDiv,
   PileDiv,
-  RadioPanelBorder,
-  RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import * as appActions from 'actions/app'
@@ -99,10 +97,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
     fnrParam
   }: PDU1SearchSelector = useAppSelector(mapState)
   const [fnrOrDnr, setFnrOrDnr] = useState<string | undefined>(fnrParam)
-
-  const [fagsak, setFagsak] = useState<string | undefined>(undefined)
   const [tema, setTema] = useState<string | undefined>(undefined)
-  const [pdu1SearchResult, setPdu1SearchResult] = useState< PDU1SearchResult | undefined>(undefined)
 
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [validMessage, setValidMessage] = useState<string>('')
@@ -169,13 +164,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
     }
   }
 
-  const onFagsakerSelected = (f: string) => {
-    if (validation[namespace + '-fagsaker']) {
-      dispatch(resetValidation(namespace + '-fagsaker'))
-    }
-    setFagsak(f)
-  }
-
   const onNewPdu1Mode = () => {
     dispatch(resetPdu1results())
     setSearchPdu1Mode(false)
@@ -192,31 +180,25 @@ const PDU1Search: React.FC<PDU1Props> = ({
     }
   }
 
-  const onPdu1SearchResultSelected = (ids: string) => {
-    const _ids = ids.split('-')
-    const pdu1SearchResult = _.find(pdu1results, { journalpostId: _ids[0], dokumentInfoId: _ids[1] })
-    setPdu1SearchResult(pdu1SearchResult)
-  }
-
-  const onCreatingPdu1 = () => {
+  const onCreatingPdu1 = (fagsak: string) => {
     const valid = performValidation({
       fnrOrDnr,
       fagsak
     })
     if (valid) {
       setLoadingForEditPdu1Mode(true)
-      dispatch(getPdu1Template(fnrOrDnr!, fagsak!))
+      dispatch(getPdu1Template(fnrOrDnr!, fagsak))
     }
   }
 
-  const onEditingPdu1 = () => {
+  const onEditingPdu1 = (pdu1SearchResult: PDU1SearchResult) => {
     if (pdu1SearchResult) {
       setLoadingForEditPdu1Mode(true)
-      dispatch(getStoredPdu1AsJSON(pdu1SearchResult.journalpostId, pdu1SearchResult.dokumentInfoId))
+      dispatch(getStoredPdu1AsJSON(pdu1SearchResult.journalpostId, pdu1SearchResult.dokumentInfoId, pdu1SearchResult.fagsakId))
     }
   }
 
-  const onPreviewingStoredPdu1 = () => {
+  const onPreviewingStoredPdu1 = (pdu1SearchResult: PDU1SearchResult) => {
     if (pdu1SearchResult) {
       setRequestPreview(true)
       dispatch(getStoredPdu1AsPDF(pdu1SearchResult.journalpostId!, pdu1SearchResult.dokumentInfoId!))
@@ -377,51 +359,48 @@ const PDU1Search: React.FC<PDU1Props> = ({
             {gettingFagsaker && (
               <WaitingPanel />
             )}
-            <RadioPanelGroup
-              value={fagsak}
-              name={namespace + '-fagsaker'}
-              onChange={(e: string) => onFagsakerSelected(e)}
-            >
-              {fagsaker?.map((f: FagSak) => (
-                <div key={f.saksID}>
-                  <RadioPanelBorder key={f.saksID} value={f.saksID}>
-                    <PileDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:fagsakNr')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.fagsakNr}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:tema')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.temakode}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:saksnummer')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.saksID}</BodyLong>
-                      </FlexBaseDiv>
-                      <FlexBaseDiv>
-                        <Label>{t('label:siste-oppdatert')}:</Label>
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <BodyLong>{f.opprettetTidspunkt}</BodyLong>
-                      </FlexBaseDiv>
-                    </PileDiv>
-                  </RadioPanelBorder>
-                  <VerticalSeparatorDiv />
-                </div>
-              ))}
-            </RadioPanelGroup>
+            {fagsaker?.map((f: FagSak) => (
+              <Panel style={{ marginBottom: '1rem' }} border key={f.saksID}>
+                <FlexDiv>
+                  <PileDiv flex='2'>
+                    <FlexBaseDiv>
+                      <Label>{t('label:fagsakNr')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.fagsakNr}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:tema')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.temakode}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:saksnummer')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.saksID}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:siste-oppdatert')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{f.opprettetTidspunkt}</BodyLong>
+                    </FlexBaseDiv>
+                  </PileDiv>
+                  <PileDiv>
+                    <Button
+                      variant='primary'
+                      disabled={!tema || creatingPdu1}
+                      onClick={() => onCreatingPdu1(f.saksID)}
+                    >
+                      {creatingPdu1 && <Loader />}
+                      {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
+                    </Button>
+                  </PileDiv>
+                </FlexDiv>
+              </Panel>
+
+            ))}
           </div>
-          <VerticalSeparatorDiv size='2' />
-          <Button
-            variant='primary'
-            disabled={!tema || !fagsak || creatingPdu1}
-            onClick={onCreatingPdu1}
-          >
-            {creatingPdu1 && <Loader />}
-            {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}
-          </Button>
+          <VerticalSeparatorDiv />
+
         </>
       )}
       {searchPdu1Mode && (
@@ -434,74 +413,54 @@ const PDU1Search: React.FC<PDU1Props> = ({
           </Heading>
           <VerticalSeparatorDiv size='2' />
           {fetchingPdu1 && <Loader />}
-          <div style={{ width: '100%' }}>
-            <RadioPanelGroup
-              value={pdu1SearchResult ? pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId : ''}
-              name={namespace + '-pdu1searchresult'}
-              onChange={(e: string) => onPdu1SearchResultSelected(e)}
-            >
-              {pdu1results?.filter(isPDU1)
-                .map((r: PDU1SearchResult) => (
-                  <div key={r.journalpostId + '-' + r.dokumentInfoId}>
-                    <RadioPanelBorder key={r.journalpostId + '-' + r.dokumentInfoId} value={r.journalpostId + '-' + r.dokumentInfoId}>
-                      <PileDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:tittel')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.tittel}</BodyLong>
-                        </FlexBaseDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:tema')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.tema}</BodyLong>
-                        </FlexBaseDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:journalpost-id')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.journalpostId}</BodyLong>
-                        </FlexBaseDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:dokument-id')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.dokumentInfoId}</BodyLong>
-                        </FlexBaseDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:variant')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.dokumentvarianter.join(', ')}</BodyLong>
-                        </FlexBaseDiv>
-                        <FlexBaseDiv>
-                          <Label>{t('label:dato-opprettet')}:</Label>
-                          <HorizontalSeparatorDiv size='0.35' />
-                          <BodyLong>{r.datoOpprettet}</BodyLong>
-                        </FlexBaseDiv>
-                      </PileDiv>
-                    </RadioPanelBorder>
+          {pdu1results?.filter(isPDU1)
+            .map((pdu1SearchResult: PDU1SearchResult) => (
+              <Panel border style={{ width: '100%', marginBottom: '1rem' }} key={pdu1SearchResult.journalpostId + '-' + pdu1SearchResult.dokumentInfoId}>
+                <FlexDiv>
+                  <PileDiv flex='2'>
+                    <FlexBaseDiv>
+                      <Label>{t('label:fagsakNr')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{pdu1SearchResult.fagsakId}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:tittel')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{pdu1SearchResult.tittel}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:tema')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{pdu1SearchResult.tema}</BodyLong>
+                    </FlexBaseDiv>
+                    <FlexBaseDiv>
+                      <Label>{t('label:dato-opprettet')}:</Label>
+                      <HorizontalSeparatorDiv size='0.35' />
+                      <BodyLong>{pdu1SearchResult.datoOpprettet}</BodyLong>
+                    </FlexBaseDiv>
+                  </PileDiv>
+                  <PileDiv>
+                    <Button
+                      variant='primary'
+                      disabled={gettingPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ORIGINAL') < 0}
+                      onClick={() => onEditingPdu1(pdu1SearchResult)}
+                    >
+                      {gettingPdu1 && <Loader />}
+                      {gettingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
+                    </Button>
                     <VerticalSeparatorDiv />
-                  </div>
-                ))}
-            </RadioPanelGroup>
-          </div>
-          <VerticalSeparatorDiv size='2' />
-          <FlexDiv>
-            <Button
-              variant='primary'
-              disabled={!pdu1SearchResult || gettingPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ORIGINAL') < 0}
-              onClick={onEditingPdu1}
-            >
-              {gettingPdu1 && <Loader />}
-              {gettingPdu1 ? t('label:laster') : t('el:button-edit-x', { x: 'PD U1' })}
-            </Button>
-            <HorizontalSeparatorDiv />
-            <Button
-              variant='secondary'
-              disabled={!pdu1SearchResult || gettingPreviewStoredPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ARKIV') < 0}
-              onClick={onPreviewingStoredPdu1}
-            >
-              {gettingPreviewStoredPdu1 && <Loader />}
-              {gettingPreviewStoredPdu1 ? t('label:laster') : t('el:button-preview-x', { x: 'PD U1' })}
-            </Button>
-          </FlexDiv>
+                    <Button
+                      variant='secondary'
+                      disabled={!pdu1SearchResult || gettingPreviewStoredPdu1 || pdu1SearchResult.dokumentvarianter.indexOf('ARKIV') < 0}
+                      onClick={() => onPreviewingStoredPdu1(pdu1SearchResult)}
+                    >
+                      {gettingPreviewStoredPdu1 && <Loader />}
+                      {gettingPreviewStoredPdu1 ? t('label:laster') : t('el:button-preview-x', { x: 'PD U1' })}
+                    </Button>
+                  </PileDiv>
+                </FlexDiv>
+              </Panel>
+            ))}
         </>
       )}
     </ContainerDiv>

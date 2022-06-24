@@ -33,11 +33,12 @@ export const searchPdu1s = (
 }
 
 export const getStoredPdu1AsJSON = (
-  journalpostId: string, dokumentId: string
+  journalpostId: string, dokumentId: string, fagsakId: string
 ): Action => {
   return call({
     url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ORIGINAL' }),
     expectedPayload: mockStoredPdu1AsJSON,
+    context: { fagsakId },
     type: {
       request: types.PDU1_GET_ASJSON_REQUEST,
       success: types.PDU1_GET_ASJSON_SUCCESS,

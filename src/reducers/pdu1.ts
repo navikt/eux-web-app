@@ -59,6 +59,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
 
     case types.PDU1_GET_ASJSON_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
+      pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
       return {
         ...state,
         pdu1

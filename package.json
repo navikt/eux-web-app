@@ -42,7 +42,7 @@
     "@navikt/tabell": "^3.5.1",
     "@navikt/tooltip": "^1.1.1",
     "@reduxjs/toolkit": "^1.8.2",
-    "@sentry/browser": "^7.2.0",
+    "@sentry/browser": "^7.3.0",
     "amplitude-js": "^8.18.5",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",

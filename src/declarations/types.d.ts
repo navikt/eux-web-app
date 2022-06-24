@@ -100,6 +100,7 @@ export interface FagSak {
 }
 
 export interface PDU1SearchResult {
+  fagsakId: string
   datoOpprettet: string
   journalpostId: string
   dokumentInfoId: string
