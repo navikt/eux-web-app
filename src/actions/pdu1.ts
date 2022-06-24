@@ -52,6 +52,7 @@ export const getStoredPdu1AsPDF = (
   return call({
     url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ARKIV' }),
     expectedPayload: mockPreviewPdu1(),
+    responseType: 'pdf',
     type: {
       request: types.PDU1_GET_ASPDF_REQUEST,
       success: types.PDU1_GET_ASPDF_SUCCESS,
