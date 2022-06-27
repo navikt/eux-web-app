@@ -23,15 +23,13 @@ export const validatePersonopplysninger = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: personInfo?.fornavn?.trim(),
     id: namespace + '-fornavn',
-    message: 'validation:noFornavn',
-    personName
+    message: 'validation:noFornavn'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: personInfo?.etternavn?.trim(),
     id: namespace + '-etternavn',
-    message: 'validation:noEtternavn',
-    personName
+    message: 'validation:noEtternavn'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {

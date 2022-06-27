@@ -63,7 +63,9 @@ export const SvarSedPage = (): JSX.Element => {
     if (_currentPage === 'B') {
       changeMode('A')
       dispatch(resetCurrentEntry('svarsed'))
-      dispatch(cleanUpSvarSed())
+      setTimeout(() =>
+        dispatch(cleanUpSvarSed())
+      , 200)
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
     if (_currentPage === 'A') {

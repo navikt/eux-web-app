@@ -183,7 +183,9 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
       changeMode('A')
       dispatch(resetCurrentEntry('svarsed'))
-      dispatch(cleanUpSvarSed())
+      setTimeout(() =>
+        dispatch(cleanUpSvarSed())
+      , 200)
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
   }, [_sendButtonClicked, sedSendResponse])

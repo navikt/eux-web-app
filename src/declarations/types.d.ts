@@ -5,6 +5,10 @@ import { JaNei, ReplySed } from 'declarations/sed'
 
 export type StorageTypes = PDU1 | ReplySed
 
+export type SakAction = 'H001' | 'X005' | 'X007' | 'X009' | 'X012' | 'Close_Case'
+
+export type SedAction = 'X008' | 'X011' | 'X012' | 'U002' | 'U017' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
+
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
   tilDato?: string
@@ -60,6 +64,7 @@ export interface Sed {
   svarsedId: string
   svarsedDisplay: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
+  sedHandlinger: Array<SedAction>
   children ?: Array<Sed>
 }
 
@@ -176,11 +181,12 @@ export interface Sak {
   sakType: string
   sakTittel: string
   sakId: string
-  sakInternasjonalId ?: string
+  internasjonalSakId ?: string
   sakUrl: string
   motpart: Array<string>
   motpartInstitusjon: string
   sistEndretDato: string
+  sakshandlinger: Array<SakAction>
   sedListe: Array<Sed>
 }
 

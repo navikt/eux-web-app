@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "6.99.19",
+  "version": "6.99.20",
   "private": true,
   "type": "module",
   "scripts": {
@@ -26,7 +26,7 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^0.18.16",
+    "@navikt/ds-css": "^0.18.18",
     "@navikt/ds-icons": "^0.8.17",
     "@navikt/ds-react": "^0.19.14",
     "@navikt/eessi-kodeverk": "^2.0.0",
@@ -46,10 +46,10 @@
     "amplitude-js": "^8.18.5",
     "ansi-to-html": "^0.7.2",
     "classnames": "^2.3.1",
-    "core-js": "^3.23.2",
+    "core-js": "^3.23.3",
     "eux-schema": "^0.4.0",
     "file-saver": "^2.0.5",
-    "i18next": "^21.8.10",
+    "i18next": "^21.8.11",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.21",
@@ -61,7 +61,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
-    "react-i18next": "^11.17.2",
+    "react-i18next": "^11.17.3",
     "react-modal": "^3.15.1",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
@@ -95,7 +95,7 @@
     "eslint": "^8.18.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-standard-jsx": "^11.0.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-jsx-a11y": "^6.6.0",
     "jest": "^28.1.1",
     "jest-styled-components": "^7.0.8",
     "npm-run-all": "^4.1.5",
@@ -104,7 +104,7 @@
     "react-scripts": "^5.0.1",
     "read-pkg": "^7.1.0",
     "shelljs": "^0.8.5",
-    "simple-git": "^3.9.0",
+    "simple-git": "^3.10.0",
     "standardx": "^7.0.0",
     "typescript": "^4.7.4",
     "write-pkg": "^5.1.0"
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@6.99.18",
+  "_id": "neessi@6.99.19",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

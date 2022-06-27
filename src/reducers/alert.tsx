@@ -185,6 +185,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     dealWithBanner = true
   }
 
+  if (action.type === types.SVARSED_SAK_DELETE_SUCCESS) {
+    bannerMessage = i18n.t('message:success-delete-sak')
+    dealWithBanner = true
+  }
+
   if (dealWithBanner) {
     return {
       ...state,

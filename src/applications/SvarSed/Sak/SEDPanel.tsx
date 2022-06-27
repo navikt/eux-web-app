@@ -120,7 +120,7 @@ const SEDPanel = ({
     dispatch(replyToSed(connectedSed, sak))
   }
 
-  const showJournalfoingButton = connectedSed.lenkeHvisForrigeSedMaaJournalfoeres
+  const showJournalforingButton = connectedSed.lenkeHvisForrigeSedMaaJournalfoeres
   const showDraftButton = hasDraft(connectedSed, entries)
   const showEditButton = !showDraftButton && connectedSed.status === 'new' && canEditSed(connectedSed.sedType)
   const showUpdateButton = !showDraftButton && connectedSed.status === 'sent' && canUpdateSed(connectedSed.sedType)
@@ -165,7 +165,7 @@ const SEDPanel = ({
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
-            {showJournalfoingButton && (
+            {showJournalforingButton && (
               <>
                 <Button
                   variant='secondary'

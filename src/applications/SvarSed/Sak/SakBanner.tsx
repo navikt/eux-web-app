@@ -106,7 +106,7 @@ const SakBanner = ({ sak }: SakProps) => {
             {sak.sakId + ' '}
             <Copy />
           </Link>
-          {!!sak.sakInternasjonalId && (
+          {!!sak.internasjonalSakId && (
             <>
               <HorizontalSeparatorDiv />
               <Popover
@@ -124,10 +124,10 @@ const SakBanner = ({ sak }: SakProps) => {
                       title={t('label:kopiere')} onClick={(e: any) => {
                         e.preventDefault()
                         e.stopPropagation()
-                        dispatch(copyToClipboard(sak.sakInternasjonalId!))
+                        dispatch(copyToClipboard(sak.internasjonalSakId!))
                       }}
                     >
-                      {sak.sakInternasjonalId + ' '}
+                      {sak.internasjonalSakId + ' '}
                       <Copy />
                     </Link>
                   </Heading>

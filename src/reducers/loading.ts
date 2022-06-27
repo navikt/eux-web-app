@@ -10,6 +10,7 @@ export const initialLoadingState: LoadingState = {
   completingPdu1: false,
   creatingSvarSed: false,
   creatingPdu1: false,
+  deletingSak: false,
   fetchingPdu1: false,
   gettingAdresser: false,
   gettingArbeidsperioder: false,
@@ -275,6 +276,19 @@ const loadingReducer = (
       return {
         ...state,
         searchingRelatertPerson: false
+      }
+
+    case types.SVARSED_SAK_DELETE_REQUEST:
+      return {
+        ...state,
+        deletingSak: true
+      }
+
+    case types.SVARSED_SAK_DELETE_SUCCESS:
+    case types.SVARSED_SAK_DELETE_FAILURE:
+      return {
+        ...state,
+        deletingSak: false
       }
 
     case types.SVARSED_SAKS_REQUEST:

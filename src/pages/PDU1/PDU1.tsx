@@ -64,7 +64,9 @@ export const PDU1Page = (): JSX.Element => {
   const onGoBackClick = () => {
     if (!pdu1Changed) {
       changeMode('A')
-      dispatch(cleanUpPDU1())
+      setTimeout(() =>
+        dispatch(cleanUpPDU1())
+      , 200)
       backToPageA()
     } else {
       _setShowSaveModal(true)

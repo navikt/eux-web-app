@@ -9,12 +9,15 @@ export default (saksnummer: string) => {
       sakTittel: 'Beslutte komponent myndighet',
       sakType: 'FB_BUC_01',
       sakId: '1166592',
-      sakInternasjonalId: 'abvcdefghijklm',
+      internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',
       motpart: [
         'Lodzkie Voivodeship Office in Lodz (Polen)'
+      ],
+      sakshandlinger: [
+        'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       sedListe: [
         {
@@ -100,6 +103,9 @@ export default (saksnummer: string) => {
       motpart: [
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
+      sakshandlinger: [
+        'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
+      ],
       sedListe: [
         {
           sedTittel: 'Description for U001',
@@ -151,6 +157,9 @@ export default (saksnummer: string) => {
       erSakseier: 'ja',
       motpart: [
         'NAV ACCEPTANCE TEST 07 (Norge)'
+      ],
+      sakshandlinger: [
+        'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
       sedListe: [
@@ -207,6 +216,9 @@ export default (saksnummer: string) => {
       sistEndretDato: '2021-04-07',
       motpart: [
         'NAV ACCEPTANCE TEST 07 (Norge)'
+      ],
+      sakshandlinger: [
+        'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       erSakseier: 'nei',
       sedListe: [

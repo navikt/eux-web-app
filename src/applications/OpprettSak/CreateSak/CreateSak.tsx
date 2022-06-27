@@ -34,7 +34,7 @@ import {
   Tema,
   Validation
 } from 'declarations/types'
-import { H001Sed, ReplySed } from 'declarations/sed'
+import { HSed, ReplySed } from 'declarations/sed'
 import * as EKV from '@navikt/eessi-kodeverk'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -58,8 +58,8 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link as DOMLink } from 'react-router-dom'
+import { isHSed } from 'utils/sed'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
-import h001template from 'mocks/seds/h001template.json'
 import styled from 'styled-components'
 
 export interface CreateSakSelector {
@@ -222,6 +222,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
 
+  const allowedToFillOut = (sedType: string) => ['H001', 'F001'].indexOf(sedType) >= 0
+
   _sedtyper = _sedtyper?.reduce((acc: any, curr: any) => {
     const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
     acc.push(kode)
@@ -351,31 +353,40 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createH001Sed = (opprettetSak: OpprettetSak): ReplySed => {
-    const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
-    h001sed.sed = {
-      sedId: opprettetSak.sedId,
-      status: 'new'
-    } as Sed
-    h001sed.sak = {
-      sakId: opprettetSak.sakId
-    } as Sak
-    h001sed.tema = tempInfoForEdit.tema
-    h001sed.fagsakId = tempInfoForEdit.fagsak
-    h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
-    h001sed.bruker.personInfo.etternavn = tempInfoForEdit.person.etternavn
-    h001sed.bruker.personInfo.kjoenn = tempInfoForEdit.person.kjoenn
-    h001sed.bruker.personInfo.foedselsdato = tempInfoForEdit.person.fdato
-    h001sed.bruker.personInfo.statsborgerskap = [{ land: 'NO' }]
-    h001sed.bruker.personInfo.pin = [{
-      land: 'NO',
-      identifikator: tempInfoForEdit.person.fnr
-    }]
-    return h001sed
+  const createBaseReplySed = (opprettetSak: OpprettetSak, sedType: string): ReplySed => {
+    const sed = {
+      sedType,
+      sedVersjon: '4.2',
+      sed: {
+        sedId: opprettetSak.sedId,
+        status: 'new'
+      } as Sed,
+      sak: {
+        sakId: opprettetSak.sakId
+      } as Sak,
+      bruker: {
+        personInfo: {
+          fornavn: tempInfoForEdit.person.fornavn,
+          etternavn: tempInfoForEdit.person.etternavn,
+          kjoenn: tempInfoForEdit.person.kjoenn,
+          foedselsdato: tempInfoForEdit.person.fdato,
+          statsborgerskap: [{ land: 'NO' }],
+          pin: [{
+            land: 'NO',
+            identifikator: tempInfoForEdit.person.fnr
+          }]
+        }
+      }
+    }
+    if (isHSed(sed)) {
+      (sed as HSed).tema = tempInfoForEdit.tema;
+      (sed as HSed).fagsakId = tempInfoForEdit.fagsak
+    }
+    return sed
   }
 
-  const fillOutSed = (opprettetSak: OpprettetSak) => {
-    const replySed = createH001Sed(opprettetSak)
+  const fillOutSed = (opprettetSak: OpprettetSak, sedType: string) => {
+    const replySed = createBaseReplySed(opprettetSak, sedType)
     dispatch(loadReplySed(replySed))
     changeMode('B', 'forward')
   }
@@ -732,8 +743,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 <>
                   <Button
                     variant='secondary'
-                    disabled={!(opprettetSak && valgtSedType === 'H001')}
-                    onClick={() => fillOutSed(opprettetSak!)}
+                    disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
+                    onClick={() => fillOutSed(opprettetSak!, valgtSedType!)}
                   >
                     {t('el:button-fill-sed')}
                   </Button>

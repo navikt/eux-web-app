@@ -1,13 +1,14 @@
 import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
-import { loadReplySed } from 'actions/svarsed'
+import { deleteSak, loadReplySed } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { XSed, Kjoenn, H001Sed } from 'declarations/sed'
 import { Sak } from 'declarations/types'
-import React from 'react'
+import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
 
 export interface SakshandlingerProps {
   sak: Sak
@@ -20,6 +21,22 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
 }: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const deletedSak: any |null | undefined = useAppSelector(state => state.svarsed.deletedSak)
+  const [deleteSakRequest, setDeleteSakRequest] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (deleteSakRequest && !_.isNil(deleteSak)) {
+      setDeleteSakRequest(false)
+      changeMode('A')
+    }
+  }, [deletedSak, deleteSakRequest])
+
+  const closeCase = () => {
+    if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
+      setDeleteSakRequest(true)
+      dispatch(deleteSak(sak.sakId))
+    }
+  }
 
   const createH001Sed = () => {
     const h001sed: H001Sed = {
@@ -104,18 +121,38 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         </BodyLong>
       </Tooltip>
       <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createH001Sed()}>
-        {t('label:create-H001')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createXSed('X009')}>
-        {t('label:create-X009')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createXSed('X012')}>
-        {t('buc:X012')}
-      </Link>
-      <VerticalSeparatorDiv />
+      {sak.sakshandlinger?.indexOf('Close_Case') >= 0 && (
+        <>
+          <Link href='#' onClick={closeCase}>
+            {t('label:close-case')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {sak.sakshandlinger?.indexOf('H001') >= 0 && (
+        <>
+          <Link href='#' onClick={() => createH001Sed()}>
+            {t('label:create-H001')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {sak.sakshandlinger?.indexOf('X009') >= 0 && (
+        <>
+          <Link href='#' onClick={() => createXSed('X009')}>
+            {t('label:create-X009')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {sak.sakshandlinger?.indexOf('X012') >= 0 && (
+        <>
+          <Link href='#' onClick={() => createXSed('X012')}>
+            {t('buc:X012')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
     </Panel>
   )
 }

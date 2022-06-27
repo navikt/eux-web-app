@@ -43,6 +43,22 @@ export const createSed = (
   })
 }
 
+export const deleteSak = (rinaSakId: string) => {
+  return call({
+    method: 'DELETE',
+    url: sprintf(urls.API_SAK_DELETE_URL, { rinaSakId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sucess: true
+    },
+    type: {
+      request: types.SVARSED_SAK_DELETE_REQUEST,
+      success: types.SVARSED_SAK_DELETE_SUCCESS,
+      failure: types.SVARSED_SAK_DELETE_FAILURE
+    }
+  })
+}
+
 export const updateSed = (
   replySed: ReplySed
 ): ActionWithPayload => {

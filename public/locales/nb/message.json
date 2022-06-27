@@ -58,7 +58,9 @@
   "success-pdu1-reloaded-after-token" : "Utkast PDU1 ble lastet inn",
   "success-svarsed-reloaded-after-token" : "Utkast SvarSED ble lastet inn",
   "success-sed-send": "SED sendt",
+  "success-delete-sak": "Sak slettet",
 
+  "warning-are-you-sure-close-case": "Er du sikker at du vil slett sak?",
   "warning-max-1-utenlandsk-pin" : "Maks 1 utenlandsk pin til H001",
   "warning-no-address": "Ingen adresser er registrert",
   "warning-no-arbeidsgiver-found": "Ingen arbeidsperioder funnet",

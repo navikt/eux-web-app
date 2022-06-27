@@ -8,6 +8,7 @@ import { AnyAction } from 'redux'
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
+  deletedSak: any | null | undefined
   personRelatert: any
   previewReplySed: ReplySed | null | undefined
   previewFile: Blob | null | undefined
@@ -23,6 +24,7 @@ export interface SvarsedState {
 
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
+  deletedSak: undefined,
   personRelatert: undefined,
   // replySED used for preview
   previewReplySed: undefined,
@@ -188,6 +190,24 @@ const svarsedReducer = (
       return {
         ...state,
         saks: null
+      }
+
+    case types.SVARSED_SAK_DELETE_REQUEST:
+      return {
+        ...state,
+        deletedSak: undefined
+      }
+
+    case types.SVARSED_SAK_DELETE_SUCCESS:
+      return {
+        ...state,
+        deletedSak: action.payload,
+        currentSak: undefined
+      }
+    case types.SVARSED_SAK_DELETE_FAILURE:
+      return {
+        ...state,
+        deletedSak: null
       }
 
     case types.SVARSED_SAKS_SUCCESS: {
