@@ -1,14 +1,8 @@
 import { ActionWithPayload } from '@navikt/fetch'
-import _ from 'lodash'
 import * as types from 'constants/actionTypes'
-import {
-  ArbeidsperiodeFraAA,
-  FagSaker,
-  OldFamilieRelasjon,
-  Institusjon,
-  OpprettetSak,
-  Person
-} from 'declarations/types'
+import { FillOutInfoPayload, Pin2 } from 'declarations/sed'
+import { ArbeidsperiodeFraAA, FagSaker, Institusjon, OldFamilieRelasjon, OpprettetSak } from 'declarations/types'
+import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface SakState {
@@ -21,7 +15,7 @@ export interface SakState {
   institusjonList: Array<Institusjon> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
-  person: Person | null | undefined
+  filloutinfo: any | null | undefined
   personRelatert: OldFamilieRelasjon | null | undefined
   saksId: any
   sektor: any
@@ -40,7 +34,7 @@ export const initialSakState: SakState = {
   institusjon: undefined,
   landkode: undefined,
   opprettetSak: undefined,
-  person: undefined,
+  filloutinfo: undefined,
   personRelatert: undefined,
   saksId: undefined,
   sedtype: undefined,
@@ -86,41 +80,54 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         landkode: (action as ActionWithPayload).payload
       }
 
-    case types.PERSON_SEARCH_FAILURE:
+    case types.SAK_FILLOUTINFO_RESET:
+    case types.SAK_FILLOUTINFO_REQUEST:
       return {
         ...state,
-        person: null
+        filloutinfo: undefined
       }
 
-    case types.PERSON_SEARCH_SUCCESS:
+    case types.SAK_FILLOUTINFO_FAILURE:
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
+        filloutinfo: null
       }
 
-    case types.PERSON_RELATERT_SEARCH_FAILURE:
+    case types.SAK_FILLOUTINFO_SUCCESS: {
+      const fillOutInfoPayload: FillOutInfoPayload = (action as ActionWithPayload).payload
+      const template = (action as ActionWithPayload).context.template
       return {
         ...state,
-        personRelatert: null
+        filloutinfo: {
+          ...template,
+          bruker: {
+            personInfo: {
+              fornavn: fillOutInfoPayload.fornavn,
+              etternavn: fillOutInfoPayload.etternavn,
+              kjoenn: fillOutInfoPayload.kjoenn,
+              foedselsdato: fillOutInfoPayload.foedselsdato,
+              statsborgerskap: fillOutInfoPayload.statsborgerskap.map((s: string) => ({ land: s })),
+              pin: (fillOutInfoPayload.utenlandskePin?.map((p: Pin2) => ({
+                land: p.landkode,
+                identifikator: p.identifikator
+              })) ?? []).concat({
+                land: 'NO',
+                identifikator: fillOutInfoPayload.fnr
+              }),
+              adresser: fillOutInfoPayload.adresser
+            }
+          },
+          sak: {
+            ...template.sak,
+            fornavn: fillOutInfoPayload.fornavn,
+            etternavn: fillOutInfoPayload.etternavn,
+            foedselsdato: fillOutInfoPayload.foedselsdato,
+            kjoenn: fillOutInfoPayload.kjoenn,
+            fnr: fillOutInfoPayload.fnr
+          }
+        }
       }
-
-    case types.PERSON_RELATERT_SEARCH_SUCCESS:
-      return {
-        ...state,
-        personRelatert: (action as ActionWithPayload).payload
-      }
-
-    case types.PERSON_SEARCH_RESET:
-      return {
-        ...state,
-        person: undefined
-      }
-
-    case types.PERSON_RELATERT_SEARCH_RESET:
-      return {
-        ...state,
-        personRelatert: undefined
-      }
+    }
 
     case types.SAK_SEND_RESET:
       return {

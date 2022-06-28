@@ -51,6 +51,14 @@ const svarsedReducer = (
     case types.APP_CLEAN:
       return initialSvarsedState
 
+    case types.SVARSED_CLEANUP:
+      return {
+        ...state,
+        replySed: undefined,
+        originalReplySed: undefined,
+        replySedChanged: false
+      }
+
     case types.SVARSED_FAGSAKER_RESET:
     case types.SVARSED_FAGSAKER_GET_REQUEST:
       return {
@@ -215,9 +223,26 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_SAKS_SUCCESS: {
-      const saks = _.isArray((action as ActionWithPayload).payload)
+      let saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload
         : [(action as ActionWithPayload).payload]
+
+      saks = saks.map((s: Sak) => {
+        if (['K', 'M', 'U'].indexOf(s.kjoenn) >= 0) {
+          return s
+        }
+        if (['k', 'm', 'u'].indexOf(s.kjoenn) >= 0) {
+          s.kjoenn = s.kjoenn.toUpperCase()
+          return s
+        }
+        if (s.kjoenn === 'f') {
+          s.kjoenn = 'K'
+          return s
+        }
+        s.kjoenn = 'U'
+        return s
+      })
+
       return {
         ...state,
         saks
@@ -225,9 +250,25 @@ const svarsedReducer = (
     }
 
     case types.SVARSED_SAKS_REFRESH_SUCCESS: {
-      const saks = _.isArray((action as ActionWithPayload).payload)
+      let saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload
         : [(action as ActionWithPayload).payload]
+
+      saks = saks.map((s: Sak) => {
+        if (['K', 'M', 'U'].indexOf(s.kjoenn) >= 0) {
+          return s
+        }
+        if (['k', 'm', 'u'].indexOf(s.kjoenn) >= 0) {
+          s.kjoenn = s.kjoenn.toUpperCase()
+          return s
+        }
+        if (s.kjoenn === 'f') {
+          s.kjoenn = 'K'
+          return s
+        }
+        s.kjoenn = 'U'
+        return s
+      })
 
       return {
         ...state,

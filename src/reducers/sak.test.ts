@@ -98,7 +98,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        person: {
+        filloutinfo: {
           etternavn: 'etternavn',
           fornavn: 'fornavn',
           fdato: 'fdato',

@@ -9,6 +9,7 @@ import {
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
+import mockPersonPdl from 'mocks/sak/personpdl'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
@@ -115,6 +116,27 @@ export const getLandkoder = (
       request: types.SAK_LANDKODER_GET_REQUEST,
       success: types.SAK_LANDKODER_GET_SUCCESS,
       failure: types.SAK_LANDKODER_GET_FAILURE
+    }
+  })
+}
+
+export const resetFilloutInfo = () => ({
+  type: types.SAK_FILLOUTINFO_RESET
+})
+
+export const getAllFillOutInfo = (
+  fnr: string, template: any
+): ActionWithPayload<Array<Kodeverk>> => {
+  return call({
+    url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
+    expectedPayload: mockPersonPdl,
+    context: {
+      template
+    },
+    type: {
+      request: types.SAK_FILLOUTINFO_REQUEST,
+      success: types.SAK_FILLOUTINFO_SUCCESS,
+      failure: types.SAK_FILLOUTINFO_FAILURE
     }
   })
 }

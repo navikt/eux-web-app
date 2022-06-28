@@ -186,9 +186,7 @@ export const SvarSedPage = (): JSX.Element => {
             )
           }}
         />
-        {currentSak !== undefined && (
-          <SakBanner sak={currentSak} />
-        )}
+        <SakBanner sak={currentSak} />
         <Container>
           <Margin />
           <Content style={{ flex: 6 }}>

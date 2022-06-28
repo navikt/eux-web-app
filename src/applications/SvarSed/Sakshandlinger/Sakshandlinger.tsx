@@ -16,11 +16,10 @@ export interface SakshandlingerProps {
 
 const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   sak,
-  changeMode,
+  changeMode
 }: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-
 
   const closeCase = () => {
     if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
@@ -37,7 +36,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         personInfo: {
           fornavn: sak.fornavn,
           etternavn: sak.etternavn,
-          kjoenn: sak.kjoenn.toUpperCase() as Kjoenn,
+          kjoenn: sak.kjoenn as Kjoenn,
           foedselsdato: sak.foedselsdato,
           statsborgerskap: [{ land: 'NO' }],
           pin: [{
@@ -59,7 +58,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       bruker: {
         fornavn: sak?.fornavn ?? '',
         etternavn: sak?.etternavn ?? '',
-        kjoenn: (sak?.kjoenn.toUpperCase() ?? 'U') as Kjoenn,
+        kjoenn: sak?.kjoenn as Kjoenn,
         foedselsdato: sak?.foedselsdato ?? '',
         statsborgerskap: [{ land: 'NO' }],
         pin: [{

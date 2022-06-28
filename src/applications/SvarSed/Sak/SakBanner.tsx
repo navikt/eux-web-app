@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 interface SakProps {
-  sak: Sak
+  sak: Sak | undefined
 }
 
 const Panel = styled(FullWidthDiv)`
@@ -30,7 +30,7 @@ const SakBanner = ({ sak }: SakProps) => {
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
   const iconRef = useRef(null)
 
-  let thisSektor = sak.sakType.split('_')[0]
+  let thisSektor = sak?.sakType.split('_')[0]
   if (thisSektor === 'H') { thisSektor = 'HZ' }
   const thisSektorName: string | undefined = _.find(sektor, s => s.kode === thisSektor)?.term
 
@@ -42,6 +42,10 @@ const SakBanner = ({ sak }: SakProps) => {
   } else if (sak?.kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
+  }
+
+  if (_.isNil(sak)) {
+    return null
   }
 
   return (

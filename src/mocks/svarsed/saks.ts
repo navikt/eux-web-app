@@ -236,7 +236,7 @@ export default (saksnummer: string, type: string) => {
     }
   ]
 
-  if (type  === 'saksnummer') {
+  if (type === 'saksnummer') {
     return [saks[0]]
   }
 

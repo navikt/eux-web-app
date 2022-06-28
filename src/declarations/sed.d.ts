@@ -124,6 +124,11 @@ export interface Pin {
   institusjonsnavn ?: string
 }
 
+export interface Pin2 {
+  landkode: string
+  identifikator: string
+}
+
 export interface Statsborgerskap {
   land: string,
   fraDato?: string
@@ -155,6 +160,18 @@ export interface PersonInfo {
     etternavnVedFoedsel: string
     fornavnVedFoedsel: string
   }
+}
+
+export interface FillOutInfoPayload {
+  'fnr': string
+  'fornavn': string
+  'mellomnavn': string
+  'etternavn': string
+  'kjoenn': string
+  'foedselsdato': string
+  'statsborgerskap': Array<string>
+  'adresser': Array<Adresse>,
+  'utenlandskePin': Array<Pin2>
 }
 
 export interface Person {

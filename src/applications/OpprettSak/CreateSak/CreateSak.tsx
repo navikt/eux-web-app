@@ -1,21 +1,36 @@
-import { ErrorFilled } from '@navikt/ds-icons'
-import { Alert, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import * as EKV from '@navikt/eessi-kodeverk'
+import {
+  AlignStartRow,
+  Column,
+  Container,
+  Content,
+  FlexCenterDiv,
+  FlexDiv,
+  HorizontalSeparatorDiv,
+  Margin,
+  PileDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { Country } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import * as appActions from 'actions/app'
-import { cleanPersons } from 'actions/person'
 import * as personActions from 'actions/person'
+import { cleanPersons } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import { cleanData, resetSentSed } from 'actions/sak'
-import { loadReplySed } from 'actions/svarsed'
+import { cleanData, getAllFillOutInfo, resetFilloutInfo, resetSentSed } from 'actions/sak'
+import { loadReplySed, setCurrentSak } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
-import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
+import { HSed } from 'declarations/sed'
 import {
-  Sak,
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
   BucTyper,
@@ -29,38 +44,21 @@ import {
   OldFamilieRelasjon,
   OpprettetSak,
   Person,
+  Sak,
   Sed,
   ServerInfo,
   Tema,
   Validation
 } from 'declarations/types'
-import { HSed, ReplySed } from 'declarations/sed'
-import * as EKV from '@navikt/eessi-kodeverk'
-import { useAppDispatch, useAppSelector } from 'store'
-import performValidation from 'utils/performValidation'
-import { Country } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  FlexDiv,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  Margin,
-  PileDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
-import ValidationBox from 'components/ValidationBox/ValidationBox'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as DOMLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'store'
+import styled from 'styled-components'
+import performValidation from 'utils/performValidation'
 import { isHSed } from 'utils/sed'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
-import styled from 'styled-components'
 
 export interface CreateSakSelector {
   alertVariant: AlertVariant | undefined
@@ -81,7 +79,7 @@ export interface CreateSakSelector {
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
-  featureToggles: FeatureToggles
+  filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<Kodeverk> | undefined
@@ -104,6 +102,8 @@ export interface CreateSakSelector {
   valgtTema: string | undefined
   valgtUnit: string | undefined
 
+  currentSak: Sak | undefined
+
   validation: Validation
 }
 
@@ -116,7 +116,6 @@ const mapState = (state: State): CreateSakSelector => ({
   serverInfo: state.app.serverinfo,
   buctyper: state.app.buctyper,
   familierelasjonKodeverk: state.app.familierelasjoner,
-  featureToggles: state.app.featureToggles,
   kodemaps: state.app.kodemaps,
   landkoder: state.app.landkoder,
   sedtyper: state.app.sedtyper,
@@ -139,6 +138,7 @@ const mapState = (state: State): CreateSakSelector => ({
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
+  filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
   valgtInstitusjon: state.sak.institusjon,
   institusjoner: state.sak.institusjonList,
@@ -149,6 +149,8 @@ const mapState = (state: State): CreateSakSelector => ({
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
   valgtUnit: state.sak.unit,
+
+  currentSak: state.svarsed.currentSak,
 
   validation: state.validation.status
 })
@@ -183,7 +185,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
     buctyper,
     fagsaker,
     familierelasjonKodeverk,
-    featureToggles,
+    filloutinfo,
     sedtyper,
     institusjoner,
     kodemaps,
@@ -204,31 +206,33 @@ const CreateSak: React.FC<CreateSakProps> = ({
     valgtSektor,
     valgtTema,
     valgtUnit,
-
     validation
   }: CreateSakSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
+  const navigate = useNavigate()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
-  let _sedtyper: Array<Kodeverk | string> = !kodemaps ? [] : !valgtSektor ? [] : !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
+  const _sedtyper: Array<Kodeverk> = !kodemaps
+    ? []
+    : !valgtSektor
+        ? []
+        : !valgtBucType
+            ? []
+            : kodemaps.BUC2SEDS[valgtSektor][valgtBucType].reduce((acc: any, curr: any) => {
+              const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
+              acc.push(kode)
+              return acc
+            }, []) ?? []
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
   const visArbeidsperioder: boolean = EKV.Koder.sektor.FB === valgtSektor &&
     EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && !_.isEmpty(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
-
   const allowedToFillOut = (sedType: string) => ['H001', 'F001'].indexOf(sedType) >= 0
-
-  _sedtyper = _sedtyper?.reduce((acc: any, curr: any) => {
-    const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
-    acc.push(kode)
-    return acc
-  }, []) ?? []
 
   const skjemaSubmit = (): void => {
     const clonedvalidation = _.cloneDeep(validation)
@@ -247,11 +251,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
     } as ValidationOpprettSakProps)
     dispatch(setValidation(clonedvalidation))
     if (!hasErrors) {
-      setTempInfoForEdit({
-        person: _.cloneDeep(person),
-        tema: valgtTema,
-        fagsak: valgtSaksId
-      })
       dispatch(sakActions.createSak({
         buctype: valgtBucType,
         fnr: valgtFnr,
@@ -353,43 +352,43 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createBaseReplySed = (opprettetSak: OpprettetSak, sedType: string): ReplySed => {
-    const sed = {
-      sedType,
-      sedVersjon: '4.2',
-      sed: {
-        sedId: opprettetSak.sedId,
-        status: 'new'
-      } as Sed,
-      sak: {
-        sakId: opprettetSak.sakId
-      } as Sak,
-      bruker: {
-        personInfo: {
-          fornavn: tempInfoForEdit.person.fornavn,
-          etternavn: tempInfoForEdit.person.etternavn,
-          kjoenn: tempInfoForEdit.person.kjoenn,
-          foedselsdato: tempInfoForEdit.person.fdato,
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: tempInfoForEdit.person.fnr
-          }]
-        }
+  const fillOutSed = (opprettetSak: OpprettetSak, sedType: string) => {
+    if (valgtFnr) {
+      const sed = {
+        sedType,
+        sedVersjon: '4.2',
+        tema: valgtTema,
+        fagsak: valgtSaksId,
+        sed: {
+          sedId: opprettetSak.sedId!,
+          sedTittel: _sedtyper.find((s: Kodeverk) => s.kode === valgtSedType!)?.term as string,
+          sedType: valgtSedType!,
+          status: 'new'
+        } as Sed,
+        sak: {
+          sakId: opprettetSak.sakId,
+          sakType: valgtBucType,
+          sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string
+        } as Sak
+      } as any
+      if (isHSed(sed)) {
+        (sed as HSed).tema = valgtTema;
+        (sed as HSed).fagsakId = valgtSaksId
       }
+      dispatch(cleanPersons())
+      dispatch(resetSentSed())
+      dispatch(getAllFillOutInfo(valgtFnr!, sed))
     }
-    if (isHSed(sed)) {
-      (sed as HSed).tema = tempInfoForEdit.tema;
-      (sed as HSed).fagsakId = tempInfoForEdit.fagsak
-    }
-    return sed
   }
 
-  const fillOutSed = (opprettetSak: OpprettetSak, sedType: string) => {
-    const replySed = createBaseReplySed(opprettetSak, sedType)
-    dispatch(loadReplySed(replySed))
-    changeMode('B', 'forward')
-  }
+  useEffect(() => {
+    if (!_.isNil(filloutinfo)) {
+      dispatch(loadReplySed(filloutinfo))
+      dispatch(setCurrentSak(filloutinfo.sak))
+      dispatch(resetFilloutInfo())
+      changeMode('B', 'forward')
+    }
+  }, [filloutinfo])
 
   return (
     <Container>
@@ -442,11 +441,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:velg')}
               </option>
               {sektor &&
-                  _.orderBy(sektor, 'term').map((k: Kodeverk) => (
-                    <option value={k.kode} key={k.kode}>
-                      {k.term}
-                    </option>
-                  ))}
+                    _.orderBy(sektor, 'term').map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.term}
+                      </option>
+                    ))}
             </Select>
             <VerticalSeparatorDiv />
           </Column>
@@ -464,11 +463,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   {t('label:velg')}
                 </option>
                 {sektor &&
-                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                      <option value={e.enhetId} key={e.enhetId}>
-                        {e.navn}
-                      </option>
-                    ))}
+                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                        <option value={e.enhetId} key={e.enhetId}>
+                          {e.navn}
+                        </option>
+                      ))}
               </Select>
             )}
             <VerticalSeparatorDiv />
@@ -490,11 +489,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:velg')}
               </option>
               {_buctyper &&
-                  _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
-                    <option value={k.kode} key={k.kode}>
-                      {k.kode} - {k.term}
-                    </option>
-                  ))}
+                    _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.kode} - {k.term}
+                      </option>
+                    ))}
             </Select>
             <VerticalSeparatorDiv />
           </Column>
@@ -511,7 +510,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               <option value=''>
                 {t('label:velg')}
               </option>)
-              {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
+              {_sedtyper && _sedtyper.map((k: Kodeverk) => {
                 // if only one element, select it
                 if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
                   onSedtypeSet((k as Kodeverk).kode)
@@ -560,14 +559,14 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   {t('label:velg')}
                 </option>)
                 {institusjoner &&
-                  _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
-                    <option
-                      value={i.institusjonsID}
-                      key={i.institusjonsID}
-                    >
-                      {i.navn}
-                    </option>
-                  ))}
+                    _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
+                      <option
+                        value={i.institusjonsID}
+                        key={i.institusjonsID}
+                      >
+                        {i.navn}
+                      </option>
+                    ))}
               </Select>
               <HorizontalSeparatorDiv size='0.5' />
               {gettingInstitusjoner && <Loader />}
@@ -699,11 +698,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                       {t('label:velg')}
                     </option>
                     {fagsaker &&
-                _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
-                  <option value={f.saksID} key={f.saksID}>
-                    {f.fagsakNr || f.saksID}
-                  </option>
-                ))}
+                  _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
+                    <option value={f.saksID} key={f.saksID}>
+                      {f.fagsakNr || f.saksID}
+                    </option>
+                  ))}
                   </Select>
                 </>
               )}
@@ -739,18 +738,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:opprett-sak-i-rina')}
               </Button>
               <HorizontalSeparatorDiv />
-              {featureToggles?.featureSvarsedH001 && (
-                <>
-                  <Button
-                    variant='secondary'
-                    disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
-                    onClick={() => fillOutSed(opprettetSak!, valgtSedType!)}
-                  >
-                    {t('el:button-fill-sed')}
-                  </Button>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
+
               <Button
                 variant='tertiary'
                 disabled={_.isEmpty(person)}
@@ -773,42 +761,47 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <Row>
               <Column>
                 <Alert variant='success'>
-                  <FlexDiv>
-                    <FlexDiv>
-                      <span>
+                  <PileDiv>
+                    <div>
+                      <BodyLong>
                         {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
-                      </span>
+                      </BodyLong>
+                      <VerticalSeparatorDiv size='0.5' />
+                    </div>
+                    <FlexDiv>
+                      <Button
+                        variant='secondary'
+                        disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
+                        onClick={() => fillOutSed(opprettetSak!, valgtSedType!)}
+                      >
+                        {t('el:button-fill-sed')}
+                      </Button>
                       <HorizontalSeparatorDiv />
                       {opprettetSak.sakUrl && (
-                        <Link
-                          className='vedlegg__lenke'
-                          href={opprettetSak.sakUrl}
-                          target='_blank' rel='noreferrer'
+                        <Button
+                          variant='tertiary'
+                          onClick={() =>
+                            window.open(opprettetSak.sakUrl, '_blank')}
                         >
                           {t('label:gå-til-rina')}
-                        </Link>
+                        </Button>
                       )}
-                    </FlexDiv>
-                    <HorizontalSeparatorDiv />
-                    <div>
+                      <HorizontalSeparatorDiv />
                       {opprettetSak.sakId && (
-                        <DOMLink
-                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.sakId}
+                        <Button
+                          variant='tertiary'
+                          onClick={() =>
+                            navigate({
+                              pathname: '/vedlegg',
+                              search: 'rinasaksnummer=' + opprettetSak.sakId
+                            })}
                         >
                           {t('label:legg-til-vedlegg-til-sed')}
-                        </DOMLink>
+                        </Button>
                       )}
-                    </div>
-                    <HorizontalSeparatorDiv />
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      role='button'
-                      tabIndex={0}
-                      onKeyPress={() => dispatch(resetSentSed())} onClick={() => dispatch(resetSentSed())}
-                    >
-                      <ErrorFilled />
-                    </div>
-                  </FlexDiv>
+
+                    </FlexDiv>
+                  </PileDiv>
                 </Alert>
               </Column>
             </Row>
@@ -818,6 +811,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
       </MyContent>
       <Margin />
     </Container>
+
   )
 }
 

@@ -22,7 +22,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
     serverInfo: undefined,
     buctyper: undefined,
     familierelasjonKodeverk: undefined,
-    featureToggles: {},
+    filloutinfo: undefined,
     kodemaps: undefined,
     landkoder: undefined,
     sedtyper: undefined,
@@ -53,6 +53,8 @@ describe('pages/OpprettSak/OpprettSak', () => {
     valgtSektor: undefined,
     valgtTema: undefined,
     valgtUnit: undefined,
+
+    currentSak: undefined,
 
     validation: {}
   }

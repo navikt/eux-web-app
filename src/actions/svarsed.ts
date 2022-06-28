@@ -170,18 +170,19 @@ export const querySaks = (
       type,
       saksnummerOrFnr
     },
-    type: actiontype === 'new' ? {
-      request: types.SVARSED_SAKS_REQUEST,
-      success: types.SVARSED_SAKS_SUCCESS,
-      failure: types.SVARSED_SAKS_FAILURE
-    } : {
-      request: types.SVARSED_SAKS_REFRESH_REQUEST,
-      success: types.SVARSED_SAKS_REFRESH_SUCCESS,
-      failure: types.SVARSED_SAKS_REFRESH_FAILURE
-    }
+    type: actiontype === 'new'
+      ? {
+          request: types.SVARSED_SAKS_REQUEST,
+          success: types.SVARSED_SAKS_SUCCESS,
+          failure: types.SVARSED_SAKS_FAILURE
+        }
+      : {
+          request: types.SVARSED_SAKS_REFRESH_REQUEST,
+          success: types.SVARSED_SAKS_REFRESH_SUCCESS,
+          failure: types.SVARSED_SAKS_REFRESH_FAILURE
+        }
   })
 }
-
 
 /*
 sedId: string, sedType: string, status: string
