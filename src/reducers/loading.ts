@@ -30,7 +30,7 @@ export const initialLoadingState: LoadingState = {
   gettingSavedItems: false,
   gettingServerinfo: false,
   gettingSedStatus: false,
-  queryingSaksnummerOrFnr: false,
+  queryingSaks: false,
   savingPdu1: false,
   savingSed: false,
   searchingPerson: false,
@@ -292,16 +292,19 @@ const loadingReducer = (
       }
 
     case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAKS_REFRESH_REQUEST:
       return {
         ...state,
-        queryingSaksnummerOrFnr: true
+        queryingSaks: true
       }
 
     case types.SVARSED_SAKS_SUCCESS:
+    case types.SVARSED_SAKS_REFRESH_SUCCESS:
     case types.SVARSED_SAKS_FAILURE:
+    case types.SVARSED_SAKS_REFRESH_FAILURE:
       return {
         ...state,
-        queryingSaksnummerOrFnr: false
+        queryingSaks: false
       }
 
     case types.SAK_SEND_REQUEST:

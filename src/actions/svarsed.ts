@@ -13,7 +13,7 @@ import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
 export const cleanUpSvarSed = ():Action => ({
-  type: types.SVARSED_BACKBUTTON_CLICKED
+  type: types.SVARSED_CLEANUP
 })
 
 export const createSed = (
@@ -146,8 +146,8 @@ export const rejectingSed = (
   payload: { connectedSed, sak }
 })
 
-export const querySaksnummerOrFnr = (
-  saksnummerOrFnr: string
+export const querySaks = (
+  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
@@ -165,18 +165,23 @@ export const querySaksnummerOrFnr = (
 
   return call({
     url,
-    expectedPayload: mockSaks(saksnummerOrFnr),
+    expectedPayload: mockSaks(saksnummerOrFnr, type),
     context: {
       type,
       saksnummerOrFnr
     },
-    type: {
+    type: actiontype === 'new' ? {
       request: types.SVARSED_SAKS_REQUEST,
       success: types.SVARSED_SAKS_SUCCESS,
       failure: types.SVARSED_SAKS_FAILURE
+    } : {
+      request: types.SVARSED_SAKS_REFRESH_REQUEST,
+      success: types.SVARSED_SAKS_REFRESH_SUCCESS,
+      failure: types.SVARSED_SAKS_REFRESH_FAILURE
     }
   })
 }
+
 
 /*
 sedId: string, sedType: string, status: string

@@ -11,12 +11,13 @@ import {
 } from '@navikt/hoykontrast'
 import { cleanData, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { querySaksnummerOrFnr, setCurrentSak } from 'actions/svarsed'
+import { querySaks, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
 import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Sak, Sed } from 'declarations/types'
@@ -46,8 +47,9 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
-  queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
+  queryingSaks: state.loading.queryingSaks,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
+  deletedSak: state.svarsed.deletedSak,
   saks: state.svarsed.saks,
   sedStatus: state.svarsed.sedStatus,
   currentSak: state.svarsed.currentSak
@@ -68,8 +70,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     entries,
     alertMessage,
     alertType,
+    deletedSak,
     featureToggles,
-    queryingSaksnummerOrFnr,
+    queryingSaks,
     rinasaksnummerOrFnrParam,
     saks,
     sedStatus,
@@ -78,9 +81,22 @@ const SEDSearch: React.FC<SvarSedProps> = ({
 
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)
+  const [_query, _setQuery] = useState<string | undefined>(undefined)
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
 
   const namespace = 'sedsearch'
+
+
+  useEffect(() => {
+    if (_query && !_.isNil(deletedSak)) {
+      // if we are deleting a sak, and query was saksnummer, then we are deleting the same sak, nothing to query
+      // but if we are querying fnr/dnr, we have to query again so we can have a sak list without the deleted sak
+      if (_queryType !== 'saksnummer') {
+        dispatch(querySaks(_query!, 'new'))
+      }
+    }
+  }, [deletedSak])
+
 
   /** if we get 1 sed by querying a saksnummer, then set it as currentSak */
   useEffect(() => {
@@ -146,14 +162,17 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             <VerticalSeparatorDiv size='2' />
             <SEDQuery
               parentNamespace={namespace}
-              initialQuery={rinasaksnummerOrFnrParam}
+              initialQuery={_query ?? rinasaksnummerOrFnrParam}
               onQueryChanged={(queryType: string) => {
                 dispatch(cleanData())
                 dispatch(setCurrentSak(undefined))
                 _setQueryType(queryType)
               }}
-              onQuerySubmit={(q: string) => dispatch(querySaksnummerOrFnr(q))}
-              querying={queryingSaksnummerOrFnr}
+              onQuerySubmit={(q: string) => {
+                _setQuery(q)
+                dispatch(querySaks(q))
+              }}
+              querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
             />
             {visibleSaks?.length > 0 && (
@@ -208,6 +227,9 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             )}
           </>
         )}
+        {queryingSaks ? (
+          <WaitingPanel/>
+        ) : (
         <AlignStartRow>
           {!!currentSak && (
             <Column>
@@ -262,6 +284,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             </MyRadioPanelGroup>
           </Column>
         </AlignStartRow>
+        )}
       </FullWidthDiv>
     </PileStartDiv>
   )

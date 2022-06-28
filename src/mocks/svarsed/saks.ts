@@ -1,4 +1,4 @@
-export default (saksnummer: string) => {
+export default (saksnummer: string, type: string) => {
   const saks = [
     {
       fornavn: 'Ola',
@@ -236,7 +236,7 @@ export default (saksnummer: string) => {
     }
   ]
 
-  if (saksnummer === '1') {
+  if (type  === 'saksnummer') {
     return [saks[0]]
   }
 

@@ -5,10 +5,9 @@ import { deleteSak, loadReplySed } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { XSed, Kjoenn, H001Sed } from 'declarations/sed'
 import { Sak } from 'declarations/types'
-import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch, useAppSelector } from 'store'
+import { useAppDispatch } from 'store'
 
 export interface SakshandlingerProps {
   sak: Sak
@@ -17,23 +16,14 @@ export interface SakshandlingerProps {
 
 const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   sak,
-  changeMode
+  changeMode,
 }: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const deletedSak: any |null | undefined = useAppSelector(state => state.svarsed.deletedSak)
-  const [deleteSakRequest, setDeleteSakRequest] = useState<boolean>(false)
 
-  useEffect(() => {
-    if (deleteSakRequest && !_.isNil(deleteSak)) {
-      setDeleteSakRequest(false)
-      changeMode('A')
-    }
-  }, [deletedSak, deleteSakRequest])
 
   const closeCase = () => {
     if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
-      setDeleteSakRequest(true)
       dispatch(deleteSak(sak.sakId))
     }
   }

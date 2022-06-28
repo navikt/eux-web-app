@@ -91,10 +91,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - saksnummer', () => {
+  it('querySaks() - saksnummer', () => {
     const saksnummerOrFnr = '123'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -110,10 +110,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - valid fnr', () => {
+  it('querySaks() - valid fnr', () => {
     const saksnummerOrFnr = '24053626692'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -129,10 +129,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - valid dnr', () => {
+  it('querySaks() - valid dnr', () => {
     const saksnummerOrFnr = '43099015781'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {

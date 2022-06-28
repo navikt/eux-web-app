@@ -6,7 +6,7 @@ import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import {
   cleanUpSvarSed,
   loadReplySed,
-  querySaksnummerOrFnr,
+  querySaks,
   setCurrentSak,
   setReplySed,
   updateReplySed
@@ -66,6 +66,10 @@ export const SvarSedPage = (): JSX.Element => {
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
+      // reload, so it reflects changes made in potential SED save/send
+      if (currentSak) {
+        dispatch(querySaks(currentSak?.sakId, 'refresh'))
+      }
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
     if (_currentPage === 'A') {
@@ -97,7 +101,7 @@ export const SvarSedPage = (): JSX.Element => {
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
       setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam)
-      dispatch(querySaksnummerOrFnr((rinasaksnummerParam || fnrParam)!))
+      dispatch(querySaks((rinasaksnummerParam || fnrParam)!))
     }
   }, [])
 

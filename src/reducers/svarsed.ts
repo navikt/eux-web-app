@@ -180,18 +180,6 @@ const svarsedReducer = (
         currentSak: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_SAKS_REQUEST:
-      return {
-        ...state,
-        saks: undefined
-      }
-
-    case types.SVARSED_SAKS_FAILURE:
-      return {
-        ...state,
-        saks: null
-      }
-
     case types.SVARSED_SAK_DELETE_REQUEST:
       return {
         ...state,
@@ -201,13 +189,29 @@ const svarsedReducer = (
     case types.SVARSED_SAK_DELETE_SUCCESS:
       return {
         ...state,
-        deletedSak: action.payload,
+        deletedSak: (action as ActionWithPayload).payload,
+        saks: undefined,
         currentSak: undefined
       }
     case types.SVARSED_SAK_DELETE_FAILURE:
       return {
         ...state,
         deletedSak: null
+      }
+
+    case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAKS_REFRESH_REQUEST:
+      return {
+        ...state,
+        saks: undefined,
+        deletedSak: undefined
+      }
+
+    case types.SVARSED_SAKS_FAILURE:
+    case types.SVARSED_SAKS_REFRESH_FAILURE:
+      return {
+        ...state,
+        saks: null
       }
 
     case types.SVARSED_SAKS_SUCCESS: {
@@ -217,6 +221,18 @@ const svarsedReducer = (
       return {
         ...state,
         saks
+      }
+    }
+
+    case types.SVARSED_SAKS_REFRESH_SUCCESS: {
+      const saks = _.isArray((action as ActionWithPayload).payload)
+        ? (action as ActionWithPayload).payload
+        : [(action as ActionWithPayload).payload]
+
+      return {
+        ...state,
+        saks,
+        currentSak: saks[0]
       }
     }
 
