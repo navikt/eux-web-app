@@ -162,7 +162,7 @@ export interface LogMeAgainPayload {
 export interface OpprettetSak {
   sakId: string
   sakUrl: string
-  sedId ?: string
+  sedId: string
 }
 
 export interface Saksbehandler {

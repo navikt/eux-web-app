@@ -4,13 +4,13 @@ import {
   FagSaker,
   OldFamilieRelasjon,
   Institusjoner,
-  Kodeverk
+  Kodeverk, OpprettetSak
 } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockPersonPdl from 'mocks/sak/personpdl'
 import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
+import mockReplySed from 'mocks/svarsed/replySed'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
@@ -124,12 +124,12 @@ export const resetFilloutInfo = () => ({
   type: types.SAK_FILLOUTINFO_RESET
 })
 
-export const getAllFillOutInfo = (
-  fnr: string, template: any
+export const editSed = (
+  opprettSak: OpprettetSak, template: any
 ): ActionWithPayload<Array<Kodeverk>> => {
   return call({
-    url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
-    expectedPayload: mockPersonPdl,
+    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: opprettSak.sakId, sedId: opprettSak.sedId }),
+    expectedPayload: mockReplySed(template.sed.sedType),
     context: {
       template
     },

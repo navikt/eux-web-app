@@ -19,7 +19,7 @@ import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import { cleanPersons } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import { cleanData, getAllFillOutInfo, resetFilloutInfo, resetSentSed } from 'actions/sak'
+import { cleanData, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
 import { loadReplySed, setCurrentSak } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
@@ -29,7 +29,6 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { HSed } from 'declarations/sed'
 import {
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
@@ -57,7 +56,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
-import { isHSed } from 'utils/sed'
 import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
 
 export interface CreateSakSelector {
@@ -352,33 +350,24 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const fillOutSed = (opprettetSak: OpprettetSak, sedType: string) => {
-    if (valgtFnr) {
-      const sed = {
-        sedType,
-        sedVersjon: '4.2',
-        tema: valgtTema,
-        fagsak: valgtSaksId,
-        sed: {
-          sedId: opprettetSak.sedId!,
-          sedTittel: _sedtyper.find((s: Kodeverk) => s.kode === valgtSedType!)?.term as string,
-          sedType: valgtSedType!,
-          status: 'new'
-        } as Sed,
-        sak: {
-          sakId: opprettetSak.sakId,
-          sakType: valgtBucType,
-          sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string
-        } as Sak
-      } as any
-      if (isHSed(sed)) {
-        (sed as HSed).tema = valgtTema;
-        (sed as HSed).fagsakId = valgtSaksId
-      }
-      dispatch(cleanPersons())
-      dispatch(resetSentSed())
-      dispatch(getAllFillOutInfo(valgtFnr!, sed))
-    }
+  const fillOutSed = (opprettetSak: OpprettetSak) => {
+    dispatch(cleanPersons())
+    dispatch(resetSentSed())
+    dispatch(editSed(opprettetSak, {
+      tema: valgtTema,
+      fagsak: valgtSaksId,
+      sed: {
+        sedId: opprettetSak.sedId!,
+        sedTittel: _sedtyper.find((s: Kodeverk) => s.kode === valgtSedType!)?.term as string,
+        sedType: valgtSedType,
+        status: 'new'
+      } as Sed,
+      sak: {
+        sakId: opprettetSak.sakId,
+        sakType: valgtBucType,
+        sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string
+      } as Sak
+    }))
   }
 
   useEffect(() => {
@@ -772,7 +761,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                       <Button
                         variant='secondary'
                         disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
-                        onClick={() => fillOutSed(opprettetSak!, valgtSedType!)}
+                        onClick={() => fillOutSed(opprettetSak!)}
                       >
                         {t('el:button-fill-sed')}
                       </Button>

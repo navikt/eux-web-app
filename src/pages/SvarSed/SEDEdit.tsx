@@ -56,7 +56,7 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, HSed, Person, ReplySed } from 'declarations/sed'
+import { F002Sed, FSed, ReplySed } from 'declarations/sed'
 import { CreateSedResponse, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -65,7 +65,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import { cleanReplySed, isFSed, isH002Sed, isHSed, isSed, isXSed } from 'utils/sed'
+import { cleanReplySed, isFSed, isH002Sed, isSed, isXSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -161,11 +161,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
   }
 
   const setComment = (comment: string) => {
-    if (isHSed(replySed)) {
-      dispatch(updateReplySed('ytterligereInfo', comment))
-    } else {
-      dispatch(updateReplySed('bruker.ytterligereInfo', comment))
-    }
+    dispatch(updateReplySed('ytterligereInfo', comment))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereInfo'))
     }
@@ -318,7 +314,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon-til-sed')}
               onChanged={setComment}
-              value={isHSed(replySed) ? (replySed as HSed)?.ytterligereInfo : (replySed?.bruker as Person)?.ytterligereInfo}
+              value={(replySed as FSed).ytterligereInfo}
             />
           </TextAreaDiv>
         </>

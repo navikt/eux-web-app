@@ -1,6 +1,6 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
-import { FillOutInfoPayload, Pin2 } from 'declarations/sed'
+import { FillOutInfoPayload } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, FagSaker, Institusjon, OldFamilieRelasjon, OpprettetSak } from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
@@ -100,23 +100,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         ...state,
         filloutinfo: {
           ...template,
-          bruker: {
-            personInfo: {
-              fornavn: fillOutInfoPayload.fornavn,
-              etternavn: fillOutInfoPayload.etternavn,
-              kjoenn: fillOutInfoPayload.kjoenn,
-              foedselsdato: fillOutInfoPayload.foedselsdato,
-              statsborgerskap: fillOutInfoPayload.statsborgerskap.map((s: string) => ({ land: s })),
-              pin: (fillOutInfoPayload.utenlandskePin?.map((p: Pin2) => ({
-                land: p.landkode,
-                identifikator: p.identifikator
-              })) ?? []).concat({
-                land: 'NO',
-                identifikator: fillOutInfoPayload.fnr
-              }),
-              adresser: fillOutInfoPayload.adresser
-            }
-          },
+          ...fillOutInfoPayload,
           sak: {
             ...template.sak,
             fornavn: fillOutInfoPayload.fornavn,

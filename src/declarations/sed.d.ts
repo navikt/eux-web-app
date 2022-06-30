@@ -124,11 +124,6 @@ export interface Pin {
   institusjonsnavn ?: string
 }
 
-export interface Pin2 {
-  landkode: string
-  identifikator: string
-}
-
 export interface Statsborgerskap {
   land: string,
   fraDato?: string
@@ -171,7 +166,7 @@ export interface FillOutInfoPayload {
   'foedselsdato': string
   'statsborgerskap': Array<string>
   'adresser': Array<Adresse>,
-  'utenlandskePin': Array<Pin2>
+  'utenlandskePin': Array<any>
 }
 
 export interface Person {
@@ -196,7 +191,6 @@ export interface Person {
   perioderSomPermittertUtenLoenn?: Array<Periode>
   personInfo: PersonInfo
   telefon ?: Array<Telefon>
-  ytterligereInfo ?: string
 }
 
 export interface PersonLight {
@@ -439,6 +433,7 @@ export interface FSed extends BaseReplySed {
   bruker: Person
   anmodningsperioder: Array<Periode>
   formaal: Array<string>
+  ytterligereInfo?: string
 }
 
 export interface F001Sed extends FSed {
