@@ -9,9 +9,10 @@ import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
+import { SisteAnsettelseInfo, TypeGrunn } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -32,10 +33,8 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'sisteAnsettelseInfo'
-  const sisteAnsettelseInfo: any = _.get(replySed, target)
+  const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
-
-  const [_typeGrunnOpphoerAnsatt, _setTypeGrunnOpphoerAnsatt] = useState<string | undefined>(undefined)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -59,12 +58,22 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
     { label: t('el:option-grunntilopphør-annet'), value: 'annet' }
   ]
 
-  const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: string) => {
-    _setTypeGrunnOpphoerAnsatt(typeGrunnOpphoerAnsatt)
-    dispatch(updateReplySed(`${target}.typeGrunnOpphoerAnsatt`, typeGrunnOpphoerAnsatt.trim()))
-    if (validation[namespace + '-typeGrunnOpphoerAnsatt']) {
-      dispatch(resetValidation(namespace + '-typeGrunnOpphoerAnsatt'))
+  const setTypeGrunnOpphoerAnsatt = (typeGrunnOpphoerAnsatt: TypeGrunn | undefined) => {
+    let newSisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.cloneDeep(sisteAnsettelseInfo)
+    if (_.isUndefined(newSisteAnsettelseInfo)) {
+      newSisteAnsettelseInfo = {} as SisteAnsettelseInfo
     }
+    if (!_.isNil(typeGrunnOpphoerAnsatt)) {
+      if (typeGrunnOpphoerAnsatt !== 'annet') {
+        _.unset(newSisteAnsettelseInfo, 'annenGrunnOpphoerAnsatt')
+        _.unset(newSisteAnsettelseInfo, 'grunnOpphoerSelvstendig')
+      }
+      _.set(newSisteAnsettelseInfo, 'typeGrunnOpphoerAnsatt', typeGrunnOpphoerAnsatt)
+    } else {
+      _.unset(newSisteAnsettelseInfo, 'typeGrunnOpphoerAnsatt')
+    }
+    dispatch(updateReplySed(target, newSisteAnsettelseInfo))
+    dispatch(resetValidation(namespace))
   }
 
   const setAnnenGrunnOpphoerAnsatt = (annenGrunnOpphoerAnsatt: string) => {
@@ -97,7 +106,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
             id={namespace + '-typeGrunnOpphoerAnsatt'}
             label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
             menuPortalTarget={document.body}
-            onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value)}
+            onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value as TypeGrunn)}
             options={årsakOptions}
             value={value}
             defaultValue={value}
@@ -107,7 +116,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
           <div style={{ paddingTop: '2rem' }}>
             <Button
               variant='tertiary'
-              onClick={() => setTypeGrunnOpphoerAnsatt('')}
+              onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}
             >
               <Delete />
               {t('el:button-clear')}
@@ -117,7 +126,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
 
       </AlignStartRow>
       <VerticalSeparatorDiv size='2' />
-      {_typeGrunnOpphoerAnsatt === 'annet' && (
+      {sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet' && (
         <>
           <AlignStartRow>
             <Column>
@@ -136,7 +145,7 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
           <AlignStartRow>
             <Column>
               <Input
-                error={validation[namespace + '-årsakselvstendig']?.feilmelding}
+                error={validation[namespace + '-grunnOpphoerSelvstendig']?.feilmelding}
                 namespace={namespace}
                 id='grunnOpphoerSelvstendig'
                 label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}

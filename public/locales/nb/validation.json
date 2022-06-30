@@ -36,6 +36,7 @@
   "noAddressStreet": "Gate mangler",
   "noAddressType": "Adresse type mangler",
   "noAktivitetstype": "Ingen aktivitetstype",
+  "noAnnenOpphør": "Ingen annet opphør",
   "noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
   "noAnswer": "Ingen svar til spørsmål",
   "noAntallPersoner": "Ingen antall personer",
@@ -135,6 +136,8 @@
   "noVedtakType": "Ingen vedtak type",
   "noYtelse": "Ingen ytelse",
   "noYtterligereInfoType": "Du må velge ytterligere informasjons type",
+
+  "noÅrsak": "Ingen årsak",
 
   "textOverX": "tekststørrelse over {{x}} tegn",
   "til-person": " til {{person}}",

@@ -162,18 +162,21 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
         </AlignStartRow>
       )}
       <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <PeriodeInput
-          namespace={namespace}
-          error={{
-            startdato: validation[namespace + '-periode-startdato']?.feilmelding,
-            sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
-          }}
-          setPeriode={setPeriode}
-          value={rettTilYtelse?.periode}
-        />
-        <Column />
-      </AlignStartRow>
+      {_rettTilStonad === 'ja' && (
+        <AlignStartRow>
+          <PeriodeInput
+            namespace={namespace}
+            error={{
+              startdato: validation[namespace + '-periode-startdato']?.feilmelding,
+              sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
+            }}
+            hideLabel={false}
+            setPeriode={setPeriode}
+            value={rettTilYtelse?.periode}
+          />
+          <Column />
+        </AlignStartRow>
+      )}
       <VerticalSeparatorDiv size='2' />
     </PaddedDiv>
   )

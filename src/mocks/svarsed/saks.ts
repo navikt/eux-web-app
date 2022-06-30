@@ -25,7 +25,8 @@ export default (saksnummer: string, type: string) => {
           status: 'new',
           sedType: 'F001',
           sedId: 'f001new',
-          sistEndretDato: '2020-01-02'
+          sistEndretDato: '2020-01-02',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for sent F001',
           status: 'sent',
@@ -34,19 +35,22 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2020-01-02',
           svarsedType: 'F002',
           svarsedDisplay: 'Description for F002',
-          svarsedId: 'f001receivedSvar'
+          svarsedId: 'f001receivedSvar',
+          sedHandlinger: ['F002', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for received F001',
           status: 'received',
           sedType: 'F001',
           sedId: 'f001received',
-          sistEndretDato: '2020-01-02'
+          sistEndretDato: '2020-01-02',
+          sedHandlinger: ['X008', 'X011', 'X012', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for new F002',
           status: 'new',
           sedType: 'F002',
           sedId: 'f002new',
-          sistEndretDato: '2020-01-01'
+          sistEndretDato: '2020-01-01',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for received F002 with sedIdParent',
           status: 'received',
@@ -56,36 +60,42 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2020-01-03',
           svarsedType: 'F002',
           svarsedDisplay: 'Description for F002',
-          svarsedId: 'f002receivedSvar'
+          svarsedId: 'f002receivedSvar',
+          sedHandlinger: ['F002', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for sent F002 with X008',
           status: 'sent',
           sedType: 'F002',
           sedId: 'f002sent',
-          sistEndretDato: '2020-01-04'
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Ugyldiggjøre SED',
           sedType: 'X008',
           status: 'new',
           sedId: 'x008cancelled',
-          sedIdParent: 'f002sent'
+          sedIdParent: 'f002sent',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Unntaksfeil',
           sedType: 'X050',
           sedId: 'x050cancelled',
-          sedIdParent: 'f002sent'
+          sedIdParent: 'f002sent',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for sent F002 without X008',
           status: 'sent',
           sedType: 'F002',
           sedId: 'f002sent2',
-          sistEndretDato: '2020-01-04'
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for active F002',
           status: 'active',
           sedType: 'F002',
           sedId: 'f002active',
-          sistEndretDato: '2020-01-05'
+          sistEndretDato: '2020-01-05',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }
       ]
     }, {
@@ -115,7 +125,8 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2020-01-03',
           svarsedType: 'U002',
           svarsedDisplay: 'Description for U002',
-          svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2'
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558116_2',
+          sedHandlinger: ['U002', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for U003',
           status: 'new',
@@ -124,13 +135,15 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2020-01-04',
           svarsedType: 'U004',
           svarsedDisplay: 'Description for U004',
-          svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2'
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558117_2',
+          sedHandlinger: ['U004', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for U004',
           status: 'new',
           sedType: 'U004',
           sedId: '603e18ebd5b549b1b5c0f53c58558118',
-          sistEndretDato: '2020-01-04'
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Description for U00X',
           status: 'new',
@@ -139,7 +152,8 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2020-01-04',
           svarsedType: 'U017',
           svarsedDisplay: 'Description for U017',
-          svarsedId: '603e18ebd5b549b1b5c0f53c58558119_2'
+          svarsedId: '603e18ebd5b549b1b5c0f53c58558119_2',
+          sedHandlinger: ['U017', 'Read', 'Update', 'Send', 'Delete']
         }
       ]
     },
@@ -168,19 +182,22 @@ export default (saksnummer: string, type: string) => {
           sedType: 'H001',
           sedId: 'h001new',
           status: 'new',
-          sistEndretDato: '2021-02-19'
+          sistEndretDato: '2021-02-19',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
           sedId: 'h001cancelled',
           status: 'cancelled',
-          sistEndretDato: '2021-02-19'
+          sistEndretDato: '2021-02-19',
+          sedHandlinger: ['Read', 'Send', 'Delete']
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
           sedId: 'h001sent',
           status: 'sent',
-          sistEndretDato: '2021-02-19'
+          sistEndretDato: '2021-02-19',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Horizontal With Link',
           sedType: 'H001',
@@ -190,7 +207,8 @@ export default (saksnummer: string, type: string) => {
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
           lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
-          svarsedId: 'h002received'
+          svarsedId: 'h002received',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
@@ -199,7 +217,8 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2021-02-19',
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
-          svarsedId: 'h002received2'
+          svarsedId: 'h002received2',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }
       ]
     },
@@ -230,7 +249,8 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2021-02-18',
           svarsedType: 'U002',
           svarsedDisplay: 'Create U002 Reply',
-          svarsedId: '8edd012b62d84a768cbd4a734929076d_2'
+          svarsedId: '8edd012b62d84a768cbd4a734929076d_2',
+          sedHandlinger: ['U002', 'Read', 'Update', 'Send', 'Delete']
         }
       ]
     }

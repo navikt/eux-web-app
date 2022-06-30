@@ -270,7 +270,7 @@ const InntektForm: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <AlignStartRow style={{ minHeight: '2.2rem' }}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -417,10 +417,7 @@ const InntektForm: React.FC<MainFormProps> = ({
             <PileDiv key={getIdInntekt(inntekt)}>
               <FlexCenterSpacedDiv>
                 <BodyLong>
-                  {t('el:option-inntekttype-' + inntekt.type)}
-                </BodyLong>
-                <BodyLong>
-                  {inntekt.typeAnnen}
+                  {t('el:option-inntekttype-' + inntekt.type) + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
                 </BodyLong>
               </FlexCenterSpacedDiv>
               <FlexDiv>
@@ -444,6 +441,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                   </FlexDiv>
                 </FlexDiv>
               </FlexDiv>
+              <HorizontalLineSeparator size='0.5' />
             </PileDiv>
           ))}
         <VerticalSeparatorDiv size='0.5' />

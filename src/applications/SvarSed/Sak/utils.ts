@@ -23,10 +23,6 @@ export const hasDraft = (
   findSavedEntry(connectedSed.svarsedId, entries) !== undefined
 )
 
-export const canEditSed = (sedType: string) => ['F001', 'F002', 'H001', 'H002', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
-
-export const canUpdateSed = (sedType: string) => ['F002', 'H001', 'H002', 'U001', 'U002', 'U004', 'U017'].indexOf(sedType) >= 0
-
 export const isSedEditable = (
   connectedSed: Sed,
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined,
@@ -34,6 +30,6 @@ export const isSedEditable = (
 ) => (
   !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
   (hasDraft(connectedSed, entries) && !hasSentStatus(connectedSed.svarsedId, sedStatus)) ||
-  (connectedSed.status === 'new' && canEditSed(connectedSed.sedType)) ||
+  (connectedSed.sedHandlinger.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
 )

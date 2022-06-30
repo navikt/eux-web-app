@@ -33,6 +33,7 @@
   "help-international-id": "Internasjonal ID er et felles globalt saksnummer for alle deltakere i \nsaken, og kan brukes til å identifisere saken hos den/de andre \ninstitusjonen(e) i saken. \nLokal ID er et RINA-saksnummer som kun benyttes av egen \ninstitusjon, og som vi benytter til å søke etter saken i nEESSI.",
 
   "loading-checking-sed-status": "Kontrollerer SED status...",
+  "loading-clarifying": "Klargjøring...",
   "loading-editing" : "Rediger...",
   "loading-invalidating" : "Ugyldiggjørende...",
   "loading-rejecting" : "Avviser...",

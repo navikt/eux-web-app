@@ -22,7 +22,7 @@ import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -401,56 +401,59 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             </>
             )
           : (
-            <AlignStartRow style={{ minHeight: '2.2rem' }}>
-              <Column>
-                <FlexDiv>
-                  <Label>{t('label:beløp') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
+            <>
+              <AlignStartRow style={{ minHeight: '2.2rem' }}>
+                <Column>
                   <FlexDiv>
-                    <FormText
-                      error={_v[_namespace + '-beloep']?.feilmelding}
-                      id={_namespace + '-beloep'}
-                    >
-                      {_utbetaling?.beloep}
-                    </FormText>
+                    <Label>{t('label:beløp') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />
-                    <FormText
-                      error={_v[_namespace + '-valuta']?.feilmelding}
-                      id={_namespace + '-valuta'}
-                    >
-                      {_utbetaling?.valuta}
-                    </FormText>
+                    <FlexDiv>
+                      <FormText
+                        error={_v[_namespace + '-beloep']?.feilmelding}
+                        id={_namespace + '-beloep'}
+                      >
+                        {_utbetaling?.beloep}
+                      </FormText>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      <FormText
+                        error={_v[_namespace + '-valuta']?.feilmelding}
+                        id={_namespace + '-valuta'}
+                      >
+                        {_utbetaling?.valuta}
+                      </FormText>
+                    </FlexDiv>
                   </FlexDiv>
-                </FlexDiv>
-              </Column>
-              <Column>
-                {!!_utbetaling?.feriedagerTilGode && (
-                  <FormText
-                    error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
-                    id={_namespace + '-feriedagerTilGode'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:feriedager-til-gode') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_utbetaling?.feriedagerTilGode}
-                    </FlexDiv>
-                  </FormText>
-                )}
-                {!!_utbetaling?.loennTilDato && (
-                  <FormText
-                    error={_v[_namespace + '-loennTilDato']?.feilmelding}
-                    id={_namespace + '-loennTilDato'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:loenn-til-dato') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_utbetaling?.loennTilDato}
-                    </FlexDiv>
-                  </FormText>
-                )}
-              </Column>
-              {addremovepanel}
-            </AlignStartRow>
+                </Column>
+                <Column>
+                  {!!_utbetaling?.feriedagerTilGode && (
+                    <FormText
+                      error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
+                      id={_namespace + '-feriedagerTilGode'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:feriedager-til-gode') + ':'}</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_utbetaling?.feriedagerTilGode}
+                      </FlexDiv>
+                    </FormText>
+                  )}
+                  {!!_utbetaling?.loennTilDato && (
+                    <FormText
+                      error={_v[_namespace + '-loennTilDato']?.feilmelding}
+                      id={_namespace + '-loennTilDato'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:loenn-til-dato') + ':'}</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_utbetaling?.loennTilDato}
+                      </FlexDiv>
+                    </FormText>
+                  )}
+                </Column>
+                {addremovepanel}
+              </AlignStartRow>
+              <HorizontalLineSeparator />
+            </>
             )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>

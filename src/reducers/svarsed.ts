@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { Kjoenn, ReplySed, X008Sed, X011Sed } from 'declarations/sed.d'
+import { Kjoenn, ReplySed, X008Sed, X011Sed, X012Sed } from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
@@ -321,6 +321,29 @@ const svarsedReducer = (
         kansellerSedId: connectedSed.sedType
       } as X011Sed
 
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_CLARIFY: {
+      const { sak } = action.payload
+      const replySed = {
+        sedType: 'X012',
+        sedVersjon: '1',
+        bruker: {
+          fornavn: sak?.fornavn ?? '',
+          etternavn: sak?.etternavn ?? '',
+          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
+          foedselsdato: sak?.foedselsdato ?? '',
+          statsborgerskap: [{ land: 'NO' }],
+          pin: [{
+            land: 'NO',
+            identifikator: sak?.fnr
+          }]
+        }
+      } as X012Sed
       return {
         ...state,
         replySed

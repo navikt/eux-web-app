@@ -24,5 +24,21 @@ export const validateGrunnTilOpphor = (
     personName
   }))
 
+  if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
+      id: namespace + '-annenGrunnOpphoerAnsatt',
+      message: 'validation:noAnnenOpphør',
+      personName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
+      id: namespace + '-grunnOpphoerSelvstendig',
+      message: 'validation:noÅrsak',
+      personName
+    }))
+  }
+
   return hasErrors.find(value => value) !== undefined
 }

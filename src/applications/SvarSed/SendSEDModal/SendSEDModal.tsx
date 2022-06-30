@@ -207,7 +207,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 </FlexCenterSpacedDiv>
               </PileCenterDiv>
             )}
-            {alertMessage && _sendButtonClicked && (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
+            {alertMessage && alertType && _sendButtonClicked && [types.SVARSED_SED_SEND_SUCCESS, types.SVARSED_SED_SEND_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
                   <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>

@@ -146,6 +146,13 @@ export const rejectingSed = (
   payload: { connectedSed, sak }
 })
 
+export const clarifyingSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_CLARIFY,
+  payload: { connectedSed, sak }
+})
+
 export const querySaks = (
   saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {
