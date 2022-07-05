@@ -1,7 +1,7 @@
 import { H002Sed, ReplySed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { checkIfNotTrue, checkLength } from 'utils/validation'
+import { checkLength } from 'utils/validation'
 import { PDU1 } from 'declarations/pd'
 
 export interface ValidationSvarPåForespørselProps {
@@ -29,13 +29,6 @@ export const validateSvarPåForespørsel = (
         !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
 
   const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negativt' : undefined
-
-  hasErrors.push(checkIfNotTrue(v, {
-    needle: doWeHavePositive || doWeHaveNegative,
-    id: namespace + '-svar',
-    message: 'validation:noSvarType',
-    personName
-  }))
 
   if (target === 'positivt') {
     hasErrors.push(checkLength(v, {
