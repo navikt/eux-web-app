@@ -56,7 +56,7 @@ const Family: React.FC<FamilyProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const remainingRelationsFromTPS: Array<OldFamilieRelasjon> = _.filter(person!.relasjoner, (relation: OldFamilieRelasjon) =>
+  const remainingRelationsFromTPS: Array<OldFamilieRelasjon> | undefined = _.filter(person?.relasjoner, (relation: OldFamilieRelasjon) =>
     _.find(valgteFamilieRelasjoner, (valgteRelasjon: OldFamilieRelasjon) => valgteRelasjon.fnr === relation.fnr) === undefined
   )
 
@@ -99,7 +99,7 @@ const Family: React.FC<FamilyProps> = ({
           <Ingress>
             {t('label:familierelasjon-i-tps')}
           </Ingress>
-          {remainingRelationsFromTPS.map((relation: OldFamilieRelasjon) => (
+          {remainingRelationsFromTPS?.map((relation: OldFamilieRelasjon) => (
             <div key={relation.fnr}>
               <PersonCard
                 className='personNotSelected'
@@ -110,7 +110,7 @@ const Family: React.FC<FamilyProps> = ({
               <VerticalSeparatorDiv size='1.5' />
             </div>
           ))}
-          {!_.isEmpty(person!.relasjoner) && _.isEmpty(remainingRelationsFromTPS) && (
+          {!_.isEmpty(person?.relasjoner) && _.isEmpty(remainingRelationsFromTPS) && (
             <>
               <VerticalSeparatorDiv size='1.5' />
               <BodyLong>
@@ -118,7 +118,7 @@ const Family: React.FC<FamilyProps> = ({
               </BodyLong>
             </>
           )}
-          {_.isEmpty(person!.relasjoner) && (
+          {_.isEmpty(person?.relasjoner) && (
             <>
               <VerticalSeparatorDiv size='1.5' />
               <BodyLong>

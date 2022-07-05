@@ -88,7 +88,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     fornavn: relation.fornavn ? relation.fornavn.trim() : '',
     etternavn: relation.etternavn ? relation.etternavn.trim() : '',
     kjoenn: relation.kjoenn ? relation.kjoenn.trim() : '',
-    relasjoner: relation.relasjoner,
+    relasjoner: relation?.relasjoner,
     land: relation.land,
     statsborgerskap: relation.statsborgerskap,
     rolle: relation.rolle

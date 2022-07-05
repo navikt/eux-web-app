@@ -56,16 +56,16 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
     !_.isEmpty((replySed as H002Sed)?.positivtSvar?.sed)
 
-  const doWeHaveNegative: boolean = !_.isEmpty((replySed as H002Sed)?.negativeSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.dokument) ||
-    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.sed) ||
-    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.grunn)
+  const doWeHaveNegative: boolean = !_.isEmpty((replySed as H002Sed)?.negativtSvar?.informasjon) ||
+    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.dokument) ||
+    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.sed) ||
+    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
 
   const [_svar, _setSvar] = useState<HSvarType | undefined>(() =>
     doWeHavePositive
       ? 'positivt'
       : doWeHaveNegative
-        ? 'negative'
+        ? 'negativt'
         : undefined
   )
 
@@ -74,9 +74,9 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     const thisSvar = svarChanged ? value : _svar
     if (thisSvar === 'positivt') {
       const newPositivtSvar: H002Svar = {
-        informasjon: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
-        dokument: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
-        sed: (svarChanged ? (replySed as H002Sed)?.negativeSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''
+        informasjon: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.informasjon : (replySed as H002Sed)?.positivtSvar?.informasjon) ?? '',
+        dokument: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.dokument : (replySed as H002Sed)?.positivtSvar?.dokument) ?? '',
+        sed: (svarChanged ? (replySed as H002Sed)?.negativtSvar?.sed : (replySed as H002Sed)?.positivtSvar?.sed) ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -88,13 +88,13 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
         positivtSvar: newPositivtSvar
       }
 
-      delete (newReplySed as H002Sed).negativeSvar
+      delete (newReplySed as H002Sed).negativtSvar
       dispatch(setReplySed!(newReplySed))
     } else {
       const newNegativtSvar = {
-        informasjon: svarChanged ? (replySed as H002Sed)?.positivtSvar?.informasjon ?? '' : (replySed as H002Sed)?.negativeSvar?.informasjon ?? '',
-        dokument: svarChanged ? (replySed as H002Sed)?.positivtSvar?.dokument ?? '' : (replySed as H002Sed)?.negativeSvar?.dokument ?? '',
-        sed: svarChanged ? (replySed as H002Sed)?.positivtSvar?.sed ?? '' : (replySed as H002Sed)?.negativeSvar?.sed ?? ''
+        informasjon: svarChanged ? (replySed as H002Sed)?.positivtSvar?.informasjon ?? '' : (replySed as H002Sed)?.negativtSvar?.informasjon ?? '',
+        dokument: svarChanged ? (replySed as H002Sed)?.positivtSvar?.dokument ?? '' : (replySed as H002Sed)?.negativtSvar?.dokument ?? '',
+        sed: svarChanged ? (replySed as H002Sed)?.positivtSvar?.sed ?? '' : (replySed as H002Sed)?.negativtSvar?.sed ?? ''
       }
       if (!svarChanged) {
         // @ts-ignore
@@ -103,7 +103,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
 
       const newReplySed: H002Sed = {
         ...(replySed as H002Sed),
-        negativeSvar: newNegativtSvar
+        negativtSvar: newNegativtSvar
       }
       delete (newReplySed as H002Sed).positivtSvar
       dispatch(setReplySed!(newReplySed))
@@ -148,7 +148,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
     }
   }
 
-  const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativeSvar
+  const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativtSvar
 
   return (
     <PaddedDiv>
@@ -180,7 +180,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
               <RadioPanel description={t('message:help-jeg-kan-sende')} value='positivt'>
                 {t('el:option-svar-1')}
               </RadioPanel>
-              <RadioPanel description={t('message:help-jeg-kan-ikke-sende')} value='negative'>
+              <RadioPanel description={t('message:help-jeg-kan-ikke-sende')} value='negativt'>
                 {t('el:option-svar-2')}
               </RadioPanel>
             </FlexRadioPanels>
@@ -240,7 +240,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      {_svar === 'negative' && (
+      {_svar === 'negativt' && (
         <AlignStartRow>
           <Column>
             <TextAreaDiv>

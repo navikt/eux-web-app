@@ -27,7 +27,7 @@ export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte'
 
 export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
-export type HSvarType = 'positivt' | 'negative'
+export type HSvarType = 'positivt' | 'negativt'
 
 export type BarnEllerFamilie = 'barn' | 'familie'
 
@@ -510,7 +510,7 @@ export interface H002Sed extends HSed {
     andreDokumenttyper: Array<string>
   }
   positivtSvar?: H002Svar
-  negativeSvar?: H002Svar
+  negativtSvar?: H002Svar
 }
 
 export interface XSed extends BaseReplySed {
