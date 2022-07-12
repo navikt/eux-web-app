@@ -170,10 +170,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All OK MESSAGES for banner go here
    */
   let dealWithBanner = false
-  if (action.type === types.APP_CLIPBOARD_COPY) {
-    bannerMessage = i18n.t('message:success-clipboard-copy')
-    dealWithBanner = true
-  }
 
   if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
     bannerMessage = i18n.t('message:success-localstorage-save')

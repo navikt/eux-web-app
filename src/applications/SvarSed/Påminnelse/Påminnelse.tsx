@@ -243,7 +243,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
                     <TextArea
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='beskrivelse'
-                      maxLength={51}
+                      maxLength={65}
                       label={t('label:dokument-info')}
                       namespace={_namespace}
                       onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}

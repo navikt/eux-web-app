@@ -11,6 +11,8 @@ import {
   setReplySed,
   updateReplySed
 } from 'actions/svarsed'
+import CreateSak from 'applications/OpprettSak/CreateSak/CreateSak'
+import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
@@ -43,19 +45,28 @@ const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak
 })
 
-export const SvarSedPage = (): JSX.Element => {
+export interface SvarSedPageProps {
+  type: 'new' | 'search'
+}
+
+export const SvarSedPage: React.FC<SvarSedPageProps> = ({
+  type
+}: SvarSedPageProps): JSX.Element => {
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const location = useLocation()
   const { t } = useTranslation()
 
   const [_currentPage, _setCurrentPage] = useState<string>('A')
+  const [_pageChanged, _setPageChanged] = useState<boolean>(false)
+
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSaveSedModal, _setShowSaveSedModal] = useState<boolean>(false)
   const params: URLSearchParams = new URLSearchParams(location.search)
   const { entries, replySed, replySedChanged, currentSak }: SvarSedSelector = useAppSelector(mapState)
 
   const changeMode = (newPage: string) => {
+    _setPageChanged(true)
     _setCurrentPage(newPage)
   }
 
@@ -131,7 +142,9 @@ export const SvarSedPage = (): JSX.Element => {
       backButton={_currentPage === 'B' || (_currentPage === 'A' && currentSak !== undefined)}
       onGoBackClick={onGoBackClick}
       unsavedDoc={replySedChanged}
-      title={t('app:page-title-svarsed')}
+      title={type === 'new'
+        ? t('app:page-title-opprettsak')
+        : t('app:page-title-svarsed')}
     >
       <>
         <Modal
@@ -190,27 +203,33 @@ export const SvarSedPage = (): JSX.Element => {
         <Container>
           <Margin />
           <Content style={{ flex: 6 }}>
-            {_currentPage === 'A' && (
-              <SEDSearch changeMode={changeMode} sak={currentSak!} />
-            )}
+            {_currentPage === 'A'
+              ? (type === 'new' && !_pageChanged)
+                  ? <CreateSak changeMode={changeMode} />
+                  : <SEDSearch changeMode={changeMode} sak={currentSak!} />
+              : null}
             {_currentPage === 'B' && (
               <SEDEdit changeMode={changeMode} />
             )}
           </Content>
           <Content style={{ flex: 2 }}>
-            {_currentPage === 'A' && (
-              currentSak === undefined
-                ? (
-                  <LoadSave<ReplySed>
-                    namespace='svarsed'
-                    changeMode={changeMode}
-                    loadReplySed={loadReplySed}
-                  />
-                  )
-                : (
-                  <Saksopplysninger sak={currentSak} />
-                  )
-            )}
+            {_currentPage === 'A'
+              ? (type === 'new' && !_pageChanged)
+                  ? <SakSidebar />
+                  : (
+                      currentSak === undefined
+                        ? (
+                          <LoadSave<ReplySed>
+                            namespace='svarsed'
+                            changeMode={changeMode}
+                            loadReplySed={loadReplySed}
+                          />
+                          )
+                        : (
+                          <Saksopplysninger sak={currentSak} />
+                          )
+                    )
+              : null}
             {_currentPage === 'B' && (
               <SEDDetails
                 updateReplySed={updateReplySed}

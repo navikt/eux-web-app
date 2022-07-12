@@ -65,7 +65,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import { cleanReplySed, isFSed, isH002Sed, isSed, isXSed } from 'utils/sed'
+import { cleanReplySed, isFSed, isH002Sed, isPreviewableSed, isSed, isXSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 
 export interface SEDEditSelector {
@@ -321,8 +321,12 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
       )}
       <VerticalSeparatorDiv size='2' />
       <Panel border>
-        <PreviewSED replySed={replySed} />
-        <VerticalSeparatorDiv />
+        {!!replySed && isPreviewableSed(replySed!.sedType) && (
+          <>
+            <PreviewSED replySed={replySed} />
+            <VerticalSeparatorDiv />
+          </>
+        )}
         <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
         <VerticalSeparatorDiv />
         <FlexDiv>

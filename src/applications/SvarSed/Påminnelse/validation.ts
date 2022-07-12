@@ -1,7 +1,7 @@
 import { Purring } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty, checkLength } from 'utils/validation'
 
 export interface ValidationPurringProps {
   purring: Purring | undefined
@@ -39,6 +39,14 @@ export const validatePurring = (
     needle: purring?.beskrivelse,
     id: namespace + idx + '-beskrivelse',
     message: 'validation:noInfo',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: purring?.beskrivelse,
+    max: 65,
+    id: namespace + idx + '-beskrivelse',
+    message: 'validation:textOverX',
     personName
   }))
 

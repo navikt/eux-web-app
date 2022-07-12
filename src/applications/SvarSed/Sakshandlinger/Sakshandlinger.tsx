@@ -5,6 +5,7 @@ import { deleteSak, loadReplySed } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { XSed, Kjoenn, H001Sed } from 'declarations/sed'
 import { Sak } from 'declarations/types'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
@@ -71,23 +72,36 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     changeMode('B')
   }
 
+  let disableCloseCase: string | undefined
+  if (sak.erSakseier !== 'ja') {
+    disableCloseCase = t('message:warning-no-sakseier')
+  } else {
+    if (_.find(sak.sedListe, s => s.status === 'received' || s.status === 'sent') !== undefined) {
+      disableCloseCase = t('message:warning-case-has-received-sent-cases')
+    }
+  }
+
   return (
     <Panel border>
       <Heading size='small'>Sakshandlinger</Heading>
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
-      <Tooltip label={(
-        <div style={{ maxWidth: '400px' }}>
-          {t('message:warning-rina')}
-        </div>
-        )}
-      >
-        <BodyLong>
-          {t('label:legg-til-deltaker')}
-        </BodyLong>
-      </Tooltip>
-      <VerticalSeparatorDiv />
+      {sak.erSakseier === 'ja' && (
+        <>
+          <Tooltip label={(
+            <div style={{ maxWidth: '400px' }}>
+              {t('message:warning-rina')}
+            </div>
+          )}
+          >
+            <BodyLong>
+              {t('label:legg-til-deltaker')}
+            </BodyLong>
+          </Tooltip>
+          <VerticalSeparatorDiv />
+        </>
+      )}
       <Tooltip label={(
         <div style={{ maxWidth: '400px' }}>
           {t('message:warning-rina')}
@@ -110,14 +124,27 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         </BodyLong>
       </Tooltip>
       <VerticalSeparatorDiv />
-      {sak.sakshandlinger?.indexOf('Close_Case') >= 0 && (
-        <>
-          <Link href='#' onClick={closeCase}>
-            {t('label:close-case')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
+      {sak.sakshandlinger?.indexOf('Close_Case') >= 0
+        ? disableCloseCase
+            ? (
+              <>
+                <Tooltip label={disableCloseCase}>
+                  <Link href='javascript:void(0);'>
+                    {t('label:close-case')}
+                  </Link>
+                </Tooltip>
+                <VerticalSeparatorDiv />
+              </>
+              )
+            : (
+              <>
+                <Link href='#' onClick={closeCase}>
+                  {t('label:close-case')}
+                </Link>
+                <VerticalSeparatorDiv />
+              </>
+              )
+        : null}
       {sak.sakshandlinger?.indexOf('H001') >= 0 && (
         <>
           <Link href='#' onClick={() => createH001Sed()}>

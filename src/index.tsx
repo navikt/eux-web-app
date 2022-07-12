@@ -45,8 +45,8 @@ root.render(
         <BrowserRouter>
           <Routes>
             <Route path='/vedlegg' element={<Pages.Vedlegg />} />
-            <Route path='/opprettsak' element={<Pages.OpprettSak />} />
-            <Route path='/svarsed' element={<Pages.SvarSed />} />
+            <Route path='/svarsed/new' element={<Pages.SvarSed type='new' />} />
+            <Route path='/svarsed/search' element={<Pages.SvarSed type='search' />} />
             <Route path='/pdu1' element={<Pages.PDU1 />} />
             <Route path='/' element={<Pages.Forside />} />
             <Route element={<Pages.UkjentSide />} />

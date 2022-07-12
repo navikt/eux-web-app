@@ -27,7 +27,7 @@ const Forside: React.FC = (): JSX.Element => {
         <Content style={{ minWidth: '800px' }}>
           <LinkPanel
             href='#'
-            onClick={() => navigate({ pathname: '/opprettsak', search: window.location.search })}
+            onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}
           >
             <LinkPanel.Title>{t('app:page-title-opprettsak')}</LinkPanel.Title>
           </LinkPanel>
@@ -42,7 +42,7 @@ const Forside: React.FC = (): JSX.Element => {
             <VerticalSeparatorDiv />
             <LinkPanel
               href='#'
-              onClick={() => navigate({ pathname: '/svarsed', search: window.location.search })}
+              onClick={() => navigate({ pathname: '/svarsed/search', search: window.location.search })}
             >
               <LinkPanel.Title>{t('app:page-title-svarsed')}</LinkPanel.Title>
             </LinkPanel>

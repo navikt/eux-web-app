@@ -1,6 +1,6 @@
 import { Eye, EyeScreened, Search } from '@navikt/ds-icons'
-import { Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
-import { AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Alert, Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
+import { AlignStartRow, Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
 import { GrayPanel, SpacedHr } from 'components/StyledComponents'
@@ -87,7 +87,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   )
 
   useEffect(() => {
-    if (gettingAdresser === false && !_.isNil(adresser)) {
+    if (gettingAdresser === false && !_.isEmpty(adresser)) {
       _setOpen(true)
     }
   }, [adresser, gettingAdresser])
@@ -118,14 +118,20 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
               : t('label:søk-pdl-adresse-til', { person: personName })}
             {gettingAdresser && <Loader />}
           </Button>
-          <HorizontalSeparatorDiv />
-          {adresser && !_open && (
+        </Column>
+        <Column flex='2'>
+          {!_.isNil(adresser) && adresser.length === 0 && (
+            <Alert variant='warning'>
+              {t('message:warning-no-pdl-address')}
+            </Alert>
+          )}
+          {!_.isEmpty(adresser) && !_open && (
             <Button variant='secondary' onClick={() => _setOpen(true)}>
               <Eye />
               {t('el:button-show')}
             </Button>
           )}
-          {adresser && _open && (
+          {!_.isEmpty(adresser) && _open && (
             <Button variant='secondary' onClick={() => _setOpen(false)}>
               <EyeScreened />
               {t('el:button-hide')}

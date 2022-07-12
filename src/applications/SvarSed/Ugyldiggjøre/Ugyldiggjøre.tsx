@@ -68,16 +68,10 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
   return (
     <PaddedDiv>
       <Heading size='small'>
-        {label}
+        {label} ID: {(replySed as X008Sed)?.kansellerSedId}
       </Heading>
       <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          {(replySed as X008Sed)?.kansellerSedId}
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
+
       <AlignStartRow>
         <Column flex='2'>
           <RadioPanelGroup

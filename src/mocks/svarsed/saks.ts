@@ -17,7 +17,7 @@ export default (saksnummer: string, type: string) => {
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
       sakshandlinger: [
-        'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
+        'H001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case'
       ],
       sedListe: [
         {
@@ -208,7 +208,7 @@ export default (saksnummer: string, type: string) => {
           svarsedDisplay: 'Create H002',
           lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
           svarsedId: 'h002received',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',
@@ -218,7 +218,7 @@ export default (saksnummer: string, type: string) => {
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
           svarsedId: 'h002received2',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
         }
       ]
     },

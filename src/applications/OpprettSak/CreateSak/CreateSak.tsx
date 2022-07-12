@@ -154,7 +154,7 @@ const mapState = (state: State): CreateSakSelector => ({
 })
 
 export interface CreateSakProps {
-  changeMode: (mode: string, from: string, callback?: () => void) => void
+  changeMode: (newPage: string) => void
 }
 
 export const MyContent = styled(Content)`
@@ -375,7 +375,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
       dispatch(loadReplySed(filloutinfo))
       dispatch(setCurrentSak(filloutinfo.sak))
       dispatch(resetFilloutInfo())
-      changeMode('B', 'forward')
+      changeMode('B')
     }
   }, [filloutinfo])
 

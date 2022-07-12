@@ -37,7 +37,7 @@ const IconDiv = styled(PileCenterDiv)`
 interface SEDPanelProps {
   currentSak: Sak
   connectedSed: Sed
-  changeMode: (mode: string) => void
+  changeMode: (newPage: string) => void
 }
 
 const mapState = (state: State): any => ({
@@ -57,18 +57,20 @@ const SEDPanel = ({
   const { entries, replySed, sedStatus }: any = useAppSelector(mapState)
 
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
+  const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
   const [_replyingToSed, _setReplyingToSed] = useState<boolean>(false)
   const [_invalidatingSed, _setInvalidatingSed] = useState<boolean>(false)
   const [_rejectingSed, _setRejectingSed] = useState<boolean>(false)
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
 
-  const waitingForOperation = _editingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed
+  const waitingForOperation = _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
     if (!_.isUndefined(replySed) && waitingForOperation) {
       _setReplyingToSed(false)
+      _setUpdatingSed(false)
       _setEditingSed(false)
       _setInvalidatingSed(false)
       _setRejectingSed(false)
@@ -100,6 +102,11 @@ const SEDPanel = ({
     dispatch(editSed(connectedSed, sak))
   }
 
+  const onUpdatingSedClick = (connectedSed: Sed, sak: Sak) => {
+    _setUpdatingSed(true)
+    dispatch(editSed(connectedSed, sak))
+  }
+
   const onInvalidatingSedClick = (connectedSed: Sed, sak: Sak) => {
     _setInvalidatingSed(true)
     dispatch(invalidatingSed(connectedSed, sak))
@@ -122,7 +129,8 @@ const SEDPanel = ({
 
   const showJournalforingButton = connectedSed.lenkeHvisForrigeSedMaaJournalfoeres
   const showDraftButton = hasDraft(connectedSed, entries)
-  const showEditButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0)
+  const showEditButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && connectedSed.status === 'new'
+  const showUpdateButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && (connectedSed.status === 'sent' || connectedSed.status === 'active')
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType && (connectedSed.sedHandlinger.indexOf(connectedSed.svarsedType as SedAction) >= 0)
   const showInvalidateButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X008') >= 0
   const showRejectButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X011') >= 0
@@ -228,6 +236,31 @@ const SEDPanel = ({
                       </>
                       )
                     : t('label:edit-sed')}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showUpdateButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_updatingSed}
+                  data-amplitude='svarsed.selection.updatesed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.sedType
+                    })
+                    onUpdatingSedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_updatingSed
+                    ? (
+                      <>
+                        {t('message:loading-updating')}
+                        <Loader />
+                      </>
+                      )
+                    : t('label:oppdater-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
