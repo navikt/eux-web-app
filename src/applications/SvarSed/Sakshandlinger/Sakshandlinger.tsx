@@ -55,7 +55,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     const replySed: XSed = {
       sedType,
       sak,
-      sedVersjon: '1',
+      sedVersjon: '4.2',
       bruker: {
         fornavn: sak?.fornavn ?? '',
         etternavn: sak?.etternavn ?? '',
