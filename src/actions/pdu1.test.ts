@@ -41,9 +41,9 @@ describe('actions/pdu1', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.PDU1_FAGSAKER_GET_REQUEST,
-          success: types.PDU1_FAGSAKER_GET_SUCCESS,
-          failure: types.PDU1_FAGSAKER_GET_FAILURE
+          request: types.PDU1_FAGSAKER_REQUEST,
+          success: types.PDU1_FAGSAKER_SUCCESS,
+          failure: types.PDU1_FAGSAKER_FAILURE
         },
         url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))

@@ -27,37 +27,37 @@ export const initialPdu1State: Pdu1State = {
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
   switch (action.type) {
-    case types.APP_CLEAN:
-    case types.PDU1_BACKBUTTON_CLICKED:
+    case types.APP_RESET:
+    case types.PDU1_RESET:
       return initialPdu1State
 
-    case types.PDU1_FAGSAKER_GET_REQUEST:
+    case types.PDU1_FAGSAKER_REQUEST:
     case types.PDU1_FAGSAKER_RESET:
       return {
         ...state,
         fagsaker: undefined
       }
 
-    case types.PDU1_FAGSAKER_GET_SUCCESS:
+    case types.PDU1_FAGSAKER_SUCCESS:
       return {
         ...state,
         fagsaker: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_FAGSAKER_GET_FAILURE:
+    case types.PDU1_FAGSAKER_FAILURE:
       return {
         ...state,
         fagsaker: null
       }
 
-    case types.PDU1_GET_ASJSON_REQUEST:
+    case types.PDU1_ASJSON_REQUEST:
       return {
         ...state,
         pdu1Changed: false,
         pdu1: undefined
       }
 
-    case types.PDU1_GET_ASJSON_SUCCESS: {
+    case types.PDU1_ASJSON_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
       pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
       return {
@@ -66,27 +66,27 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       }
     }
 
-    case types.PDU1_GET_ASJSON_FAILURE:
+    case types.PDU1_ASJSON_FAILURE:
       return {
         ...state,
         pdu1Changed: false,
         pdu1: null
       }
 
-    case types.PDU1_GET_ASPDF_RESET:
-    case types.PDU1_GET_ASPDF_REQUEST:
+    case types.PDU1_ASPDF_RESET:
+    case types.PDU1_ASPDF_REQUEST:
       return {
         ...state,
         previewStoredPdu1: undefined
       }
 
-    case types.PDU1_GET_ASPDF_SUCCESS:
+    case types.PDU1_ASPDF_SUCCESS:
       return {
         ...state,
         previewStoredPdu1: (action as ActionWithPayload).payload
       }
 
-    case types.PDU1_GET_ASPDF_FAILURE:
+    case types.PDU1_ASPDF_FAILURE:
       return {
         ...state,
         previewStoredPdu1: null

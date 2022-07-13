@@ -1,4 +1,4 @@
-import { alertClear } from 'actions/alert'
+import { alertReset } from 'actions/alert'
 import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
@@ -17,7 +17,7 @@ const defaultSelector: TopContainerSelector = {
 }
 
 jest.mock('actions/alert', () => ({
-  alertClear: jest.fn(),
+  alertReset: jest.fn(),
   alertFailure: jest.fn()
 }))
 
@@ -49,7 +49,7 @@ describe('components/TopContainer', () => {
   })
 
   it('Compute the client error message', () => {
-    (alertClear as jest.Mock).mockReset()
+    (alertReset as jest.Mock).mockReset()
     stageSelector(defaultSelector, { bannerMessage: 'mockMessage|mockParams' })
     wrapper = render(
       <TopContainer {...initialMockProps}>
@@ -60,6 +60,6 @@ describe('components/TopContainer', () => {
     expect(clientAlert.render().text()).toEqual('error' + 'mockMessage|mockParams')
 
     clientAlert.find('Icons').simulate('click')
-    expect(alertClear).toHaveBeenCalled()
+    expect(alertReset).toHaveBeenCalled()
   })
 })

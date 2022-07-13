@@ -3,7 +3,6 @@
   "button-add-new-x": "Legg til ny {{x}}",
   "button-add-new-x2": "Legg til nytt {{x}}",
   "button-add-new-xs": "Legg til nye {{x}}",
-
   "button-add-x": "Legg til {{x}}",
   "button-back": "Tilbake",
   "button-cancel": "Avbryt",
@@ -43,7 +42,6 @@
   "checkbox-pdu1-4.3": "har mottatt eller har fortsatt ikke mottatt betaling i stedet for feriedager, som beløper seg ",
   "checkbox-pdu1-4.4": "har gitt avkall på ovennevnte rettigheter i løpet av arbeidskontraktens løpetid",
   "checkbox-pdu1-4.5": "mottar for tiden",
-
   "checkbox-pdu1-6.1":   "Innehaveren har rett til dagpenger fra kontoret som utsteder dette dokumentet, i henhold til artikkel",
   "checkbox-pdu1-6.1.1": "64 og",
   "checkbox-pdu1-6.1.2": "65 (5) b) i forordning 883/2004",

@@ -14,9 +14,9 @@ export const initialValidationState: ValidationState = {
 
 const validationReducer = (state: ValidationState = initialValidationState, action: AnyAction): ValidationState => {
   switch (action.type) {
-    case types.PDU1_BACKBUTTON_CLICKED:
-    case types.SVARSED_CLEANUP:
-    case types.APP_CLEAN:
+    case types.PDU1_RESET:
+    case types.SVARSED_RESET:
+    case types.APP_RESET:
       return initialValidationState
 
     case types.VALIDATION_RESET: {

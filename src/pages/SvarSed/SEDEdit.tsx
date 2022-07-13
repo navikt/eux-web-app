@@ -1,6 +1,6 @@
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { alertClear } from 'actions/alert'
+import { alertReset } from 'actions/alert'
 import { resetCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
@@ -382,7 +382,7 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
               <Button
                 variant='tertiary' onClick={() => {
                   _setSendButtonClicked(false)
-                  dispatch(alertClear())
+                  dispatch(alertReset())
                 }}
               >
                 OK

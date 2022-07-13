@@ -15,7 +15,7 @@ import File from '@navikt/forhandsvisningsfil'
 const sprintf = require('sprintf-js').sprintf
 
 export const cleanUpPDU1 = ():Action => ({
-  type: types.PDU1_BACKBUTTON_CLICKED
+  type: types.PDU1_RESET
 })
 
 export const searchPdu1s = (
@@ -40,9 +40,9 @@ export const getStoredPdu1AsJSON = (
     expectedPayload: mockStoredPdu1AsJSON,
     context: { fagsakId },
     type: {
-      request: types.PDU1_GET_ASJSON_REQUEST,
-      success: types.PDU1_GET_ASJSON_SUCCESS,
-      failure: types.PDU1_GET_ASJSON_FAILURE
+      request: types.PDU1_ASJSON_REQUEST,
+      success: types.PDU1_ASJSON_SUCCESS,
+      failure: types.PDU1_ASJSON_FAILURE
     }
   })
 }
@@ -55,15 +55,15 @@ export const getStoredPdu1AsPDF = (
     expectedPayload: mockPreviewPdu1(),
     responseType: 'pdf',
     type: {
-      request: types.PDU1_GET_ASPDF_REQUEST,
-      success: types.PDU1_GET_ASPDF_SUCCESS,
-      failure: types.PDU1_GET_ASPDF_FAILURE
+      request: types.PDU1_ASPDF_REQUEST,
+      success: types.PDU1_ASPDF_SUCCESS,
+      failure: types.PDU1_ASPDF_FAILURE
     }
   })
 }
 
 export const resetStoredPdu1AsPDF = () => ({
-  type: types.PDU1_GET_ASPDF_RESET
+  type: types.PDU1_ASPDF_RESET
 })
 
 export const getPdu1Template = (
@@ -104,9 +104,9 @@ export const getFagsaker = (
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
-      request: types.PDU1_FAGSAKER_GET_REQUEST,
-      success: types.PDU1_FAGSAKER_GET_SUCCESS,
-      failure: types.PDU1_FAGSAKER_GET_FAILURE
+      request: types.PDU1_FAGSAKER_REQUEST,
+      success: types.PDU1_FAGSAKER_SUCCESS,
+      failure: types.PDU1_FAGSAKER_FAILURE
     }
   })
 }

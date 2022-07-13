@@ -48,10 +48,10 @@ const svarsedReducer = (
   action: AnyAction
 ): SvarsedState => {
   switch (action.type) {
-    case types.APP_CLEAN:
+    case types.APP_RESET:
       return initialSvarsedState
 
-    case types.SVARSED_CLEANUP:
+    case types.SVARSED_RESET:
       return {
         ...state,
         replySed: undefined,
@@ -60,19 +60,19 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_FAGSAKER_RESET:
-    case types.SVARSED_FAGSAKER_GET_REQUEST:
+    case types.SVARSED_FAGSAKER_REQUEST:
       return {
         ...state,
         fagsaker: undefined
       }
 
-    case types.SVARSED_FAGSAKER_GET_SUCCESS:
+    case types.SVARSED_FAGSAKER_SUCCESS:
       return {
         ...state,
         fagsaker: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_FAGSAKER_GET_FAILURE:
+    case types.SVARSED_FAGSAKER_FAILURE:
       return {
         ...state,
         fagsaker: null

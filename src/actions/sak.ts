@@ -32,8 +32,8 @@ export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRel
   payload
 })
 
-export const cleanData: ActionCreator<Action> = (): Action => ({
-  type: types.SAK_CLEAN_DATA
+export const sakReset: ActionCreator<Action> = (): Action => ({
+  type: types.SAK_RESET
 })
 
 export const createSak = (data: any): ActionWithPayload<any> => {
@@ -85,9 +85,9 @@ export const getFagsaker = (
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
-      request: types.SAK_FAGSAKER_GET_REQUEST,
-      success: types.SAK_FAGSAKER_GET_SUCCESS,
-      failure: types.SAK_FAGSAKER_GET_FAILURE
+      request: types.SAK_FAGSAKER_REQUEST,
+      success: types.SAK_FAGSAKER_SUCCESS,
+      failure: types.SAK_FAGSAKER_FAILURE
     }
   })
 }
@@ -99,9 +99,9 @@ export const getInstitusjoner = (
     url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
     expectedPayload: mockInstitusjon({ landkode }),
     type: {
-      request: types.SAK_INSTITUSJONER_GET_REQUEST,
-      success: types.SAK_INSTITUSJONER_GET_SUCCESS,
-      failure: types.SAK_INSTITUSJONER_GET_FAILURE
+      request: types.SAK_INSTITUSJONER_REQUEST,
+      success: types.SAK_INSTITUSJONER_SUCCESS,
+      failure: types.SAK_INSTITUSJONER_FAILURE
     }
   })
 }
@@ -113,9 +113,9 @@ export const getLandkoder = (
     url: sprintf(urls.API_LANDKODER_URL, { buctype }),
     expectedPayload: mockLandkode(),
     type: {
-      request: types.SAK_LANDKODER_GET_REQUEST,
-      success: types.SAK_LANDKODER_GET_SUCCESS,
-      failure: types.SAK_LANDKODER_GET_FAILURE
+      request: types.SAK_LANDKODER_REQUEST,
+      success: types.SAK_LANDKODER_SUCCESS,
+      failure: types.SAK_LANDKODER_FAILURE
     }
   })
 }

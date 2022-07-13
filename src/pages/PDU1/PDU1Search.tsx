@@ -134,7 +134,7 @@ const PDU1Search: React.FC<PDU1Props> = ({
   ]
 
   const onFnrDnrChange = (query: string) => {
-    dispatch(appActions.cleanData())
+    dispatch(appActions.appReset())
     setNewPdu1Mode(false)
     setSearchPdu1Mode(false)
     _resetValidation(namespace + '-search')

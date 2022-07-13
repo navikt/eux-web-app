@@ -9,7 +9,7 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { cleanData, copyToClipboard } from 'actions/app'
+import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { querySaks, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
@@ -162,7 +162,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               parentNamespace={namespace}
               initialQuery={_query ?? rinasaksnummerOrFnrParam}
               onQueryChanged={(queryType: string) => {
-                dispatch(cleanData())
+                dispatch(appReset())
                 dispatch(setCurrentSak(undefined))
                 _setQueryType(queryType)
               }}

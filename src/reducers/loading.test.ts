@@ -36,64 +36,64 @@ describe('reducers/loading', () => {
     ).toEqual(initialLoadingState)
   })
 
-  it('ARBEIDSPERIODER_GET_REQUEST', () => {
-    simulateRequest(types.ARBEIDSPERIODER_GET_REQUEST, 'gettingArbeidsperioder')
+  it('ARBEIDSPERIODER_REQUEST', () => {
+    simulateRequest(types.ARBEIDSPERIODER_REQUEST, 'gettingArbeidsperioder')
   })
 
-  it('ARBEIDSPERIODER_GET_SUCCESS', () => {
-    simulateSuccess(types.ARBEIDSPERIODER_GET_SUCCESS, 'gettingArbeidsperioder')
+  it('ARBEIDSPERIODER_SUCCESS', () => {
+    simulateSuccess(types.ARBEIDSPERIODER_SUCCESS, 'gettingArbeidsperioder')
   })
 
-  it('ARBEIDSPERIODER_GET_FAILURE', () => {
-    simulateFailure(types.ARBEIDSPERIODER_GET_FAILURE, 'gettingArbeidsperioder')
+  it('ARBEIDSPERIODER_FAILURE', () => {
+    simulateFailure(types.ARBEIDSPERIODER_FAILURE, 'gettingArbeidsperioder')
   })
 
-  it('VEDLEGG_DOKUMENT_GET_REQUEST', () => {
-    simulateRequest(types.VEDLEGG_DOKUMENT_GET_REQUEST, 'gettingDokument')
+  it('VEDLEGG_DOKUMENT_REQUEST', () => {
+    simulateRequest(types.VEDLEGG_DOKUMENT_REQUEST, 'gettingDokument')
   })
 
-  it('VEDLEGG_DOKUMENT_GET_SUCCESS', () => {
-    simulateSuccess(types.VEDLEGG_DOKUMENT_GET_SUCCESS, 'gettingDokument')
+  it('VEDLEGG_DOKUMENT_SUCCESS', () => {
+    simulateSuccess(types.VEDLEGG_DOKUMENT_SUCCESS, 'gettingDokument')
   })
 
-  it('VEDLEGG_DOKUMENT_GET_FAILURE', () => {
-    simulateFailure(types.VEDLEGG_DOKUMENT_GET_FAILURE, 'gettingDokument')
+  it('VEDLEGG_DOKUMENT_FAILURE', () => {
+    simulateFailure(types.VEDLEGG_DOKUMENT_FAILURE, 'gettingDokument')
   })
 
-  it('SAK_FAGSAKER_GET_REQUEST', () => {
-    simulateRequest(types.SAK_FAGSAKER_GET_REQUEST, 'gettingFagsaker')
+  it('SAK_FAGSAKER_REQUEST', () => {
+    simulateRequest(types.SAK_FAGSAKER_REQUEST, 'gettingFagsaker')
   })
 
-  it('SAK_FAGSAKER_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_FAGSAKER_GET_SUCCESS, 'gettingFagsaker')
+  it('SAK_FAGSAKER_SUCCESS', () => {
+    simulateSuccess(types.SAK_FAGSAKER_SUCCESS, 'gettingFagsaker')
   })
 
-  it('SAK_FAGSAKER_GET_FAILURE', () => {
-    simulateFailure(types.SAK_FAGSAKER_GET_FAILURE, 'gettingFagsaker')
+  it('SAK_FAGSAKER_FAILURE', () => {
+    simulateFailure(types.SAK_FAGSAKER_FAILURE, 'gettingFagsaker')
   })
 
-  it('SAK_INSTITUSJONER_GET_REQUEST', () => {
-    simulateRequest(types.SAK_INSTITUSJONER_GET_REQUEST, 'gettingInstitusjoner')
+  it('SAK_INSTITUSJONER_REQUEST', () => {
+    simulateRequest(types.SAK_INSTITUSJONER_REQUEST, 'gettingInstitusjoner')
   })
 
-  it('SAK_INSTITUSJONER_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_INSTITUSJONER_GET_SUCCESS, 'gettingInstitusjoner')
+  it('SAK_INSTITUSJONER_SUCCESS', () => {
+    simulateSuccess(types.SAK_INSTITUSJONER_SUCCESS, 'gettingInstitusjoner')
   })
 
-  it('SAK_INSTITUSJONER_GET_FAILURE', () => {
-    simulateFailure(types.SAK_INSTITUSJONER_GET_FAILURE, 'gettingInstitusjoner')
+  it('SAK_INSTITUSJONER_FAILURE', () => {
+    simulateFailure(types.SAK_INSTITUSJONER_FAILURE, 'gettingInstitusjoner')
   })
 
-  it('SAK_LANDKODER_GET_REQUEST', () => {
-    simulateRequest(types.SAK_LANDKODER_GET_REQUEST, 'gettingLandkoder')
+  it('SAK_LANDKODER_REQUEST', () => {
+    simulateRequest(types.SAK_LANDKODER_REQUEST, 'gettingLandkoder')
   })
 
-  it('SAK_LANDKODER_GET_SUCCESS', () => {
-    simulateSuccess(types.SAK_LANDKODER_GET_SUCCESS, 'gettingLandkoder')
+  it('SAK_LANDKODER_SUCCESS', () => {
+    simulateSuccess(types.SAK_LANDKODER_SUCCESS, 'gettingLandkoder')
   })
 
-  it('SAK_LANDKODER_GET_FAILURE', () => {
-    simulateFailure(types.SAK_LANDKODER_GET_FAILURE, 'gettingLandkoder')
+  it('SAK_LANDKODER_FAILURE', () => {
+    simulateFailure(types.SAK_LANDKODER_FAILURE, 'gettingLandkoder')
   })
 
   it('PERSON_SEARCH_REQUEST', () => {
@@ -132,34 +132,34 @@ describe('reducers/loading', () => {
     simulateFailure(types.VEDLEGG_POST_FAILURE, 'sendingVedlegg')
   })
 
-  it('APP_SAKSBEHANDLER_GET_REQUEST', () => {
-    simulateRequest(types.APP_SAKSBEHANDLER_GET_REQUEST, 'gettingSaksbehandler')
+  it('APP_SAKSBEHANDLER_REQUEST', () => {
+    simulateRequest(types.APP_SAKSBEHANDLER_REQUEST, 'gettingSaksbehandler')
   })
 
-  it('APP_SAKSBEHANDLER_GET_SUCCESS', () => {
-    simulateSuccess(types.APP_SAKSBEHANDLER_GET_SUCCESS, 'gettingSaksbehandler')
+  it('APP_SAKSBEHANDLER_SUCCESS', () => {
+    simulateSuccess(types.APP_SAKSBEHANDLER_SUCCESS, 'gettingSaksbehandler')
   })
 
-  it('APP_SAKSBEHANDLER_GET_FAILURE', () => {
-    simulateFailure(types.APP_SAKSBEHANDLER_GET_FAILURE, 'gettingSaksbehandler')
+  it('APP_SAKSBEHANDLER_FAILURE', () => {
+    simulateFailure(types.APP_SAKSBEHANDLER_FAILURE, 'gettingSaksbehandler')
   })
 
-  it('APP_SERVERINFO_GET_REQUEST', () => {
-    simulateRequest(types.APP_SERVERINFO_GET_REQUEST, 'gettingServerinfo')
+  it('APP_SERVERINFO_REQUEST', () => {
+    simulateRequest(types.APP_SERVERINFO_REQUEST, 'gettingServerinfo')
   })
 
-  it('APP_SERVERINFO_GET_SUCCESS', () => {
-    simulateSuccess(types.APP_SERVERINFO_GET_SUCCESS, 'gettingServerinfo')
+  it('APP_SERVERINFO_SUCCESS', () => {
+    simulateSuccess(types.APP_SERVERINFO_SUCCESS, 'gettingServerinfo')
   })
 
-  it('APP_SERVERINFO_GET_FAILURE', () => {
-    simulateFailure(types.APP_SERVERINFO_GET_FAILURE, 'gettingServerinfo')
+  it('APP_SERVERINFO_FAILURE', () => {
+    simulateFailure(types.APP_SERVERINFO_FAILURE, 'gettingServerinfo')
   })
 
-  it('APP_CLEAN', () => {
+  it('APP_RESET', () => {
     expect(
       loadingReducer({}, {
-        type: types.APP_CLEAN
+        type: types.APP_RESET
       })
     ).toEqual(initialLoadingState)
   })

@@ -11,7 +11,7 @@ import NEESSILogo from 'assets/logos/nEESSI'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
-import { cleanData } from 'actions/app'
+import { appReset } from 'actions/app'
 
 const HeaderContent = styled.header<{highContrast: boolean}>`
   background-color: ${({ highContrast }) => highContrast
@@ -71,8 +71,8 @@ const Header: React.FC<HeaderProps> = ({
     dispatch(toggleHighContrast())
   }
 
-  const _cleanData = () => {
-    dispatch(cleanData())
+  const resetApp = () => {
+    dispatch(appReset())
   }
 
   return (
@@ -91,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       <div />
       <FlexCenterDiv>
-        <DomLink to='/' onClick={_cleanData}>
+        <DomLink to='/' onClick={resetApp}>
           <NEESSILogo />
         </DomLink>
         <HorizontalSeparatorDiv />

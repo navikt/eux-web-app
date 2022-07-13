@@ -2,14 +2,14 @@ import * as types from 'constants/actionTypes'
 import sakReducer, { initialSakState } from './sak'
 
 describe('reducers/sak', () => {
-  it('SAK_FAGSAKER_GET_REQUEST', () => {
+  it('SAK_FAGSAKER_REQUEST', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState,
         fagsaker: []
       }, {
-        type: types.SAK_FAGSAKER_GET_REQUEST,
+        type: types.SAK_FAGSAKER_REQUEST,
         payload
       })
     ).toEqual({
@@ -18,14 +18,14 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_FAGSAKER_GET_SUCCESS', () => {
+  it('SAK_FAGSAKER_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState,
         fagsaker: []
       }, {
-        type: types.SAK_FAGSAKER_GET_SUCCESS,
+        type: types.SAK_FAGSAKER_SUCCESS,
         payload
       })
     ).toEqual({
@@ -34,13 +34,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_FAGSAKER_GET_FAILURE', () => {
+  it('SAK_FAGSAKER_FAILURE', () => {
     expect(
       sakReducer({
         ...initialSakState,
         fagsaker: []
       }, {
-        type: types.SAK_FAGSAKER_GET_FAILURE,
+        type: types.SAK_FAGSAKER_FAILURE,
         payload: {}
       })
     ).toEqual({
@@ -49,13 +49,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_INSTITUSJONER_GET_SUCCESS', () => {
+  it('SAK_INSTITUSJONER_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState
       }, {
-        type: types.SAK_INSTITUSJONER_GET_SUCCESS,
+        type: types.SAK_INSTITUSJONER_SUCCESS,
         payload
       })
     ).toEqual({
@@ -64,13 +64,13 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_LANDKODER_GET_SUCCESS', () => {
+  it('SAK_LANDKODER_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(
       sakReducer({
         ...initialSakState
       }, {
-        type: types.SAK_LANDKODER_GET_SUCCESS,
+        type: types.SAK_LANDKODER_SUCCESS,
         payload
       })
     ).toEqual({
@@ -94,7 +94,7 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('APP_CLEAN', () => {
+  it('APP_RESET', () => {
     expect(
       sakReducer({
         ...initialSakState,
@@ -105,19 +105,19 @@ describe('reducers/sak', () => {
           fnr: '123'
         }
       }, {
-        type: types.APP_CLEAN,
+        type: types.APP_RESET,
         payload: {}
       })
     ).toEqual(initialSakState)
   })
 
-  it('APP_CLEAN', () => {
+  it('APP_RESET', () => {
     expect(
       sakReducer({
         ...initialSakState,
         fnr: '123'
       }, {
-        type: types.APP_CLEAN
+        type: types.APP_RESET
       })
     ).toEqual(initialSakState)
   })

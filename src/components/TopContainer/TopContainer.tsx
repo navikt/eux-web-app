@@ -1,4 +1,4 @@
-import { alertClear, alertFailure } from 'actions/alert'
+import { alertReset, alertFailure } from 'actions/alert'
 import BannerAlert from 'components/BannerAlert/BannerAlert'
 import Header from 'components/Header/Header'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
@@ -123,7 +123,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   const dispatch = useAppDispatch()
 
   const onClear = (): void => {
-    dispatch(alertClear())
+    dispatch(alertReset())
   }
 
   if (_.isNil(window.onerror)) {

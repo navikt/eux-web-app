@@ -64,85 +64,140 @@ const loadingReducer = (
         gettingAdresser: false
       }
 
-    case types.ARBEIDSPERIODER_GET_REQUEST:
+    case types.ARBEIDSPERIODER_REQUEST:
       return {
         ...state,
         gettingArbeidsperioder: true
       }
 
-    case types.ARBEIDSPERIODER_GET_SUCCESS:
-    case types.ARBEIDSPERIODER_GET_FAILURE:
+    case types.ARBEIDSPERIODER_SUCCESS:
+    case types.ARBEIDSPERIODER_FAILURE:
       return {
         ...state,
         gettingArbeidsperioder: false
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_REQUEST:
+    case types.APP_SAKSBEHANDLER_REQUEST:
+      return {
+        ...state,
+        gettingSaksbehandler: true
+      }
+
+    case types.APP_SAKSBEHANDLER_SUCCESS:
+    case types.APP_SAKSBEHANDLER_FAILURE:
+      return {
+        ...state,
+        gettingSaksbehandler: false
+      }
+
+    case types.APP_SERVERINFO_REQUEST:
+      return {
+        ...state,
+        gettingServerinfo: true
+      }
+
+    case types.APP_SERVERINFO_SUCCESS:
+    case types.APP_SERVERINFO_FAILURE:
+      return {
+        ...state,
+        gettingServerinfo: false
+      }
+
+    case types.APP_RESET:
+      return initialLoadingState
+
+    case types.ATTACHMENT_LIST_REQUEST:
+      return {
+        ...state,
+        gettingJoarkList: true
+      }
+
+    case types.ATTACHMENT_LIST_SUCCESS:
+    case types.ATTACHMENT_LIST_FAILURE:
+      return {
+        ...state,
+        gettingJoarkList: false
+      }
+
+    case types.ATTACHMENT_PREVIEW_REQUEST:
+      return {
+        ...state,
+        gettingJoarkFile: true
+      }
+
+    case types.ATTACHMENT_PREVIEW_SUCCESS:
+    case types.ATTACHMENT_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingJoarkFile: false
+      }
+
+    case types.VEDLEGG_DOKUMENT_REQUEST:
       return {
         ...state,
         gettingDokument: true
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
-    case types.VEDLEGG_DOKUMENT_GET_FAILURE:
+    case types.VEDLEGG_DOKUMENT_SUCCESS:
+    case types.VEDLEGG_DOKUMENT_FAILURE:
       return {
         ...state,
         gettingDokument: false
       }
 
-    case types.SVARSED_FAGSAKER_GET_REQUEST:
-    case types.SAK_FAGSAKER_GET_REQUEST:
-    case types.PDU1_FAGSAKER_GET_REQUEST:
+    case types.SVARSED_FAGSAKER_REQUEST:
+    case types.SAK_FAGSAKER_REQUEST:
+    case types.PDU1_FAGSAKER_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
       }
 
-    case types.SVARSED_FAGSAKER_GET_SUCCESS:
-    case types.SVARSED_FAGSAKER_GET_FAILURE:
-    case types.PDU1_FAGSAKER_GET_SUCCESS:
-    case types.PDU1_FAGSAKER_GET_FAILURE:
-    case types.SAK_FAGSAKER_GET_SUCCESS:
-    case types.SAK_FAGSAKER_GET_FAILURE:
+    case types.SVARSED_FAGSAKER_SUCCESS:
+    case types.SVARSED_FAGSAKER_FAILURE:
+    case types.PDU1_FAGSAKER_SUCCESS:
+    case types.PDU1_FAGSAKER_FAILURE:
+    case types.SAK_FAGSAKER_SUCCESS:
+    case types.SAK_FAGSAKER_FAILURE:
       return {
         ...state,
         gettingFagsaker: false
       }
 
-    case types.SAK_INSTITUSJONER_GET_REQUEST:
+    case types.SAK_INSTITUSJONER_REQUEST:
       return {
         ...state,
         gettingInstitusjoner: true
       }
 
-    case types.SAK_INSTITUSJONER_GET_SUCCESS:
-    case types.SAK_INSTITUSJONER_GET_FAILURE:
+    case types.SAK_INSTITUSJONER_SUCCESS:
+    case types.SAK_INSTITUSJONER_FAILURE:
       return {
         ...state,
         gettingInstitusjoner: false
       }
 
-    case types.INNTEKT_GET_REQUEST:
+    case types.INNTEKT_REQUEST:
       return {
         ...state,
         gettingInntekter: true
       }
 
-    case types.INNTEKT_GET_SUCCESS:
-    case types.INNTEKT_GET_FAILURE:
+    case types.INNTEKT_SUCCESS:
+    case types.INNTEKT_FAILURE:
       return {
         ...state,
         gettingInntekter: false
       }
 
-    case types.SAK_LANDKODER_GET_REQUEST:
+    case types.SAK_LANDKODER_REQUEST:
       return {
         ...state,
         gettingLandkoder: true
       }
 
-    case types.SAK_LANDKODER_GET_SUCCESS:
-    case types.SAK_LANDKODER_GET_FAILURE:
+    case types.SAK_LANDKODER_SUCCESS:
+    case types.SAK_LANDKODER_FAILURE:
       return {
         ...state,
         gettingLandkoder: false
@@ -187,27 +242,27 @@ const loadingReducer = (
         completingPdu1: false
       }
 
-    case types.PDU1_GET_ASJSON_REQUEST:
+    case types.PDU1_ASJSON_REQUEST:
       return {
         ...state,
         gettingPdu1: true
       }
 
-    case types.PDU1_GET_ASPDF_REQUEST:
+    case types.PDU1_ASPDF_REQUEST:
       return {
         ...state,
         gettingPreviewStoredPdu1: true
       }
 
-    case types.PDU1_GET_ASPDF_SUCCESS:
-    case types.PDU1_GET_ASPDF_FAILURE:
+    case types.PDU1_ASPDF_SUCCESS:
+    case types.PDU1_ASPDF_FAILURE:
       return {
         ...state,
         gettingPreviewStoredPdu1: false
       }
 
-    case types.PDU1_GET_ASJSON_FAILURE:
-    case types.PDU1_GET_ASJSON_SUCCESS:
+    case types.PDU1_ASJSON_FAILURE:
+    case types.PDU1_ASJSON_SUCCESS:
       return {
         ...state,
         gettingPdu1: false
@@ -383,61 +438,6 @@ const loadingReducer = (
       return {
         ...state,
         sendingVedlegg: false
-      }
-
-    case types.APP_SAKSBEHANDLER_GET_REQUEST:
-      return {
-        ...state,
-        gettingSaksbehandler: true
-      }
-
-    case types.APP_SAKSBEHANDLER_GET_SUCCESS:
-    case types.APP_SAKSBEHANDLER_GET_FAILURE:
-      return {
-        ...state,
-        gettingSaksbehandler: false
-      }
-
-    case types.APP_SERVERINFO_GET_REQUEST:
-      return {
-        ...state,
-        gettingServerinfo: true
-      }
-
-    case types.APP_SERVERINFO_GET_SUCCESS:
-    case types.APP_SERVERINFO_GET_FAILURE:
-      return {
-        ...state,
-        gettingServerinfo: false
-      }
-
-    case types.APP_CLEAN:
-      return initialLoadingState
-
-    case types.ATTACHMENT_LIST_REQUEST:
-      return {
-        ...state,
-        gettingJoarkList: true
-      }
-
-    case types.ATTACHMENT_LIST_SUCCESS:
-    case types.ATTACHMENT_LIST_FAILURE:
-      return {
-        ...state,
-        gettingJoarkList: false
-      }
-
-    case types.ATTACHMENT_PREVIEW_REQUEST:
-      return {
-        ...state,
-        gettingJoarkFile: true
-      }
-
-    case types.ATTACHMENT_PREVIEW_SUCCESS:
-    case types.ATTACHMENT_PREVIEW_FAILURE:
-      return {
-        ...state,
-        gettingJoarkFile: false
       }
 
     default:

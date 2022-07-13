@@ -1,4 +1,4 @@
-import { alertClear } from 'actions/alert'
+import { alertReset } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import { SuccessFilled } from '@navikt/ds-icons'
@@ -197,7 +197,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <Button
                     variant='secondary'
                     onClick={() => {
-                      dispatch(alertClear())
+                      dispatch(alertReset())
                       onModalClose()
                     }}
                   >
@@ -217,7 +217,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     variant='tertiary'
                     onClick={() => {
                       _setSendButtonClicked(false)
-                      dispatch(alertClear())
+                      dispatch(alertReset())
                     }}
                   >
                     OK

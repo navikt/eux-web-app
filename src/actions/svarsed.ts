@@ -13,7 +13,7 @@ import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
 export const cleanUpSvarSed = ():Action => ({
-  type: types.SVARSED_CLEANUP
+  type: types.SVARSED_RESET
 })
 
 export const createSed = (
@@ -93,9 +93,9 @@ export const getFagsaker = (
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
-      request: types.SVARSED_FAGSAKER_GET_REQUEST,
-      success: types.SVARSED_FAGSAKER_GET_SUCCESS,
-      failure: types.SVARSED_FAGSAKER_GET_FAILURE
+      request: types.SVARSED_FAGSAKER_REQUEST,
+      success: types.SVARSED_FAGSAKER_SUCCESS,
+      failure: types.SVARSED_FAGSAKER_FAILURE
     }
   })
 }

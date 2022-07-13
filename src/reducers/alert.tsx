@@ -35,8 +35,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   let bannerStatus: string
 
   if (
-    action.type === types.ALERT_CLEAR ||
-    action.type === types.APP_CLEAN ||
+    action.type === types.ALERT_RESET ||
+    action.type === types.APP_RESET ||
     action.type === types.PERSON_RELATERT_SEARCH_RESET ||
     action.type === types.PERSON_SEARCH_REQUEST ||
     action.type === types.PERSON_RELATERT_SEARCH_REQUEST ||

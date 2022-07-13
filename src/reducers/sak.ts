@@ -45,36 +45,36 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakState => {
   switch (action.type) {
-    case types.APP_CLEAN:
-    case types.SAK_CLEAN_DATA:
+    case types.APP_RESET:
+    case types.SAK_RESET:
       return initialSakState
 
     case types.SAK_FAGSAKER_RESET:
-    case types.SAK_FAGSAKER_GET_REQUEST:
+    case types.SAK_FAGSAKER_REQUEST:
       return {
         ...state,
         fagsaker: undefined
       }
 
-    case types.SAK_FAGSAKER_GET_SUCCESS:
+    case types.SAK_FAGSAKER_SUCCESS:
       return {
         ...state,
         fagsaker: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_FAGSAKER_GET_FAILURE:
+    case types.SAK_FAGSAKER_FAILURE:
       return {
         ...state,
         fagsaker: null
       }
 
-    case types.SAK_INSTITUSJONER_GET_SUCCESS:
+    case types.SAK_INSTITUSJONER_SUCCESS:
       return {
         ...state,
         institusjonList: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_LANDKODER_GET_SUCCESS:
+    case types.SAK_LANDKODER_SUCCESS:
       return {
         ...state,
         landkode: (action as ActionWithPayload).payload

@@ -17,9 +17,9 @@ import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
-import { cleanPersons } from 'actions/person'
+import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import { cleanData, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
+import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
 import { loadReplySed, setCurrentSak } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
@@ -351,7 +351,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
   }
 
   const fillOutSed = (opprettetSak: OpprettetSak) => {
-    dispatch(cleanPersons())
+    dispatch(personReset())
     dispatch(resetSentSed())
     dispatch(editSed(opprettetSak, {
       tema: valgtTema,
@@ -400,12 +400,12 @@ const CreateSak: React.FC<CreateSakProps> = ({
               onFnrChange={() => {
                 if (isFnrValid) {
                   setIsFnrValid(false)
-                  dispatch(appActions.cleanData()) // cleans person and sak reducer
+                  dispatch(appActions.appReset()) // cleans person and sak reducer
                 }
               }}
               onPersonFound={() => setIsFnrValid(true)}
               onSearchPerformed={(fnr: string) => {
-                dispatch(sakActions.cleanData())
+                dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
                 dispatch(personActions.searchPerson(fnr))
               }}
@@ -732,8 +732,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 variant='tertiary'
                 disabled={_.isEmpty(person)}
                 onClick={() => {
-                  dispatch(cleanPersons())
-                  dispatch(cleanData())
+                  dispatch(personReset())
+                  dispatch(sakReset())
                 }}
               >
                 {t('label:reset')}

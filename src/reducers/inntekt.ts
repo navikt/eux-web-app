@@ -17,22 +17,22 @@ export const initialInntektState: InntektState = {
 
 const inntektReducer = (state: InntektState = initialInntektState, action: AnyAction): InntektState => {
   switch (action.type) {
-    case types.APP_CLEAN:
+    case types.APP_RESET:
       return initialInntektState
 
-    case types.INNTEKT_GET_REQUEST:
+    case types.INNTEKT_REQUEST:
       return {
         ...state,
         inntekter: undefined
       }
 
-    case types.INNTEKT_GET_SUCCESS:
+    case types.INNTEKT_SUCCESS:
       return {
         ...state,
         inntekter: (action as ActionWithPayload).payload
       }
 
-    case types.INNTEKT_GET_FAILURE:
+    case types.INNTEKT_FAILURE:
       return {
         ...state,
         inntekter: null
