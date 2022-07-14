@@ -12,10 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
-interface SakProps {
-  sak: Sak | undefined
-}
-
 const Panel = styled(FullWidthDiv)`
   background-color: var(--navds-panel-color-background);
   justify-content: space-between;
@@ -23,28 +19,29 @@ const Panel = styled(FullWidthDiv)`
   padding: 0.5rem 3rem;
 `
 
-const SakBanner = ({ sak }: SakProps) => {
+const SakBanner = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const sektor : Array<Kodeverk> | undefined = useAppSelector(state => state.app.sektor)
+  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
   const iconRef = useRef(null)
 
-  let thisSektor = sak?.sakType.split('_')[0]
+  let thisSektor = currentSak?.sakType.split('_')[0]
   if (thisSektor === 'H') { thisSektor = 'HZ' }
   const thisSektorName: string | undefined = _.find(sektor, s => s.kode === thisSektor)?.term
 
   let kind: string = 'nav-unknown-icon'
   let src = ukjent
-  if (sak?.kjoenn === 'K') {
+  if (currentSak?.kjoenn === 'K') {
     kind = 'nav-woman-icon'
     src = kvinne
-  } else if (sak?.kjoenn === 'M') {
+  } else if (currentSak?.kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
   }
 
-  if (_.isNil(sak)) {
+  if (_.isNil(currentSak)) {
     return null
   }
 
@@ -52,7 +49,7 @@ const SakBanner = ({ sak }: SakProps) => {
     <Panel>
       <PileDiv>
         <Heading size='small'>
-          {sak.sakType + ' - ' + sak.sakTittel}
+          {currentSak.sakType + ' - ' + currentSak.sakTittel}
         </Heading>
         <BodyLong>
           {thisSektorName ? thisSektorName + ' ' + t('label:sektor').toLowerCase() : ''}
@@ -67,14 +64,14 @@ const SakBanner = ({ sak }: SakProps) => {
             src={src}
           />
           <HorizontalSeparatorDiv />
-          {!!sak.fornavn && sak.etternavn && (
+          {!!currentSak.fornavn && currentSak.etternavn && (
             <Label>
-              {sak.etternavn + ', ' + sak.fornavn}
+              {currentSak.etternavn + ', ' + currentSak.fornavn}
             </Label>
           )}
         </FlexDiv>
         <FlexDiv>
-          {sak.fnr && (
+          {currentSak.fnr && (
             <>
               {t('label:fnr.') + ': '}
               <HorizontalSeparatorDiv size='0.5' />
@@ -82,16 +79,16 @@ const SakBanner = ({ sak }: SakProps) => {
                 title={t('label:kopiere')} onClick={(e: any) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dispatch(copyToClipboard(sak.sakId))
+                  dispatch(copyToClipboard(currentSak.sakId))
                 }}
               >
-                {' ' + sak.fnr + ' '}
+                {' ' + currentSak.fnr + ' '}
                 <Copy />
               </Link>
             </>
           )}
           <HorizontalSeparatorDiv />
-          {sak.foedselsdato}
+          {currentSak.foedselsdato}
         </FlexDiv>
       </PileDiv>
       <PileDiv>
@@ -104,13 +101,13 @@ const SakBanner = ({ sak }: SakProps) => {
             title={t('label:kopiere')} onClick={(e: any) => {
               e.preventDefault()
               e.stopPropagation()
-              dispatch(copyToClipboard(sak.sakId))
+              dispatch(copyToClipboard(currentSak.sakId))
             }}
           >
-            {sak.sakId + ' '}
+            {currentSak.sakId + ' '}
             <Copy />
           </Link>
-          {!!sak.internasjonalSakId && (
+          {!!currentSak.internasjonalSakId && (
             <>
               <HorizontalSeparatorDiv />
               <Popover
@@ -128,10 +125,10 @@ const SakBanner = ({ sak }: SakProps) => {
                       title={t('label:kopiere')} onClick={(e: any) => {
                         e.preventDefault()
                         e.stopPropagation()
-                        dispatch(copyToClipboard(sak.internasjonalSakId!))
+                        dispatch(copyToClipboard(currentSak.internasjonalSakId!))
                       }}
                     >
-                      {sak.internasjonalSakId + ' '}
+                      {currentSak.internasjonalSakId + ' '}
                       <Copy />
                     </Link>
                   </Heading>
@@ -147,7 +144,7 @@ const SakBanner = ({ sak }: SakProps) => {
           )}
         </FlexDiv>
         <FlexDiv>
-          <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>
+          <Link target='_blank' href={currentSak.sakUrl} rel='noreferrer'>
             <span>
               {t('label:åpne_sak_i_RINA')}
             </span>

@@ -200,7 +200,7 @@ export const editSed = (
 ): ActionWithPayload<ReplySed> => {
   return call({
     url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId }),
-    expectedPayload: mockReplySed(connectedSed.sedType),
+    expectedPayload: mockReplySed(connectedSed.sedType ?? 'F001'),
     context: {
       sak,
       sed: connectedSed
@@ -232,6 +232,11 @@ export const loadReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
 ): ActionWithPayload<ReplySed> => ({
   type: types.SVARSED_REPLYSED_LOAD,
   payload: replySed
+})
+
+export const setCurrentSak = (currentSak: Sak | undefined) => ({
+  type: types.SVARSED_CURRENTSAK_SET,
+  payload: currentSak
 })
 
 export const replyToSed = (

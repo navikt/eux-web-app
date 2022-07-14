@@ -1,11 +1,11 @@
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertReset } from 'actions/alert'
 import { resetCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   cleanUpSvarSed,
-  createSed,
+  createSed, editSed, querySaks,
   restoreReplySed,
   sendSedInRina,
   setReplySed,
@@ -44,6 +44,7 @@ import Påminnelse from 'applications/SvarSed/Påminnelse/Påminnelse'
 import Referanseperiode from 'applications/SvarSed/Referanseperiode/Referanseperiode'
 import Relasjon from 'applications/SvarSed/Relasjon/Relasjon'
 import RettTilYtelser from 'applications/SvarSed/RettTilYtelser/RettTilYtelser'
+import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import SendSEDModal from 'applications/SvarSed/SendSEDModal/SendSEDModal'
 import SisteAnsettelseInfo from 'applications/SvarSed/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import SvarPåForespørsel from 'applications/SvarSed/SvarPåForespørsel/SvarPåForespørsel'
@@ -54,15 +55,16 @@ import Vedtak from 'applications/SvarSed/Vedtak/Vedtak'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { F002Sed, FSed, ReplySed } from 'declarations/sed'
-import { CreateSedResponse, Validation } from 'declarations/types'
+import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
@@ -74,18 +76,20 @@ export interface SEDEditSelector {
   alertMessage: JSX.Element | string | undefined
   creatingSvarSed: boolean
   updatingSvarSed: boolean
+  currentSak: Sak | undefined
   replySed: ReplySed | null | undefined
   sendingSed: boolean
-  sedCreatedResponse: CreateSedResponse
+  sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any
   validation: Validation
 }
 
-const mapState = (state: State): any => ({
+const mapState = (state: State): SEDEditSelector => ({
   alertType: state.alert.type,
   alertMessage: state.alert.stripeMessage,
   creatingSvarSed: state.loading.creatingSvarSed,
   updatingSvarSed: state.loading.updatingSvarSed,
+  currentSak: state.svarsed.currentSak,
   replySed: state.svarsed.replySed,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
@@ -97,17 +101,19 @@ const SEDEdit = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { sedId, sakId } = useParams()
   const {
     alertType,
     alertMessage,
     creatingSvarSed,
     updatingSvarSed,
+    currentSak,
     replySed,
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
     validation
-  }: SEDEditSelector = useAppSelector(mapState)
+  } = useAppSelector(mapState)
   const namespace = 'editor'
 
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
@@ -172,6 +178,24 @@ const SEDEdit = (): JSX.Element => {
     }
   }, [])
 
+  useEffect(() => {
+    if (_.isUndefined(currentSak) && _.isUndefined(replySed)) {
+      if (sakId) {
+        dispatch(querySaks(sakId, 'new'))
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!_.isEmpty(currentSak) && _.isUndefined(replySed)) {
+      dispatch(editSed({
+        sedId
+      } as Sed,
+      currentSak as Sak
+      ))
+    }
+  }, [currentSak])
+
   // after successful SED send, go back to SED list
   useEffect(() => {
     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
@@ -181,216 +205,226 @@ const SEDEdit = (): JSX.Element => {
         dispatch(cleanUpSvarSed())
       , 200)
       navigate('/svarsed/view/' + sakId)
-      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
   }, [_sendButtonClicked, sedSendResponse])
 
+  if (!replySed) {
+    return <WaitingPanel />
+  }
+
   return (
-    <>
-      <SendSEDModal
-        fnr={fnr!}
-        open={_viewSendSedModal}
-        goToRinaUrl={replySed?.sak?.sakUrl}
-        replySed={replySed}
-        onModalClose={() => setViewSendSedModal(false)}
-      />
-      {showTopForm() && (
-        <>
-          <MainForm
-            type='onelevel'
-            namespace='formål1'
-            loggingNamespace='formalmanager'
-            forms={[
-              { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
-              { label: t('el:option-mainform-periode'), value: 'anmodningsperiode', component: AnmodningsPeriode }
-            ]}
-            replySed={replySed}
-            updateReplySed={updateReplySed}
-            setReplySed={setReplySed}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-
-      {showMainForm() && (
-        <>
-          <MainForm<ReplySed>
-            type='twolevel'
-            namespace='svarsed'
-            loggingNamespace='personmanager'
-            firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
-            forms={[
-              { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
-              { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
-              { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U'], adult: true, barn: true },
-              { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
-              { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
-              { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: 'F', adult: true },
-              { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F', adult: true },
-              { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F', adult: true },
-              { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', adult: false, barn: true },
-              { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', adult: true, barn: true },
-              { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
-              { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', adult: false, family: true },
-              { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
-              { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: 'U002' },
-              { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
-              { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
-              { label: t('el:option-mainform-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-              { label: t('el:option-mainform-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: ['U002', 'U017'] },
-              { label: t('el:option-mainform-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
-              { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
-              { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
-              { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
-              { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
-              { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
-              { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
-              { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
-              { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
-              { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
-              { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
-            ]}
-            replySed={replySed}
-            updateReplySed={updateReplySed}
-            setReplySed={setReplySed}
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-      {showBottomForm() && (
-        <>
-          <MainForm
-            type='onelevel'
-            namespace='formål2'
-            forms={[
-              {
-                label: t('el:option-mainform-vedtak'),
-                value: 'vedtak',
-                component: Vedtak,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
-              },
-              {
-                label: t('el:option-mainform-motregning'),
-                value: 'motregning',
-                component: Motregning,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false
-              },
-              {
-                label: t('el:option-mainform-prosedyre'),
-                value: 'prosedyre_ved_uenighet',
-                component: ProsedyreVedUenighet,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false
-              },
-              {
-                label: t('el:option-mainform-refusjon'),
-                value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
-                component: KravOmRefusjon,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false
-              },
-              {
-                label: t('el:option-mainform-kontoopplysninger'),
-                value: 'kontoopplysninger',
-                component: Kontoopplysning,
-                condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
-              }
-            ]}
-            replySed={replySed}
-            updateReplySed={updateReplySed}
-            setReplySed={setReplySed}
-            loggingNamespace='formalmanager'
-          />
-          <VerticalSeparatorDiv size='2' />
-        </>
-      )}
-
-      {(isFSed(replySed) || isH002Sed(replySed)) && (
-        <>
-          <VerticalSeparatorDiv />
-          <TextAreaDiv>
-            <TextArea
-              namespace={namespace}
-              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              id='ytterligereInfo'
-              label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setComment}
-              value={(replySed as FSed).ytterligereInfo}
+    <Container>
+      <Margin />
+      <Content style={{ flex: 6 }}>
+        <SendSEDModal
+          fnr={fnr!}
+          open={_viewSendSedModal}
+          goToRinaUrl={replySed?.sak?.sakUrl}
+          replySed={replySed}
+          onModalClose={() => setViewSendSedModal(false)}
+        />
+        {showTopForm() && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='formål1'
+              loggingNamespace='formalmanager'
+              forms={[
+                { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
+                { label: t('el:option-mainform-periode'), value: 'anmodningsperiode', component: AnmodningsPeriode }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
             />
-          </TextAreaDiv>
-        </>
-      )}
-      <VerticalSeparatorDiv size='2' />
-      <Panel border>
-        {!!replySed && isPreviewableSed(replySed!.sedType) && (
-          <>
-            <PreviewSED replySed={replySed} />
-            <VerticalSeparatorDiv />
+            <VerticalSeparatorDiv size='2' />
           </>
         )}
-        <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-        <VerticalSeparatorDiv />
-        <FlexDiv>
-          <div>
-            <Button
-              variant='primary'
-              data-amplitude='svarsed.editor.lagresvarsed'
-              onClick={sendReplySed}
-              disabled={creatingSvarSed || updatingSvarSed}
-            >
-              {creatingSvarSed
-                ? t('message:loading-opprette-sed')
-                : updatingSvarSed
-                  ? t('message:loading-oppdatering-sed')
-                  : t('label:lagre-sed')}
-              {(creatingSvarSed || updatingSvarSed) && <Loader />}
-            </Button>
-            <VerticalSeparatorDiv size='0.5' />
-          </div>
-          <HorizontalSeparatorDiv />
-          <div>
-            <Button
-              variant='primary'
-              // amplitude is dealt on SendSedClick
-              title={t('message:help-send-sed')}
-              disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
-              onClick={onSendSedClick}
-            >
-              {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-            </Button>
-            <VerticalSeparatorDiv size='0.5' />
-          </div>
-          <HorizontalSeparatorDiv />
-          <div>
-            <Button
-              variant='tertiary'
-              // amplitude is dealt on SendSedClick
-              title={t('message:help-restore-sed')}
-              onClick={onRestoreSedClick}
-            >
-              {t('el:button-reset-form')}
-            </Button>
-            <VerticalSeparatorDiv size='0.5' />
-          </div>
-        </FlexDiv>
-        {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
+
+        {showMainForm() && (
+          <>
+            <MainForm<ReplySed>
+              type='twolevel'
+              namespace='svarsed'
+              loggingNamespace='personmanager'
+              firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
+              forms={[
+                { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
+                { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
+                { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U'], adult: true, barn: true },
+                { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
+                { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
+                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: 'F', adult: true },
+                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F', adult: true },
+                { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F', adult: true },
+                { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', adult: false, barn: true },
+                { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', adult: true, barn: true },
+                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+                { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', adult: false, family: true },
+                { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
+                { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: 'U002' },
+                { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
+                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
+                { label: t('el:option-mainform-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
+                { label: t('el:option-mainform-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: ['U002', 'U017'] },
+                { label: t('el:option-mainform-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
+                { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
+                { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
+                { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
+                { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+                { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
+                { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
+                { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
+                { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
+                { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
+                { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
+        {showBottomForm() && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='formål2'
+              forms={[
+                {
+                  label: t('el:option-mainform-vedtak'),
+                  value: 'vedtak',
+                  component: Vedtak,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
+                },
+                {
+                  label: t('el:option-mainform-motregning'),
+                  value: 'motregning',
+                  component: Motregning,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false
+                },
+                {
+                  label: t('el:option-mainform-prosedyre'),
+                  value: 'prosedyre_ved_uenighet',
+                  component: ProsedyreVedUenighet,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false
+                },
+                {
+                  label: t('el:option-mainform-refusjon'),
+                  value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
+                  component: KravOmRefusjon,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false
+                },
+                {
+                  label: t('el:option-mainform-kontoopplysninger'),
+                  value: 'kontoopplysninger',
+                  component: Kontoopplysning,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='formalmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
+
+        {(isFSed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
-            <FlexDiv>
-              <Alert variant='error'>
-                {alertMessage!}
-              </Alert>
+            <TextAreaDiv>
+              <TextArea
+                namespace={namespace}
+                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+                id='ytterligereInfo'
+                label={t('label:ytterligere-informasjon-til-sed')}
+                onChanged={setComment}
+                value={(replySed as FSed).ytterligereInfo}
+              />
+            </TextAreaDiv>
+          </>
+        )}
+        <VerticalSeparatorDiv size='2' />
+        <Panel border>
+          {!!replySed && isPreviewableSed(replySed!.sedType) && (
+            <>
+              <PreviewSED replySed={replySed} />
+              <VerticalSeparatorDiv />
+            </>
+          )}
+          <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+          <VerticalSeparatorDiv />
+          <FlexDiv>
+            <div>
               <Button
-                variant='tertiary' onClick={() => {
-                  _setSendButtonClicked(false)
-                  dispatch(alertReset())
-                }}
+                variant='primary'
+                data-amplitude='svarsed.editor.lagresvarsed'
+                onClick={sendReplySed}
+                disabled={creatingSvarSed || updatingSvarSed}
               >
-                OK
+                {creatingSvarSed
+                  ? t('message:loading-opprette-sed')
+                  : updatingSvarSed
+                    ? t('message:loading-oppdatering-sed')
+                    : t('label:lagre-sed')}
+                {(creatingSvarSed || updatingSvarSed) && <Loader />}
               </Button>
-            </FlexDiv>
-          </>
-        )}
-      </Panel>
-    </>
+              <VerticalSeparatorDiv size='0.5' />
+            </div>
+            <HorizontalSeparatorDiv />
+            <div>
+              <Button
+                variant='primary'
+              // amplitude is dealt on SendSedClick
+                title={t('message:help-send-sed')}
+                disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
+                onClick={onSendSedClick}
+              >
+                {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+              </Button>
+              <VerticalSeparatorDiv size='0.5' />
+            </div>
+            <HorizontalSeparatorDiv />
+            <div>
+              <Button
+                variant='tertiary'
+              // amplitude is dealt on SendSedClick
+                title={t('message:help-restore-sed')}
+                onClick={onRestoreSedClick}
+              >
+                {t('el:button-reset-form')}
+              </Button>
+              <VerticalSeparatorDiv size='0.5' />
+            </div>
+          </FlexDiv>
+          {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
+            <>
+              <VerticalSeparatorDiv />
+              <FlexDiv>
+                <Alert variant='error'>
+                  {alertMessage!}
+                </Alert>
+                <Button
+                  variant='tertiary' onClick={() => {
+                    _setSendButtonClicked(false)
+                    dispatch(alertReset())
+                  }}
+                >
+                  OK
+                </Button>
+              </FlexDiv>
+            </>
+          )}
+        </Panel>
+      </Content>
+      <Content style={{ flex: 2 }}>
+        <SEDDetails updateReplySed={updateReplySed} />
+      </Content>
+      <Margin />
+    </Container>
   )
 }
 

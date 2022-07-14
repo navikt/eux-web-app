@@ -1,7 +1,7 @@
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty, checkIfNotTrue } from 'utils/validation'
 
-export interface ValidationOpprettSakProps {
+export interface ValidationSEDNewProps {
   fnr: string
   isFnrValid: boolean
   sektor: string
@@ -15,7 +15,7 @@ export interface ValidationOpprettSakProps {
   unit: string
 }
 
-export const validateOpprettSak = (
+export const validateSEDNew = (
   v: Validation,
   namespace: string,
   {
@@ -30,7 +30,7 @@ export const validateOpprettSak = (
     saksId,
     visEnheter,
     unit
-  }: ValidationOpprettSakProps
+  }: ValidationSEDNewProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 

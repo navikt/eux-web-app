@@ -47,8 +47,8 @@ root.render(
             <Route path='/vedlegg' element={<Pages.Vedlegg />} />
             <Route path='/svarsed/new' element={<Pages.SvarSed type='new' />} />
             <Route path='/svarsed/search' element={<Pages.SvarSed type='search' />} />
-            <Route path='/svarsed/view/:sakId' element={<Pages.SvarSed type='view' />} />
-            <Route path='/svarsed/edit/:sakId/sed/:sedId' element={<Pages.SvarSed type='edit' />} />
+            <Route path='/svarsed/view/sak/:sakId' element={<Pages.SvarSed type='view' />} />
+            <Route path='/svarsed/edit/sak/:sakId/sed/:sedId' element={<Pages.SvarSed type='edit' />} />
             <Route path='/pdu1/search' element={<Pages.PDU1 type='search' />} />
             <Route path='/pdu1/edit/postId/:journalpostId/docId/:dokumentInfoId/fagsak/:fagsak' element={<Pages.PDU1 type='edit' />} />
             <Route path='/pdu1/create/fnr/:fnr/fagsak/:fagsak' element={<Pages.PDU1 type='create' />} />

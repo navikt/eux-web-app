@@ -81,7 +81,7 @@ const SEDPanel = ({
       _setInvalidatingSed(false)
       _setRejectingSed(false)
       _setClarifyingSed(false)
-      navigate('/svarsed/sak' + replySed!.sak!.sakId + '/sed/' + replySed!.sed!.sedId)
+      navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/' + replySed!.sed!.sedId)
     }
   }, [replySed])
 

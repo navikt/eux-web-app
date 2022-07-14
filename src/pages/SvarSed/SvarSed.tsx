@@ -1,53 +1,41 @@
 import { Button } from '@navikt/ds-react'
-import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
-import {
-  cleanUpSvarSed,
-  loadReplySed,
-  querySaks,
-  setReplySed,
-  updateReplySed
-} from 'actions/svarsed'
-import CreateSak from 'applications/OpprettSak/CreateSak/CreateSak'
-import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
+import { cleanUpSvarSed, querySaks, setReplySed } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
-import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
-import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
-import LoadSave from 'components/LoadSave/LoadSave'
 import Modal from 'components/Modal/Modal'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry, Sak } from 'declarations/types'
+import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import SEDEdit from 'pages/SvarSed/SEDEdit'
+import SEDNew from 'pages/SvarSed/SEDNew'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
 import SEDView from 'pages/SvarSed/SEDView'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 
 interface SvarSedSelector {
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
   replySedChanged: boolean
   replySed: ReplySed | null | undefined
-  currentSak: Sak | undefined
+}
+
+export interface SvarSedPageProps {
+  type: 'new' | 'search' | 'edit' | 'view'
 }
 
 const mapState = (state: State) => ({
   entries: state.localStorage.svarsed.entries,
   replySedChanged: state.svarsed.replySedChanged,
-  replySed: state.svarsed.replySed,
-  currentSak: state.svarsed.currentSak
+  replySed: state.svarsed.replySed
 })
-
-export interface SvarSedPageProps {
-  type: 'new' | 'search' | 'edit' | 'view'
-}
 
 export const SvarSedPage: React.FC<SvarSedPageProps> = ({
   type
@@ -61,9 +49,9 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSaveSedModal, _setShowSaveSedModal] = useState<boolean>(false)
   const params: URLSearchParams = new URLSearchParams(location.search)
-  //  let { sakId, sedId } = useParams()
+  const { sakId } = useParams()
 
-  const { entries, replySed, replySedChanged, currentSak }: SvarSedSelector = useAppSelector(mapState)
+  const { entries, replySed, replySedChanged }: SvarSedSelector = useAppSelector(mapState)
 
   const goBack = () => {
     if (type === 'edit') {
@@ -71,12 +59,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
-      // reload, so it reflects changes made in potential SED save/send
-      if (currentSak) {
-        dispatch(querySaks(currentSak?.sakId, 'refresh'))
-      }
-      navigate('/svarsed/view/' + currentSak)
-      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
+      navigate('/svarsed/view/' + sakId)
     }
     if (type === 'view') {
       navigate('/svarsed/search/')
@@ -194,28 +177,11 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
             )
           }}
         />
-        <SakBanner sak={currentSak} />
-        <Container>
-          <Margin />
-          <Content style={{ flex: 6 }}>
-            {type === 'new' && (<CreateSak />)}
-            {type === 'search' && (<SEDSearch />)}
-            {type === 'view' && (<SEDView sak={currentSak!} />)}
-            {type === 'edit' && (<SEDEdit />)}
-          </Content>
-          <Content style={{ flex: 2 }}>
-            {type === 'new' && (<SakSidebar />)}
-            {type === 'search' && (
-              <LoadSave<ReplySed>
-                namespace='svarsed'
-                loadReplySed={loadReplySed}
-              />
-            )}
-            {type === 'view' && (<Saksopplysninger sak={currentSak!} />)}
-            {type === 'edit' && (<SEDDetails updateReplySed={updateReplySed} />)}
-          </Content>
-          <Margin />
-        </Container>
+        <SakBanner />
+        {type === 'new' && (<SEDNew />)}
+        {type === 'search' && (<SEDSearch />)}
+        {type === 'view' && (<SEDView />)}
+        {type === 'edit' && (<SEDEdit />)}
       </>
     </TopContainer>
   )

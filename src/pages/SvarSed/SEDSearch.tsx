@@ -2,22 +2,26 @@ import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
+  Container,
+  Content,
   FlexDiv,
   FullWidthDiv,
-  HorizontalSeparatorDiv,
+  HorizontalSeparatorDiv, Margin,
   PileDiv,
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { querySaks } from 'actions/svarsed'
+import { loadReplySed, querySaks, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
+import LoadSave from 'components/LoadSave/LoadSave'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -49,8 +53,7 @@ const mapState = (state: State): any => ({
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
   deletedSak: state.svarsed.deletedSak,
   saks: state.svarsed.saks,
-  sedStatus: state.svarsed.sedStatus,
-  currentSak: state.svarsed.currentSak
+  sedStatus: state.svarsed.sedStatus
 })
 
 const SEDSearch = (): JSX.Element => {
@@ -65,8 +68,7 @@ const SEDSearch = (): JSX.Element => {
     queryingSaks,
     rinasaksnummerOrFnrParam,
     saks,
-    sedStatus,
-    currentSak
+    sedStatus
   }: any = useAppSelector(mapState)
 
   const navigate = useNavigate()
@@ -89,8 +91,9 @@ const SEDSearch = (): JSX.Element => {
 
   /** if we get 1 sed by querying a saksnummer, then set it as currentSak */
   useEffect(() => {
-    if (_.isUndefined(currentSak) && saks?.length === 1 && _queryType === 'saksnummer') {
-      navigate('/svarsed/sak/' + saks[0])
+    if (saks?.length === 1 && _queryType === 'saksnummer') {
+      dispatch(setCurrentSak(saks[0]))
+      navigate('/svarsed/view/sak/' + saks[0].sakId)
     }
   }, [saks])
 
@@ -112,10 +115,11 @@ const SEDSearch = (): JSX.Element => {
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) !== undefined)?.length ?? 0
 
   return (
-    <PileStartDiv>
-      <FullWidthDiv>
-        {!currentSak && (
-          <>
+    <Container>
+      <Margin />
+      <Content style={{ flex: 6 }}>
+        <PileStartDiv>
+          <FullWidthDiv>
             <Heading size='medium'>
               {t('app:page-title-svarsed-search')}
             </Heading>
@@ -183,38 +187,44 @@ const SEDSearch = (): JSX.Element => {
                   )}
                 </FlexRadioGroup>
               </>
+
             )}
-          </>
-        )}
-        {queryingSaks
-          ? (
-            <WaitingPanel />
-            )
-          : (
-            <AlignStartRow>
-              <Column flex='2'>
-                <MyRadioPanelGroup>
-                  {!currentSak && filteredSaks.map((sak: Sak) => (
-                    _onlyEditableSaks &&
-                _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
-                      ? <div />
-                      : (
-                        <div key={'sak-' + sak?.sakId}>
-                          <SakPanel
-                            sak={sak}
-                            onSelected={() => navigate('/svarsed/sak/' + sak.sakId)}
-                            onCopy={() => dispatch(copyToClipboard(sak.sakId))}
-                          />
-                          <VerticalSeparatorDiv />
-                        </div>
-                        )
-                  ))}
-                </MyRadioPanelGroup>
-              </Column>
-            </AlignStartRow>
-            )}
-      </FullWidthDiv>
-    </PileStartDiv>
+            {queryingSaks
+              ? (<WaitingPanel />)
+              : (
+                <AlignStartRow>
+                  <Column flex='2'>
+                    <MyRadioPanelGroup>
+                      {filteredSaks?.map((sak: Sak) => (
+                        _onlyEditableSaks &&
+                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
+                          ? <div />
+                          : (
+                            <div key={'sak-' + sak?.sakId}>
+                              <SakPanel
+                                sak={sak}
+                                onSelected={() => navigate('/svarsed/view/sak/' + sak.sakId)}
+                                onCopy={() => dispatch(copyToClipboard(sak.sakId))}
+                              />
+                              <VerticalSeparatorDiv />
+                            </div>
+                            )
+                      ))}
+                    </MyRadioPanelGroup>
+                  </Column>
+                </AlignStartRow>
+                )}
+          </FullWidthDiv>
+        </PileStartDiv>
+      </Content>
+      <Content style={{ flex: 2 }}>
+        <LoadSave<ReplySed>
+          namespace='svarsed'
+          loadReplySed={loadReplySed}
+        />
+      </Content>
+      <Margin />
+    </Container>
   )
 }
 

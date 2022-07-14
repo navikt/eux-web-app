@@ -364,12 +364,6 @@ const MainForm = <T extends StorageTypes>({
     }
   }
 
-  const handleTilbake = () => {
-    setCurrentMenu(initialMenu)
-    setFocusedMenu(initialMenu)
-    setCurrentMenuOption(undefined)
-  }
-
   const onAddNewPerson = () => {
     setSeeNewPersonModal(true)
   }
@@ -526,10 +520,8 @@ const MainForm = <T extends StorageTypes>({
 
   useEffect(() => {
     document.addEventListener('feillenke', handleFeilLenke)
-    document.addEventListener('tilbake', handleTilbake)
     return () => {
       document.removeEventListener('feillenke', handleFeilLenke)
-      document.removeEventListener('tilbake', handleTilbake)
     }
   }, [])
 

@@ -24,6 +24,7 @@ import { loadReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
+import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
 import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
@@ -56,9 +57,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
-import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
+import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 
-export interface CreateSakSelector {
+export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
@@ -105,7 +106,7 @@ export interface CreateSakSelector {
   validation: Validation
 }
 
-const mapState = (state: State): CreateSakSelector => ({
+const mapState = (state: State): SEDNewSelector => ({
   alertVariant: state.alert.stripeStatus as AlertVariant,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
@@ -161,7 +162,7 @@ export const MyContent = styled(Content)`
   align-items: center;
 `
 
-const CreateSak = (): JSX.Element => {
+const SEDNew = (): JSX.Element => {
   const {
     alertVariant,
     alertMessage,
@@ -199,7 +200,7 @@ const CreateSak = (): JSX.Element => {
     valgtTema,
     valgtUnit,
     validation
-  }: CreateSakSelector = useAppSelector(mapState)
+  }: SEDNewSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
@@ -228,7 +229,7 @@ const CreateSak = (): JSX.Element => {
 
   const skjemaSubmit = (): void => {
     const clonedvalidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationOpprettSakProps>(clonedvalidation, namespace, validateOpprettSak, {
+    const hasErrors = performValidation<ValidationSEDNewProps>(clonedvalidation, namespace, validateSEDNew, {
       fnr: valgtFnr,
       isFnrValid,
       sektor: valgtSektor,
@@ -240,7 +241,7 @@ const CreateSak = (): JSX.Element => {
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit
-    } as ValidationOpprettSakProps)
+    } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
     if (!hasErrors) {
       dispatch(sakActions.createSak({
@@ -368,14 +369,14 @@ const CreateSak = (): JSX.Element => {
     if (!_.isNil(filloutinfo)) {
       dispatch(loadReplySed(filloutinfo))
       dispatch(resetFilloutInfo())
-      navigate('/svarsed/sak/' + filloutinfo.sak)
+      navigate('/svarsed/edit/sak/' + filloutinfo.sak.sakId + '/sed/' + filloutinfo.sed.sedId)
     }
   }, [filloutinfo])
 
   return (
     <Container>
       <Margin />
-      <MyContent>
+      <MyContent style={{ flex: 6 }}>
         <Row>
           <Column>
             <PersonSearch
@@ -781,7 +782,6 @@ const CreateSak = (): JSX.Element => {
                           {t('label:legg-til-vedlegg-til-sed')}
                         </Button>
                       )}
-
                     </FlexDiv>
                   </PileDiv>
                 </Alert>
@@ -791,10 +791,12 @@ const CreateSak = (): JSX.Element => {
           </>
         )}
       </MyContent>
+      <Content style={{ flex: 2 }}>
+        <SakSidebar />
+      </Content>
       <Margin />
     </Container>
-
   )
 }
 
-export default CreateSak
+export default SEDNew
