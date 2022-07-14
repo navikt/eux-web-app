@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { LinkPanel } from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import { useAppSelector } from 'store'
+import styled from 'styled-components'
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -15,6 +16,10 @@ interface ForsideSelector {
 const mapState = (state: State): ForsideSelector => ({
   featureToggles: state.app.featureToggles
 })
+
+const MyLinkPanel = styled(LinkPanel)`
+  cursor: pointer;
+`
 
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
@@ -25,37 +30,33 @@ const Forside: React.FC = (): JSX.Element => {
       <Container>
         <Margin />
         <Content style={{ minWidth: '800px' }}>
-          <LinkPanel
-            href='#'
+          <MyLinkPanel
             onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}
           >
             <LinkPanel.Title>{t('app:page-title-opprettsak')}</LinkPanel.Title>
-          </LinkPanel>
+          </MyLinkPanel>
           <VerticalSeparatorDiv />
-          <LinkPanel
-            href='#'
+          <MyLinkPanel
             onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}
           >
             <LinkPanel.Title>{t('app:page-title-vedlegg')}</LinkPanel.Title>
-          </LinkPanel>
+          </MyLinkPanel>
           <>
             <VerticalSeparatorDiv />
-            <LinkPanel
-              href='#'
+            <MyLinkPanel
               onClick={() => navigate({ pathname: '/svarsed/search', search: window.location.search })}
             >
               <LinkPanel.Title>{t('app:page-title-svarsed')}</LinkPanel.Title>
-            </LinkPanel>
+            </MyLinkPanel>
           </>
           {featureToggles?.featurePdu1 && (
             <>
               <VerticalSeparatorDiv />
-              <LinkPanel
-                href='#'
+              <MyLinkPanel
                 onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}
               >
                 <LinkPanel.Title>{t('app:page-title-pdu1')}</LinkPanel.Title>
-              </LinkPanel>
+              </MyLinkPanel>
             </>
           )}
         </Content>

@@ -83,7 +83,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content))
-        navigate('svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
+        navigate('/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
       }
       setSedStatusRequested(undefined)
     }
@@ -109,7 +109,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
-        navigate('svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
+        navigate('/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
       }
       setSedStatusRequested(undefined)
     }

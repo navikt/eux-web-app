@@ -181,7 +181,7 @@ const SEDEdit = (): JSX.Element => {
   useEffect(() => {
     if (_.isUndefined(currentSak) && _.isUndefined(replySed)) {
       if (sakId) {
-        dispatch(querySaks(sakId, 'new'))
+        dispatch(querySaks(sakId, 'refresh'))
       }
     }
   }, [])
@@ -204,7 +204,7 @@ const SEDEdit = (): JSX.Element => {
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
-      navigate('/svarsed/view/' + sakId)
+      navigate('/svarsed/view/sak/' + sakId)
     }
   }, [_sendButtonClicked, sedSendResponse])
 

@@ -50,7 +50,7 @@ const SEDView = (): JSX.Element => {
       dispatch(querySaks(currentSak?.sakId, 'refresh'))
     } else {
       if (sakId) {
-        dispatch(querySaks(sakId, 'new'))
+        dispatch(querySaks(sakId, 'refresh'))
       }
     }
   }, [])
@@ -122,11 +122,10 @@ const SEDView = (): JSX.Element => {
         </PileStartDiv>
       </Content>
       <Content style={{ flex: 2 }}>
-        (<Saksopplysninger sak={currentSak} />
+        <Saksopplysninger sak={currentSak} />
       </Content>
       <Margin />
     </Container>
-
   )
 }
 

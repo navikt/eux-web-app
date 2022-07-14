@@ -133,7 +133,7 @@ const SEDSearch = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q))
+                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}

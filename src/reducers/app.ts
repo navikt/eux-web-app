@@ -11,7 +11,7 @@ export interface AppState {
 
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
-  expirationTime: Date | undefined
+  expirationTime: number | undefined
 
   navn: string | undefined
   brukernavn: string | undefined
@@ -128,7 +128,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
     case types.APP_SESSION_SET:
       return {
         ...state,
-        expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes))
+        expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes)).getTime()
       }
 
     case types.APP_UTGAARDATO_SUCCESS: {
@@ -138,7 +138,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         : new Date(new Date().setMinutes(now.getMinutes() + 60))
       return {
         ...state,
-        expirationTime
+        expirationTime: expirationTime.getTime()
       }
     }
 

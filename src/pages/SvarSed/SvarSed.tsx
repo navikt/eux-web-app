@@ -59,10 +59,10 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
-      navigate('/svarsed/view/' + sakId)
+      navigate('/svarsed/view/sak/' + sakId)
     }
     if (type === 'view') {
-      navigate('/svarsed/search/')
+      navigate('/svarsed/search')
     }
   }
 
@@ -90,7 +90,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
       setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam)
-      dispatch(querySaks((rinasaksnummerParam || fnrParam)!))
+      dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new'))
     }
   }, [])
 
@@ -106,7 +106,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
           if (entry) {
             dispatch(setCurrentEntry('svarsed', entry))
             dispatch(setReplySed(entry.content, false))
-            navigate('/svarsed/edit/' + (entry.content as ReplySed).sak!.sakId + '/sed/' + (entry.content as ReplySed).sed!.sedId)
+            navigate('/svarsed/edit/sak/' + (entry.content as ReplySed).sak!.sakId + '/sed/' + (entry.content as ReplySed).sed!.sedId)
             dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
         }

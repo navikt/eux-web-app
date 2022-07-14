@@ -19,11 +19,11 @@ font-size: 80%;
 `
 
 export interface SessionMonitorProps {
-  checkInterval?: number;
-  expirationTime?: Date;
-  millisecondsForWarning?: number;
-  sessionExpiredReload?: number;
-  now?: Date;
+  checkInterval?: number
+  expirationTime?: number
+  millisecondsForWarning?: number
+  sessionExpiredReload?: number
+  now?: Date
 }
 
 export interface SessionMonitorSelector {
@@ -55,9 +55,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const getDiff = (expirationTime: any, now: any) => {
+  const getDiff = (expirationTime: number, now: any) => {
     const _now: Date = now || new Date()
-    const diff: number = expirationTime.getTime() - _now.getTime()
+    const diff: number = expirationTime - _now.getTime()
     console.log('minutes left', Math.ceil(diff / 1000 / 60))
     setDiff(diff)
     return diff
@@ -68,7 +68,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   const checkTimeout = () => {
-    if (!expirationTime) {
+    if (!_.isNumber(expirationTime)) {
       return
     }
     setTimeout(() => {
@@ -172,7 +172,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
 SessionMonitor.propTypes = {
   checkInterval: PT.number,
-  expirationTime: PT.instanceOf(Date),
+  expirationTime: PT.number,
   millisecondsForWarning: PT.number,
   sessionExpiredReload: PT.number,
   now: PT.instanceOf(Date)

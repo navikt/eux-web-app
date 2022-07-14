@@ -97,7 +97,7 @@ export interface TopContainerSelector {
   bannerStatus: string | undefined
   bannerMessage: string | JSX.Element | undefined
   error: any | undefined
-  expirationTime: Date | undefined
+  expirationTime: number | undefined
   highContrast: boolean
 }
 

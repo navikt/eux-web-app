@@ -48,7 +48,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       }
     }
     dispatch(loadReplySed(h001sed))
-    navigate('svarsed/edit/sak/' + sak.sakId + '/sed/new')
+    navigate('/svarsed/edit/sak/' + sak.sakId + '/sed/new')
   }
 
   const createXSed = (sedType: string) => {
@@ -69,7 +69,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       }
     }
     dispatch(loadReplySed(replySed))
-    navigate('svarsed/edit/sak/' + sak.sakId + '/sed/new')
+    navigate('/svarsed/edit/sak/' + sak.sakId + '/sed/new')
   }
 
   let disableCloseCase: string | undefined
