@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
-import CreateSak, { CreateSakProps, CreateSakSelector } from './CreateSak'
+import CreateSak, { CreateSakSelector } from './CreateSak'
 
 jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)
@@ -10,9 +10,7 @@ jest.mock('react-router-dom', () => ({
 describe('pages/OpprettSak/OpprettSak', () => {
   let wrapper: any
 
-  const initialMockProps: CreateSakProps = {
-    changeMode: jest.fn()
-  }
+  const initialMockProps = {}
   const defaultSelector: CreateSakSelector = {
     alertMessage: undefined,
     alertVariant: undefined,

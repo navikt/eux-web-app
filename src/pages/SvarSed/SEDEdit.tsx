@@ -62,6 +62,7 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
@@ -92,13 +93,10 @@ const mapState = (state: State): any => ({
   validation: state.validation.status
 })
 
-export interface SEDEditProps {
-  changeMode: (mode: string) => void
-}
-
-const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Element => {
+const SEDEdit = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const {
     alertType,
     alertMessage,
@@ -177,11 +175,12 @@ const SEDEdit: React.FC<SEDEditProps> = ({ changeMode }: SEDEditProps): JSX.Elem
   // after successful SED send, go back to SED list
   useEffect(() => {
     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
-      changeMode('A')
+      const sakId = replySed?.sak?.sakId
       dispatch(resetCurrentEntry('svarsed'))
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
+      navigate('/svarsed/view/' + sakId)
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
   }, [_sendButtonClicked, sedSendResponse])

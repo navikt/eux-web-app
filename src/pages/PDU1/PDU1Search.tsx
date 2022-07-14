@@ -15,11 +15,9 @@ import * as appActions from 'actions/app'
 import {
   searchPdu1s,
   getFagsaker,
-  getStoredPdu1AsJSON,
   getStoredPdu1AsPDF,
   resetFagsaker,
   resetPdu1results,
-  getPdu1Template,
   resetStoredPdu1AsPDF
 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
@@ -32,13 +30,13 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
 import { ModalContent } from 'declarations/components'
-import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { FagSak, FagSaker, PDU1SearchResult, PDU1SearchResults } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
@@ -58,7 +56,6 @@ export interface PDU1SearchSelector {
   fetchingPdu1: boolean
   previewStoredPdu1: Blob | null | undefined
   gettingPreviewStoredPdu1: boolean
-  PDU1: PDU1 | null | undefined
   pdu1results: PDU1SearchResults | null | undefined
 }
 
@@ -71,26 +68,19 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fetchingPdu1: state.loading.fetchingPdu1,
   previewStoredPdu1: state.pdu1.previewStoredPdu1,
   gettingPreviewStoredPdu1: state.loading.gettingPreviewStoredPdu1,
-  PDU1: state.pdu1.pdu1,
   pdu1results: state.pdu1.pdu1results
 })
 
-export interface PDU1Props {
-  changeMode: (newPage: string) => void
-}
-
-const PDU1Search: React.FC<PDU1Props> = ({
-  changeMode
-}: PDU1Props): JSX.Element => {
+const PDU1Search = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const {
     fagsaker,
     gettingFagsaker,
     creatingPdu1,
     gettingPdu1,
     fetchingPdu1,
-    PDU1,
     pdu1results,
     gettingPreviewStoredPdu1,
     previewStoredPdu1,
@@ -103,7 +93,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
   const [validMessage, setValidMessage] = useState<string>('')
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
 
-  const [loadingForEditPdu1Mode, setLoadingForEditPdu1Mode] = useState<boolean>(false)
   const [newPdu1Mode, setNewPdu1Mode] = useState<boolean>(false)
   const [searchPdu1Mode, setSearchPdu1Mode] = useState<boolean>(false)
   const [requestPreview, setRequestPreview] = useState<boolean>(false)
@@ -186,15 +175,13 @@ const PDU1Search: React.FC<PDU1Props> = ({
       fagsak
     })
     if (valid) {
-      setLoadingForEditPdu1Mode(true)
-      dispatch(getPdu1Template(fnrOrDnr!, fagsak))
+      navigate('/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + fagsak)
     }
   }
 
   const onEditingPdu1 = (pdu1SearchResult: PDU1SearchResult) => {
     if (pdu1SearchResult) {
-      setLoadingForEditPdu1Mode(true)
-      dispatch(getStoredPdu1AsJSON(pdu1SearchResult.journalpostId, pdu1SearchResult.dokumentInfoId, pdu1SearchResult.fagsakId))
+      navigate('/pdu1/edit/postId/' + pdu1SearchResult.journalpostId + '/docId/' + pdu1SearchResult.dokumentInfoId + '/fagsak/' + pdu1SearchResult.fagsakId)
     }
   }
 
@@ -253,20 +240,6 @@ const PDU1Search: React.FC<PDU1Props> = ({
       showPreviewModal(previewStoredPdu1)
     }
   }, [previewStoredPdu1])
-
-  useEffect(() => {
-    if (PDU1 && loadingForEditPdu1Mode) {
-      setLoadingForEditPdu1Mode(false)
-      changeMode('B')
-    }
-  }, [PDU1])
-
-  useEffect(() => {
-    if (PDU1 && loadingForEditPdu1Mode) {
-      setLoadingForEditPdu1Mode(false)
-      changeMode('B')
-    }
-  }, [PDU1])
 
   useEffect(() => {
     dispatch(startPageStatistic('pdu1-search'))

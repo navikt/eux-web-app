@@ -285,11 +285,6 @@ export const sendSedInRina = (
   })
 }
 
-export const setCurrentSak = (currentSak: Sak | undefined) => ({
-  type: types.SVARSED_CURRENTSAK_SET,
-  payload: currentSak
-})
-
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
   replySed: ReplySed
 ): ActionWithPayload<ReplySed> => ({

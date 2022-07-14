@@ -52,7 +52,7 @@ const Forside: React.FC = (): JSX.Element => {
               <VerticalSeparatorDiv />
               <LinkPanel
                 href='#'
-                onClick={() => navigate({ pathname: '/pdu1', search: window.location.search })}
+                onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}
               >
                 <LinkPanel.Title>{t('app:page-title-pdu1')}</LinkPanel.Title>
               </LinkPanel>

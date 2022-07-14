@@ -3,9 +3,9 @@ import { ArbeidsperioderFraAA } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import { AnyAction } from 'redux'
 
-export type ArbeidsperioderState = ArbeidsperioderFraAA | null | undefined
+export type ArbeidsperioderState = ArbeidsperioderFraAA | null
 
-export const initialArbeidsperioderState: ArbeidsperioderState = undefined
+export const initialArbeidsperioderState: ArbeidsperioderState = null
 
 const arbeidsperioderReducer = (state: ArbeidsperioderState = initialArbeidsperioderState, action: AnyAction): ArbeidsperioderState => {
   switch (action.type) {
@@ -14,8 +14,6 @@ const arbeidsperioderReducer = (state: ArbeidsperioderState = initialArbeidsperi
       return initialArbeidsperioderState
 
     case types.ARBEIDSPERIODER_REQUEST:
-      return undefined
-
     case types.ARBEIDSPERIODER_FAILURE:
       return null
 

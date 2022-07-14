@@ -12,6 +12,7 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { isPreviewableSed } from 'utils/sed'
@@ -34,13 +35,18 @@ const IconDiv = styled(PileCenterDiv)`
   padding: 1rem;
 `
 
+interface SEDPanelSelector {
+  entries: any
+  replySed: ReplySed | null | undefined
+  sedStatus: {[x: string] : string | null}
+}
+
 interface SEDPanelProps {
   currentSak: Sak
   connectedSed: Sed
-  changeMode: (newPage: string) => void
 }
 
-const mapState = (state: State): any => ({
+const mapState = (state: State): SEDPanelSelector => ({
   entries: state.localStorage.svarsed.entries,
   replySed: state.svarsed.replySed,
   sedStatus: state.svarsed.sedStatus
@@ -48,13 +54,13 @@ const mapState = (state: State): any => ({
 
 const SEDPanel = ({
   currentSak,
-  connectedSed,
-  changeMode
+  connectedSed
 }: SEDPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
-  const { entries, replySed, sedStatus }: any = useAppSelector(mapState)
+  const { entries, replySed, sedStatus } = useAppSelector(mapState)
 
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
   const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
@@ -68,14 +74,14 @@ const SEDPanel = ({
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
-    if (!_.isUndefined(replySed) && waitingForOperation) {
+    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && !_.isEmpty(replySed!.sed) && waitingForOperation) {
       _setReplyingToSed(false)
       _setUpdatingSed(false)
       _setEditingSed(false)
       _setInvalidatingSed(false)
       _setRejectingSed(false)
       _setClarifyingSed(false)
-      changeMode('B')
+      navigate('/svarsed/sak' + replySed!.sak!.sakId + '/sed/' + replySed!.sed!.sedId)
     }
   }, [replySed])
 

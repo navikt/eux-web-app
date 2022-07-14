@@ -7,7 +7,6 @@ import {
   cleanUpSvarSed,
   loadReplySed,
   querySaks,
-  setCurrentSak,
   setReplySed,
   updateReplySed
 } from 'actions/svarsed'
@@ -26,9 +25,10 @@ import { LocalStorageEntry, Sak } from 'declarations/types'
 import _ from 'lodash'
 import SEDEdit from 'pages/SvarSed/SEDEdit'
 import SEDSearch from 'pages/SvarSed/SEDSearch'
+import SEDView from 'pages/SvarSed/SEDView'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 
 interface SvarSedSelector {
@@ -46,7 +46,7 @@ const mapState = (state: State) => ({
 })
 
 export interface SvarSedPageProps {
-  type: 'new' | 'search'
+  type: 'new' | 'search' | 'edit' | 'view'
 }
 
 export const SvarSedPage: React.FC<SvarSedPageProps> = ({
@@ -54,25 +54,19 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
 }: SvarSedPageProps): JSX.Element => {
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const location = useLocation()
   const { t } = useTranslation()
-
-  const [_currentPage, _setCurrentPage] = useState<string>('A')
-  const [_pageChanged, _setPageChanged] = useState<boolean>(false)
 
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSaveSedModal, _setShowSaveSedModal] = useState<boolean>(false)
   const params: URLSearchParams = new URLSearchParams(location.search)
+  //  let { sakId, sedId } = useParams()
+
   const { entries, replySed, replySedChanged, currentSak }: SvarSedSelector = useAppSelector(mapState)
 
-  const changeMode = (newPage: string) => {
-    _setPageChanged(true)
-    _setCurrentPage(newPage)
-  }
-
-  const backToPageA = () => {
-    if (_currentPage === 'B') {
-      changeMode('A')
+  const goBack = () => {
+    if (type === 'edit') {
       dispatch(resetCurrentEntry('svarsed'))
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
@@ -81,16 +75,17 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       if (currentSak) {
         dispatch(querySaks(currentSak?.sakId, 'refresh'))
       }
+      navigate('/svarsed/view/' + currentSak)
       document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
     }
-    if (_currentPage === 'A') {
-      dispatch(setCurrentSak(undefined))
+    if (type === 'view') {
+      navigate('/svarsed/search/')
     }
   }
 
   const onGoBackClick = () => {
     if (!replySedChanged) {
-      backToPageA()
+      goBack()
     } else {
       _setShowSaveModal(true)
     }
@@ -128,7 +123,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
           if (entry) {
             dispatch(setCurrentEntry('svarsed', entry))
             dispatch(setReplySed(entry.content, false))
-            changeMode('B')
+            navigate('/svarsed/edit/' + (entry.content as ReplySed).sak!.sakId + '/sed/' + (entry.content as ReplySed).sed!.sedId)
             dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
         }
@@ -139,7 +134,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
 
   return (
     <TopContainer
-      backButton={_currentPage === 'B' || (_currentPage === 'A' && currentSak !== undefined)}
+      backButton={type === 'view' || type === 'edit'}
       onGoBackClick={onGoBackClick}
       unsavedDoc={replySedChanged}
       title={type === 'new'
@@ -171,7 +166,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
                   <Button
                     variant='secondary' onClick={() => {
                       _setShowSaveModal(false)
-                      backToPageA()
+                      goBack()
                     }}
                   >
                     {t('el:button-discard-changes')}
@@ -203,38 +198,21 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
         <Container>
           <Margin />
           <Content style={{ flex: 6 }}>
-            {_currentPage === 'A'
-              ? (type === 'new' && !_pageChanged)
-                  ? <CreateSak changeMode={changeMode} />
-                  : <SEDSearch changeMode={changeMode} sak={currentSak!} />
-              : null}
-            {_currentPage === 'B' && (
-              <SEDEdit changeMode={changeMode} />
-            )}
+            {type === 'new' && (<CreateSak />)}
+            {type === 'search' && (<SEDSearch />)}
+            {type === 'view' && (<SEDView sak={currentSak!} />)}
+            {type === 'edit' && (<SEDEdit />)}
           </Content>
           <Content style={{ flex: 2 }}>
-            {_currentPage === 'A'
-              ? (type === 'new' && !_pageChanged)
-                  ? <SakSidebar />
-                  : (
-                      currentSak === undefined
-                        ? (
-                          <LoadSave<ReplySed>
-                            namespace='svarsed'
-                            changeMode={changeMode}
-                            loadReplySed={loadReplySed}
-                          />
-                          )
-                        : (
-                          <Saksopplysninger sak={currentSak} />
-                          )
-                    )
-              : null}
-            {_currentPage === 'B' && (
-              <SEDDetails
-                updateReplySed={updateReplySed}
+            {type === 'new' && (<SakSidebar />)}
+            {type === 'search' && (
+              <LoadSave<ReplySed>
+                namespace='svarsed'
+                loadReplySed={loadReplySed}
               />
             )}
+            {type === 'view' && (<Saksopplysninger sak={currentSak!} />)}
+            {type === 'edit' && (<SEDDetails updateReplySed={updateReplySed} />)}
           </Content>
           <Margin />
         </Container>

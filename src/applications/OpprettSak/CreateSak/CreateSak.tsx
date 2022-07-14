@@ -20,7 +20,7 @@ import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
-import { loadReplySed, setCurrentSak } from 'actions/svarsed'
+import { loadReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
@@ -63,7 +63,7 @@ export interface CreateSakSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 
-  enheter: Enheter | undefined
+  enheter: Enheter | null | undefined
   serverInfo: ServerInfo | undefined
 
   sendingSak: boolean
@@ -153,10 +153,6 @@ const mapState = (state: State): CreateSakSelector => ({
   validation: state.validation.status
 })
 
-export interface CreateSakProps {
-  changeMode: (newPage: string) => void
-}
-
 export const MyContent = styled(Content)`
   @media (min-width: 768px) {
    min-width: 800px;
@@ -165,9 +161,7 @@ export const MyContent = styled(Content)`
   align-items: center;
 `
 
-const CreateSak: React.FC<CreateSakProps> = ({
-  changeMode
-}: CreateSakProps): JSX.Element => {
+const CreateSak = (): JSX.Element => {
   const {
     alertVariant,
     alertMessage,
@@ -373,9 +367,8 @@ const CreateSak: React.FC<CreateSakProps> = ({
   useEffect(() => {
     if (!_.isNil(filloutinfo)) {
       dispatch(loadReplySed(filloutinfo))
-      dispatch(setCurrentSak(filloutinfo.sak))
       dispatch(resetFilloutInfo())
-      changeMode('B')
+      navigate('/svarsed/sak/' + filloutinfo.sak)
     }
   }, [filloutinfo])
 

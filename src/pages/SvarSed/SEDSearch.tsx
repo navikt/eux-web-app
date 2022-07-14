@@ -11,20 +11,18 @@ import {
 } from '@navikt/hoykontrast'
 import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { querySaks, setCurrentSak } from 'actions/svarsed'
+import { querySaks } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
-import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
-import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
@@ -55,15 +53,7 @@ const mapState = (state: State): any => ({
   currentSak: state.svarsed.currentSak
 })
 
-export interface SvarSedProps {
-  sak: Sak
-  changeMode: (mode: string) => void
-}
-
-const SEDSearch: React.FC<SvarSedProps> = ({
-  sak,
-  changeMode
-}: SvarSedProps): JSX.Element => {
+const SEDSearch = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
@@ -79,6 +69,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
     currentSak
   }: any = useAppSelector(mapState)
 
+  const navigate = useNavigate()
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)
   const [_query, _setQuery] = useState<string | undefined>(undefined)
@@ -99,7 +90,7 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   /** if we get 1 sed by querying a saksnummer, then set it as currentSak */
   useEffect(() => {
     if (_.isUndefined(currentSak) && saks?.length === 1 && _queryType === 'saksnummer') {
-      dispatch(setCurrentSak(saks[0]))
+      navigate('/svarsed/sak/' + saks[0])
     }
   }, [saks])
 
@@ -120,35 +111,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const filteredSaks = _.filter(visibleSaks, (s: Sak) => _filter !== 'all' ? s.sakType.startsWith(_filter) : true)
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) !== undefined)?.length ?? 0
 
-  const sedMap: any = []
-
-  if (currentSak) {
-    const tempChildrenSed: Array<Sed> = []
-    const tempSedMap: any = {}
-    const seds: Array<Sed> | undefined = _.cloneDeep(currentSak.sedListe)
-
-    seds?.forEach((connectedSed: Sed) => {
-      // if you have a sedIdParent (not F002), let's put it under Children
-      if (connectedSed.sedIdParent && connectedSed.sedType !== 'F002') {
-        tempChildrenSed.push(connectedSed)
-      } else {
-        tempSedMap[connectedSed.sedId] = connectedSed
-      }
-    })
-    // Now, let's put all children SED
-    tempChildrenSed.forEach((connectedSed: Sed) => {
-      if (connectedSed.sedIdParent) {
-        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
-           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
-          tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
-        } else {
-          tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
-        }
-      }
-    })
-    Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
-  }
-
   return (
     <PileStartDiv>
       <FullWidthDiv>
@@ -163,7 +125,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
               initialQuery={_query ?? rinasaksnummerOrFnrParam}
               onQueryChanged={(queryType: string) => {
                 dispatch(appReset())
-                dispatch(setCurrentSak(undefined))
                 _setQueryType(queryType)
               }}
               onQuerySubmit={(q: string) => {
@@ -231,14 +192,6 @@ const SEDSearch: React.FC<SvarSedProps> = ({
             )
           : (
             <AlignStartRow>
-              {!!currentSak && (
-                <Column>
-                  <Sakshandlinger
-                    sak={sak}
-                    changeMode={changeMode}
-                  />
-                </Column>
-              )}
               <Column flex='2'>
                 <MyRadioPanelGroup>
                   {!currentSak && filteredSaks.map((sak: Sak) => (
@@ -249,38 +202,13 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                         <div key={'sak-' + sak?.sakId}>
                           <SakPanel
                             sak={sak}
-                            onSelected={() => dispatch(setCurrentSak(sak))}
+                            onSelected={() => navigate('/svarsed/sak/' + sak.sakId)}
                             onCopy={() => dispatch(copyToClipboard(sak.sakId))}
                           />
                           <VerticalSeparatorDiv />
                         </div>
                         )
                   ))}
-                  {currentSak && sedMap
-                    .sort((a: Sed, b: Sed) => (
-                      moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                    )).map((connectedSed: Sed) => (
-                      <div key={'sed-' + connectedSed.sedId}>
-                        <SEDPanel
-                          currentSak={currentSak}
-                          changeMode={changeMode}
-                          connectedSed={connectedSed}
-                        />
-                        <VerticalSeparatorDiv />
-                        {connectedSed.children?.sort((a: Sed, b: Sed) => (
-                          moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                        )).map((connectedSed2: Sed) => (
-                          <div key={'sed-' + connectedSed2.sedId} style={{ marginLeft: '4rem' }}>
-                            <SEDPanel
-                              currentSak={currentSak}
-                              changeMode={changeMode}
-                              connectedSed={connectedSed2}
-                            />
-                            <VerticalSeparatorDiv />
-                          </div>
-                        ))}
-                      </div>
-                    ))}
                 </MyRadioPanelGroup>
               </Column>
             </AlignStartRow>

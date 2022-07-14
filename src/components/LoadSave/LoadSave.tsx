@@ -22,6 +22,7 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -33,7 +34,6 @@ const LoadSaveDiv = styled(FlexDiv)`
 `
 
 interface LoadSaveProps<T> {
-  changeMode: (newPage: string) => void
   namespace: LocalStorageNamespaces
   loadReplySed: (payload: T) => ActionWithPayload<T>
 }
@@ -44,11 +44,11 @@ interface LoadSaveSelector {
 }
 
 const LoadSave = <T extends StorageTypes>({
-  changeMode,
   namespace,
   loadReplySed
 }: LoadSaveProps<T>) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { entries, sedStatus }: LoadSaveSelector =
     useAppSelector((state: State) => ({
       entries: state.localStorage[namespace].entries,
@@ -83,7 +83,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content))
-        changeMode('B')
+        navigate('svarsed/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
       }
       setSedStatusRequested(undefined)
     }
@@ -109,7 +109,7 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
-        changeMode('B')
+        navigate('svarsed/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
       }
       setSedStatusRequested(undefined)
     }

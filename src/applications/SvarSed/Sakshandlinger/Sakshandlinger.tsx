@@ -8,19 +8,19 @@ import { Sak } from 'declarations/types'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from 'store'
 
 export interface SakshandlingerProps {
   sak: Sak
-  changeMode: (newPage: string) => void
 }
 
 const Sakshandlinger: React.FC<SakshandlingerProps> = ({
-  sak,
-  changeMode
+  sak
 }: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const closeCase = () => {
     if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
@@ -48,7 +48,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       }
     }
     dispatch(loadReplySed(h001sed))
-    changeMode('B')
+    navigate('svarsed/sak/' + sak.sakId + '/sed/new')
   }
 
   const createXSed = (sedType: string) => {
@@ -69,7 +69,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       }
     }
     dispatch(loadReplySed(replySed))
-    changeMode('B')
+    navigate('svarsed/sak/' + sak.sakId + '/sed/new')
   }
 
   let disableCloseCase: string | undefined

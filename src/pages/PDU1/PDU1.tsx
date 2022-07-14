@@ -4,7 +4,6 @@ import { alertSuccess } from 'actions/alert'
 import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { cleanUpPDU1, searchPdu1s, loadPdu1 } from 'actions/pdu1'
-import { setCurrentSak } from 'actions/svarsed'
 import PDU1Details from 'applications/PDU1/PDU1Details/PDU1Details'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import LoadSave from 'components/LoadSave/LoadSave'
@@ -18,7 +17,7 @@ import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
@@ -29,45 +28,42 @@ interface PDU1Selector {
   pdu1Changed: boolean
 }
 
+export interface PDU1PageProps {
+  type: 'search' | 'edit' | 'create'
+}
+
 const mapState = (state: State) => ({
   entries: state.localStorage.svarsed.entries,
   pdu1: state.pdu1.pdu1,
   pdu1Changed: state.pdu1.pdu1Changed
 })
 
-export const PDU1Page = (): JSX.Element => {
+export const PDU1Page: React.FC<PDU1PageProps> = ({
+  type
+}: PDU1PageProps): JSX.Element => {
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const location = useLocation()
+  const navigate = useNavigate()
 
-  const [_currentPage, _setCurrentPage] = useState<string>('A')
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSavePdu1Modal, _setShowSavePdu1Modal] = useState<boolean>(false)
   const params: URLSearchParams = new URLSearchParams(location.search)
 
   const { entries, pdu1Changed, pdu1 }: PDU1Selector = useAppSelector(mapState)
 
-  const changeMode = (newPage: string) => {
-    _setCurrentPage(newPage)
-  }
-
-  const backToPageA = () => {
-    if (_currentPage === 'B') {
-      changeMode('A')
-      dispatch(resetCurrentEntry('pdu1'))
-      document.dispatchEvent(new CustomEvent('tilbake', { detail: {} }))
-    }
-    dispatch(setCurrentSak(undefined))
+  const goToSearchPage = () => {
+    navigate('/pdu1/search')
+    dispatch(resetCurrentEntry('pdu1'))
   }
 
   const onGoBackClick = () => {
     if (!pdu1Changed) {
-      changeMode('A')
       setTimeout(() =>
         dispatch(cleanUpPDU1())
       , 200)
-      backToPageA()
+      goToSearchPage()
     } else {
       _setShowSaveModal(true)
     }
@@ -101,7 +97,7 @@ export const PDU1Page = (): JSX.Element => {
           if (entry) {
             dispatch(setCurrentEntry('pdu1', entry))
             dispatch(loadPdu1(entry.content as PDU1))
-            changeMode('B')
+            navigate('/pdu1/edit/' + (entry.content as PDU1).saksreferanse)
             dispatch(alertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
           }
         }
@@ -112,7 +108,7 @@ export const PDU1Page = (): JSX.Element => {
 
   return (
     <TopContainer
-      backButton={_currentPage === 'B'}
+      backButton={type === 'edit' || type === 'create'}
       onGoBackClick={onGoBackClick}
       unsavedDoc={pdu1Changed}
       title={t('app:page-title-pdu1')}
@@ -141,7 +137,7 @@ export const PDU1Page = (): JSX.Element => {
                 <Button
                   variant='secondary' onClick={() => {
                     _setShowSaveModal(false)
-                    backToPageA()
+                    goToSearchPage()
                   }}
                 >
                   {t('el:button-discard-changes')}
@@ -173,26 +169,19 @@ export const PDU1Page = (): JSX.Element => {
       <Container>
         <Margin />
         <Content style={{ flex: 6 }}>
-          {_currentPage === 'A' && (
-            <PDU1Search changeMode={changeMode} />
-          )}
-          {_currentPage === 'B' && (
-            <PDU1Edit />
-          )}
+          {type === 'search' && (<PDU1Search />)}
+          {(type === 'create' || type === 'edit') && (<PDU1Edit type={type} />)}
         </Content>
         <Content style={{ flex: 2 }}>
-          {_currentPage === 'A' && (
+          {type === 'search' && (
             <SideBarDiv>
               <LoadSave<PDU1>
                 namespace='pdu1'
-                changeMode={changeMode}
                 loadReplySed={loadPdu1}
               />
             </SideBarDiv>
           )}
-          {_currentPage === 'B' && (
-            <PDU1Details />
-          )}
+          {(type === 'create' || type === 'edit') && (<PDU1Details />)}
         </Content>
         <Margin />
       </Container>
