@@ -1,15 +1,14 @@
 import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
-import { deleteSak, loadReplySed } from 'actions/svarsed'
+import { createH001Sed, createXSed, deleteSak } from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { XSed, Kjoenn, H001Sed } from 'declarations/sed'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from 'store'
+import { useAppDispatch, useAppSelector } from 'store'
 
 export interface SakshandlingerProps {
   sak: Sak
@@ -21,6 +20,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const replySed = useAppSelector(state => state.svarsed.replySed)
 
   const closeCase = () => {
     if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
@@ -28,49 +28,15 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     }
   }
 
-  const createH001Sed = () => {
-    const h001sed: H001Sed = {
-      sedType: 'H001',
-      sedVersjon: '4.2',
-      sak,
-      bruker: {
-        personInfo: {
-          fornavn: sak.fornavn,
-          etternavn: sak.etternavn,
-          kjoenn: sak.kjoenn as Kjoenn,
-          foedselsdato: sak.foedselsdato,
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak.fnr
-          }]
-        }
-      }
-    }
-    dispatch(loadReplySed(h001sed))
-    navigate('/svarsed/edit/sak/' + sak.sakId + '/sed/new')
-  }
+  const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
 
-  const createXSed = (sedType: string) => {
-    const replySed: XSed = {
-      sedType,
-      sak,
-      sedVersjon: '4.2',
-      bruker: {
-        fornavn: sak?.fornavn ?? '',
-        etternavn: sak?.etternavn ?? '',
-        kjoenn: sak?.kjoenn as Kjoenn,
-        foedselsdato: sak?.foedselsdato ?? '',
-        statsborgerskap: [{ land: 'NO' }],
-        pin: [{
-          land: 'NO',
-          identifikator: sak?.fnr
-        }]
-      }
+  /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
+  useEffect(() => {
+    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && !_.isEmpty(replySed!.sed) && waitingForOperation) {
+      setWaitingForOperation(false)
+      navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/new')
     }
-    dispatch(loadReplySed(replySed))
-    navigate('/svarsed/edit/sak/' + sak.sakId + '/sed/new')
-  }
+  }, [replySed])
 
   let disableCloseCase: string | undefined
   if (sak.erSakseier !== 'ja') {
@@ -79,6 +45,16 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     if (_.find(sak.sedListe, s => s.status === 'received' || s.status === 'sent') !== undefined) {
       disableCloseCase = t('message:warning-case-has-received-sent-cases')
     }
+  }
+
+  const _createXSed = (sedType: string) => {
+    setWaitingForOperation(true)
+    dispatch(createXSed(sedType, sak))
+  }
+
+  const _createH001Sed = () => {
+    setWaitingForOperation(true)
+    dispatch(createH001Sed(sak))
   }
 
   return (
@@ -147,7 +123,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
         : null}
       {sak.sakshandlinger?.indexOf('H001') >= 0 && (
         <>
-          <Link href='#' onClick={() => createH001Sed()}>
+          <Link href='#' onClick={() => _createH001Sed()}>
             {t('label:create-H001')}
           </Link>
           <VerticalSeparatorDiv />
@@ -155,7 +131,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       )}
       {sak.sakshandlinger?.indexOf('X009') >= 0 && (
         <>
-          <Link href='#' onClick={() => createXSed('X009')}>
+          <Link href='#' onClick={() => _createXSed('X009')}>
             {t('label:create-X009')}
           </Link>
           <VerticalSeparatorDiv />
@@ -163,7 +139,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       )}
       {sak.sakshandlinger?.indexOf('X012') >= 0 && (
         <>
-          <Link href='#' onClick={() => createXSed('X012')}>
+          <Link href='#' onClick={() => _createXSed('X012')}>
             {t('buc:X012')}
           </Link>
           <VerticalSeparatorDiv />

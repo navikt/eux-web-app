@@ -153,6 +153,21 @@ export const clarifyingSed = (
   payload: { connectedSed, sak }
 })
 
+export const createXSed = (
+  sedType: string, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_XSED_CREATE,
+  payload: { sedType, sak }
+})
+
+export const createH001Sed = (
+  sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_H001SED_CREATE,
+  payload: { sak }
+})
+
+
 export const querySaks = (
   saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {

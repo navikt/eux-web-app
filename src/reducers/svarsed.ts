@@ -1,5 +1,5 @@
 import * as types from 'constants/actionTypes'
-import { Kjoenn, ReplySed, X008Sed, X011Sed, X012Sed } from 'declarations/sed.d'
+import { H001Sed, Kjoenn, ReplySed, X008Sed, X011Sed, X012Sed, XSed } from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
@@ -277,11 +277,63 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_H001SED_CREATE: {
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: H001Sed = {
+        sedType: 'H001',
+        sedVersjon: '4.2',
+        sak,
+        bruker: {
+          personInfo: {
+            fornavn: sak.fornavn,
+            etternavn: sak.etternavn,
+            kjoenn: sak.kjoenn as Kjoenn,
+            foedselsdato: sak.foedselsdato,
+            statsborgerskap: [{land: 'NO'}],
+            pin: [{
+              land: 'NO',
+              identifikator: sak.fnr
+            }]
+          }
+        }
+      }
+
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_XSED_CREATE: {
+      const sedType = (action as ActionWithPayload).payload.sedType
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: XSed = {
+        sedType,
+        sak,
+        sedVersjon: '4.2',
+        bruker: {
+          fornavn: sak?.fornavn ?? '',
+          etternavn: sak?.etternavn ?? '',
+          kjoenn: sak?.kjoenn as Kjoenn,
+          foedselsdato: sak?.foedselsdato ?? '',
+          statsborgerskap: [{land: 'NO'}],
+          pin: [{
+            land: 'NO',
+            identifikator: sak?.fnr
+          }]
+        }
+      }
+      return {
+        ...state,
+        replySed
+      }
+    }
+
     case types.SVARSED_SED_INVALIDATE: {
       const { connectedSed, sak } = action.payload
       const replySed: X008Sed = {
         sedType: 'X008',
-        sedVersjon: '1',
+        sedVersjon: '4.2',
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',
@@ -306,7 +358,7 @@ const svarsedReducer = (
       const { connectedSed, sak } = action.payload
       const replySed: X011Sed = {
         sedType: 'X011',
-        sedVersjon: '1',
+        sedVersjon: '4.2',
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',
@@ -331,7 +383,7 @@ const svarsedReducer = (
       const { sak } = action.payload
       const replySed = {
         sedType: 'X012',
-        sedVersjon: '1',
+        sedVersjon: '4.2',
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',
@@ -349,6 +401,8 @@ const svarsedReducer = (
         replySed
       }
     }
+
+
 
     case types.SVARSED_SED_CREATE_SUCCESS: {
       let sed = state.replySed?.sed

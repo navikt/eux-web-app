@@ -175,13 +175,13 @@ const PDU1Search = (): JSX.Element => {
       fagsak
     })
     if (valid) {
-      navigate('/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + fagsak)
+      navigate('/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + encodeURIComponent(fagsak))
     }
   }
 
   const onEditingPdu1 = (pdu1SearchResult: PDU1SearchResult) => {
     if (pdu1SearchResult) {
-      navigate('/pdu1/edit/postId/' + pdu1SearchResult.journalpostId + '/docId/' + pdu1SearchResult.dokumentInfoId + '/fagsak/' + pdu1SearchResult.fagsakId)
+      navigate('/pdu1/edit/postId/' + pdu1SearchResult.journalpostId + '/docId/' + pdu1SearchResult.dokumentInfoId + '/fagsak/' + encodeURIComponent(pdu1SearchResult.fagsakId))
     }
   }
 
