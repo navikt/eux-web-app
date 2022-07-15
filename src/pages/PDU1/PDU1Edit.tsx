@@ -77,6 +77,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       })
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
+        // clean up PDU1 before sending it
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
@@ -84,6 +85,10 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
+        delete newPdu1.__journalpostId
+        delete newPdu1.__dokumentId
+        delete newPdu1.__fagsak
+        delete newPdu1.__fnr
         dispatch(jornalførePdu1(newPdu1))
         buttonLogger(e)
       }

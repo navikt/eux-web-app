@@ -167,7 +167,6 @@ export const createH001Sed = (
   payload: { sak }
 })
 
-
 export const querySaks = (
   saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {

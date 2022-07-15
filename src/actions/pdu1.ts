@@ -33,12 +33,16 @@ export const searchPdu1s = (
 }
 
 export const getStoredPdu1AsJSON = (
-  journalpostId: string, dokumentId: string, fagsakId: string
+  journalpostId: string, dokumentId: string, fagsak: string
 ): Action => {
   return call({
     url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ORIGINAL' }),
     expectedPayload: mockStoredPdu1AsJSON,
-    context: { fagsakId },
+    context: {
+      fagsak,
+      journalpostId,
+      dokumentId
+    },
     type: {
       request: types.PDU1_ASJSON_REQUEST,
       success: types.PDU1_ASJSON_SUCCESS,
@@ -67,12 +71,15 @@ export const resetStoredPdu1AsPDF = () => ({
 })
 
 export const getPdu1Template = (
-  fnr: string, fagsakId: string
+  fnr: string, fagsak: string
 ): Action => {
   return call({
     url: sprintf(urls.PDU1_INFO_URL, { fnr }),
     expectedPayload: mockTemplatePdu1,
-    context: { fagsakId },
+    context: {
+      fnr,
+      fagsak
+    },
     type: {
       request: types.PDU1_TEMPLATE_REQUEST,
       success: types.PDU1_TEMPLATE_SUCCESS,

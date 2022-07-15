@@ -66,8 +66,8 @@ const PDU1Details: React.FC = () => {
         disabled={savingPdu1}
       >
         {_.isNil(currentEntry)
-          ? t('el:button-save-draft-x', { x: t('label:sed') })
-          : t('el:button-update-draft-x', { x: t('label:sed') })}
+          ? t('el:button-save-draft-x', { x: t('label:pdu1') })
+          : t('el:button-update-draft-x', { x: t('label:pdu1') })}
         {savingPdu1 && <Loader />}
       </Button>
       <VerticalSeparatorDiv />

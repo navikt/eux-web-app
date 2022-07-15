@@ -72,28 +72,37 @@ const LoadSave = <T extends StorageTypes>({
   }
 
   const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed | PDU1>) => {
+    // for svarSed, we must check validity before loading
     if ((savedEntry.content as ReplySed).sedType) {
       buttonLogger(e, { type: (savedEntry.content as ReplySed).sedType })
       setSedStatusRequested(savedEntry.id)
       dispatch(getSedStatus((savedEntry.content as ReplySed).sak!.sakId!, savedEntry.id))
     } else {
-      // no need to chevk for status on PDU1 for now
+      // no need to check for status on PDU1, for now
       buttonLogger(e, { type: 'pdu1' })
       const entry: LocalStorageEntry<T> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
+        let url: string = '/pdu1'
+        if (!_.isEmpty((entry.content as PDU1).__fnr)) {
+          url += '/create/fnr/' + (entry.content as PDU1).__fnr + '/fagsak/' + encodeURIComponent((entry.content as PDU1).__fagsak!)
+        } else {
+          url += '/edit/postId/' + (entry.content as PDU1).__journalpostId +
+            '/docId/' + (entry.content as PDU1).__dokumentId +
+            '/fagsak/' + encodeURIComponent((entry.content as PDU1).__fagsak!)
+        }
         dispatch(loadReplySed(entry.content))
-        navigate('/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
+        navigate(url)
       }
       setSedStatusRequested(undefined)
     }
   }
 
   const findSavedEntry = (svarsedId: string): LocalStorageEntry | undefined => {
-    const x : LocalStorageEntry | undefined = _.find(entries, (e: LocalStorageEntry) => {
+    const entry : LocalStorageEntry | undefined = _.find(entries, (e: LocalStorageEntry) => {
       return e.id === svarsedId
     })
-    return x
+    return entry
   }
 
   const hasSentStatus = (svarsedId: string): boolean => {

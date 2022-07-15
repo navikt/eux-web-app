@@ -289,7 +289,7 @@ const svarsedReducer = (
             etternavn: sak.etternavn,
             kjoenn: sak.kjoenn as Kjoenn,
             foedselsdato: sak.foedselsdato,
-            statsborgerskap: [{land: 'NO'}],
+            statsborgerskap: [{ land: 'NO' }],
             pin: [{
               land: 'NO',
               identifikator: sak.fnr
@@ -316,7 +316,7 @@ const svarsedReducer = (
           etternavn: sak?.etternavn ?? '',
           kjoenn: sak?.kjoenn as Kjoenn,
           foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{land: 'NO'}],
+          statsborgerskap: [{ land: 'NO' }],
           pin: [{
             land: 'NO',
             identifikator: sak?.fnr
@@ -401,8 +401,6 @@ const svarsedReducer = (
         replySed
       }
     }
-
-
 
     case types.SVARSED_SED_CREATE_SUCCESS: {
       let sed = state.replySed?.sed
