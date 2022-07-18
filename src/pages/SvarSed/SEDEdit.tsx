@@ -221,7 +221,10 @@ const SEDEdit = (): JSX.Element => {
           open={_viewSendSedModal}
           goToRinaUrl={replySed?.sak?.sakUrl}
           replySed={replySed}
-          onModalClose={() => setViewSendSedModal(false)}
+          onModalClose={() => {
+            dispatch(alertReset())
+            setViewSendSedModal(false)
+          }}
         />
         {showTopForm() && (
           <>

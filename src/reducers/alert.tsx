@@ -137,7 +137,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             </FlexDiv>
           )
         } else {
-          stripeMessage = i18n.t('message:error-svarsed-failure')
+          stripeMessage = i18n.t('message:error-svarsed-failure') + ((action as ActionWithPayload).payload.message ?? '')
         }
         break
 

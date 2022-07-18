@@ -124,9 +124,9 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
               ? (
                 <>
                   <Tooltip label={disableCloseCase}>
-                    <Link href='javascript:void(0);'>
+                    <BodyLong>
                       {t('label:close-case')}
-                    </Link>
+                    </BodyLong>
                   </Tooltip>
                   <VerticalSeparatorDiv />
                 </>
