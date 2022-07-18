@@ -283,6 +283,10 @@ const svarsedReducer = (
         sedType: 'H001',
         sedVersjon: '4.2',
         sak,
+        sed: {
+          sedType: 'H001',
+          status: 'new'
+        } as Sed,
         bruker: {
           personInfo: {
             fornavn: sak.fornavn,
@@ -310,6 +314,10 @@ const svarsedReducer = (
       const replySed: XSed = {
         sedType,
         sak,
+        sed: {
+          sedType: sedType,
+          status: 'new'
+        } as Sed,
         sedVersjon: '4.2',
         bruker: {
           fornavn: sak?.fornavn ?? '',
@@ -334,6 +342,11 @@ const svarsedReducer = (
       const replySed: X008Sed = {
         sedType: 'X008',
         sedVersjon: '4.2',
+        sak,
+        sed: {
+          sedType: 'X008',
+          status: 'new'
+        } as Sed,
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',
@@ -359,6 +372,11 @@ const svarsedReducer = (
       const replySed: X011Sed = {
         sedType: 'X011',
         sedVersjon: '4.2',
+        sak,
+        sed: {
+          sedType: 'X011',
+          status: 'new'
+        } as Sed,
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',
@@ -384,6 +402,11 @@ const svarsedReducer = (
       const replySed = {
         sedType: 'X012',
         sedVersjon: '4.2',
+        sak,
+        sed: {
+          sedType: 'X012',
+          status: 'new'
+        } as Sed,
         bruker: {
           fornavn: sak?.fornavn ?? '',
           etternavn: sak?.etternavn ?? '',

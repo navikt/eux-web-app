@@ -30,9 +30,9 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
 
-  /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
+  /** if we have a replysed, from an operation staeted here, let's move to edit */
   useEffect(() => {
-    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && !_.isEmpty(replySed!.sed) && waitingForOperation) {
+    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
       setWaitingForOperation(false)
       navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/new')
     }
