@@ -7,6 +7,7 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  addingMottakere: false,
   completingPdu1: false,
   creatingSvarSed: false,
   creatingPdu1: false,
@@ -164,12 +165,15 @@ const loadingReducer = (
         gettingFagsaker: false
       }
 
+    case types.SVARSED_INSTITUSJONER_REQUEST:
     case types.SAK_INSTITUSJONER_REQUEST:
       return {
         ...state,
         gettingInstitusjoner: true
       }
 
+    case types.SVARSED_INSTITUSJONER_SUCCESS:
+    case types.SVARSED_INSTITUSJONER_FAILURE:
     case types.SAK_INSTITUSJONER_SUCCESS:
     case types.SAK_INSTITUSJONER_FAILURE:
       return {
@@ -201,6 +205,19 @@ const loadingReducer = (
       return {
         ...state,
         gettingLandkoder: false
+      }
+
+    case types.SVARSED_MOTTAKERE_ADD_REQUEST:
+      return {
+        ...state,
+        addingMottakere: true
+      }
+
+    case types.SVARSED_MOTTAKERE_ADD_SUCCESS:
+    case types.SVARSED_MOTTAKERE_ADD_FAILURE:
+      return {
+        ...state,
+        addingMottakere: false
       }
 
     case types.SVARSED_PREVIEW_REQUEST:

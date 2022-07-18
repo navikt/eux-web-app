@@ -14,6 +14,7 @@ export const API_RINASAKER_OVERSIKT_FNR_QUERY_URL = V2_BASE_URL + '/person/%(fnr
 export const API_RINASAKER_OVERSIKT_DNR_QUERY_URL = V2_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
+export const API_MOTTAKERE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
 export const API_SED_EDIT_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_UPDATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'

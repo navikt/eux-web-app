@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { H001Sed, Kjoenn, ReplySed, X008Sed, X011Sed, X012Sed, XSed } from 'declarations/sed.d'
-import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
+import { CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -9,6 +9,8 @@ import { AnyAction } from 'redux'
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
   deletedSak: any | null | undefined
+  institusjoner: Array<Institusjon> | undefined
+  mottakere: any | undefined
   personRelatert: any
   previewReplySed: ReplySed | null | undefined
   previewFile: Blob | null | undefined
@@ -25,6 +27,8 @@ export interface SvarsedState {
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   deletedSak: undefined,
+  institusjoner: undefined,
+  mottakere: undefined,
   personRelatert: undefined,
   // replySED used for preview
   previewReplySed: undefined,
@@ -137,6 +141,36 @@ const svarsedReducer = (
         replySed: null,
         originalReplySed: null,
         replySedChanged: false
+      }
+
+    case types.SVARSED_INSTITUSJONER_REQUEST:
+      return {
+        ...state,
+        institusjoner: undefined
+      }
+
+    case types.SVARSED_INSTITUSJONER_SUCCESS:
+      return {
+        ...state,
+        institusjoner: (action as ActionWithPayload).payload
+      }
+
+    case types.SVARSED_MOTTAKERE_ADD_RESET:
+      return {
+        ...state,
+        institusjoner: undefined,
+        mottakere: undefined
+      }
+
+    case types.SVARSED_MOTTAKERE_ADD_SUCCESS:
+
+      return {
+        ...state,
+        mottakere: action.payload,
+        currentSak: {
+          ...(state.currentSak as Sak),
+          motpart: (state.currentSak?.motpart ?? []).concat(action.context.mottakere)
+        }
       }
 
     case types.SVARSED_PREVIEW_SUCCESS:
@@ -315,7 +349,7 @@ const svarsedReducer = (
         sedType,
         sak,
         sed: {
-          sedType: sedType,
+          sedType,
           status: 'new'
         } as Sed,
         sedVersjon: '4.2',

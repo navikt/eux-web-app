@@ -2,6 +2,8 @@ import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
 import { createH001Sed, createXSed, deleteSak } from 'actions/svarsed'
+import AddMottakereModal from 'applications/SvarSed/AddMottakereModal/AddMottakereModal'
+import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -29,6 +31,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   }
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
+  const [showAddMottakereModal, setShowAddMottakereModal] = useState<boolean>(false)
 
   /** if we have a replysed, from an operation staeted here, let's move to edit */
   useEffect(() => {
@@ -58,94 +61,106 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   }
 
   return (
-    <Panel border>
-      <Heading size='small'>Sakshandlinger</Heading>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {sak.erSakseier === 'ja' && (
-        <>
-          <Tooltip label={(
-            <div style={{ maxWidth: '400px' }}>
-              {t('message:warning-rina')}
-            </div>
-          )}
-          >
-            <BodyLong>
+    <>
+      <Modal
+        shouldCloseOnOverlayClick={false}
+        open={showAddMottakereModal}
+        onModalClose={() => setShowAddMottakereModal(false)}
+        modal={{
+          closeButton: false,
+          modalContent: (
+            <AddMottakereModal
+              existingMottakere={sak.motpart}
+              bucType={sak.sakType}
+              rinaSakId={sak.sakId}
+              onClose={() => setShowAddMottakereModal(false)}
+            />
+          )
+        }}
+      />
+
+      <Panel border>
+        <Heading size='small'>Sakshandlinger</Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        {sak.erSakseier === 'ja' && (
+          <>
+            <Link href='#' onClick={() => setShowAddMottakereModal(true)}>
               {t('label:legg-til-deltaker')}
-            </BodyLong>
-          </Tooltip>
-          <VerticalSeparatorDiv />
-        </>
+            </Link>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+        <Tooltip label={(
+          <div style={{ maxWidth: '400px' }}>
+            {t('message:warning-rina')}
+          </div>
       )}
-      <Tooltip label={(
-        <div style={{ maxWidth: '400px' }}>
-          {t('message:warning-rina')}
-        </div>
+        >
+          <BodyLong>
+            {t('label:lukk-sak-lokakt')}
+          </BodyLong>
+        </Tooltip>
+        <VerticalSeparatorDiv />
+        <Tooltip label={(
+          <div style={{ maxWidth: '400px' }}>
+            {t('message:warning-rina')}
+          </div>
       )}
-      >
-        <BodyLong>
-          {t('label:lukk-sak-lokakt')}
-        </BodyLong>
-      </Tooltip>
-      <VerticalSeparatorDiv />
-      <Tooltip label={(
-        <div style={{ maxWidth: '400px' }}>
-          {t('message:warning-rina')}
-        </div>
-      )}
-      >
-        <BodyLong>
-          {t('label:videresend-sak')}
-        </BodyLong>
-      </Tooltip>
-      <VerticalSeparatorDiv />
-      {sak.sakshandlinger?.indexOf('Close_Case') >= 0
-        ? disableCloseCase
-            ? (
-              <>
-                <Tooltip label={disableCloseCase}>
-                  <Link href='javascript:void(0);'>
+        >
+          <BodyLong>
+            {t('label:videresend-sak')}
+          </BodyLong>
+        </Tooltip>
+        <VerticalSeparatorDiv />
+        {sak.sakshandlinger?.indexOf('Close_Case') >= 0
+          ? disableCloseCase
+              ? (
+                <>
+                  <Tooltip label={disableCloseCase}>
+                    <Link href='javascript:void(0);'>
+                      {t('label:close-case')}
+                    </Link>
+                  </Tooltip>
+                  <VerticalSeparatorDiv />
+                </>
+                )
+              : (
+                <>
+                  <Link href='#' onClick={closeCase}>
                     {t('label:close-case')}
                   </Link>
-                </Tooltip>
-                <VerticalSeparatorDiv />
-              </>
-              )
-            : (
-              <>
-                <Link href='#' onClick={closeCase}>
-                  {t('label:close-case')}
-                </Link>
-                <VerticalSeparatorDiv />
-              </>
-              )
-        : null}
-      {sak.sakshandlinger?.indexOf('H001') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createH001Sed()}>
-            {t('label:create-H001')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {sak.sakshandlinger?.indexOf('X009') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createXSed('X009')}>
-            {t('label:create-X009')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {sak.sakshandlinger?.indexOf('X012') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createXSed('X012')}>
-            {t('buc:X012')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-    </Panel>
+                  <VerticalSeparatorDiv />
+                </>
+                )
+          : null}
+        {sak.sakshandlinger?.indexOf('H001') >= 0 && (
+          <>
+            <Link href='#' onClick={() => _createH001Sed()}>
+              {t('label:create-H001')}
+            </Link>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+        {sak.sakshandlinger?.indexOf('X009') >= 0 && (
+          <>
+            <Link href='#' onClick={() => _createXSed('X009')}>
+              {t('label:create-X009')}
+            </Link>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+        {sak.sakshandlinger?.indexOf('X012') >= 0 && (
+          <>
+            <Link href='#' onClick={() => _createXSed('X012')}>
+              {t('buc:X012')}
+            </Link>
+            <VerticalSeparatorDiv />
+          </>
+        )}
+      </Panel>
+    </>
   )
 }
 

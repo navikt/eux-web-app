@@ -1,9 +1,10 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak } from 'declarations/types'
+import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
+import { mockInstitusjon } from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
 import { Action, ActionCreator } from 'redux'
@@ -11,6 +12,46 @@ import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
+
+export const addMottakere = (
+  rinaSakId: string, mottakere: Array<string>
+) => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_MOTTAKERE_URL, { rinaSakId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sucess: true
+    },
+    body: mottakere,
+    context: {
+      mottakere
+    },
+    type: {
+      request: types.SVARSED_MOTTAKERE_ADD_REQUEST,
+      success: types.SVARSED_MOTTAKERE_ADD_SUCCESS,
+      failure: types.SVARSED_MOTTAKERE_ADD_FAILURE
+    }
+  })
+}
+
+export const getInstitusjoner = (
+  buctype: string, landkode: string
+): ActionWithPayload<Institusjoner> => {
+  return call({
+    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
+    expectedPayload: mockInstitusjon({ landkode }),
+    type: {
+      request: types.SVARSED_INSTITUSJONER_REQUEST,
+      success: types.SVARSED_INSTITUSJONER_SUCCESS,
+      failure: types.SVARSED_INSTITUSJONER_FAILURE
+    }
+  })
+}
+
+export const resetMottakere = () => ({
+  type: types.SVARSED_MOTTAKERE_ADD_RESET
+})
 
 export const cleanUpSvarSed = ():Action => ({
   type: types.SVARSED_RESET
