@@ -90,6 +90,10 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
               {t('label:legg-til-deltaker')}
             </Link>
             <VerticalSeparatorDiv />
+            <Link href='#' onClick={() => _createXSed('X001')}>
+              {t('label:lukk-sak-global')}
+            </Link>
+            <VerticalSeparatorDiv />
           </>
         )}
         <Tooltip label={(
@@ -99,10 +103,11 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       )}
         >
           <BodyLong>
-            {t('label:lukk-sak-lokakt')}
+            {t('label:lukk-sak-lokalt')}
           </BodyLong>
         </Tooltip>
         <VerticalSeparatorDiv />
+
         <Tooltip label={(
           <div style={{ maxWidth: '400px' }}>
             {t('message:warning-rina')}

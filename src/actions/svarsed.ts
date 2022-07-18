@@ -194,6 +194,13 @@ export const clarifyingSed = (
   payload: { connectedSed, sak }
 })
 
+export const remindSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_REMIND,
+  payload: { connectedSed, sak }
+})
+
 export const createXSed = (
   sedType: string, sak: Sak
 ): ActionWithPayload<any> => ({

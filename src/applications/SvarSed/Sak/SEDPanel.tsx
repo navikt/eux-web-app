@@ -2,7 +2,16 @@ import { Close, Edit, Download, Send, Star, Helptext } from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
-import { clarifyingSed, editSed, getSedStatus, invalidatingSed, rejectingSed, replyToSed, setReplySed } from 'actions/svarsed'
+import {
+  clarifyingSed,
+  editSed,
+  getSedStatus,
+  invalidatingSed,
+  rejectingSed,
+  remindSed,
+  replyToSed,
+  setReplySed
+} from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
@@ -68,9 +77,10 @@ const SEDPanel = ({
   const [_invalidatingSed, _setInvalidatingSed] = useState<boolean>(false)
   const [_rejectingSed, _setRejectingSed] = useState<boolean>(false)
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
+  const [_reminderSed, _setReminderSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
 
-  const waitingForOperation = _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed
+  const waitingForOperation = _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed || _reminderSed
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
@@ -81,6 +91,7 @@ const SEDPanel = ({
       _setInvalidatingSed(false)
       _setRejectingSed(false)
       _setClarifyingSed(false)
+      _setReminderSed(false)
       navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/' + replySed!.sed!.sedId)
     }
   }, [replySed])
@@ -128,6 +139,11 @@ const SEDPanel = ({
     dispatch(clarifyingSed(connectedSed, sak))
   }
 
+  const onRemindSedClick = (connectedSed: Sed, sak: Sak) => {
+    _setReminderSed(true)
+    dispatch(remindSed(connectedSed, sak))
+  }
+
   const onReplySedClick = (connectedSed: Sed, sak: Sak) => {
     _setReplyingToSed(true)
     dispatch(replyToSed(connectedSed, sak))
@@ -139,6 +155,7 @@ const SEDPanel = ({
   const showUpdateButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && (connectedSed.status === 'sent' || connectedSed.status === 'active')
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType && (connectedSed.sedHandlinger.indexOf(connectedSed.svarsedType as SedAction) >= 0)
   const showInvalidateButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X008') >= 0
+  const showRemindButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X010') >= 0 && connectedSed.status === 'received'
   const showRejectButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X011') >= 0
   const showClarifyButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X012') >= 0
 
@@ -342,6 +359,31 @@ const SEDPanel = ({
                       </>
                       )
                     : t('label:klarkjør-sed')}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showRemindButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_reminderSed}
+                  data-amplitude='svarsed.selection.remindsed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: connectedSed.sedType
+                    })
+                    onRemindSedClick(connectedSed, currentSak)
+                  }}
+                >
+                  {_reminderSed
+                    ? (
+                      <>
+                        {t('message:loading-remind')}
+                        <Loader />
+                      </>
+                      )
+                    : t('label:svar-på-påminnelse')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>

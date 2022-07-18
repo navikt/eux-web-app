@@ -1,9 +1,20 @@
 import * as types from 'constants/actionTypes'
-import { H001Sed, Kjoenn, ReplySed, X008Sed, X011Sed, X012Sed, XSed } from 'declarations/sed.d'
+import {
+  H001Sed,
+  Kjoenn,
+  ReplySed,
+  X001Sed,
+  X008Sed,
+  X010Sed,
+  X011Sed,
+  X012Sed,
+  XSed
+} from 'declarations/sed.d'
 import { CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
+import moment from 'moment'
 import { AnyAction } from 'redux'
 
 export interface SvarsedState {
@@ -46,6 +57,30 @@ export const initialSvarsedState: SvarsedState = {
   sedSendResponse: undefined,
   sedStatus: {}
 }
+
+const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => ({
+  sedType,
+  sedVersjon: '4.2',
+  sak,
+  sed: {
+    sedType,
+    status: 'new'
+  } as Sed,
+  bruker: {
+    personInfo: {
+      fornavn: sak.fornavn,
+      etternavn: sak.etternavn,
+      kjoenn: sak.kjoenn as Kjoenn,
+      foedselsdato: sak.foedselsdato,
+      statsborgerskap: [{ land: 'NO' }],
+      pin: [{
+        land: 'NO',
+        identifikator: sak.fnr
+      }]
+    }
+  }
+} as unknown as T
+)
 
 const svarsedReducer = (
   state: SvarsedState = initialSvarsedState,
@@ -313,29 +348,7 @@ const svarsedReducer = (
 
     case types.SVARSED_H001SED_CREATE: {
       const sak = (action as ActionWithPayload).payload.sak
-      const replySed: H001Sed = {
-        sedType: 'H001',
-        sedVersjon: '4.2',
-        sak,
-        sed: {
-          sedType: 'H001',
-          status: 'new'
-        } as Sed,
-        bruker: {
-          personInfo: {
-            fornavn: sak.fornavn,
-            etternavn: sak.etternavn,
-            kjoenn: sak.kjoenn as Kjoenn,
-            foedselsdato: sak.foedselsdato,
-            statsborgerskap: [{ land: 'NO' }],
-            pin: [{
-              land: 'NO',
-              identifikator: sak.fnr
-            }]
-          }
-        }
-      }
-
+      const replySed: H001Sed = createReplySedTemplate<H001Sed>(sak, 'H001')
       return {
         ...state,
         replySed
@@ -345,25 +358,10 @@ const svarsedReducer = (
     case types.SVARSED_XSED_CREATE: {
       const sedType = (action as ActionWithPayload).payload.sedType
       const sak = (action as ActionWithPayload).payload.sak
-      const replySed: XSed = {
-        sedType,
-        sak,
-        sed: {
-          sedType,
-          status: 'new'
-        } as Sed,
-        sedVersjon: '4.2',
-        bruker: {
-          fornavn: sak?.fornavn ?? '',
-          etternavn: sak?.etternavn ?? '',
-          kjoenn: sak?.kjoenn as Kjoenn,
-          foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak?.fnr
-          }]
-        }
+      const replySed: XSed = createReplySedTemplate<XSed>(sak, sedType)
+
+      if (sedType === 'X001') {
+        (replySed as X001Sed).avslutningsDato = moment(new Date()).format('YYYY-MM-DD')
       }
       return {
         ...state,
@@ -373,28 +371,17 @@ const svarsedReducer = (
 
     case types.SVARSED_SED_INVALIDATE: {
       const { connectedSed, sak } = action.payload
-      const replySed: X008Sed = {
-        sedType: 'X008',
-        sedVersjon: '4.2',
-        sak,
-        sed: {
-          sedType: 'X008',
-          status: 'new'
-        } as Sed,
-        bruker: {
-          fornavn: sak?.fornavn ?? '',
-          etternavn: sak?.etternavn ?? '',
-          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak?.fnr
-          }]
-        },
-        kansellerSedId: connectedSed.sedType
-      } as X008Sed
+      const replySed: X008Sed = createReplySedTemplate<X008Sed>(sak, 'X008')
+      replySed.kansellerSedId = connectedSed.sedType
+      return {
+        ...state,
+        replySed
+      }
+    }
 
+    case types.SVARSED_SED_REMIND: {
+      const { sak } = action.payload
+      const replySed: X010Sed = createReplySedTemplate<X010Sed>(sak, 'X010')
       return {
         ...state,
         replySed
@@ -403,28 +390,8 @@ const svarsedReducer = (
 
     case types.SVARSED_SED_REJECT: {
       const { connectedSed, sak } = action.payload
-      const replySed: X011Sed = {
-        sedType: 'X011',
-        sedVersjon: '4.2',
-        sak,
-        sed: {
-          sedType: 'X011',
-          status: 'new'
-        } as Sed,
-        bruker: {
-          fornavn: sak?.fornavn ?? '',
-          etternavn: sak?.etternavn ?? '',
-          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak?.fnr
-          }]
-        },
-        kansellerSedId: connectedSed.sedType
-      } as X011Sed
-
+      const replySed: X011Sed = createReplySedTemplate<X011Sed>(sak, 'X011')
+      replySed.kansellerSedId = connectedSed.sedType
       return {
         ...state,
         replySed
@@ -433,26 +400,7 @@ const svarsedReducer = (
 
     case types.SVARSED_SED_CLARIFY: {
       const { sak } = action.payload
-      const replySed = {
-        sedType: 'X012',
-        sedVersjon: '4.2',
-        sak,
-        sed: {
-          sedType: 'X012',
-          status: 'new'
-        } as Sed,
-        bruker: {
-          fornavn: sak?.fornavn ?? '',
-          etternavn: sak?.etternavn ?? '',
-          kjoenn: (sak?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak?.foedselsdato ?? '',
-          statsborgerskap: [{ land: 'NO' }],
-          pin: [{
-            land: 'NO',
-            identifikator: sak?.fnr
-          }]
-        }
-      } as X012Sed
+      const replySed: X012Sed = createReplySedTemplate<X012Sed>(sak, 'X012')
       return {
         ...state,
         replySed

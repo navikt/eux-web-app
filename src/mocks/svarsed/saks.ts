@@ -17,10 +17,18 @@ export default (saksnummer: string, type: string) => {
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
       sakshandlinger: [
-        'H001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case'
+        'H001', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case'
       ],
       sedListe: [
         {
+          sedTittel: 'Påminnelse',
+          sedType: 'X009',
+          sedId: '46f4ea863edd4106bd20b36675315008',
+          sedUrl: 'https://rina-ss1-q.adeo.no/portal_new/case-management/1441020',
+          status: 'received',
+          sistEndretDato: '2022-07-18',
+          sedHandlinger: ['X010', 'Read']
+        }, {
           sedTittel: 'Description for new F001',
           status: 'new',
           sedType: 'F001',

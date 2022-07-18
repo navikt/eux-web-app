@@ -277,7 +277,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   onClick={() => _setNewForm(true)}
                 >
                   <AddCircle />
-                  {t('el:button-add-new-x', { x: t('label:fødested')?.toLowerCase() })}
+                  {t('el:button-add-x', { x: t('label:fødested')?.toLowerCase() })}
                 </Button>
               </PaddedDiv>
             )}

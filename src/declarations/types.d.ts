@@ -7,7 +7,7 @@ export type StorageTypes = PDU1 | ReplySed
 
 export type SakAction = 'H001' | 'X005' | 'X007' | 'X009' | 'X012' | 'Close_Case'
 
-export type SedAction = 'X008' | 'X011' | 'X012' | 'U002' | 'U017' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
+export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U017' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string

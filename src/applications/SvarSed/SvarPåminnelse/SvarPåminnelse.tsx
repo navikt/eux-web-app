@@ -383,7 +383,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-gjelder'}
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
-                    legend={t('label:dokument-type') + ' *'}
+                    legend={t('label:type') + ' *'}
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseKommerType(type, index)}
                   >
@@ -412,7 +412,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='info'
                       maxLength={51}
-                      label={t('label:dokument-info')}
+                      label={t('label:opplysninger')}
                       namespace={_namespace}
                       onChanged={(info: string) => setBesvarelseKommerInfo(info, index)}
                       value={_BesvarelseKommer?.beskrivelse}
@@ -511,7 +511,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-gjelder'}
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
-                    legend={t('label:dokument-type') + ' *'}
+                    legend={t('label:type') + ' *'}
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseUmuligType(type, index)}
                   >
@@ -540,7 +540,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='beskrivelse'
                       maxLength={51}
-                      label={t('label:dokument-info')}
+                      label={t('label:opplysninger')}
                       namespace={_namespace}
                       onChanged={(info: string) => setBesvarelseUmuligInfo(info, index)}
                       value={_BesvarelseUmulig?.beskrivelse}

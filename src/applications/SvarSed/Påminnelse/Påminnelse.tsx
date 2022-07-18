@@ -39,7 +39,6 @@ const mapState = (state: State): MainFormSelector => ({
 })
 
 const Påminnelse: React.FC<MainFormProps> = ({
-  label,
   parentNamespace,
   personID,
   personName,
@@ -215,7 +214,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
                     data-testid={_namespace + '-gjelder'}
                     error={_v[_namespace + '-gjelder']?.feilmelding}
                     id={_namespace + '-gjelder'}
-                    legend={t('label:dokument-type') + ' *'}
+                    legend={t('label:type') + ' *'}
                     name={_namespace + '-gjelder'}
                     onChange={(gjelder: string) => setPurringGjelder(gjelder, index)}
                   >
@@ -244,7 +243,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='beskrivelse'
                       maxLength={65}
-                      label={t('label:dokument-info')}
+                      label={t('label:opplysninger')}
                       namespace={_namespace}
                       onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}
                       value={_purring?.beskrivelse}
@@ -287,7 +286,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
     <>
       <PaddedDiv>
         <Heading size='small'>
-          {label}
+          {t('label:påminnelse-til-å-sende-oss')}
         </Heading>
       </PaddedDiv>
       <VerticalSeparatorDiv />

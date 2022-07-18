@@ -25,7 +25,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
           {t('label:vår-rolle')}:
         </Dt>
         <Dd>
-          {sak.erSakseier === 'ja' && t('label:sakeier')}
+          {sak.erSakseier === 'ja' && t('label:sakseier')}
           {sak.erSakseier === 'nei' && t('label:deltaker')}
           {_.isNil(sak.erSakseier) && t('label:ukjent')}
         </Dd>
