@@ -84,7 +84,7 @@ const SEDPanel = ({
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
-    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && !_.isEmpty(replySed!.sed) && waitingForOperation) {
+    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
       _setReplyingToSed(false)
       _setUpdatingSed(false)
       _setEditingSed(false)
@@ -92,7 +92,10 @@ const SEDPanel = ({
       _setRejectingSed(false)
       _setClarifyingSed(false)
       _setReminderSed(false)
-      navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/' + replySed!.sed!.sedId)
+      navigate({
+        pathname: '/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/' + (replySed!.sed?.sedId ?? 'new'),
+        search: window.location.search
+      })
     }
   }, [replySed])
 
@@ -155,7 +158,7 @@ const SEDPanel = ({
   const showUpdateButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && (connectedSed.status === 'sent' || connectedSed.status === 'active')
   const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType && (connectedSed.sedHandlinger.indexOf(connectedSed.svarsedType as SedAction) >= 0)
   const showInvalidateButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X008') >= 0
-  const showRemindButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X010') >= 0 && connectedSed.status === 'received'
+  const showRemindButton = !showDraftButton && !showJournalforingButton && connectedSed.sedHandlinger.indexOf('X010') >= 0 && connectedSed.status === 'received'
   const showRejectButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X011') >= 0
   const showClarifyButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X012') >= 0
 

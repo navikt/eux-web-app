@@ -23,7 +23,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   const replySed = useAppSelector(state => state.svarsed.replySed)
 
   const deleteCase = () => {
-    if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
+    if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {
       dispatch(deleteSak(sak.sakId))
     }
   }
@@ -34,7 +34,10 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   useEffect(() => {
     if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
       setWaitingForOperation(false)
-      navigate('/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/new')
+      navigate({
+        pathname: '/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/new',
+        search: window.location.search
+      })
     }
   }, [replySed])
 

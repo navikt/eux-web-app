@@ -22,7 +22,6 @@ import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
@@ -63,13 +62,12 @@ export const MyContent = styled(Content)`
 
 const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
-  const location = useLocation()
   const namespace = 'vedlegg'
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
 
   useEffect(() => {
-    const params: URLSearchParams = new URLSearchParams(location.search)
+    const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))

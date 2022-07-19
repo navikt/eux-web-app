@@ -71,10 +71,11 @@ const SEDSearch = (): JSX.Element => {
     sedStatus
   }: any = useAppSelector(mapState)
 
+  const params = new URLSearchParams(window.location.search)
   const navigate = useNavigate()
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)
-  const [_query, _setQuery] = useState<string | undefined>(undefined)
+  const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
 
   const namespace = 'sedsearch'
@@ -93,7 +94,10 @@ const SEDSearch = (): JSX.Element => {
   useEffect(() => {
     if (saks?.length === 1 && _queryType === 'saksnummer') {
       dispatch(setCurrentSak(saks[0]))
-      navigate('/svarsed/view/sak/' + saks[0].sakId)
+      navigate({
+        pathname: '/svarsed/view/sak/' + saks[0].sakId,
+        search: _query ? '?q=' + _query : ''
+      })
     }
   }, [saks])
 
@@ -204,7 +208,11 @@ const SEDSearch = (): JSX.Element => {
                               <SakPanel
                                 sak={sak}
                                 onSelected={() => {
-                                  navigate('/svarsed/view/sak/' + sak.sakId)
+                                  dispatch(setCurrentSak(sak))
+                                  navigate({
+                                    pathname: '/svarsed/view/sak/' + sak.sakId,
+                                    search: _query ? '?q=' + _query : ''
+                                  })
                                 }}
                                 onCopy={() => dispatch(copyToClipboard(sak.sakId))}
                               />

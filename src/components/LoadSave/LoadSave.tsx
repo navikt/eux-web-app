@@ -92,7 +92,10 @@ const LoadSave = <T extends StorageTypes>({
             '/fagsak/' + encodeURIComponent((entry.content as PDU1).__fagsak!)
         }
         dispatch(loadReplySed(entry.content))
-        navigate(url)
+        navigate({
+          pathname: url,
+          search: window.location.search
+        })
       }
       setSedStatusRequested(undefined)
     }
@@ -118,7 +121,10 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
-        navigate('/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId)
+        navigate({
+          pathname: '/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId,
+          search: window.location.search
+        })
       }
       setSedStatusRequested(undefined)
     }

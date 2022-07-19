@@ -18,7 +18,7 @@ import SEDSearch from 'pages/SvarSed/SEDSearch'
 import SEDView from 'pages/SvarSed/SEDView'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 
 interface SvarSedSelector {
@@ -43,12 +43,11 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
   const { t } = useTranslation()
 
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSaveSedModal, _setShowSaveSedModal] = useState<boolean>(false)
-  const params: URLSearchParams = new URLSearchParams(location.search)
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
   const { sakId } = useParams()
 
   const { entries, replySed, replySedChanged }: SvarSedSelector = useAppSelector(mapState)
@@ -59,10 +58,20 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
-      navigate('/svarsed/view/sak/' + sakId)
+      const params: URLSearchParams = new URLSearchParams(window.location.search)
+      const q = params.get('q')
+      const search = '?refresh=true' + (q ? '&q=' + q : '')
+
+      navigate({
+        pathname: '/svarsed/view/sak/' + sakId,
+        search
+      })
     }
     if (type === 'view') {
-      navigate('/svarsed/search')
+      navigate({
+        pathname: '/svarsed/search',
+        search: window.location.search
+      })
     }
   }
 
@@ -106,7 +115,10 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
           if (entry) {
             dispatch(setCurrentEntry('svarsed', entry))
             dispatch(setReplySed(entry.content, false))
-            navigate('/svarsed/edit/sak/' + (entry.content as ReplySed).sak!.sakId + '/sed/' + (entry.content as ReplySed).sed!.sedId)
+            navigate({
+              pathname: '/svarsed/edit/sak/' + (entry.content as ReplySed).sak!.sakId + '/sed/' + (entry.content as ReplySed).sed!.sedId,
+              search: window.location.search
+            })
             dispatch(alertSuccess(t('message:success-svarsed-reloaded-after-token', { name })))
           }
         }

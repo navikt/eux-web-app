@@ -369,7 +369,10 @@ const SEDNew = (): JSX.Element => {
     if (!_.isNil(filloutinfo)) {
       dispatch(loadReplySed(filloutinfo))
       dispatch(resetFilloutInfo())
-      navigate('/svarsed/edit/sak/' + filloutinfo.sak.sakId + '/sed/' + filloutinfo.sed.sedId)
+      navigate({
+        pathname: '/svarsed/edit/sak/' + filloutinfo.sak.sakId + '/sed/' + filloutinfo.sed.sedId,
+        search: window.location.search
+      })
     }
   }, [filloutinfo])
 

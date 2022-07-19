@@ -47,7 +47,10 @@ const SEDView = (): JSX.Element => {
   useEffect(() => {
     // reload, so it reflects changes made in potential SED save/send
     if (currentSak) {
-      dispatch(querySaks(currentSak?.sakId, 'refresh'))
+      const params: URLSearchParams = new URLSearchParams(window.location.search)
+      if (params.get('refresh') === 'true') {
+        dispatch(querySaks(currentSak?.sakId, 'refresh'))
+      }
     } else {
       if (sakId) {
         dispatch(querySaks(sakId, 'refresh'))

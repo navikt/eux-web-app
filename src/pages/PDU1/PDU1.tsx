@@ -17,7 +17,7 @@ import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import PDU1Edit from './PDU1Edit'
 import PDU1Search from './PDU1Search'
@@ -44,17 +44,16 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
   const [mounted, setMounted] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const location = useLocation()
   const navigate = useNavigate()
 
   const [_showSaveModal, _setShowSaveModal] = useState<boolean>(false)
   const [_showSavePdu1Modal, _setShowSavePdu1Modal] = useState<boolean>(false)
-  const params: URLSearchParams = new URLSearchParams(location.search)
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
 
   const { entries, pdu1Changed, pdu1 }: PDU1Selector = useAppSelector(mapState)
 
   const goToSearchPage = () => {
-    navigate('/pdu1/search')
+    navigate({ pathname: '/pdu1/search', search: window.location.search })
     dispatch(resetCurrentEntry('pdu1'))
   }
 
@@ -97,7 +96,10 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
           if (entry) {
             dispatch(setCurrentEntry('pdu1', entry))
             dispatch(loadPdu1(entry.content as PDU1))
-            navigate('/pdu1/edit/' + (entry.content as PDU1).saksreferanse)
+            navigate({
+              pathname: '/pdu1/edit/' + (entry.content as PDU1).saksreferanse,
+              search: window.location.search
+            })
             dispatch(alertSuccess(t('message:success-pdu1-reloaded-after-token', { name })))
           }
         }

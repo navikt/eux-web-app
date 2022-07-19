@@ -204,7 +204,13 @@ const SEDEdit = (): JSX.Element => {
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)
-      navigate('/svarsed/view/sak/' + sakId)
+      const params: URLSearchParams = new URLSearchParams(window.location.search)
+      const q = params.get('q')
+      const search = '?refresh=true' + (q ? '&q=' + q : '')
+      navigate({
+        pathname: '/svarsed/view/sak/' + sakId,
+        search
+      })
     }
   }, [_sendButtonClicked, sedSendResponse])
 

@@ -65,9 +65,21 @@ const SakBanner = () => {
           />
           <HorizontalSeparatorDiv />
           {!!currentSak.fornavn && currentSak.etternavn && (
-            <Label>
-              {currentSak.etternavn + ', ' + currentSak.fornavn}
-            </Label>
+            <>
+              <Label>
+                {currentSak.etternavn + ', ' + currentSak.fornavn}
+              </Label>
+              <HorizontalSeparatorDiv size='0.5' />
+              <Link
+                title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
+                }}
+              >
+                <Copy />
+              </Link>
+            </>
           )}
         </FlexDiv>
         <FlexDiv>
@@ -79,7 +91,7 @@ const SakBanner = () => {
                 title={t('label:kopiere')} onClick={(e: any) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dispatch(copyToClipboard(currentSak.sakId))
+                  dispatch(copyToClipboard(currentSak.fnr))
                 }}
               >
                 {' ' + currentSak.fnr + ' '}
