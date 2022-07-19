@@ -67,7 +67,6 @@
   "bygning": "Bygning",
 
   "choose": "Velg",
-  "close-case" : "Slett sak",
   "comment": "Kommentar",
   "create-H001": "Opprett H001",
   "create-X009": "Send påminnelse",
@@ -361,6 +360,7 @@
   "siste-oppdatert": "Siste oppdatert",
   "skal-ytelse-utbetales": "Skal ytelse utbetales?",
   "skjul-skjema": "Skjul skjema",
+  "slett-sak" : "Slett sak",
   "sluttdato": "Sluttdato",
   "startdato": "Startdato",
   "statsborgerskap" : "Statsborgerskap",

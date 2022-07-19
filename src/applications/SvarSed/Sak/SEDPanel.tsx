@@ -213,7 +213,7 @@ const SEDPanel = ({
                 <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-            {showDraftButton && (
+            {!!connectedSed.svarsedId && showDraftButton && (
               <Button
                 variant='secondary'
                 disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId, sedStatus)}
@@ -222,7 +222,7 @@ const SEDPanel = ({
                   buttonLogger(e, {
                     type: connectedSed.svarsedType
                   })
-                  loadDraft(currentSak.sakId, connectedSed.svarsedId)
+                  loadDraft(currentSak.sakId, connectedSed.svarsedId!)
                 }}
               >
                 <Edit />

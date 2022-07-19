@@ -58,29 +58,32 @@ export const initialSvarsedState: SvarsedState = {
   sedStatus: {}
 }
 
-const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => ({
-  sedType,
-  sedVersjon: '4.2',
-  sak,
-  sed: {
-    sedType,
-    status: 'new'
-  } as Sed,
-  bruker: {
-    personInfo: {
-      fornavn: sak.fornavn,
-      etternavn: sak.etternavn,
-      kjoenn: sak.kjoenn as Kjoenn,
-      foedselsdato: sak.foedselsdato,
-      statsborgerskap: [{ land: 'NO' }],
-      pin: [{
-        land: 'NO',
-        identifikator: sak.fnr
-      }]
-    }
+const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
+  const personInfo = {
+    fornavn: sak.fornavn,
+    etternavn: sak.etternavn,
+    kjoenn: sak.kjoenn as Kjoenn,
+    foedselsdato: sak.foedselsdato,
+    statsborgerskap: [{ land: 'NO' }],
+    pin: [{
+      land: 'NO',
+      identifikator: sak.fnr
+    }]
   }
-} as unknown as T
-)
+
+  return {
+    sedType,
+    sedVersjon: '4.2',
+    sak,
+    sed: {
+      sedType,
+      status: 'new'
+    } as Sed,
+    bruker: sedType.startsWith('X')
+      ? personInfo
+      : { personInfo }
+  } as unknown as T
+}
 
 const svarsedReducer = (
   state: SvarsedState = initialSvarsedState,
@@ -363,6 +366,7 @@ const svarsedReducer = (
       if (sedType === 'X001') {
         (replySed as X001Sed).avslutningsDato = moment(new Date()).format('YYYY-MM-DD')
       }
+
       return {
         ...state,
         replySed
@@ -373,6 +377,8 @@ const svarsedReducer = (
       const { connectedSed, sak } = action.payload
       const replySed: X008Sed = createReplySedTemplate<X008Sed>(sak, 'X008')
       replySed.kansellerSedId = connectedSed.sedType
+      replySed.utstedelsesdato = moment(connectedSed.sistEndretDato).format('YYYY-MM-DD')
+
       return {
         ...state,
         replySed

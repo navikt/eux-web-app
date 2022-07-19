@@ -528,6 +528,7 @@ export interface X001Sed extends XSed {
 }
 
 export interface X008Sed extends XSed {
+  utstedelsesdato: string
   begrunnelseType: string
   begrunnelseAnnen?: string
   kansellerSedId: string

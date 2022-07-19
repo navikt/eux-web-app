@@ -1,5 +1,8 @@
+import { Sak } from 'declarations/types'
+import _ from 'lodash'
+
 export default (saksnummer: string, type: string) => {
-  const saks = [
+  const saks: Array<Sak> = [
     {
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
@@ -83,13 +86,16 @@ export default (saksnummer: string, type: string) => {
           status: 'new',
           sedId: 'x008cancelled',
           sedIdParent: 'f002sent',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
         }, {
           sedTittel: 'Unntaksfeil',
           sedType: 'X050',
+          status: 'new',
           sedId: 'x050cancelled',
           sedIdParent: 'f002sent',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
         }, {
           sedTittel: 'Description for sent F002 without X008',
           status: 'sent',
@@ -183,7 +189,6 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
-      lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
       sedListe: [
         {
           sedTittel: 'Horizontal',
@@ -265,6 +270,10 @@ export default (saksnummer: string, type: string) => {
   ]
 
   if (type === 'saksnummer') {
+    const sak: Sak | undefined = _.find(saks, { sakId: saksnummer })
+    if (sak) {
+      return sak
+    }
     return [saks[0]]
   }
 

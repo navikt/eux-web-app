@@ -20,7 +20,7 @@ export const hasDraft = (
   connectedSed: Sed,
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
 ): boolean => (
-  findSavedEntry(connectedSed.svarsedId, entries) !== undefined
+  findSavedEntry(connectedSed.svarsedId!, entries) !== undefined
 )
 
 export const isSedEditable = (
@@ -29,7 +29,7 @@ export const isSedEditable = (
   sedStatus: {[k in string]: string | null}
 ) => (
   !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
-  (hasDraft(connectedSed, entries) && !hasSentStatus(connectedSed.svarsedId, sedStatus)) ||
+  (hasDraft(connectedSed, entries) && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
   (connectedSed.sedHandlinger.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
 )

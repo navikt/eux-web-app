@@ -203,7 +203,9 @@ const SEDSearch = (): JSX.Element => {
                             <div key={'sak-' + sak?.sakId}>
                               <SakPanel
                                 sak={sak}
-                                onSelected={() => navigate('/svarsed/view/sak/' + sak.sakId)}
+                                onSelected={() => {
+                                  navigate('/svarsed/view/sak/' + sak.sakId)
+                                }}
                                 onCopy={() => dispatch(copyToClipboard(sak.sakId))}
                               />
                               <VerticalSeparatorDiv />

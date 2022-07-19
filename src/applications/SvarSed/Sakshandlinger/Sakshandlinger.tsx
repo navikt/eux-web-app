@@ -2,8 +2,6 @@ import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
 import { createH001Sed, createXSed, deleteSak } from 'actions/svarsed'
-import AddMottakereModal from 'applications/SvarSed/AddMottakereModal/AddMottakereModal'
-import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -24,14 +22,13 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   const navigate = useNavigate()
   const replySed = useAppSelector(state => state.svarsed.replySed)
 
-  const closeCase = () => {
+  const deleteCase = () => {
     if (sak.sakId && window.confirm('message:warning-are-you-sure-close-case')) {
       dispatch(deleteSak(sak.sakId))
     }
   }
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
-  const [showAddMottakereModal, setShowAddMottakereModal] = useState<boolean>(false)
 
   /** if we have a replysed, from an operation staeted here, let's move to edit */
   useEffect(() => {
@@ -41,12 +38,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     }
   }, [replySed])
 
-  let disableCloseCase: string | undefined
+  let disableDeleteCase: string | undefined
   if (sak.erSakseier !== 'ja') {
-    disableCloseCase = t('message:warning-no-sakseier')
+    disableDeleteCase = t('message:warning-no-sakseier')
   } else {
     if (_.find(sak.sedListe, s => s.status === 'received' || s.status === 'sent') !== undefined) {
-      disableCloseCase = t('message:warning-case-has-received-sent-cases')
+      disableDeleteCase = t('message:warning-case-has-received-sent-cases')
     }
   }
 
@@ -61,111 +58,106 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
   }
 
   return (
-    <>
-      <Modal
-        shouldCloseOnOverlayClick={false}
-        open={showAddMottakereModal}
-        onModalClose={() => setShowAddMottakereModal(false)}
-        modal={{
-          closeButton: false,
-          modalContent: (
-            <AddMottakereModal
-              existingMottakere={sak.motpart}
-              bucType={sak.sakType}
-              rinaSakId={sak.sakId}
-              onClose={() => setShowAddMottakereModal(false)}
-            />
-          )
-        }}
-      />
 
-      <Panel border>
-        <Heading size='small'>Sakshandlinger</Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        {sak.erSakseier === 'ja' && (
-          <>
-            <Link href='#' onClick={() => setShowAddMottakereModal(true)}>
+    <Panel border>
+      <Heading size='small'>Sakshandlinger</Heading>
+      <VerticalSeparatorDiv />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv />
+      {sak.erSakseier === 'ja' && (
+        <>
+          <Tooltip label={(
+            <div style={{ maxWidth: '400px' }}>
+              {t('message:warning-rina')}
+            </div>
+            )}
+          >
+            <BodyLong>
               {t('label:legg-til-deltaker')}
-            </Link>
-            <VerticalSeparatorDiv />
-            <Link href='#' onClick={() => _createXSed('X001')}>
-              {t('label:lukk-sak-global')}
-            </Link>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        <Tooltip label={(
-          <div style={{ maxWidth: '400px' }}>
-            {t('message:warning-rina')}
-          </div>
+            </BodyLong>
+          </Tooltip>
+          <VerticalSeparatorDiv />
+          {sak.sakType !== 'H_BUC_01' && (
+            <>
+              <Link href='#' onClick={() => _createXSed('X001')}>
+                {t('label:lukk-sak-global')}
+              </Link>
+              <VerticalSeparatorDiv />
+            </>
+          )}
+        </>
       )}
-        >
-          <BodyLong>
-            {t('label:lukk-sak-lokalt')}
-          </BodyLong>
-        </Tooltip>
-        <VerticalSeparatorDiv />
+      <Tooltip label={(
+        <div style={{ maxWidth: '400px' }}>
+          {t('message:warning-rina')}
+        </div>
+        )}
+      >
+        <BodyLong>
+          {t('label:lukk-sak-lokalt')}
+        </BodyLong>
+      </Tooltip>
+      <VerticalSeparatorDiv />
 
-        <Tooltip label={(
-          <div style={{ maxWidth: '400px' }}>
-            {t('message:warning-rina')}
-          </div>
+      <Tooltip label={(
+        <div style={{ maxWidth: '400px' }}>
+          {t('message:warning-rina')}
+        </div>
       )}
-        >
-          <BodyLong>
-            {t('label:videresend-sak')}
-          </BodyLong>
-        </Tooltip>
-        <VerticalSeparatorDiv />
-        {sak.sakshandlinger?.indexOf('Close_Case') >= 0
-          ? disableCloseCase
-              ? (
-                <>
-                  <Tooltip label={disableCloseCase}>
-                    <BodyLong>
-                      {t('label:close-case')}
-                    </BodyLong>
-                  </Tooltip>
-                  <VerticalSeparatorDiv />
-                </>
-                )
-              : (
-                <>
-                  <Link href='#' onClick={closeCase}>
-                    {t('label:close-case')}
-                  </Link>
-                  <VerticalSeparatorDiv />
-                </>
-                )
-          : null}
-        {sak.sakshandlinger?.indexOf('H001') >= 0 && (
-          <>
-            <Link href='#' onClick={() => _createH001Sed()}>
-              {t('label:create-H001')}
-            </Link>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        {sak.sakshandlinger?.indexOf('X009') >= 0 && (
-          <>
-            <Link href='#' onClick={() => _createXSed('X009')}>
-              {t('label:create-X009')}
-            </Link>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-        {sak.sakshandlinger?.indexOf('X012') >= 0 && (
-          <>
-            <Link href='#' onClick={() => _createXSed('X012')}>
-              {t('buc:X012')}
-            </Link>
-            <VerticalSeparatorDiv />
-          </>
-        )}
-      </Panel>
-    </>
+      >
+        <BodyLong>
+          {t('label:videresend-sak')}
+        </BodyLong>
+      </Tooltip>
+      <VerticalSeparatorDiv />
+
+      {sak.sakshandlinger?.indexOf('Delete_Case') >= 0
+        ? disableDeleteCase
+            ? (
+              <>
+                <Tooltip label={disableDeleteCase}>
+                  <BodyLong>
+                    {t('label:slett-sak')}
+                  </BodyLong>
+                </Tooltip>
+                <VerticalSeparatorDiv />
+              </>
+              )
+            : (
+              <>
+                <Link href='#' onClick={deleteCase}>
+                  {t('label:slett-sak')}
+                </Link>
+                <VerticalSeparatorDiv />
+              </>
+              )
+        : null}
+      {sak.sakshandlinger?.indexOf('H001') >= 0 && (
+        <>
+          <Link href='#' onClick={() => _createH001Sed()}>
+            {t('label:create-H001')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {sak.sakshandlinger?.indexOf('X009') >= 0 && (
+        <>
+          <Link href='#' onClick={() => _createXSed('X009')}>
+            {t('label:create-X009')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+      {sak.sakshandlinger?.indexOf('X012') >= 0 && (
+        <>
+          <Link href='#' onClick={() => _createXSed('X012')}>
+            {t('buc:X012')}
+          </Link>
+          <VerticalSeparatorDiv />
+        </>
+      )}
+    </Panel>
+
   )
 }
 

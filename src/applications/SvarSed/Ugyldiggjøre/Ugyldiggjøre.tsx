@@ -68,7 +68,7 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
   return (
     <PaddedDiv>
       <Heading size='small'>
-        {label} ID: {(replySed as X008Sed)?.kansellerSedId}
+        {label} ID: {(replySed as X008Sed)?.kansellerSedId} ({(replySed as X008Sed)?.utstedelsesdato})
       </Heading>
       <VerticalSeparatorDiv size='2' />
 

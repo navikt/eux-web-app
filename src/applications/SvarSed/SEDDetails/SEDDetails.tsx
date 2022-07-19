@@ -17,7 +17,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
-import { isHSed } from 'utils/sed'
+import { isHSed, isXSed } from 'utils/sed'
 
 export interface SEDDetailsProps {
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
@@ -40,9 +40,11 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
 }: SEDDetailsProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
   const { currentEntry, savingSed, replySed }: SEDDetailsSelector = useAppSelector(mapState)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
+  const showAttachments: boolean = !isXSed(replySed)
 
   if (!replySed) {
     return <div />
@@ -124,16 +126,17 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
-      <Attachments
-        fnr={fnr}
-        onAttachmentsChanged={(attachments) => {
-          dispatch(setReplySed({
-            ...replySed,
-            attachments
-          }))
-        }}
-      />
-
+      {showAttachments && (
+        <Attachments
+          fnr={fnr}
+          onAttachmentsChanged={(attachments) => {
+            dispatch(setReplySed({
+              ...replySed,
+              attachments
+            }))
+          }}
+        />
+      )}
     </>
   )
 }

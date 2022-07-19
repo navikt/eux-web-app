@@ -5,9 +5,9 @@ import { JaNei, ReplySed } from 'declarations/sed'
 
 export type StorageTypes = PDU1 | ReplySed
 
-export type SakAction = 'H001' | 'X005' | 'X007' | 'X009' | 'X012' | 'Close_Case'
+export type SakAction = 'H001' | 'X001' | 'X005' | 'X007' | 'X008' | 'X009' | 'X012' | 'Close_Case' | 'Delete_Case' | 'CreateParticipants'
 
-export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U017' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
+export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
@@ -57,12 +57,13 @@ export interface Sed {
   sedTittel: string
   sedType: string
   sedId: string
+  sedUrl ?: string
   sedIdParent?: string
   status: string
   sistEndretDato: string
-  svarsedType: string
-  svarsedId: string
-  svarsedDisplay: string
+  svarsedType?: string
+  svarsedId?: string
+  svarsedDisplay?: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
   sedHandlinger: Array<SedAction>
   children ?: Array<Sed>
@@ -184,7 +185,7 @@ export interface Sak {
   internasjonalSakId ?: string
   sakUrl: string
   motpart: Array<string>
-  motpartInstitusjon: string
+  motpartInstitusjon?: string
   sistEndretDato: string
   sakshandlinger: Array<SakAction>
   sedListe: Array<Sed>

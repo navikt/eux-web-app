@@ -314,7 +314,7 @@ export const replyToSed = (
       sedId,
       sedType: connectedSed.svarsedType
     }),
-    expectedPayload: mockReplySed(connectedSed.svarsedType),
+    expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
       sed: undefined
