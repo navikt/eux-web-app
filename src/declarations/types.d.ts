@@ -188,6 +188,8 @@ export interface Sak {
   motpartInstitusjon?: string
   sistEndretDato: string
   sakshandlinger: Array<SakAction>
+  tema ?: string
+  fagsakId ?: string
   sedListe: Array<Sed>
 }
 

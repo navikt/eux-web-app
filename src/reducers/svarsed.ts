@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import {
   H001Sed,
+  HSed,
   Kjoenn,
   ReplySed,
   X001Sed,
@@ -71,7 +72,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     }]
   }
 
-  return {
+  const replySed =  {
     sedType,
     sedVersjon: '4.2',
     sak,
@@ -83,6 +84,12 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
       ? personInfo
       : { personInfo }
   } as unknown as T
+
+  if (sedType.startsWith('H')) {
+    (replySed as unknown as HSed).tema = sak.tema;
+    (replySed as unknown as HSed).fagsakId = sak.fagsakId
+  }
+  return replySed
 }
 
 const svarsedReducer = (
