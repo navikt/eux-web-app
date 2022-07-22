@@ -140,7 +140,7 @@ const SEDEdit = (): JSX.Element => {
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         setViewSendSedModal(true)
-        if (!_.isEmpty(newReplySed?.sed)) {
+        if (sedId !== 'new') {
           dispatch(updateSed(newReplySed))
         } else {
           dispatch(createSed(newReplySed))

@@ -53,7 +53,10 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
   const { entries, pdu1Changed, pdu1 }: PDU1Selector = useAppSelector(mapState)
 
   const goToSearchPage = () => {
-    navigate({ pathname: '/pdu1/search', search: window.location.search })
+    navigate({
+      pathname: '/pdu1/search',
+      search: window.location.search
+    })
     dispatch(resetCurrentEntry('pdu1'))
   }
 

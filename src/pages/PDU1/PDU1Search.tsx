@@ -86,7 +86,11 @@ const PDU1Search = (): JSX.Element => {
     previewStoredPdu1,
     fnrParam
   }: PDU1SearchSelector = useAppSelector(mapState)
-  const [fnrOrDnr, setFnrOrDnr] = useState<string | undefined>(fnrParam)
+
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+  const q: string | null = params.get('q')
+
+  const [fnrOrDnr, setFnrOrDnr] = useState<string | null | undefined>(fnrParam ?? q)
   const [tema, setTema] = useState<string | undefined>(undefined)
 
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -177,7 +181,7 @@ const PDU1Search = (): JSX.Element => {
     if (valid) {
       navigate({
         pathname: '/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + encodeURIComponent(fagsak),
-        search: window.location.search
+        search: '?q=' + fnrOrDnr
       })
     }
   }
@@ -186,7 +190,7 @@ const PDU1Search = (): JSX.Element => {
     if (pdu1SearchResult) {
       navigate({
         pathname: '/pdu1/edit/postId/' + pdu1SearchResult.journalpostId + '/docId/' + pdu1SearchResult.dokumentInfoId + '/fagsak/' + encodeURIComponent(pdu1SearchResult.fagsakId),
-        search: window.location.search
+        search: '?q=' + fnrOrDnr
       })
     }
   }
@@ -251,6 +255,12 @@ const PDU1Search = (): JSX.Element => {
     dispatch(startPageStatistic('pdu1-search'))
     return () => {
       dispatch(finishPageStatistic('pdu1-search'))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (q) {
+      onFnrDnrChange(q)
     }
   }, [])
 

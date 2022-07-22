@@ -9,15 +9,19 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import * as localStorageActions from 'actions/localStorage'
 import { querySaks } from 'actions/svarsed'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Sak, Sed } from 'declarations/types'
+import { PDU1 } from 'declarations/pd'
+import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
+import { LocalStorageEntry, Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -31,18 +35,37 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
   }
 `
 
+interface SEDViewSelector {
+  entries: Array<LocalStorageEntry<PDU1 | ReplySed>> | null | undefined
+  currentSak: Sak | undefined
+}
+
+const mapState = (state: State) => ({
+  currentSak: state.svarsed.currentSak,
+  entries: state.localStorage.svarsed.entries
+})
+
 const SEDView = (): JSX.Element => {
   const sedMap: any = []
   const tempChildrenSed: Array<Sed> = []
   const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
+  const { currentSak, entries }: SEDViewSelector = useAppSelector(mapState)
+
+  const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
 
   let seds: Array<Sed> | undefined
   if (currentSak) {
     seds = _.cloneDeep(currentSak.sedListe)
   }
+
+  useEffect(() => {
+    if (!loadingSavedItems && entries === undefined) {
+      setLoadingSavedItems(true)
+      dispatch(localStorageActions.loadEntries('svarsed'))
+    }
+  }, [entries, loadingSavedItems])
 
   useEffect(() => {
     // reload, so it reflects changes made in potential SED save/send
@@ -98,20 +121,20 @@ const SEDView = (): JSX.Element => {
                   {sedMap
                     .sort((a: Sed, b: Sed) => (
                       moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                    )).map((connectedSed: Sed) => (
-                      <div key={'sed-' + connectedSed.sedId}>
+                    )).map((sed: Sed) => (
+                      <div key={'sed-' + sed.sedId}>
                         <SEDPanel
                           currentSak={currentSak}
-                          connectedSed={connectedSed}
+                          sed={sed}
                         />
                         <VerticalSeparatorDiv />
-                        {connectedSed.children?.sort((a: Sed, b: Sed) => (
+                        {sed.children?.sort((a: Sed, b: Sed) => (
                           moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                        )).map((connectedSed2: Sed) => (
-                          <div key={'sed-' + connectedSed2.sedId} style={{ marginLeft: '4rem' }}>
+                        )).map((sed2: Sed) => (
+                          <div key={'sed-' + sed2.sedId} style={{ marginLeft: '4rem' }}>
                             <SEDPanel
                               currentSak={currentSak}
-                              connectedSed={connectedSed2}
+                              sed={sed2}
                             />
                             <VerticalSeparatorDiv />
                           </div>

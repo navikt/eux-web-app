@@ -13,7 +13,7 @@ import {
   setReplySed
 } from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
-import { findSavedEntry, hasDraft, hasSentStatus } from 'applications/SvarSed/Sak/utils'
+import { findSavedEntry, hasDraftFor, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { LocalStorageEntry, Sak, Sed, SedAction } from 'declarations/types'
@@ -52,7 +52,7 @@ interface SEDPanelSelector {
 
 interface SEDPanelProps {
   currentSak: Sak
-  connectedSed: Sed
+  sed: Sed
 }
 
 const mapState = (state: State): SEDPanelSelector => ({
@@ -63,7 +63,7 @@ const mapState = (state: State): SEDPanelSelector => ({
 
 const SEDPanel = ({
   currentSak,
-  connectedSed
+  sed
 }: SEDPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -112,86 +112,87 @@ const SEDPanel = ({
   }, [_sedStatusRequested, sedStatus])
 
   /** before loading the SED, let's check if the status is OK */
-  const loadDraft = (sakId: string, svarsedId: string) => {
-    _setSedStatusRequested(svarsedId)
-    dispatch(getSedStatus(sakId, svarsedId))
+  const loadDraft = (sakId: string, sedId: string) => {
+    _setSedStatusRequested(sedId)
+    dispatch(getSedStatus(sakId, sedId))
   }
 
-  const onEditingSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onEditingSedClick = (sed: Sed, sak: Sak) => {
     _setEditingSed(true)
-    dispatch(editSed(connectedSed, sak))
+    dispatch(editSed(sed, sak))
   }
 
-  const onUpdatingSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onUpdatingSedClick = (sed: Sed, sak: Sak) => {
     _setUpdatingSed(true)
-    dispatch(editSed(connectedSed, sak))
+    dispatch(editSed(sed, sak))
   }
 
-  const onInvalidatingSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onInvalidatingSedClick = (sed: Sed, sak: Sak) => {
     _setInvalidatingSed(true)
-    dispatch(invalidatingSed(connectedSed, sak))
+    dispatch(invalidatingSed(sed, sak))
   }
 
-  const onRejectingSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onRejectingSedClick = (sed: Sed, sak: Sak) => {
     _setRejectingSed(true)
-    dispatch(rejectingSed(connectedSed, sak))
+    dispatch(rejectingSed(sed, sak))
   }
 
-  const onClarifyingSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onClarifyingSedClick = (sed: Sed, sak: Sak) => {
     _setClarifyingSed(true)
-    dispatch(clarifyingSed(connectedSed, sak))
+    dispatch(clarifyingSed(sed, sak))
   }
 
-  const onRemindSedClick = (connectedSed: Sed, sak: Sak) => {
+  const onRemindSedClick = (sed: Sed, sak: Sak) => {
     _setReminderSed(true)
-    dispatch(remindSed(connectedSed, sak))
+    dispatch(remindSed(sed, sak))
   }
 
-  const onReplySedClick = (connectedSed: Sed, sak: Sak) => {
+  const onReplySedClick = (sed: Sed, sak: Sak) => {
     _setReplyingToSed(true)
-    dispatch(replyToSed(connectedSed, sak))
+    dispatch(replyToSed(sed, sak))
   }
 
-  const showJournalforingButton = connectedSed.lenkeHvisForrigeSedMaaJournalfoeres
-  const showDraftButton = hasDraft(connectedSed, entries)
-  const showEditButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && connectedSed.status === 'new'
-  const showUpdateButton = !showDraftButton && (connectedSed.sedHandlinger.indexOf('Update') >= 0) && (connectedSed.status === 'sent' || connectedSed.status === 'active')
-  const showReplyToSedButton = !showDraftButton && !!connectedSed.svarsedType && (connectedSed.sedHandlinger.indexOf(connectedSed.svarsedType as SedAction) >= 0)
-  const showInvalidateButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X008') >= 0
-  const showRemindButton = !showDraftButton && !showJournalforingButton && connectedSed.sedHandlinger.indexOf('X010') >= 0 && connectedSed.status === 'received'
-  const showRejectButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X011') >= 0
-  const showClarifyButton = !showDraftButton && connectedSed.sedHandlinger.indexOf('X012') >= 0
+  const showJournalforingButton = sed.lenkeHvisForrigeSedMaaJournalfoeres
+  const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
+  const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
+  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && sed.status === 'new'
+  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active')
+  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0)
+  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X008') >= 0
+  const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger.indexOf('X010') >= 0 && sed.status === 'received'
+  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X011') >= 0
+  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X012') >= 0
 
   return (
     <MyPanel border>
       <FlexDiv>
         <IconDiv>
-          {connectedSed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
-          {connectedSed.status === 'sent' && <Send color='green' width='32' height='32' />}
-          {connectedSed.status === 'new' && <Star color='orange' width='32' height='32' />}
-          {connectedSed.status === 'active' && <Edit width='32' height='32' />}
-          {connectedSed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
-          {!connectedSed.status && <Helptext color='black' width='32' height='32' />}
+          {sed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
+          {sed.status === 'sent' && <Send color='green' width='32' height='32' />}
+          {sed.status === 'new' && <Star color='orange' width='32' height='32' />}
+          {sed.status === 'active' && <Edit width='32' height='32' />}
+          {sed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
+          {!sed.status && <Helptext color='black' width='32' height='32' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
-            {t('app:status-received-' + (connectedSed.status?.toLowerCase() ?? 'unknown'))}
+            {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
           </Detail>
           <Detail>
-            {connectedSed.sistEndretDato}
+            {sed.sistEndretDato}
           </Detail>
         </IconDiv>
         <HorizontalSeparatorDiv />
         <PileDiv>
           <FlexBaseDiv>
             <Heading size='small'>
-              {connectedSed.sedType} - {connectedSed.sedTittel}
+              {sed.sedType} - {sed.sedTittel}
             </Heading>
-            {isPreviewableSed(connectedSed.sedType) && (
+            {isPreviewableSed(sed.sedType) && (
               <PreviewSED
                 short
                 size='small'
                 rinaSakId={currentSak.sakId}
-                sedId={connectedSed.sedId}
+                sedId={sed.sedId}
               />
             )}
           </FlexBaseDiv>
@@ -204,40 +205,65 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.journalforing'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    window.open(connectedSed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
+                    window.open(sed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
                   }}
                 >
                   {t('label:journalforing', {
-                    sedtype: connectedSed.sedType
+                    sedtype: sed.sedType
                   })}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-            {!!connectedSed.svarsedId && showDraftButton && (
+            {!!sed.svarsedId && showDraftForSvarsedIdButton && (
               <Button
                 variant='secondary'
-                disabled={_sedStatusRequested === connectedSed.svarsedId || hasSentStatus(connectedSed.svarsedId, sedStatus)}
+                disabled={_sedStatusRequested === sed.svarsedId || hasSentStatus(sed.svarsedId, sedStatus)}
                 data-amplitude='svarsed.selection.loaddraft'
                 onClick={(e: any) => {
                   buttonLogger(e, {
-                    type: connectedSed.svarsedType
+                    type: sed.svarsedType
                   })
-                  loadDraft(currentSak.sakId, connectedSed.svarsedId!)
+                  loadDraft(currentSak.sakId, sed.svarsedId!)
                 }}
               >
                 <Edit />
-                {(_sedStatusRequested === connectedSed.svarsedId)
+                {(_sedStatusRequested === sed.svarsedId)
                   ? (
                     <>
                       {t('message:loading-checking-sed-status')}
                       <Loader />
                     </>
                     )
-                  : (hasSentStatus(connectedSed.svarsedId, sedStatus)
-                      ? t('label:sed-already-sent', { sed: connectedSed.svarsedType })
+                  : (hasSentStatus(sed.svarsedId, sedStatus)
+                      ? t('label:sed-already-sent', { sed: sed.svarsedType })
+                      : t('label:gå-til-draft'))}
+              </Button>
+            )}
+            {showDraftForSedIdButton && (
+              <Button
+                variant='secondary'
+                disabled={_sedStatusRequested === sed.sedId || hasSentStatus(sed.sedId, sedStatus)}
+                data-amplitude='svarsed.selection.loaddraft'
+                onClick={(e: any) => {
+                  buttonLogger(e, {
+                    type: sed.sedType
+                  })
+                  loadDraft(currentSak.sakId, sed.sedId!)
+                }}
+              >
+                <Edit />
+                {(_sedStatusRequested === sed.sedId)
+                  ? (
+                    <>
+                      {t('message:loading-checking-sed-status')}
+                      <Loader />
+                    </>
+                    )
+                  : (hasSentStatus(sed.sedId, sedStatus)
+                      ? t('label:sed-already-sent', { sed: sed.sedType })
                       : t('label:gå-til-draft'))}
               </Button>
             )}
@@ -249,9 +275,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.editsed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onEditingSedClick(connectedSed, currentSak)
+                    onEditingSedClick(sed, currentSak)
                   }}
                 >
                   {_editingSed
@@ -274,9 +300,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.updatesed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onUpdatingSedClick(connectedSed, currentSak)
+                    onUpdatingSedClick(sed, currentSak)
                   }}
                 >
                   {_updatingSed
@@ -299,9 +325,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.invalidatesed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onInvalidatingSedClick(connectedSed, currentSak)
+                    onInvalidatingSedClick(sed, currentSak)
                   }}
                 >
                   {_invalidatingSed
@@ -324,9 +350,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.rejectsed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onRejectingSedClick(connectedSed, currentSak)
+                    onRejectingSedClick(sed, currentSak)
                   }}
                 >
                   {_rejectingSed
@@ -349,9 +375,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.clarifysed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onClarifyingSedClick(connectedSed, currentSak)
+                    onClarifyingSedClick(sed, currentSak)
                   }}
                 >
                   {_clarifyingSed
@@ -374,9 +400,9 @@ const SEDPanel = ({
                   data-amplitude='svarsed.selection.remindsed'
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.sedType
+                      type: sed.sedType
                     })
-                    onRemindSedClick(connectedSed, currentSak)
+                    onRemindSedClick(sed, currentSak)
                   }}
                 >
                   {_reminderSed
@@ -395,15 +421,15 @@ const SEDPanel = ({
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres}
+                  disabled={_replyingToSed || !!sed.lenkeHvisForrigeSedMaaJournalfoeres}
                   data-amplitude='svarsed.selection.replysed'
-                  title={connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                  title={sed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
                     buttonLogger(e, {
-                      type: connectedSed.svarsedType,
-                      parenttype: connectedSed.sedType
+                      type: sed.svarsedType,
+                      parenttype: sed.sedType
                     })
-                    onReplySedClick(connectedSed, currentSak)
+                    onReplySedClick(sed, currentSak)
                   }}
                 >
                   {_replyingToSed
@@ -414,7 +440,7 @@ const SEDPanel = ({
                       </>
                       )
                     : t('label:besvar-med', {
-                      sedtype: connectedSed.svarsedType
+                      sedtype: sed.svarsedType
                     })}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />

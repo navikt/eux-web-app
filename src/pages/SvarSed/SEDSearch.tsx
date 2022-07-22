@@ -71,7 +71,7 @@ const SEDSearch = (): JSX.Element => {
     sedStatus
   }: any = useAppSelector(mapState)
 
-  const params = new URLSearchParams(window.location.search)
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
   const navigate = useNavigate()
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)

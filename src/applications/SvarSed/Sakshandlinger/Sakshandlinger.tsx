@@ -49,6 +49,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       disableDeleteCase = t('message:warning-case-has-received-sent-cases')
     }
   }
+  const canCloseCase = sak.sakType !== 'H_BUC_01'
 
   const _createXSed = (sedType: string) => {
     setWaitingForOperation(true)
@@ -80,7 +81,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
             </BodyLong>
           </Tooltip>
           <VerticalSeparatorDiv />
-          {sak.sakType !== 'H_BUC_01' && (
+          {canCloseCase && (
             <>
               <Link href='#' onClick={() => _createXSed('X001')}>
                 {t('label:lukk-sak-global')}

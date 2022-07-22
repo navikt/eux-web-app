@@ -1,9 +1,19 @@
 import { Delete } from '@navikt/ds-icons'
 import { Alert, Button, Heading, Loader, Select } from '@navikt/ds-react'
-import { Column, FlexCenterDiv, HorizontalSeparatorDiv, PileDiv, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {
+  Column,
+  FlexCenterDiv, FlexCenterSpacedDiv,
+  HorizontalSeparatorDiv,
+  PileCenterDiv,
+  PileDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { addMottakere, getInstitusjoner, resetMottakere } from 'actions/svarsed'
+import { AlertstripeDiv } from 'components/StyledComponents'
+import * as types from 'constants/actionTypes'
 import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Institusjon, Kodeverk, Validation } from 'declarations/types'
@@ -37,6 +47,8 @@ interface AddDeltakereModalProps {
 }
 
 interface AddDeltakereModalSelector {
+  alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
   landkoder: Array<Kodeverk> | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
@@ -45,6 +57,8 @@ interface AddDeltakereModalSelector {
 }
 
 const mapState = (state: State): AddDeltakereModalSelector => ({
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type,
   landkoder: state.app.landkoder,
   mottakere: state.svarsed.mottakere,
   institusjoner: state.svarsed.institusjoner,
@@ -60,7 +74,7 @@ const AddMottakereModal = ({
 }: AddDeltakereModalProps): JSX.Element => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const { gettingInstitusjoner, institusjoner, landkoder, addingMottakere, mottakere } = useAppSelector(mapState)
+  const { alertMessage, alertType, gettingInstitusjoner, institusjoner, landkoder, addingMottakere, mottakere } = useAppSelector(mapState)
   const [landkode, setLandkode] = useState<string | undefined>(undefined)
   const [newMottakere, setNewMottakere] = useState<Array<string>>([])
   const [_validation, setValidation] = useState<Validation>({})
@@ -121,7 +135,24 @@ const AddMottakereModal = ({
         {t('label:add-deltakere-modal')}
       </Heading>
       <VerticalSeparatorDiv />
-
+      {alertMessage && alertType && [types.SVARSED_MOTTAKERE_ADD_FAILURE].indexOf(alertType) >= 0 && (
+        <PileCenterDiv>
+          <AlertstripeDiv>
+            <Alert variant='error'>{alertMessage}</Alert>
+          </AlertstripeDiv>
+          <VerticalSeparatorDiv />
+          <FlexCenterSpacedDiv>
+            <div />
+            <Button
+              variant='secondary'
+              onClick={onClose}
+            >
+              {t('label:damn-really')}
+            </Button>
+            <div />
+          </FlexCenterSpacedDiv>
+        </PileCenterDiv>
+      )}
       {_.isEmpty(mottakere)
         ? (
           <SectionDiv>

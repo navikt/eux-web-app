@@ -119,6 +119,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         stripeMessage = i18n.t('message:error-tpsperson-exists')
         break
 
+      case types.SVARSED_MOTTAKERE_ADD_FAILURE:
+        stripeMessage = i18n.t('message:error-mottakere-add')
+        break
+
       case types.SVARSED_SED_CREATE_FAILURE:
       case types.SVARSED_SED_UPDATE_FAILURE:
         if ((action as ActionWithPayload).status === 409) {

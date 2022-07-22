@@ -72,7 +72,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     }]
   }
 
-  const replySed =  {
+  const replySed = {
     sedType,
     sedVersjon: '4.2',
     sak,
@@ -99,6 +99,20 @@ const svarsedReducer = (
   switch (action.type) {
     case types.APP_RESET:
       return initialSvarsedState
+
+    case types.LOCALSTORAGE_ENTRY_SAVE: {
+      const { namespace, entry } = (action as ActionWithPayload).payload
+      if (namespace === 'svarsed') {
+        const replySed = entry.content
+        return {
+          ...state,
+          replySed,
+          originalReplySed: replySed,
+          replySedChanged: false
+        }
+      }
+      return state
+    }
 
     case types.SVARSED_RESET:
       return {

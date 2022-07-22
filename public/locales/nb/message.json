@@ -3,6 +3,7 @@
   "error-fagsak-notFound": "Det finnes ikke sak på bruker med det valgte temaet.  Sak må opprettes manuelt i Gosys eller tema må endres. ",
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
   "error-header": "Feilmeldingsdetaljer. Vennligst del denne informasjonen til utvikleren",
+  "error-mottakere-add": "Det oppsto en feil under å legge til mottakere",
   "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",

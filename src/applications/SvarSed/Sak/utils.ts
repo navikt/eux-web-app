@@ -10,18 +10,18 @@ export const hasSentStatus = (svarsedId: string, sedStatus: {[k in string]: stri
 }
 
 export const findSavedEntry = (
-  svarsedId: string,
+  id: string,
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
 ): LocalStorageEntry<ReplySed> | undefined => (
-  _.find(entries, (e: LocalStorageEntry<ReplySed>) => e.id === svarsedId)
+  _.find(entries, (e: LocalStorageEntry<ReplySed>) => e.id === id)
 )
 
-export const hasDraft = (
-  connectedSed: Sed,
-  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined
+export const hasDraftFor = (
+  sed: Sed,
+  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined,
+  needle: string
 ): boolean => (
-  findSavedEntry(connectedSed.svarsedId!, entries) !== undefined
-)
+  findSavedEntry(_.get(sed, needle), entries) !== undefined)
 
 export const isSedEditable = (
   connectedSed: Sed,
@@ -29,7 +29,7 @@ export const isSedEditable = (
   sedStatus: {[k in string]: string | null}
 ) => (
   !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
-  (hasDraft(connectedSed, entries) && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
+  (hasDraftFor(connectedSed, entries, 'svarsedId') && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
   (connectedSed.sedHandlinger.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
 )

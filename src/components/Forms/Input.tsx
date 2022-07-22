@@ -18,7 +18,7 @@ export interface InputProps {
   required ?: boolean
   type?: 'number' | 'text' | 'tel' | 'url' | 'email' | 'password' | undefined
   style ?: any
-  value: string | undefined
+  value: string | null | undefined
 }
 const Input: React.FC<InputProps> = ({
   ariaLabel,
