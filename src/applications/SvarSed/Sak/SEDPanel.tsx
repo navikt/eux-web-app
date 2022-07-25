@@ -71,6 +71,7 @@ const SEDPanel = ({
 
   const { entries, replySed, sedStatus } = useAppSelector(mapState)
 
+  const [_loadingDraftSed, _setLoadingDraftSed] = useState<boolean>(false)
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
   const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
   const [_replyingToSed, _setReplyingToSed] = useState<boolean>(false)
@@ -80,11 +81,12 @@ const SEDPanel = ({
   const [_reminderSed, _setReminderSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
 
-  const waitingForOperation = _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed || _reminderSed
+  const waitingForOperation = _loadingDraftSed || _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed || _reminderSed
 
   /** if we have a reply sed, after clicking to replyToSed, let's go to edit mode */
   useEffect(() => {
     if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
+      _setLoadingDraftSed(false)
       _setReplyingToSed(false)
       _setUpdatingSed(false)
       _setEditingSed(false)
@@ -92,6 +94,7 @@ const SEDPanel = ({
       _setRejectingSed(false)
       _setClarifyingSed(false)
       _setReminderSed(false)
+
       navigate({
         pathname: '/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/' + (replySed!.sed?.sedId ?? 'new'),
         search: window.location.search
@@ -114,6 +117,7 @@ const SEDPanel = ({
   /** before loading the SED, let's check if the status is OK */
   const loadDraft = (sakId: string, sedId: string) => {
     _setSedStatusRequested(sedId)
+    _setLoadingDraftSed(true)
     dispatch(getSedStatus(sakId, sedId))
   }
 

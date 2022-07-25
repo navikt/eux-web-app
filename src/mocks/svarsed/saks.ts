@@ -19,6 +19,8 @@ export default (saksnummer: string, type: string) => {
       motpart: [
         'Lodzkie Voivodeship Office in Lodz (Polen)'
       ],
+      tema: 'KON',
+      fagsakId: '123',
       sakshandlinger: [
         'H001', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case'
       ],
@@ -130,6 +132,8 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
+      tema: 'KON',
+      fagsakId: '123',
       sedListe: [
         {
           sedTittel: 'Description for U001',
@@ -189,6 +193,8 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
+      tema: 'KON',
+      fagsakId: '123',
       sedListe: [
         {
           sedTittel: 'Horizontal',
@@ -253,6 +259,8 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       erSakseier: 'nei',
+      tema: 'KON',
+      fagsakId: '123',
       sedListe: [
         {
           sedTittel: 'Anmodning om trygdehistorikk',

@@ -122,7 +122,7 @@ const LoadSave = <T extends StorageTypes>({
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
         navigate({
-          pathname: '/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + (entry.content! as ReplySed).sed!.sedId,
+          pathname: '/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + ((entry.content! as ReplySed).sed?.sedId ?? 'new'),
           search: window.location.search
         })
       }
