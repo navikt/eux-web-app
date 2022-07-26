@@ -60,6 +60,18 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
           <Dd>
             {sak.motpart?.map(m => <BodyLong key={m}>{m}</BodyLong>)}
           </Dd>
+          <Dt>
+            {t('label:tema')}:
+          </Dt>
+          <Dd>
+            { t('tema:' + sak.tema)}
+          </Dd>
+          <Dt>
+            {t('label:fagsak')}:
+          </Dt>
+          <Dd>
+            {sak.fagsakId}
+          </Dd>
         </Dl>
         <VerticalSeparatorDiv />
         {canChangeParticipants && (
