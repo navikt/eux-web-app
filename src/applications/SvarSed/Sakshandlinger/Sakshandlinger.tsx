@@ -14,9 +14,7 @@ export interface SakshandlingerProps {
   sak: Sak
 }
 
-const Sakshandlinger: React.FC<SakshandlingerProps> = ({
-  sak
-}: SakshandlingerProps) => {
+const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -30,7 +28,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
 
-  /** if we have a replysed, from an operation staeted here, let's move to edit */
+  /** if we have a replied, from an operation started here, let's move to edit */
   useEffect(() => {
     if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
       setWaitingForOperation(false)
@@ -61,6 +59,30 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
     dispatch(createH001Sed(sak))
   }
 
+  let disabledSakshandlinger: JSX.Element[] = [];
+  const addDisabledSakshandling = (sakshandlingFragment: JSX.Element) => {
+    disabledSakshandlinger.push(sakshandlingFragment);
+    return null;
+  }
+
+  const createDisabledSakshandlingFragment = (tooltipLabel: string, label: string) => {
+    return(
+      <>
+        <Tooltip label={(
+          <div style={{ maxWidth: '400px' }}>
+            {tooltipLabel}
+          </div>
+        )}
+        >
+          <BodyLong>
+            {label}
+          </BodyLong>
+        </Tooltip>
+        <VerticalSeparatorDiv />
+      </>
+    )
+  }
+
   return (
 
     <Panel border>
@@ -70,17 +92,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
       <VerticalSeparatorDiv />
       {sak.erSakseier === 'ja' && (
         <>
-          <Tooltip label={(
-            <div style={{ maxWidth: '400px' }}>
-              {t('message:warning-rina')}
-            </div>
-            )}
-          >
-            <BodyLong>
-              {t('label:legg-til-deltaker')}
-            </BodyLong>
-          </Tooltip>
-          <VerticalSeparatorDiv />
+          {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'), t('label:legg-til-deltaker')))}
           {canCloseCase && (
             <>
               <Link href='#' onClick={() => _createXSed('X001')}>
@@ -91,50 +103,19 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
           )}
         </>
       )}
-      <Tooltip label={(
-        <div style={{ maxWidth: '400px' }}>
-          {t('message:warning-rina')}
-        </div>
-        )}
-      >
-        <BodyLong>
-          {t('label:lukk-sak-lokalt')}
-        </BodyLong>
-      </Tooltip>
-      <VerticalSeparatorDiv />
-
-      <Tooltip label={(
-        <div style={{ maxWidth: '400px' }}>
-          {t('message:warning-rina')}
-        </div>
-      )}
-      >
-        <BodyLong>
-          {t('label:videresend-sak')}
-        </BodyLong>
-      </Tooltip>
-      <VerticalSeparatorDiv />
-
+      {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'),t('label:lukk-sak-lokalt')))}
+      {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'),t('label:videresend-sak')))}
       {sak.sakshandlinger?.indexOf('Delete_Case') >= 0
         ? disableDeleteCase
-            ? (
-              <>
-                <Tooltip label={disableDeleteCase}>
-                  <BodyLong>
-                    {t('label:slett-sak')}
-                  </BodyLong>
-                </Tooltip>
-                <VerticalSeparatorDiv />
-              </>
-              )
-            : (
-              <>
-                <Link href='#' onClick={deleteCase}>
-                  {t('label:slett-sak')}
-                </Link>
-                <VerticalSeparatorDiv />
-              </>
-              )
+          ? addDisabledSakshandling(createDisabledSakshandlingFragment(disableDeleteCase, t('label:slett-sak')))
+          : (
+            <>
+              <Link href='#' onClick={deleteCase}>
+                {t('label:slett-sak')}
+              </Link>
+              <VerticalSeparatorDiv />
+            </>
+          )
         : null}
       {sak.sakshandlinger?.indexOf('H001') >= 0 && (
         <>
@@ -160,8 +141,8 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({
           <VerticalSeparatorDiv />
         </>
       )}
+      {disabledSakshandlinger}
     </Panel>
-
   )
 }
 
