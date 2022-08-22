@@ -70,6 +70,7 @@ import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
 import { cleanReplySed, isFSed, isH002Sed, isPreviewableSed, isSed, isXSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
+import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -119,6 +120,7 @@ const SEDEdit = (): JSX.Element => {
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
+  const showAttachments: boolean = !isXSed(replySed)
 
   const showTopForm = (): boolean => isFSed(replySed)
   const showMainForm = (): boolean => isSed(replySed)
@@ -354,6 +356,20 @@ const SEDEdit = (): JSX.Element => {
                 value={(replySed as FSed).ytterligereInfo}
               />
             </TextAreaDiv>
+          </>
+        )}
+        {showAttachments && (
+          <>
+            <VerticalSeparatorDiv />
+            <Attachments
+              fnr={fnr}
+              onAttachmentsChanged={(attachments) => {
+                dispatch(setReplySed({
+                  ...replySed,
+                  attachments
+                }))
+              }}
+            />
           </>
         )}
         <VerticalSeparatorDiv size='2' />

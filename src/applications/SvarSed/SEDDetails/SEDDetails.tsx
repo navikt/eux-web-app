@@ -3,11 +3,9 @@ import { Button, Detail, Label, Loader, Panel } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { saveEntry } from 'actions/localStorage'
-import { setReplySed } from 'actions/svarsed'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import Tema from 'applications/SvarSed/Tema'
-import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Modal from 'components/Modal/Modal'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
@@ -16,8 +14,7 @@ import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getFnr } from 'utils/fnr'
-import { isHSed, isXSed } from 'utils/sed'
+import { isHSed } from 'utils/sed'
 
 export interface SEDDetailsProps {
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
@@ -43,8 +40,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
 
   const { currentEntry, savingSed, replySed }: SEDDetailsSelector = useAppSelector(mapState)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const fnr = getFnr(replySed, 'bruker')
-  const showAttachments: boolean = !isXSed(replySed)
 
   if (!replySed) {
     return <div />
@@ -125,17 +120,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           <Saksopplysninger sak={replySed.sak} />
           <VerticalSeparatorDiv />
         </>
-      )}
-      {showAttachments && (
-        <Attachments
-          fnr={fnr}
-          onAttachmentsChanged={(attachments) => {
-            dispatch(setReplySed({
-              ...replySed,
-              attachments
-            }))
-          }}
-        />
       )}
     </>
   )
