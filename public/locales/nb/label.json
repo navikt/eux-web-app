@@ -186,7 +186,7 @@
   "informasjon-om-søknaden": "Informasjon om søknaden",
   "informasjon-om-vederlag": "Informasjon om vederlag",
   "ingen-familie-i-tps": "Ingen familierelasjoner funnet i TPS",
-  "ingen-lagrede-x": "Ingen lagrede {{x}}",
+  "ingen-lokalt-lagrede-x": "Ingen lokalt lagrede {{x}}",
   "inntekt": "Inntekt",
   "inntekt-fra-komponent": "Inntekt (fra inntektskomponent)",
   "inntekt-og-time": "Inntekt og arbeidstime",
@@ -226,7 +226,7 @@
   "krav-om-refusjon-under-artikkel": "Krav om refusjon under artikkel 58 i forordning (EF) nr. 987/2009",
   "kvinne": "Kvinne",
 
-  "lagrede-x": "Lagrede {{x}}",
+  "lokalt-lagrede-x": "Lokalt lagrede {{x}}",
   "lagret-sed-utkast": "Lagret SED utkast med navn {{name}}, dato {{date}}",
   "lagret-pdu1-utkast": "Lagret PD U1 utkast med navn {{name}}, dato {{date}}",
   "lagre-sed": "Lagre SED",

@@ -150,12 +150,12 @@ const LoadSave = <T extends StorageTypes>({
         {entries === null || _.isEmpty(entries)
           ? (
             <BodyLong>
-              {t('label:ingen-lagrede-x', { x: t('label:' + namespace) })}
+              {t('label:ingen-lokalt-lagrede-x', { x: t('label:' + namespace) })}
             </BodyLong>
             )
           : (
             <BodyLong>
-              {t('label:lagrede-x', { x: t('label:' + namespace) })}
+              {t('label:lokalt-lagrede-x', { x: t('label:' + namespace) })}
             </BodyLong>
             )}
         <VerticalSeparatorDiv />
