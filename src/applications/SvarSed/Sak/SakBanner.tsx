@@ -127,7 +127,6 @@ const SakBanner = () => {
                 onClose={() => setPopoverOpen(false)}
                 arrow
                 anchorEl={iconRef.current}
-                placement='auto'
               >
                 <Popover.Content style={{ maxWidth: '600px' }}>
                   <Heading size='small'>
