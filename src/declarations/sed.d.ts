@@ -419,8 +419,10 @@ export interface UenighetKonklusjon {
 }
 
 export interface FSed extends BaseReplySed {
+  bruker: Person
   anmodningsperioder: Array<Periode>
   formaal: Array<string>
+  ytterligereInfo?: string
 }
 
 export interface F002Sed extends FSed {

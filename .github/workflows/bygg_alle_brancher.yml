@@ -61,7 +61,7 @@ jobs:
       - name: 'Install NPM dependencies'
         run: |
           application="eux-web-app"
-          npm install --force 
+          npm install --force
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
