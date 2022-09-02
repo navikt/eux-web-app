@@ -1,4 +1,4 @@
-import { BodyLong, Heading, Link, Panel } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, Panel, ReadMore } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
 import { createH001Sed, createXSed, deleteSak } from 'actions/svarsed'
@@ -39,16 +39,6 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     }
   }, [replySed])
 
-  let disableDeleteCase: string | undefined
-  if (sak.erSakseier !== 'ja') {
-    disableDeleteCase = t('message:warning-no-sakseier')
-  } else {
-    if (_.find(sak.sedListe, s => s.status === 'received' || s.status === 'sent') !== undefined) {
-      disableDeleteCase = t('message:warning-case-has-received-sent-cases')
-    }
-  }
-  const canCloseCase = sak.sakType !== 'H_BUC_01'
-
   const _createXSed = (sedType: string) => {
     setWaitingForOperation(true)
     dispatch(createXSed(sedType, sak))
@@ -59,23 +49,17 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     dispatch(createH001Sed(sak))
   }
 
-  let disabledSakshandlinger: JSX.Element[] = [];
-  const addDisabledSakshandling = (sakshandlingFragment: JSX.Element) => {
-    disabledSakshandlinger.push(sakshandlingFragment);
-    return null;
-  }
-
-  const createDisabledSakshandlingFragment = (tooltipLabel: string, label: string) => {
+  const createDisabledSakshandlingFragment = (sakshandling: string) => {
     return(
       <>
         <Tooltip label={(
           <div style={{ maxWidth: '400px' }}>
-            {tooltipLabel}
+            {t('message:warning-rina')}
           </div>
         )}
         >
           <BodyLong>
-            {label}
+            {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
           </BodyLong>
         </Tooltip>
         <VerticalSeparatorDiv />
@@ -83,66 +67,57 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     )
   }
 
-  return (
+  const createSakshandlingFragment = (sakshandling: string) => {
+    let onClickFunction: Function;
+    if(sakshandling.startsWith("X")){
+      onClickFunction = () => _createXSed(sakshandling);
+    } else if (sakshandling === "Delete_Case"){
+      onClickFunction = () => deleteCase();
+    } else  if (sakshandling === "H001"){
+      onClickFunction = () => _createH001Sed()
+    }
 
-    <Panel border>
-      <Heading size='small'>Sakshandlinger</Heading>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      {sak.erSakseier === 'ja' && (
-        <>
-          {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'), t('label:legg-til-deltaker')))}
-          {canCloseCase && (
-            <>
-              <Link href='#' onClick={() => _createXSed('X001')}>
-                {t('label:lukk-sak-global')}
-              </Link>
-              <VerticalSeparatorDiv />
-            </>
-          )}
-        </>
-      )}
-      {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'),t('label:lukk-sak-lokalt')))}
-      {addDisabledSakshandling(createDisabledSakshandlingFragment(t('message:warning-rina'),t('label:videresend-sak')))}
-      {sak.sakshandlinger?.indexOf('Delete_Case') >= 0
-        ? disableDeleteCase
-          ? addDisabledSakshandling(createDisabledSakshandlingFragment(disableDeleteCase, t('label:slett-sak')))
-          : (
-            <>
-              <Link href='#' onClick={deleteCase}>
-                {t('label:slett-sak')}
-              </Link>
-              <VerticalSeparatorDiv />
-            </>
-          )
-        : null}
-      {sak.sakshandlinger?.indexOf('H001') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createH001Sed()}>
-            {t('label:create-H001')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {sak.sakshandlinger?.indexOf('X009') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createXSed('X009')}>
-            {t('label:create-X009')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {sak.sakshandlinger?.indexOf('X012') >= 0 && (
-        <>
-          <Link href='#' onClick={() => _createXSed('X012')}>
-            {t('buc:X012')}
-          </Link>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {disabledSakshandlinger}
-    </Panel>
+    return(
+      <>
+        <Link href='#' onClick={() => onClickFunction()}>
+          {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
+        </Link>
+        <VerticalSeparatorDiv />
+      </>
+    )
+  }
+
+
+  const getSakshandlinger = () => {
+    let sakshandlinger: JSX.Element[] = [];
+    let disabledSakshandlinger: JSX.Element[] = [];
+    sak.sakshandlinger.forEach((sakshandling) => {
+      if(allowedSakshandlinger.includes(sakshandling)){
+        sakshandlinger.push(createSakshandlingFragment(sakshandling))
+      } else {
+        disabledSakshandlinger.push(createDisabledSakshandlingFragment(sakshandling))
+      }
+
+    })
+    return {sakshandlinger, disabledSakshandlinger};
+  }
+
+  const allowedSakshandlinger = ["H001", "X001", "X009", "F001", "F002", "F004", "F022", "F023", "F026", "F027", "F016", "F003", "R001", "R003", "R004", "Delete_Case", "Close_Case", "CreateParticipants"]
+  const {sakshandlinger, disabledSakshandlinger} = getSakshandlinger();
+
+  return (
+    <>
+      <Panel border>
+        <Heading size='small'>Sakshandlinger</Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        {sakshandlinger}
+        <ReadMore header="Handlinger tilgjengelig i RINA">
+          {disabledSakshandlinger}
+        </ReadMore>
+      </Panel>
+    </>
   )
 }
 

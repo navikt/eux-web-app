@@ -1,0 +1,22 @@
+{
+    "H001": "Opprett H001",
+    "X001": "Lukk sak (global)",
+    "X005": "Legg til deltaker",
+    "X007": "Videresend sak",
+    "X009": "Send påminnelse",
+    "F001": "",
+    "F002": "",
+    "F004": "",
+    "F022": "",
+    "F023": "",
+    "F026": "",
+    "F027": "",
+    "F016": "",
+    "F003": "",
+    "R001": "",
+    "R003": "",
+    "R004": "",
+    "Delete_Case": "Slett sak",
+    "Close_Case": "Lukk sak (lokal)",
+    "opprett": "Opprett {{SED}}"
+}
