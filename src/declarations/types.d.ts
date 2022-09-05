@@ -4,9 +4,6 @@ import { PDU1 } from 'declarations/pd'
 import { JaNei, ReplySed } from 'declarations/sed'
 
 export type StorageTypes = PDU1 | ReplySed
-
-//export type SakAction = 'H001' | 'X001' | 'X005' | 'X007' | 'X008' | 'X009' | 'X012' | 'Close_Case' | 'Delete_Case' | 'CreateParticipants'
-
 export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
 
 export interface ArbeidsperiodeFraAA {
