@@ -756,7 +756,7 @@ const SEDNew = (): JSX.Element => {
                     </div>
                     <FlexDiv>
                       <Button
-                        variant='secondary'
+                        variant='primary'
                         disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
                         onClick={() => fillOutSed(opprettetSak!)}
                       >
