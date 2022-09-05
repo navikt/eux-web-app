@@ -114,9 +114,11 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
         {sakshandlinger}
-        <ReadMore header="Handlinger tilgjengelig i RINA">
-          {disabledSakshandlinger}
-        </ReadMore>
+        {disabledSakshandlinger.length > 0 &&
+          <ReadMore header="Handlinger tilgjengelig i RINA">
+            {disabledSakshandlinger}
+          </ReadMore>
+        }
       </Panel>
     </>
   )
