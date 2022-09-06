@@ -102,7 +102,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     return {sakshandlinger, disabledSakshandlinger};
   }
 
-  const allowedSakshandlinger = ["H001", "X001", "X009", "F001", "F002", "F004", "F022", "F023", "F026", "F027", "F016", "F003", "R001", "R003", "R004", "Delete_Case", "Close_Case"]
+  const allowedSakshandlinger = ["H001", "X001", "X009", "F001", "F002", "F004", "F022", "F023", "F026", "F027", "F016", "F003", "R001", "R003", "R004", "Delete_Case"]
   const hiddenSaksbehandlinger = ["Create_Participants"]
   const {sakshandlinger, disabledSakshandlinger} = getSakshandlinger();
 
