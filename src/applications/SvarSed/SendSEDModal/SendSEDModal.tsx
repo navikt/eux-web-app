@@ -158,10 +158,10 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }, [replySed?.attachments])
 
   useEffect(() => {
-    if (sedCreatedResponse && !_sedSent) {
+    if (sedCreatedResponse) {
       setSedSent(true)
     }
-  }, [sedCreatedResponse, _sedSent])
+  }, [sedCreatedResponse])
 
   useEffect(() => {
     // if sed is sent, we can start sending attachments
