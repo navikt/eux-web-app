@@ -154,9 +154,16 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }
 
   useEffect(() => {
+    setSedAttachments(replySed?.attachments ?? [])
+  }, [replySed?.attachments])
+
+  useEffect(() => {
     if (sedCreatedResponse && !_sedSent) {
       setSedSent(true)
     }
+  }, [sedCreatedResponse, _sedSent])
+
+  useEffect(() => {
     // if sed is sent, we can start sending attachments
     if (_sedSent && !_sendingAttachments && !_attachmentsSent) {
       const joarksToUpload: JoarkBrowserItems = _.filter(_sedAttachments, (att) => att.type === 'joark')
@@ -172,7 +179,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       setSendingAttachments(true)
       dispatch(createSavingAttachmentJob(joarksToUpload))
     }
-  }, [_attachmentsSent, dispatch, _onFinished, sedCreatedResponse, _sendingAttachments, _sedAttachments, _sedSent])
+  }, [sedCreatedResponse, _sedSent])
 
   return (
     <Modal
