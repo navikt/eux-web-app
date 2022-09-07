@@ -153,6 +153,11 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     }
   }
 
+  const closeModal = () => {
+    setFinished(undefined)
+    onModalClose();
+  }
+
   useEffect(() => {
     setSedAttachments(replySed?.attachments ?? [])
   }, [replySed?.attachments])
@@ -309,7 +314,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <FlexCenterSpacedDiv>
                     <Button
                       variant='secondary'
-                      onClick={onModalClose}
+                      onClick={closeModal}
                     >
                       {t('el:button-close')}
                     </Button>
