@@ -155,6 +155,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 
   const closeModal = () => {
     setFinished(undefined)
+    setSedSent(false)
     onModalClose();
   }
 
