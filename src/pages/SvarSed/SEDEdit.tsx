@@ -227,10 +227,13 @@ const SEDEdit = (): JSX.Element => {
         <SendSEDModal
           fnr={fnr!}
           open={_viewSendSedModal}
-          goToRinaUrl={replySed?.sak?.sakUrl}
           replySed={replySed}
           onModalClose={() => {
             dispatch(alertReset())
+            setViewSendSedModal(false)
+          }}
+          onSendSedClicked={() => {
+            onSendSedClick();
             setViewSendSedModal(false)
           }}
         />

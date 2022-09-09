@@ -16,7 +16,6 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import { Alert, Button, Loader, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
@@ -69,9 +68,9 @@ interface SendSEDSelector {
 
 interface SendSEDModalProps {
   fnr: string
-  goToRinaUrl: string | undefined
   initialSendingAttachments?: boolean
   onModalClose: () => void
+  onSendSedClicked: () => void
   open: boolean
   replySed: ReplySed | null | undefined
 }
@@ -88,9 +87,9 @@ const mapState = (state: State): SendSEDSelector => ({
 
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
-  goToRinaUrl,
   initialSendingAttachments = false,
   onModalClose,
+  onSendSedClicked,
   open,
   replySed
 }: SendSEDModalProps): JSX.Element => {
@@ -321,18 +320,15 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     </Button>
 
                     <HorizontalSeparatorDiv />
-                    {goToRinaUrl && (
-                      <Button
-                        variant='primary'
-                        data-amplitude='svarsed.editor.editinrina'
-                        onClick={(e) => {
-                          buttonLogger(e)
-                          window.open(goToRinaUrl, 'rina')
-                        }}
-                      >
-                        {t('label:rediger-sed-i-rina')}
-                      </Button>
-                    )}
+                    <Button
+                      variant='primary'
+                      // amplitude is dealt on SendSedClick
+                      title={t('message:help-send-sed')}
+                      disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
+                      onClick={onSendSedClicked}
+                    >
+                      {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+                    </Button>
                   </FlexCenterSpacedDiv>
                 )}
               </SectionDiv>
