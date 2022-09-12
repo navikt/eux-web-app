@@ -161,7 +161,7 @@ const SEDPanel = ({
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
   const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && sed.status === 'new'
   const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active')
-  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0)
+  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0)
   const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X008') >= 0
   const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger.indexOf('X010') >= 0 && sed.status === 'received'
   const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X011') >= 0
@@ -399,7 +399,7 @@ const SEDPanel = ({
             {showRemindButton && (
               <>
                 <Button
-                  variant='secondary'
+                  variant='primary'
                   disabled={_reminderSed}
                   data-amplitude='svarsed.selection.remindsed'
                   onClick={(e: any) => {
