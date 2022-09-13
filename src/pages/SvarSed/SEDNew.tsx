@@ -1,5 +1,4 @@
 import { Alert, BodyLong, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
-import * as EKV from '@navikt/eessi-kodeverk'
 import {
   AlignStartRow,
   Column,
@@ -25,7 +24,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
-import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
@@ -174,7 +172,6 @@ const SEDNew = (): JSX.Element => {
     enheter,
     serverInfo,
     sendingSak,
-    arbeidsperioder,
     buctyper,
     fagsaker,
     familierelasjonKodeverk,
@@ -221,8 +218,6 @@ const SEDNew = (): JSX.Element => {
               return acc
             }, []) ?? []
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
-  const visArbeidsperioder: boolean = EKV.Koder.sektor.FB === valgtSektor &&
-    EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && !_.isEmpty(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
   const allowedToFillOut = (sedType: string) => ['H001', 'F001'].indexOf(sedType) >= 0
@@ -697,21 +692,6 @@ const SEDNew = (): JSX.Element => {
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        {visArbeidsperioder && (
-          <ArbeidsperioderList
-            namespace={namespace + '-arbeidsgivere'}
-            searchable
-            fnr={person?.fnr}
-            valgteArbeidsperioder={valgteArbeidsperioder}
-            arbeidsperioder={arbeidsperioder}
-            onArbeidsgiverSelect={(a: ArbeidsperiodeFraAA, checked: boolean) => dispatch(
-              checked
-                ? sakActions.addArbeidsperiode(a)
-                : sakActions.removeArbeidsperiode(a)
-            )}
-          />
-        )}
-        <VerticalSeparatorDiv size='2' />
         <Row>
           <Column>
             <FlexDiv>
