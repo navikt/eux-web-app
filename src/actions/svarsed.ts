@@ -14,7 +14,7 @@ import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
 
 export const addMottakere = (
-  rinaSakId: string, mottakere: Array<string>
+  rinaSakId: string, mottakere: Array<{id: string, name: string}>
 ) => {
   return call({
     method: 'POST',
@@ -23,9 +23,9 @@ export const addMottakere = (
     expectedPayload: {
       sucess: true
     },
-    body: mottakere,
+    body: mottakere.map((m) => m.id),
     context: {
-      mottakere
+      mottakere: mottakere.map((m) => m.name)
     },
     type: {
       request: types.SVARSED_MOTTAKERE_ADD_REQUEST,

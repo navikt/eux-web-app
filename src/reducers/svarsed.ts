@@ -222,13 +222,12 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_MOTTAKERE_ADD_SUCCESS:
-
       return {
         ...state,
-        mottakere: action.payload,
+        mottakere: {success: true},
         currentSak: {
           ...(state.currentSak as Sak),
-          motpart: (state.currentSak?.motpart ?? []).concat(action.context.mottakere)
+          motpart: action.context.mottakere
         }
       }
 

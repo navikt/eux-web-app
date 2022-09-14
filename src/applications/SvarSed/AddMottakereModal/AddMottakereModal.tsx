@@ -40,7 +40,6 @@ const SectionDiv = styled.div`
 `
 
 interface AddDeltakereModalProps {
-  existingMottakere: Array<string>
   bucType: string
   rinaSakId: string
   onClose: () => void
@@ -67,7 +66,6 @@ const mapState = (state: State): AddDeltakereModalSelector => ({
 })
 
 const AddMottakereModal = ({
-  existingMottakere,
   bucType,
   rinaSakId,
   onClose
@@ -76,7 +74,7 @@ const AddMottakereModal = ({
   const { t } = useTranslation()
   const { alertMessage, alertType, gettingInstitusjoner, institusjoner, landkoder, addingMottakere, mottakere } = useAppSelector(mapState)
   const [landkode, setLandkode] = useState<string | undefined>(undefined)
-  const [newMottakere, setNewMottakere] = useState<Array<string>>([])
+  const [newMottakere, setNewMottakere] = useState<Array<{id: string, name: string}>>([])
   const [_validation, setValidation] = useState<Validation>({})
   const namespace = 'addmottakere'
 
@@ -117,7 +115,10 @@ const AddMottakereModal = ({
   }
 
   const onInstitusjonChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
-    setNewMottakere(newMottakere.concat(event.target.value))
+    const selectedIndex = event.target.selectedIndex;
+    const name =  event.target.options[selectedIndex].text
+
+    setNewMottakere(newMottakere.concat({id: event.target.value, name: name}))
     setValidation({
       ..._validation,
       [namespace + '-institusjon']: undefined
@@ -125,7 +126,7 @@ const AddMottakereModal = ({
   }
 
   const deleteMottakere = (deletedMottaker: string) => {
-    const _newMottakere = _.filter(newMottakere, (mottaker) => mottaker !== deletedMottaker)
+    const _newMottakere = _.filter(newMottakere, (mottaker) => mottaker.id !== deletedMottaker)
     setNewMottakere(_newMottakere)
   }
 
@@ -191,8 +192,7 @@ const AddMottakereModal = ({
                       {institusjoner &&
                         _.orderBy(institusjoner, 'term')
                           .filter((i: Institusjon) =>
-                            _.find(existingMottakere, e => e === i.institusjonsID) === undefined &&
-                            _.find(newMottakere, nm => nm === i.institusjonsID) === undefined
+                            _.find(newMottakere, nm => nm.id === i.institusjonsID) === undefined
                           )
                           .map((i: Institusjon) => (
                             <option
@@ -211,11 +211,11 @@ const AddMottakereModal = ({
               </Row>
               <VerticalSeparatorDiv size='1' />
               {newMottakere.map(mottakere => (
-                <div key={mottakere} className='slideInFromLeft'>
+                <div key={mottakere.id} className='slideInFromLeft'>
                   <FlexCenterDiv>
-                    {mottakere}
+                    {mottakere.name}
                     <HorizontalSeparatorDiv />
-                    <Button onClick={() => deleteMottakere(mottakere)}>
+                    <Button onClick={() => deleteMottakere(mottakere.id)}>
                       <Delete />
                     </Button>
                   </FlexCenterDiv>

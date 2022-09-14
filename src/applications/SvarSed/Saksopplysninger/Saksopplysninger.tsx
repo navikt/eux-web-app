@@ -30,7 +30,6 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
           closeButton: false,
           modalContent: (
             <AddMottakereModal
-              existingMottakere={sak.motpart}
               bucType={sak.sakType}
               rinaSakId={sak.sakId}
               onClose={() => setShowAddMottakereModal(false)}
