@@ -12,8 +12,7 @@ export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 const store = configureStore({
-  reducer: reducers,
-  devTools: process.env.NODE_ENV !== 'production'
+  reducer: reducers
 })
 
 export default store
