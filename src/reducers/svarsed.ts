@@ -181,11 +181,20 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_EDIT_SUCCESS: {
+      const payload = (action as ActionWithPayload).payload
       const newReplySed = {
-        ...(action as ActionWithPayload).payload,
+        ...payload,
+        bruker: {
+          ...payload.bruker,
+          pin: [{
+            land: 'NO',
+            identifikator: (action as ActionWithPayload).context.sak.fnr
+          }]
+        },
         sak: (action as ActionWithPayload).context.sak,
         sed: (action as ActionWithPayload).context.sed
       }
+
       return {
         ...state,
         replySed: newReplySed,
