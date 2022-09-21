@@ -132,7 +132,7 @@ const SEDEdit = (): JSX.Element => {
       (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
     )
 
-  const sendReplySed = (e: any): void => {
+  const saveReplySed = (e: any): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const clonedValidation = _.cloneDeep(validation)
@@ -143,10 +143,8 @@ const SEDEdit = (): JSX.Element => {
       if (!hasErrors) {
         setViewSendSedModal(true)
         if (replySed?.sed?.sedId) {
-          console.log("UPDATE")
           dispatch(updateSed(newReplySed))
         } else {
-          console.log("CREATE")
           dispatch(createSed(newReplySed))
         }
         buttonLogger(e)
@@ -393,7 +391,7 @@ const SEDEdit = (): JSX.Element => {
               <Button
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
-                onClick={sendReplySed}
+                onClick={saveReplySed}
                 disabled={creatingSvarSed || updatingSvarSed}
               >
                 {creatingSvarSed
@@ -417,6 +415,7 @@ const SEDEdit = (): JSX.Element => {
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
               </Button>
               <VerticalSeparatorDiv size='0.5' />
+              {replySed?.sed?.status}
             </div>
             <HorizontalSeparatorDiv />
             <div>
