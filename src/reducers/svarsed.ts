@@ -184,9 +184,18 @@ const svarsedReducer = (
       console.log((action as ActionWithPayload).payload)
       const newReplySed = {
         ...(action as ActionWithPayload).payload,
+        bruker: {
+          ...(action as ActionWithPayload).payload.bruker,
+          pin: [{
+            land: 'NO',
+            identifikator: (action as ActionWithPayload).context.sak.fnr
+          }]
+        },
         sak: (action as ActionWithPayload).context.sak,
         sed: (action as ActionWithPayload).context.sed
       }
+
+      console.log(newReplySed)
 
       return {
         ...state,
