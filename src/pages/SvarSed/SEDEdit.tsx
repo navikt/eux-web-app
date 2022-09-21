@@ -119,7 +119,6 @@ const SEDEdit = (): JSX.Element => {
 
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
-  const [_sedId, setSedId] = useState<string | null>(null)
   const fnr = getFnr(replySed, 'bruker')
   const showAttachments: boolean = !isXSed(replySed)
 
@@ -143,9 +142,11 @@ const SEDEdit = (): JSX.Element => {
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         setViewSendSedModal(true)
-        if (sedId !== 'new') {
+        if (replySed?.sed?.sedId) {
+          console.log("UPDATE")
           dispatch(updateSed(newReplySed))
         } else {
+          console.log("CREATE")
           dispatch(createSed(newReplySed))
         }
         buttonLogger(e)
@@ -217,11 +218,6 @@ const SEDEdit = (): JSX.Element => {
     }
   }, [_sendButtonClicked, sedSendResponse])
 
-  useEffect(() => {
-    if(replySed?.sed?.sedId){
-      setSedId(replySed?.sed?.sedId)
-    }
-  }, [replySed])
 
   if (!replySed) {
     return <WaitingPanel />
@@ -408,7 +404,6 @@ const SEDEdit = (): JSX.Element => {
                 {(creatingSvarSed || updatingSvarSed) && <Loader />}
               </Button>
               <VerticalSeparatorDiv size='0.5' />
-              {_sedId}
             </div>
             <HorizontalSeparatorDiv />
             <div>
