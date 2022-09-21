@@ -409,13 +409,12 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
               // amplitude is dealt on SendSedClick
                 title={t('message:help-send-sed')}
-                disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
+                disabled={sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse)}
                 onClick={onSendSedClick}
               >
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
               </Button>
               <VerticalSeparatorDiv size='0.5' />
-              {replySed?.sed?.status}
             </div>
             <HorizontalSeparatorDiv />
             <div>
