@@ -153,9 +153,9 @@ const SEDEdit = (): JSX.Element => {
   }
 
   const onSendSedClick = () => {
-    if (replySed?.sak?.sakId && sedCreatedResponse?.sedId) {
+    if (replySed?.sak?.sakId && replySed?.sed?.sedId) {
       _setSendButtonClicked(true)
-      dispatch(sendSedInRina(replySed.sak!.sakId!, sedCreatedResponse.sedId!))
+      dispatch(sendSedInRina(replySed.sak!.sakId!, replySed?.sed?.sedId!))
       standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
     }
   }
