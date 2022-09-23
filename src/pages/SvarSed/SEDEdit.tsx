@@ -79,6 +79,7 @@ export interface SEDEditSelector {
   updatingSvarSed: boolean
   currentSak: Sak | undefined
   replySed: ReplySed | null | undefined
+  replySedChanged: boolean
   sendingSed: boolean
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any
@@ -92,6 +93,7 @@ const mapState = (state: State): SEDEditSelector => ({
   updatingSvarSed: state.loading.updatingSvarSed,
   currentSak: state.svarsed.currentSak,
   replySed: state.svarsed.replySed,
+  replySedChanged: state.svarsed.replySedChanged,
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
@@ -110,6 +112,7 @@ const SEDEdit = (): JSX.Element => {
     updatingSvarSed,
     currentSak,
     replySed,
+    replySedChanged,
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
@@ -392,7 +395,7 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
-                disabled={creatingSvarSed || updatingSvarSed}
+                disabled={!replySedChanged || creatingSvarSed || updatingSvarSed}
               >
                 {creatingSvarSed
                   ? t('message:loading-opprette-sed')
