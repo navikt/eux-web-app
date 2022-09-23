@@ -119,7 +119,8 @@ const svarsedReducer = (
         ...state,
         replySed: undefined,
         originalReplySed: undefined,
-        replySedChanged: false
+        replySedChanged: false,
+        sedSendResponse: undefined
       }
 
     case types.SVARSED_FAGSAKER_RESET:
