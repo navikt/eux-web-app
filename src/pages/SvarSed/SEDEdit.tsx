@@ -395,7 +395,7 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
-                disabled={!replySedChanged || creatingSvarSed || updatingSvarSed}
+                disabled={(!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed}
               >
                 {creatingSvarSed
                   ? t('message:loading-opprette-sed')
