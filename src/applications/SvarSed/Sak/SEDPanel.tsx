@@ -142,7 +142,7 @@ const SEDPanel = ({
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
-            {showJournalfoingButton && (
+            {showJournalfoingButton && (connectedSed.sedType === "F001" || connectedSed.sedType === "H001") && (
               <>
                 <Button
                   variant='secondary'
