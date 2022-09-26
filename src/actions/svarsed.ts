@@ -89,9 +89,6 @@ export const deleteSak = (rinaSakId: string) => {
     method: 'DELETE',
     url: sprintf(urls.API_SAK_DELETE_URL, { rinaSakId }),
     cascadeFailureError: true,
-    expectedPayload: {
-      sucess: true
-    },
     type: {
       request: types.SVARSED_SAK_DELETE_REQUEST,
       success: types.SVARSED_SAK_DELETE_SUCCESS,
