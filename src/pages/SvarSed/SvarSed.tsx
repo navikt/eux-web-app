@@ -5,7 +5,6 @@ import { setStatusParam } from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { loadReplySed, querySaksnummerOrFnr, setCurrentSak, setReplySed, updateReplySed } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
-import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import SEDDetails from 'applications/SvarSed/SEDDetails/SEDDetails'
 import LoadSave from 'components/LoadSave/LoadSave'
@@ -194,7 +193,7 @@ export const SvarSedPage = (): JSX.Element => {
                   />
                   )
                 : (
-                  <Saksopplysninger sak={currentSak} />
+                  <></>
                   )
             )}
             {_currentPage === 'B' && (
