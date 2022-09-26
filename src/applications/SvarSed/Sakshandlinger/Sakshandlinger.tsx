@@ -1,7 +1,7 @@
 import { BodyLong, Heading, Link, Panel, ReadMore } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
-import { createH001Sed, createXSed, deleteSak } from 'actions/svarsed'
+import {createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -18,13 +18,24 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
   const replySed = useAppSelector(state => state.svarsed.replySed)
+  const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
 
   const deleteCase = () => {
     if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {
       dispatch(deleteSak(sak.sakId))
     }
   }
+
+  useEffect(() => {
+    if (deletedSak) {
+      navigate({
+        pathname: '/',
+        search: '?q=' + params.get('q')
+      })
+    }
+  }, [deletedSak])
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
 
