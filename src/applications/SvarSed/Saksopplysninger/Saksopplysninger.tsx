@@ -17,8 +17,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
 
   const [showAddMottakereModal, setShowAddMottakereModal] = useState<boolean>(false)
 
-  const canChangeParticipants = sak.erSakseier === 'ja' &&
-    _.find(sak.sedListe, s => s.status === 'received' || s.status === 'sent') === undefined
+  const canChangeParticipants = _.find(sak.sakshandlinger, s => s === "singleParticipant" || s === "multipleParticipants")  !== undefined
 
   return (
     <>
@@ -32,6 +31,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             <AddMottakereModal
               bucType={sak.sakType}
               rinaSakId={sak.sakId}
+              sakshandlinger={sak.sakshandlinger}
               onClose={() => setShowAddMottakereModal(false)}
             />
           )

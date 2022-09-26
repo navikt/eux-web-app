@@ -42,6 +42,7 @@ const SectionDiv = styled.div`
 interface AddDeltakereModalProps {
   bucType: string
   rinaSakId: string
+  sakshandlinger: Array<string>
   onClose: () => void
 }
 
@@ -68,6 +69,7 @@ const mapState = (state: State): AddDeltakereModalSelector => ({
 const AddMottakereModal = ({
   bucType,
   rinaSakId,
+  sakshandlinger,
   onClose
 }: AddDeltakereModalProps): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -77,6 +79,8 @@ const AddMottakereModal = ({
   const [newMottakere, setNewMottakere] = useState<Array<{id: string, name: string}>>([])
   const [_validation, setValidation] = useState<Validation>({})
   const namespace = 'addmottakere'
+
+  const type = sakshandlinger.includes("multipleParticipants") ? "multiple" : "single"
 
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
@@ -118,11 +122,22 @@ const AddMottakereModal = ({
     const selectedIndex = event.target.selectedIndex;
     const name =  event.target.options[selectedIndex].text
 
-    setNewMottakere(newMottakere.concat({id: event.target.value, name: name}))
-    setValidation({
-      ..._validation,
-      [namespace + '-institusjon']: undefined
-    })
+    if(type === "single" && newMottakere.length > 0){
+      setValidation({
+        ..._validation,
+        [namespace + '-institusjon']: {
+          skjemaelementId: namespace + '-mottakere',
+          feilmelding: t('validation:onlySingleParticipant')
+        }
+      })
+    } else {
+      setNewMottakere(newMottakere.concat({id: event.target.value, name: name}))
+      setValidation({
+        ..._validation,
+        [namespace + '-institusjon']: undefined
+      })
+
+    }
   }
 
   const deleteMottakere = (deletedMottaker: string) => {
@@ -133,7 +148,7 @@ const AddMottakereModal = ({
   return (
     <MinimalModalDiv>
       <Heading size='small'>
-        {t('label:add-deltakere-modal')}
+        {type === "multiple" ? t('label:add-deltakere-modal') : t('label:add-deltaker-modal')}
       </Heading>
       <VerticalSeparatorDiv />
       {alertMessage && alertType && [types.SVARSED_MOTTAKERE_ADD_FAILURE].indexOf(alertType) >= 0 && (

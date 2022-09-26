@@ -140,6 +140,8 @@
 
   "noÅrsak": "Ingen årsak",
 
+  "onlySingleParticipant": "Kun en deltaker tillatt",
+
   "textOverX": "tekststørrelse over {{x}} tegn",
   "til-person": " til {{person}}",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
