@@ -64,9 +64,6 @@ const Klargjør: React.FC<MainFormProps> = ({
 
   const setGrunn = (grunn: string) => {
     dispatch(updateReplySed('grunn', grunn.trim()))
-    if (grunn !== '99') {
-      dispatch(updateReplySed('grunn', ''))
-    }
     if (validation[namespace + '-grunn']) {
       dispatch(resetValidation(namespace + '-grunn'))
     }
