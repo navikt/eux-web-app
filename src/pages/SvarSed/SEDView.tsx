@@ -55,7 +55,6 @@ const SEDView = (): JSX.Element => {
   const { currentSak, entries }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-  const params: URLSearchParams = new URLSearchParams(window.location.search)
 
 
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
