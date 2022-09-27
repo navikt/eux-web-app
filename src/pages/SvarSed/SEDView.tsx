@@ -25,6 +25,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -52,6 +53,10 @@ const SEDView = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
   const { currentSak, entries }: SEDViewSelector = useAppSelector(mapState)
+  const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
+  const navigate = useNavigate()
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+
 
   const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
 
@@ -59,6 +64,15 @@ const SEDView = (): JSX.Element => {
   if (currentSak) {
     seds = _.cloneDeep(currentSak.sedListe)
   }
+
+  useEffect(() => {
+    if (deletedSak) {
+      navigate({
+        pathname: '/',
+        search: '?q=' + params.get('q')
+      })
+    }
+  }, [deletedSak])
 
   useEffect(() => {
     if (!loadingSavedItems && entries === undefined) {

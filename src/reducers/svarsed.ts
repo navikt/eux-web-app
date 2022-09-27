@@ -299,10 +299,11 @@ const svarsedReducer = (
     case types.SVARSED_SAK_DELETE_SUCCESS:
       return {
         ...state,
-        deletedSak: (action as ActionWithPayload).payload,
+        deletedSak: true,
         saks: undefined,
         currentSak: undefined
       }
+
     case types.SVARSED_SAK_DELETE_FAILURE:
       return {
         ...state,

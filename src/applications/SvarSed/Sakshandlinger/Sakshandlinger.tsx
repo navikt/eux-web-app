@@ -18,24 +18,13 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const params: URLSearchParams = new URLSearchParams(window.location.search)
   const replySed = useAppSelector(state => state.svarsed.replySed)
-  const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
 
   const deleteCase = () => {
     if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {
       dispatch(deleteSak(sak.sakId))
     }
   }
-
-  useEffect(() => {
-    if (deletedSak) {
-      navigate({
-        pathname: '/',
-        search: '?q=' + params.get('q')
-      })
-    }
-  }, [deletedSak])
 
   const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
 
