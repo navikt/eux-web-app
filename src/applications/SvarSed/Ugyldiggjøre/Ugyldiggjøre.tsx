@@ -98,7 +98,7 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X008Sed).begrunnelseType === '99' && (
+      {(replySed as X008Sed).begrunnelseType === 'annet' && (
         <AlignStartRow>
           <Column>
             <Input
