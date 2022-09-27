@@ -68,8 +68,7 @@ const SEDView = (): JSX.Element => {
   useEffect(() => {
     if (deletedSak) {
       navigate({
-        pathname: '/',
-        search: '?q=' + params.get('q')
+        pathname: '/'
       })
     }
   }, [deletedSak])
