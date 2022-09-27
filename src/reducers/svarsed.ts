@@ -407,7 +407,7 @@ const svarsedReducer = (
     case types.SVARSED_SED_INVALIDATE: {
       const { connectedSed, sak } = action.payload
       const replySed: X008Sed = createReplySedTemplate<X008Sed>(sak, 'X008')
-      replySed.kansellerSedId = connectedSed.sedType
+      replySed.kansellerSedId = connectedSed.sedId
       replySed.utstedelsesdato = moment(connectedSed.sistEndretDato).format('YYYY-MM-DD')
 
       return {

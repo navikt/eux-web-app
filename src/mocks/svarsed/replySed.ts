@@ -12,7 +12,8 @@ import {
   X008Sed,
   X009Sed,
   X010Sed,
-  X011Sed, X012Sed
+  X011Sed,
+  X012Sed
 } from 'declarations/sed'
 import f001 from '../seds/f001.json'
 import f002 from '../seds/f002.json'
