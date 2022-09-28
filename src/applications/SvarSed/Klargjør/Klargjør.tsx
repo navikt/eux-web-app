@@ -49,23 +49,23 @@ const Klargjør: React.FC<MainFormProps> = ({
   })
 
   const setDel = (del: string) => {
-    dispatch(updateReplySed('del', del.trim()))
+    dispatch(updateReplySed('klargjoerInfo[0].del', del.trim()))
     if (validation[namespace + '-del']) {
       dispatch(resetValidation(namespace + '-del'))
     }
   }
 
   const setPunkt = (punkt: string) => {
-    dispatch(updateReplySed('punkt', punkt.trim()))
+    dispatch(updateReplySed('klargjoerInfo[0].punkt', punkt.trim()))
     if (validation[namespace + '-punkt']) {
       dispatch(resetValidation(namespace + '-punkt'))
     }
   }
 
   const setGrunn = (grunn: string) => {
-    dispatch(updateReplySed('grunn', grunn.trim()))
-    if (grunn !== '99') {
-      dispatch(updateReplySed('grunnAnnet', ''))
+    dispatch(updateReplySed('klargjoerInfo[0].begrunnelseType', grunn.trim()))
+    if (grunn !== 'annet') {
+      dispatch(updateReplySed('klargjoerInfo[0].begrunnelseAnnen', ''))
     }
     if (validation[namespace + '-grunn']) {
       dispatch(resetValidation(namespace + '-grunn'))
@@ -73,11 +73,13 @@ const Klargjør: React.FC<MainFormProps> = ({
   }
 
   const setGrunnAnnet = (grunnAnnet: string) => {
-    dispatch(updateReplySed('grunnAnnet', grunnAnnet.trim()))
+    dispatch(updateReplySed('klargjoerInfo[0].begrunnelseAnnen', grunnAnnet.trim()))
     if (validation[namespace + '-grunnAnnet']) {
       dispatch(resetValidation(namespace + '-grunnAnnet'))
     }
   }
+
+  const klargjoerInfoItem = (replySed as X012Sed).klargjoerInfo && (replySed as X012Sed).klargjoerInfo[0];
 
   return (
     <PaddedDiv>
@@ -94,7 +96,7 @@ const Klargjør: React.FC<MainFormProps> = ({
             label={t('label:del')}
             onChanged={setDel}
             required
-            value={(replySed as X012Sed).del}
+            value={klargjoerInfoItem?.del}
           />
         </Column>
       </AlignStartRow>
@@ -108,7 +110,7 @@ const Klargjør: React.FC<MainFormProps> = ({
             label={t('label:punkt')}
             onChanged={setPunkt}
             required
-            value={(replySed as X012Sed).punkt}
+            value={klargjoerInfoItem?.punkt}
           />
         </Column>
       </AlignStartRow>
@@ -116,7 +118,7 @@ const Klargjør: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column flex='2'>
           <RadioPanelGroup
-            defaultValue={(replySed as X012Sed).grunn}
+            defaultValue={klargjoerInfoItem?.begrunnelseType}
             data-no-border
             data-testid={namespace + '-grunn'}
             error={validation[namespace + '-grunn']?.feilmelding}
@@ -127,17 +129,17 @@ const Klargjør: React.FC<MainFormProps> = ({
             name={namespace + '-grunn'}
             onChange={setGrunn}
           >
-            <RadioPanel value='01'>{t('el:option-klargjør-01')}</RadioPanel>
-            <RadioPanel value='02'>{t('el:option-klargjør-02')}</RadioPanel>
-            <RadioPanel value='03'>{t('el:option-klargjør-03')}</RadioPanel>
-            <RadioPanel value='04'>{t('el:option-klargjør-04')}</RadioPanel>
-            <RadioPanel value='99'>{t('el:option-klargjør-99')}</RadioPanel>
+            <RadioPanel value='informasjon_påkrevd_for_vår_nasjonale_undersøkelse'>{t('el:option-klargjør-01')}</RadioPanel>
+            <RadioPanel value='informasjon_påkrevd_for_beregning_av_ytelse'>{t('el:option-klargjør-02')}</RadioPanel>
+            <RadioPanel value='motstridende_informasjon_mottatt'>{t('el:option-klargjør-03')}</RadioPanel>
+            <RadioPanel value='det_må_vedlegges_støttedokumentasjon_belegg'>{t('el:option-klargjør-04')}</RadioPanel>
+            <RadioPanel value='annet'>{t('el:option-klargjør-99')}</RadioPanel>
           </RadioPanelGroup>
         </Column>
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X012Sed).grunn === '99' && (
+      {klargjoerInfoItem?.begrunnelseType === 'annet' && (
         <AlignStartRow>
           <Column>
             <Input
@@ -148,7 +150,7 @@ const Klargjør: React.FC<MainFormProps> = ({
               hideLabel
               onChanged={setGrunnAnnet}
               required
-              value={(replySed as X012Sed).grunnAnnet}
+              value={klargjoerInfoItem?.begrunnelseAnnen}
             />
           </Column>
         </AlignStartRow>

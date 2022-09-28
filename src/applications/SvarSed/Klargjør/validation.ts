@@ -16,31 +16,32 @@ export const validateKlargjør = (
   }: ValidationKlargjørProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
+  const klargjoerInfoItem = (replySed as X012Sed).klargjoerInfo && (replySed as X012Sed).klargjoerInfo[0];
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as X012Sed).del,
+    needle: klargjoerInfoItem?.del,
     id: namespace + '-del',
     message: 'validation:noDel',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.punkt,
+    needle: klargjoerInfoItem?.punkt,
     id: namespace + '-punkt',
     message: 'validation:noPunkt',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.grunn,
+    needle: klargjoerInfoItem?.begrunnelseType,
     id: namespace + '-grunn',
     message: 'validation:noGrunn',
     personName
   }))
 
-  if (replySed.grunn === '99') {
+  if (klargjoerInfoItem?.begrunnelseType === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: replySed.grunnAnnet,
+      needle: klargjoerInfoItem?.begrunnelseAnnen,
       id: namespace + '-grunnAnnet',
       message: 'validation:noGrunnAnnet',
       personName

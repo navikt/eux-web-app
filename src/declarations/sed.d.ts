@@ -559,9 +559,12 @@ export interface X010Sed extends XSed {
 
 export interface X011Sed extends X008Sed {}
 
-export interface X012Sed extends XSed {
+export interface KlargjoerInfoItem {
   del: string
   punkt: string
-  grunn: string
-  grunnAnnet: string
+  begrunnelseType: string
+  begrunnelseAnnen: string
+}
+export interface X012Sed extends XSed {
+  klargjoerInfo: Array<KlargjoerInfoItem>
 }

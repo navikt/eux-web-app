@@ -5,9 +5,11 @@
     "kjoenn": "M",
     "foedselsdato": "2002-02-02"
   },
-  "del": "Del",
-  "punkt": "Punkt",
-  "grunn": "99",
-  "grunnAnnet": "grunnAnnet",
-  "sedVersjon": "4.2"
+  "sedVersjon": "4.2",
+  "klargjoerInfo": [{
+    "del": "Del",
+    "punkt": "Punkt",
+    "begrunnelseType": "annet",
+    "begrunnelseAnnen": "grunnAnnet"
+  }]
 }
