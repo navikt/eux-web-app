@@ -31,7 +31,7 @@ export const validateUgyldiggjøre = (
     personName
   }))
 
-  if (replySed.begrunnelseType === '99') {
+  if (replySed.begrunnelseType === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: replySed.begrunnelseAnnen,
       id: namespace + '-begrunnelseAnnen',
