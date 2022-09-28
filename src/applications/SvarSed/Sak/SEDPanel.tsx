@@ -321,7 +321,7 @@ const SEDPanel = ({
                 <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-            {showInvalidateButton && (
+            {true && (
               <>
                 <Button
                   variant='secondary'

@@ -49,8 +49,8 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
   })
 
   const setBegrunnelseType = (begrunnelseType: string) => {
-    dispatch(updateReplySed('begrunnelseType', begrunnelseTypeMap[begrunnelseType.trim()]))
-    if (begrunnelseType !== '99') {
+    dispatch(updateReplySed('begrunnelseType', begrunnelseType.trim()))
+    if (begrunnelseType !== 'annet') {
       dispatch(updateReplySed('begrunnelseAnnen', ''))
     }
     if (validation[namespace + '-begrunnelseType']) {
@@ -63,16 +63,6 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
     if (validation[namespace + '-begrunnelseAnnen']) {
       dispatch(resetValidation(namespace + '-begrunnelseAnnen'))
     }
-  }
-
-  const begrunnelseTypeMap: {[key: string]: string} = {
-    "01" :"personen_er_død",
-    "02" :"saken_ble_feilaktig_sendt_til_dere",
-    "03" :"feilaktig_informasjon_levert",
-    "04" :"saken_ble_revurdert_og_sed_en_er_ikke_lenger_vurdert_som_ugyldig",
-    "05" :"det_nasjonale_vedtaket_ble_bestridt_av_kunden_Mer_informasjon_vil_følge_etter_endelig_beslutning_om_bestridelsen",
-    "06" :"det_nasjonale_vedtaket_ble_bestridt_av_kunden_Det_vil_ikke_sendes_flere_sed_er",
-    "99" :"annet"
   }
 
   return (
@@ -96,19 +86,19 @@ const Ugyldiggjøre: React.FC<MainFormProps> = ({
             name={namespace + '-begrunnelseType'}
             onChange={setBegrunnelseType}
           >
-            <RadioPanel value='01'>{t('el:option-ugyldiggjøre-01')}</RadioPanel>
-            <RadioPanel value='02'>{t('el:option-ugyldiggjøre-02')}</RadioPanel>
-            <RadioPanel value='03'>{t('el:option-ugyldiggjøre-03')}</RadioPanel>
-            <RadioPanel value='04'>{t('el:option-ugyldiggjøre-04')}</RadioPanel>
-            <RadioPanel value='05'>{t('el:option-ugyldiggjøre-05')}</RadioPanel>
-            <RadioPanel value='06'>{t('el:option-ugyldiggjøre-06')}</RadioPanel>
-            <RadioPanel value='99'>{t('el:option-ugyldiggjøre-99')}</RadioPanel>
+            <RadioPanel value='personen_er_død'>{t('el:option-ugyldiggjøre-01')}</RadioPanel>
+            <RadioPanel value='saken_ble_feilaktig_sendt_til_dere'>{t('el:option-ugyldiggjøre-02')}</RadioPanel>
+            <RadioPanel value='feilaktig_informasjon_levert'>{t('el:option-ugyldiggjøre-03')}</RadioPanel>
+            <RadioPanel value='saken_ble_revurdert_og_sed_en_er_ikke_lenger_vurdert_som_ugyldig'>{t('el:option-ugyldiggjøre-04')}</RadioPanel>
+            <RadioPanel value='det_nasjonale_vedtaket_ble_bestridt_av_kunden_Mer_informasjon_vil_følge_etter_endelig_beslutning_om_bestridelsen'>{t('el:option-ugyldiggjøre-05')}</RadioPanel>
+            <RadioPanel value='det_nasjonale_vedtaket_ble_bestridt_av_kunden_Det_vil_ikke_sendes_flere_sed_er'>{t('el:option-ugyldiggjøre-06')}</RadioPanel>
+            <RadioPanel value='annet'>{t('el:option-ugyldiggjøre-99')}</RadioPanel>
           </RadioPanelGroup>
         </Column>
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X008Sed).begrunnelseType === '99' && (
+      {(replySed as X008Sed).begrunnelseType === 'annet' && (
         <AlignStartRow>
           <Column>
             <Input
