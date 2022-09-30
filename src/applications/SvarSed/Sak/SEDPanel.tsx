@@ -24,7 +24,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import { isPreviewableSed } from 'utils/sed'
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
