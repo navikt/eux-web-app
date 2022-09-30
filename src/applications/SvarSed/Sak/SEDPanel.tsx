@@ -191,14 +191,12 @@ const SEDPanel = ({
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
-            {isPreviewableSed(sed.sedType) && (
-              <PreviewSED
-                short
-                size='small'
-                rinaSakId={currentSak.sakId}
-                sedId={sed.sedId}
-              />
-            )}
+            <PreviewSED
+              short
+              size='small'
+              rinaSakId={currentSak.sakId}
+              sedId={sed.sedId}
+            />
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
