@@ -39,7 +39,7 @@ export const isX011Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const isX012Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X012'
 
 export const isPreviewableSed = (sedType: string): boolean =>
-  ['F002', 'H001', 'H002', 'U002', 'U004', 'U017', 'X001', 'X010'].indexOf(sedType) >= 0
+  ['F001', 'F002', 'H001', 'H002',  'U002', 'U004', 'U017', 'X001', 'X008', 'X009', 'X010', 'X011', 'X012'].indexOf(sedType) >= 0
 
 export const cleanReplySed = (replySed: ReplySed): ReplySed => {
   const newReplySed = _.cloneDeep(replySed)
