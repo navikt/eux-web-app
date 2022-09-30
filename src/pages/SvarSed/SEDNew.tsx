@@ -264,6 +264,13 @@ const SEDNew = (): JSX.Element => {
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     dispatch(sakActions.setProperty('unit', undefined))
+    dispatch(sakActions.setProperty('sedtype', undefined))
+    dispatch(sakActions.setProperty('buctype', undefined))
+    dispatch(sakActions.setProperty('landkode', undefined))
+    dispatch(sakActions.setProperty('institusjon', undefined))
+    dispatch(sakActions.setProperty('institusjonList', undefined))
+    dispatch(sakActions.setProperty('tema', undefined))
+    dispatch(sakActions.resetFagsaker())
     dispatch(sakActions.setProperty('sektor', e.target.value))
     if (validation[namespace + '-sektor']) {
       dispatch(resetValidation(namespace + '-sektor'))
@@ -272,9 +279,7 @@ const SEDNew = (): JSX.Element => {
 
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
-    dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
-    dispatch(sakActions.setProperty('institution', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
     dispatch(sakActions.getLandkoder(buctype))
     if (validation[namespace + '-buctype']) {
