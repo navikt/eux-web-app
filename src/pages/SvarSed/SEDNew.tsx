@@ -360,7 +360,11 @@ const SEDNew = (): JSX.Element => {
       sak: {
         sakId: opprettetSak.sakId,
         sakType: valgtBucType,
-        sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string
+        sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string,
+        fagsakId: valgtSaksId,
+        tema: valgtTema,
+        erSakseier: "ja",
+        motpart: [_.find(institusjoner, i => i.institusjonsID === valgtInstitusjon)?.navn as string]
       } as Sak
     }))
   }
