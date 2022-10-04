@@ -49,6 +49,7 @@ const mapState = (state: State) => ({
 const SEDView = (): JSX.Element => {
   const sedMap: any = []
   const tempChildrenSed: Array<Sed> = []
+  const grandChildrenSedMap: any = {}
   const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
@@ -101,17 +102,28 @@ const SEDView = (): JSX.Element => {
       tempSedMap[connectedSed.sedId] = connectedSed
     }
   })
+
   // Now, let's put all children SED
   tempChildrenSed.forEach((connectedSed: Sed) => {
     if (connectedSed.sedIdParent) {
-      if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
-         Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
-        tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
+      if(tempSedMap[connectedSed.sedIdParent]){
+        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
+           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
+          tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
+        } else {
+          tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
+        }
       } else {
-        tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
+        // Handle grand children
+        if (Object.prototype.hasOwnProperty.call(grandChildrenSedMap, connectedSed.sedIdParent)) {
+          grandChildrenSedMap[connectedSed.sedIdParent].push(connectedSed)
+        } else {
+          grandChildrenSedMap[connectedSed.sedIdParent] = [connectedSed]
+        }
       }
     }
   })
+
   Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
 
   if (_.isUndefined(currentSak)) {
@@ -149,6 +161,17 @@ const SEDView = (): JSX.Element => {
                               sed={sed2}
                             />
                             <VerticalSeparatorDiv />
+                            {grandChildrenSedMap[sed2.sedId]?.sort((a: Sed, b: Sed) => (
+                              moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                            )).map((sed3: Sed) => (
+                              <div key={'sed-' + sed3.sedId} style={{ marginLeft: '4rem' }}>
+                                <SEDPanel
+                                  currentSak={currentSak}
+                                  sed={sed3}
+                                />
+                                <VerticalSeparatorDiv />
+                              </div>
+                            ))}
                           </div>
                         ))}
                       </div>

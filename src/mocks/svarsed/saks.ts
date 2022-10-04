@@ -274,6 +274,95 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['U002', 'Read', 'Update', 'Send', 'Delete']
         }
       ]
+    },
+    {
+      "fnr": "25086820857",
+      "fornavn": "LEALAUS",
+      "etternavn": "KOPP",
+      "foedselsdato": "1968-08-25",
+      "kjoenn": "f",
+      "sakTittel": "Adhoc informasjonsutveksling",
+      "sakType": "H_BUC_01",
+      "sakId": "1442979",
+      "internasjonalSakId": "2663a13d3fa443ca8970be821c7ba2cc",
+      "erSakseier": "nei",
+      "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+      "tema": "SYK",
+      "fagsakId": "140263372",
+      "sistEndretDato": "2022-10-03",
+      "motpart": [
+        "NAV ACC 05 (Norge)"
+      ],
+      "sakshandlinger": [
+        "Close_Case",
+        "X007",
+        "X009"
+      ],
+      "sedListe": [
+        {
+          "sedTittel": "Melding/anmodning om informasjon",
+          "sedType": "H001",
+          "sedId": "e083f65f168442a1b838763048dc2977",
+          "sedUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+          "status": "received",
+          "sistEndretDato": "2022-10-03",
+          "sedHandlinger": [
+            "Read",
+            "ReadParticipants",
+            "H002"
+          ]
+        },
+        {
+          "sedTittel": "Svar på anmodning om informasjon",
+          "sedType": "H002",
+          "sedId": "e11677f21a84434eac2ae0a5d937d2b5",
+          "sedIdParent": "e083f65f168442a1b838763048dc2977",
+          "sedUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+          "status": "cancelled",
+          "sistEndretDato": "2022-10-03",
+          "sedHandlinger": [
+            "Read"
+          ]
+        },
+        {
+          "sedTittel": "Ugyldiggjøre SED",
+          "sedType": "X008",
+          "sedId": "c02b02249c1841e8933eedd241a897d9",
+          "sedIdParent": "e11677f21a84434eac2ae0a5d937d2b5",
+          //"sedIdParent": "e083f65f168442a1b838763048dc2977",
+          "sedUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+          "status": "sent",
+          "sistEndretDato": "2022-10-03",
+          "sedHandlinger": [
+            "Read"
+          ]
+        },
+        {
+          "sedTittel": "Ugyldiggjøre SED 2",
+          "sedType": "X008",
+          "sedId": "c02b02249c1841e8933eedd241a897d9",
+          "sedIdParent": "e11677f21a84434eac2ae0a5d937d2b5",
+          //"sedIdParent": "e083f65f168442a1b838763048dc2977",
+          "sedUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+          "status": "sent",
+          "sistEndretDato": "2022-10-03",
+          "sedHandlinger": [
+            "Read"
+          ]
+        },
+        {
+          "sedTittel": "Svar på anmodning om informasjon",
+          "sedType": "H001",
+          "sedId": "e11677f21a84434eac2ae0a5d937d2xx",
+          "sedIdParent": "e083f65f168442a1b838763048dc2977",
+          "sedUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
+          "status": "sent",
+          "sistEndretDato": "2022-11-03",
+          "sedHandlinger": [
+            "Read"
+          ]
+        },
+      ]
     }
   ]
 
