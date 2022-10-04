@@ -453,7 +453,7 @@ const SEDEdit = (): JSX.Element => {
         </Panel>
       </Content>
       <Content style={{ flex: 2 }}>
-        <SEDDetails updateReplySed={updateReplySed} />
+        <SEDDetails/>
       </Content>
       <Margin />
     </Container>

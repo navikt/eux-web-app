@@ -1,24 +1,16 @@
 import { Close, Edit, Email, Send, Star } from '@navikt/ds-icons'
-import { Button, Detail, Label, Loader, Panel } from '@navikt/ds-react'
-import { ActionWithPayload } from '@navikt/fetch'
-import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Button, Detail, Label, Loader } from '@navikt/ds-react'
+import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { saveEntry } from 'actions/localStorage'
-import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
-import Tema from 'applications/SvarSed/Tema'
 import Modal from 'components/Modal/Modal'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
-import { LocalStorageEntry, UpdateReplySedPayload } from 'declarations/types'
+import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { isHSed } from 'utils/sed'
-
-export interface SEDDetailsProps {
-  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
-}
 
 export interface SEDDetailsSelector {
   currentEntry: LocalStorageEntry<ReplySed> | undefined
@@ -32,9 +24,7 @@ const mapState = (state: State): SEDDetailsSelector => ({
   replySed: state.svarsed.replySed
 })
 
-const SEDDetails: React.FC<SEDDetailsProps> = ({
-  updateReplySed
-}: SEDDetailsProps) => {
+const SEDDetails: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -100,27 +90,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
         </Label>
       </FlexBaseDiv>
-
-      <VerticalSeparatorDiv />
-      {isHSed(replySed) && (
-        <>
-          <Panel border>
-            <PileDiv>
-              <Tema
-                updateReplySed={updateReplySed}
-                replySed={replySed}
-              />
-            </PileDiv>
-          </Panel>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {replySed.sak && (
-        <>
-          <Saksopplysninger sak={replySed.sak} />
-          <VerticalSeparatorDiv />
-        </>
-      )}
     </>
   )
 }
