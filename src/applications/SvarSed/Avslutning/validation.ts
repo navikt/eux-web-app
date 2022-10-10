@@ -18,27 +18,27 @@ export const validateAvslutning = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.avslutningsDato,
-    id: namespace + '-avslutningsDato',
+    needle: replySed.avslutningDato,
+    id: namespace + '-avslutningDato',
     message: 'validation:noDate',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.avslutningsType,
-    id: namespace + '-avslutningsType',
+    needle: replySed.avslutningType,
+    id: namespace + '-avslutningType',
     message: 'validation:noType',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: replySed.begrunnelse,
-    id: namespace + '-begrunnelse',
+    needle: replySed.begrunnelseType,
+    id: namespace + '-begrunnelseType',
     message: 'validation:noBegrunnelse',
     personName
   }))
 
-  if (replySed.begrunnelse === '99') {
+  if (replySed.begrunnelseType === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: replySed.begrunnelseAnnen,
       id: namespace + '-begrunnelseAnnen',

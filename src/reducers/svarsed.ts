@@ -373,7 +373,7 @@ const svarsedReducer = (
       const replySed: XSed = createReplySedTemplate<XSed>(sak, sedType)
 
       if (sedType === 'X001') {
-        (replySed as X001Sed).avslutningsDato = moment(new Date()).format('YYYY-MM-DD')
+        (replySed as X001Sed).avslutningDato = moment(new Date()).format('YYYY-MM-DD')
       }
 
       return {

@@ -61,7 +61,8 @@
   "option-avslutting-begrunnelse-09" : "Lovvalg, 30 dager siden meddelelse av relevant informasjon",
   "option-avslutting-begrunnelse-10" : "Lovvalg, 30 dager siden melding om utstasjonering",
   "option-avslutting-begrunnelse-11" : "Gjeldende lovgivning, 30 dager siden kunngjøring om gjeldende lovgivning",
-  "option-avslutting-begrunnelse-12" : "Innkreving, R005 endelig forespørsel om restanser etter 2 måneder",
+  "option-avslutting-begrunnelse-12" : "Gjeldende lovgivning, 30 dager siden svar på anmodning om mer informasjon",
+  "option-avslutting-begrunnelse-13" : "Innkreving, R005 endelig forespørsel om restanser etter 2 måneder",
   "option-avslutting-begrunnelse-99" : "Annet  ( Vennligst gi nærmere opplysninger i eget felt )",
 
   "option-avvis-01": "Personen finnes ikke i våre registre",

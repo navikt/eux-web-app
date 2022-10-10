@@ -42,19 +42,20 @@ const Avslutning: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-avslutning`
 
   const begrunnelseOptions: Options = [
-    { label: t('el:option-avslutting-begrunnelse-01'), value: '01' },
-    { label: t('el:option-avslutting-begrunnelse-02'), value: '02' },
-    { label: t('el:option-avslutting-begrunnelse-03'), value: '03' },
-    { label: t('el:option-avslutting-begrunnelse-04'), value: '04' },
-    { label: t('el:option-avslutting-begrunnelse-05'), value: '05' },
-    { label: t('el:option-avslutting-begrunnelse-06'), value: '06' },
-    { label: t('el:option-avslutting-begrunnelse-07'), value: '07' },
-    { label: t('el:option-avslutting-begrunnelse-08'), value: '08' },
-    { label: t('el:option-avslutting-begrunnelse-09'), value: '09' },
-    { label: t('el:option-avslutting-begrunnelse-10'), value: '10' },
-    { label: t('el:option-avslutting-begrunnelse-11'), value: '11' },
-    { label: t('el:option-avslutting-begrunnelse-12'), value: '12' },
-    { label: t('el:option-avslutting-begrunnelse-99'), value: '99' }
+    { label: t('el:option-avslutting-begrunnelse-01'), value: 'saken_er_løst' },
+    { label: t('el:option-avslutting-begrunnelse-02'), value: 'saken_ble_feilaktig_opprettet' },
+    { label: t('el:option-avslutting-begrunnelse-03'), value: 'saken_ble_opprettet_som_følge_av_falske_opplysninger' },
+    { label: t('el:option-avslutting-begrunnelse-04'), value: 'personen_er_død' },
+    { label: t('el:option-avslutting-begrunnelse-05'), value: 'administrativ_kontroll_estimerte_kostnader_er_for_høye_flere_anmodning_vil_ikke_sendes' },
+    { label: t('el:option-avslutting-begrunnelse-06'), value: 'legeundersøkelse_estimerte_kostnader_er_for_høye_flere_forespørsler_vil_ikke_bli_sendt' },
+    { label: t('el:option-avslutting-begrunnelse-07'), value: 'gjeldende_lovgivning_det_ble_oppnådd_enighet_om_anmodningen_om_unntak' },
+    { label: t('el:option-avslutting-begrunnelse-08'), value: 'gjeldende_lovgivning_fastsettelsen_ble_endelig_ingen_reaksjon_innen_2_måneder' },
+    { label: t('el:option-avslutting-begrunnelse-09'), value: 'lovvalg_30_dager_siden_melding_om_relevant_informasjon' },
+    { label: t('el:option-avslutting-begrunnelse-10'), value: 'lovvalg_30_dager_siden_melding_om_utstasjonering' },
+    { label: t('el:option-avslutting-begrunnelse-11'), value: 'gjeldende_lovgivning_30_dager_siden_kunngjøring_om_gjeldende_lovgivning' },
+    { label: t('el:option-avslutting-begrunnelse-12'), value: 'gjeldende_lovgivning_30_dager_siden_svar_på_anmodning_om_mer_informasjon' },
+    { label: t('el:option-avslutting-begrunnelse-13'), value: 'innkreving_r005_endelig_forespørsel_om_restanser_etter_2_måneder' },
+    { label: t('el:option-avslutting-begrunnelse-99'), value: 'annet' }
   ]
 
   useUnmount(() => {
@@ -68,27 +69,27 @@ const Avslutning: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedvalidation))
   })
 
-  const setAvslutningsDato = (avslutningsDato: string) => {
-    dispatch(updateReplySed('avslutningsDato', avslutningsDato.trim()))
-    if (validation[namespace + '-avslutningsDato']) {
-      dispatch(resetValidation(namespace + '-avslutningsDato'))
+  const setAvslutningDato = (avslutningDato: string) => {
+    dispatch(updateReplySed('avslutningDato', avslutningDato.trim()))
+    if (validation[namespace + '-avslutningDato']) {
+      dispatch(resetValidation(namespace + '-avslutningDato'))
     }
   }
 
-  const setAvslutningsType = (avslutningsType: AvslutningsType) => {
-    dispatch(updateReplySed('avslutningsType', avslutningsType.trim()))
-    if (validation[namespace + '-avslutningsType']) {
-      dispatch(resetValidation(namespace + '-avslutningsType'))
+  const setAvslutningType = (avslutningType: AvslutningsType) => {
+    dispatch(updateReplySed('avslutningType', avslutningType.trim()))
+    if (validation[namespace + '-avslutningType']) {
+      dispatch(resetValidation(namespace + '-avslutningType'))
     }
   }
 
-  const setBegrunnelse = (begrunnelse: string) => {
-    dispatch(updateReplySed('begrunnelse', begrunnelse.trim()))
-    if (begrunnelse !== 'annet') {
+  const setBegrunnelse = (begrunnelseType: string) => {
+    dispatch(updateReplySed('begrunnelseType', begrunnelseType.trim()))
+    if (begrunnelseType !== 'annet') {
       dispatch(updateReplySed('begrunnelseAnnen', ''))
     }
-    if (validation[namespace + '-begrunnelse']) {
-      dispatch(resetValidation(namespace + '-begrunnelse'))
+    if (validation[namespace + '-begrunnelseType']) {
+      dispatch(resetValidation(namespace + '-begrunnelseType'))
     }
   }
 
@@ -108,13 +109,13 @@ const Avslutning: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <DateInput
-            error={validation[namespace + '-avslutningsDato']?.feilmelding}
-            id='avslutningsDato'
+            error={validation[namespace + '-avslutningDato']?.feilmelding}
+            id='avslutningDato'
             namespace={namespace}
-            label={t('label:avslutningsdato')}
-            onChanged={setAvslutningsDato}
+            label={t('label:avslutningdato')}
+            onChanged={setAvslutningDato}
             required
-            value={(replySed as X001Sed).avslutningsDato}
+            value={(replySed as X001Sed).avslutningDato}
           />
         </Column>
         <Column flex='1.5' />
@@ -123,16 +124,16 @@ const Avslutning: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column flex='2'>
           <RadioPanelGroup
-            value={(replySed as X001Sed).avslutningsType}
+            value={(replySed as X001Sed).avslutningType}
             data-no-border
-            data-testid={namespace + '-avslutningsType'}
-            error={validation[namespace + '-avslutningsType']?.feilmelding}
-            id={namespace + '-avslutningsType'}
-            legend={t('label:avslutningstype')}
+            data-testid={namespace + '-avslutningType'}
+            error={validation[namespace + '-avslutningType']?.feilmelding}
+            id={namespace + '-avslutningType'}
+            legend={t('label:avslutningtype')}
             hideLabel={false}
             required
-            name={namespace + '-avslutningsType'}
-            onChange={setAvslutningsType}
+            name={namespace + '-avslutningType'}
+            onChange={setAvslutningType}
           >
             <FlexRadioPanels>
               <RadioPanel value='manuell'>
@@ -158,13 +159,13 @@ const Avslutning: React.FC<MainFormProps> = ({
             onChange={(o: unknown) => setBegrunnelse((o as Option).value)}
             options={begrunnelseOptions}
             required
-            value={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelse)}
-            defaultValue={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelse)}
+            value={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
+            defaultValue={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
           />
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X001Sed).begrunnelse === '99' && (
+      {(replySed as X001Sed).begrunnelseType === 'annen' && (
         <AlignStartRow>
           <Column>
             <Input

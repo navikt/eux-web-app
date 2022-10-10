@@ -521,9 +521,9 @@ export interface XSed extends BaseReplySed {
 export type AvslutningsType = 'manuell' | 'automatisk'
 
 export interface X001Sed extends XSed {
-  avslutningsDato: string
-  avslutningsType: AvslutningsType
-  begrunnelse: string
+  avslutningDato: string
+  avslutningType: AvslutningsType
+  begrunnelseType: string
   begrunnelseAnnen?: string
 }
 
