@@ -56,25 +56,25 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('getPreviewFile()', () => {
-    const rinaSakId = '123'
-    const replySed = {
-      sak: {
-        sakId: '123',
-        sakUrl: 'url'
-      }
-    } as ReplySed
-    svarsedActions.getPreviewFile(rinaSakId, replySed)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SVARSED_PREVIEW_REQUEST,
-          success: types.SVARSED_PREVIEW_SUCCESS,
-          failure: types.SVARSED_PREVIEW_FAILURE
-        },
-        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: replySed.sak?.sakId })
-      }))
-  })
+  // it('getPreviewFile()', () => {
+  //   const rinaSakId = '123'
+  //   const replySed = {
+  //     sak: {
+  //       sakId: '123',
+  //       sakUrl: 'url'
+  //     }
+  //   } as ReplySed
+  //   svarsedActions.getPreviewFile(rinaSakId, replySed)
+  //   expect(call)
+  //     .toBeCalledWith(expect.objectContaining({
+  //       type: {
+  //         request: types.SVARSED_PREVIEW_REQUEST,
+  //         success: types.SVARSED_PREVIEW_SUCCESS,
+  //         failure: types.SVARSED_PREVIEW_FAILURE
+  //       },
+  //       url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: replySed.sak?.sakId })
+  //     }))
+  // })
 
   it('getSedStatus()', () => {
     const rinaSakId = '123'

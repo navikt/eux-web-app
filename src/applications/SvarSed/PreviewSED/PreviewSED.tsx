@@ -27,14 +27,12 @@ export interface PreviewSedSelector {
   gettingPreviewFile: boolean
   gettingPreviewSed: boolean
   previewFile: Blob | undefined
-  previewReplySed: ReplySed | null | undefined
 }
 
 const mapState = (state: State): any => ({
   gettingPreviewFile: state.loading.gettingPreviewFile,
   gettingPreviewSed: state.loading.gettingPreviewSed,
   previewFile: state.svarsed.previewFile,
-  previewReplySed: state.svarsed.previewReplySed
 })
 
 const PreviewSED: React.FC<PreviewSedProps> = ({
@@ -50,7 +48,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
     gettingPreviewFile,
     gettingPreviewSed,
     previewFile,
-    previewReplySed
   }: PreviewSedSelector = useAppSelector(mapState)
 
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
@@ -62,12 +59,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       showPreviewModal(previewFile)
     }
   }, [previewFile])
-
-  useEffect(() => {
-    if (requestPreview && rinaSakId && sedId && !_.isNil(previewReplySed) && !gettingPreviewSed) {
-      dispatch(getPreviewFile(rinaSakId!, previewReplySed))
-    }
-  }, [previewReplySed])
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
@@ -112,7 +103,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
   const onPreviewSedClicked = (e: any) => {
     /* two modes:
        1) I am alrady editing a SED, so I can use all info from replySed
-       2) I am choosing a SED, therefore I have to fetch it first, then I can preview it
+       2) I am choosing a SED, get PDF from RINA
      */
     if (replySed) {
       const newReplySed = _.cloneDeep(replySed)

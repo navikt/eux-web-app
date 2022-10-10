@@ -276,13 +276,14 @@ export const previewSed = (
   sedId: string, rinaSakId: string
 ): ActionWithPayload<ReplySed> => {
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId, sedId }),
-    expectedPayload: mockReplySed('F002'),
+    url: sprintf(urls.API_PDF_URL, { rinaSakId, sedId }),
+    expectedPayload: mockPreview,
+    responseType: 'pdf',
     type: {
-      request: types.SVARSED_PREVIEW_REQUEST,
-      success: types.SVARSED_PREVIEW_SUCCESS,
-      failure: types.SVARSED_PREVIEW_FAILURE
-    }
+      request: types.SVARSED_PREVIEW_FILE_REQUEST,
+      success: types.SVARSED_PREVIEW_FILE_SUCCESS,
+      failure: types.SVARSED_PREVIEW_FILE_FAILURE
+    },
   })
 }
 

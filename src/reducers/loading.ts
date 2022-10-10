@@ -220,19 +220,6 @@ const loadingReducer = (
         addingMottakere: false
       }
 
-    case types.SVARSED_PREVIEW_REQUEST:
-      return {
-        ...state,
-        gettingPreviewSed: true
-      }
-
-    case types.SVARSED_PREVIEW_SUCCESS:
-    case types.SVARSED_PREVIEW_FAILURE:
-      return {
-        ...state,
-        gettingPreviewSed: false
-      }
-
     case types.SVARSED_PREVIEW_FILE_REQUEST:
       return {
         ...state,

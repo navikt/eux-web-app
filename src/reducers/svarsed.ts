@@ -24,7 +24,6 @@ export interface SvarsedState {
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
-  previewReplySed: ReplySed | null | undefined
   previewFile: Blob | null | undefined
   replySed: ReplySed | null | undefined
   originalReplySed: ReplySed | null | undefined
@@ -42,8 +41,6 @@ export const initialSvarsedState: SvarsedState = {
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
-  // replySED used for preview
-  previewReplySed: undefined,
   // binary PDF file for SED preview,
   previewFile: undefined,
   // the working reply sed
@@ -241,28 +238,9 @@ const svarsedReducer = (
         }
       }
 
-    case types.SVARSED_PREVIEW_SUCCESS:
-      return {
-        ...state,
-        previewReplySed: (action as ActionWithPayload).payload
-      }
-
-    case types.SVARSED_PREVIEW_FAILURE:
-      return {
-        ...state,
-        previewReplySed: null
-      }
-
-    case types.SVARSED_PREVIEW_REQUEST:
-      return {
-        ...state,
-        previewReplySed: undefined
-      }
-
     case types.SVARSED_PREVIEW_RESET:
       return {
         ...state,
-        previewReplySed: undefined,
         previewFile: undefined
       }
 
