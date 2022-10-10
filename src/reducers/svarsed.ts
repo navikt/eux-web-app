@@ -406,7 +406,7 @@ const svarsedReducer = (
     case types.SVARSED_SED_REJECT: {
       const { connectedSed, sak } = action.payload
       const replySed: X011Sed = createReplySedTemplate<X011Sed>(sak, 'X011')
-      replySed.kansellerSedId = connectedSed.sedType
+      replySed.avvisSedId = connectedSed.sedId
       return {
         ...state,
         replySed

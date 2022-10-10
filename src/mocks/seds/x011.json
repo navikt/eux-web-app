@@ -5,8 +5,8 @@
     "kjoenn": "M",
     "foedselsdato": "2002-02-02"
   },
-  "kansellerSedId": "123123123",
-  "begrunnelseType": "99",
+  "avvisSedId": "123123123",
+  "begrunnelseType": "annet",
   "begrunnelseAnnen": "æøå",
   "sedType": "X011",
   "sedVersjon": "4.2"

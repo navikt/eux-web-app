@@ -534,6 +534,12 @@ export interface X008Sed extends XSed {
   kansellerSedId: string
 }
 
+export interface X011Sed extends XSed {
+  avvisSedId: string
+  begrunnelseType: string
+  begrunnelseAnnen?: string
+}
+
 export interface Purring {
   gjelder: string
   beskrivelse: string
@@ -556,8 +562,6 @@ export interface X010Sed extends XSed {
   besvarelseKommer: Array<BesvarelseKommer>
   besvarelseUmulig: Array<BesvarelseUmulig>
 }
-
-export interface X011Sed extends X008Sed {}
 
 export interface KlargjoerInfoItem {
   del: string

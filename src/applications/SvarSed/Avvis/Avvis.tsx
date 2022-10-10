@@ -73,7 +73,7 @@ const Avvis: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          {(replySed as X011Sed)?.kansellerSedId}
+          {(replySed as X011Sed)?.avvisSedId}
         </Column>
         <Column />
       </AlignStartRow>
@@ -92,16 +92,16 @@ const Avvis: React.FC<MainFormProps> = ({
             name={namespace + '-begrunnelseType'}
             onChange={setBegrunnelseType}
           >
-            <RadioPanel value='01'>{t('el:option-avvis-01')}</RadioPanel>
-            <RadioPanel value='02'>{t('el:option-avvis-02')}</RadioPanel>
-            <RadioPanel value='03'>{t('el:option-avvis-03')}</RadioPanel>
-            <RadioPanel value='99'>{t('el:option-avvis-99')}</RadioPanel>
+            <RadioPanel value='personen_finnes_ikke_i_våre_registre'>{t('el:option-avvis-01')}</RadioPanel>
+            <RadioPanel value='ikke_kompetent_institusjon_i_saken_og_ikke_i_stand_til_å_videresende'>{t('el:option-avvis-02')}</RadioPanel>
+            <RadioPanel value='etterspurt_obligatorisk_informasjon_finnes_ikke'>{t('el:option-avvis-03')}</RadioPanel>
+            <RadioPanel value='annet'>{t('el:option-avvis-99')}</RadioPanel>
           </RadioPanelGroup>
         </Column>
         <Column />
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X011Sed).begrunnelseType === '99' && (
+      {(replySed as X011Sed).begrunnelseType === 'annet' && (
         <AlignStartRow>
           <Column>
             <Input
