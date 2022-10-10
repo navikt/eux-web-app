@@ -165,7 +165,7 @@ const Avslutning: React.FC<MainFormProps> = ({
         </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv />
-      {(replySed as X001Sed).begrunnelseType === 'annen' && (
+      {(replySed as X001Sed).begrunnelseType === 'annet' && (
         <AlignStartRow>
           <Column>
             <Input
