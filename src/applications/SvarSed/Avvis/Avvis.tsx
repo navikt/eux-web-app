@@ -73,7 +73,7 @@ const Avvis: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          {(replySed as X011Sed)?.avvisSedId}
+          {(replySed as X011Sed)?.sedType}
         </Column>
         <Column />
       </AlignStartRow>
