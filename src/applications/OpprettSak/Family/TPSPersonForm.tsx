@@ -24,6 +24,7 @@ export interface TPSPersonFormProps {
   personRelatert: Person | null | undefined
   searchingRelatertPerson: boolean
   rolleList: Array<Kodeverk>
+  disableAll?: boolean
 }
 
 const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
@@ -38,7 +39,8 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
   person,
   personRelatert,
   searchingRelatertPerson,
-  rolleList
+  rolleList,
+  disableAll
 }: TPSPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = 'tpspersonform'
@@ -128,7 +130,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             onChange={updateQuery}
             required
             value={_query}
-            disabled={searchingRelatertPerson}
+            disabled={searchingRelatertPerson || disableAll}
           >
             <Search.Button onClick={sokEtterFnr}>
               {t('el:button-search')}
@@ -151,6 +153,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
             person={_personRelatert}
             onAddClick={leggTilPersonOgRolle}
             rolleList={rolleList}
+            disableAll={disableAll}
           />
         )}
       </FlexDiv>

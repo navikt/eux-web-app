@@ -28,6 +28,8 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
+import {ALLOWED_TO_FILL_OUT} from 'constants/allowed'
+
 import {
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
@@ -220,7 +222,7 @@ const SEDNew = (): JSX.Element => {
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const allowedToFillOut = (sedType: string) => ['H001', 'F001'].indexOf(sedType) >= 0
+  const allowedToFillOut = (sedType: string) => ALLOWED_TO_FILL_OUT.indexOf(sedType) >= 0
 
   const skjemaSubmit = (): void => {
     const clonedvalidation = _.cloneDeep(validation)
@@ -420,7 +422,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sektor'}
-              disabled={_.isEmpty(person)}
+              disabled={_.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-sektor']?.feilmelding}
               id={namespace + '-sektor'}
               label={t('label:sektor')}
@@ -448,6 +450,7 @@ const SEDNew = (): JSX.Element => {
                 label={t('label:enhet')}
                 onChange={onUnitChange}
                 value={valgtUnit}
+                disabled={!!opprettetSak}
               >
                 <option value=''>
                   {t('label:velg')}
@@ -468,7 +471,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-buctype'}
-              disabled={!!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              disabled={_.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-buctype']?.feilmelding}
               id={namespace + '-buctype'}
               label={t('label:buc')}
@@ -490,7 +493,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sedtype'}
-              disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-sedtype']?.feilmelding}
               id={namespace + '-sedtype'}
               label={t('label:sed')}
@@ -526,7 +529,7 @@ const SEDNew = (): JSX.Element => {
               includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
               label={t('label:land')}
               lang='nb'
-              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person)}
+              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}
               menuPortalTarget={document.body}
               onOptionSelected={onLandkodeChange}
               flagWave
@@ -538,7 +541,7 @@ const SEDNew = (): JSX.Element => {
             <FlexCenterDiv>
               <Select
                 data-testid={namespace + '-institusjon'}
-                disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person)}
+                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person) || !!opprettetSak}
                 error={validation[namespace + '-institusjon']?.feilmelding}
                 id={namespace + '-institusjon'}
                 label={t('label:mottaker-institusjon')}
@@ -573,6 +576,7 @@ const SEDNew = (): JSX.Element => {
             </Heading>
             <VerticalSeparatorDiv />
             <Family
+              disableAll={!!opprettetSak}
               alertVariant={alertVariant}
               alertMessage={alertMessage}
               alertType={alertType}
@@ -628,7 +632,7 @@ const SEDNew = (): JSX.Element => {
                     id={namespace + '-tema'}
                     label={t('label:velg-tema')}
                     onChange={onTemaChange}
-                    disabled={_.isEmpty(person)}
+                    disabled={_.isEmpty(person) || !!opprettetSak}
                     value={valgtTema}
                   >
                     <option value=''>
@@ -648,7 +652,7 @@ const SEDNew = (): JSX.Element => {
                     <Button
                       variant='secondary'
                       onClick={onViewFagsakerClick}
-                      disabled={gettingFagsaker || !!_.isEmpty(valgtTema) || _.isEmpty(person)}
+                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(person) || !!opprettetSak}
                     >
                       {gettingFagsaker && <Loader />}
                       {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
@@ -683,6 +687,7 @@ const SEDNew = (): JSX.Element => {
                     label={t('label:velg-fagsak')}
                     onChange={onSakIDChange}
                     value={valgtSaksId}
+                    disabled={!!opprettetSak}
                   >
                     <option value=''>
                       {t('label:velg')}

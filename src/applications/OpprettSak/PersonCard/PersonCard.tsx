@@ -45,11 +45,12 @@ export interface PersonCardProps {
   onAddClick?: (p: Person | OldFamilieRelasjon) => void
   onRemoveClick?: (p: Person | OldFamilieRelasjon) => void
   person: Person | OldFamilieRelasjon
-  rolleList?: Array<Kodeverk>
+  rolleList?: Array<Kodeverk>,
+  disableAll?: boolean
 }
 
 const PersonCard: React.FC<PersonCardProps> = ({
-  className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList
+  className, familierelasjonKodeverk, onAddClick, onRemoveClick, person, rolleList, disableAll
 }: PersonCardProps): JSX.Element => {
   const [rolle, setRolle] = useState<any>(undefined)
   const { fnr, fdato, fornavn, etternavn, kjoenn } = (person as OldFamilieRelasjon)
@@ -140,6 +141,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <RemoveButton
               kompakt
               onClick={() => _onRemoveClick(person)}
+              disabled={disableAll}
             >
               <Delete width='20' height='20' />
             </RemoveButton>
@@ -151,7 +153,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
             <Button
               variant='secondary'
               data-testid='familierelasjoner__knapp--legg-til'
-              disabled={rolleList !== undefined && !rolle}
+              disabled={rolleList !== undefined && !rolle || disableAll}
               onClick={() => _onAddClick(person)}
             >
               <AddCircle width={20} />
@@ -168,6 +170,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               date-testid='familierelasjoner__select-familirelasjon-rolle'
               value={(person as OldFamilieRelasjon).rolle}
               onChange={updateFamilyRelation}
+              disabled={disableAll}
             >
               <option value=''>{t('label:velg')}</option>
               {rolleList && rolleList.map((element: Kodeverk) => (

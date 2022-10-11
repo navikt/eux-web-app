@@ -30,6 +30,7 @@ export interface FamilyProps {
   searchingRelatertPerson: boolean
   TPSPersonFormAlertTypesWatched: Array<string> | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon> | undefined
+  disableAll?: boolean
 }
 
 const Family: React.FC<FamilyProps> = ({
@@ -49,7 +50,8 @@ const Family: React.FC<FamilyProps> = ({
   person,
   searchingRelatertPerson,
   valgteFamilieRelasjoner,
-  TPSPersonFormAlertTypesWatched
+  TPSPersonFormAlertTypesWatched,
+  disableAll
 }: FamilyProps): JSX.Element => {
   const [_viewAbroadPersonForm, setViewAbroadPersonForm] = useState<boolean>(false)
   const [_viewTPSRelatedForm, setViewTPSRelatedForm] = useState<boolean>(false)
@@ -106,6 +108,7 @@ const Family: React.FC<FamilyProps> = ({
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 onAddClick={onRelationAdded}
                 person={relation}
+                disableAll={disableAll}
               />
               <VerticalSeparatorDiv size='1.5' />
             </div>
@@ -142,6 +145,7 @@ const Family: React.FC<FamilyProps> = ({
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 onRemoveClick={onRelationRemoved}
                 person={relation}
+                disableAll={disableAll}
               />
               <VerticalSeparatorDiv size='1.5' />
             </div>
@@ -166,12 +170,14 @@ const Family: React.FC<FamilyProps> = ({
               onAbroadPersonAddedSuccess={onAbroadPersonAddedSuccess}
               person={person}
               rolleList={rolleList}
+              disableAll={disableAll}
             />
           )}
           <VerticalSeparatorDiv size='2' />
           <Button
             variant='secondary'
             onClick={toggleViewAbroadPersonForm}
+            disabled={disableAll}
           >
             {_viewAbroadPersonForm
               ? t('label:skjul-skjema')
@@ -198,12 +204,14 @@ const Family: React.FC<FamilyProps> = ({
               personRelatert={personRelatert}
               searchingRelatertPerson={searchingRelatertPerson}
               rolleList={rolleList}
+              disableAll={disableAll}
             />
           )}
           <VerticalSeparatorDiv size='2' />
           <Button
             variant='secondary'
             onClick={toggleViewTPSRelatedForm}
+            disabled={disableAll}
           >
             {_viewTPSRelatedForm
               ? t('label:skjul-skjema')
