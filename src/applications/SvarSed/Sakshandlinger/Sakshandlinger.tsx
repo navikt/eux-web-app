@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
+import {ALLOWED_SAKSHANDLINGER, HIDDEN_SAKSHANDLINGER} from "../../../constants/allowed";
 
 export interface SakshandlingerProps {
   sak: Sak
@@ -92,9 +93,9 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     let sakshandlinger: JSX.Element[] = [];
     let disabledSakshandlinger: JSX.Element[] = [];
     sak.sakshandlinger.forEach((sakshandling) => {
-      if(allowedSakshandlinger.includes(sakshandling)){
+      if(ALLOWED_SAKSHANDLINGER.includes(sakshandling)){
         sakshandlinger.push(createSakshandlingFragment(sakshandling))
-      } else if (!hiddenSaksbehandlinger.includes(sakshandling)){
+      } else if (!HIDDEN_SAKSHANDLINGER.includes(sakshandling)){
         disabledSakshandlinger.push(createDisabledSakshandlingFragment(sakshandling))
       }
 
@@ -102,8 +103,6 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     return {sakshandlinger, disabledSakshandlinger};
   }
 
-  const allowedSakshandlinger = ["H001", "X001", "X009", "F001", "F002", "F004", "F022", "F023", "F026", "F027", "F016", "F003", "R001", "R003", "R004", "Delete_Case"]
-  const hiddenSaksbehandlinger = ["multipleParticipants", "singleParticipant"]
   const {sakshandlinger, disabledSakshandlinger} = getSakshandlinger();
 
   return (

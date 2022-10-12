@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {ALLOWED_SED_EDIT_AND_UPDATE, ALLOWED_SED_HANDLINGER} from "../../../constants/allowed";
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
@@ -158,13 +159,13 @@ const SEDPanel = ({
   const showJournalforingButton = sed.lenkeHvisForrigeSedMaaJournalfoeres
   const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
-  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && sed.status === 'new'
-  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active')
-  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0)
-  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X008') >= 0
-  const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger.indexOf('X010') >= 0 && sed.status === 'received'
-  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X011') >= 0
-  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X012') >= 0
+  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
+  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
+  const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
+  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
+  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
   return (
     <MyPanel border>
