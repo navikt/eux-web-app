@@ -6,5 +6,5 @@ export const ALLOWED_SAKSHANDLINGER = IS_DEVELOPMENT ?
     ["H001", "X001", "X009", "F002", "Delete_Case"]
 
 export const HIDDEN_SAKSHANDLINGER = ["multipleParticipants", "singleParticipant"]
-export const ALLOWED_SED_HANDLINGER = ["X008", "X010", "X011", "X012", "H002", "F002"]
-export const ALLOWED_SED_EDIT_AND_UPDATE = ["H001", "H002", "F002"]
+export const ALLOWED_SED_HANDLINGER = ["H002", "F002", "X008", "X010", "X011", "X012", ]
+export const ALLOWED_SED_EDIT_AND_UPDATE = ["H001", "H002", "F002", "X008", "X010", "X011", "X012"]
