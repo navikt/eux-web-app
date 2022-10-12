@@ -212,6 +212,15 @@ export const createH001Sed = (
   payload: { sak }
 })
 
+export const createF002Sed = (
+  sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_F002SED_CREATE,
+  payload: { sak }
+})
+
+
+
 export const querySaks = (
   saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {

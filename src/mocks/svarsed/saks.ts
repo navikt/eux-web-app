@@ -22,7 +22,7 @@ export default (saksnummer: string, type: string) => {
       tema: 'KON',
       fagsakId: '123',
       sakshandlinger: [
-        'H001', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
+        'H001', 'F002', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
       sedListe: [
         {

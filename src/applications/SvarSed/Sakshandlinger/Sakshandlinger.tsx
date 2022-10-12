@@ -1,7 +1,7 @@
 import { BodyLong, Heading, Link, Panel, ReadMore } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Tooltip from '@navikt/tooltip'
-import {createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
+import {createF002Sed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
@@ -50,6 +50,11 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     dispatch(createH001Sed(sak))
   }
 
+  const _createF002Sed = () => {
+    setWaitingForOperation(true)
+    dispatch(createF002Sed(sak))
+  }
+
   const createDisabledSakshandlingFragment = (sakshandling: string) => {
     return(
       <>
@@ -76,6 +81,8 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
       onClickFunction = () => deleteCase();
     } else  if (sakshandling === "H001"){
       onClickFunction = () => _createH001Sed()
+    } else  if (sakshandling === "F002"){
+      onClickFunction = () => _createF002Sed()
     }
 
     return(

@@ -1,6 +1,7 @@
 import * as types from 'constants/actionTypes'
 import {
   H001Sed,
+  F002Sed,
   HSed,
   Kjoenn,
   ReplySed,
@@ -361,6 +362,15 @@ const svarsedReducer = (
     case types.SVARSED_H001SED_CREATE: {
       const sak = (action as ActionWithPayload).payload.sak
       const replySed: H001Sed = createReplySedTemplate<H001Sed>(sak, 'H001')
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_F002SED_CREATE: {
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: F002Sed = createReplySedTemplate<F002Sed>(sak, 'F002')
       return {
         ...state,
         replySed
