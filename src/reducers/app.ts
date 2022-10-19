@@ -108,14 +108,18 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       delete payload.brukernavn
       delete payload.navn
 
+      const newFeatureToggles = _.cloneDeep(state.featureToggles)
+      if (!_.isEmpty(action.payload)) {
+        Object.keys(action.payload).forEach((k: string) => {
+          newFeatureToggles[k] = state.params[k] === "false" ? false : action.payload[k]
+        })
+      }
+
       return {
         ...state,
         brukernavn,
         navn,
-        featureToggles: {
-          ...state.featureToggles,
-          ...payload
-        }
+        featureToggles: newFeatureToggles
       }
     }
 

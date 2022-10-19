@@ -9,10 +9,10 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import {ALLOWED_SAKSHANDLINGER, HIDDEN_SAKSHANDLINGER} from "../../../constants/allowed";
+import {getAllowed, HIDDEN_SAKSHANDLINGER} from "../../../utils/allowedFeatures";
 
 export interface SakshandlingerProps {
-  sak: Sak
+  sak: Sak,
 }
 
 const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProps) => {
@@ -20,6 +20,9 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const replySed = useAppSelector(state => state.svarsed.replySed)
+  const featureToggles = useAppSelector(state => state.app.featureToggles)
+
+  const ALLOWED_SAKSHANDLINGER = getAllowed("ALLOWED_SAKSHANDLINGER", !!featureToggles?.featureIsAdmin)
 
   const deleteCase = () => {
     if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {

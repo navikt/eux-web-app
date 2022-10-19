@@ -28,7 +28,6 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import {ALLOWED_TO_FILL_OUT} from 'constants/allowed'
 
 import {
   ArbeidsperiodeFraAA,
@@ -58,6 +57,8 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
 import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
+import {FeatureToggles} from "../../declarations/app";
+import {getAllowed} from "../../utils/allowedFeatures";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -104,6 +105,7 @@ export interface SEDNewSelector {
   currentSak: Sak | undefined
 
   validation: Validation
+  featureToggles: FeatureToggles | null | undefined
 }
 
 const mapState = (state: State): SEDNewSelector => ({
@@ -151,7 +153,8 @@ const mapState = (state: State): SEDNewSelector => ({
 
   currentSak: state.svarsed.currentSak,
 
-  validation: state.validation.status
+  validation: state.validation.status,
+  featureToggles: state.app.featureToggles
 })
 
 export const MyContent = styled(Content)`
@@ -198,7 +201,8 @@ const SEDNew = (): JSX.Element => {
     valgtSektor,
     valgtTema,
     valgtUnit,
-    validation
+    validation,
+    featureToggles
   }: SEDNewSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -222,6 +226,7 @@ const SEDNew = (): JSX.Element => {
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
+  const ALLOWED_TO_FILL_OUT = getAllowed("ALLOWED_TO_FILL_OUT", !!featureToggles?.featureIsAdmin)
   const allowedToFillOut = (sedType: string) => ALLOWED_TO_FILL_OUT.indexOf(sedType) >= 0
 
   const skjemaSubmit = (): void => {
