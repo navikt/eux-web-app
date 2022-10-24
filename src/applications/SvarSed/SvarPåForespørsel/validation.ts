@@ -28,11 +28,7 @@ export const validateSvarPåForespørsel = (
       !_.isEmpty((replySed as H002Sed)?.negativtSvar?.sed) ||
         !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
 
-<<<<<<< HEAD
-  const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negative' : undefined
-=======
   const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negativt' : undefined
->>>>>>> v7
 
   if (target === 'positivt') {
     hasErrors.push(checkLength(v, {
