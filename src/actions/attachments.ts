@@ -42,10 +42,10 @@ export const getJoarkItemPreview = (
 }
 
 export const listJoarkItems = (
-  fnr: string, tema: string = '', dokumenttype: string = ''
+  fnr: string, tema: string = ''
 ): ActionWithPayload<JoarkList> => {
   return call({
-    url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr, tema, dokumenttype }),
+    url: sprintf(urls.API_ATTACHMENT_LIST_URL, { fnr, tema }),
     expectedPayload: mockJoark,
     type: {
       request: types.ATTACHMENT_LIST_REQUEST,

@@ -22,14 +22,14 @@ describe('reducers/app', () => {
     })
   })
 
-  it('VEDLEGG_DOKUMENT_GET_REQUEST', () => {
+  it('VEDLEGG_DOKUMENT_REQUEST', () => {
     const payload = 'mockPayload'
     expect(
       vedleggReducer({
         ...initialVedleggState,
         dokument: [{ kode: 'bar' } as Dokument]
       }, {
-        type: types.VEDLEGG_DOKUMENT_GET_REQUEST,
+        type: types.VEDLEGG_DOKUMENT_REQUEST,
         payload
       })
     ).toEqual({
@@ -38,14 +38,14 @@ describe('reducers/app', () => {
     })
   })
 
-  it('VEDLEGG_DOKUMENT_GET_FAILURE', () => {
+  it('VEDLEGG_DOKUMENT_FAILURE', () => {
     const payload = 'mockPayload'
     expect(
       vedleggReducer({
         ...initialVedleggState,
         dokument: [{ kode: 'bar' } as Dokument]
       }, {
-        type: types.VEDLEGG_DOKUMENT_GET_FAILURE,
+        type: types.VEDLEGG_DOKUMENT_FAILURE,
         payload
       })
     ).toEqual({
@@ -54,14 +54,14 @@ describe('reducers/app', () => {
     })
   })
 
-  it('VEDLEGG_DOKUMENT_GET_SUCCESS', () => {
+  it('VEDLEGG_DOKUMENT_SUCCESS', () => {
     const payload = [{ kode: 'bar' } as Dokument]
     expect(
       vedleggReducer({
         ...initialVedleggState,
         dokument: undefined
       }, {
-        type: types.VEDLEGG_DOKUMENT_GET_SUCCESS,
+        type: types.VEDLEGG_DOKUMENT_SUCCESS,
         payload
       })
     ).toEqual({
@@ -87,10 +87,10 @@ describe('reducers/app', () => {
     })
   })
 
-  it('APP_CLEAN', () => {
+  it('APP_RESET', () => {
     expect(
       vedleggReducer({} as VedleggState, {
-        type: types.APP_CLEAN,
+        type: types.APP_RESET,
         payload: undefined
       })
     ).toEqual(initialVedleggState)

@@ -4,6 +4,7 @@ import { PDU1 } from 'declarations/pd'
 import { JaNei, ReplySed } from 'declarations/sed'
 
 export type StorageTypes = PDU1 | ReplySed
+export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
@@ -53,13 +54,16 @@ export interface Sed {
   sedTittel: string
   sedType: string
   sedId: string
+  sedUrl ?: string
   sedIdParent?: string
   status: string
   sistEndretDato: string
-  svarsedType: string
-  svarsedId: string
-  svarsedDisplay: string
+  svarsedType?: string
+  svarsedId?: string
+  svarsedDisplay?: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
+  sedHandlinger: Array<SedAction>
+  children ?: Array<Sed>
 }
 
 export interface Dokument {
@@ -97,6 +101,19 @@ export interface FagSak {
   opprettetTidspunkt?: string
   status?: string
 }
+
+export interface PDU1SearchResult {
+  fagsakId: string
+  datoOpprettet: string
+  journalpostId: string
+  dokumentInfoId: string
+  tema: string
+  brevkode: string
+  tittel: string
+  dokumentvarianter: Array<string>
+}
+
+export type PDU1SearchResults = Array<PDU1SearchResult>
 
 export type FagSaker = Array<FagSak>
 
@@ -143,7 +160,7 @@ export interface LogMeAgainPayload {
 export interface OpprettetSak {
   sakId: string
   sakUrl: string
-  sedId ?: string
+  sedId: string
 }
 
 export interface Saksbehandler {
@@ -153,21 +170,23 @@ export interface Saksbehandler {
 }
 
 export interface Sak {
-  person?: {
-    fornavn: string
-    etternavn: string
-    foedselsdato: string
-    kjoenn: string
-    fnr: string
-  }
+  fornavn: string
+  etternavn: string
+  foedselsdato: string
+  kjoenn: string
+  fnr: string
   erSakseier? : JaNei
   sakType: string
   sakTittel: string
   sakId: string
+  internasjonalSakId ?: string
   sakUrl: string
   motpart: Array<string>
-  motpartInstitusjon: string
+  motpartInstitusjon?: string
   sistEndretDato: string
+  sakshandlinger: Array<string>
+  tema ?: string
+  fagsakId ?: string
   sedListe: Array<Sed>
 }
 

@@ -25,9 +25,9 @@ describe('actions/attachments', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.INNTEKT_GET_REQUEST,
-          success: types.INNTEKT_GET_SUCCESS,
-          failure: types.INNTEKT_GET_FAILURE
+          request: types.INNTEKT_REQUEST,
+          success: types.INNTEKT_SUCCESS,
+          failure: types.INNTEKT_FAILURE
         },
         url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom, tom, inntektsliste })
       }))

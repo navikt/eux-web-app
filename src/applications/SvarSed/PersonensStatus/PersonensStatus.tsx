@@ -50,13 +50,14 @@ const PersonensStatus: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const person: Person = _.get(replySed, personID!)
-    const [, newValidation] = performValidation<ValidationPersonensStatusProps>(
-      validation, namespace, validatePersonensStatusPerioder, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationPersonensStatusProps>(
+      clonedValidation, namespace, validatePersonensStatusPerioder, {
         person,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   return (

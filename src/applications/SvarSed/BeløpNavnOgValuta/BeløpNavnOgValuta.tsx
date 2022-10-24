@@ -137,16 +137,16 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewYtelse({
         ..._newYtelse,
-        startdato: newPeriode.startdato,
-        sluttdato: newPeriode.sluttdato
+        startdato: newPeriode.startdato.trim(),
+        sluttdato: newPeriode.sluttdato?.trim()
       } as Ytelse)
       _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
       return
     }
     _setEditYtelse({
       ..._editYtelse,
-      startdato: newPeriode.startdato,
-      sluttdato: newPeriode.sluttdato
+      startdato: newPeriode.startdato.trim(),
+      sluttdato: newPeriode.sluttdato?.trim()
     } as Ytelse)
     dispatch(resetValidation([namespace + getIdx(index) + '-startdato', namespace + getIdx(index) + '-sluttdato']))
   }
@@ -155,14 +155,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewYtelse({
         ..._newYtelse,
-        mottakersNavn: newMottakersNavn
+        mottakersNavn: newMottakersNavn.trim()
       } as Ytelse)
       _resetValidation(namespace + '-mottakersNavn')
       return
     }
     _setEditYtelse({
       ..._editYtelse,
-      mottakersNavn: newMottakersNavn
+      mottakersNavn: newMottakersNavn.trim()
     } as Ytelse)
     dispatch(resetValidation(namespace + getIdx(index) + '-mottakersNavn'))
   }
@@ -205,14 +205,15 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationBeløpNavnOgValutaProps>(
-      validation, namespace, validateBeløpNavnOgValuta, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationBeløpNavnOgValutaProps>(
+      clonedValidation, namespace, validateBeløpNavnOgValuta, {
         ytelse: _editYtelse,
         index: _editIndex,
         personID,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       const __editYtelse = _.cloneDeep(_editYtelse)
       if (personID !== 'familie') {
         delete __editYtelse?.antallPersoner
@@ -220,7 +221,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
       dispatch(updateReplySed(`${target}[${_editIndex}]`, __editYtelse))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

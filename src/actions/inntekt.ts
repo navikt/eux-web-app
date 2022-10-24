@@ -12,9 +12,9 @@ export const fetchInntekt = (
     url: sprintf(urls.API_INNTEKT_FOM_TOM_URL, { fnr, fom: fom ?? '', tom: tom ?? '', inntektsliste: inntektsliste ?? '' }),
     expectedPayload: mockInntekt,
     type: {
-      request: types.INNTEKT_GET_REQUEST,
-      success: types.INNTEKT_GET_SUCCESS,
-      failure: types.INNTEKT_GET_FAILURE
+      request: types.INNTEKT_REQUEST,
+      success: types.INNTEKT_SUCCESS,
+      failure: types.INNTEKT_FAILURE
     }
   })
 }

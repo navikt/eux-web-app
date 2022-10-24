@@ -28,13 +28,14 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-refusjon_i_henhold_til_artikkel_58_i_forordningen`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationKravOmRefusjonProps>(
-      validation, namespace, validateKravOmRefusjon, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationKravOmRefusjonProps>(
+      clonedValidation, namespace, validateKravOmRefusjon, {
         kravOmRefusjon: refusjonIHenholdTilArtikkel58IForordningen,
         formalName: personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setKrav = (newKrav: string) => {

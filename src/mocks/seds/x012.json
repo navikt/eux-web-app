@@ -1,0 +1,15 @@
+{
+  "bruker": {
+    "fornavn": "æøå",
+    "etternavn": "æøå",
+    "kjoenn": "M",
+    "foedselsdato": "2002-02-02"
+  },
+  "sedVersjon": "4.2",
+  "klargjoerInfo": [{
+    "del": "Del",
+    "punkt": "Punkt",
+    "begrunnelseType": "annet",
+    "begrunnelseAnnen": "grunnAnnet"
+  }]
+}

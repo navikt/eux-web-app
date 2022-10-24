@@ -1,7 +1,7 @@
 import { BodyLong, Button, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { saveEntry } from 'actions/localStorage'
-import { jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
+import { getPdu1Template, getStoredPdu1AsJSON, jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { setValidation } from 'actions/validation'
 import Avsender from 'applications/PDU1/Avsender/Avsender'
@@ -17,6 +17,7 @@ import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import MainForm from 'applications/SvarSed/MainForm'
 import Modal from 'components/Modal/Modal'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { LocalStorageEntry, Validation } from 'declarations/types'
@@ -24,6 +25,7 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
@@ -37,6 +39,10 @@ export interface PDU1EditSelector {
   validation: Validation
 }
 
+export interface PDU1EditProps {
+  type: 'create' | 'edit'
+}
+
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
   currentEntry: state.localStorage.pdu1.currentEntry,
@@ -45,9 +51,12 @@ const mapState = (state: State): any => ({
   validation: state.validation.status
 })
 
-const PDU1Edit: React.FC = (): JSX.Element => {
+const PDU1Edit: React.FC<PDU1EditProps> = ({
+  type
+}: PDU1EditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const params = useParams()
   const {
     completingPdu1,
     currentEntry,
@@ -62,11 +71,13 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
       const newPdu1: PDU1 = _.cloneDeep(pdu1)
-      const [valid, newValidation] = performValidation<ValidationPDU1EditProps>(validation, namespace, validatePDU1Edit, {
+      const clonedValidation = _.cloneDeep(validation)
+      const hasErrors = performValidation<ValidationPDU1EditProps>(clonedValidation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
       })
-      dispatch(setValidation(newValidation))
-      if (valid) {
+      dispatch(setValidation(clonedValidation))
+      if (!hasErrors) {
+        // clean up PDU1 before sending it
         if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
           delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
           delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
@@ -74,6 +85,10 @@ const PDU1Edit: React.FC = (): JSX.Element => {
           delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
           delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
+        delete newPdu1.__journalpostId
+        delete newPdu1.__dokumentId
+        delete newPdu1.__fagsak
+        delete newPdu1.__fnr
         dispatch(jornalførePdu1(newPdu1))
         buttonLogger(e)
       }
@@ -96,6 +111,15 @@ const PDU1Edit: React.FC = (): JSX.Element => {
   }
 
   useEffect(() => {
+    if (type === 'create' && params.fnr && params.fagsak) {
+      dispatch(getPdu1Template(params.fnr, params.fagsak))
+    }
+    if (type === 'edit' && params.journalpostId && params.dokumentInfoId && params.fagsak) {
+      dispatch(getStoredPdu1AsJSON(params.journalpostId, params.dokumentInfoId, params.fagsak))
+    }
+  }, [])
+
+  useEffect(() => {
     if (!completeModal && !_.isNil(jornalførePdu1Response)) {
       setCompleteModal(true)
     }
@@ -107,6 +131,10 @@ const PDU1Edit: React.FC = (): JSX.Element => {
       dispatch(finishPageStatistic('pdu1editor'))
     }
   }, [])
+
+  if (_.isUndefined(pdu1)) {
+    return <WaitingPanel />
+  }
 
   return (
     <>

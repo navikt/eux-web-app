@@ -52,11 +52,12 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationPersonopplysningerProps>(validation, namespace, validatePersonopplysninger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationPersonopplysningerProps>(clonedValidation, namespace, validatePersonopplysninger, {
       personInfo,
       personName
-    })
-    dispatch(setValidation(newValidation))
+    }, true)
+    dispatch(setValidation(clonedValidation))
   })
 
   const setFornavn = (newFornavn: string) => {

@@ -1,34 +1,16 @@
 import { Close, Edit, Email, Send, Star } from '@navikt/ds-icons'
-import { Button, Detail, Label, Loader, Panel } from '@navikt/ds-react'
-import { ActionWithPayload } from '@navikt/fetch'
-import {
-  FlexBaseDiv,
-  HorizontalSeparatorDiv,
-  PileCenterDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { Button, Detail, Label, Loader } from '@navikt/ds-react'
+import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { saveEntry } from 'actions/localStorage'
-import { setReplySed } from 'actions/svarsed'
-import SEDType from 'applications/SvarSed/SEDType'
-import Tema from 'applications/SvarSed/Tema'
-import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
-import Attachments from 'applications/Vedlegg/Attachments/Attachments'
 import Modal from 'components/Modal/Modal'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed.d'
-import { LocalStorageEntry, UpdateReplySedPayload } from 'declarations/types'
+import { LocalStorageEntry } from 'declarations/types'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import { getFnr } from 'utils/fnr'
-import { isHSed, isUSed } from 'utils/sed'
-
-export interface SEDDetailsProps {
-  updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
-}
 
 export interface SEDDetailsSelector {
   currentEntry: LocalStorageEntry<ReplySed> | undefined
@@ -42,14 +24,12 @@ const mapState = (state: State): SEDDetailsSelector => ({
   replySed: state.svarsed.replySed
 })
 
-const SEDDetails: React.FC<SEDDetailsProps> = ({
-  updateReplySed
-}: SEDDetailsProps) => {
+const SEDDetails: React.FC = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
   const { currentEntry, savingSed, replySed }: SEDDetailsSelector = useAppSelector(mapState)
   const [_viewSaveSedModal, setViewSaveSedModal] = useState<boolean>(false)
-  const fnr = getFnr(replySed, 'bruker')
 
   if (!replySed) {
     return <div />
@@ -110,45 +90,6 @@ const SEDDetails: React.FC<SEDDetailsProps> = ({
           {replySed?.sedType} - {t('buc:' + replySed?.sedType)}
         </Label>
       </FlexBaseDiv>
-
-      <VerticalSeparatorDiv />
-      {(isUSed(replySed) || isHSed(replySed)) && (
-        <>
-          <Panel border>
-            <PileDiv>
-              {isUSed(replySed) && (
-                <SEDType
-                  replySed={replySed}
-                  setReplySed={setReplySed}
-                />
-              )}
-              {isHSed(replySed) && (
-                <Tema
-                  updateReplySed={updateReplySed}
-                  replySed={replySed}
-                />
-              )}
-            </PileDiv>
-          </Panel>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {replySed.sak && (
-        <>
-          <Saksopplysninger sak={replySed.sak} />
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      <Attachments
-        fnr={fnr}
-        onAttachmentsChanged={(attachments) => {
-          dispatch(setReplySed({
-            ...replySed,
-            attachments
-          }))
-        }}
-      />
-
     </>
   )
 }

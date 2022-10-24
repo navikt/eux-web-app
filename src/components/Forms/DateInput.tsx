@@ -17,6 +17,7 @@ export interface DateInputProps {
   value: string | undefined
   uiFormat ?: string
   finalFormat ?: string
+  disabled?: boolean
 }
 
 const DateInput = ({
@@ -31,7 +32,8 @@ const DateInput = ({
   required = false,
   uiFormat = 'DD.MM.YYYY',
   finalFormat = 'YYYY-MM-DD',
-  value
+  value,
+  disabled
 }: DateInputProps) => {
   const [_dato, _setDato] = useState<string>(() => toDateFormat(value, uiFormat!) ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
@@ -64,6 +66,7 @@ const DateInput = ({
       }}
       required={required}
       value={_dato}
+      disabled={disabled}
     />
   )
 }

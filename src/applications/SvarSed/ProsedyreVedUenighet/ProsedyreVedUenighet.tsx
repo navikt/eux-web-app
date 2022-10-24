@@ -85,13 +85,14 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationProsedyreVedUenighetProps>(
-      validation, namespace, validateProsedyreVedUenighet, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationProsedyreVedUenighetProps>(
+      clonedValidation, namespace, validateProsedyreVedUenighet, {
         prosedyreVedUenighet,
         formalName: personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {
@@ -113,14 +114,14 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewGrunn({
         ..._newGrunn,
-        grunn: newGrunn,
+        grunn: newGrunn.trim(),
         __oldGrunn: oldGrunn
       } as Grunn)
       _resetValidation(namespace + '-grunn')
     }
     _setEditGrunn({
       ..._editGrunn,
-      grunn: newGrunn,
+      grunn: newGrunn.trim(),
       __oldGrunn: oldGrunn
     } as Grunn)
     dispatch(resetValidation(namespace + '-grunn'))
@@ -130,14 +131,14 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewGrunn({
         ..._newGrunn,
-        person
+        person: person.trim()
       } as Grunn)
       _resetValidation(namespace + '-person')
       return
     }
     _setEditGrunn({
       ..._editGrunn,
-      person
+      person: person.trim()
     } as Grunn)
     dispatch(resetValidation(namespace + getIdx(index) + '-person'))
   }
@@ -171,14 +172,15 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationGrunnProps>(
-      validation, namespace, validateGrunn, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationGrunnProps>(
+      clonedValidation, namespace, validateGrunn, {
         grunn: _editGrunn,
         grunns: _allGrunns,
         index: _editIndex,
         formalName: personName
       })
-    if (valid) {
+    if (!hasErrors) {
       let newProsedyre: ProsedyreVedUenighet = _.cloneDeep(prosedyreVedUenighet) as ProsedyreVedUenighet
       if (!_.isUndefined(_editGrunn?.__oldGrunn)) {
         newProsedyre = _.omit(newProsedyre, _editGrunn!.__oldGrunn)
@@ -187,7 +189,7 @@ const ProsedyreVedUenighetFC: React.FC<MainFormProps> = ({
       dispatch(updateReplySed(target, newProsedyre))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

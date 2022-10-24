@@ -57,7 +57,7 @@ describe('actions/localStorage', () => {
   it('removeAllEntries()', () => {
     expect(localStorageActions.removeAllEntries(namespace))
       .toMatchObject({
-        type: types.LOCALSTORAGE_ALL_REMOVE,
+        type: types.LOCALSTORAGE_RESET,
         payload: { namespace }
       })
   })

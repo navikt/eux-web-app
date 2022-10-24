@@ -1,4 +1,4 @@
-import { alertClear, alertFailure } from 'actions/alert'
+import { alertReset, alertFailure } from 'actions/alert'
 import BannerAlert from 'components/BannerAlert/BannerAlert'
 import Header from 'components/Header/Header'
 import SessionMonitor from 'components/SessionMonitor/SessionMonitor'
@@ -97,7 +97,7 @@ export interface TopContainerSelector {
   bannerStatus: string | undefined
   bannerMessage: string | JSX.Element | undefined
   error: any | undefined
-  expirationTime: Date | undefined
+  expirationTime: number | undefined
   highContrast: boolean
 }
 
@@ -123,7 +123,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   const dispatch = useAppDispatch()
 
   const onClear = (): void => {
-    dispatch(alertClear())
+    dispatch(alertReset())
   }
 
   if (_.isNil(window.onerror)) {
@@ -138,7 +138,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       extra: {
         error
       },
-      level: Sentry.Severity.Error
+      level: 'error'
     })
     return (
       <Error error={error} resetErrorBoundary={resetErrorBoundary} />

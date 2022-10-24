@@ -22,6 +22,9 @@ export const initialJoarkState: JoarkState = {
 
 const joarkReducer = (state: JoarkState = initialJoarkState, action: AnyAction): JoarkState => {
   switch (action.type) {
+    case types.APP_RESET:
+      return initialJoarkState
+
     case types.ATTACHMENT_LIST_SUCCESS:
       return {
         ...state,

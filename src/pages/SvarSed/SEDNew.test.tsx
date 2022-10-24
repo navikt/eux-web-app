@@ -1,19 +1,17 @@
 import { render } from '@testing-library/react'
 import React from 'react'
 import { stageSelector } from 'setupTests'
-import CreateSak, { CreateSakProps, CreateSakSelector } from './CreateSak'
+import SEDNew, { SEDNewSelector } from './SEDNew'
 
 jest.mock('react-router-dom', () => ({
   Link: () => (<div className='mock-link' />)
 }))
 
-describe('pages/OpprettSak/OpprettSak', () => {
+describe('pages/SEDNew/SEDNew', () => {
   let wrapper: any
 
-  const initialMockProps: CreateSakProps = {
-    changeMode: jest.fn()
-  }
-  const defaultSelector: CreateSakSelector = {
+  const initialMockProps = {}
+  const defaultSelector: SEDNewSelector = {
     alertMessage: undefined,
     alertVariant: undefined,
     alertType: undefined,
@@ -22,7 +20,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
     serverInfo: undefined,
     buctyper: undefined,
     familierelasjonKodeverk: undefined,
-    featureToggles: {},
+    filloutinfo: undefined,
     kodemaps: undefined,
     landkoder: undefined,
     sedtyper: undefined,
@@ -54,6 +52,8 @@ describe('pages/OpprettSak/OpprettSak', () => {
     valgtTema: undefined,
     valgtUnit: undefined,
 
+    currentSak: undefined,
+
     validation: {}
   }
 
@@ -62,7 +62,7 @@ describe('pages/OpprettSak/OpprettSak', () => {
   })
 
   beforeEach(() => {
-    wrapper = render(<CreateSak {...initialMockProps} />)
+    wrapper = render(<SEDNew {...initialMockProps} />)
   })
 
   afterEach(() => {

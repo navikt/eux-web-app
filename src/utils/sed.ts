@@ -10,6 +10,10 @@ export const isUSed = (replySed: ReplySed | PDU1 | null | undefined): boolean =>
 
 export const isHSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('H') ?? false
 
+export const isXSed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType?.startsWith('X') ?? false
+
+export const isF001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F001'
+
 export const isF002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F002'
 
 export const isU002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U002'
@@ -21,6 +25,21 @@ export const isU017Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 export const isH001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H001'
 
 export const isH002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H002'
+
+export const isX001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X001'
+
+export const isX008Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X008'
+
+export const isX009Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X009'
+
+export const isX010Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X010'
+
+export const isX011Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X011'
+
+export const isX012Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X012'
+
+export const isPreviewableSed = (sedType: string): boolean =>
+  ['F001', 'F002', 'H001', 'H002',  'U002', 'U004', 'U017', 'X001', 'X008', 'X009', 'X010', 'X011', 'X012'].indexOf(sedType) >= 0
 
 export const cleanReplySed = (replySed: ReplySed): ReplySed => {
   const newReplySed = _.cloneDeep(replySed)

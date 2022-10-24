@@ -25,9 +25,9 @@ describe('actions/vedlegg', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.VEDLEGG_DOKUMENT_GET_REQUEST,
-          success: types.VEDLEGG_DOKUMENT_GET_SUCCESS,
-          failure: types.VEDLEGG_DOKUMENT_GET_FAILURE
+          request: types.VEDLEGG_DOKUMENT_REQUEST,
+          success: types.VEDLEGG_DOKUMENT_SUCCESS,
+          failure: types.VEDLEGG_DOKUMENT_FAILURE
         },
         url: sprintf(urls.API_VEDLEGG_DOKUMENT_URL, { rinasaksnummer: mockRinasaksnummer })
       }))

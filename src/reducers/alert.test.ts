@@ -2,10 +2,10 @@ import alertReducer, { initialAlertState } from 'reducers/alert'
 import * as types from 'constants/actionTypes'
 
 describe('reducers/alert', () => {
-  it('ALERT_CLEAR', () => {
+  it('ALERT_RESET', () => {
     expect(
       alertReducer(initialAlertState, {
-        type: types.ALERT_CLEAR,
+        type: types.ALERT_RESET,
         payload: 'mockPayload'
       })
     ).toEqual({

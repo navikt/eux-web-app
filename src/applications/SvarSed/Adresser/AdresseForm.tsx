@@ -110,7 +110,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
                 <RadioPanel value='bosted'>{t('label:bosted')}</RadioPanel>
                 <RadioPanel value='opphold'>{t('label:opphold')}</RadioPanel>
                 <RadioPanel value='kontakt'>{t('label:kontakt')}</RadioPanel>
-                <RadioPanel value='annet'>{t('label:annet')}</RadioPanel>
               </FlexRadioPanels>
             </RadioPanelGroup>
           </Column>

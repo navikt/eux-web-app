@@ -30,12 +30,13 @@ const CoverLetter: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-coverletter`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationCoverLetterProps>(
-      validation, namespace, validateCoverLetter, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationCoverLetterProps>(
+      clonedvalidation, namespace, validateCoverLetter, {
         info
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setInfo = (newInfo: string) => {
@@ -57,7 +58,6 @@ const CoverLetter: React.FC<MainFormProps> = ({
             <TextArea
               style={{ minHeight: '140px' }}
               error={validation[namespace + '-info']?.feilmelding}
-              key={namespace + '-info-' + info}
               id='info'
               label={t('label:informasjon')}
               namespace={namespace}

@@ -28,7 +28,9 @@ const PeriodeText = ({
         id={namespace + '-startdato'}
       >
         <BodyLong>
-          {periode?.startdato ?? t('label:ukjent_startdato')}
+          {!_.isEmpty(periode?.startdato)
+            ? periode!.startdato
+            : t('label:ukjent_startdato')}
         </BodyLong>
         <ErrorLabel error={error?.startdato} />
       </PileDiv>
@@ -41,9 +43,7 @@ const PeriodeText = ({
         <BodyLong>
           {!_.isEmpty(periode?.sluttdato)
             ? periode?.sluttdato
-            : periode?.aapenPeriodeType === 'åpen_sluttdato'
-              ? t('label:åpen_sluttdato')
-              : t('label:ukjent_sluttdato')}
+            : t('label:' + periode?.aapenPeriodeType)}
         </BodyLong>
         <ErrorLabel error={error?.sluttdato} />
       </PileDiv>

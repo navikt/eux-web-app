@@ -55,17 +55,17 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
 
   const setArbeidssøkStartDato = (value: string) => {
     _resetValidation('arbeidssok-startdato')
-    _setArbeidssøkStartDato(value)
+    _setArbeidssøkStartDato(value.trim())
   }
 
   const setArbeidssøkSluttDato = (value: string) => {
     _resetValidation('arbeidssok-sluttdato')
-    _setArbeidssøkSluttDato(value)
+    _setArbeidssøkSluttDato(value.trim())
   }
 
   const setArbeidssøkInntektslistetype = (value: string) => {
     _resetValidation('arbeidssok-inntektslistetype')
-    _setArbeidssøkInntektslistetype(value)
+    _setArbeidssøkInntektslistetype(value.trim())
   }
 
   const getArbeidsperioder = () => {

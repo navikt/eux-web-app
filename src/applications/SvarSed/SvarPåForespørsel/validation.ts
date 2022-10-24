@@ -23,12 +23,16 @@ export const validateSvarPåForespørsel = (
     !_.isEmpty((replySed as H002Sed)?.positivtSvar?.dokument) ||
       !_.isEmpty((replySed as H002Sed)?.positivtSvar?.sed)
 
-  const doWeHaveNegative: boolean = !!((replySed as H002Sed)?.negativeSvar?.informasjon) ||
-    !_.isEmpty((replySed as H002Sed)?.negativeSvar?.dokument) ||
-      !_.isEmpty((replySed as H002Sed)?.negativeSvar?.sed) ||
-        !_.isEmpty((replySed as H002Sed)?.negativeSvar?.grunn)
+  const doWeHaveNegative: boolean = !!((replySed as H002Sed)?.negativtSvar?.informasjon) ||
+    !_.isEmpty((replySed as H002Sed)?.negativtSvar?.dokument) ||
+      !_.isEmpty((replySed as H002Sed)?.negativtSvar?.sed) ||
+        !_.isEmpty((replySed as H002Sed)?.negativtSvar?.grunn)
 
+<<<<<<< HEAD
   const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negative' : undefined
+=======
+  const target: string | undefined = doWeHavePositive ? 'positivt' : doWeHaveNegative ? 'negativt' : undefined
+>>>>>>> v7
 
   if (target === 'positivt') {
     hasErrors.push(checkLength(v, {
@@ -56,9 +60,9 @@ export const validateSvarPåForespørsel = (
     }))
   }
 
-  if (target === 'negative') {
+  if (target === 'negativt') {
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativeSvar?.informasjon,
+      needle: (replySed as H002Sed).negativtSvar?.informasjon,
       max: 255,
       id: namespace + '-informasjon',
       message: 'validation:textOverX',
@@ -66,7 +70,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativeSvar?.dokument,
+      needle: (replySed as H002Sed).negativtSvar?.dokument,
       max: 500,
       id: namespace + '-dokument',
       message: 'validation:textOverX',
@@ -74,7 +78,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativeSvar?.sed,
+      needle: (replySed as H002Sed).negativtSvar?.sed,
       max: 65,
       id: namespace + '-sed',
       message: 'validation:textOverX',
@@ -82,7 +86,7 @@ export const validateSvarPåForespørsel = (
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativeSvar?.grunn,
+      needle: (replySed as H002Sed).negativtSvar?.grunn,
       max: 500,
       id: namespace + '-grunn',
       message: 'validation:textOverX',

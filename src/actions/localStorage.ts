@@ -44,7 +44,7 @@ export const saveEntry = (namespace: LocalStorageNamespaces, entry: LocalStorage
 })
 
 export const removeAllEntries = (namespace: LocalStorageNamespaces) => ({
-  type: types.LOCALSTORAGE_ALL_REMOVE,
+  type: types.LOCALSTORAGE_RESET,
   payload: {
     namespace
   }

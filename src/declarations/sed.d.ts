@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed
+export type ReplySed = F001Sed | F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002'
+export type SedTypes = 'F001' | 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -27,7 +27,7 @@ export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte'
 
 export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 
-export type HSvarType = 'positivt' | 'negative'
+export type HSvarType = 'positivt' | 'negativt'
 
 export type BarnEllerFamilie = 'barn' | 'familie'
 
@@ -70,7 +70,6 @@ export interface Periode {
   startdato: string
   sluttdato?: string
   aapenPeriodeType?: AapenPeriodeType
-
   // internal use, for periode labeling, reference and visual
   // remove it before sync with ReplySed / PDU1
   __type ?: string
@@ -157,6 +156,18 @@ export interface PersonInfo {
   }
 }
 
+export interface FillOutInfoPayload {
+  'fnr': string
+  'fornavn': string
+  'mellomnavn': string
+  'etternavn': string
+  'kjoenn': string
+  'foedselsdato': string
+  'statsborgerskap': Array<string>
+  'adresser': Array<Adresse>,
+  'utenlandskePin': Array<any>
+}
+
 export interface Person {
   adresser ?: Array<Adresse>
   epost ?: Array<Epost>
@@ -179,7 +190,15 @@ export interface Person {
   perioderSomPermittertUtenLoenn?: Array<Periode>
   personInfo: PersonInfo
   telefon ?: Array<Telefon>
-  ytterligereInfo ?: string
+}
+
+export interface PersonLight {
+  fornavn: string
+  etternavn: string
+  kjoenn: Kjoenn
+  foedselsdato: string
+  statsborgerskap?: Array<Statsborgerskap>
+  pin?: Array<Pin>
 }
 
 export interface Telefon {
@@ -245,10 +264,8 @@ export interface KontoSepa {
   iban: string
 }
 
-export interface UtbetalingTilInstitusjon {
+export interface UtbetalingTilInstitusjon extends Institusjon {
   begrunnelse: string
-  id: string
-  navn: string
   kontoOrdinaer?: KontoOrdinaer
   kontoSepa?: KontoSepa
 }
@@ -327,16 +344,10 @@ export interface Barn {
 export interface Institusjon {
   id: string
   navn: string
-  idmangler?: {
-    navn: string
-    adresse: Adresse
-  }
 }
 
 export interface PeriodeDagpenger extends PeriodePeriode {
   institusjon: Institusjon
-  // added:
-  __cache?: any
 }
 
 export interface Inntekt {
@@ -360,7 +371,6 @@ export interface RettTilYtelse extends PeriodePeriode {
 }
 
 export interface BaseReplySed {
-  bruker: Person
   sedType: string
   sedVersjon: string
 
@@ -425,7 +435,7 @@ export interface FSed extends BaseReplySed {
   ytterligereInfo?: string
 }
 
-export interface F002Sed extends FSed {
+export interface F001Sed extends FSed {
   annenPerson?: Person
   barn?: Array<Barn>
   ektefelle?: Person
@@ -442,12 +452,16 @@ export interface F002Sed extends FSed {
   }
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
-  uenighet?: ProsedyreVedUenighet
   uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }
 
+export interface F002Sed extends F001Sed {
+  uenighet?: ProsedyreVedUenighet
+}
+
 export interface USed extends BaseReplySed {
+  bruker: Person
   anmodningsperiode: Periode
   lokaleSakIder: Array<LokaleSakId>
 }
@@ -478,6 +492,7 @@ export interface U017Sed extends U002Sed {
 }
 
 export interface HSed extends BaseReplySed {
+  bruker: Person
   tema?: string
   fagsakId?: string
   ytterligereInfo?: string
@@ -494,5 +509,66 @@ export interface H002Sed extends HSed {
     andreDokumenttyper: Array<string>
   }
   positivtSvar?: H002Svar
-  negativeSvar?: H002Svar
+  negativtSvar?: H002Svar
+}
+
+export interface XSed extends BaseReplySed {
+  bruker: PersonLight
+  sedType: string
+  sedVersjon: string
+}
+
+export type AvslutningsType = 'manuell' | 'automatisk'
+
+export interface X001Sed extends XSed {
+  avslutningDato: string
+  avslutningType: AvslutningsType
+  begrunnelseType: string
+  begrunnelseAnnen?: string
+}
+
+export interface X008Sed extends XSed {
+  utstedelsesdato: string
+  begrunnelseType: string
+  begrunnelseAnnen?: string
+  kansellerSedId: string
+}
+
+export interface X011Sed extends XSed {
+  avvisSedId: string
+  begrunnelseType: string
+  begrunnelseAnnen?: string
+}
+
+export interface Purring {
+  gjelder: string
+  beskrivelse: string
+}
+
+export interface X009Sed extends XSed {
+  purringer?: Array<Purring>
+}
+
+export interface BesvarelseKommer extends Purring {
+  innenDato?: string
+}
+
+export interface BesvarelseUmulig extends Purring {
+  begrunnelseType: string
+  begrunnelseAnnen?: string
+}
+
+export interface X010Sed extends XSed {
+  besvarelseKommer: Array<BesvarelseKommer>
+  besvarelseUmulig: Array<BesvarelseUmulig>
+}
+
+export interface KlargjoerInfoItem {
+  del: string
+  punkt: string
+  begrunnelseType: string
+  begrunnelseAnnen: string
+}
+export interface X012Sed extends XSed {
+  klargjoerInfo: Array<KlargjoerInfoItem>
 }

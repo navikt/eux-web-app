@@ -8,6 +8,7 @@ import {
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
+import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -21,6 +22,7 @@ import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
+import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
@@ -30,13 +32,18 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateGrunnlagForBosettingPeriode, ValidationGrunnlagForBosettingPeriodeProps } from './validation'
+import {
+  validateGrunnlagForBosetting,
+  validateGrunnlagForBosettingPeriode, ValidateGrunnlagForBosettingProps,
+  ValidationGrunnlagForBosettingPeriodeProps
+} from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
 const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -59,6 +66,16 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationGrunnlagForBosettingPeriodeProps>(validateGrunnlagForBosettingPeriode, namespace)
+
+  useUnmount(() => {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidateGrunnlagForBosettingProps>(
+      clonedvalidation, namespace, validateGrunnlagForBosetting, {
+        flyttegrunn, personName
+      }, true)
+    dispatch(setValidation(clonedvalidation))
+    dispatch(resetAdresse())
+  })
 
   const setAvsenderDato = (dato: string) => {
     dispatch(updateReplySed(`${target}.datoFlyttetTilAvsenderlandet`, dato.trim()))
@@ -113,18 +130,19 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationGrunnlagForBosettingPeriodeProps>(
-      validation, namespace, validateGrunnlagForBosettingPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationGrunnlagForBosettingPeriodeProps>(
+      clonedValidation, namespace, validateGrunnlagForBosettingPeriode, {
         periode: _editPeriode,
         perioder: flyttegrunn?.perioder,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}.perioder[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
@@ -220,7 +238,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     <>
       <PaddedDiv>
         <Heading size='small'>
-          {t('label:grunnlag-for-bosetting')}
+          {label}
         </Heading>
         <VerticalSeparatorDiv />
         <Detail>

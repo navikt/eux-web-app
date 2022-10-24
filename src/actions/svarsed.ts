@@ -1,9 +1,10 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak } from 'declarations/types'
+import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
+import { mockInstitusjon } from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
 import { Action, ActionCreator } from 'redux'
@@ -11,6 +12,50 @@ import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 const sprintf = require('sprintf-js').sprintf
+
+export const addMottakere = (
+  rinaSakId: string, mottakere: Array<{id: string, name: string}>
+) => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_MOTTAKERE_URL, { rinaSakId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sucess: true
+    },
+    body: mottakere.map((m) => m.id),
+    context: {
+      mottakere: mottakere.map((m) => m.name)
+    },
+    type: {
+      request: types.SVARSED_MOTTAKERE_ADD_REQUEST,
+      success: types.SVARSED_MOTTAKERE_ADD_SUCCESS,
+      failure: types.SVARSED_MOTTAKERE_ADD_FAILURE
+    }
+  })
+}
+
+export const getInstitusjoner = (
+  buctype: string, landkode: string
+): ActionWithPayload<Institusjoner> => {
+  return call({
+    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
+    expectedPayload: mockInstitusjon({ landkode }),
+    type: {
+      request: types.SVARSED_INSTITUSJONER_REQUEST,
+      success: types.SVARSED_INSTITUSJONER_SUCCESS,
+      failure: types.SVARSED_INSTITUSJONER_FAILURE
+    }
+  })
+}
+
+export const resetMottakere = () => ({
+  type: types.SVARSED_MOTTAKERE_ADD_RESET
+})
+
+export const cleanUpSvarSed = ():Action => ({
+  type: types.SVARSED_RESET
+})
 
 export const createSed = (
   replySed: ReplySed
@@ -36,6 +81,19 @@ export const createSed = (
       failure: types.SVARSED_SED_CREATE_FAILURE
     },
     body: copyReplySed
+  })
+}
+
+export const deleteSak = (rinaSakId: string) => {
+  return call({
+    method: 'DELETE',
+    url: sprintf(urls.API_SAK_DELETE_URL, { rinaSakId }),
+    cascadeFailureError: true,
+    type: {
+      request: types.SVARSED_SAK_DELETE_REQUEST,
+      success: types.SVARSED_SAK_DELETE_SUCCESS,
+      failure: types.SVARSED_SAK_DELETE_FAILURE
+    }
   })
 }
 
@@ -73,9 +131,9 @@ export const getFagsaker = (
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
-      request: types.SVARSED_FAGSAKER_GET_REQUEST,
-      success: types.SVARSED_FAGSAKER_GET_SUCCESS,
-      failure: types.SVARSED_FAGSAKER_GET_FAILURE
+      request: types.SVARSED_FAGSAKER_REQUEST,
+      success: types.SVARSED_FAGSAKER_SUCCESS,
+      failure: types.SVARSED_FAGSAKER_FAILURE
     }
   })
 }
@@ -112,16 +170,59 @@ export const getSedStatus = (rinaSakId: string, sedId: string): ActionWithPayloa
   })
 }
 
-// TODO implement
 export const invalidatingSed = (
   connectedSed: Sed, sak: Sak
 ): ActionWithPayload<any> => ({
-  type: '',
+  type: types.SVARSED_SED_INVALIDATE,
   payload: { connectedSed, sak }
 })
 
-export const querySaksnummerOrFnr = (
-  saksnummerOrFnr: string
+export const rejectingSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_REJECT,
+  payload: { connectedSed, sak }
+})
+
+export const clarifyingSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_CLARIFY,
+  payload: { connectedSed, sak }
+})
+
+export const remindSed = (
+  connectedSed: Sed, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_SED_REMIND,
+  payload: { connectedSed, sak }
+})
+
+export const createXSed = (
+  sedType: string, sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_XSED_CREATE,
+  payload: { sedType, sak }
+})
+
+export const createH001Sed = (
+  sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_H001SED_CREATE,
+  payload: { sak }
+})
+
+export const createF002Sed = (
+  sak: Sak
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_F002SED_CREATE,
+  payload: { sak }
+})
+
+
+
+export const querySaks = (
+  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
 ): ActionWithPayload<Sed> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
@@ -139,16 +240,22 @@ export const querySaksnummerOrFnr = (
 
   return call({
     url,
-    expectedPayload: mockSaks(saksnummerOrFnr),
+    expectedPayload: mockSaks(saksnummerOrFnr, type),
     context: {
       type,
       saksnummerOrFnr
     },
-    type: {
-      request: types.SVARSED_SAKS_REQUEST,
-      success: types.SVARSED_SAKS_SUCCESS,
-      failure: types.SVARSED_SAKS_FAILURE
-    }
+    type: actiontype === 'new'
+      ? {
+          request: types.SVARSED_SAKS_REQUEST,
+          success: types.SVARSED_SAKS_SUCCESS,
+          failure: types.SVARSED_SAKS_FAILURE
+        }
+      : {
+          request: types.SVARSED_SAKS_REFRESH_REQUEST,
+          success: types.SVARSED_SAKS_REFRESH_SUCCESS,
+          failure: types.SVARSED_SAKS_REFRESH_FAILURE
+        }
   })
 }
 
@@ -161,7 +268,7 @@ export const editSed = (
 ): ActionWithPayload<ReplySed> => {
   return call({
     url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId }),
-    expectedPayload: mockReplySed(connectedSed.sedType),
+    expectedPayload: mockReplySed(connectedSed.sedType ?? 'F001'),
     context: {
       sak,
       sed: connectedSed
@@ -178,13 +285,14 @@ export const previewSed = (
   sedId: string, rinaSakId: string
 ): ActionWithPayload<ReplySed> => {
   return call({
-    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId, sedId }),
-    expectedPayload: mockReplySed('F002'),
+    url: sprintf(urls.API_PDF_URL, { rinaSakId, sedId }),
+    expectedPayload: mockPreview,
+    responseType: 'pdf',
     type: {
-      request: types.SVARSED_PREVIEW_REQUEST,
-      success: types.SVARSED_PREVIEW_SUCCESS,
-      failure: types.SVARSED_PREVIEW_FAILURE
-    }
+      request: types.SVARSED_PREVIEW_FILE_REQUEST,
+      success: types.SVARSED_PREVIEW_FILE_SUCCESS,
+      failure: types.SVARSED_PREVIEW_FILE_FAILURE
+    },
   })
 }
 
@@ -193,6 +301,11 @@ export const loadReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
 ): ActionWithPayload<ReplySed> => ({
   type: types.SVARSED_REPLYSED_LOAD,
   payload: replySed
+})
+
+export const setCurrentSak = (currentSak: Sak | undefined) => ({
+  type: types.SVARSED_CURRENTSAK_SET,
+  payload: currentSak
 })
 
 export const replyToSed = (
@@ -208,7 +321,7 @@ export const replyToSed = (
       sedId,
       sedType: connectedSed.svarsedType
     }),
-    expectedPayload: mockReplySed(connectedSed.svarsedType),
+    expectedPayload: mockReplySed(connectedSed.svarsedType!),
     context: {
       sak,
       sed: undefined
@@ -245,11 +358,6 @@ export const sendSedInRina = (
     }
   })
 }
-
-export const setCurrentSak = (currentSak: Sak | undefined) => ({
-  type: types.SVARSED_CURRENTSAK_SET,
-  payload: currentSak
-})
 
 export const setReplySed: ActionCreator<ActionWithPayload<ReplySed>> = (
   replySed: ReplySed

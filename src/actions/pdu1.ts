@@ -4,8 +4,9 @@ import { PDU1 } from 'declarations/pd'
 import { FagSaker, UpdatePdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
-import mockGetPdu1 from 'mocks/pdu1/get'
-import mockFetchPdu1 from 'mocks/pdu1/fetch'
+import mockStoredPdu1AsJSON from 'mocks/pdu1/storedAsJSON'
+import mockSearchResultsPdu1 from 'mocks/pdu1/searchResults'
+import mockTemplatePdu1 from 'mocks/pdu1/template'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
 import { Action, ActionCreator } from 'redux'
@@ -13,31 +14,76 @@ import File from '@navikt/forhandsvisningsfil'
 
 const sprintf = require('sprintf-js').sprintf
 
-export const fetchPdu1 = (
+export const cleanUpPDU1 = ():Action => ({
+  type: types.PDU1_RESET
+})
+
+export const searchPdu1s = (
   fnr: string
 ): Action => {
   return call({
-    url: sprintf(urls.PDU1_FETCH_URL, { fnr }),
-    expectedPayload: mockFetchPdu1,
+    url: sprintf(urls.PDU1_SEARCH_URL, { fnr }),
+    expectedPayload: mockSearchResultsPdu1,
     type: {
-      request: types.PDU1_FETCH_REQUEST,
-      success: types.PDU1_FETCH_SUCCESS,
-      failure: types.PDU1_FETCH_FAILURE
+      request: types.PDU1_SEARCH_REQUEST,
+      success: types.PDU1_SEARCH_SUCCESS,
+      failure: types.PDU1_SEARCH_FAILURE
     }
   })
 }
 
-export const getPdu1 = (
-  fnr: string, fagsakId: string
+export const getStoredPdu1AsJSON = (
+  journalpostId: string, dokumentId: string, fagsak: string
 ): Action => {
   return call({
-    url: sprintf(urls.PDU1_GET_URL, { fnr }),
-    expectedPayload: mockGetPdu1,
-    context: { fagsakId },
+    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ORIGINAL' }),
+    expectedPayload: mockStoredPdu1AsJSON,
+    context: {
+      fagsak,
+      journalpostId,
+      dokumentId
+    },
     type: {
-      request: types.PDU1_GET_REQUEST,
-      success: types.PDU1_GET_SUCCESS,
-      failure: types.PDU1_GET_FAILURE
+      request: types.PDU1_ASJSON_REQUEST,
+      success: types.PDU1_ASJSON_SUCCESS,
+      failure: types.PDU1_ASJSON_FAILURE
+    }
+  })
+}
+
+export const getStoredPdu1AsPDF = (
+  journalpostId: string, dokumentId: string
+): Action => {
+  return call({
+    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ARKIV' }),
+    expectedPayload: mockPreviewPdu1(),
+    responseType: 'pdf',
+    type: {
+      request: types.PDU1_ASPDF_REQUEST,
+      success: types.PDU1_ASPDF_SUCCESS,
+      failure: types.PDU1_ASPDF_FAILURE
+    }
+  })
+}
+
+export const resetStoredPdu1AsPDF = () => ({
+  type: types.PDU1_ASPDF_RESET
+})
+
+export const getPdu1Template = (
+  fnr: string, fagsak: string
+): Action => {
+  return call({
+    url: sprintf(urls.PDU1_INFO_URL, { fnr }),
+    expectedPayload: mockTemplatePdu1,
+    context: {
+      fnr,
+      fagsak
+    },
+    type: {
+      request: types.PDU1_TEMPLATE_REQUEST,
+      success: types.PDU1_TEMPLATE_SUCCESS,
+      failure: types.PDU1_TEMPLATE_FAILURE
     }
   })
 }
@@ -65,9 +111,9 @@ export const getFagsaker = (
     url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
-      request: types.PDU1_FAGSAKER_GET_REQUEST,
-      success: types.PDU1_FAGSAKER_GET_SUCCESS,
-      failure: types.PDU1_FAGSAKER_GET_FAILURE
+      request: types.PDU1_FAGSAKER_REQUEST,
+      success: types.PDU1_FAGSAKER_SUCCESS,
+      failure: types.PDU1_FAGSAKER_FAILURE
     }
   })
 }
@@ -90,7 +136,7 @@ export const previewPdu1 = (
 }
 
 export const resetPdu1results = () => ({
-  type: types.PDU1_FETCH_RESET
+  type: types.PDU1_SEARCH_RESET
 })
 
 export const resetFagsaker = () => ({
@@ -105,17 +151,17 @@ export const resetJornalførePdu1 = () => ({
   type: types.PDU1_JOURNALFØRE_RESET
 })
 
-export const setPdu1 = (
-  PDU1: PDU1
-): ActionWithPayload<PDU1> => ({
-  type: types.PDU1_SET,
-  payload: PDU1
-})
-
 export const loadPdu1 = (
   PDU1: PDU1
 ): ActionWithPayload<PDU1> => ({
   type: types.PDU1_LOAD,
+  payload: PDU1
+})
+
+export const setPdu1 = (
+  PDU1: PDU1
+): ActionWithPayload<PDU1> => ({
+  type: types.PDU1_SET,
   payload: PDU1
 })
 

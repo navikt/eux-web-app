@@ -2,9 +2,9 @@ import * as alertActions from 'actions/alert'
 import * as types from 'constants/actionTypes'
 
 describe('actions/alert', () => {
-  it('alertClear()', () => {
-    expect(alertActions.alertClear()).toMatchObject({
-      type: types.ALERT_CLEAR
+  it('alertReset()', () => {
+    expect(alertActions.alertReset()).toMatchObject({
+      type: types.ALERT_RESET
     })
   })
 

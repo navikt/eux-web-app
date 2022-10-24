@@ -5,8 +5,8 @@ import mockPerson from 'mocks/person'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
-export const cleanPersons: ActionCreator<Action> = () => ({
-  type: types.PERSON_CLEAN_DATA
+export const personReset: ActionCreator<Action> = () => ({
+  type: types.PERSON_RESET
 })
 
 export const resetPerson: ActionCreator<Action> = () => ({

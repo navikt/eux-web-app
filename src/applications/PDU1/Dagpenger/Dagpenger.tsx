@@ -67,12 +67,13 @@ const Dagpenger: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationDagpengerPeriodeProps>(validateDagpengerPeriode, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationDagpengerPerioderProps>(
-      validation, namespace, validateDagpengerPerioder, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationDagpengerPerioderProps>(
+      clonedvalidation, namespace, validateDagpengerPerioder, {
         dagpenger: perioderDagpengerMottatt
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setPeriode = (periode: PDPeriode, index: number) => {
@@ -89,14 +90,14 @@ const Dagpenger: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewPeriode({
         ..._newPeriode,
-        info
+        info: info.trim()
       } as PDPeriode)
       _resetValidation(namespace + '-info')
       return
     }
     _setEditPeriode({
       ..._editPeriode,
-      info
+      info: info.trim()
     } as PDPeriode)
     dispatch(resetValidation(namespace + getIdx(index) + '-info'))
   }
@@ -123,16 +124,17 @@ const Dagpenger: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationDagpengerPeriodeProps>(
-      validation, namespace, validateDagpengerPeriode, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationDagpengerPeriodeProps>(
+      clonedvalidation, namespace, validateDagpengerPeriode, {
         periode: _editPeriode,
         index: _editIndex
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

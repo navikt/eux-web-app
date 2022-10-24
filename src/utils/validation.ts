@@ -23,6 +23,7 @@ export interface ValidatePatternParams extends ValidateValueParams {
 export interface ValidateLengthParams extends ValidateValueParams {
   max: number
 }
+
 export interface ValidateDuplicateParams extends ValidateValueParams {
   matchFn: () => boolean
   haystack: Array<any> | undefined
@@ -49,6 +50,13 @@ export const checkLength = (v: Validation, {
 
 export const checkIfNotEmpty = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
   if (_.isEmpty(_.isString(needle) ? needle.trim() : needle)) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
+
+export const checkPattern = (v: Validation, { needle, id, pattern, personName, message, extra }: ValidatePatternParams): boolean => {
+  if (!_.isEmpty(needle) && !(needle!.match(pattern!))) {
     return addError(v, { id, personName, message, extra })
   }
   return false
@@ -145,9 +153,14 @@ export const checkIfNotGB = (v: Validation, {
 export const hasNamespaceWithErrors = (v: Validation, namespace: string): boolean =>
   _.some(v, (value, key) => (key.startsWith(namespace) && v[key]?.feilmelding !== 'ok'))
 
-export const filterAllWithNamespace = (v: Validation, namespace: string | Array<string>): Validation =>
-  _.omitBy(v, (value, key) => {
-    return _.isString(namespace)
-      ? key.startsWith(namespace)
-      : _.find(namespace as Array<string>, (n: string) => key.startsWith(n)) !== undefined
-  }) as Validation
+// note that this function not only returns validation, but CHANGES original object, because we want
+// that to chain-validate
+export const filterAllWithNamespace = (v: Validation, namespace: string | Array<string>): Validation => {
+  const namespaceArray: Array<string> = _.isString(namespace) ? [namespace] : namespace
+  const allMatchedKeys: Array<string> = Object.keys(v).filter(haystack =>
+    namespaceArray.find((needle: string) => haystack.startsWith(needle)) !== undefined)
+  for (const path of allMatchedKeys) {
+    _.unset(v, path)
+  }
+  return v
+}

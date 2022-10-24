@@ -144,19 +144,20 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationInntektOgTimeProps>(
-      validation, namespace, validateInntektOgTime, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationInntektOgTimeProps>(
+      clonedValidation, namespace, validateInntektOgTime, {
         inntektOgTime: _editInntektOgTime,
         index: _editIndex,
         personName
       })
-    if (_editIndex !== undefined && !!_editInntektOgTime && valid) {
+    if (_editIndex !== undefined && !!_editInntektOgTime && !hasErrors) {
       const newInntektOgTime: Array<InntektOgTime> = _.cloneDeep(inntektOgTimer) as Array<InntektOgTime>
       newInntektOgTime[_editIndex] = _editInntektOgTime
       onInntektOgTimeChanged(newInntektOgTime)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -63,14 +63,14 @@ const Inntekter: React.FC<any> = ({
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,
-        type
+        type: type.trim()
       } as Inntekt)
       _resetValidation(namespace + '-type')
       return
     }
     _setEditInntekt({
       ..._editInntekt,
-      type
+      type: type.trim()
     } as Inntekt)
     dispatch(resetValidation(namespace + getIdx(index) + '-type'))
   }
@@ -79,14 +79,14 @@ const Inntekter: React.FC<any> = ({
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,
-        typeAnnen
+        typeAnnen: typeAnnen.trim()
       } as Inntekt)
       _resetValidation(namespace + '-typeAnnen')
       return
     }
     _setEditInntekt({
       ..._editInntekt,
-      typeAnnen
+      typeAnnen: typeAnnen.trim()
     } as Inntekt)
     dispatch(resetValidation(namespace + getIdx(index) + '-typeAnnen'))
   }
@@ -147,19 +147,20 @@ const Inntekter: React.FC<any> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationInntektProps>(
-      validation, namespace, validateInntekt, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationInntektProps>(
+      clonedValidation, namespace, validateInntekt, {
         inntekt: _editInntekt,
         index: _editIndex,
         personName
       })
-    if (!!_editInntekt && valid) {
+    if (!!_editInntekt && !hasErrors) {
       const newInntekter: Array<Inntekt> = _.cloneDeep(inntekter) as Array<Inntekt>
       newInntekter[_editIndex!] = _editInntekt
       onInntekterChanged(newInntekter)
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -12,10 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
-interface SakProps {
-  sak: Sak
-}
-
 const Panel = styled(FullWidthDiv)`
   background-color: var(--navds-panel-color-background);
   justify-content: space-between;
@@ -23,71 +19,89 @@ const Panel = styled(FullWidthDiv)`
   padding: 0.5rem 3rem;
 `
 
-const SakBanner = ({ sak }: SakProps) => {
+const SakBanner = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const sektor : Array<Kodeverk> | undefined = useAppSelector(state => state.app.sektor)
+  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false)
   const iconRef = useRef(null)
 
-  let thisSektor = sak.sakType.split('_')[0]
+  let thisSektor = currentSak?.sakType.split('_')[0]
   if (thisSektor === 'H') { thisSektor = 'HZ' }
   const thisSektorName: string | undefined = _.find(sektor, s => s.kode === thisSektor)?.term
 
   let kind: string = 'nav-unknown-icon'
   let src = ukjent
-  if (sak?.person?.kjoenn === 'K') {
+  if (currentSak?.kjoenn === 'K') {
     kind = 'nav-woman-icon'
     src = kvinne
-  } else if (sak?.person?.kjoenn === 'M') {
+  } else if (currentSak?.kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
+  }
+
+  if (_.isNil(currentSak)) {
+    return null
   }
 
   return (
     <Panel>
       <PileDiv>
         <Heading size='small'>
-          {sak.sakType + ' - ' + sak.sakTittel}
+          {currentSak.sakType + ' - ' + currentSak.sakTittel}
         </Heading>
         <BodyLong>
           {thisSektorName ? thisSektorName + ' ' + t('label:sektor').toLowerCase() : ''}
         </BodyLong>
       </PileDiv>
       <PileDiv>
-        {sak.person && (
-          <>
-            <FlexDiv>
-              <img
-                alt={kind}
-                width={24}
-                height={24}
-                src={src}
-              />
-              <HorizontalSeparatorDiv />
+        <FlexDiv>
+          <img
+            alt={kind}
+            width={24}
+            height={24}
+            src={src}
+          />
+          <HorizontalSeparatorDiv />
+          {!!currentSak.fornavn && currentSak.etternavn && (
+            <>
               <Label>
-                {sak.person.etternavn + ', ' + sak.person.fornavn}
+                {currentSak.etternavn + ', ' + currentSak.fornavn}
               </Label>
-            </FlexDiv>
-            <FlexDiv>
+              <HorizontalSeparatorDiv size='0.5' />
+              <Link
+                title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
+                }}
+              >
+                <Copy />
+              </Link>
+            </>
+          )}
+        </FlexDiv>
+        <FlexDiv>
+          {currentSak.fnr && (
+            <>
               {t('label:fnr.') + ': '}
               <HorizontalSeparatorDiv size='0.5' />
               <Link
                 title={t('label:kopiere')} onClick={(e: any) => {
                   e.preventDefault()
                   e.stopPropagation()
-                  dispatch(copyToClipboard(sak.sakId))
+                  dispatch(copyToClipboard(currentSak.fnr))
                 }}
               >
-                {' ' + sak.person.fnr + ' '}
+                {' ' + currentSak.fnr + ' '}
                 <Copy />
               </Link>
-              <HorizontalSeparatorDiv />
-              {sak.person.foedselsdato}
-            </FlexDiv>
-          </>
-
-        )}
+            </>
+          )}
+          <HorizontalSeparatorDiv />
+          {currentSak.foedselsdato}
+        </FlexDiv>
       </PileDiv>
       <PileDiv>
         <FlexDiv>
@@ -99,46 +113,49 @@ const SakBanner = ({ sak }: SakProps) => {
             title={t('label:kopiere')} onClick={(e: any) => {
               e.preventDefault()
               e.stopPropagation()
-              dispatch(copyToClipboard(sak.sakId))
+              dispatch(copyToClipboard(currentSak.sakId))
             }}
           >
-            {sak.sakId + ' '}
+            {currentSak.sakId + ' '}
             <Copy />
           </Link>
-          <HorizontalSeparatorDiv />
-          <Popover
-            open={popoverOpen}
-            onClose={() => setPopoverOpen(false)}
-            arrow
-            anchorEl={iconRef.current}
-            placement='auto'
-          >
-            <Popover.Content style={{ maxWidth: '600px' }}>
-              <Heading size='small'>
-                {t('label:international-id')}:
-                <HorizontalSeparatorDiv />
-                <Link
-                  title={t('label:kopiere')} onClick={(e: any) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    dispatch(copyToClipboard(sak.sakId))
-                  }}
-                >
-                  {sak.sakId + ' '}
-                  <Copy />
-                </Link>
-              </Heading>
-              {t('message:help-international-id')}
-            </Popover.Content>
-          </Popover>
-          <InformationFilled
-            style={{ cursor: 'pointer' }}
-            ref={iconRef}
-            onClick={() => setPopoverOpen(!popoverOpen)}
-          />
+          {!!currentSak.internasjonalSakId && (
+            <>
+              <HorizontalSeparatorDiv />
+              <Popover
+                open={popoverOpen}
+                onClose={() => setPopoverOpen(false)}
+                arrow
+                anchorEl={iconRef.current}
+              >
+                <Popover.Content style={{ maxWidth: '600px' }}>
+                  <Heading size='small'>
+                    {t('label:international-id')}:
+                    <HorizontalSeparatorDiv />
+                    <Link
+                      title={t('label:kopiere')} onClick={(e: any) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        dispatch(copyToClipboard(currentSak.internasjonalSakId!))
+                      }}
+                    >
+                      {currentSak.internasjonalSakId + ' '}
+                      <Copy />
+                    </Link>
+                  </Heading>
+                  {t('message:help-international-id')}
+                </Popover.Content>
+              </Popover>
+              <InformationFilled
+                style={{ cursor: 'pointer' }}
+                ref={iconRef}
+                onClick={() => setPopoverOpen(!popoverOpen)}
+              />
+            </>
+          )}
         </FlexDiv>
         <FlexDiv>
-          <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>
+          <Link target='_blank' href={currentSak.sakUrl} rel='noreferrer'>
             <span>
               {t('label:åpne_sak_i_RINA')}
             </span>

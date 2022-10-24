@@ -27,9 +27,9 @@ describe('actions/arbeidsperioder', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.ARBEIDSPERIODER_GET_REQUEST,
-          success: types.ARBEIDSPERIODER_GET_SUCCESS,
-          failure: types.ARBEIDSPERIODER_GET_FAILURE
+          request: types.ARBEIDSPERIODER_REQUEST,
+          success: types.ARBEIDSPERIODER_SUCCESS,
+          failure: types.ARBEIDSPERIODER_FAILURE
         },
         url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, mockOptions)
       }))

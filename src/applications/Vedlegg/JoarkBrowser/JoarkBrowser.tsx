@@ -1,6 +1,6 @@
-import { BodyLong, Button, Checkbox, Label, Loader } from '@navikt/ds-react'
+import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
-import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Table, { RenderOptions } from '@navikt/tabell'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
 import Modal from 'components/Modal/Modal'
@@ -75,8 +75,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }: JoarkBrowserSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-
-  const [dokumentType, setDokumentType] = useState<string>('')
 
   const [_clickedPreviewItem, setClickedPreviewItem] = useState<JoarkBrowserItem | undefined>(undefined)
   const [_items, setItems] = useState<JoarkBrowserItems | undefined>(undefined)
@@ -272,9 +270,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   useEffect(() => {
     if (!_.isNil(fnr)) {
-      dispatch(listJoarkItems(fnr, '', dokumentType))
+      dispatch(listJoarkItems(fnr, ''))
     }
-  }, [fnr, dokumentType])
+  }, [fnr])
 
   useEffect(() => {
     if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
@@ -325,15 +323,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   return (
     <div data-testid='joarkBrowser'>
-      <FlexDiv>
-        <HorizontalSeparatorDiv size='0.5' />
-        <Checkbox
-          checked={dokumentType !== ''}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDokumentType(e.target.checked ? 'DAG_EOS_U1' : '')}
-        >
-          {t('label:se-kun-tidligere-journalførte-PD-U1')}
-        </Checkbox>
-      </FlexDiv>
       <VerticalSeparatorDiv size='0.5' />
       <Modal
         open={!_.isNil(_modal)}

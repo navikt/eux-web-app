@@ -6,8 +6,6 @@ import mockAdresse from 'mocks/adresse/adresse'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
-// ActionCreator<AppThunk<Promise<ActionWithPayload<Array<Adresse>>>>
-
 export const resetAdresse: ActionCreator<Action> = (): Action => ({
   type: types.ADRESSE_SEARCH_RESET
 })

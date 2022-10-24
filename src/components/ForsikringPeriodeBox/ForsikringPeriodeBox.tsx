@@ -173,7 +173,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         ..._newForsikringPeriode,
         arbeidsgiver: {
           ...(_newForsikringPeriode as any)?.arbeidsgiver,
-          navn
+          navn: navn.trim()
         } as ArbeidsgiverWithAdresse
       } as any)
       _resetValidation(namespace + '-arbeidsgiver-navn')
@@ -183,7 +183,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
       ..._editForsikringPeriode,
       arbeidsgiver: {
         ...(_editForsikringPeriode as any)?.arbeidsgiver,
-        navn
+        navn: navn.trim()
       } as ArbeidsgiverWithAdresse
     } as any)
     if (resetValidation) {
@@ -237,14 +237,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        inntektOgTimerInfo
+        inntektOgTimerInfo: inntektOgTimerInfo.trim()
       } as any)
       _resetValidation(namespace + '-inntektOgTimerInfo')
       return
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      inntektOgTimerInfo
+      inntektOgTimerInfo: inntektOgTimerInfo.trim()
     } as any)
     if (resetValidation) {
       resetValidation(namespace + '-inntektOgTimerInfo')
@@ -293,14 +293,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        annenTypeForsikringsperiode
+        annenTypeForsikringsperiode: annenTypeForsikringsperiode.trim()
       } as any)
       _resetValidation(namespace + '-annenTypeForsikringsperiode')
       return
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      annenTypeForsikringsperiode
+      annenTypeForsikringsperiode: annenTypeForsikringsperiode.trim()
     } as any)
     if (resetValidation) {
       resetValidation(namespace + '-annenTypeForsikringsperiode')
@@ -328,8 +328,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationForsikringPeriodeBoxProps>(
-      validation!, namespace, validateForsikringPeriodeBox, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationForsikringPeriodeBoxProps>(
+      clonedValidation!, namespace, validateForsikringPeriodeBox, {
         forsikringPeriode: _editForsikringPeriode,
         showAddress,
         showArbeidsgiver,
@@ -337,14 +338,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         showAnnen,
         showBeløp
       })
-    if (!!_editForsikringPeriode && valid) {
+    if (!!_editForsikringPeriode && !hasErrors) {
       if (_.isFunction(onForsikringPeriodeEdit)) {
         onForsikringPeriodeEdit(_editForsikringPeriode, forsikringPeriode!)
       }
       onCloseEdit(namespace)
     } else {
       if (setValidation) {
-        setValidation(newValidation)
+        setValidation(clonedValidation!)
       }
     }
   }
@@ -522,6 +523,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   <AdresseForm
                     adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
                     onAdressChanged={setAdresse}
+                    type={false}
                     namespace={namespace + '-arbeidsgiver-adresse'}
                     validation={_v}
                   />
@@ -631,7 +633,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                                     border={false}
                                     adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
                                     padding='0'
-                                    seeType
+                                    seeType={false}
                                   />
                                   )}
                               {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (
@@ -699,7 +701,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           {inntektOgTime?.bruttoinntekt}  {inntektOgTime?.valuta}
                         </Column>
                         <Column>
-                          {inntektOgTime?.arbeidstimer}
+                          {inntektOgTime?.arbeidstimer} {t('label:arbeidstimer')}
                         </Column>
                       </AlignStartRow>
                     ))}

@@ -30,19 +30,19 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAc
         vedleggResponse: action.payload
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_REQUEST:
+    case types.VEDLEGG_DOKUMENT_REQUEST:
       return {
         ...state,
         dokument: undefined
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_FAILURE:
+    case types.VEDLEGG_DOKUMENT_FAILURE:
       return {
         ...state,
         dokument: null
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
+    case types.VEDLEGG_DOKUMENT_SUCCESS:
       return {
         ...state,
         dokument: action.payload
@@ -53,7 +53,7 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAc
         ...state,
         [action.payload.key]: action.payload.value
       }
-    case types.APP_CLEAN:
+    case types.APP_RESET:
       return initialVedleggState
 
     default:

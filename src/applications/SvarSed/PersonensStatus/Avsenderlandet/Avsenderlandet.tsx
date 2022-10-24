@@ -89,18 +89,19 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationAvsenderlandetProps>(
-      validation, namespace, validateAvsenderlandetPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationAvsenderlandetProps>(
+      clonedValidation, namespace, validateAvsenderlandetPeriode, {
         periode: _editPeriode,
         perioder,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

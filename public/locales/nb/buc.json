@@ -185,9 +185,19 @@
   "P12000": "Informasjon om pensjonsbeløp",
   "P14000": "Endring i personlige forhold",
   "P15000": "Overføring av pensjonssaker til EESSI",
-  "X001": "Anmodning om avslutning",
+  "X001": "Anmodning og avslutning",
+  "X002": "Anmodning om gjenåpning av avsluttet sak",
+  "X003": "Svar på anmodning om gjenåpning av avsluttet sak",
+  "X004": "Beslutning om gjenåpning av sak",
+  "X005": "Legg til deltaker",
+  "X006": "Fjern deltaker",
+  "X007": "eresend sak",
   "X008": "Ugyldiggjøre SED",
-  "X009": "Påminnelse/Purring av dokument",
-  "X010": "Svar på påminnelse"
-
+  "X009": "Påminnelse",
+  "X010": "Svar på påminnelse",
+  "X011": "Avvis SED",
+  "X012": "Klargjør innhold",
+  "X013": "Svar på anmodning om klargjøring",
+  "X050": "Unntaksfeil",
+  "X100": "Endre deltaker"
 }

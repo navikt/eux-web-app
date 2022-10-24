@@ -17,22 +17,6 @@ describe('actions/pdu1', () => {
     call.mockRestore()
   })
 
-  it('getPdu1()', () => {
-    const fnr = 'mockFnr'
-    const fagsakId = 'fagsakId'
-    pdu1Actions.getPdu1(fnr, fagsakId)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.PDU1_GET_REQUEST,
-          success: types.PDU1_GET_SUCCESS,
-          failure: types.PDU1_GET_FAILURE
-        },
-        context: { fagsakId },
-        url: sprintf(urls.PDU1_GET_URL, { fnr })
-      }))
-  })
-
   it('jornalførePdu1()', () => {
     const payload = { saksreferanse: '123' } as PDU1
     pdu1Actions.jornalførePdu1(payload)
@@ -57,9 +41,9 @@ describe('actions/pdu1', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.PDU1_FAGSAKER_GET_REQUEST,
-          success: types.PDU1_FAGSAKER_GET_SUCCESS,
-          failure: types.PDU1_FAGSAKER_GET_FAILURE
+          request: types.PDU1_FAGSAKER_REQUEST,
+          success: types.PDU1_FAGSAKER_SUCCESS,
+          failure: types.PDU1_FAGSAKER_FAILURE
         },
         url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))
@@ -91,14 +75,6 @@ describe('actions/pdu1', () => {
   it('resetJornalførePdu1()', () => {
     expect(pdu1Actions.resetJornalførePdu1()).toMatchObject({
       type: types.PDU1_JOURNALFØRE_RESET
-    })
-  })
-
-  it('setPdu1()', () => {
-    const payload = { saksreferanse: '123' } as PDU1
-    expect(pdu1Actions.setPdu1(payload)).toMatchObject({
-      type: types.PDU1_SET,
-      payload
     })
   })
 

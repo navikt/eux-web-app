@@ -1,13 +1,6 @@
 import { Alert, BodyLong, Loader, Search } from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
-import {
-  AlignStartRow,
-  Column,
-  FlexEndDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -77,33 +70,25 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
         <HorizontalSeparatorDiv size='0.2' />
         <Column flex='2'>
           <PileDiv>
-            <FlexEndDiv>
-              <Search
-                label={t('label:saksnummer-eller-fnr')}
-                data-testid={namespace + '-saksnummerOrFnr'}
-                id={namespace + '-saksnummerOrFnr'}
-                onKeyPress={handleKeyPress}
-                onChange={setSaksnummerOrFnr}
-                required
-                hideLabel={false}
-                value={_saksnummerOrFnr}
-                disabled={querying}
-              >
-                <Search.Button onClick={onSaksnummerOrFnrClick}>
-                  {querying
-                    ? t('message:loading-searching')
-                    : t('el:button-search')}
-                  {querying && <Loader />}
-                </Search.Button>
-              </Search>
-              <HorizontalSeparatorDiv />
-              <PileDiv>
-                <BodyLong>
-                  {_validMessage}
-                </BodyLong>
-                <VerticalSeparatorDiv size='0.5' />
-              </PileDiv>
-            </FlexEndDiv>
+            <Search
+              label={t('label:saksnummer-eller-fnr')}
+              data-testid={namespace + '-saksnummerOrFnr'}
+              id={namespace + '-saksnummerOrFnr'}
+              onKeyPress={handleKeyPress}
+              onChange={setSaksnummerOrFnr}
+              required
+              hideLabel={false}
+              value={_saksnummerOrFnr}
+              disabled={querying}
+            >
+              <Search.Button onClick={onSaksnummerOrFnrClick}>
+                {querying
+                  ? t('message:loading-searching')
+                  : t('el:button-search')}
+                {querying && <Loader />}
+              </Search.Button>
+            </Search>
+
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
               <>
                 <VerticalSeparatorDiv size='0.5' />
@@ -114,7 +99,14 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
             )}
           </PileDiv>
         </Column>
-        <Column />
+        <Column>
+          <PileDiv>
+            <VerticalSeparatorDiv size='2.5' />
+            <BodyLong>
+              {_validMessage}
+            </BodyLong>
+          </PileDiv>
+        </Column>
       </AlignStartRow>
       <VerticalSeparatorDiv size='3' />
       {error && (

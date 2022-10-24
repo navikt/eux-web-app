@@ -30,6 +30,7 @@ export interface AbroadPersonFormProps {
   onAbroadPersonAddedFailure: () => void
   onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
   person: Person | null | undefined
+  disableAll?: boolean
 }
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
@@ -55,7 +56,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   existingFamilyRelationships,
   onAbroadPersonAddedFailure,
   onAbroadPersonAddedSuccess,
-  person
+  person,
+  disableAll
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = 'familierelasjoner'
@@ -88,7 +90,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     fornavn: relation.fornavn ? relation.fornavn.trim() : '',
     etternavn: relation.etternavn ? relation.etternavn.trim() : '',
     kjoenn: relation.kjoenn ? relation.kjoenn.trim() : '',
-    relasjoner: relation.relasjoner,
+    relasjoner: relation?.relasjoner,
     land: relation.land,
     statsborgerskap: relation.statsborgerskap,
     rolle: relation.rolle
@@ -143,6 +145,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('fnr')
             }}
             value={_relation.fnr}
+            disabled={disableAll}
           />
         </Column>
         <Column>
@@ -151,7 +154,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             data-testid={namespace + '-land'}
             error={_validation[namespace + '-land']?.feilmelding}
             label={t('label:land')}
-            key={namespace + '-land-' + _relation.land}
             menuPortalTarget={document.body}
             includeList={CountryFilter.STANDARD({})}
             onOptionSelected={(e: Country) => {
@@ -159,6 +161,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('land')
             }}
             values={_relation.land}
+            isDisabled={disableAll}
           />
         </Column>
         <Column>
@@ -168,13 +171,13 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
             includeList={CountryFilter.STANDARD({})}
             label={t('label:statsborgerskap')}
-            key={namespace + '-statsborgerskap-' + _relation.statsborgerskap}
             menuPortalTarget={document.body}
             onOptionSelected={(e: Country) => {
               updateCountry('statsborgerskap', e.value)
               resetValidation('statsborgerskap')
             }}
             values={_relation.statsborgerskap}
+            isDisabled={disableAll}
           />
         </Column>
       </Row>
@@ -191,6 +194,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('fornavn')
             }}
             value={_relation.fornavn}
+            disabled={disableAll}
           />
         </Column>
         <Column>
@@ -204,6 +208,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('etternavn')
             }}
             value={_relation.etternavn}
+            disabled={disableAll}
           />
         </Column>
       </Row>
@@ -220,6 +225,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('kjoenn')
             }}
             value={_relation.kjoenn}
+            disabled={disableAll}
           >
             <option value='' disabled>
               {t('el:placeholder-select-default')}
@@ -236,7 +242,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           <DateInput
             id='fdato'
             data-testid={namespace + '-fdato'}
-            key={namespace + '-fdato-' + _relation.fdato}
             namespace={namespace}
             error={_validation[namespace + '-fdato']?.feilmelding}
             label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
@@ -245,6 +250,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('fdato')
             }}
             value={toDateFormat(_relation.fdato, 'DD.MM.YYYY')}
+            disabled={disableAll}
           />
           <VerticalSeparatorDiv />
         </Column>
@@ -262,6 +268,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
               resetValidation('rolle')
             }}
             value={_relation.rolle}
+            disabled={disableAll}
           >
             <option value='' disabled>
               {t('el:placeholder-select-default')}
@@ -278,6 +285,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             variant='secondary'
             onClick={addRelation}
             className='relasjon familierelasjoner__knapp'
+            disabled={disableAll}
           >
             <AddCircle />
             {t('el:button-add')}

@@ -41,8 +41,7 @@ export interface PeriodeProps<T> {
 }
 
 const parseDate = (date: string | undefined): Moment | undefined => {
-  if (!date) return undefined
-  if (date === '') return undefined
+  if (!date || date === '') return undefined
   let newDate: Moment
   if (date.match(/\d{2}.\d{2}.\d{4}/)) {
     newDate = moment(date, 'DD.MM.YYYY')
@@ -57,7 +56,7 @@ const parseDate = (date: string | undefined): Moment | undefined => {
 }
 
 export const toDateFormat = (date: string | undefined, format: string): string => {
-  const newDate = parseDate(date)
+  const newDate = parseDate(date?.trim())
   if (!newDate) { return '' }
   return newDate.isValid() ? newDate!.format(format) : ''
 }

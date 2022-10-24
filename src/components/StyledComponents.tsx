@@ -25,8 +25,10 @@ export const FadingLineSeparator = styled.div`
      animation: ${fadeOut} 1s forwards;
    }
 `
-export const HorizontalLineSeparator = styled.div`
+export const HorizontalLineSeparator = styled.div<{size?: string}>`
   height: 1px;
+  margin-top: ${(props: any) => props.size || 0}rem;
+  margin-bottom: ${(props: any) => props.size || 0}rem;
   background: linear-gradient(90deg,
     var(--navds-semantic-color-canvas-background) 0%,
     var(--navds-panel-color-border) 5%,

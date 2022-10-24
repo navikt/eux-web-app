@@ -2,11 +2,11 @@ import appReducer, { initialAppState } from 'reducers/app'
 import * as types from 'constants/actionTypes'
 
 describe('reducers/app', () => {
-  it('APP_SAKSBEHANDLER_GET_SUCCESS', () => {
+  it('APP_SAKSBEHANDLER_SUCCESS', () => {
     const mockPayload = 'mockPayload'
     expect(
       appReducer(initialAppState, {
-        type: types.APP_SAKSBEHANDLER_GET_SUCCESS,
+        type: types.APP_SAKSBEHANDLER_SUCCESS,
         payload: mockPayload
       })
     ).toEqual({
@@ -15,11 +15,11 @@ describe('reducers/app', () => {
     })
   })
 
-  it('APP_SERVERINFO_GET_SUCCESS', () => {
+  it('APP_SERVERINFO_SUCCESS', () => {
     const mockPayload = 'mockPayload'
     expect(
       appReducer(initialAppState, {
-        type: types.APP_SERVERINFO_GET_SUCCESS,
+        type: types.APP_SERVERINFO_SUCCESS,
         payload: mockPayload
       })
     ).toEqual({
@@ -28,11 +28,11 @@ describe('reducers/app', () => {
     })
   })
 
-  it('APP_ENHETER_GET_SUCCESS', () => {
+  it('APP_ENHETER_SUCCESS', () => {
     const mockPayload = 'mockPayload'
     expect(
       appReducer(initialAppState, {
-        type: types.APP_ENHETER_GET_SUCCESS,
+        type: types.APP_ENHETER_SUCCESS,
         payload: mockPayload
       })
     ).toEqual({
@@ -41,14 +41,14 @@ describe('reducers/app', () => {
     })
   })
 
-  it('APP_UTGAARDATO_GET_SUCCESS', () => {
+  it('APP_UTGAARDATO_SUCCESS', () => {
     const mockDate = new Date('2020-01-01 10:00:00')
     const mockPayload = {
       utgaarDato: mockDate
     }
     expect(
       appReducer(initialAppState, {
-        type: types.APP_UTGAARDATO_GET_SUCCESS,
+        type: types.APP_UTGAARDATO_SUCCESS,
         payload: mockPayload
       })
     ).toEqual({

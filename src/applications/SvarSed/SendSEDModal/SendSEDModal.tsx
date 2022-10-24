@@ -1,4 +1,3 @@
-import { alertClear } from 'actions/alert'
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
 import { SuccessFilled } from '@navikt/ds-icons'
@@ -17,7 +16,6 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import { Alert, Button, Loader, Heading } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
@@ -70,9 +68,9 @@ interface SendSEDSelector {
 
 interface SendSEDModalProps {
   fnr: string
-  goToRinaUrl: string | undefined
   initialSendingAttachments?: boolean
   onModalClose: () => void
+  onSendSedClicked: () => void
   open: boolean
   replySed: ReplySed | null | undefined
 }
@@ -89,9 +87,9 @@ const mapState = (state: State): SendSEDSelector => ({
 
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
   fnr,
-  goToRinaUrl,
   initialSendingAttachments = false,
   onModalClose,
+  onSendSedClicked,
   open,
   replySed
 }: SendSEDModalProps): JSX.Element => {
@@ -154,10 +152,23 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     }
   }
 
+  const closeModal = () => {
+    setFinished(undefined)
+    setSedSent(false)
+    onModalClose();
+  }
+
   useEffect(() => {
-    if (sedCreatedResponse && !_sedSent) {
+    setSedAttachments(replySed?.attachments ?? [])
+  }, [replySed?.attachments])
+
+  useEffect(() => {
+    if (sedCreatedResponse) {
       setSedSent(true)
     }
+  }, [sedCreatedResponse])
+
+  useEffect(() => {
     // if sed is sent, we can start sending attachments
     if (_sedSent && !_sendingAttachments && !_attachmentsSent) {
       const joarksToUpload: JoarkBrowserItems = _.filter(_sedAttachments, (att) => att.type === 'joark')
@@ -173,7 +184,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       setSendingAttachments(true)
       dispatch(createSavingAttachmentJob(joarksToUpload))
     }
-  }, [_attachmentsSent, dispatch, _onFinished, sedCreatedResponse, _sendingAttachments, _sedAttachments, _sedSent])
+  }, [sedCreatedResponse, _sedSent])
 
   return (
     <Modal
@@ -196,10 +207,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div />
                   <Button
                     variant='secondary'
-                    onClick={() => {
-                      dispatch(alertClear())
-                      onModalClose()
-                    }}
+                    onClick={onModalClose}
                   >
                     {t('label:damn-really')}
                   </Button>
@@ -207,7 +215,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                 </FlexCenterSpacedDiv>
               </PileCenterDiv>
             )}
-            {alertMessage && _sendButtonClicked && (alertType === types.SVARSED_SED_SEND_SUCCESS || alertType === types.SVARSED_SED_SEND_FAILURE) && (
+            {alertMessage && alertType && _sendButtonClicked && [types.SVARSED_SED_SEND_SUCCESS, types.SVARSED_SED_SEND_FAILURE].indexOf(alertType) >= 0 && (
               <>
                 <AlertstripeDiv>
                   <Alert variant={alertType === types.SVARSED_SED_SEND_FAILURE ? 'error' : 'success'}>
@@ -217,7 +225,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     variant='tertiary'
                     onClick={() => {
                       _setSendButtonClicked(false)
-                      dispatch(alertClear())
+                      onModalClose()
                     }}
                   >
                     OK
@@ -306,24 +314,21 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <FlexCenterSpacedDiv>
                     <Button
                       variant='secondary'
-                      onClick={onModalClose}
+                      onClick={closeModal}
                     >
                       {t('el:button-close')}
                     </Button>
 
                     <HorizontalSeparatorDiv />
-                    {goToRinaUrl && (
-                      <Button
-                        variant='primary'
-                        data-amplitude='svarsed.editor.editinrina'
-                        onClick={(e) => {
-                          buttonLogger(e)
-                          window.open(goToRinaUrl, 'rina')
-                        }}
-                      >
-                        {t('label:rediger-sed-i-rina')}
-                      </Button>
-                    )}
+                    <Button
+                      variant='primary'
+                      // amplitude is dealt on SendSedClick
+                      title={t('message:help-send-sed')}
+                      disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
+                      onClick={onSendSedClicked}
+                    >
+                      {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
+                    </Button>
                   </FlexCenterSpacedDiv>
                 )}
               </SectionDiv>

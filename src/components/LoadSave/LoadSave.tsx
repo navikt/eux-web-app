@@ -22,6 +22,7 @@ import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -33,7 +34,6 @@ const LoadSaveDiv = styled(FlexDiv)`
 `
 
 interface LoadSaveProps<T> {
-  changeMode: (newPage: string) => void
   namespace: LocalStorageNamespaces
   loadReplySed: (payload: T) => ActionWithPayload<T>
 }
@@ -44,11 +44,11 @@ interface LoadSaveSelector {
 }
 
 const LoadSave = <T extends StorageTypes>({
-  changeMode,
   namespace,
   loadReplySed
 }: LoadSaveProps<T>) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { entries, sedStatus }: LoadSaveSelector =
     useAppSelector((state: State) => ({
       entries: state.localStorage[namespace].entries,
@@ -72,28 +72,40 @@ const LoadSave = <T extends StorageTypes>({
   }
 
   const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed | PDU1>) => {
+    // for svarSed, we must check validity before loading
     if ((savedEntry.content as ReplySed).sedType) {
       buttonLogger(e, { type: (savedEntry.content as ReplySed).sedType })
       setSedStatusRequested(savedEntry.id)
       dispatch(getSedStatus((savedEntry.content as ReplySed).sak!.sakId!, savedEntry.id))
     } else {
-      // no need to chevk for status on PDU1 for now
+      // no need to check for status on PDU1, for now
       buttonLogger(e, { type: 'pdu1' })
       const entry: LocalStorageEntry<T> | undefined = findSavedEntry(savedEntry.id)
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
+        let url: string = '/pdu1'
+        if (!_.isEmpty((entry.content as PDU1).__fnr)) {
+          url += '/create/fnr/' + (entry.content as PDU1).__fnr + '/fagsak/' + encodeURIComponent((entry.content as PDU1).__fagsak!)
+        } else {
+          url += '/edit/postId/' + (entry.content as PDU1).__journalpostId +
+            '/docId/' + (entry.content as PDU1).__dokumentId +
+            '/fagsak/' + encodeURIComponent((entry.content as PDU1).__fagsak!)
+        }
         dispatch(loadReplySed(entry.content))
-        changeMode('B')
+        navigate({
+          pathname: url,
+          search: window.location.search
+        })
       }
       setSedStatusRequested(undefined)
     }
   }
 
   const findSavedEntry = (svarsedId: string): LocalStorageEntry | undefined => {
-    const x : LocalStorageEntry | undefined = _.find(entries, (e: LocalStorageEntry) => {
+    const entry : LocalStorageEntry | undefined = _.find(entries, (e: LocalStorageEntry) => {
       return e.id === svarsedId
     })
-    return x
+    return entry
   }
 
   const hasSentStatus = (svarsedId: string): boolean => {
@@ -109,7 +121,10 @@ const LoadSave = <T extends StorageTypes>({
       if (entry && !hasSentStatus(entry.id)) {
         dispatch(setCurrentEntry(namespace, entry))
         dispatch(loadReplySed(entry.content as T))
-        changeMode('B')
+        navigate({
+          pathname: '/svarsed/edit/sak/' + (entry.content! as ReplySed).sak!.sakId + '/sed/' + ((entry.content! as ReplySed).sed?.sedId ?? 'new'),
+          search: window.location.search
+        })
       }
       setSedStatusRequested(undefined)
     }
@@ -135,12 +150,12 @@ const LoadSave = <T extends StorageTypes>({
         {entries === null || _.isEmpty(entries)
           ? (
             <BodyLong>
-              {t('label:ingen-lagrede-x', { x: t('label:' + namespace) })}
+              {t('label:ingen-lokalt-lagrede-x', { x: t('label:' + namespace) })}
             </BodyLong>
             )
           : (
             <BodyLong>
-              {t('label:lagrede-x', { x: t('label:' + namespace) })}
+              {t('label:lokalt-lagrede-x', { x: t('label:' + namespace) })}
             </BodyLong>
             )}
         <VerticalSeparatorDiv />

@@ -7,11 +7,11 @@ import { AnyAction } from 'redux'
 
 export interface AppState {
   buctyper: BucTyper | undefined
-  enheter: Enheter | undefined
+  enheter: Enheter | null | undefined
 
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
-  expirationTime: Date | undefined
+  expirationTime: number | undefined
 
   navn: string | undefined
   brukernavn: string | undefined
@@ -63,6 +63,22 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       navigator.clipboard.writeText(action.payload)
       return state
 
+    case types.APP_ENHETER_FAILURE:
+      return {
+        ...state,
+        enheter: null
+      }
+
+    case types.APP_ENHETER_SUCCESS:
+      return {
+        ...state,
+        enheter: action.payload
+      }
+
+    case types.APP_LOGMEAGAIN_SUCCESS:
+      window.location.href = action.context.redirectUrl
+      return state
+
     case types.APP_PARAM_SET:
       newParams = _.cloneDeep(state.params)
       newParams[action.payload.key] = action.payload.value
@@ -79,7 +95,13 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         params: newParams
       }
 
-    case types.APP_SAKSBEHANDLER_GET_SUCCESS: {
+    case types.APP_PRELOAD:
+      return {
+        ...state,
+        ...action.payload
+      }
+
+    case types.APP_SAKSBEHANDLER_SUCCESS: {
       const payload = _.cloneDeep(action.payload)
       const brukernavn = payload.brukernavn
       const navn = payload.navn
@@ -97,7 +119,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       }
     }
 
-    case types.APP_SERVERINFO_GET_SUCCESS:
+    case types.APP_SERVERINFO_SUCCESS:
       return {
         ...state,
         serverinfo: action.payload
@@ -106,35 +128,19 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
     case types.APP_SESSION_SET:
       return {
         ...state,
-        expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes))
+        expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes)).getTime()
       }
 
-    case types.APP_ENHETER_GET_SUCCESS:
-      return {
-        ...state,
-        enheter: action.payload
-      }
-
-    case types.APP_UTGAARDATO_GET_SUCCESS: {
+    case types.APP_UTGAARDATO_SUCCESS: {
       const now = action.payload.naa ? new Date(action.payload.naa) : new Date()
       const expirationTime = action.payload.utgaarDato
         ? new Date(action.payload.utgaarDato)
         : new Date(new Date().setMinutes(now.getMinutes() + 60))
       return {
         ...state,
-        expirationTime
+        expirationTime: expirationTime.getTime()
       }
     }
-
-    case types.APP_LOGMEAGAIN_SUCCESS:
-      window.location.href = action.context.redirectUrl
-      return state
-
-    case types.APP_PRELOAD:
-      return {
-        ...state,
-        ...action.payload
-      }
 
     default:
       return state

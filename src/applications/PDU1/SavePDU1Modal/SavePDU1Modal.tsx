@@ -69,7 +69,7 @@ const SavePDU1Modal = ({
     return hasNoValidationErrors(validation)
   }
 
-  const onSave = async (name: string) => {
+  const onSave = (name: string) => {
     if (performValidation()) {
       const now = new Date()
       const dateString = now.toDateString()

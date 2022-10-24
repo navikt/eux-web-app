@@ -46,6 +46,7 @@ export interface ModalProps {
   className?: string
   icon?: JSX.Element | undefined
   onModalClose?: () => void
+  shouldCloseOnOverlayClick ?: boolean
   open: boolean,
   modal: ModalContent | undefined
 }
@@ -55,6 +56,7 @@ const ModalFC: React.FC<ModalProps> = ({
   className,
   icon = undefined,
   onModalClose = () => {},
+  shouldCloseOnOverlayClick = true,
   open,
   modal
 }: ModalProps): JSX.Element => {
@@ -64,6 +66,7 @@ const ModalFC: React.FC<ModalProps> = ({
 
   return (
     <Modal
+      shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       className={className}
       open={open}
       onClose={onModalClose}

@@ -7,9 +7,11 @@ export interface LoadingState {
 }
 
 export const initialLoadingState: LoadingState = {
+  addingMottakere: false,
   completingPdu1: false,
-  creatingPdu1: false,
   creatingSvarSed: false,
+  creatingPdu1: false,
+  deletingSak: false,
   fetchingPdu1: false,
   gettingAdresser: false,
   gettingArbeidsperioder: false,
@@ -20,14 +22,16 @@ export const initialLoadingState: LoadingState = {
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingLandkoder: false,
+  gettingPdu1: false,
   gettingPreviewSed: false,
   gettingPreviewFile: false,
-  gettingPreviewPdu1: false,
+  gettingPreviewStoredPdu1: false,
+  gettingPreviewDraftPdu1: false,
   gettingSaksbehandler: false,
   gettingSavedItems: false,
   gettingServerinfo: false,
   gettingSedStatus: false,
-  queryingSaksnummerOrFnr: false,
+  queryingSaks: false,
   savingPdu1: false,
   savingSed: false,
   searchingPerson: false,
@@ -61,101 +65,159 @@ const loadingReducer = (
         gettingAdresser: false
       }
 
-    case types.ARBEIDSPERIODER_GET_REQUEST:
+    case types.ARBEIDSPERIODER_REQUEST:
       return {
         ...state,
         gettingArbeidsperioder: true
       }
 
-    case types.ARBEIDSPERIODER_GET_SUCCESS:
-    case types.ARBEIDSPERIODER_GET_FAILURE:
+    case types.ARBEIDSPERIODER_SUCCESS:
+    case types.ARBEIDSPERIODER_FAILURE:
       return {
         ...state,
         gettingArbeidsperioder: false
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_REQUEST:
+    case types.APP_SAKSBEHANDLER_REQUEST:
+      return {
+        ...state,
+        gettingSaksbehandler: true
+      }
+
+    case types.APP_SAKSBEHANDLER_SUCCESS:
+    case types.APP_SAKSBEHANDLER_FAILURE:
+      return {
+        ...state,
+        gettingSaksbehandler: false
+      }
+
+    case types.APP_SERVERINFO_REQUEST:
+      return {
+        ...state,
+        gettingServerinfo: true
+      }
+
+    case types.APP_SERVERINFO_SUCCESS:
+    case types.APP_SERVERINFO_FAILURE:
+      return {
+        ...state,
+        gettingServerinfo: false
+      }
+
+    case types.APP_RESET:
+      return initialLoadingState
+
+    case types.ATTACHMENT_LIST_REQUEST:
+      return {
+        ...state,
+        gettingJoarkList: true
+      }
+
+    case types.ATTACHMENT_LIST_SUCCESS:
+    case types.ATTACHMENT_LIST_FAILURE:
+      return {
+        ...state,
+        gettingJoarkList: false
+      }
+
+    case types.ATTACHMENT_PREVIEW_REQUEST:
+      return {
+        ...state,
+        gettingJoarkFile: true
+      }
+
+    case types.ATTACHMENT_PREVIEW_SUCCESS:
+    case types.ATTACHMENT_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingJoarkFile: false
+      }
+
+    case types.VEDLEGG_DOKUMENT_REQUEST:
       return {
         ...state,
         gettingDokument: true
       }
 
-    case types.VEDLEGG_DOKUMENT_GET_SUCCESS:
-    case types.VEDLEGG_DOKUMENT_GET_FAILURE:
+    case types.VEDLEGG_DOKUMENT_SUCCESS:
+    case types.VEDLEGG_DOKUMENT_FAILURE:
       return {
         ...state,
         gettingDokument: false
       }
 
-    case types.SVARSED_FAGSAKER_GET_REQUEST:
-    case types.SAK_FAGSAKER_GET_REQUEST:
-    case types.PDU1_FAGSAKER_GET_REQUEST:
+    case types.SVARSED_FAGSAKER_REQUEST:
+    case types.SAK_FAGSAKER_REQUEST:
+    case types.PDU1_FAGSAKER_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
       }
 
-    case types.SVARSED_FAGSAKER_GET_SUCCESS:
-    case types.SVARSED_FAGSAKER_GET_FAILURE:
-    case types.PDU1_FAGSAKER_GET_SUCCESS:
-    case types.PDU1_FAGSAKER_GET_FAILURE:
-    case types.SAK_FAGSAKER_GET_SUCCESS:
-    case types.SAK_FAGSAKER_GET_FAILURE:
+    case types.SVARSED_FAGSAKER_SUCCESS:
+    case types.SVARSED_FAGSAKER_FAILURE:
+    case types.PDU1_FAGSAKER_SUCCESS:
+    case types.PDU1_FAGSAKER_FAILURE:
+    case types.SAK_FAGSAKER_SUCCESS:
+    case types.SAK_FAGSAKER_FAILURE:
       return {
         ...state,
         gettingFagsaker: false
       }
 
-    case types.SAK_INSTITUSJONER_GET_REQUEST:
+    case types.SVARSED_INSTITUSJONER_REQUEST:
+    case types.SAK_INSTITUSJONER_REQUEST:
       return {
         ...state,
         gettingInstitusjoner: true
       }
 
-    case types.SAK_INSTITUSJONER_GET_SUCCESS:
-    case types.SAK_INSTITUSJONER_GET_FAILURE:
+    case types.SVARSED_INSTITUSJONER_SUCCESS:
+    case types.SVARSED_INSTITUSJONER_FAILURE:
+    case types.SAK_INSTITUSJONER_SUCCESS:
+    case types.SAK_INSTITUSJONER_FAILURE:
       return {
         ...state,
         gettingInstitusjoner: false
       }
 
-    case types.INNTEKT_GET_REQUEST:
+    case types.INNTEKT_REQUEST:
       return {
         ...state,
         gettingInntekter: true
       }
 
-    case types.INNTEKT_GET_SUCCESS:
-    case types.INNTEKT_GET_FAILURE:
+    case types.INNTEKT_SUCCESS:
+    case types.INNTEKT_FAILURE:
       return {
         ...state,
         gettingInntekter: false
       }
 
-    case types.SAK_LANDKODER_GET_REQUEST:
+    case types.SAK_LANDKODER_REQUEST:
       return {
         ...state,
         gettingLandkoder: true
       }
 
-    case types.SAK_LANDKODER_GET_SUCCESS:
-    case types.SAK_LANDKODER_GET_FAILURE:
+    case types.SAK_LANDKODER_SUCCESS:
+    case types.SAK_LANDKODER_FAILURE:
       return {
         ...state,
         gettingLandkoder: false
       }
 
-    case types.SVARSED_PREVIEW_REQUEST:
+    case types.SVARSED_MOTTAKERE_ADD_REQUEST:
       return {
         ...state,
-        gettingPreviewSed: true
+        addingMottakere: true
       }
 
-    case types.SVARSED_PREVIEW_SUCCESS:
-    case types.SVARSED_PREVIEW_FAILURE:
+    case types.SVARSED_MOTTAKERE_ADD_SUCCESS:
+    case types.SVARSED_MOTTAKERE_ADD_FAILURE:
       return {
         ...state,
-        gettingPreviewSed: false
+        addingMottakere: false
       }
 
     case types.SVARSED_PREVIEW_FILE_REQUEST:
@@ -184,14 +246,40 @@ const loadingReducer = (
         completingPdu1: false
       }
 
-    case types.PDU1_GET_REQUEST:
+    case types.PDU1_ASJSON_REQUEST:
+      return {
+        ...state,
+        gettingPdu1: true
+      }
+
+    case types.PDU1_ASPDF_REQUEST:
+      return {
+        ...state,
+        gettingPreviewStoredPdu1: true
+      }
+
+    case types.PDU1_ASPDF_SUCCESS:
+    case types.PDU1_ASPDF_FAILURE:
+      return {
+        ...state,
+        gettingPreviewStoredPdu1: false
+      }
+
+    case types.PDU1_ASJSON_FAILURE:
+    case types.PDU1_ASJSON_SUCCESS:
+      return {
+        ...state,
+        gettingPdu1: false
+      }
+
+    case types.PDU1_TEMPLATE_REQUEST:
       return {
         ...state,
         creatingPdu1: true
       }
 
-    case types.PDU1_GET_FAILURE:
-    case types.PDU1_GET_SUCCESS:
+    case types.PDU1_TEMPLATE_FAILURE:
+    case types.PDU1_TEMPLATE_SUCCESS:
       return {
         ...state,
         creatingPdu1: false
@@ -200,24 +288,24 @@ const loadingReducer = (
     case types.PDU1_PREVIEW_REQUEST:
       return {
         ...state,
-        gettingPreviewPdu1: true
+        gettingPreviewDraftPdu1: true
       }
 
     case types.PDU1_PREVIEW_SUCCESS:
     case types.PDU1_PREVIEW_FAILURE:
       return {
         ...state,
-        gettingPreviewPdu1: false
+        gettingPreviewDraftPdu1: false
       }
 
-    case types.PDU1_FETCH_REQUEST:
+    case types.PDU1_SEARCH_REQUEST:
       return {
         ...state,
         fetchingPdu1: true
       }
 
-    case types.PDU1_FETCH_FAILURE:
-    case types.PDU1_FETCH_SUCCESS:
+    case types.PDU1_SEARCH_FAILURE:
+    case types.PDU1_SEARCH_SUCCESS:
       return {
         ...state,
         fetchingPdu1: false
@@ -249,17 +337,33 @@ const loadingReducer = (
         searchingRelatertPerson: false
       }
 
-    case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAK_DELETE_REQUEST:
       return {
         ...state,
-        queryingSaksnummerOrFnr: true
+        deletingSak: true
+      }
+
+    case types.SVARSED_SAK_DELETE_SUCCESS:
+    case types.SVARSED_SAK_DELETE_FAILURE:
+      return {
+        ...state,
+        deletingSak: false
+      }
+
+    case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAKS_REFRESH_REQUEST:
+      return {
+        ...state,
+        queryingSaks: true
       }
 
     case types.SVARSED_SAKS_SUCCESS:
+    case types.SVARSED_SAKS_REFRESH_SUCCESS:
     case types.SVARSED_SAKS_FAILURE:
+    case types.SVARSED_SAKS_REFRESH_FAILURE:
       return {
         ...state,
-        queryingSaksnummerOrFnr: false
+        queryingSaks: false
       }
 
     case types.SAK_SEND_REQUEST:
@@ -338,61 +442,6 @@ const loadingReducer = (
       return {
         ...state,
         sendingVedlegg: false
-      }
-
-    case types.APP_SAKSBEHANDLER_GET_REQUEST:
-      return {
-        ...state,
-        gettingSaksbehandler: true
-      }
-
-    case types.APP_SAKSBEHANDLER_GET_SUCCESS:
-    case types.APP_SAKSBEHANDLER_GET_FAILURE:
-      return {
-        ...state,
-        gettingSaksbehandler: false
-      }
-
-    case types.APP_SERVERINFO_GET_REQUEST:
-      return {
-        ...state,
-        gettingServerinfo: true
-      }
-
-    case types.APP_SERVERINFO_GET_SUCCESS:
-    case types.APP_SERVERINFO_GET_FAILURE:
-      return {
-        ...state,
-        gettingServerinfo: false
-      }
-
-    case types.APP_CLEAN:
-      return initialLoadingState
-
-    case types.ATTACHMENT_LIST_REQUEST:
-      return {
-        ...state,
-        gettingJoarkList: true
-      }
-
-    case types.ATTACHMENT_LIST_SUCCESS:
-    case types.ATTACHMENT_LIST_FAILURE:
-      return {
-        ...state,
-        gettingJoarkList: false
-      }
-
-    case types.ATTACHMENT_PREVIEW_REQUEST:
-      return {
-        ...state,
-        gettingJoarkFile: true
-      }
-
-    case types.ATTACHMENT_PREVIEW_SUCCESS:
-    case types.ATTACHMENT_PREVIEW_FAILURE:
-      return {
-        ...state,
-        gettingJoarkFile: false
       }
 
     default:

@@ -18,10 +18,10 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
 import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/types'
+import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
@@ -62,28 +62,28 @@ export const MyContent = styled(Content)`
 
 const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
-  const location = useLocation()
   const namespace = 'vedlegg'
   const { t } = useTranslation()
   const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
 
   useEffect(() => {
-    const params: URLSearchParams = new URLSearchParams(location.search)
+    const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
     }
   }, [])
 
-  const sendSkjema = (): void => {
-    const [valid, newValidation] = performValidation<ValidationVedleggProps>(validation, namespace, validateVedlegg, {
+  const sendSkjema = () => {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationVedleggProps>(clonedValidation, namespace, validateVedlegg, {
       journalpostID,
       dokumentID,
       rinasaksnummer,
       rinadokumentID
     })
-    dispatch(setValidation(newValidation))
-    if (valid) {
+    dispatch(setValidation(clonedValidation))
+    if (!hasErrors) {
       dispatch(vedleggActions.sendVedlegg({
         journalpostID,
         dokumentID,
@@ -167,7 +167,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <Checkbox
                 checked={sensitivt}
                 data-testid={namespace + '-sensitivt'}
-                key={namespace + '-sensitivt-' + sensitivt}
                 error={!!validation[namespace + '-sensitivt']?.feilmelding}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSensitivt(e.target.checked)}
               >

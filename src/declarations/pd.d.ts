@@ -61,6 +61,12 @@ export interface IkkeRettTilDagpenger {
 }
 
 export interface PDU1 {
+  // added
+  __journalpostId?: string
+  __dokumentId?: string
+  __fagsak?: string
+  __fnr?: string
+
   saksreferanse: string, // Nav => cover letter,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
@@ -78,6 +84,4 @@ export interface PDU1 {
   perioderDagpengerMottatt: Array<PDPeriode> // Dagpenger => 5
   rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6
   ikkeRettTilDagpenger?: IkkeRettTilDagpenger // RettTilDagpenger => 6
-  att
-
 }

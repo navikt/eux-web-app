@@ -24,10 +24,10 @@ describe('actions/app', () => {
     (call as jest.Mock).mockRestore()
   })
 
-  it('cleanData()', () => {
-    expect(appActions.cleanData())
+  it('appReset()', () => {
+    expect(appActions.appReset())
       .toMatchObject({
-        type: types.APP_CLEAN
+        type: types.APP_RESET
       })
   })
 
@@ -45,9 +45,9 @@ describe('actions/app', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.APP_ENHETER_GET_REQUEST,
-          success: types.APP_ENHETER_GET_SUCCESS,
-          failure: types.APP_ENHETER_GET_FAILURE
+          request: types.APP_ENHETER_REQUEST,
+          success: types.APP_ENHETER_SUCCESS,
+          failure: types.APP_ENHETER_FAILURE
         },
         url: urls.API_ENHETER_URL
       }))
@@ -58,9 +58,9 @@ describe('actions/app', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.APP_SAKSBEHANDLER_GET_REQUEST,
-          success: types.APP_SAKSBEHANDLER_GET_SUCCESS,
-          failure: types.APP_SAKSBEHANDLER_GET_FAILURE
+          request: types.APP_SAKSBEHANDLER_REQUEST,
+          success: types.APP_SAKSBEHANDLER_SUCCESS,
+          failure: types.APP_SAKSBEHANDLER_FAILURE
         },
         url: urls.API_SAKSBEHANDLER_URL
       }))
@@ -71,9 +71,9 @@ describe('actions/app', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.APP_SERVERINFO_GET_REQUEST,
-          success: types.APP_SERVERINFO_GET_SUCCESS,
-          failure: types.APP_SERVERINFO_GET_FAILURE
+          request: types.APP_SERVERINFO_REQUEST,
+          success: types.APP_SERVERINFO_SUCCESS,
+          failure: types.APP_SERVERINFO_FAILURE
         },
         url: urls.API_SERVERINFO_URL
       }))
@@ -84,9 +84,9 @@ describe('actions/app', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.APP_UTGAARDATO_GET_REQUEST,
-          success: types.APP_UTGAARDATO_GET_SUCCESS,
-          failure: types.APP_UTGAARDATO_GET_FAILURE
+          request: types.APP_UTGAARDATO_REQUEST,
+          success: types.APP_UTGAARDATO_SUCCESS,
+          failure: types.APP_UTGAARDATO_FAILURE
         },
         url: urls.API_UTGAARDATO_URL
       }))

@@ -20,9 +20,9 @@ export const fetchArbeidsperioder = (
     url: sprintf(urls.API_ARBEIDSPERIODER_QUERY_URL, options),
     expectedPayload: mockArbeidsperioder,
     type: {
-      request: types.ARBEIDSPERIODER_GET_REQUEST,
-      success: types.ARBEIDSPERIODER_GET_SUCCESS,
-      failure: types.ARBEIDSPERIODER_GET_FAILURE
+      request: types.ARBEIDSPERIODER_REQUEST,
+      success: types.ARBEIDSPERIODER_SUCCESS,
+      failure: types.ARBEIDSPERIODER_FAILURE
     }
   })
 }

@@ -98,13 +98,14 @@ const VedtakFC: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationVedtakProps>(
-      validation, namespace, validateVedtak, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationVedtakProps>(
+      clonedValidation, namespace, validateVedtak, {
         vedtak: _.cloneDeep(vedtak),
         formalName: personName
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
     dispatch(resetAdresse())
   })
 
@@ -287,32 +288,34 @@ const VedtakFC: React.FC<MainFormProps> = ({
   }
 
   const onSaveVedtakPeriodeEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationVedtakPeriodeProps>(
-      validation, namespace, validateVedtakPeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationVedtakPeriodeProps>(
+      clonedValidation, namespace, validateVedtakPeriode, {
         periode: _editVedtakPeriode,
         perioder: vedtak?.vedtaksperioder,
         index: _editVedtakPeriodeIndex,
         formalName: personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}.vedtaksperioder[${_editVedtakPeriodeIndex}]`, _editVedtakPeriode))
       onCloseVedtakPeriodeEdit(namespace + getIdx(_editVedtakPeriodeIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
   const onSaveKompetansePeriodeEdit = () => {
     const [type, index] = readNSIdx(_editKompetansePeriodeTypeAndIndex!)
-    const [valid, newValidation] = performValidation<ValidationKompetansePeriodeProps>(
-      validation, namespace, validateKompetansePeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationKompetansePeriodeProps>(
+      clonedValidation, namespace, validateKompetansePeriode, {
         kompetanseperiode: _editKompetansePeriode,
         kompetanseperioder: _allKompetansePeriods,
         nsIndex: _editKompetansePeriodeTypeAndIndex,
         formalName: personName
       })
 
-    if (!!_editKompetansePeriode && valid) {
+    if (!!_editKompetansePeriode && !hasErrors) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
 
       const __editKompetansePeriode = _.cloneDeep(_editKompetansePeriode)
@@ -341,7 +344,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
       }
       onCloseKompetansePeriodeEdit(namespace + _editKompetansePeriodeTypeAndIndex)
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
   const onRemoveVedtakPeriode = (removed: Periode) => {

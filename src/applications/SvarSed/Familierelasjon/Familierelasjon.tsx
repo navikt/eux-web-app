@@ -81,13 +81,14 @@ const Familierelasjon: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationFamilierelasjonerProps>(
-      validation, namespace, validateFamilierelasjoner, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationFamilierelasjonerProps>(
+      clonedValidation, namespace, validateFamilierelasjoner, {
         familierelasjoner,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const cleanUp = (f: FamilieRelasjon): FamilieRelasjon => {
@@ -104,14 +105,14 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewFamilierelasjon({
         ..._newFamilierelasjon,
-        relasjonType
+        relasjonType: relasjonType.trim()
       } as FamilieRelasjon)
       _resetValidation(namespace + '-relasjonType')
       return
     }
     _setEditFamilierelasjon({
       ..._editFamilierelasjon,
-      relasjonType
+      relasjonType: relasjonType.trim()
     } as FamilieRelasjon)
     if (validation[namespace + getIdx(index) + '-relasjonType']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-relasjonType'))
@@ -210,18 +211,19 @@ const Familierelasjon: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationFamilierelasjonProps>(
-      validation, namespace, validateFamilierelasjon, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationFamilierelasjonProps>(
+      clonedValidation, namespace, validateFamilierelasjon, {
         familierelasjon: _editFamilierelasjon,
         familierelasjoner,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, cleanUp(_editFamilierelasjon!)))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -32,15 +32,16 @@ const Trygdeordning: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidateTrygdeordningerProps>(
-      validation, namespace, validateTrygdeordninger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidateTrygdeordningerProps>(
+      clonedValidation, namespace, validateTrygdeordninger, {
         // clone it, or we can have some state inconsistences between dispatches
         replySed: _.cloneDeep(replySed as ReplySed),
         personID: personID!,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   return (

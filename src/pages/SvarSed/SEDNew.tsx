@@ -1,21 +1,36 @@
-import { ErrorFilled } from '@navikt/ds-icons'
-import { Alert, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import {
+  AlignStartRow,
+  Column,
+  Container,
+  Content,
+  FlexCenterDiv,
+  FlexDiv,
+  HorizontalSeparatorDiv,
+  Margin,
+  PileDiv,
+  Row,
+  VerticalSeparatorDiv
+} from '@navikt/hoykontrast'
+import { Country } from '@navikt/land-verktoy'
+import CountrySelect from '@navikt/landvelger'
 import * as appActions from 'actions/app'
-import { cleanPersons } from 'actions/person'
 import * as personActions from 'actions/person'
+import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import { cleanData, resetSentSed } from 'actions/sak'
+import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
 import { loadReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
-import ArbeidsperioderList from 'components/Arbeidsperioder/ArbeidsperioderList'
+import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
+import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
-import { FeatureToggles } from 'declarations/app'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
+import {ALLOWED_TO_FILL_OUT} from 'constants/allowed'
+
 import {
-  Sak,
   ArbeidsperiodeFraAA,
   ArbeidsperioderFraAA,
   BucTyper,
@@ -29,45 +44,27 @@ import {
   OldFamilieRelasjon,
   OpprettetSak,
   Person,
+  Sak,
   Sed,
   ServerInfo,
   Tema,
   Validation
 } from 'declarations/types'
-import { H001Sed, ReplySed } from 'declarations/sed'
-import * as EKV from '@navikt/eessi-kodeverk'
-import { useAppDispatch, useAppSelector } from 'store'
-import performValidation from 'utils/performValidation'
-import { Country } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  FlexDiv,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  Margin,
-  PileDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
-import ValidationBox from 'components/ValidationBox/ValidationBox'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as DOMLink } from 'react-router-dom'
-import { validateOpprettSak, ValidationOpprettSakProps } from './validation'
-import h001template from 'mocks/seds/h001template.json'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import performValidation from 'utils/performValidation'
+import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 
-export interface CreateSakSelector {
+export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 
-  enheter: Enheter | undefined
+  enheter: Enheter | null | undefined
   serverInfo: ServerInfo | undefined
 
   sendingSak: boolean
@@ -81,7 +78,7 @@ export interface CreateSakSelector {
   buctyper: BucTyper | undefined
   fagsaker: FagSaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
-  featureToggles: FeatureToggles
+  filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<Kodeverk> | undefined
@@ -104,10 +101,12 @@ export interface CreateSakSelector {
   valgtTema: string | undefined
   valgtUnit: string | undefined
 
+  currentSak: Sak | undefined
+
   validation: Validation
 }
 
-const mapState = (state: State): CreateSakSelector => ({
+const mapState = (state: State): SEDNewSelector => ({
   alertVariant: state.alert.stripeStatus as AlertVariant,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
@@ -116,7 +115,6 @@ const mapState = (state: State): CreateSakSelector => ({
   serverInfo: state.app.serverinfo,
   buctyper: state.app.buctyper,
   familierelasjonKodeverk: state.app.familierelasjoner,
-  featureToggles: state.app.featureToggles,
   kodemaps: state.app.kodemaps,
   landkoder: state.app.landkoder,
   sedtyper: state.app.sedtyper,
@@ -139,6 +137,7 @@ const mapState = (state: State): CreateSakSelector => ({
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
+  filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
   valgtInstitusjon: state.sak.institusjon,
   institusjoner: state.sak.institusjonList,
@@ -150,12 +149,10 @@ const mapState = (state: State): CreateSakSelector => ({
   valgtTema: state.sak.tema,
   valgtUnit: state.sak.unit,
 
+  currentSak: state.svarsed.currentSak,
+
   validation: state.validation.status
 })
-
-export interface CreateSakProps {
-  changeMode: (mode: string, from: string, callback?: () => void) => void
-}
 
 export const MyContent = styled(Content)`
   @media (min-width: 768px) {
@@ -165,9 +162,7 @@ export const MyContent = styled(Content)`
   align-items: center;
 `
 
-const CreateSak: React.FC<CreateSakProps> = ({
-  changeMode
-}: CreateSakProps): JSX.Element => {
+const SEDNew = (): JSX.Element => {
   const {
     alertVariant,
     alertMessage,
@@ -179,11 +174,10 @@ const CreateSak: React.FC<CreateSakProps> = ({
     enheter,
     serverInfo,
     sendingSak,
-    arbeidsperioder,
     buctyper,
     fagsaker,
     familierelasjonKodeverk,
-    featureToggles,
+    filloutinfo,
     sedtyper,
     institusjoner,
     kodemaps,
@@ -204,32 +198,35 @@ const CreateSak: React.FC<CreateSakProps> = ({
     valgtSektor,
     valgtTema,
     valgtUnit,
-
     validation
-  }: CreateSakSelector = useAppSelector(mapState)
+  }: SEDNewSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const namespace = 'opprettsak'
+  const navigate = useNavigate()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
-  let _sedtyper: Array<Kodeverk | string> = !kodemaps ? [] : !valgtSektor ? [] : !valgtBucType ? [] : kodemaps.BUC2SEDS[valgtSektor][valgtBucType]
+  const _sedtyper: Array<Kodeverk> = !kodemaps
+    ? []
+    : !valgtSektor
+        ? []
+        : !valgtBucType
+            ? []
+            : kodemaps.BUC2SEDS[valgtSektor][valgtBucType].reduce((acc: any, curr: any) => {
+              const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
+              acc.push(kode)
+              return acc
+            }, []) ?? []
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
-  const visArbeidsperioder: boolean = EKV.Koder.sektor.FB === valgtSektor &&
-    EKV.Koder.buctyper.family.FB_BUC_01 === valgtBucType && !_.isEmpty(valgtSedType)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const [tempInfoForEdit, setTempInfoForEdit] = useState<any>(undefined)
-
-  _sedtyper = _sedtyper?.reduce((acc: any, curr: any) => {
-    const kode = _.find(sedtyper, (elem: any) => elem.kode === curr)
-    acc.push(kode)
-    return acc
-  }, []) ?? []
+  const allowedToFillOut = (sedType: string) => ALLOWED_TO_FILL_OUT.indexOf(sedType) >= 0
 
   const skjemaSubmit = (): void => {
-    const [valid, newValidation] = performValidation<ValidationOpprettSakProps>(validation, namespace, validateOpprettSak, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationSEDNewProps>(clonedvalidation, namespace, validateSEDNew, {
       fnr: valgtFnr,
       isFnrValid,
       sektor: valgtSektor,
@@ -241,14 +238,9 @@ const CreateSak: React.FC<CreateSakProps> = ({
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit
-    } as ValidationOpprettSakProps)
-    dispatch(setValidation(newValidation))
-    if (valid) {
-      setTempInfoForEdit({
-        person: _.cloneDeep(person),
-        tema: valgtTema,
-        fagsak: valgtSaksId
-      })
+    } as ValidationSEDNewProps)
+    dispatch(setValidation(clonedvalidation))
+    if (!hasErrors) {
       dispatch(sakActions.createSak({
         buctype: valgtBucType,
         fnr: valgtFnr,
@@ -274,6 +266,13 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     dispatch(sakActions.setProperty('unit', undefined))
+    dispatch(sakActions.setProperty('sedtype', undefined))
+    dispatch(sakActions.setProperty('buctype', undefined))
+    dispatch(sakActions.setProperty('landkode', undefined))
+    dispatch(sakActions.setProperty('institusjon', undefined))
+    dispatch(sakActions.setProperty('institusjonList', undefined))
+    dispatch(sakActions.setProperty('tema', undefined))
+    dispatch(sakActions.resetFagsaker())
     dispatch(sakActions.setProperty('sektor', e.target.value))
     if (validation[namespace + '-sektor']) {
       dispatch(resetValidation(namespace + '-sektor'))
@@ -282,9 +281,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
 
   const onBuctypeChange = (event: React.ChangeEvent<HTMLSelectElement>): void => {
     const buctype = event.target.value
-    dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
-    dispatch(sakActions.setProperty('institution', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
     dispatch(sakActions.getLandkoder(buctype))
     if (validation[namespace + '-buctype']) {
@@ -350,39 +347,45 @@ const CreateSak: React.FC<CreateSakProps> = ({
     }
   }
 
-  const createH001Sed = (opprettetSak: OpprettetSak): ReplySed => {
-    const h001sed: H001Sed = _.cloneDeep(h001template) as H001Sed
-    h001sed.sed = {
-      sedId: opprettetSak.sedId,
-      status: 'new'
-    } as Sed
-    h001sed.sak = {
-      sakId: opprettetSak.sakId
-    } as Sak
-    h001sed.tema = tempInfoForEdit.tema
-    h001sed.fagsakId = tempInfoForEdit.fagsak
-    h001sed.bruker.personInfo.fornavn = tempInfoForEdit.person.fornavn
-    h001sed.bruker.personInfo.etternavn = tempInfoForEdit.person.etternavn
-    h001sed.bruker.personInfo.kjoenn = tempInfoForEdit.person.kjoenn
-    h001sed.bruker.personInfo.foedselsdato = tempInfoForEdit.person.fdato
-    h001sed.bruker.personInfo.statsborgerskap = [{ land: 'NO' }]
-    h001sed.bruker.personInfo.pin = [{
-      land: 'NO',
-      identifikator: tempInfoForEdit.person.fnr
-    }]
-    return h001sed
+  const fillOutSed = (opprettetSak: OpprettetSak) => {
+    dispatch(personReset())
+    dispatch(resetSentSed())
+    dispatch(editSed(opprettetSak, {
+      tema: valgtTema,
+      fagsak: valgtSaksId,
+      sed: {
+        sedId: opprettetSak.sedId!,
+        sedTittel: _sedtyper.find((s: Kodeverk) => s.kode === valgtSedType!)?.term as string,
+        sedType: valgtSedType,
+        status: 'new'
+      } as Sed,
+      sak: {
+        sakId: opprettetSak.sakId,
+        sakType: valgtBucType,
+        sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string,
+        fagsakId: valgtSaksId,
+        tema: valgtTema,
+        erSakseier: "ja",
+        motpart: [_.find(institusjoner, i => i.institusjonsID === valgtInstitusjon)?.navn as string]
+      } as Sak
+    }))
   }
 
-  const fillOutSed = (opprettetSak: OpprettetSak) => {
-    const replySed = createH001Sed(opprettetSak)
-    dispatch(loadReplySed(replySed))
-    changeMode('B', 'forward')
-  }
+  useEffect(() => {
+    if (!_.isNil(filloutinfo)) {
+      dispatch(loadReplySed(filloutinfo))
+      dispatch(resetFilloutInfo())
+      navigate({
+        pathname: '/svarsed/edit/sak/' + filloutinfo.sak.sakId + '/sed/' + filloutinfo.sed.sedId,
+        search: window.location.search
+      })
+    }
+  }, [filloutinfo])
 
   return (
     <Container>
       <Margin />
-      <MyContent>
+      <MyContent style={{ flex: 6 }}>
         <Row>
           <Column>
             <PersonSearch
@@ -400,12 +403,12 @@ const CreateSak: React.FC<CreateSakProps> = ({
               onFnrChange={() => {
                 if (isFnrValid) {
                   setIsFnrValid(false)
-                  dispatch(appActions.cleanData()) // cleans person and sak reducer
+                  dispatch(appActions.appReset()) // cleans person and sak reducer
                 }
               }}
               onPersonFound={() => setIsFnrValid(true)}
               onSearchPerformed={(fnr: string) => {
-                dispatch(sakActions.cleanData())
+                dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
                 dispatch(personActions.searchPerson(fnr))
               }}
@@ -419,7 +422,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column>
             <Select
               data-testid={namespace + '-sektor'}
-              disabled={_.isEmpty(person)}
+              disabled={_.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-sektor']?.feilmelding}
               id={namespace + '-sektor'}
               label={t('label:sektor')}
@@ -430,11 +433,11 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:velg')}
               </option>
               {sektor &&
-                  _.orderBy(sektor, 'term').map((k: Kodeverk) => (
-                    <option value={k.kode} key={k.kode}>
-                      {k.term}
-                    </option>
-                  ))}
+                    _.orderBy(sektor, 'term').map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.term}
+                      </option>
+                    ))}
             </Select>
             <VerticalSeparatorDiv />
           </Column>
@@ -447,16 +450,17 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 label={t('label:enhet')}
                 onChange={onUnitChange}
                 value={valgtUnit}
+                disabled={!!opprettetSak}
               >
                 <option value=''>
                   {t('label:velg')}
                 </option>
                 {sektor &&
-                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                      <option value={e.enhetId} key={e.enhetId}>
-                        {e.navn}
-                      </option>
-                    ))}
+                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                        <option value={e.enhetId} key={e.enhetId}>
+                          {e.navn}
+                        </option>
+                      ))}
               </Select>
             )}
             <VerticalSeparatorDiv />
@@ -467,7 +471,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
           <Column>
             <Select
               data-testid={namespace + '-buctype'}
-              disabled={!!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              disabled={_.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-buctype']?.feilmelding}
               id={namespace + '-buctype'}
               label={t('label:buc')}
@@ -478,18 +482,18 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:velg')}
               </option>
               {_buctyper &&
-                  _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
-                    <option value={k.kode} key={k.kode}>
-                      {k.kode} - {k.term}
-                    </option>
-                  ))}
+                    _.orderBy(_buctyper, 'kode').map((k: Kodeverk) => (
+                      <option value={k.kode} key={k.kode}>
+                        {k.kode} - {k.term}
+                      </option>
+                    ))}
             </Select>
             <VerticalSeparatorDiv />
           </Column>
           <Column>
             <Select
               data-testid={namespace + '-sedtype'}
-              disabled={!!_.isEmpty(valgtBucType) || !!_.isEmpty(valgtSektor) || _.isEmpty(person)}
+              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
               error={validation[namespace + '-sedtype']?.feilmelding}
               id={namespace + '-sedtype'}
               label={t('label:sed')}
@@ -499,7 +503,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               <option value=''>
                 {t('label:velg')}
               </option>)
-              {_sedtyper && _sedtyper.map((k: string | Kodeverk) => {
+              {_sedtyper && _sedtyper.map((k: Kodeverk) => {
                 // if only one element, select it
                 if (_sedtyper.length === 1 && valgtSedType !== (k as Kodeverk).kode) {
                   onSedtypeSet((k as Kodeverk).kode)
@@ -525,7 +529,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
               includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
               label={t('label:land')}
               lang='nb'
-              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person)}
+              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}
               menuPortalTarget={document.body}
               onOptionSelected={onLandkodeChange}
               flagWave
@@ -537,8 +541,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <FlexCenterDiv>
               <Select
                 data-testid={namespace + '-institusjon'}
-                key={namespace + '-institusjon-' + valgtInstitusjon}
-                disabled={!!_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person)}
+                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person) || !!opprettetSak}
                 error={validation[namespace + '-institusjon']?.feilmelding}
                 id={namespace + '-institusjon'}
                 label={t('label:mottaker-institusjon')}
@@ -549,14 +552,14 @@ const CreateSak: React.FC<CreateSakProps> = ({
                   {t('label:velg')}
                 </option>)
                 {institusjoner &&
-                  _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
-                    <option
-                      value={i.institusjonsID}
-                      key={i.institusjonsID}
-                    >
-                      {i.navn}
-                    </option>
-                  ))}
+                    _.orderBy(institusjoner, 'term').map((i: Institusjon) => (
+                      <option
+                        value={i.institusjonsID}
+                        key={i.institusjonsID}
+                      >
+                        {i.navn}
+                      </option>
+                    ))}
               </Select>
               <HorizontalSeparatorDiv size='0.5' />
               {gettingInstitusjoner && <Loader />}
@@ -573,6 +576,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
             </Heading>
             <VerticalSeparatorDiv />
             <Family
+              disableAll={!!opprettetSak}
               alertVariant={alertVariant}
               alertMessage={alertMessage}
               alertType={alertType}
@@ -628,7 +632,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                     id={namespace + '-tema'}
                     label={t('label:velg-tema')}
                     onChange={onTemaChange}
-                    disabled={_.isEmpty(person)}
+                    disabled={_.isEmpty(person) || !!opprettetSak}
                     value={valgtTema}
                   >
                     <option value=''>
@@ -648,7 +652,7 @@ const CreateSak: React.FC<CreateSakProps> = ({
                     <Button
                       variant='secondary'
                       onClick={onViewFagsakerClick}
-                      disabled={gettingFagsaker || !!_.isEmpty(valgtTema) || _.isEmpty(person)}
+                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(person) || !!opprettetSak}
                     >
                       {gettingFagsaker && <Loader />}
                       {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
@@ -683,16 +687,17 @@ const CreateSak: React.FC<CreateSakProps> = ({
                     label={t('label:velg-fagsak')}
                     onChange={onSakIDChange}
                     value={valgtSaksId}
+                    disabled={!!opprettetSak}
                   >
                     <option value=''>
                       {t('label:velg')}
                     </option>
                     {fagsaker &&
-                _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
-                  <option value={f.saksID} key={f.saksID}>
-                    {f.fagsakNr || f.saksID}
-                  </option>
-                ))}
+                  _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
+                    <option value={f.saksID} key={f.saksID}>
+                      {f.fagsakNr || f.saksID}
+                    </option>
+                  ))}
                   </Select>
                 </>
               )}
@@ -701,21 +706,6 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </AlignStartRow>
         )}
         <VerticalSeparatorDiv />
-        {visArbeidsperioder && (
-          <ArbeidsperioderList
-            namespace={namespace + '-arbeidsgivere'}
-            searchable
-            fnr={person?.fnr}
-            valgteArbeidsperioder={valgteArbeidsperioder}
-            arbeidsperioder={arbeidsperioder}
-            onArbeidsgiverSelect={(a: ArbeidsperiodeFraAA, checked: boolean) => dispatch(
-              checked
-                ? sakActions.addArbeidsperiode(a)
-                : sakActions.removeArbeidsperiode(a)
-            )}
-          />
-        )}
-        <VerticalSeparatorDiv size='2' />
         <Row>
           <Column>
             <FlexDiv>
@@ -728,24 +718,13 @@ const CreateSak: React.FC<CreateSakProps> = ({
                 {t('label:opprett-sak-i-rina')}
               </Button>
               <HorizontalSeparatorDiv />
-              {featureToggles?.featureSvarsedH001 && (
-                <>
-                  <Button
-                    variant='secondary'
-                    disabled={!(opprettetSak && valgtSedType === 'H001')}
-                    onClick={() => fillOutSed(opprettetSak!)}
-                  >
-                    {t('el:button-fill-sed')}
-                  </Button>
-                  <HorizontalSeparatorDiv />
-                </>
-              )}
+
               <Button
                 variant='tertiary'
                 disabled={_.isEmpty(person)}
                 onClick={() => {
-                  dispatch(cleanPersons())
-                  dispatch(cleanData())
+                  dispatch(personReset())
+                  dispatch(sakReset())
                 }}
               >
                 {t('label:reset')}
@@ -762,42 +741,46 @@ const CreateSak: React.FC<CreateSakProps> = ({
             <Row>
               <Column>
                 <Alert variant='success'>
-                  <FlexDiv>
-                    <FlexDiv>
-                      <span>
+                  <PileDiv>
+                    <div>
+                      <BodyLong>
                         {t('label:saksnummer') + ': ' + opprettetSak.sakId + ' ' + t('label:er-opprettet')}.
-                      </span>
+                      </BodyLong>
+                      <VerticalSeparatorDiv size='0.5' />
+                    </div>
+                    <FlexDiv>
+                      <Button
+                        variant='primary'
+                        disabled={!(opprettetSak && allowedToFillOut(valgtSedType!))}
+                        onClick={() => fillOutSed(opprettetSak!)}
+                      >
+                        {t('el:button-fill-sed')}
+                      </Button>
                       <HorizontalSeparatorDiv />
                       {opprettetSak.sakUrl && (
-                        <Link
-                          className='vedlegg__lenke'
-                          href={opprettetSak.sakUrl}
-                          target='_blank' rel='noreferrer'
+                        <Button
+                          variant='tertiary'
+                          onClick={() =>
+                            window.open(opprettetSak.sakUrl, '_blank')}
                         >
                           {t('label:gå-til-rina')}
-                        </Link>
+                        </Button>
                       )}
-                    </FlexDiv>
-                    <HorizontalSeparatorDiv />
-                    <div>
+                      <HorizontalSeparatorDiv />
                       {opprettetSak.sakId && (
-                        <DOMLink
-                          to={'/vedlegg?rinasaksnummer=' + opprettetSak.sakId}
+                        <Button
+                          variant='tertiary'
+                          onClick={() =>
+                            navigate({
+                              pathname: '/vedlegg',
+                              search: 'rinasaksnummer=' + opprettetSak.sakId
+                            })}
                         >
                           {t('label:legg-til-vedlegg-til-sed')}
-                        </DOMLink>
+                        </Button>
                       )}
-                    </div>
-                    <HorizontalSeparatorDiv />
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      role='button'
-                      tabIndex={0}
-                      onKeyPress={() => dispatch(resetSentSed())} onClick={() => dispatch(resetSentSed())}
-                    >
-                      <ErrorFilled />
-                    </div>
-                  </FlexDiv>
+                    </FlexDiv>
+                  </PileDiv>
                 </Alert>
               </Column>
             </Row>
@@ -805,9 +788,12 @@ const CreateSak: React.FC<CreateSakProps> = ({
           </>
         )}
       </MyContent>
+      <Content style={{ flex: 2 }}>
+        <SakSidebar />
+      </Content>
       <Margin />
     </Container>
   )
 }
 
-export default CreateSak
+export default SEDNew

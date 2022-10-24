@@ -9,15 +9,16 @@ export const initialArbeidsperioderState: ArbeidsperioderState = null
 
 const arbeidsperioderReducer = (state: ArbeidsperioderState = initialArbeidsperioderState, action: AnyAction): ArbeidsperioderState => {
   switch (action.type) {
-    case types.APP_CLEAN:
+    case types.APP_RESET:
+    case types.ARBEIDSPERIODER_RESET:
       return initialArbeidsperioderState
 
-    case types.ARBEIDSPERIODER_GET_REQUEST:
-    case types.ARBEIDSPERIODER_GET_FAILURE:
+    case types.ARBEIDSPERIODER_REQUEST:
+    case types.ARBEIDSPERIODER_FAILURE:
       return null
 
     case types.ARBEIDSPERIODER_UPDATE:
-    case types.ARBEIDSPERIODER_GET_SUCCESS:
+    case types.ARBEIDSPERIODER_SUCCESS:
       return (action as ActionWithPayload).payload
 
     default:

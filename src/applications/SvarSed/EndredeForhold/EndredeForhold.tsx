@@ -16,6 +16,7 @@ import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Sed, ReplySed, YtterligereInfoType } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
+import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -39,24 +40,25 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-endredeforhold`
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationEndredeForholdProps>(
-      validation, namespace, validateEndredeForhold, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationEndredeForholdProps>(
+      clonedValidation, namespace, validateEndredeForhold, {
         replySed: (replySed as ReplySed),
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setYtterligereInfoType = (newYtterligereInfoType: YtterligereInfoType) => {
-    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType))
+    dispatch(updateReplySed('ytterligereInfoType', newYtterligereInfoType.trim()))
     if (validation[namespace + '-ytterligereInfoType']) {
       dispatch(resetValidation(namespace + '-ytterligereInfoType'))
     }
   }
 
   const setYtterligereInfo = (newYtterligereInfo: string) => {
-    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo))
+    dispatch(updateReplySed('ytterligereInfo', newYtterligereInfo.trim()))
     if (validation[namespace + '-ytterligereInfo']) {
       dispatch(resetValidation(namespace + '-ytterligereiInfo'))
     }

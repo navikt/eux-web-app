@@ -35,9 +35,9 @@ describe('actions/sak', () => {
     })
   })
 
-  it('cleanData()', () => {
-    expect(sakActions.cleanData()).toMatchObject({
-      type: types.SAK_CLEAN_DATA
+  it('sakReset()', () => {
+    expect(sakActions.sakReset()).toMatchObject({
+      type: types.SAK_RESET
     })
   })
 
@@ -63,9 +63,9 @@ describe('actions/sak', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SAK_FAGSAKER_GET_REQUEST,
-          success: types.SAK_FAGSAKER_GET_SUCCESS,
-          failure: types.SAK_FAGSAKER_GET_FAILURE
+          request: types.SAK_FAGSAKER_REQUEST,
+          success: types.SAK_FAGSAKER_SUCCESS,
+          failure: types.SAK_FAGSAKER_FAILURE
         },
         url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))
@@ -78,9 +78,9 @@ describe('actions/sak', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SAK_INSTITUSJONER_GET_REQUEST,
-          success: types.SAK_INSTITUSJONER_GET_SUCCESS,
-          failure: types.SAK_INSTITUSJONER_GET_FAILURE
+          request: types.SAK_INSTITUSJONER_REQUEST,
+          success: types.SAK_INSTITUSJONER_SUCCESS,
+          failure: types.SAK_INSTITUSJONER_FAILURE
         },
         url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
@@ -92,9 +92,9 @@ describe('actions/sak', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SAK_LANDKODER_GET_REQUEST,
-          success: types.SAK_LANDKODER_GET_SUCCESS,
-          failure: types.SAK_LANDKODER_GET_FAILURE
+          request: types.SAK_LANDKODER_REQUEST,
+          success: types.SAK_LANDKODER_SUCCESS,
+          failure: types.SAK_LANDKODER_FAILURE
         },
         url: sprintf(urls.API_LANDKODER_URL, { buctype })
       }))

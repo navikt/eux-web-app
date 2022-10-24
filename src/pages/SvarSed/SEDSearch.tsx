@@ -2,26 +2,31 @@ import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
+  Container,
+  Content,
   FlexDiv,
   FullWidthDiv,
-  HorizontalSeparatorDiv,
+  HorizontalSeparatorDiv, Margin,
   PileDiv,
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import { cleanData, copyToClipboard } from 'actions/app'
+import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { querySaksnummerOrFnr, setCurrentSak } from 'actions/svarsed'
+import { loadReplySed, querySaks, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
-import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
+import LoadSave from 'components/LoadSave/LoadSave'
+import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
+import { ReplySed } from 'declarations/sed'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
@@ -44,45 +49,55 @@ const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
-  queryingSaksnummerOrFnr: state.loading.queryingSaksnummerOrFnr,
+  queryingSaks: state.loading.queryingSaks,
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
+  deletedSak: state.svarsed.deletedSak,
   saks: state.svarsed.saks,
-  sedStatus: state.svarsed.sedStatus,
-  currentSak: state.svarsed.currentSak
+  sedStatus: state.svarsed.sedStatus
 })
 
-export interface SvarSedProps {
-  sak: Sak
-  changeMode: (mode: string) => void
-}
-
-const SEDSearch: React.FC<SvarSedProps> = ({
-  changeMode
-}: SvarSedProps): JSX.Element => {
+const SEDSearch = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
     entries,
     alertMessage,
     alertType,
+    deletedSak,
     featureToggles,
-    queryingSaksnummerOrFnr,
+    queryingSaks,
     rinasaksnummerOrFnrParam,
     saks,
-    sedStatus,
-    currentSak
+    sedStatus
   }: any = useAppSelector(mapState)
 
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+  const navigate = useNavigate()
   const [_filter, _setFilter] = useState<string>('all')
   const [_onlyEditableSaks, _setOnlyEditableSeds] = useState<boolean>(true)
+  const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
 
   const namespace = 'sedsearch'
 
+  useEffect(() => {
+    if (_query && !_.isNil(deletedSak)) {
+      // if we are deleting a sak, and query was saksnummer, then we are deleting the same sak, nothing to query
+      // but if we are querying fnr/dnr, we have to query again so we can have a sak list without the deleted sak
+      if (_queryType !== 'saksnummer') {
+        dispatch(querySaks(_query!, 'new'))
+      }
+    }
+  }, [deletedSak])
+
   /** if we get 1 sed by querying a saksnummer, then set it as currentSak */
   useEffect(() => {
-    if (_.isUndefined(currentSak) && saks?.length === 1 && _queryType === 'saksnummer') {
+    if (saks?.length === 1 && _queryType === 'saksnummer') {
       dispatch(setCurrentSak(saks[0]))
+      navigate({
+        pathname: '/svarsed/view/sak/' + saks[0].sakId,
+        search: _query ? '?q=' + _query : ''
+      })
     }
   }, [saks])
 
@@ -104,24 +119,27 @@ const SEDSearch: React.FC<SvarSedProps> = ({
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) !== undefined)?.length ?? 0
 
   return (
-    <PileStartDiv>
-      <FullWidthDiv>
-        {!currentSak && (
-          <>
+    <Container>
+      <Margin />
+      <Content style={{ flex: 6 }}>
+        <PileStartDiv>
+          <FullWidthDiv>
             <Heading size='medium'>
               {t('app:page-title-svarsed-search')}
             </Heading>
             <VerticalSeparatorDiv size='2' />
             <SEDQuery
               parentNamespace={namespace}
-              initialQuery={rinasaksnummerOrFnrParam}
+              initialQuery={_query ?? rinasaksnummerOrFnrParam}
               onQueryChanged={(queryType: string) => {
-                dispatch(cleanData())
-                dispatch(setCurrentSak(undefined))
+                dispatch(appReset())
                 _setQueryType(queryType)
               }}
-              onQuerySubmit={(q: string) => dispatch(querySaksnummerOrFnr(q))}
-              querying={queryingSaksnummerOrFnr}
+              onQuerySubmit={(q: string) => {
+                _setQuery(q)
+                dispatch(querySaks(q, 'new'))
+              }}
+              querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
             />
             {visibleSaks?.length > 0 && (
@@ -174,49 +192,48 @@ const SEDSearch: React.FC<SvarSedProps> = ({
                 </FlexRadioGroup>
               </>
             )}
-          </>
-        )}
-        <AlignStartRow>
-          {/*{!!currentSak && (*/}
-          {/*  <Column>*/}
-          {/*    <Sakshandlinger*/}
-          {/*      sak={sak}*/}
-          {/*      changeMode={changeMode}*/}
-          {/*    />*/}
-          {/*  </Column>*/}
-          {/*)}*/}
-          <Column flex='2'>
-            <MyRadioPanelGroup className='xxx'>
-              {!currentSak
-                ? filteredSaks.map((sak: Sak) => (
-                    _onlyEditableSaks && _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
-                      ? <div />
-                      : (
-                        <div key={'sak-' + sak?.sakId}>
-                          <SakPanel
-                            sak={sak}
-                            onSelected={() => dispatch(setCurrentSak(sak))}
-                            onCopy={() => dispatch(copyToClipboard(sak.sakId))}
-                          />
-                          <VerticalSeparatorDiv />
-                        </div>
-                        )))
-                : currentSak.sedListe.map((connectedSed: Sed) => (
-                  <div key={'sed-' + connectedSed.sedId}>
-                    <SEDPanel
-                      currentSak={currentSak}
-                      changeMode={changeMode}
-                      connectedSed={connectedSed}
-                    />
-                    <VerticalSeparatorDiv />
-                  </div>
-                ))}
-            </MyRadioPanelGroup>
-
-          </Column>
-        </AlignStartRow>
-      </FullWidthDiv>
-    </PileStartDiv>
+            {queryingSaks
+              ? (<WaitingPanel />)
+              : (
+                <AlignStartRow>
+                  <Column flex='2'>
+                    <MyRadioPanelGroup>
+                      {filteredSaks?.map((sak: Sak) => (
+                        _onlyEditableSaks &&
+                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
+                          ? <div />
+                          : (
+                            <div key={'sak-' + sak?.sakId}>
+                              <SakPanel
+                                sak={sak}
+                                onSelected={() => {
+                                  dispatch(setCurrentSak(sak))
+                                  navigate({
+                                    pathname: '/svarsed/view/sak/' + sak.sakId,
+                                    search: _query ? '?q=' + _query : ''
+                                  })
+                                }}
+                                onCopy={() => dispatch(copyToClipboard(sak.sakId))}
+                              />
+                              <VerticalSeparatorDiv />
+                            </div>
+                            )
+                      ))}
+                    </MyRadioPanelGroup>
+                  </Column>
+                </AlignStartRow>
+                )}
+          </FullWidthDiv>
+        </PileStartDiv>
+      </Content>
+      <Content style={{ flex: 2 }}>
+        <LoadSave<ReplySed>
+          namespace='svarsed'
+          loadReplySed={loadReplySed}
+        />
+      </Content>
+      <Margin />
+    </Container>
   )
 }
 

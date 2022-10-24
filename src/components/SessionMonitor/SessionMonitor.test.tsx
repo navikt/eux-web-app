@@ -5,12 +5,12 @@ import SessionMonitor, { SessionMonitorProps } from './SessionMonitor'
 describe('components/SessionMonitor/SessionMonitor', () => {
   let wrapper: any
   const initialMockProps: SessionMonitorProps = {
-    expirationTime: new Date(2020, 1, 1)
+    expirationTime: new Date(2020, 1, 1).getTime()
   }
 
   it('Renders', () => {
     const aDate = new Date('2020-12-17T03:24:00')
-    const expirationTime = new Date('2020-12-17T03:24:10')
+    const expirationTime = new Date('2020-12-17T03:24:10').getTime()
     wrapper = render(
       <SessionMonitor
         now={aDate}
@@ -27,7 +27,7 @@ describe('components/SessionMonitor/SessionMonitor', () => {
   it('SessionMonitor will trigger a openModal when session is almost expiring', async () => {
     // expires in 5 seconds - will check every 0.5s - warnings start at 9.9s - reload only happens under 1s
     const aDate = new Date('2020-12-17T03:24:00')
-    const expirationTime = new Date('2020-12-17T03:24:05')
+    const expirationTime = new Date('2020-12-17T03:24:05').getTime()
     wrapper = render(
       <SessionMonitor
         now={aDate}
@@ -50,7 +50,7 @@ describe('components/SessionMonitor/SessionMonitor', () => {
     // expires in 1 seconds - will check every 0.5s - warnings start at 0.9s - reload happens under 10s
     (window.location.reload as jest.Mock).mockReset()
     const aDate = new Date('2020-12-17T03:24:00')
-    const expirationTime = new Date('2020-12-17T03:23:59')
+    const expirationTime = new Date('2020-12-17T03:23:59').getTime()
     wrapper = render(
       <SessionMonitor
         now={aDate}

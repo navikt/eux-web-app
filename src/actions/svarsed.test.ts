@@ -48,33 +48,33 @@ describe('actions/svarsed', () => {
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
-          request: types.SVARSED_FAGSAKER_GET_REQUEST,
-          success: types.SVARSED_FAGSAKER_GET_SUCCESS,
-          failure: types.SVARSED_FAGSAKER_GET_FAILURE
+          request: types.SVARSED_FAGSAKER_REQUEST,
+          success: types.SVARSED_FAGSAKER_SUCCESS,
+          failure: types.SVARSED_FAGSAKER_FAILURE
         },
         url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
       }))
   })
 
-  it('getPreviewFile()', () => {
-    const rinaSakId = '123'
-    const replySed = {
-      sak: {
-        sakId: '123',
-        sakUrl: 'url'
-      }
-    } as ReplySed
-    svarsedActions.getPreviewFile(rinaSakId, replySed)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SVARSED_PREVIEW_REQUEST,
-          success: types.SVARSED_PREVIEW_SUCCESS,
-          failure: types.SVARSED_PREVIEW_FAILURE
-        },
-        url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: replySed.sak?.sakId })
-      }))
-  })
+  // it('getPreviewFile()', () => {
+  //   const rinaSakId = '123'
+  //   const replySed = {
+  //     sak: {
+  //       sakId: '123',
+  //       sakUrl: 'url'
+  //     }
+  //   } as ReplySed
+  //   svarsedActions.getPreviewFile(rinaSakId, replySed)
+  //   expect(call)
+  //     .toBeCalledWith(expect.objectContaining({
+  //       type: {
+  //         request: types.SVARSED_PREVIEW_REQUEST,
+  //         success: types.SVARSED_PREVIEW_SUCCESS,
+  //         failure: types.SVARSED_PREVIEW_FAILURE
+  //       },
+  //       url: sprintf(urls.API_PREVIEW_URL, { rinaSakId: replySed.sak?.sakId })
+  //     }))
+  // })
 
   it('getSedStatus()', () => {
     const rinaSakId = '123'
@@ -91,10 +91,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - saksnummer', () => {
+  it('querySaks() - saksnummer', () => {
     const saksnummerOrFnr = '123'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -110,10 +110,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - valid fnr', () => {
+  it('querySaks() - valid fnr', () => {
     const saksnummerOrFnr = '24053626692'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -129,10 +129,10 @@ describe('actions/svarsed', () => {
       }))
   })
 
-  it('querySaksnummerOrFnr() - valid dnr', () => {
+  it('querySaks() - valid dnr', () => {
     const saksnummerOrFnr = '43099015781'
 
-    svarsedActions.querySaksnummerOrFnr(saksnummerOrFnr)
+    svarsedActions.querySaks(saksnummerOrFnr)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {

@@ -34,12 +34,13 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   const [_rettTilStonad, _setRettTilStonad] = useState<JaNei| undefined>(undefined)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationRettTilYtelseProps>(
-      validation, namespace, validateRettTilYtelse, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationRettTilYtelseProps>(
+      clonedValidation, namespace, validateRettTilYtelse, {
         rettTilYtelse
       }
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {
@@ -161,18 +162,21 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
         </AlignStartRow>
       )}
       <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <PeriodeInput
-          namespace={namespace}
-          error={{
-            startdato: validation[namespace + '-periode-startdato']?.feilmelding,
-            sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
-          }}
-          setPeriode={setPeriode}
-          value={rettTilYtelse?.periode}
-        />
-        <Column />
-      </AlignStartRow>
+      {_rettTilStonad === 'ja' && (
+        <AlignStartRow>
+          <PeriodeInput
+            namespace={namespace}
+            error={{
+              startdato: validation[namespace + '-periode-startdato']?.feilmelding,
+              sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
+            }}
+            hideLabel={false}
+            setPeriode={setPeriode}
+            value={rettTilYtelse?.periode}
+          />
+          <Column />
+        </AlignStartRow>
+      )}
       <VerticalSeparatorDiv size='2' />
     </PaddedDiv>
   )

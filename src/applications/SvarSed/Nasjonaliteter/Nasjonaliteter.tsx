@@ -70,13 +70,14 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationNasjonalitetProps>(validateNasjonalitet, namespace)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationNasjonaliteterProps>(
-      validation, namespace, validateNasjonaliteter, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationNasjonaliteterProps>(
+      clonedValidation, namespace, validateNasjonaliteter, {
         statsborgerskaper,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setLand = (land: string, index: number) => {
@@ -137,18 +138,19 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationNasjonalitetProps>(
-      validation, namespace, validateNasjonalitet, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationNasjonalitetProps>(
+      clonedValidation, namespace, validateNasjonalitet, {
         statsborgerskap: _editStatsborgerskap,
         statsborgerskaper,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editStatsborgerskap))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

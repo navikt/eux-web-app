@@ -1,15 +1,30 @@
 import * as types from 'constants/actionTypes'
-import { ReplySed } from 'declarations/sed.d'
-import { CreateSedResponse, FagSaker, Sak, Saks, Sed } from 'declarations/types.d'
+import {
+  H001Sed,
+  F002Sed,
+  HSed,
+  Kjoenn,
+  ReplySed,
+  X001Sed,
+  X008Sed,
+  X010Sed,
+  X011Sed,
+  X012Sed,
+  XSed
+} from 'declarations/sed.d'
+import { CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed } from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
+import moment from 'moment'
 import { AnyAction } from 'redux'
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
+  deletedSak: any | null | undefined
+  institusjoner: Array<Institusjon> | undefined
+  mottakere: any | undefined
   personRelatert: any
-  previewReplySed: ReplySed | null | undefined
   previewFile: Blob | null | undefined
   replySed: ReplySed | null | undefined
   originalReplySed: ReplySed | null | undefined
@@ -23,9 +38,10 @@ export interface SvarsedState {
 
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
+  deletedSak: undefined,
+  institusjoner: undefined,
+  mottakere: undefined,
   personRelatert: undefined,
-  // replySED used for preview
-  previewReplySed: undefined,
   // binary PDF file for SED preview,
   previewFile: undefined,
   // the working reply sed
@@ -41,28 +57,84 @@ export const initialSvarsedState: SvarsedState = {
   sedStatus: {}
 }
 
+const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
+  const personInfo = {
+    fornavn: sak.fornavn,
+    etternavn: sak.etternavn,
+    kjoenn: sak.kjoenn as Kjoenn,
+    foedselsdato: sak.foedselsdato,
+    statsborgerskap: [{ land: 'NO' }],
+    pin: [{
+      land: 'NO',
+      identifikator: sak.fnr
+    }]
+  }
+
+  const replySed = {
+    sedType,
+    sedVersjon: '4.2',
+    sak,
+    sed: {
+      sedType,
+      status: 'new'
+    } as Sed,
+    bruker: sedType.startsWith('X')
+      ? personInfo
+      : { personInfo }
+  } as unknown as T
+
+  if (sedType.startsWith('H')) {
+    (replySed as unknown as HSed).tema = sak.tema;
+    (replySed as unknown as HSed).fagsakId = sak.fagsakId
+  }
+  return replySed
+}
+
 const svarsedReducer = (
   state: SvarsedState = initialSvarsedState,
   action: AnyAction
 ): SvarsedState => {
   switch (action.type) {
-    case types.APP_CLEAN:
+    case types.APP_RESET:
       return initialSvarsedState
 
+    case types.LOCALSTORAGE_ENTRY_SAVE: {
+      const { namespace, entry } = (action as ActionWithPayload).payload
+      if (namespace === 'svarsed') {
+        const replySed = entry.content
+        return {
+          ...state,
+          replySed,
+          originalReplySed: replySed,
+          replySedChanged: false
+        }
+      }
+      return state
+    }
+
+    case types.SVARSED_RESET:
+      return {
+        ...state,
+        replySed: undefined,
+        originalReplySed: undefined,
+        replySedChanged: false,
+        sedSendResponse: undefined
+      }
+
     case types.SVARSED_FAGSAKER_RESET:
-    case types.SVARSED_FAGSAKER_GET_REQUEST:
+    case types.SVARSED_FAGSAKER_REQUEST:
       return {
         ...state,
         fagsaker: undefined
       }
 
-    case types.SVARSED_FAGSAKER_GET_SUCCESS:
+    case types.SVARSED_FAGSAKER_SUCCESS:
       return {
         ...state,
         fagsaker: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_FAGSAKER_GET_FAILURE:
+    case types.SVARSED_FAGSAKER_FAILURE:
       return {
         ...state,
         fagsaker: null
@@ -110,9 +182,18 @@ const svarsedReducer = (
     case types.SVARSED_EDIT_SUCCESS: {
       const newReplySed = {
         ...(action as ActionWithPayload).payload,
+        bruker: {
+          ...(action as ActionWithPayload).payload.bruker,
+          ...((action as ActionWithPayload).payload.sedType.startsWith('X') && {
+            pin: [{
+              land: 'NO',
+              identifikator: (action as ActionWithPayload).context.sak.fnr
+            }]})
+        },
         sak: (action as ActionWithPayload).context.sak,
         sed: (action as ActionWithPayload).context.sed
       }
+
       return {
         ...state,
         replySed: newReplySed,
@@ -129,28 +210,38 @@ const svarsedReducer = (
         replySedChanged: false
       }
 
-    case types.SVARSED_PREVIEW_SUCCESS:
+    case types.SVARSED_INSTITUSJONER_REQUEST:
       return {
         ...state,
-        previewReplySed: (action as ActionWithPayload).payload
+        institusjoner: undefined
       }
 
-    case types.SVARSED_PREVIEW_FAILURE:
+    case types.SVARSED_INSTITUSJONER_SUCCESS:
       return {
         ...state,
-        previewReplySed: null
+        institusjoner: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_PREVIEW_REQUEST:
+    case types.SVARSED_MOTTAKERE_ADD_RESET:
       return {
         ...state,
-        previewReplySed: undefined
+        institusjoner: undefined,
+        mottakere: undefined
+      }
+
+    case types.SVARSED_MOTTAKERE_ADD_SUCCESS:
+      return {
+        ...state,
+        mottakere: {success: true},
+        currentSak: {
+          ...(state.currentSak as Sak),
+          motpart: action.context.mottakere
+        }
       }
 
     case types.SVARSED_PREVIEW_RESET:
       return {
         ...state,
-        previewReplySed: undefined,
         previewFile: undefined
       }
 
@@ -178,25 +269,166 @@ const svarsedReducer = (
         currentSak: (action as ActionWithPayload).payload
       }
 
-    case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAK_DELETE_REQUEST:
       return {
         ...state,
-        saks: undefined
+        deletedSak: undefined
+      }
+
+    case types.SVARSED_SAK_DELETE_SUCCESS:
+      return {
+        ...state,
+        deletedSak: true,
+        saks: undefined,
+        currentSak: undefined
+      }
+
+    case types.SVARSED_SAK_DELETE_FAILURE:
+      return {
+        ...state,
+        deletedSak: null
+      }
+
+    case types.SVARSED_SAKS_REQUEST:
+    case types.SVARSED_SAKS_REFRESH_REQUEST:
+      return {
+        ...state,
+        saks: undefined,
+        deletedSak: undefined
       }
 
     case types.SVARSED_SAKS_FAILURE:
+    case types.SVARSED_SAKS_REFRESH_FAILURE:
       return {
         ...state,
         saks: null
       }
 
     case types.SVARSED_SAKS_SUCCESS: {
-      const saks = _.isArray((action as ActionWithPayload).payload)
+      let saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload
         : [(action as ActionWithPayload).payload]
+
+      saks = saks.map((s: Sak) => {
+        if (['K', 'M', 'U'].indexOf(s.kjoenn) >= 0) {
+          return s
+        }
+        if (['k', 'm', 'u'].indexOf(s.kjoenn) >= 0) {
+          s.kjoenn = s.kjoenn.toUpperCase()
+          return s
+        }
+        if (s.kjoenn === 'f') {
+          s.kjoenn = 'K'
+          return s
+        }
+        s.kjoenn = 'U'
+        return s
+      })
+
       return {
         ...state,
         saks
+      }
+    }
+
+    case types.SVARSED_SAKS_REFRESH_SUCCESS: {
+      let saks = _.isArray((action as ActionWithPayload).payload)
+        ? (action as ActionWithPayload).payload
+        : [(action as ActionWithPayload).payload]
+
+      saks = saks.map((s: Sak) => {
+        if (['K', 'M', 'U'].indexOf(s.kjoenn) >= 0) {
+          return s
+        }
+        if (['k', 'm', 'u'].indexOf(s.kjoenn) >= 0) {
+          s.kjoenn = s.kjoenn.toUpperCase()
+          return s
+        }
+        if (s.kjoenn === 'f') {
+          s.kjoenn = 'K'
+          return s
+        }
+        s.kjoenn = 'U'
+        return s
+      })
+
+      return {
+        ...state,
+        saks,
+        currentSak: saks[0]
+      }
+    }
+
+    case types.SVARSED_H001SED_CREATE: {
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: H001Sed = createReplySedTemplate<H001Sed>(sak, 'H001')
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_F002SED_CREATE: {
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: F002Sed = createReplySedTemplate<F002Sed>(sak, 'F002')
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_XSED_CREATE: {
+      const sedType = (action as ActionWithPayload).payload.sedType
+      const sak = (action as ActionWithPayload).payload.sak
+      const replySed: XSed = createReplySedTemplate<XSed>(sak, sedType)
+
+      if (sedType === 'X001') {
+        (replySed as X001Sed).avslutningDato = moment(new Date()).format('YYYY-MM-DD')
+      }
+
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_INVALIDATE: {
+      const { connectedSed, sak } = action.payload
+      const replySed: X008Sed = createReplySedTemplate<X008Sed>(sak, 'X008')
+      replySed.kansellerSedId = connectedSed.sedId
+      replySed.utstedelsesdato = moment(connectedSed.sistEndretDato).format('YYYY-MM-DD')
+
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_REMIND: {
+      const { sak } = action.payload
+      const replySed: X010Sed = createReplySedTemplate<X010Sed>(sak, 'X010')
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_REJECT: {
+      const { connectedSed, sak } = action.payload
+      const replySed: X011Sed = createReplySedTemplate<X011Sed>(sak, 'X011')
+      replySed.avvisSedId = connectedSed.sedId
+      return {
+        ...state,
+        replySed
+      }
+    }
+
+    case types.SVARSED_SED_CLARIFY: {
+      const { sak } = action.payload
+      const replySed: X012Sed = createReplySedTemplate<X012Sed>(sak, 'X012')
+      return {
+        ...state,
+        replySed
       }
     }
 

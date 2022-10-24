@@ -34,25 +34,26 @@ const Avsender: React.FC<MainFormProps> = ({
   const [allowEdit, setAllowEdit] = useState<boolean>(false)
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationAvsenderProps>(
-      validation, namespace, validateAvsender, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAvsenderProps>(
+      clonedvalidation, namespace, validateAvsender, {
         nav,
         keyForCity: 'poststed',
         keyforZipCode: 'postnr'
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   const setEnhetNavn = (enhetNavn: string) => {
-    dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn))
+    dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn.trim()))
     if (validation[namespace + '-enhetNavn']) {
       dispatch(resetValidation(namespace + '-enhetNavn'))
     }
   }
 
   const setEnhetId = (enhetId: string) => {
-    dispatch(updateReplySed(`${target}.enhetId`, enhetId))
+    dispatch(updateReplySed(`${target}.enhetId`, enhetId.trim()))
     if (validation[namespace + '-enhetId']) {
       dispatch(resetValidation(namespace + '-enhetId'))
     }
@@ -66,21 +67,21 @@ const Avsender: React.FC<MainFormProps> = ({
   }
 
   const setTlf = (tlf: string) => {
-    dispatch(updateReplySed(`${target}.tlf`, tlf))
+    dispatch(updateReplySed(`${target}.tlf`, tlf.trim()))
     if (validation[namespace + '-tlf']) {
       dispatch(resetValidation(namespace + '-tlf'))
     }
   }
 
   const setSaksbehandlerNavn = (navn: string) => {
-    dispatch(updateReplySed(`${target}.saksbehandler.navn`, navn))
+    dispatch(updateReplySed(`${target}.saksbehandler.navn`, navn.trim()))
     if (validation[namespace + '-saksbehandler-navn']) {
       dispatch(resetValidation(namespace + '-saksbehandler-navn'))
     }
   }
 
   const setSaksbehandlerEnhet = (enhet: string) => {
-    dispatch(updateReplySed(`${target}.saksbehandler.enhet`, enhet))
+    dispatch(updateReplySed(`${target}.saksbehandler.enhet`, enhet.trim()))
     if (validation[namespace + '-saksbehandler-enhet']) {
       dispatch(resetValidation(namespace + '-saksbehandler-enhet'))
     }

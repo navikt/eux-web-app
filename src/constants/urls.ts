@@ -10,10 +10,11 @@ export const V2_BASE_URL = '/v2'
 // RINA
 export const API_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
 export const API_LANDKODER_URL = API_BASE_URL + '/landkoder/%(buctype)s'
-export const API_RINASAKER_OVERSIKT_FNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
-export const API_RINASAKER_OVERSIKT_DNR_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
+export const API_RINASAKER_OVERSIKT_FNR_QUERY_URL = V2_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
+export const API_RINASAKER_OVERSIKT_DNR_QUERY_URL = V2_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
+export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = API_BASE_URL + '/rina/sak'
-export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
+export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
 export const API_SED_EDIT_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_UPDATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s'
@@ -21,12 +22,15 @@ export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(se
 export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
 export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
+export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/pdf'
+export const API_SAK_DELETE_URL = V2_BASE_URL + '/rina/sak/?rinasakId=%(rinaSakId)s'
 
 // Registre
 export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'
 export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
+export const API_PDL_PERSON_URL = API_BASE_URL + '/person/%(fnr)s/personInfo'
 export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'
 
 // Saksbehandler
@@ -44,12 +48,13 @@ export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
 
 // Joark
-export const API_ATTACHMENT_LIST_URL = API_BASE_URL + '/vedlegg/dokumentoversikt/%(fnr)s?tema=%(tema)s&dokumenttype=%(dokumenttype)s'
+export const API_ATTACHMENT_LIST_URL = API_BASE_URL + '/vedlegg/dokumentoversikt/%(fnr)s?tema=%(tema)s'
 export const API_JOARK_GET_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
 export const API_JOARK_ATTACHMENT_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
 // PD U1
+export const PDU1_GET_URL = API_BASE_URL + '/dokument/%(journalpostId)s/%(dokumentId)s/%(variant)s' // GET
 export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/pdf/journalpost' // POST
+export const PDU1_INFO_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET
+export const PDU1_SEARCH_URL = API_BASE_URL + '/person/%(fnr)s/dokumenter?dokumenttype=DAG_EOS_U1' // GET
 export const PDU1_PREVIEW_URL = V2_BASE_URL + '/pdu1/pdf/utkast' // POST
-export const PDU1_GET_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET
-export const PDU1_FETCH_URL = API_BASE_URL + '/person/%(fnr)s/search/pdu1' // GET

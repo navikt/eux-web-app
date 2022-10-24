@@ -68,7 +68,7 @@ export const validateForsikringPeriodeBox = (
 
   if (showAddress) {
     hasErrors.push(validateAdresse(v, namespace + (nsIndex ?? '') + '-arbeidsgiver-adresse', {
-      adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver.adresse,
+      adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false
     }))
   }
@@ -81,7 +81,7 @@ export const validateForsikringPeriodeBox = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo,
       id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
-      message: 'validation:noInntektOgTimerInfo'
+      message: 'validation:noInfo'
     }))
   }
 
@@ -96,19 +96,19 @@ export const validateForsikringPeriodeBox = (
   if (showBeløp) {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
-      id: namespace +  (nsIndex ?? '') + '-beloep',
+      id: namespace + (nsIndex ?? '') + '-beloep',
       message: 'validation:noBeløp'
     }))
 
     hasErrors.push(checkIfNotNumber(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.beloep,
-      id: namespace +  (nsIndex ?? '') + '-beloep',
+      id: namespace + (nsIndex ?? '') + '-beloep',
       message: 'validation:invalidBeløp'
     }))
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeFerieForsikring)?.valuta,
-      id: namespace +  (nsIndex ?? '') + '-valuta',
+      id: namespace + (nsIndex ?? '') + '-valuta',
       message: 'validation:noValuta'
     }))
   }

@@ -67,6 +67,7 @@ const mapState = (state: State): InntektFormSelector => ({
 })
 
 const InntektForm: React.FC<MainFormProps> = ({
+  label,
   parentNamespace,
   personID,
   personName,
@@ -102,13 +103,14 @@ const InntektForm: React.FC<MainFormProps> = ({
   ]
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationLoennsopplysningerProps>(
-      validation, namespace, validateLoennsopplysninger, {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationLoennsopplysningerProps>(
+      clonedValidation, namespace, validateLoennsopplysninger, {
         loennsopplysninger,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedValidation))
   })
 
   const setPeriode = (periode: Periode, index: number) => {
@@ -131,14 +133,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        periodetype
+        periodetype: periodetype.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-periodetype')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      periodetype
+      periodetype: periodetype.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-periodetype'))
   }
@@ -163,14 +165,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        arbeidsdager
+        arbeidsdager: arbeidsdager.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-arbeidsdager')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      arbeidsdager
+      arbeidsdager: arbeidsdager.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidsdager'))
   }
@@ -179,14 +181,14 @@ const InntektForm: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        arbeidstimer
+        arbeidstimer: arbeidstimer.trim()
       } as Loennsopplysning)
       _resetValidation(namespace + '-arbeidstimer')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      arbeidstimer
+      arbeidstimer: arbeidstimer.trim()
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }
@@ -213,18 +215,19 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
-    const [valid, newValidation] = performValidation<ValidationLoennsopplysningProps>(
-      validation, namespace, validateLoennsopplysning, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationLoennsopplysningProps>(
+      clonedValidation, namespace, validateLoennsopplysning, {
         loennsopplysning: _editLoennsopplysning,
         loennsopplysninger,
         index: _editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editLoennsopplysning))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
@@ -267,7 +270,7 @@ const InntektForm: React.FC<MainFormProps> = ({
         })}
       >
         <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <AlignStartRow style={{ minHeight: '2.2rem' }}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -414,10 +417,7 @@ const InntektForm: React.FC<MainFormProps> = ({
             <PileDiv key={getIdInntekt(inntekt)}>
               <FlexCenterSpacedDiv>
                 <BodyLong>
-                  {t('el:option-inntekttype-' + inntekt.type)}
-                </BodyLong>
-                <BodyLong>
-                  {inntekt.typeAnnen}
+                  {t('el:option-inntekttype-' + inntekt.type) + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
                 </BodyLong>
               </FlexCenterSpacedDiv>
               <FlexDiv>
@@ -441,6 +441,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                   </FlexDiv>
                 </FlexDiv>
               </FlexDiv>
+              <HorizontalLineSeparator size='0.5' />
             </PileDiv>
           ))}
         <VerticalSeparatorDiv size='0.5' />
@@ -453,8 +454,11 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   return (
-    <>
-      <VerticalSeparatorDiv />
+    <PaddedDiv>
+      <Heading size='small'>
+        {label}
+      </Heading>
+      <VerticalSeparatorDiv size='2' />
       {_.isEmpty(loennsopplysninger)
         ? (
           <PaddedHorizontallyDiv>
@@ -483,57 +487,56 @@ const InntektForm: React.FC<MainFormProps> = ({
           </Row>
           )}
       <VerticalSeparatorDiv size='2' />
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:inntekt-fra-komponent')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <InntektSearch
-          fnr={fnr!}
-          onInntektSearch={onInntektSearch}
-          gettingInntekter={gettingInntekter}
-        />
-        <VerticalSeparatorDiv />
-        {gettingInntekter && <WaitingPanel />}
-        {inntekter && (
-          <InntektFC inntekter={inntekter} />
-        )}
-        <VerticalSeparatorDiv size='2' />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv size='2' />
-        <Ingress>
-          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-        </Ingress>
-        <VerticalSeparatorDiv />
-        <ArbeidsperioderSøk
-          amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
-          fnr={fnr}
-          namespace={namespace}
-        />
-        <VerticalSeparatorDiv size='2' />
-        {arbeidsperioder?.arbeidsperioder && (
-          <>
-            <Heading size='small'>
-              {t('label:arbeidsperioder')}
-            </Heading>
-            <VerticalSeparatorDiv size='2' />
-            {arbeidsperioder?.arbeidsperioder?.map(a => {
-              const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
-              return (
-                <div key={getOrgnr(period, 'organisasjonsnummer')}>
-                  <ForsikringPeriodeBox
-                    forsikringPeriode={period}
-                    showArbeidsgiver
-                    namespace={namespace}
-                  />
-                  <VerticalSeparatorDiv />
-                </div>
-              )
-            })}
-          </>
-        )}
-      </PaddedDiv>
-    </>
+
+      <Heading size='small'>
+        {t('label:inntekt-fra-komponent')}
+      </Heading>
+      <VerticalSeparatorDiv />
+      <InntektSearch
+        fnr={fnr!}
+        onInntektSearch={onInntektSearch}
+        gettingInntekter={gettingInntekter}
+      />
+      <VerticalSeparatorDiv />
+      {gettingInntekter && <WaitingPanel />}
+      {inntekter && (
+        <InntektFC inntekter={inntekter} />
+      )}
+      <VerticalSeparatorDiv size='2' />
+      <HorizontalLineSeparator />
+      <VerticalSeparatorDiv size='2' />
+      <Ingress>
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+      </Ingress>
+      <VerticalSeparatorDiv />
+      <ArbeidsperioderSøk
+        amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
+        fnr={fnr}
+        namespace={namespace}
+      />
+      <VerticalSeparatorDiv size='2' />
+      {arbeidsperioder?.arbeidsperioder && (
+        <>
+          <Heading size='small'>
+            {t('label:arbeidsperioder')}
+          </Heading>
+          <VerticalSeparatorDiv size='2' />
+          {arbeidsperioder?.arbeidsperioder?.map(a => {
+            const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
+            return (
+              <div key={getOrgnr(period, 'organisasjonsnummer')}>
+                <ForsikringPeriodeBox
+                  forsikringPeriode={period}
+                  showArbeidsgiver
+                  namespace={namespace}
+                />
+                <VerticalSeparatorDiv />
+              </div>
+            )
+          })}
+        </>
+      )}
+    </PaddedDiv>
   )
 }
 

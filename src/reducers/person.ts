@@ -18,8 +18,8 @@ const personReducer = (
   action: AnyAction
 ): PersonState => {
   switch (action.type) {
-    case types.APP_CLEAN:
-    case types.PERSON_CLEAN_DATA:
+    case types.APP_RESET:
+    case types.PERSON_RESET:
       return initialPersonState
 
     case types.PERSON_SEARCH_REQUEST:

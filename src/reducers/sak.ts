@@ -1,14 +1,8 @@
 import { ActionWithPayload } from '@navikt/fetch'
-import _ from 'lodash'
 import * as types from 'constants/actionTypes'
-import {
-  ArbeidsperiodeFraAA,
-  FagSaker,
-  OldFamilieRelasjon,
-  Institusjon,
-  OpprettetSak,
-  Person
-} from 'declarations/types'
+import { FillOutInfoPayload } from 'declarations/sed'
+import { ArbeidsperiodeFraAA, FagSaker, Institusjon, OldFamilieRelasjon, OpprettetSak } from 'declarations/types'
+import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface SakState {
@@ -21,7 +15,7 @@ export interface SakState {
   institusjonList: Array<Institusjon> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
-  person: Person | null | undefined
+  filloutinfo: any | null | undefined
   personRelatert: OldFamilieRelasjon | null | undefined
   saksId: any
   sektor: any
@@ -40,7 +34,7 @@ export const initialSakState: SakState = {
   institusjon: undefined,
   landkode: undefined,
   opprettetSak: undefined,
-  person: undefined,
+  filloutinfo: undefined,
   personRelatert: undefined,
   saksId: undefined,
   sedtype: undefined,
@@ -51,76 +45,73 @@ export const initialSakState: SakState = {
 
 const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakState => {
   switch (action.type) {
-    case types.APP_CLEAN:
-    case types.SAK_CLEAN_DATA:
+    case types.APP_RESET:
+    case types.SAK_RESET:
       return initialSakState
 
     case types.SAK_FAGSAKER_RESET:
-    case types.SAK_FAGSAKER_GET_REQUEST:
+    case types.SAK_FAGSAKER_REQUEST:
       return {
         ...state,
         fagsaker: undefined
       }
 
-    case types.SAK_FAGSAKER_GET_SUCCESS:
+    case types.SAK_FAGSAKER_SUCCESS:
       return {
         ...state,
         fagsaker: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_FAGSAKER_GET_FAILURE:
+    case types.SAK_FAGSAKER_FAILURE:
       return {
         ...state,
         fagsaker: null
       }
 
-    case types.SAK_INSTITUSJONER_GET_SUCCESS:
+    case types.SAK_INSTITUSJONER_SUCCESS:
       return {
         ...state,
         institusjonList: (action as ActionWithPayload).payload
       }
 
-    case types.SAK_LANDKODER_GET_SUCCESS:
+    case types.SAK_LANDKODER_SUCCESS:
       return {
         ...state,
         landkode: (action as ActionWithPayload).payload
       }
 
-    case types.PERSON_SEARCH_FAILURE:
+    case types.SAK_FILLOUTINFO_RESET:
+    case types.SAK_FILLOUTINFO_REQUEST:
       return {
         ...state,
-        person: null
+        filloutinfo: undefined
       }
 
-    case types.PERSON_SEARCH_SUCCESS:
+    case types.SAK_FILLOUTINFO_FAILURE:
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
+        filloutinfo: null
       }
 
-    case types.PERSON_RELATERT_SEARCH_FAILURE:
+    case types.SAK_FILLOUTINFO_SUCCESS: {
+      const fillOutInfoPayload: FillOutInfoPayload = (action as ActionWithPayload).payload
+      const template = (action as ActionWithPayload).context.template
       return {
         ...state,
-        personRelatert: null
+        filloutinfo: {
+          ...template,
+          ...fillOutInfoPayload,
+          sak: {
+            ...template.sak,
+            fornavn: fillOutInfoPayload.fornavn,
+            etternavn: fillOutInfoPayload.etternavn,
+            foedselsdato: fillOutInfoPayload.foedselsdato,
+            kjoenn: fillOutInfoPayload.kjoenn,
+            fnr: fillOutInfoPayload.fnr
+          }
+        }
       }
-
-    case types.PERSON_RELATERT_SEARCH_SUCCESS:
-      return {
-        ...state,
-        personRelatert: (action as ActionWithPayload).payload
-      }
-
-    case types.PERSON_SEARCH_RESET:
-      return {
-        ...state,
-        person: undefined
-      }
-
-    case types.PERSON_RELATERT_SEARCH_RESET:
-      return {
-        ...state,
-        personRelatert: undefined
-      }
+    }
 
     case types.SAK_SEND_RESET:
       return {

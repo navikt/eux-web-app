@@ -1,78 +1,132 @@
-import { BodyShort, Heading, Link, Panel } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, Panel, ReadMore } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { loadReplySed } from 'actions/svarsed'
+import Tooltip from '@navikt/tooltip'
+import {createF002Sed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { BaseReplySed, Kjoenn } from 'declarations/sed'
 import { Sak } from 'declarations/types'
-import React from 'react'
+import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAppDispatch } from 'store'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from 'store'
+import {ALLOWED_SAKSHANDLINGER, HIDDEN_SAKSHANDLINGER} from "../../../constants/allowed";
 
 export interface SakshandlingerProps {
   sak: Sak
-  changeMode: (newPage: string) => void
 }
 
-const Sakshandlinger: React.FC<SakshandlingerProps> = ({
-  sak,
-  changeMode
-}: SakshandlingerProps) => {
-
+const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const replySed = useAppSelector(state => state.svarsed.replySed)
 
-  const createSed = (sedType: string) => {
-    const replySed: BaseReplySed = {
-      sedType: sedType,
-      sedVersjon: '1',
-      bruker: {
-        personInfo: {
-          fornavn: sak.person?.fornavn ?? '',
-          etternavn: sak.person?.etternavn ?? '',
-          kjoenn: (sak.person?.kjoenn ?? 'U') as Kjoenn,
-          foedselsdato: sak.person?.foedselsdato ?? '',
-          statsborgerskap: [{land: 'NO'}],
-          pin: [{
-            land: 'NO',
-            identifikator: sak.person?.fnr
-          }]
-        }
-      }
+  const deleteCase = () => {
+    if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {
+      dispatch(deleteSak(sak.sakId))
     }
-
-    dispatch(loadReplySed(replySed))
-    changeMode('B')
   }
 
+  const [waitingForOperation, setWaitingForOperation] = useState<boolean>(false)
+
+  /** if we have a replied, from an operation started here, let's move to edit */
+  useEffect(() => {
+    if (!_.isEmpty(replySed) && !_.isEmpty(replySed!.sak) && waitingForOperation) {
+      setWaitingForOperation(false)
+      navigate({
+        pathname: '/svarsed/edit/sak/' + replySed!.sak!.sakId + '/sed/new',
+        search: window.location.search
+      })
+    }
+  }, [replySed])
+
+  const _createXSed = (sedType: string) => {
+    setWaitingForOperation(true)
+    dispatch(createXSed(sedType, sak))
+  }
+
+  const _createH001Sed = () => {
+    setWaitingForOperation(true)
+    dispatch(createH001Sed(sak))
+  }
+
+  const _createF002Sed = () => {
+    setWaitingForOperation(true)
+    dispatch(createF002Sed(sak))
+  }
+
+  const createDisabledSakshandlingFragment = (sakshandling: string) => {
+    return(
+      <>
+        <Tooltip label={(
+          <div style={{ maxWidth: '400px' }}>
+            {t('message:warning-rina')}
+          </div>
+        )}
+        >
+          <BodyLong>
+            {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
+          </BodyLong>
+        </Tooltip>
+        <VerticalSeparatorDiv />
+      </>
+    )
+  }
+
+  const createSakshandlingFragment = (sakshandling: string) => {
+    let onClickFunction: Function;
+    if(sakshandling.startsWith("X")){
+      onClickFunction = () => _createXSed(sakshandling);
+    } else if (sakshandling === "Delete_Case"){
+      onClickFunction = () => deleteCase();
+    } else  if (sakshandling === "H001"){
+      onClickFunction = () => _createH001Sed()
+    } else  if (sakshandling === "F002"){
+      onClickFunction = () => _createF002Sed()
+    }
+
+    return(
+      <>
+        <Link href='#' onClick={() => onClickFunction()}>
+          {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
+        </Link>
+        <VerticalSeparatorDiv />
+      </>
+    )
+  }
+
+
+  const getSakshandlinger = () => {
+    let sakshandlinger: JSX.Element[] = [];
+    let disabledSakshandlinger: JSX.Element[] = [];
+    sak.sakshandlinger.forEach((sakshandling) => {
+      if(ALLOWED_SAKSHANDLINGER.includes(sakshandling)){
+        sakshandlinger.push(createSakshandlingFragment(sakshandling))
+      } else if (!HIDDEN_SAKSHANDLINGER.includes(sakshandling)){
+        disabledSakshandlinger.push(createDisabledSakshandlingFragment(sakshandling))
+      }
+
+    })
+    return {sakshandlinger, disabledSakshandlinger};
+  }
+
+  const {sakshandlinger, disabledSakshandlinger} = getSakshandlinger();
+
   return (
-    <Panel border>
-      <Heading size='small'>Sakshandlinger</Heading>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X001')}>
-        X001 - {t('el:option-mainform-avslutning')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X008')}>
-        X008 -  {t('el:option-mainform-ugyldiggjøre')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X009')}>
-        X009 - {t('el:option-mainform-påminnelse')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <Link href='#' onClick={() => createSed('X009')}>
-        X010 - {t('el:option-mainform-svarpåminnelse')}
-      </Link>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      <BodyShort>
-        Ingen flere sakshandlinger er tilgjengelige i nEESSI.
-        Åpne sak i RINA for andre mulige handlinger.
-      </BodyShort>
-    </Panel>
+    <>
+      <Panel border>
+        <Heading size='small'>Sakshandlinger</Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        {sakshandlinger}
+        {disabledSakshandlinger.length > 0 &&
+          <ReadMore header="Handlinger tilgjengelig i RINA">
+            {disabledSakshandlinger}
+          </ReadMore>
+        }
+      </Panel>
+    </>
   )
 }
 

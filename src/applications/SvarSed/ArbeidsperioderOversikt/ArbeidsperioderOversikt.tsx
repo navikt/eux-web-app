@@ -78,13 +78,14 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   useUnmount(() => {
-    const [, newValidation] = performValidation<ValidationArbeidsperioderOversiktProps>(
-      validation, namespace, validateArbeidsperioderOversikt, {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationArbeidsperioderOversiktProps>(
+      clonedvalidation, namespace, validateArbeidsperioderOversikt, {
         perioderMedForsikring: perioder,
         personName
-      }
+      }, true
     )
-    dispatch(setValidation(newValidation))
+    dispatch(setValidation(clonedvalidation))
   })
 
   useEffect(() => {
@@ -106,17 +107,18 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = (editForsikringPeriode: PeriodeMedForsikring, editIndex: number) => {
-    const [valid, newValidation] = performValidation<ValidationArbeidsperiodeOversiktProps>(
-      validation, namespace, validateArbeidsperiodeOversikt, {
+    const clonedvalidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationArbeidsperiodeOversiktProps>(
+      clonedvalidation, namespace, validateArbeidsperiodeOversikt, {
         forsikringPeriode: editForsikringPeriode,
         index: editIndex,
         personName
       })
-    if (valid) {
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${editIndex}]`, editForsikringPeriode))
       onCloseEdit(namespace + getIdx(editIndex))
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedvalidation))
     }
   }
 

@@ -121,14 +121,15 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   const onSaveEdit = () => {
     const [type, index] = readNSIdx(_editTypeAndIndex!)
-    const [valid, newValidation] = performValidation<ValidationDekkedePeriodeProps>(
-      validation, namespace, validateDekkedePeriode, {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationDekkedePeriodeProps>(
+      clonedValidation, namespace, validateDekkedePeriode, {
         periode: _editPeriode,
         perioder: _allPeriods,
         nsIndex: _editTypeAndIndex,
         personName
       })
-    if (!!_editPeriode && valid) {
+    if (!!_editPeriode && !hasErrors) {
       // if we switched period types, then we have to remove it from the old array, and add it to the new one
 
       const __editPeriode = _.cloneDeep(_editPeriode)
@@ -156,7 +157,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       }
       onCloseEdit(namespace + _editTypeAndIndex)
     } else {
-      dispatch(setValidation(newValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 

@@ -35,8 +35,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
   let bannerStatus: string
 
   if (
-    action.type === types.ALERT_CLEAR ||
-    action.type === types.APP_CLEAN ||
+    action.type === types.ALERT_RESET ||
+    action.type === types.APP_RESET ||
     action.type === types.PERSON_RELATERT_SEARCH_RESET ||
     action.type === types.PERSON_SEARCH_REQUEST ||
     action.type === types.PERSON_RELATERT_SEARCH_REQUEST ||
@@ -119,6 +119,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         stripeMessage = i18n.t('message:error-tpsperson-exists')
         break
 
+      case types.SVARSED_MOTTAKERE_ADD_FAILURE:
+        stripeMessage = i18n.t('message:error-mottakere-add')
+        break
+
       case types.SVARSED_SED_CREATE_FAILURE:
       case types.SVARSED_SED_UPDATE_FAILURE:
         if ((action as ActionWithPayload).status === 409) {
@@ -137,7 +141,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
             </FlexDiv>
           )
         } else {
-          stripeMessage = i18n.t('message:error-svarsed-failure')
+          stripeMessage = i18n.t('message:error-svarsed-failure') + ((action as ActionWithPayload).payload.message ?? '')
         }
         break
 
@@ -170,10 +174,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All OK MESSAGES for banner go here
    */
   let dealWithBanner = false
-  if (action.type === types.APP_CLIPBOARD_COPY) {
-    bannerMessage = i18n.t('message:success-clipboard-copy')
-    dealWithBanner = true
-  }
 
   if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
     bannerMessage = i18n.t('message:success-localstorage-save')
@@ -182,6 +182,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
 
   if (action.type === types.SVARSED_SED_SEND_SUCCESS) {
     bannerMessage = i18n.t('message:success-sed-send')
+    dealWithBanner = true
+  }
+
+  if (action.type === types.SVARSED_SAK_DELETE_SUCCESS) {
+    bannerMessage = i18n.t('message:success-delete-sak')
     dealWithBanner = true
   }
 
