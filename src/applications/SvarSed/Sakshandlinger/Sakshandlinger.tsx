@@ -22,7 +22,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const replySed = useAppSelector(state => state.svarsed.replySed)
   const featureToggles = useAppSelector(state => state.app.featureToggles)
 
-  const ALLOWED_SAKSHANDLINGER = getAllowed("ALLOWED_SAKSHANDLINGER", !!featureToggles?.featureIsAdmin)
+  const ALLOWED_SAKSHANDLINGER = getAllowed("ALLOWED_SAKSHANDLINGER", !!featureToggles?.featureAdmin)
 
   const deleteCase = () => {
     if (sak.sakId && window.confirm(t('message:warning-are-you-sure-close-case'))) {

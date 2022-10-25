@@ -226,7 +226,7 @@ const SEDNew = (): JSX.Element => {
   const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
-  const ALLOWED_TO_FILL_OUT = getAllowed("ALLOWED_TO_FILL_OUT", !!featureToggles?.featureIsAdmin)
+  const ALLOWED_TO_FILL_OUT = getAllowed("ALLOWED_TO_FILL_OUT", !!featureToggles?.featureAdmin)
   const allowedToFillOut = (sedType: string) => ALLOWED_TO_FILL_OUT.indexOf(sedType) >= 0
 
   const skjemaSubmit = (): void => {
