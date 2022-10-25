@@ -76,6 +76,7 @@ const SEDPanel = ({
 
   const [_loadingDraftSed, _setLoadingDraftSed] = useState<boolean>(false)
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
+  const [_deletingSed, _setDeletingSed] = useState<boolean>(false)
   const [_updatingSed, _setUpdatingSed] = useState<boolean>(false)
   const [_replyingToSed, _setReplyingToSed] = useState<boolean>(false)
   const [_invalidatingSed, _setInvalidatingSed] = useState<boolean>(false)
@@ -96,6 +97,7 @@ const SEDPanel = ({
       _setReplyingToSed(false)
       _setUpdatingSed(false)
       _setEditingSed(false)
+      _setDeletingSed(false)
       _setInvalidatingSed(false)
       _setRejectingSed(false)
       _setClarifyingSed(false)
@@ -136,6 +138,10 @@ const SEDPanel = ({
     _setUpdatingSed(true)
     dispatch(editSed(sed, sak))
   }
+  const onDeleteSedClick = (sed: Sed, sak: Sak) => {
+    _setDeletingSed(true)
+    dispatch(deleteSed(sed, sak))
+  }
 
   const onInvalidatingSedClick = (sed: Sed, sak: Sak) => {
     _setInvalidatingSed(true)
@@ -167,6 +173,7 @@ const SEDPanel = ({
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
   const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showDeleteButton = !showDraftForSedIdButton && (sed.sedHandlinger.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes(sed.sedType)
   const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
   const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
   const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
@@ -321,6 +328,31 @@ const SEDPanel = ({
                       </>
                       )
                     : t('label:oppdater-sed')}
+                </Button>
+                <HorizontalSeparatorDiv size='0.5' />
+              </>
+            )}
+            {showDeleteButton && (
+              <>
+                <Button
+                  variant='secondary'
+                  disabled={_deletingSed}
+                  data-amplitude='svarsed.selection.deletesed'
+                  onClick={(e: any) => {
+                    buttonLogger(e, {
+                      type: sed.sedType
+                    })
+                    onDeleteSedClick(sed, currentSak)
+                  }}
+                >
+                  {_deletingSed
+                    ? (
+                      <>
+                        {t('message:loading-deleting')}
+                        <Loader />
+                      </>
+                    )
+                    : t('label:slett-sed')}
                 </Button>
                 <HorizontalSeparatorDiv size='0.5' />
               </>
