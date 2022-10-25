@@ -4,5 +4,6 @@ import _ from 'lodash'
 export default () => {
   const sb: any = _.sample(mockSaksbehandler)
   sb.featureSvarsedU = true
+  sb.featureAdmin = true
   return sb
 }

@@ -54,7 +54,8 @@ describe('pages/SEDNew/SEDNew', () => {
 
     currentSak: undefined,
 
-    validation: {}
+    validation: {},
+    featureToggles: undefined
   }
 
   beforeAll(() => {

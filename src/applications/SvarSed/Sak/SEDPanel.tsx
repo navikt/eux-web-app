@@ -24,7 +24,8 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {ALLOWED_SED_EDIT_AND_UPDATE, ALLOWED_SED_HANDLINGER} from "../../../constants/allowed";
+import {getAllowed} from "utils/allowedFeatures";
+import {FeatureToggles} from "../../../declarations/app";
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
@@ -48,6 +49,7 @@ interface SEDPanelSelector {
   entries: any
   replySed: ReplySed | null | undefined
   sedStatus: {[x: string] : string | null}
+  featureToggles: FeatureToggles | null | undefined
 }
 
 interface SEDPanelProps {
@@ -58,7 +60,8 @@ interface SEDPanelProps {
 const mapState = (state: State): SEDPanelSelector => ({
   entries: state.localStorage.svarsed.entries,
   replySed: state.svarsed.replySed,
-  sedStatus: state.svarsed.sedStatus
+  sedStatus: state.svarsed.sedStatus,
+  featureToggles: state.app.featureToggles
 })
 
 const SEDPanel = ({
@@ -69,7 +72,7 @@ const SEDPanel = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { entries, replySed, sedStatus } = useAppSelector(mapState)
+  const { entries, replySed, sedStatus, featureToggles } = useAppSelector(mapState)
 
   const [_loadingDraftSed, _setLoadingDraftSed] = useState<boolean>(false)
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
@@ -80,6 +83,9 @@ const SEDPanel = ({
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
   const [_reminderSed, _setReminderSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
+
+  const ALLOWED_SED_HANDLINGER = getAllowed("ALLOWED_SED_HANDLINGER", !!featureToggles?.featureAdmin)
+  const ALLOWED_SED_EDIT_AND_UPDATE = getAllowed("ALLOWED_SED_EDIT_AND_UPDATE", !!featureToggles?.featureAdmin)
 
   const waitingForOperation = _loadingDraftSed || _editingSed || _updatingSed || _replyingToSed || _invalidatingSed || _rejectingSed || _clarifyingSed || _reminderSed
 

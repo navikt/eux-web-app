@@ -89,16 +89,16 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
     const temaParam: string | null = params.get('tema')
     const dokumenttypeParam: string | null = params.get('dokumenttype')
     if (fnrParam) {
-      setStatusParam('fnr', fnrParam)
+      dispatch(setStatusParam('fnr', fnrParam))
     }
     if (temaParam) {
-      setStatusParam('tema', temaParam)
+      dispatch(setStatusParam('tema', temaParam))
     }
     if (dokumenttypeParam) {
-      setStatusParam('dokumenttype', dokumenttypeParam)
+      dispatch(setStatusParam('dokumenttype', dokumenttypeParam))
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
-      setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam)
+      dispatch(setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam))
       dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new'))
     }
   }, [])
