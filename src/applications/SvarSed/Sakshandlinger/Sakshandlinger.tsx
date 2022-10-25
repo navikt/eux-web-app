@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import {getAllowed, HIDDEN_SAKSHANDLINGER} from "../../../utils/allowedFeatures";
+import {getAllowed, HIDDEN_SAKSHANDLINGER} from "utils/allowedFeatures";
 
 export interface SakshandlingerProps {
   sak: Sak,

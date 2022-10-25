@@ -24,7 +24,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {getAllowed} from "../../../utils/allowedFeatures";
+import {getAllowed} from "utils/allowedFeatures";
 import {FeatureToggles} from "../../../declarations/app";
 
 const MyPanel = styled(Panel)`
