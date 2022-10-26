@@ -372,3 +372,19 @@ export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPaylo
   type: types.SVARSED_REPLYSED_UPDATE,
   payload: { needle, value }
 })
+
+export const deleteSed = (rinaSakId: string, sedId: string) => {
+  return call({
+    method: 'DELETE',
+    url: sprintf(urls.API_SED_DELETE_URL, { rinaSakId, sedId }),
+    cascadeFailureError: true,
+    context: {
+      sedId
+    },
+    type: {
+      request: types.SVARSED_SED_DELETE_REQUEST,
+      success: types.SVARSED_SED_DELETE_SUCCESS,
+      failure: types.SVARSED_SED_DELETE_FAILURE
+    }
+  })
+}

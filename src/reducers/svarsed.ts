@@ -12,7 +12,7 @@ import {
   X012Sed,
   XSed
 } from 'declarations/sed.d'
-import { CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed } from 'declarations/types.d'
+import {CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -22,6 +22,7 @@ import { AnyAction } from 'redux'
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
   deletedSak: any | null | undefined
+  deletedSed: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
@@ -39,6 +40,7 @@ export interface SvarsedState {
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   deletedSak: undefined,
+  deletedSed: undefined,
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
@@ -592,6 +594,32 @@ const svarsedReducer = (
         replySedChanged: true
       }
     }
+
+    case types.SVARSED_SED_DELETE_REQUEST:
+      return {
+        ...state,
+        deletedSed: undefined
+      }
+
+    case types.SVARSED_SED_DELETE_SUCCESS:
+      const sedIdDeleted = (action as ActionWithPayload).context.sedId
+      let sedListeWithoutDeletedSed = state.currentSak ? _.filter(state.currentSak.sedListe, (sed: Sed) => {
+        return sed.sedId !== sedIdDeleted
+      }) : []
+      return {
+        ...state,
+        deletedSed: true,
+        currentSak: {
+          ...(state.currentSak as Sak),
+          sedListe: sedListeWithoutDeletedSed
+        }
+      }
+
+    case types.SVARSED_SED_DELETE_FAILURE:
+      return {
+        ...state,
+        deletedSed: null
+      }
 
     default:
       return state

@@ -36,6 +36,7 @@
   "loading-checking-sed-status": "Kontrollerer SED status...",
   "loading-clarifying": "Klargjøring...",
   "loading-editing" : "Rediger...",
+  "loading-deleting" : "Sletter...",
   "loading-invalidating" : "Ugyldiggjørende...",
   "loading-rejecting" : "Avviser...",
   "loading-updating" : "Oppdatering...",
