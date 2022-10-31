@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.3.0-feature-slett-sed",
+  "version": "8.3.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@8.3.0-feature-slett-sed",
+  "_id": "neessi@8.3.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
