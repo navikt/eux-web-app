@@ -193,11 +193,8 @@ const SEDEdit = (): JSX.Element => {
 
   useEffect(() => {
     if (!_.isEmpty(currentSak) && _.isUndefined(replySed)) {
-      dispatch(editSed({
-        sedId
-      } as Sed,
-      currentSak as Sak
-      ))
+      const currentSed = _.filter(currentSak.sedListe, (sed) => sed.sedId === sedId)
+      dispatch(editSed(currentSed[0] as Sed, currentSak as Sak))
     }
   }, [currentSak])
 
@@ -372,6 +369,7 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv />
             <Attachments
               fnr={fnr}
+              attachmentsFromRina={replySed.sed?.vedlegg}
               onAttachmentsChanged={(attachments) => {
                 dispatch(setReplySed({
                   ...replySed,

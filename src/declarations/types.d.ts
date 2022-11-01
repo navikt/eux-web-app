@@ -2,6 +2,7 @@ import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { JaNei, ReplySed } from 'declarations/sed'
+import {Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
 export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
@@ -63,7 +64,17 @@ export interface Sed {
   svarsedDisplay?: string
   lenkeHvisForrigeSedMaaJournalfoeres?: string
   sedHandlinger: Array<SedAction>
+  vedlegg?: Array<Attachment>
   children ?: Array<Sed>
+}
+
+export interface Attachment {
+  id: string,
+  navn: string
+}
+
+export interface AttachmentTableItem extends Item{
+  navn: string
 }
 
 export interface Dokument {

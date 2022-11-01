@@ -8,15 +8,19 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {Attachment, AttachmentTableItem} from "../../../declarations/types";
+import Table, {Context} from "@navikt/tabell";
 
 export interface AttachmentsProps {
   fnr: string | undefined
-  onAttachmentsChanged: (items: JoarkBrowserItems) => void
+  onAttachmentsChanged: (items: JoarkBrowserItems) => void,
+  attachmentsFromRina: Array<Attachment> | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
   fnr,
-  onAttachmentsChanged
+  onAttachmentsChanged,
+  attachmentsFromRina
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -51,7 +55,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
         sedAttachments={_items}
         tableId='vedlegg-modal'
       />
-      {_.isEmpty(_items)
+      {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
         ? (
           <>
             <SpacedHr />
@@ -68,6 +72,22 @@ const Attachments: React.FC<AttachmentsProps> = ({
               fnr={fnr}
               mode='view'
               tableId='vedlegg-view'
+            />
+            <Table
+              <AttachmentTableItem, Context>
+              searchable={false}
+              selectable={false}
+              sortable={false}
+              summary={false}
+              showHeader={false}
+              striped={false}
+              items={attachmentsFromRina ? attachmentsFromRina.map((a)=>{
+                return {
+                  ...a,
+                  key: a.id,
+                }
+              }) : []}
+              columns={[{id: 'navn', label: 'Tittel', type: 'string'}]}
             />
           </>
           )}
