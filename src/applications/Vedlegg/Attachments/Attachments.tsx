@@ -39,6 +39,10 @@ const Attachments: React.FC<AttachmentsProps> = ({
     onAttachmentsChanged(newAttachments)
   }
 
+  const convertFilenameToTitle = (navn: string): string => {
+    return navn.replaceAll("_", " ").split(".")[0]
+  }
+
   return (
     <Panel border>
       <Heading size='small'>
@@ -84,6 +88,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
               items={attachmentsFromRina ? attachmentsFromRina.map((a)=>{
                 return {
                   ...a,
+                  navn: convertFilenameToTitle(a.navn),
                   key: a.id,
                 }
               }) : []}
