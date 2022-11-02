@@ -8,8 +8,8 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {Attachment, AttachmentTableItem} from "../../../declarations/types";
-import Table, {Context} from "@navikt/tabell";
+import {Attachment} from "../../../declarations/types";
+import AttachmentsFromRinaTable from "./AttachmentsFronRinaTable";
 
 export interface AttachmentsProps {
   fnr: string | undefined
@@ -37,10 +37,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
     const newAttachments = sedOriginalAttachments.concat(jbi).sort(sedAttachmentSorter)
     setItems(newAttachments)
     onAttachmentsChanged(newAttachments)
-  }
-
-  const convertFilenameToTitle = (navn: string): string => {
-    return navn.replaceAll("_", " ").split(".")[0]
   }
 
   return (
@@ -77,23 +73,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
               mode='view'
               tableId='vedlegg-view'
             />
-            <Table
-              <AttachmentTableItem, Context>
-              searchable={false}
-              selectable={false}
-              sortable={false}
-              summary={false}
-              showHeader={false}
-              striped={false}
-              items={attachmentsFromRina ? attachmentsFromRina.map((a)=>{
-                return {
-                  ...a,
-                  navn: convertFilenameToTitle(a.navn),
-                  key: a.id,
-                }
-              }) : []}
-              columns={[{id: 'navn', label: 'Tittel', type: 'string'}]}
-            />
+            <AttachmentsFromRinaTable attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}
       <VerticalSeparatorDiv />
