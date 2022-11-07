@@ -30,7 +30,6 @@ import {FeatureToggles} from "../../../declarations/app";
 import Modal from "../../../components/Modal/Modal";
 import {ModalContent} from "../../../declarations/components";
 import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromRinaTable";
-import sak from "../../../reducers/sak";
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;

@@ -58,7 +58,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
 
   console.log(_clickedPreviewItem)
-  
+
   const handleModalClose = useCallback(() => {
     setPreviewFile(undefined)
     setModal(undefined)
