@@ -12,6 +12,7 @@ import { ActionWithPayload, call } from '@navikt/fetch'
 import mockJoark from 'mocks/attachments/joark'
 import mockPreview from 'mocks/attachments/preview'
 import { Action, ActionCreator } from 'redux'
+import {AttachmentTableItem} from "../declarations/types";
 const sprintf = require('sprintf-js').sprintf
 
 export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBrowserItems>> = (
@@ -85,3 +86,34 @@ export const setJoarkItemPreview: ActionCreator<ActionWithPayload<JoarkBrowserIt
   type: types.ATTACHMENT_PREVIEW_SET,
   payload: item
 })
+
+export const getAttachmentFromRinaPreview = (
+  item: AttachmentTableItem,
+  sedId: string | undefined,
+  sakId: string | undefined
+): ActionWithPayload<JoarkPreview> => {
+  return call({
+    url: sprintf(urls.API_RINA_ATTACHMENT_GET_URL, {
+      vedleggId: item.id,
+      sedId: sedId,
+      rinaSakId: sakId
+    }),
+    responseType: 'pdf',
+    expectedPayload: mockPreview(),
+    context: item,
+    type: {
+      request: types.ATTACHMENT_PREVIEW_REQUEST,
+      success: types.ATTACHMENT_PREVIEW_SUCCESS,
+      failure: types.ATTACHMENT_PREVIEW_FAILURE
+    }
+  })
+}
+
+export const setAttachmentFromRinaPreview: ActionCreator<ActionWithPayload<JoarkBrowserItemWithContent | undefined>> = (
+  item: JoarkBrowserItemWithContent | undefined
+): ActionWithPayload<JoarkBrowserItemWithContent | undefined> => ({
+  type: types.ATTACHMENT_PREVIEW_SET,
+  payload: item
+})
+
+

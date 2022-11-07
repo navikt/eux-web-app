@@ -9,18 +9,22 @@ import { buttonLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {Attachment} from "../../../declarations/types";
-import AttachmentsFromRinaTable from "./AttachmentsFronRinaTable";
+import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
 
 export interface AttachmentsProps {
   fnr: string | undefined
   onAttachmentsChanged: (items: JoarkBrowserItems) => void,
   attachmentsFromRina: Array<Attachment> | undefined
+  sedId: string | undefined
+  rinaSakId: string | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
   fnr,
   onAttachmentsChanged,
-  attachmentsFromRina
+  attachmentsFromRina,
+  sedId,
+  rinaSakId
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -73,7 +77,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
               mode='view'
               tableId='vedlegg-view'
             />
-            <AttachmentsFromRinaTable attachmentsFromRina={attachmentsFromRina}/>
+            <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}
       <VerticalSeparatorDiv />

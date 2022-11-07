@@ -73,7 +73,8 @@ export interface Attachment {
   navn: string
 }
 
-export interface AttachmentTableItem extends Item{
+export interface AttachmentTableItem extends Item {
+  id: string
   navn: string
 }
 

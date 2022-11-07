@@ -370,6 +370,8 @@ const SEDEdit = (): JSX.Element => {
             <Attachments
               fnr={fnr}
               attachmentsFromRina={replySed.sed?.vedlegg}
+              sedId={replySed.sed?.sedId}
+              rinaSakId={currentSak?.sakId}
               onAttachmentsChanged={(attachments) => {
                 dispatch(setReplySed({
                   ...replySed,
