@@ -102,9 +102,9 @@ export const getAttachmentFromRinaPreview = (
     expectedPayload: mockPreview(),
     context: item,
     type: {
-      request: types.ATTACHMENT_PREVIEW_REQUEST,
-      success: types.ATTACHMENT_PREVIEW_SUCCESS,
-      failure: types.ATTACHMENT_PREVIEW_FAILURE
+      request: types.ATTACHMENT_FROM_RINA_PREVIEW_REQUEST,
+      success: types.ATTACHMENT_FROM_RINA_PREVIEW_SUCCESS,
+      failure: types.ATTACHMENT_FROM_RINA_PREVIEW_FAILURE
     }
   })
 }
@@ -112,7 +112,7 @@ export const getAttachmentFromRinaPreview = (
 export const setAttachmentFromRinaPreview: ActionCreator<ActionWithPayload<JoarkBrowserItemWithContent | undefined>> = (
   item: JoarkBrowserItemWithContent | undefined
 ): ActionWithPayload<JoarkBrowserItemWithContent | undefined> => ({
-  type: types.ATTACHMENT_PREVIEW_SET,
+  type: types.ATTACHMENT_FROM_RINA_PREVIEW_SET,
   payload: item
 })
 

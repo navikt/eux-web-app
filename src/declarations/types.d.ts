@@ -2,7 +2,8 @@ import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { JaNei, ReplySed } from 'declarations/sed'
-import {Item} from "@navikt/tabell";
+import {Context, Item} from "@navikt/tabell";
+import {JoarkBrowserItem, JoarkBrowserItems} from "./attachments";
 
 export type StorageTypes = PDU1 | ReplySed
 export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
@@ -77,6 +78,12 @@ export interface AttachmentTableItem extends Item {
   id: string
   navn: string
 }
+
+export interface AttachmentContext extends Context {
+  gettingAttachmentFile: boolean
+  clickedPreviewItem: AttachmentTableItem | undefined
+}
+
 
 export interface Dokument {
   kode: string

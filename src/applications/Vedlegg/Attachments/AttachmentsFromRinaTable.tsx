@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
-import Table, {Context, RenderOptions} from "@navikt/tabell";
-import {Attachment, AttachmentTableItem} from "../../../declarations/types";
+import Table, {RenderOptions} from "@navikt/tabell";
+import {Attachment, AttachmentContext, AttachmentTableItem} from "../../../declarations/types";
 import styled from "styled-components";
 import {Button, Loader} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
@@ -24,11 +24,13 @@ const ButtonsDiv = styled.div`
 `
 
 export interface AttachmentSelector {
-  previewFileRaw: Blob | null | undefined
+  previewAttachmentFileRaw: Blob | null | undefined
+  gettingAttachmentFile: boolean
 }
 
 const mapState = /* istanbul ignore next */ (state: State): AttachmentSelector => ({
-  previewFileRaw: state.attachments.previewFileRaw
+  previewAttachmentFileRaw: state.attachments.previewAttachmentFileRaw,
+  gettingAttachmentFile: state.loading.gettingAttachmentFile
 })
 
 export interface AttachmentsFromRinaTableProps {
@@ -44,30 +46,30 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   rinaSakId
 }: AttachmentsFromRinaTableProps): JSX.Element => {
 
-  const {previewFileRaw}: AttachmentSelector = useAppSelector(mapState)
+  const {previewAttachmentFileRaw, gettingAttachmentFile}: AttachmentSelector = useAppSelector(mapState)
 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
-  console.log(sedId)
-  console.log(rinaSakId)
-
-  const [_clickedPreviewItem, setClickedPreviewItem] = useState<AttachmentTableItem | undefined>(undefined)
-  const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
-  const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
+  const [_clickedAttachmentPreviewItem, setClickedAttachmentPreviewItem] = useState<AttachmentTableItem | undefined>(undefined)
+  const [_attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
+  const [_previewAttachmentFile, setPreviewAttachmentFile] = useState<File | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
 
-  console.log(_clickedPreviewItem)
+  const context: AttachmentContext = {
+    gettingAttachmentFile,
+    clickedPreviewItem: _clickedAttachmentPreviewItem,
+  }
 
   const handleModalClose = useCallback(() => {
-    setPreviewFile(undefined)
-    setModal(undefined)
+    setPreviewAttachmentFile(undefined)
+    setAttachmentModal(undefined)
     dispatch(setAttachmentFromRinaPreview(undefined))
   }, [dispatch])
 
   const onPreviewItem = (clickedItem: AttachmentTableItem): void => {
-    setPreviewFile(undefined)
-    setClickedPreviewItem(clickedItem)
+    setPreviewAttachmentFile(undefined)
+    setClickedAttachmentPreviewItem(clickedItem)
     dispatch(getAttachmentFromRinaPreview(clickedItem, sedId, rinaSakId))
   }
 
@@ -76,16 +78,16 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     return navn.replaceAll("_", " ").split(".")[0]
   }
 
-  const renderTittel = ({ item, value }: RenderOptions<AttachmentTableItem, Context, string>) => {
-    //const previewing = context?.gettingJoarkFile
-    const spinner = false
+  const renderTittel = ({ item, value, context }: RenderOptions<AttachmentTableItem, AttachmentContext, string>) => {
+    const previewing = context?.gettingAttachmentFile
+    const spinner = previewing && _.isEqual(item as AttachmentTableItem, context?.clickedPreviewItem)
     return (
       <ButtonsDiv>
         <Button
           variant='tertiary'
           size='small'
           data-tip={t('label:preview')}
-          disabled={false}
+          disabled={previewing}
           id={'tablesorter__preview-button-' + item.key + '-' + item.navn}
           className='tablesorter__preview-button'
           onClick={() => onPreviewItem(item as AttachmentTableItem)}
@@ -98,37 +100,37 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   }
 
   useEffect(() => {
-    if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
-      if (!_.isNull(previewFileRaw)) {
+    if (_.isUndefined(_previewAttachmentFile) && !_.isUndefined(previewAttachmentFileRaw) && !_convertingRawToFile) {
+      if (!_.isNull(previewAttachmentFileRaw)) {
         setConvertingRawToFile(true)
 
-        blobToBase64(previewFileRaw).then((base64: any) => {
+        blobToBase64(previewAttachmentFileRaw).then((base64: any) => {
           const file: File = {
             id: '' + new Date().getTime(),
-            size: previewFileRaw.size,
+            size: previewAttachmentFileRaw.size,
             name: '',
             mimetype: 'application/pdf',
             content: {
               base64: base64.replaceAll('octet-stream', 'pdf')
             }
           }
-          setPreviewFile(file)
+          setPreviewAttachmentFile(file)
           setConvertingRawToFile(false)
         })
       }
     }
-  }, [_previewFile, previewFileRaw, _convertingRawToFile])
+  }, [_previewAttachmentFile, previewAttachmentFileRaw, _convertingRawToFile])
 
   useEffect(() => {
-    if (!_modal && !_convertingRawToFile && !_.isNil(_previewFile)) {
-      setModal({
+    if (!_attachmentModal && !_convertingRawToFile && !_.isNil(_previewAttachmentFile)) {
+      setAttachmentModal({
         closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
           >
             <FileFC
-              file={_previewFile}
+              file={_previewAttachmentFile}
               width={600}
               height={800}
               tema='simple'
@@ -139,17 +141,18 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         )
       })
     }
-  }, [_modal, _convertingRawToFile, _previewFile])
+  }, [_attachmentModal, _convertingRawToFile, _previewAttachmentFile])
 
   return (
     <>
       <Modal
-        open={!_.isNil(_modal)}
-        modal={_modal}
+        open={!_.isNil(_attachmentModal)}
+        modal={_attachmentModal}
         onModalClose={handleModalClose}
       />
       <Table
-        <AttachmentTableItem, Context>
+        <AttachmentTableItem, AttachmentContext>
+        context={context}
         searchable={true}
         selectable={false}
         sortable={true}

@@ -11,12 +11,14 @@ import { AnyAction } from 'redux'
 export interface JoarkState {
   list: Array<JoarkPoster> | undefined
   previewFileRaw: Blob | null | undefined
+  previewAttachmentFileRaw: Blob | null | undefined
   savingAttachmentsJob: SavingAttachmentsJob | undefined
 }
 
 export const initialJoarkState: JoarkState = {
   list: undefined,
   previewFileRaw: undefined,
+  previewAttachmentFileRaw: undefined,
   savingAttachmentsJob: undefined
 }
 
@@ -54,6 +56,32 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: AnyAction):
         ...state,
         previewFileRaw: action.payload
       }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_SET:
+      return {
+        ...state,
+        previewAttachmentFileRaw: action.payload
+      }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_REQUEST:
+      return {
+        ...state,
+        previewAttachmentFileRaw: undefined
+      }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_FAILURE:
+      return {
+        ...state,
+        previewAttachmentFileRaw: null
+      }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_SUCCESS:
+      return {
+        ...state,
+        previewAttachmentFileRaw: action.payload
+      }
+
+
 
     case types.ATTACHMENT_SEND_REQUEST:
       return {
