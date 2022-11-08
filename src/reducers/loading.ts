@@ -147,6 +147,19 @@ const loadingReducer = (
         gettingAttachmentFile: false
       }
 
+    case types.SVARSED_ATTACHMENT_DELETE_REQUEST:
+      return {
+        ...state,
+        deletingAttachment: true
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_SUCCESS:
+    case types.SVARSED_ATTACHMENT_DELETE_FAILURE:
+      return {
+        ...state,
+        deletingAttachment: false
+      }
+
 
     case types.VEDLEGG_DOKUMENT_REQUEST:
       return {

@@ -81,7 +81,8 @@ export interface AttachmentTableItem extends Item {
 
 export interface AttachmentContext extends Context {
   gettingAttachmentFile: boolean
-  clickedPreviewItem: AttachmentTableItem | undefined
+  deletingAttachment: boolean
+  clickedItem: AttachmentTableItem | undefined
 }
 
 

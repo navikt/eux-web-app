@@ -388,3 +388,20 @@ export const deleteSed = (rinaSakId: string, sedId: string) => {
     }
   })
 }
+
+export const deleteAttachment = (rinaSakId: string | undefined, sedId: string | undefined, vedleggId: string) => {
+  return call({
+    method: 'DELETE',
+    url: sprintf(urls.API_RINA_ATTACHMENT_DELETE_URL, { rinaSakId, sedId, vedleggId }),
+    cascadeFailureError: true,
+    context: {
+      vedleggId: vedleggId
+    },
+    type: {
+      request: types.SVARSED_ATTACHMENT_DELETE_REQUEST,
+      success: types.SVARSED_ATTACHMENT_DELETE_SUCCESS,
+      failure: types.SVARSED_ATTACHMENT_DELETE_FAILURE
+    }
+  })
+
+}

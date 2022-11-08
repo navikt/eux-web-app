@@ -12,6 +12,8 @@ import {ModalContent} from "../../../declarations/components";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../../actions/attachments";
+import {Delete} from "@navikt/ds-icons";
+import {deleteAttachment} from "../../../actions/svarsed";
 
 
 const ButtonsDiv = styled.div`
@@ -26,11 +28,13 @@ const ButtonsDiv = styled.div`
 export interface AttachmentSelector {
   previewAttachmentFileRaw: Blob | null | undefined
   gettingAttachmentFile: boolean
+  deletingAttachment: boolean
 }
 
 const mapState = /* istanbul ignore next */ (state: State): AttachmentSelector => ({
   previewAttachmentFileRaw: state.attachments.previewAttachmentFileRaw,
-  gettingAttachmentFile: state.loading.gettingAttachmentFile
+  gettingAttachmentFile: state.loading.gettingAttachmentFile,
+  deletingAttachment: state.loading.deletingAttachment
 })
 
 export interface AttachmentsFromRinaTableProps {
@@ -46,19 +50,20 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   rinaSakId
 }: AttachmentsFromRinaTableProps): JSX.Element => {
 
-  const {previewAttachmentFileRaw, gettingAttachmentFile}: AttachmentSelector = useAppSelector(mapState)
+  const {previewAttachmentFileRaw, gettingAttachmentFile, deletingAttachment}: AttachmentSelector = useAppSelector(mapState)
 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
 
-  const [_clickedAttachmentPreviewItem, setClickedAttachmentPreviewItem] = useState<AttachmentTableItem | undefined>(undefined)
+  const [_clickedAttachmentItem, setClickedAttachmentItem] = useState<AttachmentTableItem | undefined>(undefined)
   const [_attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
   const [_previewAttachmentFile, setPreviewAttachmentFile] = useState<File | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
 
   const context: AttachmentContext = {
     gettingAttachmentFile,
-    clickedPreviewItem: _clickedAttachmentPreviewItem,
+    deletingAttachment,
+    clickedItem: _clickedAttachmentItem,
   }
 
   const handleModalClose = useCallback(() => {
@@ -69,10 +74,14 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
 
   const onPreviewItem = (clickedItem: AttachmentTableItem): void => {
     setPreviewAttachmentFile(undefined)
-    setClickedAttachmentPreviewItem(clickedItem)
+    setClickedAttachmentItem(clickedItem)
     dispatch(getAttachmentFromRinaPreview(clickedItem, sedId, rinaSakId))
   }
 
+  const onDeleteItem = (clickedItem: AttachmentTableItem): void => {
+    setClickedAttachmentItem(clickedItem)
+    dispatch(deleteAttachment(rinaSakId, sedId, clickedItem.id))
+  }
 
   const convertFilenameToTitle = (navn: string): string => {
     return navn.replaceAll("_", " ").split(".")[0]
@@ -80,7 +89,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
 
   const renderTittel = ({ item, value, context }: RenderOptions<AttachmentTableItem, AttachmentContext, string>) => {
     const previewing = context?.gettingAttachmentFile
-    const spinner = previewing && _.isEqual(item as AttachmentTableItem, context?.clickedPreviewItem)
+    const spinner = previewing && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
     return (
       <ButtonsDiv>
         <Button
@@ -96,6 +105,26 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
           {spinner && <Loader />}
         </Button>
       </ButtonsDiv>
+    )
+  }
+
+  const renderDeleteButton = ({ item, context}: RenderOptions<AttachmentTableItem, AttachmentContext, string>) => {
+    const deleting = context?.deletingAttachment
+    const spinner = deleting && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
+    return (
+      <Button
+        variant='tertiary'
+        size='small'
+        data-tip={t('label:delete')}
+        disabled={deleting}
+        id={'tablesorter__delete-button-' + item.key + '-' + item.navn}
+        className='tablesorter__delete-button'
+        onClick={() => onDeleteItem(item as AttachmentTableItem)}
+      >
+        {spinner && <Loader/>}
+        {!spinner && <Delete />}
+      </Button>
+
     )
   }
 
@@ -166,7 +195,10 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
             key: a.id,
           }
         }) : []}
-        columns={[{id: 'navn', label: 'Tittel', type: 'string', render: renderTittel}]}
+        columns={[
+          {id: 'navn', label: 'Tittel', type: 'string', render: renderTittel},
+          {id: 'id', label: '', type: 'string', render: renderDeleteButton}
+        ]}
       />
     </>
   )

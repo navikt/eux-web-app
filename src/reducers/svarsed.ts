@@ -23,6 +23,7 @@ export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
+  deletedVedlegg: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
@@ -41,6 +42,7 @@ export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   deletedSak: undefined,
   deletedSed: undefined,
+  deletedVedlegg: undefined,
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
@@ -619,6 +621,33 @@ const svarsedReducer = (
       return {
         ...state,
         deletedSed: null
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_REQUEST:
+      return {
+        ...state,
+        deletedVedlegg: undefined
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_SUCCESS:
+      const attachmentIdDeleted = (action as ActionWithPayload).context.vedleggId
+      const updatedVedleggList = _.filter(state.replySed?.sed?.vedlegg, v => v.id !== attachmentIdDeleted)
+      return {
+        ...state,
+        deletedVedlegg: true,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggList
+          }
+        }
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_FAILURE:
+      return {
+        ...state,
+        deletedVedlegg: null
       }
 
     default:
