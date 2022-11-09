@@ -193,7 +193,7 @@ const SEDPanel = ({
       closeButton: true,
       modalContent: (
         <div style={{ cursor: 'pointer' }}>
-          <AttachmentsFromRinaTable sedId={sed.sedId} rinaSakId={currentSak.sakId} attachmentsFromRina={sed.vedlegg} showHeader={true}/>
+          <AttachmentsFromRinaTable sedId={sed.sedId} rinaSakId={currentSak.sakId} attachmentsFromRina={sed.vedlegg} showHeader={true} hideActions={true}/>
         </div>
       )
     })

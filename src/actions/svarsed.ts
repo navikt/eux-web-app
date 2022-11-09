@@ -395,7 +395,8 @@ export const deleteAttachment = (rinaSakId: string | undefined, sedId: string | 
     url: sprintf(urls.API_RINA_ATTACHMENT_DELETE_URL, { rinaSakId, sedId, vedleggId }),
     cascadeFailureError: true,
     context: {
-      vedleggId: vedleggId
+      vedleggId: vedleggId,
+      sedId: sedId
     },
     type: {
       request: types.SVARSED_ATTACHMENT_DELETE_REQUEST,

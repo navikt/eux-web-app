@@ -644,6 +644,7 @@ const svarsedReducer = (
         }
       }
 
+
     case types.SVARSED_ATTACHMENT_DELETE_FAILURE:
       return {
         ...state,

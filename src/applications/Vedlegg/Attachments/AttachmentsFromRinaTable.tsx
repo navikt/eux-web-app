@@ -42,10 +42,12 @@ export interface AttachmentsFromRinaTableProps {
   rinaSakId: string | undefined
   attachmentsFromRina: Array<Attachment> | undefined
   showHeader?: boolean
+  hideActions?: boolean
 }
 const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   attachmentsFromRina,
   showHeader,
+  hideActions,
   sedId,
   rinaSakId
 }: AttachmentsFromRinaTableProps): JSX.Element => {
@@ -172,6 +174,12 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     }
   }, [_attachmentModal, _convertingRawToFile, _previewAttachmentFile])
 
+  const columns = [
+    {id: 'navn', label: 'Tittel', type: 'string', render: renderTittel}
+  ]
+
+  if(!hideActions) columns.push({id: 'id', label: '', type: 'string', render: renderDeleteButton})
+
   return (
     <>
       <Modal
@@ -195,10 +203,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
             key: a.id,
           }
         }) : []}
-        columns={[
-          {id: 'navn', label: 'Tittel', type: 'string', render: renderTittel},
-          {id: 'id', label: '', type: 'string', render: renderDeleteButton}
-        ]}
+        columns={columns}
       />
     </>
   )
