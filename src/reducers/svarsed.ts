@@ -672,7 +672,6 @@ const svarsedReducer = (
         }
       })
 
-      console.log("REDUCER", updatedVedleggListWithSensitive)
       return {
         ...state,
         setVedleggSensitiv: true,
