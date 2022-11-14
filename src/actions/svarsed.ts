@@ -410,7 +410,9 @@ export const setAttachmentSensitive = (rinaSakId: string | undefined, sedId: str
   return call({
     method: 'PUT',
     url: sprintf(urls.API_RINA_ATTACHMENT_SENSITIVE_URL, {rinaSakId, sedId, vedleggId}),
-    body: sensitive,
+    body: {
+      sensitivt: sensitive
+    },
     cascadeFailureError: true,
     context: {
       vedleggId: vedleggId,
