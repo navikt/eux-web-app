@@ -22,6 +22,7 @@ export const initialLoadingState: LoadingState = {
   gettingJoarkList: false,
   gettingJoarkFile: false,
   gettingAttachmentFile: false,
+  settingAttachmentSensitive: false,
   gettingLandkoder: false,
   gettingPdu1: false,
   gettingPreviewSed: false,
@@ -158,6 +159,19 @@ const loadingReducer = (
       return {
         ...state,
         deletingAttachment: false
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST:
+      return {
+        ...state,
+        settingAttachmentSensitive: true
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS:
+    case types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE:
+      return {
+        ...state,
+        settingAttachmentSensitive: false
       }
 
 

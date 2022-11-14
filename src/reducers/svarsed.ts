@@ -24,6 +24,7 @@ export interface SvarsedState {
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
   deletedVedlegg: any | null | undefined
+  setVedleggSensitiv: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
@@ -43,6 +44,7 @@ export const initialSvarsedState: SvarsedState = {
   deletedSak: undefined,
   deletedSed: undefined,
   deletedVedlegg: undefined,
+  setVedleggSensitiv: undefined,
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
@@ -650,6 +652,46 @@ const svarsedReducer = (
         ...state,
         deletedVedlegg: null
       }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST:
+      return {
+        ...state,
+        setVedleggSensitiv: undefined
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS:
+      const vId = (action as ActionWithPayload).context.vedleggId
+      const updatedVedleggListWithSensitive = state.replySed?.sed?.vedlegg?.map((v) => {
+        if(v.id === vId){
+          return {
+            ...v,
+            sensitivt: (action as ActionWithPayload).context.sensitivt
+          }
+        } else {
+          return v
+        }
+      })
+
+      console.log("REDUCER", updatedVedleggListWithSensitive)
+      return {
+        ...state,
+        setVedleggSensitiv: true,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggListWithSensitive
+          }
+        }
+      }
+
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE:
+      return {
+        ...state,
+        setVedleggSensitiv: null
+      }
+
 
     default:
       return state

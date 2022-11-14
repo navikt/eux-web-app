@@ -404,5 +404,25 @@ export const deleteAttachment = (rinaSakId: string | undefined, sedId: string | 
       failure: types.SVARSED_ATTACHMENT_DELETE_FAILURE
     }
   })
+}
 
+export const setAttachmentSensitive = (rinaSakId: string | undefined, sedId: string | undefined, vedleggId: string, sensitive: boolean) => {
+  return call({
+    method: 'PUT',
+    url: sprintf(urls.API_RINA_ATTACHMENT_SENSITIVE_URL, {rinaSakId, sedId, vedleggId}),
+    body: {
+      sensitivt: true
+    },
+    cascadeFailureError: true,
+    context: {
+      vedleggId: vedleggId,
+      sensitivt: sensitive,
+      sedId: sedId
+    },
+    type: {
+      request: types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST,
+      success: types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS,
+      failure: types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE
+    }
+  })
 }

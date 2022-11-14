@@ -27,6 +27,7 @@ export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s
 export const API_SAK_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s'
 export const API_RINA_ATTACHMENT_GET_URL = API_BASE_URL + '/rina/%(rinaSakId)s/sed/%(sedId)s/vedlegg/%(vedleggId)s'
 export const API_RINA_ATTACHMENT_DELETE_URL = API_BASE_URL + '/rina/%(rinaSakId)s/sed/%(sedId)s/vedlegg/%(vedleggId)s'
+export const API_RINA_ATTACHMENT_SENSITIVE_URL = API_BASE_URL + '/rina/%(rinaSakId)s/sed/%(sedId)s/vedlegg/%(vedleggId)s/sensitivt'
 
 // Registre
 export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'

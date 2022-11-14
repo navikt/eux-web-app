@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import Table, {RenderOptions} from "@navikt/tabell";
 import {Attachment, AttachmentContext, AttachmentTableItem} from "../../../declarations/types";
 import styled from "styled-components";
-import {Button, Loader} from "@navikt/ds-react";
+import {Button, Loader, Checkbox} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {blobToBase64} from "../../../utils/blob";
@@ -13,7 +13,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../../actions/attachments";
 import {Delete} from "@navikt/ds-icons";
-import {deleteAttachment} from "../../../actions/svarsed";
+import {deleteAttachment, setAttachmentSensitive} from "../../../actions/svarsed";
 
 
 const ButtonsDiv = styled.div`
@@ -28,12 +28,14 @@ const ButtonsDiv = styled.div`
 export interface AttachmentSelector {
   previewAttachmentFileRaw: Blob | null | undefined
   gettingAttachmentFile: boolean
+  settingAttachmentSensitive: boolean
   deletingAttachment: boolean
 }
 
 const mapState = /* istanbul ignore next */ (state: State): AttachmentSelector => ({
   previewAttachmentFileRaw: state.attachments.previewAttachmentFileRaw,
   gettingAttachmentFile: state.loading.gettingAttachmentFile,
+  settingAttachmentSensitive: state.loading.settingAttachmentSensitive,
   deletingAttachment: state.loading.deletingAttachment
 })
 
@@ -52,7 +54,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   rinaSakId
 }: AttachmentsFromRinaTableProps): JSX.Element => {
 
-  const {previewAttachmentFileRaw, gettingAttachmentFile, deletingAttachment}: AttachmentSelector = useAppSelector(mapState)
+  const {previewAttachmentFileRaw, gettingAttachmentFile, deletingAttachment, settingAttachmentSensitive}: AttachmentSelector = useAppSelector(mapState)
 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -64,6 +66,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
 
   const context: AttachmentContext = {
     gettingAttachmentFile,
+    settingAttachmentSensitive,
     deletingAttachment,
     clickedItem: _clickedAttachmentItem,
   }
@@ -83,6 +86,11 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   const onDeleteItem = (clickedItem: AttachmentTableItem): void => {
     setClickedAttachmentItem(clickedItem)
     dispatch(deleteAttachment(rinaSakId, sedId, clickedItem.id))
+  }
+
+  const onSetSensitive = (event: any, clickedItem: AttachmentTableItem): void => {
+    setClickedAttachmentItem(clickedItem)
+    dispatch(setAttachmentSensitive(rinaSakId, sedId, clickedItem.id, event.target.checked))
   }
 
   const convertFilenameToTitle = (navn: string): string => {
@@ -106,6 +114,25 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
           {value}
           {spinner && <Loader />}
         </Button>
+      </ButtonsDiv>
+    )
+  }
+
+  const renderSensitivt = ({ item }: RenderOptions<AttachmentTableItem, AttachmentContext, string>) => {
+    const settingSensitive = context?.settingAttachmentSensitive
+    const spinner = settingSensitive && _.isEqual(item as AttachmentTableItem, context?.clickedItem)
+    return (
+      <ButtonsDiv>
+        {spinner && <Loader/>}
+        {!spinner &&
+          <Checkbox
+            id={'tablesorter__sensitivt-checkbox-' + item.key + '-' + item.navn}
+            checked={item.sensitivt}
+            onChange={(e: any) => onSetSensitive(e, item as AttachmentTableItem)}
+          >
+            {"Sensitivt"}
+          </Checkbox>
+        }
       </ButtonsDiv>
     )
   }
@@ -178,7 +205,10 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
     {id: 'navn', label: 'Tittel', type: 'string', render: renderTittel}
   ]
 
-  if(!hideActions) columns.push({id: 'id', label: '', type: 'string', render: renderDeleteButton})
+  if(!hideActions){
+    columns.push({id: 'sensitivt', label: 'Sensitivt', type: 'string', render: renderSensitivt})
+    columns.push({id: 'id', label: '', type: 'string', render: renderDeleteButton})
+  }
 
   return (
     <>

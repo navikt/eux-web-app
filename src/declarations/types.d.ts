@@ -72,16 +72,19 @@ export interface Sed {
 export interface Attachment {
   id: string,
   navn: string
+  sensitivt: boolean
 }
 
 export interface AttachmentTableItem extends Item {
   id: string
   navn: string
+  sensitivt: boolean
 }
 
 export interface AttachmentContext extends Context {
   gettingAttachmentFile: boolean
   deletingAttachment: boolean
+  settingAttachmentSensitive: boolean
   clickedItem: AttachmentTableItem | undefined
 }
 

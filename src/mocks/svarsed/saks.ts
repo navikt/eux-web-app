@@ -43,19 +43,23 @@ export default (saksnummer: string, type: string) => {
           vedlegg: [
             {
               "id": "3666a09dee604440a44dc9a51abf685a",
-              "navn": "Påminnelse.pdf"
+              "navn": "Påminnelse.pdf",
+              "sensitivt": true
             },
             {
               "id": "7b41e7ed544f4cd4b568dcbc48266cef",
-              "navn": "Melding_anmodning_om_informasjon.pdf"
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": true
             },
             {
               "id": "8b81b7003e354d32ad9385876a948bea",
-              "navn": "Melding_anmodning_om_informasjon.pdf"
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": false
             },
             {
               "id": "9bfabcd05fb9466693e55592bb8845fb",
-              "navn": "H001.pdf"
+              "navn": "H001.pdf",
+              "sensitivt": true
             }
           ]
         }, {
