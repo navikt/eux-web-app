@@ -691,6 +691,26 @@ const svarsedReducer = (
         setVedleggSensitiv: null
       }
 
+    case types.ATTACHMENT_SEND_SUCCESS: {
+      let updatedVedleggList = _.cloneDeep(state.replySed?.sed?.vedlegg)
+      updatedVedleggList?.push({
+        id: Math.random()*Date.now() + "",
+        navn: "TEST",
+        sensitivt: true
+      })
+      return {
+        ...state,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggList
+          }
+        }
+
+      }
+    }
+
 
     default:
       return state
