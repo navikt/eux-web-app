@@ -24,6 +24,7 @@ export interface SvarsedState {
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
   deletedVedlegg: any | null | undefined
+  savedVedlegg: any | null | undefined
   setVedleggSensitiv: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
@@ -44,6 +45,7 @@ export const initialSvarsedState: SvarsedState = {
   deletedSak: undefined,
   deletedSed: undefined,
   deletedVedlegg: undefined,
+  savedVedlegg: undefined,
   setVedleggSensitiv: undefined,
   institusjoner: undefined,
   mottakere: undefined,
@@ -693,13 +695,15 @@ const svarsedReducer = (
 
     case types.ATTACHMENT_SEND_SUCCESS: {
       let updatedVedleggList = _.cloneDeep(state.replySed?.sed?.vedlegg)
+      const responsePayload = (action as ActionWithPayload).payload
       updatedVedleggList?.push({
-        id: Math.random()*Date.now() + "",
-        navn: "TEST",
-        sensitivt: true
+        id: responsePayload.vedleggId,
+        navn: responsePayload.filnavn,
+        sensitivt: responsePayload.sensitivt
       })
       return {
         ...state,
+        savedVedlegg: (action as ActionWithPayload).context.joarkBrowserItem,
         replySed: {
           ...(state.replySed as ReplySed),
           sed: {

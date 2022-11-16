@@ -6,7 +6,7 @@ import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import {Attachment} from "../../../declarations/types";
 import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
@@ -17,6 +17,7 @@ export interface AttachmentsProps {
   attachmentsFromRina: Array<Attachment> | undefined
   sedId: string | undefined
   rinaSakId: string | undefined
+  savedVedlegg: JoarkBrowserItem | null | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
@@ -24,7 +25,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
   onAttachmentsChanged,
   attachmentsFromRina,
   sedId,
-  rinaSakId
+  rinaSakId,
+  savedVedlegg
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -42,6 +44,11 @@ const Attachments: React.FC<AttachmentsProps> = ({
     setItems(newAttachments)
     onAttachmentsChanged(newAttachments)
   }
+
+  useEffect(() => {
+    const newAttachments = _.reject(_items, (att) => att.key === savedVedlegg?.key)
+    setItems(newAttachments)
+  }, [savedVedlegg])
 
   return (
     <Panel border>

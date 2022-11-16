@@ -71,6 +71,7 @@ import performValidation from 'utils/performValidation'
 import { cleanReplySed, isFSed, isH002Sed, isPreviewableSed, isSed, isXSed } from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
+import {JoarkBrowserItem} from "../../declarations/attachments";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -84,6 +85,7 @@ export interface SEDEditSelector {
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any
   validation: Validation
+  savedVedlegg: JoarkBrowserItem | null | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -97,7 +99,8 @@ const mapState = (state: State): SEDEditSelector => ({
   sendingSed: state.loading.sendingSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
-  validation: state.validation.status
+  validation: state.validation.status,
+  savedVedlegg: state.svarsed.savedVedlegg
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -116,7 +119,8 @@ const SEDEdit = (): JSX.Element => {
     sendingSed,
     sedCreatedResponse,
     sedSendResponse,
-    validation
+    validation,
+    savedVedlegg
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -370,6 +374,7 @@ const SEDEdit = (): JSX.Element => {
             <Attachments
               fnr={fnr}
               attachmentsFromRina={replySed.sed?.vedlegg}
+              savedVedlegg={savedVedlegg}
               sedId={replySed.sed?.sedId}
               rinaSakId={currentSak?.sakId}
               onAttachmentsChanged={(attachments) => {
