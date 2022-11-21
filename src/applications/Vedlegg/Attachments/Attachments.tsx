@@ -98,7 +98,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
           )
         : (
           <>
-            <h4>Vedlegg lagt til (ikke lagret i RINA)</h4>
+            <h4>Vedlegg som legges til etter lagring av SED</h4>
             <JoarkBrowser
               existingItems={_items}
               fnr={fnr}
