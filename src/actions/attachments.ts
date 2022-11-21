@@ -67,7 +67,7 @@ export const sendAttachmentToSed = (
     url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params),
     method: 'POST',
     body: {
-      sensitivt: params.sensitivt
+      sensitivt: params.sensitivt ? params.sensitivt : false
     },
     cascadeFailureError: true,
     expectedPayload: {
