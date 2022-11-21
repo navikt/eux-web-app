@@ -23,6 +23,8 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
+import {Delete} from "@navikt/ds-icons";
+import {removeAttachment} from "../../../actions/svarsed";
 
 const ButtonsDiv = styled.div`
   display: flex;
@@ -104,6 +106,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     dispatch(getJoarkItemPreview(clickedItem))
   }
 
+  const onRemoveAttachment = (clickedItem: JoarkBrowserItem): void => {
+    dispatch(removeAttachment(clickedItem))
+  }
+
   const renderTittel = ({ item, value, context }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
     if (item.hasSubrows) {
       return <BodyLong>{value}</BodyLong>
@@ -143,6 +149,23 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       </ButtonsDiv>
     )
   }
+
+  const renderDeleteButton = ({ item }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
+    return (
+      <Button
+        variant='tertiary'
+        size='small'
+        data-tip={t('label:delete')}
+        id={'tablesorter__delete-button-' + item.key + '-' + item.navn}
+        className='tablesorter__delete-button'
+        onClick={() => onRemoveAttachment(item as JoarkBrowserItem)}
+      >
+        <Delete />
+      </Button>
+
+    )
+  }
+
 
 
   const getVariantFromJoarkDoc = (doc: JoarkDoc): JoarkFileVariant | undefined => {
@@ -400,6 +423,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
                 label: 'Sensitivt',
                 type: 'string',
                 render: renderSensitivt
+              },
+              {
+                id: 'id',
+                label: '',
+                type: 'string',
+                render: renderDeleteButton
               }
             ]}
         onRowSelectChange={onRowSelectChange}

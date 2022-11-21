@@ -26,6 +26,7 @@ export interface SvarsedState {
   deletedVedlegg: any | null | undefined
   savedVedlegg: any | null | undefined
   setVedleggSensitiv: any | null | undefined
+  attachmentRemoved: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
@@ -47,6 +48,7 @@ export const initialSvarsedState: SvarsedState = {
   deletedVedlegg: undefined,
   savedVedlegg: undefined,
   setVedleggSensitiv: undefined,
+  attachmentRemoved: undefined,
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
@@ -728,13 +730,23 @@ const svarsedReducer = (
         }
       })
 
-
       return {
         ...state,
         setVedleggSensitiv: (action as ActionWithPayload).payload,
         replySed: {
           ...(state.replySed as ReplySed),
           attachments: newAttachments
+        }
+      }
+
+    case types.SVARSED_REPLYSED_ATTACHMENTS_REMOVE:
+      const attachmentsAfterRemove = _.reject(state.replySed?.attachments, (att) => att.key === (action as ActionWithPayload).payload.key)
+      return {
+        ...state,
+        attachmentRemoved: (action as ActionWithPayload).payload,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          attachments: attachmentsAfterRemove
         }
       }
 

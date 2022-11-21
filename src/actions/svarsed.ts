@@ -11,6 +11,7 @@ import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
+import {JoarkBrowserItem} from "../declarations/attachments";
 const sprintf = require('sprintf-js').sprintf
 
 export const addMottakere = (
@@ -383,6 +384,12 @@ export const updateAttachmentsSensitivt: ActionCreator<ActionWithPayload<any>> =
   }
 })
 
+export const removeAttachment: ActionCreator<ActionWithPayload<any>> = (
+  attachment: JoarkBrowserItem
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_REPLYSED_ATTACHMENTS_REMOVE,
+  payload: attachment
+})
 
 export const deleteSed = (rinaSakId: string, sedId: string) => {
   return call({

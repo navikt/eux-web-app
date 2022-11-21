@@ -19,7 +19,8 @@ export interface AttachmentsProps {
   sedId: string | undefined
   rinaSakId: string | undefined
   savedVedlegg: JoarkBrowserItem | null | undefined
-  setVedleggSensitiv: any | null | undefined
+  setVedleggSensitiv: any | null | undefined,
+  attachmentRemoved: JoarkBrowserItem | null | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
@@ -30,7 +31,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
   sedId,
   rinaSakId,
   savedVedlegg,
-  setVedleggSensitiv
+  setVedleggSensitiv,
+  attachmentRemoved
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -55,6 +57,11 @@ const Attachments: React.FC<AttachmentsProps> = ({
   }, [savedVedlegg])
 
   useEffect(() => {
+    const newAttachments = _.reject(_items, (att) => att.key === attachmentRemoved?.key)
+    setItems(newAttachments)
+  }, [attachmentRemoved])
+
+  useEffect(() => {
     const newAttachments = _items.map((att) => {
       if(att.key === setVedleggSensitiv.attachmentKey){
         return {
@@ -67,8 +74,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
     })
     setItems(newAttachments)
   }, [setVedleggSensitiv])
-
-
 
   return (
     <Panel border>

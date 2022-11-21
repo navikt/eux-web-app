@@ -87,6 +87,7 @@ export interface SEDEditSelector {
   validation: Validation
   savedVedlegg: JoarkBrowserItem | null | undefined
   setVedleggSensitiv: any | null | undefined
+  attachmentRemoved: JoarkBrowserItem | null | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -102,7 +103,8 @@ const mapState = (state: State): SEDEditSelector => ({
   sedSendResponse: state.svarsed.sedSendResponse,
   validation: state.validation.status,
   savedVedlegg: state.svarsed.savedVedlegg,
-  setVedleggSensitiv: state.svarsed.setVedleggSensitiv
+  setVedleggSensitiv: state.svarsed.setVedleggSensitiv,
+  attachmentRemoved: state.svarsed.attachmentRemoved
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -123,6 +125,7 @@ const SEDEdit = (): JSX.Element => {
     sedSendResponse,
     validation,
     savedVedlegg,
+    attachmentRemoved,
     setVedleggSensitiv
   } = useAppSelector(mapState)
   const namespace = 'editor'
@@ -379,6 +382,7 @@ const SEDEdit = (): JSX.Element => {
               attachmentsFromRina={replySed.sed?.vedlegg}
               savedVedlegg={savedVedlegg}
               setVedleggSensitiv={setVedleggSensitiv}
+              attachmentRemoved={attachmentRemoved}
               sedId={replySed.sed?.sedId}
               rinaSakId={currentSak?.sakId}
               onUpdateAttachmentSensitivt={(attachment, sensitivt) => {
