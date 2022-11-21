@@ -99,6 +99,7 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
           dokumentInfoId: unsentAttachment.dokumentInfoId!,
           variantformat: unsentAttachment.variant!.variantformat!,
           filnavn: filnavn ?? 'fil-' + md5('' + new Date().getTime()),
+          sensitivt: unsentAttachment.sensitivt
         }
         sendAttachmentToSed(params, unsentAttachment)
       } else {
