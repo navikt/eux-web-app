@@ -14,19 +14,23 @@ import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
 export interface AttachmentsProps {
   fnr: string | undefined
   onAttachmentsChanged: (items: JoarkBrowserItems) => void,
+  onUpdateAttachmentSensitivt: (item: JoarkBrowserItem, sensitivt: boolean) => void,
   attachmentsFromRina: Array<Attachment> | undefined
   sedId: string | undefined
   rinaSakId: string | undefined
   savedVedlegg: JoarkBrowserItem | null | undefined
+  setVedleggSensitiv: any | null | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
   fnr,
   onAttachmentsChanged,
+  onUpdateAttachmentSensitivt,
   attachmentsFromRina,
   sedId,
   rinaSakId,
-  savedVedlegg
+  savedVedlegg,
+  setVedleggSensitiv
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -49,6 +53,22 @@ const Attachments: React.FC<AttachmentsProps> = ({
     const newAttachments = _.reject(_items, (att) => att.key === savedVedlegg?.key)
     setItems(newAttachments)
   }, [savedVedlegg])
+
+  useEffect(() => {
+    const newAttachments = _items.map((att) => {
+      if(att.key === setVedleggSensitiv.attachmentKey){
+        return {
+          ...att,
+          sensitivt: setVedleggSensitiv.sensitivt
+        }
+      } else {
+        return att
+      }
+    })
+    setItems(newAttachments)
+  }, [setVedleggSensitiv])
+
+
 
   return (
     <Panel border>
@@ -78,12 +98,15 @@ const Attachments: React.FC<AttachmentsProps> = ({
           )
         : (
           <>
+            <h4>Vedlegg lagt til (ikke lagret i RINA)</h4>
             <JoarkBrowser
               existingItems={_items}
               fnr={fnr}
               mode='view'
               tableId='vedlegg-view'
+              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
             />
+            <h4>Vedlegg lagret i RINA</h4>
             <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}

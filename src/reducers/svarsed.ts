@@ -715,6 +715,29 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_REPLYSED_ATTACHMENTS_SENSITIVT_UPDATE:
+      let updatedAttachmentsList = _.cloneDeep(state.replySed?.attachments)
+      const newAttachments = updatedAttachmentsList?.map((att) => {
+        if(att.key === (action as ActionWithPayload).payload.attachmentKey){
+          return {
+            ...att,
+            sensitivt: (action as ActionWithPayload).payload.sensitivt
+          }
+        } else {
+          return att
+        }
+      })
+
+
+      return {
+        ...state,
+        setVedleggSensitiv: (action as ActionWithPayload).payload,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          attachments: newAttachments
+        }
+      }
+
 
     default:
       return state

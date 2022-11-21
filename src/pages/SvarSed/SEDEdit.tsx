@@ -8,7 +8,7 @@ import {
   createSed, editSed, querySaks,
   restoreReplySed,
   sendSedInRina,
-  setReplySed,
+  setReplySed, updateAttachmentsSensitivt,
   updateReplySed,
   updateSed
 } from 'actions/svarsed'
@@ -86,6 +86,7 @@ export interface SEDEditSelector {
   sedSendResponse: any
   validation: Validation
   savedVedlegg: JoarkBrowserItem | null | undefined
+  setVedleggSensitiv: any | null | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -100,7 +101,8 @@ const mapState = (state: State): SEDEditSelector => ({
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
   validation: state.validation.status,
-  savedVedlegg: state.svarsed.savedVedlegg
+  savedVedlegg: state.svarsed.savedVedlegg,
+  setVedleggSensitiv: state.svarsed.setVedleggSensitiv
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -120,7 +122,8 @@ const SEDEdit = (): JSX.Element => {
     sedCreatedResponse,
     sedSendResponse,
     validation,
-    savedVedlegg
+    savedVedlegg,
+    setVedleggSensitiv
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -375,8 +378,13 @@ const SEDEdit = (): JSX.Element => {
               fnr={fnr}
               attachmentsFromRina={replySed.sed?.vedlegg}
               savedVedlegg={savedVedlegg}
+              setVedleggSensitiv={setVedleggSensitiv}
               sedId={replySed.sed?.sedId}
               rinaSakId={currentSak?.sakId}
+              onUpdateAttachmentSensitivt={(attachment, sensitivt) => {
+                //console.log(attachment)
+                dispatch(updateAttachmentsSensitivt(attachment.key, sensitivt))
+              }}
               onAttachmentsChanged={(attachments) => {
                 dispatch(setReplySed({
                   ...replySed,

@@ -373,6 +373,17 @@ export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPaylo
   payload: { needle, value }
 })
 
+export const updateAttachmentsSensitivt: ActionCreator<ActionWithPayload<any>> = (
+  attachmentKey: string,  sensitivt: boolean
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_REPLYSED_ATTACHMENTS_SENSITIVT_UPDATE,
+  payload: {
+    attachmentKey,
+    sensitivt
+  }
+})
+
+
 export const deleteSed = (rinaSakId: string, sedId: string) => {
   return call({
     method: 'DELETE',

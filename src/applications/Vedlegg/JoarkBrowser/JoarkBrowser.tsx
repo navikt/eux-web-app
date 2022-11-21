@@ -1,4 +1,4 @@
-import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
+import {BodyLong, Button, Checkbox, Label, Loader} from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Table, { RenderOptions } from '@navikt/tabell'
@@ -60,6 +60,7 @@ export interface JoarkBrowserProps {
   onPreviewFile?: (f: File) => void
   mode: JoarkBrowserMode
   tableId: string
+  onUpdateAttachmentSensitivt? : (item: JoarkBrowserItem, sensitivt: boolean) => void
 }
 
 export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
@@ -68,7 +69,8 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   mode,
   onRowSelectChange = () => {},
   onPreviewFile,
-  tableId
+  tableId,
+  onUpdateAttachmentSensitivt
 }: JoarkBrowserProps): JSX.Element => {
   const {
     list, gettingJoarkList, gettingJoarkFile, previewFileRaw
@@ -127,6 +129,21 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       </ButtonsDiv>
     )
   }
+
+  const renderSensitivt = ({ item }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
+    return (
+      <ButtonsDiv>
+          <Checkbox
+            id={'tablesorter__sensitivt-checkbox-' + item.key + '-' + item.navn}
+            checked={item.sensitivt}
+            onChange={(e) => onUpdateAttachmentSensitivt ? onUpdateAttachmentSensitivt(item as JoarkBrowserItem, e.target.checked) : undefined}
+          >
+            {"Sensitivt"}
+          </Checkbox>
+      </ButtonsDiv>
+    )
+  }
+
 
   const getVariantFromJoarkDoc = (doc: JoarkDoc): JoarkFileVariant | undefined => {
     let variant = _.find(doc.dokumentvarianter, (v: JoarkFileVariant) => v.variantformat === 'SLADDET')
@@ -218,7 +235,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   const getItemsForViewMode = (list: Array<JoarkPoster> | undefined, existingItems: JoarkBrowserItems): JoarkBrowserItems => {
     const items: JoarkBrowserItems = []
-    existingItems.forEach((existingItem: JoarkBrowserItem, index: number) => {
+    existingItems.forEach((existingItem: JoarkBrowserItem) => {
       const match = existingItem.title.match(/^(\d+)_ARKIV\.pdf$/)
       if (list && match) {
         const id = match[1]
@@ -244,7 +261,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       }
       items.push({
         ...existingItem,
-        key: existingItem.dokumentInfoId ? 'id-' + existingItem.dokumentInfoId : 'id-' + index,
+        //key: existingItem.dokumentInfoId ? 'id-' + existingItem.dokumentInfoId : 'id-' + index,
         type: existingItem.type,
         title: (existingItem.type === 'sed' ? '✓ ' : ' ') + existingItem.title,
         visible: true,
@@ -377,6 +394,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
                 label: t('label:tittel'),
                 type: 'string',
                 render: renderTittel
+              },
+              {
+                id: 'sensitivt',
+                label: 'Sensitivt',
+                type: 'string',
+                render: renderSensitivt
               }
             ]}
         onRowSelectChange={onRowSelectChange}
