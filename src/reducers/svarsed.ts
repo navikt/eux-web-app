@@ -698,7 +698,7 @@ const svarsedReducer = (
       }
 
     case types.ATTACHMENT_SEND_SUCCESS: {
-      let updatedVedleggList = _.cloneDeep(state.replySed?.sed?.vedlegg)
+      let updatedVedleggList = state.replySed?.sed?.vedlegg ? _.cloneDeep(state.replySed?.sed?.vedlegg) : []
       const responsePayload = (action as ActionWithPayload).payload
       updatedVedleggList?.push({
         id: responsePayload.vedleggId,
