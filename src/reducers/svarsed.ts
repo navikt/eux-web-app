@@ -26,6 +26,7 @@ export interface SvarsedState {
   deletedVedlegg: any | null | undefined
   savedVedlegg: any | null | undefined
   setVedleggSensitiv: any | null | undefined
+  setRinaAttachmentSensitive: any | null | undefined
   attachmentRemoved: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
@@ -48,6 +49,7 @@ export const initialSvarsedState: SvarsedState = {
   deletedVedlegg: undefined,
   savedVedlegg: undefined,
   setVedleggSensitiv: undefined,
+  setRinaAttachmentSensitive: undefined,
   attachmentRemoved: undefined,
   institusjoner: undefined,
   mottakere: undefined,
@@ -660,7 +662,7 @@ const svarsedReducer = (
     case types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST:
       return {
         ...state,
-        setVedleggSensitiv: undefined
+        setRinaAttachmentSensitive: undefined
       }
 
     case types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS:
@@ -678,7 +680,7 @@ const svarsedReducer = (
 
       return {
         ...state,
-        setVedleggSensitiv: true,
+        setRinaAttachmentSensitive: true,
         replySed: {
           ...(state.replySed as ReplySed),
           sed: {
@@ -692,7 +694,7 @@ const svarsedReducer = (
     case types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE:
       return {
         ...state,
-        setVedleggSensitiv: null
+        setRinaAttachmentSensitive: null
       }
 
     case types.ATTACHMENT_SEND_SUCCESS: {
