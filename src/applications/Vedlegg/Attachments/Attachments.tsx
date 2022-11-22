@@ -99,6 +99,17 @@ const Attachments: React.FC<AttachmentsProps> = ({
               {t('message:warning-no-attachments')}
             </BodyLong>
             <SpacedHr />
+            <Button
+              variant='secondary'
+              data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
+              onClick={(e: any) => {
+                buttonLogger(e)
+                setAttachmentsTableVisible(!_attachmentsTableVisible)
+              }}
+            >
+              {t('label:vis-vedlegg-tabell')}
+            </Button>
           </>
           )
         : (
@@ -111,22 +122,22 @@ const Attachments: React.FC<AttachmentsProps> = ({
               tableId='vedlegg-view'
               onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
             />
+            <VerticalSeparatorDiv />
+            <Button
+              variant='secondary'
+              data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
+              onClick={(e: any) => {
+                buttonLogger(e)
+                setAttachmentsTableVisible(!_attachmentsTableVisible)
+              }}
+            >
+              {t('label:vis-vedlegg-tabell')}
+            </Button>
             <h4>Vedlegg lagret i RINA</h4>
             <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}
-      <VerticalSeparatorDiv />
-      <Button
-        variant='secondary'
-        data-amplitude='svarsed.editor.attachments'
-        disabled={_.isNil(fnr)}
-        onClick={(e: any) => {
-          buttonLogger(e)
-          setAttachmentsTableVisible(!_attachmentsTableVisible)
-        }}
-      >
-        {t('label:vis-vedlegg-tabell')}
-      </Button>
     </Panel>
   )
 }
