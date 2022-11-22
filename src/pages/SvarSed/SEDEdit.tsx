@@ -224,6 +224,9 @@ const SEDEdit = (): JSX.Element => {
     return <WaitingPanel />
   }
 
+  const disableSave = (!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed;
+  const disableSend  = sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
+
   return (
     <Container>
       <Margin />
@@ -394,7 +397,7 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
-                disabled={(!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed}
+                disabled={disableSave}
               >
                 {creatingSvarSed
                   ? t('message:loading-opprette-sed')
@@ -409,9 +412,9 @@ const SEDEdit = (): JSX.Element => {
             <div>
               <Button
                 variant='primary'
-              // amplitude is dealt on SendSedClick
+                //amplitude is dealt on SendSedClick
                 title={t('message:help-send-sed')}
-                disabled={sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse)}
+                disabled={disableSend}
                 onClick={onSendSedClick}
               >
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
@@ -422,7 +425,7 @@ const SEDEdit = (): JSX.Element => {
             <div>
               <Button
                 variant='tertiary'
-              // amplitude is dealt on SendSedClick
+                //amplitude is dealt on SendSedClick
                 title={t('message:help-restore-sed')}
                 onClick={onRestoreSedClick}
               >
