@@ -12,7 +12,8 @@ import performValidation from 'utils/performValidation'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPdu1SearchProps {
-  fagsak: string | undefined
+  fagsakId: string | undefined
+  saksreferanse: string | undefined
   fnrOrDnr: string | null | undefined
 }
 
@@ -56,14 +57,15 @@ export const validatePdu1Search = (
   v: Validation,
   namespace: string,
   {
-    fagsak,
+    fagsakId,
+    saksreferanse,
     fnrOrDnr
   }: ValidationPdu1SearchProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: fagsak,
+    needle: fagsakId,
     id: namespace + '-pdu1results',
     message: 'validation:noFagsak'
   }))
@@ -72,6 +74,12 @@ export const validatePdu1Search = (
     needle: fnrOrDnr,
     id: namespace + '-fnrOrDnr',
     message: 'validation:noFnr'
+  }))
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: saksreferanse,
+    id: namespace + '-saksreferanse',
+    message: 'validation:noSaksreferanse'
   }))
 
   return hasErrors.find(value => value) !== undefined

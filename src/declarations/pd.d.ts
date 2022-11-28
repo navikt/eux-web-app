@@ -68,6 +68,7 @@ export interface PDU1 {
   __fnr?: string
 
   saksreferanse: string, // Nav => cover letter,
+  fagsakId: string,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
   nav: NavInfo // NAV => cover letter, section 7

@@ -113,8 +113,9 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }
 
   useEffect(() => {
-    if (type === 'create' && params.fnr && params.fagsak) {
-      dispatch(getPdu1Template(params.fnr, params.fagsak))
+    if (type === 'create' && params.fnr && params.fagsak && params.saksreferanse) {
+      console.log(params)
+      dispatch(getPdu1Template(params.fnr, params.fagsak, params.saksreferanse))
     }
     if (type === 'edit' && params.journalpostId && params.dokumentInfoId && params.fagsak) {
       dispatch(getStoredPdu1AsJSON(params.journalpostId, params.dokumentInfoId, params.fagsak))

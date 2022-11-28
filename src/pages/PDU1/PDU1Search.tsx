@@ -173,14 +173,15 @@ const PDU1Search = (): JSX.Element => {
     }
   }
 
-  const onCreatingPdu1 = (fagsak: string) => {
+  const onCreatingPdu1 = (fagsakId: string | undefined, saksreferanse: string) => {
     const valid = performValidation({
       fnrOrDnr,
-      fagsak
+      fagsakId,
+      saksreferanse
     })
-    if (valid) {
+    if (valid && fagsakId) {
       navigate({
-        pathname: '/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + encodeURIComponent(fagsak),
+        pathname: '/pdu1/create/fnr/' + fnrOrDnr! + '/fagsak/' + encodeURIComponent(fagsakId) + '/saksreferanse/' + encodeURIComponent(saksreferanse),
         search: '?q=' + fnrOrDnr
       })
     }
@@ -377,7 +378,7 @@ const PDU1Search = (): JSX.Element => {
                     <Button
                       variant='primary'
                       disabled={!tema || creatingPdu1}
-                      onClick={() => onCreatingPdu1(f.saksID)}
+                      onClick={() => onCreatingPdu1(f.fagsakNr, f.saksID)}
                     >
                       {creatingPdu1 && <Loader />}
                       {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}

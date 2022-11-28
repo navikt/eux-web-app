@@ -71,14 +71,15 @@ export const resetStoredPdu1AsPDF = () => ({
 })
 
 export const getPdu1Template = (
-  fnr: string, fagsak: string
+  fnr: string, fagsakId: string, saksreferanse: string
 ): Action => {
   return call({
     url: sprintf(urls.PDU1_INFO_URL, { fnr }),
     expectedPayload: mockTemplatePdu1,
     context: {
       fnr,
-      fagsak
+      fagsakId,
+      saksreferanse
     },
     type: {
       request: types.PDU1_TEMPLATE_REQUEST,
