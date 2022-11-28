@@ -59,8 +59,10 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
 
     case types.PDU1_ASJSON_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
-      pdu1.saksreferanse = (action as ActionWithPayload).payload.saksreferanse
-      pdu1.fagsakId = (action as ActionWithPayload).context.fagsak
+      //pdu1.saksreferanse = (action as ActionWithPayload).payload.saksreferanse
+      //pdu1.fagsakId = (action as ActionWithPayload).context.fagsak
+      pdu1.fagsakId = (action as ActionWithPayload).payload.saksreferanse
+      pdu1.saksreferanse = (action as ActionWithPayload).context.fagsak
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsak
       pdu1.__dokumentId = (action as ActionWithPayload).context.dokumentId
       pdu1.__journalpostId = (action as ActionWithPayload).context.journalpostId
@@ -177,8 +179,10 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
 
     case types.PDU1_TEMPLATE_SUCCESS: {
       const pdu1: PDU1 = (action as ActionWithPayload).payload
-      pdu1.saksreferanse = (action as ActionWithPayload).context.saksreferanse
-      pdu1.fagsakId = (action as ActionWithPayload).context.fagsakId
+      //pdu1.saksreferanse = (action as ActionWithPayload).context.saksreferanse
+      //pdu1.fagsakId = (action as ActionWithPayload).context.fagsakId
+      pdu1.fagsakId = (action as ActionWithPayload).context.saksreferanse
+      pdu1.saksreferanse = (action as ActionWithPayload).context.fagsakId
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsakId
       pdu1.__fnr = (action as ActionWithPayload).context.fnr
       console.log(pdu1)
