@@ -89,6 +89,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         delete newPdu1.__dokumentId
         delete newPdu1.__fagsak
         delete newPdu1.__fnr
+
+        console.log(newPdu1)
         dispatch(jornalførePdu1(newPdu1))
         buttonLogger(e)
       }

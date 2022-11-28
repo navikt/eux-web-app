@@ -13,7 +13,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 const store = configureStore({
   reducer: reducers,
-  devTools: process.env.NODE_ENV !== 'production'
+  //devTools: process.env.NODE_ENV !== 'production'
 })
 
 export default store
