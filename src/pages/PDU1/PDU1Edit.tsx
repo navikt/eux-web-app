@@ -90,7 +90,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         delete newPdu1.__fagsak
         delete newPdu1.__fnr
 
-        console.log(newPdu1)
         dispatch(jornalførePdu1(newPdu1))
         buttonLogger(e)
       }
@@ -114,7 +113,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
   useEffect(() => {
     if (type === 'create' && params.fnr && params.fagsak && params.saksreferanse) {
-      console.log(params)
       dispatch(getPdu1Template(params.fnr, params.fagsak, params.saksreferanse))
     }
     if (type === 'edit' && params.journalpostId && params.dokumentInfoId && params.fagsak) {

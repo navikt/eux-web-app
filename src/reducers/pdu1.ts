@@ -64,7 +64,6 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsak
       pdu1.__dokumentId = (action as ActionWithPayload).context.dokumentId
       pdu1.__journalpostId = (action as ActionWithPayload).context.journalpostId
-      console.log(pdu1)
       return {
         ...state,
         pdu1
@@ -181,7 +180,6 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       pdu1.fagsakId = (action as ActionWithPayload).context.fagsakId
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsakId
       pdu1.__fnr = (action as ActionWithPayload).context.fnr
-      console.log(pdu1)
       return {
         ...state,
         pdu1
