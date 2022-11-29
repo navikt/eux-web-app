@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.4.0-feature-eux-2372-show-attachments",
+  "version": "8.4.1-feature-eux-2372-show-attachments",
   "private": true,
   "type": "module",
   "scripts": {
