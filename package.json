@@ -228,10 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-<<<<<<< HEAD
-  "_id": "neessi@8.4.0-TEN-54-PDU-edit-error",
-=======
   "_id": "neessi@8.4.0-feature-eux-2372-show-attachments",
->>>>>>> 24add89e (EUX-2372: Show attachments from Rina)
   "disabled-homepage": "http://eesi2.no/melosys"
 }
