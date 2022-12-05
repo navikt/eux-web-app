@@ -11,6 +11,7 @@ import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
+import {JoarkBrowserItem} from "../declarations/attachments";
 const sprintf = require('sprintf-js').sprintf
 
 export const addMottakere = (
@@ -373,6 +374,23 @@ export const updateReplySed: ActionCreator<ActionWithPayload<UpdateReplySedPaylo
   payload: { needle, value }
 })
 
+export const updateAttachmentsSensitivt: ActionCreator<ActionWithPayload<any>> = (
+  attachmentKey: string,  sensitivt: boolean
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_REPLYSED_ATTACHMENTS_SENSITIVT_UPDATE,
+  payload: {
+    attachmentKey,
+    sensitivt
+  }
+})
+
+export const removeAttachment: ActionCreator<ActionWithPayload<any>> = (
+  attachment: JoarkBrowserItem
+): ActionWithPayload<any> => ({
+  type: types.SVARSED_REPLYSED_ATTACHMENTS_REMOVE,
+  payload: attachment
+})
+
 export const deleteSed = (rinaSakId: string, sedId: string) => {
   return call({
     method: 'DELETE',
@@ -385,6 +403,44 @@ export const deleteSed = (rinaSakId: string, sedId: string) => {
       request: types.SVARSED_SED_DELETE_REQUEST,
       success: types.SVARSED_SED_DELETE_SUCCESS,
       failure: types.SVARSED_SED_DELETE_FAILURE
+    }
+  })
+}
+
+export const deleteAttachment = (rinaSakId: string | undefined, sedId: string | undefined, vedleggId: string) => {
+  return call({
+    method: 'DELETE',
+    url: sprintf(urls.API_RINA_ATTACHMENT_DELETE_URL, { rinaSakId, sedId, vedleggId }),
+    cascadeFailureError: true,
+    context: {
+      vedleggId: vedleggId,
+      sedId: sedId
+    },
+    type: {
+      request: types.SVARSED_ATTACHMENT_DELETE_REQUEST,
+      success: types.SVARSED_ATTACHMENT_DELETE_SUCCESS,
+      failure: types.SVARSED_ATTACHMENT_DELETE_FAILURE
+    }
+  })
+}
+
+export const setAttachmentSensitive = (rinaSakId: string | undefined, sedId: string | undefined, vedleggId: string, sensitive: boolean) => {
+  return call({
+    method: 'PUT',
+    url: sprintf(urls.API_RINA_ATTACHMENT_SENSITIVE_URL, {rinaSakId, sedId, vedleggId}),
+    body: {
+      sensitivt: sensitive
+    },
+    cascadeFailureError: true,
+    context: {
+      vedleggId: vedleggId,
+      sensitivt: sensitive,
+      sedId: sedId
+    },
+    type: {
+      request: types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST,
+      success: types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS,
+      failure: types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE
     }
   })
 }

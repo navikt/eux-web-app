@@ -56,6 +56,7 @@ export interface JoarkBrowserItem extends Item {
   title: string
   tema: string | undefined
   date: Date
+  sensitivt?: boolean
 }
 
 export type JoarkBrowserItems = Array<JoarkBrowserItem>
@@ -93,6 +94,7 @@ export interface SEDAttachmentPayloadWithFile extends SEDAttachmentPayload {
   dokumentInfoId: string
   variantformat: string
   filnavn: string
+  sensitivt?: boolean
 }
 
 export interface SavingAttachmentsJob {

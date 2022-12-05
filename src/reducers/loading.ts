@@ -21,6 +21,8 @@ export const initialLoadingState: LoadingState = {
   gettingInstitusjoner: false,
   gettingJoarkList: false,
   gettingJoarkFile: false,
+  gettingAttachmentFile: false,
+  settingAttachmentSensitive: false,
   gettingLandkoder: false,
   gettingPdu1: false,
   gettingPreviewSed: false,
@@ -132,6 +134,46 @@ const loadingReducer = (
         ...state,
         gettingJoarkFile: false
       }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_REQUEST:
+      return {
+        ...state,
+        gettingAttachmentFile: true
+      }
+
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_SUCCESS:
+    case types.ATTACHMENT_FROM_RINA_PREVIEW_FAILURE:
+      return {
+        ...state,
+        gettingAttachmentFile: false
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_REQUEST:
+      return {
+        ...state,
+        deletingAttachment: true
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_SUCCESS:
+    case types.SVARSED_ATTACHMENT_DELETE_FAILURE:
+      return {
+        ...state,
+        deletingAttachment: false
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST:
+      return {
+        ...state,
+        settingAttachmentSensitive: true
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS:
+    case types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE:
+      return {
+        ...state,
+        settingAttachmentSensitive: false
+      }
+
 
     case types.VEDLEGG_DOKUMENT_REQUEST:
       return {

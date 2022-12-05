@@ -39,7 +39,29 @@ export default (saksnummer: string, type: string) => {
           sedType: 'F001',
           sedId: 'f001new',
           sistEndretDato: '2020-01-02',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          vedlegg: [
+            {
+              "id": "3666a09dee604440a44dc9a51abf685a",
+              "navn": "Påminnelse.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "7b41e7ed544f4cd4b568dcbc48266cef",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "8b81b7003e354d32ad9385876a948bea",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": false
+            },
+            {
+              "id": "9bfabcd05fb9466693e55592bb8845fb",
+              "navn": "H001.pdf",
+              "sensitivt": true
+            }
+          ]
         }, {
           sedTittel: 'Description for sent F001',
           status: 'sent',
@@ -202,7 +224,29 @@ export default (saksnummer: string, type: string) => {
           sedId: 'h001new',
           status: 'new',
           sistEndretDato: '2021-02-19',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          vedlegg: [
+            {
+              "id": "3666a09dee604440a44dc9a51abf685a",
+              "navn": "Påminnelse.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "7b41e7ed544f4cd4b568dcbc48266cef",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "8b81b7003e354d32ad9385876a948bea",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": false
+            },
+            {
+              "id": "9bfabcd05fb9466693e55592bb8845fb",
+              "navn": "H001.pdf",
+              "sensitivt": true
+            }
+          ]
         }, {
           sedTittel: 'Horizontal',
           sedType: 'H001',

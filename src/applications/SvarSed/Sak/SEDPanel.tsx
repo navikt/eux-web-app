@@ -1,4 +1,4 @@
-import { Close, Edit, Download, Send, Star, Helptext } from '@navikt/ds-icons'
+import {Close, Edit, Download, Send, Star, Helptext, Attachment} from '@navikt/ds-icons'
 import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
@@ -17,7 +17,7 @@ import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { findSavedEntry, hasDraftFor, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry, Sak, Sed, SedAction } from 'declarations/types'
+import {LocalStorageEntry, Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -27,6 +27,9 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import {getAllowed} from "utils/allowedFeatures";
 import {FeatureToggles} from "../../../declarations/app";
+import Modal from "../../../components/Modal/Modal";
+import {ModalContent} from "../../../declarations/components";
+import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromRinaTable";
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
@@ -44,6 +47,14 @@ const IconDiv = styled(PileCenterDiv)`
   justify-content: center;
   background-color: var(--navds-semantic-color-component-background-alternate);
   padding: 1rem;
+`
+const AttachmentButton = styled(Button)`
+  padding:0
+`
+
+const AttachmentIcon = styled(Attachment)`
+  position: relative;
+  top: 3px;
 `
 
 interface SEDPanelSelector {
@@ -87,6 +98,7 @@ const SEDPanel = ({
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
   const [_reminderSed, _setReminderSed] = useState<boolean>(false)
   const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
+  const [attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
 
   const ALLOWED_SED_HANDLINGER = getAllowed("ALLOWED_SED_HANDLINGER", !!featureToggles?.featureAdmin)
   const ALLOWED_SED_EDIT_AND_UPDATE = getAllowed("ALLOWED_SED_EDIT_AND_UPDATE", !!featureToggles?.featureAdmin)
@@ -176,6 +188,17 @@ const SEDPanel = ({
     dispatch(replyToSed(sed, sak))
   }
 
+  const openAttachmentModal = () => {
+    setAttachmentModal({
+      closeButton: true,
+      modalContent: (
+        <div style={{ cursor: 'pointer' }}>
+          <AttachmentsFromRinaTable sedId={sed.sedId} rinaSakId={currentSak.sakId} attachmentsFromRina={sed.vedlegg} showHeader={true} hideActions={true}/>
+        </div>
+      )
+    })
+  }
+
   const showJournalforingButton = sed.lenkeHvisForrigeSedMaaJournalfoeres
   const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
@@ -190,6 +213,11 @@ const SEDPanel = ({
 
   return (
     <MyPanel border>
+      <Modal
+        open={!_.isNil(attachmentModal)}
+        modal={attachmentModal}
+        onModalClose={() => setAttachmentModal(undefined)}
+      />
       <FlexDiv>
         <IconDiv>
           {sed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
@@ -218,6 +246,13 @@ const SEDPanel = ({
               rinaSakId={currentSak.sakId}
               sedId={sed.sedId}
             />
+            {sed.vedlegg && sed.vedlegg.length > 0 && (
+              <>
+                <AttachmentButton variant="tertiary" onClick={openAttachmentModal}>
+                  <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
+                </AttachmentButton>
+              </>
+            )}
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>

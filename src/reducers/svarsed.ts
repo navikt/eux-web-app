@@ -23,6 +23,11 @@ export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
+  deletedVedlegg: any | null | undefined
+  savedVedlegg: any | null | undefined
+  setVedleggSensitiv: any | null | undefined
+  setRinaAttachmentSensitive: any | null | undefined
+  attachmentRemoved: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   personRelatert: any
@@ -41,6 +46,11 @@ export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
   deletedSak: undefined,
   deletedSed: undefined,
+  deletedVedlegg: undefined,
+  savedVedlegg: undefined,
+  setVedleggSensitiv: undefined,
+  setRinaAttachmentSensitive: undefined,
+  attachmentRemoved: undefined,
   institusjoner: undefined,
   mottakere: undefined,
   personRelatert: undefined,
@@ -620,6 +630,128 @@ const svarsedReducer = (
         ...state,
         deletedSed: null
       }
+
+    case types.SVARSED_ATTACHMENT_DELETE_REQUEST:
+      return {
+        ...state,
+        deletedVedlegg: undefined
+      }
+
+    case types.SVARSED_ATTACHMENT_DELETE_SUCCESS:
+      const attachmentIdDeleted = (action as ActionWithPayload).context.vedleggId
+      const updatedVedleggList = _.filter(state.replySed?.sed?.vedlegg, v => v.id !== attachmentIdDeleted)
+      return {
+        ...state,
+        deletedVedlegg: true,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggList
+          }
+        }
+      }
+
+
+    case types.SVARSED_ATTACHMENT_DELETE_FAILURE:
+      return {
+        ...state,
+        deletedVedlegg: null
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_REQUEST:
+      return {
+        ...state,
+        setRinaAttachmentSensitive: undefined
+      }
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS:
+      const vId = (action as ActionWithPayload).context.vedleggId
+      const updatedVedleggListWithSensitive = state.replySed?.sed?.vedlegg?.map((v) => {
+        if(v.id === vId){
+          return {
+            ...v,
+            sensitivt: (action as ActionWithPayload).context.sensitivt
+          }
+        } else {
+          return v
+        }
+      })
+
+      return {
+        ...state,
+        setRinaAttachmentSensitive: true,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggListWithSensitive
+          }
+        }
+      }
+
+
+    case types.SVARSED_ATTACHMENT_SENSITIVE_FAILURE:
+      return {
+        ...state,
+        setRinaAttachmentSensitive: null
+      }
+
+    case types.ATTACHMENT_SEND_SUCCESS: {
+      let updatedVedleggList = state.replySed?.sed?.vedlegg ? _.cloneDeep(state.replySed?.sed?.vedlegg) : []
+      const responsePayload = (action as ActionWithPayload).payload
+      updatedVedleggList?.push({
+        id: responsePayload.vedleggId,
+        navn: responsePayload.filnavn,
+        sensitivt: responsePayload.sensitivt
+      })
+      return {
+        ...state,
+        savedVedlegg: (action as ActionWithPayload).context.joarkBrowserItem,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          sed: {
+            ...(state.replySed?.sed as Sed),
+            vedlegg: updatedVedleggList
+          }
+        }
+
+      }
+    }
+
+    case types.SVARSED_REPLYSED_ATTACHMENTS_SENSITIVT_UPDATE:
+      let updatedAttachmentsList = _.cloneDeep(state.replySed?.attachments)
+      const newAttachments = updatedAttachmentsList?.map((att) => {
+        if(att.key === (action as ActionWithPayload).payload.attachmentKey){
+          return {
+            ...att,
+            sensitivt: (action as ActionWithPayload).payload.sensitivt
+          }
+        } else {
+          return att
+        }
+      })
+
+      return {
+        ...state,
+        setVedleggSensitiv: (action as ActionWithPayload).payload,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          attachments: newAttachments
+        }
+      }
+
+    case types.SVARSED_REPLYSED_ATTACHMENTS_REMOVE:
+      const attachmentsAfterRemove = _.reject(state.replySed?.attachments, (att) => att.key === (action as ActionWithPayload).payload.key)
+      return {
+        ...state,
+        attachmentRemoved: (action as ActionWithPayload).payload,
+        replySed: {
+          ...(state.replySed as ReplySed),
+          attachments: attachmentsAfterRemove
+        }
+      }
+
 
     default:
       return state

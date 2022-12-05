@@ -92,12 +92,14 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
         const unsentAttachment: JoarkBrowserItem = _.first(savingAttachmentsJob.remaining)!
         let filnavn = unsentAttachment.title.replaceAll(' ', '_');
         filnavn = filnavn.replaceAll('/', "_");
+        filnavn = filnavn.replaceAll(',', "_");
         const params: SEDAttachmentPayloadWithFile = {
           ...payload,
           journalpostId: unsentAttachment.journalpostId,
           dokumentInfoId: unsentAttachment.dokumentInfoId!,
           variantformat: unsentAttachment.variant!.variantformat!,
-          filnavn: filnavn ?? 'fil-' + md5('' + new Date().getTime())
+          filnavn: filnavn ?? 'fil-' + md5('' + new Date().getTime()),
+          sensitivt: unsentAttachment.sensitivt
         }
         sendAttachmentToSed(params, unsentAttachment)
       } else {

@@ -6,17 +6,33 @@ import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
+import {Attachment} from "../../../declarations/types";
+import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
 
 export interface AttachmentsProps {
   fnr: string | undefined
-  onAttachmentsChanged: (items: JoarkBrowserItems) => void
+  onAttachmentsChanged: (items: JoarkBrowserItems) => void,
+  onUpdateAttachmentSensitivt: (item: JoarkBrowserItem, sensitivt: boolean) => void,
+  attachmentsFromRina: Array<Attachment> | undefined
+  sedId: string | undefined
+  rinaSakId: string | undefined
+  savedVedlegg: JoarkBrowserItem | null | undefined
+  setVedleggSensitiv: any | null | undefined,
+  attachmentRemoved: JoarkBrowserItem | null | undefined
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
   fnr,
-  onAttachmentsChanged
+  onAttachmentsChanged,
+  onUpdateAttachmentSensitivt,
+  attachmentsFromRina,
+  sedId,
+  rinaSakId,
+  savedVedlegg,
+  setVedleggSensitiv,
+  attachmentRemoved
 }: AttachmentsProps): JSX.Element => {
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -35,6 +51,30 @@ const Attachments: React.FC<AttachmentsProps> = ({
     onAttachmentsChanged(newAttachments)
   }
 
+  useEffect(() => {
+    const newAttachments = _.reject(_items, (att) => att.key === savedVedlegg?.key)
+    setItems(newAttachments)
+  }, [savedVedlegg])
+
+  useEffect(() => {
+    const newAttachments = _.reject(_items, (att) => att.key === attachmentRemoved?.key)
+    setItems(newAttachments)
+  }, [attachmentRemoved])
+
+  useEffect(() => {
+    const newAttachments = _items.map((att) => {
+      if(att.key === setVedleggSensitiv.attachmentKey){
+        return {
+          ...att,
+          sensitivt: setVedleggSensitiv.sensitivt
+        }
+      } else {
+        return att
+      }
+    })
+    setItems(newAttachments)
+  }, [setVedleggSensitiv])
+
   return (
     <Panel border>
       <Heading size='small'>
@@ -51,7 +91,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
         sedAttachments={_items}
         tableId='vedlegg-modal'
       />
-      {_.isEmpty(_items)
+      {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
         ? (
           <>
             <SpacedHr />
@@ -59,30 +99,45 @@ const Attachments: React.FC<AttachmentsProps> = ({
               {t('message:warning-no-attachments')}
             </BodyLong>
             <SpacedHr />
+            <Button
+              variant='secondary'
+              data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
+              onClick={(e: any) => {
+                buttonLogger(e)
+                setAttachmentsTableVisible(!_attachmentsTableVisible)
+              }}
+            >
+              {t('label:vis-vedlegg-tabell')}
+            </Button>
           </>
           )
         : (
           <>
+            <h4>Vedlegg som legges til etter lagring av SED</h4>
             <JoarkBrowser
               existingItems={_items}
               fnr={fnr}
               mode='view'
               tableId='vedlegg-view'
+              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
             />
+            <VerticalSeparatorDiv />
+            <Button
+              variant='secondary'
+              data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
+              onClick={(e: any) => {
+                buttonLogger(e)
+                setAttachmentsTableVisible(!_attachmentsTableVisible)
+              }}
+            >
+              {t('label:vis-vedlegg-tabell')}
+            </Button>
+            <h4>Vedlegg lagret i RINA</h4>
+            <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}
-      <VerticalSeparatorDiv />
-      <Button
-        variant='secondary'
-        data-amplitude='svarsed.editor.attachments'
-        disabled={_.isNil(fnr)}
-        onClick={(e: any) => {
-          buttonLogger(e)
-          setAttachmentsTableVisible(!_attachmentsTableVisible)
-        }}
-      >
-        {t('label:vis-vedlegg-tabell')}
-      </Button>
     </Panel>
   )
 }
