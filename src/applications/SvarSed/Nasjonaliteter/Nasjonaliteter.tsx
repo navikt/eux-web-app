@@ -207,7 +207,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
                   id={_namespace + '-land'}
-                  includeList={CountryFilter.STANDARD({})}
+                  includeList={CountryFilter.STANDARD({addXS_XR_XU:true})}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => setLand(e.value, index)}
                   required
