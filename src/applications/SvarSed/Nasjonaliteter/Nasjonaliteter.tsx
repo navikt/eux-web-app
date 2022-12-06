@@ -32,7 +32,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
-import { isUSed } from 'utils/sed'
+import { isFSed } from 'utils/sed'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateNasjonalitet,
@@ -227,7 +227,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                 </FormText>
                 )}
           </Column>
-          {isUSed(replySed!) && (
+          {isFSed(replySed!) && (
             <Column>
               {inEditMode
                 ? (
@@ -299,7 +299,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                     {t('label:land') + ' *'}
                   </Label>
                 </Column>
-                {isUSed(replySed!)
+                {isFSed(replySed!)
                   ? (
                     <Column>
                       <Label>
