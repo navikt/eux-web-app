@@ -125,7 +125,6 @@ export interface Pin {
 
 export interface Statsborgerskap {
   land: string,
-  fraDato?: string
 }
 
 export interface Foedested {

@@ -45,13 +45,6 @@ export const validateNasjonalitet = (
     personName
   }))
 
-  hasErrors.push(checkIfNotDate(v, {
-    needle: statsborgerskap?.fraDato,
-    id: namespace + idx + '-fraDato',
-    message: 'validation:invalidDate',
-    personName
-  }))
-
   return hasErrors.find(value => value) !== undefined
 }
 
