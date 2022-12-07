@@ -10,7 +10,7 @@ const allowed:Allowed = {
   ADMIN_ALLOWED_SED_HANDLINGER: ["H002", "F002", "U002", "U004", "U017", "X008", "X010", "X011", "X012", "Delete"],
   ALLOWED_SED_HANDLINGER: ["H002", "F002", "X008", "X010", "X011", "X012", "Delete"],
   ADMIN_ALLOWED_SED_EDIT_AND_UPDATE: ["H001", "H002", "F001", "F002", "U002", "U004", "U017", "X001", "X008", "X009", "X010", "X011", "X012"],
-  ALLOWED_SED_EDIT_AND_UPDATE: ["H001", "H002", "F002", "X001", "X008", "X009", "X010", "X011", "X012"]
+  ALLOWED_SED_EDIT_AND_UPDATE: ["H001", "H002", "F002", "U002", "U004", "U017", "X001", "X008", "X009", "X010", "X011", "X012"]
 }
 
 export const getAllowed = (feature: string, isAdmin: boolean): string[] => {
