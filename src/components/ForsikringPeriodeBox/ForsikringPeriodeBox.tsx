@@ -69,6 +69,9 @@ const ForsikringPeriodePanel = styled(Panel)`
 `
 
 const AdresseAccordion = styled(Accordion)`
+  .navds-accordion__header{
+    padding-left: 0px;
+  }
   .navds-accordion__header, .navds-accordion__content{
     border-bottom: 1px solid var(--navds-accordion-color-border);
   }
@@ -546,20 +549,23 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   validation={_v}
                 />
                 {showAddress && (
-                  <AdresseAccordion>
-                    <AccordionItem>
-                    <AccordionHeader>{t('label:forsikringsperiode-adresse')}</AccordionHeader>
-                    <AccordionContent>
-                      <AdresseForm
-                        adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
-                        onAdressChanged={setAdresse}
-                        type={false}
-                        namespace={namespace + '-arbeidsgiver-adresse'}
-                        validation={_v}
-                      />
-                    </AccordionContent>
-                    </AccordionItem>
-                  </AdresseAccordion>
+                  <>
+                    <AdresseAccordion>
+                      <AccordionItem>
+                      <AccordionHeader>{t('label:forsikringsperiode-adresse')}</AccordionHeader>
+                      <AccordionContent>
+                        <AdresseForm
+                          adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
+                          onAdressChanged={setAdresse}
+                          type={false}
+                          namespace={namespace + '-arbeidsgiver-adresse'}
+                          validation={_v}
+                        />
+                      </AccordionContent>
+                      </AccordionItem>
+                    </AdresseAccordion>
+                    <VerticalSeparatorDiv />
+                  </>
                 )}
               </>
             )}
