@@ -36,7 +36,7 @@ import {
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { getIdx } from 'utils/namespace'
@@ -136,6 +136,12 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const [_editForsikringPeriode, _setEditForsikringPeriode] = useState<T | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeBoxProps>(validateForsikringPeriodeBox, namespace)
   const [validateAddress, setValidateAddress] = useState(false)
+
+  useEffect(() => {
+    if(newMode){
+      _setNewForsikringPeriode(forsikringPeriode)
+    }
+  }, [forsikringPeriode, newMode])
 
   const adresseHasProps = (adresse: Adresse | undefined) => {
     let adresseHasProps = false
