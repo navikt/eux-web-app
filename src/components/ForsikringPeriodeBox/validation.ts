@@ -13,6 +13,7 @@ export interface ValidationForsikringPeriodeBoxProps {
   forsikringPeriode: ForsikringPeriode | null | undefined
   nsIndex?: string
   showAddress: boolean
+  validateAddress: boolean
   showArbeidsgiver: boolean
   showInntekt: boolean
   showAnnen: boolean
@@ -26,6 +27,7 @@ export const validateForsikringPeriodeBox = (
     forsikringPeriode,
     nsIndex,
     showAddress,
+    validateAddress,
     showArbeidsgiver,
     showInntekt,
     showAnnen,
@@ -66,7 +68,7 @@ export const validateForsikringPeriodeBox = (
     }))
   }
 
-  if (showAddress) {
+  if (showAddress && validateAddress) {
     hasErrors.push(validateAdresse(v, namespace + (nsIndex ?? '') + '-arbeidsgiver-adresse', {
       adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false

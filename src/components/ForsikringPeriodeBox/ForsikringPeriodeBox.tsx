@@ -1,4 +1,4 @@
-import { BodyLong, Checkbox, Heading, Label, Panel } from '@navikt/ds-react'
+import {Accordion, BodyLong, Checkbox, Heading, Label, Panel} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -44,6 +44,9 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
+import AccordionHeader from "@navikt/ds-react/esm/accordion/AccordionHeader";
+import AccordionContent from "@navikt/ds-react/esm/accordion/AccordionContent";
+import AccordionItem from "@navikt/ds-react/esm/accordion/AccordionItem";
 
 const ForsikringPeriodePanel = styled(Panel)`
   padding: 1rem;
@@ -62,6 +65,12 @@ const ForsikringPeriodePanel = styled(Panel)`
   &:not(:hover) .control-buttons {
     position: absolute;
     margin-left: -10000px;
+  }
+`
+
+const AdresseAccordion = styled(Accordion)`
+  .navds-accordion__header, .navds-accordion__content{
+    border-bottom: 1px solid var(--navds-accordion-color-border);
   }
 `
 export type Editable = 'only_period' | 'full'
@@ -123,6 +132,19 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const [_newForsikringPeriode, _setNewForsikringPeriode] = useState<T | null | undefined>(newMode ? forsikringPeriode : undefined)
   const [_editForsikringPeriode, _setEditForsikringPeriode] = useState<T | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationForsikringPeriodeBoxProps>(validateForsikringPeriodeBox, namespace)
+  const [validateAddress, setValidateAddress] = useState(false)
+
+  const adresseHasProps = (adresse: Adresse | undefined) => {
+    let adresseHasProps = false
+    if(adresse){
+      Object.keys(adresse).forEach((k) => {
+        if(adresse[k as keyof Adresse] && adresse[k as keyof Adresse] !== "" ) {
+          adresseHasProps = true
+        }
+      })
+    }
+    return adresseHasProps
+  }
 
   const setPeriode = (periode: Periode) => {
     if (newMode) {
@@ -144,6 +166,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const setAdresse = (adresse: Adresse) => {
+    adresseHasProps(adresse) ? setValidateAddress(true) : setValidateAddress(false)
+
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
@@ -333,6 +357,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
       clonedValidation!, namespace, validateForsikringPeriodeBox, {
         forsikringPeriode: _editForsikringPeriode,
         showAddress,
+        validateAddress,
         showArbeidsgiver,
         showInntekt,
         showAnnen,
@@ -354,6 +379,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     const valid: boolean = _performValidation({
       forsikringPeriode: _newForsikringPeriode,
       showAddress,
+      validateAddress,
       showArbeidsgiver,
       showInntekt,
       showAnnen,
@@ -520,13 +546,20 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   validation={_v}
                 />
                 {showAddress && (
-                  <AdresseForm
-                    adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
-                    onAdressChanged={setAdresse}
-                    type={false}
-                    namespace={namespace + '-arbeidsgiver-adresse'}
-                    validation={_v}
-                  />
+                  <AdresseAccordion>
+                    <AccordionItem>
+                    <AccordionHeader>{t('label:forsikringsperiode-adresse')}</AccordionHeader>
+                    <AccordionContent>
+                      <AdresseForm
+                        adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
+                        onAdressChanged={setAdresse}
+                        type={false}
+                        namespace={namespace + '-arbeidsgiver-adresse'}
+                        validation={_v}
+                      />
+                    </AccordionContent>
+                    </AccordionItem>
+                  </AdresseAccordion>
                 )}
               </>
             )}
@@ -622,7 +655,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                             <HorizontalLineSeparator />
                             <VerticalSeparatorDiv size='0.5' />
                             <PileDiv>
-                              {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
+                              {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse) || !adresseHasProps((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
                                 ? (
                                   <BodyLong>
                                     {t('message:warning-unknown-address')}

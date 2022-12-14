@@ -43,11 +43,13 @@ export const validateForsikringPeriode = (
   const showArbeidsgiver = !!periode?.__type && ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0
   const showInntekt = !!periode?.__type && ['perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(periode?.__type) >= 0
   const showAddress = showArbeidsgiver
+  const validateAddress = false
   const showBeløp = periode?.__type === 'perioderKompensertFerie'
   hasErrors.push(validateForsikringPeriodeBox(v, namespace, {
     forsikringPeriode: periode,
     nsIndex,
     showAddress,
+    validateAddress,
     showArbeidsgiver,
     showInntekt,
     showAnnen,
