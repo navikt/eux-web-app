@@ -242,6 +242,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           <VerticalSeparatorDiv />
           {_type && (
             <ForsikringPeriodeBox
+              key={(_periode as ForsikringPeriode).__type}
               allowDelete
               allowEdit
               forsikringPeriode={_periode as ForsikringPeriode}
