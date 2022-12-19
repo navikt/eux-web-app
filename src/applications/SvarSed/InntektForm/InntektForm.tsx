@@ -99,7 +99,7 @@ const InntektForm: React.FC<MainFormProps> = ({
 
   const ansettelsesTypeOptions = [
     { label: t('el:option-ansettelsestype-ansettelsesforhold'), value: 'ansettelsesforhold' },
-    { label: t('el:option-ansettelsestype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet' }
+    { label: t('el:option-ansettelsestype-selvstendig-næringsvirksomhet'), value: 'selvstendig_næringsvirksomhet' }
   ]
 
   useUnmount(() => {
