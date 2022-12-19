@@ -280,7 +280,7 @@ const Inntekter: React.FC<any> = ({
                             error={_v[_namespace + '-typeAnnen']?.feilmelding}
                             id={_namespace + '-typeAnnen'}
                           >
-                            <BodyLong>({_inntekt?.typeAnnen})</BodyLong>
+                            <BodyLong>{_inntekt?.typeAnnen ? "(" + _inntekt?.typeAnnen + ")" : ""}</BodyLong>
                           </FormText>
                         </>
                       )}
@@ -311,25 +311,22 @@ const Inntekter: React.FC<any> = ({
               )}
         </AlignStartRow>
         <VerticalSeparatorDiv size='0.5' />
-        {_inntekt?.type === 'annet_vederlag' && (
-          <AlignStartRow>
-            <Column>
-              {inEditMode && (
-                <Input
-                  ariaLabel={t('label:informasjon-om-vederlag')}
-                  error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                  id='informasjonOmVederlag'
-                  label={t('label:informasjon-om-vederlag')}
-                  namespace={_namespace}
-                  onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
-                  required
-                  value={_inntekt?.typeAnnen}
-                />
-              )}
-            </Column>
-            <Column />
-          </AlignStartRow>
-        )}
+        <AlignStartRow>
+          <Column>
+            {inEditMode && (
+              <Input
+                ariaLabel={t('label:informasjon-om-vederlag')}
+                error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                id='informasjonOmVederlag'
+                label={t('label:informasjon-om-vederlag')}
+                namespace={_namespace}
+                onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
+                value={_inntekt?.typeAnnen}
+              />
+            )}
+          </Column>
+          <Column />
+        </AlignStartRow>
       </RepeatableRow>
     )
   }
