@@ -38,6 +38,7 @@
   "noAktivitetstype": "Ingen aktivitetstype",
   "noAnnenOpphør": "Ingen annet opphør",
   "noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
+  "noAnsettelsesType": "Ingen periodetype",
   "noAnswer": "Ingen svar til spørsmål",
   "noAntallPersoner": "Ingen antall personer",
   "noArbeidstimer": "Ingen arbeidstimer",
@@ -104,7 +105,6 @@
   "noOrgnr": "Ingen orgnr",
 
   "noPensjonType": "Ingen type pensjon",
-  "noPeriodeType": "Ingen periodetype",
   "noPersonGiven": "Ingen person oppgitt",
   "noPunkt": "Ingen punkt",
   "noPurring": "Ingen purring",

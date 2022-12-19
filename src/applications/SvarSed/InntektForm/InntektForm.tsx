@@ -31,7 +31,7 @@ import InntektFC from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import { Loennsopplysning, Periode, PeriodeMedForsikring, PeriodeType } from 'declarations/sed'
+import { Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType } from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
 import { ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -97,9 +97,9 @@ const InntektForm: React.FC<MainFormProps> = ({
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationLoennsopplysningProps>(validateLoennsopplysning, namespace)
 
-  const periodeTypeOptions = [
-    { label: t('el:option-periodetype-ansettelsesforhold'), value: 'ansettelsesforhold' },
-    { label: t('el:option-periodetype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet' }
+  const ansettelsesTypeOptions = [
+    { label: t('el:option-ansettelsestype-ansettelsesforhold'), value: 'ansettelsesforhold' },
+    { label: t('el:option-ansettelsestype-selvstendig-næringsvirksomhet'), value: 'selvstendig-næringsvirksomhet' }
   ]
 
   useUnmount(() => {
@@ -129,20 +129,20 @@ const InntektForm: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
   }
 
-  const setPeriodeType = (periodetype: PeriodeType, index: number) => {
+  const setAnsettelsesType = (ansettelsestype: AnsettelsesType, index: number) => {
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        periodetype: periodetype.trim()
+        ansettelsestype: ansettelsestype.trim()
       } as Loennsopplysning)
-      _resetValidation(namespace + '-periodetype')
+      _resetValidation(namespace + '-ansettelsestype')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      periodetype: periodetype.trim()
+      ansettelsestype: ansettelsestype.trim()
     } as Loennsopplysning)
-    dispatch(resetValidation(namespace + getIdx(index) + '-periodetype'))
+    dispatch(resetValidation(namespace + getIdx(index) + '-ansettelsestype'))
   }
 
   const setInntekter = (inntekter: Array<Inntekt>, index: number) => {
@@ -343,16 +343,16 @@ const InntektForm: React.FC<MainFormProps> = ({
                 <Column>
                   <Select
                     closeMenuOnSelect
-                    data-testid={_namespace + '-periodetype'}
-                    error={_v[_namespace + '-periodetype']?.feilmelding}
-                    id={_namespace + '-periodetype'}
+                    data-testid={_namespace + '-ansettelsestype'}
+                    error={_v[_namespace + '-ansettelsestype']?.feilmelding}
+                    id={_namespace + '-ansettelsestype'}
                     label={t('label:type-periode')}
                     menuPortalTarget={document.body}
-                    onChange={(e: any) => setPeriodeType(e.value, index)}
-                    options={periodeTypeOptions}
+                    onChange={(e: any) => setAnsettelsesType(e.value, index)}
+                    options={ansettelsesTypeOptions}
                     required
-                    value={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
-                    defaultValue={_.find(periodeTypeOptions, b => b.value === _loennsopplysning?.periodetype)}
+                    value={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
+                    defaultValue={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
                   />
                 </Column>
               </>
@@ -385,12 +385,12 @@ const InntektForm: React.FC<MainFormProps> = ({
                 </Column>
                 <Column>
                   <FormText
-                    error={_v[_namespace + '-periodetype']?.feilmelding}
-                    id={_namespace + '-periodetype'}
+                    error={_v[_namespace + '-ansettelsestype']?.feilmelding}
+                    id={_namespace + '-ansettelsestype'}
                   >
                     <Label>{t('label:type-periode') + ':'}</Label>
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_loennsopplysning?.periodetype}
+                    {_loennsopplysning?.ansettelsestype}
                   </FormText>
                 </Column>
               </>

@@ -202,8 +202,8 @@
   "option-perioder-perioderLoennSomAnsatt" : "Inntekt fra ansettelsesforhold",
   "option-perioder-perioderInntektSomSelvstendig" : "Inntekt fra selvstendig næringsvirksomhet",
 
-  "option-periodetype-ansettelsesforhold": "Ansettelsesforhold",
-  "option-periodetype-selvstendig-næringsvirksomhet": "Selvstendig næringsvirksomhet",
+  "option-ansettelsestype-ansettelsesforhold": "Ansettelsesforhold",
+  "option-ansettelsestype-selvstendig-næringsvirksomhet": "Selvstendig næringsvirksomhet",
 
   "option-person-søker" : "Søker",
   "option-person-ektefelle_partner" : "Ektefelle/partner",
