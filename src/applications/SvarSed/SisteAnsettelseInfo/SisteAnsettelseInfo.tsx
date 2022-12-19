@@ -391,7 +391,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                       id='feriedagerTilGode'
                       label={t('label:feriedager-til-gode')}
                       onChanged={(value) => setFeriedagerTilGode(value, index)}
-                      required
                       value={_utbetaling?.feriedagerTilGode}
                     />
                   )}
