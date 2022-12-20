@@ -107,6 +107,7 @@ import {
   isXSed
 } from 'utils/sed'
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -241,32 +242,14 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         perioderDagpenger: (replySed as U002Sed)?.dagpengeperioder,
         personName
       }, true))
-      const nrArbeidsperioder = (
-        ((replySed as U002Sed)?.perioderAnsattMedForsikring?.length ?? 0) +
-        ((replySed as U002Sed)?.perioderSelvstendigMedForsikring?.length ?? 0) +
-        ((replySed as U002Sed)?.perioderAnsattUtenForsikring?.length ?? 0) +
-        ((replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.length ?? 0)
-      )
+      const nrArbeidsperioder = getNrOfArbeidsPerioder(replySed as USed)
+      const allArbeidsPerioderHaveSluttdato = getAllArbeidsPerioderHaveSluttDato(replySed as USed)
 
-      let allArbeidsPerioderHaveSluttdato = true
+      hasErrors.push(performValidation<ValidateGrunnTilOpphørProps>(v, `svarsed-${personID}-grunntilopphør`, validateGrunnTilOpphor, {
+        sisteAnsettelseInfo: (replySed as U002Sed)?.sisteAnsettelseInfo,
+        doValidate: (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato)
+      }, true))
 
-      // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
-      if (replySed.sedType === 'U002') {
-        if (
-          _.find((replySed as U002Sed)?.perioderAnsattMedForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find((replySed as U002Sed)?.perioderSelvstendigMedForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find((replySed as U002Sed)?.perioderAnsattUtenForsikring, p => _.isEmpty(p.sluttdato)) ||
-          _.find((replySed as U002Sed)?.perioderSelvstendigUtenForsikring, p => _.isEmpty(p.sluttdato))
-        ) {
-          allArbeidsPerioderHaveSluttdato = false
-        }
-      }
-
-      if (nrArbeidsperioder > 0 && allArbeidsPerioderHaveSluttdato) {
-        hasErrors.push(performValidation<ValidateGrunnTilOpphørProps>(v, `svarsed-${personID}-grunntilopphør`, validateGrunnTilOpphor, {
-          sisteAnsettelseInfo: (replySed as U002Sed)?.sisteAnsettelseInfo
-        }, true))
-      }
       hasErrors.push(performValidation<ValidateSisteAnsettelseInfoProps>(v, `svarsed-${personID}-sisteAnsettelseInfo`, validateSisteAnsettelseInfo, {
         sisteAnsettelseInfo: (replySed as U002Sed)?.sisteAnsettelseInfo
       }, true))

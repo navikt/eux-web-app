@@ -1,4 +1,4 @@
-import { ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring } from 'declarations/sed'
+import {ArbeidsgiverIdentifikator, Periode, PeriodeMedForsikring, U002Sed, USed} from 'declarations/sed'
 import { ArbeidsperiodeFraAA } from 'declarations/types'
 import _ from 'lodash'
 
@@ -41,3 +41,30 @@ export const generateIdentifikatorKey = (ids: Array<ArbeidsgiverIdentifikator> |
 export const getOrgnr = (arbeidsgiver: PeriodeMedForsikring, type: string): string | undefined => (
   _.find(arbeidsgiver.arbeidsgiver?.identifikatorer, (id: ArbeidsgiverIdentifikator) => id.type === type)?.id
 )
+
+export const getNrOfArbeidsPerioder = (replySed: USed): number => {
+  return (
+    ((replySed as U002Sed)?.perioderAnsattMedForsikring?.length ?? 0) +
+    ((replySed as U002Sed)?.perioderSelvstendigMedForsikring?.length ?? 0) +
+    ((replySed as U002Sed)?.perioderAnsattUtenForsikring?.length ?? 0) +
+    ((replySed as U002Sed)?.perioderSelvstendigUtenForsikring?.length ?? 0)
+  )
+}
+
+export const getAllArbeidsPerioderHaveSluttDato = (replySed: USed): boolean => {
+  let allArbeidsPerioderHaveSluttdato = true
+  // U002. "Grunn til opphør" er ikke obligatorisk på en arbeidsperiode med åpen sluttdato.
+  if ((replySed as USed).sedType === 'U002') {
+    if (
+      _.find((replySed as U002Sed)?.perioderAnsattMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+      _.find((replySed as U002Sed)?.perioderSelvstendigMedForsikring, p => _.isEmpty(p.sluttdato)) ||
+      _.find((replySed as U002Sed)?.perioderAnsattUtenForsikring, p => _.isEmpty(p.sluttdato)) ||
+      _.find((replySed as U002Sed)?.perioderSelvstendigUtenForsikring, p => _.isEmpty(p.sluttdato))
+    ) {
+      allArbeidsPerioderHaveSluttdato = false
+    }
+  }
+
+  return allArbeidsPerioderHaveSluttdato
+}
+

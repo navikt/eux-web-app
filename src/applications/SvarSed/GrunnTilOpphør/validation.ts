@@ -5,6 +5,7 @@ import { checkIfNotEmpty } from 'utils/validation'
 export interface ValidateGrunnTilOpphørProps {
   sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
   personName ?: string
+  doValidate?: boolean
 }
 
 export const validateGrunnTilOpphor = (
@@ -12,11 +13,21 @@ export const validateGrunnTilOpphor = (
   namespace: string,
   {
     sisteAnsettelseInfo,
-    personName
+    personName,
+    doValidate
   }: ValidateGrunnTilOpphørProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  
+
+  if(doValidate){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
+      id: namespace + '-typeGrunnOpphoerAnsatt',
+      message: 'validation:noType',
+      personName
+    }))
+  }
+
   if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
