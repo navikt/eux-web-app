@@ -16,14 +16,7 @@ export const validateGrunnTilOpphor = (
   }: ValidateGrunnTilOpphørProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
-    id: namespace + '-typeGrunnOpphoerAnsatt',
-    message: 'validation:noType',
-    personName
-  }))
-
+  
   if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
