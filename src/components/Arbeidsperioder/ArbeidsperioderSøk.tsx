@@ -21,6 +21,7 @@ interface ArbeidsperioderSøkProps {
   fnr: string | undefined
   namespace: string
   fillOutFnr ?: () => void
+  defaultDates?: { [key: string]: string | null;}
 }
 
 interface ArbeidsperioderSøkSelector {
@@ -35,14 +36,16 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   amplitude,
   fnr,
   namespace,
-  fillOutFnr
+  fillOutFnr,
+  defaultDates
 }: ArbeidsperioderSøkProps): JSX.Element => {
   const { t } = useTranslation()
   const { gettingArbeidsperioder }: ArbeidsperioderSøkSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>('2015-01')
-  const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(moment().format('YYYY-MM'))
+
+  const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>(defaultDates?.startDato ? defaultDates?.startDato : '2015-01')
+  const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(defaultDates?.sluttDato ? defaultDates?.sluttDato : moment().format('YYYY-MM'))
   const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
 
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>(validateArbeidsperioderSøk, namespace + '-arbeidssok')

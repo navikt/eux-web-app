@@ -11,7 +11,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -30,6 +30,7 @@ import {
   ValidationArbeidsperiodeOversiktProps,
   ValidationArbeidsperioderOversiktProps
 } from './validation'
+import moment from "moment";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -63,6 +64,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
+  const anmodningsperiode: Periode = _.get(replySed, "anmodningsperiode")
   const fnr = getFnr(replySed, personID)
   const getId = (p: PlanItem<ForsikringPeriode> | null | undefined) => p
     ? p.type + '-' + ((p.item as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '')
@@ -257,6 +259,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}
+        defaultDates={{
+          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+        }}
       />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(_plan)
@@ -312,6 +318,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         fnr={fnr!}
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}
+        defaultDates={{
+          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+        }}
       />
       <VerticalSeparatorDiv />
       {inntekter && <Inntekt inntekter={inntekter} />}
