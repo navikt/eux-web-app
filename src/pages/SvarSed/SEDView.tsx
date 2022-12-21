@@ -133,14 +133,14 @@ const SEDView = (): JSX.Element => {
   return (
     <Container>
       <Margin />
-      <Content style={{ flex: 6 }}>
+      <Content style={{ flex: 6}}>
         <PileStartDiv>
           <FullWidthDiv>
             <AlignStartRow>
-              <Column>
+              <Column style={{marginRight: "1.5rem"}}>
                 <Sakshandlinger sak={currentSak} />
               </Column>
-              <Column flex='2'>
+              <Column flex='2' style={{marginLeft: "1.5rem"}}>
                 <MyRadioPanelGroup>
                   {sedMap
                     .sort((a: Sed, b: Sed) => (
