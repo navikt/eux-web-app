@@ -208,6 +208,14 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periodeDagpenger = index < 0 ? _newPeriodeDagpenger : (inEditMode ? _editPeriodeDagpenger : periodeDagpenger)
 
+    let defaultInstitusjonNavn: string | undefined = ""
+    let defaultInstitusjonId: string | undefined = ""
+
+    if(replySed && ("sak" in replySed)) {
+      defaultInstitusjonNavn = replySed?.sak?.navinstitusjon.navn
+      defaultInstitusjonId = replySed?.sak?.navinstitusjon.id
+    }
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -271,7 +279,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                     id='institusjon-id'
                     label={t('label:institusjonens-id')}
                     onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
-                    value={_periodeDagpenger?.institusjon?.id}
+                    value={_periodeDagpenger?.institusjon?.id ? _periodeDagpenger?.institusjon?.id : defaultInstitusjonId}
                   />
                 </Column>
                 <Column>
@@ -281,7 +289,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                     id='institusjon-navn'
                     label={t('label:institusjonens-navn')}
                     onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
-                    value={_periodeDagpenger?.institusjon?.navn}
+                    value={_periodeDagpenger?.institusjon?.navn ? _periodeDagpenger?.institusjon?.navn : defaultInstitusjonNavn}
                   />
                 </Column>
                 <Column />
