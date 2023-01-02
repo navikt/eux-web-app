@@ -12,7 +12,7 @@ import {
   X012Sed,
   XSed
 } from 'declarations/sed.d'
-import {CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed} from 'declarations/types.d'
+import {CreateSedResponse, FagSaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -337,6 +337,15 @@ const svarsedReducer = (
         return s
       })
 
+      saks = saks.map((s: Sak) => {
+        let motpart: Array<string> = []
+        s.motparter?.forEach((m:Motpart) => {
+          motpart.push(m.motpartNavn)
+        })
+        s.motpart = motpart
+        return s
+      })
+
       return {
         ...state,
         saks
@@ -361,6 +370,15 @@ const svarsedReducer = (
           return s
         }
         s.kjoenn = 'U'
+        return s
+      })
+
+      saks = saks.map((s: Sak) => {
+        let motpart: Array<string> = []
+        s.motparter?.forEach((m:Motpart) => {
+          motpart.push(m.motpartNavn)
+        })
+        s.motpart = motpart
         return s
       })
 

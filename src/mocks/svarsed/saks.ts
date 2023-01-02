@@ -16,8 +16,23 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',
-      motpart: [
-        'Lodzkie Voivodeship Office in Lodz (Polen)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        },
+        {
+          formatertNavn: "Test institusjon",
+          motpartId: "RO:70005",
+          motpartNavn: "Test institusjon",
+          motpartLand: "RO"
+        }
       ],
       tema: 'KON',
       fagsakId: '123',
@@ -148,8 +163,17 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'nei',
-      motpart: [
-        'Lodzkie Voivodeship Office in Lodz (Polen)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
@@ -209,8 +233,17 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
-      motpart: [
-        'NAV ACCEPTANCE TEST 07 (Norge)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
@@ -296,8 +329,17 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      motpart: [
-        'NAV ACCEPTANCE TEST 07 (Norge)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
@@ -334,8 +376,17 @@ export default (saksnummer: string, type: string) => {
       "tema": "SYK",
       "fagsakId": "140263372",
       "sistEndretDato": "2022-10-03",
-      "motpart": [
-        "NAV ACC 05 (Norge)"
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       "sakshandlinger": [
         "Close_Case",
