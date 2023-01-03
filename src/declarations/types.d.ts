@@ -206,7 +206,7 @@ export interface Sak {
   internasjonalSakId ?: string
   sakUrl: string
   motparter: Array<Motpart>
-  motpart: Array<string>
+  motpart?: Array<string>
   motpartInstitusjon?: string
   navinstitusjon: NavInstitusjon
   sistEndretDato: string

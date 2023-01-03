@@ -34,7 +34,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      motpart: [],
       tema: 'KON',
       fagsakId: '123',
       sakshandlinger: [
@@ -176,7 +175,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      motpart: [],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
@@ -247,7 +245,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      motpart: [],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
@@ -344,7 +341,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      motpart: [],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
@@ -392,7 +388,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      motpart: [],
       "sakshandlinger": [
         "Close_Case",
         "X007",
