@@ -18,6 +18,7 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { AnyAction } from 'redux'
+import {isUSed} from "../utils/sed";
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
@@ -163,11 +164,26 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_REPLYTOSED_SUCCESS: {
+      const payload = (action as ActionWithPayload).payload
+      let lokaleSakIder = payload.lokaleSakIder
+
+      if(isUSed(payload)){
+        //Add Norsk Saksnummer for U-Seds - TEN-24
+        lokaleSakIder.push({
+          saksnummer: state.currentSak?.fagsakId,
+          institusjonsnavn: state.currentSak?.navinstitusjon.navn,
+          institusjonsid: state.currentSak?.navinstitusjon.id,
+          land: ""
+        })
+      }
+
       const newReplySed: ReplySed | null | undefined = {
-        ...(action as ActionWithPayload).payload,
+        ...payload,
+        lokaleSakIder,
         sak: (action as ActionWithPayload).context.sak,
         sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
       }
+
       return {
         ...state,
         replySed: newReplySed,
