@@ -214,6 +214,9 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     if(replySed && ("sak" in replySed)) {
       defaultInstitusjonNavn = replySed?.sak?.navinstitusjon.navn
       defaultInstitusjonId = replySed?.sak?.navinstitusjon.id
+
+      if(!_periodeDagpenger?.institusjon?.navn  && defaultInstitusjonNavn) setInstitutionNavn(defaultInstitusjonNavn, index)
+      if(!_periodeDagpenger?.institusjon?.id && defaultInstitusjonId) setInstitutionId(defaultInstitusjonId, index)
     }
 
     return (
