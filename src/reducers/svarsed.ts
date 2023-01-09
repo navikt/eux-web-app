@@ -169,11 +169,12 @@ const svarsedReducer = (
 
       if(isUSed(payload)){
         //Add Norsk Saksnummer for U-Seds - TEN-24
+        const idParts = state.currentSak?.navinstitusjon.id.split(":")
         lokaleSakIder.push({
           saksnummer: state.currentSak?.fagsakId,
           institusjonsnavn: state.currentSak?.navinstitusjon.navn,
           institusjonsid: state.currentSak?.navinstitusjon.id,
-          land: ""
+          land: idParts ? idParts[0] : ""
         })
       }
 
