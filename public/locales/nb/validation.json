@@ -15,6 +15,7 @@
   "endDateBeforeStartDate": "Sluttdato er tidligere enn startdato",
 
   "feiloppsummering": "For å gå videre må du rette opp følgende:",
+  "for-person": " for {{person}}",
 
   "invalidBeløp": "Ugyldig beløp",
   "invalidDate": "Ugyldig dato",
@@ -73,6 +74,7 @@
   "noGender": "Kjønn er ikke valgt",
   "noGrunn": "Ingen grunn oppgitt",
   "noGrunnAnnet": "Du må taste inn en beskivelse",
+  "noGrunnOpphorType": "Du må velge grunn til opphør",
 
   "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
   "noId": "Du må skrive identifikatoren",
@@ -144,7 +146,6 @@
   "onlySingleParticipant": "Kun en deltaker tillatt",
 
   "textOverX": "tekststørrelse over {{x}} tegn",
-  "til-person": " til {{person}}",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 
   "uncheckedFnr": "Uverifisert fødselsnummer",

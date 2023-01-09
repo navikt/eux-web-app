@@ -23,7 +23,7 @@ export const validateGrunnTilOpphor = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
       id: namespace + '-typeGrunnOpphoerAnsatt',
-      message: 'validation:noType',
+      message: 'validation:noGrunnOpphorType',
       personName
     }))
   }

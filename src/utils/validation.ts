@@ -32,7 +32,7 @@ export interface ValidateDuplicateParams extends ValidateValueParams {
 export const addError = (v: Validation, { id, personName, message, extra = {} }: ValidateParams
 ) => {
   v[id] = {
-    feilmelding: i18n.t(message, extra) + (personName ? i18n.t('validation:til-person', { person: personName }) : ''),
+    feilmelding: i18n.t(message, extra) + (personName ? i18n.t('validation:for-person', { person: personName }) : ''),
     skjemaelementId: id
   } as ErrorElement
   return true
