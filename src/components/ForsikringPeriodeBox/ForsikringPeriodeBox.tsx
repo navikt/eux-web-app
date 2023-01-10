@@ -102,6 +102,7 @@ export interface ArbeidsgiverBoxProps<T> {
   validation ?: Validation
   resetValidation ?: (namespace: string) => void
   setValidation ?: (v: Validation) => void
+  setCopiedPeriod?: (p:T | null) => void
 }
 
 const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
@@ -127,7 +128,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   style,
   validation,
   resetValidation,
-  setValidation
+  setValidation,
+  setCopiedPeriod
 }: ArbeidsgiverBoxProps<T>): JSX.Element => {
   const { t } = useTranslation()
 
@@ -335,6 +337,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const onCloseNew = () => {
+    if (setCopiedPeriod) {
+      setCopiedPeriod(null)
+    }
+
     _resetValidation(namespace)
     if (onForsikringPeriodeNewClose) {
       onForsikringPeriodeNewClose()
@@ -399,6 +405,12 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   const onRemove = () => {
     if (_.isFunction(onForsikringPeriodeDelete)) {
       onForsikringPeriodeDelete(forsikringPeriode!)
+    }
+  }
+
+  const onCopy = (p:T) => {
+    if (_.isFunction(setCopiedPeriod)) {
+      setCopiedPeriod(p)
     }
   }
 
@@ -507,6 +519,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   onStartEdit={onStartEdit}
                   onConfirmEdit={onSaveEdit}
                   onAddNew={onAddNew}
+                  onCopy={setCopiedPeriod ? onCopy : undefined}
                   onCancelEdit={() => onCloseEdit(namespace)}
                   onCancelNew={onCloseNew}
                   onRemove={onRemove}

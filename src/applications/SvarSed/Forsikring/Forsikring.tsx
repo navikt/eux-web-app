@@ -37,7 +37,7 @@ import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getNSIdx } from 'utils/namespace'
@@ -68,10 +68,19 @@ const Forsikring: React.FC<MainFormProps> = ({
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
   const [_newType, _setNewType] = useState<string | undefined>(undefined)
   const [_newTypeError, _setNewTypeError] = useState<string | undefined>(undefined)
+  const [_copiedPeriod, _setCopiedPeriod] = useState<ForsikringPeriode | null>(null)
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
+
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    if(_copiedPeriod){
+      ref.current?.scrollIntoView({behavior: 'smooth'});
+    }
+  }, [_copiedPeriod])
 
   const periodeOptions: Options = [
     { label: t('el:option-forsikring-ANSATTPERIODE_FORSIKRET'), value: 'perioderAnsattMedForsikring' },
@@ -161,6 +170,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = (newPeriode: ForsikringPeriode) => {
+    _setCopiedPeriod(null)
     if (!newPeriode.__type) {
       _setNewTypeError(t('validation:noType'))
       return
@@ -199,7 +209,10 @@ const Forsikring: React.FC<MainFormProps> = ({
   const doSetValidation = (validation: Validation) => dispatch(setValidation(validation))
 
   const renderRow = (periode: ForsikringPeriode | null, index: number) => {
-    const _type: string | undefined = index < 0 ? _newType : periode?.__type
+    const newMode = index < 0 && _.isNil(_copiedPeriod)
+    const copyMode = index < 0 && !_.isNil(_copiedPeriod)
+
+    const _type: string | undefined = newMode ? _newType : periode?.__type
 
     const showArbeidsgiver: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
     const showAddress: boolean = _.isUndefined(_type) ? false : ['perioderAnsattMedForsikring', 'perioderSelvstendigMedForsikring', 'perioderAnsattUtenForsikring', 'perioderSelvstendigUtenForsikring'].indexOf(_type) >= 0
@@ -207,7 +220,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     const showBeløp: boolean = _.isUndefined(_type) ? false : ['perioderKompensertFerie'].indexOf(_type) >= 0
     const showAnnen: boolean = _.isUndefined(_type) ? false : ['perioderAnnenForsikring'].indexOf(_type) >= 0
 
-    const newMode = index < 0
     const _periode = newMode ? { ...periode, __type: _type } : periode
 
     return (
@@ -221,6 +233,7 @@ const Forsikring: React.FC<MainFormProps> = ({
             error: hasNamespaceWithErrors(validation, namespace)
           })}
         >
+          {copyMode && <div ref={ref}></div>}
           {newMode && (
             <AlignStartRow>
               <Column>
@@ -246,7 +259,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               allowDelete
               allowEdit
               forsikringPeriode={_periode as ForsikringPeriode}
-              newMode={newMode}
+              newMode={newMode || copyMode}
               editable='full'
               showAddress={showAddress}
               showArbeidsgiver={showArbeidsgiver}
@@ -262,6 +275,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               validation={validation}
               resetValidation={doResetValidation}
               setValidation={doSetValidation}
+              setCopiedPeriod={_setCopiedPeriod}
             />
           )}
         </RepeatableRow>
@@ -328,6 +342,7 @@ const Forsikring: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
+      {_copiedPeriod && renderRow(_copiedPeriod, -1)}
       {_newForm
         ? renderRow(null, -1)
         : (
@@ -340,7 +355,8 @@ const Forsikring: React.FC<MainFormProps> = ({
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>
-          )}
+          )
+      }
     </>
   )
 }
