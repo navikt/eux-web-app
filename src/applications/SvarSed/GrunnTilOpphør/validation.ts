@@ -13,7 +13,6 @@ export const validateGrunnTilOpphor = (
   namespace: string,
   {
     sisteAnsettelseInfo,
-    personName,
     doValidate
   }: ValidateGrunnTilOpphørProps
 ): boolean => {
@@ -23,8 +22,7 @@ export const validateGrunnTilOpphor = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
       id: namespace + '-typeGrunnOpphoerAnsatt',
-      message: 'validation:noGrunnOpphorType',
-      personName
+      message: 'validation:noGrunnOpphorType'
     }))
   }
 
@@ -32,15 +30,13 @@ export const validateGrunnTilOpphor = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
       id: namespace + '-annenGrunnOpphoerAnsatt',
-      message: 'validation:noAnnenOpphør',
-      personName
+      message: 'validation:noAnnenOpphør'
     }))
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
       id: namespace + '-grunnOpphoerSelvstendig',
-      message: 'validation:noÅrsak',
-      personName
+      message: 'validation:noÅrsak'
     }))
   }
 
