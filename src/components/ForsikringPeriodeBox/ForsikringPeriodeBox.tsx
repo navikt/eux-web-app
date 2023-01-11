@@ -102,7 +102,7 @@ export interface ArbeidsgiverBoxProps<T> {
   validation ?: Validation
   resetValidation ?: (namespace: string) => void
   setValidation ?: (v: Validation) => void
-  setCopiedPeriod?: (p:T | null) => void
+  setCopiedPeriod?: (p:any | null) => void
 }
 
 const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
