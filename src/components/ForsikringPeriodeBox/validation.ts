@@ -60,12 +60,6 @@ export const validateForsikringPeriodeBox = (
       id: namespace + (nsIndex ?? '') + '-arbeidsgiver-navn',
       message: 'validation:noNavnInstitusjon'
     }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer,
-      id: namespace + (nsIndex ?? '') + '-arbeidsgiver-identifikatorer',
-      message: 'validation:noOrgnr'
-    }))
   }
 
   if (showAddress && validateAddress) {
