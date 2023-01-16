@@ -102,6 +102,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             <Button
               variant='secondary'
               data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
               onClick={(e: any) => {
                 buttonLogger(e)
                 setAttachmentsTableVisible(!_attachmentsTableVisible)
@@ -125,6 +126,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             <Button
               variant='secondary'
               data-amplitude='svarsed.editor.attachments'
+              disabled={_.isNil(fnr)}
               onClick={(e: any) => {
                 buttonLogger(e)
                 setAttachmentsTableVisible(!_attachmentsTableVisible)
