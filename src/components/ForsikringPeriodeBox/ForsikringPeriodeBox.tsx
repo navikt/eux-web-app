@@ -92,6 +92,7 @@ export interface ArbeidsgiverBoxProps<T> {
   selectable?: boolean,
   showArbeidsgiver ?: boolean,
   showAddress ?: boolean
+  showAddressInListView ?: boolean
   showInntekt ?: boolean
   showAnnen ?: boolean
   showBeløp ?: boolean
@@ -112,6 +113,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   icon,
   showAnnen = false,
   showAddress = false,
+  showAddressInListView = false,
   showInntekt = false,
   showArbeidsgiver = false,
   showBeløp = false,
@@ -669,7 +671,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                             </Label>
                           )}
                         </PileDiv>
-                        {showAddress && (
+                        {showAddress && showAddressInListView && (
                           <>
                             <HorizontalLineSeparator />
                             <VerticalSeparatorDiv size='0.5' />
