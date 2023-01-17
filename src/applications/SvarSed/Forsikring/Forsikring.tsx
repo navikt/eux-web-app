@@ -72,7 +72,7 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   const [_newForm, _setNewForm] = useState<boolean>(false)
 
-  const [_sort, _setSort] = useState<PeriodeSort>('time')
+  const [_sort, _setSort] = useState<PeriodeSort>('group')
 
   const ref = useRef<null | HTMLDivElement>(null);
 
