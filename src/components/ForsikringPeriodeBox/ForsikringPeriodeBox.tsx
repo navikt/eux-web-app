@@ -495,8 +495,6 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   t('label:fra-arbeidsgiverregisteret')}
                   {(_forsikringPeriode as PeriodeMedForsikring)?.extra?.fraInntektsregisteret === 'ja' &&
                   t('label:fra-inntektsregisteret')}
-                  {(_forsikringPeriode as PeriodeMedForsikring)?.extra?.fraSed === 'ja' &&
-                  t('label:fra-sed')}
                 </BodyLong>
               </FlexCenterDiv>
             </Column>
