@@ -301,31 +301,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </>
             )
           : (
-            <AlignStartRow>
-              <Column>
-                <FlexDiv>
-                  <Label>{t('label:institusjon') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <FlexDiv>
-                    <FormText
-                      error={_v[_namespace + '-institusjon-id']?.feilmelding}
-                      id={_namespace + '-institusjon-id'}
-                    >
-                      {_periodeDagpenger?.institusjon?.id}
-                    </FormText>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    -
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <FormText
-                      error={_v[_namespace + '-institusjon-navn']?.feilmelding}
-                      id={_namespace + '-institusjon-navn'}
-                    >
-                      {_periodeDagpenger?.institusjon?.navn}
-                    </FormText>
-                  </FlexDiv>
-                </FlexDiv>
-              </Column>
-            </AlignStartRow>
+            <></>
             )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
