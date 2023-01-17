@@ -55,6 +55,8 @@
   "loading-sending-sed" : "Sender SED i RINA...",
   "loading-sending-vedlegg" : "Sender vedlegg...",
 
+  "success-attachment-deleted": "SED lagret - vedlegg slettet",
+  "success-attachment-sensitiv": "SED lagret - vedlegg satt til {{sensitive}}",
   "success-complete-pdu1": "PD U1 fullført",
   "success-clipboard-copy": "Kopiert til utklippstavlen",
   "success-localstorage-save": "Utkastet er lagret",
