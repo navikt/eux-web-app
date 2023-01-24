@@ -69,7 +69,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             {t('label:fagsak')}:
           </Dt>
           <Dd>
-            {sak.fagsakId}
+            {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id}
           </Dd>
         </Dl>
         <VerticalSeparatorDiv />

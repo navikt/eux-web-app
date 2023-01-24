@@ -98,7 +98,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
 
   if (sedType.startsWith('H')) {
     (replySed as unknown as HSed).tema = sak.tema;
-    (replySed as unknown as HSed).fagsakId = sak.fagsakId
+    (replySed as unknown as HSed).fagsakId = sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id
   }
   return replySed
 }
@@ -171,7 +171,7 @@ const svarsedReducer = (
         //Add Norsk Saksnummer for U-Seds - TEN-24
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
         lokaleSakIder.push({
-          saksnummer: state.currentSak?.fagsakId,
+          saksnummer: state.currentSak?.fagsak?.nr ? state.currentSak?.fagsak?.nr : state.currentSak?.fagsak?.id,
           institusjonsnavn: state.currentSak?.navinstitusjon.navn,
           institusjonsid: state.currentSak?.navinstitusjon.id,
           land: idParts ? idParts[0] : ""
