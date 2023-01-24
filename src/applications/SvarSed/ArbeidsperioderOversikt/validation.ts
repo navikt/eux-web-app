@@ -54,12 +54,6 @@ export const validateArbeidsperiodeOversikt = (
     personName
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: forsikringPeriode?.arbeidsgiver?.identifikatorer,
-    id: namespace + idx + '-arbeidsgiver-identifikatorer',
-    message: 'validation:noIdentifikatorer',
-    personName
-  }))
 
   hasErrors.push(validateIdentifikatorer(v, namespace + idx + '-arbeidsgiver-identifikatorer', {
     identifikatorer: forsikringPeriode?.arbeidsgiver.identifikatorer,
