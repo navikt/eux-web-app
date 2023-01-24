@@ -489,13 +489,6 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                       )}
                     </PileDiv>
                     )}
-                <HorizontalSeparatorDiv size='0.5' />
-                <BodyLong size='small'>
-                  {(_forsikringPeriode as PeriodeMedForsikring)?.extra?.fraArbeidsgiverregisteret === 'ja' &&
-                  t('label:fra-arbeidsgiverregisteret')}
-                  {(_forsikringPeriode as PeriodeMedForsikring)?.extra?.fraInntektsregisteret === 'ja' &&
-                  t('label:fra-inntektsregisteret')}
-                </BodyLong>
               </FlexCenterDiv>
             </Column>
             )}
