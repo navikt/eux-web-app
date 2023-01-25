@@ -39,11 +39,13 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
 interface SEDViewSelector {
   entries: Array<LocalStorageEntry<PDU1 | ReplySed>> | null | undefined
   currentSak: Sak | undefined
+  deletedSed: Boolean | undefined | null
 }
 
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
-  entries: state.localStorage.svarsed.entries
+  entries: state.localStorage.svarsed.entries,
+  deletedSed: state.svarsed.deletedSed
 })
 
 const SEDView = (): JSX.Element => {
@@ -53,7 +55,7 @@ const SEDView = (): JSX.Element => {
   const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, entries }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, entries, deletedSed }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -93,6 +95,12 @@ const SEDView = (): JSX.Element => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (deletedSed && currentSak) {
+      dispatch(querySaks(currentSak?.sakId, 'refresh'))
+    }
+  }, [deletedSed])
 
   seds?.forEach((connectedSed: Sed) => {
     // if you have a sedIdParent (not F002), let's put it under Children
