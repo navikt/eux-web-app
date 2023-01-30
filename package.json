@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.4.2-TEN-30-Dagpenger",
+  "version": "8.4.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@8.4.2-TEN-30-Dagpenger",
+  "_id": "neessi@8.4.3",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
