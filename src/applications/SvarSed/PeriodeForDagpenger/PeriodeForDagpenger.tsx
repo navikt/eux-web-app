@@ -1,12 +1,10 @@
 import { AddCircle } from '@navikt/ds-icons'
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignEndRow,
   AlignStartRow,
   Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
@@ -15,7 +13,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
@@ -208,6 +205,17 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periodeDagpenger = index < 0 ? _newPeriodeDagpenger : (inEditMode ? _editPeriodeDagpenger : periodeDagpenger)
 
+    let defaultInstitusjonNavn: string | undefined = ""
+    let defaultInstitusjonId: string | undefined = ""
+
+    if(replySed && ("sak" in replySed)) {
+      defaultInstitusjonNavn = replySed?.sak?.navinstitusjon.navn
+      defaultInstitusjonId = replySed?.sak?.navinstitusjon.id
+
+      if(!_periodeDagpenger?.institusjon?.navn  && defaultInstitusjonNavn) setInstitutionNavn(defaultInstitusjonNavn, index)
+      if(!_periodeDagpenger?.institusjon?.id && defaultInstitusjonId) setInstitutionId(defaultInstitusjonId, index)
+    }
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -271,7 +279,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                     id='institusjon-id'
                     label={t('label:institusjonens-id')}
                     onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
-                    value={_periodeDagpenger?.institusjon?.id}
+                    value={_periodeDagpenger?.institusjon?.id ? _periodeDagpenger?.institusjon?.id : defaultInstitusjonId}
                   />
                 </Column>
                 <Column>
@@ -281,7 +289,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                     id='institusjon-navn'
                     label={t('label:institusjonens-navn')}
                     onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
-                    value={_periodeDagpenger?.institusjon?.navn}
+                    value={_periodeDagpenger?.institusjon?.navn ? _periodeDagpenger?.institusjon?.navn : defaultInstitusjonNavn}
                   />
                 </Column>
                 <Column />
@@ -290,31 +298,7 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
             </>
             )
           : (
-            <AlignStartRow>
-              <Column>
-                <FlexDiv>
-                  <Label>{t('label:institusjon') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <FlexDiv>
-                    <FormText
-                      error={_v[_namespace + '-institusjon-id']?.feilmelding}
-                      id={_namespace + '-institusjon-id'}
-                    >
-                      {_periodeDagpenger?.institusjon?.id}
-                    </FormText>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    -
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <FormText
-                      error={_v[_namespace + '-institusjon-navn']?.feilmelding}
-                      id={_namespace + '-institusjon-navn'}
-                    >
-                      {_periodeDagpenger?.institusjon?.navn}
-                    </FormText>
-                  </FlexDiv>
-                </FlexDiv>
-              </Column>
-            </AlignStartRow>
+            <></>
             )}
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>

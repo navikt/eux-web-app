@@ -48,9 +48,9 @@ export const validateLoennsopplysning = (
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: loennsopplysning?.periodetype,
-    id: namespace + idx + '-periodetype',
-    message: 'validation:noPeriodeType',
+    needle: loennsopplysning?.ansettelsestype,
+    id: namespace + idx + '-ansettelsestype',
+    message: 'validation:noAnsettelsesType',
     personName
   }))
 

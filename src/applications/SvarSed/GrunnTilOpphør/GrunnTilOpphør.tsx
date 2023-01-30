@@ -9,13 +9,14 @@ import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { SisteAnsettelseInfo, TypeGrunn } from 'declarations/sed'
+import {SisteAnsettelseInfo, TypeGrunn, USed} from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../../utils/arbeidsperioder";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -36,14 +37,18 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const sisteAnsettelseInfo: SisteAnsettelseInfo | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-grunntilopphør`
 
+  const nrArbeidsperioder = getNrOfArbeidsPerioder(replySed as USed)
+  const allArbeidsPerioderHaveSluttdato = getAllArbeidsPerioderHaveSluttDato(replySed as USed)
+
   useUnmount(() => {
-    const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidateGrunnTilOpphørProps>(
-      clonedValidation, namespace, validateGrunnTilOpphor, {
-        sisteAnsettelseInfo,
-        personName
-      }, true
-    )
+      const clonedValidation = _.cloneDeep(validation)
+      performValidation<ValidateGrunnTilOpphørProps>(
+        clonedValidation, namespace, validateGrunnTilOpphor, {
+          sisteAnsettelseInfo,
+          personName,
+          doValidate: (nrArbeidsperioder>0 && allArbeidsPerioderHaveSluttdato)
+        }, true
+      )
     dispatch(setValidation(clonedValidation))
   })
 

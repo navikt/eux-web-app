@@ -48,15 +48,6 @@ export const validateUtbetaling = (
         personName
       }))
     }
-
-    if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' &&
-      _.isEmpty(utbetaling?.feriedagerTilGode?.trim())) {
-      hasErrors.push(addError(v, {
-        id: namespace + idx + '-feriedagerTilGode',
-        message: 'validation:noFeriedagerTilGode',
-        personName
-      }))
-    }
   }
 
   hasErrors.push(checkIfNotEmpty(v, {

@@ -190,6 +190,17 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     dealWithBanner = true
   }
 
+  if (action.type === types.SVARSED_ATTACHMENT_SENSITIVE_SUCCESS) {
+    const sensitivt = (action as ActionWithPayload).context.sensitivt
+    bannerMessage = i18n.t('message:success-attachment-sensitiv', {sensitive: sensitivt ? "sensitivt" : "ikke sensitivt"})
+    dealWithBanner = true
+  }
+
+  if (action.type === types.SVARSED_ATTACHMENT_DELETE_SUCCESS) {
+    bannerMessage = i18n.t('message:success-attachment-deleted')
+    dealWithBanner = true
+  }
+
   if (dealWithBanner) {
     return {
       ...state,

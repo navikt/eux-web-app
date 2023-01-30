@@ -1,7 +1,7 @@
 import { Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationNasjonalitetProps {
   statsborgerskap: Statsborgerskap | undefined
@@ -42,13 +42,6 @@ export const validateNasjonalitet = (
     id: namespace + idx + '-land',
     index,
     message: 'validation:duplicateBirthCountry',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotDate(v, {
-    needle: statsborgerskap?.fraDato,
-    id: namespace + idx + '-fraDato',
-    message: 'validation:invalidDate',
     personName
   }))
 

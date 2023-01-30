@@ -3,7 +3,6 @@ import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
 import { JaNei, ReplySed } from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
-import {JoarkBrowserItem, JoarkBrowserItems} from "./attachments";
 
 export type StorageTypes = PDU1 | ReplySed
 export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
@@ -204,13 +203,35 @@ export interface Sak {
   sakId: string
   internasjonalSakId ?: string
   sakUrl: string
-  motpart: Array<string>
+  motparter: Array<Motpart>
+  motpart?: Array<string>
   motpartInstitusjon?: string
+  navinstitusjon: NavInstitusjon
   sistEndretDato: string
   sakshandlinger: Array<string>
   tema ?: string
-  fagsakId ?: string
+  fagsakId?: string
+  fagsak?: SakFagsak
   sedListe: Array<Sed>
+}
+
+export interface SakFagsak {
+  id: string
+  tema?: string | null | undefined
+  type?: string | null | undefined
+  nr?: string | null | undefined
+  system?: string | null | undefined
+}
+export interface NavInstitusjon {
+  id: string
+  navn: string
+}
+
+export interface Motpart {
+  formatertNavn: string
+  motpartId: string
+  motpartNavn: string
+  motpartLand: string
 }
 
 export type Saks = Array<Sak>

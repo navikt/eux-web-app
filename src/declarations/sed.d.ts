@@ -43,7 +43,7 @@ export type ArbeidsgiverIdentifikatorType = 'organisasjonsnummer' | 'trygd' | 's
 
 export type PeriodeInputType = 'simple' | 'withcheckbox'
 
-export type PeriodeType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet'
+export type AnsettelsesType = 'ansettelsesforhold' | 'selvstendig_næringsvirksomhet'
 
 export type KontoType = 'sepa' | 'ordinaer'
 
@@ -125,7 +125,6 @@ export interface Pin {
 
 export interface Statsborgerskap {
   land: string,
-  fraDato?: string
 }
 
 export interface Foedested {
@@ -358,7 +357,6 @@ export interface Inntekt {
 }
 
 export interface Loennsopplysning extends PeriodePeriode {
-  periodetype: string
   ansettelsestype?: string
   inntekter: Array<Inntekt>
   arbeidsdager?: string

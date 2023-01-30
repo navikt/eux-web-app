@@ -1,7 +1,7 @@
 import { validateAdresse } from 'applications/SvarSed/Adresser/validation'
 import { validateIdentifikatorer } from 'applications/SvarSed/Identifikator/validation'
 import { validatePeriode } from 'components/Forms/validation'
-import { PeriodeMedForsikring } from 'declarations/sed'
+import {Adresse, PeriodeMedForsikring} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
@@ -15,6 +15,18 @@ export interface ValidationArbeidsperiodeOversiktProps {
 export interface ValidationArbeidsperioderOversiktProps {
   perioderMedForsikring: Array<PeriodeMedForsikring> | undefined
   personName ?: string
+}
+
+const adresseHasProps = (adresse: Adresse | undefined) => {
+  let adresseHasProps = false
+  if(adresse){
+    Object.keys(adresse).forEach((k) => {
+      if(adresse[k as keyof Adresse] && adresse[k as keyof Adresse] !== "" ) {
+        adresseHasProps = true
+      }
+    })
+  }
+  return adresseHasProps
 }
 
 export const validateArbeidsperiodeOversikt = (
@@ -42,24 +54,20 @@ export const validateArbeidsperiodeOversikt = (
     personName
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: forsikringPeriode?.arbeidsgiver?.identifikatorer,
-    id: namespace + idx + '-arbeidsgiver-identifikatorer',
-    message: 'validation:noIdentifikatorer',
-    personName
-  }))
 
   hasErrors.push(validateIdentifikatorer(v, namespace + idx + '-arbeidsgiver-identifikatorer', {
     identifikatorer: forsikringPeriode?.arbeidsgiver.identifikatorer,
     personName
   }))
 
-  hasErrors.push(validateAdresse(v, namespace + idx + '-arbeidsgiver-adresse', {
-    adresse: forsikringPeriode?.arbeidsgiver.adresse,
-    index,
-    checkAdresseType: false,
-    personName
-  }))
+  if(adresseHasProps(forsikringPeriode?.arbeidsgiver.adresse)) {
+    hasErrors.push(validateAdresse(v, namespace + idx + '-arbeidsgiver-adresse', {
+      adresse: forsikringPeriode?.arbeidsgiver.adresse,
+      index,
+      checkAdresseType: false,
+      personName
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }

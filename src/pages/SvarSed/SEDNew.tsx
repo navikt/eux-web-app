@@ -210,7 +210,9 @@ const SEDNew = (): JSX.Element => {
   const navigate = useNavigate()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
 
-  const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema]
+  const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
+    return k.kode !== "GEN"
+  })
   const _buctyper: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !buctyper ? [] : buctyper[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof BucTyper]
   const _sedtyper: Array<Kodeverk> = !kodemaps
     ? []
@@ -309,6 +311,7 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onLandkodeChange = (country: Country): void => {
+    dispatch(sakActions.setProperty('institusjon', ''))
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType!, landKode))

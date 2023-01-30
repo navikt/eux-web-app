@@ -11,12 +11,12 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
@@ -30,6 +30,7 @@ import {
   ValidationArbeidsperiodeOversiktProps,
   ValidationArbeidsperioderOversiktProps
 } from './validation'
+import moment from "moment";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -63,15 +64,25 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
+  const anmodningsperiode: Periode = _.get(replySed, "anmodningsperiode")
   const fnr = getFnr(replySed, personID)
-  const getId = (p: PlanItem<ForsikringPeriode> | null | undefined) => p
-    ? p.type + '-' + ((p.item as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '')
-    : 'new'
+  const getId = (p: PlanItem<ForsikringPeriode> | null | undefined, index: number) => p
+    ? p.type + '-' + ((p.item as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') + "_" + index
+    : 'new' + "_" + index
 
   const [_plan, _setPlan] = useState<Array<PlanItem<ForsikringPeriode>> | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
+  const [_copiedPeriod, _setCopiedPeriod] = useState<PlanItem<ForsikringPeriode> | null>(null)
+
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    if(_copiedPeriod){
+      ref.current?.scrollIntoView({behavior: 'smooth'});
+    }
+  }, [_copiedPeriod])
 
   const onInntektSearch = (fnr: string, fom: string, tom: string, inntektsliste: string) => {
     dispatch(fetchInntekt(fnr, fom, tom, inntektsliste))
@@ -133,6 +144,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = (newForsikringPeriode?: ForsikringPeriode) => {
+    _setCopiedPeriod(null)
     let newPerioderMedforsikring: Array<ForsikringPeriode> | undefined = _.cloneDeep(perioder)
     if (_.isNil(newPerioderMedforsikring)) {
       newPerioderMedforsikring = []
@@ -182,7 +194,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   const renderPlan = (item: PlanItem<ForsikringPeriode>, index: number, previousItem: PlanItem<ForsikringPeriode> | undefined) => {
     return (
-      <div key={getId(item)}>
+      <div key={getId(item, index)}>
         {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
           <>
             <PaddedHorizontallyDiv>
@@ -191,16 +203,18 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
             <VerticalSeparatorDiv />
           </>
         )}
-        {renderPlanItem(item)}
+        {renderPlanItem(item, index)}
         <VerticalSeparatorDiv />
       </div>
     )
   }
 
-  const renderPlanItem = (item: PlanItem<ForsikringPeriode> | null) => {
-    const newMode = item === null
-    const _item: PeriodeMedForsikring |null = item === null ? null : item.item as PeriodeMedForsikring
-    const index: number = _item ? _item?.__index! : -1
+  const renderPlanItem = (item: PlanItem<ForsikringPeriode> | null, index: number) => {
+    const newMode = index < 0 && _.isNil(_copiedPeriod)
+    const copyMode = index < 0 && !_.isNil(_copiedPeriod)
+
+    const _item: PeriodeMedForsikring | PlanItem<ForsikringPeriode> | null = newMode ? null : item?.item ? item?.item as PeriodeMedForsikring : item
+    
     const selectable = item?.type === 'forsikringPeriode'
     const selected = selectable && !_.isNil(index) && index >= 0
     const style = newMode
@@ -219,27 +233,32 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     const _validation = item?.type === 'forsikringPeriode' && _.isNil(index) ? {} : validation
 
     return (
-      <ForsikringPeriodeBox
-        forsikringPeriode={_item}
-        editable='full'
-        allowEdit={allowEdit}
-        allowDelete={allowDelete}
-        selectable={selectable}
-        newMode={newMode}
-        style={style}
-        showArbeidsgiver
-        showAddress
-        onForsikringPeriodeSelect={onArbeidsgiverSelect}
-        onForsikringPeriodeEdit={onArbeidsgiverEdit}
-        onForsikringPeriodeNew={onAddNew}
-        onForsikringPeriodeNewClose={onCloseNew}
-        onForsikringPeriodeDelete={onRemove}
-        namespace={namespace}
-        icon={<Office1 width='20' height='20' />}
-        validation={_validation}
-        resetValidation={doResetValidation}
-        setValidation={doSetValidation}
-      />
+      <>
+        {copyMode && <div ref={ref}></div>}
+        <ForsikringPeriodeBox
+          key={_item ? (_item as PeriodeMedForsikring).__type + "" + index : "newPeriod" + "_" + index}
+          forsikringPeriode={_item as PeriodeMedForsikring}
+          editable='full'
+          allowEdit={allowEdit}
+          allowDelete={allowDelete}
+          selectable={selectable}
+          newMode={newMode || copyMode}
+          style={style}
+          showArbeidsgiver
+          showAddress
+          onForsikringPeriodeSelect={onArbeidsgiverSelect}
+          onForsikringPeriodeEdit={onArbeidsgiverEdit}
+          onForsikringPeriodeNew={onAddNew}
+          onForsikringPeriodeNewClose={onCloseNew}
+          onForsikringPeriodeDelete={onRemove}
+          namespace={namespace}
+          icon={<Office1 width='20' height='20' />}
+          validation={_validation}
+          resetValidation={doResetValidation}
+          setValidation={doSetValidation}
+          setCopiedPeriod={_setCopiedPeriod}
+       />
+      </>
     )
   }
 
@@ -257,6 +276,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}
+        defaultDates={{
+          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+        }}
       />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(_plan)
@@ -291,8 +314,9 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           </>
           )}
       <VerticalSeparatorDiv />
+      {_copiedPeriod && renderPlanItem(_copiedPeriod, -1)}
       {_newForm
-        ? renderPlanItem(null)
+        ? renderPlanItem(null, -1)
         : (
           <Button
             variant='tertiary'
@@ -312,6 +336,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         fnr={fnr!}
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}
+        defaultDates={{
+          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+        }}
       />
       <VerticalSeparatorDiv />
       {inntekter && <Inntekt inntekter={inntekter} />}

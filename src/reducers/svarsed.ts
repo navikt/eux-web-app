@@ -12,12 +12,13 @@ import {
   X012Sed,
   XSed
 } from 'declarations/sed.d'
-import {CreateSedResponse, FagSaker, Institusjon, Sak, Saks, Sed} from 'declarations/types.d'
+import {CreateSedResponse, FagSaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { AnyAction } from 'redux'
+import {isUSed} from "../utils/sed";
 
 export interface SvarsedState {
   fagsaker: FagSaker | null | undefined
@@ -97,7 +98,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
 
   if (sedType.startsWith('H')) {
     (replySed as unknown as HSed).tema = sak.tema;
-    (replySed as unknown as HSed).fagsakId = sak.fagsakId
+    (replySed as unknown as HSed).fagsakId = sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id
   }
   return replySed
 }
@@ -163,11 +164,27 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_REPLYTOSED_SUCCESS: {
+      const payload = (action as ActionWithPayload).payload
+      let lokaleSakIder = payload.lokaleSakIder
+
+      if(isUSed(payload)){
+        //Add Norsk Saksnummer for U-Seds - TEN-24
+        const idParts = state.currentSak?.navinstitusjon.id.split(":")
+        lokaleSakIder.push({
+          saksnummer: state.currentSak?.fagsak?.nr ? state.currentSak?.fagsak?.nr : state.currentSak?.fagsak?.id,
+          institusjonsnavn: state.currentSak?.navinstitusjon.navn,
+          institusjonsid: state.currentSak?.navinstitusjon.id,
+          land: idParts ? idParts[0] : ""
+        })
+      }
+
       const newReplySed: ReplySed | null | undefined = {
-        ...(action as ActionWithPayload).payload,
+        ...payload,
+        lokaleSakIder,
         sak: (action as ActionWithPayload).context.sak,
         sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
       }
+
       return {
         ...state,
         replySed: newReplySed,
@@ -337,6 +354,15 @@ const svarsedReducer = (
         return s
       })
 
+      saks = saks.map((s: Sak) => {
+        let motpart: Array<string> = []
+        s.motparter?.forEach((m:Motpart) => {
+          motpart.push(m.motpartNavn)
+        })
+        s.motpart = motpart
+        return s
+      })
+
       return {
         ...state,
         saks
@@ -361,6 +387,15 @@ const svarsedReducer = (
           return s
         }
         s.kjoenn = 'U'
+        return s
+      })
+
+      saks = saks.map((s: Sak) => {
+        let motpart: Array<string> = []
+        s.motparter?.forEach((m:Motpart) => {
+          motpart.push(m.motpartNavn)
+        })
+        s.motpart = motpart
         return s
       })
 

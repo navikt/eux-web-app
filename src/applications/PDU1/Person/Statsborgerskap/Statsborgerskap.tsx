@@ -159,7 +159,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
         key={statsborgerskap}
         className={classNames({
           new: index < 0,
-          error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
+          error: _v[_namespace + '-land']
         })}
       >
         <VerticalSeparatorDiv size='0.5' />

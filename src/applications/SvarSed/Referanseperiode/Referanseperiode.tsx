@@ -68,7 +68,6 @@ const Referanseperiode: React.FC<MainFormProps> = ({
             sluttdato: validation[namespace + '-sluttdato']?.feilmelding
           }}
           hideLabel={false}
-          periodeType='simple'
           setPeriode={setPeriode}
           value={anmodningsperiode}
         />

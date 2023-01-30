@@ -1,6 +1,6 @@
 {
 
-  "badId": "Ugyldig identifikatoren",
+  "badId": "Ugyldig identifikator",
 
   "duplicateBirthCountry": "Statsborgerskapen eksisterer allerede",
   "duplicateEpostAdresse": "e-post adresse eksisterer allerede",
@@ -15,6 +15,7 @@
   "endDateBeforeStartDate": "Sluttdato er tidligere enn startdato",
 
   "feiloppsummering": "For å gå videre må du rette opp følgende:",
+  "for-person": " for {{person}}",
 
   "invalidBeløp": "Ugyldig beløp",
   "invalidDate": "Ugyldig dato",
@@ -38,6 +39,7 @@
   "noAktivitetstype": "Ingen aktivitetstype",
   "noAnnenOpphør": "Ingen annet opphør",
   "noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
+  "noAnsettelsesType": "Ingen periodetype",
   "noAnswer": "Ingen svar til spørsmål",
   "noAntallPersoner": "Ingen antall personer",
   "noArbeidstimer": "Ingen arbeidstimer",
@@ -72,6 +74,7 @@
   "noGender": "Kjønn er ikke valgt",
   "noGrunn": "Ingen grunn oppgitt",
   "noGrunnAnnet": "Du må taste inn en beskivelse",
+  "noGrunnOpphorType": "Du må velge grunn til opphør",
 
   "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
   "noId": "Du må skrive identifikatoren",
@@ -99,11 +102,11 @@
   "noName": "Ingen navn",
   "noNationality": "Du har ikke valg statsborgerskap",
   "noNavn": "Ingen navn på person",
+  "noNavnInstitusjon": "Ingen navn på institusjon",
 
   "noOrgnr": "Ingen orgnr",
 
   "noPensjonType": "Ingen type pensjon",
-  "noPeriodeType": "Ingen periodetype",
   "noPersonGiven": "Ingen person oppgitt",
   "noPunkt": "Ingen punkt",
   "noPurring": "Ingen purring",
@@ -143,7 +146,6 @@
   "onlySingleParticipant": "Kun en deltaker tillatt",
 
   "textOverX": "tekststørrelse over {{x}} tegn",
-  "til-person": " til {{person}}",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 
   "uncheckedFnr": "Uverifisert fødselsnummer",

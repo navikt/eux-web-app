@@ -1,4 +1,4 @@
-import { AddCircle, Cancel, Delete, Edit, SuccessStroke } from '@navikt/ds-icons'
+import {AddCircle, Cancel, Copy, Delete, Edit, SuccessStroke} from '@navikt/ds-icons'
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Button, BodyLong } from '@navikt/ds-react'
@@ -16,6 +16,7 @@ export interface AddRemovePanelProps<T> {
   allowEdit?: boolean
   allowDelete?: boolean
   onAddNew?: () => void
+  onCopy?: (item: T, index: number) => void
   inEditMode?: boolean
   onStartEdit?: (item: T, index: number) => void
   onConfirmEdit?: () => void
@@ -49,6 +50,7 @@ const AddRemovePanel = <T extends any>({
   onCancelEdit,
   onRemove,
   onAddNew,
+  onCopy,
   onCancelNew
 }: AddRemovePanelProps<T>): JSX.Element | null => {
   const { t } = useTranslation()
@@ -164,6 +166,18 @@ const AddRemovePanel = <T extends any>({
           {labels?.edit ?? t('el:button-edit')}
         </Button>
       )}
+      {onCopy &&
+        <Button
+          size='small'
+          variant='tertiary'
+          onClick={() => {
+            onCopy(item!, index)
+          }}
+        >
+          <Copy/>
+          {labels?.copy ?? t('el:button-copy')}
+        </Button>
+      }
       {allowDelete && (
         <>
           <HorizontalSeparatorDiv />

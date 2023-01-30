@@ -13,6 +13,7 @@ export interface ValidationForsikringPeriodeBoxProps {
   forsikringPeriode: ForsikringPeriode | null | undefined
   nsIndex?: string
   showAddress: boolean
+  validateAddress: boolean
   showArbeidsgiver: boolean
   showInntekt: boolean
   showAnnen: boolean
@@ -26,6 +27,7 @@ export const validateForsikringPeriodeBox = (
     forsikringPeriode,
     nsIndex,
     showAddress,
+    validateAddress,
     showArbeidsgiver,
     showInntekt,
     showAnnen,
@@ -56,17 +58,11 @@ export const validateForsikringPeriodeBox = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn,
       id: namespace + (nsIndex ?? '') + '-arbeidsgiver-navn',
-      message: 'validation:noNavn'
-    }))
-
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer,
-      id: namespace + (nsIndex ?? '') + '-arbeidsgiver-identifikatorer',
-      message: 'validation:noOrgnr'
+      message: 'validation:noNavnInstitusjon'
     }))
   }
 
-  if (showAddress) {
+  if (showAddress && validateAddress) {
     hasErrors.push(validateAdresse(v, namespace + (nsIndex ?? '') + '-arbeidsgiver-adresse', {
       adresse: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse,
       checkAdresseType: false

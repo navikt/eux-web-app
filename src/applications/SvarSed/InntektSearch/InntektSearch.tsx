@@ -19,19 +19,21 @@ interface InntektSearchProps {
   fnr: string
   onInntektSearch: (fnr: string, fom: string, tom: string, inntektsliste: string) => void
   gettingInntekter: boolean
+  defaultDates?: { [key: string]: string | null;}
 }
 
 const InntektSearch = ({
   amplitude,
   fnr,
   onInntektSearch,
-  gettingInntekter
+  gettingInntekter,
+  defaultDates
 }: InntektSearchProps) => {
   const { t } = useTranslation()
   const namespace = 'inntekt-search'
   const [_searchPeriode, _setSearchPeriode] = useState<Periode>(() => ({
-    startdato: '2015-01',
-    sluttdato: moment(new Date()).format('YYYY-MM')
+    startdato: defaultDates?.startDato ? defaultDates?.startDato : '2015-01',
+    sluttdato: defaultDates?.sluttDato ? defaultDates?.sluttDato : moment(new Date()).format('YYYY-MM')
   }))
   const [_filter, _setFilter] = useState<string>('DAGPENGER')
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationInntektSearchProps>(validateInntektSearch, namespace)

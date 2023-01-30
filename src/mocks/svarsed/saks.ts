@@ -1,4 +1,4 @@
-import { Sak } from 'declarations/types'
+import {Sak} from 'declarations/types'
 import _ from 'lodash'
 
 export default (saksnummer: string, type: string) => {
@@ -16,11 +16,32 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',
-      motpart: [
-        'Lodzkie Voivodeship Office in Lodz (Polen)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        },
+        {
+          formatertNavn: "Test institusjon",
+          motpartId: "RO:70005",
+          motpartNavn: "Test institusjon",
+          motpartLand: "RO"
+        }
       ],
       tema: 'KON',
-      fagsakId: '123',
+      fagsak: {
+        "id": "140282517",
+        "tema": null,
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11"
+      },
       sakshandlinger: [
         'H001', 'F002', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
@@ -148,14 +169,29 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'nei',
-      motpart: [
-        'Lodzkie Voivodeship Office in Lodz (Polen)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       tema: 'KON',
-      fagsakId: '123',
+      fagsak: {
+        "id": "140282517",
+        "tema": null,
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11"
+      },
       sedListe: [
         {
           sedTittel: 'Description for U001',
@@ -209,14 +245,29 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
-      motpart: [
-        'NAV ACCEPTANCE TEST 07 (Norge)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       tema: 'KON',
-      fagsakId: '123',
+      fagsak: {
+        "id": "140282517",
+        "tema": null,
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11"
+      },
       sedListe: [
         {
           sedTittel: 'Horizontal',
@@ -296,15 +347,30 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      motpart: [
-        'NAV ACCEPTANCE TEST 07 (Norge)'
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       erSakseier: 'nei',
       tema: 'KON',
-      fagsakId: '123',
+      fagsak: {
+        "id": "140282517",
+        "tema": null,
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11"
+      },
       sedListe: [
         {
           sedTittel: 'Anmodning om trygdehistorikk',
@@ -332,10 +398,25 @@ export default (saksnummer: string, type: string) => {
       "erSakseier": "nei",
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       "tema": "SYK",
-      "fagsakId": "140263372",
+      fagsak: {
+        "id": "140282517",
+        "tema": null,
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11"
+      },
       "sistEndretDato": "2022-10-03",
-      "motpart": [
-        "NAV ACC 05 (Norge)"
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        }
       ],
       "sakshandlinger": [
         "Close_Case",
@@ -411,7 +492,7 @@ export default (saksnummer: string, type: string) => {
   ]
 
   if (type === 'saksnummer') {
-    const sak: Sak | undefined = _.find(saks, { sakId: saksnummer })
+    const sak: Sak | undefined = _.find(saks, {sakId: saksnummer})
     if (sak) {
       return sak
     }

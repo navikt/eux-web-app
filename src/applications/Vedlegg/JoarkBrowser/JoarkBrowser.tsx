@@ -249,7 +249,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         if (multipleDocuments) {
           item.parentKey = 'joark-group-' + post.journalpostId
         }
-        items.push(item)
+
+        selected ? items.unshift(item) : items.push(item)
+
       })
     })
 

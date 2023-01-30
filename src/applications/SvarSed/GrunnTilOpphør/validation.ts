@@ -5,6 +5,7 @@ import { checkIfNotEmpty } from 'utils/validation'
 export interface ValidateGrunnTilOpphørProps {
   sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
   personName ?: string
+  doValidate?: boolean
 }
 
 export const validateGrunnTilOpphor = (
@@ -12,31 +13,30 @@ export const validateGrunnTilOpphor = (
   namespace: string,
   {
     sisteAnsettelseInfo,
-    personName
+    doValidate
   }: ValidateGrunnTilOpphørProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
-    id: namespace + '-typeGrunnOpphoerAnsatt',
-    message: 'validation:noType',
-    personName
-  }))
+  if(doValidate){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt,
+      id: namespace + '-typeGrunnOpphoerAnsatt',
+      message: 'validation:noGrunnOpphorType'
+    }))
+  }
 
   if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
       id: namespace + '-annenGrunnOpphoerAnsatt',
-      message: 'validation:noAnnenOpphør',
-      personName
+      message: 'validation:noAnnenOpphør'
     }))
 
     hasErrors.push(checkIfNotEmpty(v, {
       needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
       id: namespace + '-grunnOpphoerSelvstendig',
-      message: 'validation:noÅrsak',
-      personName
+      message: 'validation:noÅrsak'
     }))
   }
 

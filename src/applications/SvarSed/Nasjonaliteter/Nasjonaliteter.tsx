@@ -17,7 +17,6 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
@@ -32,7 +31,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
-import { isUSed } from 'utils/sed'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateNasjonalitet,
@@ -95,24 +93,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     })
     if (validation[namespace + getIdx(index) + '-land']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-land'))
-    }
-  }
-
-  const onFradatoChanged = (fraDato: string, index: number) => {
-    if (index < 0) {
-      _setNewStatsborgerskap({
-        ..._newStatsborgerskap,
-        fraDato: fraDato.trim()
-      } as Statsborgerskap)
-      _resetValidation(namespace + '-fraDato')
-      return
-    }
-    _setEditStatsborgerskap({
-      ..._editStatsborgerskap,
-      fraDato: fraDato.trim()
-    } as Statsborgerskap)
-    if (validation[namespace + getIdx(index) + '-fraDato']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-fraDato'))
     }
   }
 
@@ -207,7 +187,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
                   id={_namespace + '-land'}
-                  includeList={CountryFilter.STANDARD({})}
+                  includeList={CountryFilter.STANDARD({addXS_XR_XU:true})}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => setLand(e.value, index)}
                   required
@@ -227,31 +207,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                 </FormText>
                 )}
           </Column>
-          {isUSed(replySed!) && (
-            <Column>
-              {inEditMode
-                ? (
-                  <DateInput
-                    ariaLabel={t('label:fra-dato')}
-                    error={_v[_namespace + 'fraDato']?.feilmelding}
-                    id='fraDato'
-                    label={t('label:fra-dato')}
-                    hideLabel={index >= 0}
-                    namespace={_namespace}
-                    onChanged={(date: string) => onFradatoChanged(date, index)}
-                    value={_statsborgerskap?.fraDato}
-                  />
-                  )
-                : (
-                  <FormText
-                    error={_v[_namespace + '-fraDato']?.feilmelding}
-                    id={_namespace + '-fraDato'}
-                  >
-                    {_statsborgerskap?.fraDato}
-                  </FormText>
-                  )}
-            </Column>
-          )}
           <AlignEndColumn>
             <AddRemovePanel<Statsborgerskap>
               item={statsborgerskap}
@@ -299,15 +254,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                     {t('label:land') + ' *'}
                   </Label>
                 </Column>
-                {isUSed(replySed!)
-                  ? (
-                    <Column>
-                      <Label>
-                        {t('label:fra-dato')}
-                      </Label>
-                    </Column>
-                    )
-                  : <Column />}
                 <Column />
               </AlignStartRow>
             </PaddedHorizontallyDiv>
