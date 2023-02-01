@@ -79,7 +79,7 @@ export const validateLoennsopplysninger = (
   hasErrors.push(checkIfNotEmpty(validation, {
     needle: loennsopplysninger,
     id: namespace + '-ingen-loennsopplysninger',
-    message: 'validation:noLoennsopplynisnger'
+    message: 'validation:noLoennsopplysninger'
   }))
 
   loennsopplysninger?.forEach((loennsopplysning: Loennsopplysning, index: number) => {
