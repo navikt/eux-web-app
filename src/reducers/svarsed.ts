@@ -2,7 +2,6 @@ import * as types from 'constants/actionTypes'
 import {
   H001Sed,
   F002Sed,
-  HSed,
   Kjoenn,
   ReplySed,
   X001Sed,
