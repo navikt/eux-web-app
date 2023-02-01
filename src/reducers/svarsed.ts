@@ -96,10 +96,6 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
       : { personInfo }
   } as unknown as T
 
-  if (sedType.startsWith('H')) {
-    (replySed as unknown as HSed).tema = sak.tema;
-    (replySed as unknown as HSed).fagsakId = sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id
-  }
   return replySed
 }
 
