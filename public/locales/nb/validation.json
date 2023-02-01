@@ -80,6 +80,7 @@
   "noId": "Du må skrive identifikatoren",
   "noInfo": "Ingen informasjon",
   "noInntekt": "Ingen inntekt",
+  "noInntekter": "Inntekter mangler",
   "noInntektInfo": "Ingen inntekt info",
   "noInntektsliste": "Du må velge en inntektsfilter",
   "noInstitusjonensId": "Du må velge institusjonens ID",
@@ -95,6 +96,7 @@
   "noLand": "Du må velge land",
   "noLastName": "Du må taste inn etternavn",
   "noLoenn": "Du må taste inn lønn",
+  "noLoennsopplynisnger": "Lønnsopplysninger mangler",
   "noLoennTilDato": "Du må taste inn lønn til dato",
 
   "noMottakere": "Ingen mottakerere",

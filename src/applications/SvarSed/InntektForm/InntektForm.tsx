@@ -403,6 +403,14 @@ const InntektForm: React.FC<MainFormProps> = ({
               <Heading size='small'>
                 {t('label:inntekter')}
               </Heading>
+              {_.isEmpty(_loennsopplysning?.inntekter) &&
+                <FormText
+                  error={_v[_namespace + '-inntekter']?.feilmelding}
+                  id={_namespace + '-inntekter'}
+                >
+                  Ingen inntekter registrert
+                </FormText>
+              }
               <VerticalSeparatorDiv />
               <Inntekter
                 inntekter={_loennsopplysning?.inntekter}
@@ -413,37 +421,42 @@ const InntektForm: React.FC<MainFormProps> = ({
               />
             </>
             )
-          : _loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => (
-            <PileDiv key={getIdInntekt(inntekt)}>
-              <FlexCenterSpacedDiv>
-                <BodyLong>
-                  {t('el:option-inntekttype-' + inntekt.type) + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
-                </BodyLong>
-              </FlexCenterSpacedDiv>
-              <FlexDiv>
-                <FlexDiv>
-                  <Label>{t('label:beløp') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
+          : (
+            <>
+              {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => (
+                <PileDiv key={getIdInntekt(inntekt)}>
+                  <FlexCenterSpacedDiv>
+                    <BodyLong>
+                      {t('el:option-inntekttype-' + inntekt.type) + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
+                    </BodyLong>
+                  </FlexCenterSpacedDiv>
                   <FlexDiv>
-                    <FormText
-                      error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
-                      id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
-                    >
-                      {inntekt?.beloep}
-                    </FormText>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <FormText
-                      error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
-                      id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
-                    >
-                      {inntekt?.valuta}
-                    </FormText>
+                    <FlexDiv>
+                      <Label>{t('label:beløp') + ':'}</Label>
+                      <HorizontalSeparatorDiv size='0.5' />
+                      <FlexDiv>
+                        <FormText
+                          error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
+                          id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
+                        >
+                          {inntekt?.beloep}
+                        </FormText>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        <FormText
+                          error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
+                          id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
+                        >
+                          {inntekt?.valuta}
+                        </FormText>
+                      </FlexDiv>
+                    </FlexDiv>
                   </FlexDiv>
-                </FlexDiv>
-              </FlexDiv>
-              <HorizontalLineSeparator size='0.5' />
-            </PileDiv>
-          ))}
+                  <HorizontalLineSeparator size='0.5' />
+                </PileDiv>
+              ))}
+            </>
+          )
+        }
         <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
@@ -463,9 +476,12 @@ const InntektForm: React.FC<MainFormProps> = ({
         ? (
           <PaddedHorizontallyDiv>
             <SpacedHr />
-            <BodyLong>
+            <FormText
+              error={validation[namespace + '-ingen-loennsopplysninger']?.feilmelding}
+              id={namespace + '-ingen-loennsopplysninger'}
+            >
               {t('message:warning-no-inntekt')}
-            </BodyLong>
+            </FormText>
             <SpacedHr />
           </PaddedHorizontallyDiv>
           )

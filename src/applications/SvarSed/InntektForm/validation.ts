@@ -54,6 +54,15 @@ export const validateLoennsopplysning = (
     personName
   }))
 
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: loennsopplysning?.inntekter,
+    id: namespace + idx + '-inntekter',
+    message: 'validation:noInntekter',
+    personName
+  }))
+
+
+
   return hasErrors.find(value => value) !== undefined
 }
 
@@ -66,6 +75,13 @@ export const validateLoennsopplysninger = (
   }: ValidationLoennsopplysningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
+
+  hasErrors.push(checkIfNotEmpty(validation, {
+    needle: loennsopplysninger,
+    id: namespace + '-ingen-loennsopplysninger',
+    message: 'validation:noLoennsopplynisnger'
+  }))
+
   loennsopplysninger?.forEach((loennsopplysning: Loennsopplysning, index: number) => {
     hasErrors.push(validateLoennsopplysning(validation, namespace, {
       loennsopplysning,
