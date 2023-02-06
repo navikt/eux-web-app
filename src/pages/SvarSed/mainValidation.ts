@@ -78,7 +78,6 @@ import {
   Flyttegrunn,
   FSed,
   H001Sed,
-  HSed,
   Person,
   PersonInfo,
   ReplySed,
@@ -106,7 +105,7 @@ import {
   isX010Sed, isX011Sed, isX012Sed,
   isXSed
 } from 'utils/sed'
-import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
+import { checkLength } from 'utils/validation'
 import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
 
 export interface ValidationSEDEditProps {
@@ -369,22 +368,6 @@ export const validateSEDEdit = (
     hasErrors.push(validateBottomForm(v, replySed))
   }
 
-  if (isHSed(replySed)) {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: (replySed as HSed).tema,
-      id: 'editor-tema',
-      message: 'validation:noTema'
-    }))
-
-    if (!_.isEmpty((replySed as HSed).tema)) {
-      if ((replySed as HSed).tema === 'GEN') {
-        hasErrors.push(addError(v, {
-          id: 'editor-tema',
-          message: 'validation:invalidTema'
-        }))
-      }
-    }
-  }
   if (!isH001Sed(replySed)) {
     hasErrors.push(checkLength(v, {
       needle: (replySed as H001Sed)?.ytterligereInfo,
