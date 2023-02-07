@@ -8,6 +8,11 @@ import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateSEDQuery } from './validation'
+import styled from 'styled-components'
+
+const StyledSpan = styled.span`
+  display: inline-block;
+`
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit }: any) => {
   const { t } = useTranslation()
@@ -98,12 +103,9 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
               </>
             )}
           </PileDiv>
-        </Column>
-        <Column>
           <PileDiv>
-            <VerticalSeparatorDiv size='2.5' />
             <BodyLong>
-              {_validMessage}
+              <StyledSpan>{_validMessage}</StyledSpan>
             </BodyLong>
           </PileDiv>
         </Column>

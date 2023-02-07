@@ -1,10 +1,10 @@
 import { State } from 'declarations/reducers'
-import { Container, Content, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Container, Content, Margin } from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {Link, LinkPanel} from '@navikt/ds-react'
+import {Link} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
@@ -13,26 +13,25 @@ import {ReactComponent as Dokument} from 'assets/icons/Dokument.svg'
 import {ReactComponent as Binders} from 'assets/icons/Binders.svg'
 import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
-import {querySaks} from "../../actions/svarsed";
+import {querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
+import {Saks} from "../../declarations/types";
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
   queryingSaks: boolean
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
+  saks: Saks | null | undefined
 }
 
 const mapState = (state: State): ForsideSelector => ({
   featureToggles: state.app.featureToggles,
   queryingSaks: state.loading.queryingSaks,
   alertMessage: state.alert.stripeMessage,
-  alertType: state.alert.type
+  alertType: state.alert.type,
+  saks: state.svarsed.saks
 })
-
-const MyLinkPanel = styled(LinkPanel)`
-  cursor: pointer;
-`
 
 const ContentArea = styled.div`
   display: flex;
@@ -82,86 +81,74 @@ const StyledLink = styled(Link)`
   };
 `
 
-
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
-  const { featureToggles, queryingSaks, alertMessage, alertType}: ForsideSelector = useAppSelector(mapState)
+  const { featureToggles, queryingSaks, alertMessage, alertType, saks}: ForsideSelector = useAppSelector(mapState)
+  const params: URLSearchParams = new URLSearchParams(window.location.search)
+  const [_query, _setQuery] = useState<string | null>(params.get('q'))
+  const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
+
+
+  useEffect(() => {
+    if (saks?.length === 1 && _queryType === 'saksnummer') {
+      dispatch(setCurrentSak(saks[0]))
+      navigate({
+        pathname: '/svarsed/view/sak/' + saks[0].sakId,
+        search: _query ? '?q=' + _query : ''
+      })
+    } else if (saks && saks.length > 1) {
+      navigate({
+        pathname: '/svarsed/search',
+        search: _query ? '?q=' + _query : ''
+      })
+    }
+  }, [saks])
 
   return (
     <TopContainer title={t('app:page-title-forside')}>
       <Container>
         <Margin />
         <Content style={{ minWidth: '800px' }}>
-          <MyLinkPanel
-            onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}
-          >
-            <LinkPanel.Title>{t('app:page-title-opprettsak')}</LinkPanel.Title>
-          </MyLinkPanel>
-          <VerticalSeparatorDiv />
-          <MyLinkPanel
-            onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}
-          >
-            <LinkPanel.Title>{t('app:page-title-vedlegg')}</LinkPanel.Title>
-          </MyLinkPanel>
-          <>
-            <VerticalSeparatorDiv />
-            <MyLinkPanel
-              onClick={() => navigate({ pathname: '/svarsed/search', search: window.location.search })}
-            >
-              <LinkPanel.Title>{t('app:page-title-svarsed')}</LinkPanel.Title>
-            </MyLinkPanel>
-          </>
-          {featureToggles?.featurePdu1 && (
-            <>
-              <VerticalSeparatorDiv />
-              <MyLinkPanel
-                onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}
-              >
-                <LinkPanel.Title>{t('app:page-title-pdu1')}</LinkPanel.Title>
-              </MyLinkPanel>
-            </>
-          )}
-
-          <VerticalSeparatorDiv size='2' />
-          <VerticalSeparatorDiv />
           <ContentArea>
-          <SEDQuery
-            parentNamespace="sedsearch"
-            initialQuery=""
-            onQueryChanged={() => {
-              dispatch(appReset())
-            }}
-            onQuerySubmit={(q: string) => {
-              dispatch(querySaks(q, 'new'))
-            }}
-            querying={queryingSaks}
-            error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
-          />
-          <Squares>
-            <StyledLink onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
-              <Square>
-                <OpprettSakIcon/>
-                Opprett ny sak
-              </Square>
-            </StyledLink>
-            <StyledLink onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}>
-              <Square>
-                <BindersIcon/>
-                Legg til vedlegg
-              </Square>
-            </StyledLink>
-            {featureToggles?.featurePdu1 && (
-              <StyledLink onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}>
+            <SEDQuery
+              parentNamespace="sedsearch"
+              initialQuery=""
+              onQueryChanged={(queryType: string) => {
+                dispatch(appReset())
+                _setQueryType(queryType)
+              }}
+              onQuerySubmit={(q: string) => {
+                _setQuery(q)
+                dispatch(querySaks(q, 'new'))
+              }}
+              querying={queryingSaks}
+              error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
+            />
+            <Squares>
+              <StyledLink onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
                 <Square>
-                  <DokumentIcon/>
-                  SED PD U1
+                  <OpprettSakIcon/>
+                  Opprett ny sak
                 </Square>
               </StyledLink>
-            )}
-          </Squares>
+              <StyledLink onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}>
+                <Square>
+                  <BindersIcon/>
+                  Legg til vedlegg
+                </Square>
+              </StyledLink>
+              {featureToggles?.featurePdu1 && (
+                <StyledLink onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}>
+                  <Square>
+                    <DokumentIcon/>
+                    SED PD U1
+                  </Square>
+                </StyledLink>
+              )}
+            </Squares>
           </ContentArea>
         </Content>
         <Margin />
