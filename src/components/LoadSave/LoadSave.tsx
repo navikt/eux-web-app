@@ -1,19 +1,8 @@
-import { BodyLong, Button, Detail, Loader, Panel } from '@navikt/ds-react'
+import {Button, Loader, Panel} from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import {
-  FlexBaseSpacedDiv,
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import * as localStorageActions from 'actions/localStorage'
 import { setCurrentEntry } from 'actions/localStorage'
 import { getSedStatus } from 'actions/svarsed'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import { GrayPanel } from 'components/StyledComponents'
-import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
@@ -26,11 +15,51 @@ import { useNavigate } from 'react-router-dom'
 import { LocalStorageNamespaces } from 'reducers/localStorage'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {ReactComponent as LocalItemIcon} from 'assets/icons/LocalItem.svg'
+import {Delete} from "@navikt/ds-icons";
+import WaitingPanel from "../WaitingPanel/WaitingPanel";
 
-const LoadSaveDiv = styled(FlexDiv)`
-  width: 100%;
-  min-width: 21rem;
+
+const StyledPanel = styled(Panel)`
+  border: 1px #D8D8D8 solid;
+  border-bottom-width: 0px;
+  border-radius: 0px;
+  &:last-child{
+   border-bottom-width: 1px;
+  }
+`
+
+const SavedItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+`
+
+const ItemContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
   flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px #D8D8D8 solid;
+`
+
+const ItemInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+`
+
+const ItemData = styled.div`
+  flex:1;
+`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 `
 
 interface LoadSaveProps<T> {
@@ -64,12 +93,12 @@ const LoadSave = <T extends StorageTypes>({
     dispatch(localStorageActions.removeEntry(namespace, entry))
   }
 
-  const onRemoveAll = (e: any) => {
+/*  const onRemoveAll = (e: any) => {
     buttonLogger(e)
     if (window.confirm(t('label:er-du-sikker'))) {
       dispatch(localStorageActions.removeAllEntries(namespace))
     }
-  }
+  }*/
 
   const handleLoadDraft = (e: React.ChangeEvent<HTMLButtonElement>, savedEntry: LocalStorageEntry<ReplySed | PDU1>) => {
     // for svarSed, we must check validity before loading
@@ -144,6 +173,55 @@ const LoadSave = <T extends StorageTypes>({
   }, [entries, loadingSavedItems])
 
   return (
+    <>
+      {loadingSavedItems && (<WaitingPanel />)}
+
+      {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>) => {
+        const savedDate = new Date(savedEntry.date);
+        const savedType = (savedEntry.content as any).sedType ? (savedEntry.content as any).sedType : namespace.toUpperCase();
+        const savedSaksnr = namespace === "pdu1" ? (savedEntry.content as any).saksreferanse : (savedEntry.content as any).sak?.sakId
+        return (
+            <StyledPanel key={savedEntry.id}>
+              <SavedItem>
+                <LocalItemIcon/>
+                <ItemContainer>
+                  <div><b>{savedEntry.name}</b></div>
+                  <ItemInfo>
+                    <ItemData>Saksnr: {savedSaksnr}</ItemData>
+                    <ItemData>Type: {savedType}</ItemData>
+                    <ItemData>Dato: {savedDate.toLocaleDateString("no-NO")}</ItemData>
+                  </ItemInfo>
+                </ItemContainer>
+                <ButtonContainer>
+                  <Button
+                    variant='secondary'
+                    disabled={(savedEntry.id && _sedStatusRequested === savedEntry.id) || hasSentStatus(savedEntry.id)}
+                    data-amplitude={namespace + '.sidebar.loaddraft'}
+                    onClick={(e: any) => handleLoadDraft(e, savedEntry)}
+                  >
+                    {savedEntry.id && _sedStatusRequested === savedEntry.id && <Loader/>}
+                    {savedEntry.id && _sedStatusRequested === savedEntry.id
+                      ? t('message:loading-checking-sed-status')
+                      : (hasSentStatus(savedEntry.id)
+                        ? t('label:sendt')
+                        : t('el:button-load'))}
+                  </Button>
+                  <Button
+                    variant='tertiary'
+                    onClick={() => onRemove(savedEntry)}
+                  >
+                    <Delete/>
+                    {t('el:button-slett')}
+                  </Button>
+                </ButtonContainer>
+              </SavedItem>
+            </StyledPanel>
+          )
+        }
+      )}
+
+
+{/*    <VerticalSeparatorDiv/>
     <Panel border style={{ margin: '0.1rem' }}>
       <LoadSaveDiv>
         {loadingSavedItems && (<WaitingPanel />)}
@@ -247,7 +325,8 @@ const LoadSave = <T extends StorageTypes>({
           </>
         )}
       </LoadSaveDiv>
-    </Panel>
+    </Panel>*/}
+    </>
   )
 }
 

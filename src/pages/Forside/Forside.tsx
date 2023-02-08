@@ -1,5 +1,5 @@
 import { State } from 'declarations/reducers'
-import { Container, Content, Margin } from '@navikt/hoykontrast'
+import {Container, Content, Margin, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,9 +13,13 @@ import {ReactComponent as Dokument} from 'assets/icons/Dokument.svg'
 import {ReactComponent as Binders} from 'assets/icons/Binders.svg'
 import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
-import {querySaks, setCurrentSak} from "../../actions/svarsed";
+import {loadReplySed, querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
 import {Saks} from "../../declarations/types";
+import LoadSave from "../../components/LoadSave/LoadSave";
+import {ReplySed} from "../../declarations/sed";
+import {PDU1} from "../../declarations/pd";
+import {loadPdu1} from "../../actions/pdu1";
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -149,6 +153,15 @@ const Forside: React.FC = (): JSX.Element => {
                 </StyledLink>
               )}
             </Squares>
+            <VerticalSeparatorDiv size="4"/>
+            <LoadSave<ReplySed>
+              namespace='svarsed'
+              loadReplySed={loadReplySed}
+            />
+            <LoadSave<PDU1>
+              namespace='pdu1'
+              loadReplySed={loadPdu1}
+            />
           </ContentArea>
         </Content>
         <Margin />

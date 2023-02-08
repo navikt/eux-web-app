@@ -13,15 +13,13 @@ import {
 } from '@navikt/hoykontrast'
 import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { loadReplySed, querySaks, setCurrentSak } from 'actions/svarsed'
+import { querySaks, setCurrentSak } from 'actions/svarsed'
 import SakPanel from 'applications/SvarSed/Sak/SakPanel'
 import { isSedEditable } from 'applications/SvarSed/Sak/utils'
 import SEDQuery from 'applications/SvarSed/SEDQuery/SEDQuery'
-import LoadSave from 'components/LoadSave/LoadSave'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
 import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -225,12 +223,6 @@ const SEDSearch = (): JSX.Element => {
                 )}
           </FullWidthDiv>
         </PileStartDiv>
-      </Content>
-      <Content style={{ flex: 2 }}>
-        <LoadSave<ReplySed>
-          namespace='svarsed'
-          loadReplySed={loadReplySed}
-        />
       </Content>
       <Margin />
     </Container>
