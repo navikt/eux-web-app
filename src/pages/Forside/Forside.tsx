@@ -4,7 +4,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {Link} from '@navikt/ds-react'
+import {BodyLong, Link} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
@@ -36,6 +36,10 @@ const mapState = (state: State): ForsideSelector => ({
   alertType: state.alert.type,
   saks: state.svarsed.saks
 })
+
+const WhiteContainer = styled(Container)`
+  background-color: #ffffff
+`
 
 const ContentArea = styled.div`
   display: flex;
@@ -94,6 +98,9 @@ const Forside: React.FC = (): JSX.Element => {
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
+  const [_hasLocalReplySeds, _setHasLocalReplySeds] = useState<boolean>(false)
+  const [_hasLocaPDU1, _setHasLocalPDU1] = useState<boolean>(false)
+
 
 
   useEffect(() => {
@@ -117,7 +124,9 @@ const Forside: React.FC = (): JSX.Element => {
         <Margin />
         <Content style={{ minWidth: '800px' }}>
           <ContentArea>
+            <VerticalSeparatorDiv size="2"/>
             <SEDQuery
+              frontpage={true}
               parentNamespace="sedsearch"
               initialQuery=""
               onQueryChanged={(queryType: string) => {
@@ -131,6 +140,15 @@ const Forside: React.FC = (): JSX.Element => {
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
             />
+          </ContentArea>
+        </Content>
+        <Margin/>
+      </Container>
+      <WhiteContainer>
+        <Margin/>
+        <Content style={{ minWidth: '800px' }}>
+          <ContentArea>
+            <VerticalSeparatorDiv size="3"/>
             <Squares>
               <StyledLink onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
                 <Square>
@@ -153,12 +171,27 @@ const Forside: React.FC = (): JSX.Element => {
                 </StyledLink>
               )}
             </Squares>
-            <VerticalSeparatorDiv size="4"/>
+            <VerticalSeparatorDiv size="3"/>
+          </ContentArea>
+        </Content>
+        <Margin/>
+      </WhiteContainer>
+      <Container>
+        <Margin/>
+        <Content style={{ minWidth: '800px' }}>
+          <ContentArea>
+            {(_hasLocalReplySeds || _hasLocaPDU1) &&
+              <BodyLong>
+                {t('label:lokalt-lagrede-x', { x: t('label:svarsed') })}
+              </BodyLong>
+            }
             <LoadSave<ReplySed>
+              setHasEntries={_setHasLocalReplySeds}
               namespace='svarsed'
               loadReplySed={loadReplySed}
             />
             <LoadSave<PDU1>
+              setHasEntries={_setHasLocalPDU1}
               namespace='pdu1'
               loadReplySed={loadPdu1}
             />

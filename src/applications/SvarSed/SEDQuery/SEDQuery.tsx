@@ -14,7 +14,7 @@ const StyledSpan = styled.span`
   display: inline-block;
 `
 
-const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit }: any) => {
+const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false }: any) => {
   const { t } = useTranslation()
   const namespace = parentNamespace + '-sedquery'
 
@@ -110,7 +110,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
           </PileDiv>
         </Column>
       </AlignStartRow>
-      <VerticalSeparatorDiv size='3' />
+      {!frontpage && <VerticalSeparatorDiv size='3' />}
       {error && (
         <>
           <AlertstripeDiv>
