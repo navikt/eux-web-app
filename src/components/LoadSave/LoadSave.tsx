@@ -190,9 +190,9 @@ const LoadSave = <T extends StorageTypes>({
                 <ItemContainer>
                   <div><b>{savedEntry.name}</b></div>
                   <ItemInfo>
-                    <ItemData>Saksnr: {savedSaksnr}</ItemData>
-                    <ItemData>Type: {savedType}</ItemData>
-                    <ItemData>Dato: {savedDate.toLocaleDateString("no-NO")}</ItemData>
+                    <ItemData>{t('label:saksnr') + ': '} {savedSaksnr}</ItemData>
+                    <ItemData>{t('label:type') + ': '} {savedType}</ItemData>
+                    <ItemData>{t('label:dato') + ': '} {savedDate.toLocaleDateString("no-NO")}</ItemData>
                   </ItemInfo>
                 </ItemContainer>
                 <ButtonContainer>

@@ -125,7 +125,6 @@ const SEDSearch = (): JSX.Element => {
             <Heading size='medium'>
               {t('app:page-title-svarsed-search')}
             </Heading>
-            <VerticalSeparatorDiv size='2' />
             <SEDQuery
               parentNamespace={namespace}
               initialQuery={_query ?? rinasaksnummerOrFnrParam}

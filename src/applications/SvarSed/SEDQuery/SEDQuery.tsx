@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Loader, Search } from '@navikt/ds-react'
+import {Alert, BodyLong, Label, Loader, Search} from '@navikt/ds-react'
 import validator from '@navikt/fnrvalidator'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import classNames from 'classnames'
@@ -12,6 +12,10 @@ import styled from 'styled-components'
 
 const StyledSpan = styled.span`
   display: inline-block;
+`
+
+const StyledLabel = styled(Label)`
+  font-weight: normal;
 `
 
 const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false }: any) => {
@@ -72,19 +76,23 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       <AlignStartRow
         className={classNames({ error: _validation.saksnummerOrFnr })}
       >
-        <HorizontalSeparatorDiv size='0.2' />
+        <HorizontalSeparatorDiv size='0.1' />
         <Column flex='2'>
           <PileDiv>
+            <StyledLabel htmlFor={namespace + '-saksnummerOrFnr'}>
+              {t('label:søk-rina-sak-for-å-sende-svarsed')}
+            </StyledLabel>
             <Search
-              label={t('label:saksnummer-eller-fnr')}
+              label={t('label:søk-rina-sak-for-å-sende-svarsed')}
               data-testid={namespace + '-saksnummerOrFnr'}
               id={namespace + '-saksnummerOrFnr'}
               onKeyPress={handleKeyPress}
               onChange={setSaksnummerOrFnr}
               required
-              hideLabel={false}
+              hideLabel={true}
               value={_saksnummerOrFnr}
               disabled={querying}
+              placeholder={t('label:saksnummer-eller-fnr')}
             >
               <Search.Button onClick={onSaksnummerOrFnrClick}>
                 {querying

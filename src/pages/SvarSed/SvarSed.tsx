@@ -133,7 +133,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       onGoBackClick={onGoBackClick}
       unsavedDoc={replySedChanged}
       title={type === 'new'
-        ? t('app:page-title-opprettsak')
+        ? t('app:page-title-opprettnysak')
         : t('app:page-title-svarsed')}
     >
       <>

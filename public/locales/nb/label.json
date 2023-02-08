@@ -335,7 +335,8 @@
   "saksbehandlers-enhet" : "Saksbehandlers enhet",
   "saksbehandlers-navn" : "Saksbehandlers navn",
   "saksnummer" : "Saksnummer",
-  "saksnummer-eller-fnr" : "RINA saksnummer eller f.nr./d.nr. (11 sifre)",
+  "saksnr" : "Saksnr",
+  "saksnummer-eller-fnr" : "Saksnr. eller f.nr./d.nr.",
   "saksopplysninger": "Saksopplysninger",
   "save-sed" : "Lagring lokal kopi av SED",
   "save-pdu1" : "Lagring PD U1",
@@ -373,6 +374,7 @@
   "sykdom": "Sykdom",
   "søker" : "Søker",
   "søk-pdl-adresse-til": "Søk PDL adresse til {{person}}",
+  "søk-rina-sak-for-å-sende-svarsed": "Søk RINA-sak for å sende svarSED eller opprette ny SED i eksisterende sak",
 
   "telefonnummer": "Telefonnummer",
   "tema": "Tema",

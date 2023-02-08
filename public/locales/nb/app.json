@@ -1,10 +1,11 @@
 {
   "page-title-forside": "Velkommen til nEESSI",
-  "page-title-vedlegg": "Legg vedlegg til SED",
-  "page-title-opprettsak" : "Opprett sak",
+  "page-title-vedlegg": "Legg til vedlegg",
+  "page-title-opprettnysak" : "Opprett ny sak",
   "page-title-svarsed": "SvarSED eller ny SED i eksisterende sak",
-  "page-title-svarsed-search": "Velg RINA-sak og opprett SED",
+  "page-title-svarsed-search": "Søk sak",
   "page-title-pdu1": "PD U1 - Perioder av betydning for retten til dagpenger",
+  "page-title-sed-pdu1": "SED - PD U1",
   "page-title-pdu1-search": "Søk på person og opprett PD U1",
   "page-title-unknown": "Ukjent",
 

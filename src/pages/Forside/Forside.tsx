@@ -4,7 +4,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {BodyLong, Link} from '@navikt/ds-react'
+import {BodyLong, Heading, Link} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
@@ -125,6 +125,9 @@ const Forside: React.FC = (): JSX.Element => {
         <Content style={{ minWidth: '800px' }}>
           <ContentArea>
             <VerticalSeparatorDiv size="2"/>
+            <Heading size='medium'>
+              {t('app:page-title-svarsed-search')}
+            </Heading>
             <SEDQuery
               frontpage={true}
               parentNamespace="sedsearch"
@@ -153,20 +156,20 @@ const Forside: React.FC = (): JSX.Element => {
               <StyledLink onClick={() => navigate({ pathname: '/svarsed/new', search: window.location.search })}>
                 <Square>
                   <OpprettSakIcon/>
-                  Opprett ny sak
+                  {t('app:page-title-opprettnysak')}
                 </Square>
               </StyledLink>
               <StyledLink onClick={() => navigate({ pathname: '/vedlegg', search: window.location.search })}>
                 <Square>
                   <BindersIcon/>
-                  Legg til vedlegg
+                  {t('app:page-title-vedlegg')}
                 </Square>
               </StyledLink>
               {featureToggles?.featurePdu1 && (
                 <StyledLink onClick={() => navigate({ pathname: '/pdu1/search', search: window.location.search })}>
                   <Square>
                     <DokumentIcon/>
-                    SED PD U1
+                    {t('app:page-title-sed-pdu1')}
                   </Square>
                 </StyledLink>
               )}
