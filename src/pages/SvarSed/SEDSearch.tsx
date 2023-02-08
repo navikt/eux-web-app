@@ -119,7 +119,7 @@ const SEDSearch = (): JSX.Element => {
   return (
     <Container>
       <Margin />
-      <Content style={{ flex: 6 }}>
+      <Content style={{minWidth: '800px'}}>
         <PileStartDiv>
           <FullWidthDiv>
             <Heading size='medium'>
