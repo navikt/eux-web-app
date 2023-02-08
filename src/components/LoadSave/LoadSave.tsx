@@ -182,7 +182,7 @@ const LoadSave = <T extends StorageTypes>({
       {entries?.map((savedEntry: LocalStorageEntry<PDU1 | ReplySed>) => {
         const savedDate = new Date(savedEntry.date);
         const savedType = (savedEntry.content as any).sedType ? (savedEntry.content as any).sedType : namespace.toUpperCase();
-        const savedSaksnr = namespace === "pdu1" ? (savedEntry.content as any).fagsakNr : (savedEntry.content as any).sak?.sakId
+        const savedSaksnr = namespace === "pdu1" ? (savedEntry.content as any).fagsakId : (savedEntry.content as any).sak?.sakId
         return (
             <StyledPanel key={savedEntry.id}>
               <SavedItem>
