@@ -6,9 +6,7 @@ import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { cleanUpPDU1, searchPdu1s, loadPdu1 } from 'actions/pdu1'
 import PDU1Details from 'applications/PDU1/PDU1Details/PDU1Details'
 import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
-import LoadSave from 'components/LoadSave/LoadSave'
 import Modal from 'components/Modal/Modal'
-import { SideBarDiv } from 'components/StyledComponents'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
@@ -178,14 +176,6 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
           {(type === 'create' || type === 'edit') && (<PDU1Edit type={type} />)}
         </Content>
         <Content style={{ flex: 2 }}>
-          {type === 'search' && (
-            <SideBarDiv>
-              <LoadSave<PDU1>
-                namespace='pdu1'
-                loadReplySed={loadPdu1}
-              />
-            </SideBarDiv>
-          )}
           {(type === 'create' || type === 'edit') && (<PDU1Details />)}
         </Content>
         <Margin />
