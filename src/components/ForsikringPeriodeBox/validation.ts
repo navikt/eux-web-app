@@ -58,7 +58,7 @@ export const validateForsikringPeriodeBox = (
     hasErrors.push(checkIfNotEmpty(v, {
       needle: (forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn,
       id: namespace + (nsIndex ?? '') + '-arbeidsgiver-navn',
-      message: 'validation:noNavnInstitusjon'
+      message: 'validation:noNavnArbeidsgiver'
     }))
   }
 

@@ -50,17 +50,17 @@ export const validateArbeidsperiodeOversikt = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: forsikringPeriode?.arbeidsgiver?.navn,
     id: namespace + idx + '-arbeidsgiver-navn',
-    message: 'validation:noNavn',
+    message: 'validation:noNavnArbeidsgiver',
     personName
   }))
 
 
   hasErrors.push(validateIdentifikatorer(v, namespace + idx + '-arbeidsgiver-identifikatorer', {
-    identifikatorer: forsikringPeriode?.arbeidsgiver.identifikatorer,
+    identifikatorer: forsikringPeriode?.arbeidsgiver?.identifikatorer,
     personName
   }))
 
-  if(adresseHasProps(forsikringPeriode?.arbeidsgiver.adresse)) {
+  if(adresseHasProps(forsikringPeriode?.arbeidsgiver?.adresse)) {
     hasErrors.push(validateAdresse(v, namespace + idx + '-arbeidsgiver-adresse', {
       adresse: forsikringPeriode?.arbeidsgiver.adresse,
       index,
