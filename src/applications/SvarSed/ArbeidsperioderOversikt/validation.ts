@@ -40,7 +40,6 @@ export const validateArbeidsperiodeOversikt = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
-
   hasErrors.push(validatePeriode(v, namespace, {
     periode: forsikringPeriode,
     index,
@@ -80,9 +79,11 @@ export const validateArbeidsperioderOversikt = (
   }: ValidationArbeidsperioderOversiktProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  perioderMedForsikring?.forEach((forsikringPeriode: PeriodeMedForsikring) => {
+  perioderMedForsikring?.forEach((forsikringPeriode: PeriodeMedForsikring, index) => {
     hasErrors.push(validateArbeidsperiodeOversikt(validation, namespace, {
-      forsikringPeriode
+      forsikringPeriode,
+      personName: undefined,
+      index
     }))
   })
   return hasErrors.find(value => value) !== undefined

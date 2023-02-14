@@ -222,6 +222,9 @@ const Forsikring: React.FC<MainFormProps> = ({
 
     const _periode = newMode ? { ...periode, __type: _type } : periode
 
+/*    const idx = index && index === -1 ? "" : "[" + index + "]"
+    namespace = _type ? namespace + '[' + _type + ']' + idx : namespace + idx*/
+
     return (
       <>
         <VerticalSeparatorDiv size='0.5' />
@@ -230,7 +233,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           key={getId(periode)}
           className={classNames({
             new: index < 0,
-            error: hasNamespaceWithErrors(validation, namespace)
+            error: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
           })}
         >
           {copyMode && <div ref={ref}></div>}
@@ -276,6 +279,8 @@ const Forsikring: React.FC<MainFormProps> = ({
               resetValidation={doResetValidation}
               setValidation={doSetValidation}
               setCopiedPeriod={_setCopiedPeriod}
+              index={index}
+              type={_type}
             />
           )}
         </RepeatableRow>

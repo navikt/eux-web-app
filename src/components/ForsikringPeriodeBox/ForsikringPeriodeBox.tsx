@@ -104,6 +104,8 @@ export interface ArbeidsgiverBoxProps<T> {
   resetValidation ?: (namespace: string) => void
   setValidation ?: (v: Validation) => void
   setCopiedPeriod?: (p:any | null) => void
+  index?: number | undefined
+  type?: string | undefined
 }
 
 const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
@@ -131,9 +133,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   validation,
   resetValidation,
   setValidation,
-  setCopiedPeriod
+  setCopiedPeriod,
+  index,
+  type
 }: ArbeidsgiverBoxProps<T>): JSX.Element => {
   const { t } = useTranslation()
+
+  const idx = index === undefined || (index && index === -1) ? "" : "[" + index + "]"
+  namespace = type ? namespace + '[' + type + ']' + idx : namespace + idx
 
   const [_inEditMode, _setInEditMode] = useState<boolean>(newMode)
   const [_newForsikringPeriode, _setNewForsikringPeriode] = useState<T | null | undefined>(newMode ? forsikringPeriode : undefined)
@@ -656,7 +663,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           <Label id={namespace + '-arbeidsgiver-navn'}>
                             {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
                           </Label>
-                          {_v[namespace + '-arbeidsgiver-navn']?.feilmelding && (
+                          {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
                             <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
                               {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
                             </Label>

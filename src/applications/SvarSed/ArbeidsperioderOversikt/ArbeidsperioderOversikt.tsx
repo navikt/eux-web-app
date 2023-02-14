@@ -90,9 +90,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
+    const sortedPerioder = _.cloneDeep(perioder)
     performValidation<ValidationArbeidsperioderOversiktProps>(
       clonedvalidation, namespace, validateArbeidsperioderOversikt, {
-        perioderMedForsikring: perioder,
+        perioderMedForsikring: sortedPerioder,
         personName
       }, true
     )
@@ -214,7 +215,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     const copyMode = index < 0 && !_.isNil(_copiedPeriod)
 
     const _item: PeriodeMedForsikring | PlanItem<ForsikringPeriode> | null = newMode ? null : item?.item ? item?.item as PeriodeMedForsikring : item
-    
+
     const selectable = item?.type === 'forsikringPeriode'
     const selected = selectable && !_.isNil(index) && index >= 0
     const style = newMode
@@ -257,6 +258,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           resetValidation={doResetValidation}
           setValidation={doSetValidation}
           setCopiedPeriod={_setCopiedPeriod}
+          index={index}
        />
       </>
     )

@@ -537,10 +537,10 @@ const InntektForm: React.FC<MainFormProps> = ({
             {t('label:arbeidsperioder')}
           </Heading>
           <VerticalSeparatorDiv size='2' />
-          {arbeidsperioder?.arbeidsperioder?.map(a => {
+          {arbeidsperioder?.arbeidsperioder?.map((a, index) => {
             const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
             return (
-              <div key={getOrgnr(period, 'organisasjonsnummer')}>
+              <div key={getOrgnr(period, 'organisasjonsnummer') + '_' + index}>
                 <ForsikringPeriodeBox
                   forsikringPeriode={period}
                   showArbeidsgiver
