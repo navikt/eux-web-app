@@ -71,6 +71,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     : 'new' + "_" + index
 
   const [_plan, _setPlan] = useState<Array<PlanItem<ForsikringPeriode>> | undefined>(undefined)
+  const [_periodsForValidation, _setPeriodsForValidation] = useState<Array<PeriodeMedForsikring> | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
@@ -90,10 +91,9 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    const sortedPerioder = _.cloneDeep(perioder)
     performValidation<ValidationArbeidsperioderOversiktProps>(
       clonedvalidation, namespace, validateArbeidsperioderOversikt, {
-        perioderMedForsikring: sortedPerioder,
+        perioderMedForsikring: _periodsForValidation,
         personName
       }, true
     )
@@ -108,7 +108,33 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       sort: _sort
     } as RenderPlanProps<ForsikringPeriode>)
     _setPlan(plan)
+    createAndSetPeriodsForValidation(plan)
   }, [replySed, _sort, arbeidsperioder])
+
+
+  const createAndSetPeriodsForValidation = (plan:Array<PlanItem<ForsikringPeriode>>) => {
+    const allPeriods = plan?.map((p) => ({...p.item}))
+    let myPeriods:Array<PeriodeMedForsikring> = []
+    allPeriods?.forEach((p) => {
+      delete p.__type
+      delete p.__index
+      myPeriods.push(p as PeriodeMedForsikring)
+    })
+    _setPeriodsForValidation(myPeriods)
+  }
+
+  useEffect(() => {
+    if(arbeidsperioder && arbeidsperioder.arbeidsperioder && arbeidsperioder.arbeidsperioder.length >0 ){
+      const clonedvalidation = _.cloneDeep(validation)
+      performValidation<ValidationArbeidsperioderOversiktProps>(
+        clonedvalidation, namespace, validateArbeidsperioderOversikt, {
+          perioderMedForsikring: _periodsForValidation,
+          personName
+        }, false
+      )
+      dispatch(setValidation(clonedvalidation))
+    }
+  }, [_periodsForValidation])
 
   const onCloseEdit = (namespace: string) => {
     dispatch(resetValidation(namespace))
