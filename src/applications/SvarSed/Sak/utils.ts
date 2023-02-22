@@ -30,6 +30,6 @@ export const isSedEditable = (
 ) => (
   !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
   (hasDraftFor(connectedSed, entries, 'svarsedId') && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
-  (connectedSed.sedHandlinger.indexOf('Update') >= 0) ||
+  (connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
 )

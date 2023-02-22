@@ -102,7 +102,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const getSakshandlinger = () => {
     let sakshandlinger: JSX.Element[] = [];
     let disabledSakshandlinger: JSX.Element[] = [];
-    sak.sakshandlinger.forEach((sakshandling) => {
+    sak.sakshandlinger?.forEach((sakshandling) => {
       if(ALLOWED_SAKSHANDLINGER.includes(sakshandling)){
         sakshandlinger.push(createSakshandlingFragment(sakshandling))
       } else if (!HIDDEN_SAKSHANDLINGER.includes(sakshandling)){
