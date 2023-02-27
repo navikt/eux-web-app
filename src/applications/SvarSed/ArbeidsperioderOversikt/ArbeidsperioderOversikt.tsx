@@ -93,7 +93,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     const clonedvalidation = _.cloneDeep(validation)
     performValidation<ValidationArbeidsperioderOversiktProps>(
       clonedvalidation, namespace, validateArbeidsperioderOversikt, {
-        perioderMedForsikring: _periodsForValidation,
+        perioderMedForsikring: _periodsForValidation ? _periodsForValidation : perioder,
         personName
       }, true
     )
