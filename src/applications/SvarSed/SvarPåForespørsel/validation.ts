@@ -58,20 +58,21 @@ export const validateSvarPåForespørsel = (
 
   if (target === 'negativt') {
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.informasjon,
+      needle: (replySed as H002Sed).negativtSvar?.dokument,
       max: 255,
-      id: namespace + '-informasjon',
+      id: namespace + '-dokument',
       message: 'validation:textOverX',
       personName
     }))
 
     hasErrors.push(checkLength(v, {
-      needle: (replySed as H002Sed).negativtSvar?.dokument,
+      needle: (replySed as H002Sed).negativtSvar?.informasjon,
       max: 500,
-      id: namespace + '-dokument',
+      id: namespace + '-informasjon',
       message: 'validation:textOverX',
       personName
     }))
+
 
     hasErrors.push(checkLength(v, {
       needle: (replySed as H002Sed).negativtSvar?.sed,

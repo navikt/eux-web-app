@@ -245,6 +245,7 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={500}
                 error={validation[namespace + '-grunn']?.feilmelding}
                 namespace={namespace}
                 id='grunn'
