@@ -502,6 +502,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerRettighet']?.feilmelding}
                 namespace={namespace}
                 id='avkall'
@@ -517,6 +518,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
                 namespace={namespace}
                 id='opphoerRettighetGrunn'
@@ -532,6 +534,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerYtelse']?.feilmelding}
                 namespace={namespace}
                 id='opphoerYtelse'

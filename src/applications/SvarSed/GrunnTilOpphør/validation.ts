@@ -1,6 +1,6 @@
 import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty } from 'utils/validation'
+import {checkIfNotEmpty, checkLength} from 'utils/validation'
 
 export interface ValidateGrunnTilOpphørProps {
   sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
@@ -38,6 +38,21 @@ export const validateGrunnTilOpphor = (
       id: namespace + '-grunnOpphoerSelvstendig',
       message: 'validation:noÅrsak'
     }))
+
+    hasErrors.push(checkLength(v, {
+      needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
+      max: 65,
+      id: namespace + '-annenGrunnOpphoerAnsatt',
+      message: 'validation:textOverX'
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
+      max: 65,
+      id: namespace + '-grunnOpphoerSelvstendig',
+      message: 'validation:textOverX'
+    }))
+
   }
 
   return hasErrors.find(value => value) !== undefined

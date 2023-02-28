@@ -2,7 +2,8 @@ import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import { addError, checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
+import {addError, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+
 
 export interface ValidationUtbetalingProps {
   utbetaling: Utbetaling | undefined
@@ -103,6 +104,37 @@ export const validateSisteAnsettelseInfo = (
   }: ValidateSisteAnsettelseInfoProps
 ) => {
   const hasErrors: Array<boolean> = []
+
+  if(!_.isEmpty(sisteAnsettelseInfo?.opphoerRettighet)){
+    hasErrors.push(checkLength(v, {
+      needle: sisteAnsettelseInfo?.opphoerRettighet,
+      max: 255,
+      id: namespace + '-opphoerRettighet',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
+  if(!_.isEmpty(sisteAnsettelseInfo?.opphoerRettighetGrunn)){
+    hasErrors.push(checkLength(v, {
+      needle: sisteAnsettelseInfo?.opphoerRettighetGrunn,
+      max: 255,
+      id: namespace + '-opphoerRettighetGrunn',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
+  if(!_.isEmpty(sisteAnsettelseInfo?.opphoerYtelse)){
+    hasErrors.push(checkLength(v, {
+      needle: sisteAnsettelseInfo?.opphoerYtelse,
+      max: 255,
+      id: namespace + '-opphoerYtelse',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
   hasErrors.push(validateUtbetalinger(v, namespace, {
     utbetalinger: sisteAnsettelseInfo?.utbetalinger,
     personName
