@@ -60,7 +60,7 @@ export const validateInntekt = (
       needle: inntekt?.typeAnnen,
       max: 65,
       id: namespace + idx + '-typeAnnen',
-      message: 'validation:textOverX3',
+      message: 'validation:textOverX',
       personName
     }))
   }
