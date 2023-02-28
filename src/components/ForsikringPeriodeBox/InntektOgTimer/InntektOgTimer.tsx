@@ -57,17 +57,18 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektOgTimeProps>(validateInntektOgTime, namespace)
 
   const setArbeidstimer = (arbeidstimer: string, index: number) => {
+    const aTimer = arbeidstimer.trim().replace(",", ".")
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,
-        arbeidstimer: arbeidstimer.trim()
+        arbeidstimer: aTimer
       } as InntektOgTime)
       _resetValidation(namespace + '-arbeidstimer')
       return
     }
     _setEditInntektOgTime({
       ..._editInntektOgTime,
-      arbeidstimer: arbeidstimer.trim()
+      arbeidstimer: aTimer
     } as InntektOgTime)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }
@@ -276,7 +277,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   id='arbeidstimer'
                   label={t('label:arbeidstimer')}
                   onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-                  value={_inntektOgTime?.arbeidstimer}
+                  value={_inntektOgTime?.arbeidstimer ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : undefined}
                 />
               </Column>
             </AlignStartRow>
@@ -310,7 +311,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   <FlexDiv>
                     {t('label:arbeidstimer')}:
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_inntektOgTime?.arbeidstimer ?? '-'}
+                    {_inntektOgTime?.arbeidstimer ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : '-'}
                   </FlexDiv>
                 </FormText>
               </Column>
