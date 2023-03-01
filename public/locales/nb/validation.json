@@ -149,7 +149,7 @@
 
   "onlySingleParticipant": "Kun en deltaker tillatt",
 
-  "textOverX": "tekststørrelse over {{x}} tegn",
+  "textOverX": "Tekststørrelse over {{x}} tegn",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 
   "uncheckedFnr": "Uverifisert fødselsnummer",

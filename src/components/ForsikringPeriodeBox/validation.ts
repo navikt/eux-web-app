@@ -7,7 +7,8 @@ import {
   PeriodeUtenForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotDate, checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
+import {checkIfNotDate, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidationForsikringPeriodeBoxProps {
   forsikringPeriode: ForsikringPeriode | null | undefined
@@ -87,6 +88,15 @@ export const validateForsikringPeriodeBox = (
       id: namespace + (nsIndex ?? '') + '-annenTypeForsikringsperiode',
       message: 'validation:noAnnenTypeForsikringsperiode'
     }))
+
+    if(!_.isEmpty((forsikringPeriode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode)){
+      hasErrors.push(checkLength(v, {
+        needle: (forsikringPeriode as PeriodeAnnenForsikring)?.annenTypeForsikringsperiode,
+        max: 65,
+        id: namespace + (nsIndex ?? '') + '-annenTypeForsikringsperiode',
+        message: 'validation:textOverX'
+      }))
+    }
   }
 
   if (showBeløp) {

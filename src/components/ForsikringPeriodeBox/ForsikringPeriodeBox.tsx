@@ -616,6 +616,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 label={t('label:annen-type')}
                 onChanged={setAnnenTypeForsikringsperiode}
                 value={(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
+                required={true}
               />
             )}
 
