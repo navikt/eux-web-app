@@ -603,6 +603,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                       label={t('label:inntekt-og-time-info')}
                       onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo)}
                       value={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
+                      required={true}
                     />
                   </Column>
                 </AlignStartRow>

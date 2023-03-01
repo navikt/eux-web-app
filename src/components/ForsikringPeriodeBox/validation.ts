@@ -80,6 +80,16 @@ export const validateForsikringPeriodeBox = (
       id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
       message: 'validation:noInfo'
     }))
+
+    if(!_.isEmpty((forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo)){
+      hasErrors.push(checkLength(v, {
+        needle: (forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo,
+        max: 25,
+        id: namespace + (nsIndex ?? '') + '-inntektOgTimerInfo',
+        message: 'validation:textOverX'
+      }))
+    }
+
   }
 
   if (showAnnen) {
