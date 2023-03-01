@@ -1,6 +1,7 @@
 import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import {checkIfNotEmpty, checkLength} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidateGrunnTilOpphørProps {
   sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
@@ -27,17 +28,21 @@ export const validateGrunnTilOpphor = (
   }
 
   if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
-      id: namespace + '-annenGrunnOpphoerAnsatt',
-      message: 'validation:noAnnenOpphør'
-    }))
+    if(_.isEmpty(sisteAnsettelseInfo?.grunnOpphoerSelvstendig)){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
+        id: namespace + '-annenGrunnOpphoerAnsatt',
+        message: 'validation:noAnnenOpphør'
+      }))
+    }
 
-    hasErrors.push(checkIfNotEmpty(v, {
-      needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
-      id: namespace + '-grunnOpphoerSelvstendig',
-      message: 'validation:noÅrsak'
-    }))
+    if(_.isEmpty(sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt)){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
+        id: namespace + '-grunnOpphoerSelvstendig',
+        message: 'validation:noÅrsak'
+      }))
+    }
 
     hasErrors.push(checkLength(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
