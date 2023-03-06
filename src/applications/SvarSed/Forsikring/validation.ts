@@ -3,6 +3,7 @@ import { ForsikringPeriode, Periode, ReplySed, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getNSIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
+import {periodeSort} from "../../../utils/sort";
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode | undefined
@@ -68,7 +69,7 @@ export const validateForsikringPerioder = (
   }: ValidateForsikringPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  perioder?.forEach((periode: Periode, index: number) => {
+  perioder?.sort(periodeSort).forEach((periode: Periode, index: number) => {
     if (!Object.prototype.hasOwnProperty.call(periode as ForsikringPeriode, '__type')) {
       periode.__type = type
       periode.__index = index
