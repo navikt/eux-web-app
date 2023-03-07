@@ -131,7 +131,8 @@
   "noSluttdato": "Ingen sluttdato",
   "noSwift": "Ingen SWIFT",
 
-  "notANumber": "Må være heltall eller desimaltall",
+  "notANumber": "Kun heltall eller desimaltall tillatt",
+  "notInteger": "Kun heltall tillatt",
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
   "noTelephoneType": "Du må velge en telefon type til",
   "noTema": "Du må velge et tema",

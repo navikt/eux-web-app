@@ -385,7 +385,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   )}
                   {_utbetaling?.utbetalingType === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
                     <Input
-                      type='number'
                       error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
                       namespace={_namespace}
                       id='feriedagerTilGode'

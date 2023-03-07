@@ -39,6 +39,15 @@ export const validateInntektOgTime = (
     personName
   }))
 
+  if(!_.isEmpty(inntektOgTime?.bruttoinntekt)){
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: inntektOgTime?.bruttoinntekt,
+      id: namespace + idx + '-bruttoinntekt',
+      message: 'validation:notANumber',
+      personName
+    }))
+  }
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntektOgTime?.valuta,
     id: namespace + idx + '-valuta',

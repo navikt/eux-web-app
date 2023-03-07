@@ -290,10 +290,11 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const setBeløp = (newBeløp: string) => {
+    const beloep = newBeløp.trim().replace(",", ".")
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        beloep: newBeløp.trim(),
+        beloep: beloep,
         valuta: _.isNil((_newForsikringPeriode as any)?.valuta) ? 'NOK' : (_newForsikringPeriode as any)?.valuta
       } as any)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -301,7 +302,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      beloep: newBeløp.trim(),
+      beloep: beloep,
       valuta: _.isNil((_editForsikringPeriode as any)?.valuta) ? 'NOK' : (_editForsikringPeriode as any)?.valuta
     } as any)
     if (resetValidation) {
@@ -631,7 +632,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     label={t('label:beløp')}
                     onChanged={setBeløp}
                     required
-                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? parseFloat((_forsikringPeriode as PeriodeFerieForsikring)?.beloep).toLocaleString('nb-NO') : undefined}
                   />
                 </Column>
                 <Column>
@@ -787,7 +788,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         error={_v[namespace + '-beloep']?.feilmelding}
                         id={namespace + '-beloep'}
                       >
-                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? parseFloat((_forsikringPeriode as PeriodeFerieForsikring)?.beloep).toLocaleString('nb-NO') : '-'}
                       </FormText>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FormText

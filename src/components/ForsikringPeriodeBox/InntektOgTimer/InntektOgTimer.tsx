@@ -90,10 +90,11 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   }
 
   const setBruttoinntekt = (newBeløp: string, index: number) => {
+    const bruttoinntekt = newBeløp.trim().replace(",", ".")
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,
-        bruttoinntekt: newBeløp.trim(),
+        bruttoinntekt: bruttoinntekt,
         valuta: _.isNil(_newInntektOgTime?.valuta) ? 'NOK' : _newInntektOgTime?.valuta
       } as InntektOgTime)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -101,7 +102,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     }
     _setEditInntektOgTime({
       ..._editInntektOgTime,
-      bruttoinntekt: newBeløp.trim(),
+      bruttoinntekt: bruttoinntekt,
       valuta: _.isNil(_editInntektOgTime?.valuta) ? 'NOK' : _editInntektOgTime?.valuta
     } as InntektOgTime)
     dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + '-beloep', namespace + '-valuta']))
@@ -252,7 +253,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   label={t('label:brutto-inntekt')}
                   onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
                   required
-                  value={_inntektOgTime?.bruttoinntekt}
+                  value={_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.bruttoinntekt).toLocaleString('nb-NO') : undefined}
                 />
               </Column>
               <Column>
@@ -292,7 +293,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                     error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
                     id={_namespace + '-bruttoinntekt'}
                   >
-                    {_inntektOgTime?.bruttoinntekt}
+                    {_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : '-'}
                   </FormText>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FormText

@@ -2,7 +2,7 @@ import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import {addError, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+import {addError, checkIfInteger, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
 
 
 export interface ValidationUtbetalingProps {
@@ -49,6 +49,18 @@ export const validateUtbetaling = (
         personName
       }))
     }
+  }
+
+  if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'){
+    if(!_.isEmpty(utbetaling?.feriedagerTilGode)){
+      hasErrors.push(checkIfInteger(v, {
+        needle: utbetaling?.feriedagerTilGode,
+        id: namespace + idx + '-feriedagerTilGode',
+        message: 'validation:notInteger',
+        personName
+      }))
+    }
+
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
