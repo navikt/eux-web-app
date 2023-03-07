@@ -3,7 +3,7 @@ import { Loennsopplysning } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import {checkIfDuplicate, checkIfNotEmpty, checkIfNotNumber} from 'utils/validation'
+import {checkIfDuplicate, checkIfInteger, checkIfNotEmpty, checkIfNotNumber} from 'utils/validation'
 
 export interface ValidationLoennsopplysningerProps {
   loennsopplysninger: Array<Loennsopplysning> | undefined
@@ -52,6 +52,14 @@ export const validateLoennsopplysning = (
       needle: loennsopplysning?.arbeidstimer,
       id: namespace + idx + '-arbeidstimer',
       message: 'validation:notANumber',
+      personName
+    }))
+  }
+  if(!_.isEmpty(loennsopplysning?.arbeidsdager)){
+    hasErrors.push(checkIfInteger(v, {
+      needle: loennsopplysning?.arbeidsdager,
+      id: namespace + idx + '-arbeidsdager',
+      message: 'validation:notInteger',
       personName
     }))
   }

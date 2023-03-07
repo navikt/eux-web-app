@@ -92,10 +92,11 @@ const Inntekter: React.FC<any> = ({
   }
 
   const setBeløp = (newBeløp: string, index: number) => {
+    const beloep = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
     if (index < 0) {
       _setNewInntekt({
         ..._newInntekt,
-        beloep: newBeløp.trim(),
+        beloep: beloep,
         valuta: _.isNil(_newInntekt?.valuta) ? 'NOK' : _newInntekt?.valuta
       } as Inntekt)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -103,7 +104,7 @@ const Inntekter: React.FC<any> = ({
     }
     _setEditInntekt({
       ..._editInntekt,
-      beloep: newBeløp.trim(),
+      beloep: beloep,
       valuta: _.isNil(_editInntekt?.valuta) ? 'NOK' : _editInntekt?.valuta
     } as Inntekt)
     dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + getIdx(index) + '-valuta']))
@@ -246,7 +247,7 @@ const Inntekter: React.FC<any> = ({
                     label={t('label:beløp')}
                     onChanged={(beløp: string) => setBeløp(beløp, index)}
                     required
-                    value={_inntekt?.beloep}
+                    value={_inntekt?.beloep.replace('.', ',')}
                   />
                 </Column>
                 <Column>
@@ -293,7 +294,7 @@ const Inntekter: React.FC<any> = ({
                           error={_v[_namespace + '-beloep']?.feilmelding}
                           id={_namespace + '-beloep'}
                         >
-                          {_inntekt?.beloep}
+                          {_inntekt?.beloep.replace('.', ',')}
                         </FormText>
                         <HorizontalSeparatorDiv size='0.5' />
                         <FormText
