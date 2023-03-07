@@ -247,7 +247,7 @@ const Inntekter: React.FC<any> = ({
                     label={t('label:beløp')}
                     onChanged={(beløp: string) => setBeløp(beløp, index)}
                     required
-                    value={_inntekt?.beloep.replace('.', ',')}
+                    value={_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : undefined}
                   />
                 </Column>
                 <Column>
@@ -294,7 +294,7 @@ const Inntekter: React.FC<any> = ({
                           error={_v[_namespace + '-beloep']?.feilmelding}
                           id={_namespace + '-beloep'}
                         >
-                          {_inntekt?.beloep.replace('.', ',')}
+                          {_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : '-'}
                         </FormText>
                         <HorizontalSeparatorDiv size='0.5' />
                         <FormText

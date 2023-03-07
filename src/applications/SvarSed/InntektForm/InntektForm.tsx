@@ -440,7 +440,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                           error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
                           id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
                         >
-                          {inntekt?.beloep.replace('.', ',')}
+                          {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
                         </FormText>
                         <HorizontalSeparatorDiv size='0.5' />
                         <FormText
