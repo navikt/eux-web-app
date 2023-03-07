@@ -290,7 +290,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const setBeløp = (newBeløp: string) => {
-    const beloep = newBeløp.trim().replace(",", ".")
+    const beloep = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
@@ -632,7 +632,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     label={t('label:beløp')}
                     onChanged={setBeløp}
                     required
-                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? parseFloat((_forsikringPeriode as PeriodeFerieForsikring)?.beloep).toLocaleString('nb-NO') : undefined}
+                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep.replace('.', ',') : undefined}
                   />
                 </Column>
                 <Column>
@@ -753,10 +753,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           />
                         </Column>
                         <Column>
-                          {inntektOgTime?.bruttoinntekt}  {inntektOgTime?.valuta}
+                          {inntektOgTime?.bruttoinntekt.replace('.', ',')}  {inntektOgTime?.valuta}
                         </Column>
                         <Column>
-                          {inntektOgTime?.arbeidstimer} {t('label:arbeidstimer')}
+                          {inntektOgTime?.arbeidstimer.replace('.', ',')} {t('label:arbeidstimer')}
                         </Column>
                       </AlignStartRow>
                     ))}
@@ -782,13 +782,13 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 <AlignStartRow>
                   <Column>
                     <FlexDiv>
-                      <Label>{t('label:beløp') + ':'}</Label>
+                      <Label>{t('label:beløp') + ':'} </Label>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FormText
                         error={_v[namespace + '-beloep']?.feilmelding}
                         id={namespace + '-beloep'}
                       >
-                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? parseFloat((_forsikringPeriode as PeriodeFerieForsikring)?.beloep).toLocaleString('nb-NO') : '-'}
+                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep.replace('.', ',') : '-'}
                       </FormText>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FormText

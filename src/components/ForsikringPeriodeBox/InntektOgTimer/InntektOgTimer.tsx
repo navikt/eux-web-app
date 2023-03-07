@@ -90,7 +90,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   }
 
   const setBruttoinntekt = (newBeløp: string, index: number) => {
-    const bruttoinntekt = newBeløp.trim().replace(",", ".")
+    const bruttoinntekt = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,
@@ -253,7 +253,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   label={t('label:brutto-inntekt')}
                   onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
                   required
-                  value={_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.bruttoinntekt).toLocaleString('nb-NO') : undefined}
+                  value={_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : undefined}
                 />
               </Column>
               <Column>
@@ -278,7 +278,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   id='arbeidstimer'
                   label={t('label:arbeidstimer')}
                   onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-                  value={_inntektOgTime?.arbeidstimer ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : undefined}
+                  value={_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : undefined}
                 />
               </Column>
             </AlignStartRow>
@@ -293,7 +293,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                     error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
                     id={_namespace + '-bruttoinntekt'}
                   >
-                    {_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.bruttoinntekt).toLocaleString('nb-NO') : '-'}
+                    {_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : '-'}
                   </FormText>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FormText
@@ -312,7 +312,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   <FlexDiv>
                     {t('label:arbeidstimer')}:
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_inntektOgTime?.arbeidstimer ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : '-'}
+                    {_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : '-'}
                   </FlexDiv>
                 </FormText>
               </Column>
