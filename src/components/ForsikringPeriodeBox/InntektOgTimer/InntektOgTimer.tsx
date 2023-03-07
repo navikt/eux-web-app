@@ -293,7 +293,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                     error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
                     id={_namespace + '-bruttoinntekt'}
                   >
-                    {_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.arbeidstimer).toLocaleString('nb-NO') : '-'}
+                    {_inntektOgTime?.bruttoinntekt ? parseFloat(_inntektOgTime?.bruttoinntekt).toLocaleString('nb-NO') : '-'}
                   </FormText>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FormText
