@@ -39,7 +39,7 @@ const PDU1Details: React.FC = () => {
     } else {
       const newCurrentEntry: LocalStorageEntry<PDU1> = _.cloneDeep(currentEntry)
       newCurrentEntry.content = _.cloneDeep(pdu1!)
-      dispatch(saveEntry('svarsed', newCurrentEntry))
+      dispatch(saveEntry('pdu1', newCurrentEntry))
     }
   }
 
