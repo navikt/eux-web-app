@@ -9,7 +9,8 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  XSed
+  XSed,
+  Person
 } from 'declarations/sed.d'
 import {CreateSedResponse, FagSaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -98,6 +99,28 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
   return replySed
 }
 
+const trimPin = (bruker:Person):Person => {
+  let brukerWithTrimmedPin = bruker
+  if(bruker && bruker.personInfo) {
+    let personInfo = bruker.personInfo
+    let trimmedPins = personInfo.pin.map((pin: any) => {
+      return {
+        ...pin,
+        identifikator: pin.identifikator.trim()
+      }
+    })
+
+    brukerWithTrimmedPin = {
+      ...bruker,
+      personInfo: {
+        ...personInfo,
+        pin: trimmedPins
+      }
+    }
+  }
+  return brukerWithTrimmedPin
+}
+
 const svarsedReducer = (
   state: SvarsedState = initialSvarsedState,
   action: AnyAction
@@ -162,6 +185,9 @@ const svarsedReducer = (
       const payload = (action as ActionWithPayload).payload
       let lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
 
+      // trim fnr - might contain whitespace if entered in RINA
+      let bruker = trimPin(payload.bruker)
+
       if(isUSed(payload)){
         //Add Norsk Saksnummer for U-Seds - TEN-24
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
@@ -175,6 +201,7 @@ const svarsedReducer = (
 
       const newReplySed: ReplySed | null | undefined = {
         ...payload,
+        bruker,
         lokaleSakIder,
         sak: (action as ActionWithPayload).context.sak,
         sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
@@ -204,10 +231,15 @@ const svarsedReducer = (
       }
 
     case types.SVARSED_EDIT_SUCCESS: {
+      const payload = (action as ActionWithPayload).payload
+
+      // trim fnr - might contain whitespace if entered in RINA
+      let bruker = trimPin(payload.bruker)
+
       const newReplySed = {
-        ...(action as ActionWithPayload).payload,
+        ...payload,
         bruker: {
-          ...(action as ActionWithPayload).payload.bruker,
+          ...bruker,
           ...((action as ActionWithPayload).payload.sedType.startsWith('X') && {
             pin: [{
               land: 'NO',
