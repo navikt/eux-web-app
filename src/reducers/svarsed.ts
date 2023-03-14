@@ -160,7 +160,7 @@ const svarsedReducer = (
 
     case types.SVARSED_REPLYTOSED_SUCCESS: {
       const payload = (action as ActionWithPayload).payload
-      let lokaleSakIder = payload.lokaleSakIder
+      let lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
 
       if(isUSed(payload)){
         //Add Norsk Saksnummer for U-Seds - TEN-24
