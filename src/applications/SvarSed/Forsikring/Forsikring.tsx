@@ -149,6 +149,21 @@ const Forsikring: React.FC<MainFormProps> = ({
     _setNewForm(false)
   }
 
+  const onSort = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clonedValidation = _.cloneDeep(validation)
+    const sortType = e.target.checked ? 'group' : 'time'
+    performValidation<ValidateForsikringProps>(
+      clonedValidation, namespace, validateForsikring, {
+        replySed: _.cloneDeep(replySed) as ReplySed,
+        sort: sortType,
+        allPeriodsSorted: _allPeriods,
+        personName
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+    _setSort(sortType)
+  }
+
   const onSaveEdit = (editPeriode: ForsikringPeriode) => {
     const type = editPeriode.__type
     const index = editPeriode.__index
@@ -300,7 +315,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           <>
             <Checkbox
               checked={_sort === 'group'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+              onChange={onSort}
             >
               {t('label:group-by-periodetype')}
             </Checkbox>
