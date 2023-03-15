@@ -44,6 +44,10 @@ import { getNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
+import {
+  validateArbeidsperioderOversikt,
+  ValidationArbeidsperioderOversiktProps
+} from "../ArbeidsperioderOversikt/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -63,6 +67,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-${personID}-forsikring`
+  const arbeidsPerioderNamespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const getId = (p: ForsikringPeriode | null | undefined): string => p ? p.__type + '[' + p.__index + ']' : 'new-forsikring'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
@@ -105,6 +110,15 @@ const Forsikring: React.FC<MainFormProps> = ({
         personName
       }, true
     )
+
+    if(hasNamespaceWithErrors(clonedValidation, arbeidsPerioderNamespace)){
+      performValidation<ValidationArbeidsperioderOversiktProps>(
+        clonedValidation, arbeidsPerioderNamespace, validateArbeidsperioderOversikt, {
+          perioderMedForsikring: _.get(replySed, 'perioderAnsattMedForsikring'),
+          personName
+        }, true
+      )
+    }
     dispatch(setValidation(clonedValidation))
   })
 

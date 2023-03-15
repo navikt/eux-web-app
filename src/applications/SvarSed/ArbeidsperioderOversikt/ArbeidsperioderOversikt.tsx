@@ -11,7 +11,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView} from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView, ReplySed} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -31,6 +31,8 @@ import {
   ValidationArbeidsperioderOversiktProps
 } from './validation'
 import moment from "moment";
+import {validateForsikring, ValidateForsikringProps} from "../Forsikring/validation";
+import {hasNamespaceWithErrors} from "../../../utils/validation";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -62,6 +64,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
+  const forsikringNamespace = `${parentNamespace}-${personID}-forsikring`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const anmodningsperiode: Periode = _.get(replySed, "anmodningsperiode")
@@ -90,14 +93,24 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   useUnmount(() => {
-    const clonedvalidation = _.cloneDeep(validation)
+    const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationArbeidsperioderOversiktProps>(
-      clonedvalidation, namespace, validateArbeidsperioderOversikt, {
+      clonedValidation, namespace, validateArbeidsperioderOversikt, {
         perioderMedForsikring: _periodsForValidation ? _periodsForValidation : perioder,
         personName
       }, true
     )
-    dispatch(setValidation(clonedvalidation))
+
+    if(hasNamespaceWithErrors(clonedValidation, forsikringNamespace)){
+      performValidation<ValidateForsikringProps>(
+        clonedValidation, forsikringNamespace, validateForsikring, {
+          replySed: _.cloneDeep(replySed) as ReplySed,
+          personName
+        }, true
+      )
+    }
+
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {
