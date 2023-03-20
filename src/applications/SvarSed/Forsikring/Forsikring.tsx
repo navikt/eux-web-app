@@ -104,9 +104,11 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
+    const clonedReplySed = _.cloneDeep(replySed) as ReplySed
+    const sortedPerioderMedForsikring = (_.get(clonedReplySed, 'perioderAnsattMedForsikring')).sort(periodeSort)
     performValidation<ValidateForsikringProps>(
       clonedValidation, namespace, validateForsikring, {
-        replySed: _.cloneDeep(replySed) as ReplySed,
+        replySed: clonedReplySed,
         personName
       }, true
     )
@@ -114,7 +116,7 @@ const Forsikring: React.FC<MainFormProps> = ({
     if(hasNamespaceWithErrors(clonedValidation, arbeidsPerioderNamespace)){
       performValidation<ValidationArbeidsperioderOversiktProps>(
         clonedValidation, arbeidsPerioderNamespace, validateArbeidsperioderOversikt, {
-          perioderMedForsikring: _.get(replySed, 'perioderAnsattMedForsikring'),
+          perioderMedForsikring: sortedPerioderMedForsikring,
           personName
         }, true
       )

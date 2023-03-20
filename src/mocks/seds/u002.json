@@ -54,23 +54,7 @@
   "sedType": "U002",
   "perioderAnsattMedForsikring": [
     {
-      "arbeidsgiver": {
-        "navn": "Ansatt Med Forsikring AS",
-        "adresse": {
-          "gate": "Storgata 1",
-          "postnummer": "0155",
-          "by": "Oslo",
-          "land": "NO",
-          "bygning": "A",
-          "region": "Akershus"
-        },
-        "identifikatorer": [
-          {
-            "type": "organisasjonsnummer",
-            "id": "111111111"
-          }
-        ]
-      },
+      "arbeidsgiver": null,
       "startdato": "1960-01-01",
       "sluttdato": "1960-12-31"
     },
@@ -99,6 +83,27 @@
       "arbeidsgiver": null,
       "startdato": "1962-01-01",
       "sluttdato": "1962-12-31"
+    },
+    {
+      "arbeidsgiver": {
+        "navn": "Ansatt Med Forsikring AS",
+        "adresse": {
+          "gate": "Storgata 1",
+          "postnummer": "0155",
+          "by": "Oslo",
+          "land": "NO",
+          "bygning": "A",
+          "region": "Akershus"
+        },
+        "identifikatorer": [
+          {
+            "type": "organisasjonsnummer",
+            "id": "111111111"
+          }
+        ]
+      },
+      "startdato": "1961-01-01",
+      "sluttdato": "1961-12-31"
     }
   ],
   "perioderSelvstendigMedForsikring" : [
