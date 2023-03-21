@@ -385,7 +385,6 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                   )}
                   {_utbetaling?.utbetalingType === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (
                     <Input
-                      type='number'
                       error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
                       namespace={_namespace}
                       id='feriedagerTilGode'
@@ -502,6 +501,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerRettighet']?.feilmelding}
                 namespace={namespace}
                 id='avkall'
@@ -517,6 +517,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
                 namespace={namespace}
                 id='opphoerRettighetGrunn'
@@ -532,6 +533,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           <Column>
             <TextAreaDiv>
               <TextArea
+                maxLength={255}
                 error={validation[namespace + '-opphoerYtelse']?.feilmelding}
                 namespace={namespace}
                 id='opphoerYtelse'

@@ -258,10 +258,13 @@
   "option-ugyldiggjøre-06" : "Det nasjonale vedtaket ble bestridt av kunden Det vil ikke sendes flere SED-er",
   "option-ugyldiggjøre-99" : "Annet",
 
-  "option-vedtaktype-primaerkompetanseArt58": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
-  "option-vedtaktype-sekundaerkompetanseArt58": "Vedtak om sekundærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
-  "option-vedtaktype-primaerkompetanseArt68": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
-  "option-vedtaktype-sekundaerkompetanseArt68": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
+  "option-vedtaktype-midlertidig-vedtak": "Midlertidig vedtak",
+  "option-vedtaktype-vedtak-om-kompetanse": "Vedtak om kompetanse",
+
+  "option-kompetansetype-primaerkompetanseArt58": "Vedtak om primærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
+  "option-kompetansetype-sekundaerkompetanseArt58": "Vedtak om sekundærkompetanse etter artikkel 58 i forordning (EF) nr. 987/2009",
+  "option-kompetansetype-primaerkompetanseArt68": "Vedtak om primærkompetanse under artikkel 68 i forordning (EF) nr. 883/2004",
+  "option-kompetansetype-sekundaerkompetanseArt68": "Vedtak om sekundærkompetanse etter artikkel 68 i forordning (EF) nr. 883/2004020",
 
   "option-ytterligere-1" : "Melding om mer informasjon",
   "option-ytterligere-2" : "Anmodning om tilleggsinformasjon",

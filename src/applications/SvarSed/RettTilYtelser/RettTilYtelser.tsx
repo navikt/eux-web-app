@@ -38,7 +38,7 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
     performValidation<ValidationRettTilYtelseProps>(
       clonedValidation, namespace, validateRettTilYtelse, {
         rettTilYtelse
-      }
+      }, true
     )
     dispatch(setValidation(clonedValidation))
   })

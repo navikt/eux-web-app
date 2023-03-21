@@ -2,7 +2,8 @@ import { validatePeriode } from 'components/Forms/validation'
 import { InntektOgTime } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfNotEmpty } from 'utils/validation'
+import {checkIfNotEmpty, checkIfNotNumber} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidationInntektOgTimeProps {
   inntektOgTime: InntektOgTime | undefined
@@ -38,12 +39,30 @@ export const validateInntektOgTime = (
     personName
   }))
 
+  if(!_.isEmpty(inntektOgTime?.bruttoinntekt)){
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: inntektOgTime?.bruttoinntekt,
+      id: namespace + idx + '-bruttoinntekt',
+      message: 'validation:notANumber',
+      personName
+    }))
+  }
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: inntektOgTime?.valuta,
     id: namespace + idx + '-valuta',
     message: 'validation:noValuta',
     personName
   }))
+
+  if(!_.isEmpty(inntektOgTime?.arbeidstimer)){
+    hasErrors.push(checkIfNotNumber(v, {
+      needle: inntektOgTime?.arbeidstimer,
+      id: namespace + idx + '-arbeidstimer',
+      message: 'validation:notANumber',
+      personName
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }

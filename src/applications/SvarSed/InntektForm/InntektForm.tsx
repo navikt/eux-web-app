@@ -178,17 +178,18 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   const setArbeidsTimer = (arbeidstimer: string, index: number) => {
+    const aTimer = arbeidstimer.trim().replace(",", ".")
     if (index < 0) {
       _setNewLoennsopplysning({
         ..._newLoennsopplysning,
-        arbeidstimer: arbeidstimer.trim()
+        arbeidstimer: aTimer
       } as Loennsopplysning)
       _resetValidation(namespace + '-arbeidstimer')
       return
     }
     _setEditLoennsopplysning({
       ..._editLoennsopplysning,
-      arbeidstimer: arbeidstimer.trim()
+      arbeidstimer: aTimer
     } as Loennsopplysning)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }
@@ -337,7 +338,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                     id='arbeidstimer'
                     label={t('label:arbeidstimer')}
                     onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
-                    value={_loennsopplysning?.arbeidstimer}
+                    value={_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
                   />
                 </Column>
                 <Column>
@@ -379,7 +380,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                     <FlexDiv>
                       <Label>{t('label:arbeidstimer') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
-                      {_loennsopplysning?.arbeidstimer}
+                      {_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
                     </FlexDiv>
                   </FormText>
                 </Column>
@@ -439,7 +440,7 @@ const InntektForm: React.FC<MainFormProps> = ({
                           error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
                           id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
                         >
-                          {inntekt?.beloep}
+                          {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
                         </FormText>
                         <HorizontalSeparatorDiv size='0.5' />
                         <FormText
@@ -537,10 +538,10 @@ const InntektForm: React.FC<MainFormProps> = ({
             {t('label:arbeidsperioder')}
           </Heading>
           <VerticalSeparatorDiv size='2' />
-          {arbeidsperioder?.arbeidsperioder?.map(a => {
+          {arbeidsperioder?.arbeidsperioder?.map((a, index) => {
             const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
             return (
-              <div key={getOrgnr(period, 'organisasjonsnummer')}>
+              <div key={getOrgnr(period, 'organisasjonsnummer') + '_' + index}>
                 <ForsikringPeriodeBox
                   forsikringPeriode={period}
                   showArbeidsgiver

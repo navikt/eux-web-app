@@ -3,6 +3,7 @@ import { ForsikringPeriode, Periode, ReplySed, U002Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getNSIdx } from 'utils/namespace'
 import { checkIfNotEmpty } from 'utils/validation'
+import {periodeSort} from "../../../utils/sort";
 
 export interface ValidationForsikringPeriodeProps {
   periode: ForsikringPeriode | undefined
@@ -12,12 +13,14 @@ export interface ValidationForsikringPeriodeProps {
 
 interface ValidateForsikringPerioderProps {
   perioder: Array<ForsikringPeriode> |undefined
-  type: string
+  type?: string
   personName?: string
 }
 
 export interface ValidateForsikringProps {
   replySed: ReplySed
+  sort?: "group" | "time"
+  allPeriodsSorted?: Array<ForsikringPeriode>
   personName?: string
 }
 
@@ -68,14 +71,14 @@ export const validateForsikringPerioder = (
   }: ValidateForsikringPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  perioder?.forEach((periode: Periode, index: number) => {
+  perioder?.sort(periodeSort).forEach((periode: Periode, index: number) => {
     if (!Object.prototype.hasOwnProperty.call(periode as ForsikringPeriode, '__type')) {
       periode.__type = type
       periode.__index = index
     }
     hasErrors.push(validateForsikringPeriode(validation, namespace, {
       periode,
-      nsIndex: getNSIdx(type, index),
+      nsIndex: getNSIdx(periode.__type, index),
       personName
     }))
   })
@@ -87,21 +90,27 @@ export const validateForsikring = (
   namespace: string,
   {
     replySed,
+    sort,
+    allPeriodsSorted,
     personName
   } : ValidateForsikringProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattMedForsikring', perioder: (replySed as U002Sed).perioderAnsattMedForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigMedForsikring', perioder: (replySed as U002Sed).perioderSelvstendigMedForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattUtenForsikring', perioder: (replySed as U002Sed).perioderAnsattUtenForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigUtenForsikring', perioder: (replySed as U002Sed).perioderSelvstendigUtenForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSyk', perioder: (replySed as U002Sed).perioderSyk, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSvangerskapBarn', perioder: (replySed as U002Sed).perioderSvangerskapBarn, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderUtdanning', perioder: (replySed as U002Sed).perioderUtdanning, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderMilitaertjeneste', perioder: (replySed as U002Sed).perioderMilitaertjeneste, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrihetsberoevet', perioder: (replySed as U002Sed).perioderFrihetsberoevet, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrivilligForsikring', perioder: (replySed as U002Sed).perioderFrivilligForsikring, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderKompensertFerie', perioder: (replySed as U002Sed).perioderKompensertFerie, personName }))
-  hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnnenForsikring', perioder: (replySed as U002Sed).perioderAnnenForsikring, personName }))
+  if(sort && allPeriodsSorted && sort === "time"){
+    hasErrors.push(validateForsikringPerioder(v, namespace, { perioder: allPeriodsSorted, personName }))
+  } else {
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattMedForsikring', perioder: (replySed as U002Sed).perioderAnsattMedForsikring, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigMedForsikring', perioder: (replySed as U002Sed).perioderSelvstendigMedForsikring, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnsattUtenForsikring', perioder: (replySed as U002Sed).perioderAnsattUtenForsikring, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSelvstendigUtenForsikring', perioder: (replySed as U002Sed).perioderSelvstendigUtenForsikring, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSyk', perioder: (replySed as U002Sed).perioderSyk, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderSvangerskapBarn', perioder: (replySed as U002Sed).perioderSvangerskapBarn, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderUtdanning', perioder: (replySed as U002Sed).perioderUtdanning, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderMilitaertjeneste', perioder: (replySed as U002Sed).perioderMilitaertjeneste, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrihetsberoevet', perioder: (replySed as U002Sed).perioderFrihetsberoevet, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderFrivilligForsikring', perioder: (replySed as U002Sed).perioderFrivilligForsikring, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderKompensertFerie', perioder: (replySed as U002Sed).perioderKompensertFerie, personName }))
+    hasErrors.push(validateForsikringPerioder(v, namespace, { type: 'perioderAnnenForsikring', perioder: (replySed as U002Sed).perioderAnnenForsikring, personName }))
+  }
   return hasErrors.find(value => value) !== undefined
 }

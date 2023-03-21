@@ -57,17 +57,18 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektOgTimeProps>(validateInntektOgTime, namespace)
 
   const setArbeidstimer = (arbeidstimer: string, index: number) => {
+    const aTimer = arbeidstimer.trim().replace(",", ".")
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,
-        arbeidstimer: arbeidstimer.trim()
+        arbeidstimer: aTimer
       } as InntektOgTime)
       _resetValidation(namespace + '-arbeidstimer')
       return
     }
     _setEditInntektOgTime({
       ..._editInntektOgTime,
-      arbeidstimer: arbeidstimer.trim()
+      arbeidstimer: aTimer
     } as InntektOgTime)
     dispatch(resetValidation(namespace + getIdx(index) + '-arbeidstimer'))
   }
@@ -89,10 +90,11 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
   }
 
   const setBruttoinntekt = (newBeløp: string, index: number) => {
+    const bruttoinntekt = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
     if (index < 0) {
       _setNewInntektOgTime({
         ..._newInntektOgTime,
-        bruttoinntekt: newBeløp.trim(),
+        bruttoinntekt: bruttoinntekt,
         valuta: _.isNil(_newInntektOgTime?.valuta) ? 'NOK' : _newInntektOgTime?.valuta
       } as InntektOgTime)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -100,7 +102,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     }
     _setEditInntektOgTime({
       ..._editInntektOgTime,
-      bruttoinntekt: newBeløp.trim(),
+      bruttoinntekt: bruttoinntekt,
       valuta: _.isNil(_editInntektOgTime?.valuta) ? 'NOK' : _editInntektOgTime?.valuta
     } as InntektOgTime)
     dispatch(resetValidation([namespace + getIdx(index) + '-beloep', namespace + '-beloep', namespace + '-valuta']))
@@ -251,7 +253,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   label={t('label:brutto-inntekt')}
                   onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
                   required
-                  value={_inntektOgTime?.bruttoinntekt}
+                  value={_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : undefined}
                 />
               </Column>
               <Column>
@@ -276,7 +278,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   id='arbeidstimer'
                   label={t('label:arbeidstimer')}
                   onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-                  value={_inntektOgTime?.arbeidstimer}
+                  value={_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : undefined}
                 />
               </Column>
             </AlignStartRow>
@@ -291,7 +293,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                     error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
                     id={_namespace + '-bruttoinntekt'}
                   >
-                    {_inntektOgTime?.bruttoinntekt}
+                    {_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : '-'}
                   </FormText>
                   <HorizontalSeparatorDiv size='0.5' />
                   <FormText
@@ -310,7 +312,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
                   <FlexDiv>
                     {t('label:arbeidstimer')}:
                     <HorizontalSeparatorDiv size='0.5' />
-                    {_inntektOgTime?.arbeidstimer ?? '-'}
+                    {_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : '-'}
                   </FlexDiv>
                 </FormText>
               </Column>

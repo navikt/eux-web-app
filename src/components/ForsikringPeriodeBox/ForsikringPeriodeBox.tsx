@@ -104,6 +104,8 @@ export interface ArbeidsgiverBoxProps<T> {
   resetValidation ?: (namespace: string) => void
   setValidation ?: (v: Validation) => void
   setCopiedPeriod?: (p:any | null) => void
+  index?: number | undefined
+  type?: string | undefined
 }
 
 const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
@@ -131,9 +133,14 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   validation,
   resetValidation,
   setValidation,
-  setCopiedPeriod
+  setCopiedPeriod,
+  index,
+  type
 }: ArbeidsgiverBoxProps<T>): JSX.Element => {
   const { t } = useTranslation()
+
+  const idx = index === undefined || (index && index === -1) ? "" : "[" + index + "]"
+  namespace = type ? namespace + '[' + type + ']' + idx : namespace + idx
 
   const [_inEditMode, _setInEditMode] = useState<boolean>(newMode)
   const [_newForsikringPeriode, _setNewForsikringPeriode] = useState<T | null | undefined>(newMode ? forsikringPeriode : undefined)
@@ -283,10 +290,11 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
   }
 
   const setBeløp = (newBeløp: string) => {
+    const beloep = parseFloat(newBeløp.trim().replace(",", ".")).toFixed(2)
     if (newMode) {
       _setNewForsikringPeriode({
         ..._newForsikringPeriode,
-        beloep: newBeløp.trim(),
+        beloep: beloep,
         valuta: _.isNil((_newForsikringPeriode as any)?.valuta) ? 'NOK' : (_newForsikringPeriode as any)?.valuta
       } as any)
       _resetValidation([namespace + '-beloep', namespace + '-valuta'])
@@ -294,7 +302,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
     }
     _setEditForsikringPeriode({
       ..._editForsikringPeriode,
-      beloep: newBeløp.trim(),
+      beloep: beloep,
       valuta: _.isNil((_editForsikringPeriode as any)?.valuta) ? 'NOK' : (_editForsikringPeriode as any)?.valuta
     } as any)
     if (resetValidation) {
@@ -596,6 +604,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                       label={t('label:inntekt-og-time-info')}
                       onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo)}
                       value={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
+                      required={true}
                     />
                   </Column>
                 </AlignStartRow>
@@ -609,6 +618,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 label={t('label:annen-type')}
                 onChanged={setAnnenTypeForsikringsperiode}
                 value={(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
+                required={true}
               />
             )}
 
@@ -622,7 +632,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                     label={t('label:beløp')}
                     onChanged={setBeløp}
                     required
-                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep.replace('.', ',') : undefined}
                   />
                 </Column>
                 <Column>
@@ -656,7 +666,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           <Label id={namespace + '-arbeidsgiver-navn'}>
                             {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
                           </Label>
-                          {_v[namespace + '-arbeidsgiver-navn']?.feilmelding && (
+                          {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
                             <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
                               {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
                             </Label>
@@ -743,10 +753,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           />
                         </Column>
                         <Column>
-                          {inntektOgTime?.bruttoinntekt}  {inntektOgTime?.valuta}
+                          {inntektOgTime?.bruttoinntekt.replace('.', ',')}  {inntektOgTime?.valuta}
                         </Column>
                         <Column>
-                          {inntektOgTime?.arbeidstimer} {t('label:arbeidstimer')}
+                          {inntektOgTime?.arbeidstimer.replace('.', ',')} {t('label:arbeidstimer')}
                         </Column>
                       </AlignStartRow>
                     ))}
@@ -772,13 +782,13 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 <AlignStartRow>
                   <Column>
                     <FlexDiv>
-                      <Label>{t('label:beløp') + ':'}</Label>
+                      <Label>{t('label:beløp') + ':'} </Label>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FormText
                         error={_v[namespace + '-beloep']?.feilmelding}
                         id={namespace + '-beloep'}
                       >
-                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep}
+                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep.replace('.', ',') : '-'}
                       </FormText>
                       <HorizontalSeparatorDiv size='0.5' />
                       <FormText

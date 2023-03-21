@@ -105,6 +105,7 @@
   "noNationality": "Du har ikke valg statsborgerskap",
   "noNavn": "Ingen navn på person",
   "noNavnInstitusjon": "Ingen navn på institusjon",
+  "noNavnArbeidsgiver": "Ingen navn på arbeidsgiver",
 
   "noOrgnr": "Ingen orgnr",
 
@@ -130,6 +131,8 @@
   "noSluttdato": "Ingen sluttdato",
   "noSwift": "Ingen SWIFT",
 
+  "notANumber": "Kun heltall eller desimaltall tillatt",
+  "notInteger": "Kun heltall tillatt",
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
   "noTelephoneType": "Du må velge en telefon type til",
   "noTema": "Du må velge et tema",
@@ -147,7 +150,7 @@
 
   "onlySingleParticipant": "Kun en deltaker tillatt",
 
-  "textOverX": "tekststørrelse over {{x}} tegn",
+  "textOverX": "Tekststørrelse over {{x}} tegn",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 
   "uncheckedFnr": "Uverifisert fødselsnummer",

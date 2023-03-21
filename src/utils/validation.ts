@@ -88,6 +88,15 @@ export const checkIfNotNumber = (v: Validation, {
   return false
 }
 
+export const checkIfInteger = (v: Validation, {
+  needle, id, personName, message, extra
+}: ValidateValueParams): boolean => {
+  if (!_.isEmpty(needle) && !(needle!.match(/^[0-9]*$/))) {
+    return addError(v, { id, personName, message, extra })
+  }
+  return false
+}
+
 export const checkIfNotTrue = (v: Validation, {
   needle, id, personName, message, extra
 }: ValidateValueParams): boolean => {

@@ -40,7 +40,6 @@ export const validateArbeidsperiodeOversikt = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
-
   hasErrors.push(validatePeriode(v, namespace, {
     periode: forsikringPeriode,
     index,
@@ -50,17 +49,17 @@ export const validateArbeidsperiodeOversikt = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: forsikringPeriode?.arbeidsgiver?.navn,
     id: namespace + idx + '-arbeidsgiver-navn',
-    message: 'validation:noNavn',
+    message: 'validation:noNavnArbeidsgiver',
     personName
   }))
 
 
   hasErrors.push(validateIdentifikatorer(v, namespace + idx + '-arbeidsgiver-identifikatorer', {
-    identifikatorer: forsikringPeriode?.arbeidsgiver.identifikatorer,
+    identifikatorer: forsikringPeriode?.arbeidsgiver?.identifikatorer,
     personName
   }))
 
-  if(adresseHasProps(forsikringPeriode?.arbeidsgiver.adresse)) {
+  if(adresseHasProps(forsikringPeriode?.arbeidsgiver?.adresse)) {
     hasErrors.push(validateAdresse(v, namespace + idx + '-arbeidsgiver-adresse', {
       adresse: forsikringPeriode?.arbeidsgiver.adresse,
       index,
@@ -80,9 +79,11 @@ export const validateArbeidsperioderOversikt = (
   }: ValidationArbeidsperioderOversiktProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  perioderMedForsikring?.forEach((forsikringPeriode: PeriodeMedForsikring) => {
+  perioderMedForsikring?.forEach((forsikringPeriode: PeriodeMedForsikring, index) => {
     hasErrors.push(validateArbeidsperiodeOversikt(validation, namespace, {
-      forsikringPeriode
+      forsikringPeriode,
+      personName: undefined,
+      index
     }))
   })
   return hasErrors.find(value => value) !== undefined

@@ -1,7 +1,8 @@
 import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfNotEmpty, checkIfNotNumber } from 'utils/validation'
+import {checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidationInntekterProps {
   inntekter: Array<Inntekt> | undefined
@@ -54,7 +55,17 @@ export const validateInntekt = (
     personName
   }))
 
-  return hasErrors.find(value => value) !== undefined
+  if (!_.isEmpty(inntekt?.typeAnnen)) {
+    hasErrors.push(checkLength(v, {
+      needle: inntekt?.typeAnnen,
+      max: 65,
+      id: namespace + idx + '-typeAnnen',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
+    return hasErrors.find(value => value) !== undefined
 }
 
 export const validateInntekter = (

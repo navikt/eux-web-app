@@ -44,6 +44,10 @@ import { getNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
+import {
+  validateArbeidsperioderOversikt,
+  ValidationArbeidsperioderOversiktProps
+} from "../ArbeidsperioderOversikt/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -63,6 +67,7 @@ const Forsikring: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-${personID}-forsikring`
+  const arbeidsPerioderNamespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const getId = (p: ForsikringPeriode | null | undefined): string => p ? p.__type + '[' + p.__index + ']' : 'new-forsikring'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<ForsikringPeriode>>([])
@@ -99,12 +104,23 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
+    const clonedReplySed = _.cloneDeep(replySed) as ReplySed
+    const sortedPerioderMedForsikring = (_.get(clonedReplySed, 'perioderAnsattMedForsikring')).sort(periodeSort)
     performValidation<ValidateForsikringProps>(
       clonedValidation, namespace, validateForsikring, {
-        replySed: _.cloneDeep(replySed) as ReplySed,
+        replySed: clonedReplySed,
         personName
       }, true
     )
+
+    if(hasNamespaceWithErrors(clonedValidation, arbeidsPerioderNamespace)){
+      performValidation<ValidationArbeidsperioderOversiktProps>(
+        clonedValidation, arbeidsPerioderNamespace, validateArbeidsperioderOversikt, {
+          perioderMedForsikring: sortedPerioderMedForsikring,
+          personName
+        }, true
+      )
+    }
     dispatch(setValidation(clonedValidation))
   })
 
@@ -147,6 +163,21 @@ const Forsikring: React.FC<MainFormProps> = ({
     _setNewType(undefined)
     _setNewTypeError(undefined)
     _setNewForm(false)
+  }
+
+  const onSort = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clonedValidation = _.cloneDeep(validation)
+    const sortType = e.target.checked ? 'group' : 'time'
+    performValidation<ValidateForsikringProps>(
+      clonedValidation, namespace, validateForsikring, {
+        replySed: _.cloneDeep(replySed) as ReplySed,
+        sort: sortType,
+        allPeriodsSorted: _allPeriods,
+        personName
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+    _setSort(sortType)
   }
 
   const onSaveEdit = (editPeriode: ForsikringPeriode) => {
@@ -222,6 +253,9 @@ const Forsikring: React.FC<MainFormProps> = ({
 
     const _periode = newMode ? { ...periode, __type: _type } : periode
 
+/*    const idx = index && index === -1 ? "" : "[" + index + "]"
+    namespace = _type ? namespace + '[' + _type + ']' + idx : namespace + idx*/
+
     return (
       <>
         <VerticalSeparatorDiv size='0.5' />
@@ -230,7 +264,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           key={getId(periode)}
           className={classNames({
             new: index < 0,
-            error: hasNamespaceWithErrors(validation, namespace)
+            error: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
           })}
         >
           {copyMode && <div ref={ref}></div>}
@@ -276,6 +310,8 @@ const Forsikring: React.FC<MainFormProps> = ({
               resetValidation={doResetValidation}
               setValidation={doSetValidation}
               setCopiedPeriod={_setCopiedPeriod}
+              index={index}
+              type={_type}
             />
           )}
         </RepeatableRow>
@@ -295,7 +331,7 @@ const Forsikring: React.FC<MainFormProps> = ({
           <>
             <Checkbox
               checked={_sort === 'group'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+              onChange={onSort}
             >
               {t('label:group-by-periodetype')}
             </Checkbox>

@@ -1,5 +1,5 @@
 import { Delete } from '@navikt/ds-icons'
-import { Button, Heading } from '@navikt/ds-react'
+import {BodyLong, Button, Heading} from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateGrunnTilOpphor, ValidateGrunnTilOpphørProps } from 'applications/SvarSed/GrunnTilOpphør/validation'
@@ -133,6 +133,10 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       {sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet' && (
         <>
+          <BodyLong>
+            * {t('label:du-må-fylle-ut-enten')} <b>{t('label:annet-opphør')}</b> {t('label:eller')} <b>{t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}</b>
+          </BodyLong>
+          <VerticalSeparatorDiv />
           <AlignStartRow>
             <Column>
               <Input
@@ -141,7 +145,6 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
                 id='annenGrunnOpphoerAnsatt'
                 label={t('label:annet-opphør')}
                 onChanged={setAnnenGrunnOpphoerAnsatt}
-                required
                 value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
               />
             </Column>
@@ -155,7 +158,6 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
                 id='grunnOpphoerSelvstendig'
                 label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
                 onChanged={setGrunnOpphoerSelvstendig}
-                required
                 value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
               />
             </Column>

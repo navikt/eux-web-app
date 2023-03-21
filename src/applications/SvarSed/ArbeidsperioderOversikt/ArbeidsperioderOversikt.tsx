@@ -11,7 +11,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import Inntekt from 'components/Inntekt/Inntekt'
 import { SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView} from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView, ReplySed} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -31,6 +31,8 @@ import {
   ValidationArbeidsperioderOversiktProps
 } from './validation'
 import moment from "moment";
+import {validateForsikring, ValidateForsikringProps} from "../Forsikring/validation";
+import {hasNamespaceWithErrors} from "../../../utils/validation";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -62,6 +64,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
+  const forsikringNamespace = `${parentNamespace}-${personID}-forsikring`
   const target = 'perioderAnsattMedForsikring'
   const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
   const anmodningsperiode: Periode = _.get(replySed, "anmodningsperiode")
@@ -71,6 +74,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     : 'new' + "_" + index
 
   const [_plan, _setPlan] = useState<Array<PlanItem<ForsikringPeriode>> | undefined>(undefined)
+  const [_periodsForValidation, _setPeriodsForValidation] = useState<Array<PeriodeMedForsikring> | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_sort, _setSort] = useState<PeriodeSort>('time')
   const [_view, _setView] = useState<PeriodeView>('all')
@@ -89,14 +93,24 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   }
 
   useUnmount(() => {
-    const clonedvalidation = _.cloneDeep(validation)
+    const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationArbeidsperioderOversiktProps>(
-      clonedvalidation, namespace, validateArbeidsperioderOversikt, {
-        perioderMedForsikring: perioder,
+      clonedValidation, namespace, validateArbeidsperioderOversikt, {
+        perioderMedForsikring: _periodsForValidation ? _periodsForValidation : perioder,
         personName
       }, true
     )
-    dispatch(setValidation(clonedvalidation))
+
+    if(hasNamespaceWithErrors(clonedValidation, forsikringNamespace)){
+      performValidation<ValidateForsikringProps>(
+        clonedValidation, forsikringNamespace, validateForsikring, {
+          replySed: _.cloneDeep(replySed) as ReplySed,
+          personName
+        }, true
+      )
+    }
+
+    dispatch(setValidation(clonedValidation))
   })
 
   useEffect(() => {
@@ -107,7 +121,33 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       sort: _sort
     } as RenderPlanProps<ForsikringPeriode>)
     _setPlan(plan)
+    createAndSetPeriodsForValidation(plan)
   }, [replySed, _sort, arbeidsperioder])
+
+
+  const createAndSetPeriodsForValidation = (plan:Array<PlanItem<ForsikringPeriode>>) => {
+    const allPeriods = plan?.map((p) => ({...p.item}))
+    let myPeriods:Array<PeriodeMedForsikring> = []
+    allPeriods?.forEach((p) => {
+      delete p.__type
+      delete p.__index
+      myPeriods.push(p as PeriodeMedForsikring)
+    })
+    _setPeriodsForValidation(myPeriods)
+  }
+
+  useEffect(() => {
+    if(arbeidsperioder && arbeidsperioder.arbeidsperioder && arbeidsperioder.arbeidsperioder.length >0 ){
+      const clonedvalidation = _.cloneDeep(validation)
+      performValidation<ValidationArbeidsperioderOversiktProps>(
+        clonedvalidation, namespace, validateArbeidsperioderOversikt, {
+          perioderMedForsikring: _periodsForValidation,
+          personName
+        }, false
+      )
+      dispatch(setValidation(clonedvalidation))
+    }
+  }, [_periodsForValidation])
 
   const onCloseEdit = (namespace: string) => {
     dispatch(resetValidation(namespace))
@@ -214,7 +254,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     const copyMode = index < 0 && !_.isNil(_copiedPeriod)
 
     const _item: PeriodeMedForsikring | PlanItem<ForsikringPeriode> | null = newMode ? null : item?.item ? item?.item as PeriodeMedForsikring : item
-    
+
     const selectable = item?.type === 'forsikringPeriode'
     const selected = selectable && !_.isNil(index) && index >= 0
     const style = newMode
@@ -257,6 +297,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           resetValidation={doResetValidation}
           setValidation={doSetValidation}
           setCopiedPeriod={_setCopiedPeriod}
+          index={index}
        />
       </>
     )

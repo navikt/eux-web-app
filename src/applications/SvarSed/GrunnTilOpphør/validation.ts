@@ -1,6 +1,7 @@
 import { SisteAnsettelseInfo } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty } from 'utils/validation'
+import {checkIfNotEmpty, checkLength} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidateGrunnTilOpphørProps {
   sisteAnsettelseInfo: SisteAnsettelseInfo | undefined
@@ -27,17 +28,36 @@ export const validateGrunnTilOpphor = (
   }
 
   if (sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet') {
-    hasErrors.push(checkIfNotEmpty(v, {
+    if(_.isEmpty(sisteAnsettelseInfo?.grunnOpphoerSelvstendig)){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
+        id: namespace + '-annenGrunnOpphoerAnsatt',
+        message: 'validation:noAnnenOpphør'
+      }))
+    }
+
+    if(_.isEmpty(sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt)){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
+        id: namespace + '-grunnOpphoerSelvstendig',
+        message: 'validation:noÅrsak'
+      }))
+    }
+
+    hasErrors.push(checkLength(v, {
       needle: sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt,
+      max: 65,
       id: namespace + '-annenGrunnOpphoerAnsatt',
-      message: 'validation:noAnnenOpphør'
+      message: 'validation:textOverX'
     }))
 
-    hasErrors.push(checkIfNotEmpty(v, {
+    hasErrors.push(checkLength(v, {
       needle: sisteAnsettelseInfo?.grunnOpphoerSelvstendig,
+      max: 65,
       id: namespace + '-grunnOpphoerSelvstendig',
-      message: 'validation:noÅrsak'
+      message: 'validation:textOverX'
     }))
+
   }
 
   return hasErrors.find(value => value) !== undefined

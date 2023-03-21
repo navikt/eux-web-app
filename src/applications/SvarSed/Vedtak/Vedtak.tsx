@@ -90,11 +90,15 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
   const [_sort, _setSort] = useState<PeriodeSort>('time')
 
-  const vedtakTypeOptions: Options = [
-    { label: t('el:option-vedtaktype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
-    { label: t('el:option-vedtaktype-sekundaerkompetanseArt58'), value: 'sekundaerkompetanseArt58' },
-    { label: t('el:option-vedtaktype-primaerkompetanseArt68'), value: 'primaerkompetanseArt68' },
-    { label: t('el:option-vedtaktype-sekundaerkompetanseArt68'), value: 'sekundaerkompetanseArt68' }
+  const vedtaksTypeOptions: Options = [
+    { label: t('el:option-vedtaktype-midlertidig-vedtak'), value: 'midlertidig_vedtak' },
+    { label: t('el:option-vedtaktype-vedtak-om-kompetanse'), value: 'vedtak_om_kompetanse' },
+  ]
+  const kompetanseTypeOptions: Options = [
+    { label: t('el:option-kompetansetype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
+    { label: t('el:option-kompetansetype-sekundaerkompetanseArt58'), value: 'sekundaerkompetanseArt58' },
+    { label: t('el:option-kompetansetype-primaerkompetanseArt68'), value: 'primaerkompetanseArt68' },
+    { label: t('el:option-kompetansetype-sekundaerkompetanseArt68'), value: 'sekundaerkompetanseArt68' }
   ]
 
   useUnmount(() => {
@@ -467,7 +471,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
   }
 
   const getTag = (type: string) => {
-    const label: string | undefined = _.find(vedtakTypeOptions, v => v.value === type)?.label
+    const label: string | undefined = _.find(kompetanseTypeOptions, v => v.value === type)?.label
     if (!label) return null
     return (<Tag size='small' variant='info'>{label}</Tag>)
   }
@@ -559,9 +563,9 @@ const VedtakFC: React.FC<MainFormProps> = ({
                     label={t('label:vedtak-type')}
                     menuPortalTarget={document.body}
                     onChange={(o: unknown) => setKompetansePeriodeType((o as Option).value, index)}
-                    options={vedtakTypeOptions}
-                    defaultValue={_.find(vedtakTypeOptions, v => v.value === _periode?.periode?.__type)}
-                    value={_.find(vedtakTypeOptions, v => v.value === _periode?.periode?.__type)}
+                    options={kompetanseTypeOptions}
+                    defaultValue={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
+                    value={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
                   />
                 </Column>
                 <Column>
@@ -661,10 +665,10 @@ const VedtakFC: React.FC<MainFormProps> = ({
               label={t('label:vedtak-type')}
               menuPortalTarget={document.body}
               onChange={(e: unknown) => setVedtakstype((e as Option).value)}
-              options={vedtakTypeOptions}
+              options={vedtaksTypeOptions}
               required
-              defaultValue={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
-              value={_.find(vedtakTypeOptions, v => v.value === vedtak?.vedtakstype)}
+              defaultValue={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
+              value={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
             />
           </Column>
           <Column>
@@ -775,17 +779,17 @@ const VedtakFC: React.FC<MainFormProps> = ({
             ? _allKompetansePeriods?.map(renderKompetansePeriodeRow)
             : (
               <>
-                {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(vedtaktype => {
-                  const perioder: Array<KompetansePeriode> | undefined | null = _.get(vedtak, vedtaktype)
+                {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(kompetanseType => {
+                  const perioder: Array<KompetansePeriode> | undefined | null = _.get(vedtak, kompetanseType)
                   return (
-                    <div key={vedtaktype}>
+                    <div key={kompetanseType}>
                       {!_.isEmpty(perioder) && (
                         <PaddedDiv>
-                          <Label>{_.find(vedtakTypeOptions, v => v.value === vedtaktype)?.label}</Label>
+                          <Label>{_.find(kompetanseTypeOptions, v => v.value === kompetanseType)?.label}</Label>
                         </PaddedDiv>
                       )}
                       {perioder?.map((p: KompetansePeriode, i: number) =>
-                        ({ ...p, periode: { ...p.periode, __type: vedtaktype, __index: i } })
+                        ({ ...p, periode: { ...p.periode, __type: kompetanseType, __index: i } })
                       ).sort(periodePeriodeSort)
                         .map(renderKompetansePeriodeRow)}
                     </div>
