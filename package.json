@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.5.2-misc-bugfixes",
+  "version": "8.5.2",
   "private": true,
   "type": "module",
   "scripts": {
