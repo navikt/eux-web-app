@@ -26,7 +26,7 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import IkkeJournalfoerteSED from "../../applications/SvarSed/IkkeJournalfoerteSED/IkkeJournalfoerteSED";
+import IkkeJournalfoerteSED from "../../applications/Journalfoering/IkkeJournalfoerteSED/IkkeJournalfoerteSED";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;

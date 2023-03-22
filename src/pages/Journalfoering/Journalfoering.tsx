@@ -6,11 +6,11 @@ import {useAppSelector} from "../../store";
 import {State} from "../../declarations/reducers";
 import {Sak} from "../../declarations/types";
 
-export interface JournalFoeringProps {
+export interface JournalfoeringProps {
 
 }
 
-interface JournalFoeringSelector {
+interface JournalfoeringSelector {
   currentSak: Sak | undefined
 }
 
@@ -18,9 +18,9 @@ const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
 })
 
-export const JournalFoering: React.FC<JournalFoeringProps> = ({}: JournalFoeringProps): JSX.Element => {
+export const Journalfoering: React.FC<JournalfoeringProps> = ({}: JournalfoeringProps): JSX.Element => {
   const navigate = useNavigate()
-  const { currentSak }: JournalFoeringSelector = useAppSelector(mapState)
+  const { currentSak }: JournalfoeringSelector = useAppSelector(mapState)
 
   const goBack = () => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)
@@ -41,4 +41,4 @@ export const JournalFoering: React.FC<JournalFoeringProps> = ({}: JournalFoering
   )
 }
 
-export default JournalFoering
+export default Journalfoering
