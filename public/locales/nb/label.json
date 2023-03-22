@@ -179,6 +179,7 @@
   "identifikator": "Identifikator",
   "identifikasjonsnummer": "Identifikasjonsnummer",
   "ikke-tilgjengelig": "Ikke tilgjengelig",
+  "ikke-journalfoerte-dokumenter": "Ikke journalførte dokumenter",
   "info-confirm-information" : "Vi bekrefter leverte opplysninger",
   "info-point-information" : "Gi oss punktvise opplysninger",
   "informasjon" : "Informasjon",
@@ -208,6 +209,7 @@
   "jente" : "Jente",
   "journalpost-id": "Journalpost ID",
   "journalforing" : "Journalfør {{sedtype}}",
+  "journalfoer" : "Journalfør",
 
   "kjønn" : "Kjønn",
   "klarkjør-sed": "Presiser SED innhold",

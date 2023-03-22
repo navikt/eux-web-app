@@ -26,6 +26,7 @@ export const App = () => {
             <Route path='/svarsed/search' element={<Pages.SvarSed type='search' />} />
             <Route path='/svarsed/view/sak/:sakId' element={<Pages.SvarSed type='view' />} />
             <Route path='/svarsed/edit/sak/:sakId/sed/:sedId' element={<Pages.SvarSed type='edit' />} />
+            <Route path='/journalfoering/sak/:sakId' element={<Pages.JournalFoering/>} />
             <Route path='/pdu1/search' element={<Pages.PDU1 type='search' />} />
             <Route path='/pdu1/edit/postId/:journalpostId/docId/:dokumentInfoId/fagsak/:fagsak' element={<Pages.PDU1 type='edit' />} />
             <Route path='/pdu1/create/fnr/:fnr/fagsak/:fagsak/saksreferanse/:saksreferanse' element={<Pages.PDU1 type='create' />} />

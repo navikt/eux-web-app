@@ -188,6 +188,13 @@ const SEDPanel = ({
     dispatch(replyToSed(sed, sak))
   }
 
+  const onJournalFoerClick = () => {
+    navigate({
+      pathname: '/journalfoering/sak/' + currentSak.sakId,
+      search: window.location.search
+    })
+  }
+
   const openAttachmentModal = () => {
     setAttachmentModal({
       closeButton: true,
@@ -265,7 +272,7 @@ const SEDPanel = ({
                     buttonLogger(e, {
                       type: sed.sedType
                     })
-                    window.open(sed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
+                    onJournalFoerClick()
                   }}
                 >
                   {t('label:journalforing', {

@@ -271,6 +271,13 @@ export default (saksnummer: string, type: string) => {
         "nr": "1/2023",
         "system": "AO11"
       },
+      ikkeJournalFoerteSED: [
+        "H001 - Melding/anmodning om informasjon",
+        "F001 - Anmodning om avgjørelse av kompetanse",
+        "F004 - Anmodning om avklaringer",
+        "F022 - Anmodning om informasjon om perioder",
+        "H003 - Fremlegg/melding om bostedsland"
+      ],
       sedListe: [
         {
           sedTittel: 'Horizontal',
@@ -323,7 +330,6 @@ export default (saksnummer: string, type: string) => {
           sistEndretDato: '2021-02-18',
           svarsedType: 'H002',
           svarsedDisplay: 'Create H002',
-          lenkeHvisForrigeSedMaaJournalfoeres: 'http://www.nav.no',
           svarsedId: 'h002received',
           sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
         }, {

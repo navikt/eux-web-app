@@ -26,6 +26,7 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import IkkeJournalfoerteSED from "../../applications/SvarSed/IkkeJournalfoerteSED/IkkeJournalfoerteSED";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -192,6 +193,10 @@ const SEDView = (): JSX.Element => {
       </Content>
       <Content style={{ flex: 2 }}>
         <Saksopplysninger sak={currentSak} />
+        <VerticalSeparatorDiv />
+        {currentSak.ikkeJournalFoerteSED &&
+          <IkkeJournalfoerteSED sak={currentSak}/>
+        }
       </Content>
       <Margin />
     </Container>
