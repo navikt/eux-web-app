@@ -1,14 +1,16 @@
-import {JournalfoeringFagSak, JournalfoeringFagSaker} from "../declarations/types";
+import {JournalfoeringFagSak, JournalfoeringFagSaker, Person} from "../declarations/types";
 import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
 
 export interface JournalfoeringState {
+  person: Person | null | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
+  person: undefined,
   fagsaker: undefined,
   fagsak: undefined
 }
@@ -18,6 +20,26 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.APP_RESET:
     case types.JOURNALFOERING_RESET:
       return initialJournalfoeringState
+
+    case types.JOURNALFOERING_PERSON_SEARCH_RESET:
+    case types.JOURNALFOERING_PERSON_SEARCH_REQUEST:
+      return {
+        ...state,
+        person: undefined
+      }
+
+    case types.JOURNALFOERING_PERSON_SEARCH_SUCCESS:
+      return {
+        ...state,
+        person: (action as ActionWithPayload).payload
+      }
+
+    case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
+      return {
+        ...state,
+        person: null
+      }
+
 
     case types.JOURNALFOERING_FAGSAK_RESET:
     case types.JOURNALFOERING_FAGSAKER_RESET:

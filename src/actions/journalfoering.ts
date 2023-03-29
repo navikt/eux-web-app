@@ -4,12 +4,33 @@ import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
 import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
+import mockPerson from "../mocks/person";
 
 const sprintf = require('sprintf-js').sprintf
 
-export const jounalfoeringReset: ActionCreator<Action> = (): Action => ({
+export const journalfoeringReset: ActionCreator<Action> = (): Action => ({
   type: types.JOURNALFOERING_RESET
 })
+
+export const resetJournalfoeringPerson: ActionCreator<Action> = () => ({
+  type: types.JOURNALFOERING_PERSON_SEARCH_RESET
+})
+
+
+export const searchJournalfoeringPerson = (
+  fnr: string
+): ActionWithPayload => {
+  return call({
+    url: sprintf(urls.API_PERSONER_URL, { fnr }),
+    expectedPayload: mockPerson,
+    cascadeFailureError: true,
+    type: {
+      request: types.JOURNALFOERING_PERSON_SEARCH_REQUEST,
+      success: types.JOURNALFOERING_PERSON_SEARCH_SUCCESS,
+      failure: types.JOURNALFOERING_PERSON_SEARCH_FAILURE
+    }
+  })
+}
 
 export const getJournalfoeringFagsaker = (
   fnr: string, tema: string

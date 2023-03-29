@@ -12,11 +12,12 @@ import {Row, Column, VerticalSeparatorDiv, HorizontalSeparatorDiv} from "@navikt
 import {Button, Heading, Panel, Select, TextField} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
-import {personReset, searchPerson} from "../../actions/person";
 import {
+  journalfoeringReset,
+  searchJournalfoeringPerson,
   getJournalfoeringFagsaker,
-  resetJournalfoeringFagsaker,
-  setJournalfoeringFagsak
+  setJournalfoeringFagsak,
+  resetJournalfoeringFagsaker
 } from "../../actions/journalfoering";
 
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -49,7 +50,7 @@ interface JournalfoerPanelSelector {
 }
 
 const mapState = (state: State) => ({
-  person: state.person.person,
+  person: state.journalfoering.person,
   searchingPerson: state.loading.searchingPerson,
   gettingFagsaker: state.loading.gettingFagsaker,
   kodemaps: state.app.kodemaps,
@@ -80,7 +81,7 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
   const showFagsaker: boolean = !_.isEmpty(tema) && !_.isEmpty(fagsaker)
 
   useEffect(() => {
-    dispatch(personReset()) // cleans person
+    dispatch(journalfoeringReset())
   }, [])
 
   useEffect(() => {
@@ -107,7 +108,7 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
       return
     }
     setLocalValidation(undefined)
-    dispatch(searchPerson(_fnr))
+    dispatch(searchJournalfoeringPerson(_fnr))
   }
 
   const onFnrChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -117,7 +118,9 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
     setfnr(newFnr)
     if (isFnrValid) {
       setIsFnrValid(false)
-      dispatch(personReset()) // cleans person
+      setTema("");
+      (document.getElementById("mySelect") as HTMLSelectElement)!.selectedIndex = 0
+      dispatch(journalfoeringReset()) // reset all
     }
   }
 
@@ -167,7 +170,7 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
       <VerticalSeparatorDiv />
       <Row>
         <Column flex={1}>
-          <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)}>
+          <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
             <option value=''>
               {t('label:velg')}
             </option>)
