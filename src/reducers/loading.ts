@@ -41,8 +41,8 @@ export const initialLoadingState: LoadingState = {
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
-  updatingSvarSed: false
-
+  updatingSvarSed: false,
+  isJournalfoering: false
 }
 
 const loadingReducer = (
@@ -487,6 +487,19 @@ const loadingReducer = (
       return {
         ...state,
         sendingVedlegg: false
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
+      return {
+        ...state,
+        isJournalfoering: true
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_SUCCESS:
+    case types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE:
+      return {
+        ...state,
+        isJournalfoering: false
       }
 
     default:

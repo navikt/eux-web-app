@@ -7,12 +7,14 @@ export interface JournalfoeringState {
   person: Person | null | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
+  journalfoert: boolean | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
   person: undefined,
   fagsaker: undefined,
-  fagsak: undefined
+  fagsak: undefined,
+  journalfoert: undefined
 }
 
 const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoeringState, action: AnyAction): JournalfoeringState => {
@@ -66,6 +68,24 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       return {
         ...state,
         fagsak: (action as ActionWithPayload).payload
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
+      return {
+        ...state,
+        journalfoert: undefined
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_SUCCESS:
+      return {
+        ...state,
+        journalfoert: true
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE:
+      return {
+        ...state,
+        journalfoert: false
       }
 
 

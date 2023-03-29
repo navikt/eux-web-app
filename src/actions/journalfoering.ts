@@ -56,3 +56,22 @@ export const setJournalfoeringFagsak: ActionCreator<Action> = (
   type: types.JOURNALFOERING_FAGSAK_SET,
   payload: fagsak
 })
+
+export const journalfoer = (
+  sakId: string, fagsak: JournalfoeringFagSak
+): ActionWithPayload => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId }),
+    body: fagsak,
+    expectedPayload: {
+      success: true
+    },
+    cascadeFailureError: true,
+    type: {
+      request: types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST,
+      success: types.JOURNALFOERING_JOURNALFOER_SAK_SUCCESS,
+      failure: types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE
+    }
+  })
+}

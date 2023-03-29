@@ -17,7 +17,7 @@ import {
   searchJournalfoeringPerson,
   getJournalfoeringFagsaker,
   setJournalfoeringFagsak,
-  resetJournalfoeringFagsaker
+  resetJournalfoeringFagsaker, journalfoer
 } from "../../actions/journalfoering";
 
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -43,26 +43,30 @@ interface JournalfoerPanelSelector {
   person: Person | null | undefined
   searchingPerson: boolean
   gettingFagsaker: boolean
+  isJournalfoering: boolean
   kodemaps: Kodemaps | undefined
   tema: Tema | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
+  journalfoert: boolean | undefined | null
 }
 
 const mapState = (state: State) => ({
   person: state.journalfoering.person,
   searchingPerson: state.loading.searchingPerson,
   gettingFagsaker: state.loading.gettingFagsaker,
+  isJournalfoering: state.loading.isJournalfoering,
   kodemaps: state.app.kodemaps,
   tema: state.app.tema,
   fagsaker: state.journalfoering.fagsaker,
-  fagsak: state.journalfoering.fagsak
+  fagsak: state.journalfoering.fagsak,
+  journalfoert: state.journalfoering.journalfoert
 })
 
 export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, kodemaps, tema, fagsaker, fagsak }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoert }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string>()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -139,6 +143,10 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
     dispatch(setJournalfoeringFagsak(fagsak))
   }
 
+  const onJournalfoerClick = () => {
+    dispatch(journalfoer(sak.sakId, fagsak!))
+  }
+
   return (
     <Panel border>
       <Heading size='small'>
@@ -208,7 +216,7 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
       </Row>
       <Row>
         <Column>
-          <Button variant="primary" onClick={()=>{}} loading={false} className='nolabel' disabled={fagsak ? false : true}>
+          <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoert && fagsak)}>
             {t("el:button-journalfoer")}
           </Button>
         </Column>
