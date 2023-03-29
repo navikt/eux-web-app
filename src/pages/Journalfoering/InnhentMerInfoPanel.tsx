@@ -15,7 +15,7 @@ export const InnhentMerInfoPanel = ({ sak }: InnhentMerInfoPanelProps) => {
   return (
     <Panel border>
       <Heading size='small'>
-        {t('label:innhent-mer-info')}
+        {t('label:innhent-mer-info') + " " + sak.sakId}
       </Heading>
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />

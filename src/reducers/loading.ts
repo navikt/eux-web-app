@@ -191,6 +191,7 @@ const loadingReducer = (
     case types.SVARSED_FAGSAKER_REQUEST:
     case types.SAK_FAGSAKER_REQUEST:
     case types.PDU1_FAGSAKER_REQUEST:
+    case types.JOURNALFOERING_FAGSAKER_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
@@ -202,6 +203,8 @@ const loadingReducer = (
     case types.PDU1_FAGSAKER_FAILURE:
     case types.SAK_FAGSAKER_SUCCESS:
     case types.SAK_FAGSAKER_FAILURE:
+    case types.JOURNALFOERING_FAGSAKER_SUCCESS:
+    case types.JOURNALFOERING_FAGSAKER_FAILURE:
       return {
         ...state,
         gettingFagsaker: false

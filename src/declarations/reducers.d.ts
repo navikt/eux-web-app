@@ -13,6 +13,7 @@ import { SvarsedState } from 'reducers/svarsed'
 import { UiState } from 'reducers/ui'
 import { ValidationState } from 'reducers/validation'
 import { VedleggState } from 'reducers/vedlegg'
+import {JournalfoeringState} from "../reducers/journalfoering";
 
 export interface State {
   adresse: AdresseState,
@@ -21,6 +22,7 @@ export interface State {
   arbeidsperioder: ArbeidsperioderState,
   attachments: AttachmentsState,
   inntekt: InntektState,
+  journalfoering: JournalfoeringState,
   loading: LoadingState,
   localStorage: LocalStorageState,
   pdu1: Pdu1State,

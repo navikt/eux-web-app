@@ -125,6 +125,15 @@ export interface FagSak {
   status?: string
 }
 
+export interface JournalfoeringFagSak {
+  id: string
+  aktoerId: string
+  tema: string
+  type: string
+  nr?: string
+  system?: string
+}
+
 export interface PDU1SearchResult {
   fagsakId: string
   datoOpprettet: string
@@ -139,6 +148,8 @@ export interface PDU1SearchResult {
 export type PDU1SearchResults = Array<PDU1SearchResult>
 
 export type FagSaker = Array<FagSak>
+export type JournalfoeringFagSaker = Array<JournalfoeringFagSak>
+
 
 export interface OldFamilieRelasjon extends Person {
   land?: string | null | undefined

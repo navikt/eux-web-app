@@ -15,7 +15,7 @@ export const AvsluttSakPanel = ({ sak }: AvsluttSakPanelProps) => {
   return (
     <Panel border>
       <Heading size='small'>
-        {t('label:avslutt-sak')}
+        {t('label:avslutt-sak') + " " + sak.sakId}
       </Heading>
       <VerticalSeparatorDiv />
       <HorizontalLineSeparator />
