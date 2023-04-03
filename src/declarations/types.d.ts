@@ -132,6 +132,13 @@ export interface JournalfoeringFagSak {
   type: string
   nr?: string
   system?: string
+  opprettetDato?: string
+}
+
+export interface JournalfoeringLogg {
+  journalfoert?: Array<string> | null | undefined,
+  ikkeJournalfoert?: Array<string> | null | undefined,
+  varJournalfoertFeil?: Array<string> | null | undefined
 }
 
 export interface PDU1SearchResult {

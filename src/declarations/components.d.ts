@@ -5,6 +5,7 @@ export interface ModalButton {
   flat?: boolean
   text: string
   hide ?: boolean
+  variant ?: 'tertiary' | 'primary' | 'secondary' | 'danger' | undefined
 }
 
 export interface ModalContent {

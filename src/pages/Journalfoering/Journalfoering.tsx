@@ -13,6 +13,7 @@ import {querySaks} from "../../actions/svarsed";
 import JournalfoerPanel from "./JournalfoerPanel";
 import InnhentMerInfoPanel from "./InnhentMerInfoPanel";
 import AvsluttSakPanel from "./AvsluttSakPanel";
+import {appReset} from "../../actions/app";
 
 export interface JournalfoeringProps {
 
@@ -43,6 +44,13 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
     })
   }
 
+  const gotoFrontpage = () => {
+    dispatch(appReset())
+    navigate({
+      pathname: '/',
+    })
+  }
+
   useEffect(() => {
     // reload, so it reflects changes made in potential SED save/send
     if (!currentSak && sakId) {
@@ -60,7 +68,7 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
       <Container>
         <Margin />
         <Content style={{ flex: 6}}>
-          <JournalfoerPanel sak={currentSak} />
+          <JournalfoerPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
           <VerticalSeparatorDiv />
           <InnhentMerInfoPanel sak={currentSak} />
           <VerticalSeparatorDiv />

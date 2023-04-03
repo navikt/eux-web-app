@@ -1,4 +1,4 @@
-import {JournalfoeringFagSak, JournalfoeringFagSaker, Person} from "../declarations/types";
+import {JournalfoeringFagSak, JournalfoeringFagSaker, JournalfoeringLogg, Person} from "../declarations/types";
 import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
@@ -7,14 +7,14 @@ export interface JournalfoeringState {
   person: Person | null | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
-  journalfoert: boolean | undefined | null
+  journalfoeringLogg: JournalfoeringLogg | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
   person: undefined,
   fagsaker: undefined,
   fagsak: undefined,
-  journalfoert: undefined
+  journalfoeringLogg: undefined
 }
 
 const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoeringState, action: AnyAction): JournalfoeringState => {
@@ -73,19 +73,19 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
       return {
         ...state,
-        journalfoert: undefined
+        journalfoeringLogg: undefined
       }
 
     case types.JOURNALFOERING_JOURNALFOER_SAK_SUCCESS:
       return {
         ...state,
-        journalfoert: true
+        journalfoeringLogg: (action as ActionWithPayload).payload
       }
 
     case types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE:
       return {
         ...state,
-        journalfoert: false
+        journalfoeringLogg: null
       }
 
 

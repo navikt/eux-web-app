@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
   JournalfoeringFagSak,
-  JournalfoeringFagSaker,
+  JournalfoeringFagSaker, JournalfoeringLogg,
   Kodemaps,
   Kodeverk,
   Person,
@@ -28,6 +28,7 @@ import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import styled from "styled-components";
+import Modal from "../../components/Modal/Modal";
 
 
 const ImgContainer = styled.span`
@@ -36,7 +37,9 @@ const ImgContainer = styled.span`
 `
 
 export interface JournalfoerPanelProps {
-  sak: Sak
+  sak: Sak,
+  gotoSak: () => void
+  gotoFrontpage: () => void
 }
 
 interface JournalfoerPanelSelector {
@@ -48,7 +51,7 @@ interface JournalfoerPanelSelector {
   tema: Tema | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
-  journalfoert: boolean | undefined | null
+  journalfoeringLogg: JournalfoeringLogg | undefined | null
 }
 
 const mapState = (state: State) => ({
@@ -60,17 +63,18 @@ const mapState = (state: State) => ({
   tema: state.app.tema,
   fagsaker: state.journalfoering.fagsaker,
   fagsak: state.journalfoering.fagsak,
-  journalfoert: state.journalfoering.journalfoert
+  journalfoeringLogg: state.journalfoering.journalfoeringLogg
 })
 
-export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
+export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoert }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string>()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
   const [_tema, setTema] = useState<string>()
+  const [_journalfoerModal, setJournalfoerModal] = useState<boolean>(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -100,6 +104,12 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
       }
     }
   }, [person])
+
+  useEffect(() => {
+    if(journalfoeringLogg!== undefined){
+      setJournalfoerModal(true)
+    }
+  }, [journalfoeringLogg])
 
   const onSearch = () => {
     if (!_fnr) {
@@ -147,81 +157,133 @@ export const JournalfoerPanel = ({ sak }: JournalfoerPanelProps) => {
     dispatch(journalfoer(sak.sakId, fagsak!))
   }
 
+  const onJournalfoerModalClose = () => {
+    dispatch(journalfoeringReset())
+    setJournalfoerModal(false)
+  }
+
+  const hasIkkeJournalfoert = journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && journalfoeringLogg.ikkeJournalfoert.length > 0
+  const hasVarJournalfoertFeil = journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && journalfoeringLogg.varJournalfoertFeil.length > 0
+  const hasJournalfoert =  journalfoeringLogg && journalfoeringLogg.journalfoert && journalfoeringLogg.journalfoert.length > 0
+  const alleSedJournalfoert = hasJournalfoert && !hasVarJournalfoertFeil && !hasIkkeJournalfoert
+  const modalTitle =  alleSedJournalfoert ? t('label:sed-er-journalfoert') : t('label:journalposter-ble-ikke-journalfoert')
+
+  const getListOfJournalPostIds = (journalPostList: Array<string>) => {
+    let items: JSX.Element[] = [];
+    journalPostList.forEach((id: string, index: number) => {
+      items.push(<li key={id + "_" + index}>{id}</li>)
+    })
+    return items
+  }
+
   return (
-    <Panel border>
-      <Heading size='small'>
-        {t('label:journalfoer') + " " + sak.sakId}
-      </Heading>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      <Row>
-        <Column flex={1}>
-          <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation}/>
-        </Column>
-        <Column flex={0.5}>
-          <Button variant="secondary" onClick={onSearch} loading={searchingPerson} className='nolabel'>
-            {t("el:button-search-i-x", {x: "PDL"})}
-          </Button>
-        </Column>
-        <Column flex={1}>
-          {person &&
-            <div className='nolabel'>
-              <ImgContainer><img alt={kind} width={25} height={25} src={src}/></ImgContainer>
-              <HorizontalSeparatorDiv />
-              {person.etternavn}, {person.fornavn}
-            </div>
-          }
-        </Column>
-        <Column/>
-      </Row>
-      <VerticalSeparatorDiv />
-      <Row>
-        <Column flex={1}>
-          <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
-            <option value=''>
-              {t('label:velg')}
-            </option>)
-            {temaer && temaer.map((k: Kodeverk) => (
-              <option value={k.kode} key={k.kode}>
-                {k.term}
-              </option>
-            ))}
-          </Select>
-        </Column>
-        <Column flex={0.5}>
-          <Button variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
-            {t("el:button-finn-x", {x: "fagsaker"})}
-          </Button>
-        </Column>
-        <Column flex={1}>
-          {showFagsaker &&
-            <Select
-              label={t('label:velg-fagsak')}
-              onChange={onFagsakChange}
-            >
+    <>
+      <Modal
+        open={_journalfoerModal}
+        onModalClose={onJournalfoerModalClose}
+        appElementId="root"
+        modal={{
+          closeButton: false,
+          modalTitle: modalTitle,
+          modalContent: (
+            <>
+              {!alleSedJournalfoert &&
+                <>
+                  {t('label:journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt')}
+                  <ul>
+                    {journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && getListOfJournalPostIds(journalfoeringLogg?.ikkeJournalfoert)}
+                    {journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && getListOfJournalPostIds(journalfoeringLogg?.varJournalfoertFeil)}
+                  </ul>
+                </>
+              }
+            </>
+          ),
+          modalButtons: [
+            {
+              text: t('el:button-gaa-tilbake-til-saken'),
+              onClick: gotoSak
+            },
+            {
+              text: t('el:button-gaa-til-forsiden'),
+              onClick: gotoFrontpage
+            }]
+        }}
+      />
+      <Panel border>
+        <Heading size='small'>
+          {t('label:journalfoer')}
+        </Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        <Row>
+          <Column flex={1}>
+            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation}/>
+          </Column>
+          <Column flex={0.5}>
+            <Button variant="secondary" onClick={onSearch} loading={searchingPerson} className='nolabel'>
+              {t("el:button-search-i-x", {x: "PDL"})}
+            </Button>
+          </Column>
+          <Column flex={1}>
+            {person &&
+              <div className='nolabel'>
+                <ImgContainer><img alt={kind} width={25} height={25} src={src}/></ImgContainer>
+                <HorizontalSeparatorDiv />
+                {person.etternavn}, {person.fornavn}
+              </div>
+            }
+          </Column>
+          <Column/>
+        </Row>
+        <VerticalSeparatorDiv />
+        <Row>
+          <Column flex={1}>
+            <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
               <option value=''>
                 {t('label:velg')}
-              </option>
-              {fagsaker &&
-                _.orderBy(fagsaker, 'nr').map((f: JournalfoeringFagSak) => (
-                  <option value={f.id} key={f.id}>
-                    {f.nr || f.id}
-                  </option>
-                ))}
+              </option>)
+              {temaer && temaer.map((k: Kodeverk) => (
+                <option value={k.kode} key={k.kode}>
+                  {k.term}
+                </option>
+              ))}
             </Select>
-          }
-        </Column>
-        <Column/>
-      </Row>
-      <Row>
-        <Column>
-          <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoert && fagsak)}>
-            {t("el:button-journalfoer")}
-          </Button>
-        </Column>
-      </Row>
-    </Panel>
+          </Column>
+          <Column flex={0.5}>
+            <Button variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
+              {t("el:button-finn-x", {x: "fagsaker"})}
+            </Button>
+          </Column>
+          <Column flex={1}>
+            {showFagsaker &&
+              <Select
+                label={t('label:velg-fagsak')}
+                onChange={onFagsakChange}
+              >
+                <option value=''>
+                  {t('label:velg')}
+                </option>
+                {fagsaker &&
+                  _.orderBy(fagsaker, 'nr').map((f: JournalfoeringFagSak) => (
+                    <option value={f.id} key={f.id}>
+                      {f.nr || f.id}
+                    </option>
+                  ))}
+              </Select>
+            }
+          </Column>
+          <Column/>
+        </Row>
+        <Row>
+          <Column>
+            <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak)}>
+              {t("el:button-journalfoer")}
+            </Button>
+          </Column>
+        </Row>
+      </Panel>
+    </>
   )
 }
 

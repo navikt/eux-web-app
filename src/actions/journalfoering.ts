@@ -65,7 +65,9 @@ export const journalfoer = (
     url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId }),
     body: fagsak,
     expectedPayload: {
-      success: true
+      journalfoert: ["1234567", "9876543"],
+      ikkeJournalfoert: ["1234567", "9876543"],
+      varJournalfoertFeil: ["1234567", "9876543"]
     },
     cascadeFailureError: true,
     type: {
