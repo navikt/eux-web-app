@@ -106,7 +106,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }, [person])
 
   useEffect(() => {
-    if(journalfoeringLogg!== undefined){
+    if(journalfoeringLogg){
       setJournalfoerModal(true)
     }
   }, [journalfoeringLogg])
@@ -166,6 +166,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const hasVarJournalfoertFeil = journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && journalfoeringLogg.varJournalfoertFeil.length > 0
   const hasJournalfoert =  journalfoeringLogg && journalfoeringLogg.journalfoert && journalfoeringLogg.journalfoert.length > 0
   const alleSedJournalfoert = hasJournalfoert && !hasVarJournalfoertFeil && !hasIkkeJournalfoert
+  const allListsEmpty = !hasIkkeJournalfoert && ! hasVarJournalfoertFeil && !hasJournalfoert
   const modalTitle =  alleSedJournalfoert ? t('label:sed-er-journalfoert') : t('label:journalposter-ble-ikke-journalfoert')
 
   const getListOfJournalPostIds = (journalPostList: Array<string>) => {
@@ -189,7 +190,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             <>
               {!alleSedJournalfoert &&
                 <>
-                  {t('label:journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt')}
+                  { !allListsEmpty ? t('label:journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt') : ""}
                   <ul>
                     {journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && getListOfJournalPostIds(journalfoeringLogg?.ikkeJournalfoert)}
                     {journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && getListOfJournalPostIds(journalfoeringLogg?.varJournalfoertFeil)}
