@@ -65,7 +65,8 @@ export interface Sed {
   lenkeHvisForrigeSedMaaJournalfoeres?: string
   sedHandlinger: Array<SedAction>
   vedlegg?: Array<Attachment>
-  children ?: Array<Sed>
+  children ?: Array<Sed>,
+  manglerInformasjonOmEktefelleEllerAnnenPerson? : boolean
 }
 
 export interface Attachment {

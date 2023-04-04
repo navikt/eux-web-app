@@ -342,6 +342,15 @@ export default (saksnummer: string, type: string) => {
           svarsedDisplay: 'Create H002',
           svarsedId: 'h002received2',
           sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
+        },
+        {
+          sedTittel: 'F001 - Mottat',
+          sedType: 'F001',
+          sedId: 'f001mottatt',
+          status: 'received',
+          sistEndretDato: '2021-02-19',
+          sedHandlinger: ['Read', 'Send', 'Delete'],
+          manglerInformasjonOmEktefelleEllerAnnenPerson: true
         }
       ]
     },

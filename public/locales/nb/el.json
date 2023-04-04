@@ -41,6 +41,7 @@
   "button-slett": "Slett",
   "button-start-new-x" : "Start en ny {{x}}",
   "button-send-sed" : "Send SED",
+  "button-send-x" : "Send {{x}}",
   "button-show" : "Vis",
   "button-update-draft-x" : "Oppdatere utkast {{x}}",
 
