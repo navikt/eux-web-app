@@ -1,10 +1,11 @@
 import {ActionWithPayload, call} from "@navikt/fetch";
-import {FagSaker, JournalfoeringFagSak, Sak} from "../declarations/types";
+import {CreateSedResponse, FagSaker, JournalfoeringFagSak, Sak} from "../declarations/types";
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
 import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
 import mockPerson from "../mocks/person";
+import {H001Sed} from "../declarations/sed";
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -78,7 +79,40 @@ export const journalfoer = (
   })
 }
 
-export const createH001 = (sak: Sak, text: string): ActionWithPayload<any> => ({
+export const createH001 = (sak: Sak, informasjonTekst: string): ActionWithPayload<any> => ({
   type: types.JOURNALFOERING_H001_CREATE,
-  payload: { sak, text }
+  payload: { sak, informasjonTekst }
 })
+
+export const createH001SedInRina = (sakId: string, H001: H001Sed | undefined | null): ActionWithPayload => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_SED_CREATE_URL, { rinaSakId: sakId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sedId: '123'
+    } as CreateSedResponse,
+    type: {
+      request: types.JOURNALFOERING_H001_CREATE_REQUEST,
+      success: types.JOURNALFOERING_H001_CREATE_SUCCESS,
+      failure: types.JOURNALFOERING_H001_CREATE_FAILURE
+    },
+    body: H001
+  })
+}
+
+export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithPayload<any> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_SED_SEND_URL, { rinaSakId, sedId }),
+    expectedPayload: {
+      success: 'true'
+    },
+    type: {
+      request: types.JOURNALFOERING_H001_SEND_REQUEST,
+      success: types.JOURNALFOERING_H001_SEND_SUCCESS,
+      failure: types.JOURNALFOERING_H001_SEND_FAILURE
+    }
+  })
+}
+

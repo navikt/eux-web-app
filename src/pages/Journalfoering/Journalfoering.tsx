@@ -70,7 +70,7 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
         <Content style={{ flex: 6}}>
           <JournalfoerPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
           <VerticalSeparatorDiv />
-          <InnhentMerInfoPanel sak={currentSak} />
+          <InnhentMerInfoPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
           <VerticalSeparatorDiv />
           <AvsluttSakPanel sak={currentSak} />
         </Content>

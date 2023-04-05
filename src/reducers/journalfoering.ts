@@ -3,20 +3,22 @@ import {
   JournalfoeringFagSaker,
   JournalfoeringLogg,
   Person,
-  Sak,
-  Sed
+  Sak
 } from "../declarations/types";
 import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
 import {H001Sed, Kjoenn} from "../declarations/sed";
 
+
 export interface JournalfoeringState {
   person: Person | null | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
-  h001: H001Sed | undefined | null
+  H001: H001Sed | undefined | null
+  H001Id: string | undefined | null
+  sendH001Response: any | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
@@ -24,10 +26,12 @@ export const initialJournalfoeringState: JournalfoeringState = {
   fagsaker: undefined,
   fagsak: undefined,
   journalfoeringLogg: undefined,
-  h001: undefined
+  H001: undefined,
+  H001Id: undefined,
+  sendH001Response: undefined
 }
 
-const createH001= <T>(sak: Sak, text: string): T => {
+const createH001= <T>(sak: Sak, informasjonTekst: string): T => {
   const personInfo = {
     fornavn: sak.fornavn,
     etternavn: sak.etternavn,
@@ -43,15 +47,10 @@ const createH001= <T>(sak: Sak, text: string): T => {
   return {
     sedType: "H001",
     sedVersjon: '4.2',
-    sak,
-    sed: {
-      sedType: "H001",
-      status: 'new'
-    } as Sed,
     bruker: { personInfo },
     anmodning: {
       dokumentasjon: {
-        informasjon: text
+        informasjon: informasjonTekst
       }
     }
   } as unknown as T
@@ -130,11 +129,47 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
 
     case types.JOURNALFOERING_H001_CREATE:
       const sak = (action as ActionWithPayload).payload.sak
-      const text = (action as ActionWithPayload).payload.text
-      const h001: H001Sed = createH001<H001Sed>(sak, text)
+      const informasjonTekst = (action as ActionWithPayload).payload.informasjonTekst
+      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst)
       return {
         ...state,
-        h001
+        H001: H001Sed
+      }
+
+    case types.JOURNALFOERING_H001_CREATE_REQUEST:
+      return {
+        ...state,
+        H001Id: undefined
+      }
+
+    case types.JOURNALFOERING_H001_CREATE_SUCCESS:
+      return {
+        ...state,
+        H001Id: (action as ActionWithPayload).payload.sedId
+      }
+
+    case types.JOURNALFOERING_H001_CREATE_FAILURE:
+      return {
+        ...state,
+        H001Id: null
+      }
+
+    case types.JOURNALFOERING_H001_SEND_REQUEST:
+      return {
+        ...state,
+        sendH001Response: undefined
+      }
+
+    case types.JOURNALFOERING_H001_SEND_SUCCESS:
+      return {
+        ...state,
+        sendH001Response: (action as ActionWithPayload).payload
+      }
+
+    case types.JOURNALFOERING_H001_SEND_FAILURE:
+      return {
+        ...state,
+        sendH001Response: null
       }
 
     default:

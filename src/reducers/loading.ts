@@ -42,7 +42,8 @@ export const initialLoadingState: LoadingState = {
   sendingSak: false,
   sendingSed: false,
   updatingSvarSed: false,
-  isJournalfoering: false
+  isJournalfoering: false,
+  isSendingH001: false
 }
 
 const loadingReducer = (
@@ -500,6 +501,20 @@ const loadingReducer = (
       return {
         ...state,
         isJournalfoering: false
+      }
+
+    case types.JOURNALFOERING_H001_CREATE:
+      return {
+        ...state,
+        isSendingH001: true
+      }
+
+    case types.JOURNALFOERING_H001_CREATE_FAILURE:
+    case types.JOURNALFOERING_H001_SEND_FAILURE:
+    case types.JOURNALFOERING_H001_SEND_SUCCESS:
+      return {
+        ...state,
+        isSendingH001: false
       }
 
     default:
