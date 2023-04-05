@@ -1,20 +1,60 @@
-import {JournalfoeringFagSak, JournalfoeringFagSaker, JournalfoeringLogg, Person} from "../declarations/types";
+import {
+  JournalfoeringFagSak,
+  JournalfoeringFagSaker,
+  JournalfoeringLogg,
+  Person,
+  Sak,
+  Sed
+} from "../declarations/types";
 import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
+import {H001Sed, Kjoenn} from "../declarations/sed";
 
 export interface JournalfoeringState {
   person: Person | null | undefined
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
+  h001: H001Sed | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
   person: undefined,
   fagsaker: undefined,
   fagsak: undefined,
-  journalfoeringLogg: undefined
+  journalfoeringLogg: undefined,
+  h001: undefined
+}
+
+const createH001= <T>(sak: Sak, text: string): T => {
+  const personInfo = {
+    fornavn: sak.fornavn,
+    etternavn: sak.etternavn,
+    kjoenn: sak.kjoenn as Kjoenn,
+    foedselsdato: sak.foedselsdato,
+    statsborgerskap: [{ land: 'NO' }],
+    pin: [{
+      land: 'NO',
+      identifikator: sak.fnr
+    }]
+  }
+
+  return {
+    sedType: "H001",
+    sedVersjon: '4.2',
+    sak,
+    sed: {
+      sedType: "H001",
+      status: 'new'
+    } as Sed,
+    bruker: { personInfo },
+    anmodning: {
+      dokumentasjon: {
+        informasjon: text
+      }
+    }
+  } as unknown as T
 }
 
 const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoeringState, action: AnyAction): JournalfoeringState => {
@@ -88,6 +128,14 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
         journalfoeringLogg: null
       }
 
+    case types.JOURNALFOERING_H001_CREATE:
+      const sak = (action as ActionWithPayload).payload.sak
+      const text = (action as ActionWithPayload).payload.text
+      const h001: H001Sed = createH001<H001Sed>(sak, text)
+      return {
+        ...state,
+        h001
+      }
 
     default:
       return state

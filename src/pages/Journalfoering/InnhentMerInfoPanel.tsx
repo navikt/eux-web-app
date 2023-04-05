@@ -6,6 +6,8 @@ import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import _ from "lodash";
+import {useAppDispatch} from "../../store";
+import {createH001} from "../../actions/journalfoering";
 
 const StyledTextarea = styled(Textarea)<{$visible?: boolean}>`
   display: ${props => props.$visible ? "block" : "none"};
@@ -17,11 +19,12 @@ export interface InnhentMerInfoPanelProps {
 
 export const InnhentMerInfoPanel = ({ sak }: InnhentMerInfoPanelProps) => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const [_textareaVisible, setTextareaVisible] = useState<boolean>(false);
   const [_textSelected, setTextSelected] = useState(false);
   const [_fritekst, setFritekst] = useState<string>("");
 
-  let standardText = t('journalfoering:standard-tekst')
+  let standardText = t('journalfoering:standardtekst')
 
   if(sak.sakType === "FB_BUC_01"){
     const mottattF001 = _.find(sak.sedListe, (sed) => {
@@ -40,8 +43,6 @@ export const InnhentMerInfoPanel = ({ sak }: InnhentMerInfoPanelProps) => {
     if(mottattF003 && !mottattF003.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-har-info')
   }
 
-  console.log(standardText)
-
   const onRadioChange = (val: any) => {
     setTextSelected(true)
     if(val === "fritekst"){
@@ -54,6 +55,14 @@ export const InnhentMerInfoPanel = ({ sak }: InnhentMerInfoPanelProps) => {
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFritekst(e.target.value)
+  }
+
+  const onSendH001 = () => {
+    if(sak.sakshandlinger.includes("H001")){
+      dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
+    } else {
+      console.log("Opprett H001 i NY sak")
+    }
   }
 
   return (
@@ -82,7 +91,7 @@ export const InnhentMerInfoPanel = ({ sak }: InnhentMerInfoPanelProps) => {
         onChange={onTextChange}
       />
       <VerticalSeparatorDiv />
-      <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)}>
+      <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001}>
         {t("el:button-send-x", {x: "H001"})}
       </Button>
     </Panel>

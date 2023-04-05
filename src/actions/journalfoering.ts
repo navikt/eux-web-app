@@ -1,5 +1,5 @@
 import {ActionWithPayload, call} from "@navikt/fetch";
-import {FagSaker, JournalfoeringFagSak} from "../declarations/types";
+import {FagSaker, JournalfoeringFagSak, Sak} from "../declarations/types";
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
@@ -77,3 +77,8 @@ export const journalfoer = (
     }
   })
 }
+
+export const createH001 = (sak: Sak, text: string): ActionWithPayload<any> => ({
+  type: types.JOURNALFOERING_H001_CREATE,
+  payload: { sak, text }
+})
