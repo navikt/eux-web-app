@@ -156,6 +156,8 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           onChange={onTextChange}
         />
         <VerticalSeparatorDiv />
+        <p>{standardText}</p>
+        <p>{_fritekst}</p>
         <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
         </Button>

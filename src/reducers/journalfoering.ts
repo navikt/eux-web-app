@@ -130,7 +130,9 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.JOURNALFOERING_H001_CREATE:
       const sak = (action as ActionWithPayload).payload.sak
       const informasjonTekst = (action as ActionWithPayload).payload.informasjonTekst
+      console.log(informasjonTekst)
       const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst)
+      console.log(H001Sed)
       return {
         ...state,
         H001: H001Sed
