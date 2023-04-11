@@ -271,7 +271,7 @@ export default (saksnummer: string, type: string) => {
         "nr": "1/2023",
         "system": "AO11"
       },
-      ikkeJournalFoerteSED: [
+      ikkeJournalfoerteSed: [
         "H001 - Melding/anmodning om informasjon",
         "F001 - Anmodning om avgjørelse av kompetanse",
         "F004 - Anmodning om avklaringer",

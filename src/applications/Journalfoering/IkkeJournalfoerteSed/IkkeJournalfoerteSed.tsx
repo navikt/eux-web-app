@@ -11,11 +11,11 @@ export const DocumentList = styled.ul`
 
 `
 
-interface IkkeJournalfoerteSEDProps {
+interface IkkeJournalfoerteSedProps {
   sak: Sak
 }
 
-const IkkeJournalfoerteSED = ({ sak }: IkkeJournalfoerteSEDProps) => {
+const IkkeJournalfoerteSed = ({ sak }: IkkeJournalfoerteSedProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
@@ -34,9 +34,9 @@ const IkkeJournalfoerteSED = ({ sak }: IkkeJournalfoerteSEDProps) => {
         </Heading>
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        {sak.ikkeJournalFoerteSED && sak.ikkeJournalFoerteSED.length>0 &&
+        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length>0 &&
           <DocumentList>
-            {sak.ikkeJournalFoerteSED.map((sedTitle) => {
+            {sak.ikkeJournalfoerteSed.map((sedTitle) => {
               return (<li>{sedTitle}</li>)
             })}
           </DocumentList>
@@ -53,4 +53,4 @@ const IkkeJournalfoerteSED = ({ sak }: IkkeJournalfoerteSEDProps) => {
   )
 }
 
-export default IkkeJournalfoerteSED
+export default IkkeJournalfoerteSed
