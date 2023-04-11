@@ -82,17 +82,23 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   const onSendH001 = () => {
     if(sak.sakshandlinger.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
-      dispatch(createH001SedInRina(sak.sakId, H001))
     } else {
       console.log("Opprett H001 i NY sak")
     }
   }
 
   useEffect(() => {
+    if(H001){
+      dispatch(createH001SedInRina(sak.sakId, H001))
+    }
+  }, [H001])
+
+  useEffect(() => {
     if(H001Id){
       dispatch(sendH001SedInRina(sak.sakId, H001Id))
     }
   }, [H001Id])
+
 
   const onSendH001ModalClose = () => {
     dispatch(journalfoeringReset())
