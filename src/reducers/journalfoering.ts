@@ -37,11 +37,6 @@ const createH001= <T>(sak: Sak, informasjonTekst: string): T => {
     etternavn: sak.etternavn,
     kjoenn: sak.kjoenn as Kjoenn,
     foedselsdato: sak.foedselsdato,
-    statsborgerskap: [{ land: 'NO' }],
-    pin: [{
-      land: 'NO',
-      identifikator: sak.fnr
-    }]
   }
 
   return {
