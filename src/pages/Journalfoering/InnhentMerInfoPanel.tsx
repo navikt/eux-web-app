@@ -96,7 +96,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
       console.log("Opprett H001 i NY sak")
-      dispatch(createHBUC01({institusjonsID: sak.sakseier, sektor: sektor}))
+      dispatch(createHBUC01({institusjonsID: sak.sakseier?.id, sektor: sektor}))
     }
   }
 
