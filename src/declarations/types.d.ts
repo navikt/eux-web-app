@@ -218,6 +218,7 @@ export interface Sak {
   kjoenn: string
   fnr: string
   erSakseier? : JaNei
+  sakseier?: NavInstitusjon
   sakType: string
   sakTittel: string
   sakId: string

@@ -248,6 +248,10 @@ export default (saksnummer: string, type: string) => {
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
       sensitiv: false,
+      sakseier: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"

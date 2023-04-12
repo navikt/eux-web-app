@@ -123,6 +123,8 @@ export const createHBUC01 = (data: any): ActionWithPayload<any> => {
     landKode: "NO",
     sedtype: "H001",
     sektor: data.sektor,
+    fnr: "",
+    institusjonsID: data.institusjonsID
   } as any
 
   return call({
