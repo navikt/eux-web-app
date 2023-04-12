@@ -6,6 +6,7 @@ import {Action, ActionCreator} from "redux";
 import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
 import mockPerson from "../mocks/person";
 import {H001Sed} from "../declarations/sed";
+import mockSendSak from "../mocks/sak/sendSak";
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -112,6 +113,27 @@ export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithP
       request: types.JOURNALFOERING_H001_SEND_REQUEST,
       success: types.JOURNALFOERING_H001_SEND_SUCCESS,
       failure: types.JOURNALFOERING_H001_SEND_FAILURE
+    }
+  })
+}
+
+export const createHBUC01 = (data: any): ActionWithPayload<any> => {
+  const payload = {
+    buctype: "H_BUC_01",
+    landKode: "NO",
+    sedtype: "H001",
+    sektor: data.sektor,
+  } as any
+
+  return call({
+    url: urls.API_SAK_SEND_URL,
+    method: 'POST',
+    payload,
+    expectedPayload: mockSendSak,
+    type: {
+      request: types.JOURNALFOERING_H_BUC_01_CREATE_REQUEST,
+      success: types.JOURNALFOERING_H_BUC_01_CREATE_SUCCESS,
+      failure: types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE
     }
   })
 }

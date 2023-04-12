@@ -504,6 +504,7 @@ const loadingReducer = (
       }
 
     case types.JOURNALFOERING_H001_CREATE:
+    case types.JOURNALFOERING_H_BUC_01_CREATE_REQUEST:
       return {
         ...state,
         isSendingH001: true
@@ -512,6 +513,8 @@ const loadingReducer = (
     case types.JOURNALFOERING_H001_CREATE_FAILURE:
     case types.JOURNALFOERING_H001_SEND_FAILURE:
     case types.JOURNALFOERING_H001_SEND_SUCCESS:
+    case types.JOURNALFOERING_H_BUC_01_CREATE_SUCCESS:
+    case types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE:
       return {
         ...state,
         isSendingH001: false

@@ -9,10 +9,17 @@ import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import _ from "lodash";
 import {useAppDispatch, useAppSelector} from "../../store";
-import {createH001, createH001SedInRina, journalfoeringReset, sendH001SedInRina} from "../../actions/journalfoering";
+import {
+  createH001,
+  createH001SedInRina,
+  createHBUC01,
+  journalfoeringReset,
+  sendH001SedInRina
+} from "../../actions/journalfoering";
 import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
 import Modal from "../../components/Modal/Modal";
+import {buctypeToSektor} from "../../utils/sektorUtils";
 
 const StyledTextarea = styled(Textarea)<{$visible?: boolean}>`
   display: ${props => props.$visible ? "block" : "none"};
@@ -27,6 +34,7 @@ interface InnhentMerInfoPanelSelector {
   H001: H001Sed | undefined | null
   H001Id: string | undefined | null
   sendH001Response: any | undefined | null
+  createdHBUC01: any | undefined | null
   isSendingH001: boolean
 }
 
@@ -34,17 +42,21 @@ const mapState = (state: State) => ({
   H001: state.journalfoering.H001,
   H001Id: state.journalfoering.H001Id,
   sendH001Response: state.journalfoering.sendH001Response,
+  createdHBUC01: state.journalfoering.createdHBUC01,
   isSendingH001: state.loading.isSendingH001
 })
 
 export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerInfoPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { H001, H001Id, sendH001Response, isSendingH001 }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
+  const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001 }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
   const [_textareaVisible, setTextareaVisible] = useState<boolean>(false);
   const [_textSelected, setTextSelected] = useState(false);
   const [_fritekst, setFritekst] = useState<string>("");
   const [_sendH001Modal, setSendH001Modal] = useState<boolean>(false)
+
+  let sektor = sak.sakType.split('_')[0]
+  sektor = buctypeToSektor[sektor]
 
   let standardText = t('journalfoering:standardtekst')
 
@@ -84,6 +96,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
       console.log("Opprett H001 i NY sak")
+      dispatch(createHBUC01({sektor}))
     }
   }
 
@@ -163,6 +176,9 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
         <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
         </Button>
+        {createdHBUC01 &&
+          <p>{createdHBUC01.sakId}</p>
+        }
       </Panel>
     </>
   )
