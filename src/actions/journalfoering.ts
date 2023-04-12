@@ -102,6 +102,23 @@ export const createH001SedInRina = (sakId: string, H001: H001Sed | undefined | n
   })
 }
 
+export const updateH001SedInRina = (sakId: string, sedId: string, H001: H001Sed | undefined | null): ActionWithPayload => {
+  return call({
+    method: 'PUT',
+    url: sprintf(urls.API_SED_UPDATE_URL, { rinaSakId: sakId, sedId: sedId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      sedId: '123'
+    } as CreateSedResponse,
+    type: {
+      request: types.JOURNALFOERING_H001_UPDATE_REQUEST,
+      success: types.JOURNALFOERING_H001_UPDATE_SUCCESS,
+      failure: types.JOURNALFOERING_H001_UPDATE_FAILURE
+    },
+    body: H001
+  })
+}
+
 export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithPayload<any> => {
   return call({
     method: 'POST',

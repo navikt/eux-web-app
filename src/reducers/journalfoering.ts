@@ -134,18 +134,21 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       }
 
     case types.JOURNALFOERING_H001_CREATE_REQUEST:
+    case types.JOURNALFOERING_H001_UPDATE_REQUEST:
       return {
         ...state,
         H001Id: undefined
       }
 
     case types.JOURNALFOERING_H001_CREATE_SUCCESS:
+    case types.JOURNALFOERING_H001_UPDATE_SUCCESS:
       return {
         ...state,
         H001Id: (action as ActionWithPayload).payload.sedId
       }
 
     case types.JOURNALFOERING_H001_CREATE_FAILURE:
+    case types.JOURNALFOERING_H001_UPDATE_FAILURE:
       return {
         ...state,
         H001Id: null

@@ -14,7 +14,7 @@ import {
   createH001SedInRina,
   createHBUC01,
   journalfoeringReset,
-  sendH001SedInRina
+  sendH001SedInRina, updateH001SedInRina
 } from "../../actions/journalfoering";
 import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
@@ -92,19 +92,26 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   }
 
   const onSendH001 = () => {
-    if(sak.sakshandlinger.includes("H001")){
+    if(!sak.sakshandlinger.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
-      console.log("Opprett H001 i NY sak")
       dispatch(createHBUC01({institusjonsID: sak.sakseier?.id, sektor: sektor}))
     }
   }
 
   useEffect(() => {
-    if(H001){
-      dispatch(createH001SedInRina(sak.sakId, H001))
+    if(createdHBUC01){
+      dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     }
-  }, [H001])
+  }, [createdHBUC01])
+
+  useEffect(() => {
+    if(H001 && !createdHBUC01){
+      dispatch(createH001SedInRina(sak.sakId, H001))
+    } else if (H001 && createdHBUC01){
+      dispatch(updateH001SedInRina(createdHBUC01.sakId, createdHBUC01.sedId, H001))
+    }
+  }, [H001, createdHBUC01])
 
   useEffect(() => {
     if(H001Id){
