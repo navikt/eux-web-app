@@ -115,7 +115,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   useEffect(() => {
     if(H001Id){
-      dispatch(sendH001SedInRina(sak.sakId, H001Id))
+      dispatch(sendH001SedInRina(createdHBUC01 ? createdHBUC01.sakId : sak.sakId, H001Id))
     }
   }, [H001Id])
 
