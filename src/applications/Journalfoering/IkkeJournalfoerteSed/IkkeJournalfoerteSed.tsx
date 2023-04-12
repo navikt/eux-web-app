@@ -34,7 +34,7 @@ const IkkeJournalfoerteSed = ({ sak }: IkkeJournalfoerteSedProps) => {
         </Heading>
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length>0 &&
+        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
           <DocumentList>
             {sak.ikkeJournalfoerteSed.map((sedTitle) => {
               return (<li>{sedTitle}</li>)

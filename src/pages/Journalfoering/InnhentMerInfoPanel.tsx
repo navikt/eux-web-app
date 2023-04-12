@@ -99,18 +99,16 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     }
   }, [H001Id])
 
-
-  const onSendH001ModalClose = () => {
-    dispatch(journalfoeringReset())
-    setSendH001Modal(false)
-  }
-
   useEffect(() => {
     if(sendH001Response){
       setSendH001Modal(true)
     }
   }, [sendH001Response])
 
+  const onSendH001ModalClose = () => {
+    dispatch(journalfoeringReset())
+    setSendH001Modal(false)
+  }
 
   return (
     <>
@@ -162,8 +160,6 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           onChange={onTextChange}
         />
         <VerticalSeparatorDiv />
-        <p>{standardText}</p>
-        <p>{_fritekst}</p>
         <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
         </Button>
