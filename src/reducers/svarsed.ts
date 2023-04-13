@@ -106,7 +106,7 @@ const trimPin = (bruker:Person):Person => {
     let trimmedPins = personInfo.pin.map((pin: any) => {
       return {
         ...pin,
-        identifikator: pin.identifikator.trim()
+        identifikator: pin.identifikator ? pin.identifikator.trim() : null
       }
     })
 
