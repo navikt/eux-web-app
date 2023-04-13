@@ -101,7 +101,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
 
 const trimPin = (bruker:Person):Person => {
   let brukerWithTrimmedPin = bruker
-  if(bruker && bruker.personInfo) {
+  if(bruker && bruker.personInfo && bruker.personInfo.pin) {
     let personInfo = bruker.personInfo
     let trimmedPins = personInfo.pin.map((pin: any) => {
       return {
