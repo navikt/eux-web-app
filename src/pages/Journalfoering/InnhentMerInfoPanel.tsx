@@ -106,7 +106,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   useEffect(() => {
     if(createdHBUC01){
-      dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
+      dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText, t('label:international-id') + ": " + sak.internasjonalSakId))
     }
   }, [createdHBUC01])
 

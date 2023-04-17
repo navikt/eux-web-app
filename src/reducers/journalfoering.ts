@@ -33,7 +33,7 @@ export const initialJournalfoeringState: JournalfoeringState = {
   createdHBUC01: undefined
 }
 
-const createH001= <T>(sak: Sak, informasjonTekst: string): T => {
+const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereinfo?: string): T => {
   const personInfo = {
     fornavn: sak.fornavn,
     etternavn: sak.etternavn,
@@ -41,7 +41,7 @@ const createH001= <T>(sak: Sak, informasjonTekst: string): T => {
     foedselsdato: sak.foedselsdato,
   }
 
-  return {
+  let h001Sed = {
     sedType: "H001",
     sedVersjon: '4.2',
     bruker: { personInfo },
@@ -51,6 +51,17 @@ const createH001= <T>(sak: Sak, informasjonTekst: string): T => {
       }
     }
   } as unknown as T
+
+  if(ytterligereinfo){
+    return {
+      ...h001Sed,
+      ytterligereinfoType: "melding_om_mer_informasjon",
+      ytterligereinfo: ytterligereinfo
+    }
+  } else {
+    return h001Sed
+  }
+
 }
 
 const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoeringState, action: AnyAction): JournalfoeringState => {
@@ -127,7 +138,8 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.JOURNALFOERING_H001_CREATE:
       const sak = (action as ActionWithPayload).payload.sak
       const informasjonTekst = (action as ActionWithPayload).payload.informasjonTekst
-      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst)
+      const ytterligereinfo = (action as ActionWithPayload).payload.ytterligereinfo
+      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst, ytterligereinfo)
       return {
         ...state,
         H001: H001Sed

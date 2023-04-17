@@ -80,9 +80,9 @@ export const journalfoer = (
   })
 }
 
-export const createH001 = (sak: Sak, informasjonTekst: string): ActionWithPayload<any> => ({
+export const createH001 = (sak: Sak, informasjonTekst: string, ytterligereinfo?: string): ActionWithPayload<any> => ({
   type: types.JOURNALFOERING_H001_CREATE,
-  payload: { sak, informasjonTekst }
+  payload: { sak, informasjonTekst, ytterligereinfo }
 })
 
 export const createH001SedInRina = (sakId: string, H001: H001Sed | undefined | null): ActionWithPayload => {

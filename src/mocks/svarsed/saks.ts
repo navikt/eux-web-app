@@ -244,6 +244,7 @@ export default (saksnummer: string, type: string) => {
       sakTittel: 'Horisontal',
       sakType: 'H_BUC_01',
       sakId: '398793',
+      internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
