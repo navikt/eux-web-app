@@ -33,7 +33,7 @@ export const initialJournalfoeringState: JournalfoeringState = {
   createdHBUC01: undefined
 }
 
-const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereinfo?: string): T => {
+const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: string): T => {
   const personInfo = {
     fornavn: sak.fornavn,
     etternavn: sak.etternavn,
@@ -52,11 +52,11 @@ const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereinfo?: stri
     }
   } as unknown as T
 
-  if(ytterligereinfo){
+  if(ytterligereInfo){
     return {
       ...h001Sed,
-      ytterligereinfoType: "melding_om_mer_informasjon",
-      ytterligereinfo: ytterligereinfo
+      ytterligereInfoType: "melding_om_mer_informasjon",
+      ytterligereInfo: ytterligereInfo
     }
   } else {
     return h001Sed
@@ -138,8 +138,8 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.JOURNALFOERING_H001_CREATE:
       const sak = (action as ActionWithPayload).payload.sak
       const informasjonTekst = (action as ActionWithPayload).payload.informasjonTekst
-      const ytterligereinfo = (action as ActionWithPayload).payload.ytterligereinfo
-      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst, ytterligereinfo)
+      const ytterligereInfo = (action as ActionWithPayload).payload.ytterligereInfo
+      const H001Sed: H001Sed = createH001<H001Sed>(sak, informasjonTekst, ytterligereInfo)
       return {
         ...state,
         H001: H001Sed
