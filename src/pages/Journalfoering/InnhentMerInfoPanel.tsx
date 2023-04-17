@@ -3,7 +3,7 @@ import {
   Sak,
 } from "../../declarations/types";
 import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Panel, Radio, RadioGroup, Textarea} from "@navikt/ds-react";
+import {Button, Heading, Link, Panel, Radio, RadioGroup, Textarea} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
@@ -54,6 +54,11 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   const [_textSelected, setTextSelected] = useState(false);
   const [_fritekst, setFritekst] = useState<string>("");
   const [_sendH001Modal, setSendH001Modal] = useState<boolean>(false)
+
+  const gotoNewSak = (sakId: string) => {
+    onSendH001ModalClose()
+    window.location.href = '/svarsed/view/sak/' + sakId
+  }
 
   let sektor = sak.sakType.split('_')[0]
   sektor = buctypeToSektor[sektor]
@@ -138,10 +143,14 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
         appElementId="root"
         modal={{
           closeButton: false,
-          modalTitle: t('label:sed-er-sendt'),
+          modalTitle: t('label:H001-er-sendt'),
           modalContent: (
             <>
-
+              {createdHBUC01 &&
+                <p>
+                  {t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link>
+                </p>
+              }
             </>
           ),
           modalButtons: [
@@ -183,9 +192,6 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
         <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
         </Button>
-        {createdHBUC01 &&
-          <p>{createdHBUC01.sakId}</p>
-        }
       </Panel>
     </>
   )

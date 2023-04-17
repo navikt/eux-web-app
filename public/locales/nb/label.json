@@ -167,6 +167,7 @@
   "gå-til-draft": "gå til lagret utkast",
   "gå-til-rina": "gå til RINA",
 
+  "H001-er-sendt": "H001 er sendt",
   "hele-familien" : "Hele familien",
   "hent-perioder-fra-aa-registeret-og-a-inntekt": "Hent arbeidsperioder fra AA-Registeret og A-Inntekt",
   "hent-inntekt-i-A-inntekt": "Hent inntekt i A-Inntekt",
@@ -272,6 +273,7 @@
   "no-grunn": "Ingen grunn",
   "norsk-fnr" : "Norsk personnummer",
   "norsk-fnr-beskrivelse": "Finn bruker på norsk personnummer og hent opplysninger fra TPS",
+  "ny-buc-opprettet": "Ny BUC opprettet",
 
   "only-active-seds": "Vis kun saker som kan behandles i nEESSI",
   "oppdater-sed" : "Oppdater SED",
