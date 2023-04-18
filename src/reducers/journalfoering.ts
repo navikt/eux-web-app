@@ -20,6 +20,7 @@ export interface JournalfoeringState {
   H001Id: string | undefined | null
   sendH001Response: any | undefined | null
   createdHBUC01: any | undefined | null
+  addedRelatertRinaSak: any | undefined | null
 }
 
 export const initialJournalfoeringState: JournalfoeringState = {
@@ -30,7 +31,8 @@ export const initialJournalfoeringState: JournalfoeringState = {
   H001: undefined,
   H001Id: undefined,
   sendH001Response: undefined,
-  createdHBUC01: undefined
+  createdHBUC01: undefined,
+  addedRelatertRinaSak: undefined
 }
 
 const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: string): T => {
@@ -200,6 +202,24 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       return {
         ...state,
         createdHBUC01: null
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_REQUEST:
+      return {
+        ...state,
+        addedRelatertRinaSak: undefined
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_SUCCESS:
+      return {
+        ...state,
+        addedRelatertRinaSak: true
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE:
+      return {
+        ...state,
+        addedRelatertRinaSak: null
       }
 
     default:

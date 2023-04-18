@@ -3,18 +3,20 @@ import {
   Sak,
 } from "../../declarations/types";
 import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Link, Panel, Radio, RadioGroup, Textarea} from "@navikt/ds-react";
+import {Button, Heading, Link, Loader, Panel, Radio, RadioGroup, Textarea} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import styled from "styled-components";
 import _ from "lodash";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {
+  addRelatedRinaSak,
   createH001,
   createH001SedInRina,
   createHBUC01,
   journalfoeringReset,
-  sendH001SedInRina, updateH001SedInRina
+  sendH001SedInRina,
+  updateH001SedInRina
 } from "../../actions/journalfoering";
 import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
@@ -35,6 +37,8 @@ interface InnhentMerInfoPanelSelector {
   sendH001Response: any | undefined | null
   createdHBUC01: any | undefined | null
   isSendingH001: boolean
+  isAddingRelatertRinaSak: boolean
+  addedRelatertRinaSak: any | undefined | null
 }
 
 const mapState = (state: State) => ({
@@ -42,13 +46,15 @@ const mapState = (state: State) => ({
   H001Id: state.journalfoering.H001Id,
   sendH001Response: state.journalfoering.sendH001Response,
   createdHBUC01: state.journalfoering.createdHBUC01,
-  isSendingH001: state.loading.isSendingH001
+  isSendingH001: state.loading.isSendingH001,
+  isAddingRelatertRinaSak: state.loading.isAddingRelatertRinaSak,
+  addedRelatertRinaSak: state.journalfoering.addedRelatertRinaSak
 })
 
 export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerInfoPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001 }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
+  const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak}: InnhentMerInfoPanelSelector = useAppSelector(mapState)
   const [_textareaVisible, setTextareaVisible] = useState<boolean>(false);
   const [_textSelected, setTextSelected] = useState(false);
   const [_fritekst, setFritekst] = useState<string>("");
@@ -94,7 +100,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   const onSendH001 = () => {
     dispatch(journalfoeringReset())
-    if(sak.sakshandlinger.includes("H001")){
+    if(!sak.sakshandlinger.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
       dispatch(createHBUC01({institusjonsID: sak.sakseier?.id}))
@@ -124,6 +130,9 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   useEffect(() => {
     if(sendH001Response){
       setSendH001Modal(true)
+      if(createdHBUC01){
+        dispatch(addRelatedRinaSak(sak.sakId, createdHBUC01.sakId))
+      }
     }
   }, [sendH001Response])
 
@@ -145,7 +154,10 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
             <>
               {createdHBUC01 &&
                 <>
-                  {t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link>
+                  {isAddingRelatertRinaSak ? <Loader/> : addedRelatertRinaSak ?
+                    (<>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link></>) :
+                    (<>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link> <br/> ({t('label:obs-ta-vare-paa-saksnummeret')})</>)
+                  }
                   <VerticalSeparatorDiv />
                 </>
               }
@@ -154,10 +166,12 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           modalButtons: [
             {
               text: t('el:button-gaa-tilbake-til-saken'),
+              disabled: isAddingRelatertRinaSak,
               onClick: gotoSak
             },
             {
               text: t('el:button-gaa-til-forsiden'),
+              disabled: isAddingRelatertRinaSak,
               onClick: gotoFrontpage
             }]
         }}

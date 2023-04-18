@@ -30,6 +30,7 @@ export const API_RINA_ATTACHMENT_GET_URL = API_BASE_URL + '/rina/%(rinaSakId)s/s
 export const API_RINA_ATTACHMENT_DELETE_URL = API_BASE_URL + '/rina/%(rinaSakId)s/sed/%(sedId)s/vedlegg/%(vedleggId)s'
 export const API_RINA_ATTACHMENT_SENSITIVE_URL = API_BASE_URL + '/rina/%(rinaSakId)s/sed/%(sedId)s/vedlegg/%(vedleggId)s/sensitivt'
 export const API_RINA_JOURNALFOER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/journalfoer'
+export const API_ADD_RELATED_RINASAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/relaterte/%(relatertRinaSakId)s'
 
 // Registre
 export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'

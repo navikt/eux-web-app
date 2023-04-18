@@ -158,3 +158,21 @@ export const createHBUC01 = (data: any): ActionWithPayload<any> => {
   })
 }
 
+export const addRelatedRinaSak = (rinaSakId: string, relatertRinaSakId: string): ActionWithPayload<any> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_ADD_RELATED_RINASAK_URL, { rinaSakId, relatertRinaSakId }),
+    expectedErrorRate: {
+      500: 1
+    },
+    cascadeFailureError: true,
+    expectedPayload: {
+      success: 'true'
+    },
+    type: {
+      request: types.JOURNALFOERING_ADD_RELATED_RINASAK_REQUEST,
+      success: types.JOURNALFOERING_ADD_RELATED_RINASAK_SUCCESS,
+      failure: types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE
+    }
+  })
+}

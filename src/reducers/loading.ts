@@ -43,7 +43,8 @@ export const initialLoadingState: LoadingState = {
   sendingSed: false,
   updatingSvarSed: false,
   isJournalfoering: false,
-  isSendingH001: false
+  isSendingH001: false,
+  isAddingRelatertRinaSak: false
 }
 
 const loadingReducer = (
@@ -518,6 +519,19 @@ const loadingReducer = (
       return {
         ...state,
         isSendingH001: false
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_REQUEST:
+      return {
+        ...state,
+        isAddingRelatertRinaSak: true
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_SUCCESS:
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE:
+      return {
+        ...state,
+        isAddingRelatertRinaSak: false
       }
 
     default:
