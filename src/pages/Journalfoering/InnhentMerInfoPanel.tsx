@@ -19,7 +19,6 @@ import {
 import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
 import Modal from "../../components/Modal/Modal";
-import {buctypeToSektor} from "../../utils/sektorUtils";
 
 const StyledTextarea = styled(Textarea)<{$visible?: boolean}>`
   display: ${props => props.$visible ? "block" : "none"};
@@ -60,9 +59,6 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     window.location.href = '/svarsed/view/sak/' + sakId
   }
 
-  let sektor = sak.sakType.split('_')[0]
-  sektor = buctypeToSektor[sektor]
-
   let standardText = t('journalfoering:standardtekst')
 
   if(sak.sakType === "FB_BUC_01"){
@@ -97,10 +93,11 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   }
 
   const onSendH001 = () => {
+    dispatch(journalfoeringReset())
     if(sak.sakshandlinger.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
-      dispatch(createHBUC01({institusjonsID: sak.sakseier?.id, sektor: sektor}))
+      dispatch(createHBUC01({institusjonsID: sak.sakseier?.id}))
     }
   }
 

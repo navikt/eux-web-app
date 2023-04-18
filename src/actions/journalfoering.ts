@@ -123,6 +123,7 @@ export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithP
   return call({
     method: 'POST',
     url: sprintf(urls.API_SED_SEND_URL, { rinaSakId, sedId }),
+    cascadeFailureError: true,
     expectedPayload: {
       success: 'true'
     },
@@ -137,15 +138,15 @@ export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithP
 export const createHBUC01 = (data: any): ActionWithPayload<any> => {
   const payload = {
     buctype: "H_BUC_01",
-    landKode: "NO",
+    sektor: "HZ",
     sedtype: "H001",
-    sektor: data.sektor,
+    institusjonsID: data.institusjonsID,
     fnr: "",
-    institusjonsID: data.institusjonsID
   } as any
 
   return call({
     url: urls.API_SAK_SEND_URL,
+    cascadeFailureError: true,
     method: 'POST',
     payload,
     expectedPayload: mockSendSak,
