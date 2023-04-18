@@ -147,9 +147,10 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           modalContent: (
             <>
               {createdHBUC01 &&
-                <p>
+                <>
                   {t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link>
-                </p>
+                  <VerticalSeparatorDiv />
+                </>
               }
             </>
           ),
