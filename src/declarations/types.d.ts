@@ -236,6 +236,7 @@ export interface Sak {
   fagsak?: SakFagsak
   sedListe: Array<Sed>
   ikkeJournalfoerteSed?:Array<string>
+  relaterteRinasakIder?: Array<string>
 }
 
 export interface SakFagsak {

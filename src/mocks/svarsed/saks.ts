@@ -283,6 +283,11 @@ export default (saksnummer: string, type: string) => {
         "F022 - Anmodning om informasjon om perioder",
         "H003 - Fremlegg/melding om bostedsland"
       ],
+      relaterteRinasakIder: [
+        "161007",
+        "161007",
+        "161007",
+      ],
       sedListe: [
         {
           sedTittel: 'Horizontal',
