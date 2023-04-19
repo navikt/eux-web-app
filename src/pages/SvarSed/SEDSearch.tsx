@@ -114,7 +114,7 @@ const SEDSearch = (): JSX.Element => {
   const sykdom: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('S_'))?.length ?? 0
   const lovvalg: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('LA_'))?.length ?? 0
   const filteredSaks = _.filter(visibleSaks, (s: Sak) => _filter !== 'all' ? s.sakType.startsWith(_filter) : true)
-  const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) !== undefined)?.length ?? 0
+  const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(s, sed, entries, sedStatus)) !== undefined)?.length ?? 0
 
   return (
     <Container>
@@ -197,7 +197,7 @@ const SEDSearch = (): JSX.Element => {
                     <MyRadioPanelGroup>
                       {filteredSaks?.map((sak: Sak) => (
                         _onlyEditableSaks &&
-                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sed, entries, sedStatus)) === undefined
+                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sak, sed, entries, sedStatus)) === undefined
                           ? <div />
                           : (
                             <div key={'sak-' + sak?.sakId}>

@@ -62,7 +62,6 @@ export interface Sed {
   svarsedType?: string
   svarsedId?: string
   svarsedDisplay?: string
-  lenkeHvisForrigeSedMaaJournalfoeres?: string
   sedHandlinger: Array<SedAction>
   vedlegg?: Array<Attachment>
   children ?: Array<Sed>,
