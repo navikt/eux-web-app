@@ -200,7 +200,7 @@ const SEDView = (): JSX.Element => {
             <IkkeJournalfoerteSed sak={currentSak}/>
           </>
         }
-        {currentSak.relaterteRinasakIder &&
+        {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
           <>
             <VerticalSeparatorDiv />
             <RelaterteRinaSaker sak={currentSak} />

@@ -25,17 +25,15 @@ const RelaterteRinaSaker = ({ sak }: RelaterteRinaSakerProps) => {
     <>
       <Panel border>
         <Heading size='small'>
-          {t('label:tilknyttet-sak')}
+          { sak.relaterteRinasakIder && sak.relaterteRinasakIder.length > 1 ? t('label:tilknyttede-saker') : t('label:tilknyttet-sak')}
         </Heading>
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        {sak.relaterteRinasakIder && sak.relaterteRinasakIder.length > 0 &&
             <>
-              {sak.relaterteRinasakIder.map((sakId) => {
+              {sak.relaterteRinasakIder?.map((sakId) => {
                 return (<><Link href='#' onClick={() => gotoSak(sakId)}>{sakId}</Link><br/></>)
               })}
             </>
-        }
       </Panel>
     </>
   )
