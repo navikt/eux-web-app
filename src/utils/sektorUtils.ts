@@ -2,7 +2,7 @@ import {StringMap} from "../declarations/types";
 
 export const buctypeToSektor: StringMap = {
   AW: "AW",
-  F: "FB",
+  FB: "FB",
   H: "HZ",
   LA: "LA",
   M: "MI",
