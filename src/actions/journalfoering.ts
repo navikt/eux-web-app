@@ -174,19 +174,19 @@ export const addRelatedRinaSak = (rinaSakId: string, relatertRinaSakId: string):
   })
 }
 
-export const sendSedAndCloseCase = (rinaSakId: string): ActionWithPayload<any> => {
+export const feilregistrerJournalposter = (rinaSakId: string): ActionWithPayload<any> => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_SEND_SED_AND_CLOSE_SAK_URL, { rinaSakId }),
+    url: sprintf(urls.API_FEILREGISTRER_JOURNALPOSTER_URL, { rinaSakId }),
     cascadeFailureError: true,
     expectedPayload: {
-      bleFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
-      bleIkkeFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
+      bleFeilregistrertBeskrivelse: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      bleIkkeFeilregistrertBeskrivelse: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
     },
     type: {
-      request: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_REQUEST,
-      success: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_SUCCESS,
-      failure: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE
+      request: types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_REQUEST,
+      success: types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_SUCCESS,
+      failure: types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_FAILURE
     }
   })
 }

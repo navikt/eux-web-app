@@ -3,12 +3,7 @@ import {VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from "styled-components";
 import {HorizontalLineSeparator} from "../../../components/StyledComponents";
-
-export const DocumentList = styled.ul`
-
-`
 
 interface RelaterteRinaSakerProps {
   sak: Sak

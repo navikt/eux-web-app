@@ -4,12 +4,7 @@ import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import {useNavigate} from "react-router-dom";
-import styled from "styled-components";
 import {HorizontalLineSeparator} from "../../../components/StyledComponents";
-
-export const DocumentList = styled.ul`
-
-`
 
 interface IkkeJournalfoerteSedProps {
   sak: Sak
@@ -35,11 +30,11 @@ const IkkeJournalfoerteSed = ({ sak }: IkkeJournalfoerteSedProps) => {
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
         {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
-          <DocumentList>
+          <ul>
             {sak.ikkeJournalfoerteSed.map((sedTitle) => {
               return (<li>{sedTitle}</li>)
             })}
-          </DocumentList>
+          </ul>
         }
         <VerticalSeparatorDiv />
         <Button

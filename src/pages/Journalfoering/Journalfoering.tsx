@@ -12,7 +12,7 @@ import WaitingPanel from "../../components/WaitingPanel/WaitingPanel";
 import {querySaks} from "../../actions/svarsed";
 import JournalfoerPanel from "./JournalfoerPanel";
 import InnhentMerInfoPanel from "./InnhentMerInfoPanel";
-import AvsluttSakPanel from "./AvsluttSakPanel";
+import FeilregistrerJournalposterPanel from "./FeilregistrerJournalposterPanel";
 import {appReset} from "../../actions/app";
 
 export interface JournalfoeringProps {
@@ -72,7 +72,7 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
           <VerticalSeparatorDiv />
           <InnhentMerInfoPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
           <VerticalSeparatorDiv />
-          <AvsluttSakPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
+          <FeilregistrerJournalposterPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
         </Content>
         <Content style={{ flex: 2 }}>
           <Saksopplysninger sak={currentSak} />

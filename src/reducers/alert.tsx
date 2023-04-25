@@ -164,7 +164,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       case types.JOURNALFOERING_H001_UPDATE_FAILURE:
       case types.JOURNALFOERING_H001_SEND_FAILURE:
       case types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE:
-      //case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE:
+      case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_FAILURE:
         bannerMessage = _.isString((action as ActionWithPayload).payload.error)
           ? (action as ActionWithPayload).payload.error
           : (action as ActionWithPayload).payload.error?.message

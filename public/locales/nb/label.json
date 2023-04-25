@@ -43,7 +43,6 @@
   "avslutningdato" : "Avslutningsdato",
   "avslutningtype" : "Avslutningstype",
   "avsender": "Avsender",
-  "avslutt-sak": "Avslutt sak",
 
   "bankens-navn": "Bankens navn",
   "barn": "Barn",
@@ -111,6 +110,7 @@
 
   "fagsak" : "Fagsak",
   "fagsakNr" : "Fagsak nr.",
+  "feilregistrer-og-avslutt": "Feilregistrer og avslutt",
   "familie-alle-lagt-inn": "Du har lagt til alle som fantes i listen",
   "familien": "Familien",
   "familierelasjon": "Familierelasjon til ektefelle eller annen person",

@@ -1,5 +1,5 @@
 import {
-  FeilregistreringLogg,
+  FeilregistrerJournalposterLogg,
   JournalfoeringFagSak,
   JournalfoeringFagSaker,
   JournalfoeringLogg,
@@ -17,7 +17,7 @@ export interface JournalfoeringState {
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
-  feilregistreringLogg: FeilregistreringLogg | undefined | null
+  feilregistrerJournalposterLogg: FeilregistrerJournalposterLogg | undefined | null
   H001: H001Sed | undefined | null
   H001Id: string | undefined | null
   sendH001Response: any | undefined | null
@@ -30,7 +30,7 @@ export const initialJournalfoeringState: JournalfoeringState = {
   fagsaker: undefined,
   fagsak: undefined,
   journalfoeringLogg: undefined,
-  feilregistreringLogg: undefined,
+  feilregistrerJournalposterLogg: undefined,
   H001: undefined,
   H001Id: undefined,
   sendH001Response: undefined,
@@ -225,22 +225,22 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
         addedRelatertRinaSak: null
       }
 
-    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_REQUEST:
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_REQUEST:
       return {
         ...state,
-        feilregistreringLogg: undefined
+        feilregistrerJournalposterLogg: undefined
       }
 
-    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_SUCCESS:
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_SUCCESS:
       return {
         ...state,
-        feilregistreringLogg: (action as ActionWithPayload).payload
+        feilregistrerJournalposterLogg: (action as ActionWithPayload).payload
       }
 
-    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE:
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_FAILURE:
       return {
         ...state,
-        feilregistreringLogg: null
+        feilregistrerJournalposterLogg: null
       }
 
     default:
