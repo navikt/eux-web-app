@@ -67,9 +67,9 @@ export const journalfoer = (
     url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId }),
     body: fagsak,
     expectedPayload: {
-      journalfoert: ["1234567", "9876543"],
-      ikkeJournalfoert: ["1234567", "9876543"],
-      varJournalfoertFeil: ["1234567", "9876543"]
+      journalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      ikkeJournalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      varJournalfoertFeil: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
     },
     cascadeFailureError: true,
     type: {
@@ -162,9 +162,6 @@ export const addRelatedRinaSak = (rinaSakId: string, relatertRinaSakId: string):
   return call({
     method: 'POST',
     url: sprintf(urls.API_ADD_RELATED_RINASAK_URL, { rinaSakId, relatertRinaSakId }),
-    expectedErrorRate: {
-      500: 1
-    },
     cascadeFailureError: true,
     expectedPayload: {
       success: 'true'
@@ -173,6 +170,23 @@ export const addRelatedRinaSak = (rinaSakId: string, relatertRinaSakId: string):
       request: types.JOURNALFOERING_ADD_RELATED_RINASAK_REQUEST,
       success: types.JOURNALFOERING_ADD_RELATED_RINASAK_SUCCESS,
       failure: types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE
+    }
+  })
+}
+
+export const sendSedAndCloseCase = (rinaSakId: string): ActionWithPayload<any> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_SEND_SED_AND_CLOSE_SAK_URL, { rinaSakId }),
+    cascadeFailureError: true,
+    expectedPayload: {
+      bleFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      bleIkkeFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
+    },
+    type: {
+      request: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_REQUEST,
+      success: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_SUCCESS,
+      failure: types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE
     }
   })
 }

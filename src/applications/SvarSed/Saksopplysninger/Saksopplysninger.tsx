@@ -63,7 +63,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             {t('label:tema')}:
           </Dt>
           <Dd>
-            {t('tema:' + sak.tema)}
+            {sak.tema ? t('tema:' + sak.tema) : ""}
           </Dd>
           <Dt>
             {t('label:fagsak')}:

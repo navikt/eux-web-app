@@ -1,4 +1,5 @@
 import {
+  FeilregistreringLogg,
   JournalfoeringFagSak,
   JournalfoeringFagSaker,
   JournalfoeringLogg,
@@ -16,6 +17,7 @@ export interface JournalfoeringState {
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
+  feilregistreringLogg: FeilregistreringLogg | undefined | null
   H001: H001Sed | undefined | null
   H001Id: string | undefined | null
   sendH001Response: any | undefined | null
@@ -28,6 +30,7 @@ export const initialJournalfoeringState: JournalfoeringState = {
   fagsaker: undefined,
   fagsak: undefined,
   journalfoeringLogg: undefined,
+  feilregistreringLogg: undefined,
   H001: undefined,
   H001Id: undefined,
   sendH001Response: undefined,
@@ -220,6 +223,24 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       return {
         ...state,
         addedRelatertRinaSak: null
+      }
+
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_REQUEST:
+      return {
+        ...state,
+        feilregistreringLogg: undefined
+      }
+
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_SUCCESS:
+      return {
+        ...state,
+        feilregistreringLogg: (action as ActionWithPayload).payload
+      }
+
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE:
+      return {
+        ...state,
+        feilregistreringLogg: null
       }
 
     default:

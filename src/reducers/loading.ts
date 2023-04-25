@@ -44,7 +44,8 @@ export const initialLoadingState: LoadingState = {
   updatingSvarSed: false,
   isJournalfoering: false,
   isSendingH001: false,
-  isAddingRelatertRinaSak: false
+  isAddingRelatertRinaSak: false,
+  isSendingSedAndClosingSak: false
 }
 
 const loadingReducer = (
@@ -532,6 +533,19 @@ const loadingReducer = (
       return {
         ...state,
         isAddingRelatertRinaSak: false
+      }
+
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_REQUEST:
+      return {
+        ...state,
+        isSendingSedAndClosingSak: true
+      }
+
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_SUCCESS:
+    case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE:
+      return {
+        ...state,
+        isSendingSedAndClosingSak: false
       }
 
     default:

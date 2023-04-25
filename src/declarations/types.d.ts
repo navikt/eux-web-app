@@ -140,6 +140,12 @@ export interface JournalfoeringLogg {
   varJournalfoertFeil?: Array<string> | null | undefined
 }
 
+export interface FeilregistreringLogg {
+  varAlleredeFeilregistrert?: Array<string> | null | undefined,
+  bleFeilregistrert?: Array<string> | null | undefined,
+  bleIkkeFeilregistrert?: Array<string> | null | undefined
+}
+
 export interface PDU1SearchResult {
   fagsakId: string
   datoOpprettet: string
