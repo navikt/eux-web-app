@@ -132,7 +132,6 @@ export interface JournalfoeringFagSak {
   type: string
   nr?: string
   system?: string
-  opprettetDato?: string
 }
 
 export interface JournalfoeringLogg {
