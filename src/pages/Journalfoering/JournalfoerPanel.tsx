@@ -9,7 +9,7 @@ import {
   Tema
 } from "../../declarations/types";
 import {Row, Column, VerticalSeparatorDiv, HorizontalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Panel, Select, TextField} from "@navikt/ds-react";
+import {Alert, Button, Heading, Panel, Select, TextField} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -29,6 +29,7 @@ import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import styled from "styled-components";
 import Modal from "../../components/Modal/Modal";
+import {alertReset} from "../../actions/alert";
 
 
 const ImgContainer = styled.span`
@@ -52,6 +53,7 @@ interface JournalfoerPanelSelector {
   fagsaker: JournalfoeringFagSaker | undefined | null
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
+  alertMessage: JSX.Element | string | undefined
 }
 
 const mapState = (state: State) => ({
@@ -63,13 +65,14 @@ const mapState = (state: State) => ({
   tema: state.app.tema,
   fagsaker: state.journalfoering.fagsaker,
   fagsak: state.journalfoering.fagsak,
-  journalfoeringLogg: state.journalfoering.journalfoeringLogg
+  journalfoeringLogg: state.journalfoering.journalfoeringLogg,
+  alertMessage: state.alert.stripeMessage
 })
 
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string>()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -112,6 +115,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }, [journalfoeringLogg])
 
   const onSearch = () => {
+    dispatch(alertReset())
     if (!_fnr) {
       setLocalValidation(t('validation:noFnr'))
       return
@@ -126,6 +130,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   const onFnrChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    dispatch(alertReset())
     const fnr = e.target.value
     setLocalValidation(undefined)
     const newFnr = fnr.trim()
@@ -233,6 +238,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 <HorizontalSeparatorDiv />
                 {person.etternavn}, {person.fornavn}
               </div>
+            }
+            {alertMessage &&
+              <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </Column>
           <Column/>

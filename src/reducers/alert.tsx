@@ -104,6 +104,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    */
   if (_.endsWith(action.type, '/FAILURE')) {
     stripeStatus = 'error'
+    bannerStatus =  'error'
     switch (action.type) {
       case types.PERSON_SEARCH_FAILURE:
         stripeMessage = i18n.t('message:error-person-notFound')
@@ -147,6 +148,28 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         }
         break
 
+      case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
+        if ((action as ActionWithPayload).status === 404) {
+          stripeMessage = i18n.t('message:error-person-notFound')
+        } else {
+          bannerMessage = _.isString((action as ActionWithPayload).payload.error)
+            ? (action as ActionWithPayload).payload.error
+            : (action as ActionWithPayload).payload.error?.message
+        }
+        break
+
+      case types.JOURNALFOERING_FAGSAKER_FAILURE:
+      case types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE:
+      case types.JOURNALFOERING_H001_CREATE_FAILURE:
+      case types.JOURNALFOERING_H001_UPDATE_FAILURE:
+      case types.JOURNALFOERING_H001_SEND_FAILURE:
+      case types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE:
+      //case types.JOURNALFOERING_SEND_SED_AND_CLOSE_CASE_FAILURE:
+        bannerMessage = _.isString((action as ActionWithPayload).payload.error)
+          ? (action as ActionWithPayload).payload.error
+          : (action as ActionWithPayload).payload.error?.message
+        break
+
       default:
         if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
           stripeMessage = _.isString((action as ActionWithPayload).payload.error)
@@ -161,6 +184,8 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     return {
       ...state,
       type: action.type,
+      bannerStatus,
+      bannerMessage,
       stripeStatus,
       stripeMessage,
       error: (action as ActionWithPayload).payload

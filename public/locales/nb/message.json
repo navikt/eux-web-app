@@ -9,7 +9,7 @@
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
   "error-page-footer" : "",
   "error-page-title" : "Teknisk feil",
-  "error-person-notFound": "Brukeren du søker finnes ikke i TPS eller har en diskresjonskode",
+  "error-person-notFound": "Brukeren du søker finnes ikke i PDL eller har en diskresjonskode",
   "error-personRelated-notFound": "Ingen person med FNR {{feiletSok}} funnet eller har en diskresjonskode",
   "error-relation-already-in-tps": "Familierelasjonen er allerede registrert i TPS",
   "error-sending-attachments" : "Feil å sende vedlegg",
