@@ -57,7 +57,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
           closeButton: false,
           modalContent: (
             <>
-              {feilregistrerJournalposterLogg?.bleFeilregistrert?.length &&
+              {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&
                 <>
                   <Heading size={"small"}>{t('journalfoering:modal-ble-feilregistrert-title')}</Heading>
                     <VerticalSeparatorDiv/>
@@ -67,7 +67,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
                     <VerticalSeparatorDiv/>
                 </>
               }
-              {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert?.length &&
+              {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert && feilregistrerJournalposterLogg?.bleIkkeFeilregistrert?.length > 0 &&
                 <>
                   <Heading size={"small"}>{t('journalfoering:modal-ble-ikke-feilregistrert-title')}</Heading>
                   <VerticalSeparatorDiv/>
