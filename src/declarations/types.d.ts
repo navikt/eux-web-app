@@ -141,8 +141,8 @@ export interface JournalfoeringLogg {
 }
 
 export interface FeilregistrerJournalposterLogg {
-  bleFeilregistrertBeskrivelse?: Array<string> | null | undefined,
-  bleIkkeFeilregistrertBeskrivelse?: Array<string> | null | undefined
+  bleFeilregistrert?: Array<string> | null | undefined,
+  bleIkkeFeilregistrert?: Array<string> | null | undefined
 }
 
 export interface PDU1SearchResult {

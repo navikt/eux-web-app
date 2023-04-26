@@ -180,8 +180,8 @@ export const feilregistrerJournalposter = (rinaSakId: string): ActionWithPayload
     url: sprintf(urls.API_FEILREGISTRER_JOURNALPOSTER_URL, { rinaSakId }),
     cascadeFailureError: true,
     expectedPayload: {
-      bleFeilregistrertBeskrivelse: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
-      bleIkkeFeilregistrertBeskrivelse: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
+      bleFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      bleIkkeFeilregistrert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
     },
     type: {
       request: types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_REQUEST,
