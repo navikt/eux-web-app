@@ -42,12 +42,14 @@ interface SEDViewSelector {
   entries: Array<LocalStorageEntry<PDU1 | ReplySed>> | null | undefined
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
+  queryingSaks: boolean
 }
 
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
   entries: state.localStorage.svarsed.entries,
-  deletedSed: state.svarsed.deletedSed
+  deletedSed: state.svarsed.deletedSed,
+  queryingSaks: state.loading.queryingSaks
 })
 
 const SEDView = (): JSX.Element => {
@@ -57,7 +59,7 @@ const SEDView = (): JSX.Element => {
   const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, entries, deletedSed }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, entries, deletedSed,queryingSaks }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -136,7 +138,7 @@ const SEDView = (): JSX.Element => {
 
   Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
 
-  if (_.isUndefined(currentSak)) {
+  if (_.isUndefined(currentSak) || queryingSaks) {
     return <WaitingPanel />
   }
 
