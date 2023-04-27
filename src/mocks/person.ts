@@ -4,6 +4,7 @@ export default {
   fornavn: 'STOR',
   etternavn: 'BLYANT',
   kjoenn: 'M',
+  adressebeskyttelse: 'STRENGT_FORTROLIG',
   relasjoner: [
     {
       rolle: 'EKTE',

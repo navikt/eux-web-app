@@ -1,5 +1,5 @@
 import { Copy, ExternalLink } from '@navikt/ds-icons'
-import { BodyLong, Heading, Link } from '@navikt/ds-react'
+import {Alert, BodyLong, Heading, Link} from '@navikt/ds-react'
 import {
   FlexCenterDiv,
   FlexCenterSpacedDiv,
@@ -88,6 +88,11 @@ const SakPanel = ({
             </Link>
           </FlexCenterDiv>
         </FlexCenterSpacedDiv>
+        {sak.sensitiv ? (
+          <Alert size="small" variant='warning'>
+            <span>Denne saken er markert som sensitiv</span>
+          </Alert>
+        ) : null}
       </PileDiv>
     </RadioPanelBorderWithLinks>
   )
