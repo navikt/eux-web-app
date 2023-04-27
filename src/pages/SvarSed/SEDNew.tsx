@@ -431,9 +431,11 @@ const SEDNew = (): JSX.Element => {
         </Row>
         {grading != "" ?
           <Row>
-          <Alert size="small" variant='warning'>
-            Denne personen har beskyttelseskode {grading}
-          </Alert>
+            <Column>
+              <Alert size="small" variant='warning'>
+                Denne personen har beskyttelseskode {grading}
+              </Alert>
+            </Column>
           </Row>
           : null}
         <VerticalSeparatorDiv size='2' />
