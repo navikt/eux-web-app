@@ -90,7 +90,7 @@ const SakPanel = ({
         </FlexCenterSpacedDiv>
         {sak.sensitiv ? (
           <Alert size="small" variant='warning'>
-            <span>Denne saken er markert som sensitiv</span>
+            <span>{t('label:sensitivSak')}</span>
           </Alert>
         ) : null}
       </PileDiv>

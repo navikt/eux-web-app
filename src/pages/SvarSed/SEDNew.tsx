@@ -209,7 +209,7 @@ const SEDNew = (): JSX.Element => {
   const namespace = 'opprettsak'
   const navigate = useNavigate()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const [grading, setGrading] = useState<string>("")
+  const [gradering, setGradering] = useState<string | null>(null)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
     return k.kode !== "GEN"
@@ -417,7 +417,7 @@ const SEDNew = (): JSX.Element => {
               }}
               onPersonFound={() => {
                 setIsFnrValid(true)
-                setGrading(person?.adressebeskyttelse != undefined ? person.adressebeskyttelse : "")
+                setGradering(person?.adressebeskyttelse ? person.adressebeskyttelse : null)
               }}
               onSearchPerformed={(fnr: string) => {
                 dispatch(sakActions.sakReset())
@@ -429,15 +429,13 @@ const SEDNew = (): JSX.Element => {
           </Column>
           <Column />
         </Row>
-        {grading != "" ?
-          <Row>
+        {gradering && (<Row>
             <Column>
               <Alert size="small" variant='warning'>
-                Denne personen har beskyttelseskode {grading}
+                {t('label:sensitivPerson', {gradering: gradering})}
               </Alert>
             </Column>
-          </Row>
-          : null}
+          </Row>)}
         <VerticalSeparatorDiv size='2' />
         <Row>
           <Column>

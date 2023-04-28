@@ -210,7 +210,7 @@ export interface Sak {
   navinstitusjon: NavInstitusjon
   sistEndretDato: string
   sakshandlinger: Array<string>
-  sensitiv: boolean
+  sensitiv?: boolean
   tema ?: string
   fagsakId?: string
   fagsak?: SakFagsak
