@@ -88,11 +88,11 @@ const SakPanel = ({
             </Link>
           </FlexCenterDiv>
         </FlexCenterSpacedDiv>
-        {sak.sensitiv ? (
+        {sak.sensitiv && (
           <Alert size="small" variant='warning'>
             <span>{t('label:sensitivSak')}</span>
           </Alert>
-        ) : null}
+        )}
       </PileDiv>
     </RadioPanelBorderWithLinks>
   )
