@@ -108,6 +108,7 @@ export interface Person {
   etternavn?: string
   kjoenn?: string
   relasjoner?: Array<OldFamilieRelasjon>
+  adressebeskyttelse?: string
 }
 
 export interface FagSak {
@@ -209,6 +210,7 @@ export interface Sak {
   navinstitusjon: NavInstitusjon
   sistEndretDato: string
   sakshandlinger: Array<string>
+  sensitiv?: boolean
   tema ?: string
   fagsakId?: string
   fagsak?: SakFagsak
