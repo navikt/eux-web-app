@@ -16,7 +16,6 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',
-      sensitiv: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -170,7 +169,6 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'nei',
-      sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -248,7 +246,6 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
-      sensitiv: false,
       sakseier: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -278,10 +275,8 @@ export default (saksnummer: string, type: string) => {
       },
 
       ikkeJournalfoerteSed: [
-        "F001 - Anmodning om avgjørelse av kompetanse",
-      ],
-      sedUnderJournalfoeringEllerUkjentStatus : [
         "H001 - Melding/anmodning om informasjon",
+        "F001 - Anmodning om avgjørelse av kompetanse",
       ],
       relaterteRinasakIder: [
         "161007",
@@ -375,7 +370,6 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -425,7 +419,6 @@ export default (saksnummer: string, type: string) => {
       "sakId": "1442979",
       "internasjonalSakId": "2663a13d3fa443ca8970be821c7ba2cc",
       "erSakseier": "nei",
-      "sensitiv": false,
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       "tema": "SYK",
       fagsak: {

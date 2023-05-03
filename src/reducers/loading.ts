@@ -414,6 +414,19 @@ const loadingReducer = (
         queryingSaks: false
       }
 
+    case types.SVARSED_SAKS_TIMER_REFRESH_REQUEST:
+      return {
+        ...state,
+        refreshingSaks: true
+      }
+
+    case types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS:
+    case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
+      return {
+        ...state,
+        refreshingSaks: false
+      }
+
     case types.SAK_SEND_REQUEST:
       return {
         ...state,

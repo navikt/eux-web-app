@@ -355,6 +355,7 @@ const svarsedReducer = (
 
     case types.SVARSED_SAKS_FAILURE:
     case types.SVARSED_SAKS_REFRESH_FAILURE:
+    case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
       return {
         ...state,
         saks: null
@@ -396,6 +397,7 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS:
     case types.SVARSED_SAKS_REFRESH_SUCCESS: {
       let saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload

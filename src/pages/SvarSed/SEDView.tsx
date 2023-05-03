@@ -26,8 +26,9 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
+import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
+import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -43,13 +44,15 @@ interface SEDViewSelector {
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
   queryingSaks: boolean
+  refreshingSaks: boolean
 }
 
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
   entries: state.localStorage.svarsed.entries,
   deletedSed: state.svarsed.deletedSed,
-  queryingSaks: state.loading.queryingSaks
+  queryingSaks: state.loading.queryingSaks,
+  refreshingSaks: state.loading.refreshingSaks
 })
 
 const SEDView = (): JSX.Element => {
@@ -59,7 +62,7 @@ const SEDView = (): JSX.Element => {
   const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, entries, deletedSed,queryingSaks }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, entries, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -138,79 +141,93 @@ const SEDView = (): JSX.Element => {
 
   Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
 
-  if (_.isUndefined(currentSak) || queryingSaks) {
+  if (_.isUndefined(currentSak)) {
     return <WaitingPanel />
   }
 
   return (
-    <Container>
-      <Margin />
-      <Content style={{ flex: 6}}>
-        <PileStartDiv>
-          <FullWidthDiv>
-            <AlignStartRow>
-              <Column style={{marginRight: "1.5rem"}}>
-                <Sakshandlinger sak={currentSak} />
-              </Column>
-              <Column flex='2' style={{marginLeft: "1.5rem"}}>
-                <MyRadioPanelGroup>
-                  {sedMap
-                    .sort((a: Sed, b: Sed) => (
-                      moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                    )).map((sed: Sed) => (
-                      <div key={'sed-' + sed.sedId}>
-                        <SEDPanel
-                          currentSak={currentSak}
-                          sed={sed}
-                        />
-                        <VerticalSeparatorDiv />
-                        {sed.children?.sort((a: Sed, b: Sed) => (
-                          moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                        )).map((sed2: Sed) => (
-                          <div key={'sed-' + sed2.sedId} style={{ marginLeft: '4rem' }}>
-                            <SEDPanel
-                              currentSak={currentSak}
-                              sed={sed2}
-                            />
-                            <VerticalSeparatorDiv />
-                            {grandChildrenSedMap[sed2.sedId]?.sort((a: Sed, b: Sed) => (
-                              moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                            )).map((sed3: Sed) => (
-                              <div key={'sed-' + sed3.sedId} style={{ marginLeft: '4rem' }}>
-                                <SEDPanel
-                                  currentSak={currentSak}
-                                  sed={sed3}
-                                />
-                                <VerticalSeparatorDiv />
-                              </div>
-                            ))}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                </MyRadioPanelGroup>
-              </Column>
-            </AlignStartRow>
-          </FullWidthDiv>
-        </PileStartDiv>
-      </Content>
-      <Content style={{ flex: 2 }}>
-        <Saksopplysninger sak={currentSak} />
-        {currentSak.ikkeJournalfoerteSed &&
-          <>
-            <VerticalSeparatorDiv />
-            <IkkeJournalfoerteSed sak={currentSak}/>
-          </>
-        }
-        {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
-          <>
-            <VerticalSeparatorDiv />
-            <RelaterteRinaSaker sak={currentSak} />
-          </>
-        }
-      </Content>
-      <Margin />
-    </Container>
+    <>
+      {queryingSaks && !refreshingSaks &&
+        <>
+          <VerticalSeparatorDiv/>
+          <WaitingPanel/>
+        </>
+      }
+      <Container>
+        <Margin />
+        <Content style={{ flex: 6}}>
+          <PileStartDiv>
+            <FullWidthDiv>
+              <AlignStartRow>
+                <Column style={{marginRight: "1.5rem"}}>
+                  <Sakshandlinger sak={currentSak} />
+                </Column>
+                <Column flex='2' style={{marginLeft: "1.5rem"}}>
+                  <MyRadioPanelGroup>
+                    {sedMap
+                      .sort((a: Sed, b: Sed) => (
+                        moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                      )).map((sed: Sed) => (
+                        <div key={'sed-' + sed.sedId}>
+                          <SEDPanel
+                            currentSak={currentSak}
+                            sed={sed}
+                          />
+                          <VerticalSeparatorDiv />
+                          {sed.children?.sort((a: Sed, b: Sed) => (
+                            moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                          )).map((sed2: Sed) => (
+                            <div key={'sed-' + sed2.sedId} style={{ marginLeft: '4rem' }}>
+                              <SEDPanel
+                                currentSak={currentSak}
+                                sed={sed2}
+                              />
+                              <VerticalSeparatorDiv />
+                              {grandChildrenSedMap[sed2.sedId]?.sort((a: Sed, b: Sed) => (
+                                moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+                              )).map((sed3: Sed) => (
+                                <div key={'sed-' + sed3.sedId} style={{ marginLeft: '4rem' }}>
+                                  <SEDPanel
+                                    currentSak={currentSak}
+                                    sed={sed3}
+                                  />
+                                  <VerticalSeparatorDiv />
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                  </MyRadioPanelGroup>
+                </Column>
+              </AlignStartRow>
+            </FullWidthDiv>
+          </PileStartDiv>
+        </Content>
+        <Content style={{ flex: 2 }}>
+          <Saksopplysninger sak={currentSak} />
+          {currentSak.ikkeJournalfoerteSed &&
+            <>
+              <VerticalSeparatorDiv />
+              <IkkeJournalfoerteSed sak={currentSak}/>
+            </>
+          }
+          {currentSak.sedUnderJournalfoeringEllerUkjentStatus &&
+            <>
+              <VerticalSeparatorDiv />
+              <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
+            </>
+          }
+          {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
+            <>
+              <VerticalSeparatorDiv />
+              <RelaterteRinaSaker sak={currentSak} />
+            </>
+          }
+        </Content>
+        <Margin />
+      </Container>
+    </>
   )
 }
 
