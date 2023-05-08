@@ -84,7 +84,6 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     if(mottattF003 && !mottattF003.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-har-info')
   }
 
-  console.log(standardText)
 
   const onRadioChange = (val: any) => {
     setTextSelected(true)
