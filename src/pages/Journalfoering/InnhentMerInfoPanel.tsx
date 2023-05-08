@@ -76,11 +76,10 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     if(mottattF001 && !mottattF001.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-har-info')
 
   } else if (sak.sakType === "FB_BUC_04"){
-    console.log("FB_BUC_04")
     const mottattF003 = _.find(sak.sedListe, (sed) => {
       return sed.sedType === "F003" && sed.status === "received"
     })
-    console.log(mottattF003)
+
     if(mottattF003 && mottattF003.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-mangler-info')
     if(mottattF003 && !mottattF003.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-har-info')
   }

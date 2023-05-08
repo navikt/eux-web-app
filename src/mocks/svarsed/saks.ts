@@ -242,7 +242,7 @@ export default (saksnummer: string, type: string) => {
       foedselsdato: '1970-01-01',
       fnr: '12345678901',
       sakTittel: 'Horisontal',
-      sakType: 'H_BUC_01',
+      sakType: 'FB_BUC_04',
       sakId: '398793',
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
@@ -354,13 +354,13 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
         },
         {
-          sedTittel: 'F001 - Mottat',
-          sedType: 'F001',
+          sedTittel: 'F003 - Mottat',
+          sedType: 'F003',
           sedId: 'f001mottatt',
           status: 'received',
           sistEndretDato: '2021-02-19',
           sedHandlinger: ['Read', 'Send', 'Delete'],
-          manglerInformasjonOmEktefelleEllerAnnenPerson: true
+          manglerInformasjonOmEktefelleEllerAnnenPerson: false
         }
       ]
     },
