@@ -63,7 +63,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
         }
         {refreshingSaks &&
           <CenteredDiv>
-            Sjekker status <Loader/>
+            {t('label:sjekker-status')} &nbsp; <Loader/>
           </CenteredDiv>
         }
       </Panel>
