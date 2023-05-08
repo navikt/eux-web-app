@@ -38,7 +38,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
       if(runs === 60){
         clearInterval(interval)
         return
-      } else if (sak.sedUnderJournalfoeringEllerUkjentStatus) {
+      } else if (sak.sedUnderJournalfoeringEllerUkjentStatus && (runs === 5 || runs === 10 || runs === 59)) {
         dispatch(querySaks(sak?.sakId, 'timer', runs >= 2))
       }
     }, 1000);
