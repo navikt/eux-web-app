@@ -35,7 +35,7 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
     let runs = 0
     interval = setInterval(() => {
       runs += 1
-      if(runs === 5){
+      if(runs === 60){
         clearInterval(interval)
         return
       } else if (sak.sedUnderJournalfoeringEllerUkjentStatus) {
