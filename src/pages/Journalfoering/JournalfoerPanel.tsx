@@ -30,6 +30,7 @@ import ukjent from 'assets/icons/Unknown.png'
 import styled from "styled-components";
 import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
+import * as types from "../../constants/actionTypes";
 
 
 const ImgContainer = styled.span`
@@ -54,6 +55,7 @@ interface JournalfoerPanelSelector {
   fagsak: JournalfoeringFagSak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
   alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
 }
 
 const mapState = (state: State) => ({
@@ -66,13 +68,14 @@ const mapState = (state: State) => ({
   fagsaker: state.journalfoering.fagsaker,
   fagsak: state.journalfoering.fagsak,
   journalfoeringLogg: state.journalfoering.journalfoeringLogg,
-  alertMessage: state.alert.stripeMessage
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type
 })
 
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string>()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -239,7 +242,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 {person.etternavn}, {person.fornavn}
               </div>
             }
-            {alertMessage &&
+            {alertMessage && alertType && [types.JOURNALFOERING_PERSON_SEARCH_FAILURE].indexOf(alertType) >= 0 &&
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </Column>
