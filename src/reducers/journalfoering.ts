@@ -40,10 +40,10 @@ export const initialJournalfoeringState: JournalfoeringState = {
 
 const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: string): T => {
   const personInfo = {
-    fornavn: sak.fornavn,
-    etternavn: sak.etternavn,
-    kjoenn: sak.kjoenn as Kjoenn,
-    foedselsdato: sak.foedselsdato,
+    fornavn: sak.fornavn ? sak.fornavn : "XX",
+    etternavn: sak.etternavn ? sak.etternavn : "XX",
+    kjoenn: sak.kjoenn ? sak.kjoenn as Kjoenn : "U",
+    foedselsdato: sak.foedselsdato ? sak.foedselsdato : "1900-01-01",
   }
 
   let h001Sed = {
