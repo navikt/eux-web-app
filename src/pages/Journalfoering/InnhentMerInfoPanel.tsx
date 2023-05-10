@@ -89,6 +89,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     setTextSelected(true)
     if(val === "fritekst"){
       setTextareaVisible(true)
+      setFritekst(standardText)
     } else {
       setTextareaVisible(false)
       setFritekst("")
@@ -201,6 +202,12 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           $visible={_textareaVisible}
           onChange={onTextChange}
         />
+        {!_textareaVisible && _textSelected &&
+          <>
+            <VerticalSeparatorDiv />
+            <em>{standardText}</em>
+          </>
+        }
         <VerticalSeparatorDiv />
         <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
