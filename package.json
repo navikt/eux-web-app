@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.6.0-TEN-6-journalfoering-ukjent-bruker",
+  "version": "8.6.0",
   "private": true,
   "type": "module",
   "scripts": {
