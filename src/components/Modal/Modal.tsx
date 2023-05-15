@@ -4,7 +4,6 @@ import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { ModalContent } from 'declarations/components'
 import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
-import ReactModal from 'react-modal'
 import PT from 'prop-types'
 import React from 'react'
 
@@ -61,7 +60,7 @@ const ModalFC: React.FC<ModalProps> = ({
   modal
 }: ModalProps): JSX.Element => {
   if (typeof (window) !== 'undefined') {
-    ReactModal.setAppElement(document.getElementById(appElementId) ?? 'body')
+    Modal.setAppElement(document.getElementById(appElementId) ?? 'body')
   }
 
   return (
@@ -96,7 +95,8 @@ const ModalFC: React.FC<ModalProps> = ({
               if (button.hide) {
                 return null
               }
-              let variant: 'tertiary' | 'primary' | 'secondary' | 'danger' | undefined = 'secondary'
+              let variant  = button.variant
+              //let variant: 'tertiary' | 'primary' | 'secondary' | 'danger' | undefined = 'secondary'
               if (button.main) {
                 variant = 'primary'
               }
@@ -112,7 +112,7 @@ const ModalFC: React.FC<ModalProps> = ({
               return (
                 <ButtonMargin key={i}>
                   <Button
-                    variant={variant}
+                    variant={variant ? variant : 'secondary'}
                     data-testid={'modal__button-id-' + i}
                     disabled={button.disabled || false}
                     id={'modal__button-id-' + i}

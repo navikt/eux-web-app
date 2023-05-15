@@ -16,7 +16,6 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'ja',
-      sensitiv: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -170,7 +169,6 @@ export default (saksnummer: string, type: string) => {
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
       erSakseier: 'nei',
-      sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -242,13 +240,12 @@ export default (saksnummer: string, type: string) => {
       foedselsdato: '1970-01-01',
       fnr: '12345678901',
       sakTittel: 'Horisontal',
-      sakType: 'FB_BUC_04',
+      sakType: 'H_BUC_01',
       sakId: '398793',
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
       erSakseier: 'ja',
-      sensitiv: false,
       sakseier: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -278,10 +275,8 @@ export default (saksnummer: string, type: string) => {
       },
 
       ikkeJournalfoerteSed: [
-        "F001 - Anmodning om avgjørelse av kompetanse",
-      ],
-      sedUnderJournalfoeringEllerUkjentStatus : [
         "H001 - Melding/anmodning om informasjon",
+        "F001 - Anmodning om avgjørelse av kompetanse",
       ],
       relaterteRinasakIder: [
         "161007",
@@ -354,13 +349,13 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['H002', 'Read', 'Update', 'Send', 'Delete']
         },
         {
-          sedTittel: 'F003 - Mottat',
-          sedType: 'F003',
+          sedTittel: 'F001 - Mottat',
+          sedType: 'F001',
           sedId: 'f001mottatt',
           status: 'received',
           sistEndretDato: '2021-02-19',
           sedHandlinger: ['Read', 'Send', 'Delete'],
-          manglerInformasjonOmEktefelleEllerAnnenPerson: false
+          manglerInformasjonOmEktefelleEllerAnnenPerson: true
         }
       ]
     },
@@ -375,7 +370,6 @@ export default (saksnummer: string, type: string) => {
       sakId: '398792',
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398792?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -425,7 +419,6 @@ export default (saksnummer: string, type: string) => {
       "sakId": "1442979",
       "internasjonalSakId": "2663a13d3fa443ca8970be821c7ba2cc",
       "erSakseier": "nei",
-      "sensitiv": false,
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       "tema": "SYK",
       fagsak: {

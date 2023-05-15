@@ -41,8 +41,11 @@ export const initialLoadingState: LoadingState = {
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
-  updatingSvarSed: false
-
+  updatingSvarSed: false,
+  isJournalfoering: false,
+  isSendingH001: false,
+  isAddingRelatertRinaSak: false,
+  isFeilregistreringJournalposter: false
 }
 
 const loadingReducer = (
@@ -191,6 +194,7 @@ const loadingReducer = (
     case types.SVARSED_FAGSAKER_REQUEST:
     case types.SAK_FAGSAKER_REQUEST:
     case types.PDU1_FAGSAKER_REQUEST:
+    case types.JOURNALFOERING_FAGSAKER_REQUEST:
       return {
         ...state,
         gettingFagsaker: true
@@ -202,6 +206,8 @@ const loadingReducer = (
     case types.PDU1_FAGSAKER_FAILURE:
     case types.SAK_FAGSAKER_SUCCESS:
     case types.SAK_FAGSAKER_FAILURE:
+    case types.JOURNALFOERING_FAGSAKER_SUCCESS:
+    case types.JOURNALFOERING_FAGSAKER_FAILURE:
       return {
         ...state,
         gettingFagsaker: false
@@ -408,6 +414,19 @@ const loadingReducer = (
         queryingSaks: false
       }
 
+    case types.SVARSED_SAKS_TIMER_REFRESH_REQUEST:
+      return {
+        ...state,
+        refreshingSaks: true
+      }
+
+    case types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS:
+    case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
+      return {
+        ...state,
+        refreshingSaks: false
+      }
+
     case types.SAK_SEND_REQUEST:
       return {
         ...state,
@@ -484,6 +503,62 @@ const loadingReducer = (
       return {
         ...state,
         sendingVedlegg: false
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
+      return {
+        ...state,
+        isJournalfoering: true
+      }
+
+    case types.JOURNALFOERING_JOURNALFOER_SAK_SUCCESS:
+    case types.JOURNALFOERING_JOURNALFOER_SAK_FAILURE:
+      return {
+        ...state,
+        isJournalfoering: false
+      }
+
+    case types.JOURNALFOERING_H001_CREATE:
+    case types.JOURNALFOERING_H_BUC_01_CREATE_REQUEST:
+      return {
+        ...state,
+        isSendingH001: true
+      }
+
+    case types.JOURNALFOERING_H001_CREATE_FAILURE:
+    case types.JOURNALFOERING_H001_UPDATE_FAILURE:
+    case types.JOURNALFOERING_H001_SEND_FAILURE:
+    case types.JOURNALFOERING_H001_SEND_SUCCESS:
+    case types.JOURNALFOERING_H_BUC_01_CREATE_FAILURE:
+      return {
+        ...state,
+        isSendingH001: false
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_REQUEST:
+      return {
+        ...state,
+        isAddingRelatertRinaSak: true
+      }
+
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_SUCCESS:
+    case types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE:
+      return {
+        ...state,
+        isAddingRelatertRinaSak: false
+      }
+
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_REQUEST:
+      return {
+        ...state,
+        isFeilregistreringJournalposter: true
+      }
+
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_SUCCESS:
+    case types.JOURNALFOERING_FEILREGISTRER_JOURNALPOSTER_FAILURE:
+      return {
+        ...state,
+        isFeilregistreringJournalposter: false
       }
 
     default:

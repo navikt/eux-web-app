@@ -62,10 +62,10 @@ export interface Sed {
   svarsedType?: string
   svarsedId?: string
   svarsedDisplay?: string
-  lenkeHvisForrigeSedMaaJournalfoeres?: string
   sedHandlinger: Array<SedAction>
   vedlegg?: Array<Attachment>
-  children ?: Array<Sed>
+  children ?: Array<Sed>,
+  manglerInformasjonOmEktefelleEllerAnnenPerson? : boolean
 }
 
 export interface Attachment {
@@ -125,6 +125,26 @@ export interface FagSak {
   status?: string
 }
 
+export interface JournalfoeringFagSak {
+  id: string
+  aktoerId: string
+  tema: string
+  type: string
+  nr?: string
+  system?: string
+}
+
+export interface JournalfoeringLogg {
+  journalfoert?: Array<string> | null | undefined,
+  ikkeJournalfoert?: Array<string> | null | undefined,
+  varJournalfoertFeil?: Array<string> | null | undefined
+}
+
+export interface FeilregistrerJournalposterLogg {
+  bleFeilregistrert?: Array<string> | null | undefined,
+  bleIkkeFeilregistrert?: Array<string> | null | undefined
+}
+
 export interface PDU1SearchResult {
   fagsakId: string
   datoOpprettet: string
@@ -139,6 +159,8 @@ export interface PDU1SearchResult {
 export type PDU1SearchResults = Array<PDU1SearchResult>
 
 export type FagSaker = Array<FagSak>
+export type JournalfoeringFagSaker = Array<JournalfoeringFagSak>
+
 
 export interface OldFamilieRelasjon extends Person {
   land?: string | null | undefined
@@ -199,6 +221,7 @@ export interface Sak {
   kjoenn: string
   fnr: string
   erSakseier? : JaNei
+  sakseier?: NavInstitusjon
   sakType: string
   sakTittel: string
   sakId: string
@@ -215,6 +238,9 @@ export interface Sak {
   fagsakId?: string
   fagsak?: SakFagsak
   sedListe: Array<Sed>
+  ikkeJournalfoerteSed?:Array<string>
+  sedUnderJournalfoeringEllerUkjentStatus?:Array<string>
+  relaterteRinasakIder?: Array<string>
 }
 
 export interface SakFagsak {

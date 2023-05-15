@@ -199,7 +199,7 @@ const SEDPanel = ({
     })
   }
 
-  const showJournalforingButton = sed.lenkeHvisForrigeSedMaaJournalfoeres
+  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length
   const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
   const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
@@ -207,7 +207,7 @@ const SEDPanel = ({
   const showDeleteButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
   const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger?.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
   const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
-  const showRemindButton = !showDraftForSedIdButton && !showJournalforingButton && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
+  const showRemindButton = !showDraftForSedIdButton && !hasIkkeJournalfoerteSed && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
   const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
   const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
@@ -256,25 +256,6 @@ const SEDPanel = ({
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
-            {showJournalforingButton && (
-              <>
-                <Button
-                  variant='secondary'
-                  data-amplitude='svarsed.selection.journalforing'
-                  onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
-                    window.open(sed.lenkeHvisForrigeSedMaaJournalfoeres, 'rina')
-                  }}
-                >
-                  {t('label:journalforing', {
-                    sedtype: sed.sedType
-                  })}
-                </Button>
-                <HorizontalSeparatorDiv size='0.5' />
-              </>
-            )}
             {!!sed.svarsedId && showDraftForSvarsedIdButton && (
               <Button
                 variant='secondary'
@@ -504,9 +485,9 @@ const SEDPanel = ({
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!sed.lenkeHvisForrigeSedMaaJournalfoeres}
+                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length}
                   data-amplitude='svarsed.selection.replysed'
-                  title={sed.lenkeHvisForrigeSedMaaJournalfoeres ? t('message:warning-spørre-sed-not-journalført') : ''}
+                  title={!!currentSak.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
                     buttonLogger(e, {
                       type: sed.svarsedType,

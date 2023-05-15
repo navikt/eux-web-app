@@ -1,5 +1,5 @@
 import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry, Sed } from 'declarations/types'
+import {LocalStorageEntry, Sak, Sed} from 'declarations/types'
 import _ from 'lodash'
 
 export const hasSentStatus = (svarsedId: string, sedStatus: {[k in string]: string | null}): boolean => {
@@ -24,12 +24,13 @@ export const hasDraftFor = (
   findSavedEntry(_.get(sed, needle), entries) !== undefined)
 
 export const isSedEditable = (
+  sak: Sak,
   connectedSed: Sed,
   entries: Array<LocalStorageEntry<ReplySed>> | null | undefined,
   sedStatus: {[k in string]: string | null}
 ) => (
-  !!connectedSed.lenkeHvisForrigeSedMaaJournalfoeres ||
+  !!sak.ikkeJournalfoerteSed?.length ||
   (hasDraftFor(connectedSed, entries, 'svarsedId') && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
   (connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
-  (connectedSed.svarsedType && !connectedSed.lenkeHvisForrigeSedMaaJournalfoeres)
+  (connectedSed.svarsedType && !sak.ikkeJournalfoerteSed?.length)
 )

@@ -7,6 +7,7 @@ import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon } from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
+import mockSaks2 from 'mocks/svarsed/saks_2'
 import { Action, ActionCreator } from 'redux'
 import validator from '@navikt/fnrvalidator'
 import mockPreview from 'mocks/previewFile'
@@ -223,7 +224,7 @@ export const createF002Sed = (
 
 
 export const querySaks = (
-  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' = 'new'
+  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' | 'timer' = 'new', mock2: boolean = false
 ): ActionWithPayload<Sed> => {
   let url, type
   const result = validator.idnr(saksnummerOrFnr)
@@ -239,24 +240,34 @@ export const querySaks = (
     url = sprintf(urls.API_RINASAKER_OVERSIKT_SAKID_QUERY_URL, { rinaSakId: saksnummerOrFnr })
   }
 
+  let myActionType = {
+    request: types.SVARSED_SAKS_REQUEST,
+    success: types.SVARSED_SAKS_SUCCESS,
+    failure: types.SVARSED_SAKS_FAILURE
+  }
+
+  if(actiontype === 'refresh') {
+    myActionType = {
+      request: types.SVARSED_SAKS_REFRESH_REQUEST,
+      success: types.SVARSED_SAKS_REFRESH_SUCCESS,
+      failure: types.SVARSED_SAKS_REFRESH_FAILURE
+    }
+  } else if (actiontype === 'timer') {
+    myActionType = {
+      request: types.SVARSED_SAKS_TIMER_REFRESH_REQUEST,
+      success: types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS,
+      failure: types.SVARSED_SAKS_TIMER_REFRESH_FAILURE
+    }
+  }
+
   return call({
     url,
-    expectedPayload: mockSaks(saksnummerOrFnr, type),
+    expectedPayload: mock2 ? mockSaks2(saksnummerOrFnr, type) : mockSaks(saksnummerOrFnr, type),
     context: {
       type,
       saksnummerOrFnr
     },
-    type: actiontype === 'new'
-      ? {
-          request: types.SVARSED_SAKS_REQUEST,
-          success: types.SVARSED_SAKS_SUCCESS,
-          failure: types.SVARSED_SAKS_FAILURE
-        }
-      : {
-          request: types.SVARSED_SAKS_REFRESH_REQUEST,
-          success: types.SVARSED_SAKS_REFRESH_SUCCESS,
-          failure: types.SVARSED_SAKS_REFRESH_FAILURE
-        }
+    type: myActionType
   })
 }
 

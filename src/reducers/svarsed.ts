@@ -101,12 +101,12 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
 
 const trimPin = (bruker:Person):Person => {
   let brukerWithTrimmedPin = bruker
-  if(bruker && bruker.personInfo) {
+  if(bruker && bruker.personInfo && bruker.personInfo.pin) {
     let personInfo = bruker.personInfo
     let trimmedPins = personInfo.pin.map((pin: any) => {
       return {
         ...pin,
-        identifikator: pin.identifikator.trim()
+        identifikator: pin.identifikator ? pin.identifikator.trim() : null
       }
     })
 
@@ -355,6 +355,7 @@ const svarsedReducer = (
 
     case types.SVARSED_SAKS_FAILURE:
     case types.SVARSED_SAKS_REFRESH_FAILURE:
+    case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
       return {
         ...state,
         saks: null
@@ -396,6 +397,7 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_SAKS_TIMER_REFRESH_SUCCESS:
     case types.SVARSED_SAKS_REFRESH_SUCCESS: {
       let saks = _.isArray((action as ActionWithPayload).payload)
         ? (action as ActionWithPayload).payload
