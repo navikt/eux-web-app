@@ -96,6 +96,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
       : { personInfo }
   } as unknown as T
 
+  console.log("createReplySedTemplate", replySed)
   return replySed
 }
 
