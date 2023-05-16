@@ -5,6 +5,7 @@
   "standardtekst": "We are unable to locate the applicant in Norway. Please give us more information, like the Norwegian ID-number, employer, address etc.",
   "standardtekst-fsed-har-info": "We are unable to locate this family in Norway.  Please give us more information about the person who works/worked in Norway, like the Norwegian ID-number, employer, address etc.",
   "standardtekst-fsed-mangler-info": "We are unable to locate the applicant in Norway. Please give us more information about the family member who works/worked in Norway, like the Norwegian ID-number, employer, address etc.",
+  "kunne-ikke-hente-liste": "Kunne ikke hente liste med ikke journalførte sed",
 
   "radio-option-standardtekst": "Standardtekst",
   "radio-option-fritekst": "Tilpasset informasjon (fritekst)"

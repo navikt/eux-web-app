@@ -29,6 +29,8 @@ import { useNavigate } from 'react-router-dom'
 import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
+import {Alert} from "@navikt/ds-react";
+import {useTranslation} from "react-i18next";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -56,6 +58,7 @@ const mapState = (state: State) => ({
 })
 
 const SEDView = (): JSX.Element => {
+  const { t } = useTranslation()
   const sedMap: any = []
   const tempChildrenSed: Array<Sed> = []
   const grandChildrenSedMap: any = {}
@@ -206,10 +209,18 @@ const SEDView = (): JSX.Element => {
         </Content>
         <Content style={{ flex: 2 }}>
           <Saksopplysninger sak={currentSak} />
-          {currentSak.ikkeJournalfoerteSed &&
+          {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
             <>
               <VerticalSeparatorDiv />
               <IkkeJournalfoerteSed sak={currentSak}/>
+            </>
+          }
+          {currentSak.ikkeJournalfoerteSedListFailed &&
+            <>
+              <VerticalSeparatorDiv />
+              <Alert variant="error">
+                {t('journalfoering:kunne-ikke-hente-liste')}
+              </Alert>
             </>
           }
           {currentSak.sedUnderJournalfoeringEllerUkjentStatus &&

@@ -239,6 +239,7 @@ export interface Sak {
   fagsak?: SakFagsak
   sedListe: Array<Sed>
   ikkeJournalfoerteSed?:Array<string>
+  ikkeJournalfoerteSedListFailed?:boolean
   sedUnderJournalfoeringEllerUkjentStatus?:Array<string>
   relaterteRinasakIder?: Array<string>
 }

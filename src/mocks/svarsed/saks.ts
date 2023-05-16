@@ -280,6 +280,7 @@ export default (saksnummer: string, type: string) => {
       ikkeJournalfoerteSed: [
         "F001 - Anmodning om avgjørelse av kompetanse",
       ],
+      ikkeJournalfoerteSedListFailed: true,
       sedUnderJournalfoeringEllerUkjentStatus : [
         "H001 - Melding/anmodning om informasjon",
       ],
