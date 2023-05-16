@@ -199,7 +199,7 @@ const SEDPanel = ({
     })
   }
 
-  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length
+  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed
   const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
   const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)

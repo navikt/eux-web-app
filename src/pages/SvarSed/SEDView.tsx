@@ -223,7 +223,7 @@ const SEDView = (): JSX.Element => {
               </Alert>
             </>
           }
-          {currentSak.sedUnderJournalfoeringEllerUkjentStatus &&
+          {currentSak.sedUnderJournalfoeringEllerUkjentStatus && !currentSak.ikkeJournalfoerteSedListFailed &&
             <>
               <VerticalSeparatorDiv />
               <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
