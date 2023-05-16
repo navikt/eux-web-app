@@ -485,7 +485,7 @@ const SEDPanel = ({
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length}
+                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed}
                   data-amplitude='svarsed.selection.replysed'
                   title={!!currentSak.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
