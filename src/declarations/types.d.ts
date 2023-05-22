@@ -219,7 +219,7 @@ export interface Sak {
   etternavn: string
   foedselsdato: string
   kjoenn: string
-  fnr: string
+  fnr?: string
   erSakseier? : JaNei
   sakseier?: NavInstitusjon
   sakType: string

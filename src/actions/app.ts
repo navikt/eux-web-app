@@ -11,7 +11,7 @@ import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import { Action, ActionCreator } from 'redux'
 
-export const copyToClipboard = (text: string) => ({
+export const copyToClipboard = (text?: string) => ({
   type: types.APP_CLIPBOARD_COPY,
   payload: text
 })

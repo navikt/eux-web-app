@@ -76,11 +76,11 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     etternavn: sak.etternavn,
     kjoenn: sak.kjoenn as Kjoenn,
     foedselsdato: sak.foedselsdato,
-    statsborgerskap: [{ land: 'NO' }],
-    pin: [{
-      land: 'NO',
-      identifikator: sak.fnr
-    }]
+    ...(sak.fnr && sak.fnr !== "" &&
+      {pin: [{
+        land: 'NO',
+        identifikator: sak.fnr
+      }]})
   }
 
   const replySed = {
@@ -96,7 +96,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
       : { personInfo }
   } as unknown as T
 
-  console.log("createReplySedTemplate", replySed)
+  //console.log("createReplySedTemplate", replySed)
   return replySed
 }
 
