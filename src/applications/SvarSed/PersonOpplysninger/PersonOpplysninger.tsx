@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import {Heading, TextField} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -15,8 +15,6 @@ import {
   ValidationPersonopplysningerProps
 } from 'applications/SvarSed/PersonOpplysninger/validation'
 import FoedestedFC from 'components/Foedested/Foedested'
-import DateInput from 'components/Forms/DateInput'
-import Input from 'components/Forms/Input'
 import NorskPin from 'components/NorskPin/NorskPin'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
@@ -24,10 +22,11 @@ import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import {toDateFormat} from "../../../components/Forms/PeriodeInput";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -156,6 +155,20 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
   }
 
+  const uiFormat = 'DD.MM.YYYY'
+  const finalFormat = 'YYYY-MM-DD'
+
+  const [_dato, _setDato] = useState<string>(() => toDateFormat(personInfo?.foedselsdato, uiFormat!) ?? '')
+
+  const onDatoBlur = () => {
+    const date = toDateFormat(_dato, finalFormat!)
+    setFodselsdato(date)
+  }
+
+  useEffect(() => {
+    _setDato(toDateFormat(personInfo?.foedselsdato, uiFormat!))
+  }, [personInfo?.foedselsdato])
+
   return (
     <>
       <PaddedDiv>
@@ -174,36 +187,42 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       <PaddedDiv>
         <AlignStartRow>
           <Column>
-            <Input
+            <TextField
               error={validation[namespace + '-fornavn']?.feilmelding}
-              id='fornavn'
-              label={t('label:fornavn')}
-              namespace={namespace}
-              onChanged={setFornavn}
+              id={namespace + '-' + "fornavn"}
+              label={t('label:fornavn') + ' *'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setFornavn(e.target.value)
+              }}
               required
               value={personInfo?.fornavn ?? ''}
             />
           </Column>
           <Column>
-            <Input
+            <TextField
               error={validation[namespace + '-etternavn']?.feilmelding}
-              id='etternavn'
-              label={t('label:etternavn')}
-              namespace={namespace}
-              onChanged={setEtternavn}
+              id={namespace + '-' + 'etternavn'}
+              label={t('label:etternavn') + ' *'}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEtternavn(e.target.value)
+              }}
               required
               value={personInfo?.etternavn ?? ''}
             />
           </Column>
           <Column>
-            <DateInput
+            <TextField
               error={validation[namespace + '-foedselsdato']?.feilmelding}
-              id='foedselsdato'
-              label={t('label:fødselsdato')}
-              namespace={namespace}
-              onChanged={setFodselsdato}
+              id={namespace + '-' + 'foedselsdato'}
+              label={t('label:fødselsdato') +  '(' + t('el:placeholder-date-default') + ')' + ' *'}
               required
-              value={personInfo?.foedselsdato ?? ''}
+              onBlur={() => {
+                onDatoBlur()
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                _setDato(e.target.value)
+              }}
+              value={_dato}
             />
           </Column>
         </AlignStartRow>

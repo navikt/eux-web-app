@@ -18,8 +18,8 @@ import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import {buttonLogger} from 'metrics/loggers'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 
@@ -82,11 +82,15 @@ const NorskPin: React.FC<NorskPinProps> = ({
   }
 
   const searchUser = (e: any) => {
-    if (norwegianPin && norwegianPin.identifikator) {
+    if (_tempNorwegianPin) {
       buttonLogger(e)
-      dispatch(searchPerson(norwegianPin.identifikator))
+      dispatch(searchPerson(_tempNorwegianPin))
     }
   }
+
+  useEffect(() => {
+    fillOutPerson()
+  }, [searchedPerson])
 
   const { t } = useTranslation()
   return (
