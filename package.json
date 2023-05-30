@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.6.1",
+  "version": "8.6.2-TEN-269-Personopplysninger",
   "private": true,
   "type": "module",
   "scripts": {
