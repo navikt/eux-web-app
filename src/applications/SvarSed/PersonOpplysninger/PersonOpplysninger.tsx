@@ -94,6 +94,11 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
       if (index >= 0) {
         newPersonInfo!.pin[index].identifikator = searchedPerson.fnr
+      } else {
+        newPersonInfo!.pin.push({
+          identifikator: searchedPerson.fnr,
+          land: 'NO'
+        })
       }
     }
     if (searchedPerson.fdato) {
@@ -108,6 +113,10 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (searchedPerson.kjoenn) {
       newPersonInfo!.kjoenn = searchedPerson.kjoenn as Kjoenn
     }
+    if (searchedPerson.statsborgerskapList) {
+      newPersonInfo!.statsborgerskap = searchedPerson.statsborgerskapList
+    }
+
     dispatch(updateReplySed(target, newPersonInfo))
     dispatch(resetValidation([
       namespace + '-fornavn',
