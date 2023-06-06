@@ -1,12 +1,12 @@
 import * as types from 'constants/actionTypes'
 import { PDU1 } from 'declarations/pd'
-import { FagSaker, PDU1SearchResults } from 'declarations/types'
+import { Fagsaker, PDU1SearchResults } from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface Pdu1State {
-  fagsaker: FagSaker | null | undefined
+  fagsaker: Fagsaker | null | undefined
   pdu1: PDU1 | null | undefined
   pdu1results: PDU1SearchResults | null | undefined
   previewDraftPdu1: Blob | null | undefined

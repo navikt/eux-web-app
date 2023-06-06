@@ -111,27 +111,14 @@ export interface Person {
   adressebeskyttelse?: string
 }
 
-export interface FagSak {
-  saksID: string
-  temakode: string
-  fagsystem: string
-  aktoerId?: string
-  orgnr?: string
-  fagsakNr?: string
-  sakstype?: string
-  opprettet?: string
-  opprettetAv?: string
-  opprettetTidspunkt?: string
-  status?: string
-}
-
-export interface JournalfoeringFagSak {
+export interface Fagsak {
   id: string
-  aktoerId: string
-  tema: string
-  type: string
-  nr?: string
-  system?: string
+  aktoerId?: string | null | undefined
+  tema?: string | null | undefined
+  type?: string | null | undefined
+  nr?: string | null | undefined
+  system?: string | null | undefined
+  fnr?: string | null | undefined
 }
 
 export interface JournalfoeringLogg {
@@ -158,9 +145,7 @@ export interface PDU1SearchResult {
 
 export type PDU1SearchResults = Array<PDU1SearchResult>
 
-export type FagSaker = Array<FagSak>
-export type JournalfoeringFagSaker = Array<JournalfoeringFagSak>
-
+export type Fagsaker = Array<Fagsak>
 
 export interface OldFamilieRelasjon extends Person {
   land?: string | null | undefined
@@ -236,7 +221,7 @@ export interface Sak {
   sensitiv?: boolean
   tema ?: string
   fagsakId?: string
-  fagsak?: SakFagsak
+  fagsak?: Fagsak
   sedListe: Array<Sed>
   ikkeJournalfoerteSed?:Array<string>
   ikkeJournalfoerteSedListFailed?:boolean
@@ -244,13 +229,6 @@ export interface Sak {
   relaterteRinasakIder?: Array<string>
 }
 
-export interface SakFagsak {
-  id: string
-  tema?: string | null | undefined
-  type?: string | null | undefined
-  nr?: string | null | undefined
-  system?: string | null | undefined
-}
 export interface NavInstitusjon {
   id: string
   navn: string

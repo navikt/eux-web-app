@@ -52,7 +52,7 @@ describe('actions/svarsed', () => {
           success: types.SVARSED_FAGSAKER_SUCCESS,
           failure: types.SVARSED_FAGSAKER_FAILURE
         },
-        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
+        url: sprintf(urls.API_GET_FAGSAKER_URL, { fnr, tema })
       }))
   })
 

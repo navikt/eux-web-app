@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed, CreateSedResponse, FagSaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
+import { Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon } from 'mocks/institutionList'
@@ -128,9 +128,9 @@ export const updateSed = (
 
 export const getFagsaker = (
   fnr: string, sektor: string, tema: string
-): ActionWithPayload<FagSaker> => {
+): ActionWithPayload<Fagsaker> => {
   return call({
-    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
+    url: sprintf(urls.API_GET_FAGSAKER_URL, { fnr, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
       request: types.SVARSED_FAGSAKER_REQUEST,

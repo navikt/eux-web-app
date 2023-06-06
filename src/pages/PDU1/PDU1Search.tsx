@@ -31,7 +31,7 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import { FagSak, FagSaker, PDU1SearchResult, PDU1SearchResults } from 'declarations/types'
+import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak} from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -49,7 +49,7 @@ const ContainerDiv = styled(PileCenterDiv)`
 
 export interface PDU1SearchSelector {
   fnrParam: string | undefined
-  fagsaker: FagSaker | null | undefined
+  fagsaker: Fagsaker | null | undefined
   gettingFagsaker: boolean
   creatingPdu1: boolean
   gettingPdu1: boolean
@@ -173,7 +173,7 @@ const PDU1Search = (): JSX.Element => {
     }
   }
 
-  const onCreatingPdu1 = (fagsakId: string, fagsakNr: string | undefined) => {
+  const onCreatingPdu1 = (fagsakId: string, fagsakNr: string | null | undefined) => {
     const valid = performValidation({
       fnrOrDnr,
       fagsakId,
@@ -349,36 +349,36 @@ const PDU1Search = (): JSX.Element => {
             {gettingFagsaker && (
               <WaitingPanel />
             )}
-            {fagsaker?.map((f: FagSak) => (
-              <Panel style={{ marginBottom: '1rem' }} border key={f.saksID}>
+            {fagsaker?.map((f: Fagsak) => (
+              <Panel style={{ marginBottom: '1rem' }} border key={f.id}>
                 <FlexDiv>
                   <PileDiv flex='2'>
                     <FlexBaseDiv>
                       <Label>{t('label:fagsakNr')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.fagsakNr}</BodyLong>
+                      <BodyLong>{f.nr}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
                       <Label>{t('label:tema')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.temakode}</BodyLong>
+                      <BodyLong>{f.tema}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
                       <Label>{t('label:saksnummer')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.saksID}</BodyLong>
+                      <BodyLong>{f.id}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
                       <Label>{t('label:siste-oppdatert')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.opprettetTidspunkt}</BodyLong>
+                      <BodyLong>{/*f.opprettetTidspunkt*/}</BodyLong>
                     </FlexBaseDiv>
                   </PileDiv>
                   <PileDiv>
                     <Button
                       variant='primary'
                       disabled={!tema || creatingPdu1}
-                      onClick={() => onCreatingPdu1(f.saksID, f.fagsakNr)}
+                      onClick={() => onCreatingPdu1(f.id, f.nr)}
                     >
                       {creatingPdu1 && <Loader />}
                       {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}

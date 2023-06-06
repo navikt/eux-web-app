@@ -34,7 +34,6 @@ export const API_ADD_RELATED_RINASAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId
 export const API_FEILREGISTRER_JOURNALPOSTER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/feilregistrerjournalposter'
 
 // Registre
-export const API_FAGSAKER_QUERY_URL = API_BASE_URL + '/fagsaker/%(fnr)s/?sektor=%(sektor)s&tema=%(tema)s'
 export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker/?tema=%(tema)s'
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'

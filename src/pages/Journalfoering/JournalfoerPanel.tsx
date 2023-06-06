@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {
-  JournalfoeringFagSak,
-  JournalfoeringFagSaker, JournalfoeringLogg,
+  Fagsak,
+  Fagsaker,
+  JournalfoeringLogg,
   Kodemaps,
   Kodeverk,
   Person,
@@ -51,8 +52,8 @@ interface JournalfoerPanelSelector {
   isJournalfoering: boolean
   kodemaps: Kodemaps | undefined
   tema: Tema | undefined
-  fagsaker: JournalfoeringFagSaker | undefined | null
-  fagsak: JournalfoeringFagSak | undefined | null
+  fagsaker: Fagsaker | undefined | null
+  fagsak: Fagsak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
@@ -157,7 +158,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   const onFagsakChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const fagsakId = e.target.value
-    const fagsak: JournalfoeringFagSak | undefined = _.find(fagsaker, (fagsak) => {return fagsak.id === fagsakId})
+    const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak.id === fagsakId})
     dispatch(setJournalfoeringFagsak(fagsak))
   }
 
@@ -277,7 +278,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   {t('label:velg')}
                 </option>
                 {fagsaker &&
-                  _.orderBy(fagsaker, 'nr').map((f: JournalfoeringFagSak) => (
+                  _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
                     <option value={f.id} key={f.id}>
                       {f.nr || f.id}
                     </option>

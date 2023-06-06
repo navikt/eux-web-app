@@ -1,7 +1,7 @@
 import { ParamPayload } from 'declarations/app'
 import {
   ArbeidsperiodeFraAA,
-  FagSaker,
+  Fagsaker,
   OldFamilieRelasjon,
   Institusjoner,
   Kodeverk, OpprettetSak
@@ -80,9 +80,9 @@ export const createSak = (data: any): ActionWithPayload<any> => {
 
 export const getFagsaker = (
   fnr: string, sektor: string, tema: string
-): ActionWithPayload<FagSaker> => {
+): ActionWithPayload<Fagsaker> => {
   return call({
-    url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema }),
+    url: sprintf(urls.API_GET_FAGSAKER_URL, { fnr, tema }),
     expectedPayload: mockFagsakerList({ fnr, sektor, tema }),
     type: {
       request: types.SAK_FAGSAKER_REQUEST,

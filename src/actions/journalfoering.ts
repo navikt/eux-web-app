@@ -1,5 +1,5 @@
 import {ActionWithPayload, call} from "@navikt/fetch";
-import {CreateSedResponse, FagSaker, JournalfoeringFagSak, Sak} from "../declarations/types";
+import {CreateSedResponse, Fagsak, Fagsaker, Sak} from "../declarations/types";
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
@@ -36,7 +36,7 @@ export const searchJournalfoeringPerson = (
 
 export const getJournalfoeringFagsaker = (
   fnr: string, tema: string
-): ActionWithPayload<FagSaker> => {
+): ActionWithPayload<Fagsaker> => {
   return call({
     url: sprintf(urls.API_GET_FAGSAKER_URL, { fnr, tema }),
     expectedPayload: mockJournalfoeringFagsaker(),
@@ -53,14 +53,14 @@ export const resetJournalfoeringFagsaker: ActionCreator<Action> = (): Action => 
 })
 
 export const setJournalfoeringFagsak: ActionCreator<Action> = (
-  fagsak: JournalfoeringFagSak
+  fagsak: Fagsak
 ): ActionWithPayload<any> => ({
   type: types.JOURNALFOERING_FAGSAK_SET,
   payload: fagsak
 })
 
 export const journalfoer = (
-  sakId: string, fagsak: JournalfoeringFagSak
+  sakId: string, fagsak: Fagsak
 ): ActionWithPayload => {
   return call({
     method: 'POST',

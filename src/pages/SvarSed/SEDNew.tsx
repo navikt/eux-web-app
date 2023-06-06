@@ -35,8 +35,8 @@ import {
   BucTyper,
   Enhet,
   Enheter,
-  FagSak,
-  FagSaker,
+  Fagsak,
+  Fagsaker,
   Institusjon,
   Kodemaps,
   Kodeverk,
@@ -77,7 +77,7 @@ export interface SEDNewSelector {
 
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   buctyper: BucTyper | undefined
-  fagsaker: FagSaker | undefined | null
+  fagsaker: Fagsaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
   filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
@@ -712,9 +712,9 @@ const SEDNew = (): JSX.Element => {
                       {t('label:velg')}
                     </option>
                     {fagsaker &&
-                  _.orderBy(fagsaker, 'fagsakNr').map((f: FagSak) => (
-                    <option value={f.saksID} key={f.saksID}>
-                      {f.fagsakNr || f.saksID}
+                  _.orderBy(fagsaker, 'fagsakNr').map((f: Fagsak) => (
+                    <option value={f.id} key={f.id}>
+                      {f.nr || f.id}
                     </option>
                   ))}
                   </Select>
