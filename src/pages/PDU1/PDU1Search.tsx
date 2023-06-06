@@ -369,7 +369,7 @@ const PDU1Search = (): JSX.Element => {
                       <BodyLong>{f.id}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
-                      <Label>{t('label:siste-oppdatert')}:</Label>
+                      <Label>{t('label:sist-oppdatert')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
                       <BodyLong>{/*f.opprettetTidspunkt*/}</BodyLong>
                     </FlexBaseDiv>

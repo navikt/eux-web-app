@@ -62,7 +62,7 @@ const SakPanel = ({
         </FlexDiv>
         <FlexCenterSpacedDiv style={{ width: '100%' }}>
           <BodyLong>
-            {t('label:siste-oppdatert') + ': ' + sak.sistEndretDato}
+            {t('label:sist-oppdatert') + ': ' + sak.sistEndretDato}
           </BodyLong>
           <FlexCenterDiv>
             <span>
