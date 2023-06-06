@@ -213,6 +213,7 @@
   "journalpost-id": "Journalpost ID",
   "journalforing" : "Journalfør {{sedtype}}",
   "journalfoer" : "Journalfør",
+  "journalfoert-paa" : "Journalført på",
   "journalposter-ble-ikke-journalfoert": "Journalposter ble ikke journalført",
   "journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt": "Følgende journalposter ble ikke journalført og må behandles manuelt:",
 

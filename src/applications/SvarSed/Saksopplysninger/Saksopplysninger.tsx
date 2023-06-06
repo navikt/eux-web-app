@@ -72,7 +72,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id}
           </Dd>
           <Dt>
-            {t('label:fnr')}:
+            {t('label:journalfoert-paa')}:
           </Dt>
           <Dd>
             {sak.fagsak?.fnr ? sak.fagsak?.fnr : ""}
