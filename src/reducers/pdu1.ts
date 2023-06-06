@@ -13,6 +13,7 @@ export interface Pdu1State {
   previewStoredPdu1: Blob | null | undefined
   jornalførePdu1Response: any
   pdu1Changed: boolean
+  pdu1Initialized: boolean
 }
 
 export const initialPdu1State: Pdu1State = {
@@ -22,7 +23,8 @@ export const initialPdu1State: Pdu1State = {
   previewDraftPdu1: undefined,
   previewStoredPdu1: undefined,
   jornalførePdu1Response: undefined,
-  pdu1Changed: false
+  pdu1Changed: false,
+  pdu1Initialized: false
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
@@ -54,6 +56,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       return {
         ...state,
         pdu1Changed: false,
+        pdu1Initialized: false,
         pdu1: undefined
       }
 
@@ -66,7 +69,8 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       pdu1.__journalpostId = (action as ActionWithPayload).context.journalpostId
       return {
         ...state,
-        pdu1
+        pdu1,
+        pdu1Initialized: true
       }
     }
 
@@ -74,6 +78,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       return {
         ...state,
         pdu1Changed: false,
+        pdu1Initialized: false,
         pdu1: null
       }
 
@@ -171,6 +176,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       return {
         ...state,
         pdu1Changed: false,
+        pdu1Initialized: false,
         pdu1: undefined
       }
 
@@ -182,7 +188,8 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       pdu1.__fnr = (action as ActionWithPayload).context.fnr
       return {
         ...state,
-        pdu1
+        pdu1,
+        pdu1Initialized: true
       }
     }
 
@@ -190,6 +197,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       return {
         ...state,
         pdu1Changed: false,
+        pdu1Initialized: false,
         pdu1: null
       }
 

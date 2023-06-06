@@ -10,7 +10,7 @@ import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -44,12 +44,6 @@ const Avsender: React.FC<MainFormProps> = ({
     )
     dispatch(setValidation(clonedvalidation))
   })
-
-/*
-  useEffect(() => {
-    setSaksbehandlerNavn()
-  }, [])
-*/
 
   const setEnhetNavn = (enhetNavn: string) => {
     dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn.trim()))
