@@ -29,14 +29,17 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
+import moment from "moment/moment";
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
+  pdu1Initialized: boolean
   currentEntry: LocalStorageEntry<PDU1> | undefined
   pdu1: PDU1 | null | undefined
   savingPdu1: boolean
   jornalførePdu1Response: any
   validation: Validation
+  saksbehandlerNavn: string | undefined
 }
 
 export interface PDU1EditProps {
@@ -45,10 +48,12 @@ export interface PDU1EditProps {
 
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
+  pdu1Initialized: state.pdu1.pdu1Initialized,
   currentEntry: state.localStorage.pdu1.currentEntry,
   pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
-  validation: state.validation.status
+  validation: state.validation.status,
+  saksbehandlerNavn: state.app.navn
 })
 
 const PDU1Edit: React.FC<PDU1EditProps> = ({
@@ -59,10 +64,12 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   const params = useParams()
   const {
     completingPdu1,
+    pdu1Initialized,
     currentEntry,
     pdu1,
     jornalførePdu1Response,
-    validation
+    validation,
+    saksbehandlerNavn
   }: PDU1EditSelector = useAppSelector(mapState)
   const namespace = 'pdu1'
   const [completeModal, setCompleteModal] = useState<boolean>(false)
@@ -119,6 +126,14 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       dispatch(getStoredPdu1AsJSON(params.journalpostId, params.dokumentInfoId, params.fagsak))
     }
   }, [])
+
+  useEffect(() => {
+    if(pdu1Initialized && saksbehandlerNavn){
+      dispatch(updatePdu1("nav.saksbehandler.navn", saksbehandlerNavn.trim()))
+      dispatch(updatePdu1("dato", moment(new Date()).format('DD.MM.YYYY')))
+    }
+  }, [pdu1Initialized])
+
 
   useEffect(() => {
     if (!completeModal && !_.isNil(jornalførePdu1Response)) {

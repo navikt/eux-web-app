@@ -1,7 +1,7 @@
 import {
+  Fagsak,
+  Fagsaker,
   FeilregistrerJournalposterLogg,
-  JournalfoeringFagSak,
-  JournalfoeringFagSaker,
   JournalfoeringLogg,
   Person,
   Sak
@@ -14,8 +14,8 @@ import {H001Sed, Kjoenn} from "../declarations/sed";
 
 export interface JournalfoeringState {
   person: Person | null | undefined
-  fagsaker: JournalfoeringFagSaker | undefined | null
-  fagsak: JournalfoeringFagSak | undefined | null
+  fagsaker: Fagsaker | undefined | null
+  fagsak: Fagsak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
   feilregistrerJournalposterLogg: FeilregistrerJournalposterLogg | undefined | null
   H001: H001Sed | undefined | null

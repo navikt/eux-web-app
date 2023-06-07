@@ -13,7 +13,7 @@ import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationPdu1SearchProps {
   fagsakId: string | undefined
-  saksreferanse: string | undefined
+  saksreferanse: string | null | undefined
   fnrOrDnr: string | null | undefined
 }
 

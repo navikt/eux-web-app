@@ -1,0 +1,23 @@
+[
+  {
+    "id": "fbBAR:7865457854345",
+    "tema": "BAR",
+    "system": "IT01",
+    "aktoerId": "1350969741332",
+    "nr": "1445A01"
+  },
+  {
+    "id": "fbGEN:73465",
+    "tema": "GEN",
+    "system": "Gosys",
+    "aktoerId": "1350969741332",
+    "nr": "1445A02"
+  },
+  {
+    "id": "fbKON:7865457854366",
+    "tema": "KON",
+    "system": "IT01",
+    "aktoerId": "1350969741332",
+    "nr": "1445A03"
+  }
+]

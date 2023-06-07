@@ -213,6 +213,7 @@
   "journalpost-id": "Journalpost ID",
   "journalforing" : "Journalfør {{sedtype}}",
   "journalfoer" : "Journalfør",
+  "journalfoert-paa" : "Journalført på",
   "journalposter-ble-ikke-journalfoert": "Journalposter ble ikke journalført",
   "journalposter-ble-ikke-journalfoert-og-maa-behandles-manuelt": "Følgende journalposter ble ikke journalført og må behandles manuelt:",
 
@@ -371,7 +372,7 @@
   "siste-ansettelse-info": "Siste ansettelse info",
   "siste-lønnsendring" : "Siste lønnsendring",
   "siste-nav-kontor": "Siste NAV-kontor",
-  "siste-oppdatert": "Siste oppdatert",
+  "sist-oppdatert": "Sist oppdatert",
   "sjekker-status": "Sjekker status...",
   "skal-ytelse-utbetales": "Skal ytelse utbetales?",
   "skjul-skjema": "Skjul skjema",

@@ -9,7 +9,7 @@ import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { HSed, ReplySed } from 'declarations/sed'
-import { FagSak, FagSaker, UpdateReplySedPayload, Validation } from 'declarations/types'
+import {Fagsaker, UpdateReplySedPayload, Validation, Fagsak} from 'declarations/types'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -26,7 +26,7 @@ interface TemaProps {
 interface TemaSelector {
   validation: Validation
   gettingFagsaker: boolean
-  fagsaker: FagSaker | null | undefined
+  fagsaker: Fagsaker | null | undefined
 }
 
 const mapState = (state: State): TemaSelector => ({
@@ -103,9 +103,9 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
 
   const onEditModeClicked = () => setEditMode(true)
 
-  const fagsakIdOptions: Options = fagsaker?.map((f: FagSak) => ({
-    value: f.saksID,
-    label: f.saksID
+  const fagsakIdOptions: Options = fagsaker?.map((f: Fagsak) => ({
+    value: f.id,
+    label: f.id
   })) ?? []
 
   useEffect(() => {

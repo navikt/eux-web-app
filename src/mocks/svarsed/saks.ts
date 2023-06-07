@@ -38,10 +38,11 @@ export default (saksnummer: string, type: string) => {
       tema: 'KON',
       fagsak: {
         "id": "140282517",
-        "tema": null,
+        "tema": "KON",
         "type": "FAGSAK",
         "nr": "1/2023",
-        "system": "AO11"
+        "system": "AO11",
+        "fnr": "12345678901"
       },
       sakshandlinger: [
         'H001', 'F002', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
@@ -189,10 +190,11 @@ export default (saksnummer: string, type: string) => {
       tema: 'KON',
       fagsak: {
         "id": "140282517",
-        "tema": null,
+        "tema": "KON",
         "type": "FAGSAK",
         "nr": "1/2023",
-        "system": "AO11"
+        "system": "AO11",
+        "fnr": "12345678901"
       },
       sedListe: [
         {
@@ -271,10 +273,11 @@ export default (saksnummer: string, type: string) => {
       tema: 'KON',
       fagsak: {
         "id": "140282517",
-        "tema": null,
+        "tema": "KON",
         "type": "FAGSAK",
         "nr": "1/2023",
-        "system": "AO11"
+        "system": "AO11",
+        "fnr": "12345678901"
       },
 
       ikkeJournalfoerteSed: [
@@ -396,10 +399,11 @@ export default (saksnummer: string, type: string) => {
       tema: 'KON',
       fagsak: {
         "id": "140282517",
-        "tema": null,
+        "tema": "KON",
         "type": "FAGSAK",
         "nr": "1/2023",
-        "system": "AO11"
+        "system": "AO11",
+        "fnr": "12345678901"
       },
       sedListe: [
         {
@@ -434,7 +438,8 @@ export default (saksnummer: string, type: string) => {
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
-        "system": "AO11"
+        "system": "AO11",
+        "fnr": "12345678901"
       },
       "sistEndretDato": "2022-10-03",
       navinstitusjon: {

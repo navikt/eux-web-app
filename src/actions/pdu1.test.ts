@@ -45,7 +45,7 @@ describe('actions/pdu1', () => {
           success: types.PDU1_FAGSAKER_SUCCESS,
           failure: types.PDU1_FAGSAKER_FAILURE
         },
-        url: sprintf(urls.API_FAGSAKER_QUERY_URL, { fnr, sektor, tema })
+        url: sprintf(urls.API_GET_FAGSAKER_URL, { fnr, tema })
       }))
   })
 

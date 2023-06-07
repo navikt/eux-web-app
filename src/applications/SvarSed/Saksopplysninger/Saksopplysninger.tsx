@@ -63,13 +63,19 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
             {t('label:tema')}:
           </Dt>
           <Dd>
-            {sak.tema ? t('tema:' + sak.tema) : ""}
+            {sak.fagsak?.tema ? t('tema:' + sak.fagsak.tema) : ""}
           </Dd>
           <Dt>
             {t('label:fagsak')}:
           </Dt>
           <Dd>
             {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id}
+          </Dd>
+          <Dt>
+            {t('label:journalfoert-paa')}:
+          </Dt>
+          <Dd>
+            {sak.fagsak?.fnr ? sak.fagsak?.fnr : ""}
           </Dd>
         </Dl>
         <VerticalSeparatorDiv />

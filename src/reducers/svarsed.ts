@@ -12,7 +12,7 @@ import {
   XSed,
   Person
 } from 'declarations/sed.d'
-import {CreateSedResponse, FagSaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
+import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -21,7 +21,7 @@ import { AnyAction } from 'redux'
 import {isUSed} from "../utils/sed";
 
 export interface SvarsedState {
-  fagsaker: FagSaker | null | undefined
+  fagsaker: Fagsaker | null | undefined
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
   deletedVedlegg: any | null | undefined
