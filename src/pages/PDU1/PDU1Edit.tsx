@@ -29,6 +29,7 @@ import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
+import moment from "moment/moment";
 
 export interface PDU1EditSelector {
   completingPdu1: boolean
@@ -128,8 +129,8 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
   useEffect(() => {
     if(pdu1Initialized && saksbehandlerNavn){
-      console.log("SET SAKSBEHANDLERNAVN")
-      dispatch(updatePdu1(`nav.saksbehandler.navn`, saksbehandlerNavn.trim()))
+      dispatch(updatePdu1("nav.saksbehandler.navn", saksbehandlerNavn.trim()))
+      dispatch(updatePdu1("dato", moment(new Date()).format('DD.MM.YYYY')))
     }
   }, [pdu1Initialized])
 
