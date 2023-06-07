@@ -1,5 +1,5 @@
 import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
-import { BodyLong, Button, Label, Loader } from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Label, Loader} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -18,10 +18,11 @@ import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import { Person } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import {buttonLogger} from 'metrics/loggers'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
+import * as types from "../../constants/actionTypes";
 
 export interface NorskPinProps {
   norwegianPin: Pin | undefined
@@ -34,11 +35,15 @@ export interface NorskPinProps {
 interface NorskPinSelector {
   searchingPerson: boolean
   searchedPerson: Person | null | undefined
+  alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
 }
 
 const mapState = (state: State): NorskPinSelector => ({
   searchedPerson: state.person.person,
-  searchingPerson: state.loading.searchingPerson
+  searchingPerson: state.loading.searchingPerson,
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type
 })
 
 const NorskPin: React.FC<NorskPinProps> = ({
@@ -49,11 +54,21 @@ const NorskPin: React.FC<NorskPinProps> = ({
   onFillOutPerson
 }: NorskPinProps) => {
   const dispatch = useAppDispatch()
+  const { searchedPerson, searchingPerson, alertMessage, alertType } = useAppSelector(mapState)
 
   const [_seeNorskPinForm, _setSeeNorskPinForm] = useState<boolean>(false)
   const [_tempNorwegianPin, _setTempNorwegianPin] = useState<string| undefined>(undefined)
+  const [_searchFailure, _setSearchFailure] = useState(false)
 
-  const { searchedPerson, searchingPerson } = useAppSelector(mapState)
+
+  useEffect(() => {
+    if(alertMessage && alertType && [types.PERSON_SEARCH_FAILURE].indexOf(alertType) >= 0){
+      _setSearchFailure(true)
+      _setSeeNorskPinForm(true)
+    } else {
+      _setSearchFailure(false)
+    }
+  }, [alertMessage])
 
   const setNorwegianPin = (newPin: string) => {
     _setTempNorwegianPin(newPin)
@@ -63,6 +78,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
     if (searchedPerson) {
       dispatch(resetPerson())
     }
+    _setSearchFailure(false)
     _setSeeNorskPinForm(false)
   }
 
@@ -70,6 +86,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
     if (_tempNorwegianPin) {
       onNorwegianPinSave(_tempNorwegianPin)
     }
+    _setSearchFailure(false)
     _setSeeNorskPinForm(false)
   }
 
@@ -77,16 +94,20 @@ const NorskPin: React.FC<NorskPinProps> = ({
     if (searchedPerson) {
       onFillOutPerson(searchedPerson)
       dispatch(resetPerson())
+      _setSeeNorskPinForm(false)
     }
-    _setSeeNorskPinForm(false)
   }
 
   const searchUser = (e: any) => {
-    if (norwegianPin && norwegianPin.identifikator) {
+    if (_tempNorwegianPin) {
       buttonLogger(e)
-      dispatch(searchPerson(norwegianPin.identifikator))
+      dispatch(searchPerson(_tempNorwegianPin))
     }
   }
+
+  useEffect(() => {
+    fillOutPerson()
+  }, [searchedPerson])
 
   const { t } = useTranslation()
   return (
@@ -174,6 +195,9 @@ const NorskPin: React.FC<NorskPinProps> = ({
             </>
             )}
       </AlignStartRow>
+      {_searchFailure &&
+        <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
+      }
       <VerticalSeparatorDiv />
       {searchedPerson
         ? (

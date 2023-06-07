@@ -3,8 +3,12 @@ export default {
   fdato: '1961-02-02',
   fornavn: 'STOR',
   etternavn: 'BLYANT',
-  kjoenn: 'M',
+  kjoenn: 'K',
   adressebeskyttelse: 'STRENGT_FORTROLIG',
+  statsborgerskap: [
+    {"land": "NO"},
+    {"land": "SE"},
+  ],
   relasjoner: [
     {
       rolle: 'EKTE',

@@ -23,6 +23,9 @@ export const searchPerson = (
   return call({
     url: sprintf(urls.API_PERSONER_URL, { fnr }),
     expectedPayload: mockPerson,
+    expectedErrorRate: {
+      401:0.5
+    },
     cascadeFailureError: true,
     type: {
       request: types.PERSON_SEARCH_REQUEST,
