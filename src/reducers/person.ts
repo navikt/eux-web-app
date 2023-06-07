@@ -30,9 +30,13 @@ const personReducer = (
       }
 
     case types.PERSON_SEARCH_SUCCESS:
+      const personPayload = (action as ActionWithPayload).payload
       return {
         ...state,
-        person: (action as ActionWithPayload).payload
+        person: {
+          ...personPayload,
+          statsborgerskapList: personPayload.statsborgerskap
+        }
       }
 
     case types.PERSON_SEARCH_FAILURE:
@@ -54,9 +58,13 @@ const personReducer = (
       }
 
     case types.PERSON_RELATERT_SEARCH_SUCCESS:
+      const relatertPayload = (action as ActionWithPayload).payload
       return {
         ...state,
-        personRelatert: (action as ActionWithPayload).payload
+        personRelatert: {
+          ...relatertPayload,
+          statsborgerskapList: relatertPayload.statsborgerskap
+        }
       }
 
     default:
