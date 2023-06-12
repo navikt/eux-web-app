@@ -105,7 +105,8 @@ const Forsikring: React.FC<MainFormProps> = ({
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     const clonedReplySed = _.cloneDeep(replySed) as ReplySed
-    const sortedPerioderMedForsikring = (_.get(clonedReplySed, 'perioderAnsattMedForsikring')).sort(periodeSort)
+    const perioderMedForsikring = _.get(clonedReplySed, 'perioderAnsattMedForsikring')
+    const sortedPerioderMedForsikring = perioderMedForsikring ? perioderMedForsikring.sort(periodeSort) : perioderMedForsikring
     performValidation<ValidateForsikringProps>(
       clonedValidation, namespace, validateForsikring, {
         replySed: clonedReplySed,
