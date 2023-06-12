@@ -13,7 +13,7 @@ import {
 import { resetPerson, searchPerson } from 'actions/person'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import Input from 'components/Forms/Input'
-import { RepeatableRow, ShadowPanel } from 'components/StyledComponents'
+import { RepRow, ShadowPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import { Person } from 'declarations/types'
@@ -111,7 +111,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const { t } = useTranslation()
   return (
-    <RepeatableRow>
+    <RepRow>
       <AlignStartRow>
         {!_seeNorskPinForm
           ? (
@@ -227,7 +227,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
             </BodyLong>
             )
           : <div />}
-    </RepeatableRow>
+    </RepRow>
   )
 }
 

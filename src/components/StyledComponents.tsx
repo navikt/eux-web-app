@@ -122,6 +122,23 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
     margin-left: -10000px;
   }
 `
+
+export const RepRow = styled(PaddedHorizontallyDiv)`
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  min-height: 3.6rem;
+  &.new {
+    background-color: rgba(236, 243, 153, 0.5);
+  };
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+  &:hover:not(.new):not(.error) {
+    background-color: var(--navds-global-color-gray-100);
+  }
+`
+
+
 export const GrayPanel = styled(Panel)`
   background-color: var(--navds-semantic-color-canvas-background);
 `
