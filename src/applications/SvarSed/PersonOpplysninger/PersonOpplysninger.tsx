@@ -94,11 +94,16 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
       const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
       if (index >= 0) {
         newPersonInfo!.pin[index].identifikator = searchedPerson.fnr
-      } else {
+      } else if (newPersonInfo!.pin){
         newPersonInfo!.pin.push({
           identifikator: searchedPerson.fnr,
           land: 'NO'
         })
+      } else {
+        newPersonInfo!.pin = [{
+          identifikator: searchedPerson.fnr,
+          land: 'NO'
+        }]
       }
     }
     if (searchedPerson.fdato) {
