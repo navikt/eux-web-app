@@ -1,8 +1,8 @@
-import validator from '@navikt/fnrvalidator'
 import { PersonLight, Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { addError, checkIfNotDate, checkIfNotEmpty } from 'utils/validation'
+import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 
 export interface ValidationPersonLightProps {
   personLight: PersonLight | undefined
@@ -63,7 +63,7 @@ export const validatePersonLight = (
   }
 
   if (!_.isEmpty(norwegianPin?.identifikator)) {
-    const result = validator.idnr(norwegianPin!.identifikator!)
+    const result = validateFnrDnrNpid(norwegianPin!.identifikator!)
     if (result.status !== 'valid') {
       hasErrors.push(addError(v, {
         id: namespace + '-norskpin',

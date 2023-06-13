@@ -125,7 +125,7 @@ describe('actions/svarsed', () => {
           type: 'fnr',
           saksnummerOrFnr
         },
-        url: sprintf(urls.API_RINASAKER_OVERSIKT_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
+        url: sprintf(urls.API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL, { fnr: saksnummerOrFnr })
       }))
   })
 
@@ -144,7 +144,7 @@ describe('actions/svarsed', () => {
           type: 'dnr',
           saksnummerOrFnr
         },
-        url: sprintf(urls.API_RINASAKER_OVERSIKT_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
+        url: sprintf(urls.API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL, { fnr: saksnummerOrFnr })
       }))
   })
 

@@ -9,7 +9,7 @@ import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
 import mockSaks2 from 'mocks/svarsed/saks_2'
 import { Action, ActionCreator } from 'redux'
-import validator from '@navikt/fnrvalidator'
+import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
@@ -227,13 +227,11 @@ export const querySaks = (
   saksnummerOrFnr: string, actiontype: 'new' | 'refresh' | 'timer' = 'new', mock2: boolean = false
 ): ActionWithPayload<Sed> => {
   let url, type
-  const result = validator.idnr(saksnummerOrFnr)
+  const result = validateFnrDnrNpid(saksnummerOrFnr)
   if (result.status === 'valid') {
     type = result.type
-    if (result.type === 'fnr') {
-      url = sprintf(urls.API_RINASAKER_OVERSIKT_FNR_QUERY_URL, { fnr: saksnummerOrFnr })
-    } else {
-      url = sprintf(urls.API_RINASAKER_OVERSIKT_DNR_QUERY_URL, { fnr: saksnummerOrFnr })
+    if (result.type) {
+      url = sprintf(urls.API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL, { fnr: saksnummerOrFnr })
     }
   } else {
     type = 'saksnummer'
