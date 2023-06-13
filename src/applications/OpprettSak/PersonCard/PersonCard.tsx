@@ -124,8 +124,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
           <HorizontalSeparatorDiv />
           <div data-testid='panelheader__tittel'>
             <Heading size='small' data-testid='panelheader__tittel__hoved'>
-              {fornavn}
-              {' '}
+              {fornavn ? fornavn + ' ' : ''}
               {etternavn}
               {(person as OldFamilieRelasjon).rolle ? ' - ' + rolleTerm : ''}
             </Heading>
