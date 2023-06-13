@@ -1,4 +1,4 @@
-import { BodyLong, Button, Heading, Label, Loader, Panel } from '@navikt/ds-react'´
+import { BodyLong, Button, Heading, Label, Loader, Panel } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
