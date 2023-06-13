@@ -1,5 +1,4 @@
 import {Alert, BodyLong, Label, Loader, Search} from '@navikt/ds-react'
-import validator from '@navikt/fnrvalidator'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
@@ -9,6 +8,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateSEDQuery } from './validation'
 import styled from 'styled-components'
+import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
 
 const StyledSpan = styled.span`
   display: inline-block;
@@ -32,7 +32,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
     _resetValidation(namespace + '-saksnummerOrFnr')
     _setSaksnummerOrFnr(q)
     let message = ''; let queryType = ''
-    const result = validator.idnr(q)
+    const result = validateFnrDnrNpid(q)
     if (result.status !== 'valid') {
       if (q.match(/^\d+$/)) {
         queryType = 'saksnummer'
@@ -46,6 +46,10 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       if (result.type === 'dnr') {
         queryType = 'dnr'
         message = t('label:valid-dnr')
+      }
+      if (result.type === 'npid') {
+        queryType = 'npid'
+        message = t('label:valid-npid')
       }
     }
     _setQueryType(queryType)

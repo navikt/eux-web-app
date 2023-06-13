@@ -1,5 +1,4 @@
 import { BodyLong, Button, Heading, Label, Loader, Panel } from '@navikt/ds-react'
-import validator from '@navikt/fnrvalidator'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
@@ -41,6 +40,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
 import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
+import {validateFnrDnrNpid} from "../../utils/fnrValidator";
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -132,7 +132,7 @@ const PDU1Search = (): JSX.Element => {
     setSearchPdu1Mode(false)
     _resetValidation(namespace + '-search')
     setFnrOrDnr(query)
-    const result = validator.idnr(query)
+    const result = validateFnrDnrNpid(query)
     if (result.status !== 'valid') {
       setValidFnr(false)
       setValidMessage(t('label:ukjent'))
@@ -143,6 +143,9 @@ const PDU1Search = (): JSX.Element => {
       }
       if (result.type === 'dnr') {
         setValidMessage(t('label:valid-dnr'))
+      }
+      if (result.type === 'npid') {
+        setValidMessage(t('label:valid-npid'))
       }
     }
   }

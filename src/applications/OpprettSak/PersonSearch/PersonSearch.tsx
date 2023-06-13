@@ -49,7 +49,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }, [value])
 
   const isPersonValid = useCallback((person: Person) =>
-    person?.fornavn?.length !== undefined && person?.fnr !== undefined,
+    person?.fnr !== undefined,
   []
   )
 

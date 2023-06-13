@@ -15,7 +15,7 @@ const mapState = (state: State):SakSidebarSelector => ({
 const SakSidebar = () => {
   const { person }: SakSidebarSelector = useAppSelector(mapState)
   const isPersonValid = useCallback((person: Person) =>
-    person?.fornavn?.length !== undefined && person?.fnr !== undefined,
+    person?.fnr !== undefined,
   []
   )
 
