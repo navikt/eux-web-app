@@ -1,6 +1,5 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
-import DateInput from 'components/Forms/DateInput'
 import { toDateFormat } from 'components/Forms/PeriodeInput'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
@@ -66,6 +65,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
   const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: true })?.filter((it: string) => it !== 'NO')
 
+  const [_dato, _setDato] = useState<string>(() => toDateFormat(_relation.fdato, "DD.MM.YYYY") ?? '')
+
   useEffect(() => {
     setRelation(emptyFamilieRelasjon)
     resetValidation()
@@ -84,6 +85,17 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     ..._relation,
     [felt]: value ?? ''
   })
+
+  const onDatoBlur = () => {
+    const date = toDateFormat(_dato, 'YYYY-MM-DD')
+
+    updateRelation('fdato', date)
+    resetValidation('fdato')
+  }
+
+  useEffect(() => {
+    _setDato(toDateFormat(_relation.fdato, "DD.MM.YYYY"))
+  }, [_relation])
 
   const trimFamilyRelation = (relation: OldFamilieRelasjon): OldFamilieRelasjon => ({
     fnr: relation.fnr ? relation.fnr.trim() : '',
@@ -240,18 +252,18 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           </Select>
         </Column>
         <Column>
-          <DateInput
-            id='fdato'
-            data-testid={namespace + '-fdato'}
-            namespace={namespace}
+          <TextField
             error={_validation[namespace + '-fdato']?.feilmelding}
+            id={namespace + '-' + 'fdato'}
+            data-testid={namespace + '-fdato'}
             label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
-            onChanged={(date: string) => {
-              updateRelation('fdato', date)
-              resetValidation('fdato')
+            onBlur={() => {
+              onDatoBlur()
             }}
-            value={toDateFormat(_relation.fdato, 'DD.MM.YYYY')}
-            disabled={disableAll}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              _setDato(e.target.value)
+            }}
+            value={_dato}
           />
           <VerticalSeparatorDiv />
         </Column>
