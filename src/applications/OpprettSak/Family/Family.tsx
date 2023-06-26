@@ -99,7 +99,7 @@ const Family: React.FC<FamilyProps> = ({
       <FlexDiv>
         <div style={{ minWidth: '450px', flex: 1 }}>
           <Ingress>
-            {t('label:familierelasjon-i-tps')}
+            {t('label:familierelasjon-i-pdl')}
           </Ingress>
           {remainingRelationsFromTPS?.map((relation: OldFamilieRelasjon) => (
             <div key={relation.fnr}>
@@ -125,7 +125,7 @@ const Family: React.FC<FamilyProps> = ({
             <>
               <VerticalSeparatorDiv size='1.5' />
               <BodyLong>
-                ({t('label:ingen-familie-i-tps')})
+                ({t('label:ingen-familie-i-pdl')})
               </BodyLong>
             </>
           )}
@@ -187,7 +187,7 @@ const Family: React.FC<FamilyProps> = ({
         <VerticalSeparatorDiv size='2' />
         <div>
           <Ingress>
-            {t('label:family-tps')}
+            {t('label:family-pdl')}
           </Ingress>
           <VerticalSeparatorDiv />
           {_viewTPSRelatedForm && person && (
