@@ -57,12 +57,6 @@ export const validateAbroadPersonForm = (
     message: 'validation:noLand'
   }))
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: relation.statsborgerskap,
-    id: namespace + '-statsborgerskap',
-    message: 'validation:noNationality'
-  }))
-
   return hasErrors.find(value => value) !== undefined
 }
 
