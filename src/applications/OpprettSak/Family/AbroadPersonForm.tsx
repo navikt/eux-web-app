@@ -139,7 +139,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     !_.isEmpty(_relation.fnr) &&
     !_.isEmpty(_relation.rolle) &&
     !_.isEmpty(_relation.land) &&
-    !_.isEmpty(_relation.statsborgerskap) &&
     !_.isEmpty(_relation.kjoenn) &&
     !_.isEmpty(_relation.fornavn) &&
     !_.isEmpty(_relation.etternavn) &&
@@ -160,6 +159,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       namespace,
       relation: _relation
     })
+
+    console.log(valid)
     if (valid) {
       if (canAddRelation() && !conflictingPerson()) {
         setRelation(emptyFamilieRelasjon)
