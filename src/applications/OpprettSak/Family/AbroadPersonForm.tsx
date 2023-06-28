@@ -8,12 +8,14 @@ import useLocalValidation from 'hooks/useLocalValidation'
 import { Country, CountryFilter } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import _ from 'lodash'
-import { Column, Row, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Column, Row, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'store'
 import { AbroadPersonFormValidationProps, validateAbroadPersonForm } from './validation'
+import styled from "styled-components";
+import useUnmount from "../../../hooks/useUnmount";
 
 export interface AbroadPersonFormSelector {
   kjoennList: Array<Kodeverk> | undefined
@@ -30,6 +32,9 @@ export interface AbroadPersonFormProps {
   onAbroadPersonAddedSuccess: (r: OldFamilieRelasjon) => void
   person: Person | null | undefined
   disableAll?: boolean
+  closeAndOpen?: () => void
+  setOpenAgain?: (s: any) => void
+  flashBackground?: boolean | null
 }
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
@@ -47,6 +52,20 @@ const emptyFamilieRelasjon: OldFamilieRelasjon = {
   etternavn: ''
 }
 
+type StyleTypes = {
+  flashBackground?: boolean | null
+}
+
+const FlashDiv = styled.div<StyleTypes>`
+  background: #ffffff;
+  animation: ${props => props.flashBackground ? 'fadeBackground 1s' : ''};
+
+  @keyframes fadeBackground {
+    from { background-color: #ffffff; }
+    to { background-color: #FCE97F; }
+  }
+`
+
 const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   alertMessage,
   alertType,
@@ -56,7 +75,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   onAbroadPersonAddedFailure,
   onAbroadPersonAddedSuccess,
   person,
-  disableAll
+  disableAll,
+  closeAndOpen,
+  setOpenAgain,
+  flashBackground
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = 'familierelasjoner'
@@ -66,6 +88,10 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: true })?.filter((it: string) => it !== 'NO')
 
   const [_dato, _setDato] = useState<string>(() => toDateFormat(_relation.fdato, "DD.MM.YYYY") ?? '')
+
+  useUnmount(() => {
+    if(setOpenAgain) setOpenAgain(null)
+  })
 
   useEffect(() => {
     setRelation(emptyFamilieRelasjon)
@@ -138,12 +164,13 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       if (canAddRelation() && !conflictingPerson()) {
         setRelation(emptyFamilieRelasjon)
         onAbroadPersonAddedSuccess(trimFamilyRelation(_relation))
+        if(closeAndOpen) closeAndOpen()
       }
     }
   }
 
   return (
-    <>
+    <FlashDiv flashBackground={flashBackground}>
       <BodyLong>{t('label:family-utland-add-form')}</BodyLong>
       <VerticalSeparatorDiv />
       <Row>
@@ -310,7 +337,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           </Alert>
         )}
       </Row>
-    </>
+    </FlashDiv>
   )
 }
 

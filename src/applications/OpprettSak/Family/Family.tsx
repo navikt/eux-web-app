@@ -1,11 +1,11 @@
-import { BodyLong, Button, Heading, Ingress, Panel } from '@navikt/ds-react'
+import {BodyLong, Button, Heading, Ingress, Panel} from '@navikt/ds-react'
 import { resetPersonRelated } from 'actions/person'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { FadingLineSeparator } from 'components/StyledComponents'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import _ from 'lodash'
 import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import AbroadPersonForm from './AbroadPersonForm'
@@ -54,6 +54,8 @@ const Family: React.FC<FamilyProps> = ({
   disableAll
 }: FamilyProps): JSX.Element => {
   const [_viewAbroadPersonForm, setViewAbroadPersonForm] = useState<boolean>(false)
+  const [_openAgain, setOpenAgain] = useState<boolean | null>(null)
+
   const [_viewTPSRelatedForm, setViewTPSRelatedForm] = useState<boolean>(false)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -63,6 +65,22 @@ const Family: React.FC<FamilyProps> = ({
   )
 
   const toggleViewAbroadPersonForm = (): void => setViewAbroadPersonForm(!_viewAbroadPersonForm)
+
+  const closeAndOpen = (): void => {
+    setViewAbroadPersonForm(false)
+    setOpenAgain(false)
+  }
+
+  const openAgain = (): void => {
+    setViewAbroadPersonForm(true)
+    setOpenAgain(true)
+  }
+
+  useEffect(() => {
+    if(_openAgain === false){
+      setTimeout(openAgain, 500)
+    }
+  }, [_openAgain])
 
   const toggleViewTPSRelatedForm = (): void => {
     setViewTPSRelatedForm(!_viewTPSRelatedForm)
@@ -171,6 +189,9 @@ const Family: React.FC<FamilyProps> = ({
               person={person}
               rolleList={rolleList}
               disableAll={disableAll}
+              closeAndOpen={closeAndOpen}
+              setOpenAgain={setOpenAgain}
+              flashBackground={_openAgain}
             />
           )}
           <VerticalSeparatorDiv size='2' />
