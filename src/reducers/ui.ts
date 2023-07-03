@@ -6,11 +6,13 @@ import { AnyAction } from 'redux'
 export interface UiState {
   highContrast: boolean
   modal: ModalContent | undefined
+  textAreaDirty: boolean
 }
 
 export const initialUiState: UiState = {
   highContrast: false,
-  modal: undefined
+  modal: undefined,
+  textAreaDirty: false
 }
 
 const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState => {
@@ -26,6 +28,12 @@ const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState 
       return {
         ...state,
         highContrast: !state.highContrast
+      }
+
+    case types.UI_SET_TEXTAREA_DIRTY:
+      return {
+        ...state,
+        textAreaDirty: (action as ActionWithPayload).payload.isDirty
       }
 
     default:

@@ -88,6 +88,7 @@ export interface SEDEditSelector {
   savedVedlegg: JoarkBrowserItem | null | undefined
   setVedleggSensitiv: any | null | undefined
   attachmentRemoved: JoarkBrowserItem | null | undefined
+  textAreaDirty: boolean
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -104,7 +105,8 @@ const mapState = (state: State): SEDEditSelector => ({
   validation: state.validation.status,
   savedVedlegg: state.svarsed.savedVedlegg,
   setVedleggSensitiv: state.svarsed.setVedleggSensitiv,
-  attachmentRemoved: state.svarsed.attachmentRemoved
+  attachmentRemoved: state.svarsed.attachmentRemoved,
+  textAreaDirty: state.ui.textAreaDirty
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -126,7 +128,8 @@ const SEDEdit = (): JSX.Element => {
     validation,
     savedVedlegg,
     attachmentRemoved,
-    setVedleggSensitiv
+    setVedleggSensitiv,
+    textAreaDirty
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -232,7 +235,7 @@ const SEDEdit = (): JSX.Element => {
   }
 
   const disableSave = (!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed;
-  const disableSend  = sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
+  const disableSend  = textAreaDirty || sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
 
   return (
     <Container>
@@ -414,7 +417,7 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
-                disabled={disableSave}
+                disabled={disableSave && !textAreaDirty}
               >
                 {creatingSvarSed
                   ? t('message:loading-opprette-sed')
