@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { TextField } from '@navikt/ds-react'
+import {useAppDispatch} from "../../store";
+import {setTextFieldDirty} from "../../actions/ui";
 
 export interface InputProps {
   ariaLabel ?: string
@@ -40,6 +42,13 @@ const Input: React.FC<InputProps> = ({
   const [_value, _setValue] = useState<string>(value ?? '')
   const [_dirty, _setDirty] = useState<boolean>(false)
 
+  const dispatch = useAppDispatch()
+
+  const doSetDirty = (isDirty: boolean) => {
+    _setDirty(isDirty)
+    dispatch(setTextFieldDirty(isDirty))
+  }
+
   return (
     <TextField
       aria-invalid={!!error}
@@ -57,13 +66,13 @@ const Input: React.FC<InputProps> = ({
       onBlur={() => {
         if (_dirty) {
           onChanged!(_value)
-          _setDirty(false)
+          doSetDirty(false)
         }
       }}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         onContentChange!(e.target.value)
         _setValue(e.target.value)
-        _setDirty(true)
+        doSetDirty(true)
       }}
       required={required}
       type={type}

@@ -7,12 +7,14 @@ export interface UiState {
   highContrast: boolean
   modal: ModalContent | undefined
   textAreaDirty: boolean
+  textFieldDirty: boolean
 }
 
 export const initialUiState: UiState = {
   highContrast: false,
   modal: undefined,
-  textAreaDirty: false
+  textAreaDirty: false,
+  textFieldDirty: false
 }
 
 const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState => {
@@ -34,6 +36,12 @@ const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState 
       return {
         ...state,
         textAreaDirty: (action as ActionWithPayload).payload.isDirty
+      }
+
+    case types.UI_SET_TEXTFIELD_DIRTY:
+      return {
+        ...state,
+        textFieldDirty: (action as ActionWithPayload).payload.isDirty
       }
 
     default:

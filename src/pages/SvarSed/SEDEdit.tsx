@@ -89,6 +89,7 @@ export interface SEDEditSelector {
   setVedleggSensitiv: any | null | undefined
   attachmentRemoved: JoarkBrowserItem | null | undefined
   textAreaDirty: boolean
+  textFieldDirty: boolean
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -106,7 +107,8 @@ const mapState = (state: State): SEDEditSelector => ({
   savedVedlegg: state.svarsed.savedVedlegg,
   setVedleggSensitiv: state.svarsed.setVedleggSensitiv,
   attachmentRemoved: state.svarsed.attachmentRemoved,
-  textAreaDirty: state.ui.textAreaDirty
+  textAreaDirty: state.ui.textAreaDirty,
+  textFieldDirty: state.ui.textFieldDirty
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -129,7 +131,8 @@ const SEDEdit = (): JSX.Element => {
     savedVedlegg,
     attachmentRemoved,
     setVedleggSensitiv,
-    textAreaDirty
+    textAreaDirty,
+    textFieldDirty
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -234,8 +237,8 @@ const SEDEdit = (): JSX.Element => {
     return <WaitingPanel />
   }
 
-  const disableSave = (!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed;
-  const disableSend  = textAreaDirty || sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
+  const disableSave = !textFieldDirty && !textAreaDirty && ((!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed);
+  const disableSend  = textFieldDirty || textAreaDirty || sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
 
   return (
     <Container>
@@ -417,7 +420,7 @@ const SEDEdit = (): JSX.Element => {
                 variant='primary'
                 data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
-                disabled={disableSave && !textAreaDirty}
+                disabled={disableSave}
               >
                 {creatingSvarSed
                   ? t('message:loading-opprette-sed')
