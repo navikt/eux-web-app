@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import {toDateFormat} from "../../../components/Forms/PeriodeInput";
+import {setTextFieldDirty} from "../../../actions/ui";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -177,6 +178,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const onDatoBlur = () => {
     const date = toDateFormat(_dato, finalFormat!)
     setFodselsdato(date)
+    dispatch(setTextFieldDirty(false))
   }
 
   useEffect(() => {
@@ -235,6 +237,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               }}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 _setDato(e.target.value)
+                dispatch(setTextFieldDirty(true))
               }}
               value={_dato}
             />
