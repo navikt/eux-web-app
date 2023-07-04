@@ -221,7 +221,6 @@ const SEDPanel = ({
   const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
   const sedHandlingerRINA = sed.sedHandlinger.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
-  console.log(sedHandlingerRINA)
 
   return (
     <MyPanel border>
