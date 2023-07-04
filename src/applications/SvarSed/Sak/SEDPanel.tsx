@@ -268,9 +268,9 @@ const SEDPanel = ({
               <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"}>
                 <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
                 <ul>
-                  {sedHandlingerRINA.map((h) => {
+                  {sedHandlingerRINA.map((sedhandling) => {
                     return (
-                      <li>{h}</li>
+                      <li>{t('sedhandlinger:' + sedhandling, t('sedhandlinger:besvar-med', {SED: sedhandling}))}</li>
                     )
                   })}
                 </ul>
