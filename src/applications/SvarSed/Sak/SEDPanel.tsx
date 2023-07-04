@@ -1,5 +1,5 @@
 import {Close, Edit, Download, Send, Star, Helptext, Attachment} from '@navikt/ds-icons'
-import { Button, Detail, Heading, Loader, Panel } from '@navikt/ds-react'
+import {Button, Detail, Heading, HelpText, Loader, Panel} from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { setCurrentEntry } from 'actions/localStorage'
 import {
@@ -55,6 +55,15 @@ const AttachmentButton = styled(Button)`
 const AttachmentIcon = styled(Attachment)`
   position: relative;
   top: 3px;
+`
+
+const MyHelpText = styled(HelpText)`
+  position: relative;
+  top: 5px;
+  left: 5px;
+  & svg {
+    width: 0.8em
+  }
 `
 
 interface SEDPanelSelector {
@@ -211,6 +220,9 @@ const SEDPanel = ({
   const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
   const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
+  const sedHandlingerRINA = sed.sedHandlinger.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
+  console.log(sedHandlingerRINA)
+
   return (
     <MyPanel border>
       <Modal
@@ -253,6 +265,18 @@ const SEDPanel = ({
                 </AttachmentButton>
               </>
             )}
+            {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
+              <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"}>
+                <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
+                <ul>
+                  {sedHandlingerRINA.map((h) => {
+                    return (
+                      <li>{h}</li>
+                    )
+                  })}
+                </ul>
+              </MyHelpText>
+            }
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
