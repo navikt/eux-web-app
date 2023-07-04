@@ -108,7 +108,7 @@ export default (saksnummer: string, type: string) => {
           sedType: 'F002',
           sedId: 'f002new',
           sistEndretDato: '2020-01-01',
-          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete', "ReadParticipants"]
         }, {
           sedTittel: 'Description for received F002 with sedIdParent',
           status: 'received',
