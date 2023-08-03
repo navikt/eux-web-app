@@ -165,6 +165,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
+    const _land = _pin?.land ? _pin?.land : "Ukjent"
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -198,11 +199,23 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   error={_validation[_namespace + '-land']?.feilmelding}
                   id={_namespace + '-land'}
                 >
-                  <FlexCenterDiv>
-                    <Flag size='S' country={_pin?.land!} />
-                    <HorizontalSeparatorDiv />
-                    {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
-                  </FlexCenterDiv>
+                  {_pin?.land
+                    ? (
+                      <FlexCenterDiv>
+                        <Flag size='S' country={_pin?.land!} />
+                        <HorizontalSeparatorDiv />
+                        {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
+                      </FlexCenterDiv>
+                      )
+                    : (
+                      <FlexCenterDiv>
+                        <Flag size='S' country="XU" />
+                        <HorizontalSeparatorDiv />
+                        {_land}
+                      </FlexCenterDiv>
+                      )
+                  }
+
                 </FormText>
                 )}
           </Column>
