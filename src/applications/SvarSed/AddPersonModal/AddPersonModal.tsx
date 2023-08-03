@@ -149,6 +149,7 @@ const AddPersonModal = <T extends StorageTypes>({
         kjoenn: _newPersonKjoenn.trim() as Kjoenn,
         statsborgerskap: [],
         pin: [{
+          land: "NO",
           identifikator: _newPersonFnr.trim()
         }]
       } as PersonInfo
