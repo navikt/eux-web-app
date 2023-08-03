@@ -26,7 +26,7 @@ import { StorageTypes } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import styled from 'styled-components'
@@ -296,10 +296,15 @@ const AddPersonModal = <T extends StorageTypes>({
     )
   }
 
+  const modalClose = () => {
+    resetForm()
+    onModalClose()
+  }
+
   return (
     <ModalDiv
       open={open}
-      onClose={onModalClose}
+      onClose={modalClose}
     >
       <PaddedDiv id='add-person-modal-id'>
         <Heading size='small'>
@@ -365,7 +370,6 @@ const AddPersonModal = <T extends StorageTypes>({
                   label={t('label:fnr-dnr')}
                   namespace={namespace}
                   onChanged={setFnr}
-                  required
                   value={_newPersonFnr}
                 />
                 <HorizontalSeparatorDiv />
@@ -431,6 +435,7 @@ const AddPersonModal = <T extends StorageTypes>({
             variant='primary'
             onClick={() => {
               onSavePersons()
+              resetForm()
               onModalClose()
             }}
           >
