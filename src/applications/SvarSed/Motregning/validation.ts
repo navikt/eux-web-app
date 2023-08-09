@@ -36,10 +36,21 @@ export const validateMotregning = (
   }))
 
   if (motregning?.__type === 'barn') {
+    const selectedBarn: Array<KeyAndYtelse> = motregning?.__index?.values?.filter((value: KeyAndYtelse) => {
+      return value.isChecked
+    })
+
     hasErrors.push(checkIfNotEmpty(v, {
       needle: motregning?.__index.values,
-      id: namespace + (nsIndex ?? '') + '-ytelseNavn',
-      message: 'validation:noYtelse',
+      id: namespace + (nsIndex ?? '') + '-selectedBarn',
+      message: 'validation:noBarnSelected',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: selectedBarn,
+      id: namespace + (nsIndex ?? '') + '-selectedBarn',
+      message: 'validation:noBarnSelected',
       personName: formalName
     }))
 
@@ -51,6 +62,15 @@ export const validateMotregning = (
         personName: formalName
       }))
     })
+  }
+
+  if (motregning?.__type === 'familie') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: motregning?.ytelseNavn,
+      id: namespace + (nsIndex ?? '') + '-ytelseNavn',
+      message: 'validation:noYtelse',
+      personName: formalName
+    }))
   }
 
   hasErrors.push(checkIfNotEmpty(v, {

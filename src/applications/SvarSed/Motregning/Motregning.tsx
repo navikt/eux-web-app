@@ -54,6 +54,7 @@ import {
   ValidationMotregningerProps,
   ValidationMotregningProps
 } from './validation'
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -814,6 +815,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                   </PaddedHorizontallyDiv>
                 )
               })}
+              <ErrorLabel error={_v[_namespace + '-selectedBarn']?.feilmelding}/>
             </>
           )}
           {_motregning?.__type === 'familie' && (
@@ -1032,7 +1034,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                           {value?.ytelseNavn}
                         </FormText>
                       </FlexDiv>
-                      <HorizontalSeparatorDiv />
+                      <HorizontalSeparatorDiv/>
                     </div>
                   )
                 })}
