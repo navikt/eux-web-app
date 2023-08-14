@@ -25,7 +25,9 @@ describe('components/Family/Family', () => {
     person: samplePerson,
     valgteFamilieRelasjoner: undefined,
     abroadPersonFormAlertTypesWatched: [],
-    TPSPersonFormAlertTypesWatched: []
+    TPSPersonFormAlertTypesWatched: [],
+    namespace: undefined,
+    validation: {}
   }
 
   beforeEach(() => {

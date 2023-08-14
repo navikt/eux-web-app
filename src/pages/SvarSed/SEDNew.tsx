@@ -243,6 +243,7 @@ const SEDNew = (): JSX.Element => {
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
       tema: valgtTema,
+      familierelasjoner: valgteFamilieRelasjoner,
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit
@@ -595,6 +596,8 @@ const SEDNew = (): JSX.Element => {
             </Heading>
             <VerticalSeparatorDiv />
             <Family
+              namespace={namespace}
+              validation={validation}
               disableAll={!!opprettetSak}
               alertVariant={alertVariant}
               alertMessage={alertMessage}
@@ -615,6 +618,9 @@ const SEDNew = (): JSX.Element => {
               onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
                 dispatch(sakActions.addFamilierelasjoner(relation))
                 dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
+                if (validation[namespace + '-familieRelasjoner']) {
+                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
+                }
               }}
               onRelationAdded={(relation: OldFamilieRelasjon) => {
                 /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
@@ -624,6 +630,9 @@ const SEDNew = (): JSX.Element => {
                     nasjonalitet: 'NO'
                   })
                 )
+                if (validation[namespace + '-familieRelasjoner']) {
+                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
+                }
               }}
               onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
               onRelationReset={() => dispatch(personActions.resetPersonRelated())}
@@ -631,6 +640,9 @@ const SEDNew = (): JSX.Element => {
               onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
                 dispatch(sakActions.addFamilierelasjoner(relation))
                 dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
+                if (validation[namespace + '-familieRelasjoner']) {
+                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
+                }
               }}
               onSearchFnr={(fnrQuery: string) => {
                 dispatch(personActions.resetPersonRelated())
