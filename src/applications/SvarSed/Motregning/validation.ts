@@ -30,7 +30,7 @@ export const validateMotregning = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.__type,
-    id: namespace + (nsIndex ?? '') + '-BarnEllerFamilie',
+    id: namespace + (nsIndex ?? '') + '-type',
     message: 'validation:noBarnEllerFamilie',
     personName: formalName
   }))
@@ -76,7 +76,7 @@ export const validateMotregning = (
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.svarType,
     id: namespace + (nsIndex ?? '') + '-svarType',
-    message: 'validation:noAnswer',
+    message: 'validation:noType',
     personName: formalName
   }))
 
