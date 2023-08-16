@@ -296,12 +296,16 @@ const MainForm = <T extends StorageTypes>({
     if (type === 'onelevel') {
       if (currentMenu !== menu) {
         setCurrentMenu(menu)
+      } else if (currentMenu === menu){
+        setCurrentMenu(initialMenu)
       }
       menuRef.current = menu
       return
     }
 
     const changedMenu: boolean = currentMenu !== menu
+    const sameMenu: boolean = currentMenu === menu
+
     const changedMenuOption: boolean =
       !_.isNil(menuOption)
         ? ((menuOption !== currentMenuOption) || (menuOption === currentMenuOption && changedMenu))
@@ -311,6 +315,10 @@ const MainForm = <T extends StorageTypes>({
       setFocusedMenu(menu)
       if (changedMenuOption) {
         setCurrentMenu(menu)
+      }
+    } else if(sameMenu){
+      if (!changedMenuOption){
+        setCurrentMenu(initialMenu)
       }
     }
 
