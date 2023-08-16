@@ -102,6 +102,10 @@
   "option-formaal-prosedyre": "Prosedyre ved uenighet",
   "option-formaal-refusjon": "Refusjon i henhold til artikkel 58 i forordningen",
 
+  "option-formaal-anmodning-om-kontroll": "Anmodning om kontroll eller årlig kontroll",
+  "option-formaal-anmodning-om-informasjon": "Anmodning om informasjon",
+
+
   "option-forsikring-ANSATTPERIODE_FORSIKRET" : "Ansettelsesforhold som utgjør forsikringsperiode",
   "option-forsikring-SELVSTENDIG_FORSIKRET" : "Selvstendig næringsvirksomhet som utgjør forsikringsperiode",
   "option-forsikring-ANSATTPERIODE_UFORSIKRET" : "Ansettelsesforhold som ikke utgjør forsikringsperiode",

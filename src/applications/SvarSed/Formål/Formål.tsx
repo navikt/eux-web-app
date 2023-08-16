@@ -62,8 +62,18 @@ const Formål: React.FC<MainFormProps> = ({
     { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
   ]
 
+  let formaalOptionsF001: Options = [
+    { label: t('el:option-formaal-mottak'), value: 'mottak_av_søknad_om_familieytelser' },
+    { label: t('el:option-formaal-informasjon'), value: 'informasjon_om_endrede_forhold' },
+    { label: t('el:option-formaal-anmodning-om-kontroll'), value: 'anmodning_om_kontroll_eller_årlig_kontroll' },
+    { label: t('el:option-formaal-anmodning-om-informasjon'), value: 'anmodning_om_informasjon' },
+    { label: t('el:option-formaal-vedtak'), value: 'vedtak' },
+    { label: t('el:option-formaal-motregning'), value: 'motregning' },
+    { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
+  ]
+
   if (isF001Sed(replySed)) {
-    formaalOptions = _.reject(formaalOptions, { value: 'prosedyre_ved_uenighet' })
+    formaalOptions = formaalOptionsF001
   }
 
   const setFormal = (item: string, checked: boolean) => {
