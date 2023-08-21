@@ -40,13 +40,13 @@
   "noAnnenOpphør": "Ingen annet opphør",
   "noAnnenTypeForsikringsperiode": "Ingen annen type forsikringsperiode",
   "noAnsettelsesType": "Ingen periodetype",
-  "noAnswer": "Ingen svar til spørsmål",
+  "noAnswer": "Ingen svar på spørsmål",
   "noAntallPersoner": "Ingen antall personer",
   "noArbeidstimer": "Ingen arbeidstimer",
   "noAvgrensing": "Ingen avgrensning av periode",
 
   "noBarnValgt": "Ingen barn valgt",
-  "noBarnaEllerFamilie": "Velg mellom barna eller familie",
+  "noBarnEllerFamilie": "Velg mellom barn eller familie",
   "noBegrunnelse": "Ingen begrunnelse",
   "noBegrunnelseAnnen": "Ingen begrunnelse beskrivelse",
   "noBeløp": "Ingen beløp",
@@ -144,6 +144,7 @@
   "noValuta": "Ingen valuta",
   "noVedtakType": "Ingen vedtak type",
   "noYtelse": "Ingen ytelse",
+  "noBarnSelected": "Ingen barn valgt",
   "noYtterligereInfoType": "Du må velge ytterligere informasjons type",
 
   "noÅrsak": "Ingen årsak",

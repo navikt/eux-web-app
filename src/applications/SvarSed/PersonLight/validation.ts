@@ -54,14 +54,6 @@ export const validatePersonLight = (
 
   const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
 
-  if (norwegianPin === undefined) {
-    hasErrors.push(addError(v, {
-      id: namespace + '-norskpin',
-      message: 'validation:noId',
-      personName
-    }))
-  }
-
   if (!_.isEmpty(norwegianPin?.identifikator)) {
     const result = validateFnrDnrNpid(norwegianPin!.identifikator!)
     if (result.status !== 'valid') {

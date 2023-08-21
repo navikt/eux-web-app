@@ -30,16 +30,27 @@ export const validateMotregning = (
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.__type,
-    id: namespace + (nsIndex ?? '') + '-BarnEllerFamilie',
+    id: namespace + (nsIndex ?? '') + '-type',
     message: 'validation:noBarnEllerFamilie',
     personName: formalName
   }))
 
   if (motregning?.__type === 'barn') {
+    const selectedBarn: Array<KeyAndYtelse> = motregning?.__index?.values?.filter((value: KeyAndYtelse) => {
+      return value.isChecked
+    })
+
     hasErrors.push(checkIfNotEmpty(v, {
       needle: motregning?.__index.values,
-      id: namespace + (nsIndex ?? '') + '-ytelseNavn',
-      message: 'validation:noYtelse',
+      id: namespace + (nsIndex ?? '') + '-selectedBarn',
+      message: 'validation:noBarnSelected',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: selectedBarn,
+      id: namespace + (nsIndex ?? '') + '-selectedBarn',
+      message: 'validation:noBarnSelected',
       personName: formalName
     }))
 
@@ -53,10 +64,19 @@ export const validateMotregning = (
     })
   }
 
+  if (motregning?.__type === 'familie') {
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: motregning?.ytelseNavn,
+      id: namespace + (nsIndex ?? '') + '-ytelseNavn',
+      message: 'validation:noYtelse',
+      personName: formalName
+    }))
+  }
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: motregning?.svarType,
     id: namespace + (nsIndex ?? '') + '-svarType',
-    message: 'validation:noAnswer',
+    message: 'validation:noType',
     personName: formalName
   }))
 

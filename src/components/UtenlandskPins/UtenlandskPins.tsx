@@ -198,11 +198,19 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   error={_validation[_namespace + '-land']?.feilmelding}
                   id={_namespace + '-land'}
                 >
-                  <FlexCenterDiv>
-                    <Flag size='S' country={_pin?.land!} />
-                    <HorizontalSeparatorDiv />
-                    {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
-                  </FlexCenterDiv>
+                  {_pin?.land
+                    ? (
+                      <FlexCenterDiv>
+                        <Flag size='S' country={_pin?.land!} />
+                        <HorizontalSeparatorDiv />
+                        {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
+                      </FlexCenterDiv>
+                      )
+                    : (
+                      <FlexCenterDiv/>
+                      )
+                  }
+
                 </FormText>
                 )}
           </Column>

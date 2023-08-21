@@ -1,8 +1,8 @@
 import {BodyLong, Button, Heading, Ingress, Panel} from '@navikt/ds-react'
 import { resetPersonRelated } from 'actions/person'
 import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
-import { FadingLineSeparator } from 'components/StyledComponents'
-import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
+import {FadingLineSeparator} from 'components/StyledComponents'
+import {Kodeverk, OldFamilieRelasjon, Person, Validation} from 'declarations/types'
 import _ from 'lodash'
 import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, {useEffect, useState} from 'react'
@@ -10,6 +10,10 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import AbroadPersonForm from './AbroadPersonForm'
 import TPSPersonForm from './TPSPersonForm'
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import classNames from "classnames";
+import {hasNamespaceWithErrors} from "../../../utils/validation";
+import styled from "styled-components";
 
 export interface FamilyProps {
   abroadPersonFormAlertTypesWatched: Array<string> | undefined
@@ -31,7 +35,16 @@ export interface FamilyProps {
   TPSPersonFormAlertTypesWatched: Array<string> | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon> | undefined
   disableAll?: boolean
+  namespace?: string
+  validation: Validation
 }
+
+export const WithErrorPanel = styled(Panel)`
+  &.error {
+    margin: -4px;
+    border: 4px solid var(--navds-error-summary-color-border) !important;
+  }
+`
 
 const Family: React.FC<FamilyProps> = ({
   abroadPersonFormAlertTypesWatched,
@@ -51,7 +64,9 @@ const Family: React.FC<FamilyProps> = ({
   searchingRelatertPerson,
   valgteFamilieRelasjoner,
   TPSPersonFormAlertTypesWatched,
-  disableAll
+  disableAll,
+  namespace,
+  validation
 }: FamilyProps): JSX.Element => {
   const [_viewAbroadPersonForm, setViewAbroadPersonForm] = useState<boolean>(false)
   const [_openAgain, setOpenAgain] = useState<boolean | null>(null)
@@ -109,7 +124,12 @@ const Family: React.FC<FamilyProps> = ({
   const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => ekskluderteVerdier.includes(kt.kode) === false)
 
   return (
-    <Panel border data-testid='family'>
+    <WithErrorPanel
+      border data-testid='family'
+      className={classNames({
+        error: hasNamespaceWithErrors(validation, namespace! + "-familieRelasjoner")
+      })}
+    >
       <Heading size='small'>
         {t('label:family-description')}
       </Heading>
@@ -239,8 +259,10 @@ const Family: React.FC<FamilyProps> = ({
               : t('label:vis-skjema')}
           </Button>
         </div>
+        <VerticalSeparatorDiv/>
+        <ErrorLabel error={validation[namespace + '-familieRelasjoner']?.feilmelding}/>
       </PileDiv>
-    </Panel>
+    </WithErrorPanel>
   )
 }
 

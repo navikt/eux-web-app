@@ -54,6 +54,7 @@ import {
   ValidationMotregningerProps,
   ValidationMotregningProps
 } from './validation'
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -470,6 +471,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
           values: newValues
         }
       } as Motregning)
+      _resetValidation([namespace + '-selectedBarn', namespace + '-ytelse[' + keyIndex +']-ytelseNavn'])
       return
     }
 
@@ -814,6 +816,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
                   </PaddedHorizontallyDiv>
                 )
               })}
+              <ErrorLabel error={_v[_namespace + '-selectedBarn']?.feilmelding}/>
             </>
           )}
           {_motregning?.__type === 'familie' && (
@@ -1018,7 +1021,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
         {_motregning?.__type === 'barn' && (
           <AlignStartRow>
             <Column>
-              <FlexDiv>
+
                 {_motregning?.__index?.values.map((value: KeyAndYtelse, index: number) => {
                   return (
                     <div key={value.key1}>
@@ -1032,11 +1035,10 @@ const MotregningFC: React.FC<MainFormProps> = ({
                           {value?.ytelseNavn}
                         </FormText>
                       </FlexDiv>
-                      <HorizontalSeparatorDiv />
                     </div>
                   )
                 })}
-              </FlexDiv>
+
             </Column>
           </AlignStartRow>
         )}

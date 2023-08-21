@@ -95,10 +95,10 @@ const VedtakFC: React.FC<MainFormProps> = ({
     { label: t('el:option-vedtaktype-vedtak-om-kompetanse'), value: 'vedtak_om_kompetanse' },
   ]
   const kompetanseTypeOptions: Options = [
-    { label: t('el:option-kompetansetype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
-    { label: t('el:option-kompetansetype-sekundaerkompetanseArt58'), value: 'sekundaerkompetanseArt58' },
     { label: t('el:option-kompetansetype-primaerkompetanseArt68'), value: 'primaerkompetanseArt68' },
-    { label: t('el:option-kompetansetype-sekundaerkompetanseArt68'), value: 'sekundaerkompetanseArt68' }
+    { label: t('el:option-kompetansetype-sekundaerkompetanseArt68'), value: 'sekundaerkompetanseArt68' },
+    { label: t('el:option-kompetansetype-primaerkompetanseArt58'), value: 'primaerkompetanseArt58' },
+    { label: t('el:option-kompetansetype-sekundaerkompetanseArt58'), value: 'sekundaerkompetanseArt58' }
   ]
 
   useUnmount(() => {
@@ -748,7 +748,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv />
       <PaddedDiv>
         <Heading size='small'>
-          {t('label:perioder')}
+          {t('label:type-kompetanse')}
         </Heading>
       </PaddedDiv>
       {!_.isEmpty(_allKompetansePeriods) && (

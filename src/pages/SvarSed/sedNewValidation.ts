@@ -1,5 +1,6 @@
-import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkIfNotTrue } from 'utils/validation'
+import {OldFamilieRelasjon, Validation} from 'declarations/types'
+import {addError, checkIfNotEmpty, checkIfNotTrue, ValidateValueParams} from 'utils/validation'
+import _, {isEmpty} from "lodash";
 
 export interface ValidationSEDNewProps {
   fnr: string
@@ -10,6 +11,7 @@ export interface ValidationSEDNewProps {
   landkode: string
   institusjon: string
   tema: string
+  familierelasjoner:Array<OldFamilieRelasjon>
   saksId: string
   visEnheter: boolean
   unit: string
@@ -27,12 +29,24 @@ export const validateSEDNew = (
     landkode,
     institusjon,
     tema,
+    familierelasjoner,
     saksId,
     visEnheter,
     unit
   }: ValidationSEDNewProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
+
+  const checkIfHasChildren = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
+    const barn = needle.filter((relasjon: OldFamilieRelasjon) => {
+      return relasjon.rolle === "BARN"
+    })
+
+    if (isEmpty(barn)) {
+      return addError(v, { id, personName, message, extra })
+    }
+    return false
+  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: fnr,
@@ -95,6 +109,24 @@ export const validateSEDNew = (
       message: 'validation:noUnit'
     }))
   }
+
+  if(sektor && sektor === "FB"){
+    if(_.isEmpty(familierelasjoner)){
+      hasErrors.push(addError(v, {
+        id: namespace + '-familieRelasjoner',
+        message: 'validation:noBarnValgt'
+      }))
+    }
+
+    if(!_.isEmpty(familierelasjoner)){
+      hasErrors.push(checkIfHasChildren(v, {
+        needle: familierelasjoner,
+        id: namespace + '-familieRelasjoner',
+        message: 'validation:noBarnValgt'
+      }))
+    }
+  }
+
 
   return hasErrors.find(value => value) !== undefined
 }

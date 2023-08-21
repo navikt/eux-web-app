@@ -25,12 +25,6 @@ export const validateAddPersonModal = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: fnr,
-    message: 'validation:noFnr',
-    id: namespace + '-fnr'
-  }))
-
   if (!_.isEmpty(fnr?.trim())) {
     hasErrors.push(checkIfValidFnr(v, {
       needle: fnr,
@@ -38,12 +32,6 @@ export const validateAddPersonModal = (
       id: namespace + '-fnr'
     }))
   }
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: fnr,
-    message: 'validation:noFnr',
-    id: namespace + '-fnr'
-  }))
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: fornavn,
