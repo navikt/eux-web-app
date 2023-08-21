@@ -748,7 +748,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv />
       <PaddedDiv>
         <Heading size='small'>
-          {t('label:perioder')}
+          {t('label:type-kompetanse')}
         </Heading>
       </PaddedDiv>
       {!_.isEmpty(_allKompetansePeriods) && (
