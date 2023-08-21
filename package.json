@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.7.0-FSED-FIXES",
+  "version": "8.7.0",
   "private": true,
   "type": "module",
   "scripts": {
