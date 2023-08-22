@@ -37,6 +37,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
+  //const [_fnr, setFnr] = useState<string>(fnr!)
+  const _fnr = fnr!
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -85,7 +87,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
       <VerticalSeparatorDiv />
       <SEDAttachmentModal
         open={_attachmentsTableVisible}
-        fnr={fnr!}
+        fnr={_fnr}
         onModalClose={() => setAttachmentsTableVisible(false)}
         onFinishedSelection={onJoarkAttachmentsChanged}
         sedAttachments={_items}
@@ -117,7 +119,14 @@ const Attachments: React.FC<AttachmentsProps> = ({
             <h4>Vedlegg som legges til etter lagring av SED</h4>
             <JoarkBrowser
               existingItems={_items}
-              fnr={fnr}
+              fnr={_fnr}
+              mode='view'
+              tableId='vedlegg-view'
+              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
+            />
+            <JoarkBrowser
+              existingItems={_items}
+              fnr={"DUMMYFNR"}
               mode='view'
               tableId='vedlegg-view'
               onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
@@ -126,7 +135,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             <Button
               variant='secondary'
               data-amplitude='svarsed.editor.attachments'
-              disabled={_.isNil(fnr)}
+              disabled={_.isNil(_fnr)}
               onClick={(e: any) => {
                 buttonLogger(e)
                 setAttachmentsTableVisible(!_attachmentsTableVisible)
