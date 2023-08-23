@@ -259,7 +259,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }
 
   const getItemsForViewMode = (list: Array<JoarkPoster> | undefined, existingItems: JoarkBrowserItems): JoarkBrowserItems => {
-    console.log(list)
     const items: JoarkBrowserItems = []
     existingItems.forEach((existingItem: JoarkBrowserItem) => {
       const match = existingItem.title.match(/^(\d+)_ARKIV\.pdf$/)
@@ -300,7 +299,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
   // this will update when we get updated existingItems
   useEffect(() => {
-    console.log(existingItems, list)
     let items: JoarkBrowserItems = []
     if (mode === 'select') {
       items = getItemsForSelectMode(list, existingItems)

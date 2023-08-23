@@ -449,6 +449,7 @@
   "velg-grunn-til-uenighet": "Velg grunn til uenighet",
   "velg-meny" : "Velg en meny for å se og fylle inn opplysninger.",
   "velg-person" : "Velg {{person}}",
+  "velg-en-person" : "Velg person",
   "velg-barn-som-motregning" : "Velg barn som motregningen skal kobles til",
   "velg-tema" : "Velg tema",
   "velg-vedlegg-til-sed" : "Velg vedlegg til SED",
@@ -459,6 +460,7 @@
   "vis-saker": "Vis saker",
   "vis-skjema": "Vis skjema",
   "vis-vedlegg-tabell": "Åpne vedleggstabell",
+  "vis-vedlegg-tabell-for": "Åpne vedleggstabell for",
   "vår-rolle": "Vår rolle",
 
   "ytelse": "Ytelse",
