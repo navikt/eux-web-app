@@ -145,6 +145,14 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
               </span>
             </>
           )}
+          {_personRelatert?.adressebeskyttelse &&
+            <>
+              <VerticalSeparatorDiv size='0.5' />
+              <Alert size="small" variant='warning'>
+                {t('label:sensitivPerson', {gradering: _personRelatert.adressebeskyttelse})}
+              </Alert>
+            </>
+          }
         </PileDiv>
 
         <HorizontalSeparatorDiv />
