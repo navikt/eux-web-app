@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import {Alert, Heading} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -18,7 +18,7 @@ import { Kjoenn, PersonLight, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -44,6 +44,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-personlight`
 
   const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
+  const [gradering, setGradering] = useState<string | null>(null)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -84,6 +85,8 @@ const PersonLightFC: React.FC<MainFormProps> = ({
 
   const fillOutPerson = (searchedPerson: Person) => {
     let newPersonLight: PersonLight | undefined = _.cloneDeep(personLight)
+    setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
+
     if (!newPersonLight) {
       newPersonLight = {} as PersonLight
     }
@@ -150,6 +153,13 @@ const PersonLightFC: React.FC<MainFormProps> = ({
         onFillOutPerson={fillOutPerson}
       />
       <VerticalSeparatorDiv />
+      {gradering &&
+        <PaddedDiv>
+          <Alert size="small" variant='warning'>
+            {t('label:sensitivPerson', {gradering: gradering})}
+          </Alert>
+        </PaddedDiv>
+      }
       <PaddedDiv>
         <AlignStartRow>
           <Column>

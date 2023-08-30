@@ -1,5 +1,5 @@
 import { ExternalLink, Copy, InformationFilled } from '@navikt/ds-icons'
-import { BodyLong, Label, Heading, Link, Popover } from '@navikt/ds-react'
+import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
 import mann from 'assets/icons/Man.png'
@@ -163,6 +163,13 @@ const SakBanner = () => {
             <ExternalLink />
           </Link>
         </FlexDiv>
+        {currentSak.sensitiv &&
+          <FlexDiv>
+          <Alert size="small" variant='warning'>
+            <span>{t('label:sensitivSak')}</span>
+          </Alert>
+          </FlexDiv>
+        }
       </PileDiv>
     </Panel>
   )

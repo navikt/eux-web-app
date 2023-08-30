@@ -1,4 +1,4 @@
-import {Heading, TextField} from '@navikt/ds-react'
+import {Alert, Heading, TextField} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -51,6 +51,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
+  const [gradering, setGradering] = useState<string | null>(null)
+
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationPersonopplysningerProps>(clonedValidation, namespace, validatePersonopplysninger, {
@@ -90,6 +92,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
 
   const fillOutPerson = (searchedPerson: Person) => {
     const newPersonInfo = _.cloneDeep(personInfo)
+
+    setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
 
     if (searchedPerson.fnr) {
       const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
@@ -200,6 +204,13 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         onFillOutPerson={fillOutPerson}
       />
       <VerticalSeparatorDiv />
+      {gradering &&
+        <PaddedDiv>
+          <Alert size="small" variant='warning'>
+            {t('label:sensitivPerson', {gradering: gradering})}
+          </Alert>
+        </PaddedDiv>
+      }
       <PaddedDiv>
         <AlignStartRow>
           <Column>
