@@ -50,8 +50,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
   }
 
   const onJoarkAttachmentsChanged = (jbi: JoarkBrowserItems): void => {
-    const sedOriginalAttachments: JoarkBrowserItems = _.filter(_items, (att) => att.type !== 'joark')
-    const newAttachments = sedOriginalAttachments.concat(jbi).sort(sedAttachmentSorter)
+    //const sedOriginalAttachments: JoarkBrowserItems = _.filter(_items, (att) => att.type !== 'joark')
+    const newAttachments = _items.concat(jbi).sort(sedAttachmentSorter)
     setItems(newAttachments)
     onAttachmentsChanged(newAttachments)
   }
