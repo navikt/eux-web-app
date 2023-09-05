@@ -207,6 +207,7 @@ export interface Sak {
   foedselsdato: string
   kjoenn: string
   fnr?: string
+  adressebeskyttelse?: string
   erSakseier? : JaNei
   sakseier?: NavInstitusjon
   sakType: string

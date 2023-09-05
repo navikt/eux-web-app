@@ -9,6 +9,7 @@ export default (saksnummer: string, type: string) => {
       kjoenn: 'M',
       foedselsdato: '1970-01-01',
       fnr: '12345678901',
+      adressebeskyttelse: 'STRENGT_FORTROLIG',
       sakTittel: 'Beslutte komponent myndighet',
       sakType: 'FB_BUC_01',
       sakId: '1166592',

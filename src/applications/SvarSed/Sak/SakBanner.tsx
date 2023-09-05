@@ -102,6 +102,13 @@ const SakBanner = () => {
           <HorizontalSeparatorDiv />
           {currentSak.foedselsdato}
         </FlexDiv>
+        {currentSak.adressebeskyttelse &&
+          <FlexDiv>
+            <Alert size="small" variant='warning'>
+              <span>{t('label:sensitivPerson', {gradering: currentSak.adressebeskyttelse})}</span>
+            </Alert>
+          </FlexDiv>
+        }
       </PileDiv>
       <PileDiv>
         <FlexDiv>
@@ -165,9 +172,9 @@ const SakBanner = () => {
         </FlexDiv>
         {currentSak.sensitiv &&
           <FlexDiv>
-          <Alert size="small" variant='warning'>
-            <span>{t('label:sensitivSak')}</span>
-          </Alert>
+            <Alert size="small" variant='warning'>
+              <span>{t('label:sensitivSak')}</span>
+            </Alert>
           </FlexDiv>
         }
       </PileDiv>
