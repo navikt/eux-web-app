@@ -1,5 +1,10 @@
 name: "Build npm and deploy Maven-artifact. See the step 'Deploy Maven artifact...' for Maven dependency/version"
 
+permissions:
+  deployments: write
+  packages: write
+  contents: write
+
 on:
   push:
     branches:
