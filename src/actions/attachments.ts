@@ -63,6 +63,11 @@ export const resetSedAttachments: ActionCreator<Action> = (): Action => ({
 export const sendAttachmentToSed = (
   params: SEDAttachmentPayloadWithFile, joarkBrowserItem: JoarkBrowserItem
 ): Action => {
+  params = {
+    ...params,
+    filnavn: encodeURIComponent(params.filnavn)
+  }
+  
   return call({
     url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params),
     method: 'POST',
