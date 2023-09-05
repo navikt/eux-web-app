@@ -50,8 +50,10 @@ const Attachments: React.FC<AttachmentsProps> = ({
   }
 
   const onJoarkAttachmentsChanged = (jbi: JoarkBrowserItems): void => {
-    //const sedOriginalAttachments: JoarkBrowserItems = _.filter(_items, (att) => att.type !== 'joark')
-    const newAttachments = _items.concat(jbi).sort(sedAttachmentSorter)
+    const newAttachments = _items
+      .concat(jbi.filter(attachment => !_items.find(item => item.dokumentInfoId === attachment.dokumentInfoId)))
+      .sort(sedAttachmentSorter);
+
     setItems(newAttachments)
     onAttachmentsChanged(newAttachments)
   }
@@ -131,8 +133,10 @@ const Attachments: React.FC<AttachmentsProps> = ({
 
     return(
       <Column flex="0.5">
-        <Select label={t("label:vis-vedlegg-tabell-for")} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFnr(e.currentTarget.value)}>
-          <option value="">{t("label:velg-en-person")}</option>
+        <Select
+          label={t("label:vis-vedlegg-tabell-for")}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFnr(e.currentTarget.value)}
+        >
           {FNRSelectOptions}
         </Select>
       </Column>
