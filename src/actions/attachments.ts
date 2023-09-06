@@ -65,9 +65,9 @@ export const sendAttachmentToSed = (
 ): Action => {
   params = {
     ...params,
-    filnavn: encodeURIComponent(params.filnavn)
+    filnavn: params.filnavn
   }
-  
+
   return call({
     url: sprintf(urls.API_JOARK_ATTACHMENT_URL, params),
     method: 'POST',
