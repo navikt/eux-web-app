@@ -65,7 +65,7 @@ export const sendAttachmentToSed = (
 ): Action => {
   params = {
     ...params,
-    filnavn: params.filnavn
+    filnavn: encodeURIComponent(params.filnavn)
   }
 
   return call({

@@ -107,8 +107,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     bannerStatus =  'error'
     switch (action.type) {
       case types.ATTACHMENT_SEND_FAILURE:
-        console.log("ATTACHMENT_SEND_FAILURE")
-        stripeMessage = "ATTACHMENT_SEND_FAILURE"
+        stripeMessage = i18n.t('message:error-attachment-send-failed')
         break
 
       case types.PERSON_SEARCH_FAILURE:
