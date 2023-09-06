@@ -58,6 +58,7 @@ const WrapperDiv = styled.div`
 
 interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
+  bannerMessage: JSX.Element | string | undefined
   alertType: string | undefined
   creatingSvarSed: boolean
   updatingSvarSed: boolean
@@ -78,6 +79,7 @@ interface SendSEDModalProps {
 
 const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.stripeMessage,
+  bannerMessage: state.alert.bannerMessage,
   alertType: state.alert.type,
   creatingSvarSed: state.loading.creatingSvarSed,
   updatingSvarSed: state.loading.updatingSvarSed,
@@ -97,6 +99,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 }: SendSEDModalProps): JSX.Element => {
   const {
     alertMessage,
+    bannerMessage,
     alertType,
     creatingSvarSed,
     updatingSvarSed,
@@ -248,6 +251,14 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
               <>
                 <Alert variant='error'>
                   {alertMessage}
+                </Alert>
+                <VerticalSeparatorDiv size='2' />
+              </>
+            )}
+            {bannerMessage && (
+              <>
+                <Alert variant='error'>
+                  {bannerMessage}
                 </Alert>
                 <VerticalSeparatorDiv size='2' />
               </>

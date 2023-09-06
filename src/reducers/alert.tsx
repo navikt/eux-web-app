@@ -170,11 +170,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
           : (action as ActionWithPayload).payload.error?.message
         break
 
-      case types.ATTACHMENT_SEND_FAILURE:
-        stripeMessage = "Klarte ikke lagre vedlegg"
-        console.log("ATTACHMENT SEND FAILURE")
-        break
-
       default:
         if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
           stripeMessage = _.isString((action as ActionWithPayload).payload.error)
