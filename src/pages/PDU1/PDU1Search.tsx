@@ -1,4 +1,4 @@
-import { BodyLong, Button, Heading, Label, Loader, Panel } from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
@@ -22,7 +22,6 @@ import {
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
-import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
@@ -30,7 +29,7 @@ import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { Option, Options } from 'declarations/app'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak} from 'declarations/types'
+import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak, Person} from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -40,7 +39,10 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
 import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
-import {validateFnrDnrNpid} from "../../utils/fnrValidator";
+import PersonSearch from "../../applications/OpprettSak/PersonSearch/PersonSearch";
+import * as types from "../../constants/actionTypes";
+import * as personActions from "../../actions/person";
+import SakSidebar from "../../applications/OpprettSak/SakSidebar/SakSidebar";
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -57,6 +59,11 @@ export interface PDU1SearchSelector {
   previewStoredPdu1: Blob | null | undefined
   gettingPreviewStoredPdu1: boolean
   pdu1results: PDU1SearchResults | null | undefined
+
+  person: Person | null | undefined
+  searchingPerson: boolean
+  alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
 }
 
 const mapState = (state: State): PDU1SearchSelector => ({
@@ -68,7 +75,12 @@ const mapState = (state: State): PDU1SearchSelector => ({
   fetchingPdu1: state.loading.fetchingPdu1,
   previewStoredPdu1: state.pdu1.previewStoredPdu1,
   gettingPreviewStoredPdu1: state.loading.gettingPreviewStoredPdu1,
-  pdu1results: state.pdu1.pdu1results
+  pdu1results: state.pdu1.pdu1results,
+
+  person: state.person.person,
+  searchingPerson: state.loading.searchingPerson,
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type
 })
 
 const PDU1Search = (): JSX.Element => {
@@ -84,7 +96,11 @@ const PDU1Search = (): JSX.Element => {
     pdu1results,
     gettingPreviewStoredPdu1,
     previewStoredPdu1,
-    fnrParam
+    fnrParam,
+    person,
+    searchingPerson,
+    alertMessage,
+    alertType
   }: PDU1SearchSelector = useAppSelector(mapState)
 
   const params: URLSearchParams = new URLSearchParams(window.location.search)
@@ -94,7 +110,6 @@ const PDU1Search = (): JSX.Element => {
   const [tema, setTema] = useState<string | undefined>(undefined)
 
   const [validFnr, setValidFnr] = useState<boolean>(false)
-  const [validMessage, setValidMessage] = useState<string>('')
   const [previewModal, setPreviewModal] = useState<ModalContent | undefined>(undefined)
 
   const [newPdu1Mode, setNewPdu1Mode] = useState<boolean>(false)
@@ -103,6 +118,8 @@ const PDU1Search = (): JSX.Element => {
 
   const namespace = 'pdu1search'
   const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
+
+  const [gradering, setGradering] = useState<string | null>(null)
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -125,30 +142,6 @@ const PDU1Search = (): JSX.Element => {
     { label: t('tema:SUP'), value: 'SUP' },
     { label: t('tema:UFM'), value: 'UFM' }
   ]
-
-  const onFnrDnrChange = (query: string) => {
-    dispatch(appActions.appReset())
-    setNewPdu1Mode(false)
-    setSearchPdu1Mode(false)
-    _resetValidation(namespace + '-search')
-    setFnrOrDnr(query)
-    const result = validateFnrDnrNpid(query)
-    if (result.status !== 'valid') {
-      setValidFnr(false)
-      setValidMessage(t('label:ukjent'))
-    } else {
-      setValidFnr(true)
-      if (result.type === 'fnr') {
-        setValidMessage(t('label:valid-fnr'))
-      }
-      if (result.type === 'dnr') {
-        setValidMessage(t('label:valid-dnr'))
-      }
-      if (result.type === 'npid') {
-        setValidMessage(t('label:valid-npid'))
-      }
-    }
-  }
 
   const onTemaChanged = (o: unknown) => {
     if (validation[namespace + '-tema']) {
@@ -262,12 +255,6 @@ const PDU1Search = (): JSX.Element => {
     }
   }, [])
 
-  useEffect(() => {
-    if (q) {
-      onFnrDnrChange(q)
-    }
-  }, [])
-
   return (
     <ContainerDiv>
       <Modal
@@ -285,21 +272,53 @@ const PDU1Search = (): JSX.Element => {
       >
         <Column>
           <PileDiv>
-            <Input
-              label={t('label:fnr-dnr')}
-              error={validation[namespace + '-search']?.feilmelding}
-              id='search'
-              namespace={namespace}
-              onContentChange={onFnrDnrChange}
-              required
-              value={fnrOrDnr}
+            <PersonSearch
+              key={namespace + '-fnr-'}
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
+              data-testid={namespace + '-fnr'}
+              error={validation[namespace + '-fnr']?.feilmelding}
+              searchingPerson={searchingPerson}
+              id={namespace + '-fnr'}
+              initialFnr=''
+              value={fnrOrDnr!}
+              parentNamespace={namespace}
+              onFnrChange={() => {
+                if (validFnr) {
+                  setNewPdu1Mode(false)
+                  setSearchPdu1Mode(false)
+                  _resetValidation(namespace + '-search')
+                  setValidFnr(false)
+                  dispatch(appActions.appReset())
+                  setGradering(null)
+                }
+              }}
+              onPersonFound={() => {
+                setValidFnr(true)
+                setFnrOrDnr(person?.fnr)
+                setGradering(person?.adressebeskyttelse ? person.adressebeskyttelse : null)
+              }}
+              onSearchPerformed={(fnr: string) => {
+                dispatch(personActions.searchPerson(fnr))
+              }}
+              person={person}
             />
-            <VerticalSeparatorDiv size='0.5' />
-            <BodyLong>
-              {validMessage}
-            </BodyLong>
+            <VerticalSeparatorDiv/>
+            <SakSidebar />
+            <VerticalSeparatorDiv/>
+            {gradering &&
+              <Alert size="small" variant='warning'>
+                {t('label:sensitivPerson', {gradering: gradering})}
+              </Alert>
+            }
           </PileDiv>
         </Column>
+      </AlignStartRow>
+      <AlignStartRow
+        style={{ width: '100%' }}
+        className={classNames({ error: validation[namespace + '-search'] })}
+      >
         <Column>
           <FlexBaseDiv style={{ marginTop: '2rem' }}>
             <Button
