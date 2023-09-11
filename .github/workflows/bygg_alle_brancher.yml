@@ -124,3 +124,8 @@ jobs:
           echo "</dependency>"
 
           mvn --settings settings.xml deploy:deploy-file -Dfile=${versionZipfile} -DartifactId=${application} -DgroupId=no.nav.eux -Dversion=${version} -Ddescription='Eux-web-app JavaScript resources.' -Durl=https://maven.pkg.github.com/navikt/eux-web-app -DrepositoryId=github
+
+      - name: 'Echo Version'
+        run: |
+          echo "## Version:" >> $GITHUB_STEP_SUMMARY
+          echo "${version}" >> $GITHUB_STEP_SUMMARY
