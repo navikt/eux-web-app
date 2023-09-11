@@ -1,4 +1,5 @@
 {
+  "error-attachment-send-failed": "Lagring av vedlegg feilet. Obs: Dersom filnavnet til vedlegget inneholder spesialtegn (#,£ e.l.), så kan dette medføre at lagring av vedlegg feiler.",
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-fagsak-notFound": "Det finnes ikke sak på bruker med det valgte temaet.  Sak må opprettes manuelt i Gosys eller tema må endres. ",
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",

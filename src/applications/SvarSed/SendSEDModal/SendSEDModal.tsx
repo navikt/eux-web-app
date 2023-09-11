@@ -58,12 +58,14 @@ const WrapperDiv = styled.div`
 
 interface SendSEDSelector {
   alertMessage: JSX.Element | string | undefined
+  bannerMessage: JSX.Element | string | undefined
   alertType: string | undefined
   creatingSvarSed: boolean
   updatingSvarSed: boolean
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
-  sendingSed: boolean
+  sendingSed: boolean,
+  savingAttachmentsJob: SavingAttachmentsJob | undefined
 }
 
 interface SendSEDModalProps {
@@ -77,12 +79,14 @@ interface SendSEDModalProps {
 
 const mapState = (state: State): SendSEDSelector => ({
   alertMessage: state.alert.stripeMessage,
+  bannerMessage: state.alert.bannerMessage,
   alertType: state.alert.type,
   creatingSvarSed: state.loading.creatingSvarSed,
   updatingSvarSed: state.loading.updatingSvarSed,
   sedCreatedResponse: state.svarsed.sedCreatedResponse,
   sedSendResponse: state.svarsed.sedSendResponse,
-  sendingSed: state.loading.sendingSed
+  sendingSed: state.loading.sendingSed,
+  savingAttachmentsJob: state.attachments.savingAttachmentsJob
 })
 
 const SendSEDModal: React.FC<SendSEDModalProps> = ({
@@ -95,12 +99,14 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
 }: SendSEDModalProps): JSX.Element => {
   const {
     alertMessage,
+    bannerMessage,
     alertType,
     creatingSvarSed,
     updatingSvarSed,
     sendingSed,
     sedCreatedResponse,
-    sedSendResponse
+    sedSendResponse,
+    savingAttachmentsJob
   }: SendSEDSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -186,6 +192,13 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     }
   }, [sedCreatedResponse, _sedSent])
 
+  useEffect(() => {
+    if(!savingAttachmentsJob){
+      setSendingAttachments(false)
+    }
+
+  }, [savingAttachmentsJob])
+
   return (
     <Modal
       open={open}
@@ -232,6 +245,22 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   </Button>
                 </AlertstripeDiv>
                 <VerticalSeparatorDiv />
+              </>
+            )}
+            {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
+              <>
+                <Alert variant='error'>
+                  {alertMessage}
+                </Alert>
+                <VerticalSeparatorDiv size='2' />
+              </>
+            )}
+            {bannerMessage && (
+              <>
+                <Alert variant='error'>
+                  {bannerMessage}
+                </Alert>
+                <VerticalSeparatorDiv size='2' />
               </>
             )}
             <MinimalContentDiv>

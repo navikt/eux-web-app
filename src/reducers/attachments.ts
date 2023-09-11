@@ -114,6 +114,13 @@ const joarkReducer = (state: JoarkState = initialJoarkState, action: AnyAction):
       }
     }
 
+    case types.ATTACHMENT_SEND_FAILURE: {
+      return {
+        ...state,
+        savingAttachmentsJob: undefined
+      }
+    }
+
     case types.ATTACHMENT_SAVINGATTACHMENTJOB_SET:
 
       return {
