@@ -7,7 +7,7 @@ import { HorizontalSeparatorDiv, VerticalSeparatorDiv, FlexCenterSpacedDiv, Flex
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import _ from 'lodash'
-import { Button, Panel, Select, Heading } from '@navikt/ds-react'
+import {Button, Panel, Select, Heading, Alert} from '@navikt/ds-react'
 import PT from 'prop-types'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -132,6 +132,11 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <div>{t('label:fnr') + ' : ' + fnr}</div>
               <div>{t('label:fødselsdato') + ': ' + toDateFormat(fdato, 'DD.MM.YYYY')}</div>
             </Undertitle>
+            {person.adressebeskyttelse &&
+              <Alert size="small" variant='warning'>
+                {t('label:sensitivPerson', {gradering: person.adressebeskyttelse})}
+              </Alert>
+            }
           </div>
         </FlexDiv>
         {_.isFunction(onRemoveClick) && (

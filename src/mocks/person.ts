@@ -16,7 +16,8 @@ export default {
       fdato: '1961-04-08',
       fornavn: 'PEN',
       etternavn: 'BLYANT',
-      kjoenn: 'K'
+      kjoenn: 'K',
+      adressebeskyttelse: 'STRENGT_FORTROLIG',
     },
     {
       rolle: 'BARN',
@@ -24,7 +25,8 @@ export default {
       fdato: '1980-02-02',
       fornavn: 'LITEN',
       etternavn: 'BLYANT',
-      kjoenn: 'M'
+      kjoenn: 'M',
+      adressebeskyttelse: 'STRENGT_FORTROLIG',
     }
   ]
 }
