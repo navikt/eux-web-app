@@ -28,6 +28,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {alertReset} from "../../../actions/alert";
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -173,6 +174,10 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       setSedSent(true)
     }
   }, [sedCreatedResponse])
+
+  useEffect(() => {
+    dispatch(alertReset())    
+  }, [open])
 
   useEffect(() => {
     // if sed is sent, we can start sending attachments
