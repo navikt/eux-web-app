@@ -1,4 +1,4 @@
-import { BodyLong, Heading } from '@navikt/ds-react'
+import {Alert, BodyLong, Heading} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -197,6 +197,14 @@ const Person: React.FC<MainFormProps> = ({
               onChanged={onFnrChange}
               value={pdu1Person?.fnr}
             />
+            {pdu1Person?.adressebeskyttelse &&
+              <>
+                <VerticalSeparatorDiv/>
+                <Alert size="small" variant='warning'>
+                  {t('label:sensitivPerson', {gradering: pdu1Person?.adressebeskyttelse})}
+                </Alert>
+              </>
+            }
           </Column>
           <Column />
         </AlignStartRow>

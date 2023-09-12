@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
+import {BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
@@ -118,8 +118,6 @@ const PDU1Search = (): JSX.Element => {
 
   const namespace = 'pdu1search'
   const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
-
-  const [gradering, setGradering] = useState<string | null>(null)
 
   const temaOptions: Options = [
     { label: t('tema:GEN'), value: 'GEN' },
@@ -291,13 +289,11 @@ const PDU1Search = (): JSX.Element => {
                   _resetValidation(namespace + '-search')
                   setValidFnr(false)
                   dispatch(appActions.appReset())
-                  setGradering(null)
                 }
               }}
               onPersonFound={() => {
                 setValidFnr(true)
                 setFnrOrDnr(person?.fnr)
-                setGradering(person?.adressebeskyttelse ? person.adressebeskyttelse : null)
               }}
               onSearchPerformed={(fnr: string) => {
                 dispatch(personActions.searchPerson(fnr))
@@ -307,11 +303,6 @@ const PDU1Search = (): JSX.Element => {
             <VerticalSeparatorDiv/>
             <SakSidebar />
             <VerticalSeparatorDiv/>
-            {gradering &&
-              <Alert size="small" variant='warning'>
-                {t('label:sensitivPerson', {gradering: gradering})}
-              </Alert>
-            }
           </PileDiv>
         </Column>
       </AlignStartRow>
