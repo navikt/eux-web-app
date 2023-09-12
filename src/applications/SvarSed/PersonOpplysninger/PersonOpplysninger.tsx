@@ -211,6 +211,13 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
           </Alert>
         </PaddedDiv>
       }
+      {personInfo?.adressebeskyttelse && !gradering &&
+        <PaddedDiv>
+          <Alert size="small" variant='warning'>
+            {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
+          </Alert>
+        </PaddedDiv>
+      }
       <PaddedDiv>
         <AlignStartRow>
           <Column>

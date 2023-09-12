@@ -16,6 +16,7 @@
           "land": "SE"
         }
       ],
+      "adressebeskyttelse": "STRENGT_FORTROLIG",
       "pin": [
         {
           "land": "NO",
@@ -253,6 +254,7 @@
           "land": "SE"
         }
       ],
+      "adressebeskyttelse": "HEMMELIG",
       "pin": [
         {
           "land": "DK",
