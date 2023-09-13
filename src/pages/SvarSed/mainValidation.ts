@@ -218,7 +218,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         flyttegrunn, personName
       }, true))
       const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
-      if ((replySed as FSed).formaal.indexOf('vedtak') >= 0) {
+      if ((replySed as FSed).formaal && (replySed as FSed).formaal.indexOf('vedtak') >= 0) {
         hasErrors.push(performValidation<ValidationBeløpNavnOgValutasProps>(v, `svarsed-${personID}-beløpnavnogvaluta`, validateBeløpNavnOgValutas, {
           ytelser, personID, personName
         }, true))
