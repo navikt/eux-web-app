@@ -1,7 +1,7 @@
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty, checkIfNotGB, checkIfValidLand } from 'utils/validation'
+import { checkIfDuplicate, checkIfNotEmpty, checkIfValidLand } from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
   pin: Pin | null | undefined
@@ -48,12 +48,14 @@ export const validateUtenlandskPin = (
     message: 'validation:invalidLand'
   }))
 
+/*
   hasErrors.push(checkIfNotGB(v, {
     needle: pin?.land,
     id: namespace + idx + '-land',
     message: 'validation:invalidLand',
     personName
   }))
+*/
 
   hasErrors.push(checkIfDuplicate(v, {
     needle: pin?.land,
