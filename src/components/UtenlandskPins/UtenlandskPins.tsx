@@ -54,7 +54,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
-  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: true })?.filter((it: string) => it !== 'NO')
+  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false })?.filter((it: string) => it !== 'NO')
   const getId = (p: Pin | null): string => p ? p.land + '-' + p.identifikator : 'new'
 
   const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)

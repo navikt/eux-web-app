@@ -177,7 +177,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                   id={_namespace + '-statsborgerskap'}
                   label={t('label:land')}
                   hideLabel={false}
-                  includeList={CountryFilter.STANDARD({ useUK: true })}
+                  includeList={CountryFilter.STANDARD({ useUK: false })}
                   menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
                   required
