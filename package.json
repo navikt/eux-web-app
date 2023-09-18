@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.7.4-TEN-384-adressebeskyttlese",
+  "version": "8.8.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@8.7.4-TEN-384-adressebeskyttlese",
+  "_id": "neessi@8.8.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
