@@ -139,6 +139,7 @@ export interface PersonInfo {
   kjoenn: Kjoenn
   foedselsdato: string
   statsborgerskap: Array<Statsborgerskap>
+  adressebeskyttelse?: string
   pin: Array<Pin>
   pinMangler?: {
     foedested: Foedested
@@ -198,6 +199,7 @@ export interface PersonLight {
   foedselsdato: string
   statsborgerskap?: Array<Statsborgerskap>
   pin?: Array<Pin>
+  adressebeskyttelse?: string
 }
 
 export interface Telefon {

@@ -11,6 +11,7 @@ export interface PDPeriode extends Periode {
 
 export interface Pdu1Person {
   fnr: string
+  adressebeskyttelse?: string
   kjoenn: string
   fornavn: string
   etternavn: string

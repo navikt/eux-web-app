@@ -160,6 +160,13 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           </Alert>
         </PaddedDiv>
       }
+      {personLight?.adressebeskyttelse && !gradering &&
+        <PaddedDiv>
+          <Alert size="small" variant='warning'>
+            {t('label:sensitivPerson', {gradering: personLight?.adressebeskyttelse})}
+          </Alert>
+        </PaddedDiv>
+      }
       <PaddedDiv>
         <AlignStartRow>
           <Column>

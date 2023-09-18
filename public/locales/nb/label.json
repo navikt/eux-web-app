@@ -364,7 +364,7 @@
   "sendt" : "Sendt",
   "sensitivt": "Sensitivt",
   "sensitivSak": "Denne saken er markert som sensitiv",
-  "sensitivPerson": "Denne personen har beskyttelseskode {{gradering}}",
+  "sensitivPerson": "Adressebeskyttelse: {{gradering}}",
   "sepa-konto": "SEPA-konto",
   "show-less": "Vis mindre",
   "show-more": "Vis mer",

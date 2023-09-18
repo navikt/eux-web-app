@@ -2,6 +2,7 @@ export default {
   dato: '24.06.2022',
   bruker: {
     fnr: '31108121370',
+    adressebeskyttelse: "STRENGT_FORTROLIG",
     kjoenn: 'M',
     fornavn: 'ABSURD',
     etternavn: 'VEGGPRYD',
