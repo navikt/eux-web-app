@@ -85,7 +85,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
-  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: true })?.filter((it: string) => it !== 'NO')
+  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
 
   const [_dato, _setDato] = useState<string>(() => toDateFormat(_relation.fdato, "DD.MM.YYYY") ?? '')
 
@@ -210,7 +210,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             id={namespace + '-statsborgerskap'}
             data-testid={namespace + '-statsborgerskap'}
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
-            includeList={CountryFilter.STANDARD({ useUK: true })}
+            includeList={CountryFilter.STANDARD({ useUK: false, useEL:false })}
             label={t('label:statsborgerskap')}
             menuPortalTarget={document.body}
             onOptionSelected={(e: Country) => {
