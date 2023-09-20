@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
-import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
+import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo } from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
