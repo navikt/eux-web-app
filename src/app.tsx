@@ -39,7 +39,7 @@ export const App = () => {
     useEffect(() => {
       if(loginRedirect){
         dispatch(resetLoginRedirect())
-        console.log("REDIRECT LOGIN")
+        window.location.href = "/login"
       }
     },[loginRedirect])
 
