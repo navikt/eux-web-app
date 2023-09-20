@@ -30,7 +30,7 @@
     "@navikt/ds-icons": "^1.1.0",
     "@navikt/ds-react": "^1.1.0",
     "@navikt/eessi-kodeverk": "^2.0.4",
-    "@navikt/fetch": "^2.1.11",
+    "@navikt/fetch": "^2.1.12",
     "@navikt/flagg-ikoner": "^3.2.7",
     "@navikt/fnrvalidator": "^1.3.0",
     "@navikt/forhandsvisningsfil": "^3.0.6",
