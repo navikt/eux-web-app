@@ -26,6 +26,8 @@ export interface AppState {
 
   params: Params
   featureToggles: FeatureToggles
+
+  loginRedirect: boolean | undefined
 }
 
 export const initialAppState: AppState = {
@@ -52,7 +54,9 @@ export const initialAppState: AppState = {
     featureSvarsedU: false,
     featureSvarsedH001: IS_DEVELOPMENT,
     featurePdu1: IS_DEVELOPMENT
-  }
+  },
+
+  loginRedirect: undefined
 }
 
 const appReducer = (state: AppState = initialAppState, action: AnyAction): AppState => {
@@ -143,6 +147,20 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       return {
         ...state,
         expirationTime: expirationTime.getTime()
+      }
+    }
+
+    case types.API_CALL_REDIRECT: {
+      return {
+        ...state,
+        loginRedirect: true
+      }
+    }
+
+    case types.APP_LOGINREDIRECT_RESET: {
+      return {
+        ...state,
+        loginRedirect: undefined
       }
     }
 

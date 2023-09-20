@@ -110,7 +110,7 @@ export const getServerinfo = (): ActionWithPayload<ServerInfo> => {
   })
 }
 
-export const getUtgaarDato = (): ActionWithPayload<UtgaarDatoPayload> => {
+export const getUtgaarDato = (): ActionWithPayload<any> => {
   return call({
     url: urls.API_UTGAARDATO_URL,
     expectedPayload: mockUtgaarDato,
@@ -127,4 +127,8 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
   payload: {
     minutes: 6
   }
+})
+
+export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
+  type: types.APP_LOGINREDIRECT_RESET
 })
