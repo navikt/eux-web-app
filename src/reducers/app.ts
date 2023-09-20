@@ -48,15 +48,14 @@ export const initialAppState: AppState = {
 
   brukernavn: undefined,
   navn: undefined,
+  loginRedirect: undefined,
 
   params: {},
   featureToggles: {
     featureSvarsedU: false,
     featureSvarsedH001: IS_DEVELOPMENT,
     featurePdu1: IS_DEVELOPMENT
-  },
-
-  loginRedirect: undefined
+  }
 }
 
 const appReducer = (state: AppState = initialAppState, action: AnyAction): AppState => {
@@ -151,16 +150,18 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
     }
 
     case types.API_CALL_REDIRECT: {
+      console.log("API_CALL_REDIRECT")
       return {
         ...state,
         loginRedirect: true
       }
     }
 
-    case types.APP_LOGINREDIRECT_RESET: {
+    case types.APP_LOGINREDIRECT_RESET:
+    case types.APP_RESET: {
       return {
         ...state,
-        loginRedirect: undefined
+        loginRedirect: false
       }
     }
 
