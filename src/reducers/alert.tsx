@@ -175,6 +175,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       default:
+        console.log((action as ActionWithPayload).type)
+        console.log((action as ActionWithPayload).status)
+        console.log((action as ActionWithPayload).context)
+        console.log((action as ActionWithPayload).payload)
         if ((action as ActionWithPayload).payload && (action as ActionWithPayload).payload.error) {
           stripeMessage = _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
