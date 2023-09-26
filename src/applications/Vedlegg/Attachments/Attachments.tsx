@@ -217,7 +217,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
               </Column>
             </AlignStartRow>
             <h4>Vedlegg lagret i RINA</h4>
-            {rinaSakId}
             <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
           </>
           )}
