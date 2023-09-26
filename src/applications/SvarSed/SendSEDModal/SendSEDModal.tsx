@@ -176,7 +176,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }, [sedCreatedResponse])
 
   useEffect(() => {
-    dispatch(alertReset())    
+    dispatch(alertReset())
   }, [open])
 
   useEffect(() => {
