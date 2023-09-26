@@ -125,6 +125,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
   }
 
   const _sendAttachmentToSed = (params: SEDAttachmentPayloadWithFile, unsentAttachment: JoarkBrowserItem): void => {
+    if(_sedSent){
+      dispatch(alertReset())
+    }
     dispatch(sendAttachmentToSed(params, unsentAttachment))
   }
 
