@@ -391,7 +391,7 @@ const SEDEdit = (): JSX.Element => {
               setVedleggSensitiv={setVedleggSensitiv}
               attachmentRemoved={attachmentRemoved}
               sedId={replySed.sed?.sedId}
-              rinaSakId={currentSak?.sakId}
+              rinaSakId={currentSak ? currentSak?.sakId : replySed.sak?.sakId}
               onUpdateAttachmentSensitivt={(attachment, sensitivt) => {
                 //console.log(attachment)
                 dispatch(updateAttachmentsSensitivt(attachment.key, sensitivt))
