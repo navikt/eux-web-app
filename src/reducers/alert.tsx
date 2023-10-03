@@ -75,11 +75,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       case types.SERVER_INTERNAL_ERROR:
         bannerMessage = i18n.t('message:error-serverInternalError')
         break
-
-      case types.SERVER_UNAUTHORIZED_ERROR:
-        bannerMessage = i18n.t('message:error-serverAuthenticationError')
-        break
-
+      
       default:
         bannerMessage = (action as ActionWithPayload).payload.message || i18n.t('message:error-serverInternalError')
         break
