@@ -39,7 +39,7 @@ export const App = () => {
     useEffect(() => {
       if(loginRedirect){
         dispatch(resetLoginRedirect())
-        window.location.href = "/login"
+        window.location.href = "/oauth2/login?redirect=" + window.location
       }
     },[loginRedirect])
 

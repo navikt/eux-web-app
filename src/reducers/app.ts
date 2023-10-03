@@ -149,8 +149,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       }
     }
 
-    case types.API_CALL_REDIRECT: {
-      console.log("API_CALL_REDIRECT")
+    case types.SERVER_UNAUTHORIZED_ERROR: {
       return {
         ...state,
         loginRedirect: true
