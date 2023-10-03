@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
-import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo, UtgaarDatoPayload } from 'declarations/types'
+import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo } from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
@@ -110,7 +110,7 @@ export const getServerinfo = (): ActionWithPayload<ServerInfo> => {
   })
 }
 
-export const getUtgaarDato = (): ActionWithPayload<UtgaarDatoPayload> => {
+export const getUtgaarDato = (): ActionWithPayload<any> => {
   return call({
     url: urls.API_UTGAARDATO_URL,
     expectedPayload: mockUtgaarDato,
@@ -127,4 +127,8 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
   payload: {
     minutes: 6
   }
+})
+
+export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
+  type: types.APP_LOGINREDIRECT_RESET
 })

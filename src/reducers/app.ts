@@ -26,6 +26,8 @@ export interface AppState {
 
   params: Params
   featureToggles: FeatureToggles
+
+  loginRedirect: boolean | undefined
 }
 
 export const initialAppState: AppState = {
@@ -46,6 +48,7 @@ export const initialAppState: AppState = {
 
   brukernavn: undefined,
   navn: undefined,
+  loginRedirect: undefined,
 
   params: {},
   featureToggles: {
@@ -143,6 +146,21 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       return {
         ...state,
         expirationTime: expirationTime.getTime()
+      }
+    }
+
+    case types.SERVER_UNAUTHORIZED_ERROR: {
+      return {
+        ...state,
+        loginRedirect: true
+      }
+    }
+
+    case types.APP_LOGINREDIRECT_RESET:
+    case types.APP_RESET: {
+      return {
+        ...state,
+        loginRedirect: false
       }
     }
 

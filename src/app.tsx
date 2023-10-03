@@ -1,11 +1,28 @@
 import {Route, Routes} from "react-router-dom";
 import Pages from "pages/index";
 import React, {useEffect} from "react";
-import {useAppDispatch} from "./store";
-import {getEnheter, getSaksbehandler, getServerinfo, getUtgaarDato, preload, setStatusParam} from "actions/app";
+import {useAppDispatch, useAppSelector} from "./store";
+import {
+  getEnheter,
+  getSaksbehandler,
+  getServerinfo,
+  getUtgaarDato,
+  preload,
+  resetLoginRedirect,
+  setStatusParam
+} from "actions/app";
+import {State} from "./declarations/reducers";
+
+export interface AppSelector {
+  loginRedirect: boolean | undefined
+}
+const mapState = (state: State): AppSelector => ({
+  loginRedirect: state.app.loginRedirect
+})
 
 export const App = () => {
     const dispatch = useAppDispatch()
+    const { loginRedirect } = useAppSelector(mapState)
     const params: URLSearchParams = new URLSearchParams(window.location.search)
 
     useEffect(() => {
@@ -18,6 +35,14 @@ export const App = () => {
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
     }, [])
+
+    useEffect(() => {
+      if(loginRedirect){
+        dispatch(resetLoginRedirect())
+        window.location.href = "/oauth2/login?redirect=" + window.location
+      }
+    },[loginRedirect])
+
 
     return (
         <Routes>
