@@ -59,10 +59,6 @@ const mapState = (state: State) => ({
 
 const SEDView = (): JSX.Element => {
   const { t } = useTranslation()
-  const sedMap: any = []
-  const tempChildrenSed: Array<Sed> = []
-  const grandChildrenSedMap: any = {}
-  const tempSedMap: any = {}
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
   const { currentSak, entries, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
@@ -112,37 +108,32 @@ const SEDView = (): JSX.Element => {
     }
   }, [deletedSed])
 
-  seds?.forEach((connectedSed: Sed) => {
-    // if you have a sedIdParent (not F002), let's put it under Children
-    if (connectedSed.sedIdParent && connectedSed.sedType !== 'F002') {
-      tempChildrenSed.push(connectedSed)
-    } else {
-      tempSedMap[connectedSed.sedId] = connectedSed
-    }
-  })
 
-  // Now, let's put all children SED
-  tempChildrenSed.forEach((connectedSed: Sed) => {
-    if (connectedSed.sedIdParent) {
-      if(tempSedMap[connectedSed.sedIdParent]){
-        if (Object.prototype.hasOwnProperty.call(tempSedMap, connectedSed.sedIdParent) &&
-           Object.prototype.hasOwnProperty.call(tempSedMap[connectedSed.sedIdParent], 'children')) {
-          tempSedMap[connectedSed.sedIdParent].children.push(connectedSed)
-        } else {
-          tempSedMap[connectedSed.sedIdParent].children = [connectedSed]
-        }
-      } else {
-        // Handle grand children
-        if (Object.prototype.hasOwnProperty.call(grandChildrenSedMap, connectedSed.sedIdParent)) {
-          grandChildrenSedMap[connectedSed.sedIdParent].push(connectedSed)
-        } else {
-          grandChildrenSedMap[connectedSed.sedIdParent] = [connectedSed]
-        }
-      }
-    }
-  })
 
-  Object.keys(tempSedMap).forEach(key => sedMap.push(tempSedMap[key]))
+  const arrayToTree = (arr:any, parent = undefined) =>{
+    let newArr = []
+    if(arr){
+      newArr = arr.filter((item:any) => item.sedIdParent === parent)
+        .map((child:any) => ({ ...child, children: arrayToTree(arr,
+            child.sedId) }));
+    }
+    return newArr
+  }
+
+  const getSedPanels = (sedArray:Array<Sed>, addMargin:boolean = false) => {
+    return sedArray.sort((a: Sed, b: Sed) => (
+      moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
+    )).map((sed: Sed) => (
+      <div key={'sed-' + sed.sedId} style={addMargin ? { marginLeft: '4rem' } : {}}>
+        <SEDPanel
+          currentSak={currentSak!}
+          sed={sed}
+        />
+        <VerticalSeparatorDiv />
+        {sed.children ? getSedPanels(sed.children, true) : undefined}
+      </div>
+    ))
+  }
 
   if (_.isUndefined(currentSak)) {
     return <WaitingPanel />
@@ -167,40 +158,7 @@ const SEDView = (): JSX.Element => {
                 </Column>
                 <Column flex='2' style={{marginLeft: "1.5rem"}}>
                   <MyRadioPanelGroup>
-                    {sedMap
-                      .sort((a: Sed, b: Sed) => (
-                        moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                      )).map((sed: Sed) => (
-                        <div key={'sed-' + sed.sedId}>
-                          <SEDPanel
-                            currentSak={currentSak}
-                            sed={sed}
-                          />
-                          <VerticalSeparatorDiv />
-                          {sed.children?.sort((a: Sed, b: Sed) => (
-                            moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                          )).map((sed2: Sed) => (
-                            <div key={'sed-' + sed2.sedId} style={{ marginLeft: '4rem' }}>
-                              <SEDPanel
-                                currentSak={currentSak}
-                                sed={sed2}
-                              />
-                              <VerticalSeparatorDiv />
-                              {grandChildrenSedMap[sed2.sedId]?.sort((a: Sed, b: Sed) => (
-                                moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
-                              )).map((sed3: Sed) => (
-                                <div key={'sed-' + sed3.sedId} style={{ marginLeft: '4rem' }}>
-                                  <SEDPanel
-                                    currentSak={currentSak}
-                                    sed={sed3}
-                                  />
-                                  <VerticalSeparatorDiv />
-                                </div>
-                              ))}
-                            </div>
-                          ))}
-                        </div>
-                      ))}
+                    {getSedPanels(arrayToTree(seds))}
                   </MyRadioPanelGroup>
                 </Column>
               </AlignStartRow>

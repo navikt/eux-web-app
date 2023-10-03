@@ -136,7 +136,35 @@ export default (saksnummer: string, type: string) => {
           sedIdParent: 'f002sent',
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
           sistEndretDato: '2020-01-03'
-        }, {
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 2',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled2',
+          sedIdParent: 'x008cancelled',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 3',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled3',
+          sedIdParent: 'x008cancelled2',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 4',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled3´´',
+          sedIdParent: 'x008cancelled3',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
           sedTittel: 'Unntaksfeil',
           sedType: 'X050',
           status: 'new',
@@ -144,7 +172,17 @@ export default (saksnummer: string, type: string) => {
           sedIdParent: 'f002sent',
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
           sistEndretDato: '2020-01-03'
-        }, {
+        },
+        {
+          sedTittel: 'Unntaksfeil 2',
+          sedType: 'X050',
+          status: 'new',
+          sedId: 'x050cancelled2',
+          sedIdParent: 'x050cancelled',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
           sedTittel: 'Description for sent F002 without X008',
           status: 'sent',
           sedType: 'F002',
