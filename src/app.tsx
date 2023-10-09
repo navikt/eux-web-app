@@ -45,22 +45,15 @@ export const App = () => {
     }, [])
 
     useEffect(() => {
-      let redirect = window.location
-      if(loginRedirect){
-        if(isNewSed && replySed && replySed.sed?.sedId){
-          redirect = {
-            ...redirect,
-            pathname: redirect.pathname.replace("new", replySed.sed?.sedId)
-          }
-        } else if(currentSak) {
-          redirect = {
-            ...redirect,
-            pathname: "/svarsed/view/sak/" + currentSak.sakId
-          }
+      let redirect = window.location.pathname
+      if(loginRedirect) {
+        if (isNewSed && replySed && replySed.sed?.sedId) {
+          redirect = redirect.replace("new", replySed.sed?.sedId)
+        } else if (isNewSed && currentSak) {
+          redirect = "/svarsed/view/sak/" + currentSak.sakId
         }
-        console.log(redirect)
         dispatch(resetLoginRedirect())
-        window.location.href = "/oauth2/login?redirect=" + window.location
+        window.location.href = "/oauth2/login?redirect=" + window.location.origin + redirect
       }
     },[loginRedirect, replySed, currentSak])
 
