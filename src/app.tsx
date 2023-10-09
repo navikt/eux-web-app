@@ -58,8 +58,9 @@ export const App = () => {
             pathname: "/svarsed/view/sak/" + currentSak.sakId
           }
         }
+        console.log(redirect)
         dispatch(resetLoginRedirect())
-        window.location.href = "/oauth2/login?redirect=" + redirect
+        window.location.href = "/oauth2/login?redirect=" + window.location
       }
     },[loginRedirect, replySed, currentSak])
 
