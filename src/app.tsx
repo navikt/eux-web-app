@@ -12,18 +12,26 @@ import {
   setStatusParam
 } from "actions/app";
 import {State} from "./declarations/reducers";
+import {ReplySed} from "./declarations/sed";
+import {Sak} from "./declarations/types";
+
 
 export interface AppSelector {
   loginRedirect: boolean | undefined
+  replySed: ReplySed | null | undefined
+  currentSak:  Sak | null | undefined
 }
 const mapState = (state: State): AppSelector => ({
-  loginRedirect: state.app.loginRedirect
+  loginRedirect: state.app.loginRedirect,
+  replySed: state.svarsed.replySed,
+  currentSak: state.svarsed.currentSak
 })
 
 export const App = () => {
     const dispatch = useAppDispatch()
-    const { loginRedirect } = useAppSelector(mapState)
+    const { loginRedirect, currentSak, replySed } = useAppSelector(mapState)
     const params: URLSearchParams = new URLSearchParams(window.location.search)
+    const isNewSed = window.location.pathname.indexOf("/sed/new") > 0
 
     useEffect(() => {
       params.forEach((value, key) => {
@@ -37,11 +45,23 @@ export const App = () => {
     }, [])
 
     useEffect(() => {
+      let redirect = window.location
       if(loginRedirect){
+        if(isNewSed && replySed && replySed.sed?.sedId){
+          redirect = {
+            ...redirect,
+            pathname: redirect.pathname.replace("new", replySed.sed?.sedId)
+          }
+        } else if(currentSak) {
+          redirect = {
+            ...redirect,
+            pathname: "/svarsed/view/sak/" + currentSak.sakId
+          }
+        }
         dispatch(resetLoginRedirect())
-        window.location.href = "/oauth2/login?redirect=" + window.location
+        window.location.href = "/oauth2/login?redirect=" + redirect
       }
-    },[loginRedirect])
+    },[loginRedirect, replySed, currentSak])
 
 
     return (
