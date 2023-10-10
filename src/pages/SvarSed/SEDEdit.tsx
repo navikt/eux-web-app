@@ -224,7 +224,10 @@ const SEDEdit = (): JSX.Element => {
 
   useEffect(() => {
     if (sedCreatedResponse) {
-      console.log(sedCreatedResponse)
+      const isNewSed = window.location.pathname.indexOf("/sed/new") > 0
+      if(isNewSed && sedCreatedResponse.sedId){
+        window.history.replaceState(null, "", "/svarsed/edit/sak/" + sakId + "/sed/" + sedCreatedResponse.sedId)
+      }
     }
   }, [sedCreatedResponse])
 
