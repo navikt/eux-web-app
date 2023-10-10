@@ -208,11 +208,25 @@ const SEDEdit = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (!_.isEmpty(currentSak) && _.isUndefined(replySed)) {
+    if (!_.isEmpty(currentSak) && _.isUndefined(replySed) && sedId!=="new") {
       const currentSed = _.filter(currentSak.sedListe, (sed) => sed.sedId === sedId)
       dispatch(editSed(currentSed[0] as Sed, currentSak as Sak))
+    } else if (_.isUndefined(replySed) && sedId==="new") {
+      const params: URLSearchParams = new URLSearchParams(window.location.search)
+      const q = params.get('q')
+      const search = (q ? '?q=' + q : '')
+      navigate({
+        pathname: '/svarsed/view/sak/' + sakId,
+        search
+      })
     }
   }, [currentSak])
+
+  useEffect(() => {
+    if (sedCreatedResponse) {
+      console.log(sedCreatedResponse)
+    }
+  }, [sedCreatedResponse])
 
   // after successful SED send, go back to SED list
   useEffect(() => {
