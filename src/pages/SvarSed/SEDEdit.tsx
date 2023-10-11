@@ -6,7 +6,6 @@ import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   cleanUpSvarSed,
   createSed, editSed, querySaks,
-  restoreReplySed,
   sendSedInRina,
   setReplySed, updateAttachmentsSensitivt,
   updateReplySed,
@@ -179,11 +178,6 @@ const SEDEdit = (): JSX.Element => {
     }
   }
 
-  const onRestoreSedClick = () => {
-    if (window.confirm(t('label:er-du-sikker'))) {
-      dispatch(restoreReplySed())
-    }
-  }
 
   const setComment = (comment: string) => {
     dispatch(updateReplySed('ytterligereInfo', comment))
@@ -459,18 +453,6 @@ const SEDEdit = (): JSX.Element => {
                 onClick={onSendSedClick}
               >
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
-              </Button>
-              <VerticalSeparatorDiv size='0.5' />
-            </div>
-            <HorizontalSeparatorDiv />
-            <div>
-              <Button
-                variant='tertiary'
-                //amplitude is dealt on SendSedClick
-                title={t('message:help-restore-sed')}
-                onClick={onRestoreSedClick}
-              >
-                {t('el:button-reset-form')}
               </Button>
               <VerticalSeparatorDiv size='0.5' />
             </div>

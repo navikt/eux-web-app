@@ -344,10 +344,6 @@ export const replyToSed = (
   })
 }
 
-export const restoreReplySed: ActionCreator<Action> = (): Action => ({
-  type: types.SVARSED_REPLYSED_RESTORE
-})
-
 export const resetPreviewSvarSed = () => ({
   type: types.SVARSED_PREVIEW_RESET
 })

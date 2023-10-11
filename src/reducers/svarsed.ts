@@ -647,12 +647,6 @@ const svarsedReducer = (
         replySedChanged: true
       }
 
-    case types.SVARSED_REPLYSED_RESTORE:
-      return {
-        ...state,
-        replySed: state.originalReplySed
-      }
-
     case types.SVARSED_REPLYSED_UPDATE: {
       let newReplySed: ReplySed | null | undefined = _.cloneDeep(state.replySed)
       if (!newReplySed) {
