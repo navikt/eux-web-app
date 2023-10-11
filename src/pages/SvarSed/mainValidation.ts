@@ -177,7 +177,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
       const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
-        adresser, checkAdresseType: true, personName
+        adresser, checkAdresseType: false, personName
       }, true))
     }
 
