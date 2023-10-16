@@ -86,6 +86,17 @@ const Formål: React.FC<MainFormProps> = ({
     } else {
       newFormaals = _.reject(newFormaals, f => f === item)
     }
+    if(item === "vedtak" && !checked){
+      dispatch(updateReplySed('vedtak', null))
+    }
+    if(item === "motregning" && !checked){
+      dispatch(updateReplySed('motregning', null))
+    }
+    if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
+      dispatch(updateReplySed('refusjonskrav', null))
+      dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+    }
+
     dispatch(updateReplySed('formaal', newFormaals))
     standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item })
     dispatch(resetValidation(namespace + '-checkbox'))
