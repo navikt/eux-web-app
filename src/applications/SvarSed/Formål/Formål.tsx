@@ -6,7 +6,7 @@ import { MainFormProps } from 'applications/SvarSed/MainForm'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { FSed } from 'declarations/sed'
+import {Barn, F002Sed, FSed} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -90,11 +90,24 @@ const Formål: React.FC<MainFormProps> = ({
       dispatch(updateReplySed('vedtak', null))
     }
     if(item === "motregning" && !checked){
-      dispatch(updateReplySed('motregning', null))
+      dispatch(updateReplySed('familie.motregninger', []));
+
+      (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
+        dispatch(updateReplySed('barn['+barnIndex+'].motregninger', []))
+      })
+
+      if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
+        dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+      }
+
     }
+
     if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
       dispatch(updateReplySed('refusjonskrav', null))
-      dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+
+      if(!_.find(newFormaals, f => f === "motregning")){
+        dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+      }
     }
 
     dispatch(updateReplySed('formaal', newFormaals))
