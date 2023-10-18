@@ -124,13 +124,14 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
   const setGjelderAlleBarn = (newGjelderAlleBarn: JaNei) => {
     let newVedtak: Vedtak | undefined = _.cloneDeep(vedtak)
-    if (_.isUndefined(newVedtak)) {
+    if (_.isUndefined(newVedtak) || _.isNull(newVedtak)) {
       newVedtak = {} as Vedtak
     }
     _.set(newVedtak, 'gjelderAlleBarn', newGjelderAlleBarn.trim())
     if (newGjelderAlleBarn.trim() === 'ja') {
       _.set(newVedtak, 'barnVedtaketOmfatter', [])
     }
+
     dispatch(updateReplySed(target, newVedtak))
     if (validation[namespace + '-gjelderAlleBarn']) {
       dispatch(resetValidation([namespace + '-gjelderAlleBarn', namespace + '-barnVedtaketOmfatter']))
