@@ -86,9 +86,14 @@ const Formål: React.FC<MainFormProps> = ({
     } else {
       newFormaals = _.reject(newFormaals, f => f === item)
     }
+
     if(item === "vedtak" && !checked){
-      dispatch(updateReplySed('vedtak', null))
+      dispatch(updateReplySed('vedtak', null));
+      (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
+        dispatch(updateReplySed('barn['+barnIndex+'].ytelser', []))
+      })
     }
+
     if(item === "motregning" && !checked){
       dispatch(updateReplySed('familie.motregninger', []));
 
@@ -99,12 +104,14 @@ const Formål: React.FC<MainFormProps> = ({
       if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
       }
+    }
 
+    if(item === "prosedyre_ved_uenighet" && !checked){
+      dispatch(updateReplySed('uenighet', null));
     }
 
     if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
       dispatch(updateReplySed('refusjonskrav', null))
-
       if(!_.find(newFormaals, f => f === "motregning")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
       }
