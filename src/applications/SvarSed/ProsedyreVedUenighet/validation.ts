@@ -63,7 +63,7 @@ export const validateProsedyreVedUenighet = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if (!prosedyreVedUenighet.bosted && !prosedyreVedUenighet.medlemsperiode && !prosedyreVedUenighet.personligSituasjon &&
+  if (prosedyreVedUenighet && !prosedyreVedUenighet.bosted && !prosedyreVedUenighet.medlemsperiode && !prosedyreVedUenighet.personligSituasjon &&
     !prosedyreVedUenighet.pensjon && !prosedyreVedUenighet.oppholdetsVarighet && !prosedyreVedUenighet.ansettelse
   ) {
     hasErrors.push(addError(v, {
