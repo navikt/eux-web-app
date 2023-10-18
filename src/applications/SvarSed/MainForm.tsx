@@ -159,6 +159,8 @@ export interface MainFormFCProps<T> {
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   namespace: string
   loggingNamespace: string
+  deselectedMenu?: string | undefined
+  deselectedMenuOption?: string | undefined
 }
 
 export interface MainFormProps {
@@ -198,7 +200,9 @@ const MainForm = <T extends StorageTypes>({
   setReplySed,
   updateReplySed,
   namespace,
-  loggingNamespace
+  loggingNamespace,
+  deselectedMenu,
+  deselectedMenuOption
 }: MainFormFCProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
@@ -377,7 +381,11 @@ const MainForm = <T extends StorageTypes>({
   }
 
   const renderOneLevelMenu = (forms: Array<Form>) => {
-    return forms.filter(o => _.isFunction(o.condition) ? o.condition() : true).map((form) => {
+    if(currentMenu && deselectedMenu && currentMenu === deselectedMenu){
+      setCurrentMenu(initialMenu)
+    }
+    const filteredForms = forms.filter(o => _.isFunction(o.condition) ? o.condition() : true)
+    return filteredForms.map((form) => {
       const selected: boolean = currentMenu === form.value
       const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + form.value))
       const isValidated = validationKeys.length > 0
@@ -418,6 +426,9 @@ const MainForm = <T extends StorageTypes>({
   }
 
   const renderTwoLevelMenu = (replySed: ReplySed | PDU1, personId: string) => {
+    if(currentMenuOption && deselectedMenuOption && currentMenuOption === deselectedMenuOption){
+      setCurrentMenuOption(initialMenuOption)
+    }
     const personInfo: PersonInfo | undefined = _.get(replySed, `${personId}.personInfo`) // undefined for family pr pdu1
     const personName = personId === 'familie'
       ? t('label:hele-familien')

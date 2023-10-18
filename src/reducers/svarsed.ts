@@ -41,6 +41,7 @@ export interface SvarsedState {
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sedStatus: {[k in string]: string | null}
+  deselectedFormaal: string | undefined
 }
 
 export const initialSvarsedState: SvarsedState = {
@@ -67,7 +68,8 @@ export const initialSvarsedState: SvarsedState = {
   currentSak: undefined,
   sedCreatedResponse: undefined,
   sedSendResponse: undefined,
-  sedStatus: {}
+  sedStatus: {},
+  deselectedFormaal: undefined
 }
 
 const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
@@ -811,6 +813,12 @@ const svarsedReducer = (
         }
       }
 
+    case types.SVARSED_DESELECTED_FORMAAL_SET:
+      const deselectedFormaal = (action as ActionWithPayload).payload
+      return {
+        ...state,
+        deselectedFormaal
+      }
 
     default:
       return state

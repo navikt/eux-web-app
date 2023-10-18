@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
 import { isF001Sed } from 'utils/sed'
+import {setDeselectedFormaal} from "../../../actions/svarsed";
 
 const CheckboxDiv = styled.div`
  display: inline-block;
@@ -85,6 +86,12 @@ const Formål: React.FC<MainFormProps> = ({
       newFormaals.push(item)
     } else {
       newFormaals = _.reject(newFormaals, f => f === item)
+    }
+
+    if(!checked){
+      dispatch(setDeselectedFormaal(item))
+    } else {
+      dispatch(setDeselectedFormaal(undefined))
     }
 
     if(item === "vedtak" && !checked){

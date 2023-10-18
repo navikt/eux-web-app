@@ -89,6 +89,7 @@ export interface SEDEditSelector {
   attachmentRemoved: JoarkBrowserItem | null | undefined
   textAreaDirty: boolean
   textFieldDirty: boolean
+  deselectedFormaal: string | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -107,7 +108,8 @@ const mapState = (state: State): SEDEditSelector => ({
   setVedleggSensitiv: state.svarsed.setVedleggSensitiv,
   attachmentRemoved: state.svarsed.attachmentRemoved,
   textAreaDirty: state.ui.textAreaDirty,
-  textFieldDirty: state.ui.textFieldDirty
+  textFieldDirty: state.ui.textFieldDirty,
+  deselectedFormaal: state.svarsed.deselectedFormaal
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -131,7 +133,8 @@ const SEDEdit = (): JSX.Element => {
     attachmentRemoved,
     setVedleggSensitiv,
     textAreaDirty,
-    textFieldDirty
+    textFieldDirty,
+    deselectedFormaal
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -251,6 +254,25 @@ const SEDEdit = (): JSX.Element => {
   const disableSave = !textFieldDirty && !textAreaDirty && ((!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed);
   const disableSend  = textFieldDirty || textAreaDirty || sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
 
+  const formaalToMenuMap: any = {
+    "vedtak": {
+      menu: "vedtak",
+      menuOption: "beløpnavnogvaluta"
+    },
+    "motregning": {
+      menu: "motregning",
+      menuOption: undefined
+    },
+    "prosedyre_ved_uenighet": {
+      menu: "prosedyre_ved_uenighet",
+      menuOption: undefined
+    },
+    "refusjon_i_henhold_til_artikkel_58_i_forordningen": {
+      menu: "refusjon_i_henhold_til_artikkel_58_i_forordningen",
+      menuOption: undefined
+    }
+  }
+
   return (
     <Container>
       <Margin />
@@ -293,6 +315,7 @@ const SEDEdit = (): JSX.Element => {
               namespace='svarsed'
               loggingNamespace='personmanager'
               firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
+              deselectedMenuOption={deselectedFormaal ? formaalToMenuMap[deselectedFormaal].menuOption : undefined}
               forms={[
                 { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
@@ -336,6 +359,7 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='onelevel'
               namespace='formål2'
+              deselectedMenu={deselectedFormaal ? formaalToMenuMap[deselectedFormaal].menu : undefined}
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
