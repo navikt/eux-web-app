@@ -31,7 +31,7 @@ export type HSvarType = 'positivt' | 'negativt'
 
 export type BarnEllerFamilie = 'barn' | 'familie'
 
-export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_om_anmodning_om_motregning_per_barn'
+export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_på_anmodning_om_motregning_per_barn' | 'anmodning_om_motregning_for_hele_familien' | 'svar_på_anmodning_om_motregning_for_hele_familien'
 
 export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
 
