@@ -315,7 +315,7 @@ const SEDEdit = (): JSX.Element => {
               namespace='svarsed'
               loggingNamespace='personmanager'
               firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
-              deselectedMenuOption={deselectedFormaal ? formaalToMenuMap[deselectedFormaal].menuOption : undefined}
+              deselectedMenuOption={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menuOption : undefined}
               forms={[
                 { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
@@ -359,7 +359,7 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='onelevel'
               namespace='formål2'
-              deselectedMenu={deselectedFormaal ? formaalToMenuMap[deselectedFormaal].menu : undefined}
+              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
