@@ -55,6 +55,7 @@ import {
   ValidationMotregningProps
 } from './validation'
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import {isF002Sed} from "../../../utils/sed";
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -721,15 +722,15 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-svarType'}
                 error={_v[_namespace + '-svarType']?.feilmelding}
                 id={_namespace + '-svarType'}
-                legend={t('label:anmodning-om-motregning')}
+                legend={isF002Sed(replySed) ? t('label:anmodning-om-motregning') : t('label:anmodning')}
                 name={_namespace + '-svarType'}
                 onChange={(e: string) => setSvarType(e as AnmodningSvarType, index)}
               >
                 <div>
                   <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning-barn')}</RadioPanel>
-                  <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar-barn')}</RadioPanel>
+                  {isF002Sed(replySed) && <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar-barn')}</RadioPanel>}
                   <RadioPanel value='anmodning_om_motregning_for_hele_familien'>{t('label:anmodning-hele-familien')}</RadioPanel>
-                  <RadioPanel value='svar_på_anmodning_om_motregning_for_hele_familien'>{t('label:anmodning-svar-hele-familien')}</RadioPanel>
+                  {isF002Sed(replySed) && <RadioPanel value='svar_på_anmodning_om_motregning_for_hele_familien'>{t('label:anmodning-svar-hele-familien')}</RadioPanel>}
                 </div>
               </RadioPanelGroup>
             </Column>
