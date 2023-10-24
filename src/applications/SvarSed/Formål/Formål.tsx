@@ -6,7 +6,7 @@ import { MainFormProps } from 'applications/SvarSed/MainForm'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { FSed } from 'declarations/sed'
+import {Barn, F002Sed, FSed} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
 import { isF001Sed } from 'utils/sed'
+import {setDeselectedFormaal} from "../../../actions/svarsed";
 
 const CheckboxDiv = styled.div`
  display: inline-block;
@@ -86,6 +87,43 @@ const Formål: React.FC<MainFormProps> = ({
     } else {
       newFormaals = _.reject(newFormaals, f => f === item)
     }
+
+    if(!checked){
+      dispatch(setDeselectedFormaal(item))
+    } else {
+      dispatch(setDeselectedFormaal(undefined))
+    }
+
+    if(item === "vedtak" && !checked){
+      dispatch(updateReplySed('vedtak', null));
+      (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
+        dispatch(updateReplySed('barn['+barnIndex+'].ytelser', []))
+      })
+    }
+
+    if(item === "motregning" && !checked){
+      dispatch(updateReplySed('familie.motregninger', []));
+
+      (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
+        dispatch(updateReplySed('barn['+barnIndex+'].motregninger', []))
+      })
+
+      if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
+        dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+      }
+    }
+
+    if(item === "prosedyre_ved_uenighet" && !checked){
+      dispatch(updateReplySed('uenighet', null));
+    }
+
+    if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
+      dispatch(updateReplySed('refusjonskrav', null))
+      if(!_.find(newFormaals, f => f === "motregning")){
+        dispatch(updateReplySed('utbetalingTilInstitusjon', null))
+      }
+    }
+
     dispatch(updateReplySed('formaal', newFormaals))
     standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item })
     dispatch(resetValidation(namespace + '-checkbox'))

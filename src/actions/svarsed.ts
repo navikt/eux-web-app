@@ -344,10 +344,6 @@ export const replyToSed = (
   })
 }
 
-export const restoreReplySed: ActionCreator<Action> = (): Action => ({
-  type: types.SVARSED_REPLYSED_RESTORE
-})
-
 export const resetPreviewSvarSed = () => ({
   type: types.SVARSED_PREVIEW_RESET
 })
@@ -453,3 +449,8 @@ export const setAttachmentSensitive = (rinaSakId: string | undefined, sedId: str
     }
   })
 }
+
+export const setDeselectedFormaal = (formaal: string | undefined) => ({
+  type: types.SVARSED_DESELECTED_FORMAAL_SET,
+  payload: formaal
+})

@@ -32,6 +32,7 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
+import {isFSed} from "../../../utils/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -52,7 +53,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
 
-  const checkAdresseType: boolean = true
+  const checkAdresseType: boolean = !isFSed(replySed)
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '') : 'new'
 
@@ -186,6 +187,7 @@ const Adresser: React.FC<MainFormProps> = ({
         {inEditMode
           ? (
             <AdresseForm
+              required={checkAdresseType ? ['type', 'by', 'land'] : ['by', 'land']}
               namespace={_namespace}
               adresse={_adresse}
               onAdressChanged={(a: Adresse) => setAdresse(a, index)}

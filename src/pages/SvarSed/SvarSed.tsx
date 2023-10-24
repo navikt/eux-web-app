@@ -1,7 +1,7 @@
 import { Button } from '@navikt/ds-react'
 import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertSuccess } from 'actions/alert'
-import { setStatusParam } from 'actions/app'
+import {appReset, setStatusParam} from 'actions/app'
 import { resetCurrentEntry, setCurrentEntry } from 'actions/localStorage'
 import { cleanUpSvarSed, querySaks, setReplySed } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
@@ -68,9 +68,9 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
       })
     }
     if (type === 'view') {
+      dispatch(appReset())
       navigate({
-        pathname: '/svarsed/search',
-        search: window.location.search
+        pathname: '/'
       })
     }
   }

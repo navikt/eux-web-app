@@ -55,6 +55,7 @@ import {
   ValidationMotregningProps
 } from './validation'
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import {isF002Sed} from "../../../utils/sed";
 
 export type BarnaNameKeyMap = {[barnaName in string]: string}
 
@@ -322,19 +323,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
   }
 
   const setSvarType = (svarType: string, index: number) => {
-    if (index < 0) {
-      _setNewMotregning({
-        ..._newMotregning,
-        svarType: svarType.trim()
-      } as Motregning)
-      _resetValidation(namespace + '-svarType')
-      return
-    }
-    _setEditMotregning({
-      ..._editMotregning,
-      svarType: svarType.trim()
-    } as Motregning)
-    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-svarType'))
+    setType(svarType.indexOf('_barn') > 0 ? 'barn' : "familie", svarType, index)
   }
 
   const setUtbetalingshyppighet = (utbetalingshyppighet: string, index: number) => {
@@ -414,7 +403,7 @@ const MotregningFC: React.FC<MainFormProps> = ({
     ]))
   }
 
-  const setType = (type: BarnEllerFamilie, index: number) => {
+  const setType = (type: BarnEllerFamilie, svarType: string, index: number) => {
     if (index < 0) {
       const oldType: BarnEllerFamilie | undefined = _newMotregning?.__type as BarnEllerFamilie | undefined
       // clean up index values
@@ -424,12 +413,14 @@ const MotregningFC: React.FC<MainFormProps> = ({
       }
       _setNewMotregning({
         ..._newMotregning,
+        svarType: svarType.trim(),
         __type: type,
         __index: {
           index: _newMotregning?.__index?.index,
           values: newValues
         }
       } as Motregning)
+      _resetValidation(namespace + '-svarType')
       _resetValidation(namespace + '-type')
       return
     }
@@ -441,12 +432,15 @@ const MotregningFC: React.FC<MainFormProps> = ({
     }
     _setEditMotregning({
       ..._editMotregning,
+      svarType: svarType.trim(),
       __type: type,
       __index: {
         index: _editMotregning?.__index?.index,
         values: newValues
       }
     } as Motregning)
+
+    dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-svarType'))
     dispatch(resetValidation(namespace + '[' + _editMotregning?.__index.index + ']-type'))
   }
 
@@ -728,39 +722,21 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 data-testid={_namespace + '-svarType'}
                 error={_v[_namespace + '-svarType']?.feilmelding}
                 id={_namespace + '-svarType'}
-                legend={t('label:anmodning-om-motregning')}
+                legend={isF002Sed(replySed) ? t('label:anmodning-om-motregning') : t('label:anmodning')}
                 name={_namespace + '-svarType'}
                 onChange={(e: string) => setSvarType(e as AnmodningSvarType, index)}
               >
-                <FlexRadioPanels>
-                  <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning')}</RadioPanel>
-                  <RadioPanel value='svar_om_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar')}</RadioPanel>
-                </FlexRadioPanels>
+                <div>
+                  <RadioPanel value='anmodning_om_motregning_per_barn'>{t('label:anmodning-barn')}</RadioPanel>
+                  {isF002Sed(replySed) && <RadioPanel value='svar_på_anmodning_om_motregning_per_barn'>{t('label:anmodning-svar-barn')}</RadioPanel>}
+                  <RadioPanel value='anmodning_om_motregning_for_hele_familien'>{t('label:anmodning-hele-familien')}</RadioPanel>
+                  {isF002Sed(replySed) && <RadioPanel value='svar_på_anmodning_om_motregning_for_hele_familien'>{t('label:anmodning-svar-hele-familien')}</RadioPanel>}
+                </div>
               </RadioPanelGroup>
             </Column>
             <Column />
           </AlignStartRow>
           <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column flex='2'>
-              <RadioPanelGroup
-                value={_motregning?.__type}
-                data-no-border
-                data-testid={_namespace + '-type'}
-                error={_v[_namespace + '-type']?.feilmelding}
-                id={_namespace + '-type'}
-                legend={t('label:barna-or-familie') + ' *'}
-                name={_namespace + '-type'}
-                onChange={(type: string) => setType(type as BarnEllerFamilie, index)}
-              >
-                <FlexRadioPanels>
-                  <RadioPanel value='barn'>{t('label:barn')}</RadioPanel>
-                  <RadioPanel value='familie'>{t('label:familien')}</RadioPanel>
-                </FlexRadioPanels>
-              </RadioPanelGroup>
-            </Column>
-            <Column />
-          </AlignStartRow>
           <VerticalSeparatorDiv />
           {_motregning?.__type === 'barn' && (
             <>
@@ -987,18 +963,11 @@ const MotregningFC: React.FC<MainFormProps> = ({
                 id={_namespace + '-svarType'}
               >
                 <Label>
-                  {_motregning?.svarType === 'anmodning_om_motregning_per_barn' && t('label:anmodning')}
-                  {_motregning?.svarType === 'svar_om_anmodning_om_motregning_per_barn' && t('label:anmodning-svar')}
+                  {_motregning?.svarType === 'anmodning_om_motregning_per_barn' && t('label:anmodning-barn')}
+                  {_motregning?.svarType === 'svar_på_anmodning_om_motregning_per_barn' && t('label:anmodning-svar-barn')}
+                  {_motregning?.svarType === 'anmodning_om_motregning_for_hele_familien' && t('label:anmodning-hele-familien')}
+                  {_motregning?.svarType === 'svar_på_anmodning_om_motregning_for_hele_familien' && t('label:anmodning-svar-hele-familien')}
                 </Label>
-              </FormText>
-              <HorizontalSeparatorDiv size='0.3' />
-              <Label>{t('label:til').toLowerCase()}</Label>
-              <HorizontalSeparatorDiv size='0.3' />
-              <FormText
-                error={_v[_namespace + '-type']?.feilmelding}
-                id={_namespace + '-type'}
-              >
-                <Label>{t('label:' + _motregning?.__type).toLowerCase()}</Label>
               </FormText>
               {_motregning?.__type === 'familie' && (
                 <>
