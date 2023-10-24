@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.8.5-V4-OVERSIKT-AND-BUGFIXES",
+  "version": "8.8.5",
   "private": true,
   "type": "module",
   "scripts": {
