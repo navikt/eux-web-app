@@ -94,8 +94,6 @@ const Attachments: React.FC<AttachmentsProps> = ({
   }, [replySed])
 
   const FNRSelectColumn = () => {
-    console.log("SELECTCOLUMN:" + _fnr)
-
     let FNRSelectOptions = []
 
     const brukerFnr = getFnr(replySed, 'bruker')

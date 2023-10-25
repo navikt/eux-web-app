@@ -28,8 +28,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
     onFinishedSelection(_items)
     onModalClose()
   }
-
-  console.log("MODAL:" + fnr)
+  
 
   return (
     <Modal

@@ -311,7 +311,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    console.log("JOARKBROWSER:" + fnr)
     if (!_.isNil(fnr)) {
       dispatch(listJoarkItems(fnr, ''))
     }
