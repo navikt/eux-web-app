@@ -29,6 +29,8 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
     onModalClose()
   }
 
+  console.log("MODAL:" + fnr)
+
   return (
     <Modal
       open={open}
