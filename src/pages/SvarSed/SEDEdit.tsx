@@ -419,7 +419,6 @@ const SEDEdit = (): JSX.Element => {
           <>
             <VerticalSeparatorDiv />
             <Attachments
-              fnr={fnr}
               replySed={replySed}
               attachmentsFromRina={replySed.sed?.vedlegg}
               savedVedlegg={savedVedlegg}

@@ -14,7 +14,6 @@ import {Barn, F001Sed, ReplySed} from "../../../declarations/sed";
 import {getFnr} from "../../../utils/fnr";
 
 export interface AttachmentsProps {
-  fnr: string | undefined
   replySed: ReplySed | null | undefined
   onAttachmentsChanged: (items: JoarkBrowserItems) => void,
   onUpdateAttachmentSensitivt: (item: JoarkBrowserItem, sensitivt: boolean) => void,
@@ -27,7 +26,6 @@ export interface AttachmentsProps {
 }
 
 const Attachments: React.FC<AttachmentsProps> = ({
-  fnr,
   replySed,
   onAttachmentsChanged,
   onUpdateAttachmentSensitivt,
@@ -41,7 +39,12 @@ const Attachments: React.FC<AttachmentsProps> = ({
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
-  const [_fnr, setFnr] = useState<string | undefined>(getFnr(replySed, 'bruker'))
+
+  const bFnr = getFnr(replySed, 'bruker')
+  const eFnr = getFnr(replySed, 'ektefelle')
+  const aFnr = getFnr(replySed, 'annenPerson')
+
+  const [_fnr, setFnr] = useState<string | undefined>(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : undefined)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -82,6 +85,14 @@ const Attachments: React.FC<AttachmentsProps> = ({
     setItems(newAttachments)
   }, [setVedleggSensitiv])
 
+  useEffect(() => {
+    const bFnr = getFnr(replySed, 'bruker')
+    const eFnr = getFnr(replySed, 'ektefelle')
+    const aFnr = getFnr(replySed, 'annenPerson')
+
+    setFnr(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : undefined)
+  }, [replySed])
+
   const FNRSelectColumn = () => {
     let FNRSelectOptions = []
 
@@ -109,8 +120,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
     if(annenPersonFnr) {
       FNRSelectOptions.push(
         <option selected={_fnr === annenPersonFnr} value={annenPersonFnr}>
-          {(replySed as F001Sed).ektefelle?.personInfo.fornavn}&nbsp;
-          {(replySed as F001Sed).ektefelle?.personInfo.etternavn}
+          {(replySed as F001Sed).annenPerson?.personInfo.fornavn}&nbsp;
+          {(replySed as F001Sed).annenPerson?.personInfo.etternavn}
         </option>
       )
     }
@@ -174,7 +185,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
                   <Button
                     variant='secondary'
                     data-amplitude='svarsed.editor.attachments'
-                    disabled={_.isNil(fnr)}
+                    disabled={_.isNil(_fnr)}
                     onClick={(e: any) => {
                       buttonLogger(e)
                       setAttachmentsTableVisible(!_attachmentsTableVisible)
