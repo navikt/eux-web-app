@@ -3,7 +3,7 @@ import { Loennsopplysning } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
-import {checkIfDuplicate, checkIfInteger, checkIfNotEmpty, checkIfNotNumber} from 'utils/validation'
+import {checkIfInteger, checkIfNotEmpty, checkIfNotNumber} from 'utils/validation'
 
 export interface ValidationLoennsopplysningerProps {
   loennsopplysninger: Array<Loennsopplysning> | undefined
@@ -22,7 +22,6 @@ export const validateLoennsopplysning = (
   namespace: string,
   {
     loennsopplysning,
-    loennsopplysninger,
     index,
     personName
   }: ValidationLoennsopplysningProps
@@ -34,18 +33,6 @@ export const validateLoennsopplysning = (
     periode: loennsopplysning?.periode,
     personName
   }))
-
-  if (!_.isEmpty(loennsopplysning?.periode?.startdato)) {
-    hasErrors.push(checkIfDuplicate(v, {
-      needle: loennsopplysning,
-      haystack: loennsopplysninger,
-      matchFn: (l: Loennsopplysning) => (l.periode.startdato === loennsopplysning?.periode.startdato && l.periode.sluttdato === loennsopplysning.periode?.sluttdato),
-      index,
-      id: namespace + idx + '-startdato',
-      message: 'validation:duplicateStartdato',
-      personName
-    }))
-  }
 
   if(!_.isEmpty(loennsopplysning?.arbeidstimer)){
     hasErrors.push(checkIfNotNumber(v, {
