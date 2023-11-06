@@ -4,6 +4,7 @@ import { PDU1 } from 'declarations/pd'
 import { Fagsaker, UpdatePdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
+import mockFagsak from 'mocks/fagsak'
 import mockStoredPdu1AsJSON from 'mocks/pdu1/storedAsJSON'
 import mockSearchResultsPdu1 from 'mocks/pdu1/searchResults'
 import mockTemplatePdu1 from 'mocks/pdu1/template'
@@ -115,6 +116,21 @@ export const getFagsaker = (
       request: types.PDU1_FAGSAKER_REQUEST,
       success: types.PDU1_FAGSAKER_SUCCESS,
       failure: types.PDU1_FAGSAKER_FAILURE
+    }
+  })
+}
+
+export const createFagsak = (
+  fnr: string
+): ActionWithPayload<Fagsaker> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_PDU1_CREATE_FAGSAK_URL, { fnr }),
+    expectedPayload: mockFagsak,
+    type: {
+      request: types.PDU1_CREATE_FAGSAK_REQUEST,
+      success: types.PDU1_CREATE_FAGSAK_SUCCESS,
+      failure: types.PDU1_CREATE_FAGSAK_FAILURE
     }
   })
 }
