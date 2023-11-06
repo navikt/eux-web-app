@@ -3,10 +3,9 @@ import {
   Sak,
 } from "../../declarations/types";
 import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Link, Loader, Panel, Radio, RadioGroup, Textarea} from "@navikt/ds-react";
+import {Button, Heading, Link, Loader, Panel, Textarea} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
-import styled from "styled-components";
 import _ from "lodash";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {
@@ -22,9 +21,7 @@ import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
 import Modal from "../../components/Modal/Modal";
 
-const StyledTextarea = styled(Textarea)<{$visible?: boolean}>`
-  display: ${props => props.$visible ? "block" : "none"};
-`
+
 export interface InnhentMerInfoPanelProps {
   sak: Sak
   gotoSak: () => void
@@ -55,8 +52,6 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak}: InnhentMerInfoPanelSelector = useAppSelector(mapState)
-  const [_textareaVisible, setTextareaVisible] = useState<boolean>(false);
-  const [_textSelected, setTextSelected] = useState(false);
   const [_fritekst, setFritekst] = useState<string>("");
   const [_sendH001Modal, setSendH001Modal] = useState<boolean>(false)
 
@@ -84,17 +79,9 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     if(mottattF003 && !mottattF003.manglerInformasjonOmEktefelleEllerAnnenPerson) standardText = t('journalfoering:standardtekst-fsed-har-info')
   }
 
-
-  const onRadioChange = (val: any) => {
-    setTextSelected(true)
-    if(val === "fritekst"){
-      setTextareaVisible(true)
-      setFritekst(standardText)
-    } else {
-      setTextareaVisible(false)
-      setFritekst("")
-    }
-  }
+  useEffect(() => {
+    setFritekst(standardText)
+  }, [standardText])
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFritekst(e.target.value)
@@ -185,31 +172,17 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
         <VerticalSeparatorDiv />
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        <RadioGroup
-          legend={t('label:innhent-mer-info')}
-          hideLegend={true}
-          onChange={onRadioChange}
-        >
-          <Radio value="standard">{t('journalfoering:radio-option-standardtekst')}</Radio>
-          <Radio value="fritekst">{t('journalfoering:radio-option-fritekst')}</Radio>
-        </RadioGroup>
-        <StyledTextarea
+
+        <Textarea
           label={t('journalfoering:radio-option-fritekst')}
           value={_fritekst}
           hideLabel={true}
           maxLength={255}
           resize={true}
-          $visible={_textareaVisible}
           onChange={onTextChange}
         />
-        {!_textareaVisible && _textSelected &&
-          <>
-            <VerticalSeparatorDiv />
-            <em>{standardText}</em>
-          </>
-        }
         <VerticalSeparatorDiv />
-        <Button variant="primary" disabled={!_textSelected || (_fritekst === "" && _textareaVisible)} onClick={onSendH001} loading={isSendingH001}>
+        <Button variant="primary" disabled={_fritekst === ""} onClick={onSendH001} loading={isSendingH001}>
           {t("el:button-send-x", {x: "H001"})}
         </Button>
       </Panel>
