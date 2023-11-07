@@ -1,8 +1,8 @@
 import { validateAdresser, ValidationAdresserProps } from 'applications/SvarSed/Adresser/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
-  validateAnmodningsPerioder,
-  ValidationAnmodningsPerioderProps
+  validateAnmodningsPerioder, validateKrav,
+  ValidationAnmodningsPerioderProps, ValidationKravProps
 } from 'applications/SvarSed/AnmodningsPeriode/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { validateAvvis, ValidationAvvisProps } from 'applications/SvarSed/Avvis/validation'
@@ -353,6 +353,13 @@ export const validateSEDEdit = (
     hasErrors.push(performValidation<ValidationAnmodningsPerioderProps>(v, 'formål1-anmodningsperiode', validateAnmodningsPerioder, {
       anmodningsperioder: (replySed as FSed).anmodningsperioder
     }, true))
+
+    if ((replySed as F002Sed).krav) {
+      hasErrors.push(performValidation<ValidationKravProps>(v, 'formål1-anmodningsperiode', validateKrav, {
+        krav: (replySed as F002Sed).krav
+      }, true))
+    }
+
     if ((replySed as F002Sed).ektefelle) {
       hasErrors.push(validateMainForm(v, replySed, 'ektefelle'))
     }

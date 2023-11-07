@@ -304,6 +304,7 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
                 error={validation[namespace + '-personligSituasjon']?.feilmelding}
                 namespace={namespace}
                 id='personligSituasjon'
+                maxLength={255}
                 label={t('label:elementter-i-personlig-situasjon')}
                 onChanged={setPersonligSituasjon}
                 value={flyttegrunn?.personligSituasjon ?? ''}

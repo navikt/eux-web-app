@@ -78,7 +78,7 @@ export const validateGrunnlagForBosetting = (
     needle: flyttegrunn?.personligSituasjon,
     id: namespace + '-personligSituasjon',
     message: 'validation:textOverX',
-    max: 500,
+    max: 255,
     personName
   }))
 

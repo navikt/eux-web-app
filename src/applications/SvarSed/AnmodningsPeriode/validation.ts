@@ -1,9 +1,14 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
+import {checkLength} from "../../../utils/validation";
 
 export interface ValidationAnmodningsPerioderProps {
   anmodningsperioder: Array<Periode> | undefined
+}
+
+export interface ValidationKravProps {
+  krav: any | undefined
 }
 
 export interface ValidationAnmodningsPeriodeProps {
@@ -38,5 +43,26 @@ export const validateAnmodningsPerioder = (
       index
     }))
   })
+  return hasErrors.find(value => value) !== undefined
+}
+
+export const validateKrav = (
+  v: Validation,
+  namespace: string,
+  {
+    krav
+  }: ValidationKravProps
+): boolean => {
+  const hasErrors: Array<boolean> = []
+
+  if(krav?.infoType === 'gi_oss_punktvise_opplysninger'){
+    hasErrors.push(checkLength(v, {
+      needle: krav?.infoPresisering,
+      max: 255,
+      id: namespace + '-opplysninger',
+      message: 'validation:textOverX',
+    }))
+  }
+
   return hasErrors.find(value => value) !== undefined
 }

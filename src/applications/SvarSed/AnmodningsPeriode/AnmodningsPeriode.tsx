@@ -18,7 +18,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed, FSed, Periode } from 'declarations/sed'
+import {F001Sed, F002Sed, FSed, Periode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
@@ -32,9 +32,9 @@ import { isFSed } from 'utils/sed'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateAnmodningsPeriode,
-  validateAnmodningsPerioder,
+  validateAnmodningsPerioder, validateKrav,
   ValidationAnmodningsPeriodeProps,
-  ValidationAnmodningsPerioderProps
+  ValidationAnmodningsPerioderProps, ValidationKravProps
 } from './validation'
 
 const PeriodeFC: React.FC<MainFormProps> = ({
@@ -62,6 +62,13 @@ const PeriodeFC: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateAnmodningsPerioder, {
         anmodningsperioder: (replySed as FSed).anmodningsperioder
       }, true)
+
+    performValidation<ValidationKravProps>(
+      clonedvalidation, namespace, validateKrav, {
+        krav: (replySed as F001Sed).krav
+      }, true)
+
+
     dispatch(setValidation(clonedvalidation))
   })
 
@@ -316,7 +323,7 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                       id='opplysninger'
                       namespace={namespace}
                       label={t('label:hvilke-opplysninger')}
-                      maxLength={500}
+                      maxLength={255}
                       onChanged={setInfoPresisering}
                       value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
                     />
