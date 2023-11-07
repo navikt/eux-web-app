@@ -4,5 +4,5 @@ export default {
   "nr": "1/2023",
   "system": "NEESSI",
   "arkiv": "GSAK",
-  "datoOpprettet": "2021-12-30T14:02:53"
+  "tidspunktOpprettet": "2021-12-30T14:02:53"
 }

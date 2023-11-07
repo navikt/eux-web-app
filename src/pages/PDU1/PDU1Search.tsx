@@ -374,7 +374,7 @@ const PDU1Search = (): JSX.Element => {
                     <FlexBaseDiv>
                       <Label>{t('label:sist-oppdatert')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.opprettetdato}</BodyLong>
+                      <BodyLong>{f.tidspunktOpprettet}</BodyLong>
                     </FlexBaseDiv>
                   </PileDiv>
                   <PileDiv>
