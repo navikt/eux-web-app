@@ -120,7 +120,7 @@ export interface Fagsak {
   nr?: string | null | undefined
   system?: string | null | undefined
   fnr?: string | null | undefined
-  opprettetdato?: string | null | undefined
+  tidspunktOpprettet?: string | null | undefined
 }
 
 export interface JournalfoeringLogg {

@@ -4,13 +4,15 @@
     "type": "Dagpenger",
     "tema": "DAG",
     "system": "Arena",
-    "nr": "0331D17"
+    "nr": "0331D17",
+    "tidspunktOpprettet": "2019-08-30T15:05:53"
   },
   {
     "id": "ubGEN:a2873465",
     "type": "Generell",
     "tema": "GEN",
     "system": "Gosys",
-    "nr": "0441D17"
+    "nr": "0441D17",
+    "tidspunktOpprettet": "2020-11-30T14:02:53"
   }
 ]

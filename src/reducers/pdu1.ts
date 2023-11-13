@@ -1,12 +1,13 @@
 import * as types from 'constants/actionTypes'
 import { PDU1 } from 'declarations/pd'
-import { Fagsaker, PDU1SearchResults } from 'declarations/types'
+import {Fagsak, Fagsaker, PDU1SearchResults} from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface Pdu1State {
   fagsaker: Fagsaker | null | undefined
+  createdFagsak: string | null | undefined
   pdu1: PDU1 | null | undefined
   pdu1results: PDU1SearchResults | null | undefined
   previewDraftPdu1: Blob | null | undefined
@@ -18,6 +19,7 @@ export interface Pdu1State {
 
 export const initialPdu1State: Pdu1State = {
   fagsaker: undefined,
+  createdFagsak: undefined,
   pdu1: undefined,
   pdu1results: undefined,
   previewDraftPdu1: undefined,
@@ -37,7 +39,8 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_FAGSAKER_RESET:
       return {
         ...state,
-        fagsaker: undefined
+        fagsaker: undefined,
+        createdFagsak: undefined
       }
 
     case types.PDU1_FAGSAKER_SUCCESS:
@@ -51,6 +54,29 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
         ...state,
         fagsaker: null
       }
+
+    case types.PDU1_CREATE_FAGSAK_REQUEST:
+      return {
+        ...state,
+        createdFagsak: undefined
+      }
+
+    case types.PDU1_CREATE_FAGSAK_SUCCESS:
+      const fagsak:Fagsak = (action as ActionWithPayload).payload
+      let fSaker = _.cloneDeep(state.fagsaker)
+      fSaker?.unshift(fagsak)
+      return {
+        ...state,
+        fagsaker: fSaker,
+        createdFagsak: fagsak.id
+      }
+
+    case types.PDU1_CREATE_FAGSAK_FAILURE:
+      return {
+        ...state,
+        createdFagsak: null
+      }
+
 
     case types.PDU1_ASJSON_REQUEST:
       return {

@@ -1,4 +1,4 @@
-import {BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
@@ -17,16 +17,13 @@ import {
   getStoredPdu1AsPDF,
   resetFagsaker,
   resetPdu1results,
-  resetStoredPdu1AsPDF
+  resetStoredPdu1AsPDF, createFagsak
 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
-import { resetValidation } from 'actions/validation'
 import classNames from 'classnames'
-import Select from 'components/Forms/Select'
 import Modal from 'components/Modal/Modal'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { Option, Options } from 'declarations/app'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak, Person} from 'declarations/types'
@@ -52,6 +49,8 @@ const ContainerDiv = styled(PileCenterDiv)`
 export interface PDU1SearchSelector {
   fnrParam: string | undefined
   fagsaker: Fagsaker | null | undefined
+  createdFagsak: string | null | undefined
+  creatingFagsak: boolean
   gettingFagsaker: boolean
   creatingPdu1: boolean
   gettingPdu1: boolean
@@ -69,6 +68,8 @@ export interface PDU1SearchSelector {
 const mapState = (state: State): PDU1SearchSelector => ({
   fnrParam: state.app.params.fnr,
   fagsaker: state.pdu1.fagsaker,
+  createdFagsak: state.pdu1.createdFagsak,
+  creatingFagsak: state.loading.creatingFagsak,
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingPdu1: state.loading.creatingPdu1,
   gettingPdu1: state.loading.gettingPdu1,
@@ -83,12 +84,21 @@ const mapState = (state: State): PDU1SearchSelector => ({
   alertType: state.alert.type
 })
 
+const FagsakPanel = styled(Panel)`
+  margin-bottom: 1rem;
+  &.new {
+    background-color: rgba(236, 243, 153, 0.5);
+  };
+`
+
 const PDU1Search = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const {
     fagsaker,
+    createdFagsak,
+    creatingFagsak,
     gettingFagsaker,
     creatingPdu1,
     gettingPdu1,
@@ -119,42 +129,20 @@ const PDU1Search = (): JSX.Element => {
   const namespace = 'pdu1search'
   const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
 
-  const temaOptions: Options = [
-    { label: t('tema:GEN'), value: 'GEN' },
-    { label: t('tema:AAP'), value: 'AAP' },
-    { label: t('tema:BAR'), value: 'BAR' },
-    { label: t('tema:DAG'), value: 'DAG' },
-    { label: t('tema:FEI'), value: 'FEI' },
-    { label: t('tema:FOR'), value: 'FOR' },
-    { label: t('tema:GRA'), value: 'GRA' },
-    { label: t('tema:KON'), value: 'KON' },
-    { label: t('tema:MED'), value: 'MED' },
-    { label: t('tema:OMS'), value: 'OMS' },
-    { label: t('tema:PEN'), value: 'PEN' },
-    { label: t('tema:SYK'), value: 'SYK' },
-    { label: t('tema:YRK'), value: 'YRK' },
-    { label: t('tema:UFO'), value: 'UFO' },
-    { label: t('tema:GRU'), value: 'GRU' },
-    { label: t('tema:KTR'), value: 'KTR' },
-    { label: t('tema:TRY'), value: 'TRY' },
-    { label: t('tema:SUP'), value: 'SUP' },
-    { label: t('tema:UFM'), value: 'UFM' }
-  ]
-
-  const onTemaChanged = (o: unknown) => {
-    if (validation[namespace + '-tema']) {
-      dispatch(resetValidation(namespace + '-tema'))
-    }
-    setTema((o as Option).value)
-    if (fnrOrDnr) {
-      dispatch(getFagsaker(fnrOrDnr, 'PD', (o as Option).value))
-    }
-  }
-
   const onNewPdu1Mode = () => {
     dispatch(resetPdu1results())
     setSearchPdu1Mode(false)
     setNewPdu1Mode(true)
+    setTema("DAG")
+    if (fnrOrDnr) {
+      dispatch(getFagsaker(fnrOrDnr, 'PD', "DAG"))
+    }
+  }
+
+  const onCreateFagsak = () => {
+    if (fnrOrDnr) {
+      dispatch(createFagsak(fnrOrDnr))
+    }
   }
 
   const onSearchPdu1Mode = () => {
@@ -342,28 +330,40 @@ const PDU1Search = (): JSX.Element => {
             {t('el:button-start-new-x', { x: 'PD U1' })}
           </Heading>
           <VerticalSeparatorDiv size='2' />
-          <AlignStartRow>
+          {!gettingFagsaker &&
             <Column>
-              <Select
-                label={t('label:tema')}
-                defaultValue={_.find(temaOptions, { value: tema })}
-                error={validation[namespace + '-tema']?.feilmelding}
-                id={namespace + '-tema'}
-                menuPortalTarget={document.body}
-                onChange={onTemaChanged}
-                options={temaOptions}
-                value={_.find(temaOptions, { value: tema })}
-                style={{ minWidth: '300px' }}
-              />
+              <Button
+                variant='primary'
+                disabled={!validFnr}
+                loading={creatingFagsak}
+                onClick={onCreateFagsak}
+              >
+                {t('el:button-create-x', { x: 'fagsak' })}
+              </Button>
             </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv size='2' />
+          }
+
           <div style={{ width: '100%' }}>
             {gettingFagsaker && (
               <WaitingPanel />
             )}
+            <VerticalSeparatorDiv/>
+            {createdFagsak &&
+              <>
+                <Alert size="small" variant='warning'>
+                  OBS: Husk å journalføre i JOARK før du oppretter ny PD U1
+                </Alert>
+                <VerticalSeparatorDiv/>
+              </>
+            }
             {fagsaker?.map((f: Fagsak) => (
-              <Panel style={{ marginBottom: '1rem' }} border key={f.id}>
+              <FagsakPanel
+                key={f.id}
+                border
+                className={classNames({
+                  new: createdFagsak === f.id
+                })}
+              >
                 <FlexDiv>
                   <PileDiv flex='2'>
                     <FlexBaseDiv>
@@ -372,19 +372,9 @@ const PDU1Search = (): JSX.Element => {
                       <BodyLong>{f.nr}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
-                      <Label>{t('label:tema')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.tema}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
-                      <Label>{t('label:saksnummer')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.id}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
                       <Label>{t('label:sist-oppdatert')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.opprettetdato}</BodyLong>
+                      <BodyLong>{f.tidspunktOpprettet}</BodyLong>
                     </FlexBaseDiv>
                   </PileDiv>
                   <PileDiv>
@@ -398,7 +388,7 @@ const PDU1Search = (): JSX.Element => {
                     </Button>
                   </PileDiv>
                 </FlexDiv>
-              </Panel>
+              </FagsakPanel>
 
             ))}
           </div>

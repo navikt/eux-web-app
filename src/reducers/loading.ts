@@ -9,6 +9,7 @@ export interface LoadingState {
 export const initialLoadingState: LoadingState = {
   addingMottakere: false,
   completingPdu1: false,
+  creatingFagsak: false,
   creatingSvarSed: false,
   creatingPdu1: false,
   deletingSak: false,
@@ -560,6 +561,23 @@ const loadingReducer = (
         ...state,
         isFeilregistreringJournalposter: false
       }
+
+    case types.PDU1_CREATE_FAGSAK_REQUEST:
+      return {
+        ...state,
+        creatingFagsak: true
+      }
+
+    case types.PDU1_CREATE_FAGSAK_SUCCESS:
+    case types.PDU1_CREATE_FAGSAK_FAILURE:
+      return {
+        ...state,
+        creatingFagsak: false
+      }
+
+
+
+
 
     default:
       return state
