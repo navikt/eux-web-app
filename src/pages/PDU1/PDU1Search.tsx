@@ -351,7 +351,7 @@ const PDU1Search = (): JSX.Element => {
             {createdFagsak &&
               <>
                 <Alert size="small" variant='warning'>
-                  OBS: Husk å journalføre i JOARK før du oppretter ny PD U1
+                  OBS: Husk å journalføre i Gosys før du oppretter ny PD U1
                 </Alert>
                 <VerticalSeparatorDiv/>
               </>
