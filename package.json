@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.8.7-TEN-445-OPPRETT-FAGSAK",
+  "version": "8.8.7",
   "private": true,
   "type": "module",
   "scripts": {
