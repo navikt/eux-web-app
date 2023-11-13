@@ -1,7 +1,7 @@
 [
   {
     "id": "ubDAG:34243232223",
-    "type": "Dagpenger",
+    "type": "FAGSAK",
     "tema": "DAG",
     "system": "Arena",
     "nr": "0331D17",
@@ -9,10 +9,19 @@
   },
   {
     "id": "ubGEN:a2873465",
-    "type": "Generell",
-    "tema": "GEN",
+    "type": "FAGSAK",
+    "tema": "DAG",
     "system": "Gosys",
     "nr": "0441D17",
     "tidspunktOpprettet": "2020-11-30T14:02:53"
+  },
+  {
+    "id": "ubGEN:dg453464",
+    "type": "GENERELL_SAK",
+    "tema": "GEN",
+    "system": "Gosys",
+    "nr": "0441G17",
+    "tidspunktOpprettet": "2020-11-30T14:02:53"
   }
+
 ]

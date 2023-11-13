@@ -356,7 +356,7 @@ const PDU1Search = (): JSX.Element => {
                 <VerticalSeparatorDiv/>
               </>
             }
-            {fagsaker?.map((f: Fagsak) => (
+            {fagsaker?.filter((f: Fagsak) => f.type === "FAGSAK").map((f: Fagsak) => (
               <FagsakPanel
                 key={f.id}
                 border
