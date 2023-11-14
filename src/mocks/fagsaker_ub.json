@@ -5,7 +5,7 @@
     "tema": "DAG",
     "system": "Arena",
     "nr": "0331D17",
-    "tidspunktOpprettet": "2019-08-30T15:05:53"
+    "opprettetTidspunkt": "2019-08-30T15:05:53"
   },
   {
     "id": "ubGEN:a2873465",
@@ -13,7 +13,7 @@
     "tema": "DAG",
     "system": "Gosys",
     "nr": "0441D17",
-    "tidspunktOpprettet": "2020-11-30T14:02:53"
+    "opprettetTidspunkt": "2020-11-30T14:02:53"
   },
   {
     "id": "ubGEN:dg453464",
@@ -21,7 +21,7 @@
     "tema": "GEN",
     "system": "Gosys",
     "nr": "0441G17",
-    "tidspunktOpprettet": "2020-11-30T14:02:53"
+    "opprettetTidspunkt": "2020-11-30T14:02:53"
   }
 
 ]

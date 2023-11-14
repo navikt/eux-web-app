@@ -5,7 +5,7 @@
     "system": "IT01",
     "aktoerId": "1350969741332",
     "nr": "1445A01",
-    "tidspunktOpprettet": "2021-12-31T14:02:53"
+    "opprettetTidspunkt": "2021-12-31T14:02:53"
   },
   {
     "id": "fbGEN:73465",
@@ -13,7 +13,7 @@
     "system": "Gosys",
     "aktoerId": "1350969741332",
     "nr": "1445A02",
-    "tidspunktOpprettet": "2022-07-01T14:02:53"
+    "opprettetTidspunkt": "2022-07-01T14:02:53"
   },
   {
     "id": "fbKON:7865457854366",
@@ -21,6 +21,6 @@
     "system": "IT01",
     "aktoerId": "1350969741332",
     "nr": "1445A03",
-    "tidspunktOpprettet": "2020-08-02T14:02:53"
+    "opprettetTidspunkt": "2020-08-02T14:02:53"
   }
 ]

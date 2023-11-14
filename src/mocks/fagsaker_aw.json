@@ -5,7 +5,7 @@
     "tema": "YRK",
     "system": "Arena",
     "nr": "0551D21",
-    "tidspunktOpprettet": "2022-10-22T14:02:53"
+    "opprettetTidspunkt": "2022-10-22T14:02:53"
   },
   {
     "id": "awGEN:a2873465",
@@ -13,6 +13,6 @@
     "tema": "GEN",
     "system": "Gosys",
     "nr": "0551D20",
-    "tidspunktOpprettet": "2021-10-18T14:02:53"
+    "opprettetTidspunkt": "2021-10-18T14:02:53"
   }
 ]

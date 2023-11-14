@@ -40,6 +40,7 @@ import PersonSearch from "../../applications/OpprettSak/PersonSearch/PersonSearc
 import * as types from "../../constants/actionTypes";
 import * as personActions from "../../actions/person";
 import SakSidebar from "../../applications/OpprettSak/SakSidebar/SakSidebar";
+import moment from "moment";
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -374,7 +375,7 @@ const PDU1Search = (): JSX.Element => {
                     <FlexBaseDiv>
                       <Label>{t('label:sist-oppdatert')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{f.tidspunktOpprettet}</BodyLong>
+                      <BodyLong>{moment(f.opprettetTidspunkt).format('DD.MM.YYYY HH:mm')}</BodyLong>
                     </FlexBaseDiv>
                   </PileDiv>
                   <PileDiv>
