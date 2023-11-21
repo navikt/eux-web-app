@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.8.7",
+  "version": "8.8.8",
   "private": true,
   "type": "module",
   "scripts": {
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@8.8.7-TEN-445-OPPRETT-FAGSAK",
+  "_id": "neessi@8.8.7",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

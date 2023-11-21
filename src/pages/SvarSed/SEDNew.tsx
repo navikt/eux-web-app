@@ -19,7 +19,7 @@ import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
-import { loadReplySed } from 'actions/svarsed'
+import {loadReplySed, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
@@ -201,6 +201,7 @@ const SEDNew = (): JSX.Element => {
     valgtSektor,
     valgtTema,
     valgtUnit,
+    currentSak,
     validation,
     featureToggles
   }: SEDNewSelector = useAppSelector(mapState)
@@ -379,6 +380,13 @@ const SEDNew = (): JSX.Element => {
       } as Sak
     }))
   }
+
+  useEffect(() => {
+    if(currentSak){
+      dispatch(setCurrentSak(undefined))
+    }
+  }, [])
+
 
   useEffect(() => {
     if (!_.isNil(filloutinfo)) {

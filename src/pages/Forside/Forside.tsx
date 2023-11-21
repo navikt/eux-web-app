@@ -15,7 +15,7 @@ import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
 import {loadReplySed, querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
-import {Saks} from "../../declarations/types";
+import {Sak, Saks} from "../../declarations/types";
 import LoadSave from "../../components/LoadSave/LoadSave";
 import {ReplySed} from "../../declarations/sed";
 import {PDU1} from "../../declarations/pd";
@@ -100,8 +100,14 @@ const Forside: React.FC = (): JSX.Element => {
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
   const [_hasLocalReplySeds, _setHasLocalReplySeds] = useState<boolean>(false)
   const [_hasLocaPDU1, _setHasLocalPDU1] = useState<boolean>(false)
+  const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
 
 
+  useEffect(() => {
+    if(currentSak){
+      dispatch(setCurrentSak(undefined))
+    }
+  }, [])
 
   useEffect(() => {
     if (saks?.length === 1 && _queryType === 'saksnummer') {
