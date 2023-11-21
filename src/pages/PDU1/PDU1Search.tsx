@@ -373,7 +373,7 @@ const PDU1Search = (): JSX.Element => {
                       <BodyLong>{f.nr}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
-                      <Label>{t('label:sist-oppdatert')}:</Label>
+                      <Label>{t('label:dato-opprettet')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
                       <BodyLong>{moment(f.opprettetTidspunkt).format('DD.MM.YYYY HH:mm')}</BodyLong>
                     </FlexBaseDiv>
@@ -423,14 +423,9 @@ const PDU1Search = (): JSX.Element => {
                       <BodyLong>{pdu1SearchResult.tittel}</BodyLong>
                     </FlexBaseDiv>
                     <FlexBaseDiv>
-                      <Label>{t('label:tema')}:</Label>
-                      <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{pdu1SearchResult.tema}</BodyLong>
-                    </FlexBaseDiv>
-                    <FlexBaseDiv>
                       <Label>{t('label:dato-opprettet')}:</Label>
                       <HorizontalSeparatorDiv size='0.35' />
-                      <BodyLong>{pdu1SearchResult.datoOpprettet}</BodyLong>
+                      <BodyLong>{moment(pdu1SearchResult.datoOpprettet).format('DD.MM.YYYY HH:mm')}</BodyLong>
                     </FlexBaseDiv>
                   </PileDiv>
                   <PileDiv>
