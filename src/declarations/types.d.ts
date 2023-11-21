@@ -62,7 +62,7 @@ export interface Sed {
   svarsedType?: string
   svarsedId?: string
   svarsedDisplay?: string
-  sedHandlinger: Array<SedAction>
+  sedHandlinger?: Array<SedAction>
   vedlegg?: Array<Attachment>
   children ?: Array<Sed>,
   manglerInformasjonOmEktefelleEllerAnnenPerson? : boolean
@@ -220,7 +220,7 @@ export interface Sak {
   motpartInstitusjon?: string
   navinstitusjon: NavInstitusjon
   sistEndretDato: string
-  sakshandlinger: Array<string>
+  sakshandlinger?: Array<string>
   sensitiv?: boolean
   tema ?: string
   fagsakId?: string

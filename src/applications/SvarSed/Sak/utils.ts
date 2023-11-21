@@ -31,6 +31,6 @@ export const isSedEditable = (
 ) => (
   !!sak.ikkeJournalfoerteSed?.length ||
   (hasDraftFor(connectedSed, entries, 'svarsedId') && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
-  (connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
+  (connectedSed.sedHandlinger && connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && (!sak.ikkeJournalfoerteSed?.length || !sak.ikkeJournalfoerteSedListFailed))
 )

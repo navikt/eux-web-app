@@ -89,7 +89,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   const onSendH001 = () => {
     dispatch(journalfoeringReset())
-    if(sak.sakshandlinger.includes("H001")){
+    if(sak.sakshandlinger?.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
       dispatch(createHBUC01({institusjonsID: sak.sakseier?.id}))

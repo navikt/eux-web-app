@@ -42,7 +42,7 @@ const SectionDiv = styled.div`
 interface AddDeltakereModalProps {
   bucType: string
   rinaSakId: string
-  sakshandlinger: Array<string>
+  sakshandlinger: Array<string> | undefined
   onClose: () => void
 }
 
@@ -80,7 +80,7 @@ const AddMottakereModal = ({
   const [_validation, setValidation] = useState<Validation>({})
   const namespace = 'addmottakere'
 
-  const type = sakshandlinger.includes("multipleParticipants") ? "multiple" : "single"
+  const type = sakshandlinger?.includes("multipleParticipants") ? "multiple" : "single"
 
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 

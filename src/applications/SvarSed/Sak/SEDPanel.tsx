@@ -211,16 +211,16 @@ const SEDPanel = ({
   const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed
   const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
   const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
-  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
-  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
-  const showDeleteButton = !showDraftForSedIdButton && (sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
-  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger?.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
-  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
-  const showRemindButton = !showDraftForSedIdButton && !hasIkkeJournalfoerteSed && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
-  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
-  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
+  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showDeleteButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
+  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger && sed.sedHandlinger?.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
+  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
+  const showRemindButton = !showDraftForSedIdButton && !hasIkkeJournalfoerteSed && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
+  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
+  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
-  const sedHandlingerRINA = sed.sedHandlinger.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
+  const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
 
   return (
     <MyPanel border>
