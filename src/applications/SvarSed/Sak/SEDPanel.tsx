@@ -220,6 +220,7 @@ const SEDPanel = ({
   const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
   const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
+  const hasSedHandlinger = sed.sedHandlinger && sed.sedHandlinger.length > 0
   const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
 
   return (
@@ -256,6 +257,7 @@ const SEDPanel = ({
               size='small'
               rinaSakId={currentSak.sakId}
               sedId={sed.sedId}
+              disabled={!hasSedHandlinger}
             />
             {sed.vedlegg && sed.vedlegg.length > 0 && (
               <>

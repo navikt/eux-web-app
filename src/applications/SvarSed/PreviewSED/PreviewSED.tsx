@@ -21,6 +21,7 @@ export interface PreviewSedProps {
   replySed?: ReplySed | null | undefined
   short ?: boolean
   size ?: 'medium' | 'small' | 'xsmall' | undefined
+  disabled?: boolean
 }
 
 export interface PreviewSedSelector {
@@ -40,7 +41,8 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
   sedId,
   replySed,
   short = false,
-  size = 'medium'
+  size = 'medium',
+  disabled = false
 }: PreviewSedProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -132,7 +134,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       <Button
         variant='tertiary'
         size={size}
-        disabled={gettingPreviewFile || gettingPreviewSed}
+        disabled={gettingPreviewFile || gettingPreviewSed || disabled}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
       >
