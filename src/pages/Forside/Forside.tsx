@@ -124,11 +124,14 @@ const Forside: React.FC = (): JSX.Element => {
     }
   }, [saks])
 
-  let controller:AbortController = new AbortController()
+  let controller = new AbortController()
+  const signal = controller.signal;
 
-  useEffect(() =>{  
+  useEffect(() =>{
     return () => {
+      console.log("UNMOUNT")
       if(controller){
+        console.log("ABORTING....")
         controller.abort();
       }
     }
@@ -154,7 +157,7 @@ const Forside: React.FC = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q, 'new', false, controller.signal))
+                dispatch(querySaks(q, 'new', false, signal))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
