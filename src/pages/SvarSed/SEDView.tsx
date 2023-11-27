@@ -89,15 +89,24 @@ const SEDView = (): JSX.Element => {
   }, [entries, loadingSavedItems])
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     // reload, so it reflects changes made in potential SED save/send
     if (currentSak) {
       const params: URLSearchParams = new URLSearchParams(window.location.search)
       if (params.get('refresh') === 'true') {
-        dispatch(querySaks(currentSak?.sakId, 'refresh'))
+        dispatch(querySaks(currentSak?.sakId, 'refresh', false, signal))
       }
     } else {
       if (sakId) {
-        dispatch(querySaks(sakId, 'refresh'))
+        dispatch(querySaks(sakId, 'refresh', false, signal))
+      }
+    }
+    return () => {
+      if(controller){
+        console.log("ABORTING QUERY ON UNMOUNT")
+        controller.abort();
       }
     }
   }, [])
