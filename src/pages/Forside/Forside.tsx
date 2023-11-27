@@ -124,18 +124,6 @@ const Forside: React.FC = (): JSX.Element => {
     }
   }, [saks])
 
-  let controller:AbortController;
-
-  useEffect(() =>{
-    return () => {
-      console.log("UNMOUNT")
-      if(controller){
-        console.log("ABORTING....")
-        controller.abort();
-      }
-    }
-  },[])
-
   return (
     <TopContainer title={t('app:page-title-forside')}>
       <Container>
@@ -155,10 +143,8 @@ const Forside: React.FC = (): JSX.Element => {
                 _setQueryType(queryType)
               }}
               onQuerySubmit={(q: string) => {
-                controller = new AbortController();
-                const signal = controller.signal;
                 _setQuery(q)
-                dispatch(querySaks(q, 'new', false, signal))
+                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
