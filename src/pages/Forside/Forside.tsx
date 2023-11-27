@@ -124,8 +124,7 @@ const Forside: React.FC = (): JSX.Element => {
     }
   }, [saks])
 
-  let controller = new AbortController()
-  const signal = controller.signal;
+  let controller:AbortController;
 
   useEffect(() =>{
     return () => {
@@ -156,6 +155,8 @@ const Forside: React.FC = (): JSX.Element => {
                 _setQueryType(queryType)
               }}
               onQuerySubmit={(q: string) => {
+                controller = new AbortController();
+                const signal = controller.signal;
                 _setQuery(q)
                 dispatch(querySaks(q, 'new', false, signal))
               }}
