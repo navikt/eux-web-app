@@ -261,7 +261,7 @@ const SEDPanel = ({
             />
             {sed.vedlegg && sed.vedlegg.length > 0 && (
               <>
-                <AttachmentButton variant="tertiary" onClick={openAttachmentModal}>
+                <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
                 </AttachmentButton>
               </>
