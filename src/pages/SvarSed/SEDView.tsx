@@ -105,7 +105,6 @@ const SEDView = (): JSX.Element => {
     }
     return () => {
       if(controller){
-        console.log("ABORTING QUERY ON UNMOUNT")
         controller.abort();
       }
     }
