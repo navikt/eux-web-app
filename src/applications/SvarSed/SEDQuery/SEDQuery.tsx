@@ -109,6 +109,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                   : t('el:button-search')}
                 {querying && <Loader />}
               </Search.Button>
+              &nbsp;
               <Button onClick={abort}>CANCEL</Button>
             </Search>
 
