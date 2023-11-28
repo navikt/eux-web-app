@@ -75,6 +75,11 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
     }
   }
 
+  const abort = () => {
+    console.log("Aborting")
+    controller.abort()
+  }
+
   return (
     <>
       <AlignStartRow
@@ -104,7 +109,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                   : t('el:button-search')}
                 {querying && <Loader />}
               </Search.Button>
-              <Button onClick={() => controller.abort()}>CANCEL</Button>
+              <Button onClick={abort}>CANCEL</Button>
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
