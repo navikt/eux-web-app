@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Label, Loader, Search} from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Label, Loader, Search} from '@navikt/ds-react'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
@@ -104,6 +104,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                   : t('el:button-search')}
                 {querying && <Loader />}
               </Search.Button>
+              <Button onClick={controller.abort()}>CANCEL</Button>
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
