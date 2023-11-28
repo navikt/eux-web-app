@@ -104,7 +104,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                   : t('el:button-search')}
                 {querying && <Loader />}
               </Search.Button>
-              <Button onClick={controller.abort()}>CANCEL</Button>
+              <Button onClick={() => controller.abort()}>CANCEL</Button>
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (
