@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Button, Label, Loader, Search} from '@navikt/ds-react'
+import {Alert, BodyLong,  Label, Loader, Search} from '@navikt/ds-react'
 import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
@@ -18,7 +18,7 @@ const StyledLabel = styled(Label)`
   font-weight: normal;
 `
 
-const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false, controller}: any) => {
+const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false}: any) => {
   const { t } = useTranslation()
   const namespace = parentNamespace + '-sedquery'
 
@@ -71,13 +71,8 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       standardLogger('svarsed.selection.query', {
         type: _queryType
       })
-      onQuerySubmit(_saksnummerOrFnr.trim(), controller)
+      onQuerySubmit(_saksnummerOrFnr.trim())
     }
-  }
-
-  const abort = () => {
-    console.log("Aborting")
-    controller.abort()
   }
 
   return (
@@ -109,8 +104,6 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
                   : t('el:button-search')}
                 {querying && <Loader />}
               </Search.Button>
-              &nbsp;
-              <Button onClick={abort}>CANCEL</Button>
             </Search>
 
             {_validation[namespace + '-saksnummerOrFnr']?.feilmelding && (

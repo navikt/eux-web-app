@@ -19,7 +19,7 @@ import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
 import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
-import {loadReplySed, setCurrentSak} from 'actions/svarsed'
+import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
@@ -43,7 +43,7 @@ import {
   OldFamilieRelasjon,
   OpprettetSak,
   Person,
-  Sak,
+  Sak, Saks,
   Sed,
   ServerInfo,
   Tema,
@@ -102,6 +102,7 @@ export interface SEDNewSelector {
   valgtTema: string | undefined
   valgtUnit: string | undefined
 
+  saks: Saks | null | undefined
   currentSak: Sak | undefined
 
   validation: Validation
@@ -151,6 +152,7 @@ const mapState = (state: State): SEDNewSelector => ({
   valgtTema: state.sak.tema,
   valgtUnit: state.sak.unit,
 
+  saks: state.svarsed.saks,
   currentSak: state.svarsed.currentSak,
 
   validation: state.validation.status,
@@ -201,6 +203,7 @@ const SEDNew = (): JSX.Element => {
     valgtSektor,
     valgtTema,
     valgtUnit,
+    saks,
     currentSak,
     validation,
     featureToggles
@@ -386,6 +389,13 @@ const SEDNew = (): JSX.Element => {
       dispatch(setCurrentSak(undefined))
     }
   }, [])
+
+  useEffect(() => {
+    //If saks is set because search from frontpage is not finished - reset
+    if(saks){
+      dispatch(resetSaks())
+    }
+  }, [saks])
 
 
   useEffect(() => {

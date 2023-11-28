@@ -438,6 +438,13 @@ const svarsedReducer = (
       }
     }
 
+    case types.SVARSED_SAKS_RESET: {
+      return {
+        ...state,
+        saks: undefined
+      }
+    }
+
     case types.SVARSED_H001SED_CREATE: {
       const sak = (action as ActionWithPayload).payload.sak
       const replySed: H001Sed = createReplySedTemplate<H001Sed>(sak, 'H001')

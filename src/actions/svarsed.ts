@@ -59,6 +59,10 @@ export const cleanUpSvarSed = ():Action => ({
   type: types.SVARSED_RESET
 })
 
+export const resetSaks = ():Action => ({
+  type: types.SVARSED_SAKS_RESET
+})
+
 export const createSed = (
   replySed: ReplySed
 ): ActionWithPayload => {

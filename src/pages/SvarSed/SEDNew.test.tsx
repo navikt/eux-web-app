@@ -52,6 +52,7 @@ describe('pages/SEDNew/SEDNew', () => {
     valgtTema: undefined,
     valgtUnit: undefined,
 
+    saks: undefined,
     currentSak: undefined,
 
     validation: {},
