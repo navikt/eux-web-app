@@ -18,7 +18,7 @@ const StyledLabel = styled(Label)`
   font-weight: normal;
 `
 
-const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false }: any) => {
+const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQuery, onQuerySubmit, frontpage=false, controller}: any) => {
   const { t } = useTranslation()
   const namespace = parentNamespace + '-sedquery'
 
@@ -71,7 +71,7 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       standardLogger('svarsed.selection.query', {
         type: _queryType
       })
-      onQuerySubmit(_saksnummerOrFnr.trim())
+      onQuerySubmit(_saksnummerOrFnr.trim(), controller)
     }
   }
 

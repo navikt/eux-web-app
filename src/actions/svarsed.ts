@@ -228,7 +228,6 @@ export const querySaks = (
 ): ActionWithPayload<Sed> => {
   let url, type
   const result = validateFnrDnrNpid(saksnummerOrFnr)
-  console.log("SIGNAL", signal)
   if (result.status === 'valid') {
     type = result.type
     if (result.type) {

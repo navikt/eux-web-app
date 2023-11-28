@@ -102,10 +102,18 @@ const Forside: React.FC = (): JSX.Element => {
   const [_hasLocaPDU1, _setHasLocalPDU1] = useState<boolean>(false)
   const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
 
+  let controller:AbortController = new AbortController()
+  let signal:AbortSignal
 
   useEffect(() => {
     if(currentSak){
       dispatch(setCurrentSak(undefined))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
     }
   }, [])
 
@@ -123,6 +131,12 @@ const Forside: React.FC = (): JSX.Element => {
       })
     }
   }, [saks])
+
+  const onQuerySubmit = (q: string, controller: AbortController) => {
+    signal = controller.signal
+    _setQuery(q)
+    dispatch(querySaks(q, 'new', false, signal))
+  }
 
   return (
     <TopContainer title={t('app:page-title-forside')}>
@@ -142,10 +156,8 @@ const Forside: React.FC = (): JSX.Element => {
                 dispatch(appReset())
                 _setQueryType(queryType)
               }}
-              onQuerySubmit={(q: string) => {
-                _setQuery(q)
-                dispatch(querySaks(q, 'new'))
-              }}
+              onQuerySubmit={onQuerySubmit}
+              controller={controller}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
             />
