@@ -1,4 +1,4 @@
-import { BackFilled, FileContentFilled } from '@navikt/ds-icons'
+import {BackFilled, ExternalLink} from '@navikt/ds-icons'
 import { toggleHighContrast } from 'actions/ui'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
@@ -60,8 +60,7 @@ const Header: React.FC<HeaderProps> = ({
   backButton,
   highContrast,
   onGoBackClick,
-  title,
-  unsavedDoc = false
+  title
 }: HeaderProps): JSX.Element => {
   const { saksbehandler }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
@@ -99,15 +98,6 @@ const Header: React.FC<HeaderProps> = ({
           {title}
         </Heading>
       </FlexCenterDiv>
-      <div>
-        {unsavedDoc && (
-          <FlexCenterDiv>
-            {t('label:utkast')}
-            <HorizontalSeparatorDiv size='0.5' />
-            <FileContentFilled />
-          </FlexCenterDiv>
-        )}
-      </div>
       <SaksbehandlerDiv>
         <Link
           data-testid='header__highcontrast-link'
@@ -126,6 +116,22 @@ const Header: React.FC<HeaderProps> = ({
             {saksbehandler.navn}
           </Name>
         )}
+        <Link
+          target='_blank'
+          href='https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx'
+        >
+          {t('label:brukerveiledning')}
+          <ExternalLink />
+        </Link>
+        <HorizontalSeparatorDiv />
+        <Link
+          target='_blank'
+          href='https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en'
+        >
+          {t('label:cai')}
+          <ExternalLink />
+        </Link>
+
       </SaksbehandlerDiv>
     </HeaderContent>
   )
