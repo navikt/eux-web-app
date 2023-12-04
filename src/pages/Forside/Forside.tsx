@@ -115,7 +115,7 @@ const Forside: React.FC = (): JSX.Element => {
         pathname: '/svarsed/view/sak/' + saks[0].sakId,
         search: _query ? '?q=' + _query : ''
       })
-    } else if (saks && saks.length > 1) {
+    } else if (saks) {
       navigate({
         pathname: '/svarsed/search',
         search: _query ? '?q=' + _query : ''
