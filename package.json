@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.8.9",
+  "version": "8.9.0-TEN-518",
   "private": true,
   "type": "module",
   "scripts": {
