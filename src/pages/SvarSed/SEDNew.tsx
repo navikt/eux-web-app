@@ -258,7 +258,7 @@ const SEDNew = (): JSX.Element => {
         fnr: valgtFnr,
         landKode: valgtLandkode,
         institusjonsID: valgtInstitusjon,
-        saksID: valgtSaksId,
+        fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
         sedtype: valgtSedType,
         sektor: valgtSektor,
         tema: valgtTema,

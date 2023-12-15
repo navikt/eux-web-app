@@ -42,7 +42,7 @@ export const createSak = (data: any): ActionWithPayload<any> => {
     fnr: data.fnr,
     landKode: data.landKode,
     institusjonsID: data.institusjonsID,
-    saksID: data.saksID,
+    fagsak: data.fagsak,
     sedtype: data.sedtype,
     sektor: data.sektor,
     tilleggsopplysninger: {
