@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react'
-import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin } from '@navikt/hoykontrast'
 import { setStatusParam } from 'actions/app'
 import { cleanUpPDU1, searchPdu1s } from 'actions/pdu1'
 import Modal from 'components/Modal/Modal'

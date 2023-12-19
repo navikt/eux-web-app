@@ -1,5 +1,5 @@
 import { Button } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import {appReset, setStatusParam} from 'actions/app'
 import { cleanUpSvarSed, querySaks } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
