@@ -9,19 +9,16 @@ import {
   RadioPanelGroup,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import * as localStorageActions from 'actions/localStorage'
 import { querySaks } from 'actions/svarsed'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { ReplySed } from 'declarations/sed'
-import { LocalStorageEntry, Sak, Sed } from 'declarations/types'
+import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -42,7 +39,6 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
 `
 
 interface SEDViewSelector {
-  entries: Array<LocalStorageEntry<PDU1 | ReplySed>> | null | undefined
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
   queryingSaks: boolean
@@ -51,7 +47,6 @@ interface SEDViewSelector {
 
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
-  entries: state.localStorage.svarsed.entries,
   deletedSed: state.svarsed.deletedSed,
   queryingSaks: state.loading.queryingSaks,
   refreshingSaks: state.loading.refreshingSaks
@@ -61,12 +56,9 @@ const SEDView = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, entries, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
-
-
-  const [loadingSavedItems, setLoadingSavedItems] = useState<boolean>(false)
 
   let seds: Array<Sed> | undefined
   if (currentSak) {
@@ -80,13 +72,6 @@ const SEDView = (): JSX.Element => {
       })
     }
   }, [deletedSak])
-
-  useEffect(() => {
-    if (!loadingSavedItems && entries === undefined) {
-      setLoadingSavedItems(true)
-      dispatch(localStorageActions.loadEntries('svarsed'))
-    }
-  }, [entries, loadingSavedItems])
 
   useEffect(() => {
     let controller = new AbortController();

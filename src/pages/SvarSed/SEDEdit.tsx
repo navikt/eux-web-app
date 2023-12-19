@@ -1,7 +1,6 @@
 import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
 import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { alertReset } from 'actions/alert'
-import { resetCurrentEntry } from 'actions/localStorage'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
   cleanUpSvarSed,
@@ -232,7 +231,6 @@ const SEDEdit = (): JSX.Element => {
   useEffect(() => {
     if (_sendButtonClicked && !_.isNil(sedSendResponse)) {
       const sakId = replySed?.sak?.sakId
-      dispatch(resetCurrentEntry('svarsed'))
       setTimeout(() =>
         dispatch(cleanUpSvarSed())
       , 200)

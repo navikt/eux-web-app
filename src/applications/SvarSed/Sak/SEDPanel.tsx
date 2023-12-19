@@ -1,23 +1,19 @@
 import {Close, Edit, Download, Send, Star, Helptext, Attachment} from '@navikt/ds-icons'
 import {Button, Detail, Heading, HelpText, Loader, Panel} from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { setCurrentEntry } from 'actions/localStorage'
 import {
   clarifyingSed,
   deleteSed,
   editSed,
-  getSedStatus,
   invalidatingSed,
   rejectingSed,
   remindSed,
   replyToSed,
-  setReplySed
 } from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
-import { findSavedEntry, hasDraftFor, hasSentStatus } from 'applications/SvarSed/Sak/utils'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
-import {LocalStorageEntry, Sak, Sed, SedAction} from 'declarations/types'
+import {Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
@@ -67,9 +63,7 @@ const MyHelpText = styled(HelpText)`
 `
 
 interface SEDPanelSelector {
-  entries: any
   replySed: ReplySed | null | undefined
-  sedStatus: {[x: string] : string | null}
   deletedSed: boolean | null | undefined
   featureToggles: FeatureToggles | null | undefined
 }
@@ -80,9 +74,7 @@ interface SEDPanelProps {
 }
 
 const mapState = (state: State): SEDPanelSelector => ({
-  entries: state.localStorage.svarsed.entries,
   replySed: state.svarsed.replySed,
-  sedStatus: state.svarsed.sedStatus,
   deletedSed: state.svarsed.deletedSed,
   featureToggles: state.app.featureToggles
 })
@@ -95,7 +87,7 @@ const SEDPanel = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { entries, replySed, sedStatus, deletedSed, featureToggles } = useAppSelector(mapState)
+  const { replySed, deletedSed, featureToggles } = useAppSelector(mapState)
 
   const [_loadingDraftSed, _setLoadingDraftSed] = useState<boolean>(false)
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
@@ -106,7 +98,6 @@ const SEDPanel = ({
   const [_rejectingSed, _setRejectingSed] = useState<boolean>(false)
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
   const [_reminderSed, _setReminderSed] = useState<boolean>(false)
-  const [_sedStatusRequested, _setSedStatusRequested] = useState<string |undefined>(undefined)
   const [attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
 
   const ALLOWED_SED_HANDLINGER = getAllowed("ALLOWED_SED_HANDLINGER", !!featureToggles?.featureAdmin)
@@ -133,30 +124,12 @@ const SEDPanel = ({
     }
   }, [replySed])
 
-  /** if we have received an OK from update on SED Status, and it is on local storage, load it  */
-  useEffect(() => {
-    if (!_.isUndefined(_sedStatusRequested) && Object.prototype.hasOwnProperty.call(sedStatus, _sedStatusRequested)) {
-      const entry: LocalStorageEntry<ReplySed> | undefined = findSavedEntry(_sedStatusRequested, entries)
-      if (entry && !hasSentStatus(entry.id, sedStatus)) {
-        dispatch(setCurrentEntry('svarsed', entry))
-        dispatch(setReplySed(entry.content))
-      }
-      _setSedStatusRequested(undefined)
-    }
-  }, [_sedStatusRequested, sedStatus])
-
   useEffect(() => {
     if(deletedSed && waitingForOperation){
       _setDeletingSed(false)
     }
   }, [deletedSed])
 
-  /** before loading the SED, let's check if the status is OK */
-  const loadDraft = (sakId: string, sedId: string) => {
-    _setSedStatusRequested(sedId)
-    _setLoadingDraftSed(true)
-    dispatch(getSedStatus(sakId, sedId))
-  }
 
   const onEditingSedClick = (sed: Sed, sak: Sak) => {
     _setEditingSed(true)
@@ -209,16 +182,14 @@ const SEDPanel = ({
   }
 
   const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed
-  const showDraftForSvarsedIdButton = hasDraftFor(sed, entries, 'svarsedId')
-  const showDraftForSedIdButton = hasDraftFor(sed, entries, 'sedId')
-  const showEditButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
-  const showUpdateButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
-  const showDeleteButton = !showDraftForSedIdButton && (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
-  const showReplyToSedButton = !showDraftForSvarsedIdButton && !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger && sed.sedHandlinger?.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
-  const showInvalidateButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
-  const showRemindButton = !showDraftForSedIdButton && !hasIkkeJournalfoerteSed && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
-  const showRejectButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
-  const showClarifyButton = !showDraftForSedIdButton && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
+  const showEditButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showUpdateButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
+  const showDeleteButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
+  const showReplyToSedButton = !!sed.svarsedType && sed.svarsedType !== "X010" && (sed.sedHandlinger && sed.sedHandlinger?.indexOf(sed.svarsedType as SedAction) >= 0) && ALLOWED_SED_HANDLINGER.includes(sed.svarsedType)
+  const showInvalidateButton = sed.sedHandlinger && sed.sedHandlinger?.indexOf('X008') >= 0  && ALLOWED_SED_HANDLINGER.includes("X008")
+  const showRemindButton = !hasIkkeJournalfoerteSed && sed.sedHandlinger && sed.sedHandlinger?.indexOf('X010') >= 0 && sed.status === 'received'  && ALLOWED_SED_HANDLINGER.includes("X010")
+  const showRejectButton = sed.sedHandlinger && sed.sedHandlinger?.indexOf('X011') >= 0  && ALLOWED_SED_HANDLINGER.includes("X011")
+  const showClarifyButton = sed.sedHandlinger && sed.sedHandlinger?.indexOf('X012') >= 0  && ALLOWED_SED_HANDLINGER.includes("X012")
 
   const hasSedHandlinger = sed.sedHandlinger && sed.sedHandlinger.length > 0
   const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
@@ -281,56 +252,6 @@ const SEDPanel = ({
           </FlexBaseDiv>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
-            {!!sed.svarsedId && showDraftForSvarsedIdButton && (
-              <Button
-                variant='secondary'
-                disabled={_sedStatusRequested === sed.svarsedId || hasSentStatus(sed.svarsedId, sedStatus)}
-                data-amplitude='svarsed.selection.loaddraft'
-                onClick={(e: any) => {
-                  buttonLogger(e, {
-                    type: sed.svarsedType
-                  })
-                  loadDraft(currentSak.sakId, sed.svarsedId!)
-                }}
-              >
-                <Edit />
-                {(_sedStatusRequested === sed.svarsedId)
-                  ? (
-                    <>
-                      {t('message:loading-checking-sed-status')}
-                      <Loader />
-                    </>
-                    )
-                  : (hasSentStatus(sed.svarsedId, sedStatus)
-                      ? t('label:sed-already-sent', { sed: sed.svarsedType })
-                      : t('label:gå-til-draft'))}
-              </Button>
-            )}
-            {showDraftForSedIdButton && (
-              <Button
-                variant='secondary'
-                disabled={_sedStatusRequested === sed.sedId || hasSentStatus(sed.sedId, sedStatus)}
-                data-amplitude='svarsed.selection.loaddraft'
-                onClick={(e: any) => {
-                  buttonLogger(e, {
-                    type: sed.sedType
-                  })
-                  loadDraft(currentSak.sakId, sed.sedId!)
-                }}
-              >
-                <Edit />
-                {(_sedStatusRequested === sed.sedId)
-                  ? (
-                    <>
-                      {t('message:loading-checking-sed-status')}
-                      <Loader />
-                    </>
-                    )
-                  : (hasSentStatus(sed.sedId, sedStatus)
-                      ? t('label:sed-already-sent', { sed: sed.sedType })
-                      : t('label:gå-til-draft'))}
-              </Button>
-            )}
             {showEditButton && (
               <>
                 <Button

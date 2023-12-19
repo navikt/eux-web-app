@@ -1,5 +1,4 @@
 import { logMeAgain, reduceSessionTime } from 'actions/app'
-import SaveSEDModal from 'applications/SvarSed/SaveSEDModal/SaveSEDModal'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
@@ -11,7 +10,6 @@ import Modal from 'components/Modal/Modal'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
 
 const SessionMonitorDiv = styled.div`
@@ -49,7 +47,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
-  const [saveAndRenew, setSaveAndRenew] = useState<boolean>(false)
   const { pdu1, replySed }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
@@ -105,11 +102,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       text: t('el:button-ok-got-it'),
       onClick: () => setModal(false)
     }, {
-      hide: !hasDraft,
-      main: true,
-      text: t('el:button-save-and-renew'),
-      onClick: () => setSaveAndRenew(true)
-    }, {
       main: false,
       text: t('el:button-log-me-again'),
       onClick: () => dispatch(logMeAgain())
@@ -126,34 +118,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   return (
     <SessionMonitorDiv>
-      <Modal
-        open={saveAndRenew}
-        onModalClose={() => setSaveAndRenew(false)}
-        modal={{
-          modalContent: (
-            <>
-              {!_.isNil(replySed) && (
-                <SaveSEDModal
-                  saveName='svarsed-localstorage-token-save'
-                  replySed={replySed!}
-                  savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name ?: string) => dispatch(logMeAgain(name))}
-                  onCancelled={() => setSaveAndRenew(false)}
-                />
-              )}
-              {!_.isNil(pdu1) && (
-                <SavePDU1Modal
-                  saveName='pdu1-localstorage-token-save'
-                  pdu1={pdu1!}
-                  savedButtonText={t('app:session-saved-going-to-reboot')}
-                  onSaved={(name?: string) => dispatch(logMeAgain(name))}
-                  onCancelled={() => setSaveAndRenew(false)}
-                />
-              )}
-            </>
-          )
-        }}
-      />
       <Modal
         open={modal}
         onModalClose={() => setModal(false)}

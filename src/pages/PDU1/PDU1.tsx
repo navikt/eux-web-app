@@ -93,14 +93,6 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
               <VerticalSeparatorDiv />
               <FlexDiv>
                 <Button
-                  variant='primary' onClick={() => {
-                    _setShowSaveModal(false)
-                  }}
-                >
-                  {t('el:button-save-draft-x', { x: t('label:pdu1') })}
-                </Button>
-                <HorizontalSeparatorDiv />
-                <Button
                   variant='secondary' onClick={() => {
                     _setShowSaveModal(false)
                     goToSearchPage()
