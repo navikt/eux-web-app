@@ -26,11 +26,10 @@ export const hasDraftFor = (
 export const isSedEditable = (
   sak: Sak,
   connectedSed: Sed,
-  entries: Array<LocalStorageEntry<ReplySed>> | null | undefined,
   sedStatus: {[k in string]: string | null}
 ) => (
   !!sak.ikkeJournalfoerteSed?.length ||
-  (hasDraftFor(connectedSed, entries, 'svarsedId') && !hasSentStatus(connectedSed.svarsedId!, sedStatus)) ||
+  !hasSentStatus(connectedSed.svarsedId!, sedStatus) ||
   (connectedSed.sedHandlinger && connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
   (connectedSed.svarsedType && (!sak.ikkeJournalfoerteSed?.length || !sak.ikkeJournalfoerteSedListFailed))
 )
