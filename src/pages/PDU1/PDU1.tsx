@@ -87,10 +87,6 @@ export const PDU1Page: React.FC<PDU1PageProps> = ({
           modalTitle: t('message:warning-x-not-saved', { x: 'PDU1' }),
           modalContent: (
             <>
-              <div>
-                {t('message:warning-x-save', { x: 'PDU1' })}
-              </div>
-              <VerticalSeparatorDiv />
               <FlexDiv>
                 <Button
                   variant='secondary' onClick={() => {

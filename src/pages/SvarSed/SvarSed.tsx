@@ -107,10 +107,6 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
             modalTitle: t('message:warning-x-not-saved', { x: 'SED' }),
             modalContent: (
               <>
-                <div>
-                  {t('message:warning-x-save', { x: 'SEDen' })}
-                </div>
-                <VerticalSeparatorDiv />
                 <FlexDiv>
                   <Button
                     variant='secondary' onClick={() => {
