@@ -71,6 +71,9 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
   }
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     const rinasaksnummerParam: string | null = params.get('rinasaksnummer')
     const fnrParam: string | null = params.get('fnr')
     const temaParam: string | null = params.get('tema')
@@ -86,7 +89,13 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
       dispatch(setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam))
-      dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new'))
+      dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new', signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
     }
   }, [])
 
