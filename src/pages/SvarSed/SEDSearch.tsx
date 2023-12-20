@@ -104,6 +104,21 @@ const SEDSearch = (): JSX.Element => {
     }
   }, [])
 
+  useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if(_query){
+      dispatch(querySaks(_query, 'new', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [_query])
+
   // filter out U-seds or UB-seds if featureSvarsed.u = false
   const visibleSaks = saks?.filter((s: Sak) => !((s.sakType.startsWith('U_') || s.sakType.startsWith('UB_')) && featureToggles.featureSvarsedU === false)) ?? undefined
   const familieytelser: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('FB_'))?.length ?? 0
@@ -132,7 +147,6 @@ const SEDSearch = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
