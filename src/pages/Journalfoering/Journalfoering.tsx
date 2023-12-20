@@ -52,9 +52,18 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
   }
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     // reload, so it reflects changes made in potential SED save/send
     if (!currentSak && sakId) {
-      dispatch(querySaks(sakId, 'refresh'))
+      dispatch(querySaks(sakId, 'refresh', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
     }
   }, [])
 
