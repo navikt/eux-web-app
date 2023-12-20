@@ -89,7 +89,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
     }
     if (!!rinasaksnummerParam || !!fnrParam) {
       dispatch(setStatusParam('rinasaksnummerOrFnr', rinasaksnummerParam || fnrParam))
-      dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new', signal))
+      dispatch(querySaks((rinasaksnummerParam || fnrParam)!, 'new', false, signal))
     }
 
     return () => {
