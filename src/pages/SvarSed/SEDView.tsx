@@ -96,8 +96,17 @@ const SEDView = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     if (deletedSed && currentSak) {
-      dispatch(querySaks(currentSak?.sakId, 'refresh'))
+      dispatch(querySaks(currentSak?.sakId, 'refresh', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
     }
   }, [deletedSed])
 
