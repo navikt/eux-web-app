@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {sign} from "crypto";
 
 export const FlexRadioGroup = styled(RadioGroup)`
  .navds-radio-buttons {
@@ -77,11 +78,20 @@ const SEDSearch = (): JSX.Element => {
   const namespace = 'sedsearch'
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     if (_query && !_.isNil(deletedSak)) {
       // if we are deleting a sak, and query was saksnummer, then we are deleting the same sak, nothing to query
       // but if we are querying fnr/dnr, we have to query again so we can have a sak list without the deleted sak
       if (_queryType !== 'saksnummer') {
-        dispatch(querySaks(_query!, 'new'))
+        dispatch(querySaks(_query!, 'new', false, signal))
+      }
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
       }
     }
   }, [deletedSak])
