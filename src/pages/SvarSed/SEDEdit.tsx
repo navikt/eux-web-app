@@ -196,9 +196,18 @@ const SEDEdit = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     if (_.isUndefined(currentSak) && _.isUndefined(replySed)) {
       if (sakId) {
-        dispatch(querySaks(sakId, 'refresh'))
+        dispatch(querySaks(sakId, 'refresh', false, signal))
+      }
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
       }
     }
   }, [])
