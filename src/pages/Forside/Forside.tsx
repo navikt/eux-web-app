@@ -103,6 +103,21 @@ const Forside: React.FC = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if(_query){
+      dispatch(querySaks(_query, 'new', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [_query])
+
+  useEffect(() => {
     if (saks?.length === 1 && _queryType === 'saksnummer') {
       dispatch(setCurrentSak(saks[0]))
       navigate({
@@ -137,7 +152,6 @@ const Forside: React.FC = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
