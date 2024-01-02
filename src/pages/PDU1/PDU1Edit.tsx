@@ -23,7 +23,7 @@ import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
@@ -57,6 +57,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 }: PDU1EditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const params = useParams()
   const {
     completingPdu1,
@@ -97,9 +98,18 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     }
   }
 
+
+  const goToSearchPage = () => {
+    navigate({
+      pathname: '/pdu1/search',
+      search: window.location.search
+    })
+  }
+
   const resetComplete = () => {
     dispatch(resetJornalførePdu1())
     setCompleteModal(false)
+    goToSearchPage()
   }
 
   useEffect(() => {
