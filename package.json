@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "8.9.1-TEN-339-Remove-LocalStorage",
+  "version": "8.9.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -228,6 +228,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@8.9.1-TEN-339-Remove-LocalStorage",
+  "_id": "neessi@8.9.1",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
