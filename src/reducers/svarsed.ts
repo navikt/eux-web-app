@@ -132,20 +132,6 @@ const svarsedReducer = (
     case types.APP_RESET:
       return initialSvarsedState
 
-    case types.LOCALSTORAGE_ENTRY_SAVE: {
-      const { namespace, entry } = (action as ActionWithPayload).payload
-      if (namespace === 'svarsed') {
-        const replySed = entry.content
-        return {
-          ...state,
-          replySed,
-          originalReplySed: replySed,
-          replySedChanged: false
-        }
-      }
-      return state
-    }
-
     case types.SVARSED_RESET:
       return {
         ...state,

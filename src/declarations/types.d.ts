@@ -44,13 +44,6 @@ export interface BucTyper {
   unemployment: Array<Kodeverk>
 }
 
-export interface LocalStorageEntry<CustomLocalStorageContent extends StorageTypes = any> {
-  id: string
-  name: string
-  date: string
-  content: CustomLocalStorageContent
-}
-
 export interface Sed {
   sedTittel: string
   sedType: string

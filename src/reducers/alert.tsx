@@ -75,7 +75,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
       case types.SERVER_INTERNAL_ERROR:
         bannerMessage = i18n.t('message:error-serverInternalError')
         break
-      
+
       default:
         bannerMessage = (action as ActionWithPayload).payload.message || i18n.t('message:error-serverInternalError')
         break
@@ -205,12 +205,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All OK MESSAGES for banner go here
    */
   let dealWithBanner = false
-
-  if (action.type === types.LOCALSTORAGE_ENTRY_SAVE) {
-    bannerMessage = i18n.t('message:success-localstorage-save')
-    dealWithBanner = true
-  }
-
+  
   if (action.type === types.SVARSED_SED_SEND_SUCCESS) {
     bannerMessage = i18n.t('message:success-sed-send')
     dealWithBanner = true

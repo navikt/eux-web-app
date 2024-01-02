@@ -43,7 +43,6 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
 `
 
 const mapState = (state: State): any => ({
-  entries: state.localStorage.svarsed.entries,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   featureToggles: state.app.featureToggles,
@@ -58,7 +57,6 @@ const SEDSearch = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const {
-    entries,
     alertMessage,
     alertType,
     deletedSak,
@@ -79,11 +77,20 @@ const SEDSearch = (): JSX.Element => {
   const namespace = 'sedsearch'
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     if (_query && !_.isNil(deletedSak)) {
       // if we are deleting a sak, and query was saksnummer, then we are deleting the same sak, nothing to query
       // but if we are querying fnr/dnr, we have to query again so we can have a sak list without the deleted sak
       if (_queryType !== 'saksnummer') {
-        dispatch(querySaks(_query!, 'new'))
+        dispatch(querySaks(_query!, 'new', false, signal))
+      }
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
       }
     }
   }, [deletedSak])
@@ -106,6 +113,21 @@ const SEDSearch = (): JSX.Element => {
     }
   }, [])
 
+  useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if(_query){
+      dispatch(querySaks(_query, 'new', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [_query])
+
   // filter out U-seds or UB-seds if featureSvarsed.u = false
   const visibleSaks = saks?.filter((s: Sak) => !((s.sakType.startsWith('U_') || s.sakType.startsWith('UB_')) && featureToggles.featureSvarsedU === false)) ?? undefined
   const familieytelser: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('FB_'))?.length ?? 0
@@ -114,7 +136,7 @@ const SEDSearch = (): JSX.Element => {
   const sykdom: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('S_'))?.length ?? 0
   const lovvalg: number = _.filter(visibleSaks, (s: Sak) => s.sakType.startsWith('LA_'))?.length ?? 0
   const filteredSaks = _.filter(visibleSaks, (s: Sak) => _filter !== 'all' ? s.sakType.startsWith(_filter) : true)
-  const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(s, sed, entries, sedStatus)) !== undefined)?.length ?? 0
+  const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(s, sed, sedStatus)) !== undefined)?.length ?? 0
 
   return (
     <Container>
@@ -134,7 +156,6 @@ const SEDSearch = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
@@ -197,7 +218,7 @@ const SEDSearch = (): JSX.Element => {
                     <MyRadioPanelGroup>
                       {filteredSaks?.map((sak: Sak) => (
                         _onlyEditableSaks &&
-                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sak, sed, entries, sedStatus)) === undefined
+                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sak, sed, sedStatus)) === undefined
                           ? <div />
                           : (
                             <div key={'sak-' + sak?.sakId}>

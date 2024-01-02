@@ -1,6 +1,5 @@
 import { BodyLong, Button, Loader, Panel } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import { saveEntry } from 'actions/localStorage'
+import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPdu1Template, getStoredPdu1AsJSON, jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { setValidation } from 'actions/validation'
@@ -11,7 +10,6 @@ import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
 import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
-import SavePDU1Modal from 'applications/PDU1/SavePDU1Modal/SavePDU1Modal'
 import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
 import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
 import MainForm from 'applications/SvarSed/MainForm'
@@ -20,12 +18,12 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { PDU1 } from 'declarations/pd'
 import { State } from 'declarations/reducers'
-import { LocalStorageEntry, Validation } from 'declarations/types'
+import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePDU1Edit, ValidationPDU1EditProps } from './mainValidation'
@@ -34,7 +32,6 @@ import moment from "moment/moment";
 export interface PDU1EditSelector {
   completingPdu1: boolean
   pdu1Initialized: boolean
-  currentEntry: LocalStorageEntry<PDU1> | undefined
   pdu1: PDU1 | null | undefined
   savingPdu1: boolean
   jornalførePdu1Response: any
@@ -49,7 +46,6 @@ export interface PDU1EditProps {
 const mapState = (state: State): any => ({
   completingPdu1: state.loading.completingPdu1,
   pdu1Initialized: state.pdu1.pdu1Initialized,
-  currentEntry: state.localStorage.pdu1.currentEntry,
   pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
@@ -61,11 +57,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 }: PDU1EditProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const params = useParams()
   const {
     completingPdu1,
     pdu1Initialized,
-    currentEntry,
     pdu1,
     jornalførePdu1Response,
     validation,
@@ -73,7 +69,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
   }: PDU1EditSelector = useAppSelector(mapState)
   const namespace = 'pdu1'
   const [completeModal, setCompleteModal] = useState<boolean>(false)
-  const [viewSavePdu1Modal, setViewSavePdu1Modal] = useState<boolean>(false)
 
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
@@ -103,19 +98,18 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     }
   }
 
-  const onSavePdu1Click = () => {
-    if (_.isNil(currentEntry)) {
-      setViewSavePdu1Modal(true)
-    } else {
-      const newCurrentEntry: LocalStorageEntry<PDU1> = _.cloneDeep(currentEntry)
-      newCurrentEntry.content = _.cloneDeep(pdu1!)
-      dispatch(saveEntry('pdu1', newCurrentEntry))
-    }
+
+  const goToSearchPage = () => {
+    navigate({
+      pathname: '/pdu1/search',
+      search: window.location.search
+    })
   }
 
   const resetComplete = () => {
     dispatch(resetJornalførePdu1())
     setCompleteModal(false)
+    goToSearchPage()
   }
 
   useEffect(() => {
@@ -177,20 +171,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           onModalClose={resetComplete}
         />
       )}
-      <Modal
-        open={viewSavePdu1Modal}
-        onModalClose={() => setViewSavePdu1Modal(false)}
-        modal={{
-          closeButton: false,
-          modalContent: (
-            <SavePDU1Modal
-              pdu1={pdu1!}
-              onCancelled={() => setViewSavePdu1Modal(false)}
-              onSaved={() => setViewSavePdu1Modal(false)}
-            />
-          )
-        }}
-      />
       <MainForm<PDU1>
         type='onelevel'
         namespace={namespace}
@@ -238,20 +218,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
                 ? t('message:loading-opprette-pdu1')
                 : t('label:opprett-pdu1')}
               {completingPdu1 && <Loader />}
-            </Button>
-            <VerticalSeparatorDiv size='0.5' />
-          </div>
-          <HorizontalSeparatorDiv />
-
-          <div>
-            <Button
-              variant='secondary'
-              data-amplitude={_.isNil(currentEntry) ? 'pdu1.editor.savedraft' : 'pdu1.editor.updatedraft'}
-              onClick={onSavePdu1Click}
-            >
-              {_.isNil(currentEntry)
-                ? t('el:button-save-draft-x', { x: 'PD U1' })
-                : t('el:button-update-draft-x', { x: 'PD U1' })}
             </Button>
             <VerticalSeparatorDiv size='0.5' />
           </div>

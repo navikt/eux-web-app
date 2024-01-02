@@ -31,6 +31,9 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
   const { refreshingSaks }: SedUnderJournalfoeringEllerUkjentStatusSelector = useAppSelector(mapState)
 
   useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
     let interval: string | number | NodeJS.Timeout | undefined
     let runs = 0
     interval = setInterval(() => {
@@ -39,10 +42,16 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
         clearInterval(interval)
         return
       } else if (sak.sedUnderJournalfoeringEllerUkjentStatus && (runs === 5 || runs === 10 || runs === 59)) {
-        dispatch(querySaks(sak?.sakId, 'timer', runs >= 2))
+        dispatch(querySaks(sak?.sakId, 'timer', runs >= 2, signal))
       }
     }, 1000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      if(controller){
+        controller.abort();
+      }
+    }
   }, [])
 
 

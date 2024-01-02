@@ -4,7 +4,7 @@ import TopContainer from 'components/TopContainer/TopContainer'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import {BodyLong, Heading, Link} from '@navikt/ds-react'
+import {Heading, Link} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
@@ -13,13 +13,9 @@ import {ReactComponent as Dokument} from 'assets/icons/Dokument.svg'
 import {ReactComponent as Binders} from 'assets/icons/Binders.svg'
 import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
-import {loadReplySed, querySaks, setCurrentSak} from "../../actions/svarsed";
+import {querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
 import {Sak, Saks} from "../../declarations/types";
-import LoadSave from "../../components/LoadSave/LoadSave";
-import {ReplySed} from "../../declarations/sed";
-import {PDU1} from "../../declarations/pd";
-import {loadPdu1} from "../../actions/pdu1";
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -98,8 +94,6 @@ const Forside: React.FC = (): JSX.Element => {
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
-  const [_hasLocalReplySeds, _setHasLocalReplySeds] = useState<boolean>(false)
-  const [_hasLocaPDU1, _setHasLocalPDU1] = useState<boolean>(false)
   const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
 
   useEffect(() => {
@@ -107,6 +101,21 @@ const Forside: React.FC = (): JSX.Element => {
       dispatch(setCurrentSak(undefined))
     }
   }, [])
+
+  useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if(_query){
+      dispatch(querySaks(_query, 'new', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [_query])
 
   useEffect(() => {
     if (saks?.length === 1 && _queryType === 'saksnummer') {
@@ -143,7 +152,6 @@ const Forside: React.FC = (): JSX.Element => {
               }}
               onQuerySubmit={(q: string) => {
                 _setQuery(q)
-                dispatch(querySaks(q, 'new'))
               }}
               querying={queryingSaks}
               error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
@@ -184,29 +192,6 @@ const Forside: React.FC = (): JSX.Element => {
         </Content>
         <Margin/>
       </WhiteContainer>
-      <Container>
-        <Margin/>
-        <Content style={{ minWidth: '800px' }}>
-          <ContentArea>
-            {(_hasLocalReplySeds || _hasLocaPDU1) &&
-              <BodyLong>
-                {t('label:lokalt-lagrede-x', { x: t('label:svarsed') })}
-              </BodyLong>
-            }
-            <LoadSave<ReplySed>
-              setHasEntries={_setHasLocalReplySeds}
-              namespace='svarsed'
-              loadReplySed={loadReplySed}
-            />
-            <LoadSave<PDU1>
-              setHasEntries={_setHasLocalPDU1}
-              namespace='pdu1'
-              loadReplySed={loadPdu1}
-            />
-          </ContentArea>
-        </Content>
-        <Margin />
-      </Container>
     </TopContainer>
   )
 }

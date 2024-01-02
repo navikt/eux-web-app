@@ -6,7 +6,6 @@ import attachments from './attachments'
 import inntekt from './inntekt'
 import journalfoering from './journalfoering'
 import loading from './loading'
-import localStorage from './localStorage'
 import pdu1 from './pdu1'
 import person from './person'
 import sak from './sak'
@@ -17,5 +16,5 @@ import validation from './validation'
 import vedlegg from './vedlegg'
 
 export default {
-  adresse, alert, app, arbeidsperioder, attachments, inntekt, journalfoering, loading, localStorage, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
+  adresse, alert, app, arbeidsperioder, attachments, inntekt, journalfoering, loading, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
 }

@@ -5,7 +5,6 @@ import { ArbeidsperioderState } from 'reducers/arbeidsperioder'
 import { AttachmentsState } from 'reducers/attachments'
 import { InntektState } from 'reducers/inttekt'
 import { LoadingState } from 'reducers/loading'
-import { LocalStorageState } from 'reducers/localStorage'
 import { Pdu1State } from 'reducers/pdu1'
 import { PersonState } from 'reducers/person'
 import { SakState } from 'reducers/sak'
@@ -24,7 +23,6 @@ export interface State {
   inntekt: InntektState,
   journalfoering: JournalfoeringState,
   loading: LoadingState,
-  localStorage: LocalStorageState,
   pdu1: Pdu1State,
   person: PersonState,
   sak: SakState,
