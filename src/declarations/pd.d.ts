@@ -61,6 +61,10 @@ export interface IkkeRettTilDagpenger {
   ikkeSoekt: JaNei
 }
 
+export interface FagsakPayload {
+  aar?: string
+}
+
 export interface PDU1 {
   // added
   __journalpostId?: string
