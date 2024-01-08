@@ -1,6 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { PDU1 } from 'declarations/pd'
+import {FagsakPayload, PDU1} from 'declarations/pd'
 import { Fagsaker, UpdatePdu1Payload } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
@@ -121,12 +121,13 @@ export const getFagsaker = (
 }
 
 export const createFagsak = (
-  fnr: string
+  fnr: string, payload: FagsakPayload
 ): ActionWithPayload<Fagsaker> => {
   return call({
     method: 'POST',
     url: sprintf(urls.API_PDU1_CREATE_FAGSAK_URL, { fnr }),
     expectedPayload: mockFagsak,
+    body: payload,
     type: {
       request: types.PDU1_CREATE_FAGSAK_REQUEST,
       success: types.PDU1_CREATE_FAGSAK_SUCCESS,

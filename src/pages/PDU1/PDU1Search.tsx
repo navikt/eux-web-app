@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Button, Heading, Label, Loader, Panel} from '@navikt/ds-react'
+import {Alert, BodyLong, Button, Heading, Label, Loader, Panel, Select} from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
@@ -116,6 +116,7 @@ const PDU1Search = (): JSX.Element => {
 
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const q: string | null = params.get('q')
+  const currentYear = new Date().getFullYear()
 
   const [fnrOrDnr, setFnrOrDnr] = useState<string | null | undefined>(fnrParam ?? q)
   const [tema, setTema] = useState<string | undefined>(undefined)
@@ -126,15 +127,18 @@ const PDU1Search = (): JSX.Element => {
   const [newPdu1Mode, setNewPdu1Mode] = useState<boolean>(false)
   const [searchPdu1Mode, setSearchPdu1Mode] = useState<boolean>(false)
   const [requestPreview, setRequestPreview] = useState<boolean>(false)
+  const [fagsakYear, setFagsakYear] = useState<any>(currentYear)
 
   const namespace = 'pdu1search'
   const [validation, _resetValidation, performValidation] = useLocalValidation<ValidationPdu1SearchProps>(validatePdu1Search, namespace)
+
 
   const onNewPdu1Mode = () => {
     dispatch(resetPdu1results())
     setSearchPdu1Mode(false)
     setNewPdu1Mode(true)
     setTema("DAG")
+    setFagsakYear(currentYear)
     if (fnrOrDnr) {
       dispatch(getFagsaker(fnrOrDnr, 'PD', "DAG"))
     }
@@ -142,7 +146,7 @@ const PDU1Search = (): JSX.Element => {
 
   const onCreateFagsak = () => {
     if (fnrOrDnr) {
-      dispatch(createFagsak(fnrOrDnr))
+      dispatch(createFagsak(fnrOrDnr, {aar: fagsakYear}))
     }
   }
 
@@ -332,6 +336,16 @@ const PDU1Search = (): JSX.Element => {
           </Heading>
           <VerticalSeparatorDiv size='2' />
           {!gettingFagsaker &&
+            <AlignStartRow style={{ width: '50%' }}>
+            <Column>
+              <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakYear(e.currentTarget.value)}>
+                <option value={currentYear}>{currentYear}</option>
+                <option value={currentYear - 1}>{currentYear - 1}</option>
+                <option value={currentYear - 2}>{currentYear - 2}</option>
+                <option value={currentYear - 3}>{currentYear - 3}</option>
+                <option value={currentYear - 4}>{currentYear - 4}</option>
+              </Select>
+            </Column>
             <Column>
               <Button
                 variant='primary'
@@ -342,6 +356,7 @@ const PDU1Search = (): JSX.Element => {
                 {t('el:button-create-x', { x: 'fagsak' })}
               </Button>
             </Column>
+            </AlignStartRow>
           }
 
           <div style={{ width: '100%' }}>
