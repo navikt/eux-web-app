@@ -70,7 +70,7 @@ const Formål: React.FC<MainFormProps> = ({
     { label: t('el:option-formaal-anmodning-om-informasjon'), value: 'anmodning_om_informasjon' },
     { label: t('el:option-formaal-vedtak'), value: 'vedtak' },
     { label: t('el:option-formaal-motregning'), value: 'motregning' },
-    { label: t('el:option-formaal-refusjon'), value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen' }
+    { label: t('el:option-formaal-refusjon'), value: 'refusjon_ihht_artikkel_58_i_forordning' }
   ]
 
   if (isF001Sed(replySed)) {
