@@ -47,7 +47,7 @@ export interface JournalfoerPanelProps {
 
 interface JournalfoerPanelSelector {
   person: Person | null | undefined
-  searchingPerson: boolean
+  searchingJournalfoeringPerson: boolean
   gettingFagsaker: boolean
   isJournalfoering: boolean
   kodemaps: Kodemaps | undefined
@@ -61,7 +61,7 @@ interface JournalfoerPanelSelector {
 
 const mapState = (state: State) => ({
   person: state.journalfoering.person,
-  searchingPerson: state.loading.searchingPerson,
+  searchingJournalfoeringPerson: state.loading.searchingJournalfoeringPerson,
   gettingFagsaker: state.loading.gettingFagsaker,
   isJournalfoering: state.loading.isJournalfoering,
   kodemaps: state.app.kodemaps,
@@ -76,11 +76,11 @@ const mapState = (state: State) => ({
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
-  const [_fnr, setfnr] = useState<string>()
+  const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const [_tema, setTema] = useState<string>()
+  const [_tema, setTema] = useState<string | undefined>(sak.fagsak && sak.fagsak.tema ? sak.fagsak.tema : undefined)
   const [_journalfoerModal, setJournalfoerModal] = useState<boolean>(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
@@ -117,6 +117,14 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
       setJournalfoerModal(true)
     }
   }, [journalfoeringLogg])
+
+  useEffect(() => {
+    if(sak.fagsak && sak.fagsak.fnr && sak.fagsak.tema){
+      dispatch(searchJournalfoeringPerson(sak.fagsak.fnr))
+      dispatch(getJournalfoeringFagsaker(sak.fagsak.fnr, sak.fagsak.tema))
+      dispatch(setJournalfoeringFagsak(sak.fagsak))
+    }
+  }, [])
 
   const onSearch = () => {
     dispatch(alertReset())
@@ -228,10 +236,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
         <VerticalSeparatorDiv />
         <Row>
           <Column flex={1}>
-            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation}/>
+            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fnr}/>
           </Column>
           <Column flex={0.5}>
-            <Button variant="secondary" onClick={onSearch} loading={searchingPerson} className='nolabel'>
+            <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
               {t("el:button-search-i-x", {x: "PDL"})}
             </Button>
           </Column>
@@ -257,7 +265,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 {t('label:velg')}
               </option>)
               {temaer && temaer.map((k: Kodeverk) => (
-                <option value={k.kode} key={k.kode}>
+                <option value={k.kode} key={k.kode} selected={k.kode === _tema}>
                   {k.term}
                 </option>
               ))}
@@ -279,7 +287,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </option>
                 {fagsaker &&
                   _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
-                    <option value={f.id} key={f.id}>
+                    <option value={f.id} key={f.id} selected={f.id === sak.fagsak?.id}>
                       {f.nr || f.id}
                     </option>
                   ))}

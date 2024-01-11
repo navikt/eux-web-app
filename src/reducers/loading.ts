@@ -39,6 +39,7 @@ export const initialLoadingState: LoadingState = {
   savingSed: false,
   searchingPerson: false,
   searchingRelatertPerson: false,
+  searchingJournalfoeringPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
@@ -505,6 +506,19 @@ const loadingReducer = (
         ...state,
         sendingVedlegg: false
       }
+
+    case types.JOURNALFOERING_PERSON_SEARCH_REQUEST:
+    return {
+      ...state,
+      searchingJournalfoeringPerson: true
+    }
+
+  case types.JOURNALFOERING_PERSON_SEARCH_SUCCESS:
+  case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
+    return {
+      ...state,
+      searchingJournalfoeringPerson: false
+    }
 
     case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
       return {
