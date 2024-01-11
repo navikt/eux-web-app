@@ -149,6 +149,7 @@ const SEDEdit = (): JSX.Element => {
       (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
       (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
       (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
+      (replySed as F002Sed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 ||
       (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
     )
 
@@ -277,6 +278,10 @@ const SEDEdit = (): JSX.Element => {
     "refusjon_i_henhold_til_artikkel_58_i_forordningen": {
       menu: "refusjon_i_henhold_til_artikkel_58_i_forordningen",
       menuOption: undefined
+    },
+    "refusjon_ihht_artikkel_58_i_forordning": {
+      menu: "refusjon_ihht_artikkel_58_i_forordning",
+      menuOption: undefined
     }
   }
 
@@ -388,6 +393,12 @@ const SEDEdit = (): JSX.Element => {
                 },
                 {
                   label: t('el:option-mainform-refusjon'),
+                  value: 'refusjon_ihht_artikkel_58_i_forordning',
+                  component: KravOmRefusjon,
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 ?? false
+                },
+                {
+                  label: t('el:option-mainform-refusjon'),
                   value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
                   component: KravOmRefusjon,
                   condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false
@@ -396,7 +407,7 @@ const SEDEdit = (): JSX.Element => {
                   label: t('el:option-mainform-kontoopplysninger'),
                   value: 'kontoopplysninger',
                   component: Kontoopplysning,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
                 }
               ]}
               replySed={replySed}
