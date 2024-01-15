@@ -262,7 +262,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
         <VerticalSeparatorDiv />
         <Row>
           <Column flex={1}>
-            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fnr}/>
+            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
           </Column>
           <Column flex={0.5}>
             <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
