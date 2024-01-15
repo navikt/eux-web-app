@@ -10,7 +10,7 @@ import {
   Tema
 } from "../../declarations/types";
 import {Row, Column, VerticalSeparatorDiv, HorizontalSeparatorDiv} from "@navikt/hoykontrast";
-import {Alert, Button, Heading, Panel, Select, TextField} from "@navikt/ds-react";
+import {Alert, Button, Heading, Loader, Panel, Select, TextField} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -82,6 +82,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
   const [_tema, setTema] = useState<string | undefined>(sak.fagsak && sak.fagsak.tema ? sak.fagsak.tema : undefined)
   const [_journalfoerModal, setJournalfoerModal] = useState<boolean>(false)
+  const [_isLoading, setIsLoading] = useState(false)
+  const [_fagsakSelected, setFagsakSelected] = useState(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -120,11 +122,19 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   useEffect(() => {
     if(sak.fagsak && sak.fagsak.fnr && sak.fagsak.tema){
+      setIsLoading(true)
+      setFagsakSelected(true)
       dispatch(searchJournalfoeringPerson(sak.fagsak.fnr))
       dispatch(getJournalfoeringFagsaker(sak.fagsak.fnr, sak.fagsak.tema))
       dispatch(setJournalfoeringFagsak(sak.fagsak))
     }
   }, [])
+
+  useEffect(() => {
+    if(!gettingFagsaker && !searchingJournalfoeringPerson && _isLoading){
+      setIsLoading(false)
+    }
+  }, [gettingFagsaker, searchingJournalfoeringPerson])
 
   const onSearch = () => {
     dispatch(alertReset())
@@ -161,6 +171,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   const onGetFagsaker = () => {
+    setFagsakSelected(false)
     dispatch(getJournalfoeringFagsaker(_fnr!, _tema!))
   }
 
@@ -193,6 +204,21 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     })
     return items
   }
+
+  if(_isLoading){
+    return(
+      <Panel border>
+        <Heading size='small'>
+          {t('label:journalfoer')}
+        </Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        <Loader/>
+      </Panel>
+    )
+  }
+
 
   return (
     <>
@@ -287,7 +313,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </option>
                 {fagsaker &&
                   _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
-                    <option value={f.id} key={f.id} selected={f.id === sak.fagsak?.id}>
+                    <option value={f.id} key={f.id} selected={f.id === sak.fagsak?.id && _fagsakSelected}>
                       {f.nr || f.id}
                     </option>
                   ))}
