@@ -94,6 +94,24 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
         person: null
       }
 
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_REQUEST:
+      return {
+        ...state,
+        fagsak: undefined
+      }
+
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_SUCCESS:
+      return {
+        ...state,
+        fagsaker: [(action as ActionWithPayload).payload],
+        fagsak: (action as ActionWithPayload).payload
+      }
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE:
+      return {
+        ...state,
+        fagsaker: null,
+        fagsak: null
+      }
 
     case types.JOURNALFOERING_FAGSAK_RESET:
     case types.JOURNALFOERING_FAGSAKER_RESET:

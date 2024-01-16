@@ -7,6 +7,7 @@ import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
 import mockPerson from "../mocks/person";
 import {H001Sed} from "../declarations/sed";
 import mockSendSak from "../mocks/sak/sendSak";
+import mockFagsakGenerell from 'mocks/fagsak_generell'
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -44,6 +45,24 @@ export const getJournalfoeringFagsaker = (
       request: types.JOURNALFOERING_FAGSAKER_REQUEST,
       success: types.JOURNALFOERING_FAGSAKER_SUCCESS,
       failure: types.JOURNALFOERING_FAGSAKER_FAILURE
+    }
+  })
+}
+
+export const createJournalfoeringFagsak = (
+  fnr: string, tema: string
+): ActionWithPayload<Fagsaker> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_CREATE_FAGSAK_GENERELL_URL, { fnr }),
+    body: {
+      tema
+    },
+    expectedPayload: mockFagsakGenerell,
+    type: {
+      request: types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_REQUEST,
+      success: types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_SUCCESS,
+      failure: types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE
     }
   })
 }

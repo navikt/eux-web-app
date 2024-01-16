@@ -18,7 +18,7 @@ import {
   searchJournalfoeringPerson,
   getJournalfoeringFagsaker,
   setJournalfoeringFagsak,
-  resetJournalfoeringFagsaker, journalfoer
+  resetJournalfoeringFagsaker, journalfoer, createJournalfoeringFagsak
 } from "../../actions/journalfoering";
 
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -49,6 +49,7 @@ interface JournalfoerPanelSelector {
   person: Person | null | undefined
   searchingJournalfoeringPerson: boolean
   gettingFagsaker: boolean
+  creatingFagsak: boolean
   isJournalfoering: boolean
   kodemaps: Kodemaps | undefined
   tema: Tema | undefined
@@ -63,6 +64,7 @@ const mapState = (state: State) => ({
   person: state.journalfoering.person,
   searchingJournalfoeringPerson: state.loading.searchingJournalfoeringPerson,
   gettingFagsaker: state.loading.gettingFagsaker,
+  creatingFagsak: state.loading.creatingFagsak,
   isJournalfoering: state.loading.isJournalfoering,
   kodemaps: state.app.kodemaps,
   tema: state.app.tema,
@@ -76,7 +78,7 @@ const mapState = (state: State) => ({
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingJournalfoeringPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -131,6 +133,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }, [])
 
   useEffect(() => {
+    if(fagsak){
+      setFagsakSelected(true)
+    }
+  }, [fagsak])
+
+  useEffect(() => {
     if(!gettingFagsaker && !searchingJournalfoeringPerson && _isLoading){
       setIsLoading(false)
     }
@@ -173,6 +181,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const onGetFagsaker = () => {
     setFagsakSelected(false)
     dispatch(getJournalfoeringFagsaker(_fnr!, _tema!))
+  }
+
+  const onCreateFagsak = () => {
+    dispatch(createJournalfoeringFagsak(_fnr!, _tema!))
   }
 
   const onFagsakChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -313,11 +325,16 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </option>
                 {fagsaker &&
                   _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
-                    <option value={f.id} key={f.id} selected={f.id === sak.fagsak?.id && _fagsakSelected}>
+                    <option value={f.id} key={f.id} selected={f.id === fagsak?.id && _fagsakSelected}>
                       {f.nr || f.id}
                     </option>
                   ))}
               </Select>
+            }
+            {fagsaker && fagsaker.length === 0 &&
+              <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
+                {t("el:button-create-x", {x: "fagsak"})}
+              </Button>
             }
           </Column>
           <Column/>
