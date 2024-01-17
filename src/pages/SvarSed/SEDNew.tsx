@@ -754,18 +754,18 @@ const SEDNew = (): JSX.Element => {
                 </>
               )}
               {valgtSektor !== "UB" && fagsaker && fagsaker.length === 0 &&
-                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
+                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel' disabled={!!opprettetSak}>
                   {t("el:button-create-x", {x: "fagsak"})}
                 </Button>
               }
               <VerticalSeparatorDiv />
               {valgtSektor === "UB" && fagsaker && fagsaker.length >= 0 &&
                 <>
-                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak} disabled={!!opprettetSak}>
                     {t("el:button-create-x", {x: "fagsak"})}
                   </Button>
                   <VerticalSeparatorDiv size={0.2}/>
-                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                  <Select disabled={!!opprettetSak} label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
                     <option value={currentYear}>{currentYear}</option>
                     <option value={currentYear - 1}>{currentYear - 1}</option>
                     <option value={currentYear - 2}>{currentYear - 2}</option>
