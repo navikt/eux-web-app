@@ -292,10 +292,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           <Column flex={1}>
             <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
           </Column>
-          <Column flex={0.5}>
-            <Button variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
+          <Column flex={1}>
+            <FullWidthButton variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
               {t("el:button-search-i-x", {x: "PDL"})}
-            </Button>
+            </FullWidthButton>
           </Column>
           <Column flex={1}>
             {person &&
@@ -309,7 +309,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </Column>
-          <Column/>
         </Row>
         <VerticalSeparatorDiv />
         <Row>
@@ -325,10 +324,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               ))}
             </Select>
           </Column>
-          <Column flex={0.5}>
-            <Button variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
+          <Column flex={1}>
+            <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
               {t("el:button-finn-x", {x: "fagsaker"})}
-            </Button>
+            </FullWidthButton>
           </Column>
           <Column flex={1}>
             {showFagsaker &&
@@ -370,7 +369,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               </>
             }
             </Column>
-            <Column/>
         </Row>
         <Row>
           <Column>
