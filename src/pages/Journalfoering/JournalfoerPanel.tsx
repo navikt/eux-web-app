@@ -18,7 +18,10 @@ import {
   searchJournalfoeringPerson,
   getJournalfoeringFagsaker,
   setJournalfoeringFagsak,
-  resetJournalfoeringFagsaker, journalfoer, createJournalfoeringFagsak
+  resetJournalfoeringFagsaker,
+  journalfoer,
+  createJournalfoeringFagsak,
+  createJournalfoeringFagsakDagpenger
 } from "../../actions/journalfoering";
 
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -32,11 +35,17 @@ import styled from "styled-components";
 import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
+import {createFagsak} from "../../actions/pdu1";
 
 
 const ImgContainer = styled.span`
   position: relative;
   top: 5px;
+`
+
+const FullWidthButton = styled(Button)`
+  display: block;
+  width: 100%
 `
 
 export interface JournalfoerPanelProps {
@@ -78,6 +87,7 @@ const mapState = (state: State) => ({
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  const currentYear = new Date().getFullYear()
   const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
@@ -86,6 +96,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [_journalfoerModal, setJournalfoerModal] = useState<boolean>(false)
   const [_isLoading, setIsLoading] = useState(false)
   const [_fagsakSelected, setFagsakSelected] = useState(false)
+  const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -97,7 +108,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     return k.kode !== "GEN"
   })
 
-  const showFagsaker: boolean = !_.isEmpty(tema) && !_.isEmpty(fagsaker)
+  const showFagsaker: false | undefined | null | boolean = !_.isEmpty(tema) && (!_.isEmpty(fagsaker) || (sektor === "UB" && fagsaker && fagsaker.length >= 0))
 
   useEffect(() => {
     dispatch(journalfoeringReset())
@@ -185,6 +196,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   const onCreateFagsak = () => {
     dispatch(createJournalfoeringFagsak(_fnr!, _tema!))
+  }
+
+  const onCreateFagsakDagpenger = () => {
+    dispatch(createJournalfoeringFagsakDagpenger(_fnr!, {aar: fagsakDagpengerYear}))
   }
 
   const onFagsakChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -331,13 +346,30 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   ))}
               </Select>
             }
-            {fagsaker && fagsaker.length === 0 &&
+            {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
               <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
                 {t("el:button-create-x", {x: "fagsak"})}
               </Button>
             }
-          </Column>
-          <Column/>
+
+            {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+              <>
+                <VerticalSeparatorDiv/>
+                <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </FullWidthButton>
+                <VerticalSeparatorDiv size={0.2}/>
+                <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                  <option value={currentYear}>{currentYear}</option>
+                  <option value={currentYear - 1}>{currentYear - 1}</option>
+                  <option value={currentYear - 2}>{currentYear - 2}</option>
+                  <option value={currentYear - 3}>{currentYear - 3}</option>
+                  <option value={currentYear - 4}>{currentYear - 4}</option>
+                </Select>
+              </>
+            }
+            </Column>
+            <Column/>
         </Row>
         <Row>
           <Column>

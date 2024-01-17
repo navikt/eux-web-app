@@ -10,6 +10,7 @@ import {AnyAction} from "redux";
 import * as types from "../constants/actionTypes";
 import {ActionWithPayload} from "@navikt/fetch";
 import {H001Sed, Kjoenn} from "../declarations/sed";
+import _ from "lodash";
 
 
 export interface JournalfoeringState {
@@ -95,6 +96,7 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       }
 
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_REQUEST:
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_REQUEST:
       return {
         ...state,
         fagsak: undefined
@@ -106,7 +108,20 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
         fagsaker: [(action as ActionWithPayload).payload],
         fagsak: (action as ActionWithPayload).payload
       }
+
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_SUCCESS:
+      const fagsak:Fagsak = (action as ActionWithPayload).payload
+      let fSaker = _.cloneDeep(state.fagsaker)
+      fSaker?.unshift(fagsak)
+
+      return {
+        ...state,
+        fagsaker: fSaker,
+        fagsak: fagsak
+      }
+
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE:
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_FAILURE:
       return {
         ...state,
         fagsaker: null,
