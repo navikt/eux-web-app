@@ -18,7 +18,7 @@ import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import { sakReset, editSed, resetFilloutInfo, resetSentSed } from 'actions/sak'
+import {sakReset, editSed, resetFilloutInfo, resetSentSed, createFagsakGenerell} from 'actions/sak'
 import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
@@ -70,6 +70,7 @@ export interface SEDNewSelector {
 
   sendingSak: boolean
   gettingFagsaker: boolean
+  creatingFagsak: boolean
   searchingPerson: boolean
   searchingRelatertPerson: boolean
   gettingArbeidsperioder: boolean
@@ -126,6 +127,7 @@ const mapState = (state: State): SEDNewSelector => ({
 
   sendingSak: state.loading.sendingSak,
   gettingFagsaker: state.loading.gettingFagsaker,
+  creatingFagsak: state.loading.creatingFagsak,
   searchingPerson: state.loading.searchingPerson,
   searchingRelatertPerson: state.loading.searchingRelatertPerson,
   gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
@@ -173,6 +175,7 @@ const SEDNew = (): JSX.Element => {
     alertMessage,
     alertType,
     gettingFagsaker,
+    creatingFagsak,
     gettingInstitusjoner,
     searchingPerson,
     searchingRelatertPerson,
@@ -360,6 +363,12 @@ const SEDNew = (): JSX.Element => {
     }
   }
 
+  const onCreateFagsak = () => {
+    if (!!person?.fnr && valgtTema) {
+      dispatch(createFagsakGenerell(person.fnr!, valgtTema!))
+    }
+  }
+
   const fillOutSed = (opprettetSak: OpprettetSak) => {
     dispatch(personReset())
     dispatch(resetSentSed())
@@ -408,6 +417,8 @@ const SEDNew = (): JSX.Element => {
       })
     }
   }, [filloutinfo])
+
+
 
   return (
     <Container>
@@ -733,14 +744,20 @@ const SEDNew = (): JSX.Element => {
                       {t('label:velg')}
                     </option>
                     {fagsaker &&
-                  _.orderBy(fagsaker, 'fagsakNr').map((f: Fagsak) => (
-                    <option value={f.id} key={f.id}>
-                      {f.nr || f.id}
-                    </option>
-                  ))}
+                      _.orderBy(fagsaker, 'fagsakNr').map((f: Fagsak) => (
+                        <option value={f.id} key={f.id}>
+                          {f.nr || f.id}
+                        </option>
+                      ))
+                    }
                   </Select>
                 </>
               )}
+              {valgtSektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </Button>
+              }
               <VerticalSeparatorDiv />
             </Column>
           </AlignStartRow>

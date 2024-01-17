@@ -579,6 +579,8 @@ const loadingReducer = (
     case types.PDU1_CREATE_FAGSAK_REQUEST:
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_REQUEST:
     case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_REQUEST:
+    case types.SAK_CREATE_FAGSAK_GENERELL_REQUEST:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_REQUEST:
       return {
         ...state,
         creatingFagsak: true
@@ -590,6 +592,10 @@ const loadingReducer = (
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE:
     case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_SUCCESS:
     case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_FAILURE:
+    case types.SAK_CREATE_FAGSAK_GENERELL_SUCCESS:
+    case types.SAK_CREATE_FAGSAK_GENERELL_FAILURE:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_FAILURE:
       return {
         ...state,
         creatingFagsak: false

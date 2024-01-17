@@ -1,7 +1,7 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import { FillOutInfoPayload } from 'declarations/sed'
-import { ArbeidsperiodeFraAA, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak } from 'declarations/types'
+import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
@@ -67,6 +67,40 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         ...state,
         fagsaker: null
       }
+
+    case types.SAK_CREATE_FAGSAK_GENERELL_REQUEST:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_REQUEST:
+      return {
+        ...state,
+        saksId: undefined
+      }
+
+    case types.SAK_CREATE_FAGSAK_GENERELL_SUCCESS:
+      return {
+        ...state,
+        fagsaker: [(action as ActionWithPayload).payload],
+        saksId: (action as ActionWithPayload).payload.id
+      }
+
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS:
+      const fagsak:Fagsak = (action as ActionWithPayload).payload
+      let fSaker = _.cloneDeep(state.fagsaker)
+      fSaker?.unshift(fagsak)
+
+      return {
+        ...state,
+        fagsaker: fSaker,
+        saksId: fagsak.id
+      }
+
+    case types.SAK_CREATE_FAGSAK_GENERELL_FAILURE:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_FAILURE:
+      return {
+        ...state,
+        fagsaker: null,
+        saksId: null
+      }
+
 
     case types.SAK_INSTITUSJONER_SUCCESS:
       return {
