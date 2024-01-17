@@ -35,8 +35,6 @@ import styled from "styled-components";
 import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
-import {createFagsak} from "../../actions/pdu1";
-
 
 const ImgContainer = styled.span`
   position: relative;
