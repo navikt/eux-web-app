@@ -176,7 +176,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     setfnr(newFnr)
     if (isFnrValid) {
       setIsFnrValid(false)
-      setTema("");
+      setTema("")
+      setFagsakDagpengerYear(currentYear);
+
       (document.getElementById("mySelect") as HTMLSelectElement)!.selectedIndex = 0
       dispatch(journalfoeringReset()) // reset all
     }
@@ -189,6 +191,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   const onGetFagsaker = () => {
     setFagsakSelected(false)
+    setFagsakDagpengerYear(currentYear);
     dispatch(getJournalfoeringFagsaker(_fnr!, _tema!))
   }
 
