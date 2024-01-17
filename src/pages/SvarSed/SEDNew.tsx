@@ -1,4 +1,4 @@
-import { Alert, BodyLong, Button, Heading, Link, Loader, Select } from '@navikt/ds-react'
+import { Alert, BodyLong, Button, Heading, Loader, Select } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -18,7 +18,14 @@ import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
 import * as sakActions from 'actions/sak'
-import {sakReset, editSed, resetFilloutInfo, resetSentSed, createFagsakGenerell} from 'actions/sak'
+import {
+  sakReset,
+  editSed,
+  resetFilloutInfo,
+  resetSentSed,
+  createFagsakGenerell,
+  createFagsakDagpenger
+} from 'actions/sak'
 import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
@@ -180,7 +187,6 @@ const SEDNew = (): JSX.Element => {
     searchingPerson,
     searchingRelatertPerson,
     enheter,
-    serverInfo,
     sendingSak,
     buctyper,
     fagsaker,
@@ -216,6 +222,8 @@ const SEDNew = (): JSX.Element => {
   const namespace = 'opprettsak'
   const navigate = useNavigate()
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
+  const currentYear = new Date().getFullYear()
+  const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
     return k.kode !== "GEN"
@@ -232,7 +240,7 @@ const SEDNew = (): JSX.Element => {
               acc.push(kode)
               return acc
             }, []) ?? []
-  const visFagsakerListe: boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && !_.isEmpty(fagsaker)
+  const visFagsakerListe: false | undefined | null | boolean = !_.isEmpty(valgtSektor) && !_.isEmpty(tema) && (!_.isEmpty(fagsaker) || (valgtSektor === "UB" && fagsaker && fagsaker.length >= 0))
   const visEnheter: boolean = valgtSektor === 'HZ' || valgtSektor === 'SI'
 
   const ALLOWED_TO_FILL_OUT = getAllowed("ALLOWED_TO_FILL_OUT", !!featureToggles?.featureAdmin)
@@ -351,6 +359,7 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onViewFagsakerClick = (): void => {
+    setFagsakDagpengerYear(currentYear);
     if (!!person?.fnr && valgtSektor && valgtTema) {
       dispatch(sakActions.getFagsaker(person.fnr!, valgtSektor!, valgtTema!))
     }
@@ -366,6 +375,12 @@ const SEDNew = (): JSX.Element => {
   const onCreateFagsak = () => {
     if (!!person?.fnr && valgtTema) {
       dispatch(createFagsakGenerell(person.fnr!, valgtTema!))
+    }
+  }
+
+  const onCreateFagsakDagpenger = () => {
+    if (!!person?.fnr) {
+      dispatch(createFagsakDagpenger(person.fnr!, {aar: fagsakDagpengerYear}))
     }
   }
 
@@ -716,21 +731,6 @@ const SEDNew = (): JSX.Element => {
             <Column>
               {visFagsakerListe && (
                 <>
-                  {(fagsaker === null || (fagsaker !== undefined && _.isEmpty(fagsaker))) && (
-                    <Alert variant='warning'>
-                      {t('message:error-fagsak-notFound')}
-                      {serverInfo && (
-                        <Link
-                          href={serverInfo?.gosysURL}
-                          aria-label={t('label:lenke-til-gosys')}
-                          target='_blank' rel='noreferrer'
-                        >
-                          {t('label:lenke-til-gosys')}
-                        </Link>
-                      )}
-                      <VerticalSeparatorDiv />
-                    </Alert>
-                  )}
                   <Select
                     data-testid={namespace + '-saksId'}
                     error={validation[namespace + '-saksId']?.feilmelding}
@@ -759,6 +759,21 @@ const SEDNew = (): JSX.Element => {
                 </Button>
               }
               <VerticalSeparatorDiv />
+              {valgtSektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+                <>
+                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                    {t("el:button-create-x", {x: "fagsak"})}
+                  </Button>
+                  <VerticalSeparatorDiv size={0.2}/>
+                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                  </Select>
+                </>
+              }
             </Column>
           </AlignStartRow>
         )}
