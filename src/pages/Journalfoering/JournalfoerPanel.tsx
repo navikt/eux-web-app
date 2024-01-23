@@ -148,6 +148,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }, [fagsak])
 
   useEffect(() => {
+    if(fagsaker && fagsaker.length === 1){
+      dispatch(setJournalfoeringFagsak(fagsaker[0]))
+    }
+  }, [fagsaker])
+
+  useEffect(() => {
     if(!gettingFagsaker && !searchingJournalfoeringPerson && _isLoading){
       setIsLoading(false)
     }
