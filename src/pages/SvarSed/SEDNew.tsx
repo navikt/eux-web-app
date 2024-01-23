@@ -436,7 +436,7 @@ const SEDNew = (): JSX.Element => {
 
   useEffect(() => {
     if(fagsaker && fagsaker.length === 1){
-      dispatch(setJournalfoeringFagsak(fagsaker[0]))
+      dispatch(sakActions.setProperty('saksId', fagsaker[0].id))
     }
   }, [fagsaker])
 
