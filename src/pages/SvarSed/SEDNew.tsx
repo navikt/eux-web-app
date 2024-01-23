@@ -66,7 +66,6 @@ import performValidation from 'utils/performValidation'
 import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
-import {setJournalfoeringFagsak} from "../../actions/journalfoering";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
