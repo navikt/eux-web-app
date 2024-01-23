@@ -8,7 +8,7 @@ export default {
     etternavn: 'VEGGPRYD',
     foedselsdato: '31.10.1981',
     statsborgerskap: [
-      'NO'
+      null
     ],
     adresse: {
       gate: 'Bøveien 1117',
