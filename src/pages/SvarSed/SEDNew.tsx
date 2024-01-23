@@ -744,7 +744,7 @@ const SEDNew = (): JSX.Element => {
                       {t('label:velg')}
                     </option>
                     {fagsaker &&
-                      _.orderBy(fagsaker, 'fagsakNr').map((f: Fagsak) => (
+                      fagsaker.map((f: Fagsak) => (
                         <option value={f.id} key={f.id}>
                           {f.nr || f.id}
                         </option>

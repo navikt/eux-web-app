@@ -339,7 +339,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   {t('label:velg')}
                 </option>
                 {fagsaker &&
-                  _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
+                  fagsaker.map((f: Fagsak) => (
                     <option value={f.id} key={f.id} selected={f.id === fagsak?.id && _fagsakSelected}>
                       {f.nr || f.id}
                     </option>
