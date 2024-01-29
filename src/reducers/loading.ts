@@ -39,6 +39,7 @@ export const initialLoadingState: LoadingState = {
   savingSed: false,
   searchingPerson: false,
   searchingRelatertPerson: false,
+  searchingJournalfoeringPerson: false,
   sendingVedlegg: false,
   sendingSak: false,
   sendingSed: false,
@@ -506,6 +507,19 @@ const loadingReducer = (
         sendingVedlegg: false
       }
 
+    case types.JOURNALFOERING_PERSON_SEARCH_REQUEST:
+    return {
+      ...state,
+      searchingJournalfoeringPerson: true
+    }
+
+  case types.JOURNALFOERING_PERSON_SEARCH_SUCCESS:
+  case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
+    return {
+      ...state,
+      searchingJournalfoeringPerson: false
+    }
+
     case types.JOURNALFOERING_JOURNALFOER_SAK_REQUEST:
       return {
         ...state,
@@ -563,6 +577,10 @@ const loadingReducer = (
       }
 
     case types.PDU1_CREATE_FAGSAK_REQUEST:
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_REQUEST:
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_REQUEST:
+    case types.SAK_CREATE_FAGSAK_GENERELL_REQUEST:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_REQUEST:
       return {
         ...state,
         creatingFagsak: true
@@ -570,6 +588,14 @@ const loadingReducer = (
 
     case types.PDU1_CREATE_FAGSAK_SUCCESS:
     case types.PDU1_CREATE_FAGSAK_FAILURE:
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_SUCCESS:
+    case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE:
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_SUCCESS:
+    case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_FAILURE:
+    case types.SAK_CREATE_FAGSAK_GENERELL_SUCCESS:
+    case types.SAK_CREATE_FAGSAK_GENERELL_FAILURE:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS:
+    case types.SAK_CREATE_FAGSAK_DAGPENGER_FAILURE:
       return {
         ...state,
         creatingFagsak: false

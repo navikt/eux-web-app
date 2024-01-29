@@ -283,7 +283,7 @@ export default (saksnummer: string, type: string) => {
       foedselsdato: '1970-01-01',
       fnr: '12345678901',
       sakTittel: 'Horisontal',
-      sakType: 'FB_BUC_04',
+      sakType: 'UB_BUC_04',
       sakId: '398793',
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',

@@ -53,7 +53,7 @@ export const validatePerson = (
     })
   }))
 
-  hasErrors.push(validateStatsborgerskaper(v, namespace + '-statsborgerskap', { statsborgerskaper: person?.statsborgerskap }))
+  hasErrors.push(validateStatsborgerskaper(v, namespace + '-statsborgerskap', { statsborgerskaper: person?.statsborgerskap.filter((s) => s) }))
 
   hasErrors.push(validateAdresse(v, namespace + '-adresse', { adresse: person?.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
 

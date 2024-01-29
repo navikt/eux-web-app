@@ -35,6 +35,7 @@ export const API_FEILREGISTRER_JOURNALPOSTER_URL = API_BASE_URL + '/rina/sak/%(r
 
 // Registre
 export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker/?tema=%(tema)s'
+export const API_CREATE_FAGSAK_GENERELL_URL = API_BASE_URL + '/person/%(fnr)s/fagsak/generell'
 export const API_PDU1_CREATE_FAGSAK_URL = API_BASE_URL + '/person/%(fnr)s/fagsak/dagpenger'
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'

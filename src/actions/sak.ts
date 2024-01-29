@@ -15,6 +15,9 @@ import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
+import mockFagsakGenerell from "../mocks/fagsak_generell";
+import {FagsakPayload} from "../declarations/pd";
+import mockFagsakDagpenger from "../mocks/fagsak";
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -88,6 +91,40 @@ export const getFagsaker = (
       request: types.SAK_FAGSAKER_REQUEST,
       success: types.SAK_FAGSAKER_SUCCESS,
       failure: types.SAK_FAGSAKER_FAILURE
+    }
+  })
+}
+
+export const createFagsakGenerell = (
+  fnr: string, tema: string
+): ActionWithPayload<Fagsaker> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_CREATE_FAGSAK_GENERELL_URL, { fnr }),
+    body: {
+      tema
+    },
+    expectedPayload: mockFagsakGenerell,
+    type: {
+      request: types.SAK_CREATE_FAGSAK_GENERELL_REQUEST,
+      success: types.SAK_CREATE_FAGSAK_GENERELL_SUCCESS,
+      failure: types.SAK_CREATE_FAGSAK_GENERELL_FAILURE
+    }
+  })
+}
+
+export const createFagsakDagpenger = (
+  fnr: string, payload: FagsakPayload
+): ActionWithPayload<Fagsaker> => {
+  return call({
+    method: 'POST',
+    url: sprintf(urls.API_PDU1_CREATE_FAGSAK_URL, { fnr }),
+    expectedPayload: mockFagsakDagpenger,
+    body: payload,
+    type: {
+      request: types.SAK_CREATE_FAGSAK_DAGPENGER_REQUEST,
+      success: types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS,
+      failure: types.SAK_CREATE_FAGSAK_DAGPENGER_FAILURE
     }
   })
 }

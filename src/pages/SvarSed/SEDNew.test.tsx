@@ -31,6 +31,7 @@ describe('pages/SEDNew/SEDNew', () => {
     searchingPerson: false,
     searchingRelatertPerson: false,
     gettingFagsaker: false,
+    creatingFagsak: false,
     gettingArbeidsperioder: false,
     gettingInstitusjoner: false,
 

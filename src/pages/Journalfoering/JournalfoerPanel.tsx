@@ -10,7 +10,7 @@ import {
   Tema
 } from "../../declarations/types";
 import {Row, Column, VerticalSeparatorDiv, HorizontalSeparatorDiv} from "@navikt/hoykontrast";
-import {Alert, Button, Heading, Panel, Select, TextField} from "@navikt/ds-react";
+import {Alert, Button, Heading, Loader, Panel, Select, TextField} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -18,7 +18,10 @@ import {
   searchJournalfoeringPerson,
   getJournalfoeringFagsaker,
   setJournalfoeringFagsak,
-  resetJournalfoeringFagsaker, journalfoer
+  resetJournalfoeringFagsaker,
+  journalfoer,
+  createJournalfoeringFagsak,
+  createJournalfoeringFagsakDagpenger
 } from "../../actions/journalfoering";
 
 import {useAppDispatch, useAppSelector} from "../../store";
@@ -33,10 +36,14 @@ import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
 
-
 const ImgContainer = styled.span`
   position: relative;
   top: 5px;
+`
+
+const FullWidthButton = styled(Button)`
+  display: block;
+  width: 100%
 `
 
 export interface JournalfoerPanelProps {
@@ -47,8 +54,9 @@ export interface JournalfoerPanelProps {
 
 interface JournalfoerPanelSelector {
   person: Person | null | undefined
-  searchingPerson: boolean
+  searchingJournalfoeringPerson: boolean
   gettingFagsaker: boolean
+  creatingFagsak: boolean
   isJournalfoering: boolean
   kodemaps: Kodemaps | undefined
   tema: Tema | undefined
@@ -61,8 +69,9 @@ interface JournalfoerPanelSelector {
 
 const mapState = (state: State) => ({
   person: state.journalfoering.person,
-  searchingPerson: state.loading.searchingPerson,
+  searchingJournalfoeringPerson: state.loading.searchingJournalfoeringPerson,
   gettingFagsaker: state.loading.gettingFagsaker,
+  creatingFagsak: state.loading.creatingFagsak,
   isJournalfoering: state.loading.isJournalfoering,
   kodemaps: state.app.kodemaps,
   tema: state.app.tema,
@@ -76,12 +85,16 @@ const mapState = (state: State) => ({
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { person, searchingPerson, gettingFagsaker, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const currentYear = new Date().getFullYear()
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
-  const [_fnr, setfnr] = useState<string>()
+  const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
-  const [_tema, setTema] = useState<string>()
+  const [_tema, setTema] = useState<string | undefined>(sak.fagsak && sak.fagsak.tema ? sak.fagsak.tema : undefined)
   const [_journalfoerModal, setJournalfoerModal] = useState<boolean>(false)
+  const [_isLoading, setIsLoading] = useState(false)
+  const [_fagsakSelected, setFagsakSelected] = useState(false)
+  const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -93,7 +106,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     return k.kode !== "GEN"
   })
 
-  const showFagsaker: boolean = !_.isEmpty(tema) && !_.isEmpty(fagsaker)
+  const showFagsaker: false | undefined | null | boolean = !_.isEmpty(tema) && (!_.isEmpty(fagsaker) || (sektor === "UB" && fagsaker && fagsaker.length >= 0))
 
   useEffect(() => {
     dispatch(journalfoeringReset())
@@ -118,6 +131,34 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     }
   }, [journalfoeringLogg])
 
+  useEffect(() => {
+    if(sak.fagsak && sak.fagsak.fnr && sak.fagsak.tema){
+      setIsLoading(true)
+      setFagsakSelected(true)
+      dispatch(searchJournalfoeringPerson(sak.fagsak.fnr))
+      dispatch(getJournalfoeringFagsaker(sak.fagsak.fnr, sak.fagsak.tema))
+      dispatch(setJournalfoeringFagsak(sak.fagsak))
+    }
+  }, [])
+
+  useEffect(() => {
+    if(fagsak){
+      setFagsakSelected(true)
+    }
+  }, [fagsak])
+
+  useEffect(() => {
+    if(fagsaker && fagsaker.length === 1){
+      dispatch(setJournalfoeringFagsak(fagsaker[0]))
+    }
+  }, [fagsaker])
+
+  useEffect(() => {
+    if(!gettingFagsaker && !searchingJournalfoeringPerson && _isLoading){
+      setIsLoading(false)
+    }
+  }, [gettingFagsaker, searchingJournalfoeringPerson])
+
   const onSearch = () => {
     dispatch(alertReset())
     if (!_fnr) {
@@ -141,7 +182,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     setfnr(newFnr)
     if (isFnrValid) {
       setIsFnrValid(false)
-      setTema("");
+      setTema("")
+      setFagsakDagpengerYear(currentYear);
+
       (document.getElementById("mySelect") as HTMLSelectElement)!.selectedIndex = 0
       dispatch(journalfoeringReset()) // reset all
     }
@@ -153,7 +196,17 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   const onGetFagsaker = () => {
+    setFagsakSelected(false)
+    setFagsakDagpengerYear(currentYear);
     dispatch(getJournalfoeringFagsaker(_fnr!, _tema!))
+  }
+
+  const onCreateFagsak = () => {
+    dispatch(createJournalfoeringFagsak(_fnr!, _tema!))
+  }
+
+  const onCreateFagsakDagpenger = () => {
+    dispatch(createJournalfoeringFagsakDagpenger(_fnr!, {aar: fagsakDagpengerYear}))
   }
 
   const onFagsakChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -185,6 +238,21 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     })
     return items
   }
+
+  if(_isLoading){
+    return(
+      <Panel border>
+        <Heading size='small'>
+          {t('label:journalfoer')}
+        </Heading>
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
+        <VerticalSeparatorDiv />
+        <Loader/>
+      </Panel>
+    )
+  }
+
 
   return (
     <>
@@ -228,12 +296,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
         <VerticalSeparatorDiv />
         <Row>
           <Column flex={1}>
-            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation}/>
+            <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
           </Column>
-          <Column flex={0.5}>
-            <Button variant="secondary" onClick={onSearch} loading={searchingPerson} className='nolabel'>
+          <Column flex={1}>
+            <FullWidthButton variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
               {t("el:button-search-i-x", {x: "PDL"})}
-            </Button>
+            </FullWidthButton>
           </Column>
           <Column flex={1}>
             {person &&
@@ -247,7 +315,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </Column>
-          <Column/>
         </Row>
         <VerticalSeparatorDiv />
         <Row>
@@ -257,16 +324,16 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 {t('label:velg')}
               </option>)
               {temaer && temaer.map((k: Kodeverk) => (
-                <option value={k.kode} key={k.kode}>
+                <option value={k.kode} key={k.kode} selected={k.kode === _tema}>
                   {k.term}
                 </option>
               ))}
             </Select>
           </Column>
-          <Column flex={0.5}>
-            <Button variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
+          <Column flex={1}>
+            <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
               {t("el:button-finn-x", {x: "fagsaker"})}
-            </Button>
+            </FullWidthButton>
           </Column>
           <Column flex={1}>
             {showFagsaker &&
@@ -278,15 +345,36 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   {t('label:velg')}
                 </option>
                 {fagsaker &&
-                  _.orderBy(fagsaker, 'nr').map((f: Fagsak) => (
-                    <option value={f.id} key={f.id}>
+                  fagsaker.map((f: Fagsak) => (
+                    <option value={f.id} key={f.id} selected={f.id === fagsak?.id && _fagsakSelected}>
                       {f.nr || f.id}
                     </option>
                   ))}
               </Select>
             }
-          </Column>
-          <Column/>
+            {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+              <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
+                {t("el:button-create-x", {x: "fagsak"})}
+              </Button>
+            }
+
+            {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+              <>
+                <VerticalSeparatorDiv/>
+                <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </FullWidthButton>
+                <VerticalSeparatorDiv size={0.2}/>
+                <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                  <option value={currentYear}>{currentYear}</option>
+                  <option value={currentYear - 1}>{currentYear - 1}</option>
+                  <option value={currentYear - 2}>{currentYear - 2}</option>
+                  <option value={currentYear - 3}>{currentYear - 3}</option>
+                  <option value={currentYear - 4}>{currentYear - 4}</option>
+                </Select>
+              </>
+            }
+            </Column>
         </Row>
         <Row>
           <Column>

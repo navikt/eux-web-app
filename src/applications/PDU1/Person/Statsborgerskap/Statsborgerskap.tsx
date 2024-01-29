@@ -63,9 +63,10 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
+    const filteredStatsborgerskaper = statsborgerskaper?.filter(s => s) // Remove NULL values from array
     performValidation<ValidationStatsborgerskaperProps>(
       clonedvalidation, namespace, validateStatsborgerskaper, {
-        statsborgerskaper
+        statsborgerskaper: filteredStatsborgerskaper
       }, true
     )
     dispatch(setValidation(clonedvalidation))
@@ -153,6 +154,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === index
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
+
+    if(!inEditMode && !statsborgerskap) return
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -185,16 +188,16 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                 />
                 )
               : (
-                <FormText
-                  id={_namespace + '-statsborgerskap'}
-                  error={_v[_namespace + '-statsborgerskap']?.feilmelding}
-                >
-                  <FlexCenterDiv>
-                    <Flag size='S' country={_statsborgerskap ?? ''} />
-                    <HorizontalSeparatorDiv />
-                    {countryData.findByValue(_statsborgerskap)?.label ?? _statsborgerskap}
-                  </FlexCenterDiv>
-                </FormText>
+                  <FormText
+                    id={_namespace + '-statsborgerskap'}
+                    error={_v[_namespace + '-statsborgerskap']?.feilmelding}
+                  >
+                    <FlexCenterDiv>
+                      <Flag size='S' country={_statsborgerskap ?? ''} />
+                      <HorizontalSeparatorDiv />
+                      {countryData.findByValue(_statsborgerskap)?.label ?? _statsborgerskap}
+                    </FlexCenterDiv>
+                  </FormText>
                 )}
           </Column>
           <AlignEndColumn>

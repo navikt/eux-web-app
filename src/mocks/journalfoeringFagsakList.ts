@@ -20,6 +20,14 @@ const fagsaker = [
     "tema": "BAR",
     "type": "GENERELL_SAK",
     "system": "FS22"
+  },
+  {
+    "id": "140282517",
+    "tema": "KON",
+    "type": "FAGSAK",
+    "nr": "1/2023",
+    "system": "AO11",
+    "fnr": "12345678901"
   }
 ]
 
