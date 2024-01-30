@@ -102,5 +102,8 @@
   "warning-x-not-saved": "{{x}} er ikke lagret!",
   "warning-x-save": "Ønsker du å lagre en kopi av {{x}} før du fortsetter?",
   "warning-spørre-sed-not-journalført": "Du kan ikke opprette SED fordi spørre SED er ikke journalført",
-  "warning-unknown-address": "Ukjent adresse"
+  "warning-unknown-address": "Ukjent adresse",
+  "warning-unknown-statsborgerskap": "Ukjent statsborgerskap",
+  "warning-unknown-statsborgerskap-text1": "Personen har et eller flere ukjente statsborgerskap.",
+  "warning-unknown-statsborgerskap-text2": "Disse må legges inn manuelt."
 }

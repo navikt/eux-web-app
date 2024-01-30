@@ -7,7 +7,7 @@ export interface Option {
 
 export type Options = Array<Option>
 export type Loading = {[key: string]: boolean}
-export type Params = {[k: string] : string}
+export type Params = {[k: string] : any}
 export interface ParamPayload {
   key: string,
   value?: any

@@ -8,7 +8,7 @@ import {
   FlexCenterDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PaddedHorizontallyDiv,
+  PaddedHorizontallyDiv, PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
@@ -25,7 +25,7 @@ import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
@@ -36,6 +36,15 @@ import {
   ValidationStatsborgerskaperProps,
   ValidationStatsborgerskapProps
 } from './validation'
+import Modal from "../../../../components/Modal/Modal";
+import {setStatusParam} from "../../../../actions/app";
+
+export interface StatsborgerskapSelector {
+  statsborgerskapModalShown: boolean
+}
+const mapStatsborgerskapState = (state: State): StatsborgerskapSelector => ({
+  statsborgerskapModalShown: state.app.params.statsborgerskapModalShown
+})
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -48,6 +57,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
+  const { statsborgerskapModalShown } = useAppSelector(mapStatsborgerskapState)
+
   const dispatch = useAppDispatch()
   const target = 'bruker.statsborgerskap'
   const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
@@ -61,9 +72,11 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationStatsborgerskapProps>(validateStatsborgerskap, namespace)
 
+  const [_showStatborgerskapMissingModal, _setShowStatsborgerskapMissingModal] = useState<boolean>(false)
+
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
-    const filteredStatsborgerskaper = statsborgerskaper?.filter(s => s) // Remove NULL values from array
+    const filteredStatsborgerskaper = statsborgerskaper ? statsborgerskaper?.filter(s => s) : statsborgerskaper // Remove NULL values from array
     performValidation<ValidationStatsborgerskaperProps>(
       clonedvalidation, namespace, validateStatsborgerskaper, {
         statsborgerskaper: filteredStatsborgerskaper
@@ -71,6 +84,17 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
     )
     dispatch(setValidation(clonedvalidation))
   })
+
+  useEffect(() => {
+    if(!statsborgerskapModalShown && statsborgerskaper?.some((s) => s === null)){
+      _setShowStatsborgerskapMissingModal(true)
+    }
+  }, [])
+
+  const onModalClose = () => {
+    dispatch(setStatusParam("statsborgerskapModalShown", true))
+    _setShowStatsborgerskapMissingModal(false)
+  }
 
   const onStatsborgerskapSelected = (land: string, index: number) => {
     if (index < 0) {
@@ -222,6 +246,27 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 
   return (
     <>
+      <Modal
+        open={_showStatborgerskapMissingModal}
+        modal={{
+          closeButton: true,
+          modalTitle: t("message:warning-unknown-statsborgerskap"),
+          modalContent: (
+            <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
+              <PileDiv>
+                <BodyLong>{t("message:warning-unknown-statsborgerskap-text1")}</BodyLong>
+                <BodyLong>{t("message:warning-unknown-statsborgerskap-text2")}</BodyLong>
+              </PileDiv>
+            </div>
+          ),
+          modalButtons: [{
+            main: true,
+            text: 'OK',
+            onClick: () => onModalClose()
+          }]
+        }}
+        onModalClose={() => onModalClose()}
+      />
       <VerticalSeparatorDiv />
       {_.isEmpty(statsborgerskaper)
         ? (
