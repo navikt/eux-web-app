@@ -120,11 +120,17 @@ export interface JournalfoeringLogg {
   journalfoert?: Array<string> | null | undefined,
   ikkeJournalfoert?: Array<string> | null | undefined,
   varJournalfoertFeil?: Array<string> | null | undefined
+  tilknyttedeOppgaver?: Array<TilknyttetOppgave> | null | undefined
 }
 
 export interface FeilregistrerJournalposterLogg {
   bleFeilregistrert?: Array<string> | null | undefined,
   bleIkkeFeilregistrert?: Array<string> | null | undefined
+}
+
+export interface TilknyttetOppgave {
+  status: string,
+  beskrivelse: string
 }
 
 export interface PDU1SearchResult {

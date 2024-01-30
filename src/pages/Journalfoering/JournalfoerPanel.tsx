@@ -229,6 +229,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const hasJournalfoert =  journalfoeringLogg && journalfoeringLogg.journalfoert && journalfoeringLogg.journalfoert.length > 0
   const alleSedJournalfoert = hasJournalfoert && !hasVarJournalfoertFeil && !hasIkkeJournalfoert
   const allListsEmpty = !hasIkkeJournalfoert && ! hasVarJournalfoertFeil && !hasJournalfoert
+  const tilknyttedeOppgaver = journalfoeringLogg && journalfoeringLogg.tilknyttedeOppgaver
+  const ferdigstillingFeilet = tilknyttedeOppgaver && tilknyttedeOppgaver.filter((to) => to.status === "FERDIGSTILLING_FEILET")
   const modalTitle =  alleSedJournalfoert ? t('label:sed-er-journalfoert') : t('label:journalposter-ble-ikke-journalfoert')
 
   const getListOfJournalPostIds = (journalPostList: Array<string>) => {
@@ -272,6 +274,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                     {journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && getListOfJournalPostIds(journalfoeringLogg?.ikkeJournalfoert)}
                     {journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && getListOfJournalPostIds(journalfoeringLogg?.varJournalfoertFeil)}
                   </ul>
+                </>
+              }
+              {ferdigstillingFeilet &&
+                <>
+                  <Heading size="small">{t('label:ferdigstilling-av-tilhorende-oppgave-feilet', {NO_OF_OPPGAVE: ferdigstillingFeilet.length})}</Heading>
+                  {t('label:oppgavene-maa-lukkes-i-gosys')}
                 </>
               }
             </>

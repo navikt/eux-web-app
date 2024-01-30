@@ -106,7 +106,21 @@ export const journalfoer = (
     expectedPayload: {
       journalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
       ikkeJournalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
-      varJournalfoertFeil: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"]
+      varJournalfoertFeil: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
+      tilknyttedeOppgaver: [
+        {
+          "status": "OPPGAVE_FERDIGSTILT",
+          "beskrivelse": "Oppgave 1 ble ferdigstilt"
+        },
+        {
+          "status": "OPPGAVE_FERDIGSTILT",
+          "beskrivelse": "Oppgave 2 ble ferdigstilt"
+        },
+        {
+          "status": "FERDIGSTILLING_FEILET",
+          "beskrivelse": "Ferdigstilling av oppgave 3 feilet pga. manglende respons fra oppgave-systemet"
+        }
+      ]
     },
     cascadeFailureError: true,
     type: {
