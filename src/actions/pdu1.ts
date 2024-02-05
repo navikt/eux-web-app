@@ -169,6 +169,10 @@ export const resetJornalførePdu1 = () => ({
   type: types.PDU1_JOURNALFØRE_RESET
 })
 
+export const setStatsborgerskapModalShown = () => ({
+  type:types.PDU1_STATSBORGERSKAP_MODAL_SHOWN_SET
+})
+
 export const loadPdu1 = (
   PDU1: PDU1
 ): ActionWithPayload<PDU1> => ({

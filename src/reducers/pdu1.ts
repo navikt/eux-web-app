@@ -15,6 +15,7 @@ export interface Pdu1State {
   jornalførePdu1Response: any
   pdu1Changed: boolean
   pdu1Initialized: boolean
+  statsborgerskapModalShown: boolean
 }
 
 export const initialPdu1State: Pdu1State = {
@@ -26,7 +27,8 @@ export const initialPdu1State: Pdu1State = {
   previewStoredPdu1: undefined,
   jornalførePdu1Response: undefined,
   pdu1Changed: false,
-  pdu1Initialized: false
+  pdu1Initialized: false,
+  statsborgerskapModalShown: false
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
@@ -203,7 +205,8 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
         ...state,
         pdu1Changed: false,
         pdu1Initialized: false,
-        pdu1: undefined
+        pdu1: undefined,
+        statsborgerskapModalShown: false
       }
 
     case types.PDU1_TEMPLATE_SUCCESS: {
@@ -241,6 +244,13 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
         ...state,
         pdu1Changed: true,
         pdu1: newPdu1
+      }
+    }
+
+    case types.PDU1_STATSBORGERSKAP_MODAL_SHOWN_SET: {
+      return {
+        ...state,
+        statsborgerskapModalShown: true
       }
     }
 

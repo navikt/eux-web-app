@@ -37,13 +37,13 @@ import {
   ValidationStatsborgerskapProps
 } from './validation'
 import Modal from "../../../../components/Modal/Modal";
-import {setStatusParam} from "../../../../actions/app";
+import {setStatsborgerskapModalShown} from "../../../../actions/pdu1";
 
 export interface StatsborgerskapSelector {
   statsborgerskapModalShown: boolean
 }
 const mapStatsborgerskapState = (state: State): StatsborgerskapSelector => ({
-  statsborgerskapModalShown: state.app.params.statsborgerskapModalShown
+  statsborgerskapModalShown: state.pdu1.statsborgerskapModalShown
 })
 
 const mapState = (state: State): MainFormSelector => ({
@@ -92,7 +92,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
   }, [])
 
   const onModalClose = () => {
-    dispatch(setStatusParam("statsborgerskapModalShown", true))
+    dispatch(setStatsborgerskapModalShown())
     _setShowStatsborgerskapMissingModal(false)
   }
 
