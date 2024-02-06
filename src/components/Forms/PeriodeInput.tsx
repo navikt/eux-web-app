@@ -72,7 +72,7 @@ const PeriodeInput = <T extends Periode>({
   setPeriode,
   hideLabel = true,
   value,
-  finalFormat = 'YYYY-MM-DD',
+  finalFormat = 'DD.MM.YYYY',
   uiFormat = 'DD.MM.YYYY'
 }: PeriodeProps<T>) => {
   const { t } = useTranslation()
