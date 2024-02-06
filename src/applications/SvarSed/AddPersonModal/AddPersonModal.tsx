@@ -26,7 +26,7 @@ import { StorageTypes } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import styled from 'styled-components'
@@ -80,6 +80,10 @@ const AddPersonModal = <T extends StorageTypes>({
   const [_newPersonRelation, _setNewPersonRelation] = useState<string | undefined>(undefined)
   const [_replySed, _setReplySed] = useState<T | null | undefined>(replySed)
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationAddPersonModalProps>(validateAddPersonModal, namespace)
+
+  useEffect(() => {
+    _setReplySed(replySed)
+  }, [replySed])
 
   const onRemovePerson = (personID: string) => {
     const newReplySed = _.cloneDeep(_replySed)
