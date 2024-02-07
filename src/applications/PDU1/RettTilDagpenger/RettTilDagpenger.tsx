@@ -6,7 +6,6 @@ import {
   ValidationRettTilDagpengerProps
 } from 'applications/PDU1/RettTilDagpenger/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import Input from 'components/Forms/Input'
 import { IkkeRettTilDagpenger, PDU1, RettTilDagpenger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
@@ -15,6 +14,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import DateField from "components/DateField/DateField";
 
 type RettTilDagpengerRadio = 'rettTilDagpenger' | 'ikkeRettTilDagpenger' | undefined
 
@@ -195,24 +195,22 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
               <PaddedDiv size='0.5'>
                 {t('label:for-perioden-fra')}
               </PaddedDiv>
-              <Input
-                ariaLabel={t('label:startdato')}
+              <DateField
                 error={validation[namespace + '-startdato']?.feilmelding}
-                id='startdato'
+                id={namespace + '-' + 'startdato'}
                 label={t('label:startdato')}
-                namespace={namespace}
                 onChanged={onStartdatoChange}
-                value={rettTilDagpenger?.startdato}
+                dateValue={rettTilDagpenger?.startdato}
+                finalFormat={"DD.MM.YYYY"}
               />
               <PaddedDiv size='0.5'>{t('label:til').toLowerCase()}</PaddedDiv>
-              <Input
-                ariaLabel={t('label:sluttdato')}
+              <DateField
                 error={validation[namespace + '-sluttdato']?.feilmelding}
-                id='sluttdato'
+                id={namespace + '-' + 'sluttdato'}
                 label={t('label:sluttdato')}
-                namespace={namespace}
                 onChanged={onSluttdatoChange}
-                value={rettTilDagpenger?.sluttdato}
+                dateValue={rettTilDagpenger?.sluttdato}
+                finalFormat={"DD.MM.YYYY"}
               />
             </FlexEndDiv>
           </Column>
