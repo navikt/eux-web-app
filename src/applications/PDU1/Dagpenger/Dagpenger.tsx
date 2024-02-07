@@ -206,6 +206,8 @@ const Dagpenger: React.FC<MainFormProps> = ({
                 hideLabel={false}
                 setPeriode={(p: PDPeriode) => setPeriode(p, index)}
                 value={_periode}
+                finalFormat = 'DD.MM.YYYY'
+                uiFormat = 'DD.MM.YYYY'
               />
               )
             : (
