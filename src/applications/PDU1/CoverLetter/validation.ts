@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import { checkLength } from 'utils/validation'
+import {doNothing} from 'utils/validation'
 
 export interface ValidationCoverLetterProps {
   info: string | undefined
@@ -14,11 +14,10 @@ export const validateCoverLetter = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkLength(v, {
+  hasErrors.push(doNothing(v, {
     needle: info,
-    max: 500,
     id: namespace + '-info',
-    message: 'validation:textOverX'
+    message: 'dummy'
   }))
 
   return hasErrors.find(value => value) !== undefined

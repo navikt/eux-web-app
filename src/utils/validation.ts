@@ -38,6 +38,15 @@ export const addError = (v: Validation, { id, personName, message, extra = {} }:
   return true
 }
 
+export const doNothing = (v: Validation, { needle, id, message}: ValidateValueParams) : boolean => {
+  //DUMMY FUNCTION - DOES NOTHING
+  if(v && needle && message && id) {
+    return false
+  }
+
+  return false
+}
+
 export const checkLength = (v: Validation, {
   needle, max = 500, id, personName, message, extra
 }: ValidateLengthParams): boolean => {

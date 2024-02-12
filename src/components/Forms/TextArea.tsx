@@ -11,6 +11,7 @@ export interface TextAreaProps {
   id: string
   label: string
   maxLength ?: number
+  cols?: number
   onChanged: (e: string) => void
   required?: boolean
   style?: any
@@ -24,6 +25,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   id,
   label,
   maxLength = 500,
+  cols,
   onChanged,
   required = false,
   style = {},
@@ -49,6 +51,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       id={namespace + '-' + id}
       label={label + (required ? ' *' : '')}
       maxLength={maxLength}
+      cols={cols}
       onBlur={() => {
         if (_dirty) {
           onChanged(_value)

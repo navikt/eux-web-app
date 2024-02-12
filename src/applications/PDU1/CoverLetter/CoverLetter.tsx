@@ -1,10 +1,10 @@
-import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Heading} from '@navikt/ds-react'
+import {AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateCoverLetter, ValidationCoverLetterProps } from 'applications/PDU1/CoverLetter/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
+
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -12,6 +12,13 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import styled from "styled-components";
+
+export const TextAreaNoWidth = styled(TextArea)`
+  .navds-textarea__wrapper {
+    width: auto !important;
+  }
+`
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -54,17 +61,17 @@ const CoverLetter: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <TextAreaDiv>
-            <TextArea
-              style={{ minHeight: '140px' }}
-              error={validation[namespace + '-info']?.feilmelding}
-              id='info'
-              label={t('label:informasjon')}
-              namespace={namespace}
-              onChanged={setInfo}
-              value={info}
-            />
-          </TextAreaDiv>
+          <TextAreaNoWidth
+            style={{ minHeight: '140px'}}
+            cols={80}
+            maxLength={0}
+            error={validation[namespace + '-info']?.feilmelding}
+            id='info'
+            label={t('label:informasjon')}
+            namespace={namespace}
+            onChanged={setInfo}
+            value={info}
+          />
         </Column>
       </AlignStartRow>
     </PaddedDiv>
