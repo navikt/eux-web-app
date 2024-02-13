@@ -318,6 +318,7 @@ const Perioder: React.FC<MainFormProps> = ({
                       }}
                       namespace={_namespace}
                       periode={_periode}
+                      uiFormat = 'DD.MM.YYYY'
                     />
                     <HorizontalSeparatorDiv />
                     <FormText

@@ -5,6 +5,7 @@ import { Periode } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import {toDateFormat} from "./PeriodeInput";
 
 export interface PeriodeTextProps {
   periode: Periode | null | undefined
@@ -13,12 +14,14 @@ export interface PeriodeTextProps {
     startdato: string | undefined
     sluttdato: string | undefined
   }
+  uiFormat?: string
 }
 
 const PeriodeText = ({
   periode,
   namespace,
-  error
+  error,
+  uiFormat = 'DD.MM.YYYY'
 }: PeriodeTextProps) => {
   const { t } = useTranslation()
   return (
@@ -29,7 +32,7 @@ const PeriodeText = ({
       >
         <BodyLong>
           {!_.isEmpty(periode?.startdato)
-            ? periode!.startdato
+            ? toDateFormat(periode!.startdato, uiFormat)
             : t('label:ukjent_startdato')}
         </BodyLong>
         <ErrorLabel error={error?.startdato} />
@@ -42,7 +45,7 @@ const PeriodeText = ({
       >
         <BodyLong>
           {!_.isEmpty(periode?.sluttdato)
-            ? periode?.sluttdato
+            ? toDateFormat(periode!.sluttdato, uiFormat)
             : t('label:' + periode?.aapenPeriodeType)}
         </BodyLong>
         <ErrorLabel error={error?.sluttdato} />
