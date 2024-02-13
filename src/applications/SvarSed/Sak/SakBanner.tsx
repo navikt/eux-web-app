@@ -11,6 +11,7 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {toDateFormat} from "../../../components/Forms/PeriodeInput";
 
 const Panel = styled(FullWidthDiv)`
   background-color: var(--navds-panel-color-background);
@@ -100,7 +101,7 @@ const SakBanner = () => {
             </>
           )}
           <HorizontalSeparatorDiv />
-          {currentSak.foedselsdato}
+          {toDateFormat(currentSak.foedselsdato, 'DD.MM.YYYY')}
         </FlexDiv>
         {currentSak.adressebeskyttelse &&
           <FlexDiv>
