@@ -425,6 +425,7 @@ const SEDNew = (): JSX.Element => {
   useEffect(() => {
     if (!_.isNil(filloutinfo)) {
       dispatch(loadReplySed(filloutinfo))
+      dispatch(setCurrentSak(filloutinfo.sak))
       dispatch(resetFilloutInfo())
       navigate({
         pathname: '/svarsed/edit/sak/' + filloutinfo.sak.sakId + '/sed/' + filloutinfo.sed.sedId,
