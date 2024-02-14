@@ -157,15 +157,10 @@ export interface PersonInfo {
 }
 
 export interface FillOutInfoPayload {
-  'fnr': string
-  'fornavn': string
-  'mellomnavn': string
-  'etternavn': string
-  'kjoenn': string
-  'foedselsdato': string
-  'statsborgerskap': Array<string>
-  'adresser': Array<Adresse>,
-  'utenlandskePin': Array<any>
+  bruker: {
+    adresser: Array<Adresse>
+    personInfo: PersonInfo
+  }
 }
 
 export interface Person {

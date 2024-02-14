@@ -130,6 +130,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_FILLOUTINFO_SUCCESS: {
       const fillOutInfoPayload: FillOutInfoPayload = (action as ActionWithPayload).payload
       const template = (action as ActionWithPayload).context.template
+      const norwegianPin = fillOutInfoPayload.bruker.personInfo.pin.filter((p) => (p.land === 'NO'))
       return {
         ...state,
         filloutinfo: {
@@ -137,11 +138,11 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
           ...fillOutInfoPayload,
           sak: {
             ...template.sak,
-            fornavn: fillOutInfoPayload.fornavn,
-            etternavn: fillOutInfoPayload.etternavn,
-            foedselsdato: fillOutInfoPayload.foedselsdato,
-            kjoenn: fillOutInfoPayload.kjoenn,
-            fnr: fillOutInfoPayload.fnr
+            fornavn: fillOutInfoPayload.bruker.personInfo.fornavn,
+            etternavn: fillOutInfoPayload.bruker.personInfo.etternavn,
+            foedselsdato: fillOutInfoPayload.bruker.personInfo.foedselsdato,
+            kjoenn: fillOutInfoPayload.bruker.personInfo.kjoenn,
+            fnr: norwegianPin && norwegianPin.length === 1 ? norwegianPin[0].identifikator : undefined
           }
         }
       }
