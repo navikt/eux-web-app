@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+
 import { TextField } from '@navikt/ds-react'
 import {useAppDispatch} from "../../store";
 import {setTextFieldDirty} from "../../actions/ui";
@@ -18,12 +19,20 @@ export interface DateFieldProps {
 const parseDate = (date: string | undefined): Moment | undefined => {
   if (!date || date === '') return undefined
   let newDate: Moment
-  if (date.match(/\d{2}.\d{2}.\d{4}/)) {
+  if (date.match(/\d{2}[.]\d{2}[.]\d{4}/)) {
     newDate = moment(date, 'DD.MM.YYYY')
+  } else if (date.match(/\d{2}[.]\d{2}[.]\d{2}/)) {
+    newDate = moment(date, 'DD.MM.YY')
   } else if (date.match(/\d{4}-\d{2}-\d{2}/)) {
     newDate = moment(date, 'YYYY-MM-DD')
-  } else if (date.match(/\d{6}/)) {
+  } else if (date.match(/^\d{6}$/)) {
     newDate = moment(date, 'DDMMYY')
+  } else if (date.match(/^\d{8}$/)) {
+    newDate = moment(date, 'DDMMYYYY')
+  } else if (date.match(/\d{2}[/]\d{2}[/]\d{4}/)) {
+    newDate = moment(date, 'DD/MM/YYYY')
+  } else if (date.match(/\d{2}[/]\d{2}[/]\d{2}/)) {
+    newDate = moment(date, 'DD/MM/YY')
   } else {
     newDate = moment(date)
   }
