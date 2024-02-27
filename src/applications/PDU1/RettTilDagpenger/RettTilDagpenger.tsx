@@ -1,5 +1,5 @@
 import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, Column, FlexEndDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { AlignStartRow, Column, FlexStartDiv, PaddedDiv, VerticalSeparatorDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import {
   validateRettTilDagpenger,
@@ -15,12 +15,19 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import DateField from "components/DateField/DateField";
+import styled from "styled-components";
 
 type RettTilDagpengerRadio = 'rettTilDagpenger' | 'ikkeRettTilDagpenger' | undefined
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
+
+export const FullWidthFlexStart = styled(FlexStartDiv)`
+  width: 100%;
+  margin-right: 3.5rem;
+`
+
 
 const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   parentNamespace,
@@ -33,6 +40,7 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
   const rettTilDagpenger: RettTilDagpenger | undefined = _.get(replySed, 'rettTilDagpenger')
   const ikkeRettTilDagpenger: IkkeRettTilDagpenger | undefined = _.get(replySed, 'ikkeRettTilDagpenger')
   const namespace = `${parentNamespace}-retttildagpenger`
+  const [_toggleDateError, _setToggleDateError] = useState<boolean>(false)
 
   const [rettTilDagpengerRadio, setRettTilDagpengerRadio] = useState<RettTilDagpengerRadio>(() =>
     !_.isEmpty(rettTilDagpenger) ? 'rettTilDagpenger' : !_.isEmpty(ikkeRettTilDagpenger) ? 'ikkeRettTilDagpenger' : undefined
@@ -51,6 +59,7 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
 
   const onRettTilDagpengerRadioChange = (value: string | number | boolean) => {
     const newReplySed: PDU1 = _.cloneDeep(replySed) as PDU1
+    _setToggleDateError(!_toggleDateError)
     if (value as string === 'rettTilDagpenger') {
       delete newReplySed.ikkeRettTilDagpenger
       newReplySed.rettTilDagpenger = {
@@ -190,11 +199,9 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
         </AlignStartRow>
         <VerticalSeparatorDiv />
         <AlignStartRow>
-          <Column>
-            <FlexEndDiv>
-              <PaddedDiv size='0.5'>
-                {t('label:for-perioden-fra')}
-              </PaddedDiv>
+          <HorizontalSeparatorDiv size={"3.5"}/>
+          <FullWidthFlexStart>
+            <Column>
               <DateField
                 error={validation[namespace + '-startdato']?.feilmelding}
                 id={namespace + '-' + 'startdato'}
@@ -202,8 +209,10 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
                 onChanged={onStartdatoChange}
                 dateValue={rettTilDagpenger?.startdato}
                 finalFormat={"DD.MM.YYYY"}
+                resetError={_toggleDateError}
               />
-              <PaddedDiv size='0.5'>{t('label:til').toLowerCase()}</PaddedDiv>
+            </Column>
+            <Column>
               <DateField
                 error={validation[namespace + '-sluttdato']?.feilmelding}
                 id={namespace + '-' + 'sluttdato'}
@@ -211,9 +220,10 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
                 onChanged={onSluttdatoChange}
                 dateValue={rettTilDagpenger?.sluttdato}
                 finalFormat={"DD.MM.YYYY"}
+                resetError={_toggleDateError}
               />
-            </FlexEndDiv>
-          </Column>
+            </Column>
+          </FullWidthFlexStart>
         </AlignStartRow>
         <VerticalSeparatorDiv size='2' />
         <AlignStartRow>
