@@ -11,7 +11,7 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {toDateFormat} from "../../../components/Forms/PeriodeInput";
+import { toDateFormat } from 'components/DateField/DateField'
 
 const Panel = styled(FullWidthDiv)`
   background-color: var(--navds-panel-color-background);

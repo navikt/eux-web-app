@@ -26,7 +26,7 @@ import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import {toDateFormat} from "../../../components/Forms/PeriodeInput";
+import { toDateFormat } from 'components/DateField/DateField'
 import {setTextFieldDirty} from "../../../actions/ui";
 
 const mapState = (state: State): MainFormSelector => ({

@@ -1,5 +1,5 @@
 import { TextField } from '@navikt/ds-react'
-import { toDateFormat } from 'components/Forms/PeriodeInput'
+import { toDateFormat } from 'components/DateField/DateField'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch} from "../../store";

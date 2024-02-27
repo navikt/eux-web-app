@@ -1,6 +1,6 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
-import { toDateFormat } from 'components/Forms/PeriodeInput'
+import { toDateFormat } from 'components/DateField/DateField'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'

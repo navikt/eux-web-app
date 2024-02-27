@@ -5,7 +5,7 @@ import { Periode } from 'declarations/sed'
 import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import {toDateFormat} from "./PeriodeInput";
+import { toDateFormat } from 'components/DateField/DateField'
 
 export interface PeriodeTextProps {
   periode: Periode | null | undefined

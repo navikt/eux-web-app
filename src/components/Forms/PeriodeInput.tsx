@@ -1,13 +1,12 @@
 import { Checkbox } from '@navikt/ds-react'
 import classNames from 'classnames'
-import Input from 'components/Forms/Input'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
-import moment, { Moment } from 'moment'
 import { Column } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import DateField, {toDateFormat} from "components/DateField/DateField";
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -40,35 +39,6 @@ export interface PeriodeProps<T> {
   finalFormat ?: string
 }
 
-const parseDate = (date: string | undefined): Moment | undefined => {
-  if (!date || date === '') return undefined
-  let newDate: Moment
-  if (date.match(/\d{2}[.]\d{2}[.]\d{4}/)) {
-    newDate = moment(date, 'DD.MM.YYYY')
-  } else if (date.match(/\d{2}[.]\d{2}[.]\d{2}/)) {
-    newDate = moment(date, 'DD.MM.YY')
-  } else if (date.match(/\d{4}-\d{2}-\d{2}/)) {
-    newDate = moment(date, 'YYYY-MM-DD')
-  } else if (date.match(/^\d{6}$/)) {
-    newDate = moment(date, 'DDMMYY')
-  } else if (date.match(/^\d{8}$/)) {
-    newDate = moment(date, 'DDMMYYYY')
-  } else if (date.match(/\d{2}[/]\d{2}[/]\d{4}/)) {
-    newDate = moment(date, 'DD/MM/YYYY')
-  } else if (date.match(/\d{2}[/]\d{2}[/]\d{2}/)) {
-    newDate = moment(date, 'DD/MM/YY')
-  } else {
-    newDate = moment(date)
-  }
-  return newDate
-}
-
-export const toDateFormat = (date: string | undefined, format: string): string => {
-  const newDate = parseDate(date?.trim())
-  if (!newDate) { return '' }
-  return newDate.isValid() ? newDate!.format(format) : ''
-}
-
 const PeriodeInput = <T extends Periode>({
   error,
   breakInTwo = false,
@@ -81,7 +51,6 @@ const PeriodeInput = <T extends Periode>({
   hideLabel = true,
   value,
   finalFormat = 'YYYY-MM-DD',
-  uiFormat = 'DD.MM.YYYY'
 }: PeriodeProps<T>) => {
   const { t } = useTranslation()
 
@@ -114,31 +83,27 @@ const PeriodeInput = <T extends Periode>({
   return (
     <>
       <Column>
-        <Input
-          ariaLabel={label?.startdato ?? t('label:startdato')}
-          error={error.startdato}
-          id='startdato'
+        <DateField
           key={namespace + '-startdato-' + value?.startdato}
+          id='startdato'
+          error={error.startdato}
           label={label?.startdato ?? t('label:startdato') + ' (' + t('el:placeholder-date-default') + ')'}
-          hideLabel={hideLabel}
-          namespace={namespace}
           onChanged={onStartDatoChanged}
+          dateValue={value?.startdato}
+          hideLabel={hideLabel}
           required={requiredStartDato}
-          value={toDateFormat(value?.startdato, uiFormat!) ?? ''}
         />
       </Column>
       <Column>
-        <Input
-          ariaLabel={label?.sluttdato || t('label:sluttdato')}
-          error={error.sluttdato}
-          id='sluttdato'
+        <DateField
           key={namespace + '-sluttdato-' + value?.sluttdato}
-          hideLabel={hideLabel}
+          id='sluttdato'
+          error={error.sluttdato}
           label={label?.sluttdato ?? t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
-          namespace={namespace}
           onChanged={onEndDatoChanged}
+          dateValue={value?.sluttdato}
+          hideLabel={hideLabel}
           required={requiredSluttDato}
-          value={toDateFormat(value?.sluttdato, uiFormat!) ?? ''}
         />
       </Column>
       {breakInTwo && <div />}
