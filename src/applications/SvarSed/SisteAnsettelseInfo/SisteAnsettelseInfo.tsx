@@ -18,10 +18,10 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
+import DateField from "components/DateField/DateField";
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
@@ -374,13 +374,13 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                 </Column>
                 <Column>
                   {_utbetaling?.utbetalingType === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
-                    <DateInput
+                    <DateField
                       error={_v[_namespace + '-loennTilDato']?.feilmelding}
                       namespace={_namespace}
                       id='loennTilDato'
                       label={t('label:loenn-til-dato')}
                       onChanged={(date: string) => setLoennTilDato(date, index)}
-                      value={_utbetaling?.loennTilDato}
+                      dateValue={_utbetaling?.loennTilDato}
                     />
                   )}
                   {_utbetaling?.utbetalingType === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie' && (

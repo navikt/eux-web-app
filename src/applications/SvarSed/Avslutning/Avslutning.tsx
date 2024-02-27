@@ -11,7 +11,7 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import DateInput from 'components/Forms/DateInput'
+import DateField from 'components/DateField/DateField'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Option, Options } from 'declarations/app'
@@ -108,14 +108,14 @@ const Avslutning: React.FC<MainFormProps> = ({
       <VerticalSeparatorDiv size='2' />
       <AlignStartRow>
         <Column>
-          <DateInput
+          <DateField
             error={validation[namespace + '-avslutningDato']?.feilmelding}
             id='avslutningDato'
             namespace={namespace}
             label={t('label:avslutningdato')}
             onChanged={setAvslutningDato}
             required
-            value={(replySed as X001Sed).avslutningDato}
+            dateValue={(replySed as X001Sed).avslutningDato}
           />
         </Column>
         <Column flex='1.5' />

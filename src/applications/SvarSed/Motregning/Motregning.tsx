@@ -21,7 +21,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
+import DateField from 'components/DateField/DateField'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
@@ -818,13 +818,13 @@ const MotregningFC: React.FC<MainFormProps> = ({
           <VerticalSeparatorDiv />
           <AlignStartRow>
             <Column>
-              <DateInput
+              <DateField
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
                 id='vedtaksdato'
                 label={t('label:vedtaksdato')}
                 namespace={_namespace}
                 onChanged={(newVedtaksdato) => setVedtaksDato(newVedtaksdato, index)}
-                value={_motregning?.vedtaksdato}
+                dateValue={_motregning?.vedtaksdato}
               />
             </Column>
             <Column>

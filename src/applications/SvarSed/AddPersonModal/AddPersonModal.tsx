@@ -16,7 +16,7 @@ import {
 } from '@navikt/hoykontrast'
 import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
+import DateField from 'components/DateField/DateField'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { GrayPanel, HorizontalLineSeparator } from 'components/StyledComponents'
@@ -356,14 +356,14 @@ const AddPersonModal = <T extends StorageTypes>({
                 <HorizontalSeparatorDiv />
               </Column>
               <Column>
-                <DateInput
+                <DateField
                   error={_validation[namespace + '-fdato']?.feilmelding}
                   id='fdato'
                   namespace={namespace}
                   label={t('label:fødselsdato')}
                   onChanged={setFoedselsdato}
                   required
-                  value={_newPersonFodselsdato}
+                  dateValue={_newPersonFodselsdato}
                 />
                 <HorizontalSeparatorDiv />
               </Column>

@@ -1,6 +1,6 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
-import { toDateFormat } from 'components/DateField/DateField'
+import DateField, { toDateFormat } from 'components/DateField/DateField'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -112,9 +112,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     [felt]: value ?? ''
   })
 
-  const onDatoBlur = () => {
-    const date = toDateFormat(_dato, 'YYYY-MM-DD')
-
+  const onDatoChanged = (date: string) => {
     updateRelation('fdato', date)
     resetValidation('fdato')
   }
@@ -280,18 +278,13 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           </Select>
         </Column>
         <Column>
-          <TextField
+          <DateField
             error={_validation[namespace + '-fdato']?.feilmelding}
-            id={namespace + '-' + 'fdato'}
-            data-testid={namespace + '-fdato'}
-            label={t('label:fødselsdato') + ' (' + t('el:placeholder-date-default') + ')'}
-            onBlur={() => {
-              onDatoBlur()
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              _setDato(e.target.value)
-            }}
-            value={_dato}
+            id='fdato'
+            namespace={namespace}
+            label={t('label:fødselsdato')}
+            onChanged={onDatoChanged}
+            dateValue={_dato}
           />
           <VerticalSeparatorDiv />
         </Column>

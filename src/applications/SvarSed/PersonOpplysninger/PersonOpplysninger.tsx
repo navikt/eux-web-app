@@ -26,7 +26,7 @@ import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { toDateFormat } from 'components/DateField/DateField'
+import DateField, { toDateFormat } from 'components/DateField/DateField'
 import {setTextFieldDirty} from "../../../actions/ui";
 
 const mapState = (state: State): MainFormSelector => ({
@@ -175,12 +175,10 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   }
 
   const uiFormat = 'DD.MM.YYYY'
-  const finalFormat = 'YYYY-MM-DD'
 
   const [_dato, _setDato] = useState<string>(() => toDateFormat(personInfo?.foedselsdato, uiFormat!) ?? '')
 
-  const onDatoBlur = () => {
-    const date = toDateFormat(_dato, finalFormat!)
+  const onDatoChanged = (date: string) => {
     setFodselsdato(date)
     dispatch(setTextFieldDirty(false))
   }
@@ -245,19 +243,14 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             />
           </Column>
           <Column>
-            <TextField
+            <DateField
               error={validation[namespace + '-foedselsdato']?.feilmelding}
-              id={namespace + '-' + 'foedselsdato'}
-              label={t('label:fødselsdato') +  '(' + t('el:placeholder-date-default') + ')' + ' *'}
+              id='foedselsdato'
+              namespace={namespace}
+              label={t('label:fødselsdato')}
+              onChanged={onDatoChanged}
+              dateValue={_dato}
               required
-              onBlur={() => {
-                onDatoBlur()
-              }}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                _setDato(e.target.value)
-                dispatch(setTextFieldDirty(true))
-              }}
-              value={_dato}
             />
           </Column>
         </AlignStartRow>

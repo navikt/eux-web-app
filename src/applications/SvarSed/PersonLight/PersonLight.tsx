@@ -10,7 +10,7 @@ import {
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import DateInput from 'components/Forms/DateInput'
+import DateField from 'components/DateField/DateField'
 import Input from 'components/Forms/Input'
 import NorskPin from 'components/NorskPin/NorskPin'
 import { State } from 'declarations/reducers'
@@ -192,14 +192,14 @@ const PersonLightFC: React.FC<MainFormProps> = ({
             />
           </Column>
           <Column>
-            <DateInput
+            <DateField
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
               label={t('label:fødselsdato')}
               namespace={namespace}
               onChanged={setFodselsdato}
               required
-              value={personLight?.foedselsdato ?? ''}
+              dateValue={personLight?.foedselsdato ?? ''}
             />
           </Column>
         </AlignStartRow>

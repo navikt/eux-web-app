@@ -4,8 +4,12 @@ import { TextField } from '@navikt/ds-react'
 import {useAppDispatch} from "../../store";
 import {setTextFieldDirty} from "../../actions/ui";
 import moment, {Moment} from "moment/moment";
+import {useTranslation} from "react-i18next";
 
 export interface DateFieldProps {
+  ariaLabel ?: string
+  className ?: string
+  namespace: string
   error: string | null | undefined
   id: string
   label: string
@@ -50,6 +54,9 @@ export const toDateFormat = (date: string | undefined, format: string): string =
 }
 
 const DateField = ({
+  ariaLabel,
+  className,
+  namespace,
   error,
   id,
   label,
@@ -63,6 +70,7 @@ const DateField = ({
 
 }: DateFieldProps) => {
   const dispatch = useAppDispatch()
+  const { t } = useTranslation()
   const [_dato, _setDato] = useState<string>(() => toDateFormat(dateValue, uiFormat!) ?? '')
   const [_error, _setError] = useState<string | undefined>(() => undefined)
 
@@ -95,9 +103,13 @@ const DateField = ({
 
   return (
     <TextField
+      aria-invalid={!!error}
+      aria-label={ariaLabel ?? label}
+      className={className}
+      data-testid={namespace + ''}
+      id={namespace + '-' + id}
       error={error || _error}
-      id={id}
-      label={label}
+      label={(label ?? t('label:dato')) + ' (' + t('el:placeholder-date-default') + ')' + (required ? ' *' : '')}
       required={required}
       onBlur={onDateBlur}
       onChange={onDateChange}

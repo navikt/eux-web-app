@@ -86,8 +86,9 @@ const PeriodeInput = <T extends Periode>({
         <DateField
           key={namespace + '-startdato-' + value?.startdato}
           id='startdato'
+          namespace={namespace}
           error={error.startdato}
-          label={label?.startdato ?? t('label:startdato') + ' (' + t('el:placeholder-date-default') + ')'}
+          label={label?.startdato ?? t('label:startdato')}
           onChanged={onStartDatoChanged}
           dateValue={value?.startdato}
           hideLabel={hideLabel}
@@ -97,9 +98,10 @@ const PeriodeInput = <T extends Periode>({
       <Column>
         <DateField
           key={namespace + '-sluttdato-' + value?.sluttdato}
+          namespace={namespace}
           id='sluttdato'
           error={error.sluttdato}
-          label={label?.sluttdato ?? t('label:sluttdato') + ' (' + t('el:placeholder-date-default') + ')'}
+          label={label?.sluttdato ?? t('label:sluttdato')}
           onChanged={onEndDatoChanged}
           dateValue={value?.sluttdato}
           hideLabel={hideLabel}

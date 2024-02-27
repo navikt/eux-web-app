@@ -13,10 +13,10 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
+import DateField from "components/DateField/DateField";
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import {F001Sed, F002Sed, FSed, Periode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -288,13 +288,13 @@ const PeriodeFC: React.FC<MainFormProps> = ({
                 </Radio>
               </RadioGroup>
               <VerticalSeparatorDiv />
-              <DateInput
+              <DateField
                 error={validation[namespace + '-kravMottattDato']?.feilmelding}
                 namespace={namespace}
                 id='kravMottattDato'
                 label={t('label:krav-mottatt-dato')}
                 onChanged={setKravMottattDato}
-                value={(replySed as F002Sed).krav?.kravMottattDato}
+                dateValue={(replySed as F002Sed).krav?.kravMottattDato}
               />
               <VerticalSeparatorDiv />
             </div>

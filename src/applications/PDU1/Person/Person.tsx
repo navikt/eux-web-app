@@ -12,7 +12,6 @@ import { setReplySed } from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validatePerson, ValidationPersonProps } from 'applications/PDU1/Person/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
-import DateInput from 'components/Forms/DateInput'
 import Input from 'components/Forms/Input'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { Pdu1Person } from 'declarations/pd'
@@ -26,6 +25,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import Adresse from './Adresse/Adresse'
 import StatsborgerskapFC from './Statsborgerskap/Statsborgerskap'
+import DateField from "../../../components/DateField/DateField";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -125,16 +125,16 @@ const Person: React.FC<MainFormProps> = ({
             />
           </Column>
           <Column>
-            <DateInput
+            <DateField
               uiFormat='DD.MM.YYYY'
               finalFormat='DD.MM.YYYY'
-              error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
-              label={t('label:fødselsdato')}
               namespace={namespace}
+              error={validation[namespace + '-foedselsdato']?.feilmelding}
+              label={t('label:fødselsdato')}
               onChanged={onFodselsdatoChange}
+              dateValue={pdu1Person?.foedselsdato ?? ''}
               required
-              value={pdu1Person?.foedselsdato ?? ''}
             />
           </Column>
         </AlignStartRow>

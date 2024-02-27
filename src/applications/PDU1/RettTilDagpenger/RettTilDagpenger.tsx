@@ -204,7 +204,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Column>
               <DateField
                 error={validation[namespace + '-startdato']?.feilmelding}
-                id={namespace + '-' + 'startdato'}
+                namespace={namespace}
+                id='startdato'
                 label={t('label:startdato')}
                 onChanged={onStartdatoChange}
                 dateValue={rettTilDagpenger?.startdato}
@@ -215,7 +216,8 @@ const RettTilDagpengerFC: React.FC<MainFormProps> = ({
             <Column>
               <DateField
                 error={validation[namespace + '-sluttdato']?.feilmelding}
-                id={namespace + '-' + 'sluttdato'}
+                id='sluttdato'
+                namespace={namespace}
                 label={t('label:sluttdato')}
                 onChanged={onSluttdatoChange}
                 dateValue={rettTilDagpenger?.sluttdato}

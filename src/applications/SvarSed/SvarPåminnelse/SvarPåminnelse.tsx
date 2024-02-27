@@ -17,10 +17,10 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
+import DateField from "components/DateField/DateField";
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { BesvarelseUmulig, BesvarelseKommer, X010Sed } from 'declarations/sed'
@@ -420,14 +420,14 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   </TextAreaDiv>
                 </Column>
                 <Column>
-                  <DateInput
+                  <DateField
                     error={_v[_namespace + '-dato']?.feilmelding}
                     id='dato'
                     label={t('label:dato')}
                     namespace={_namespace}
                     onChanged={(innenDato: string) => setInnenDato(innenDato, index)}
                     required
-                    value={_BesvarelseKommer?.innenDato ?? ''}
+                    dateValue={_BesvarelseKommer?.innenDato ?? ''}
                   />
                 </Column>
               </AlignStartRow>

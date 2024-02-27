@@ -13,7 +13,7 @@ import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
+import DateField from 'components/DateField/DateField'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
@@ -275,23 +275,23 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
       <PaddedDiv>
         <AlignStartRow>
           <Column>
-            <DateInput
+            <DateField
               error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
               namespace={namespace}
               id='datoFlyttetTilAvsenderlandet'
               label={t('label:flyttedato-til-avsenderlandet')}
               onChanged={setAvsenderDato}
-              value={flyttegrunn?.datoFlyttetTilAvsenderlandet}
+              dateValue={flyttegrunn?.datoFlyttetTilAvsenderlandet}
             />
           </Column>
           <Column>
-            <DateInput
+            <DateField
               error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
               namespace={namespace}
               id='datoFlyttetTilMottakerlandet'
               label={t('label:flyttedato-til-mottakerslandet')}
               onChanged={setMottakerDato}
-              value={flyttegrunn?.datoFlyttetTilMottakerlandet}
+              dateValue={flyttegrunn?.datoFlyttetTilMottakerlandet}
             />
           </Column>
           <Column />

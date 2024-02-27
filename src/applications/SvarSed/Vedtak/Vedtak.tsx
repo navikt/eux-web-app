@@ -27,12 +27,12 @@ import {
 } from 'applications/SvarSed/Vedtak/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
-import DateInput from 'components/Forms/DateInput'
 import FormText from 'components/Forms/FormText'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
+import DateField from "components/DateField/DateField";
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
@@ -673,14 +673,14 @@ const VedtakFC: React.FC<MainFormProps> = ({
             />
           </Column>
           <Column>
-            <DateInput
+            <DateField
               error={validation[namespace + '-vedtaksdato']?.feilmelding}
               namespace={namespace}
               id='vedtaksdato'
               label={t('label:vedtaksdato')}
               onChanged={setVedtaksdato}
               required
-              value={vedtak?.vedtaksdato}
+              dateValue={vedtak?.vedtaksdato}
             />
           </Column>
         </AlignStartRow>
