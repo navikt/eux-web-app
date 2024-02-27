@@ -14,6 +14,8 @@ export interface DateFieldProps {
   finalFormat ?: string
   onChanged: (dato: string) => void
   dateValue: string | undefined
+  resetError?: boolean
+  hideLabel?: boolean
 }
 
 const parseDate = (date: string | undefined): Moment | undefined => {
@@ -29,14 +31,16 @@ const parseDate = (date: string | undefined): Moment | undefined => {
     newDate = moment(date, 'DDMMYY')
   } else if (date.match(/^\d{8}$/)) {
     newDate = moment(date, 'DDMMYYYY')
-  } else if (date.match(/\d{2}[/]\d{2}[/]\d{4}/)) {
-    newDate = moment(date, 'DD/MM/YYYY')
-  } else if (date.match(/\d{2}[/]\d{2}[/]\d{2}/)) {
-    newDate = moment(date, 'DD/MM/YY')
   } else {
-    newDate = moment(date)
+    return undefined
   }
   return newDate
+}
+
+const isDateValidFormat = (date: string | undefined): boolean => {
+  return !date || moment(date, "DD.MM.YYYY", true).isValid() ||
+    moment(date, "DD.MM.YY", true).isValid() ||
+    moment(date, "DDMMYY", true).isValid();
 }
 
 export const toDateFormat = (date: string | undefined, format: string): string => {
@@ -54,18 +58,34 @@ const DateField = ({
   dateValue,
   uiFormat = 'DD.MM.YYYY',
   finalFormat = 'YYYY-MM-DD',
+  resetError,
+  hideLabel = false,
+
 }: DateFieldProps) => {
   const dispatch = useAppDispatch()
   const [_dato, _setDato] = useState<string>(() => toDateFormat(dateValue, uiFormat!) ?? '')
+  const [_error, _setError] = useState<string | undefined>(() => undefined)
 
   useEffect(() => {
     _setDato(toDateFormat(dateValue, uiFormat!))
   }, [dateValue])
 
+  useEffect(() => {
+    if(_error){
+      _setDato("")
+      _setError(undefined)
+    }
+  }, [resetError])
+
   const onDateBlur = () => {
-    const date = toDateFormat(_dato, finalFormat!)
-    onChanged(date)
-    dispatch(setTextFieldDirty(false))
+    if(isDateValidFormat(_dato)){
+      _setError(undefined)
+      const date = toDateFormat(_dato, finalFormat!)
+      onChanged(date)
+      dispatch(setTextFieldDirty(false))
+    } else {
+      _setError("Feil datoformat (DD.MM.YYYY / DD.MM.YY / DDMMYY)")
+    }
   }
 
   const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,13 +95,14 @@ const DateField = ({
 
   return (
     <TextField
-      error={error}
+      error={error || _error}
       id={id}
       label={label}
       required={required}
       onBlur={onDateBlur}
       onChange={onDateChange}
       value={_dato}
+      hideLabel={hideLabel}
     />
   )
 }
