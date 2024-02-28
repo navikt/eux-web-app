@@ -1,9 +1,10 @@
 import * as types from 'constants/actionTypes'
-import { PDU1 } from 'declarations/pd'
+import {PDPeriode, PDU1} from 'declarations/pd'
 import {Fagsak, Fagsaker, PDU1SearchResults} from 'declarations/types'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
+import {toDateFormat} from "../components/DateField/DateField";
 
 export interface Pdu1State {
   fagsaker: Fagsaker | null | undefined
@@ -29,6 +30,41 @@ export const initialPdu1State: Pdu1State = {
   pdu1Changed: false,
   pdu1Initialized: false,
   statsborgerskapModalShown: false
+}
+
+const convertDatesInPeriode = (periodeArray:Array<PDPeriode>): Array<PDPeriode> => {
+  return periodeArray.map((periode: PDPeriode) => {
+      return {
+        ...periode,
+        startdato: toDateFormat(periode.startdato, "DD.MM.YYYY"),
+        sluttdato: toDateFormat(periode.sluttdato, "DD.MM.YYYY")
+      }
+  })
+}
+
+const convertDatesInPeriodeArrays = (orgPDU1: PDU1): PDU1 => {
+  let perioderAnsattMedForsikring: Array<PDPeriode> | undefined = orgPDU1.perioderAnsattMedForsikring ? convertDatesInPeriode(orgPDU1.perioderAnsattMedForsikring) : undefined
+  let perioderSelvstendigMedForsikring: Array<PDPeriode> | undefined = orgPDU1.perioderSelvstendigMedForsikring ? convertDatesInPeriode(orgPDU1.perioderSelvstendigMedForsikring) : undefined
+  let perioderAndreForsikringer: Array<PDPeriode> | undefined = orgPDU1.perioderAndreForsikringer ? convertDatesInPeriode(orgPDU1.perioderAndreForsikringer) : undefined
+  let perioderAnsettSomForsikret: Array<PDPeriode> | undefined = orgPDU1.perioderAnsettSomForsikret ? convertDatesInPeriode(orgPDU1.perioderAnsettSomForsikret) : undefined
+  let perioderAnsattUtenForsikring: Array<PDPeriode> | undefined = orgPDU1.perioderAnsattUtenForsikring ? convertDatesInPeriode(orgPDU1.perioderAnsattUtenForsikring) : undefined
+  let perioderSelvstendigUtenForsikring: Array<PDPeriode> | undefined = orgPDU1.perioderSelvstendigUtenForsikring ? convertDatesInPeriode(orgPDU1.perioderSelvstendigUtenForsikring) : undefined
+  let perioderLoennSomAnsatt: Array<PDPeriode> | undefined = orgPDU1.perioderLoennSomAnsatt ? convertDatesInPeriode(orgPDU1.perioderLoennSomAnsatt) : undefined
+  let perioderInntektSomSelvstendig: Array<PDPeriode> | undefined = orgPDU1.perioderInntektSomSelvstendig ? convertDatesInPeriode(orgPDU1.perioderInntektSomSelvstendig) : undefined
+  let perioderDagpengerMottatt: Array<PDPeriode> | undefined = orgPDU1.perioderDagpengerMottatt ? convertDatesInPeriode(orgPDU1.perioderDagpengerMottatt) : undefined
+
+  return {
+    ...orgPDU1,
+    perioderAnsattMedForsikring,
+    perioderSelvstendigMedForsikring,
+    perioderAndreForsikringer,
+    perioderAnsettSomForsikret,
+    perioderAnsattUtenForsikring,
+    perioderSelvstendigUtenForsikring,
+    perioderLoennSomAnsatt,
+    perioderInntektSomSelvstendig,
+    perioderDagpengerMottatt
+  } as PDU1
 }
 
 const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pdu1State => {
@@ -89,7 +125,7 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       }
 
     case types.PDU1_ASJSON_SUCCESS: {
-      const pdu1: PDU1 = (action as ActionWithPayload).payload
+      const pdu1: PDU1 = convertDatesInPeriodeArrays((action as ActionWithPayload).payload)
       pdu1.saksreferanse = (action as ActionWithPayload).payload.saksreferanse
       pdu1.fagsakId = (action as ActionWithPayload).payload.fagsakId
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsak
