@@ -1,7 +1,7 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkLength} from "../../../utils/validation";
+import {checkLength, checkValidDateFormat} from "../../../utils/validation";
 
 export interface ValidationAnmodningsPerioderProps {
   anmodningsperioder: Array<Periode> | undefined
@@ -61,6 +61,14 @@ export const validateKrav = (
       max: 255,
       id: namespace + '-opplysninger',
       message: 'validation:textOverX',
+    }))
+  }
+
+  if(krav?.kravMottattDato){
+    hasErrors.push(checkValidDateFormat(v, {
+      needle: krav?.kravMottattDato,
+      id: namespace + '-kravMottattDato',
+      message: 'validation:invalidDateFormat',
     }))
   }
 
