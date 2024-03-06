@@ -2,7 +2,8 @@ import { validatePeriode } from 'components/Forms/validation'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotDate, checkLength } from 'utils/validation'
+import {checkIfDuplicate, checkIfNotDate, checkLength, checkValidDateFormat} from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidationGrunnlagForBosettingPeriodeProps {
   periode: Periode | undefined
@@ -73,6 +74,22 @@ export const validateGrunnlagForBosetting = (
     message: 'validation:invalidDate',
     personName
   }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: flyttegrunn?.datoFlyttetTilAvsenderlandet,
+    id: namespace + '-datoFlyttetTilAvsenderlandet',
+    message: 'validation:invalidDateFormat',
+    personName
+  }))
+
+  if (!_.isEmpty(flyttegrunn?.datoFlyttetTilMottakerlandet)){
+    hasErrors.push(checkValidDateFormat(v, {
+      needle: flyttegrunn?.datoFlyttetTilMottakerlandet,
+      id: namespace + '-datoFlyttetTilMottakerlandet',
+      message: 'validation:invalidDateFormat',
+      personName
+    }))
+  }
 
   hasErrors.push(checkLength(v, {
     needle: flyttegrunn?.personligSituasjon,

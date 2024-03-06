@@ -3,7 +3,14 @@ import { Vedtak, Periode, KompetansePeriode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getIdx, getNSIdx } from 'utils/namespace'
-import { addError, checkIfDuplicate, checkIfNotDate, checkIfNotEmpty, checkLength } from 'utils/validation'
+import {
+  addError,
+  checkIfDuplicate,
+  checkIfNotDate,
+  checkIfNotEmpty,
+  checkLength,
+  checkValidDateFormat
+} from 'utils/validation'
 
 export interface ValidationVedtakPeriodeProps {
   periode: Periode | undefined
@@ -146,6 +153,14 @@ export const validateVedtak = (
     message: 'validation:invalidDate',
     personName: formalName
   }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: vedtak?.vedtaksdato,
+    id: namespace + '-vedtaksdato',
+    message: 'validation:invalidDateFormat',
+    personName: formalName
+  }))
+
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: vedtak?.begrunnelse,

@@ -7,7 +7,7 @@ import {
   PeriodeUtenForsikring
 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkIfNotDate, checkIfNotEmpty, checkIfNotNumber, checkLength} from 'utils/validation'
+import {checkIfNotDate, checkIfNotEmpty, checkIfNotNumber, checkLength, checkValidDateFormat} from 'utils/validation'
 import _ from "lodash";
 
 export interface ValidationForsikringPeriodeBoxProps {
@@ -49,10 +49,22 @@ export const validateForsikringPeriodeBox = (
     message: 'validation:invalidDate'
   }))
 
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: forsikringPeriode?.startdato,
+    id: namespace + (nsIndex ?? '') + '-startdato',
+    message: 'validation:invalidDateFormat'
+  }))
+
   hasErrors.push(checkIfNotDate(v, {
     needle: forsikringPeriode?.sluttdato,
     id: namespace + (nsIndex ?? '') + '-sluttdato',
     message: 'validation:invalidDate'
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: forsikringPeriode?.sluttdato,
+    id: namespace + (nsIndex ?? '') + '-sluttdato',
+    message: 'validation:invalidDateFormat'
   }))
 
   if (showArbeidsgiver) {
