@@ -2,6 +2,7 @@ import { ErrorElement } from 'declarations/app'
 import _ from 'lodash'
 import i18n from 'i18n'
 import { Validation } from 'declarations/types'
+import {isDateValidFormat} from "../components/DateField/DateField";
 
 export const datePattern = /^\d{4}-\d{2}-\d{2}$/
 
@@ -76,6 +77,14 @@ export const checkIfNotDate = (v: Validation, { needle, id, pattern = datePatter
     return addError(v, { id, personName, message, extra })
   }
   return false
+}
+
+export const checkValidDateFormat = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
+  if (isDateValidFormat(needle)){
+    return false
+  } else {
+    return addError(v, { id, personName, message, extra })
+  }
 }
 
 export const checkIfNotEmail = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams

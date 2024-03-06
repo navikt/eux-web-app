@@ -1,6 +1,6 @@
 import { AddCircle } from '@navikt/ds-icons'
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
-import DateField, { toDateFormat } from 'components/DateField/DateField'
+import DateField  from 'components/DateField/DateField'
 import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
@@ -87,8 +87,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
   const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
   const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
 
-  const [_dato, _setDato] = useState<string>(() => toDateFormat(_relation.fdato, "DD.MM.YYYY") ?? '')
-
   useUnmount(() => {
     if(setOpenAgain) setOpenAgain(null)
   })
@@ -117,9 +115,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
     resetValidation('fdato')
   }
 
-  useEffect(() => {
-    _setDato(toDateFormat(_relation.fdato, "DD.MM.YYYY"))
-  }, [_relation])
 
   const trimFamilyRelation = (relation: OldFamilieRelasjon): OldFamilieRelasjon => ({
     fnr: relation.fnr ? relation.fnr.trim() : '',
@@ -158,7 +153,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
       relation: _relation
     })
 
-    console.log(valid)
     if (valid) {
       if (canAddRelation() && !conflictingPerson()) {
         setRelation(emptyFamilieRelasjon)
@@ -284,7 +278,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             namespace={namespace}
             label={t('label:fødselsdato')}
             onChanged={onDatoChanged}
-            dateValue={_dato}
+            dateValue={_relation.fdato}
           />
           <VerticalSeparatorDiv />
         </Column>

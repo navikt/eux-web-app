@@ -41,8 +41,10 @@ const parseDate = (date: string | undefined): Moment | undefined => {
   return newDate
 }
 
-const isDateValidFormat = (date: string | undefined): boolean => {
-  return !date || moment(date, "DD.MM.YYYY", true).isValid() ||
+export const isDateValidFormat = (date: string | undefined): boolean => {
+  return !date ||
+    moment(date, "YYYY-MM-DD", true).isValid() ||
+    moment(date, "DD.MM.YYYY", true).isValid() ||
     moment(date, "DD.MM.YY", true).isValid() ||
     moment(date, "DDMMYY", true).isValid();
 }
@@ -71,11 +73,17 @@ const DateField = ({
 }: DateFieldProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const [_dato, _setDato] = useState<string>(() => toDateFormat(dateValue, uiFormat!) ?? '')
+  const [_dato, _setDato] = useState<string>(() => isDateValidFormat(dateValue) ? toDateFormat(dateValue, uiFormat!) : dateValue ? dateValue : '')
   const [_error, _setError] = useState<string | undefined>(() => undefined)
 
   useEffect(() => {
-    _setDato(toDateFormat(dateValue, uiFormat!))
+    if(isDateValidFormat(dateValue)){
+      _setError(undefined)
+      _setDato(toDateFormat(dateValue, uiFormat!))
+    } else {
+      _setError(t('validation:invalidDateFormat'))
+      dateValue ? _setDato(dateValue) : ''
+    }
   }, [dateValue])
 
   useEffect(() => {
@@ -92,7 +100,8 @@ const DateField = ({
       onChanged(date)
       dispatch(setTextFieldDirty(false))
     } else {
-      _setError("Feil datoformat (DD.MM.YYYY / DD.MM.YY / DDMMYY)")
+      _setError(t('validation:invalidDateFormat'))
+      onChanged(_dato)
     }
   }
 

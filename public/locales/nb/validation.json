@@ -19,6 +19,7 @@
 
   "invalidBeløp": "Ugyldig beløp",
   "invalidDate": "Ugyldig dato",
+  "invalidDateFormat": "Ugyldig datoformat (DD.MM.YYYY / DD.MM.YY / DDMMYY)",
   "invalidDate2015": "Fom dato må være etter 01-2015",
   "invalidDateFomTom": "Tom dato må være etter fom dato",
   "invalidEpost": "Ugyldig epost adresse",

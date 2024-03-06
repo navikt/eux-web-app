@@ -22,12 +22,11 @@ import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
 import { Person } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import DateField, { toDateFormat } from 'components/DateField/DateField'
-import {setTextFieldDirty} from "../../../actions/ui";
+import DateField from 'components/DateField/DateField'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -174,19 +173,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
   }
 
-  const uiFormat = 'DD.MM.YYYY'
-
-  const [_dato, _setDato] = useState<string>(() => toDateFormat(personInfo?.foedselsdato, uiFormat!) ?? '')
-
-  const onDatoChanged = (date: string) => {
-    setFodselsdato(date)
-    dispatch(setTextFieldDirty(false))
-  }
-
-  useEffect(() => {
-    _setDato(toDateFormat(personInfo?.foedselsdato, uiFormat!))
-  }, [personInfo?.foedselsdato])
-
   return (
     <>
       <PaddedDiv>
@@ -248,8 +234,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               id='foedselsdato'
               namespace={namespace}
               label={t('label:fødselsdato')}
-              onChanged={onDatoChanged}
-              dateValue={_dato}
+              onChanged={setFodselsdato}
+              dateValue={personInfo?.foedselsdato}
               required
             />
           </Column>

@@ -6,7 +6,7 @@ import { Column } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import DateField, {toDateFormat} from "components/DateField/DateField";
+import DateField, {isDateValidFormat, toDateFormat} from "components/DateField/DateField";
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -56,7 +56,7 @@ const PeriodeInput = <T extends Periode>({
 
   const onStartDatoChanged = (startDato: string) => {
     const newPeriode: T = _.cloneDeep(value) ?? {} as T
-    newPeriode.startdato = toDateFormat(startDato, finalFormat!)
+    newPeriode.startdato = isDateValidFormat(startDato) ? toDateFormat(startDato, finalFormat!) : startDato
     if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato) && _.isEmpty(newPeriode.aapenPeriodeType)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     }
@@ -65,7 +65,7 @@ const PeriodeInput = <T extends Periode>({
 
   const onEndDatoChanged = (sluttDato: string) => {
     const newPeriode: T = _.cloneDeep(value) ?? {} as T
-    newPeriode.sluttdato = toDateFormat(sluttDato, finalFormat!)
+    newPeriode.sluttdato = isDateValidFormat(sluttDato) ? toDateFormat(sluttDato, finalFormat!) : sluttDato
     if (periodeType === 'withcheckbox' && _.isEmpty(newPeriode.sluttdato)) {
       newPeriode.aapenPeriodeType = 'åpen_sluttdato'
     } else {
