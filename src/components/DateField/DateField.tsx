@@ -75,6 +75,8 @@ const DateField = ({
   const { t } = useTranslation()
   const [_dato, _setDato] = useState<string>(() => isDateValidFormat(dateValue) ? toDateFormat(dateValue, uiFormat!) : dateValue ? dateValue : '')
   const [_error, _setError] = useState<string | undefined>(() => undefined)
+  const [_blurred, _setBlurred] = useState<boolean>(() => false)
+
 
   useEffect(() => {
     if(isDateValidFormat(dateValue)){
@@ -84,7 +86,7 @@ const DateField = ({
       _setError(t('validation:invalidDateFormat'))
       dateValue ? _setDato(dateValue) : ''
     }
-  }, [dateValue])
+  }, [dateValue, _blurred])
 
   useEffect(() => {
     if(_error){
@@ -103,6 +105,7 @@ const DateField = ({
       _setError(t('validation:invalidDateFormat'))
       onChanged(_dato)
     }
+    _setBlurred(!_blurred)
   }
 
   const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
