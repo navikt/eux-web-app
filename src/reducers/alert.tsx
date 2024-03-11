@@ -123,10 +123,11 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.SAK_SEND_FAILURE:
-        stripeMessage = i18n.t('message:error-opprett-sak-failure')
-          + ((action as ActionWithPayload).payload.message ?
-            " : " + (action as ActionWithPayload).payload.message + "(" + (action as ActionWithPayload).payload.status + ")"
-            : '')
+        bannerMessage = i18n.t('message:error-opprett-sak-failure')
+          + " : " + _.isString((action as ActionWithPayload).payload.error)
+          ? (action as ActionWithPayload).payload.error
+          : (action as ActionWithPayload).payload.error?.message
+          + "(" + (action as ActionWithPayload).payload.status + ")"
         break
 
       case types.SVARSED_MOTTAKERE_ADD_FAILURE:
