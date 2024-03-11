@@ -123,10 +123,10 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         break
 
       case types.SAK_SEND_FAILURE:
-        bannerMessage = i18n.t('message:error-opprett-sak-failure')
-          + " : " + _.isString((action as ActionWithPayload).payload.error)
+        bannerMessage = i18n.t('message:error-opprett-sak-failure') + " : " +
+          (_.isString((action as ActionWithPayload).payload.error)
           ? (action as ActionWithPayload).payload.error
-          : (action as ActionWithPayload).payload.error?.message
+          : (action as ActionWithPayload).payload.error?.message)
           + "(" + (action as ActionWithPayload).payload.status + ")"
         break
 
