@@ -122,6 +122,13 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         stripeMessage = i18n.t('message:error-tpsperson-exists')
         break
 
+      case types.SAK_SEND_FAILURE:
+        stripeMessage = i18n.t('message:error-opprett-sak-failure')
+          + ((action as ActionWithPayload).payload.message ?
+            " : " + (action as ActionWithPayload).payload.message + "(" + (action as ActionWithPayload).payload.status + ")"
+            : '')
+        break
+
       case types.SVARSED_MOTTAKERE_ADD_FAILURE:
         stripeMessage = i18n.t('message:error-mottakere-add')
         break
@@ -205,7 +212,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
    * All OK MESSAGES for banner go here
    */
   let dealWithBanner = false
-  
+
   if (action.type === types.SVARSED_SED_SEND_SUCCESS) {
     bannerMessage = i18n.t('message:success-sed-send')
     dealWithBanner = true

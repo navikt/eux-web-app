@@ -16,6 +16,7 @@
   "error-sending-attachments" : "Feil å sende vedlegg",
   "error-serverInternalError": "Serverens interne feil",
   "error-serverAuthenticationError": "Manglende tilgang",
+  "error-opprett-sak-failure" : "Det oppsto en feil under opprettelse av sak",
   "error-svarsed-failure" : "Det oppsto en feil under sending av data for å svare på SED",
   "error-svarsed-failure-duplicate" : "Kunne ikke opprette SED. ",
   "error-svarsed-failure-duplicate-2" : "Finnes det allerede en SED i Rina?",
