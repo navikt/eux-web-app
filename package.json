@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.0.0",
+  "version": "9.0.0-UPGRADE-AKSEL-V2",
   "private": true,
   "type": "module",
   "scripts": {
