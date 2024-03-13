@@ -1,6 +1,6 @@
 import { SavingAttachmentsJob } from 'declarations/attachments'
 import { render } from '@testing-library/react'
-import ProgressBar from '@navikt/fremdriftslinje'
+import ProgressBar from 'components/ProgressBar/ProgressBar'
 import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentSender, { SEDAttachmentSenderProps } from './SEDAttachmentSender'
