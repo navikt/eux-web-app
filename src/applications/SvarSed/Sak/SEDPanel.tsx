@@ -30,8 +30,8 @@ import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromR
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
   &:hover {
-    color: var(--navds-color-text-primary) !important;
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle) !important;
+    color: var(--a-text-default) !important;
+    background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 
@@ -41,7 +41,7 @@ const IconDiv = styled(PileCenterDiv)`
   margin-top: -1rem;
   margin-bottom: -1rem;
   justify-content: center;
-  background-color: var(--navds-semantic-color-component-background-alternate);
+  background-color: var(--a-surface-subtle);
   padding: 1rem;
 `
 const AttachmentButton = styled(Button)`
@@ -203,7 +203,7 @@ const SEDPanel = ({
       />
       <FlexDiv>
         <IconDiv>
-          {sed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
+          {sed.status === 'received' && <Download color='var(--a-surface-action)' width='32' height='32' />}
           {sed.status === 'sent' && <Send color='green' width='32' height='32' />}
           {sed.status === 'new' && <Star color='orange' width='32' height='32' />}
           {sed.status === 'active' && <Edit width='32' height='32' />}

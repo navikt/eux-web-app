@@ -15,9 +15,9 @@ import { appReset } from 'actions/app'
 
 const HeaderContent = styled.header<{highContrast: boolean}>`
   background-color: ${({ highContrast }) => highContrast
-  ? 'var(--navds-semantic-color-component-background-alternate)'
-  : 'var(--navds-global-color-blue-200)'};
-  color: var(--navds-color-text-primary);
+  ? 'var(--a-surface-subtle)'
+  : 'var(--a-blue-200)'};
+  color: var(--a-text-default);
   display: flex;
   flex-direction: row;
   height: 4rem;
@@ -33,7 +33,7 @@ const SaksbehandlerDiv = styled.div`
   align-items: center;
 `
 const Name = styled.div`
-  color: var(--navds-color-text-primary);
+  color: var(--a-text-default);
   font-weight: bold;
   display: flex;
   margin: auto 0;

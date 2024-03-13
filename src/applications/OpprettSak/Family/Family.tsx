@@ -42,7 +42,7 @@ export interface FamilyProps {
 export const WithErrorPanel = styled(Panel)`
   &.error {
     margin: -4px;
-    border: 4px solid var(--navds-error-summary-color-border) !important;
+    border: 4px solid var(--a-border-danger) !important;
   }
 `
 

@@ -26,8 +26,8 @@ const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
   padding: 0;
-  color: var(--navds-semantic-color-text);
-  background: var(--navds-semantic-color-canvas-background);
+  color: var(--a-text-default);
+  background: var(--a-bg-subtle);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -36,6 +36,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  --ac-button-secondary-bg: white;
 }
 .nolabel {
   margin-top: 2rem !important;
@@ -67,6 +68,29 @@ body {
   opacity: 0;
   transform: translateY(20px);
   animation: ${slideInFromBottom(20)} 0.3s forwards;
+}
+
+#root,
+.ReactModalPortal {
+  /* Graa ramme rundt flagg */
+  --navds-semantic-color-border: var(--a-border-strong);
+
+  /* Farger fra DS2+ i tabeller i Vedleggsopplaster */
+  --navds-semantic-color-canvas-background: var(--a-bg-subtle);
+  --navds-semantic-color-component-background-light: var(--a-surface-default);
+
+  --navds-semantic-color-focus-inverted: var(--a-border-focus-on-inverted);
+  --navds-semantic-color-interaction-primary-hover-subtle: var(--a-surface-action-subtle-hover);
+  --navds-semantic-color-component-background-alternate: var(--a-surface-subtle);
+
+  --navds-semantic-color-text: var(--a-text-default);
+  --navds-semantic-color-interaction-primary: var(--a-surface-action);
+  --navds-semantic-color-interaction-primary-hover: var(--a-surface-action-hover);
+  --navds-semantic-color-focus: var(--a-border-focus);
+  --navds-tag-color-error-border: var(--a-border-danger);
+
+  --navds-select-color-background: var(--a-surface-default);
+  --navds-select-color-border: var(--a-border-default);
 }
 `
 const Main = styled(PileDiv)`

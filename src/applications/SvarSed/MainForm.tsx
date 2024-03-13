@@ -53,8 +53,8 @@ const RightDiv = styled.div`
 const RightActiveDiv = styled.div`
   border-width: 1px;
   border-style: solid;
-  border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-canvas-background-light);
+  border-color: var(--a-border-strong);
+  background-color: var(--a-bg-default);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   height: 100%;
@@ -62,16 +62,16 @@ const RightActiveDiv = styled.div`
 `
 const NameAndOptionsDiv = styled(PileDiv)`
  &.selected {
-   border-right: 1px solid var(--navds-panel-color-background);
-   background-image: linear-gradient(to right, var(--navds-semantic-color-canvas-background), var(--navds-semantic-color-canvas-background-light));
+   border-right: 1px solid var(--a-bg-default);
+   background-image: linear-gradient(to right, var(--a-bg-subtle), var(--a-bg-default));
  }
- background-color: var(--navds-semantic-color-canvas-background-light);
- border-top: 1px solid var(--navds-panel-color-border);
- border-right: 1px solid var(--navds-panel-color-border);
+ background-color: var(--a-bg-default);
+ border-top: 1px solid var(--a-border-strong);
+ border-right: 1px solid var(--a-border-strong);
  border-width: 1px;
  border-bottom-width: 0px;
  border-style: solid;
- border-color: var(--navds-panel-color-border);
+ border-color: var(--a-border-strong);
 `
 
 const NameDiv = styled.div`
@@ -81,8 +81,8 @@ const NameDiv = styled.div`
   padding: 1rem 0.5rem;
   transition: all 0.2s ease-in-out;
   &:hover {
-   color: var(--navds-semantic-color-text-inverted);
-   background-color: var(--navds-semantic-color-interaction-primary-hover);
+   color: var(--a-text-on-inverted);
+   background-color: var(--a-surface-action-hover);
   }
 `
 const NameLabelDiv = styled(FlexCenterDiv)`
@@ -96,17 +96,17 @@ const OptionDiv = styled.div`
   align-items: center;
   cursor: pointer;
   &:hover:not(.selected) {
-    color: var(--navds-semantic-color-text-inverted);
-    background-color: var(--navds-semantic-color-interaction-primary-hover);
+    color: var(--a-text-on-inverted);
+    background-color: var(--a-surface-action-hover);
   }
   &.selected {
     font-weight: bold;
-    border-top: 1px solid var(--navds-panel-color-border);
-    border-bottom: 1px solid var(--navds-panel-color-border);
-    background-image: linear-gradient(to right, var(--navds-semantic-color-canvas-background), var(--navds-semantic-color-canvas-background-light));
+    border-top: 1px solid var(--a-border-strong);
+    border-bottom: 1px solid var(--a-border-strong);
+    background-image: linear-gradient(to right, var(--a-bg-subtle), var(--a-bg-default));
   }
   &.selected {
-    border-right: 1px solid var(--navds-panel-color-background);
+    border-right: 1px solid var(--a-bg-default);
     margin-right: -1px;
   }
   &.first {
@@ -116,14 +116,14 @@ const OptionDiv = styled.div`
 const LastDivWithButton = styled.div`
   flex: 1;
   padding: 1rem 0.5rem;
-  border-top: 1px solid var(--navds-panel-color-border);
-  border-right: 1px solid var(--navds-panel-color-border);
+  border-top: 1px solid var(--a-border-strong);
+  border-right: 1px solid var(--a-border-strong);
   border-right-width: 1px;
 `
 const LastDiv = styled.div`
   flex: 1;
-  border-top: 1px solid var(--navds-panel-color-border);
-  border-right: 1px solid var(--navds-panel-color-border);
+  border-top: 1px solid var(--a-border-strong);
+  border-right: 1px solid var(--a-border-strong);
 `
 const LandSpan = styled.span`
   color: grey;
@@ -138,8 +138,8 @@ const MenuArrowDiv = styled.div`
 const BlankDiv = styled(PileCenterDiv)`
   border-width: 1px;
   border-style: solid;
-  border-color: var(--navds-panel-color-border);
-  background-color: var(--navds-semantic-color-canvas-background-light);
+  border-color: var(--a-border-strong);
+  background-color: var(--a-bg-default);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   margin-left: -1px;
@@ -148,7 +148,7 @@ const BlankDiv = styled(PileCenterDiv)`
 const BlankContentDiv = styled(FlexCenterDiv)`
   flex: 1;
   align-self: center;
-  background-color: var(--navds-semantic-color-canvas-background-light);
+  background-color: var(--a-bg-default);
 `
 export interface MainFormFCProps<T> {
   forms: Array<Form>

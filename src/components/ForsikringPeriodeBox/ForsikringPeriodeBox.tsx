@@ -55,13 +55,13 @@ const ForsikringPeriodePanel = styled(Panel)`
     background-color: rgba(236, 243, 153, 0.5);
   }
   &.original {
-    background-color: var(--navds-global-color-blue-100);
+    background-color: var(--a-blue-100);
   }
   &.error {
     background-color: rgba(255, 0, 0, 0.2);
   }
   &:hover:not(.new):not(.error) {
-    background-color: var(--navds-global-color-gray-100);
+    background-color: var(--a-gray-100);
   }
   &:not(:hover) .control-buttons {
     position: absolute;
@@ -74,7 +74,7 @@ const AdresseAccordion = styled(Accordion)`
     padding-left: 0px;
   }
   .navds-accordion__header, .navds-accordion__content{
-    border-bottom: 1px solid var(--navds-accordion-color-border);
+    border-bottom: 1px solid var(--a-border-default);
   }
 `
 export type Editable = 'only_period' | 'full'

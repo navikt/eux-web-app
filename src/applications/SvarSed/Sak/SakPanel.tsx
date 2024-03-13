@@ -30,7 +30,12 @@ const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`
   }
   .navds-radio__input:checked + .navds-radio__label .navds-link,
   .navds-radio__input:checked + .navds-radio__label .navds-link svg {
-     color: var(--navds-color-text-inverse);
+     color: var(--a-text-on-inverted);
+  }
+
+  background-color: var(--a-surface-default) !important;
+  &:hover {
+    background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 

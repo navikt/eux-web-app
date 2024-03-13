@@ -14,7 +14,7 @@ import styled from 'styled-components'
 import { toDateFormat } from 'components/DateField/DateField'
 
 const Panel = styled(FullWidthDiv)`
-  background-color: var(--navds-panel-color-background);
+  background-color: var(--a-bg-default);
   justify-content: space-between;
   display: flex;
   padding: 0.5rem 3rem;

@@ -38,14 +38,14 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             minHeight: props.size === 'small' ? '35px' : '48px',
             borderWidth: props.error ? '3px' : '1px',
             borderStyle: 'solid',
-            borderColor: props.error ? 'var(--navds-select-color-border-error)' : 'var(--navds-select-color-border)',
+            borderColor: props.error ? 'var(--a-surface-danger)' : 'var(--a-border-default)',
             borderRadius: '4px',
-            color: 'var(--navds-semantic-color-text-primary)',
-            backgroundColor: isDisabled ? 'var(--navds-semantic-color-component-background-alternate)' : 'var(--navds-select-color-background)'
+            color: 'var(--a-text-default)',
+            backgroundColor: isDisabled ? 'var(--a-surface-subtle)' : 'var(--a-surface-default)'
           }),
           indicatorSeparator: (styles: any) => ({
             ...styles,
-            backgroundColor: 'var(--navds-select-color-border)'
+            backgroundColor: 'var(--a-border-default)'
           }),
           menu: (styles: any) => ({
             ...styles,
@@ -56,27 +56,27 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             ...styles,
             borderWidth: '1px',
             borderStyle: 'solid',
-            borderColor: 'var(--navds-select-color-border)',
-            backgroundColor: 'var(--navds-semantic-color-component-background-alternate)'
+            borderColor: 'var(--a-border-default)',
+            backgroundColor: 'var(--a-surface-subtle)'
           }),
           option: (styles: any, { isDisabled, isFocused, isSelected }) => ({
             ...styles,
             color: isFocused
-              ? 'var(--navds-semantic-color-text-inverted)'
+              ? 'var(--a-text-on-inverted)'
               : isSelected
-                ? 'var(--navds-semantic-color-text-inverted)'
-                : 'var(--navds-color-text-primary)',
+                ? 'var(--a-text-on-inverted)'
+                : 'var(--a-text-default)',
             backgroundColor: isFocused
-              ? 'var(--navds-semantic-color-focus)'
+              ? 'var(--a-border-focus)'
               : isSelected
-                ? 'var(--navds-semantic-color-interaction-primary)'
+                ? 'var(--a-surface-action)'
                 : isDisabled
-                  ? 'var(--navds-semantic-color-component-background-alternate)'
-                  : 'var(--navds-select-color-background)'
+                  ? 'var(--a-surface-subtle)'
+                  : 'var(--a-surface-default)'
           }),
           singleValue: (styles: any) => ({
             ...styles,
-            color: 'var(--navds-color-text-primary)'
+            color: 'var(--a-text-default)'
           })
         }}
         {...props}
