@@ -1,17 +1,17 @@
 import {
-  AddCircle,
-  Bag,
-  Hospital,
-  Law,
-  Office1,
-  Office2,
-  PensionBag,
-  Receipt,
-  SchoolBag,
-  ShakeHandsFilled,
-  Stroller,
-  Vacation
-} from '@navikt/ds-icons'
+  PlusCircleIcon,
+  BriefcaseIcon,
+  HospitalIcon,
+  GavelSoundBlockIcon,
+  Buldings3Icon,
+  Buldings2Icon,
+  SackPensionIcon,
+  ReceiptIcon,
+  BackpackIcon,
+  HandshakeFillIcon,
+  StrollerIcon,
+  ParasolBeachIcon
+} from '@navikt/aksel-icons'
 import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -222,18 +222,18 @@ const Forsikring: React.FC<MainFormProps> = ({
 
   const getIcon = (type: string, size: string = '32') => (
     <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
-      {type === 'perioderAnsattMedForsikring' && (<Office1 width={size} height={size} />)}
-      {type === 'perioderSelvstendigMedForsikring' && (<PensionBag width={size} height={size} />)}
-      {type === 'perioderAnsattUtenForsikring' && (<Office2 width={size} height={size} />)}
-      {type === 'perioderSelvstendigUtenForsikring' && (<Bag width={size} height={size} />)}
-      {type === 'perioderSyk' && (<Hospital width={size} height={size} />)}
-      {type === 'perioderSvangerskapBarn' && (<Stroller width={size} height={size} />)}
-      {type === 'perioderUtdanning' && (<SchoolBag width={size} height={size} />)}
+      {type === 'perioderAnsattMedForsikring' && (<Buldings3Icon width={size} height={size} />)}
+      {type === 'perioderSelvstendigMedForsikring' && (<SackPensionIcon width={size} height={size} />)}
+      {type === 'perioderAnsattUtenForsikring' && (<Buldings2Icon width={size} height={size} />)}
+      {type === 'perioderSelvstendigUtenForsikring' && (<BriefcaseIcon width={size} height={size} />)}
+      {type === 'perioderSyk' && (<HospitalIcon width={size} height={size} />)}
+      {type === 'perioderSvangerskapBarn' && (<StrollerIcon width={size} height={size} />)}
+      {type === 'perioderUtdanning' && (<BackpackIcon width={size} height={size} />)}
       {type === 'perioderMilitaertjeneste' && (<Military width={size} height={size} />)}
-      {type === 'perioderFrihetsberoevet' && (<Law width={size} height={size} />)}
-      {type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width={size} height={size} />)}
-      {type === 'perioderKompensertFerie' && (<Vacation width={size} height={size} />)}
-      {type === 'perioderAnnenForsikring' && (<Receipt width={size} height={size} />)}
+      {type === 'perioderFrihetsberoevet' && (<GavelSoundBlockIcon width={size} height={size} />)}
+      {type === 'perioderFrivilligForsikring' && (<HandshakeFillIcon width={size} height={size} />)}
+      {type === 'perioderKompensertFerie' && (<ParasolBeachIcon width={size} height={size} />)}
+      {type === 'perioderAnnenForsikring' && (<ReceiptIcon width={size} height={size} />)}
     </Tooltip>
   )
 
@@ -387,8 +387,8 @@ const Forsikring: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>

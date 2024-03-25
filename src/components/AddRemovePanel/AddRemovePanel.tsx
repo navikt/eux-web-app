@@ -1,4 +1,4 @@
-import {AddCircle, Cancel, Copy, Delete, Edit, SuccessStroke} from '@navikt/ds-icons'
+import { PlusCircleIcon, ArrowUndoIcon, TrashIcon, PencilIcon, CheckmarkIcon, FilesIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
 import { Button, BodyLong } from '@navikt/ds-react'
@@ -97,8 +97,8 @@ const AddRemovePanel = <T extends any>({
           onClick={() => {
             onConfirmEdit!()
           }}
+          icon={<CheckmarkIcon/>}
         >
-          <SuccessStroke />
           {labels?.ok ?? t('el:button-save')}
         </Button>
         <HorizontalSeparatorDiv />
@@ -110,8 +110,8 @@ const AddRemovePanel = <T extends any>({
               onCancelEdit()
             }
           }}
+          icon={<ArrowUndoIcon/>}
         >
-          <Cancel />
           {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>
@@ -129,8 +129,8 @@ const AddRemovePanel = <T extends any>({
               onAddNew()
             }
           }}
+          icon={<PlusCircleIcon/>}
         >
-          <AddCircle />
           {labels?.add ?? t('el:button-add')}
         </Button>
         <HorizontalSeparatorDiv />
@@ -142,8 +142,8 @@ const AddRemovePanel = <T extends any>({
               onCancelNew()
             }
           }}
+          icon={<ArrowUndoIcon/>}
         >
-          <Cancel />
           {labels?.cancel ?? t('el:button-cancel')}
         </Button>
       </InlineFlexDiv>
@@ -161,8 +161,8 @@ const AddRemovePanel = <T extends any>({
               onStartEdit(item!, index)
             }
           }}
+          icon={<PencilIcon/>}
         >
-          <Edit />
           {labels?.edit ?? t('el:button-edit')}
         </Button>
       )}
@@ -173,8 +173,8 @@ const AddRemovePanel = <T extends any>({
           onClick={() => {
             onCopy(item!, index)
           }}
+          icon={<FilesIcon/>}
         >
-          <Copy/>
           {labels?.copy ?? t('el:button-copy')}
         </Button>
       }
@@ -185,8 +185,8 @@ const AddRemovePanel = <T extends any>({
             size='small'
             variant='tertiary'
             onClick={() => setInDeleteMode(true)}
+            icon={<TrashIcon/>}
           >
-            <Delete />
             {labels?.remove ?? t('el:button-remove')}
           </Button>
         </>

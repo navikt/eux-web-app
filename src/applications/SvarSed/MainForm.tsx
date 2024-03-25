@@ -1,12 +1,13 @@
 import {
-  AddCircle,
-  Child,
-  EllipsisCircleH,
-  ErrorFilled,
-  ExpandFilled,
-  NextFilled,
-  SuccessFilled
-} from '@navikt/ds-icons'
+  PlusCircleIcon,
+  ChildEyesIcon,
+  MenuElipsisHorizontalCircleIcon,
+  XMarkOctagonFillIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  CheckmarkCircleFillIcon
+} from '@navikt/aksel-icons'
+
 import { BodyLong, Button } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
@@ -407,8 +408,8 @@ const MainForm = <T extends StorageTypes>({
               {!isValidated
                 ? null
                 : validationHasErrors
-                  ? <ErrorFilled height={20} color='red' />
-                  : <SuccessFilled color='green' height={20} />}
+                  ? <XMarkOctagonFillIcon height={20} color='red' />
+                  : <CheckmarkCircleFillIcon color='green' height={20} />}
               <>
                 <HorizontalSeparatorDiv size='0.5' />
                 <MenuLabelText className={classNames({ selected })}>
@@ -417,7 +418,7 @@ const MainForm = <T extends StorageTypes>({
               </>
             </NameLabelDiv>
             <MenuArrowDiv>
-              <NextFilled />
+              <ChevronRightIcon />
             </MenuArrowDiv>
           </NameDiv>
         </NameAndOptionsDiv>
@@ -456,8 +457,8 @@ const MainForm = <T extends StorageTypes>({
           >
             {isValidated
               ? validationHasErrors
-                  ? <ErrorFilled height={20} color='red' />
-                  : <SuccessFilled color='green' height={20} />
+                  ? <XMarkOctagonFillIcon height={20} color='red' />
+                  : <CheckmarkCircleFillIcon color='green' height={20} />
               : null}
             <>
               <HorizontalSeparatorDiv size='0.5' />
@@ -474,12 +475,12 @@ const MainForm = <T extends StorageTypes>({
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <Child />
+                <ChildEyesIcon />
               </>
             )}
           </NameLabelDiv>
           <MenuArrowDiv>
-            {open ? <ExpandFilled /> : <NextFilled />}
+            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </MenuArrowDiv>
         </NameDiv>
         {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
@@ -525,9 +526,9 @@ const MainForm = <T extends StorageTypes>({
               >
                 {isValidated
                   ? validationHasErrors
-                      ? <ErrorFilled color='red' height={20} />
-                      : <SuccessFilled color='green' height={20} />
-                  : <EllipsisCircleH height={20} />}
+                      ? <XMarkOctagonFillIcon color='red' height={20} />
+                      : <CheckmarkCircleFillIcon color='green' height={20} />
+                  : <MenuElipsisHorizontalCircleIcon height={20} />}
                 <HorizontalSeparatorDiv size='0.5' />
                 {o.label}
               </OptionDiv>
@@ -573,8 +574,8 @@ const MainForm = <T extends StorageTypes>({
                     <Button
                       variant='tertiary'
                       onClick={onAddNewPerson}
+                      icon={<PlusCircleIcon/>}
                     >
-                      <AddCircle />
                       {t('el:button-add-new-x', { x: t('label:person') })}
                     </Button>
                   )}

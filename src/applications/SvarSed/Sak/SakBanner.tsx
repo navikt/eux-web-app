@@ -1,4 +1,4 @@
-import { ExternalLink, Copy, InformationFilled } from '@navikt/ds-icons'
+import { ExternalLinkIcon, FilesIcon, InformationSquareFillIcon } from '@navikt/aksel-icons'
 import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
@@ -78,7 +78,7 @@ const SakBanner = () => {
                   dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
                 }}
               >
-                <Copy />
+                <FilesIcon />
               </Link>
             </>
           )}
@@ -96,7 +96,7 @@ const SakBanner = () => {
                 }}
               >
                 {' ' + currentSak.fnr + ' '}
-                <Copy />
+                <FilesIcon />
               </Link>
             </>
           )}
@@ -125,7 +125,7 @@ const SakBanner = () => {
             }}
           >
             {currentSak.sakId + ' '}
-            <Copy />
+            <FilesIcon />
           </Link>
           {!!currentSak.internasjonalSakId && (
             <>
@@ -148,13 +148,13 @@ const SakBanner = () => {
                       }}
                     >
                       {currentSak.internasjonalSakId + ' '}
-                      <Copy />
+                      <FilesIcon />
                     </Link>
                   </Heading>
                   {t('message:help-international-id')}
                 </Popover.Content>
               </Popover>
-              <InformationFilled
+              <InformationSquareFillIcon
                 style={{ cursor: 'pointer' }}
                 ref={iconRef}
                 onClick={() => setPopoverOpen(!popoverOpen)}
@@ -168,7 +168,7 @@ const SakBanner = () => {
               {t('label:åpne_sak_i_RINA')}
             </span>
             <HorizontalSeparatorDiv size='0.35' />
-            <ExternalLink />
+            <ExternalLinkIcon />
           </Link>
         </FlexDiv>
         {currentSak.sensitiv &&

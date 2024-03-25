@@ -8,13 +8,13 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import { Button, BodyLong, Loader } from '@navikt/ds-react'
 import { AlignEndRow, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { useAppDispatch, useAppSelector } from 'store'
 import { validateArbeidsperioderSøk, ValidationArbeidsperioderSøkProps } from './validation'
-import { Search } from '@navikt/ds-icons'
 
 interface ArbeidsperioderSøkProps {
   amplitude ?: string
@@ -133,8 +133,8 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
             className='nolabel'
             disabled={gettingArbeidsperioder || _.isNil(fnr)}
             onClick={getArbeidsperioder}
+            icon={<MagnifyingGlassIcon/>}
           >
-            <Search />
             {gettingArbeidsperioder
               ? t('message:loading-searching')
               : t('el:button-get-x', { x: t('label:arbeidsperioder') })}

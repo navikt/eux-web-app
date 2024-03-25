@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -345,8 +345,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
             </Button>
           </PaddedDiv>

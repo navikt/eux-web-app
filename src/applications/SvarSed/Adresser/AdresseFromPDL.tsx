@@ -1,4 +1,4 @@
-import { Eye, EyeScreened, Search } from '@navikt/ds-icons'
+import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import { Alert, Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
 import { AlignStartRow, Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { searchAdresse } from 'actions/adresse'
@@ -111,8 +111,8 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
             variant='primary'
             disabled={gettingAdresser || _.isNil(fnr)}
             onClick={getAdresse}
+            icon={<MagnifyingGlassIcon/>}
           >
-            <Search />
             {gettingAdresser
               ? t('message:loading-searching')
               : t('label:søk-pdl-adresse-til', { person: personName })}
@@ -126,14 +126,12 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
             </Alert>
           )}
           {!_.isEmpty(adresser) && !_open && (
-            <Button variant='secondary' onClick={() => _setOpen(true)}>
-              <Eye />
+            <Button variant='secondary' onClick={() => _setOpen(true)} icon={<EyeIcon/>}>
               {t('el:button-show')}
             </Button>
           )}
           {!_.isEmpty(adresser) && _open && (
-            <Button variant='secondary' onClick={() => _setOpen(false)}>
-              <EyeScreened />
+            <Button variant='secondary' onClick={() => _setOpen(false)} icon={<EyeSlashIcon/>}>
               {t('el:button-hide')}
             </Button>
           )}

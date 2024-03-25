@@ -1,4 +1,4 @@
-import { AddCircle, Child } from '@navikt/ds-icons'
+import { PlusCircleIcon, ChildEyesIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading, Modal as NavModal } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
@@ -285,7 +285,7 @@ const AddPersonModal = <T extends StorageTypes>({
             {personId.startsWith('barn[') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <Child />
+                <ChildEyesIcon />
               </>
             )}
           </FlexCenterSpacedDiv>
@@ -424,8 +424,8 @@ const AddPersonModal = <T extends StorageTypes>({
                   <Button
                     variant='secondary'
                     onClick={onAdd}
+                    icon={<PlusCircleIcon/>}
                   >
-                    <AddCircle width={20} />
                     {t('el:button-add')}
                   </Button>
                 </div>

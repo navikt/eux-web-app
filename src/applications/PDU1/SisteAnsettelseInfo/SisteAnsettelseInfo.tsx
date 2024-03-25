@@ -1,4 +1,4 @@
-import { Delete } from '@navikt/ds-icons'
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Button, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -119,8 +119,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
         </Column>
         <Column>
           <div style={{ marginTop: '2rem' }}>
-            <Button variant='secondary' onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}>
-              <Delete />
+            <Button variant='secondary' onClick={() => setTypeGrunnOpphoerAnsatt(undefined)} icon={<TrashIcon/>}>
               {t('el:button-remove')}
             </Button>
           </div>

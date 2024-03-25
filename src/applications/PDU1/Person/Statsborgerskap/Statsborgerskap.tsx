@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import {
@@ -302,8 +302,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
             </Button>
           </PaddedDiv>

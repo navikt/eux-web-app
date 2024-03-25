@@ -1,4 +1,4 @@
-import { Download, ErrorFilled, Sight } from '@navikt/ds-icons'
+import { DownloadIcon, XMarkOctagonFillIcon, EyeWithPupilIcon } from '@navikt/aksel-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { previewPdu1, resetPreviewPdu1 } from 'actions/pdu1'
 import { setValidation } from 'actions/validation'
@@ -91,8 +91,8 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             disabled={gettingPreviewDraftPdu1 || !_.isNil(previewPdu1file)}
             data-amplitude='pdu1.editor.preview'
             onClick={onPreviewPdu1Clicked}
+            icon={<EyeWithPupilIcon/>}
           >
-            <Sight />
             {gettingPreviewDraftPdu1
               ? t('label:laster-ned-filen')
               : _.isNil(previewPdu1)
@@ -109,8 +109,8 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
               disabled={gettingPreviewDraftPdu1}
               data-amplitude='pdu1.editor.download'
               onClick={onDownloadPdu1Clicked}
+              icon={<DownloadIcon/>}
             >
-              <Download />
               {t('label:last-ned-pdu1')}
             </Button>
             <HorizontalSeparatorDiv />
@@ -119,8 +119,8 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
               disabled={gettingPreviewDraftPdu1}
               data-amplitude='pdu1.editor.reset'
               onClick={onResetPdu1Clicked}
+              icon={<XMarkOctagonFillIcon/>}
             >
-              <ErrorFilled />
               {t('label:fjern-pdu1')}
             </Button>
           </>

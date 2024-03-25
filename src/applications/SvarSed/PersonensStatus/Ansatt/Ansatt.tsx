@@ -1,4 +1,4 @@
-import { AddCircle, Office1 } from '@navikt/ds-icons'
+import { PlusCircleIcon, Buldings3Icon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -275,7 +275,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         <ForsikringPeriodeBox
           forsikringPeriode={periode}
           allowEdit
-          icon={<Office1 width='20' height='20' />}
+          icon={<Buldings3Icon width='20' height='20' />}
           editable='only_period'
           showArbeidsgiver
           showAddress={false}
@@ -420,8 +420,8 @@ const Ansatt: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>

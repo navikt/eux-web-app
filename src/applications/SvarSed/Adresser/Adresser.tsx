@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -253,8 +253,8 @@ const Adresser: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
             </Button>
           </PaddedDiv>

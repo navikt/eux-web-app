@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Checkbox, Heading, Label, Tag } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -740,8 +740,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewVedtakPeriodeForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
             </Button>
           </PaddedDiv>
@@ -806,8 +806,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewKompetansePeriodeForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>

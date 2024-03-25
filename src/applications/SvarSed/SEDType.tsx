@@ -18,7 +18,7 @@ import { Column, FlexCenterDiv, HorizontalSeparatorDiv, Row } from '@navikt/hoyk
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Option } from 'declarations/app.d'
-import { Edit } from '@navikt/ds-icons'
+import { PencilIcon } from '@navikt/aksel-icons'
 import { useAppDispatch, useAppSelector } from 'store'
 
 interface SEDTypeProps {
@@ -183,8 +183,8 @@ const SEDType: React.FC<SEDTypeProps> = ({
             <Button
               variant='tertiary'
               onClick={onEditModeClicked}
+              icon={<PencilIcon/>}
             >
-              <Edit />
               <HorizontalSeparatorDiv size='0.5' />
               {t('el:button-edit')}
             </Button>

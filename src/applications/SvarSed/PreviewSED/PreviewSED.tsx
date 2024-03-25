@@ -1,5 +1,5 @@
-import { Sight } from '@navikt/ds-icons'
-import { Button, Loader } from '@navikt/ds-react'
+import { EyeWithPupilIcon } from '@navikt/aksel-icons'
+import { Button } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPreviewFile, previewSed, resetPreviewSvarSed } from 'actions/svarsed'
@@ -137,13 +137,13 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
         disabled={gettingPreviewFile || gettingPreviewSed || disabled}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
+        loading={(short && (gettingPreviewFile || gettingPreviewSed)) || (!short && gettingPreviewFile)}
+        icon={<EyeWithPupilIcon />}
       >
-        {(short && (gettingPreviewFile || gettingPreviewSed)) ? <Loader /> : <Sight />}
         {!short && (
           <>
             <HorizontalSeparatorDiv size='0.5' />
             {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-            {gettingPreviewFile && <Loader />}
           </>
         )}
       </Button>

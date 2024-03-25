@@ -1,4 +1,4 @@
-import { ErrorFilled } from '@navikt/ds-icons'
+import { XMarkOctagonFillIcon } from '@navikt/aksel-icons'
 import classNames from 'classnames'
 import { fadeIn, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { AlertError, AlertVariant } from 'declarations/components'
@@ -22,7 +22,7 @@ export const AlertDiv = styled(Alert)`
     display: flex !important;
   }
 `
-export const CloseIcon = styled(ErrorFilled)`
+export const CloseIcon = styled(XMarkOctagonFillIcon)`
   cursor: pointer;
 `
 

@@ -1,4 +1,4 @@
-import {Close, Edit, Download, Send, Star, Helptext, Attachment} from '@navikt/ds-icons'
+import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
 import {Button, Detail, Heading, HelpText, Loader, Panel} from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import {
@@ -48,7 +48,7 @@ const AttachmentButton = styled(Button)`
   padding:0
 `
 
-const AttachmentIcon = styled(Attachment)`
+const AttachmentIcon = styled(PaperclipIcon)`
   position: relative;
   top: 3px;
 `
@@ -203,12 +203,12 @@ const SEDPanel = ({
       />
       <FlexDiv>
         <IconDiv>
-          {sed.status === 'received' && <Download color='var(--a-surface-action)' width='32' height='32' />}
-          {sed.status === 'sent' && <Send color='green' width='32' height='32' />}
-          {sed.status === 'new' && <Star color='orange' width='32' height='32' />}
-          {sed.status === 'active' && <Edit width='32' height='32' />}
-          {sed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
-          {!sed.status && <Helptext color='black' width='32' height='32' />}
+          {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
+          {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
+          {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
+          {sed.status === 'active' && <PencilIcon width='32' height='32' />}
+          {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
+          {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}

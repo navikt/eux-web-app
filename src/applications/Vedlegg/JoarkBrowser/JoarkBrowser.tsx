@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
-import {Delete} from "@navikt/ds-icons";
+import { TrashIcon } from '@navikt/aksel-icons';
 import {removeAttachment} from "../../../actions/svarsed";
 
 const ButtonsDiv = styled.div`
@@ -159,10 +159,8 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         id={'tablesorter__delete-button-' + item.key + '-' + item.navn}
         className='tablesorter__delete-button'
         onClick={() => onRemoveAttachment(item as JoarkBrowserItem)}
-      >
-        <Delete />
-      </Button>
-
+        icon={<TrashIcon/>}
+      />
     )
   }
 

@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@navikt/ds-css": "^2.0.0",
-    "@navikt/ds-icons": "^2.0.0",
     "@navikt/ds-react": "^2.0.0",
     "@navikt/eessi-kodeverk": "^2.0.6",
     "@navikt/fetch": "^2.1.14",
@@ -227,6 +226,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@9.0.0",
+  "_id": "neessi@9.0.0-UPGRADE-AKSEL-V2",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

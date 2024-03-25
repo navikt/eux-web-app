@@ -12,7 +12,7 @@ import {ModalContent} from "../../../declarations/components";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../../actions/attachments";
-import {Delete} from "@navikt/ds-icons";
+import { TrashIcon } from '@navikt/aksel-icons';
 import {deleteAttachment, setAttachmentSensitive} from "../../../actions/svarsed";
 
 
@@ -151,7 +151,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         onClick={() => onDeleteItem(item as AttachmentTableItem)}
       >
         {spinner && <Loader/>}
-        {!spinner && <Delete />}
+        {!spinner && <TrashIcon/>}
       </Button>
 
     )

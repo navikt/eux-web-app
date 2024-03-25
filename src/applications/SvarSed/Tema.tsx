@@ -1,4 +1,4 @@
-import { Cancel, Edit, SuccessStroke } from '@navikt/ds-icons'
+import { ArrowUndoIcon, PencilIcon, CheckmarkIcon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import { FlexBaseDiv, FlexDiv, HorizontalSeparatorDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
@@ -192,16 +192,16 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
               <Button
                 variant='primary'
                 onClick={onSaveChangesClicked}
+                icon={<CheckmarkIcon/>}
               >
-                <SuccessStroke />
                 {t('el:button-save')}
               </Button>
               <VerticalSeparatorDiv />
               <Button
                 variant='secondary'
                 onClick={onCancelChangesClicked}
+                icon={<ArrowUndoIcon/>}
               >
-                <Cancel />
                 {t('el:button-cancel')}
               </Button>
             </PileDiv>
@@ -212,8 +212,8 @@ const Tema: React.FC<TemaProps> = ({ replySed, updateReplySed }: TemaProps) => {
                 <Button
                   variant='tertiary'
                   onClick={onEditModeClicked}
+                  icon={<PencilIcon/>}
                 >
-                  <Edit />
                   {t('el:button-edit')}
                 </Button>
               </div>

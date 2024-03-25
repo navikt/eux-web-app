@@ -1,4 +1,4 @@
-import { Delete } from '@navikt/ds-icons'
+import { TrashIcon } from '@navikt/aksel-icons';
 import { Alert, Button, Heading, Loader, Select } from '@navikt/ds-react'
 import {
   Column,
@@ -230,9 +230,7 @@ const AddMottakereModal = ({
                   <FlexCenterDiv>
                     {mottakere.name}
                     <HorizontalSeparatorDiv />
-                    <Button onClick={() => deleteMottakere(mottakere.id)}>
-                      <Delete />
-                    </Button>
+                    <Button onClick={() => deleteMottakere(mottakere.id)} icon={<TrashIcon/>}/>
                   </FlexCenterDiv>
                   <VerticalSeparatorDiv size='0.3' />
                 </div>

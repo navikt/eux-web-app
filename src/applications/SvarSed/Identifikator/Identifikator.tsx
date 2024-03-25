@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -277,8 +277,8 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
               variant='tertiary'
               data-testid={namespace + '-new'}
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
             </Button>
           </>

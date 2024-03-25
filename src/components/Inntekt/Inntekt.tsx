@@ -1,4 +1,4 @@
-import { ExternalLink } from '@navikt/ds-icons'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
 import { BodyLong, Link, Heading } from '@navikt/ds-react'
@@ -121,7 +121,7 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                 <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
                   {t('label:gå-til-A-inntekt')}
                   <HorizontalSeparatorDiv size='0.35' />
-                  <ExternalLink />
+                  <ExternalLinkIcon />
                 </Link>
               </Column>
               <Column>

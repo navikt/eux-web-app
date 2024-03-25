@@ -1,4 +1,4 @@
-import {BackFilled, ExternalLink} from '@navikt/ds-icons'
+import { ChevronLeftIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
 import { toggleHighContrast } from 'actions/ui'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
@@ -81,8 +81,8 @@ const Header: React.FC<HeaderProps> = ({
           <Button
             variant='secondary'
             onClick={onGoBackClick}
+            icon={<ChevronLeftIcon/>}
           >
-            <BackFilled />
             <HorizontalSeparatorDiv size='0.5' />
             {t('label:tilbake')}
           </Button>
@@ -121,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({
           href='https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx'
         >
           {t('label:brukerveiledning')}
-          <ExternalLink />
+          <ExternalLinkIcon />
         </Link>
         <HorizontalSeparatorDiv />
         <Link
@@ -129,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({
           href='https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en'
         >
           {t('label:cai')}
-          <ExternalLink />
+          <ExternalLinkIcon />
         </Link>
 
       </SaksbehandlerDiv>

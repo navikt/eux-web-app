@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -478,8 +478,8 @@ const Familierelasjon: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:familierelasjon').toLowerCase() })}
             </Button>
           </PaddedDiv>
