@@ -87,7 +87,6 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
 
   const replySed = {
     sedType,
-    sedVersjon: '4.2',
     sak,
     sed: {
       sedType,

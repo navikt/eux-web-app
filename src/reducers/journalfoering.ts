@@ -49,7 +49,6 @@ const createH001= <T>(sak: Sak, informasjonTekst: string, ytterligereInfo?: stri
 
   let h001Sed = {
     sedType: "H001",
-    sedVersjon: '4.2',
     bruker: { personInfo },
     anmodning: {
       dokumentasjon: {
