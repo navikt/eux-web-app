@@ -91,6 +91,12 @@ body {
 
   --navds-select-color-background: var(--a-surface-default);
   --navds-select-color-border: var(--a-border-default);
+
+  /* Farger DS2+ RadioPanel (Hoykontrast) */
+  --navds-semantic-color-interaction-primary-selected: var(--a-surface-action-selected);
+  --navds-semantic-color-text-inverted: var(--a-text-on-inverted);
+  --navds-panel-color-border: var(--a-border-default);
+  --navds-spacing-3: var(--a-spacing-3)
 }
 `
 const Main = styled(PileDiv)`
