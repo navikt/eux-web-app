@@ -26,8 +26,8 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^2.0.0",
-    "@navikt/ds-react": "^2.0.0",
+    "@navikt/ds-css": "^3.0.0",
+    "@navikt/ds-react": "^3.0.0",
     "@navikt/eessi-kodeverk": "^2.0.6",
     "@navikt/fetch": "^2.1.14",
     "@navikt/flagg-ikoner": "^3.2.7",

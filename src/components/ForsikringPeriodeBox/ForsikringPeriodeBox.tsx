@@ -73,9 +73,6 @@ const AdresseAccordion = styled(Accordion)`
   .navds-accordion__header{
     padding-left: 0px;
   }
-  .navds-accordion__header, .navds-accordion__content{
-    border-bottom: 1px solid var(--a-border-default);
-  }
 `
 export type Editable = 'only_period' | 'full'
 

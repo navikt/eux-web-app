@@ -53,12 +53,14 @@ const AttachmentIcon = styled(PaperclipIcon)`
   top: 3px;
 `
 
-const MyHelpText = styled(HelpText)`
+const AttachmentDiv = styled.div`
   position: relative;
-  top: 5px;
-  left: 5px;
+  top: -5px;
+`
+
+const MyHelpText = styled(HelpText)`
   & svg {
-    width: 0.8em
+    width: 0.7em
   }
 `
 
@@ -231,11 +233,11 @@ const SEDPanel = ({
               disabled={!hasSedHandlinger}
             />
             {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <>
+              <AttachmentDiv>
                 <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
                 </AttachmentButton>
-              </>
+              </AttachmentDiv>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
               <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"}>
