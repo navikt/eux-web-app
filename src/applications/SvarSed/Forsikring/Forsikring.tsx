@@ -8,11 +8,11 @@ import {
   SackPensionIcon,
   ReceiptIcon,
   BackpackIcon,
-  HandshakeFillIcon,
+  HandshakeIcon,
   StrollerIcon,
   ParasolBeachIcon
 } from '@navikt/aksel-icons'
-import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Label, Tooltip } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -21,7 +21,6 @@ import {
   PaddedDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateForsikring, ValidateForsikringProps } from 'applications/SvarSed/Forsikring/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -220,22 +219,54 @@ const Forsikring: React.FC<MainFormProps> = ({
     standardLogger('svarsed.editor.periode.add', { type })
   }
 
-  const getIcon = (type: string, size: string = '32') => (
-    <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
-      {type === 'perioderAnsattMedForsikring' && (<Buldings3Icon width={size} height={size} />)}
-      {type === 'perioderSelvstendigMedForsikring' && (<SackPensionIcon width={size} height={size} />)}
-      {type === 'perioderAnsattUtenForsikring' && (<Buldings2Icon width={size} height={size} />)}
-      {type === 'perioderSelvstendigUtenForsikring' && (<BriefcaseIcon width={size} height={size} />)}
-      {type === 'perioderSyk' && (<HospitalIcon width={size} height={size} />)}
-      {type === 'perioderSvangerskapBarn' && (<StrollerIcon width={size} height={size} />)}
-      {type === 'perioderUtdanning' && (<BackpackIcon width={size} height={size} />)}
-      {type === 'perioderMilitaertjeneste' && (<Military width={size} height={size} />)}
-      {type === 'perioderFrihetsberoevet' && (<GavelSoundBlockIcon width={size} height={size} />)}
-      {type === 'perioderFrivilligForsikring' && (<HandshakeFillIcon width={size} height={size} />)}
-      {type === 'perioderKompensertFerie' && (<ParasolBeachIcon width={size} height={size} />)}
-      {type === 'perioderAnnenForsikring' && (<ReceiptIcon width={size} height={size} />)}
-    </Tooltip>
-  )
+  const getIcon = (type: string, size: string = '32') => {
+    let icon;
+    switch (type) {
+      case 'perioderAnsattMedForsikring':
+        icon = <Buldings3Icon width={size} height={size} />
+        break;
+      case 'perioderSelvstendigMedForsikring':
+        icon = <SackPensionIcon width={size} height={size} />
+        break;
+      case 'perioderAnsattUtenForsikring':
+        icon = <Buldings2Icon width={size} height={size} />
+        break;
+      case 'perioderSelvstendigUtenForsikring':
+        icon = <BriefcaseIcon width={size} height={size} />
+        break;
+      case 'perioderSyk':
+        icon = <HospitalIcon width={size} height={size} />
+        break;
+      case 'perioderSvangerskapBarn':
+        icon = <StrollerIcon width={size} height={size} />
+        break;
+      case 'perioderUtdanning':
+        icon = <BackpackIcon width={size} height={size} />
+        break;
+      case 'perioderMilitaertjeneste':
+        icon = <Military width={size} height={size} />
+        break;
+      case 'perioderFrihetsberoevet':
+        icon = <GavelSoundBlockIcon width={size} height={size} />
+        break;
+      case 'perioderFrivilligForsikring':
+        icon = <HandshakeIcon width={size} height={size} />
+        break;
+      case 'perioderKompensertFerie':
+        icon = <ParasolBeachIcon width={size} height={size} />
+        break;
+      case 'perioderAnnenForsikring':
+        icon = <ReceiptIcon width={size} height={size} />
+        break;
+      default:
+        icon = <></>
+    }
+    return (
+      <Tooltip placement='top' content={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
+        {icon}
+      </Tooltip>
+    )
+  }
 
   const doResetValidation = (namespace: string) => dispatch(resetValidation(namespace))
   const doSetValidation = (validation: Validation) => dispatch(setValidation(validation))

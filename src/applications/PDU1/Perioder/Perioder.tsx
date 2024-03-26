@@ -1,5 +1,5 @@
 import { PlusCircleIcon, PersonSuitIcon, GavelSoundBlockIcon, WalletIcon, Buldings3Icon,SackPensionIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Checkbox, Heading, Ingress } from '@navikt/ds-react'
+import { BodyLong, Button, Checkbox, Heading, Ingress, Tooltip } from '@navikt/ds-react'
 import {
   AlignStartRow,
   AlignEndColumn,
@@ -12,7 +12,6 @@ import {
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -241,18 +240,42 @@ const Perioder: React.FC<MainFormProps> = ({
     }
   }
 
-  const getIcon = (type: string, size: string = '32') => (
-    <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
-      {type === 'perioderAnsattMedForsikring' && (<FlexDiv><SackPensionIcon width={size} height={size} /><Buldings3Icon width={size} height={size} /></FlexDiv>)}
-      {type === 'perioderSelvstendigMedForsikring' && (<FlexDiv><SackPensionIcon width={size} height={size} /><PersonSuitIcon width={size} height={size} /></FlexDiv>)}
-      {type === 'perioderAndreForsikringer' && (<SackPensionIcon width={size} height={size} />)}
-      {type === 'perioderAnsettSomForsikret' && (<FlexDiv><SackPensionIcon width={size} height={size} /><GavelSoundBlockIcon width={size} height={size} /></FlexDiv>)}
-      {type === 'perioderAnsattUtenForsikring' && (<Buldings3Icon width={size} height={size} />)}
-      {type === 'perioderSelvstendigUtenForsikring' && (<PersonSuitIcon width={size} height={size} />)}
-      {type === 'perioderLoennSomAnsatt' && (<FlexDiv><WalletIcon width={size} height={size} /><Buldings3Icon width={size} height={size} /></FlexDiv>)}
-      {type === 'perioderInntektSomSelvstendig' && (<FlexDiv><WalletIcon width={size} height={size} /><PersonSuitIcon width={size} height={size} /></FlexDiv>)}
-    </Tooltip>
-  )
+  const getIcon = (type: string, size: string = '32') => {
+    let icon;
+    switch (type) {
+      case 'perioderAnsattMedForsikring':
+        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><Buldings3Icon width={size} height={size}/></FlexDiv>
+        break;
+      case 'perioderSelvstendigMedForsikring':
+        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>
+        break;
+      case 'perioderAndreForsikringer':
+        icon = <SackPensionIcon width={size} height={size}/>
+        break;
+      case 'perioderAnsettSomForsikret':
+        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></FlexDiv>
+        break;
+      case 'perioderAnsattUtenForsikring':
+        icon = <Buldings3Icon width={size} height={size}/>
+        break;
+      case 'perioderSelvstendigUtenForsikring':
+        icon = <PersonSuitIcon width={size} height={size}/>
+        break;
+      case 'perioderLoennSomAnsatt':
+        icon = <FlexDiv><WalletIcon width={size} height={size}/><Buldings3Icon width={size} height={size}/></FlexDiv>
+        break;
+      case 'perioderInntektSomSelvstendig':
+        icon = <FlexDiv><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>
+        break;
+      default:
+        icon = <></>
+    }
+    return (
+      <Tooltip placement='top' content={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
+        {icon}
+      </Tooltip>
+    )
+  }
 
   const renderRow = (periode: PDPeriode | null, index: number) => {
     // replace index order from map (which is "ruined" by a sort) with real index from replySed
