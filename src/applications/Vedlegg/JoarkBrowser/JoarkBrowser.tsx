@@ -339,7 +339,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   useEffect(() => {
     if (!_modal && !_convertingRawToFile && !_.isNil(_previewFile)) {
       setModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}

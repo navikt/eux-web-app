@@ -135,9 +135,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
       <Modal
         open={_sendH001Modal}
         onModalClose={onSendH001ModalClose}
-        appElementId="root"
         modal={{
-          closeButton: false,
           modalTitle: t('label:H001-er-sendt'),
           modalContent: (
             <>

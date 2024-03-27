@@ -52,9 +52,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
       <Modal
         open={_feilregistrerJournalposterModal}
         onModalClose={onFeilregistrerJournalposterModalClose}
-        appElementId="root"
         modal={{
-          closeButton: false,
           modalContent: (
             <>
               {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&

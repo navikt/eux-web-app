@@ -262,9 +262,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
       <Modal
         open={_journalfoerModal}
         onModalClose={onJournalfoerModalClose}
-        appElementId="root"
         modal={{
-          closeButton: false,
           modalTitle: modalTitle,
           modalContent: (
             <>

@@ -28,13 +28,12 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
     onFinishedSelection(_items)
     onModalClose()
   }
-  
+
 
   return (
     <Modal
       open={open}
       modal={{
-        closeButton: true,
         modalTitle: t('label:velg-vedlegg-til-sed'),
         modalContent: (
           <>

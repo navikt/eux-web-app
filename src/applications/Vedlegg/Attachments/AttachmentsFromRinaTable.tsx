@@ -182,7 +182,6 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   useEffect(() => {
     if (!_attachmentModal && !_convertingRawToFile && !_.isNil(_previewAttachmentFile)) {
       setAttachmentModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}

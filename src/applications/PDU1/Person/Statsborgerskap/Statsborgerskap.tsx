@@ -249,7 +249,6 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
       <Modal
         open={_showStatborgerskapMissingModal}
         modal={{
-          closeButton: true,
           modalTitle: t("message:warning-unknown-statsborgerskap"),
           modalContent: (
             <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>

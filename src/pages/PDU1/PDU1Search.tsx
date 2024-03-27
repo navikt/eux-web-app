@@ -210,7 +210,6 @@ const PDU1Search = (): JSX.Element => {
       }
 
       setPreviewModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}

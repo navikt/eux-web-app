@@ -1,5 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import { Alert, Button, Heading, Loader, Select } from '@navikt/ds-react'
+import { Alert, Button, Loader, Select } from '@navikt/ds-react'
 import {
   Column,
   FlexCenterDiv, FlexCenterSpacedDiv,
@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 
 const MinimalModalDiv = styled.div`
-  min-height: 200px;
+  min-height: 250px;
   min-width: 600px;
   display: flex;
   flex-direction: column;
@@ -147,10 +147,6 @@ const AddMottakereModal = ({
 
   return (
     <MinimalModalDiv>
-      <Heading size='small'>
-        {type === "multiple" ? t('label:add-deltakere-modal') : t('label:add-deltaker-modal')}
-      </Heading>
-      <VerticalSeparatorDiv />
       {alertMessage && alertType && [types.SVARSED_MOTTAKERE_ADD_FAILURE].indexOf(alertType) >= 0 && (
         <PileCenterDiv>
           <AlertstripeDiv>
@@ -183,7 +179,6 @@ const AddMottakereModal = ({
                     includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
                     label={t('label:land')}
                     lang='nb'
-                    menuPortalTarget={document.body}
                     onOptionSelected={onLandkodeChange}
                     flagWave
                     value={landkode ?? null}

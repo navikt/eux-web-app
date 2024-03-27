@@ -9,7 +9,6 @@ import {
   FlexDiv,
   FlexRadioPanels,
   HorizontalSeparatorDiv,
-  PaddedDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -31,10 +30,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
 import styled from 'styled-components'
 
-const ModalDiv = styled(NavModal)`
-  width: auto !important;
-  height: auto !important;
-`
 const ModalButtons = styled.div`
   text-align: left;
 `
@@ -306,134 +301,130 @@ const AddPersonModal = <T extends StorageTypes>({
   }
 
   return (
-    <ModalDiv
+    <NavModal
       open={open}
       onClose={modalClose}
+      header={{heading: t('label:legg-til-fjern-personer')}}
+      width="1"
     >
-      <PaddedDiv id='add-person-modal-id'>
-        <Heading size='small'>
-          {t('label:legg-til-fjern-personer')}
-        </Heading>
+      <NavModal.Body id='add-person-modal-id'>
+        {_replySed?.bruker && renderPerson('bruker')}
+        {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
+        {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
+        {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`))}
+        <VerticalSeparatorDiv />
+        <HorizontalLineSeparator />
         <VerticalSeparatorDiv size='2' />
-        <>
-          {_replySed?.bruker && renderPerson('bruker')}
-          {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
-          {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
-          {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`))}
+        <GrayPanel>
+          <Heading size='small'>
+            {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
+          </Heading>
           <VerticalSeparatorDiv />
           <HorizontalLineSeparator />
-          <VerticalSeparatorDiv size='2' />
-          <GrayPanel>
-            <Heading size='small'>
-              {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
-            </Heading>
-            <VerticalSeparatorDiv />
-            <HorizontalLineSeparator />
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <Column>
-                <Input
-                  error={_validation[namespace + '-fornavn']?.feilmelding}
-                  id='fornavn'
-                  namespace={namespace}
-                  label={t('label:fornavn')}
-                  onChanged={setFornavn}
-                  required
-                  value={_newPersonFornavn}
-                />
-                <HorizontalSeparatorDiv />
-              </Column>
-              <Column>
-                <Input
-                  error={_validation[namespace + '-etternavn']?.feilmelding}
-                  id='etternavn'
-                  namespace={namespace}
-                  label={t('label:etternavn')}
-                  onChanged={setEtternavn}
-                  required
-                  value={_newPersonEtternavn}
-                />
-                <HorizontalSeparatorDiv />
-              </Column>
-              <Column>
-                <DateField
-                  error={_validation[namespace + '-fdato']?.feilmelding}
-                  id='fdato'
-                  namespace={namespace}
-                  label={t('label:fødselsdato')}
-                  onChanged={setFoedselsdato}
-                  required
-                  dateValue={_newPersonFodselsdato}
-                />
-                <HorizontalSeparatorDiv />
-              </Column>
-              <Column>
-                <Input
-                  error={_validation[namespace + '-fnr']?.feilmelding}
-                  id='fnr'
-                  label={t('label:fnr-dnr')}
-                  namespace={namespace}
-                  onChanged={setFnr}
-                  value={_newPersonFnr}
-                />
-                <HorizontalSeparatorDiv />
-              </Column>
-            </AlignStartRow>
-            <AlignStartRow>
-              <Column flex='1.5'>
-                <RadioPanelGroup
-                  value={_newPersonKjoenn}
-                  data-no-border
-                  data-testid={namespace + '-kjoenn'}
-                  error={_validation[namespace + '-kjoenn']?.feilmelding}
-                  id={namespace + '-kjoenn'}
-                  legend={t('label:kjønn') + ' *'}
-                  name={namespace + '-kjoenn'}
-                  onChange={setKjoenn}
-                >
-                  <FlexRadioPanels>
-                    <RadioPanel value='M'>
-                      {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                    </RadioPanel>
-                    <RadioPanel value='K'>
-                      {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                    </RadioPanel>
-                    <RadioPanel value='U'>
-                      {t('label:ukjent')}
-                    </RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-              </Column>
-              <Column flex='1'>
-                <Select
-                  aria-label={t('label:familierelasjon')}
-                  data-testid={namespace + '-relasjon'}
-                  error={_validation[namespace + '-relasjon']?.feilmelding}
-                  id={namespace + '-relasjon'}
-                  label={t('label:familierelasjon')}
-                  onChange={setRelation}
-                  options={relationOptions}
-                  required
-                  value={_.find(relationOptions, o => o.value === _newPersonRelation)}
-                  defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
-                />
-                <HorizontalSeparatorDiv />
-              </Column>
-              <Column flex='0.5'>
-                <div className='nolabel'>
-                  <Button
-                    variant='secondary'
-                    onClick={onAdd}
-                    icon={<PlusCircleIcon/>}
-                  >
-                    {t('el:button-add')}
-                  </Button>
-                </div>
-              </Column>
-            </AlignStartRow>
-          </GrayPanel>
           <VerticalSeparatorDiv />
-        </>
+          <AlignStartRow>
+            <Column>
+              <Input
+                error={_validation[namespace + '-fornavn']?.feilmelding}
+                id='fornavn'
+                namespace={namespace}
+                label={t('label:fornavn')}
+                onChanged={setFornavn}
+                required
+                value={_newPersonFornavn}
+              />
+              <HorizontalSeparatorDiv />
+            </Column>
+            <Column>
+              <Input
+                error={_validation[namespace + '-etternavn']?.feilmelding}
+                id='etternavn'
+                namespace={namespace}
+                label={t('label:etternavn')}
+                onChanged={setEtternavn}
+                required
+                value={_newPersonEtternavn}
+              />
+              <HorizontalSeparatorDiv />
+            </Column>
+            <Column>
+              <DateField
+                error={_validation[namespace + '-fdato']?.feilmelding}
+                id='fdato'
+                namespace={namespace}
+                label={t('label:fødselsdato')}
+                onChanged={setFoedselsdato}
+                required
+                dateValue={_newPersonFodselsdato}
+              />
+              <HorizontalSeparatorDiv />
+            </Column>
+            <Column>
+              <Input
+                error={_validation[namespace + '-fnr']?.feilmelding}
+                id='fnr'
+                label={t('label:fnr-dnr')}
+                namespace={namespace}
+                onChanged={setFnr}
+                value={_newPersonFnr}
+              />
+              <HorizontalSeparatorDiv />
+            </Column>
+          </AlignStartRow>
+          <AlignStartRow>
+            <Column flex='1.5'>
+              <RadioPanelGroup
+                value={_newPersonKjoenn}
+                data-no-border
+                data-testid={namespace + '-kjoenn'}
+                error={_validation[namespace + '-kjoenn']?.feilmelding}
+                id={namespace + '-kjoenn'}
+                legend={t('label:kjønn') + ' *'}
+                name={namespace + '-kjoenn'}
+                onChange={setKjoenn}
+              >
+                <FlexRadioPanels>
+                  <RadioPanel value='M'>
+                    {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+                  </RadioPanel>
+                  <RadioPanel value='K'>
+                    {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+                  </RadioPanel>
+                  <RadioPanel value='U'>
+                    {t('label:ukjent')}
+                  </RadioPanel>
+                </FlexRadioPanels>
+              </RadioPanelGroup>
+            </Column>
+            <Column flex='1'>
+              <Select
+                aria-label={t('label:familierelasjon')}
+                data-testid={namespace + '-relasjon'}
+                error={_validation[namespace + '-relasjon']?.feilmelding}
+                id={namespace + '-relasjon'}
+                label={t('label:familierelasjon')}
+                onChange={setRelation}
+                options={relationOptions}
+                required
+                value={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
+              />
+              <HorizontalSeparatorDiv />
+            </Column>
+            <Column flex='0.5'>
+              <div className='nolabel'>
+                <Button
+                  variant='secondary'
+                  onClick={onAdd}
+                  icon={<PlusCircleIcon/>}
+                >
+                  {t('el:button-add')}
+                </Button>
+              </div>
+            </Column>
+          </AlignStartRow>
+        </GrayPanel>
+        <VerticalSeparatorDiv />
         <ModalButtons>
           <Button
             variant='primary'
@@ -446,8 +437,8 @@ const AddPersonModal = <T extends StorageTypes>({
             {t('el:button-close-person-modal')}
           </Button>
         </ModalButtons>
-      </PaddedDiv>
-    </ModalDiv>
+      </NavModal.Body>
+    </NavModal>
   )
 }
 

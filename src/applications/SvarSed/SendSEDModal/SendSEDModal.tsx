@@ -211,7 +211,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     <Modal
       open={open}
       modal={{
-        closeButton: false,
         modalContent: (
           <MinimalModalDiv>
             <Heading size='small'>
