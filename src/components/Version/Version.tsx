@@ -15,8 +15,6 @@ const mapState = (state: State): VersjonSelector => ({
 })
 
 const ModalDiv = styled.div`
-  padding: 1rem;
-  min-width: 400px;
   dt {
     width: 200px;
     float: left;
@@ -61,28 +59,30 @@ const Version = () => {
   }
   return (
     <>
-      <Modal onClose={() => setVisVersjonDetaljer(false)} open={visVersjonDetaljer && !!serverInfo}>
-        <ModalDiv>
-          <dl>
-            <Heading size='small'>Web</Heading>
-            <dt className='odd'>Build time</dt><dd className='odd'>{byggTidspunkt()}</dd>
-            <dt>Build version</dt><dd>{byggVersjon()}</dd>
-            <dt className='odd'>Branch</dt><dd className='odd'>{branchVersjon()}</dd>
-            <dt>eessi-kodeverk</dt><dd>{eessiKodeverk()}</dd>
-            <dt className='odd'>React</dt><dd className='odd'>{reactLibVersion()}</dd>
-            <p />
-            <Heading size='small'>Server</Heading>
-            <dt className='odd'>Namespace</dt><dd className='odd'>{serverInfo.namespace ?? '-'}</dd>
-            <dt>Cluster</dt><dd>{serverInfo.cluster ?? '-'}</dd>
-            <dt className='odd'>BranchName</dt><dd className='odd'>{serverInfo.branchName ?? '-'}</dd>
-            <dt>Vera</dt><dd>{serverInfo.veraUrl ?? '-'}</dd>
-            <dt className='odd'>Gosys</dt><dd className='odd'>{serverInfo.gosysURL ?? '-'}</dd>
-            <dt>VersionHash</dt><dd>{serverInfo.longVersionHash ?? '-'}</dd>
-          </dl>
-          <Button onClick={copyToClipBoard}>
-            Klikk for å kopiere versjonsinfo
-          </Button>
-        </ModalDiv>
+      <Modal onClose={() => setVisVersjonDetaljer(false)} open={visVersjonDetaljer && !!serverInfo} header={{heading: "Versjonsinfo"}}>
+        <Modal.Body>
+          <ModalDiv>
+            <dl>
+              <Heading size='small'>Web</Heading>
+              <dt className='odd'>Build time</dt><dd className='odd'>{byggTidspunkt()}</dd>
+              <dt>Build version</dt><dd>{byggVersjon()}</dd>
+              <dt className='odd'>Branch</dt><dd className='odd'>{branchVersjon()}</dd>
+              <dt>eessi-kodeverk</dt><dd>{eessiKodeverk()}</dd>
+              <dt className='odd'>React</dt><dd className='odd'>{reactLibVersion()}</dd>
+              <p />
+              <Heading size='small'>Server</Heading>
+              <dt className='odd'>Namespace</dt><dd className='odd'>{serverInfo.namespace ?? '-'}</dd>
+              <dt>Cluster</dt><dd>{serverInfo.cluster ?? '-'}</dd>
+              <dt className='odd'>BranchName</dt><dd className='odd'>{serverInfo.branchName ?? '-'}</dd>
+              <dt>Vera</dt><dd>{serverInfo.veraUrl ?? '-'}</dd>
+              <dt className='odd'>Gosys</dt><dd className='odd'>{serverInfo.gosysURL ?? '-'}</dd>
+              <dt>VersionHash</dt><dd>{serverInfo.longVersionHash ?? '-'}</dd>
+            </dl>
+            <Button onClick={copyToClipBoard}>
+              Klikk for å kopiere versjonsinfo
+            </Button>
+          </ModalDiv>
+        </Modal.Body>
       </Modal>
       <div style={{ textAlign: 'right' }}>
         <Button variant='tertiary' size='small' onClick={toggleVersjon}>
