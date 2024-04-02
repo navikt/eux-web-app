@@ -55,6 +55,7 @@ const ModalFC: React.FC<ModalProps> = ({
       open={open}
       onClose={onModalClose}
       header={{heading: modal?.modalTitle ?? '', icon: icon ?? undefined}}
+      portal={true}
     >
       <Modal.Body>
         <ContentDiv className={classNames({ icon: !!icon })}>
