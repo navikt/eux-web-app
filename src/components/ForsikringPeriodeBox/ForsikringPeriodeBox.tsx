@@ -45,9 +45,6 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
-import AccordionHeader from "@navikt/ds-react/esm/accordion/AccordionHeader";
-import AccordionContent from "@navikt/ds-react/esm/accordion/AccordionContent";
-import AccordionItem from "@navikt/ds-react/esm/accordion/AccordionItem";
 
 const ForsikringPeriodePanel = styled(Panel)`
   padding: 1rem;
@@ -563,9 +560,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                 {showAddress && (
                   <>
                     <AdresseAccordion>
-                      <AccordionItem>
-                      <AccordionHeader>{t('label:forsikringsperiode-adresse')}</AccordionHeader>
-                      <AccordionContent>
+                      <Accordion.Item>
+                      <Accordion.Header>{t('label:forsikringsperiode-adresse')}</Accordion.Header>
+                      <Accordion.Content>
                         <AdresseForm
                           adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
                           onAdressChanged={setAdresse}
@@ -573,8 +570,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           namespace={namespace + '-arbeidsgiver-adresse'}
                           validation={_v}
                         />
-                      </AccordionContent>
-                      </AccordionItem>
+                      </Accordion.Content>
+                      </Accordion.Item>
                     </AdresseAccordion>
                     <VerticalSeparatorDiv />
                   </>

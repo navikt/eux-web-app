@@ -45,12 +45,12 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
 
   const onAddAttachmentsButtonClick = (): void => {
     onFinishedSelection(_items)
-    resetPreviewAndCloseModal()
+    resetPreviewAndReturnTrue()
+    onModalClose()
   }
 
-  const resetPreviewAndCloseModal = (): boolean => {
+  const resetPreviewAndReturnTrue = (): boolean => {
     resetPreview()
-    onModalClose()
     return true
   }
 
@@ -129,7 +129,8 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
           onClick: onAddAttachmentsButtonClick
         }] : []
       }}
-      onBeforeClose={_preview ? resetPreview : resetPreviewAndCloseModal}
+      onModalClose={onModalClose}
+      onBeforeClose={_preview ? resetPreview : resetPreviewAndReturnTrue}
     />
 
   )
