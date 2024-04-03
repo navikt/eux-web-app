@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.0.0-UPGRADE-AKSEL-V5",
+  "version": "9.0.0-UPGRADE-AKSEL-V6",
   "private": true,
   "type": "module",
   "scripts": {
@@ -26,8 +26,8 @@
     "test:coverage": "cross-env NODE_ENV=test react-scripts test --coverage  --watchAll=false"
   },
   "dependencies": {
-    "@navikt/ds-css": "^5.0.0",
-    "@navikt/ds-react": "^5.0.0",
+    "@navikt/ds-css": "^6.0.0",
+    "@navikt/ds-react": "^6.0.0",
     "@navikt/eessi-kodeverk": "^2.0.6",
     "@navikt/fetch": "^2.1.14",
     "@navikt/flagg-ikoner": "^3.2.7",
@@ -225,6 +225,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@9.0.0-UPGRADE-AKSEL-V5",
+  "_id": "neessi@9.0.0-UPGRADE-AKSEL-V6",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
