@@ -12,7 +12,7 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import Pagination from '@navikt/paginering'
+import { Pagination } from "@navikt/ds-react";
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -126,15 +126,18 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
               </Column>
               <Column>
                 <FlexDiv style={{ flexDirection: 'row-reverse' }}>
-                  <Pagination
-                    currentPage={_currentPage[inntekt.orgNr]}
-                    itemsPerPage={itemsPerPage}
-                    numberOfItems={Object.keys(inntekt.maanedsinntekter).length}
-                    onChange={(page: number) => setCurrentPage({
-                      ..._currentPage,
-                      [inntekt.orgNr]: page
-                    })}
-                  />
+                  {Object.keys(inntekt.maanedsinntekter).length >= itemsPerPage &&
+                    <Pagination
+                      page={_currentPage[inntekt.orgNr]}
+                      count={Math.ceil(Object.keys(inntekt.maanedsinntekter).length/itemsPerPage)}
+                      siblingCount={2}
+                      size="xsmall"
+                      onPageChange={(page: number) => setCurrentPage({
+                        ..._currentPage,
+                        [inntekt.orgNr]: page
+                      })}
+                    />
+                  }
                 </FlexDiv>
               </Column>
             </AlignEndRow>

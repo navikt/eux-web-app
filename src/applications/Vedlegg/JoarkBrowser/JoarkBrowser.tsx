@@ -368,7 +368,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [_modal, _convertingRawToFile, _previewFile])
 
   return (
-    <div data-testid='joarkBrowser'>
+    <div data-testid='joarkBrowser' id='joarkBrowser'>
       <VerticalSeparatorDiv size='0.5' />
       {mode !== "select" &&
         <Modal

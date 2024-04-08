@@ -70,33 +70,8 @@ body {
   animation: ${slideInFromBottom(20)} 0.3s forwards;
 }
 
-#root,
-.ReactModalPortal {
-  /* Graa ramme rundt flagg */
-  --navds-semantic-color-border: var(--a-border-strong);
-
-  /* Farger fra DS2+ i tabeller i Vedleggsopplaster */
-  --navds-semantic-color-canvas-background: var(--a-bg-subtle);
-  --navds-semantic-color-component-background-light: var(--a-surface-default);
-
-  --navds-semantic-color-focus-inverted: var(--a-border-focus-on-inverted);
-  --navds-semantic-color-interaction-primary-hover-subtle: var(--a-surface-action-subtle-hover);
-  --navds-semantic-color-component-background-alternate: var(--a-surface-subtle);
-
-  --navds-semantic-color-text: var(--a-text-default);
-  --navds-semantic-color-interaction-primary: var(--a-surface-action);
-  --navds-semantic-color-interaction-primary-hover: var(--a-surface-action-hover);
-  --navds-semantic-color-focus: var(--a-border-focus);
-  --navds-tag-color-error-border: var(--a-border-danger);
-
-  --navds-select-color-background: var(--a-surface-default);
-  --navds-select-color-border: var(--a-border-default);
-
-  /* Farger DS2+ RadioPanel (Hoykontrast) */
-  --navds-semantic-color-interaction-primary-selected: var(--a-surface-action-selected);
-  --navds-semantic-color-text-inverted: var(--a-text-on-inverted);
-  --navds-panel-color-border: var(--a-border-default);
-  --navds-spacing-3: var(--a-spacing-3)
+#joarkBrowser .navds-button--tertiary:hover{
+  background-color: var(--a-surface-transparent);
 }
 `
 const Main = styled(PileDiv)`
