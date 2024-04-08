@@ -1,4 +1,5 @@
-import { ExternalLinkIcon, FilesIcon, InformationSquareFillIcon } from '@navikt/aksel-icons'
+import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
+import {ReactComponent as InformationIcon} from 'assets/icons/InformationIconOld.svg'
 import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
@@ -18,6 +19,11 @@ const Panel = styled(FullWidthDiv)`
   justify-content: space-between;
   display: flex;
   padding: 0.5rem 3rem;
+`
+
+const InformationIconPadded = styled(InformationIcon)`
+  margin-top: 0.2rem;
+  margin-left: 0.3  rem;
 `
 
 const SakBanner = () => {
@@ -129,7 +135,6 @@ const SakBanner = () => {
           </Link>
           {!!currentSak.internasjonalSakId && (
             <>
-              <HorizontalSeparatorDiv />
               <Popover
                 open={popoverOpen}
                 onClose={() => setPopoverOpen(false)}
@@ -154,7 +159,7 @@ const SakBanner = () => {
                   {t('message:help-international-id')}
                 </Popover.Content>
               </Popover>
-              <InformationSquareFillIcon
+              <InformationIconPadded
                 style={{ cursor: 'pointer' }}
                 ref={iconRef}
                 onClick={() => setPopoverOpen(!popoverOpen)}
