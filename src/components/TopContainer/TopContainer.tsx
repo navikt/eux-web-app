@@ -6,7 +6,7 @@ import Version from 'components/Version/Version'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import NavHighContrast, {
+import {
   fadeIn,
   PileDiv, slideInFromBottom,
   slideInFromLeft,
@@ -103,7 +103,6 @@ export interface TopContainerSelector {
   bannerMessage: string | JSX.Element | undefined
   error: any | undefined
   expirationTime: number | undefined
-  highContrast: boolean
 }
 
 const mapState = (state: State): TopContainerSelector => ({
@@ -111,7 +110,6 @@ const mapState = (state: State): TopContainerSelector => ({
   bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
-  highContrast: state.ui.highContrast
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
@@ -123,7 +121,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   title
 }: TopContainerProps): JSX.Element => {
   const {
-    bannerStatus, bannerMessage, error, expirationTime, highContrast
+    bannerStatus, bannerMessage, error, expirationTime
   }: TopContainerSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
@@ -151,7 +149,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+    <div>
       <GlobalStyle />
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
@@ -161,7 +159,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       >
         <Header
           title={title}
-          highContrast={highContrast}
           backButton={backButton}
           onGoBackClick={onGoBackClick}
           unsavedDoc={unsavedDoc}
@@ -187,7 +184,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           <Version />
         </Debug>
       </ErrorBoundary>
-    </NavHighContrast>
+    </div>
   )
 }
 

@@ -1,5 +1,4 @@
 import { ChevronLeftIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
-import { toggleHighContrast } from 'actions/ui'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
@@ -13,10 +12,8 @@ import styled from 'styled-components'
 import PT from 'prop-types'
 import { appReset } from 'actions/app'
 
-const HeaderContent = styled.header<{highContrast: boolean}>`
-  background-color: ${({ highContrast }) => highContrast
-  ? 'var(--a-surface-subtle)'
-  : 'var(--a-blue-200)'};
+const HeaderContent = styled.header`
+  background-color: var(--a-blue-200);
   color: var(--a-text-default);
   display: flex;
   flex-direction: row;
@@ -45,7 +42,6 @@ export interface HeaderSelector {
 }
 
 export interface HeaderProps {
-  highContrast: boolean
   title: string
   backButton?: boolean
   onGoBackClick?: () => void
@@ -58,7 +54,6 @@ export const mapState = (state: State): HeaderSelector => ({
 
 const Header: React.FC<HeaderProps> = ({
   backButton,
-  highContrast,
   onGoBackClick,
   title
 }: HeaderProps): JSX.Element => {
@@ -66,16 +61,12 @@ const Header: React.FC<HeaderProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const handleHighContrastToggle = (): void => {
-    dispatch(toggleHighContrast())
-  }
-
   const resetApp = () => {
     dispatch(appReset())
   }
 
   return (
-    <HeaderContent highContrast={highContrast}>
+    <HeaderContent>
       <div>
         {backButton && (
           <Button
@@ -99,18 +90,6 @@ const Header: React.FC<HeaderProps> = ({
         </Heading>
       </FlexCenterDiv>
       <SaksbehandlerDiv>
-        <Link
-          data-testid='header__highcontrast-link'
-          href='#highContrast'
-          onClick={(e: React.MouseEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            handleHighContrastToggle()
-          }}
-        >
-          {t('label:høy-kontrast')}
-        </Link>
-        <HorizontalSeparatorDiv />
         {saksbehandler && saksbehandler.navn && (
           <Name>
             {saksbehandler.navn}
