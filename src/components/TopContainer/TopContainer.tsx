@@ -73,6 +73,11 @@ body {
 #joarkBrowser .navds-button--tertiary:hover{
   background-color: var(--a-surface-transparent);
 }
+
+#neessiModal div{
+  user-select:text !important;
+  cursor: default !important;
+}
 `
 const Main = styled(PileDiv)`
   padding: 0px;
