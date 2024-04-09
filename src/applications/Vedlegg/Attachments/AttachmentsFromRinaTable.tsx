@@ -210,7 +210,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   }
 
   return (
-    <>
+    <div id='attachmentsFromRina'>
       <Modal
         open={!_.isNil(_attachmentModal)}
         modal={_attachmentModal}
@@ -234,7 +234,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         }) : []}
         columns={columns}
       />
-    </>
+    </div>
   )
 }
 

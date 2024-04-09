@@ -70,7 +70,7 @@ body {
   animation: ${slideInFromBottom(20)} 0.3s forwards;
 }
 
-#joarkBrowser .navds-button--tertiary:hover{
+#joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {
   background-color: var(--a-surface-transparent);
 }
 
