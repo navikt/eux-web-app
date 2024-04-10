@@ -21,6 +21,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled, { createGlobalStyle } from 'styled-components'
 import * as Sentry from '@sentry/browser'
+import 'react-pdf/dist/Page/TextLayer.css'; //Needed for text copy/paste from @navikt/forhandsvisningsfil (react-pdf)
 
 const GlobalStyle = createGlobalStyle`
 body {

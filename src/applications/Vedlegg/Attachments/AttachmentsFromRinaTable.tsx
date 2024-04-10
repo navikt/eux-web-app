@@ -192,7 +192,6 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
               height={800}
               tema='simple'
               viewOnePage={false}
-              onContentClick={handleModalClose}
             />
           </div>
         )

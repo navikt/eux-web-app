@@ -89,7 +89,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
               height={1200}
               tema='simple'
               viewOnePage={false}
-              onContentClick={resetPreview}
             />
           </div>
         )
@@ -97,7 +96,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
     })
   }
 
-  const resetPreview = () => {
+  const handleModalClose = () => {
     dispatch(resetPreviewSvarSed())
     setPreviewModal(undefined)
   }
@@ -129,7 +128,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       <Modal
         open={!_.isNil(previewModal)}
         modal={previewModal}
-        onModalClose={() => setPreviewModal(undefined)}
+        onModalClose={handleModalClose}
       />
       <Button
         variant='tertiary'
