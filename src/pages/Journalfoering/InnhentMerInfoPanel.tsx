@@ -130,6 +130,16 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     setSendH001Modal(false)
   }
 
+  const closeModalAndGotoSak = () => {
+    onSendH001ModalClose()
+    gotoSak()
+  }
+
+  const closeModalAndGotoFrontpage = () => {
+    onSendH001ModalClose()
+    gotoFrontpage
+  }
+
   return (
     <>
       <Modal
@@ -154,12 +164,12 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
             {
               text: t('el:button-gaa-tilbake-til-saken'),
               disabled: isAddingRelatertRinaSak,
-              onClick: gotoSak
+              onClick: closeModalAndGotoSak
             },
             {
               text: t('el:button-gaa-til-forsiden'),
               disabled: isAddingRelatertRinaSak,
-              onClick: gotoFrontpage
+              onClick: closeModalAndGotoFrontpage
             }]
         }}
       />

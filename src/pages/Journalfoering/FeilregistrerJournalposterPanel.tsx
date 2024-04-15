@@ -46,6 +46,15 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
     setFeilregistrerJournalposterModal(false)
   }
 
+  const closeModalAndGotoSak = () => {
+    onFeilregistrerJournalposterModalClose()
+    gotoSak()
+  }
+
+  const closeModalAndGotoFrontpage = () => {
+    onFeilregistrerJournalposterModalClose()
+    gotoFrontpage
+  }
 
   return (
     <>
@@ -80,11 +89,11 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
           modalButtons: [
             {
               text: t('el:button-gaa-tilbake-til-saken'),
-              onClick: gotoSak
+              onClick: closeModalAndGotoSak
             },
             {
               text: t('el:button-gaa-til-forsiden'),
-              onClick: gotoFrontpage
+              onClick: closeModalAndGotoFrontpage
             }]
         }}
       />
