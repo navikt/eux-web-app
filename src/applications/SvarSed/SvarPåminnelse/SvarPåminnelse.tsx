@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -679,8 +679,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewBesvarelseKommerForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:dokument-til-send').toLowerCase() })}
             </Button>
           </PaddedDiv>
@@ -711,8 +711,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewBesvarelseUmuligForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:dokument-ikke-tilgjengelige').toLowerCase() })}
             </Button>
           </PaddedDiv>

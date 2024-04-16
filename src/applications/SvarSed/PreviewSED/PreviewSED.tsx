@@ -1,5 +1,5 @@
-import { Sight } from '@navikt/ds-icons'
-import { Button, Loader } from '@navikt/ds-react'
+import { EyeWithPupilIcon } from '@navikt/aksel-icons'
+import { Button } from '@navikt/ds-react'
 import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPreviewFile, previewSed, resetPreviewSvarSed } from 'actions/svarsed'
@@ -89,7 +89,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
               height={1200}
               tema='simple'
               viewOnePage={false}
-              onContentClick={resetPreview}
             />
           </div>
         )
@@ -97,7 +96,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
     })
   }
 
-  const resetPreview = () => {
+  const handleModalClose = () => {
     dispatch(resetPreviewSvarSed())
     setPreviewModal(undefined)
   }
@@ -129,7 +128,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       <Modal
         open={!_.isNil(previewModal)}
         modal={previewModal}
-        onModalClose={() => setPreviewModal(undefined)}
+        onModalClose={handleModalClose}
       />
       <Button
         variant='tertiary'
@@ -137,13 +136,13 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
         disabled={gettingPreviewFile || gettingPreviewSed || disabled}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
+        loading={(short && (gettingPreviewFile || gettingPreviewSed)) || (!short && gettingPreviewFile)}
+        icon={<EyeWithPupilIcon />}
       >
-        {(short && (gettingPreviewFile || gettingPreviewSed)) ? <Loader /> : <Sight />}
         {!short && (
           <>
             <HorizontalSeparatorDiv size='0.5' />
             {gettingPreviewFile ? t('label:laster-ned-filen') : t('el:button-preview-x', { x: 'SED' })}
-            {gettingPreviewFile && <Loader />}
           </>
         )}
       </Button>

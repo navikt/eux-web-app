@@ -1,4 +1,4 @@
-import { Search } from '@navikt/ds-icons'
+import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import { Button, Loader } from '@navikt/ds-react'
 import { AlignEndColumn, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Input from 'components/Forms/Input'
@@ -119,8 +119,8 @@ const InntektSearch = ({
           variant='secondary'
           disabled={gettingInntekter}
           onClick={onInntektSearchClicked}
+          icon={<MagnifyingGlassIcon/>}
         >
-          <Search />
           <HorizontalSeparatorDiv />
           {gettingInntekter
             ? t('message:loading-searching')

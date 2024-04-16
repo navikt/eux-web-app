@@ -1,4 +1,4 @@
-import {Close, Edit, Download, Send, Star, Helptext, Attachment} from '@navikt/ds-icons'
+import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
 import {Button, Detail, Heading, HelpText, Loader, Panel} from '@navikt/ds-react'
 import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import {
@@ -30,8 +30,8 @@ import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromR
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
   &:hover {
-    color: var(--navds-color-text-primary) !important;
-    background-color: var(--navds-semantic-color-interaction-primary-hover-subtle) !important;
+    color: var(--a-text-default) !important;
+    background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 
@@ -41,24 +41,26 @@ const IconDiv = styled(PileCenterDiv)`
   margin-top: -1rem;
   margin-bottom: -1rem;
   justify-content: center;
-  background-color: var(--navds-semantic-color-component-background-alternate);
+  background-color: var(--a-surface-subtle);
   padding: 1rem;
 `
 const AttachmentButton = styled(Button)`
   padding:0
 `
 
-const AttachmentIcon = styled(Attachment)`
+const AttachmentIcon = styled(PaperclipIcon)`
   position: relative;
   top: 3px;
 `
 
-const MyHelpText = styled(HelpText)`
+const AttachmentDiv = styled.div`
   position: relative;
-  top: 5px;
-  left: 5px;
+  top: -5px;
+`
+
+const MyHelpText = styled(HelpText)`
   & svg {
-    width: 0.8em
+    width: 0.7em
   }
 `
 
@@ -203,12 +205,12 @@ const SEDPanel = ({
       />
       <FlexDiv>
         <IconDiv>
-          {sed.status === 'received' && <Download color='var(--navds-button-color-primary-background)' width='32' height='32' />}
-          {sed.status === 'sent' && <Send color='green' width='32' height='32' />}
-          {sed.status === 'new' && <Star color='orange' width='32' height='32' />}
-          {sed.status === 'active' && <Edit width='32' height='32' />}
-          {sed.status === 'cancelled' && <Close color='red' width='32' height='32' />}
-          {!sed.status && <Helptext color='black' width='32' height='32' />}
+          {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
+          {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
+          {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
+          {sed.status === 'active' && <PencilIcon width='32' height='32' />}
+          {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
+          {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
@@ -231,11 +233,11 @@ const SEDPanel = ({
               disabled={!hasSedHandlinger}
             />
             {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <>
+              <AttachmentDiv>
                 <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
                 </AttachmentButton>
-              </>
+              </AttachmentDiv>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
               <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"}>

@@ -1,4 +1,4 @@
-import { Delete } from '@navikt/ds-icons'
+import { TrashIcon } from '@navikt/aksel-icons';
 import {BodyLong, Button, Heading} from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -122,8 +122,8 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}
+              icon={<TrashIcon/>}
             >
-              <Delete />
               {t('el:button-clear')}
             </Button>
           </div>

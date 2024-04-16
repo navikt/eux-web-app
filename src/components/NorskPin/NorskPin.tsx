@@ -1,4 +1,4 @@
-import { Cancel, Edit, Search, SuccessStroke } from '@navikt/ds-icons'
+import {ArrowUndoIcon, PencilIcon, MagnifyingGlassIcon, CheckmarkIcon} from '@navikt/aksel-icons'
 import {Alert, BodyLong, Button, Label, Loader} from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -138,8 +138,8 @@ const NorskPin: React.FC<NorskPinProps> = ({
                     _setTempNorwegianPin(norwegianPin?.identifikator)
                     _setSeeNorskPinForm(true)
                   }}
+                  icon={<PencilIcon/>}
                 >
-                  <Edit />
                   {t('label:endre')}
                 </Button>
               </AlignEndColumn>
@@ -165,8 +165,8 @@ const NorskPin: React.FC<NorskPinProps> = ({
                     disabled={_.isEmpty(_tempNorwegianPin?.trim())}
                     data-amplitude='svarsed.editor.personopplysning.norskpin.save'
                     onClick={saveNorwegianPin}
+                    icon={<CheckmarkIcon/>}
                   >
-                    <SuccessStroke />
                     {t('el:button-save')}
                   </Button>
                   <HorizontalSeparatorDiv size='0.35' />
@@ -175,8 +175,8 @@ const NorskPin: React.FC<NorskPinProps> = ({
                     disabled={searchingPerson}
                     data-amplitude='svarsed.editor.personopplysning.norskpin.search'
                     onClick={searchUser}
+                    icon={<MagnifyingGlassIcon/>}
                   >
-                    <Search />
                     {searchingPerson
                       ? t('message:loading-searching')
                       : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
@@ -186,8 +186,8 @@ const NorskPin: React.FC<NorskPinProps> = ({
                   <Button
                     variant='tertiary'
                     onClick={cleanUp}
+                    icon={<ArrowUndoIcon/>}
                   >
-                    <Cancel />
                     {t('el:button-cancel')}
                   </Button>
                 </FlexStartDiv>

@@ -1,6 +1,6 @@
 import { createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed } from 'actions/attachments'
 import SEDAttachmentSender from 'applications/Vedlegg/SEDAttachmentSender/SEDAttachmentSender'
-import { SuccessFilled } from '@navikt/ds-icons'
+import { CheckmarkCircleFillIcon } from '@navikt/aksel-icons'
 import Modal from 'components/Modal/Modal'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -211,7 +211,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     <Modal
       open={open}
       modal={{
-        closeButton: false,
         modalContent: (
           <MinimalModalDiv>
             <Heading size='small'>
@@ -284,7 +283,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     )}
                     {!_.isNil(sedCreatedResponse) && (
                       <FlexCenterSpacedDiv>
-                        <SuccessFilled color='green' />
+                        <CheckmarkCircleFillIcon color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-lagret')}</span>
                       </FlexCenterSpacedDiv>
@@ -294,7 +293,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {_finished && (
                       <FlexCenterSpacedDiv>
-                        <SuccessFilled color='green' />
+                        <CheckmarkCircleFillIcon color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{_finished}</span>
                       </FlexCenterSpacedDiv>
@@ -311,7 +310,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                   <div>
                     {!_.isNil(sedSendResponse) && _finished && (
                       <FlexCenterSpacedDiv>
-                        <SuccessFilled color='green' />
+                        <CheckmarkCircleFillIcon color='green' />
                         <HorizontalSeparatorDiv size='0.5' />
                         <span>{t('message:loading-sed-sendt')}</span>
                       </FlexCenterSpacedDiv>

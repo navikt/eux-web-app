@@ -1,5 +1,4 @@
-import {BackFilled, ExternalLink} from '@navikt/ds-icons'
-import { toggleHighContrast } from 'actions/ui'
+import { ChevronLeftIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
 import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
@@ -13,11 +12,9 @@ import styled from 'styled-components'
 import PT from 'prop-types'
 import { appReset } from 'actions/app'
 
-const HeaderContent = styled.header<{highContrast: boolean}>`
-  background-color: ${({ highContrast }) => highContrast
-  ? 'var(--navds-semantic-color-component-background-alternate)'
-  : 'var(--navds-global-color-blue-200)'};
-  color: var(--navds-color-text-primary);
+const HeaderContent = styled.header`
+  background-color: var(--a-blue-200);
+  color: var(--a-text-default);
   display: flex;
   flex-direction: row;
   height: 4rem;
@@ -33,7 +30,7 @@ const SaksbehandlerDiv = styled.div`
   align-items: center;
 `
 const Name = styled.div`
-  color: var(--navds-color-text-primary);
+  color: var(--a-text-default);
   font-weight: bold;
   display: flex;
   margin: auto 0;
@@ -45,7 +42,6 @@ export interface HeaderSelector {
 }
 
 export interface HeaderProps {
-  highContrast: boolean
   title: string
   backButton?: boolean
   onGoBackClick?: () => void
@@ -58,7 +54,6 @@ export const mapState = (state: State): HeaderSelector => ({
 
 const Header: React.FC<HeaderProps> = ({
   backButton,
-  highContrast,
   onGoBackClick,
   title
 }: HeaderProps): JSX.Element => {
@@ -66,23 +61,19 @@ const Header: React.FC<HeaderProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const handleHighContrastToggle = (): void => {
-    dispatch(toggleHighContrast())
-  }
-
   const resetApp = () => {
     dispatch(appReset())
   }
 
   return (
-    <HeaderContent highContrast={highContrast}>
+    <HeaderContent>
       <div>
         {backButton && (
           <Button
             variant='secondary'
             onClick={onGoBackClick}
+            icon={<ChevronLeftIcon/>}
           >
-            <BackFilled />
             <HorizontalSeparatorDiv size='0.5' />
             {t('label:tilbake')}
           </Button>
@@ -99,18 +90,6 @@ const Header: React.FC<HeaderProps> = ({
         </Heading>
       </FlexCenterDiv>
       <SaksbehandlerDiv>
-        <Link
-          data-testid='header__highcontrast-link'
-          href='#highContrast'
-          onClick={(e: React.MouseEvent) => {
-            e.preventDefault()
-            e.stopPropagation()
-            handleHighContrastToggle()
-          }}
-        >
-          {t('label:høy-kontrast')}
-        </Link>
-        <HorizontalSeparatorDiv />
         {saksbehandler && saksbehandler.navn && (
           <Name>
             {saksbehandler.navn}
@@ -121,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({
           href='https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx'
         >
           {t('label:brukerveiledning')}
-          <ExternalLink />
+          <ExternalLinkIcon />
         </Link>
         <HorizontalSeparatorDiv />
         <Link
@@ -129,7 +108,7 @@ const Header: React.FC<HeaderProps> = ({
           href='https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en'
         >
           {t('label:cai')}
-          <ExternalLink />
+          <ExternalLinkIcon />
         </Link>
 
       </SaksbehandlerDiv>

@@ -18,15 +18,15 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
   const [showAddMottakereModal, setShowAddMottakereModal] = useState<boolean>(false)
 
   const canChangeParticipants = _.find(sak.sakshandlinger, s => s === "singleParticipant" || s === "multipleParticipants")  !== undefined
+  const type = sak.sakshandlinger?.includes("multipleParticipants") ? "multiple" : "single"
 
   return (
     <>
       <Modal
-        shouldCloseOnOverlayClick={false}
         open={showAddMottakereModal}
         onModalClose={() => setShowAddMottakereModal(false)}
         modal={{
-          closeButton: false,
+          modalTitle: type === "multiple" ? t('label:add-deltakere-modal') : t('label:add-deltaker-modal'),
           modalContent: (
             <AddMottakereModal
               bucType={sak.sakType}

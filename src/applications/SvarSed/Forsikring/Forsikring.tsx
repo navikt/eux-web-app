@@ -1,18 +1,18 @@
 import {
-  AddCircle,
-  Bag,
-  Hospital,
-  Law,
-  Office1,
-  Office2,
-  PensionBag,
-  Receipt,
-  SchoolBag,
-  ShakeHandsFilled,
-  Stroller,
-  Vacation
-} from '@navikt/ds-icons'
-import { BodyLong, Button, Checkbox, Heading, Label } from '@navikt/ds-react'
+  PlusCircleIcon,
+  BriefcaseIcon,
+  HospitalIcon,
+  GavelSoundBlockIcon,
+  Buldings3Icon,
+  Buldings2Icon,
+  SackPensionIcon,
+  ReceiptIcon,
+  BackpackIcon,
+  HandshakeIcon,
+  StrollerIcon,
+  ParasolBeachIcon
+} from '@navikt/aksel-icons'
+import { BodyLong, Button, Checkbox, Heading, Label, Tooltip } from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -21,7 +21,6 @@ import {
   PaddedDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import Tooltip from '@navikt/tooltip'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateForsikring, ValidateForsikringProps } from 'applications/SvarSed/Forsikring/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -220,22 +219,54 @@ const Forsikring: React.FC<MainFormProps> = ({
     standardLogger('svarsed.editor.periode.add', { type })
   }
 
-  const getIcon = (type: string, size: string = '32') => (
-    <Tooltip placement='top' label={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
-      {type === 'perioderAnsattMedForsikring' && (<Office1 width={size} height={size} />)}
-      {type === 'perioderSelvstendigMedForsikring' && (<PensionBag width={size} height={size} />)}
-      {type === 'perioderAnsattUtenForsikring' && (<Office2 width={size} height={size} />)}
-      {type === 'perioderSelvstendigUtenForsikring' && (<Bag width={size} height={size} />)}
-      {type === 'perioderSyk' && (<Hospital width={size} height={size} />)}
-      {type === 'perioderSvangerskapBarn' && (<Stroller width={size} height={size} />)}
-      {type === 'perioderUtdanning' && (<SchoolBag width={size} height={size} />)}
-      {type === 'perioderMilitaertjeneste' && (<Military width={size} height={size} />)}
-      {type === 'perioderFrihetsberoevet' && (<Law width={size} height={size} />)}
-      {type === 'perioderFrivilligForsikring' && (<ShakeHandsFilled width={size} height={size} />)}
-      {type === 'perioderKompensertFerie' && (<Vacation width={size} height={size} />)}
-      {type === 'perioderAnnenForsikring' && (<Receipt width={size} height={size} />)}
-    </Tooltip>
-  )
+  const getIcon = (type: string, size: string = '32') => {
+    let icon;
+    switch (type) {
+      case 'perioderAnsattMedForsikring':
+        icon = <Buldings3Icon width={size} height={size} />
+        break;
+      case 'perioderSelvstendigMedForsikring':
+        icon = <SackPensionIcon width={size} height={size} />
+        break;
+      case 'perioderAnsattUtenForsikring':
+        icon = <Buldings2Icon width={size} height={size} />
+        break;
+      case 'perioderSelvstendigUtenForsikring':
+        icon = <BriefcaseIcon width={size} height={size} />
+        break;
+      case 'perioderSyk':
+        icon = <HospitalIcon width={size} height={size} />
+        break;
+      case 'perioderSvangerskapBarn':
+        icon = <StrollerIcon width={size} height={size} />
+        break;
+      case 'perioderUtdanning':
+        icon = <BackpackIcon width={size} height={size} />
+        break;
+      case 'perioderMilitaertjeneste':
+        icon = <Military width={size} height={size} />
+        break;
+      case 'perioderFrihetsberoevet':
+        icon = <GavelSoundBlockIcon width={size} height={size} />
+        break;
+      case 'perioderFrivilligForsikring':
+        icon = <HandshakeIcon width={size} height={size} />
+        break;
+      case 'perioderKompensertFerie':
+        icon = <ParasolBeachIcon width={size} height={size} />
+        break;
+      case 'perioderAnnenForsikring':
+        icon = <ReceiptIcon width={size} height={size} />
+        break;
+      default:
+        icon = <></>
+    }
+    return (
+      <Tooltip placement='top' content={_.find(periodeOptions, o => o.value === type)?.label ?? ''}>
+        {icon}
+      </Tooltip>
+    )
+  }
 
   const doResetValidation = (namespace: string) => dispatch(resetValidation(namespace))
   const doSetValidation = (validation: Validation) => dispatch(setValidation(validation))
@@ -387,8 +418,8 @@ const Forsikring: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
           </PaddedDiv>

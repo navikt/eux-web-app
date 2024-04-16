@@ -6,7 +6,7 @@ import Version from 'components/Version/Version'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import NavHighContrast, {
+import {
   fadeIn,
   PileDiv, slideInFromBottom,
   slideInFromLeft,
@@ -21,13 +21,14 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled, { createGlobalStyle } from 'styled-components'
 import * as Sentry from '@sentry/browser'
+import 'react-pdf/dist/Page/TextLayer.css'; //Needed for text copy/paste from @navikt/forhandsvisningsfil (react-pdf)
 
 const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
   padding: 0;
-  color: var(--navds-semantic-color-text);
-  background: var(--navds-semantic-color-canvas-background);
+  color: var(--a-text-default);
+  background: var(--a-bg-subtle);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -36,6 +37,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  --ac-button-secondary-bg: white;
 }
 .nolabel {
   margin-top: 2rem !important;
@@ -68,6 +70,15 @@ body {
   transform: translateY(20px);
   animation: ${slideInFromBottom(20)} 0.3s forwards;
 }
+
+#joarkBrowser .navds-button--tertiary:hover, #attachmentsFromRina .navds-button--tertiary:hover {
+  background-color: var(--a-surface-transparent);
+}
+
+#neessiModal div{
+  user-select:text !important;
+  cursor: default !important;
+}
 `
 const Main = styled(PileDiv)`
   padding: 0px;
@@ -98,7 +109,6 @@ export interface TopContainerSelector {
   bannerMessage: string | JSX.Element | undefined
   error: any | undefined
   expirationTime: number | undefined
-  highContrast: boolean
 }
 
 const mapState = (state: State): TopContainerSelector => ({
@@ -106,7 +116,6 @@ const mapState = (state: State): TopContainerSelector => ({
   bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
-  highContrast: state.ui.highContrast
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({
@@ -118,7 +127,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   title
 }: TopContainerProps): JSX.Element => {
   const {
-    bannerStatus, bannerMessage, error, expirationTime, highContrast
+    bannerStatus, bannerMessage, error, expirationTime
   }: TopContainerSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
@@ -146,7 +155,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   return (
-    <NavHighContrast highContrast={highContrast}>
+    <div>
       <GlobalStyle />
       <ErrorBoundary
         FallbackComponent={ErrorFallback}
@@ -156,7 +165,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       >
         <Header
           title={title}
-          highContrast={highContrast}
           backButton={backButton}
           onGoBackClick={onGoBackClick}
           unsavedDoc={unsavedDoc}
@@ -182,7 +190,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
           <Version />
         </Debug>
       </ErrorBoundary>
-    </NavHighContrast>
+    </div>
   )
 }
 

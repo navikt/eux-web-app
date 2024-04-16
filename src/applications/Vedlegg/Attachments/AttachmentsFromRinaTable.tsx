@@ -12,7 +12,7 @@ import {ModalContent} from "../../../declarations/components";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../../actions/attachments";
-import {Delete} from "@navikt/ds-icons";
+import { TrashIcon } from '@navikt/aksel-icons';
 import {deleteAttachment, setAttachmentSensitive} from "../../../actions/svarsed";
 
 
@@ -151,7 +151,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         onClick={() => onDeleteItem(item as AttachmentTableItem)}
       >
         {spinner && <Loader/>}
-        {!spinner && <Delete />}
+        {!spinner && <TrashIcon/>}
       </Button>
 
     )
@@ -182,7 +182,6 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   useEffect(() => {
     if (!_attachmentModal && !_convertingRawToFile && !_.isNil(_previewAttachmentFile)) {
       setAttachmentModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
@@ -193,7 +192,6 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
               height={800}
               tema='simple'
               viewOnePage={false}
-              onContentClick={handleModalClose}
             />
           </div>
         )
@@ -211,7 +209,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   }
 
   return (
-    <>
+    <div id='attachmentsFromRina'>
       <Modal
         open={!_.isNil(_attachmentModal)}
         modal={_attachmentModal}
@@ -235,7 +233,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         }) : []}
         columns={columns}
       />
-    </>
+    </div>
   )
 }
 

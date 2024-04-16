@@ -192,7 +192,7 @@ const PDU1Search = (): JSX.Element => {
 
   const isPDU1 = (r: PDU1SearchResult) => r.brevkode === 'DAG_EOS_U1'
 
-  const resetPreview = () => {
+  const handleModalClose = () => {
     dispatch(resetStoredPdu1AsPDF())
     setPreviewModal(undefined)
   }
@@ -210,7 +210,6 @@ const PDU1Search = (): JSX.Element => {
       }
 
       setPreviewModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
@@ -224,7 +223,6 @@ const PDU1Search = (): JSX.Element => {
               height={1200}
               tema='simple'
               viewOnePage={false}
-              onContentClick={resetPreview}
             />
           </div>
         )
@@ -251,7 +249,7 @@ const PDU1Search = (): JSX.Element => {
       <Modal
         open={!_.isNil(previewModal)}
         modal={previewModal}
-        onModalClose={() => setPreviewModal(undefined)}
+        onModalClose={handleModalClose}
       />
       <Heading size='medium'>
         {t('app:page-title-pdu1-search')}

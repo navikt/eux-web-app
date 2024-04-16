@@ -1,4 +1,4 @@
-import { Copy, ExternalLink } from '@navikt/ds-icons'
+import { FilesIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
 import {Alert, BodyLong, Heading, Link} from '@navikt/ds-react'
 import {
   FlexCenterDiv,
@@ -30,7 +30,12 @@ const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`
   }
   .navds-radio__input:checked + .navds-radio__label .navds-link,
   .navds-radio__input:checked + .navds-radio__label .navds-link svg {
-     color: var(--navds-color-text-inverse);
+     color: var(--a-text-on-inverted);
+  }
+
+  background-color: var(--a-surface-default) !important;
+  &:hover {
+    background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 
@@ -74,7 +79,7 @@ const SakPanel = ({
                 {sak?.sakId}
               </span>
               <HorizontalSeparatorDiv size='0.35' />
-              <ExternalLink />
+              <ExternalLinkIcon />
             </Link>
             <HorizontalSeparatorDiv />
             <Link
@@ -84,7 +89,7 @@ const SakPanel = ({
                 onCopy()
               }}
             >
-              <Copy />
+              <FilesIcon />
             </Link>
           </FlexCenterDiv>
         </FlexCenterSpacedDiv>

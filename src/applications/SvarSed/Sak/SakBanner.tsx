@@ -1,4 +1,5 @@
-import { ExternalLink, Copy, InformationFilled } from '@navikt/ds-icons'
+import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
+import {ReactComponent as InformationIcon} from 'assets/icons/InformationIconOld.svg'
 import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
@@ -14,10 +15,15 @@ import styled from 'styled-components'
 import { toDateFormat } from 'components/DateField/DateField'
 
 const Panel = styled(FullWidthDiv)`
-  background-color: var(--navds-panel-color-background);
+  background-color: var(--a-bg-default);
   justify-content: space-between;
   display: flex;
   padding: 0.5rem 3rem;
+`
+
+const InformationIconPadded = styled(InformationIcon)`
+  margin-top: 0.2rem;
+  margin-left: 0.3  rem;
 `
 
 const SakBanner = () => {
@@ -78,7 +84,7 @@ const SakBanner = () => {
                   dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
                 }}
               >
-                <Copy />
+                <FilesIcon />
               </Link>
             </>
           )}
@@ -96,7 +102,7 @@ const SakBanner = () => {
                 }}
               >
                 {' ' + currentSak.fnr + ' '}
-                <Copy />
+                <FilesIcon />
               </Link>
             </>
           )}
@@ -125,11 +131,10 @@ const SakBanner = () => {
             }}
           >
             {currentSak.sakId + ' '}
-            <Copy />
+            <FilesIcon />
           </Link>
           {!!currentSak.internasjonalSakId && (
             <>
-              <HorizontalSeparatorDiv />
               <Popover
                 open={popoverOpen}
                 onClose={() => setPopoverOpen(false)}
@@ -148,13 +153,13 @@ const SakBanner = () => {
                       }}
                     >
                       {currentSak.internasjonalSakId + ' '}
-                      <Copy />
+                      <FilesIcon />
                     </Link>
                   </Heading>
                   {t('message:help-international-id')}
                 </Popover.Content>
               </Popover>
-              <InformationFilled
+              <InformationIconPadded
                 style={{ cursor: 'pointer' }}
                 ref={iconRef}
                 onClick={() => setPopoverOpen(!popoverOpen)}
@@ -168,7 +173,7 @@ const SakBanner = () => {
               {t('label:åpne_sak_i_RINA')}
             </span>
             <HorizontalSeparatorDiv size='0.35' />
-            <ExternalLink />
+            <ExternalLinkIcon />
           </Link>
         </FlexDiv>
         {currentSak.sensitiv &&

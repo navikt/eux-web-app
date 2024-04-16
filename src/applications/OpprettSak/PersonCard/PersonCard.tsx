@@ -1,7 +1,7 @@
 import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
-import { Delete, AddCircle } from '@navikt/ds-icons'
+import { TrashIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import { toDateFormat } from 'components/DateField/DateField'
 import { HorizontalSeparatorDiv, VerticalSeparatorDiv, FlexCenterSpacedDiv, FlexDiv } from '@navikt/hoykontrast'
 import { OldFamilieRelasjon, Kodeverk, Person } from 'declarations/types'
@@ -146,9 +146,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
               kompakt
               onClick={() => _onRemoveClick(person)}
               disabled={disableAll}
-            >
-              <Delete width='20' height='20' />
-            </RemoveButton>
+              icon={<TrashIcon/>}
+            />
           </FlexDiv>
         )}
         {_.isFunction(onAddClick) && (
@@ -159,9 +158,8 @@ const PersonCard: React.FC<PersonCardProps> = ({
               data-testid='familierelasjoner__knapp--legg-til'
               disabled={rolleList !== undefined && !rolle || disableAll}
               onClick={() => _onAddClick(person)}
-            >
-              <AddCircle width={20} />
-            </Button>
+              icon={<PlusCircleIcon/>}
+            />
           </FlexDiv>
         )}
       </FlexCenterSpacedDiv>

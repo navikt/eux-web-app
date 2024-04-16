@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import { Button, Modal, Heading } from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Button, Modal } from '@navikt/ds-react'
 import { ModalContent } from 'declarations/components'
 import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
@@ -23,12 +22,7 @@ const ButtonMargin = styled.div`
   margin-top: 0.5rem;
   margin-botton: 0.5rem;
 `
-const IconDiv = styled.div`
-  z-index: 40000;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-`
+
 const ContentDiv = styled.div`
   overflow: auto;
   max-height: 85vh;
@@ -41,47 +35,33 @@ const ContentDiv = styled.div`
 `
 
 export interface ModalProps {
-  appElementId?: string
   className?: string
   icon?: JSX.Element | undefined
   onModalClose?: () => void
-  shouldCloseOnOverlayClick ?: boolean
+  onBeforeClose?: () => boolean
   open: boolean,
   modal: ModalContent | undefined
 }
 
 const ModalFC: React.FC<ModalProps> = ({
-  appElementId = 'body',
   className,
   icon = undefined,
   onModalClose = () => {},
-  shouldCloseOnOverlayClick = true,
+  onBeforeClose = () => true,
   open,
   modal
 }: ModalProps): JSX.Element => {
-  if (typeof (window) !== 'undefined') {
-    Modal.setAppElement(document.getElementById(appElementId) ?? 'body')
-  }
-
   return (
     <Modal
-      shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       className={className}
       open={open}
       onClose={onModalClose}
+      onBeforeClose={onBeforeClose}
+      header={{heading: modal?.modalTitle ?? '', icon: icon ?? undefined}}
+      portal={true}
+      id="neessiModal"
     >
-      <Modal.Content>
-        {icon && (
-          <IconDiv>{icon}</IconDiv>
-        )}
-        {modal?.modalTitle && (
-          <>
-            <Heading size='small' data-testid='modal__title-id'>
-              {modal?.modalTitle}
-            </Heading>
-            <VerticalSeparatorDiv />
-          </>
-        )}
+      <Modal.Body>
         <ContentDiv className={classNames({ icon: !!icon })}>
           {modal?.modalContent || (
             <ModalText data-testid='modal__text-id'>
@@ -106,7 +86,6 @@ const ModalFC: React.FC<ModalProps> = ({
               const handleClick = _.isFunction(button.onClick)
                 ? () => {
                   button.onClick!()
-                  onModalClose()
                   }
                 : onModalClose
               return (
@@ -125,14 +104,13 @@ const ModalFC: React.FC<ModalProps> = ({
             })}
           </ModalButtons>
         )}
-      </Modal.Content>
+      </Modal.Body>
     </Modal>
 
   )
 }
 
 ModalFC.propTypes = {
-  appElementId: PT.string,
   className: PT.string,
   onModalClose: PT.func,
   modal: ModalContentPropType

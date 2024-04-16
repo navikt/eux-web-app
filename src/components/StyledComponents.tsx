@@ -10,10 +10,10 @@ export const FadingLineSeparator = styled.div`
    border-left-style: solid;
    border-image: linear-gradient(
     to bottom,
-     var(--navds-semantic-color-canvas-background) 0%,
-     var(--navds-semantic-color-border) 5%,
-     var(--navds-semantic-color-border) 95%,
-     var(--navds-semantic-color-canvas-background) 100%
+     var(--a-bg-subtle) 0%,
+     var(--a-border-strong) 5%,
+     var(--a-border-strong) 95%,
+     var(--a-bg-subtle) 100%
     ) 1 100%;
    opacity: 0;
    &.fadeIn {
@@ -30,16 +30,16 @@ export const HorizontalLineSeparator = styled.div<{size?: string}>`
   margin-top: ${(props: any) => props.size || 0}rem;
   margin-bottom: ${(props: any) => props.size || 0}rem;
   background: linear-gradient(90deg,
-    var(--navds-semantic-color-canvas-background) 0%,
-    var(--navds-panel-color-border) 5%,
-    var(--navds-panel-color-border) 95%,
-    var(--navds-semantic-color-canvas-background) 100%
+    var(--a-bg-subtle) 0%,
+    var(--a-border-strong) 5%,
+    var(--a-border-strong) 95%,
+    var(--a-bg-subtle) 100%
   );
   width: 100%;
 `
 
 export const Hr = styled.div`
-   background: var(--navds-panel-color-border);
+   background: var(--a-border-strong);
    width: 100%;
    height: 1px;
 `
@@ -65,12 +65,12 @@ export const WithErrorPanel = styled(Panel)`
   border: none;
   &.error {
     margin: -4px;
-    border: 4px solid var(--navds-error-summary-color-border) !important;
+    border: 4px solid var(--a-border-danger) !important;
   }
 `
 
 export const ShadowPanel = styled(Panel)`
- background-color: var(--navds-semantic-color-component-background-alternate);
+ background-color: var(--a-surface-subtle);
 `
 
 export const AlertstripeDiv = styled.div`
@@ -101,7 +101,7 @@ export const Dl = styled.dl`
   flex-wrap: wrap;
   width: 100%;
   .odd {
-    background-color: var(--navds-semantic-color-component-background-alternate);
+    background-color: var(--a-surface-subtle);
   }
 `
 export const RepeatableRow = styled(PaddedHorizontallyDiv)`
@@ -115,7 +115,7 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
     background-color: rgba(255, 0, 0, 0.2);
   };
   &:hover:not(.new):not(.error) {
-    background-color: var(--navds-global-color-gray-100);
+    background-color: var(--a-gray-100);
   }
   &:not(:hover) .control-buttons {
     position: absolute;
@@ -134,13 +134,13 @@ export const RepRow = styled(PaddedHorizontallyDiv)`
     background-color: rgba(255, 0, 0, 0.2);
   };
   &:hover:not(.new):not(.error) {
-    background-color: var(--navds-global-color-gray-100);
+    background-color: var(--a-gray-100);
   }
 `
 
 
 export const GrayPanel = styled(Panel)`
-  background-color: var(--navds-semantic-color-canvas-background);
+  background-color: var(--a-bg-subtle);
 `
 export const TransparentPanel = styled(Panel)`
   background-color: transparent;

@@ -1,4 +1,4 @@
-import { ExternalLink } from '@navikt/ds-icons'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import * as types from 'constants/actionTypes'
 import i18n from 'i18n'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -143,7 +143,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
                   {i18n.t('message:error-svarsed-failure-duplicate-2') as string}
                 </span>
                 <HorizontalSeparatorDiv size='0.35' />
-                <ExternalLink />
+                <ExternalLinkIcon />
               </Link>
             </FlexDiv>
           )

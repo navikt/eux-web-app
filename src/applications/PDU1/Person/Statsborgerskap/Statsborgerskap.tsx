@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
 import Flag from '@navikt/flagg-ikoner'
 import {
@@ -249,7 +249,6 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
       <Modal
         open={_showStatborgerskapMissingModal}
         modal={{
-          closeButton: true,
           modalTitle: t("message:warning-unknown-statsborgerskap"),
           modalContent: (
             <div style={{ textAlign: 'center', display: 'block', minWidth: '400px', minHeight: '100px' }}>
@@ -302,8 +301,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x2', { x: t('label:statsborgerskap').toLowerCase() })}
             </Button>
           </PaddedDiv>

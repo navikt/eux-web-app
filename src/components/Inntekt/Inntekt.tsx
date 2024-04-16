@@ -1,4 +1,4 @@
-import { ExternalLink } from '@navikt/ds-icons'
+import { ExternalLinkIcon } from '@navikt/aksel-icons'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { IInntekt, IInntekter } from 'declarations/types'
 import { BodyLong, Link, Heading } from '@navikt/ds-react'
@@ -12,7 +12,7 @@ import {
   PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import Pagination from '@navikt/paginering'
+import { Pagination } from "@navikt/ds-react";
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -28,7 +28,7 @@ const ArbeidsgiverDiv = styled(FlexDiv)`
  padding: 1rem;
 `
 const LeftBorderFlexDiv = styled(FlexDiv)`
-  border-left: 1px solid var(--navds-panel-color-border);
+  border-left: 1px solid var(--a-border-strong);
 `
 
 const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
@@ -121,20 +121,23 @@ const Inntekt: React.FC<InntektProps> = ({ inntekter }: InntektProps) => {
                 <Link target='_blank' href={inntekter.uriInntektRegister} rel='noreferrer'>
                   {t('label:gå-til-A-inntekt')}
                   <HorizontalSeparatorDiv size='0.35' />
-                  <ExternalLink />
+                  <ExternalLinkIcon />
                 </Link>
               </Column>
               <Column>
                 <FlexDiv style={{ flexDirection: 'row-reverse' }}>
-                  <Pagination
-                    currentPage={_currentPage[inntekt.orgNr]}
-                    itemsPerPage={itemsPerPage}
-                    numberOfItems={Object.keys(inntekt.maanedsinntekter).length}
-                    onChange={(page: number) => setCurrentPage({
-                      ..._currentPage,
-                      [inntekt.orgNr]: page
-                    })}
-                  />
+                  {Object.keys(inntekt.maanedsinntekter).length >= itemsPerPage &&
+                    <Pagination
+                      page={_currentPage[inntekt.orgNr]}
+                      count={Math.ceil(Object.keys(inntekt.maanedsinntekter).length/itemsPerPage)}
+                      siblingCount={2}
+                      size="xsmall"
+                      onPageChange={(page: number) => setCurrentPage({
+                        ..._currentPage,
+                        [inntekt.orgNr]: page
+                      })}
+                    />
+                  }
                 </FlexDiv>
               </Column>
             </AlignEndRow>

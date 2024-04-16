@@ -224,6 +224,15 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     setJournalfoerModal(false)
   }
 
+  const closeModalAndGotoSak = () => {
+    onJournalfoerModalClose()
+    gotoSak()
+  }
+  const closeModalAndGotoFrontpage = () => {
+    onJournalfoerModalClose()
+    gotoFrontpage
+  }
+
   const hasIkkeJournalfoert = journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && journalfoeringLogg.ikkeJournalfoert.length > 0
   const hasVarJournalfoertFeil = journalfoeringLogg && journalfoeringLogg.varJournalfoertFeil && journalfoeringLogg.varJournalfoertFeil.length > 0
   const hasJournalfoert =  journalfoeringLogg && journalfoeringLogg.journalfoert && journalfoeringLogg.journalfoert.length > 0
@@ -256,15 +265,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     )
   }
 
-
   return (
     <>
       <Modal
         open={_journalfoerModal}
         onModalClose={onJournalfoerModalClose}
-        appElementId="root"
         modal={{
-          closeButton: false,
           modalTitle: modalTitle,
           modalContent: (
             <>
@@ -294,11 +300,11 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           modalButtons: [
             {
               text: t('el:button-gaa-tilbake-til-saken'),
-              onClick: gotoSak
+              onClick: closeModalAndGotoSak
             },
             {
               text: t('el:button-gaa-til-forsiden'),
-              onClick: gotoFrontpage
+              onClick: closeModalAndGotoFrontpage
             }]
         }}
       />

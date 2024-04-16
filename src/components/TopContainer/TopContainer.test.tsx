@@ -12,7 +12,6 @@ const defaultSelector: TopContainerSelector = {
   bannerMessage: undefined,
   bannerStatus: undefined,
   expirationTime: undefined,
-  highContrast: false,
   error: undefined
 }
 

@@ -46,15 +46,22 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
     setFeilregistrerJournalposterModal(false)
   }
 
+  const closeModalAndGotoSak = () => {
+    onFeilregistrerJournalposterModalClose()
+    gotoSak()
+  }
+
+  const closeModalAndGotoFrontpage = () => {
+    onFeilregistrerJournalposterModalClose()
+    gotoFrontpage
+  }
 
   return (
     <>
       <Modal
         open={_feilregistrerJournalposterModal}
         onModalClose={onFeilregistrerJournalposterModalClose}
-        appElementId="root"
         modal={{
-          closeButton: false,
           modalContent: (
             <>
               {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&
@@ -82,11 +89,11 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
           modalButtons: [
             {
               text: t('el:button-gaa-tilbake-til-saken'),
-              onClick: gotoSak
+              onClick: closeModalAndGotoSak
             },
             {
               text: t('el:button-gaa-til-forsiden'),
-              onClick: gotoFrontpage
+              onClick: closeModalAndGotoFrontpage
             }]
         }}
       />

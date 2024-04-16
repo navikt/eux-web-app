@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { Alert, BodyLong, Button, Select, TextField } from '@navikt/ds-react'
 import DateField  from 'components/DateField/DateField'
 import { State } from 'declarations/reducers'
@@ -314,8 +314,8 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             onClick={addRelation}
             className='relasjon familierelasjoner__knapp'
             disabled={disableAll}
+            icon={<PlusCircleIcon/>}
           >
-            <AddCircle />
             {t('el:button-add')}
           </Button>
         </Column>

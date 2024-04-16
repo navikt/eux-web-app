@@ -1,4 +1,4 @@
-import { Close, Edit, Email, Send, Star } from '@navikt/ds-icons'
+import { XMarkIcon, PencilIcon, EnvelopeClosedIcon, PaperplaneIcon, StarIcon } from '@navikt/aksel-icons'
 import { Detail, Label } from '@navikt/ds-react'
 import { FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
@@ -29,11 +29,11 @@ const SEDDetails: React.FC = () => {
     <>
       <FlexBaseDiv>
         <PileCenterDiv style={{ alignItems: 'center' }} title={t('')}>
-          {replySed?.sed?.status === 'received' && <Email width='20' height='20' />}
-          {replySed?.sed?.status === 'sent' && <Send width='20' height='20' />}
-          {(_.isNil(replySed?.sed) || replySed?.sed?.status === 'new') && <Star width='20' height='20' />}
-          {replySed?.sed?.status === 'active' && <Edit width='20' height='20' />}
-          {replySed?.sed?.status === 'cancelled' && <Close width='20' height='20' />}
+          {replySed?.sed?.status === 'received' && <EnvelopeClosedIcon width='20' height='20' />}
+          {replySed?.sed?.status === 'sent' && <PaperplaneIcon width='20' height='20' />}
+          {(_.isNil(replySed?.sed) || replySed?.sed?.status === 'new') && <StarIcon width='20' height='20' />}
+          {replySed?.sed?.status === 'active' && <PencilIcon width='20' height='20' />}
+          {replySed?.sed?.status === 'cancelled' && <XMarkIcon width='20' height='20' />}
           <VerticalSeparatorDiv size='0.35' />
           <Detail>
             {t('app:status-received-' + (replySed?.sed?.status?.toLowerCase() ?? 'new'))}

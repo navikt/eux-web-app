@@ -11,7 +11,6 @@ describe('components/Header/Header', () => {
   let wrapper: any
   const initialMockProps: HeaderProps = {
     title: 'title',
-    highContrast: false
   }
 
   const defaultSelector: HeaderSelector = {

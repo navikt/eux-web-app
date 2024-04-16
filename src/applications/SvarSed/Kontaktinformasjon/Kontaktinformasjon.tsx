@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons'
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -476,8 +476,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 <Button
                   variant='tertiary'
                   onClick={() => _setSeeNewTelefonForm(true)}
+                  icon={<PlusCircleIcon/>}
                 >
-                  <AddCircle />
                   {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
                 </Button>
               </Column>
@@ -521,8 +521,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
             <Button
               variant='tertiary'
               onClick={() => _setSeeNewEpostForm(true)}
+              icon={<PlusCircleIcon/>}
             >
-              <AddCircle />
               {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
             </Button>
           </PaddedDiv>

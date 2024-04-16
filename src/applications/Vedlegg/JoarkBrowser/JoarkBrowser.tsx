@@ -23,7 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
-import {Delete} from "@navikt/ds-icons";
+import { TrashIcon } from '@navikt/aksel-icons';
 import {removeAttachment} from "../../../actions/svarsed";
 
 const ButtonsDiv = styled.div`
@@ -83,6 +83,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const [_clickedPreviewItem, setClickedPreviewItem] = useState<JoarkBrowserItem | undefined>(undefined)
   const [_items, setItems] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
+  const [_modalInViewMode, setModalInViewMode] = useState<boolean>(false)
   const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
   const [_tableKey, setTableKey] = useState<string>('')
@@ -95,6 +96,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }
 
   const handleModalClose = useCallback(() => {
+    setModalInViewMode(false)
     setPreviewFile(undefined)
     setModal(undefined)
     dispatch(setJoarkItemPreview(undefined))
@@ -103,6 +105,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const onPreviewItem = (clickedItem: JoarkBrowserItem): void => {
     setPreviewFile(undefined)
     setClickedPreviewItem(clickedItem)
+    if(mode === "view"){
+      setModalInViewMode(true)
+    }
     dispatch(getJoarkItemPreview(clickedItem))
   }
 
@@ -159,10 +164,8 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         id={'tablesorter__delete-button-' + item.key + '-' + item.navn}
         className='tablesorter__delete-button'
         onClick={() => onRemoveAttachment(item as JoarkBrowserItem)}
-      >
-        <Delete />
-      </Button>
-
+        icon={<TrashIcon/>}
+      />
     )
   }
 
@@ -317,31 +320,32 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [fnr])
 
   useEffect(() => {
-    if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
-      if (!_.isNull(previewFileRaw)) {
-        setConvertingRawToFile(true)
+    if(mode !== "select" && _modalInViewMode){
+      if (_.isUndefined(_previewFile) && !_.isUndefined(previewFileRaw) && !_convertingRawToFile) {
+        if (!_.isNull(previewFileRaw)) {
+          setConvertingRawToFile(true)
 
-        blobToBase64(previewFileRaw).then((base64: any) => {
-          const file: File = {
-            id: '' + new Date().getTime(),
-            size: previewFileRaw.size,
-            name: '',
-            mimetype: 'application/pdf',
-            content: {
-              base64: base64.replaceAll('octet-stream', 'pdf')
+          blobToBase64(previewFileRaw).then((base64: any) => {
+            const file: File = {
+              id: '' + new Date().getTime(),
+              size: previewFileRaw.size,
+              name: '',
+              mimetype: 'application/pdf',
+              content: {
+                base64: base64.replaceAll('octet-stream', 'pdf')
+              }
             }
-          }
-          setPreviewFile(file)
-          setConvertingRawToFile(false)
-        })
+            setPreviewFile(file)
+            setConvertingRawToFile(false)
+          })
+        }
       }
     }
-  }, [_previewFile, previewFileRaw, _convertingRawToFile])
+  }, [mode, _modalInViewMode, _previewFile, previewFileRaw, _convertingRawToFile])
 
   useEffect(() => {
     if (!_modal && !_convertingRawToFile && !_.isNil(_previewFile)) {
       setModal({
-        closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
@@ -352,7 +356,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
               height={800}
               tema='simple'
               viewOnePage={false}
-              onContentClick={handleModalClose}
             />
           </div>
         )
@@ -364,13 +367,15 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [_modal, _convertingRawToFile, _previewFile])
 
   return (
-    <div data-testid='joarkBrowser'>
+    <div data-testid='joarkBrowser' id='joarkBrowser'>
       <VerticalSeparatorDiv size='0.5' />
-      <Modal
-        open={!_.isNil(_modal)}
-        modal={_modal}
-        onModalClose={handleModalClose}
-      />
+      {mode !== "select" &&
+        <Modal
+          open={!_.isNil(_modal)}
+          modal={_modal}
+          onModalClose={handleModalClose}
+        />
+      }
       <Table
         <JoarkBrowserItem, JoarkBrowserContext>
         id={'joarkbrowser-' + tableId}

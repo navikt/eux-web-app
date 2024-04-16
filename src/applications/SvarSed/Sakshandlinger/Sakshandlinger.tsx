@@ -1,6 +1,5 @@
-import { BodyLong, Heading, Link, Panel, ReadMore } from '@navikt/ds-react'
+import { BodyLong, Heading, Link, Panel, ReadMore, Tooltip } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import Tooltip from '@navikt/tooltip'
 import {createF002Sed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
@@ -61,12 +60,7 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
   const createDisabledSakshandlingFragment = (sakshandling: string) => {
     return(
       <>
-        <Tooltip label={(
-          <div style={{ maxWidth: '400px' }}>
-            {t('message:warning-rina')}
-          </div>
-        )}
-        >
+        <Tooltip content={t('message:warning-rina')}>
           <BodyLong>
             {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
           </BodyLong>

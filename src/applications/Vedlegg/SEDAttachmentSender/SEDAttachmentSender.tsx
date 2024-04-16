@@ -9,7 +9,7 @@ import {
   SEDAttachmentPayloadPropType
 } from 'declarations/attachments.pt'
 import { State } from 'declarations/reducers'
-import ProgressBar, { ProgressBarStatus } from '@navikt/fremdriftslinje'
+import ProgressBar, { ProgressBarStatus } from 'components/ProgressBar/ProgressBar'
 import _ from 'lodash'
 import md5 from 'md5'
 import { Button } from '@navikt/ds-react'

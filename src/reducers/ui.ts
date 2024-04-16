@@ -4,14 +4,12 @@ import { ActionWithPayload } from '@navikt/fetch'
 import { AnyAction } from 'redux'
 
 export interface UiState {
-  highContrast: boolean
   modal: ModalContent | undefined
   textAreaDirty: boolean
   textFieldDirty: boolean
 }
 
 export const initialUiState: UiState = {
-  highContrast: false,
   modal: undefined,
   textAreaDirty: false,
   textFieldDirty: false
@@ -23,13 +21,6 @@ const uiReducer = (state: UiState = initialUiState, action: AnyAction): UiState 
       return {
         ...state,
         modal: (action as ActionWithPayload).payload
-      }
-
-    case types.UI_HIGHCONTRAST_TOGGLE :
-
-      return {
-        ...state,
-        highContrast: !state.highContrast
       }
 
     case types.UI_SET_TEXTAREA_DIRTY:
