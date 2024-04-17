@@ -1,25 +1,22 @@
 import * as types from 'constants/actionTypes'
 import { Dokument, VedleggSendResponse } from 'declarations/types'
 import { AnyAction } from 'redux'
+import {JoarkBrowserItems} from "../declarations/attachments";
 
 export interface VedleggState {
   vedleggResponse: VedleggSendResponse | undefined;
   rinasaksnummer: string | undefined
   rinadokumentID: string | undefined
-  journalpostID: string | undefined
-  dokumentID: string | undefined
   dokument: Array<Dokument> | null | undefined
-  sensitivt: boolean
+  attachments: JoarkBrowserItems
 }
 
 export const initialVedleggState: VedleggState = {
   vedleggResponse: undefined,
   rinasaksnummer: undefined,
   rinadokumentID: undefined,
-  journalpostID: undefined,
-  dokumentID: undefined,
   dokument: undefined,
-  sensitivt: false
+  attachments: []
 }
 
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAction): VedleggState => {

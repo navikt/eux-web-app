@@ -15,10 +15,7 @@ describe('pages/Vedlegg', () => {
     alertMessage: undefined,
     vedleggResponse: undefined,
     rinasaksnummer: undefined,
-    journalpostID: undefined,
     rinadokumentID: undefined,
-    dokumentID: undefined,
-    sensitivt: true,
     sendingVedlegg: false,
     validation: {}
   }
