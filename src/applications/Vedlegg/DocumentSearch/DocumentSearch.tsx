@@ -47,7 +47,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   }
 
   const setRinaSaksnummer = (newRinaSaksnummer: string): void => {
-    if (!_.isNil(document)) {
+    if (!_.isNil(dokument)) {
       dispatch(vedleggActions.propertySet('dokument', undefined))
       if (validation[namespace + '-dokument']) {
         dispatch(resetValidation(namespace + '-dokument'))
@@ -79,7 +79,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           required
           hideLabel={false}
           onChange={setRinaSaksnummer}
-          value={rinasaksnummer}
+          value={rinasaksnummer || ''}
           disabled={gettingDokument}
         >
           <Search.Button onClick={sokEtterDokument}>

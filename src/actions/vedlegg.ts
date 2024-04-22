@@ -5,7 +5,12 @@ import { call, ActionWithPayload } from '@navikt/fetch'
 import mockSendVedlegg from 'mocks/vedlegg/sendVedlegg'
 import mockRinaDokumenter from 'mocks/vedlegg/rinaDokumenter'
 import {JoarkBrowserItems} from "../declarations/attachments";
+import {Action, ActionCreator} from "redux";
 const sprintf = require('sprintf-js').sprintf
+
+export const resetVedlegg: ActionCreator<Action> = (): Action => ({
+  type: types.VEDLEGG_RESET
+})
 
 export const getDokument = (rinasaksnummer: string): ActionWithPayload => {
   return call({

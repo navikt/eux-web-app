@@ -21,6 +21,7 @@ export const initialVedleggState: VedleggState = {
 
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAction): VedleggState => {
   switch (action.type) {
+
     case types.VEDLEGG_POST_SUCCESS:
       return {
         ...state,
@@ -50,7 +51,9 @@ const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAc
         ...state,
         [action.payload.key]: action.payload.value
       }
+
     case types.APP_RESET:
+    case types.VEDLEGG_RESET:
       return initialVedleggState
 
     default:

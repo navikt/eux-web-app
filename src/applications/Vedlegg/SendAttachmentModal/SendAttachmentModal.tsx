@@ -13,10 +13,12 @@ import {IS_TEST} from "../../../constants/environment";
 import {createSavingAttachmentJob, resetSedAttachments, sendAttachmentToSed} from "../../../actions/attachments";
 import {useTranslation} from "react-i18next";
 import {alertReset} from "../../../actions/alert";
-import {FlexCenterSpacedDiv, VerticalSeparatorDiv} from "@navikt/hoykontrast";
+import {FlexCenterSpacedDiv, HorizontalSeparatorDiv, VerticalSeparatorDiv} from "@navikt/hoykontrast";
 import SEDAttachmentSender from "../SEDAttachmentSender/SEDAttachmentSender";
-import {Button} from "@navikt/ds-react";
+import {Alert, Button} from "@navikt/ds-react";
 import styled from "styled-components";
+import * as types from "../../../constants/actionTypes";
+import {CheckmarkCircleFillIcon} from "@navikt/aksel-icons";
 
 const MinimalModalDiv = styled.div`
   min-height: 200px;
@@ -77,7 +79,10 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
     savingAttachmentsJob,
     attachments,
     rinaId,
-    rinaDokumentId
+    rinaDokumentId,
+    alertMessage,
+    alertType,
+    bannerMessage
   }: SendAttachmentSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -158,38 +163,64 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
       modal={{
         modalTitle: "Sender vedlegg",
         modalContent: (
-          <SectionDiv>
-            <VerticalSeparatorDiv />
-            {(_sendingAttachments || _attachmentsSent) && (
-              <MinimalModalDiv>
-                <WrapperDiv>
-                  <SEDAttachmentSender
-                    attachmentsError={undefined}
-                    payload={{
-                      fnr,
-                      rinaId: rinaId,
-                      rinaDokumentId: rinaDokumentId
-                    } as SEDAttachmentPayload}
-                    onSaved={_onSaved}
-                    onFinished={_onFinished}
-                    onCancel={_cancelSendAttachmentToSed}
-                    sendAttachmentToSed={_sendAttachmentToSed}
-                  />
-                  <VerticalSeparatorDiv />
-                </WrapperDiv>
-              </MinimalModalDiv>
+          <>
+            {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
+              <>
+                <Alert variant='error'>
+                  {alertMessage}
+                </Alert>
+                <VerticalSeparatorDiv size='2' />
+              </>
             )}
-            {_finished && (
-              <FlexCenterSpacedDiv>
-                <Button
-                  variant='secondary'
-                  onClick={onModalClose}
-                >
-                  {t('el:button-close')}
-                </Button>
-              </FlexCenterSpacedDiv>
+            {bannerMessage && (
+              <>
+                <Alert variant='error'>
+                  {bannerMessage}
+                </Alert>
+                <VerticalSeparatorDiv size='2' />
+              </>
             )}
-          </SectionDiv>
+            <SectionDiv>
+              <VerticalSeparatorDiv />
+              {(_sendingAttachments || _attachmentsSent) && (
+                <MinimalModalDiv>
+                  <WrapperDiv>
+                    <SEDAttachmentSender
+                      attachmentsError={undefined}
+                      payload={{
+                        fnr,
+                        rinaId: rinaId,
+                        rinaDokumentId: rinaDokumentId
+                      } as SEDAttachmentPayload}
+                      onSaved={_onSaved}
+                      onFinished={_onFinished}
+                      onCancel={_cancelSendAttachmentToSed}
+                      sendAttachmentToSed={_sendAttachmentToSed}
+                    />
+                    <VerticalSeparatorDiv />
+                  </WrapperDiv>
+                </MinimalModalDiv>
+              )}
+
+              {_finished && (
+                <>
+                  <FlexCenterSpacedDiv>
+                    <CheckmarkCircleFillIcon color='green' />
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <span>{_finished}</span>
+                  </FlexCenterSpacedDiv>
+                  <FlexCenterSpacedDiv>
+                    <Button
+                      variant='secondary'
+                      onClick={onModalClose}
+                    >
+                      {t('el:button-close')}
+                    </Button>
+                  </FlexCenterSpacedDiv>
+                </>
+              )}
+            </SectionDiv>
+          </>
         )
       }}
     />

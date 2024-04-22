@@ -1,4 +1,4 @@
-import { Alert, Button, Link, Loader } from '@navikt/ds-react'
+import {Alert, Button, Link, Loader, TextField} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -10,7 +10,6 @@ import {
 import { resetValidation, setValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
-import Input from 'components/Forms/Input'
 import TopContainer from 'components/TopContainer/TopContainer'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
@@ -28,7 +27,7 @@ import SendAttachmentModal from "applications/Vedlegg/SendAttachmentModal/SendAt
 import {JoarkBrowserItem, JoarkBrowserItems} from "declarations/attachments";
 import JoarkBrowser from "applications/Vedlegg/JoarkBrowser/JoarkBrowser";
 import {alertReset} from "actions/alert";
-import {propertySet} from "actions/vedlegg";
+import {propertySet, resetVedlegg} from "actions/vedlegg";
 
 export interface VedleggSelector {
   alertMessage: JSX.Element | string | undefined
@@ -125,6 +124,15 @@ const Vedlegg: React.FC = (): JSX.Element => {
     setItems(newAttachments)
   }
 
+  const resetAndClose = () => {
+    setFnr("")
+    setItems([])
+    dispatch(alertReset())
+    dispatch(resetVedlegg())
+    setViewSendVedleggModal(false)
+  }
+
+
   useEffect(() => {
     dispatch(propertySet("attachments", _items))
   }, [_items])
@@ -134,10 +142,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
       <SendAttachmentModal
         fnr={_fnr!}
         open={_viewSendVedleggModal}
-        onModalClose={() => {
-          dispatch(alertReset())
-          setViewSendVedleggModal(false)
-        }}
+        onModalClose={resetAndClose}
       />
       <SEDAttachmentModal
         open={_attachmentsTableVisible}
@@ -152,12 +157,11 @@ const Vedlegg: React.FC = (): JSX.Element => {
         <MyContent>
           <AlignStartRow>
             <Column>
-              <Input
+              <TextField
                 id="fnr"
                 error={validation[namespace + '-fnr']?.feilmelding}
-                namespace={namespace}
                 label="Fødselsnummer"
-                onChanged={(fnr) => setFnr(fnr)}
+                onChange={(e) => setFnr(e.target.value)}
                 value={_fnr}
               />
             </Column>
