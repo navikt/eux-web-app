@@ -851,7 +851,7 @@ const SEDNew = (): JSX.Element => {
                           onClick={() =>
                             navigate({
                               pathname: '/vedlegg',
-                              search: 'rinasaksnummer=' + opprettetSak.sakId
+                              search: 'rinasaksnummer=' + opprettetSak.sakId + '&fnr=' + valgtFnr
                             })}
                         >
                           {t('label:legg-til-vedlegg-til-sed')}

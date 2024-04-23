@@ -72,6 +72,10 @@ const Vedlegg: React.FC = (): JSX.Element => {
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
+    const fnr = params.get('fnr')
+    if(fnr){
+      setFnr(fnr)
+    }
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
     }
