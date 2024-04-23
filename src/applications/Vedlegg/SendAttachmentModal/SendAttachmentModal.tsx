@@ -201,14 +201,18 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
                   </WrapperDiv>
                 </MinimalModalDiv>
               )}
+            </SectionDiv>
 
-              {_finished && (
-                <>
+            {_finished && (
+              <>
+                <SectionDiv>
                   <FlexCenterSpacedDiv>
                     <CheckmarkCircleFillIcon color='green' />
                     <HorizontalSeparatorDiv size='0.5' />
                     <span>{_finished}</span>
                   </FlexCenterSpacedDiv>
+                </SectionDiv>
+                <SectionDiv>
                   <FlexCenterSpacedDiv>
                     <Button
                       variant='secondary'
@@ -217,9 +221,9 @@ const SendAttachmentModal: React.FC<SendAttachmentModalProps> = ({
                       {t('el:button-close')}
                     </Button>
                   </FlexCenterSpacedDiv>
-                </>
-              )}
-            </SectionDiv>
+                </SectionDiv>
+              </>
+            )}
           </>
         )
       }}
