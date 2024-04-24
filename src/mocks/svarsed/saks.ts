@@ -36,7 +36,6 @@ export default (saksnummer: string, type: string) => {
           motpartLand: "RO"
         }
       ],
-      tema: 'KON',
       fagsak: {
         "id": "140282517",
         "tema": "KON",
@@ -226,7 +225,6 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
-      tema: 'KON',
       fagsak: {
         "id": "140282517",
         "tema": "KON",
@@ -309,7 +307,6 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
-      tema: 'KON',
       fagsak: {
         "id": "140282517",
         "tema": "KON",
@@ -435,7 +432,6 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       erSakseier: 'nei',
-      tema: 'KON',
       fagsak: {
         "id": "140282517",
         "tema": "KON",
@@ -471,7 +467,6 @@ export default (saksnummer: string, type: string) => {
       "erSakseier": "nei",
       "sensitiv": false,
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
-      "tema": "SYK",
       fagsak: {
         "id": "140282517",
         "tema": null,

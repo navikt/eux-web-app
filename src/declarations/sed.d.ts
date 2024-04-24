@@ -488,8 +488,6 @@ export interface U017Sed extends U002Sed {
 
 export interface HSed extends BaseReplySed {
   bruker: Person
-  tema?: string
-  fagsakId?: string
   ytterligereInfo?: string
 }
 

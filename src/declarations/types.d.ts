@@ -221,8 +221,6 @@ export interface Sak {
   sistEndretDato: string
   sakshandlinger?: Array<string>
   sensitiv?: boolean
-  tema ?: string
-  fagsakId?: string
   fagsak?: Fagsak
   sedListe: Array<Sed>
   ikkeJournalfoerteSed?:Array<string>

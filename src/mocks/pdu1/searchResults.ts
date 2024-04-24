@@ -1,6 +1,5 @@
 export default [
   {
-    fagsakId: '12345',
     datoOpprettet: '2021-12-30T14:02:53',
     journalpostId: '453761221',
     dokumentInfoId: '454144205',
@@ -13,7 +12,6 @@ export default [
     ]
   },
   {
-    fagsakId: '12346',
     datoOpprettet: '2021-09-23T09:15:04',
     journalpostId: '453656104',
     dokumentInfoId: '454038644',
