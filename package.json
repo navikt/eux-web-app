@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.0.0",
+  "version": "9.1.0-TEN-726-VEDLEGG",
   "private": true,
   "type": "module",
   "scripts": {
@@ -36,7 +36,7 @@
     "@navikt/hoykontrast": "^4.0.1",
     "@navikt/land-verktoy": "^4.0.0",
     "@navikt/landvelger": "^4.0.0",
-    "@navikt/tabell": "^4.1.1",
+    "@navikt/tabell": "^4.4.1",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/browser": "^7.11.1",
     "amplitude-js": "^8.19.0",
@@ -223,6 +223,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@9.0.0",
+  "_id": "neessi@9.1.0-TEN-726-VEDLEGG",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

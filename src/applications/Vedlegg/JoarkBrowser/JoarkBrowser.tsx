@@ -63,6 +63,7 @@ export interface JoarkBrowserProps {
   mode: JoarkBrowserMode
   tableId: string
   onUpdateAttachmentSensitivt? : (item: JoarkBrowserItem, sensitivt: boolean) => void
+  onRemoveAttachment? : (item: JoarkBrowserItem) => void
 }
 
 export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
@@ -72,7 +73,8 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   onRowSelectChange = () => {},
   onPreviewFile,
   tableId,
-  onUpdateAttachmentSensitivt
+  onUpdateAttachmentSensitivt,
+  onRemoveAttachment
 }: JoarkBrowserProps): JSX.Element => {
   const {
     list, gettingJoarkList, gettingJoarkFile, previewFileRaw
@@ -111,7 +113,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     dispatch(getJoarkItemPreview(clickedItem))
   }
 
-  const onRemoveAttachment = (clickedItem: JoarkBrowserItem): void => {
+  const doRemoveAttachment = (clickedItem: JoarkBrowserItem): void => {
     dispatch(removeAttachment(clickedItem))
   }
 
@@ -163,7 +165,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         data-tip={t('label:delete')}
         id={'tablesorter__delete-button-' + item.key + '-' + item.navn}
         className='tablesorter__delete-button'
-        onClick={() => onRemoveAttachment(item as JoarkBrowserItem)}
+        onClick={() => onRemoveAttachment ? onRemoveAttachment(item as JoarkBrowserItem) : doRemoveAttachment(item as JoarkBrowserItem)}
         icon={<TrashIcon/>}
       />
     )
@@ -314,7 +316,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }, [existingItems, list, mode])
 
   useEffect(() => {
-    if (!_.isNil(fnr)) {
+    if (mode === "select" && fnr && !gettingJoarkList) {
       dispatch(listJoarkItems(fnr, ''))
     }
   }, [fnr])

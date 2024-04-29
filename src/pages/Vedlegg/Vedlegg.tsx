@@ -1,39 +1,39 @@
-import { Alert, Button, Checkbox, HelpText, Link, Loader } from '@navikt/ds-react'
+import {Alert, Button, Link, Loader, TextField} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
   Container,
   Content,
-  FlexDiv,
-  HorizontalSeparatorDiv,
   Margin,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import * as vedleggActions from 'actions/vedlegg'
 import DocumentSearch from 'applications/Vedlegg/DocumentSearch/DocumentSearch'
-import Input from 'components/Forms/Input'
 import TopContainer from 'components/TopContainer/TopContainer'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { Validation, VedleggPayload, VedleggSendResponse } from 'declarations/types'
+import { Validation, VedleggSendResponse } from 'declarations/types'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
-import React, { useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import { validateVedlegg, ValidationVedleggProps } from './validation'
+import SEDAttachmentModal from "applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal";
+import SendAttachmentModal from "applications/Vedlegg/SendAttachmentModal/SendAttachmentModal";
+import {JoarkBrowserItem, JoarkBrowserItems} from "declarations/attachments";
+import JoarkBrowser from "applications/Vedlegg/JoarkBrowser/JoarkBrowser";
+import {alertReset} from "actions/alert";
+import {propertySet, resetVedlegg} from "actions/vedlegg";
 
 export interface VedleggSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
-  dokumentID: string | undefined
-  journalpostID: string | undefined
   rinadokumentID: string | undefined
   rinasaksnummer: string | undefined
-  sensitivt: boolean
   sendingVedlegg: boolean
   vedleggResponse: VedleggSendResponse | undefined
   validation: Validation
@@ -43,11 +43,8 @@ const mapState = (state: State): VedleggSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   sendingVedlegg: state.loading.sendingVedlegg,
-  dokumentID: state.vedlegg.dokumentID,
-  journalpostID: state.vedlegg.journalpostID,
   rinadokumentID: state.vedlegg.rinadokumentID,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
-  sensitivt: state.vedlegg.sensitivt,
   vedleggResponse: state.vedlegg.vedleggResponse,
   validation: state.validation.status
 })
@@ -64,11 +61,21 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const namespace = 'vedlegg'
   const { t } = useTranslation()
-  const { alertMessage, alertType, journalpostID, dokumentID, rinasaksnummer, rinadokumentID, sendingVedlegg, sensitivt, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
+  const { alertMessage, alertType, rinasaksnummer, rinadokumentID, sendingVedlegg, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
+
+  const [_fnr, setFnr] = useState<string | undefined>(undefined)
+  const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
+  const [_items, setItems] = useState<JoarkBrowserItems>([])
+  const [_viewSendVedleggModal, setViewSendVedleggModal] = useState<boolean>(false)
+
 
   useEffect(() => {
     const params: URLSearchParams = new URLSearchParams(window.location.search)
     const rinasaksnummer = params.get('rinasaksnummer')
+    const fnr = params.get('fnr')
+    if(fnr){
+      setFnr(fnr)
+    }
     if (rinasaksnummer) {
       dispatch(vedleggActions.propertySet('rinasaksnummer', rinasaksnummer))
     }
@@ -77,104 +84,114 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const sendSkjema = () => {
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationVedleggProps>(clonedValidation, namespace, validateVedlegg, {
-      journalpostID,
-      dokumentID,
       rinasaksnummer,
       rinadokumentID
     })
     dispatch(setValidation(clonedValidation))
     if (!hasErrors) {
-      dispatch(vedleggActions.sendVedlegg({
-        journalpostID,
-        dokumentID,
-        rinasaksnummer,
-        rinadokumentID,
-        sensitivt
-      } as VedleggPayload))
+      setViewSendVedleggModal(true)
     }
   }
 
-  const setJournalpostID = (newJournalpostID: string): void => {
-    dispatch(vedleggActions.propertySet('journalpostID', newJournalpostID))
-    if (validation[namespace + '-journalpostID']) {
-      dispatch(resetValidation(namespace + '-journalpostID'))
-    }
+  const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
+    if (b.type === 'joark' && a.type === 'sed') return -1
+    if (b.type === 'sed' && a.type === 'joark') return 1
+    return b.key.localeCompare(a.key)
   }
 
-  const setDokumentID = (newDokumentID: string): void => {
-    dispatch(vedleggActions.propertySet('dokumentID', newDokumentID))
-    if (validation[namespace + '-dokumentID']) {
-      dispatch(resetValidation(namespace + '-dokumentID'))
-    }
+  const onJoarkAttachmentsChanged = (jbi: JoarkBrowserItems): void => {
+    const newAttachments = _items
+      .concat(jbi.filter(attachment => !_items.find(item => item.dokumentInfoId === attachment.dokumentInfoId)))
+      .sort(sedAttachmentSorter);
+
+    setItems(newAttachments)
   }
 
-  const setSensitivt = (newSensitivt: boolean): void => {
-    dispatch(vedleggActions.propertySet('sensitivt', newSensitivt))
-    if (validation[namespace + '-sensitivt']) {
-      dispatch(resetValidation(namespace + '-sensitivt'))
-    }
+  const onUpdateAttachmentSensitivt = (attachment: JoarkBrowserItem, sensitivt: boolean) => {
+    const newAttachments = _items.map((att) => {
+      if(att.key === attachment.key){
+        return {
+          ...att,
+          sensitivt: sensitivt
+        }
+      } else {
+        return att
+      }
+    })
+    setItems(newAttachments)
   }
+
+  const onRemoveAttachment = (attachment: JoarkBrowserItem) => {
+    const newAttachments = _items.filter((att) => {
+      return att.key !== attachment.key
+    })
+    setItems(newAttachments)
+  }
+
+  const resetAndClose = () => {
+    setFnr("")
+    setItems([])
+    dispatch(alertReset())
+    dispatch(resetVedlegg())
+    setViewSendVedleggModal(false)
+  }
+
+
+  useEffect(() => {
+    dispatch(propertySet("attachments", _items))
+  }, [_items])
 
   return (
     <TopContainer title={t('app:page-title-vedlegg')}>
+      <SendAttachmentModal
+        fnr={_fnr!}
+        open={_viewSendVedleggModal}
+        onModalClose={resetAndClose}
+      />
+      <SEDAttachmentModal
+        open={_attachmentsTableVisible}
+        fnr={_fnr!}
+        onModalClose={() => setAttachmentsTableVisible(false)}
+        onFinishedSelection={onJoarkAttachmentsChanged}
+        sedAttachments={_items}
+        tableId='vedlegg-modal'
+      />
       <Container>
         <Margin />
         <MyContent>
           <AlignStartRow>
             <Column>
-              <Input
-                id='journalpostID'
-                data-testid={namespace + '-journalpostID'}
-                namespace={namespace}
-                value={journalpostID}
-                label={(
-                  <FlexDiv>
-                    {t('label:journalpost-id') + ' *'}
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <HelpText id='journalPostID'>
-                      {t('message:help-journalpostID')}
-                    </HelpText>
-                  </FlexDiv>
-                )}
-                onChanged={setJournalpostID}
-                error={validation[namespace + '-journalpostID']?.feilmelding}
+              <TextField
+                id="fnr"
+                error={validation[namespace + '-fnr']?.feilmelding}
+                label="Fødselsnummer"
+                onChange={(e) => setFnr(e.target.value)}
+                value={_fnr}
               />
-              <VerticalSeparatorDiv />
             </Column>
             <Column>
-              <Input
-                id='dokumentID'
-                namespace={namespace}
-                data-testid={namespace + '-dokumentID'}
-                value={dokumentID}
-                label={(
-                  <FlexDiv>
-                    {t('label:dokument-id') + ' *'}
-                    <HorizontalSeparatorDiv size='0.35' />
-                    <HelpText id={namespace + '-dokumentID-help'}>
-                      {t('message:help-dokumentID')}
-                    </HelpText>
-                  </FlexDiv>
-                )}
-                onChanged={setDokumentID}
-                error={validation[namespace + '-dokumentID']?.feilmelding}
-              />
-              <VerticalSeparatorDiv />
+              <div className='nolabel'>
+                <Button
+                  variant='secondary'
+                  data-amplitude='svarsed.editor.attachments'
+                  disabled={_.isNil(_fnr) || _fnr === ''}
+                  onClick={() => {
+                    setAttachmentsTableVisible(!_attachmentsTableVisible)
+                  }}
+                >
+                  {t('label:vis-vedlegg-tabell')}
+                </Button>
+              </div>
             </Column>
           </AlignStartRow>
-          <AlignStartRow>
-            <Column>
-              <Checkbox
-                checked={sensitivt}
-                data-testid={namespace + '-sensitivt'}
-                error={!!validation[namespace + '-sensitivt']?.feilmelding}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSensitivt(e.target.checked)}
-              >
-                {t('label:sensitivt')}
-              </Checkbox>
-              <VerticalSeparatorDiv />
-            </Column>
-          </AlignStartRow>
+          <JoarkBrowser
+            existingItems={_items}
+            fnr={_fnr}
+            mode='view'
+            tableId='vedlegg-view'
+            onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
+            onRemoveAttachment={onRemoveAttachment}
+          />
           <AlignStartRow>
             <DocumentSearch
               parentNamespace={namespace}

@@ -6,7 +6,6 @@ import { Dokument, Validation } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import { Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import PT from 'prop-types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -47,7 +46,7 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
   }
 
   const setRinaSaksnummer = (newRinaSaksnummer: string): void => {
-    if (!_.isNil(document)) {
+    if (!_.isNil(dokument)) {
       dispatch(vedleggActions.propertySet('dokument', undefined))
       if (validation[namespace + '-dokument']) {
         dispatch(resetValidation(namespace + '-dokument'))
@@ -76,10 +75,9 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
           /* error={validation[namespace + '-rinasaksnummer']?.feilmelding} */
           data-testid={namespace + '-rinasaksnummer'}
           id={namespace + '-rinasaksnummer'}
-          required
           hideLabel={false}
           onChange={setRinaSaksnummer}
-          value={rinasaksnummer}
+          value={rinasaksnummer || ''}
           disabled={gettingDokument}
         >
           <Search.Button onClick={sokEtterDokument}>
@@ -127,13 +125,6 @@ const DocumentSearch: React.FC<DocumentSearchProps> = ({
       </Column>
     </>
   )
-}
-
-DocumentSearch.propTypes = {
-  className: PT.string,
-  resetValidation: PT.func.isRequired,
-  parentNamespace: PT.string.isRequired
-//  validation: ValidationPropType.isRequired
 }
 
 export default DocumentSearch

@@ -400,8 +400,6 @@ const SEDNew = (): JSX.Element => {
         sakId: opprettetSak.sakId,
         sakType: valgtBucType,
         sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string,
-        fagsakId: valgtSaksId,
-        tema: valgtTema,
         erSakseier: "ja",
         motpart: [_.find(institusjoner, i => i.institusjonsID === valgtInstitusjon)?.navn as string]
       } as Sak
@@ -851,7 +849,7 @@ const SEDNew = (): JSX.Element => {
                           onClick={() =>
                             navigate({
                               pathname: '/vedlegg',
-                              search: 'rinasaksnummer=' + opprettetSak.sakId
+                              search: 'rinasaksnummer=' + opprettetSak.sakId + '&fnr=' + valgtFnr
                             })}
                         >
                           {t('label:legg-til-vedlegg-til-sed')}
