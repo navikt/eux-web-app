@@ -15,9 +15,9 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -197,6 +197,48 @@ export interface PersonLight {
   adressebeskyttelse?: string
 }
 
+export interface PersonBruker {
+  personInfo?: PersonInfo
+  adresser?: Array<Adresse>
+  telefon?: Array<Telefon>
+  epost?: Array<Epost>
+  ikkeRettTilYtelser?: {
+    typeGrunn: string
+    typeGrunnAnnen: string
+  }
+  perioderMedYtelser?: Array<Periode>
+}
+
+export interface PersonEktefelle {
+  personInfo?: PersonInfo
+  adresser?: Array<Adresse>
+  telefon?: Array<Telefon>
+  epost?: Array<Epost>
+  ytterligereInfo?: string
+}
+
+export interface PersonAnnenPerson {
+  personInfo?: PersonInfo
+  adresser?: Array<Adresse>
+  telefon?: Array<Telefon>
+  epost?: Array<Epost>
+  familierelasjoner?: Array<FamilieRelasjon>
+}
+
+export interface PersonBarn {
+  personInfo?: PersonInfo
+  far?: {
+    fornavn: string
+    etternavnVedFoedsel: string
+  }
+  mor?: {
+    fornavn: string
+    etternavnVedFoedsel: string
+  }
+  adresser?: Array<Adresse>
+  ytelser?: Array<Ytelse>
+}
+
 export interface Telefon {
   type: TelefonType
   nummer: string
@@ -297,7 +339,6 @@ export interface Vedtak {
   sekundaerkompetanseArt68: Array<KompetansePeriode>,
   vedtaksperioder: Array<Periode>,
   barnVedtaketOmfatter: Array<VedtakBarn>
-
 }
 
 export interface ProsedyreVedUenighet {
@@ -453,6 +494,28 @@ export interface F001Sed extends FSed {
 
 export interface F002Sed extends F001Sed {
   uenighet?: ProsedyreVedUenighet
+}
+
+export interface F003Sed extends BaseReplySed {
+  bruker: PersonBruker
+  ektefelle?: PersonEktefelle
+  annenPerson?: PersonAnnenPerson
+  barn?: Array<PersonBarn>
+  familie?: {
+    ytelser?: Array<Ytelse>
+  }
+  krav: {
+    kravMottattDato: string
+    kravType: string
+  }
+  vedtak?: {
+    begrunnelse: string
+    gjelderAlleBarn: JaNei
+    vedtaksperioder: Array<Periode>
+    barnVedtaketOmfatter: Array<VedtakBarn>
+    kompetanse: string
+    ytterligereInfo: string
+  }
 }
 
 export interface USed extends BaseReplySed {
