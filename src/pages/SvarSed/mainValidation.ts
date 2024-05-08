@@ -73,12 +73,12 @@ import {
   Adresse,
   Barnetilhoerighet,
   Epost,
-  F002Sed,
+  F002Sed, F003Sed,
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
   H001Sed,
-  Person,
+  Person, PersonBarn,
   PersonInfo,
   ReplySed,
   Statsborgerskap,
@@ -94,6 +94,7 @@ import i18n from 'i18n'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import {
+  isF001Sed, isF002Sed, isF003Sed,
   isFSed,
   isH001Sed,
   isH002Sed,
@@ -110,6 +111,16 @@ import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
+}
+
+export const validateVedtakF003 = (v: Validation, replySed: ReplySed): boolean => {
+  const hasErrors: Array<boolean> = []
+  hasErrors.push(performValidation<ValidationVedtakProps>(
+    v, 'vedtak-vedtak', validateVedtak, {
+      vedtak: _.get(replySed, 'vedtak'),
+      formalName: i18n.t('label:vedtak').toLowerCase()
+    }, true))
+  return hasErrors.find(value => value) !== undefined
 }
 
 export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
@@ -346,7 +357,7 @@ export const validateSEDEdit = (
   // this is common to all seds
   hasErrors.push(validateMainForm(v, replySed, 'bruker'))
 
-  if (isFSed(replySed)) {
+  if (isF001Sed(replySed) || isF002Sed(replySed)) {
     hasErrors.push(performValidation<ValidationFormålProps>(v, 'formål1-formål', validateFormål, {
       formaal: (replySed as FSed).formaal
     }, true))
@@ -373,6 +384,25 @@ export const validateSEDEdit = (
       hasErrors.push(validateMainForm(v, replySed, 'familie'))
     }
     hasErrors.push(validateBottomForm(v, replySed))
+  }
+
+  if(isF003Sed(replySed)){
+    if ((replySed as F003Sed).krav) {
+      hasErrors.push(performValidation<ValidationKravProps>(v, 'mottakavsoknad-krav', validateKrav, {
+        krav: (replySed as F003Sed).krav
+      }, true))
+    }
+    if ((replySed as F003Sed).ektefelle) {
+      hasErrors.push(validateMainForm(v, replySed, 'ektefelle'))
+    }
+    if ((replySed as F003Sed).annenPerson) {
+      hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
+    }
+    (replySed as F003Sed).barn?.forEach((b: PersonBarn, i: number) => {
+      hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
+    })
+
+    hasErrors.push(validateVedtakF003(v, replySed))
   }
 
   if (!isH001Sed(replySed)) {

@@ -30,6 +30,7 @@ import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontakti
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import MainForm from 'applications/SvarSed/MainForm'
+import MottakAvSoknad from 'applications/SvarSed/MottakAvSoknad/MottakAvSoknad'
 import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
@@ -66,7 +67,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import {cleanReplySed, isF001Sed, isF002Sed, isFSed, isH002Sed, isPreviewableSed, isSed, isXSed} from 'utils/sed'
+import {
+  cleanReplySed,
+  isF001Sed,
+  isF002Sed,
+  isF003Sed,
+  isFSed,
+  isH002Sed,
+  isPreviewableSed,
+  isSed,
+  isXSed
+} from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
 import {JoarkBrowserItem} from "../../declarations/attachments";
@@ -318,7 +329,22 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-
+        {isF003Sed(replySed) && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='mottakavsoknad'
+              loggingNamespace='mottakavsoknadmanager'
+              forms={[
+                { label: t('el:option-mainform-mottak-av-soknad'), value: 'mottakavsoknad', component: MottakAvSoknad },
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
         {showMainForm() && (
           <>
             <MainForm<ReplySed>

@@ -558,6 +558,61 @@ export default (saksnummer: string, type: string) => {
           ]
         },
       ]
+    },
+    {
+      fornavn: 'Ola',
+      etternavn: 'Nordmenn',
+      kjoenn: 'M',
+      foedselsdato: '1970-01-01',
+      fnr: '12345678901',
+      adressebeskyttelse: 'STRENGT_FORTROLIG',
+      sakTittel: 'Beslutte komponent myndighet',
+      sakType: 'FB_BUC_04',
+      sakId: '123456789',
+      internasjonalSakId: 'abvcdefghijklm',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2020-01-01',
+      erSakseier: 'ja',
+      sensitiv: true,
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        },
+        {
+          formatertNavn: "Test institusjon",
+          motpartId: "RO:70005",
+          motpartNavn: "Test institusjon",
+          motpartLand: "RO"
+        }
+      ],
+      fagsak: {
+        "id": "140282517",
+        "tema": "KON",
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11",
+        "fnr": "12345678901"
+      },
+      sakshandlinger: [
+        'Close_Case', 'singleParticipant', 'Delete_Case'
+      ],
+      sedListe: [
+        {
+          sedTittel: 'Description for sent F003',
+          status: 'sent',
+          sedType: 'F003',
+          sedId: 'f003sent',
+          sistEndretDato: '2024-01-02',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }
+      ]
     }
   ]
 

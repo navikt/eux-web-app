@@ -2,7 +2,7 @@
   "sedType": "F003",
   "sedVersjon": "4.2",
   "krav": {
-    "kravMottattDato": "æøå",
+    "kravMottattDato": "2020-02-01",
     "kravType": "nytt_krav"
   },
   "bruker": {
@@ -21,17 +21,17 @@
         {
           "land": "NO",
           "sektor": "yrkesskade_og_yrkessykdom",
-          "identifikator": "æøå",
+          "identifikator": "0101200143456",
           "institusjonsid": "æøå",
           "institusjonsnavn": "æøå"
         }
       ],
       "pinMangler": {
-        "etternavnVedFoedsel": "æøå",
-        "fornavnVedFoedsel": "æøå",
+        "etternavnVedFoedsel": "Brukersen",
+        "fornavnVedFoedsel": "Bruker",
         "foedested": {
-          "by": "æøå",
-          "region": "æøå",
+          "by": "Oslo",
+          "region": "Holmenkollen",
           "land": "NO"
         },
         "far": {
@@ -47,23 +47,23 @@
     "adresser": [
       {
         "type": "bosted",
-        "gate": "æøå",
-        "postnummer": "æøå",
-        "by": "æøå",
+        "gate": "Drammensveien 1",
+        "postnummer": "0101",
+        "by": "Oslo",
         "land": "NO",
-        "bygning": "æøå",
-        "region": "æøå"
+        "bygning": "B",
+        "region": "Oslo"
       }
     ],
     "telefon": [
       {
         "type": "hjem",
-        "nummer": "æøå"
+        "nummer": "22277643"
       }
     ],
     "epost": [
       {
-        "adresse": "æøå"
+        "adresse": "bruker@bruker.no"
       }
     ],
     "perioderMedYtelser": [
