@@ -280,9 +280,9 @@
       },
       "ytelser": [
         {
-          "startdato": "æøå",
-          "sluttdato": "æøå",
-          "beloep": "æøå",
+          "startdato": "2001-01-01",
+          "sluttdato": "2002-01-01",
+          "beloep": "1000",
           "valuta": "NOK",
           "utbetalingshyppighet": "æøå",
           "ytelseNavn": "æøå",
@@ -294,14 +294,24 @@
   "familie": {
     "ytelser": [
       {
-        "antallPersoner": "æøå",
-        "startdato": "æøå",
-        "sluttdato": "æøå",
-        "beloep": "æøå",
+        "antallPersoner": "1",
+        "startdato": "2020-01-01",
+        "sluttdato": "2022-01-01",
+        "beloep": "1000",
         "valuta": "NOK",
-        "utbetalingshyppighet": "æøå",
-        "ytelseNavn": "æøå",
-        "mottakersNavn": "æøå"
+        "utbetalingshyppighet": "Årlig",
+        "ytelseNavn": "Barnetrygd",
+        "mottakersNavn": "Mottaker"
+      },
+      {
+        "antallPersoner": "1",
+        "startdato": "2020-01-01",
+        "sluttdato": "2022-01-01",
+        "beloep": "1000",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "Månedlig",
+        "ytelseNavn": "Utvidet barnetrygd",
+        "mottakersNavn": "Mottaker"
       }
     ]
   },
@@ -316,8 +326,8 @@
     ],
     "barnVedtaketOmfatter": [
       {
-        "fornavn": "æøå",
-        "etternavn": "æøå",
+        "fornavn": "Barn",
+        "etternavn": "Brukersen",
         "foedselsdato": "2001-01-01"
       }
     ],

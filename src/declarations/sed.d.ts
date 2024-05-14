@@ -23,7 +23,7 @@ export type JaNei = 'ja' | 'nei'
 
 export type PensjonsType = 'alderspensjon' | 'uførhet'
 
-export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte'
+export type YtelseNavn = 'Barnetrygd' | 'Kontantstøtte' | 'Utvidet barnetrygd'
 
 export type Utbetalingshyppighet = 'Månedlig'| 'Årlig'
 

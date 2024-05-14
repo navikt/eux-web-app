@@ -81,6 +81,7 @@ import {
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
 import {JoarkBrowserItem} from "../../declarations/attachments";
+import VedtakForF003 from "../../applications/SvarSed/VedtakForF003/VedtakForF003";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -445,6 +446,27 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
+        {isF003Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='vedtak'
+              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
+              forms={[
+                {
+                  label: t('el:option-mainform-vedtak'),
+                  value: 'vedtak',
+                  component: VedtakForF003,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='vedtakmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
         {(isFSed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />

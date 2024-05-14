@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
+import {BodyLong, Button, Heading, Label} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -9,7 +9,6 @@ import {
   FlexRadioPanels,
   HorizontalSeparatorDiv,
   PaddedDiv,
-  PaddedHorizontallyDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -24,7 +23,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableRow } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -39,6 +38,27 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
+import styled from "styled-components";
+
+const PanelDiv = styled.div`
+  .navds-radio{
+    margin: 0.2rem 0;
+  }
+`
+
+const RepeatableRowWithMargin = styled(RepeatableRow)`
+    background-color: var(--a-bg-default);
+    margin: 0.2rem 0;
+`
+
+const DivWithHorizontalPadding = styled.div<{padded:boolean}>`
+  padding-left: ${props => (props.padded ? 1 : 0)}rem;
+  padding-right: ${props => (props.padded ? 1 : 0)}rem;
+`
+
+const PaddedFlexDiv = styled(FlexDiv)`
+  padding-top: 0.7rem;
+`
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -49,11 +69,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
+  const showHeading = options && options.hasOwnProperty("showHeading") ? options["showHeading"] : true
+  const utvidetBarneTrygd = options && options.hasOwnProperty("utvidetBarneTrygd") ? options["utvidetBarneTrygd"] : false
 
   const target: string = `${personID}.ytelser`
   const ytelser: Array<Ytelse> | undefined = _.get(replySed, target)
@@ -205,16 +228,25 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   }
 
   const onSaveEdit = () => {
+    let ytelseForSaving = _.cloneDeep(_editYtelse)
+    if(utvidetBarneTrygd){
+      ytelseForSaving = {
+        ...ytelseForSaving as Ytelse,
+        ytelseNavn: "Utvidet barnetrygd",
+        antallPersoner: "1"
+      }
+    }
+
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationBeløpNavnOgValutaProps>(
       clonedValidation, namespace, validateBeløpNavnOgValuta, {
-        ytelse: _editYtelse,
+        ytelse: ytelseForSaving,
         index: _editIndex,
         personID,
         personName
       })
     if (!hasErrors) {
-      const __editYtelse = _.cloneDeep(_editYtelse)
+      const __editYtelse = _.cloneDeep(ytelseForSaving)
       if (personID !== 'familie') {
         delete __editYtelse?.antallPersoner
       }
@@ -232,9 +264,17 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = () => {
-    const __newYtelse = _.cloneDeep(_newYtelse)
+    let __newYtelse = _.cloneDeep(_newYtelse)
     if (personID !== 'familie') {
       delete __newYtelse?.antallPersoner
+    }
+
+    if(utvidetBarneTrygd){
+      __newYtelse = {
+        ...__newYtelse as Ytelse,
+        ytelseNavn: "Utvidet barnetrygd",
+        antallPersoner: "1"
+      }
     }
 
     const valid = _performValidation({
@@ -277,7 +317,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableRowWithMargin
         id={'repeatablerow-' + _namespace}
         key={getId(ytelse)}
         className={classNames({
@@ -289,40 +329,43 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
         {inEditMode
           ? (
             <>
-              <AlignStartRow>
-                <Column>
-                  <RadioPanelGroup
-                    defaultValue={ytelse?.ytelseNavn}
-                    data-no-border
-                    data-testid={_namespace + '-ytelseNavn'}
-                    error={_v[_namespace + '-ytelseNavn']?.feilmelding}
-                    id={_namespace + '-ytelseNavn'}
-                    legend={t('label:betegnelse-på-ytelse') + ' *'}
-                    name={_namespace + '-ytelseNavn'}
-                    onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</RadioPanel>
-                      <RadioPanel value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <Column>
-                  {personID === 'familie' && (
-                    <Input
-                      type='number'
-                      min='0'
-                      error={_v[_namespace + '-antallPersoner']?.feilmelding}
-                      namespace={_namespace}
-                      id='antallPersoner'
-                      label={t('label:antall-innvilges')}
-                      onChanged={(newAntallPersoner: string) => setAntallPersoner(newAntallPersoner, index)}
-                      required
-                      value={_ytelse?.antallPersoner}
-                    />
-                  )}
-                </Column>
-              </AlignStartRow>
+              {!utvidetBarneTrygd &&
+                <AlignStartRow>
+                  <Column>
+                    <RadioPanelGroup
+                      defaultValue={ytelse?.ytelseNavn}
+                      data-no-border
+                      data-testid={_namespace + '-ytelseNavn'}
+                      error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                      id={_namespace + '-ytelseNavn'}
+                      legend={t('label:betegnelse-på-ytelse') + ' *'}
+                      name={_namespace + '-ytelseNavn'}
+                      onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
+                    >
+                      <PanelDiv>
+                        <RadioPanel value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</RadioPanel>
+                        <RadioPanel value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</RadioPanel>
+                        <RadioPanel value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</RadioPanel>
+                      </PanelDiv>
+                    </RadioPanelGroup>
+                  </Column>
+                  <Column>
+                    {personID === 'familie' && (
+                      <Input
+                        type='number'
+                        min='0'
+                        error={_v[_namespace + '-antallPersoner']?.feilmelding}
+                        namespace={_namespace}
+                        id='antallPersoner'
+                        label={t('label:antall-innvilges')}
+                        onChanged={(newAntallPersoner: string) => setAntallPersoner(newAntallPersoner, index)}
+                        required
+                        value={_ytelse?.antallPersoner}
+                      />
+                    )}
+                  </Column>
+                </AlignStartRow>
+              }
               <VerticalSeparatorDiv />
               <AlignStartRow>
                 <Column>
@@ -330,14 +373,14 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-beloep']?.feilmelding}
                     namespace={_namespace}
                     id='beloep'
-                    description={personID === 'familie' ? t('message:help-familieytelser-beløp') : undefined}
+                    description={personID === 'familie' && showHeading ? t('message:help-familieytelser-beløp') : undefined}
                     label={t('label:beløp')}
                     onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
                     required
                     value={_ytelse?.beloep}
                   />
                 </Column>
-                <Column style={{ marginTop: personID === 'familie' ? '3rem' : '0rem' }}>
+                <Column style={{ marginTop: personID === 'familie' && showHeading  ? '3rem' : '0rem' }}>
                   <CountrySelect
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
@@ -415,21 +458,23 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
           : (
             <>
               <AlignStartRow>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-ytelseNavn']?.feilmelding}
-                    id={_namespace + '-ytelseNavn'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:betegnelse-på-ytelse') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_ytelse?.ytelseNavn}
-                    </FlexDiv>
-                  </FormText>
-                </Column>
+                {!utvidetBarneTrygd &&
+                  <Column>
+                    <FormText
+                      error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                      id={_namespace + '-ytelseNavn'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:betegnelse-på-ytelse') + ':'}</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {_ytelse?.ytelseNavn}
+                      </FlexDiv>
+                    </FormText>
+                  </Column>
+                }
                 <Column>
                   <FlexDiv>
-                    {personID === 'familie' && (
+                    {personID === 'familie' && !utvidetBarneTrygd && (
                       <>
                         <FormText
                           error={_v[_namespace + '-antallPersoner']?.feilmelding}
@@ -444,25 +489,30 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                         <HorizontalSeparatorDiv size='0.5' />
                       </>
                     )}
-                    <FlexDiv>
-                      <Label>{t('label:beløp') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FormText
-                        error={_v[_namespace + '-beloep']?.feilmelding}
-                        id={_namespace + '-beloep'}
-                      >
-                        {_ytelse?.beloep}
-                      </FormText>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FormText
-                        error={_v[_namespace + '-valuta']?.feilmelding}
-                        id={_namespace + '-valuta'}
-                      >
-                        {_ytelse?.valuta}
-                      </FormText>
-                    </FlexDiv>
                   </FlexDiv>
                 </Column>
+              </AlignStartRow>
+              <AlignStartRow>
+                <Column>
+                  <FlexDiv>
+                    <Label>{t('label:beløp') + ':'}</Label>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <FormText
+                      error={_v[_namespace + '-beloep']?.feilmelding}
+                      id={_namespace + '-beloep'}
+                    >
+                      {_ytelse?.beloep}
+                    </FormText>
+                    <HorizontalSeparatorDiv size='0.5' />
+                    <FormText
+                      error={_v[_namespace + '-valuta']?.feilmelding}
+                      id={_namespace + '-valuta'}
+                    >
+                      {_ytelse?.valuta}
+                    </FormText>
+                  </FlexDiv>
+                </Column>
+                <Column/>
               </AlignStartRow>
               <VerticalSeparatorDiv />
               <AlignStartRow>
@@ -496,14 +546,13 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                     id={_namespace + '-mottakersNavn'}
                   >
-                    <FlexDiv>
+                    <PaddedFlexDiv>
                       <Label>{t('label:mottakers-navn') + ':'}</Label>
                       <HorizontalSeparatorDiv size='0.5' />
                       {_ytelse?.mottakersNavn}
-                    </FlexDiv>
+                    </PaddedFlexDiv>
                   </FormText>
                 </Column>
-
                 <AlignEndColumn>
                   {addremovepanel}
                 </AlignEndColumn>
@@ -511,34 +560,36 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             </>
             )}
         <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatableRowWithMargin>
     )
   }
 
+
+
   return (
     <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
-        </Heading>
-      </PaddedDiv>
+      {showHeading &&
+        <PaddedDiv>
+          <Heading size='small'>
+            {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
+          </Heading>
+        </PaddedDiv>
+      }
       <VerticalSeparatorDiv />
       {_.isEmpty(ytelser)
         ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
+          <DivWithHorizontalPadding padded={showHeading}>
             <BodyLong>
               {t('message:warning-no-ytelse')}
             </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </DivWithHorizontalPadding>
           )
         : ytelser?.map(renderRow)}
       <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <DivWithHorizontalPadding padded={showHeading}>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
@@ -546,7 +597,8 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
             >
               {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
             </Button>
-          </PaddedDiv>
+            {!showHeading && <VerticalSeparatorDiv/>}
+          </DivWithHorizontalPadding>
           )}
     </>
   )
