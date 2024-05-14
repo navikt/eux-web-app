@@ -6,7 +6,7 @@ import {
   Column,
   FlexRadioPanels,
   PaddedDiv,
-  PaddedHorizontallyDiv,
+  PaddedVerticallyDiv,
   RadioPanel,
   RadioPanelGroup,
   Row,
@@ -28,7 +28,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -50,7 +50,7 @@ import BeløpNavnOgValuta from "../BeløpNavnOgValuta/BeløpNavnOgValuta";
 import {setReplySed} from "../../../actions/svarsed";
 import styled from "styled-components";
 
-const YtelserDiv = styled.div`
+const GreyBoxWithBorder = styled.div`
   background-color: var(--a-surface-subtle);
   border: 1px solid var(--a-border-default);
   padding: 0 1rem;
@@ -296,7 +296,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
+        <VerticalSeparatorDiv/>
         <AlignStartRow>
           {inEditMode
             ? (
@@ -339,7 +339,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             />
           </AlignEndColumn>
         </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
       </RepeatableRow>
     )
   }
@@ -385,7 +384,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
               return (
                 <>
-                  <YtelserDiv
+                  <GreyBoxWithBorder
                     key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
                   >
                     <Checkbox
@@ -404,7 +403,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                         options={{showHeading: false}}
                       />
                     }
-                  </YtelserDiv>
+                  </GreyBoxWithBorder>
                   <VerticalSeparatorDiv/>
                 </>
               )
@@ -436,7 +435,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           </>
         }
         {_utvidetBarneTrygd === "ja" && vedtak?.gjelderAlleBarn === 'nei' &&
-          <YtelserDiv>
+          <GreyBoxWithBorder>
             <BeløpNavnOgValuta
               replySed={replySed}
               parentNamespace="vedtak"
@@ -445,10 +444,10 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               personID="familie"
               options={{showHeading: false, utvidetBarneTrygd: true}}
             />
-          </YtelserDiv>
+          </GreyBoxWithBorder>
         }
         {vedtak?.gjelderAlleBarn === 'ja' &&
-          <YtelserDiv>
+          <GreyBoxWithBorder>
             <BeløpNavnOgValuta
               replySed={replySed}
               parentNamespace="vedtak"
@@ -457,7 +456,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               personID="familie"
               options={{showHeading: false}}
             />
-          </YtelserDiv>
+          </GreyBoxWithBorder>
         }
         <VerticalSeparatorDiv />
         <AlignStartRow>
@@ -491,31 +490,29 @@ const VedtakForF003: React.FC<MainFormProps> = ({
         <Label>
           {t('label:vedtaksperioder')}
         </Label>
-        {_.isEmpty(vedtak?.vedtaksperioder)
-          ? (
-            <PaddedHorizontallyDiv>
-              <SpacedHr />
-              <BodyLong>
-                {t('message:warning-no-periods')}
-              </BodyLong>
-              <SpacedHr />
-            </PaddedHorizontallyDiv>
-          )
-          : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
-        <VerticalSeparatorDiv />
-        {_newVedtakPeriodeForm
-          ? renderVedtakPeriodeRow(null, -1)
-          : (
-            <PaddedDiv>
-              <Button
-                variant='tertiary'
-                onClick={() => _setNewVedtakPeriodeForm(true)}
-                icon={<PlusCircleIcon/>}
-              >
-                {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
-              </Button>
-            </PaddedDiv>
-          )}
+        <GreyBoxWithBorder>
+          {_.isEmpty(vedtak?.vedtaksperioder)
+            ? (
+              <PaddedVerticallyDiv>
+                <BodyLong>
+                  {t('message:warning-no-periods')}
+                </BodyLong>
+              </PaddedVerticallyDiv>
+            )
+            : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
+          {_newVedtakPeriodeForm
+            ? renderVedtakPeriodeRow(null, -1)
+            : (
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setNewVedtakPeriodeForm(true)}
+                  icon={<PlusCircleIcon/>}
+                >
+                  {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
+                </Button>
+            )}
+          <VerticalSeparatorDiv/>
+        </GreyBoxWithBorder>
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>

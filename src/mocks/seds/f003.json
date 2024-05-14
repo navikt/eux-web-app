@@ -137,7 +137,7 @@
         "adresse": "æøå"
       }
     ],
-    "ytterligereInfo": "æøå"
+    "ytterligereInfo": "Ytterligere info til Ektefelle  "
   },
   "annenPerson": {
     "personInfo": {
@@ -316,7 +316,7 @@
     ]
   },
   "vedtak": {
-    "begrunnelse": "æøå",
+    "begrunnelse": "Begrunnelse",
     "gjelderAlleBarn": "ja",
     "vedtaksperioder": [
       {
@@ -331,7 +331,7 @@
         "foedselsdato": "2001-01-01"
       }
     ],
-    "kompetanse": "æøå",
-    "ytterligereInfo": "æøå"
+    "kompetanse": "Kompetanse",
+    "ytterligereInfo": "Ytterligere info"
   }
 }

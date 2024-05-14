@@ -57,7 +57,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, ReplySed } from 'declarations/sed'
+import {F002Sed, F003Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -467,7 +467,7 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isFSed(replySed) || isH002Sed(replySed)) && (
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>
@@ -478,6 +478,21 @@ const SEDEdit = (): JSX.Element => {
                 label={t('label:ytterligere-informasjon-til-sed')}
                 onChanged={setComment}
                 value={(replySed as FSed).ytterligereInfo}
+              />
+            </TextAreaDiv>
+          </>
+        )}
+        {isF003Sed(replySed) && (
+          <>
+            <VerticalSeparatorDiv />
+            <TextAreaDiv>
+              <TextArea
+                namespace={namespace}
+                error={validation[namespace + 'ektefelle-ytterligereInfo']?.feilmelding}
+                id='ytterligereInfo'
+                label={t('label:ytterligere-informasjon-til-sed')}
+                onChanged={setComment}
+                value={(replySed as F003Sed).ektefelle?.ytterligereInfo}
               />
             </TextAreaDiv>
           </>
