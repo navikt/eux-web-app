@@ -345,7 +345,7 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                       <PanelDiv>
                         <RadioPanel value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</RadioPanel>
                         <RadioPanel value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</RadioPanel>
-                        <RadioPanel value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</RadioPanel>
+                        {personID === 'familie' && <RadioPanel value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</RadioPanel>}
                       </PanelDiv>
                     </RadioPanelGroup>
                   </Column>

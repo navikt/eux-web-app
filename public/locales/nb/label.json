@@ -158,7 +158,7 @@
 
   "gateadresse": "Vei-/Gateadresse og nr ",
   "gjennomsnitt": "Gj.snitt/mnd",
-  "grant-date": "Innvilgelsdato for ytelser",
+  "grant-date": "Innvilgelsesdato for ytelser",
   "group-by-dekkede": "Grupper etter dekkede",
   "group-by-familieytelse": "Grupper etter familieytelse",
   "group-by-periodetype": "Grupper etter periodetype",
@@ -452,6 +452,7 @@
   "vedtaksdato": "Vedtaksdato",
   "vedtaksperiode": "Vedtaksperiode",
   "vedtaksperioder": "Vedtaksperioder",
+  "vedtak-om-kompetanse-angaaende-prioritet": "Vedtak om kompetanse angående prioritet",
   "vennligst-send-oss-folgende-dokumenter": "Vennligst send oss følgende dokument(er)",
   "vennligst-send-oss-folgende-informasjon": "Vennligst send oss følgende informasjon",
   "vennligst-send-oss-folgende-sed-er": "Vennligst send oss følgende SED-er",

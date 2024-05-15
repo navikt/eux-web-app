@@ -57,7 +57,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import {F002Sed, F003Sed, FSed, ReplySed} from 'declarations/sed'
+import {F002Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -82,6 +82,7 @@ import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
 import {JoarkBrowserItem} from "../../declarations/attachments";
 import VedtakForF003 from "../../applications/SvarSed/VedtakForF003/VedtakForF003";
+import YtterligereInfo from "../../applications/SvarSed/YtterligereInfo/YtterligereInfo";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -360,6 +361,7 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
+                { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F003', other: true },
@@ -478,21 +480,6 @@ const SEDEdit = (): JSX.Element => {
                 label={t('label:ytterligere-informasjon-til-sed')}
                 onChanged={setComment}
                 value={(replySed as FSed).ytterligereInfo}
-              />
-            </TextAreaDiv>
-          </>
-        )}
-        {isF003Sed(replySed) && (
-          <>
-            <VerticalSeparatorDiv />
-            <TextAreaDiv>
-              <TextArea
-                namespace={namespace}
-                error={validation[namespace + 'ektefelle-ytterligereInfo']?.feilmelding}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon-til-sed')}
-                onChanged={setComment}
-                value={(replySed as F003Sed).ektefelle?.ytterligereInfo}
               />
             </TextAreaDiv>
           </>

@@ -20,19 +20,15 @@ import {
   validateVedtakPeriode,
   ValidationVedtakPeriodeProps,
   ValidationVedtakProps
-} from 'applications/SvarSed/Vedtak/validation'
+} from 'applications/SvarSed/VedtakForF003/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
-import DateField from "components/DateField/DateField";
 import { RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
-import { Options } from 'declarations/app'
-import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import {F002Sed, F003Sed, JaNei, Periode, Vedtak, VedtakBarn} from 'declarations/sed'
+import {F003Sed, JaNei, Periode, VedtakBarn, VedtakF003} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
@@ -73,7 +69,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-vedtak`
   const target = 'vedtak'
-  const vedtak: Vedtak | undefined = _.get(replySed, target)
+  const vedtak: VedtakF003 | undefined = _.get(replySed, target)
   const getVedtakPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
 
   const [_newVedtakPeriode, _setNewVedtakPeriode] = useState<Periode | undefined>(undefined)
@@ -84,11 +80,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
   const [_validationVedtakPeriode, _resetValidationVedtakPeriode, _performValidationVedtakPeriode] = useLocalValidation<ValidationVedtakPeriodeProps>(validateVedtakPeriode, namespace)
 
   const [_utvidetBarneTrygd, _setUtvidetBarneTrygd] = useState<string>("")
-
-  const vedtaksTypeOptions: Options = [
-    { label: t('el:option-vedtaktype-midlertidig-vedtak'), value: 'midlertidig_vedtak' },
-    { label: t('el:option-vedtaktype-vedtak-om-kompetanse'), value: 'vedtak_om_kompetanse' },
-  ]
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -129,9 +120,9 @@ const VedtakForF003: React.FC<MainFormProps> = ({
   }
 
   const setGjelderAlleBarn = (newGjelderAlleBarn: JaNei) => {
-    let newVedtak: Vedtak | undefined = _.cloneDeep(vedtak)
+    let newVedtak: VedtakF003 | undefined = _.cloneDeep(vedtak)
     if (_.isUndefined(newVedtak) || _.isNull(newVedtak)) {
-      newVedtak = {} as Vedtak
+      newVedtak = {} as VedtakF003
     }
     _.set(newVedtak, 'gjelderAlleBarn', newGjelderAlleBarn.trim())
     if (newGjelderAlleBarn.trim() === 'ja') {
@@ -155,20 +146,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(target, newVedtak))
     if (validation[namespace + '-gjelderAlleBarn']) {
       dispatch(resetValidation([namespace + '-gjelderAlleBarn', namespace + '-barnVedtaketOmfatter']))
-    }
-  }
-
-  const setVedtakstype = (newType: string) => {
-    dispatch(updateReplySed(`${target}.vedtakstype`, newType.trim()))
-    if (validation[namespace + '-vedtakstype']) {
-      dispatch(resetValidation(namespace + '-vedtakstype'))
-    }
-  }
-
-  const setVedtaksdato = (newDato: string) => {
-    dispatch(updateReplySed(`${target}.vedtaksdato`, newDato.trim()))
-    if (validation[namespace + '-vedtaksdato']) {
-      dispatch(resetValidation(namespace + '-vedtaksdato'))
     }
   }
 
@@ -375,11 +352,11 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           <div>
             <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
             <VerticalSeparatorDiv />
-            {(replySed as F002Sed)?.barn?.map((b, index) => {
+            {(replySed as F003Sed)?.barn?.map((b, index) => {
               const vedtakBarn: VedtakBarn = {
-                fornavn: b.personInfo.fornavn,
-                etternavn: b.personInfo.etternavn,
-                foedselsdato: b.personInfo.foedselsdato
+                fornavn: b.personInfo?.fornavn,
+                etternavn: b.personInfo?.etternavn,
+                foedselsdato: b.personInfo?.foedselsdato
               }
               const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
               return (
@@ -459,34 +436,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           </GreyBoxWithBorder>
         }
         <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Select
-              data-testid={namespace + '-vedtakstype'}
-              error={validation[namespace + '-vedtakstype']?.feilmelding}
-              id={namespace + '-vedtakstype'}
-              label={t('label:vedtak-type')}
-              menuPortalTarget={document.body}
-              onChange={(e: unknown) => setVedtakstype((e as Option).value)}
-              options={vedtaksTypeOptions}
-              required
-              defaultValue={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
-              value={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
-            />
-          </Column>
-          <Column>
-            <DateField
-              error={validation[namespace + '-vedtaksdato']?.feilmelding}
-              namespace={namespace}
-              id='vedtaksdato'
-              label={t('label:vedtaksdato')}
-              onChanged={setVedtaksdato}
-              required
-              dateValue={vedtak?.vedtaksdato}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
         <Label>
           {t('label:vedtaksperioder')}
         </Label>
@@ -524,6 +473,21 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                 label={t('label:begrunnelse')}
                 onChanged={setBegrunnelse}
                 value={vedtak?.begrunnelse}
+              />
+            </TextAreaDiv>
+          </Column>
+        </AlignStartRow>
+        <VerticalSeparatorDiv />
+        <AlignStartRow>
+          <Column flex='2'>
+            <TextAreaDiv>
+              <TextArea
+                error={validation[namespace + '-kompetanse']?.feilmelding}
+                namespace={namespace}
+                id='kompetanse'
+                label={t('label:vedtak-om-kompetanse-angaaende-prioritet')}
+                onChanged={setYtterligeInfo}
+                value={vedtak?.kompetanse}
               />
             </TextAreaDiv>
           </Column>

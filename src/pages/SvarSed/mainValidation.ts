@@ -108,15 +108,20 @@ import {
 } from 'utils/sed'
 import { checkLength } from 'utils/validation'
 import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
+import {
+  validateYtterligereInfo,
+  ValidationYtterligereInfoProps
+} from "../../applications/SvarSed/YtterligereInfo/validation";
+import { validateVedtak as validateVedtakF003, ValidationVedtakProps as ValidationVedtakF003Props } from 'applications/SvarSed/VedtakForF003/validation'
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
 }
 
-export const validateVedtakF003 = (v: Validation, replySed: ReplySed): boolean => {
+export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(performValidation<ValidationVedtakProps>(
-    v, 'vedtak-vedtak', validateVedtak, {
+  hasErrors.push(performValidation<ValidationVedtakF003Props>(
+    v, 'vedtak-vedtak', validateVedtakF003, {
       vedtak: _.get(replySed, 'vedtak'),
       formalName: i18n.t('label:vedtak').toLowerCase()
     }, true))
@@ -217,6 +222,11 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         const person: Person = _.get(replySed, `${personID}`)
         hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
           person, personName
+        }, true))
+
+        //Specific to F003 - Ektefelle
+        hasErrors.push(performValidation<ValidationYtterligereInfoProps>(v, `svarsed-${personID}-ytterligereInfo`, validateYtterligereInfo, {
+          replySed, personName
         }, true))
       }
     } else {
@@ -402,7 +412,7 @@ export const validateSEDEdit = (
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
     })
 
-    hasErrors.push(validateVedtakF003(v, replySed))
+    hasErrors.push(validateVedtakForF003(v, replySed))
   }
 
   if (!isH001Sed(replySed)) {

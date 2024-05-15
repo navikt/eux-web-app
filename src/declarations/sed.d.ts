@@ -320,9 +320,9 @@ export interface KompetansePeriode extends PeriodePeriode {
 }
 
 export interface VedtakBarn {
-  fornavn: string
-  etternavn: string
-  foedselsdato: string
+  fornavn?: string
+  etternavn?: string
+  foedselsdato?: string
 
 }
 
@@ -339,6 +339,15 @@ export interface Vedtak {
   sekundaerkompetanseArt68: Array<KompetansePeriode>,
   vedtaksperioder: Array<Periode>,
   barnVedtaketOmfatter: Array<VedtakBarn>
+}
+
+export interface VedtakF003 {
+  begrunnelse: string
+  gjelderAlleBarn: JaNei
+  vedtaksperioder: Array<Periode>
+  barnVedtaketOmfatter: Array<VedtakBarn>
+  kompetanse: string
+  ytterligereInfo: string
 }
 
 export interface ProsedyreVedUenighet {
@@ -508,14 +517,7 @@ export interface F003Sed extends BaseReplySed {
     kravMottattDato: string
     kravType: string
   }
-  vedtak?: {
-    begrunnelse: string
-    gjelderAlleBarn: JaNei
-    vedtaksperioder: Array<Periode>
-    barnVedtaketOmfatter: Array<VedtakBarn>
-    kompetanse: string
-    ytterligereInfo: string
-  }
+  vedtak?: VedtakF003
 }
 
 export interface USed extends BaseReplySed {
