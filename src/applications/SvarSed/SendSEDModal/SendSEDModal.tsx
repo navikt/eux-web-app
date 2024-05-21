@@ -16,7 +16,7 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import { CreateSedResponse } from 'declarations/types'
 import _ from 'lodash'
-import { Alert, Button, Loader, Heading } from '@navikt/ds-react'
+import { Alert, Button, Loader } from '@navikt/ds-react'
 import {
   FlexCenterSpacedDiv,
   HorizontalSeparatorDiv,
@@ -211,12 +211,9 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
     <Modal
       open={open}
       modal={{
+        modalTitle: t('label:lagre-sed'),
         modalContent: (
           <MinimalModalDiv>
-            <Heading size='small'>
-              {t('label:lagre-sed')}
-            </Heading>
-            <VerticalSeparatorDiv />
             {alertMessage && alertType && [types.SVARSED_SED_CREATE_FAILURE, types.SVARSED_SED_UPDATE_FAILURE].indexOf(alertType) >= 0 && (
               <PileCenterDiv>
                 <AlertstripeDiv>

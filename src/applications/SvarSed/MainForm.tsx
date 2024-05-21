@@ -33,7 +33,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import { isFSed } from 'utils/sed'
+import {isF001Sed, isF002Sed, isFSed} from 'utils/sed'
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -185,6 +185,9 @@ export interface Form extends Option {
   barn?: boolean
   family?: boolean
   adult?: boolean
+  other?: boolean
+  user?: boolean
+  spouse?: boolean
   condition ?: () => void
   options?: any
 }
@@ -505,6 +508,18 @@ const MainForm = <T extends StorageTypes>({
                 return !!o.family
               }
               return !!o.adult
+            } else if (Object.prototype.hasOwnProperty.call(o, 'user')) {
+              if (personId === 'bruker') {
+                return !!o.user
+              }
+            } else if (Object.prototype.hasOwnProperty.call(o, 'spouse')) {
+              if (personId === 'ektefelle') {
+                return !!o.spouse
+              }
+            } else if (Object.prototype.hasOwnProperty.call(o, 'other')) {
+              if (personId === 'annenPerson') {
+                return !!o.other
+              }
             } else {
               return true
             }
@@ -568,7 +583,7 @@ const MainForm = <T extends StorageTypes>({
                 {type === 'twolevel' && (replySed as F002Sed)?.ektefelle && renderTwoLevelMenu(replySed!, 'ektefelle')}
                 {type === 'twolevel' && (replySed as F002Sed)?.annenPerson && renderTwoLevelMenu(replySed!, 'annenPerson')}
                 {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
-                {type === 'twolevel' && isFSed(replySed) && renderTwoLevelMenu(replySed!, 'familie')}
+                {type === 'twolevel' && (isF001Sed(replySed) || isF002Sed(replySed)) && renderTwoLevelMenu(replySed!, 'familie')}
                 <LastDivWithButton>
                   {isFSed(replySed) && (
                     <Button

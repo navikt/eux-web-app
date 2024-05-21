@@ -1,0 +1,337 @@
+{
+  "sedType": "F003",
+  "sedVersjon": "4.2",
+  "krav": {
+    "kravMottattDato": "2020-02-01",
+    "kravType": "nytt_krav"
+  },
+  "bruker": {
+    "personInfo": {
+      "fornavn": "Bruker",
+      "etternavn": "Brukersen",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "0101200143456",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "Brukersen",
+        "fornavnVedFoedsel": "Bruker",
+        "foedested": {
+          "by": "Oslo",
+          "region": "Holmenkollen",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "Drammensveien 1",
+        "postnummer": "0101",
+        "by": "Oslo",
+        "land": "NO",
+        "bygning": "B",
+        "region": "Oslo"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "22277643"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "bruker@bruker.no"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnAnnen": "æøå"
+    }
+  },
+  "ektefelle": {
+    "personInfo": {
+      "fornavn": "Ektefelle",
+      "etternavn": "Brukersen",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "ytterligereInfo": "Ytterligere info til Ektefelle  "
+  },
+  "annenPerson": {
+    "personInfo": {
+      "fornavn": "Annen",
+      "etternavn": "Person",
+      "kjoenn": "M",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "NO"
+        }
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "adresser": [
+      {
+        "type": "bosted",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "hjem",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "familierelasjoner": [
+      {
+        "relasjonType": "gift",
+        "relasjonInfo": "æøå",
+        "periode": {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        },
+        "borSammen": "nei",
+        "annenRelasjonType": "æøå",
+        "annenRelasjonPersonNavn": "æøå",
+        "annenRelasjonDato": "æøå"
+      }
+    ]
+  },
+  "barn": [
+    {
+      "personInfo": {
+        "fornavn": "Barn",
+        "etternavn": "Brukersen",
+        "kjoenn": "M",
+        "foedselsdato": "2001-01-01",
+        "statsborgerskap": [
+          {
+            "land": "NO"
+          }
+        ],
+        "pin": [
+          {
+            "land": "NO",
+            "sektor": "yrkesskade_og_yrkessykdom",
+            "identifikator": "æøå",
+            "institusjonsid": "æøå",
+            "institusjonsnavn": "æøå"
+          }
+        ],
+        "pinMangler": {
+          "etternavnVedFoedsel": "æøå",
+          "fornavnVedFoedsel": "æøå",
+          "foedested": {
+            "by": "æøå",
+            "region": "æøå",
+            "land": "NO"
+          },
+          "far": {
+            "fornavn": "æøå",
+            "etternavnVedFoedsel": "æøå"
+          },
+          "mor": {
+            "fornavn": "æøå",
+            "etternavnVedFoedsel": "æøå"
+          }
+        }
+      },
+      "adresser": [
+        {
+          "type": "bosted",
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "NO",
+          "bygning": "æøå",
+          "region": "æøå"
+        }
+      ],
+      "mor": {
+        "fornavn": "æøå",
+        "etternavnVedFoedsel": "æøå"
+      },
+      "far": {
+        "fornavn": "æøå",
+        "etternavnVedFoedsel": "æøå"
+      }
+    },
+    {
+      "personInfo": {
+        "fornavn": "Barnto",
+        "etternavn": "Brukersen"
+      },
+      "ytelser": [
+        {
+          "startdato": "2001-01-01",
+          "sluttdato": "2002-01-01",
+          "beloep": "1000",
+          "valuta": "NOK",
+          "utbetalingshyppighet": "æøå",
+          "ytelseNavn": "æøå",
+          "mottakersNavn": "æøå"
+        }
+      ]
+    }
+  ],
+  "familie": {
+    "ytelser": [
+      {
+        "antallPersoner": "1",
+        "startdato": "2020-01-01",
+        "sluttdato": "2022-01-01",
+        "beloep": "1000",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "Årlig",
+        "ytelseNavn": "Barnetrygd",
+        "mottakersNavn": "Mottaker"
+      },
+      {
+        "antallPersoner": "1",
+        "startdato": "2020-01-01",
+        "sluttdato": "2022-01-01",
+        "beloep": "1000",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "Månedlig",
+        "ytelseNavn": "Utvidet barnetrygd",
+        "mottakersNavn": "Mottaker"
+      }
+    ]
+  },
+  "vedtak": {
+    "begrunnelse": "Begrunnelse",
+    "gjelderAlleBarn": "ja",
+    "vedtaksperioder": [
+      {
+        "startdato": "2001-01-01",
+        "aapenPeriodeType": "åpen_sluttdato"
+      }
+    ],
+    "barnVedtaketOmfatter": [
+      {
+        "fornavn": "Barn",
+        "etternavn": "Brukersen",
+        "foedselsdato": "2001-01-01"
+      }
+    ],
+    "kompetanse": "Kompetanse",
+    "ytterligereInfo": "Ytterligere info"
+  }
+}

@@ -30,6 +30,7 @@ import Kontaktinformasjon from 'applications/SvarSed/Kontaktinformasjon/Kontakti
 import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysning'
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import MainForm from 'applications/SvarSed/MainForm'
+import MottakAvSoknad from 'applications/SvarSed/MottakAvSoknad/MottakAvSoknad'
 import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
@@ -56,7 +57,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import { F002Sed, FSed, ReplySed } from 'declarations/sed'
+import {F002Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -66,10 +67,23 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getFnr } from 'utils/fnr'
 import performValidation from 'utils/performValidation'
-import { cleanReplySed, isFSed, isH002Sed, isPreviewableSed, isSed, isXSed } from 'utils/sed'
+import {
+  cleanReplySed,
+  isF001Sed,
+  isF002Sed,
+  isF003Sed,
+  isFSed,
+  isH002Sed,
+  isPreviewableSed,
+  isSed,
+  isXSed
+} from 'utils/sed'
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
-import Attachments from "../../applications/Vedlegg/Attachments/Attachments";
-import {JoarkBrowserItem} from "../../declarations/attachments";
+import Attachments from "applications/Vedlegg/Attachments/Attachments";
+import {JoarkBrowserItem} from "declarations/attachments";
+import VedtakForF003 from "applications/SvarSed/VedtakForF003/VedtakForF003";
+import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
+import TrygdeordningF003 from "applications/SvarSed/TrygdeordningF003/TrygdeordningF003";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -142,7 +156,6 @@ const SEDEdit = (): JSX.Element => {
   const fnr = getFnr(replySed, 'bruker')
   const showAttachments: boolean = !isXSed(replySed)
 
-  const showTopForm = (): boolean => isFSed(replySed)
   const showMainForm = (): boolean => isSed(replySed)
   const showBottomForm = (): boolean =>
     isFSed(replySed) && (
@@ -302,7 +315,7 @@ const SEDEdit = (): JSX.Element => {
             setViewSendSedModal(false)
           }}
         />
-        {showTopForm() && (
+        {(isF001Sed(replySed) || isF002Sed(replySed)) && (
           <>
             <MainForm
               type='onelevel'
@@ -319,7 +332,22 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-
+        {isF003Sed(replySed) && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='mottakavsoknad'
+              loggingNamespace='mottakavsoknadmanager'
+              forms={[
+                { label: t('el:option-mainform-mottak-av-soknad'), value: 'mottakavsoknad', component: MottakAvSoknad },
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
         {showMainForm() && (
           <>
             <MainForm<ReplySed>
@@ -334,13 +362,16 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
-                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: 'F', adult: true },
-                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F', adult: true },
-                { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: 'F', adult: true },
-                { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: 'F', adult: false, barn: true },
-                { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: 'F', adult: true, barn: true },
-                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: 'F', adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
-                { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: 'F', adult: false, family: true },
+                { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
+                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F001', 'F002'], adult: true },
+                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
+                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: 'F003', other: true },
+                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordningf003', component: TrygdeordningF003, type: 'F003', user: true },
+                { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: ['F001', 'F002'], adult: true },
+                { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
+                { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
+                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+                { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
                 { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
                 { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
                 { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
@@ -418,7 +449,28 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-        {(isFSed(replySed) || isH002Sed(replySed)) && (
+        {isF003Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='vedtak'
+              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
+              forms={[
+                {
+                  label: t('el:option-mainform-vedtak'),
+                  value: 'vedtak',
+                  component: VedtakForF003,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='vedtakmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>

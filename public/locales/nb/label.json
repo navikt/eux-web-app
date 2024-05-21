@@ -158,7 +158,7 @@
 
   "gateadresse": "Vei-/Gateadresse og nr ",
   "gjennomsnitt": "Gj.snitt/mnd",
-  "grant-date": "Innvilgelsdato for ytelser",
+  "grant-date": "Innvilgelsesdato for ytelser",
   "group-by-dekkede": "Grupper etter dekkede",
   "group-by-familieytelse": "Grupper etter familieytelse",
   "group-by-periodetype": "Grupper etter periodetype",
@@ -271,6 +271,7 @@
   "motregning": "Motregning",
   "mottaker-institusjon": "Mottaker institusjon",
   "mottakers-navn": "Mottakers navn",
+  "mottaksdato": "Mottaksdato",
   "mottatte-dagpenger": "Mottatte dagpenger",
 
   "nasjonalitet": "Nasjonalitet",
@@ -426,6 +427,7 @@
   "ukjent_sluttdato": "Ukjent sluttdato",
   "ukjent-rolle": "(ukjent rolle)",
   "under-journalfoering-ukjent-status": "Under journalføring eller ukjent status",
+  "utbetales-det-utvidet-barnetrygd": "Utbetales det utvidet barnetrygd?",
   "utbetaling": "Utbetaling",
   "utbetaling-type": "Utbetaling type",
   "utenlandsk-id": "Utenlandsk ID",
@@ -450,6 +452,7 @@
   "vedtaksdato": "Vedtaksdato",
   "vedtaksperiode": "Vedtaksperiode",
   "vedtaksperioder": "Vedtaksperioder",
+  "vedtak-om-kompetanse-angaaende-prioritet": "Vedtak om kompetanse angående prioritet",
   "vennligst-send-oss-folgende-dokumenter": "Vennligst send oss følgende dokument(er)",
   "vennligst-send-oss-folgende-informasjon": "Vennligst send oss følgende informasjon",
   "vennligst-send-oss-folgende-sed-er": "Vennligst send oss følgende SED-er",
