@@ -26,7 +26,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableRow, TextAreaDiv } from 'components/StyledComponents'
+import {RepeatablePeriodeRow, TextAreaDiv} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {F003Sed, JaNei, Periode, VedtakBarn, VedtakF003} from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -190,7 +190,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
       return
     }
     _setEditVedtakPeriode(periode)
-    dispatch(resetValidation(namespace + getIdx(index) + '-vedtaksperioder'))
+    dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(index)))
   }
 
 
@@ -210,7 +210,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
   const onStartVedtakPeriodeEdit = (periode: Periode, index: number) => {
     // reset any validation that exists from a cancelled edited item
     if (_editVedtakPeriodeIndex !== undefined) {
-      dispatch(resetValidation(namespace + getIdx(_editVedtakPeriodeIndex)))
+      dispatch(resetValidation(namespace + '-vedtaksperioder' + getIdx(_editVedtakPeriodeIndex)))
     }
     _setEditVedtakPeriode(periode)
     _setEditVedtakPeriodeIndex(index)
@@ -227,7 +227,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
       })
     if (!hasErrors) {
       dispatch(updateReplySed(`${target}.vedtaksperioder[${_editVedtakPeriodeIndex}]`, _editVedtakPeriode))
-      onCloseVedtakPeriodeEdit(namespace + getIdx(_editVedtakPeriodeIndex))
+      onCloseVedtakPeriodeEdit(namespace + '-vedtaksperioder' + getIdx(_editVedtakPeriodeIndex))
     } else {
       dispatch(setValidation(clonedValidation))
     }
@@ -265,7 +265,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
     return (
-      <RepeatableRow
+      <RepeatablePeriodeRow
         id={'repeatablerow-' + _namespace}
         key={getVedtakPeriodeId(periode)}
         className={classNames({
@@ -273,7 +273,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv/>
         <AlignStartRow>
           {inEditMode
             ? (
@@ -316,7 +315,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             />
           </AlignEndColumn>
         </AlignStartRow>
-      </RepeatableRow>
+      </RepeatablePeriodeRow>
     )
   }
 

@@ -81,9 +81,9 @@ import {
 import { validateSEDEdit, ValidationSEDEditProps } from './mainValidation'
 import Attachments from "applications/Vedlegg/Attachments/Attachments";
 import {JoarkBrowserItem} from "declarations/attachments";
-import VedtakForF003 from "applications/SvarSed/VedtakForF003/VedtakForF003";
+import VedtakForF003 from 'applications/SvarSed/VedtakForF003/VedtakForF003'
 import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
-import TrygdeordningF003 from "applications/SvarSed/TrygdeordningF003/TrygdeordningF003";
+import TrygdeordningF003 from 'applications/SvarSed/TrygdeordningF003/TrygdeordningF003'
 
 export interface SEDEditSelector {
   alertType: string | undefined

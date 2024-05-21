@@ -42,6 +42,11 @@ body {
 .nolabel {
   margin-top: 2rem !important;
 }
+
+.nolabel2 {
+  margin-top: 1.5rem !important;
+}
+
 .hide {
   position: absolute;
   margin-left: -10000px;

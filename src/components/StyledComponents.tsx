@@ -138,7 +138,11 @@ export const RepRow = styled(PaddedHorizontallyDiv)`
   }
 `
 
-
+export const RepeatablePeriodeRow = styled(RepeatableRow)`
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  min-height: 3rem;
+`
 export const GrayPanel = styled(Panel)`
   background-color: var(--a-bg-subtle);
 `

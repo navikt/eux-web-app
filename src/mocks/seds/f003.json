@@ -66,12 +66,7 @@
         "adresse": "bruker@bruker.no"
       }
     ],
-    "perioderMedYtelser": [
-      {
-        "startdato": "2001-01-01",
-        "sluttdato": "2001-01-01"
-      }
-    ],
+    "perioderMedYtelser": [],
     "ikkeRettTilYtelser": {
       "typeGrunn": "krav_ikke_framsatt",
       "typeGrunnAnnen": "æøå"
