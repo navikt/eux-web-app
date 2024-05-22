@@ -43,6 +43,7 @@ import {
   ValidationFamilierelasjonerProps,
   ValidationFamilierelasjonProps
 } from './validation'
+import DateField, {toDateFormat} from "../../../components/DateField/DateField";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -168,6 +169,24 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     } as FamilieRelasjon)
     if (validation[namespace + getIdx(index) + '-annenRelasjonPersonNavn']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonPersonNavn'))
+    }
+  }
+
+  const setAnnenRelasjonDato = (annenRelasjonDato: string, index: number) => {
+    if (index < 0) {
+      _setNewFamilierelasjon({
+        ..._newFamilierelasjon,
+        annenRelasjonDato: annenRelasjonDato.trim()
+      } as FamilieRelasjon)
+      _resetValidation(namespace + '-annenRelasjonDato')
+      return
+    }
+    _setEditFamilierelasjon({
+      ..._editFamilierelasjon,
+      annenRelasjonDato: annenRelasjonDato.trim()
+    } as FamilieRelasjon)
+    if (validation[namespace + getIdx(index) + '-annenRelasjonDato']) {
+      dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonDato'))
     }
   }
 
@@ -334,39 +353,48 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                   : (<Column />)}
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_familierelasjon?.relasjonType === 'annet' && (
-                <>
-                  <AlignStartRow>
-                    <Column>
-                      <Input
-                        error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
-                        namespace={_namespace}
-                        id='annenRelasjonPersonNavn'
-                        label={t('label:person-navn')}
-                        onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
-                        value={_familierelasjon?.annenRelasjonPersonNavn}
-                      />
-                    </Column>
-                    <Column>
-                      <RadioPanelGroup
-                        value={_familierelasjon?.borSammen}
-                        data-testid={_namespace + '-borSammen'}
-                        data-no-border
-                        id={_namespace + '-borSammen'}
-                        error={_v[_namespace + '-borSammen']?.feilmelding}
-                        legend={t('label:bor-sammen')}
-                        name={_namespace + '-borSammen'}
-                        onChange={(e: string) => setBorSammen(e as JaNei, index)}
-                      >
-                        <FlexRadioPanels>
-                          <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                          <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-                        </FlexRadioPanels>
-                      </RadioPanelGroup>
-                    </Column>
-                  </AlignStartRow>
-                </>
-              )}
+              <AlignStartRow>
+                <Column>
+                  <Input
+                    error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+                    namespace={_namespace}
+                    id='annenRelasjonPersonNavn'
+                    label={t('label:person-navn')}
+                    onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
+                    value={_familierelasjon?.annenRelasjonPersonNavn}
+                  />
+                </Column>
+                <Column>
+                  <DateField
+                    namespace={namespace}
+                    id='annenRelasjonDato'
+                    error={_v[_namespace + '-annenRelasjonDato']?.feilmelding}
+                    label={t('label:dato-for-relasjon')}
+                    onChanged={(value: string) => setAnnenRelasjonDato(value, index)}
+                    dateValue={_familierelasjon?.annenRelasjonDato}
+                  />
+                </Column>
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <AlignStartRow>
+                <Column>
+                  <RadioPanelGroup
+                    value={_familierelasjon?.borSammen}
+                    data-testid={_namespace + '-borSammen'}
+                    data-no-border
+                    id={_namespace + '-borSammen'}
+                    error={_v[_namespace + '-borSammen']?.feilmelding}
+                    legend={t('label:bor-sammen')}
+                    name={_namespace + '-borSammen'}
+                    onChange={(e: string) => setBorSammen(e as JaNei, index)}
+                  >
+                    <FlexRadioPanels>
+                      <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                      <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                    </FlexRadioPanels>
+                  </RadioPanelGroup>
+                </Column>
+              </AlignStartRow>
             </>
             )
           : (
@@ -387,20 +415,20 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                 </Column>
                 {addremovepanel}
               </AlignStartRow>
-              {_familierelasjon?.relasjonType === 'annet' && (
-
                 <AlignStartRow>
                   <Column>
-                    <FormText
-                      error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
-                      id={_namespace + '-annenRelasjonType'}
-                    >
-                      <FlexDiv>
-                        <Label>{t('label:annenRelasjonType')}:</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        {_familierelasjon?.annenRelasjonType}
-                      </FlexDiv>
-                    </FormText>
+                    {_familierelasjon?.relasjonType === 'annet' && (
+                      <FormText
+                        error={_v[_namespace + '-annenRelasjonType']?.feilmelding}
+                        id={_namespace + '-annenRelasjonType'}
+                      >
+                        <FlexDiv>
+                          <Label>{t('label:annenRelasjonType')}:</Label>
+                          <HorizontalSeparatorDiv size='0.5' />
+                          {_familierelasjon?.annenRelasjonType}
+                        </FlexDiv>
+                      </FormText>
+                    )}
                     <FormText
                       error={_v[_namespace + '-annenRelasjonPersonNavn']?.feilmelding}
                       id={_namespace + '-annenRelasjonPersonNavn'}
@@ -409,6 +437,16 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                         <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
                         <HorizontalSeparatorDiv size='0.5' />
                         {_familierelasjon?.annenRelasjonPersonNavn}
+                      </FlexDiv>
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-annenRelasjonDato']?.feilmelding}
+                      id={_namespace + '-annenRelasjonDato'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:dato-for-relasjon')}:</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {toDateFormat(_familierelasjon?.annenRelasjonDato, "DD.MM.YYYY")}
                       </FlexDiv>
                     </FormText>
                     <FormText
@@ -423,7 +461,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                     </FormText>
                   </Column>
                 </AlignStartRow>
-              )}
             </>
             )}
         <VerticalSeparatorDiv size='0.5' />
