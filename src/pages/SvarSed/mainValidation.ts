@@ -77,7 +77,7 @@ import {
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
-  H001Sed,
+  H001Sed, Periode,
   Person, PersonBarn,
   PersonInfo,
   ReplySed,
@@ -113,6 +113,10 @@ import {
   ValidationYtterligereInfoProps
 } from "../../applications/SvarSed/YtterligereInfo/validation";
 import { validateVedtak as validateVedtakF003, ValidationVedtakProps as ValidationVedtakF003Props } from 'applications/SvarSed/VedtakForF003/validation'
+import {
+  validateTrygdeOrdninger,
+  ValidationTrygdeOrdningerProps
+} from "../../applications/SvarSed/TrygdeordningF003/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -215,6 +219,21 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordninger`, validateTrygdeordninger, {
           replySed, personID, personName
         }, true))
+
+        //F003 - START
+        const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+        const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
+        let rettTilFamilieYtelser;
+        if(perioderMedYtelser && perioderMedYtelser.length >= 0){
+          rettTilFamilieYtelser = "ja"
+        } else if(ikkeRettTilYtelser){
+          rettTilFamilieYtelser = "nei"
+        }
+        hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-trygdeordningf003`, validateTrygdeOrdninger, {
+          perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
+        }, true))
+        // F003 - END
+
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
