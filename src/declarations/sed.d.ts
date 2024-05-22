@@ -203,10 +203,10 @@ export interface PersonBruker {
   telefon?: Array<Telefon>
   epost?: Array<Epost>
   ikkeRettTilYtelser?: {
-    typeGrunn: string
-    typeGrunnAnnen: string
-  }
-  perioderMedYtelser?: Array<Periode>
+    typeGrunn?: string
+    typeGrunnAnnen?: string
+  } | null
+  perioderMedYtelser?: Array<Periode> | null
 }
 
 export interface PersonEktefelle {

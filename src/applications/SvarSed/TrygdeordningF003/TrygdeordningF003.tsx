@@ -38,11 +38,16 @@ import {
   ValidationTrygdeOrdningerProps
 } from "./validation";
 import {periodeSort} from "../../../utils/sort";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const GreyBoxWithBorder = styled.div`
   background-color: var(--a-surface-subtle);
   border: 1px solid var(--a-border-default);
   padding: 0 1rem;
+
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
 `
 
 const mapState = (state: State): MainFormSelector => ({
@@ -83,6 +88,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateTrygdeOrdninger, {
         perioderMedYtelser,
         ikkeRettTilYtelser,
+        rettTilFamilieYtelser: _rettTilFamilieYtelser,
         personName
       }, true
     )
@@ -90,7 +96,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   })
 
   useEffect(() => {
-    if(perioderMedYtelser && perioderMedYtelser.length > 0){
+    if(perioderMedYtelser && perioderMedYtelser.length >= 0){
       dispatch(updateReplySed(`${target}.ikkeRettTilYtelser`, undefined))
       _setRettTilFamilieYtelser("ja")
     } else if(ikkeRettTilYtelser){
@@ -102,8 +108,10 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   const setRettTilFamilieYtelser = (value: string) => {
     if(value === "ja"){
       dispatch(updateReplySed(`${target}.ikkeRettTilYtelser`, undefined))
+      dispatch(updateReplySed(`${target}.perioderMedYtelser`, []))
     } else {
       dispatch(updateReplySed(`${target}.perioderMedYtelser`, undefined))
+      dispatch(updateReplySed(`${target}.ikkeRettTilYtelser`, {}))
     }
     _setRettTilFamilieYtelser(value)
   }
@@ -134,7 +142,8 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
       perioder: perioderMedYtelser,
       personName
     })
-
+    dispatch(resetValidation(namespace + '-perioderMedYtelser'))
+    
     if (!!_newPeriode && valid) {
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderMedYtelser)
       if (_.isNil(newPerioder)) {
@@ -279,7 +288,13 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
         </Row>
         <VerticalSeparatorDiv />
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "ja" &&
-          <GreyBoxWithBorder>
+          <>
+          <GreyBoxWithBorder
+              id={namespace + '-perioderMedYtelser'}
+            className={classNames({
+              error: hasNamespaceWithErrors(validation, namespace + "-perioderMedYtelser")
+            })}
+          >
             {_.isEmpty(perioderMedYtelser)
               ? (
                 <PaddedVerticallyDiv>
@@ -302,6 +317,10 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
               )}
             <VerticalSeparatorDiv/>
           </GreyBoxWithBorder>
+          {validation[namespace + '-perioderMedYtelser']?.feilmelding &&
+            <ErrorLabel error={validation[namespace + '-perioderMedYtelser']?.feilmelding}/>
+          }
+          </>
         }
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "nei" &&
           <Row>

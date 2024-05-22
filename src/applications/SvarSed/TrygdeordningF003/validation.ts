@@ -14,6 +14,7 @@ export interface ValidationFamilieYtelsePeriodeProps {
 export interface ValidationTrygdeOrdningerProps {
   perioderMedYtelser: Array<Periode> | undefined
   ikkeRettTilYtelser: any | undefined
+  rettTilFamilieYtelser: string |undefined
   personName?: string
 }
 
@@ -55,10 +56,27 @@ export const validateTrygdeOrdninger = (
   {
     perioderMedYtelser,
     ikkeRettTilYtelser,
+    rettTilFamilieYtelser,
     personName
   }: ValidationTrygdeOrdningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
+
+  if(rettTilFamilieYtelser === "ja"){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: perioderMedYtelser,
+      id: namespace + '-perioderMedYtelser',
+      message: 'validation:noPerioder'
+    }))
+  }
+
+  if(rettTilFamilieYtelser === "nei"){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: ikkeRettTilYtelser?.typeGrunn,
+      id: namespace + '-ikkeRettTilYtelser',
+      message: 'validation:noType'
+    }))
+  }
 
   perioderMedYtelser?.forEach((periode: Periode, index: number) => {
     hasErrors.push(validateFamilieYtelsePeriode(v, namespace, { periode: periode, perioder: perioderMedYtelser, index, personName }))
