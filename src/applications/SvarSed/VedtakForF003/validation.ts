@@ -68,6 +68,15 @@ export const validateVedtak = (
     personName: formalName
   }))
 
+  if(vedtak?.gjelderAlleBarn && vedtak?.gjelderAlleBarn === "nei"){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: vedtak?.barnVedtaketOmfatter,
+      id: namespace + '-barnVedtaketOmfatter',
+      message: 'validation:noBarnValgt',
+      personName: formalName
+    }))
+  }
+
   vedtak?.vedtaksperioder?.forEach((vedtaksperioder, index) => {
     hasErrors.push(validateVedtakPeriode(v, namespace, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, formalName }))
   })

@@ -45,11 +45,16 @@ import { hasNamespaceWithErrors } from 'utils/validation'
 import BeløpNavnOgValuta from "../BeløpNavnOgValuta/BeløpNavnOgValuta";
 import {setReplySed} from "../../../actions/svarsed";
 import styled from "styled-components";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const GreyBoxWithBorder = styled.div`
   background-color: var(--a-surface-subtle);
   border: 1px solid var(--a-border-default);
   padding: 0 1rem;
+
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
 `
 
 const mapState = (state: State): MainFormSelector => ({
@@ -362,6 +367,9 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                 <>
                   <GreyBoxWithBorder
                     key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
+                    className={classNames({
+                      error: hasNamespaceWithErrors(validation, namespace + "-barnVedtaketOmfatter")
+                    })}
                   >
                     <Checkbox
                       checked={checked}
@@ -384,6 +392,10 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                 </>
               )
             })}
+            {validation[namespace + '-barnVedtaketOmfatter']?.feilmelding &&
+              <ErrorLabel error={validation[namespace + '-barnVedtaketOmfatter']?.feilmelding}/>
+            }
+            <VerticalSeparatorDiv/>
           </div>
         )}
         {vedtak?.gjelderAlleBarn === 'nei' &&

@@ -220,7 +220,22 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
           replySed, personID, personName
         }, true))
 
-        //F003 - START
+        const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
+        hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
+          familierelasjoner, personName
+        }, true))
+        const person: Person = _.get(replySed, `${personID}`)
+        hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
+          person, personName
+        }, true))
+
+        // Specific to F003
+        // Ektefelle
+        hasErrors.push(performValidation<ValidationYtterligereInfoProps>(v, `svarsed-${personID}-ytterligereInfo`, validateYtterligereInfo, {
+          replySed, personName
+        }, true))
+
+        // Trygdeordning
         const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
         const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
         let rettTilFamilieYtelser;
@@ -231,21 +246,6 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         }
         hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-trygdeordningf003`, validateTrygdeOrdninger, {
           perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
-        }, true))
-        // F003 - END
-
-        const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
-        hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
-          familierelasjoner, personName
-        }, true))
-        const person: Person = _.get(replySed, `${personID}`)
-        hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
-          person, personName
-        }, true))
-
-        //Specific to F003 - Ektefelle
-        hasErrors.push(performValidation<ValidationYtterligereInfoProps>(v, `svarsed-${personID}-ytterligereInfo`, validateYtterligereInfo, {
-          replySed, personName
         }, true))
       }
     } else {
