@@ -43,7 +43,7 @@ import {
   ValidationFamilierelasjonerProps,
   ValidationFamilierelasjonProps
 } from './validation'
-import DateField, {toDateFormat} from "../../../components/DateField/DateField";
+import {isF003Sed} from "../../../utils/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -80,6 +80,13 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     { label: t('el:option-familierelasjon-aleneforelder'), value: 'aleneforelder' },
     { label: t('el:option-familierelasjon-annet'), value: 'annet' }
   ]
+
+  const relasjonTypeOptionsF003: Options = [
+    { label: t('el:option-familierelasjon-gift'), value: 'gift' },
+    { label: t('el:option-familierelasjon-aleneforelder'), value: 'aleneforelder' },
+    { label: t('el:option-familierelasjon-annet'), value: 'annet' }
+  ]
+
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -169,24 +176,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     } as FamilieRelasjon)
     if (validation[namespace + getIdx(index) + '-annenRelasjonPersonNavn']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonPersonNavn'))
-    }
-  }
-
-  const setAnnenRelasjonDato = (annenRelasjonDato: string, index: number) => {
-    if (index < 0) {
-      _setNewFamilierelasjon({
-        ..._newFamilierelasjon,
-        annenRelasjonDato: annenRelasjonDato.trim()
-      } as FamilieRelasjon)
-      _resetValidation(namespace + '-annenRelasjonDato')
-      return
-    }
-    _setEditFamilierelasjon({
-      ..._editFamilierelasjon,
-      annenRelasjonDato: annenRelasjonDato.trim()
-    } as FamilieRelasjon)
-    if (validation[namespace + getIdx(index) + '-annenRelasjonDato']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-annenRelasjonDato'))
     }
   }
 
@@ -282,7 +271,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
       <AlignEndColumn>
         <AddRemovePanel<FamilieRelasjon>
           item={familierelasjon}
-          marginTop={inEditMode}
+          marginTop={false}
           index={index}
           inEditMode={inEditMode}
           onRemove={onRemove}
@@ -331,7 +320,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                     label={t('label:type')}
                     menuPortalTarget={document.body}
                     onChange={(e: unknown) => setRelasjonType((e as Option).value as RelasjonType, index)}
-                    options={relasjonTypeOptions}
+                    options={isF003Sed(replySed) ? relasjonTypeOptionsF003 : relasjonTypeOptions}
                     required
                     defaultValue={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
                     value={_.find(relasjonTypeOptions, r => r.value === _familierelasjon?.relasjonType)}
@@ -362,16 +351,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                     label={t('label:person-navn')}
                     onChanged={(value: string) => setAnnenRelasjonPersonNavn(value, index)}
                     value={_familierelasjon?.annenRelasjonPersonNavn}
-                  />
-                </Column>
-                <Column>
-                  <DateField
-                    namespace={namespace}
-                    id='annenRelasjonDato'
-                    error={_v[_namespace + '-annenRelasjonDato']?.feilmelding}
-                    label={t('label:dato-for-relasjon')}
-                    onChanged={(value: string) => setAnnenRelasjonDato(value, index)}
-                    dateValue={_familierelasjon?.annenRelasjonDato}
                   />
                 </Column>
               </AlignStartRow>
@@ -437,16 +416,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
                         <Label>{t('label:annenRelasjonPersonNavn')}:</Label>
                         <HorizontalSeparatorDiv size='0.5' />
                         {_familierelasjon?.annenRelasjonPersonNavn}
-                      </FlexDiv>
-                    </FormText>
-                    <FormText
-                      error={_v[_namespace + '-annenRelasjonDato']?.feilmelding}
-                      id={_namespace + '-annenRelasjonDato'}
-                    >
-                      <FlexDiv>
-                        <Label>{t('label:dato-for-relasjon')}:</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        {toDateFormat(_familierelasjon?.annenRelasjonDato, "DD.MM.YYYY")}
                       </FlexDiv>
                     </FormText>
                     <FormText
