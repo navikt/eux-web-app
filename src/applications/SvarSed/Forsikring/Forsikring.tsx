@@ -19,6 +19,7 @@ import {
   FlexCenterDiv,
   HorizontalSeparatorDiv,
   PaddedDiv,
+  PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -28,7 +29,7 @@ import Military from 'assets/icons/Military'
 import classNames from 'classnames'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'declarations/sed'
@@ -358,28 +359,28 @@ const Forsikring: React.FC<MainFormProps> = ({
         <Heading size='small'>
           {label}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
         {!_.isEmpty(_allPeriods) && (
           <>
+            <VerticalSeparatorDiv/>
             <Checkbox
               checked={_sort === 'group'}
               onChange={onSort}
             >
               {t('label:group-by-periodetype')}
             </Checkbox>
-            <VerticalSeparatorDiv />
           </>
         )}
       </PaddedDiv>
+      <VerticalSeparatorDiv/>
       {_.isEmpty(_allPeriods)
         ? (
-          <PaddedDiv>
+          <PaddedHorizontallyDiv>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
             <SpacedHr />
-          </PaddedDiv>
+          </PaddedHorizontallyDiv>
           )
         : _sort === 'time'
           ? _allPeriods.map(renderRow)
@@ -408,7 +409,6 @@ const Forsikring: React.FC<MainFormProps> = ({
             </>
             )}
       <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
       <VerticalSeparatorDiv />
       {_copiedPeriod && renderRow(_copiedPeriod, -1)}
       {_newForm
