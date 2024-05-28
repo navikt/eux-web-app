@@ -1,4 +1,4 @@
-import {Accordion, BodyLong, Checkbox, Heading, Label, Panel} from '@navikt/ds-react'
+import {Accordion, BodyLong, Box, Checkbox, Heading, Label} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -46,7 +46,7 @@ import { hasNamespaceWithErrors } from 'utils/validation'
 import InntektOgTimerFC from './InntektOgTimer/InntektOgTimer'
 import { validateForsikringPeriodeBox, ValidationForsikringPeriodeBoxProps } from './validation'
 
-const ForsikringPeriodePanel = styled(Panel)`
+const ForsikringPeriodePanel = styled(Box)`
   padding: 1rem;
   &.new {
     background-color: rgba(236, 243, 153, 0.5);
@@ -432,7 +432,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
 
   return (
     <ForsikringPeriodePanel
-      border
+      borderWidth="1"
       className={classNames(style, {
         error: hasNamespaceWithErrors(_v, namespace)
       })}

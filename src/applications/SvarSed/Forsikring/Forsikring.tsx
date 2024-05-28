@@ -347,6 +347,7 @@ const Forsikring: React.FC<MainFormProps> = ({
               type={_type}
             />
           )}
+          <VerticalSeparatorDiv />
         </RepeatableRow>
         <VerticalSeparatorDiv size='0.5' />
       </>
@@ -408,7 +409,6 @@ const Forsikring: React.FC<MainFormProps> = ({
               })}
             </>
             )}
-      <VerticalSeparatorDiv size='2' />
       <VerticalSeparatorDiv />
       {_copiedPeriod && renderRow(_copiedPeriod, -1)}
       {_newForm
