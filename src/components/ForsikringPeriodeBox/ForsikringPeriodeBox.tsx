@@ -437,6 +437,26 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         error: hasNamespaceWithErrors(_v, namespace)
       })}
     >
+      {(newMode || (_inEditMode && allowEdit)) && (
+        <AlignStartRow>
+          <AlignEndColumn>
+            <AddRemovePanel
+              item={newMode ? null : forsikringPeriode}
+              index={newMode ? -1 : 0}
+              marginTop={false}
+              allowDelete={allowDelete}
+              inEditMode={_inEditMode}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onAddNew={onAddNew}
+              onCopy={setCopiedPeriod ? onCopy : undefined}
+              onCancelEdit={() => onCloseEdit(namespace)}
+              onCancelNew={onCloseNew}
+              onRemove={onRemove}
+            />
+          </AlignEndColumn>
+        </AlignStartRow>
+      )}
       <AlignStartRow>
         {newMode || (_inEditMode && allowEdit)
           ? (
@@ -453,9 +473,13 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             )
           : (
             <Column flex='2'>
-              <FlexCenterDiv style={{ padding: '0.5rem' }}>
-                {icon}
-                <HorizontalSeparatorDiv />
+              <FlexCenterDiv style={{ padding: '0.5rem 0' }}>
+                {icon &&
+                  <>
+                    {icon}
+                    <HorizontalSeparatorDiv />
+                  </>
+                }
                 <PileDiv>
                   <Label id={_v[namespace + '-startdato']?.skjemaelementId}>
                     {toDateFormat(_forsikringPeriode?.startdato, 'DD.MM.YYYY')}
@@ -504,8 +528,8 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
               >{t('label:velg')}
               </Checkbox>
             )}
-            {(newMode || allowEdit) && (
-              <FlexDiv className='control-buttons'>
+            {allowEdit && !newMode && !_inEditMode && (
+              <FlexDiv>
                 <AddRemovePanel
                   item={newMode ? null : forsikringPeriode}
                   index={newMode ? -1 : 0}

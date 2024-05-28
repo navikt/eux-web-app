@@ -373,13 +373,13 @@ const Forsikring: React.FC<MainFormProps> = ({
       </PaddedDiv>
       {_.isEmpty(_allPeriods)
         ? (
-          <>
+          <PaddedDiv>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
             <SpacedHr />
-          </>
+          </PaddedDiv>
           )
         : _sort === 'time'
           ? _allPeriods.map(renderRow)
