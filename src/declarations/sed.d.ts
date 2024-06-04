@@ -10,6 +10,7 @@ export type BarnRelasjon = '01' | '02' | '03' | '04'
 export type BarnRelasjonType = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08'
 
 export type RelasjonType = 'gift' |'samboer' | 'registrert_partnerskap' | 'skilt' | 'aleneforelder' | 'annet'
+export type ForelderType = 'gift' | 'aleneforelder' | 'annet'
 
 export type Kjoenn = 'K' | 'M' | 'U'
 
@@ -112,7 +113,8 @@ export interface FamilieRelasjon extends PeriodePeriode {
   annenRelasjonType?: string
   borSammen?: JaNei
   relasjonInfo: string
-  relasjonType?: RelasjonType
+  relasjonType?: RelasjonType // F001, F002
+  forelderType?: ForelderType // F003
 }
 
 export interface Pin {
@@ -222,7 +224,7 @@ export interface PersonAnnenPerson {
   adresser?: Array<Adresse>
   telefon?: Array<Telefon>
   epost?: Array<Epost>
-  familierelasjoner?: Array<FamilieRelasjon>
+  familierelasjon?: FamilieRelasjon
 }
 
 export interface PersonBarn {

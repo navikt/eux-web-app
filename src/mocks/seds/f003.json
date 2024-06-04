@@ -199,20 +199,14 @@
         "adresse": "æøå"
       }
     ],
-    "familierelasjoner": [
-      {
-        "relasjonType": "gift",
-        "relasjonInfo": "æøå",
-        "periode": {
-          "startdato": "2001-01-01",
-          "sluttdato": "2001-01-01"
-        },
-        "borSammen": "nei",
-        "annenRelasjonType": "æøå",
-        "annenRelasjonPersonNavn": "æøå",
-        "annenRelasjonDato": "æøå"
-      }
-    ]
+    "familierelasjon": {
+      "periode": {},
+      "borSammen": "ja",
+      "annenRelasjonType": "æøå",
+      "annenRelasjonPersonNavn": "æøå",
+      "annenRelasjonDato": "2001-01-01",
+      "forelderType": "annet"
+    }
   },
   "barn": [
     {
