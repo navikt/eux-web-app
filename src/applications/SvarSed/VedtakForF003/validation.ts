@@ -77,6 +77,14 @@ export const validateVedtak = (
     }))
   }
 
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: vedtak?.vedtaksperioder,
+    id: namespace + '-vedtaksperioder',
+    message: 'validation:noVedtaksperioder',
+    personName: formalName
+  }))
+
+
   vedtak?.vedtaksperioder?.forEach((vedtaksperioder, index) => {
     hasErrors.push(validateVedtakPeriode(v, namespace, { periode: vedtaksperioder, perioder: vedtak.vedtaksperioder, index, formalName }))
   })

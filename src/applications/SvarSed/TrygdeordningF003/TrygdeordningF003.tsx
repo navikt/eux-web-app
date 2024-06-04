@@ -143,7 +143,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
       personName
     })
     dispatch(resetValidation(namespace + '-perioderMedYtelser'))
-    
+
     if (!!_newPeriode && valid) {
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderMedYtelser)
       if (_.isNil(newPerioder)) {
@@ -290,7 +290,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "ja" &&
           <>
           <GreyBoxWithBorder
-              id={namespace + '-perioderMedYtelser'}
+            id={namespace + '-perioderMedYtelser'}
             className={classNames({
               error: hasNamespaceWithErrors(validation, namespace + "-perioderMedYtelser")
             })}

@@ -450,7 +450,12 @@ const VedtakForF003: React.FC<MainFormProps> = ({
         <Label>
           {t('label:vedtaksperioder')}
         </Label>
-        <GreyBoxWithBorder>
+        <GreyBoxWithBorder
+          id={namespace + '-vedtaksperioder'}
+          className={classNames({
+            error: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
+          })}
+        >
           {_.isEmpty(vedtak?.vedtaksperioder)
             ? (
               <PaddedVerticallyDiv>
@@ -473,6 +478,9 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             )}
           <VerticalSeparatorDiv/>
         </GreyBoxWithBorder>
+        {validation[namespace + '-vedtaksperioder']?.feilmelding &&
+          <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
+        }
         <VerticalSeparatorDiv />
         <AlignStartRow>
           <Column flex='2'>
