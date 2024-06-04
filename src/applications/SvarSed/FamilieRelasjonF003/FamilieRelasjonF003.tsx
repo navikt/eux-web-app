@@ -18,7 +18,10 @@ import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import Select from "../../../components/Forms/Select";
 import {Option, Options} from "../../../declarations/app";
 import Input from "../../../components/Forms/Input";
-import {resetValidation} from "../../../actions/validation";
+import {resetValidation, setValidation} from "../../../actions/validation";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {validateFamilierelasjon, ValidationFamilierelasjonProps} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -28,7 +31,7 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
-  //personName,
+  personName,
   replySed,
   updateReplySed
 }:MainFormProps): JSX.Element => {
@@ -40,10 +43,22 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-familierelasjonf003`
 
   const forelderTypeOptions: Options = [
+    { label: t('el:placeholder-select-default'), value: '' },
     { label: t('el:option-familierelasjon-gift'), value: 'gift' },
     { label: t('el:option-familierelasjon-aleneforelder'), value: 'aleneforelder' },
     { label: t('el:option-familierelasjon-annet'), value: 'annet' }
   ]
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationFamilierelasjonProps>(
+      clonedValidation, namespace, validateFamilierelasjon, {
+        familierelasjon: familieRelasjon,
+        personName
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+  })
 
 
   const setForelderType = (forelderType: ForelderType) => {
@@ -94,7 +109,7 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
               sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
             }}
             hideLabel={false}
-            requiredStartDato={false}
+            requiredStartDato={true}
             setPeriode={(p: Periode) => setPeriode(p)}
             value={familieRelasjon?.periode}
           />

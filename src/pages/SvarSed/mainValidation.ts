@@ -117,6 +117,10 @@ import {
   validateTrygdeOrdninger,
   ValidationTrygdeOrdningerProps
 } from "../../applications/SvarSed/TrygdeordningF003/validation";
+import {
+  validateFamilierelasjon,
+  ValidationFamilierelasjonProps
+} from "../../applications/SvarSed/FamilieRelasjonF003/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -247,6 +251,13 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-trygdeordningf003`, validateTrygdeOrdninger, {
           perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
         }, true))
+
+        //Familierelasjon Annen Person
+        const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)
+        hasErrors.push(performValidation<ValidationFamilierelasjonProps>(v, `svarsed-${personID}-familierelasjonf003`, validateFamilierelasjon, {
+          familierelasjon, personName
+        }, true))
+
       }
     } else {
       const barnetilhoerigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
