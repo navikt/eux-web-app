@@ -120,6 +120,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   }
 
   const setIkkeRettTilFamilieYtelser = (value: string) => {
+    dispatch(resetValidation(namespace + '-ikkeRettTilYtelser'))
     dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunn`, value))
     if(value !== "annen"){
       dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunnAnnen`, undefined))
