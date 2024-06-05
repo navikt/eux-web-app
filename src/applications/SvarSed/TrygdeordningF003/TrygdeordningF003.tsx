@@ -199,6 +199,11 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace))
   }
 
+  const addTrygdeordningPeriode = () => {
+    dispatch(resetValidation(namespace + '-perioderMedYtelser'))
+    _setNewPeriodeForm(true)
+  }
+
   const renderPeriodeRow = (periode: Periode | null, index: number) => {
     const _namespace = namespace + '-perioderMedYtelser' + getIdx(index)
     const _v: Validation = index < 0 ? _validationPeriode : validation
@@ -309,7 +314,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
               : (
                 <Button
                   variant='tertiary'
-                  onClick={() => _setNewPeriodeForm(true)}
+                  onClick={addTrygdeordningPeriode}
                   icon={<PlusCircleIcon/>}
                 >
                   {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
