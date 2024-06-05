@@ -388,8 +388,6 @@ const SEDNew = (): JSX.Element => {
     dispatch(personReset())
     dispatch(resetSentSed())
     dispatch(editSed(opprettetSak, {
-      tema: valgtTema,
-      fagsak: valgtSaksId,
       sed: {
         sedId: opprettetSak.sedId!,
         sedTittel: _sedtyper.find((s: Kodeverk) => s.kode === valgtSedType!)?.term as string,
