@@ -264,6 +264,11 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     }
   }
 
+  const addVedtakPeriode = () => {
+    dispatch(resetValidation(namespace + '-vedtaksperioder'))
+    _setNewVedtakPeriodeForm(true)
+  }
+
   const renderVedtakPeriodeRow = (periode: Periode | null, index: number) => {
     const _namespace = namespace + '-vedtaksperioder' + getIdx(index)
     const _v: Validation = index < 0 ? _validationVedtakPeriode : validation
@@ -470,7 +475,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
             : (
                 <Button
                   variant='tertiary'
-                  onClick={() => _setNewVedtakPeriodeForm(true)}
+                  onClick={addVedtakPeriode}
                   icon={<PlusCircleIcon/>}
                 >
                   {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
