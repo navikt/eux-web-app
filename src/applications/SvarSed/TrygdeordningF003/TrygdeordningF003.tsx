@@ -122,7 +122,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   const setIkkeRettTilFamilieYtelser = (value: string) => {
     dispatch(resetValidation(namespace + '-ikkeRettTilYtelser'))
     dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunnForVedtak`, value))
-    if(value !== "annen"){
+    if(value !== "annen_grunn"){
       dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunnAnnen`, undefined))
     }
   }
@@ -342,14 +342,13 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
                 onChange={setIkkeRettTilFamilieYtelser}
               >
                 <FlexRadioPanels>
-                  <RadioPanel value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</RadioPanel>
-                  <RadioPanel value='for_hoy_inntekt'>{t('label:for-hoy-inntekt')}</RadioPanel>
-                  <RadioPanel value='annen'>{t('label:annet')}</RadioPanel>
+                  <RadioPanel value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</RadioPanel>
+                  <RadioPanel value='annen_grunn'>{t('label:annet')}</RadioPanel>
                 </FlexRadioPanels>
               </RadioPanelGroup>
             </Column>
             <Column>
-              {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen" &&
+              {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen_grunn" &&
                 <TextField
                   error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
                   id={namespace + "-ikkeRettTilYtelser-typeGrunnAnnen"}

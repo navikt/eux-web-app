@@ -82,7 +82,7 @@ export const validateTrygdeOrdninger = (
     hasErrors.push(validateFamilieYtelsePeriode(v, namespace, { periode: periode, perioder: perioderMedYtelser, index, personName }))
   })
 
-  if(ikkeRettTilYtelser && ikkeRettTilYtelser.typeGrunnForVedtak === "annen"){
+  if(ikkeRettTilYtelser && ikkeRettTilYtelser.typeGrunnForVedtak === "annen_grunn"){
     hasErrors.push(checkIfNotEmpty(v, {
       needle: ikkeRettTilYtelser.typeGrunnAnnen,
       id: namespace + '-ikkeRettTilYtelser-typeGrunnAnnen',
