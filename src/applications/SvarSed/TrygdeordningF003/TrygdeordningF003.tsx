@@ -121,7 +121,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
 
   const setIkkeRettTilFamilieYtelser = (value: string) => {
     dispatch(resetValidation(namespace + '-ikkeRettTilYtelser'))
-    dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunn`, value))
+    dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunnForVedtak`, value))
     if(value !== "annen"){
       dispatch(updateReplySed(`${target}.ikkeRettTilYtelser.typeGrunnAnnen`, undefined))
     }
@@ -332,7 +332,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
           <Row>
             <Column flex='2'>
               <RadioPanelGroup
-                value={ikkeRettTilYtelser?.typeGrunn}
+                value={ikkeRettTilYtelser?.typeGrunnForVedtak}
                 data-no-border
                 data-testid={namespace + '-ikkeRettTilYtelser'}
                 error={validation[namespace + '-ikkeRettTilYtelser']?.feilmelding}
@@ -349,7 +349,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
               </RadioPanelGroup>
             </Column>
             <Column>
-              {ikkeRettTilYtelser?.typeGrunn === "annen" &&
+              {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen" &&
                 <TextField
                   error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
                   id={namespace + "-ikkeRettTilYtelser-typeGrunnAnnen"}

@@ -206,6 +206,7 @@ export interface PersonBruker {
   epost?: Array<Epost>
   ikkeRettTilYtelser?: {
     typeGrunn?: string
+    typeGrunnForVedtak?: string
     typeGrunnAnnen?: string
   } | null
   perioderMedYtelser?: Array<Periode> | null

@@ -74,6 +74,7 @@
     ],
     "ikkeRettTilYtelser": {
       "typeGrunn": "krav_ikke_framsatt",
+      "typeGrunnForVedtak": "for_hoy_inntekt",
       "typeGrunnAnnen": "æøå"
     }
   },
