@@ -72,7 +72,7 @@ export const validateTrygdeOrdninger = (
 
   if(rettTilFamilieYtelser === "nei"){
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: ikkeRettTilYtelser?.typeGrunn,
+      needle: ikkeRettTilYtelser?.typeGrunnForVedtak,
       id: namespace + '-ikkeRettTilYtelser',
       message: 'validation:noType'
     }))
@@ -82,7 +82,7 @@ export const validateTrygdeOrdninger = (
     hasErrors.push(validateFamilieYtelsePeriode(v, namespace, { periode: periode, perioder: perioderMedYtelser, index, personName }))
   })
 
-  if(ikkeRettTilYtelser && ikkeRettTilYtelser.typeGrunn === "annen"){
+  if(ikkeRettTilYtelser && ikkeRettTilYtelser.typeGrunnForVedtak === "annen"){
     hasErrors.push(checkIfNotEmpty(v, {
       needle: ikkeRettTilYtelser.typeGrunnAnnen,
       id: namespace + '-ikkeRettTilYtelser-typeGrunnAnnen',
