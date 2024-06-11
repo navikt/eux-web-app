@@ -55,7 +55,7 @@ export const validateKrav = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if(krav?.infoType === 'gi_oss_punktvise_opplysninger'){
+  if(krav?.infoType === 'gi_oss_opplysninger'){
     hasErrors.push(checkLength(v, {
       needle: krav?.infoPresisering,
       max: 255,

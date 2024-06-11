@@ -231,10 +231,10 @@
   "option-personensstatus-4": "Personen har permisjon med lønn, er i streik eller lockout",
   "option-personensstatus-5": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
 
-  "option-svarpåminnelse-01" : "Ikke mulig å få tak i den etterspurte informasjonen",
-  "option-svarpåminnelse-02" : "Ikke mulig å få tak i de(t) etterspurte dokumentene",
-  "option-svarpåminnelse-03" : "Personen samarbeidet ikke",
-  "option-svarpåminnelse-99" : "Annet",
+  "option-svarpåminnelse-kan_ikke_fremlegge_etterspurt_informasjon" : "Kan ikke fremlegge etterspurt informasjonen",
+  "option-svarpåminnelse-kan_ikke_fremlegge_etterspurte_dokumenter" : "Kan ikke fremlegge etterspurte dokumenter",
+  "option-svarpåminnelse-personen_samarbeidet_ikke" : "Personen samarbeidet ikke",
+  "option-svarpåminnelse-annet" : "Annet",
 
   "option-relasjon-daglig_omsorg": "Daglig omsorg for barnet",
   "option-relasjon-født_i_ekteskap": "Barn født i ekteskap",

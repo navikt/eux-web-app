@@ -564,16 +564,16 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-begrunnelseType'}
                     onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
                   >
-                    <RadioPanel value='01'>{t('el:option-svarpåminnelse-01')}</RadioPanel>
-                    <RadioPanel value='02'>{t('el:option-svarpåminnelse-02')}</RadioPanel>
-                    <RadioPanel value='03'>{t('el:option-svarpåminnelse-03')}</RadioPanel>
-                    <RadioPanel value='99'>{t('el:option-svarpåminnelse-99')}</RadioPanel>
+                    <RadioPanel value='kan_ikke_fremlegge_etterspurt_informasjon'>{t('el:option-svarpåminnelse-01')}</RadioPanel>
+                    <RadioPanel value='kan_ikke_fremlegge_etterspurte_dokumenter'>{t('el:option-svarpåminnelse-02')}</RadioPanel>
+                    <RadioPanel value='personen_samarbeidet_ikke'>{t('el:option-svarpåminnelse-03')}</RadioPanel>
+                    <RadioPanel value='annet'>{t('el:option-svarpåminnelse-99')}</RadioPanel>
                   </RadioPanelGroup>
                 </Column>
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_BesvarelseUmulig?.begrunnelseType === '99' && (
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                 <AlignStartRow>
                   <Column>
                     <Input
@@ -625,7 +625,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     >
                       {t('el:option-svarpåminnelse-' + _BesvarelseUmulig?.begrunnelseType)}
                     </FormText>
-                    {_BesvarelseUmulig?.begrunnelseType === '99' && (
+                    {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                       <>
                         <HorizontalSeparatorDiv />
                         <FormText

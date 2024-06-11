@@ -104,7 +104,7 @@ export const validateBesvarelseUmulig = (
     personName
   }))
 
-  if (dokument?.begrunnelseType === '99') {
+  if (dokument?.begrunnelseType === 'annet') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: dokument?.begrunnelseAnnen,
       id: namespace + idx + '-begrunnelseAnnen',

@@ -308,13 +308,13 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               value={(replySed as F002Sed).krav?.infoType}
               onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
-              <Radio value='vi_bekrefter_leverte_opplysninger'>
+              <Radio value='bekrefter_opplysninger'>
                 {t('label:info-confirm-information')}
               </Radio>
-              <Radio value='gi_oss_punktvise_opplysninger'>
+              <Radio value='gi_oss_opplysninger'>
                 {t('label:info-point-information')}
               </Radio>
-              {(replySed as F002Sed).krav?.infoType === 'gi_oss_punktvise_opplysninger' && (
+              {(replySed as F002Sed).krav?.infoType === 'gi_oss_opplysninger' && (
                 <div>
                   <VerticalSeparatorDiv />
                   <TextAreaDiv>

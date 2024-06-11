@@ -14,7 +14,7 @@ export type ForelderType = 'gift' | 'aleneforelder' | 'annet'
 
 export type Kjoenn = 'K' | 'M' | 'U'
 
-export type TelefonType = 'arbeid' | 'hjemme' | 'mobil'
+export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
 export type ReplySed = F001Sed | F002Sed | F003Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
