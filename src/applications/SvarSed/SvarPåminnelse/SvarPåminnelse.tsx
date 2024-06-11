@@ -630,7 +630,9 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-begrunnelse']?.feilmelding}
                       id={_namespace + '-begrunnelse'}
                     >
-                      {t('el:option-svarpåminnelse-' + _BesvarelseUmulig?.begrunnelseType)}
+                      {begrunnelsetypeOptions.filter((option) => {
+                        return option.value === _BesvarelseUmulig?.begrunnelseType
+                      })[0].label}
                     </FormText>
                     {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                       <>
