@@ -343,7 +343,7 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-type']?.feilmelding}
                   id={_namespace + '-type'}
                 >
-                  <BodyLong>{t('el:option-telefon-type-' + _telefon?.type)}</BodyLong>
+                  <BodyLong>{_telefon?.type ? t('el:option-telefon-type-' + _telefon?.type) : ""}</BodyLong>
                 </FormText>
                 )}
           </Column>
