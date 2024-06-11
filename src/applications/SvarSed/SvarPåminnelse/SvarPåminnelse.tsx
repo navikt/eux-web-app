@@ -42,6 +42,7 @@ import {
   ValidationBesvarelseKommerProps,
   ValidationSvarPåminnelseProps
 } from './validation'
+import {Options} from "../../../declarations/app";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -490,6 +491,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
       />
     )
 
+    const begrunnelsetypeOptions: Options = [
+      { label: t('el:option-svarpåminnelse-01'), value: 'kan_ikke_fremlegge_etterspurt_informasjon' },
+      { label: t('el:option-svarpåminnelse-02'), value: 'kan_ikke_fremlegge_etterspurte_dokumenter' },
+      { label: t('el:option-svarpåminnelse-03'), value: 'personen_samarbeidet_ikke' },
+      { label: t('el:option-svarpåminnelse-99'), value: 'annet' }
+    ]
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + _namespace}
@@ -564,10 +572,9 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-begrunnelseType'}
                     onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
                   >
-                    <RadioPanel value='kan_ikke_fremlegge_etterspurt_informasjon'>{t('el:option-svarpåminnelse-01')}</RadioPanel>
-                    <RadioPanel value='kan_ikke_fremlegge_etterspurte_dokumenter'>{t('el:option-svarpåminnelse-02')}</RadioPanel>
-                    <RadioPanel value='personen_samarbeidet_ikke'>{t('el:option-svarpåminnelse-03')}</RadioPanel>
-                    <RadioPanel value='annet'>{t('el:option-svarpåminnelse-99')}</RadioPanel>
+                    {begrunnelsetypeOptions.map((option) => {
+                      return <RadioPanel value={option.value}>{option.label}</RadioPanel>
+                    })}
                   </RadioPanelGroup>
                 </Column>
                 <Column />
