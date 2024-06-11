@@ -154,6 +154,7 @@
   "noÅrsak": "Ingen årsak",
 
   "onlySingleParticipant": "Kun en deltaker tillatt",
+  "onlyOneEKTESAMBREPAAllowed": "Kun tillatt med en ektefelle, samboer eller registrert partner",
 
   "textOverX": "Tekststørrelse over {{x}} tegn",
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",

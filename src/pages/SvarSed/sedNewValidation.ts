@@ -48,6 +48,18 @@ export const validateSEDNew = (
     return false
   }
 
+  const checkIfOnlyOneEKTESAMBREPA = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
+    const ekteSambRepa = needle.filter((relasjon: OldFamilieRelasjon) => {
+      return (relasjon.rolle === "EKTE" || relasjon.rolle === "SAMB" || relasjon.rolle === "REPA")
+    })
+
+    if (ekteSambRepa.length > 1) {
+      return addError(v, { id, personName, message, extra })
+    }
+    return false
+  }
+
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: fnr,
     id: namespace + '-fnr',
@@ -123,6 +135,12 @@ export const validateSEDNew = (
         needle: familierelasjoner,
         id: namespace + '-familieRelasjoner',
         message: 'validation:noBarnValgt'
+      }))
+
+      hasErrors.push(checkIfOnlyOneEKTESAMBREPA(v, {
+        needle: familierelasjoner,
+        id: namespace + '-familieRelasjoner',
+        message: 'validation:onlyOneEKTESAMBREPAAllowed'
       }))
     }
   }
