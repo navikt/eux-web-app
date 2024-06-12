@@ -357,6 +357,41 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           <Column />
         </Row>
         <VerticalSeparatorDiv />
+        <Label>
+          {t('label:vedtaksperioder')}
+        </Label>
+        <GreyBoxWithBorder
+          id={namespace + '-vedtaksperioder'}
+          className={classNames({
+            error: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
+          })}
+        >
+          {_.isEmpty(vedtak?.vedtaksperioder)
+            ? (
+              <PaddedVerticallyDiv>
+                <BodyLong>
+                  {t('message:warning-no-periods')}
+                </BodyLong>
+              </PaddedVerticallyDiv>
+            )
+            : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
+          {_newVedtakPeriodeForm
+            ? renderVedtakPeriodeRow(null, -1)
+            : (
+              <Button
+                variant='tertiary'
+                onClick={addVedtakPeriode}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
+              </Button>
+            )}
+          <VerticalSeparatorDiv/>
+        </GreyBoxWithBorder>
+        {validation[namespace + '-vedtaksperioder']?.feilmelding &&
+          <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
+        }
+        <VerticalSeparatorDiv />
         {vedtak?.gjelderAlleBarn === 'nei' && (
           <div>
             <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
@@ -450,41 +485,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               options={{showHeading: false}}
             />
           </GreyBoxWithBorder>
-        }
-        <VerticalSeparatorDiv />
-        <Label>
-          {t('label:vedtaksperioder')}
-        </Label>
-        <GreyBoxWithBorder
-          id={namespace + '-vedtaksperioder'}
-          className={classNames({
-            error: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
-          })}
-        >
-          {_.isEmpty(vedtak?.vedtaksperioder)
-            ? (
-              <PaddedVerticallyDiv>
-                <BodyLong>
-                  {t('message:warning-no-periods')}
-                </BodyLong>
-              </PaddedVerticallyDiv>
-            )
-            : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
-          {_newVedtakPeriodeForm
-            ? renderVedtakPeriodeRow(null, -1)
-            : (
-                <Button
-                  variant='tertiary'
-                  onClick={addVedtakPeriode}
-                  icon={<PlusCircleIcon/>}
-                >
-                  {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
-                </Button>
-            )}
-          <VerticalSeparatorDiv/>
-        </GreyBoxWithBorder>
-        {validation[namespace + '-vedtaksperioder']?.feilmelding &&
-          <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
         }
         <VerticalSeparatorDiv />
         <AlignStartRow>
