@@ -443,9 +443,8 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-mottakersNavn']?.feilmelding}
                     namespace={_namespace}
                     id='mottakersNavn'
-                    label={t('label:mottakers-navn')}
+                    label={t('label:mottakers-navn-naar-annen-enn-soker')}
                     onChanged={(newNavn: string) => setMottakersNavn(newNavn, index)}
-                    required
                     value={_ytelse?.mottakersNavn}
                   />
                 </Column>

@@ -81,13 +81,6 @@ export const validateBeløpNavnOgValuta = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: ytelse?.mottakersNavn,
-    id: namespace + idx + '-mottakersNavn',
-    message: 'validation:noNavn',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
     needle: ytelse?.utbetalingshyppighet,
     id: namespace + idx + '-utbetalingshyppighet',
     message: 'validation:noUtbetalingshyppighet',
