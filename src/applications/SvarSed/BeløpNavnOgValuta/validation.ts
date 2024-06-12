@@ -74,7 +74,9 @@ export const validateBeløpNavnOgValuta = (
       startdato: ytelse?.startdato,
       sluttdato: ytelse?.sluttdato
     } as Periode,
-    mandatorySluttdato: true,
+    mandatoryStartdato: false,
+    mandatorySluttdato: false,
+    mandatorySluttdatoIfStartdato: true,
     periodeType: 'simple',
     index,
     personName

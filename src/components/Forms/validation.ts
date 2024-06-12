@@ -11,6 +11,7 @@ export interface ValidationPeriodeProps {
   index?: number | undefined
   mandatoryStartdato ?: boolean
   mandatorySluttdato ?: boolean
+  mandatorySluttdatoIfStartdato?: boolean
   periodeType ?: PeriodeInputType
   personName?: string
 }
@@ -23,6 +24,7 @@ export const validatePeriode = (
     index = undefined,
     mandatoryStartdato = true,
     mandatorySluttdato = false,
+    mandatorySluttdatoIfStartdato = false,
     periodeType = 'withcheckbox',
     personName
   }: ValidationPeriodeProps
@@ -90,6 +92,24 @@ export const validatePeriode = (
     hasErrors.push(addError(v, {
       id: namespace + idx + '-aapenPeriodeType',
       message: 'validation:noAapenPeriodeType',
+      personName
+    }))
+  }
+
+  if(mandatorySluttdatoIfStartdato && !_.isEmpty(periode?.startdato?.trim())){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periode?.sluttdato,
+      id: namespace + idx + '-sluttdato',
+      message: 'validation:noDate',
+      personName
+    }))
+  }
+
+  if(mandatorySluttdatoIfStartdato && !_.isEmpty(periode?.sluttdato?.trim())){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: periode?.startdato,
+      id: namespace + idx + '-startdato',
+      message: 'validation:noDate',
       personName
     }))
   }

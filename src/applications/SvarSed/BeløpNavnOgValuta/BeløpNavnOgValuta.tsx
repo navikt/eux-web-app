@@ -416,7 +416,8 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   periodeType='simple'
                   setPeriode={(p: Periode, id: string) => setPeriode(p, id, index)}
                   value={_ytelse}
-                  requiredSluttDato={true}
+                  requiredStartDato={false}
+                  requiredSluttDato={false}
                 />
                 <Column flex='2'>
                   <RadioPanelGroup

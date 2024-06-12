@@ -46,7 +46,8 @@ const PeriodeText = ({
         <BodyLong>
           {!_.isEmpty(periode?.sluttdato)
             ? toDateFormat(periode!.sluttdato, uiFormat)
-            : t('label:' + periode?.aapenPeriodeType)}
+            : periode?.aapenPeriodeType ? t('label:' + periode?.aapenPeriodeType) : t('label:ukjent_sluttdato')
+          }
         </BodyLong>
         <ErrorLabel error={error?.sluttdato} />
       </PileDiv>
