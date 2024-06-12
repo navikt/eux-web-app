@@ -1,7 +1,7 @@
 import {Validation} from "declarations/types";
 import {getIdx} from "utils/namespace";
 import {validatePeriode} from "components/Forms/validation";
-import {checkIfDuplicate, checkIfNotEmpty} from "utils/validation";
+import {checkIfDuplicate, checkIfNotEmpty, checkLength} from "utils/validation";
 import {Periode} from "declarations/sed";
 
 export interface ValidationFamilieYtelsePeriodeProps {
@@ -88,7 +88,15 @@ export const validateTrygdeOrdninger = (
       id: namespace + '-ikkeRettTilYtelser-typeGrunnAnnen',
       message: 'validation:noAnnenTypeGrunn'
     }))
+
+    hasErrors.push(checkLength(v, {
+      needle: ikkeRettTilYtelser.typeGrunnAnnen,
+      max: 500,
+      id: namespace + '-ikkeRettTilYtelser-typeGrunnAnnen',
+      message: 'validation:textOverX'
+    }))
   }
+
 
   return hasErrors.find(value => value) !== undefined
 }

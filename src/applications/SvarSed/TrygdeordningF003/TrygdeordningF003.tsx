@@ -1,4 +1,4 @@
-import {BodyLong, Button, Heading, TextField} from '@navikt/ds-react'
+import {BodyLong, Button, Heading} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -24,7 +24,7 @@ import {PlusCircleIcon} from "@navikt/aksel-icons";
 import styled from "styled-components";
 import {getIdx} from "../../../utils/namespace";
 import {Validation} from "../../../declarations/types";
-import {RepeatablePeriodeRow} from "../../../components/StyledComponents";
+import {RepeatablePeriodeRow, TextAreaDiv} from "../../../components/StyledComponents";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
@@ -39,6 +39,7 @@ import {
 } from "./validation";
 import {periodeSort} from "../../../utils/sort";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import TextArea from "../../../components/Forms/TextArea";
 
 const GreyBoxWithBorder = styled.div`
   background-color: var(--a-surface-subtle);
@@ -269,7 +270,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
     <>
       <PaddedDiv>
         <Heading size='small'>
-          Trygdeordninger
+          Rett til ytelser
         </Heading>
         <VerticalSeparatorDiv size='2' />
         <Row>
@@ -329,6 +330,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
           </>
         }
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "nei" &&
+          <>
           <Row>
             <Column flex='2'>
               <RadioPanelGroup
@@ -347,21 +349,25 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
                 </FlexRadioPanels>
               </RadioPanelGroup>
             </Column>
+            <Column/>
+          </Row>
+          <Row>
             <Column>
               {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen_grunn" &&
-                <TextField
-                  error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
-                  id={namespace + "-ikkeRettTilYtelser-typeGrunnAnnen"}
-                  label={""}
-                  className="nolabel2"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setTypeGrunnAnnen(e.target.value)
-                  }}
-                  value={ikkeRettTilYtelser?.typeGrunnAnnen ?? ''}
-                />
+                <TextAreaDiv>
+                  <TextArea
+                    id={"ikkeRettTilYtelser-typeGrunnAnnen"}
+                    error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
+                    namespace={namespace}
+                    label={t("label:begrunnelse")}
+                    onChanged={setTypeGrunnAnnen}
+                    value={ikkeRettTilYtelser?.typeGrunnAnnen ?? ''}
+                  />
+                </TextAreaDiv>
               }
             </Column>
           </Row>
+          </>
         }
       </PaddedDiv>
     </>
