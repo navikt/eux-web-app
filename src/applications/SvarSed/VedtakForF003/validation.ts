@@ -65,7 +65,6 @@ export const validateVedtak = (
     needle: vedtak?.gjelderAlleBarn,
     id: namespace + '-gjelderAlleBarn',
     message: 'validation:noBarnValgt',
-    personName: formalName
   }))
 
   if(vedtak?.gjelderAlleBarn && vedtak?.gjelderAlleBarn === "nei"){
@@ -73,7 +72,6 @@ export const validateVedtak = (
       needle: vedtak?.barnVedtaketOmfatter,
       id: namespace + '-barnVedtaketOmfatter',
       message: 'validation:noBarnValgt',
-      personName: formalName
     }))
   }
 
@@ -81,7 +79,6 @@ export const validateVedtak = (
     needle: vedtak?.vedtaksperioder,
     id: namespace + '-vedtaksperioder',
     message: 'validation:noVedtaksperioder',
-    personName: formalName
   }))
 
 
@@ -93,7 +90,6 @@ export const validateVedtak = (
     needle: vedtak?.begrunnelse,
     id: namespace + '-begrunnelse',
     message: 'validation:noBegrunnelse',
-    personName: formalName
   }))
 
   hasErrors.push(checkLength(v, {
@@ -101,15 +97,20 @@ export const validateVedtak = (
     max: 500,
     id: namespace + '-begrunnelse',
     message: 'validation:textOverX',
-    personName: formalName
   }))
+
+  hasErrors.push(checkLength(v, {
+    needle: vedtak?.kompetanse,
+    max: 500,
+    id: namespace + '-kompetanse',
+    message: 'validation:textOverX',
+  }));
 
   hasErrors.push(checkLength(v, {
     needle: vedtak?.ytterligereInfo,
     max: 500,
     id: namespace + '-ytterligereInfo',
     message: 'validation:textOverX',
-    personName: formalName
   }));
 
   return hasErrors.find(value => value) !== undefined

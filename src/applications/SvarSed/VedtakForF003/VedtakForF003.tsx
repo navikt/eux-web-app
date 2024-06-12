@@ -168,6 +168,13 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     }
   }
 
+  const setKompetanse = (newKompetanse: string) => {
+    dispatch(updateReplySed(`${target}.kompetanse`, newKompetanse.trim()))
+    if (validation[namespace + '-kompetanse']) {
+      dispatch(resetValidation(namespace + '-kompetanse'))
+    }
+  }
+
   const onCheckBarn = (vedtakBarn: VedtakBarn, barnIndex: number, checked: boolean) => {
     let newBarnVedtaketOmfatter: Array<VedtakBarn> | undefined = _.cloneDeep(vedtak?.barnVedtaketOmfatter)
     if (_.isNil(newBarnVedtaketOmfatter)) {
@@ -493,7 +500,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               <TextArea
                 error={validation[namespace + '-begrunnelse']?.feilmelding}
                 namespace={namespace}
-                id='grunnen'
+                id='begrunnelse'
                 label={t('label:begrunnelse')}
                 onChanged={setBegrunnelse}
                 value={vedtak?.begrunnelse}
@@ -510,7 +517,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                 namespace={namespace}
                 id='kompetanse'
                 label={t('label:vedtak-om-kompetanse-angaaende-prioritet')}
-                onChanged={setYtterligeInfo}
+                onChanged={setKompetanse}
                 value={vedtak?.kompetanse}
               />
             </TextAreaDiv>
