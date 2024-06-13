@@ -162,6 +162,7 @@ export interface MainFormFCProps<T> {
   loggingNamespace: string
   deselectedMenu?: string | undefined
   deselectedMenuOption?: string | undefined
+  menuDefaultClosed?: boolean
 }
 
 export interface MainFormProps {
@@ -206,7 +207,8 @@ const MainForm = <T extends StorageTypes>({
   namespace,
   loggingNamespace,
   deselectedMenu,
-  deselectedMenuOption
+  deselectedMenuOption,
+  menuDefaultClosed = false
 }: MainFormFCProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
@@ -224,7 +226,7 @@ const MainForm = <T extends StorageTypes>({
 
   const initialMenu = type === 'twolevel'
     ? totalPeopleNr === 1 ? 'bruker' : undefined
-    : forms.length === 1 ? forms[0].value : undefined
+    : forms.length === 1 ? menuDefaultClosed ? undefined : forms[0].value : undefined
   const initialMenuOption = (type === 'twolevel' && totalPeopleNr === 1) ? firstForm : undefined
 
   const [_seeNewPersonModal, setSeeNewPersonModal] = useState<boolean>(false)

@@ -454,8 +454,8 @@ const SEDEdit = (): JSX.Element => {
           <>
             <MainForm
               type='onelevel'
+              menuDefaultClosed={true}
               namespace='vedtak'
-              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
