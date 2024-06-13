@@ -683,7 +683,7 @@ const SEDNew = (): JSX.Element => {
               }}
               onSearchFnr={(fnrQuery: string) => {
                 dispatch(personActions.resetPersonRelated())
-                dispatch(personActions.searchPersonRelated(fnrQuery))
+                dispatch(personActions.searchPersonRelated(fnrQuery.trim()))
               }}
             />
           </>
