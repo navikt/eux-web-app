@@ -136,6 +136,7 @@
 
   "notANumber": "Kun heltall eller desimaltall tillatt",
   "notInteger": "Kun heltall tillatt",
+  "noInfoPresisering": "Ingen punktvise opplysninger oppgitt",
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
   "noTelephoneType": "Du må velge en telefon type til",
   "noTema": "Du må velge et tema",

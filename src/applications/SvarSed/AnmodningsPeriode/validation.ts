@@ -1,7 +1,7 @@
 import { validatePeriode } from 'components/Forms/validation'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkLength, checkValidDateFormat} from "../../../utils/validation";
+import {checkIfNotEmpty, checkLength, checkValidDateFormat} from "../../../utils/validation";
 
 export interface ValidationAnmodningsPerioderProps {
   anmodningsperioder: Array<Periode> | undefined
@@ -56,6 +56,13 @@ export const validateKrav = (
   const hasErrors: Array<boolean> = []
 
   if(krav?.infoType === 'gi_oss_opplysninger'){
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: krav?.infoPresisering,
+      id: namespace + '-opplysninger',
+      message: 'validation:noInfoPresisering',
+    }))
+
     hasErrors.push(checkLength(v, {
       needle: krav?.infoPresisering,
       max: 255,
