@@ -141,16 +141,20 @@ const AddPersonModal = <T extends StorageTypes>({
     })
     if (valid) {
       const newReplySed = _.cloneDeep(_replySed)
+      let pin
+      if(!_.isEmpty(_newPersonFnr?.trim())){
+        pin = [{
+          land: "NO",
+          identifikator: _newPersonFnr.trim()
+        }]
+      }
       const personInfo: PersonInfo = {
         fornavn: _newPersonFornavn.trim(),
         etternavn: _newPersonEtternavn.trim(),
         foedselsdato: _newPersonFodselsdato.trim(),
         kjoenn: _newPersonKjoenn.trim() as Kjoenn,
         statsborgerskap: [],
-        pin: [{
-          land: "NO",
-          identifikator: _newPersonFnr.trim()
-        }]
+        pin
       } as PersonInfo
       if (_newPersonRelation === 'barn') {
         if (!Object.prototype.hasOwnProperty.call(newReplySed, 'barn')) {
