@@ -82,8 +82,8 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace + '-perioder' + getIdx(index)))
   }
 
-  const setInfoPresisering = (infoPresisering: string) => {
-    dispatch(updateReplySed('krav.infoPresisering', infoPresisering.trim()))
+  const setInfoPresisering = (infoPresisering: string | undefined) => {
+    dispatch(updateReplySed('krav.infoPresisering', infoPresisering ? infoPresisering.trim() : undefined))
     if (validation[namespace + '-infoPresisering']) {
       dispatch(resetValidation(namespace + '-infoPresisering'))
     }
@@ -104,6 +104,9 @@ const PeriodeFC: React.FC<MainFormProps> = ({
 
   const setInfoType = (info: string) => {
     dispatch(updateReplySed('krav.infoType', info.trim()))
+    if(info === "bekrefter_opplysninger"){
+      setInfoPresisering(undefined)
+    }
     if (validation[namespace + '-infoType']) {
       dispatch(resetValidation(namespace + '-infoType'))
     }
