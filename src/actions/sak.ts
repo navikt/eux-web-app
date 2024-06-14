@@ -60,12 +60,20 @@ export const createSak = (data: any): ActionWithPayload<any> => {
     payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsperioder
   }
   if (data.familierelasjoner && data.familierelasjoner.length > 0) {
-    payload.tilleggsopplysninger.familierelasjoner = data.familierelasjoner.map((relasjon: any) => ({
+    let relasjoner = data.familierelasjoner.map((relasjon: any) => ({
       ...relasjon,
       fdato: relasjon.fdato.indexOf('-') > 0
         ? relasjon.fdato
         : moment(relasjon.fdato, ['DD.MM.YYYY HH:mm', 'DD.MM.YYYY']).format('YYYY-MM-DD')
     }))
+
+    relasjoner.forEach((r:any) => {
+      if(r.statsborgerskap && r.statsborgerskapList){
+        delete r.statsborgerskapList
+      }
+    })
+
+    payload.tilleggsopplysninger.familierelasjoner = relasjoner
   }
 
   return call({
