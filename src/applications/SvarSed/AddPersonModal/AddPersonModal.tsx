@@ -1,5 +1,5 @@
 import { PlusCircleIcon, ChildEyesIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Modal as NavModal } from '@navikt/ds-react'
+import {BodyLong, Button, Heading, Modal as NavModal, TextField} from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
 import {
   AlignStartRow,
@@ -16,7 +16,6 @@ import {
 import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateField from 'components/DateField/DateField'
-import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { GrayPanel, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
@@ -227,6 +226,10 @@ const AddPersonModal = <T extends StorageTypes>({
   const getRelationOptions = (): Array<Option> => {
     const relationOptions: Array<Option> = []
     relationOptions.push({
+      label: "Velg",
+      value: ""
+    })
+    relationOptions.push({
       label: t('el:option-familierelasjon-bruker') + (_replySed?.bruker
         ? '(' + t('label:ikke-tilgjengelig') + ')'
         : ''),
@@ -328,24 +331,22 @@ const AddPersonModal = <T extends StorageTypes>({
           <VerticalSeparatorDiv />
           <AlignStartRow>
             <Column>
-              <Input
+              <TextField
                 error={_validation[namespace + '-fornavn']?.feilmelding}
-                id='fornavn'
-                namespace={namespace}
+                id={namespace + '-fornavn'}
                 label={t('label:fornavn')}
-                onChanged={setFornavn}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFornavn(e.target.value)}
                 required
                 value={_newPersonFornavn}
               />
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
-              <Input
+              <TextField
                 error={_validation[namespace + '-etternavn']?.feilmelding}
-                id='etternavn'
-                namespace={namespace}
+                id={namespace + '-etternavn'}
                 label={t('label:etternavn')}
-                onChanged={setEtternavn}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEtternavn(e.target.value)}
                 required
                 value={_newPersonEtternavn}
               />
@@ -364,12 +365,11 @@ const AddPersonModal = <T extends StorageTypes>({
               <HorizontalSeparatorDiv />
             </Column>
             <Column>
-              <Input
+              <TextField
                 error={_validation[namespace + '-fnr']?.feilmelding}
-                id='fnr'
+                id={namespace + '-fnr'}
                 label={t('label:fnr-dnr')}
-                namespace={namespace}
-                onChanged={setFnr}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFnr(e.target.value)}
                 value={_newPersonFnr}
               />
               <HorizontalSeparatorDiv />
