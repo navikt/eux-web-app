@@ -60,9 +60,11 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-
   const setForelderType = (forelderType: ForelderType) => {
     dispatch(updateReplySed(`${target}.forelderType`, forelderType))
+    if(forelderType !== 'annet'){
+      dispatch(updateReplySed(`${target}.annenRelasjonType`, undefined))
+    }
     if (validation[namespace + '-forelderType']) {
       dispatch(resetValidation(namespace + '-forelderType'))
     }
