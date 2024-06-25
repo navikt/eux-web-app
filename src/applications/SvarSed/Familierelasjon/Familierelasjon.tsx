@@ -99,16 +99,6 @@ const Familierelasjon: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  const cleanUp = (f: FamilieRelasjon): FamilieRelasjon => {
-    const _f = _.cloneDeep(f)
-    if (_f.relasjonType !== 'annet') {
-      delete _f.annenRelasjonPersonNavn
-      delete _f.annenRelasjonType
-      delete _f.borSammen
-    }
-    return _f
-  }
-
   const setRelasjonType = (relasjonType: RelasjonType, index: number) => {
     if (index < 0) {
       _setNewFamilierelasjon({
@@ -228,7 +218,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
         personName
       })
     if (!hasErrors) {
-      dispatch(updateReplySed(`${target}[${_editIndex}]`, cleanUp(_editFamilierelasjon!)))
+      dispatch(updateReplySed(`${target}[${_editIndex}]`, _editFamilierelasjon))
       onCloseEdit(namespace + getIdx(_editIndex))
     } else {
       dispatch(setValidation(clonedValidation))
@@ -254,7 +244,7 @@ const Familierelasjon: React.FC<MainFormProps> = ({
       if (_.isNil(newFamilieRelasjoner)) {
         newFamilieRelasjoner = []
       }
-      newFamilieRelasjoner.push(cleanUp(_newFamilierelasjon))
+      newFamilieRelasjoner.push(_newFamilierelasjon)
       dispatch(updateReplySed(target, newFamilieRelasjoner))
       standardLogger('svarsed.editor.familierelasjon.add')
       onCloseNew()
