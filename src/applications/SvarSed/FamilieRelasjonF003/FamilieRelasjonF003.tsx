@@ -44,7 +44,7 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
 
   const forelderTypeOptions: Options = [
     { label: t('el:placeholder-select-default'), value: '' },
-    { label: t('el:option-familierelasjon-gift'), value: 'gift' },
+    { label: t('el:option-familierelasjon-skilt'), value: 'skilt' },
     { label: t('el:option-familierelasjon-aleneforelder'), value: 'aleneforelder' },
     { label: t('el:option-familierelasjon-annet'), value: 'annet' }
   ]
