@@ -18,7 +18,6 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
 import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
@@ -265,7 +264,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const onSaveBesvarelseKommerEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationBesvarelseKommerProps>(
-      clonedValidation, namespace, validateBesvarelseKommer, {
+      clonedValidation, namespace + '-BesvarelseKommer', validateBesvarelseKommer, {
         dokument: _editBesvarelseKommer,
         dokumenter: besvarelseKommer,
         index: _editBesvarelseKommerIndex,
@@ -282,7 +281,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const onSaveBesvarelseUmuligEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationBesvarelseUmuligProps>(
-      clonedValidation, namespace, validateBesvarelseUmulig, {
+      clonedValidation, namespace + '-BesvarelseUmulig', validateBesvarelseUmulig, {
         dokument: _editBesvarelseUmulig,
         dokumenter: besvarelseUmulig,
         index: _editBesvarelseUmuligIndex,
@@ -411,8 +410,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   <TextAreaDiv>
                     <TextArea
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                      id='info'
-                      maxLength={51}
+                      id='beskrivelse'
+                      maxLength={65}
                       label={t('label:opplysninger')}
                       namespace={_namespace}
                       onChanged={(info: string) => setBesvarelseKommerInfo(info, index)}
@@ -547,7 +546,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     <TextArea
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='beskrivelse'
-                      maxLength={51}
+                      maxLength={65}
                       label={t('label:opplysninger')}
                       namespace={_namespace}
                       onChanged={(info: string) => setBesvarelseUmuligInfo(info, index)}
@@ -583,16 +582,18 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
               {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                 <AlignStartRow>
                   <Column>
-                    <Input
-                      error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
-                      namespace={_namespace}
-                      id='begrunnelseAnnen'
-                      label={t('label:begrunnelseAnnen')}
-                      hideLabel
-                      onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
-                      required
-                      value={_BesvarelseUmulig?.begrunnelseAnnen}
-                    />
+                    <TextAreaDiv>
+                      <TextArea
+                        error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
+                        id='begrunnelseAnnen'
+                        maxLength={255}
+                        label={t('label:begrunnelseAnnen')}
+                        hideLabel
+                        namespace={_namespace}
+                        onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
+                        value={_BesvarelseUmulig?.begrunnelseAnnen}
+                      />
+                    </TextAreaDiv>
                   </Column>
                 </AlignStartRow>
               )}

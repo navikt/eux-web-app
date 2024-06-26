@@ -10,6 +10,7 @@ export interface TextAreaProps {
   namespace: string
   id: string
   label: string
+  hideLabel ?: boolean
   maxLength ?: number
   cols?: number
   onChanged: (e: string) => void
@@ -24,6 +25,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   namespace,
   id,
   label,
+  hideLabel = false,
   maxLength = 500,
   cols,
   onChanged,
@@ -50,6 +52,7 @@ const TextArea: React.FC<TextAreaProps> = ({
       error={error}
       id={namespace + '-' + id}
       label={label + (required ? ' *' : '')}
+      hideLabel={hideLabel}
       maxLength={maxLength}
       cols={cols}
       onBlur={() => {

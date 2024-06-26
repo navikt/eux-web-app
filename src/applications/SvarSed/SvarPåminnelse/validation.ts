@@ -1,7 +1,7 @@
 import { BesvarelseKommer, BesvarelseUmulig } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty, checkLength } from 'utils/validation'
+import {checkIfDuplicate, checkIfNotEmpty, checkLength, checkValidDateFormat} from 'utils/validation'
 
 export interface ValidationBesvarelseKommerProps {
   dokument: BesvarelseKommer | undefined
@@ -50,10 +50,25 @@ export const validateBesvarelseKommer = (
     personName
   }))
 
+  hasErrors.push(checkLength(v, {
+    needle: dokument?.beskrivelse,
+    max: 65,
+    id: namespace + idx + '-beskrivelse',
+    message: 'validation:textOverX',
+    personName
+  }))
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: dokument?.innenDato,
     id: namespace + idx + '-innenDato',
     message: 'validation:noDate',
+    personName
+  }))
+
+  hasErrors.push(checkValidDateFormat(v, {
+    needle: dokument?.innenDato,
+    id: namespace + idx + '-innenDato',
+    message: 'validation:invalidDateFormat',
     personName
   }))
 
@@ -94,6 +109,14 @@ export const validateBesvarelseUmulig = (
     needle: dokument?.beskrivelse,
     id: namespace + idx + '-beskrivelse',
     message: 'validation:noInfo',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: dokument?.beskrivelse,
+    max: 65,
+    id: namespace + idx + '-beskrivelse',
+    message: 'validation:textOverX',
     personName
   }))
 
