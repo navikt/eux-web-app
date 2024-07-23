@@ -413,9 +413,10 @@ export interface Loennsopplysning extends PeriodePeriode {
   arbeidstimer?: string
 }
 
-export interface RettTilYtelse extends PeriodePeriode {
+export interface RettTilYtelse{
   bekreftelsesgrunn?: string
   avvisningsgrunn?: string
+  periode?: Periode
 }
 
 export interface BaseReplySed {

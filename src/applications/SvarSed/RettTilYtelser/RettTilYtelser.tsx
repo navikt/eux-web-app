@@ -44,11 +44,11 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   })
 
   useEffect(() => {
-    if (!_.isEmpty(rettTilYtelse?.bekreftelsesgrunn)) {
+    if (!_.isNil(rettTilYtelse?.bekreftelsesgrunn)) {
       _setRettTilStonad('ja')
       return
     }
-    if (!_.isEmpty(rettTilYtelse?.avvisningsgrunn)) {
+    if (!_.isNil(rettTilYtelse?.avvisningsgrunn)) {
       _setRettTilStonad('nei')
       return
     }
@@ -61,7 +61,13 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   }
 
   const setRettTilStonad = (rettTilStonad: JaNei) => {
-    _setRettTilStonad(rettTilStonad)
+    if(rettTilStonad === "ja"){
+      setBekreftelsesgrunn("")
+    } else {
+      setAvvisningsGrunn("")
+    }
+    //_setRettTilStonad(rettTilStonad)
+
     if (validation[namespace + '-retttilstonad']) {
       dispatch(resetValidation(namespace + '-retttilstonad'))
     }
@@ -87,6 +93,7 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
     }
     newRettTilYtelse.avvisningsgrunn = avvisningsgrunn.trim()
     delete newRettTilYtelse.bekreftelsesgrunn
+    delete newRettTilYtelse.periode
     dispatch(updateReplySed(target, newRettTilYtelse))
     if (validation[namespace + '-avvisningsgrunn']) {
       dispatch(resetValidation(namespace + '-avvisningsgrunn'))
