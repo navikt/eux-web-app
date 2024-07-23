@@ -25,11 +25,17 @@ import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import useLocalValidation from "../../hooks/useLocalValidation";
+import performValidation from "../../utils/performValidation";
+import {resetValidation, setValidation} from "../../actions/validation";
+import {validateFoedested, ValidationFoedestedProps} from "./validation";
+import {useAppDispatch} from "../../store";
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
   onFoedestedChanged: (newFoedested: Foedested) => void
   namespace: string,
+  personName?: string
   loggingNamespace: string,
   validation: Validation
 }
@@ -39,9 +45,11 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   foedested,
   onFoedestedChanged,
   namespace,
+  personName,
   validation
 }: FoedestedProps) => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
 
   const [_newFoedested, _setNewFoedested] = useState<Foedested | undefined>(undefined)
@@ -49,6 +57,8 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 
   const [_editMode, _setEditMode] = useState<boolean>(false)
   const [_newForm, _setNewForm] = useState<boolean>(false)
+
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationFoedestedProps>(validateFoedested, namespace)
 
   const emptyFoedsted: boolean = (
     _.isEmpty(foedested?.by?.trim()) &&
@@ -90,22 +100,26 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         ..._newFoedested,
         land: land.trim()
       })
+      _resetValidation(namespace + '-land')
       return
     }
     _setEditFoedested({
       ..._editFoedested,
       land: land.trim()
     })
+    dispatch(resetValidation(namespace + '-land'))
   }
 
   const onCloseEdit = () => {
     _setEditFoedested(undefined)
     _setEditMode(false)
+    dispatch(resetValidation(namespace))
   }
 
   const onCloseNew = () => {
     _setNewFoedested(undefined)
     _setNewForm(false)
+    _resetValidation()
   }
 
   const onStartEdit = (f: Foedested) => {
@@ -114,8 +128,18 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   }
 
   const onSaveEdit = () => {
-    onFoedestedChanged(_editFoedested ?? {} as Foedested)
-    onCloseEdit()
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationFoedestedProps>(
+      clonedValidation, namespace, validateFoedested, {
+        foedested: _newFoedested,
+        personName
+      })
+    if(!hasErrors){
+      onFoedestedChanged(_editFoedested ?? {} as Foedested)
+      onCloseEdit()
+    } else {
+      dispatch(setValidation(clonedValidation))
+    }
   }
 
   const onRemove = () => {
@@ -125,14 +149,21 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 
   const onAddNew = () => {
     // this one does not have validation.
-    standardLogger(loggingNamespace + '.foedested.add')
-    onFoedestedChanged(_newFoedested ?? {} as Foedested)
-    onCloseNew()
+    const valid: boolean = _performValidation({
+      foedested: _newFoedested,
+      personName
+    })
+    if (!!_newFoedested && valid){
+      standardLogger(loggingNamespace + '.foedested.add')
+      onFoedestedChanged(_newFoedested ?? {} as Foedested)
+      onCloseNew()
+    }
   }
 
   const renderRow = (foedested: Foedested | null, index: number) => {
     const inEditMode = index < 0 || _editMode
     const _foedested = index < 0 ? _newFoedested : (inEditMode ? _editFoedested : foedested)
+    const _v: Validation = index < 0 ? _validation : validation
     return (
       <RepeatableRow
         id={'repeatablerow-' + namespace}
@@ -146,7 +177,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
             {inEditMode
               ? (
                 <Input
-                  error={validation[namespace + '-by']?.feilmelding}
+                  error={_v[namespace + '-by']?.feilmelding}
                   id='by'
                   label={t('label:by')}
                   hideLabel={index >= 0}
@@ -165,7 +196,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
             {inEditMode
               ? (
                 <Input
-                  error={validation[namespace + '-region']?.feilmelding}
+                  error={_v[namespace + '-region']?.feilmelding}
                   id='region'
                   label={t('label:region')}
                   hideLabel={index >= 0}
@@ -183,7 +214,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               ? (
                 <CountrySelect
                   data-testid={namespace + '-land'}
-                  error={validation[namespace + '-land']?.feilmelding}
+                  error={_v[namespace + '-land']?.feilmelding}
                   id={namespace + '-land'}
                   includeList={CountryFilter.STANDARD({})}
                   label={t('label:land')}

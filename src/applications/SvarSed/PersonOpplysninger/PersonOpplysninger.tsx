@@ -292,6 +292,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         foedested={personInfo?.pinMangler?.foedested}
         onFoedestedChanged={setFoedsted}
         namespace={namespace + '-foedested'}
+        personName={personName}
         validation={validation}
       />
     </>

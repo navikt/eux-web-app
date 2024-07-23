@@ -1,9 +1,10 @@
 import { validateUtenlandskPin } from 'components/UtenlandskPins/validation'
-import { PersonInfo, Pin } from 'declarations/sed'
+import {Foedested, PersonInfo, Pin} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import {addError, checkIfNotDate, checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
 import {validateFnrDnrNpid} from "../../../utils/fnrValidator";
+import {validateFoedested} from "../../../components/Foedested/validation";
 
 export interface ValidationPersonopplysningerProps {
   personInfo: PersonInfo | undefined
@@ -83,5 +84,12 @@ export const validatePersonopplysninger = (
     }))
   })
 
+  const foedested: Foedested | undefined = personInfo?.pinMangler?.foedested
+  if(foedested){
+    hasErrors.push(validateFoedested(v, namespace + '-foedested', {
+      foedested,
+      personName
+    }))
+  }
   return hasErrors.find(value => value) !== undefined
 }
