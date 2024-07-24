@@ -188,10 +188,19 @@ const SEDEdit = (): JSX.Element => {
   }
 
   const onSendSedClick = () => {
-    if (replySed?.sak?.sakId && replySed?.sed?.sedId) {
-      _setSendButtonClicked(true)
-      dispatch(sendSedInRina(replySed.sak!.sakId!, replySed?.sed?.sedId!))
-      standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
+    if (replySed) {
+      const newReplySed: ReplySed = cleanReplySed(replySed)
+      const clonedValidation = _.cloneDeep(validation)
+      const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
+        replySed: newReplySed
+      })
+      dispatch(setValidation(clonedValidation))
+
+      if (!hasErrors && replySed?.sak?.sakId && replySed?.sed?.sedId) {
+        _setSendButtonClicked(true)
+        dispatch(sendSedInRina(replySed.sak!.sakId!, replySed?.sed?.sedId!))
+        standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
+      }
     }
   }
 
