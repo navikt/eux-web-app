@@ -1,6 +1,7 @@
 import {Foedested} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty, checkIfValidLand } from 'utils/validation'
+import _ from "lodash";
 
 export interface ValidationFoedestedProps {
   foedested: Foedested | null | undefined,
@@ -17,18 +18,20 @@ export const validateFoedested = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: foedested?.land,
-    id: namespace + '-land',
-    message: 'validation:noLand',
-    personName
-  }))
+  if(!_.isEmpty(foedested)){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: foedested?.land,
+      id: namespace + '-land',
+      message: 'validation:noLand',
+      personName
+    }))
 
-  hasErrors.push(checkIfValidLand(v, {
-    needle: foedested?.land,
-    id: namespace + '-land',
-    message: 'validation:invalidLand'
-  }))
+    hasErrors.push(checkIfValidLand(v, {
+      needle: foedested?.land,
+      id: namespace + '-land',
+      message: 'validation:invalidLand'
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }
