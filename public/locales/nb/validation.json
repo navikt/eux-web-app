@@ -46,13 +46,13 @@
   "noAntallPersoner": "Ingen antall personer",
   "noArbeidstimer": "Ingen arbeidstimer",
   "noAvgrensing": "Ingen avgrensning av periode",
-  "noAvvisningsgrunn": "Mangler grunn",
+  "noAvvisningsgrunn": "Ingen avslagsgrunn",
 
   "noBarnValgt": "Ingen barn valgt",
   "noBarnEllerFamilie": "Velg mellom barn eller familie",
   "noBegrunnelse": "Ingen begrunnelse",
   "noBegrunnelseAnnen": "Mangler annen begrunnelse",
-  "noBekreftelsesgrunn": "Mangler bekreftelsesgrunn (artikkelnummer)",
+  "noBekreftelsesgrunn": "Ingen innvilgelsesgrunn",
   "noBeløp": "Ingen beløp",
   "noBetegnelsePåYtelse": "Ingen betegnelse på ytelse",
   "noBirthCountry": "Ingen statsborgerskaps land",
@@ -121,7 +121,7 @@
 
   "noRelation": "Ingen relasjon valgt",
   "noRelationType": "Ingen type for relasjon",
-  "noRettTilStønad": "Du må svare på om du har rett til stønad",
+  "noRettTilStønad": "Ingen informasjon om stønad",
   "noRinadokumentID": "Du må velge en SED",
   "noRolle": "Ingen rolle valgt",
 
