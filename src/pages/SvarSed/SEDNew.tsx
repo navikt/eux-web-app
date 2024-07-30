@@ -169,11 +169,18 @@ const mapState = (state: State): SEDNewSelector => ({
 })
 
 export const MyContent = styled(Content)`
-  @media (min-width: 768px) {
-   min-width: 800px;
-   maxWidth: 1000px;
- }
+  @media (min-width: 1280px) {
+    div.personInfo {
+      display: none;
+    }
+  };
   align-items: center;
+`
+
+export const PersonInfoContent = styled(Content)`
+  @media (max-width: 1280px) {
+    display: none;
+  };
 `
 
 const SEDNew = (): JSX.Element => {
@@ -472,7 +479,13 @@ const SEDNew = (): JSX.Element => {
               person={person}
             />
           </Column>
-          <Column />
+          <Column/>
+        </Row>
+        <VerticalSeparatorDiv size='2' />
+        <Row className="personInfo">
+          <Column>
+            <SakSidebar />
+          </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row>
@@ -862,9 +875,9 @@ const SEDNew = (): JSX.Element => {
           </>
         )}
       </MyContent>
-      <Content style={{ flex: 2 }}>
+      <PersonInfoContent style={{ flex: 2 }}>
         <SakSidebar />
-      </Content>
+      </PersonInfoContent>
       <Margin />
     </Container>
   )
