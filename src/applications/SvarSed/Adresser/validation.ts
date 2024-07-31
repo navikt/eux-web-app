@@ -1,7 +1,7 @@
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfNotEmpty } from 'utils/validation'
+import {checkIfNotEmpty, checkLength} from 'utils/validation'
 
 export interface ValidationAdresseProps {
   adresse: Adresse | undefined
@@ -50,6 +50,41 @@ export const validateAdresse = (
     id: namespace + idx + '-by',
     message: 'validation:noAddressCity',
     personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.gate,
+    id: namespace + idx + '-gate',
+    max: 155,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.bygning,
+    id: namespace + idx + '-bygning',
+    max: 155,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.by,
+    id: namespace + idx + '-by',
+    max: 65,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.postnummer,
+    id: namespace + idx + '-postnummer',
+    max: 25,
+    message: 'validation:textOverX'
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: adresse?.region,
+    id: namespace + idx + '-region',
+    max: 65,
+    message: 'validation:textOverX'
   }))
 
   return hasErrors.find(value => value) !== undefined
