@@ -131,7 +131,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationFoedestedProps>(
       clonedValidation, namespace, validateFoedested, {
-        foedested: _newFoedested,
+        foedested: _editFoedested,
         personName
       })
     if(!hasErrors){

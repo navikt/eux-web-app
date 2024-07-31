@@ -1,6 +1,6 @@
 import {Foedested} from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty, checkIfValidLand } from 'utils/validation'
+import {checkIfNotEmpty, checkIfValidLand, checkLength} from 'utils/validation'
 import _ from "lodash";
 
 export interface ValidationFoedestedProps {
@@ -31,6 +31,21 @@ export const validateFoedested = (
       id: namespace + '-land',
       message: 'validation:invalidLand'
     }))
+
+    hasErrors.push(checkLength(v, {
+      needle: foedested?.by,
+      id: namespace + '-by',
+      max: 65,
+      message: 'validation:textOverX'
+    }))
+
+    hasErrors.push(checkLength(v, {
+      needle: foedested?.region,
+      id: namespace + '-region',
+      max: 65,
+      message: 'validation:textOverX'
+    }))
+
   }
 
   return hasErrors.find(value => value) !== undefined
