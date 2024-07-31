@@ -1,7 +1,7 @@
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty, checkIfValidLand } from 'utils/validation'
+import {checkIfDuplicate, checkIfNotEmpty, checkIfValidLand, checkLength} from 'utils/validation'
 
 export interface ValidationUtenlandskPinProps {
   pin: Pin | null | undefined
@@ -32,6 +32,14 @@ export const validateUtenlandskPin = (
     needle: pin?.identifikator,
     id: namespace + idx + '-identifikator',
     message: 'validation:noId',
+    personName
+  }))
+
+  hasErrors.push(checkLength(v, {
+    needle: pin?.identifikator,
+    id: namespace + idx + '-identifikator',
+    max: 65,
+    message: 'validation:textOverX',
     personName
   }))
 
