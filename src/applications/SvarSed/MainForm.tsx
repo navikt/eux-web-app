@@ -41,6 +41,7 @@ const LeftDiv = styled.div`
   flex-direction: column;
   align-self: stretch;
   min-width: 300px;
+  max-width: 300px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 `

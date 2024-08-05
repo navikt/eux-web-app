@@ -62,7 +62,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   })
 
   const setFornavn = (newFornavn: string) => {
-    dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
+    dispatch(updateReplySed(`${target}.fornavn`, newFornavn))
     if (validation[namespace + '-fornavn']) {
       dispatch(resetValidation(namespace + '-fornavn'))
     }
