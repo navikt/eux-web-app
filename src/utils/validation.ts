@@ -159,7 +159,7 @@ export const checkIfValidLand = (v: Validation, {
   message,
   extra
 }: any): boolean => {
-  if (!_.isEmpty(needle) && needle?.trim()?.length !== 2) {
+  if (!_.isEmpty(needle) && needle?.trim()?.length !== 3) {
     return addError(v, { id, personName, message, extra })
   }
   return false

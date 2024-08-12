@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.3.2",
+  "version": "9.4.0-TEN-855-LANDKODER",
   "private": true,
   "type": "module",
   "scripts": {
@@ -35,7 +35,7 @@
     "@navikt/forhandsvisningsfil": "^5.0.0",
     "@navikt/hoykontrast": "^4.0.1",
     "@navikt/land-verktoy": "^4.0.0",
-    "@navikt/landvelger": "^4.0.0",
+    "@navikt/landvelger": "^4.1.0",
     "@navikt/tabell": "^4.4.1",
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/browser": "^7.11.1",
@@ -223,6 +223,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@9.3.2",
+  "_id": "neessi@9.4.0-TEN-855-LANDKODER",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

@@ -19,14 +19,14 @@
       "adressebeskyttelse": "STRENGT_FORTROLIG",
       "pin": [
         {
-          "land": "NO",
+          "land": "NOR",
           "sektor": "Folkeregistrer",
           "identifikator": "10000000001",
           "institusjonsid": "NO:DEMO01",
           "institusjonsnavn": "Skatteetaten"
         },
         {
-          "land": "SE",
+          "land": "SWE",
           "sektor": "Registry",
           "identifikator": "20000000001",
           "institusjonsid": "US:DEMO01",

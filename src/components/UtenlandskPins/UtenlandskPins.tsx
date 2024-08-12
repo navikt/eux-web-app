@@ -11,7 +11,7 @@ import {
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
+import CountryData, { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
@@ -54,7 +54,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const countryData = CountryData.getCountryInstance('nb')
-  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
+  const landUtenNorge = ['SWE', 'FIN'] //CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
   const getId = (p: Pin | null): string => p ? p.land + '-' + p.identifikator : 'new'
 
   const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)
@@ -189,8 +189,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   hideLabel={index >= 0}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => setUtenlandskeLand(e.value, index)}
+                  onOptionSelected={(e: Country) => setUtenlandskeLand(e.value3, index)}
                   values={_pin?.land}
+                  useAlpha3Value={true}
                 />
                 )
               : (
@@ -201,9 +202,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   {_pin?.land
                     ? (
                       <FlexCenterDiv>
-                        <Flag size='S' country={_pin?.land!} />
+                        <Flag size='S' country={countryData.findByValue3(_pin?.land)?.value!} />
                         <HorizontalSeparatorDiv />
-                        {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
+                        {countryData.findByValue3(_pin?.land)?.label ?? _pin?.land}
                       </FlexCenterDiv>
                       )
                     : (
