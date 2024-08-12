@@ -45,7 +45,7 @@ export default (saksnummer: string, type: string) => {
         "fnr": "12345678901"
       },
       sakshandlinger: [
-        'H001', 'F002', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
+        'H001', 'F002', 'F026', 'F027', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
       sedListe: [
         {

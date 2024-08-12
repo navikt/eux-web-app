@@ -218,11 +218,12 @@ export const createH001Sed = (
   payload: { sak }
 })
 
-export const createF002Sed = (
+export const createFSed = (
+  sedType: string,
   sak: Sak
 ): ActionWithPayload<any> => ({
-  type: types.SVARSED_F002SED_CREATE,
-  payload: { sak }
+  type: types.SVARSED_FSED_CREATE,
+  payload: { sedType, sak }
 })
 
 
