@@ -1,0 +1,131 @@
+{
+  "sedType": "F026",
+  "sedVersjon": "4.3",
+  "bruker": {
+    "adresser": [
+      {
+        "type": "kontakt",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "BG",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "arbeid",
+        "nummer": "æøå"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "æøå"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunnAnnen": "æøå"
+    },
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "U",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "BG",
+          "fraDato": "2001-01-01"
+        }
+      ],
+      "pin": [
+        {
+          "land": "BG",
+          "sektor": "alle",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "BG"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    }
+  },
+  "ytterligereInfo": "æøå",
+  "anmodningOmMerInformasjon": {
+    "utdanning": {
+      "timerPr": "maaned",
+      "ytterligereInformasjon": "æøå",
+      "typeDeltakelse": "deltid",
+      "timer": "æøå",
+      "type": "universitet"
+    },
+    "utdanningsinstitusjon": {
+      "adresse": {
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "BG",
+        "bygning": "æøå",
+        "region": "æøå"
+      },
+      "ytterligereInformasjon": "æøå",
+      "navn": "æøå",
+      "identifikator": [
+        {
+          "id": "æøå",
+          "type": "skatt"
+        }
+      ]
+    },
+    "annenInformasjonOmBarnet": {
+      "ytterligereInformasjon": "æøå",
+      "etterspurtInformasjonType": "er_barnet_adoptert"
+    },
+    "ytelseTilForeldreLoese": {
+      "ytterligereInformasjon": "æøå",
+      "etterspurtInformasjonType": "identifikasjon_av_andre_personer_en_annen_slektning_verge_som_søker_på_vegne_av_den_foreldreløse_barnet"
+    },
+    "adopsjon": {
+      "ytterligereInformasjon": "æøå",
+      "etterspurtInformasjonType": "dokument_som_stadfester_at_adopsjonen_er_lovlig"
+    },
+    "inntekt": {
+      "ytterligereInformasjon": "æøå",
+      "etterspurtInformasjonType": "periode_fratil_det_kreves_opplysninger_om"
+    }
+  }
+}

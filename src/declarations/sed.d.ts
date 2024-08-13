@@ -1,5 +1,6 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { Sak, Sed } from 'declarations/types'
+import Identifikator from "../applications/SvarSed/Identifikator/Identifikator";
 
 export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'
 
@@ -53,6 +54,42 @@ export type YtterligereInfoType = 'melding_om_mer_informasjon' | 'admodning_om_m
 export type PeriodeSort = 'time' | 'group'
 
 export type PeriodeView = 'periods' | 'all'
+
+export type AdopsjonEtterspurtInformasjonType =
+  'dato_da_adoptivforeldrene_fikk_omsorg_for_det_adopterte_barnet' |
+  'dato_da_adopsjonsbevillingen_ble_offentlig_registrert' |
+  'dokument_som_stadfester_at_adopsjonen_er_lovlig'
+
+export type AnnenInformasjonOmBarnetEtterspurtInformasjonType =
+  'hvem_har_daglig_omsorg_for_barnet' |
+  'hvem_har_foreldreansvar_for_barnet' |
+  'er_barnet_adoptert' |
+  'forsørges_barnet_av_det_offentlige' |
+  'går_barnet_i_barnehage_finansieres_barnehagen_av_staten_eller_det_offentlige_antall_timer_barnet_går_i_barnehage' |
+  'barnets_sivilstand' |
+  'dato_for_endrede_forhold'
+
+export type InntektEtterspurtInformasjonType =
+  'type_påkrevde_data_inntektskilde' |
+  'årlig_inntekt' |
+  'periode_fratil_det_kreves_opplysninger_om'
+
+export type YtelseTilForeldreloeseEtterspurtInformasjonType =
+  'identifisering_av_den_avdøde' |
+  'identifisering_av_de_berørte_barna' |
+  'identifikasjon_av_andre_personer_en_annen_slektning_verge_som_søker_på_vegne_av_den_foreldreløse_barnet' |
+  'den_foreldreløses_barnets_bosted' |
+  'relasjon_mellom_den_foreldreløse_barnet_og_avdøde' |
+  'relasjon_mellom_annen_person_og_den_avdøde' |
+  'den_foreldreløses_barnets_aktivitet' |
+  'skole' |
+  'opplæring' |
+  'uførhet' |
+  'qrbeidsledighet' |
+  'inntekt_til_den_foreldreløse_barnet'
+
+export type UtdanningType = 'skole' | 'høyskole' | 'universitet' | 'yrkesrettet_opplæring' | 'barnehage_daghjem'
+
 
 // periode: simple period. arbeidsperiode: period as ForsikringPeriode
 export type PlanItemType = 'periode' | 'forsikringPeriode'
@@ -210,6 +247,8 @@ export interface PersonBruker {
     typeGrunnAnnen?: string
   } | null
   perioderMedYtelser?: Array<Periode> | null
+  perioderMedITrygdeordning?: Array<Periode> | null
+  perioderUtenforTrygdeordning?: Array<Periode> | null
 }
 
 export interface PersonEktefelle {
@@ -522,6 +561,40 @@ export interface F003Sed extends BaseReplySed {
     kravType: string
   }
   vedtak?: VedtakF003
+}
+
+export interface F026Sed extends BaseReplySed {
+  bruker: PersonBruker
+  ytterligereInfo?: string
+  anmodningOmMerInformasjon?:{
+    adopsjon?: EtterspurtInformasjon
+    inntekt?: EtterspurtInformasjon
+    ytelseTilForeldreLoese?: EtterspurtInformasjon
+    annenInformasjonOmBarnet?: EtterspurtInformasjon
+    utdanning?: {
+      timerPr?: 'dag' | 'uke' | 'maaned',
+      ytterligereInformasjon?: string
+      typeDeltakelse?: 'heltid' | 'deltid'
+      timer?: string
+      type?: UtdanningType
+    }
+    utdanningsinstitusjon?: {
+      adresse?: Adresse
+      ytterligereInformasjon?: string
+      navn?: string
+      identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
+    }
+  }
+}
+
+export interface EtterspurtInformasjon {
+  ytterligereInformasjon?: string
+  etterspurtInformasjonType?: Array<AdopsjonEtterspurtInformasjonType | InntektEtterspurtInformasjonType | AnnenInformasjonOmBarnetEtterspurtInformasjonType | YtelseTilForeldreloeseEtterspurtInformasjonType>
+}
+
+export interface UtdanningsInstitusjonsIndentifikator {
+  type?: string
+  id?: string
 }
 
 export interface USed extends BaseReplySed {
