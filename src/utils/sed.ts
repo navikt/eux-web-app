@@ -18,6 +18,8 @@ export const isF002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 
 export const isF003Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F003'
 
+export const isF026Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'F026'
+
 export const isU002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U002'
 
 export const isU004Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'U004'

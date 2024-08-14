@@ -6,7 +6,7 @@ import {
   Column,
   FlexRadioPanels,
   PaddedDiv,
-  PaddedHorizontallyDiv,
+  PaddedHorizontallyDiv, PaddedVerticallyDiv,
   RadioPanel,
   RadioPanelGroup,
   VerticalSeparatorDiv
@@ -17,7 +17,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableRow } from 'components/StyledComponents'
 import { Periode, PeriodeSort, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -31,6 +31,17 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateDekkedePeriode, ValidationDekkedePeriodeProps } from './validation'
+import styled from "styled-components";
+
+const GreyBoxWithBorder = styled.div`
+  background-color: var(--a-surface-subtle);
+  border: 1px solid var(--a-border-default);
+  padding: 0 1rem;
+
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+`
 
 interface DekkedePerioderProps extends MainFormProps {
   validation: Validation
@@ -305,70 +316,75 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   return (
     <>
-      <VerticalSeparatorDiv />
-      {!_.isEmpty(_allPeriods) && (
-        <>
-          <PaddedHorizontallyDiv>
-            <Checkbox
-              checked={_sort === 'group'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-            >
-              {t('label:group-by-dekkede')}
-            </Checkbox>
-          </PaddedHorizontallyDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {_.isEmpty(_allPeriods)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : (_sort === 'time'
-            ? _allPeriods?.map(renderRow)
-            : (
-              <>
-                {!_.isEmpty(person?.perioderMedITrygdeordning) && (
-                  <PaddedDiv>
-                    <Label>
-                      {t('label:dekkede')}
-                    </Label>
-                  </PaddedDiv>
-                )}
-                {person?.perioderMedITrygdeordning?.map((p: Periode, i: number) =>
-                  ({ ...p, __type: 'perioderMedITrygdeordning', __index: i }))
-                  .sort(periodeSort).map(renderRow)}
-                {!_.isEmpty(person?.perioderUtenforTrygdeordning) && (
-                  <PaddedDiv>
-                    <Label>
-                      {t('label:udekkede')}
-                    </Label>
-                  </PaddedDiv>
-                )}
-                {person?.perioderUtenforTrygdeordning?.map((p: Periode, i: number) =>
-                  ({ ...p, __type: 'perioderUtenforTrygdeordning', __index: i }))
-                  .sort(periodeSort).map(renderRow)}
-              </>
-              ))}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
+      <PaddedDiv>
+        <GreyBoxWithBorder
+          id={namespace + '-dekkedePerioder'}
+          className={classNames({
+            error: hasNamespaceWithErrors(validation, namespace)
+          })}
+        >
+          {!_.isEmpty(_allPeriods) && (
+            <>
+              <PaddedHorizontallyDiv>
+                <Checkbox
+                  checked={_sort === 'group'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+                >
+                  {t('label:group-by-dekkede')}
+                </Checkbox>
+              </PaddedHorizontallyDiv>
+              <VerticalSeparatorDiv />
+            </>
           )}
+          {_.isEmpty(_allPeriods)
+            ? (
+              <PaddedVerticallyDiv>
+                <BodyLong>
+                  {t('message:warning-no-periods')}
+                </BodyLong>
+              </PaddedVerticallyDiv>
+              )
+            : (_sort === 'time'
+                ? _allPeriods?.map(renderRow)
+                : (
+                  <>
+                    {!_.isEmpty(person?.perioderMedITrygdeordning) && (
+                      <PaddedDiv>
+                        <Label>
+                          {t('label:dekkede')}
+                        </Label>
+                      </PaddedDiv>
+                    )}
+                    {person?.perioderMedITrygdeordning?.map((p: Periode, i: number) =>
+                      ({ ...p, __type: 'perioderMedITrygdeordning', __index: i }))
+                      .sort(periodeSort).map(renderRow)}
+                    {!_.isEmpty(person?.perioderUtenforTrygdeordning) && (
+                      <PaddedDiv>
+                        <Label>
+                          {t('label:udekkede')}
+                        </Label>
+                      </PaddedDiv>
+                    )}
+                    {person?.perioderUtenforTrygdeordning?.map((p: Periode, i: number) =>
+                      ({ ...p, __type: 'perioderUtenforTrygdeordning', __index: i }))
+                      .sort(periodeSort).map(renderRow)}
+                  </>
+                  ))}
+          {_newForm
+            ? renderRow(null, -1)
+            : (
+                <Button
+                  variant='tertiary'
+                  onClick={() => _setNewForm(true)}
+                  icon={<PlusCircleIcon/>}
+                >
+                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                </Button>
+              )
+          }
+          <VerticalSeparatorDiv />
+        </GreyBoxWithBorder>
+      </PaddedDiv>
     </>
   )
 }

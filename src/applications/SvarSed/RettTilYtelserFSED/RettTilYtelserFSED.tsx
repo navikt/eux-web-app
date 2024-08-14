@@ -40,6 +40,7 @@ import {
 import {periodeSort} from "../../../utils/sort";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 import TextArea from "../../../components/Forms/TextArea";
+import {isF026Sed} from "../../../utils/sed";
 
 const GreyBoxWithBorder = styled.div`
   background-color: var(--a-surface-subtle);
@@ -344,6 +345,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
                 onChange={setIkkeRettTilFamilieYtelser}
               >
                 <FlexRadioPanels>
+                  {isF026Sed(replySed) && <RadioPanel value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</RadioPanel>}
                   <RadioPanel value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</RadioPanel>
                   <RadioPanel value='annen_grunn'>{t('label:annet')}</RadioPanel>
                 </FlexRadioPanels>

@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { ReplySed } from 'declarations/sed'
+import {isF001Sed, isF002Sed, isF026Sed} from 'utils/sed'
+import RettTilYtelserFSED from '../RettTilYtelserFSED/RettTilYtelserFSED'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -48,10 +50,9 @@ const Trygdeordning: React.FC<MainFormProps> = ({
     <>
       <PaddedDiv>
         <Heading size='small'>
-          {t('label:dekning-trygdeordningen')}
+          {t('label:periode-trygdeordning-avsenderlandet')}
         </Heading>
       </PaddedDiv>
-      <VerticalSeparatorDiv />
       <DekkedePerioder
         parentNamespace={namespace}
         personID={personID}
@@ -61,22 +62,35 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         validation={validation}
       />
-      <VerticalSeparatorDiv size={2} />
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:trygdeordningen-familieYtelse')}
-        </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      <FamilieYtelser
-        parentNamespace={namespace}
-        personID={personID}
-        personName={personName}
-        replySed={replySed}
-        updateReplySed={updateReplySed}
-        setReplySed={setReplySed}
-        validation={validation}
-      />
+      {(isF001Sed(replySed) || isF002Sed(replySed)) &&
+        <>
+          <PaddedDiv>
+            <Heading size='small'>
+              {t('label:trygdeordningen-familieYtelse')}
+            </Heading>
+          </PaddedDiv>
+          <VerticalSeparatorDiv/>
+          <FamilieYtelser
+            parentNamespace={namespace}
+            personID={personID}
+            personName={personName}
+            replySed={replySed}
+            updateReplySed={updateReplySed}
+            setReplySed={setReplySed}
+            validation={validation}
+          />
+        </>
+      }
+      {isF026Sed(replySed) &&
+        <RettTilYtelserFSED
+          parentNamespace={namespace}
+          personID={personID}
+          personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
+        />
+      }
     </>
   )
 }
