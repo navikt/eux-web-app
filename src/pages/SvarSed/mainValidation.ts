@@ -116,7 +116,7 @@ import { validateVedtak as validateVedtakF003, ValidationVedtakProps as Validati
 import {
   validateTrygdeOrdninger,
   ValidationTrygdeOrdningerProps
-} from "../../applications/SvarSed/TrygdeordningF003/validation";
+} from "../../applications/SvarSed/RettTilYtelserFSED/validation";
 import {
   validateFamilierelasjon,
   ValidationFamilierelasjonProps
@@ -248,7 +248,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         } else if(ikkeRettTilYtelser){
           rettTilFamilieYtelser = "nei"
         }
-        hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-trygdeordningf003`, validateTrygdeOrdninger, {
+        hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
           perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
         }, true))
 

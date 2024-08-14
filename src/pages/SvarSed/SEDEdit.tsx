@@ -83,7 +83,7 @@ import Attachments from "applications/Vedlegg/Attachments/Attachments";
 import {JoarkBrowserItem} from "declarations/attachments";
 import VedtakForF003 from 'applications/SvarSed/VedtakForF003/VedtakForF003'
 import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
-import TrygdeordningF003 from 'applications/SvarSed/TrygdeordningF003/TrygdeordningF003'
+import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilYtelserFSED'
 import FamilieRelasjonF003 from "../../applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
 
 export interface SEDEditSelector {
@@ -376,7 +376,8 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
-                { label: t('el:option-mainform-retttilytelser'), value: 'trygdeordningf003', component: TrygdeordningF003, type: 'F003', user: true },
+                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true },
+                //{ label: t('el:option-mainform-trygdeordning'), value: 'trygdeordningf02x', component: RettTilYtelserFSED, type: ['F026'], user: true },
                 { label: t('el:option-mainform-personensstatus'), value: 'personensstatus', component: PersonensStatus, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
                 { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },

@@ -55,7 +55,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const TrygdeordningF003: React.FC<MainFormProps> = ({
+const RettTilYtelserFSED: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
   personName,
@@ -63,7 +63,7 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   updateReplySed,
   //setReplySed
 }: MainFormProps): JSX.Element => {
-  const namespace = `${parentNamespace}-${personID}-trygdeordningf003`
+  const namespace = `${parentNamespace}-${personID}-retttilytelserfsed`
   const target = `${personID}`
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
@@ -374,4 +374,4 @@ const TrygdeordningF003: React.FC<MainFormProps> = ({
   )
 }
 
-export default TrygdeordningF003
+export default RettTilYtelserFSED
