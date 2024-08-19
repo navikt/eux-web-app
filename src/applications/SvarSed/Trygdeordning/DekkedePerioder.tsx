@@ -17,7 +17,7 @@ import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow } from 'components/StyledComponents'
+import {RepeatablePeriodeRow} from 'components/StyledComponents'
 import { Periode, PeriodeSort, Person } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -236,7 +236,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatablePeriodeRow
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
@@ -244,10 +244,9 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
+              <>
               <AlignStartRow>
                 <PeriodeInput
                   namespace={_namespace}
@@ -309,8 +308,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
               </AlignEndColumn>
             </AlignStartRow>
             )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatablePeriodeRow>
     )
   }
 
