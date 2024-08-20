@@ -71,7 +71,7 @@ import {
   cleanReplySed,
   isF001Sed,
   isF002Sed,
-  isF003Sed,
+  isF003Sed, isF026Sed,
   isFSed,
   isH002Sed,
   isPreviewableSed,
@@ -85,6 +85,7 @@ import VedtakForF003 from 'applications/SvarSed/VedtakForF003/VedtakForF003'
 import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
 import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilYtelserFSED'
 import FamilieRelasjonF003 from "../../applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
+import EtterspurtInformasjon from "../../applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -480,7 +481,28 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isH002Sed(replySed)) && (
+        {isF026Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              menuDefaultClosed={true}
+              namespace='etterspurtinformasjon'
+              forms={[
+                {
+                  label: t('el:option-mainform-etterspurtinformasjon'),
+                  value: 'etterspurtinformasjon',
+                  component: EtterspurtInformasjon,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='etterspurtinfomanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>

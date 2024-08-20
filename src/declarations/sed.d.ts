@@ -566,30 +566,34 @@ export interface F003Sed extends BaseReplySed {
 export interface F026Sed extends BaseReplySed {
   bruker: PersonBruker
   ytterligereInfo?: string
-  anmodningOmMerInformasjon?:{
-    adopsjon?: EtterspurtInformasjon
-    inntekt?: EtterspurtInformasjon
-    ytelseTilForeldreLoese?: EtterspurtInformasjon
-    annenInformasjonOmBarnet?: EtterspurtInformasjon
-    utdanning?: {
-      timerPr?: 'dag' | 'uke' | 'maaned',
-      ytterligereInformasjon?: string
-      typeDeltakelse?: 'heltid' | 'deltid'
-      timer?: string
-      type?: UtdanningType
-    }
-    utdanningsinstitusjon?: {
-      adresse?: Adresse
-      ytterligereInformasjon?: string
-      navn?: string
-      identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
-    }
+  anmodningOmMerInformasjon?: AnmodningOmMerInformasjon
+}
+
+export interface AnmodningOmMerInformasjon {
+  adopsjon?: EtterspurtInformasjon
+  inntekt?: EtterspurtInformasjon
+  ytelseTilForeldreLoese?: EtterspurtInformasjon
+  annenInformasjonOmBarnet?: EtterspurtInformasjon
+  utdanning?: {
+    timerPr?: 'dag' | 'uke' | 'maaned',
+    ytterligereInformasjon?: string
+    typeDeltakelse?: 'heltid' | 'deltid'
+    timer?: string
+    type?: UtdanningType
+  }
+  utdanningsinstitusjon?: {
+    adresse?: Adresse
+    ytterligereInformasjon?: string
+    navn?: string
+    identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
   }
 }
 
 export interface EtterspurtInformasjon {
   ytterligereInformasjon?: string
-  etterspurtInformasjonType?: Array<AdopsjonEtterspurtInformasjonType | InntektEtterspurtInformasjonType | AnnenInformasjonOmBarnetEtterspurtInformasjonType | YtelseTilForeldreloeseEtterspurtInformasjonType>
+  etterspurtInformasjonType?: {
+    typer?: Array<string>
+  }
 }
 
 export interface UtdanningsInstitusjonsIndentifikator {

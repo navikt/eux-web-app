@@ -10,7 +10,7 @@ export interface StatisticsState {
 }
 
 export const initialUiState: StatisticsState = {
-  menuTime: { personmanager: {}, formalmanager: {}, vedtakmanager: {}, mottakavsoknadmanager: {} },
+  menuTime: { personmanager: {}, formalmanager: {}, vedtakmanager: {}, mottakavsoknadmanager: {}, etterspurtinfomanager: {}},
   pageTime: { total: {}, selection: {}, editor: {} }
 }
 
