@@ -52,32 +52,32 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
   ]
 
   const etterspurtInformasjonsTyperInntekt = [
-    {label: "Type påkrevde data inntektskilde", value: "type_påkrevde_data_inntektskilde"},
+    {label: "Type påkrevde data: Inntektskilde (spesifikk inntekt fra ansettelsesforhold eller selvstendig næringsvirksomhet, fra eiendom, verdi av land/eiendom, underholdsbidrag/barnebidrag)", value: "type_påkrevde_data_inntektskilde"},
     {label: "Årlig inntekt", value: "årlig_inntekt"},
-    {label: "Periode fra/til det kreves opplysninger om", value: "periode_fratil_det_kreves_opplysninger_om"}
+    {label: "Periode (fra/til) det kreves opplysninger om", value: "periode_fratil_det_kreves_opplysninger_om"}
   ]
 
   const etterspurtInformasjonsTyperYtelseTilForeldreLoese = [
     {label: "Identifisering av den avdøde", value: "identifisering_av_den_avdøde"},
     {label: "Identifisering av de berørte barna", value: "identifisering_av_de_berørte_barna"},
-    {label: "Identifikasjon av andre personer en annen slektning verge som søker på vegne av den foreldreløse barnet", value: "identifikasjon_av_andre_personer_en_annen_slektning_verge_som_søker_på_vegne_av_den_foreldreløse_barnet"},
-    {label: "Den foreldreløses barnets bosted", value: "den foreldreløses barnets bosted"},
-    {label: "Relasjon mellom den foreldreløse barnet og avdøde", value: "relasjon_mellom_den_foreldreløse_barnet_og_avdøde"},
+    {label: "Identifikasjon av andre personer - en annen slektning/verge som søker på vegne av den foreldreløse/barnet", value: "identifikasjon_av_andre_personer_en_annen_slektning_verge_som_søker_på_vegne_av_den_foreldreløse_barnet"},
+    {label: "Den foreldreløses/barnets bosted", value: "den_foreldreløses_barnets_bosted"},
+    {label: "Relasjon mellom den foreldreløse/barnet og avdøde", value: "relasjon_mellom_den_foreldreløse_barnet_og_avdøde"},
     {label: "Relasjon mellom annen person og den avdøde", value: "relasjon_mellom_annen_person_og_den_avdøde"},
-    {label: "Den foreldreløses barnets aktivitet", value: "den_foreldreløses_barnets_aktivitet"},
+    {label: "Den foreldreløses/barnets aktivitet", value: "den_foreldreløses_barnets_aktivitet"},
     {label: "Skole", value: "skole"},
     {label: "Opplæring", value: "opplæring"},
     {label: "Uførhet", value: "uførhet"},
     {label: "Arbeidsledighet", value: "qrbeidsledighet"},
-    {label: "Inntekt til den foreldreløse barn", value: "inntekt_til_den_foreldreløse_barn"}
+    {label: "Inntekt til det foreldreløse barnet", value: "inntekt_til_den_foreldreløse_barnet"}
   ]
 
   const etterspurtInformasjonsTyperAnnenInformasjonOmBarnet = [
-    {label: "Hvem har daglig omsorg for barnet", value: "hvem_har_daglig_omsorg_for_barnet"},
-    {label: "Hvem har foreldreansvar for barnet", value: "hvem_har_foreldreansvar_for_barnet"},
-    {label: "Er barnet adoptert", value: "er_barnet_adoptert"},
-    {label: "Forsørges barnet av det offentlige", value: "forsørges_barnet_av_det_offentlige"},
-    {label: "Går barnet i barnehage finansieres barnehagen av staten eller det offentlige antall timer barnet går i barnehage", value: "går_barnet_i_barnehage_finansieres_barnehagen_av_staten_eller_det_offentlige_antall_timer_barnet_går_i_barnehage"},
+    {label: "Hvem har daglig omsorg for barnet?", value: "hvem_har_daglig_omsorg_for_barnet"},
+    {label: "Hvem har foreldreansvar for barnet?", value: "hvem_har_foreldreansvar_for_barnet"},
+    {label: "Er barnet adoptert?", value: "er_barnet_adoptert"},
+    {label: "Forsørges barnet av det offentlige?", value: "forsørges_barnet_av_det_offentlige"},
+    {label: "Går barnet i barnehage. finansieres barnehagen av staten eller det offentlige/antall timer barnet går i barnehage", value: "går_barnet_i_barnehage_finansieres_barnehagen_av_staten_eller_det_offentlige_antall_timer_barnet_går_i_barnehage"},
     {label: "Barnets sivilstand", value: "barnets_sivilstand"},
     {label: "Dato for endrede forhold", value: "dato_for_endrede_forhold"}
   ]
