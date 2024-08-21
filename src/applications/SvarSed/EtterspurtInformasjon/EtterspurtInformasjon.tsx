@@ -28,8 +28,18 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-etterspurtinformasjon`
   const target = 'anmodningOmMerInformasjon'
   const anmodningOmMerInformasjon: AnmodningOmMerInformasjon | undefined = _.get(replySed, target)
+  let initialSelectedOptions:ComboboxOption[] = []
 
   console.log(namespace, anmodningOmMerInformasjon)
+
+
+  useEffect(() => {
+    anmodningOmMerInformasjon?.adopsjon?.etterspurtInformasjonType?.typer?.forEach((type) => {
+      // @ts-ignore
+      const option: ComboboxOption = initialOptions?.find((o) => o.value === type)
+      initialSelectedOptions.push(option)
+    })
+  }, [])
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -40,17 +50,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${target}.${e.target.value}`, e.target.checked ? {} : undefined))
   }
 
-  const getInitialSelectedOptions = () => {
-    let initialSelectedOptions:ComboboxOption[] = []
-    anmodningOmMerInformasjon?.adopsjon?.etterspurtInformasjonType?.typer?.forEach((type) => {
-      // @ts-ignore
-      const option: ComboboxOption = initialOptions?.find((o) => o.value === type)
-      initialSelectedOptions.push(option)
-    })
-    return initialSelectedOptions
-  }
-
-  const [selectedOptions, setSelectedOptions] = useState<ComboboxOption[]>(getInitialSelectedOptions);
+  const [selectedOptions, setSelectedOptions] = useState<ComboboxOption[]>(initialSelectedOptions);
   const onToggleSelected = (option: string, isSelected: boolean) => {
     if (isSelected) {
       // @ts-ignore
