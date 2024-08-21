@@ -2,14 +2,15 @@ import {State} from "declarations/reducers";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "store";
-import {Box, Checkbox, Heading, VStack} from "@navikt/ds-react";
-import {PaddedDiv} from "@navikt/hoykontrast";
+import {Box, Checkbox, Heading, Label, VStack} from "@navikt/ds-react";
+import {PaddedDiv, RadioPanel, RadioPanelGroup, FlexRadioPanels} from "@navikt/hoykontrast";
 import useUnmount from "hooks/useUnmount";
 import _ from "lodash";
 import {AnmodningOmMerInformasjon} from "declarations/sed";
 import EtterspurtInformasjonTyper from "./EtterspurtInformasjonTyper";
 import TextArea from "../../../components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
+import Input from "../../../components/Forms/Input";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -43,6 +44,10 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
 
   const setYtterligereInfo = (type:string, value: string) => {
     dispatch(updateReplySed(`${target}.${type}.ytterligereInformasjon`, value))
+  }
+
+  const setUtdanning = (prop:string, value: string) => {
+    dispatch(updateReplySed(`${target}.utdanning.${prop}`, value))
   }
 
   const etterspurtInformasjonsTyperAdopsjon = [
@@ -110,7 +115,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   maxLength={255}
                   error={validation[namespace + '-adopsjon-yttterligereinformasjon']?.feilmelding}
                   namespace={namespace}
-                  id='adopsjon-yttterligereinformasjon'
+                  id='adopsjon-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
                   onChanged={(v) => setYtterligereInfo("adopsjon", v)}
                   value={anmodningOmMerInformasjon.adopsjon.ytterligereInformasjon ?? ''}
@@ -138,7 +143,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   maxLength={255}
                   error={validation[namespace + '-inntekt-yttterligereinformasjon']?.feilmelding}
                   namespace={namespace}
-                  id='inntekt-yttterligereinformasjon'
+                  id='inntekt-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
                   onChanged={(v) => setYtterligereInfo("inntekt", v)}
                   value={anmodningOmMerInformasjon.inntekt.ytterligereInformasjon ?? ''}
@@ -166,7 +171,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   maxLength={255}
                   error={validation[namespace + '-ytelseTilForeldreLoese-yttterligereinformasjon']?.feilmelding}
                   namespace={namespace}
-                  id='ytelseTilForeldreLoese-yttterligereinformasjon'
+                  id='ytelseTilForeldreLoese-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
                   onChanged={(v) => setYtterligereInfo("ytelseTilForeldreLoese", v)}
                   value={anmodningOmMerInformasjon.ytelseTilForeldreLoese.ytterligereInformasjon ?? ''}
@@ -194,7 +199,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   maxLength={255}
                   error={validation[namespace + '-annenInformasjonOmBarnet-yttterligereinformasjon']?.feilmelding}
                   namespace={namespace}
-                  id='annenInformasjonOmBarnet-yttterligereinformasjon'
+                  id='annenInformasjonOmBarnet-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
                   onChanged={(v) => setYtterligereInfo("annenInformasjonOmBarnet", v)}
                   value={anmodningOmMerInformasjon.annenInformasjonOmBarnet.ytterligereInformasjon ?? ''}
@@ -210,6 +215,62 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
             >
               Fremmøte på skole/høyskole/opplæring/arbeidsledighet
             </Checkbox>
+            {!!anmodningOmMerInformasjon?.utdanning &&
+              <VStack gap="4">
+                <RadioPanelGroup
+                  value={anmodningOmMerInformasjon?.utdanning.type}
+                  legend="Type opplæringsinstitusjon"
+                  onChange={(v:string)=>setUtdanning("type", v)}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='skole'>Skole</RadioPanel>
+                    <RadioPanel value='høyskole'>Høyskole</RadioPanel>
+                    <RadioPanel value='universitet'>Universitet</RadioPanel>
+                    <RadioPanel value='yrkesrettet_opplæring'>Yrkesrettet opplæring</RadioPanel>
+                    <RadioPanel value='barnehage_daghjem'>Barnehage/Daghjem</RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
+                <RadioPanelGroup
+                  value={anmodningOmMerInformasjon?.utdanning.typeDeltakelse}
+                  legend="Type deltakelse"
+                  onChange={(v:string)=>setUtdanning("typeDeltakelse", v)}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='deltid'>Deltid</RadioPanel>
+                    <RadioPanel value='heltid'>Heltid</RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
+                <Label>Faktisk deltakelse</Label>
+                <RadioPanelGroup
+                  value={anmodningOmMerInformasjon?.utdanning.timerPr}
+                  legend="Timer pr"
+                  onChange={(v:string)=>setUtdanning("timerPr", v)}
+                >
+                  <FlexRadioPanels>
+                    <RadioPanel value='dag'>Dag</RadioPanel>
+                    <RadioPanel value='uke'>Uke</RadioPanel>
+                    <RadioPanel value='maaned'>Måned</RadioPanel>
+                  </FlexRadioPanels>
+                </RadioPanelGroup>
+                <Input
+                  error={undefined}
+                  namespace={namespace}
+                  id='timer'
+                  label="Antall timer"
+                  onChanged={(v: string) => setUtdanning("timer", v)}
+                  value={anmodningOmMerInformasjon?.utdanning.timer}
+                />
+                <TextArea
+                  maxLength={255}
+                  error={validation[namespace + '-utdanning-yttterligereinformasjon']?.feilmelding}
+                  namespace={namespace}
+                  id='utdanning-ytterligereinformasjon'
+                  label={t('label:ytterligere-informasjon')}
+                  onChanged={(v) => setYtterligereInfo("utdanning", v)}
+                  value={anmodningOmMerInformasjon.utdanning.ytterligereInformasjon ?? ''}
+                />
+              </VStack>
+            }
           </Box>
         </VStack>
       </PaddedDiv>
