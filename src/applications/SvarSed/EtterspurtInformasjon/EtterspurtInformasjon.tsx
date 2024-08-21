@@ -71,7 +71,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
     selectedOptions.forEach((o) => {
       etterspurtInformasjonTypeArray.push(o.value)
     })
-    dispatch(updateReplySed(`${target}.adopsjon.etterspurtInformasjonType`, etterspurtInformasjonTypeArray))
+    dispatch(updateReplySed(`${target}.adopsjon.etterspurtInformasjonType.typer`, etterspurtInformasjonTypeArray))
   }, [selectedOptions])
 
   return (
