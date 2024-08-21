@@ -196,7 +196,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   namespace={namespace}
                   id='annenInformasjonOmBarnet-yttterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
-                  onChanged={(v) => setYtterligereInfo("ytelseTilForeldreLoese", v)}
+                  onChanged={(v) => setYtterligereInfo("annenInformasjonOmBarnet", v)}
                   value={anmodningOmMerInformasjon.annenInformasjonOmBarnet.ytterligereInformasjon ?? ''}
                 />
               </VStack>
