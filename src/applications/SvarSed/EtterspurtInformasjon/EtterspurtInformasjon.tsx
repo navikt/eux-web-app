@@ -54,7 +54,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
   const etterspurtInformasjonsTyperInntekt = [
     {label: "Type påkrevde data inntektskilde", value: "type_påkrevde_data_inntektskilde"},
     {label: "Årlig inntekt", value: "årlig_inntekt"},
-    {label: "Periode fratil det kreves opplysninger om", value: "periode_fratil_det_kreves_opplysninger_om"}
+    {label: "Periode fra/til det kreves opplysninger om", value: "periode_fratil_det_kreves_opplysninger_om"}
   ]
 
   const etterspurtInformasjonsTyperYtelseTilForeldreLoese = [
@@ -103,6 +103,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.adopsjon"
                   initialOptions={etterspurtInformasjonsTyperAdopsjon}
+                  etterspurtInformasjon={anmodningOmMerInformasjon?.adopsjon}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
@@ -130,6 +131,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.inntekt"
                   initialOptions={etterspurtInformasjonsTyperInntekt}
+                  etterspurtInformasjon={anmodningOmMerInformasjon?.inntekt}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
@@ -157,6 +159,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.ytelseTilForeldreLoese"
                   initialOptions={etterspurtInformasjonsTyperYtelseTilForeldreLoese}
+                  etterspurtInformasjon={anmodningOmMerInformasjon?.ytelseTilForeldreLoese}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
@@ -184,6 +187,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.annenInformasjonOmBarnet"
                   initialOptions={etterspurtInformasjonsTyperAnnenInformasjonOmBarnet}
+                  etterspurtInformasjon={anmodningOmMerInformasjon?.annenInformasjonOmBarnet}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
