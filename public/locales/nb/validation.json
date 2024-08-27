@@ -67,6 +67,7 @@
   "noEnhetId": "Du må taste inn enhets id",
   "noEnhetNavn": "Du må taste inn enhets navn",
   "noEtternavn": "Etternavn mangler",
+  "noEtterspurtInformasjonType": "Etterspurt informasjon mangler for {{type}}",
 
   "noFeriedagerTilGode": "Du må taste inn feriedager",
   "noFirstName": "Du må taste inn fornavn",
@@ -147,6 +148,9 @@
   "noUnit": "Du må velge enhet",
   "noUtbetalingshyppighet": "Du må velge en utbetalingshyppighet",
   "noUtbetalingType": "Du må velge en utbetalingstype",
+  "noUtdanningTimer": "Ingen timer",
+  "noUtdanningTypeDeltakelse": "Ingen type deltakelse",
+  "noUtdanningType": "Ingen utdanningstype",
   "noUtstedelsesdato" : "Ingen utstedelsesdato",
   "noValuta": "Ingen valuta",
   "noVedtakType": "Ingen vedtak type",

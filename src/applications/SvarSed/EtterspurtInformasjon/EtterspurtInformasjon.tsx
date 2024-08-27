@@ -11,6 +11,7 @@ import EtterspurtInformasjonTyper from "./EtterspurtInformasjonTyper";
 import TextArea from "../../../components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import Input from "../../../components/Forms/Input";
+import {resetValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -27,11 +28,9 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
   const {validation}: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-etterspurtinformasjon`
+  const namespace = `${parentNamespace}`
   const target = 'anmodningOmMerInformasjon'
   const anmodningOmMerInformasjon: AnmodningOmMerInformasjon | undefined = _.get(replySed, target)
-
-  console.log(namespace, anmodningOmMerInformasjon)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -40,14 +39,23 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
 
   const setAnmodningOmMerInformasjon = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(updateReplySed(`${target}.${e.target.value}`, e.target.checked ? {} : undefined))
+    if(validation[namespace + '-' + e.target.value + '-etterspurt-informasjon-typer']){
+      dispatch(resetValidation(namespace + '-' + e.target.value + '-etterspurt-informasjon-typer'))
+    }
   }
 
   const setYtterligereInfo = (type:string, value: string) => {
     dispatch(updateReplySed(`${target}.${type}.ytterligereInformasjon`, value))
+    if(validation[namespace + '-' + type + '-ytterligereinformasjon']){
+      dispatch(resetValidation(namespace + '-' + type + '-ytterligereinformasjon'))
+    }
   }
 
   const setUtdanning = (prop:string, value: string) => {
     dispatch(updateReplySed(`${target}.utdanning.${prop}`, value))
+    if(validation[namespace + '-utdanning-' + prop.toLowerCase()]){
+      dispatch(resetValidation(namespace + '-utdanning-' + prop.toLowerCase()))
+    }
   }
 
   const etterspurtInformasjonsTyperAdopsjon = [
@@ -107,13 +115,15 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               <VStack gap="4">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.adopsjon"
+                  namespace={namespace + '-adopsjon'}
+                  error={validation[namespace + '-adopsjon-etterspurt-informasjon-typer']?.feilmelding}
                   initialOptions={etterspurtInformasjonsTyperAdopsjon}
                   etterspurtInformasjon={anmodningOmMerInformasjon?.adopsjon}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
                   maxLength={255}
-                  error={validation[namespace + '-adopsjon-yttterligereinformasjon']?.feilmelding}
+                  error={validation[namespace + '-adopsjon-ytterligereinformasjon']?.feilmelding}
                   namespace={namespace}
                   id='adopsjon-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
@@ -135,13 +145,15 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               <VStack gap="4">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.inntekt"
+                  namespace={namespace + '-inntekt'}
+                  error={validation[namespace + '-inntekt-etterspurt-informasjon-typer']?.feilmelding}
                   initialOptions={etterspurtInformasjonsTyperInntekt}
                   etterspurtInformasjon={anmodningOmMerInformasjon?.inntekt}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
                   maxLength={255}
-                  error={validation[namespace + '-inntekt-yttterligereinformasjon']?.feilmelding}
+                  error={validation[namespace + '-inntekt-ytterligereinformasjon']?.feilmelding}
                   namespace={namespace}
                   id='inntekt-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
@@ -163,13 +175,15 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               <VStack gap="4">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.ytelseTilForeldreLoese"
+                  namespace={namespace + '-ytelseTilForeldreLoese'}
+                  error={validation[namespace + '-ytelseTilForeldreLoese-etterspurt-informasjon-typer']?.feilmelding}
                   initialOptions={etterspurtInformasjonsTyperYtelseTilForeldreLoese}
                   etterspurtInformasjon={anmodningOmMerInformasjon?.ytelseTilForeldreLoese}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
                   maxLength={255}
-                  error={validation[namespace + '-ytelseTilForeldreLoese-yttterligereinformasjon']?.feilmelding}
+                  error={validation[namespace + '-ytelseTilForeldreLoese-ytterligereinformasjon']?.feilmelding}
                   namespace={namespace}
                   id='ytelseTilForeldreLoese-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
@@ -191,13 +205,15 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               <VStack gap="4">
                 <EtterspurtInformasjonTyper
                   target="anmodningOmMerInformasjon.annenInformasjonOmBarnet"
+                  namespace={namespace + '-annenInformasjonOmBarnet'}
+                  error={validation[namespace + '-annenInformasjonOmBarnet-etterspurt-informasjon-typer']?.feilmelding}
                   initialOptions={etterspurtInformasjonsTyperAnnenInformasjonOmBarnet}
                   etterspurtInformasjon={anmodningOmMerInformasjon?.annenInformasjonOmBarnet}
                   updateReplySed={updateReplySed}
                 />
                 <TextArea
                   maxLength={255}
-                  error={validation[namespace + '-annenInformasjonOmBarnet-yttterligereinformasjon']?.feilmelding}
+                  error={validation[namespace + '-annenInformasjonOmBarnet-ytterligereinformasjon']?.feilmelding}
                   namespace={namespace}
                   id='annenInformasjonOmBarnet-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}
@@ -218,9 +234,11 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
             {!!anmodningOmMerInformasjon?.utdanning &&
               <VStack gap="4">
                 <RadioPanelGroup
+                  id={namespace + '-utdanning-type'}
                   value={anmodningOmMerInformasjon?.utdanning.type}
                   legend="Type opplæringsinstitusjon"
                   onChange={(v:string)=>setUtdanning("type", v)}
+                  error={validation[namespace + '-utdanning-type']?.feilmelding}
                 >
                   <FlexRadioPanels>
                     <RadioPanel value='skole'>Skole</RadioPanel>
@@ -231,9 +249,11 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   </FlexRadioPanels>
                 </RadioPanelGroup>
                 <RadioPanelGroup
+                  id={namespace + '-utdanning-typedeltakelse'}
                   value={anmodningOmMerInformasjon?.utdanning.typeDeltakelse}
                   legend="Type deltakelse"
                   onChange={(v:string)=>setUtdanning("typeDeltakelse", v)}
+                  error={validation[namespace + '-utdanning-typedeltakelse']?.feilmelding}
                 >
                   <FlexRadioPanels>
                     <RadioPanel value='deltid'>Deltid</RadioPanel>
@@ -253,7 +273,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                   </FlexRadioPanels>
                 </RadioPanelGroup>
                 <Input
-                  error={undefined}
+                  error={validation[namespace + '-utdanning-timer']?.feilmelding}
                   namespace={namespace}
                   id='timer'
                   label="Antall timer"
@@ -262,7 +282,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
                 />
                 <TextArea
                   maxLength={255}
-                  error={validation[namespace + '-utdanning-yttterligereinformasjon']?.feilmelding}
+                  error={validation[namespace + '-utdanning-ytterligereinformasjon']?.feilmelding}
                   namespace={namespace}
                   id='utdanning-ytterligereinformasjon'
                   label={t('label:ytterligere-informasjon')}

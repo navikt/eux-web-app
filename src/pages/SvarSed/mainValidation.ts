@@ -73,7 +73,7 @@ import {
   Adresse,
   Barnetilhoerighet,
   Epost,
-  F002Sed, F003Sed,
+  F002Sed, F003Sed, F026Sed,
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
@@ -94,7 +94,7 @@ import i18n from 'i18n'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import {
-  isF001Sed, isF002Sed, isF003Sed,
+  isF001Sed, isF002Sed, isF003Sed, isF026Sed,
   isFSed,
   isH001Sed,
   isH002Sed,
@@ -121,6 +121,10 @@ import {
   validateFamilierelasjon,
   ValidationFamilierelasjonProps
 } from "../../applications/SvarSed/FamilieRelasjonF003/validation";
+import {
+  validateEtterspurtInformasjon,
+  ValidationEtterspurtInformasjonProps
+} from "../../applications/SvarSed/EtterspurtInformasjon/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -443,6 +447,14 @@ export const validateSEDEdit = (
     })
 
     hasErrors.push(validateVedtakForF003(v, replySed))
+  }
+
+  if(isF026Sed(replySed)){
+    if((replySed as F026Sed).anmodningOmMerInformasjon){
+      hasErrors.push(performValidation<ValidationEtterspurtInformasjonProps>(v, 'etterspurtinformasjon', validateEtterspurtInformasjon, {
+        anmodningOmMerInformasjon: (replySed as F026Sed).anmodningOmMerInformasjon!
+      }, true))
+    }
   }
 
   if (!isH001Sed(replySed)) {
