@@ -224,7 +224,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidateEposterProps>(v, `svarsed-${personID}-kontaktinformasjon-epost`, validateKontaktsinformasjonEposter, {
           eposter, personName
         }, true))
-        hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordninger`, validateTrygdeordninger, {
+        hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
           replySed, personID, personName
         }, true))
 
@@ -238,30 +238,31 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         }, true))
 
         // Specific to F003
-        // Ektefelle
-        hasErrors.push(performValidation<ValidationYtterligereInfoProps>(v, `svarsed-${personID}-ytterligereInfo`, validateYtterligereInfo, {
-          replySed, personName
-        }, true))
+        if(isF003Sed(replySed)){
+          // Ektefelle
+          hasErrors.push(performValidation<ValidationYtterligereInfoProps>(v, `svarsed-${personID}-ytterligereInfo`, validateYtterligereInfo, {
+            replySed, personName
+          }, true))
 
-        // Trygdeordning
-        const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
-        const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
-        let rettTilFamilieYtelser;
-        if(perioderMedYtelser && perioderMedYtelser.length >= 0){
-          rettTilFamilieYtelser = "ja"
-        } else if(ikkeRettTilYtelser){
-          rettTilFamilieYtelser = "nei"
+          // Trygdeordning
+          const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+          const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
+          let rettTilFamilieYtelser;
+          if(perioderMedYtelser && perioderMedYtelser.length >= 0){
+            rettTilFamilieYtelser = "ja"
+          } else if(ikkeRettTilYtelser){
+            rettTilFamilieYtelser = "nei"
+          }
+          hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
+            perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
+          }, true))
+
+          //Familierelasjon Annen Person
+          const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)
+          hasErrors.push(performValidation<ValidationFamilierelasjonProps>(v, `svarsed-${personID}-familierelasjonf003`, validateFamilierelasjon, {
+            familierelasjon, personName
+          }, true))
         }
-        hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
-          perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
-        }, true))
-
-        //Familierelasjon Annen Person
-        const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)
-        hasErrors.push(performValidation<ValidationFamilierelasjonProps>(v, `svarsed-${personID}-familierelasjonf003`, validateFamilierelasjon, {
-          familierelasjon, personName
-        }, true))
-
       }
     } else {
       const barnetilhoerigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
