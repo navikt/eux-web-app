@@ -28,7 +28,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
   const {validation}: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}`
+  const namespace = `${parentNamespace}-etterspurtinformasjon`
   const target = 'anmodningOmMerInformasjon'
   const anmodningOmMerInformasjon: AnmodningOmMerInformasjon | undefined = _.get(replySed, target)
 

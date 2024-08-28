@@ -452,7 +452,7 @@ export const validateSEDEdit = (
 
   if(isF026Sed(replySed)){
     if((replySed as F026Sed).anmodningOmMerInformasjon){
-      hasErrors.push(performValidation<ValidationEtterspurtInformasjonProps>(v, 'etterspurtinformasjon', validateEtterspurtInformasjon, {
+      hasErrors.push(performValidation<ValidationEtterspurtInformasjonProps>(v, 'etterspurtinformasjon-etterspurtinformasjon', validateEtterspurtInformasjon, {
         anmodningOmMerInformasjon: (replySed as F026Sed).anmodningOmMerInformasjon!
       }, true))
     }
