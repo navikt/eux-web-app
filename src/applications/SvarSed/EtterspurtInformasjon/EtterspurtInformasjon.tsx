@@ -42,7 +42,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
     if(validation[namespace + '-' + e.target.value + '-etterspurt-informasjon-typer']){
       dispatch(resetValidation(namespace + '-' + e.target.value + '-etterspurt-informasjon-typer'))
     }
-    
+
     if(e.target.value === "utdanning"){
       dispatch(resetValidation(namespace + '-utdanning'))
     }
