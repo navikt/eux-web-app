@@ -73,8 +73,7 @@ describe('actions/sak', () => {
 
   it('getInstitusjoner()', () => {
     const buctype = 'P_BUC_MOCK'
-    const landkode = 'AA'
-    sakActions.getInstitusjoner(buctype, landkode)
+    sakActions.getInstitusjoner(buctype)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -82,21 +81,7 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_SUCCESS,
           failure: types.SAK_INSTITUSJONER_FAILURE
         },
-        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
-      }))
-  })
-
-  it('getLandkoder()', () => {
-    const buctype = 'P_BUC_MOCK'
-    sakActions.getLandkoder(buctype)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.SAK_LANDKODER_REQUEST,
-          success: types.SAK_LANDKODER_SUCCESS,
-          failure: types.SAK_LANDKODER_FAILURE
-        },
-        url: sprintf(urls.API_LANDKODER_URL, { buctype })
+        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype })
       }))
   })
 

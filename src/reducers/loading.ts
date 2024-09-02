@@ -244,19 +244,6 @@ const loadingReducer = (
         gettingInntekter: false
       }
 
-    case types.SAK_LANDKODER_REQUEST:
-      return {
-        ...state,
-        gettingLandkoder: true
-      }
-
-    case types.SAK_LANDKODER_SUCCESS:
-    case types.SAK_LANDKODER_FAILURE:
-      return {
-        ...state,
-        gettingLandkoder: false
-      }
-
     case types.SVARSED_MOTTAKERE_ADD_REQUEST:
       return {
         ...state,

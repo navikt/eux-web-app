@@ -90,7 +90,7 @@ export interface SEDNewSelector {
   filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
-  landkoder: Array<Kodeverk> | undefined
+  landkoder: Array<string> | undefined
   opprettetSak: OpprettetSak | undefined
   person: Person | null | undefined
   personRelatert: Person | null | undefined
@@ -127,7 +127,6 @@ const mapState = (state: State): SEDNewSelector => ({
   buctyper: state.app.buctyper,
   familierelasjonKodeverk: state.app.familierelasjoner,
   kodemaps: state.app.kodemaps,
-  landkoder: state.app.landkoder,
   sedtyper: state.app.sedtyper,
   sektor: state.app.sektor,
   tema: state.app.tema,
@@ -152,7 +151,8 @@ const mapState = (state: State): SEDNewSelector => ({
   filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
   valgtInstitusjon: state.sak.institusjon,
-  institusjoner: state.sak.institusjonList,
+  institusjoner: state.sak.institusjonListByLandkode,
+  landkoder: state.sak.landkoder,
   valgtLandkode: state.sak.landkode,
   opprettetSak: state.sak.opprettetSak,
   valgtSaksId: state.sak.saksId,
@@ -313,7 +313,7 @@ const SEDNew = (): JSX.Element => {
     const buctype = event.target.value
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
-    dispatch(sakActions.getLandkoder(buctype))
+    dispatch(sakActions.getInstitusjoner(buctype))
     if (validation[namespace + '-buctype']) {
       dispatch(resetValidation(namespace + '-buctype'))
     }
@@ -337,7 +337,7 @@ const SEDNew = (): JSX.Element => {
     dispatch(sakActions.setProperty('institusjon', ''))
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
-    dispatch(sakActions.getInstitusjoner(valgtBucType!, landKode))
+    dispatch(sakActions.setInstitusjonerByLandkode(landKode))
     if (validation[namespace + '-landkode']) {
       dispatch(resetValidation(namespace + '-landkode'))
     }
@@ -596,7 +596,7 @@ const SEDNew = (): JSX.Element => {
               data-testid={namespace + '-landkode'}
               error={validation[namespace + '-landkode']?.feilmelding}
               id={namespace + '-landkode'}
-              includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
+              includeList={landkoder ? landkoder : []}
               label={t('label:land')}
               lang='nb'
               isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}

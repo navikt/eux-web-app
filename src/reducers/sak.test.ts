@@ -64,21 +64,6 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_LANDKODER_SUCCESS', () => {
-    const payload = 'mockPayload'
-    expect(
-      sakReducer({
-        ...initialSakState
-      }, {
-        type: types.SAK_LANDKODER_SUCCESS,
-        payload
-      })
-    ).toEqual({
-      ...initialSakState,
-      landkoder: payload
-    })
-  })
-
   it('SAK_SEND_SUCCESS', () => {
     const payload = 'mockPayload'
     expect(

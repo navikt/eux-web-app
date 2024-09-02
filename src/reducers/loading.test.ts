@@ -84,18 +84,6 @@ describe('reducers/loading', () => {
     simulateFailure(types.SAK_INSTITUSJONER_FAILURE, 'gettingInstitusjoner')
   })
 
-  it('SAK_LANDKODER_REQUEST', () => {
-    simulateRequest(types.SAK_LANDKODER_REQUEST, 'gettingLandkoder')
-  })
-
-  it('SAK_LANDKODER_SUCCESS', () => {
-    simulateSuccess(types.SAK_LANDKODER_SUCCESS, 'gettingLandkoder')
-  })
-
-  it('SAK_LANDKODER_FAILURE', () => {
-    simulateFailure(types.SAK_LANDKODER_FAILURE, 'gettingLandkoder')
-  })
-
   it('PERSON_SEARCH_REQUEST', () => {
     simulateRequest(types.PERSON_SEARCH_REQUEST, 'searchingPerson')
   })

@@ -4,7 +4,7 @@ import { ReplySed } from 'declarations/sed'
 import { Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
-import { mockInstitusjon } from 'mocks/institutionList'
+import {mockInstitusjonByLandkode} from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
 import mockSaks2 from 'mocks/svarsed/saks_2'
@@ -42,7 +42,7 @@ export const getInstitusjoner = (
 ): ActionWithPayload<Institusjoner> => {
   return call({
     url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
-    expectedPayload: mockInstitusjon({ landkode }),
+    expectedPayload: mockInstitusjonByLandkode({ landkode }),
     type: {
       request: types.SVARSED_INSTITUSJONER_REQUEST,
       success: types.SVARSED_INSTITUSJONER_SUCCESS,

@@ -9,7 +9,7 @@ import {
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
-import { mockInstitusjon, mockLandkode } from 'mocks/institutionList'
+import { mockInstitusjon } from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
@@ -138,11 +138,11 @@ export const createFagsakDagpenger = (
 }
 
 export const getInstitusjoner = (
-  buctype: string, landkode: string
+  buctype: string
 ): ActionWithPayload<Institusjoner> => {
   return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
-    expectedPayload: mockInstitusjon({ landkode }),
+    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode: undefined }),
+    expectedPayload: mockInstitusjon(),
     type: {
       request: types.SAK_INSTITUSJONER_REQUEST,
       success: types.SAK_INSTITUSJONER_SUCCESS,
@@ -151,19 +151,12 @@ export const getInstitusjoner = (
   })
 }
 
-export const getLandkoder = (
-  buctype: string
-): ActionWithPayload<Array<Kodeverk>> => {
-  return call({
-    url: sprintf(urls.API_LANDKODER_URL, { buctype }),
-    expectedPayload: mockLandkode(),
-    type: {
-      request: types.SAK_LANDKODER_REQUEST,
-      success: types.SAK_LANDKODER_SUCCESS,
-      failure: types.SAK_LANDKODER_FAILURE
-    }
-  })
-}
+export const setInstitusjonerByLandkode: ActionCreator<ActionWithPayload> = (
+   landkode: string
+): ActionWithPayload => ({
+  type: types.SAK_INSTITUSJONER_BY_LANDKODE_SET,
+  payload: landkode
+})
 
 export const resetFilloutInfo = () => ({
   type: types.SAK_FILLOUTINFO_RESET

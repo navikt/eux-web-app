@@ -1,6 +1,3 @@
-import _ from 'lodash'
-import EKV from '@navikt/eessi-kodeverk'
-
 const institusjoner = [
   {
     institusjonsID: 'CH:ALLBUCs',
@@ -934,12 +931,10 @@ const institusjoner = [
   }
 ]
 
-export const mockInstitusjon = ({ landkode }: any) => {
+export const mockInstitusjonByLandkode = ({ landkode }: any) => {
   return institusjoner.filter((item: any) => item.landkode === landkode)
 }
 
-export const mockLandkode = () => {
-  const landMedInstitusjoner = _.uniq(institusjoner.map((item: any) => item.landkode)).sort()
-  const { landkoder } = EKV.KTObjects
-  return landkoder.filter((landkode: any) => landMedInstitusjoner.includes(landkode.kode))
+export const mockInstitusjon = () => {
+  return institusjoner
 }

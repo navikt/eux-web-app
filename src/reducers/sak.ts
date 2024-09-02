@@ -13,6 +13,8 @@ export interface SakState {
   fnr: string | undefined
   institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
+  institusjonListByLandkode: Array<Institusjon> | undefined
+  landkoder: Array<string> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
   filloutinfo: any | null | undefined
@@ -31,7 +33,9 @@ export const initialSakState: SakState = {
   familierelasjoner: [],
   fnr: undefined,
   institusjonList: undefined,
+  institusjonListByLandkode:undefined,
   institusjon: undefined,
+  landkoder: undefined,
   landkode: undefined,
   opprettetSak: undefined,
   filloutinfo: undefined,
@@ -105,13 +109,15 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_INSTITUSJONER_SUCCESS:
       return {
         ...state,
-        institusjonList: (action as ActionWithPayload).payload
+        institusjonList: (action as ActionWithPayload).payload,
+        landkoder: _.uniq((action as ActionWithPayload).payload.map((institusjon: any) => institusjon.landkode))
       }
 
-    case types.SAK_LANDKODER_SUCCESS:
+    case types.SAK_INSTITUSJONER_BY_LANDKODE_SET:
+      const landkode = (action as ActionWithPayload).payload
       return {
         ...state,
-        landkode: (action as ActionWithPayload).payload
+        institusjonListByLandkode: state.institusjonList?.filter((i) => i.landkode === landkode)
       }
 
     case types.SAK_FILLOUTINFO_RESET:
