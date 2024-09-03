@@ -18,7 +18,6 @@ import * as urls from 'constants/urls'
 import mockFagsakGenerell from "../mocks/fagsak_generell";
 import {FagsakPayload} from "../declarations/pd";
 import mockFagsakDagpenger from "../mocks/fagsak";
-import {API_ALL_INSTITUSJONER_URL} from "constants/urls";
 
 const sprintf = require('sprintf-js').sprintf
 
