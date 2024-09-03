@@ -11,6 +11,7 @@ export const V4_BASE_URL = '/v4'
 
 // RINA
 export const API_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
+export const API_ALL_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V3_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V4_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = V2_BASE_URL + '/rina/sak'

@@ -18,6 +18,7 @@ import * as urls from 'constants/urls'
 import mockFagsakGenerell from "../mocks/fagsak_generell";
 import {FagsakPayload} from "../declarations/pd";
 import mockFagsakDagpenger from "../mocks/fagsak";
+import {API_ALL_INSTITUSJONER_URL} from "constants/urls";
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -141,7 +142,7 @@ export const getInstitusjoner = (
   buctype: string
 ): ActionWithPayload<Institusjoner> => {
   return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode: undefined }),
+    url: sprintf(urls.API_ALL_INSTITUSJONER_URL, { buctype }),
     expectedPayload: mockInstitusjon(),
     type: {
       request: types.SAK_INSTITUSJONER_REQUEST,
