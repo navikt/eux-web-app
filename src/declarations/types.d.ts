@@ -31,6 +31,23 @@ export interface Kodeverk {
   term: string
 }
 
+export type CountryCodes = {
+  "v4.2": CountryCodeLists,
+  "v4.3": CountryCodeLists
+}
+
+export type CountryCodeLists = {
+  "euEftaLand": Array<SimpleCountry>
+  "verdensLand": Array<SimpleCountry>
+  "verdensLandHistorisk": Array<SimpleCountry>
+  "statsborgerskap": Array<SimpleCountry>
+}
+
+export type SimpleCountry = {
+  landkode: string
+  landnavn: string
+}
+
 export interface BucTyper {
   awod: Array<Kodeverk>
   administrative: Array<Kodeverk>

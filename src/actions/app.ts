@@ -9,6 +9,7 @@ import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
+import mockCountryCodes from 'mocks/app/countryCodes'
 import { Action, ActionCreator } from 'redux'
 
 export const copyToClipboard = (text?: string) => ({
@@ -106,6 +107,19 @@ export const getServerinfo = (): ActionWithPayload<ServerInfo> => {
       request: types.APP_SERVERINFO_REQUEST,
       success: types.APP_SERVERINFO_SUCCESS,
       failure: types.APP_SERVERINFO_FAILURE
+    }
+  })
+}
+
+export const getCountryCodes = (): Action => {
+  return call({
+    url: urls.API_LANDKODER_RINA_URL,
+    cascadeFailureError: true,
+    expectedPayload: mockCountryCodes,
+    type: {
+      request: types.APP_COUNTRYCODES_REQUEST,
+      success: types.APP_COUNTRYCODES_SUCCESS,
+      failure: types.APP_COUNTRYCODES_FAILURE,
     }
   })
 }

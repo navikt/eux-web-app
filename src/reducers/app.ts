@@ -1,6 +1,15 @@
 import * as types from 'constants/actionTypes'
 import { FeatureToggles, Params } from 'declarations/app'
-import { BucTyper, Enheter, Kodemaps, Kodeverk, Saksbehandler, ServerInfo, Tema } from 'declarations/types'
+import {
+  BucTyper,
+  CountryCodes,
+  Enheter,
+  Kodemaps,
+  Kodeverk,
+  Saksbehandler,
+  ServerInfo,
+  Tema
+} from 'declarations/types'
 import _ from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
 import { AnyAction } from 'redux'
@@ -8,6 +17,7 @@ import { AnyAction } from 'redux'
 export interface AppState {
   buctyper: BucTyper | undefined
   enheter: Enheter | null | undefined
+  countryCodes: CountryCodes | null | undefined
 
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
@@ -34,6 +44,7 @@ export const initialAppState: AppState = {
   saksbehandler: undefined,
   serverinfo: undefined,
   enheter: undefined,
+  countryCodes: undefined,
   expirationTime: undefined,
 
   // comes from eessi-kodeverk
@@ -77,6 +88,19 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         enheter: action.payload
       }
+
+    case types.APP_COUNTRYCODES_SUCCESS:
+      return {
+        ...state,
+        countryCodes: action.payload
+      }
+
+    case types.APP_COUNTRYCODES_FAILURE:
+      return {
+        ...state,
+        countryCodes: null
+      }
+
 
     case types.APP_LOGMEAGAIN_SUCCESS:
       window.location.href = action.context.redirectUrl

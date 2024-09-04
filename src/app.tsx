@@ -3,6 +3,7 @@ import Pages from "pages/index";
 import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./store";
 import {
+  getCountryCodes,
   getEnheter,
   getSaksbehandler,
   getServerinfo,
@@ -42,6 +43,7 @@ export const App = () => {
       dispatch(getEnheter())
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
+      dispatch(getCountryCodes())
     }, [])
 
     useEffect(() => {
