@@ -40,15 +40,14 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
 
   const {replySed, countryCodes} = useAppSelector(mapState)
   const cdmVersion = replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
-  console.log("cdmVersion", cdmVersion)
-  console.log("countryCodes", countryCodes)
+  const version = cdmVersion ? "v" + cdmVersion : undefined
 
   return(
     <CountrySelect
       data-testid={dataTestId}
       error={error}
       id={id}
-      includeList={countryCodes ? countryCodes["v" + cdmVersion! as keyof CountryCodes][countryCodeList as keyof CountryCodeLists] : []}
+      includeList={countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeList as keyof CountryCodeLists] : []}
       label={label}
       hideLabel={hideLabel}
       menuPortalTarget={document.body}
