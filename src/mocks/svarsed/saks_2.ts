@@ -4,6 +4,7 @@ import _ from 'lodash'
 export default (saksnummer: string, type: string) => {
   const saks: Array<Sak> = [
     {
+      cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -157,6 +158,7 @@ export default (saksnummer: string, type: string) => {
         }
       ]
     }, {
+      cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -232,6 +234,7 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
+      cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -357,6 +360,7 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
+      cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -405,6 +409,7 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
+      "cdmVersjon": '4.2',
       "fnr": "25086820857",
       "fornavn": "LEALAUS",
       "etternavn": "KOPP",

@@ -13,8 +13,7 @@ import {
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CountryData, {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -30,6 +29,7 @@ import performValidation from "../../utils/performValidation";
 import {resetValidation, setValidation} from "../../actions/validation";
 import {validateFoedested, ValidationFoedestedProps} from "./validation";
 import {useAppDispatch} from "../../store";
+import CountryDropdown from "../CountryDropdown/CountryDropdown";
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
@@ -164,6 +164,11 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const inEditMode = index < 0 || _editMode
     const _foedested = index < 0 ? _newFoedested : (inEditMode ? _editFoedested : foedested)
     const _v: Validation = index < 0 ? _validation : validation
+
+    const handleCountrySelect = (c: Country) => {
+      setLand(c.value, index)
+    }
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + namespace}
@@ -212,16 +217,15 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
-                  data-testid={namespace + '-land'}
+                <CountryDropdown
+                  dataTestId={namespace + '-land'}
                   error={_v[namespace + '-land']?.feilmelding}
                   id={namespace + '-land'}
-                  includeList={CountryFilter.STANDARD({})}
                   label={t('label:land')}
                   hideLabel={index >= 0}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => setLand(e.value, index)}
+                  onOptionSelected={handleCountrySelect}
                   values={_foedested?.land}
+                  countryCodeList="verdensLandHistorisk"
                 />
                 )
               : (
