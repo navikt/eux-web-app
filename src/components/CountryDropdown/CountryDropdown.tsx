@@ -40,6 +40,8 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
 
   const {replySed, countryCodes} = useAppSelector(mapState)
   const cdmVersion = replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
+  console.log("cdmVersion", cdmVersion)
+  console.log("countryCodes", countryCodes)
 
   return(
     <CountrySelect
