@@ -222,7 +222,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   hideLabel={index >= 0}
                   onOptionSelected={handleCountrySelect}
                   values={_foedested?.land}
-                  countryCodeList="verdensLandHistorisk"
+                  countryCodeListName="verdensLandHistorisk"
                 />
                 )
               :

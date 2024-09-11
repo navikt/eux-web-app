@@ -36,7 +36,6 @@ const Adresse: React.FC<MainFormProps> = ({
       required={['gate', 'postnummer', 'by', 'land']}
       keyForCity='poststed'
       keyforZipCode='postnr'
-      useUK
       namespace={namespace}
       adresse={adresse}
       onAdressChanged={setAdresse}

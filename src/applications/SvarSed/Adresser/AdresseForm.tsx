@@ -1,12 +1,12 @@
 import Input from 'components/Forms/Input'
 import { Adresse, AdresseType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import { Country } from '@navikt/land-verktoy'
 import _ from 'lodash'
 import { AlignStartRow, Column, FlexRadioPanels, RadioPanel, RadioPanelGroup, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import CountryDropdown from "components/CountryDropdown/CountryDropdown";
 
 export interface AdresseFormProps {
   disabled?: boolean
@@ -20,7 +20,6 @@ export interface AdresseFormProps {
   keyForCity ?: string
   keyforZipCode ?: string
   labelforZipCode ?: string
-  useUK ?: boolean
 }
 
 const AdresseForm: React.FC<AdresseFormProps> = ({
@@ -35,7 +34,6 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
   keyForCity = 'by',
   keyforZipCode = 'postnummer',
   labelforZipCode = 'postnr',
-  useUK = false
 }: AdresseFormProps) => {
   const { t } = useTranslation()
 
@@ -186,16 +184,15 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
         )}
         <Column>
           <div style={{ maxWidth: '400px' }}>
-            <CountrySelect
+            <CountryDropdown
               isDisabled={disabled}
               closeMenuOnSelect
               data-testid={namespace + '-land'}
               error={validation[namespace + '-land']?.feilmelding}
-              includeList={CountryFilter.STANDARD({ useUK })}
+              countryCodeListName="verdensLand"
               flagWave
               id={namespace + '-land'}
               label={t('label:land')}
-              menuPortalTarget={document.body}
               onOptionSelected={(e: Country) => setLand(e.value)}
               required={required.indexOf('land') >= 0}
               values={adresse?.land}

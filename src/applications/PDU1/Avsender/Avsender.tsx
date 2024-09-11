@@ -178,7 +178,6 @@ const Avsender: React.FC<MainFormProps> = ({
             type={false}
             options={{ bygning: false, region: false }}
             required={['gate', 'postnummer', 'by', 'land']}
-            useUK
             namespace={namespace + '-adresse'}
             keyForCity='poststed'
             keyforZipCode='postnr'
