@@ -19,18 +19,20 @@ export interface CountryDropdownProps extends CountrySelectProps<any>{
   dataTestId?: string
   countryCodeListName?: string
   excludeNorway?: boolean
+  cdmVersion?: string
 }
 
 const CountryDropdown : React.FC<CountryDropdownProps> = ({
   countryCodeListName,
   dataTestId,
   excludeNorway = false,
+  cdmVersion,
   ...rest
 }: CountryDropdownProps) => {
 
   const {replySed, countryCodes} = useAppSelector(mapState)
-  const cdmVersion = replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
-  const version = cdmVersion ? "v" + cdmVersion : undefined
+  const cdm = cdmVersion ? cdmVersion : replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
+  const version = cdm ? "v" + cdm : undefined
 
   let includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
 

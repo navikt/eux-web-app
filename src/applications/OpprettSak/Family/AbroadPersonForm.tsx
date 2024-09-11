@@ -5,8 +5,7 @@ import { State } from 'declarations/reducers'
 import { Kodeverk, OldFamilieRelasjon, Person } from 'declarations/types'
 import { KodeverkPropType } from 'declarations/types.pt'
 import useLocalValidation from 'hooks/useLocalValidation'
-import { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import { Country } from '@navikt/land-verktoy'
 import _ from 'lodash'
 import {Column, Row, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import PT from 'prop-types'
@@ -16,9 +15,11 @@ import { useAppSelector } from 'store'
 import { AbroadPersonFormValidationProps, validateAbroadPersonForm } from './validation'
 import styled from "styled-components";
 import useUnmount from "../../../hooks/useUnmount";
+import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown";
 
 export interface AbroadPersonFormSelector {
   kjoennList: Array<Kodeverk> | undefined
+  cdmVersjon: string | undefined
 }
 
 export interface AbroadPersonFormProps {
@@ -38,7 +39,8 @@ export interface AbroadPersonFormProps {
 }
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
-  kjoennList: state.app.kjoenn
+  kjoennList: state.app.kjoenn,
+  cdmVersjon: state.app.cdmVersjon
 })
 
 const emptyFamilieRelasjon: OldFamilieRelasjon = {
@@ -82,10 +84,9 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = 'familierelasjoner'
-  const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
+  const { kjoennList, cdmVersjon }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
-  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
 
   useUnmount(() => {
     if(setOpenAgain) setOpenAgain(null)
@@ -182,13 +183,14 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           />
         </Column>
         <Column>
-          <CountrySelect
+          <CountryDropdown
             id={namespace + '-land'}
             data-testid={namespace + '-land'}
             error={_validation[namespace + '-land']?.feilmelding}
             label={t('label:land')}
-            menuPortalTarget={document.body}
-            includeList={landUtenNorge}
+            countryCodeListName="euEftaLand"
+            excludeNorway={true}
+            cdmVersion={cdmVersjon}
             onOptionSelected={(e: Country) => {
               updateCountry('land', e.value)
               resetValidation('land')
@@ -198,13 +200,13 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
           />
         </Column>
         <Column>
-          <CountrySelect
+          <CountryDropdown
             id={namespace + '-statsborgerskap'}
             data-testid={namespace + '-statsborgerskap'}
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
-            includeList={CountryFilter.STANDARD({ useUK: false, useEL:false })}
+            countryCodeListName="statsborgerskap"
+            cdmVersion={cdmVersjon}
             label={t('label:statsborgerskap')}
-            menuPortalTarget={document.body}
             onOptionSelected={(e: Country) => {
               updateCountry('statsborgerskap', e.value)
               resetValidation('statsborgerskap')
