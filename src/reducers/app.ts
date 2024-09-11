@@ -18,6 +18,7 @@ import { AnyAction } from 'redux'
 export interface AppState {
   buctyper: BucTyper | undefined
   enheter: Enheter | null | undefined
+  cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
   countryCodeMap: {key?: string} | null | undefined
 
@@ -46,6 +47,7 @@ export const initialAppState: AppState = {
   saksbehandler: undefined,
   serverinfo: undefined,
   enheter: undefined,
+  cdmVersjon: undefined,
   countryCodes: undefined,
   countryCodeMap: undefined,
   expirationTime: undefined,
@@ -91,6 +93,13 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         enheter: action.payload
       }
+
+    case types.APP_CDMVERSJON_SUCCESS: {
+      return {
+        ...state,
+        cdmVersjon: action.payload
+      }
+    }
 
     case types.APP_COUNTRYCODES_SUCCESS: {
       let countryCodeMap: {key?: string} = {}

@@ -10,6 +10,7 @@ export const V4_BASE_URL = '/v4'
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
 // RINA
+export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso2'
 export const API_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
 export const API_ALL_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s'

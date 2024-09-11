@@ -111,6 +111,20 @@ export const getServerinfo = (): ActionWithPayload<ServerInfo> => {
   })
 }
 
+export const getCDMVersjon = (): Action => {
+  return call({
+    url: urls.API_CDMVERSJON_RINA_URL,
+    cascadeFailureError: true,
+    expectedPayload: "4.2",
+    type: {
+      request: types.APP_CDMVERSJON_REQUEST,
+      success: types.APP_CDMVERSJON_SUCCESS,
+      failure: types.APP_CDMVERSJON_FAILURE,
+    }
+  })
+}
+
+
 export const getCountryCodes = (): Action => {
   return call({
     url: urls.API_LANDKODER_RINA_URL,
