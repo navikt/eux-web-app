@@ -184,7 +184,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
                   id={_namespace + '-land'}
-                  countryCodeListName="verdensLand"
+                  countryCodeListName="statsborgerskap"
                   onOptionSelected={(e: Country) => setLand(e.value, index)}
                   required
                   values={_statsborgerskap?.land}
