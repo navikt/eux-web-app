@@ -1,19 +1,16 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
-import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   PaddedRow,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, {Country} from '@navikt/land-verktoy'
+import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -30,6 +27,7 @@ import {resetValidation, setValidation} from "../../actions/validation";
 import {validateFoedested, ValidationFoedestedProps} from "./validation";
 import {useAppDispatch} from "../../store";
 import CountryDropdown from "../CountryDropdown/CountryDropdown";
+import FlagPanel from "../FlagPanel/FlagPanel";
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
@@ -50,7 +48,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 }: FoedestedProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const countryData = CountryData.getCountryInstance('nb')
 
   const [_newFoedested, _setNewFoedested] = useState<Foedested | undefined>(undefined)
   const [_editFoedested, _setEditFoedested] = useState<Foedested | undefined>(undefined)
@@ -228,17 +225,9 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   countryCodeList="verdensLandHistorisk"
                 />
                 )
-              : (
-                <FlexCenterDiv id={namespace + '-land'}>
-                  {_foedested?.land && (
-                    <>
-                      <Flag size='S' country={_foedested?.land!} />
-                      <HorizontalSeparatorDiv />
-                    </>
-                  )}
-                  {countryData.findByValue(_foedested?.land)?.label ?? _foedested?.land}
-                </FlexCenterDiv>
-                )}
+              :
+                <FlagPanel land={_foedested?.land} id={namespace + '-land'}/>
+            }
           </Column>
         </Row>
         <PaddedRow size='0.5'>
