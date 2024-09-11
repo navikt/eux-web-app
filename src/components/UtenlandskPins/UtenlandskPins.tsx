@@ -1,18 +1,15 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
-import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
   AlignStartRow,
   Column,
   FlexCenterDiv,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -31,6 +28,8 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateUtenlandskPin, ValidationUtenlandskPinProps } from './validation'
+import CountryDropdown from "../CountryDropdown/CountryDropdown";
+import FlagPanel from "../FlagPanel/FlagPanel";
 
 export interface UtenlandskPinProps {
   pins: Array<Pin> | undefined
@@ -53,8 +52,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const countryData = CountryData.getCountryInstance('nb')
-  const landUtenNorge = CountryFilter.RINA_ACCEPTED({ useUK: false, useEL:false })?.filter((it: string) => it !== 'NO')
   const getId = (p: Pin | null): string => p ? p.land + '-' + p.identifikator : 'new'
 
   const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)
@@ -179,13 +176,14 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
+                <CountryDropdown
                   closeMenuOnSelect
                   data-testid={_namespace + '-land'}
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
                   id={_namespace + '-land'}
-                  includeList={landUtenNorge}
+                  countryCodeListName="euEftaLand"
+                  excludeNorway={true}
                   hideLabel={index >= 0}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
@@ -199,13 +197,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   id={_namespace + '-land'}
                 >
                   {_pin?.land
-                    ? (
-                      <FlexCenterDiv>
-                        <Flag size='S' country={_pin?.land!} />
-                        <HorizontalSeparatorDiv />
-                        {countryData.findByValue(_pin?.land)?.label ?? _pin?.land}
-                      </FlexCenterDiv>
-                      )
+                    ? <FlagPanel land={_pin?.land}/>
                     : (
                       <FlexCenterDiv/>
                       )
