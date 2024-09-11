@@ -162,10 +162,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const _foedested = index < 0 ? _newFoedested : (inEditMode ? _editFoedested : foedested)
     const _v: Validation = index < 0 ? _validation : validation
 
-    const handleCountrySelect = (c: Country) => {
-      setLand(c.value, index)
-    }
-
     return (
       <RepeatableRow
         id={'repeatablerow-' + namespace}
@@ -220,7 +216,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   id={namespace + '-land'}
                   label={t('label:land')}
                   hideLabel={index >= 0}
-                  onOptionSelected={handleCountrySelect}
+                  onOptionSelected={(e: Country) => setLand(e.value, index)}
                   values={_foedested?.land}
                   countryCodeListName="verdensLandHistorisk"
                 />

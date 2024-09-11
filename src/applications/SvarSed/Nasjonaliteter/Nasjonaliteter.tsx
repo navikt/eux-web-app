@@ -1,18 +1,14 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -38,6 +34,8 @@ import {
   ValidationNasjonaliteterProps,
   ValidationNasjonalitetProps
 } from './validation'
+import CountryDropdown from "components/CountryDropdown/CountryDropdown";
+import FlagPanel from "../../../components/FlagPanel/FlagPanel";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -54,7 +52,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const countryData = CountryData.getCountryInstance('nb')
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, target)
@@ -178,7 +175,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
+                <CountryDropdown
                   ariaLabel={t('label:land')}
                   label={t('label:land')}
                   hideLabel={index >= 0}
@@ -187,8 +184,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   flagWave
                   id={_namespace + '-land'}
-                  includeList={CountryFilter.STANDARD({addXS_XR_XU:true})}
-                  menuPortalTarget={document.body}
+                  countryCodeListName="verdensLand"
                   onOptionSelected={(e: Country) => setLand(e.value, index)}
                   required
                   values={_statsborgerskap?.land}
@@ -199,11 +195,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   id={_namespace + '-land'}
                 >
-                  <FlexCenterDiv>
-                    <Flag size='S' country={_statsborgerskap?.land!} />
-                    <HorizontalSeparatorDiv />
-                    {countryData.findByValue(_statsborgerskap?.land)?.label ?? _statsborgerskap?.land}
-                  </FlexCenterDiv>
+                  <FlagPanel land={_statsborgerskap?.land}/>
                 </FormText>
                 )}
           </Column>
