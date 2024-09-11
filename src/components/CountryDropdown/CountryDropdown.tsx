@@ -1,6 +1,5 @@
 import React from "react";
-import CountrySelect from "@navikt/landvelger";
-import {Country} from "@navikt/land-verktoy";
+import CountrySelect, {CountrySelectProps} from "@navikt/landvelger";
 import {State} from "../../declarations/reducers";
 import {ReplySed} from "../../declarations/sed";
 import {useAppSelector} from "../../store";
@@ -16,43 +15,27 @@ const mapState = (state: State): CountryDropdownSelector => ({
   countryCodes: state.app.countryCodes
 })
 
-export interface CountryDropdownProps {
-  dataTestId: string
-  error: string | undefined
-  id: string
-  label: string
-  hideLabel: boolean
-  values: string | undefined
-  onOptionSelected: (selectedCountry: Country) => void
-  countryCodeList: string
+export interface CountryDropdownProps extends CountrySelectProps<any>{
+  dataTestId?: string
+  countryCodeListName?: string
 }
 
 const CountryDropdown : React.FC<CountryDropdownProps> = ({
-  dataTestId,
-  error,
-  id,
-  label,
-  hideLabel,
-  values,
-  onOptionSelected,
-  countryCodeList
+  countryCodeListName, dataTestId, ...rest
 }: CountryDropdownProps) => {
 
   const {replySed, countryCodes} = useAppSelector(mapState)
   const cdmVersion = replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
   const version = cdmVersion ? "v" + cdmVersion : undefined
 
+  const includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
+
   return(
     <CountrySelect
-      data-testid={dataTestId}
-      error={error}
-      id={id}
-      includeList={countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeList as keyof CountryCodeLists] : []}
-      label={label}
-      hideLabel={hideLabel}
+      {...rest}
       menuPortalTarget={document.body}
-      onOptionSelected={onOptionSelected}
-      values={values}
+      data-testid={dataTestId}
+      includeList={includeList}
     />
   )
 
