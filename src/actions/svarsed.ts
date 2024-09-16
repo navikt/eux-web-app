@@ -37,20 +37,6 @@ export const addMottakere = (
   })
 }
 
-export const getInstitusjoner = (
-  buctype: string, landkode: string
-): ActionWithPayload<Institusjoner> => {
-  return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
-    expectedPayload: mockInstitusjonByLandkode({ landkode }),
-    type: {
-      request: types.SVARSED_INSTITUSJONER_REQUEST,
-      success: types.SVARSED_INSTITUSJONER_SUCCESS,
-      failure: types.SVARSED_INSTITUSJONER_FAILURE
-    }
-  })
-}
-
 export const resetMottakere = () => ({
   type: types.SVARSED_MOTTAKERE_ADD_RESET
 })

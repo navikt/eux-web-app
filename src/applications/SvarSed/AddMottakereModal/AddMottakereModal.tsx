@@ -11,17 +11,18 @@ import {
 } from '@navikt/hoykontrast'
 import { Country } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
-import { addMottakere, getInstitusjoner, resetMottakere } from 'actions/svarsed'
+import { addMottakere, resetMottakere } from 'actions/svarsed'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
 import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import { Institusjon, Kodeverk, Validation } from 'declarations/types'
+import { Institusjon, Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
+import {getInstitusjoner, setInstitusjonerByLandkode} from "actions/sak";
 
 const MinimalModalDiv = styled.div`
   min-height: 250px;
@@ -49,7 +50,7 @@ interface AddDeltakereModalProps {
 interface AddDeltakereModalSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
-  landkoder: Array<Kodeverk> | undefined
+  landkoder: Array<string> | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
   gettingInstitusjoner: boolean
@@ -59,9 +60,9 @@ interface AddDeltakereModalSelector {
 const mapState = (state: State): AddDeltakereModalSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  landkoder: state.app.landkoder,
+  landkoder: state.sak.landkoder,
   mottakere: state.svarsed.mottakere,
-  institusjoner: state.svarsed.institusjoner,
+  institusjoner: state.sak.institusjonListByLandkode,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
   addingMottakere: state.loading.addingMottakere
 })
@@ -83,6 +84,10 @@ const AddMottakereModal = ({
   const type = sakshandlinger?.includes("multipleParticipants") ? "multiple" : "single"
 
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
+
+  useEffect(() => {
+    dispatch(getInstitusjoner(bucType))
+  }, [])
 
   const performValidation = (): boolean => {
     const validation: Validation = {}
@@ -110,7 +115,7 @@ const AddMottakereModal = ({
   const onLandkodeChange = (country: Country): void => {
     const landKode = country.value
     setLandkode(landKode)
-    dispatch(getInstitusjoner(bucType, landKode))
+    dispatch(setInstitusjonerByLandkode(landKode))
     setValidation({
       ..._validation,
       [namespace + '-landkode']: undefined,
@@ -176,7 +181,7 @@ const AddMottakereModal = ({
                     data-testid={namespace + '-landkode'}
                     error={_validation[namespace + '-landkode']?.feilmelding}
                     id={namespace + '-landkode'}
-                    includeList={landkoder ? _.orderBy(landkoder, 'term').map((k: Kodeverk) => k.kode) : []}
+                    includeList={landkoder ? landkoder : []}
                     label={t('label:land')}
                     lang='nb'
                     onOptionSelected={onLandkodeChange}

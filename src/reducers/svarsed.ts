@@ -254,18 +254,6 @@ const svarsedReducer = (
         replySedChanged: false
       }
 
-    case types.SVARSED_INSTITUSJONER_REQUEST:
-      return {
-        ...state,
-        institusjoner: undefined
-      }
-
-    case types.SVARSED_INSTITUSJONER_SUCCESS:
-      return {
-        ...state,
-        institusjoner: (action as ActionWithPayload).payload
-      }
-
     case types.SVARSED_MOTTAKERE_ADD_RESET:
       return {
         ...state,
