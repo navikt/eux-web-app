@@ -578,6 +578,8 @@ const MainForm = <T extends StorageTypes>({
         }
       })
 
+      setOpenMenus(_.filter(openMenus, _id => _id !== deselectedMenu))
+
       if(deselectedMenu === currentMenu && formsInDeSelectedMenu?.length > 0){
         const isCurrentMenuOptionInFormsInDeSelectedMenu = _.find(formsInDeSelectedMenu, (f) => f.value === currentMenuOption)
         if(isCurrentMenuOptionInFormsInDeSelectedMenu){
@@ -592,6 +594,8 @@ const MainForm = <T extends StorageTypes>({
     const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key))
     const isValidated = validationKeys.length > 0
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+
+    console.log(validation)
 
     return(
       <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === menuItem.key })}>

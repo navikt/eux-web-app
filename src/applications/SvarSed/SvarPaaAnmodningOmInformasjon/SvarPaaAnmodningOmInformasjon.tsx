@@ -20,7 +20,7 @@ import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
 import {Box, Checkbox, VStack} from "@navikt/ds-react";
-import {setDeselectedFormaal} from "../../../actions/svarsed";
+import {setDeselectedMenu} from "../../../actions/svarsed";
 
 interface KravSelector {
   validation: Validation
@@ -72,10 +72,12 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
   }
 
   const setSvarPaaAnmodning = (item: string, checked: boolean) => {
+    dispatch(resetValidation(parentNamespace + '-' + item))
+
     if(!checked){
-      dispatch(setDeselectedFormaal(item))
+      dispatch(setDeselectedMenu(item))
     } else {
-      dispatch(setDeselectedFormaal(undefined))
+      dispatch(setDeselectedMenu(undefined))
     }
 
     dispatch(updateReplySed(`${target}.${item}`, checked ? {} : undefined))
@@ -149,12 +151,6 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanningsinstitusjon", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.utdanningsinstitusjon}>
                 Svar om fremmøte på skole / høyskole / opplæring / arbeidsledighet
-              </Checkbox>
-              <Checkbox
-                value="deltakelsePaaUtdanning"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("deltakelsePaaUtdanning", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
-                Datoer for deltakelse på skole / høyskole / opplæring / arbeidsledighet
               </Checkbox>
           </Box>
         </VStack>

@@ -107,7 +107,7 @@ export interface SEDEditSelector {
   attachmentRemoved: JoarkBrowserItem | null | undefined
   textAreaDirty: boolean
   textFieldDirty: boolean
-  deselectedFormaal: string | undefined
+  deselectedMenu: string | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -127,7 +127,7 @@ const mapState = (state: State): SEDEditSelector => ({
   attachmentRemoved: state.svarsed.attachmentRemoved,
   textAreaDirty: state.ui.textAreaDirty,
   textFieldDirty: state.ui.textFieldDirty,
-  deselectedFormaal: state.svarsed.deselectedFormaal
+  deselectedMenu: state.svarsed.deselectedMenu
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -152,7 +152,7 @@ const SEDEdit = (): JSX.Element => {
     setVedleggSensitiv,
     textAreaDirty,
     textFieldDirty,
-    deselectedFormaal
+    deselectedMenu
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -385,7 +385,7 @@ const SEDEdit = (): JSX.Element => {
               namespace='svarsed'
               loggingNamespace='personmanager'
               firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
-              deselectedMenuOption={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menuOption : undefined}
+              deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
               forms={[
                 { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
@@ -432,7 +432,7 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='onelevel'
               namespace='formål2'
-              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
+              deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
@@ -526,15 +526,14 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='twolevelmenus'
               menuDefaultClosed={true}
-              namespace='svarpaaetterspurtinformasjon'
-              deselectedMenu={deselectedFormaal}
+              namespace='svarpaaanmodningominformasjon'
+              deselectedMenu={deselectedMenu}
               menuItems={[
                 {key: "adopsjon", label:"Svar på forespørsel om adopsjon" , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
                 {key: "inntekt", label:"Svar på anmodning om inntekt", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
                 {key: "ytelseTilForeldreloese", label:"Svar på anmodning om barnepensjon", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
                 {key: "annenInformasjonBarnet", label:"Svar på anmodning om annen informasjon angående barnet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
                 {key: "utdanningsinstitusjon", label:"Svar om fremmøte på skole / høyskole / opplæring / arbeidsledighet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanningsinstitusjon},
-                {key: "deltakelsePaaUtdanning", label:"Datoer for deltakelse på skole / høyskole / opplæring / arbeidsledighet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
               ]}
               forms={[
                 {

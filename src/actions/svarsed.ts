@@ -441,7 +441,7 @@ export const setAttachmentSensitive = (rinaSakId: string | undefined, sedId: str
   })
 }
 
-export const setDeselectedFormaal = (formaal: string | undefined) => ({
-  type: types.SVARSED_DESELECTED_FORMAAL_SET,
-  payload: formaal
+export const setDeselectedMenu = (menu: string | undefined) => ({
+  type: types.SVARSED_DESELECTED_MENU_SET,
+  payload: menu
 })
