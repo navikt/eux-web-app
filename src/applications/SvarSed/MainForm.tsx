@@ -33,7 +33,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {isF001Sed, isF002Sed, isFSed} from 'utils/sed'
+import {isF001Sed, isF002Sed, canAddPerson} from 'utils/sed'
 
 const LeftDiv = styled.div`
   flex: 1;
@@ -588,7 +588,7 @@ const MainForm = <T extends StorageTypes>({
                 {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
                 {type === 'twolevel' && (isF001Sed(replySed) || isF002Sed(replySed)) && renderTwoLevelMenu(replySed!, 'familie')}
                 <LastDivWithButton>
-                  {isFSed(replySed) && (
+                  {canAddPerson(replySed) && (
                     <Button
                       variant='tertiary'
                       onClick={onAddNewPerson}

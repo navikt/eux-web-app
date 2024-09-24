@@ -1,10 +1,9 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak, Institusjoner } from 'declarations/types'
+import { Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
-import {mockInstitusjonByLandkode} from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
 import mockSaks from 'mocks/svarsed/saks'
 import mockSaks2 from 'mocks/svarsed/saks_2'
@@ -33,20 +32,6 @@ export const addMottakere = (
       request: types.SVARSED_MOTTAKERE_ADD_REQUEST,
       success: types.SVARSED_MOTTAKERE_ADD_SUCCESS,
       failure: types.SVARSED_MOTTAKERE_ADD_FAILURE
-    }
-  })
-}
-
-export const getInstitusjoner = (
-  buctype: string, landkode: string
-): ActionWithPayload<Institusjoner> => {
-  return call({
-    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
-    expectedPayload: mockInstitusjonByLandkode({ landkode }),
-    type: {
-      request: types.SVARSED_INSTITUSJONER_REQUEST,
-      success: types.SVARSED_INSTITUSJONER_SUCCESS,
-      failure: types.SVARSED_INSTITUSJONER_FAILURE
     }
   })
 }

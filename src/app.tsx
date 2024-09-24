@@ -3,6 +3,7 @@ import Pages from "pages/index";
 import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "./store";
 import {
+  getCDMVersjon,
   getCountryCodes,
   getEnheter,
   getSaksbehandler,
@@ -44,6 +45,7 @@ export const App = () => {
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
       dispatch(getCountryCodes())
+      dispatch(getCDMVersjon())
     }, [])
 
     useEffect(() => {

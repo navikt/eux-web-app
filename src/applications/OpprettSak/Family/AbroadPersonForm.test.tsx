@@ -23,7 +23,8 @@ describe('applications/OpprettSak/Family/AbroadPersonForm', () => {
   }
 
   const defaultSelector: AbroadPersonFormSelector = {
-    kjoennList: kjoenn
+    kjoennList: kjoenn,
+    cdmVersjon: "4.2"
   }
 
   beforeAll(() => {

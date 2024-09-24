@@ -1,14 +1,60 @@
 export default {
   "v4.2": {
-    "euEftaLand": ["SE", "DK", "FI"],
-    "verdensLand": ["NO", "SE", "DK", "FI"],
-    "verdensLandHistorisk": ["NO", "SE", "DK", "FI", "YUCS"],
-    "statsborgerskap": ["NO", "SE", "DK", "FI", "IN"]
+    "euEftaLand": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"}
+    ],
+    "verdensLand": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+    ],
+    "verdensLandHistorisk": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+      {landkode: "GB", landnavn: "Storbritania"},
+      {landkode: "YUCS", landnavn: "Jugoslavia"}
+    ],
+    "statsborgerskap": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+      {landkode: "IN", landnavn: "India"}
+    ]
   },
   "v4.3": {
-    "euEftaLand": ["SE", "DK", "FI"],
-    "verdensLand": ["NO", "SE", "DK", "FI"],
-    "verdensLandHistorisk": ["NO", "SE", "DK", "FI", "YUCS"],
-    "statsborgerskap": ["NO", "SE", "DK", "FI", "XK"]
+    "euEftaLand": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+    ],
+    "verdensLand": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+    ],
+    "verdensLandHistorisk": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+      {landkode: "YUCS", landnavn: "Jugoslavia"}
+    ],
+    "statsborgerskap": [
+      {landkode: "NO", landnavn: "Norge"},
+      {landkode: "SE", landnavn: "Sverige"},
+      {landkode: "DK", landnavn: "Danmark"},
+      {landkode: "FI", landnavn: "Finland"},
+      {landkode: "YUCS", landnavn: "Jugoslavia"},
+      {landkode: "XK", landnavn: "Kosovo"}
+    ]
   }
 }

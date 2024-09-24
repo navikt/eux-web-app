@@ -81,7 +81,7 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_SUCCESS,
           failure: types.SAK_INSTITUSJONER_FAILURE
         },
-        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype })
+        url: sprintf(urls.API_ALL_INSTITUSJONER_URL, { buctype })
       }))
   })
 

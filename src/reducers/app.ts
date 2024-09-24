@@ -3,6 +3,7 @@ import { FeatureToggles, Params } from 'declarations/app'
 import {
   BucTyper,
   CountryCodes,
+  CountryCodeLists,
   Enheter,
   Kodemaps,
   Kodeverk,
@@ -17,7 +18,9 @@ import { AnyAction } from 'redux'
 export interface AppState {
   buctyper: BucTyper | undefined
   enheter: Enheter | null | undefined
+  cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
+  countryCodeMap: {key?: string} | null | undefined
 
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
@@ -44,7 +47,9 @@ export const initialAppState: AppState = {
   saksbehandler: undefined,
   serverinfo: undefined,
   enheter: undefined,
+  cdmVersjon: undefined,
   countryCodes: undefined,
+  countryCodeMap: undefined,
   expirationTime: undefined,
 
   // comes from eessi-kodeverk
@@ -89,16 +94,36 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         enheter: action.payload
       }
 
-    case types.APP_COUNTRYCODES_SUCCESS:
+    case types.APP_CDMVERSJON_SUCCESS: {
       return {
         ...state,
-        countryCodes: action.payload
+        cdmVersjon: action.payload
       }
+    }
+
+    case types.APP_COUNTRYCODES_SUCCESS: {
+      let countryCodeMap: {key?: string} = {}
+      const countryCodes: CountryCodes = action.payload
+      Object.keys(countryCodes).forEach(versionKey => {
+        Object.keys(countryCodes[versionKey as keyof CountryCodes]).forEach(landKey => {
+          countryCodes[versionKey as keyof CountryCodes][landKey as keyof CountryCodeLists].forEach(land => {
+            countryCodeMap[land.landkode as keyof {key: string}] = land.landnavn;
+          });
+        });
+      });
+
+      return {
+        ...state,
+        countryCodes,
+        countryCodeMap
+      }
+    }
 
     case types.APP_COUNTRYCODES_FAILURE:
       return {
         ...state,
-        countryCodes: null
+        countryCodes: null,
+        countryCodeMap: null
       }
 
 

@@ -1,6 +1,6 @@
 import {Foedested} from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import {checkIfNotEmpty, checkIfValidLand, checkLength} from 'utils/validation'
+import {checkIfNotEmpty, checkLength} from 'utils/validation'
 import _ from "lodash";
 
 export interface ValidationFoedestedProps {
@@ -24,12 +24,6 @@ export const validateFoedested = (
       id: namespace + '-land',
       message: 'validation:noLand',
       personName
-    }))
-
-    hasErrors.push(checkIfValidLand(v, {
-      needle: foedested?.land,
-      id: namespace + '-land',
-      message: 'validation:invalidLand'
     }))
 
     hasErrors.push(checkLength(v, {

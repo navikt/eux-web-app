@@ -1,20 +1,16 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Label } from '@navikt/ds-react'
-import Flag from '@navikt/flagg-ikoner'
 import {
   AlignEndColumn,
   AlignStartRow,
   Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
   PaddedDiv,
   PaddedHorizontallyDiv,
   PaddedRow,
   Row,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
@@ -30,6 +26,8 @@ import performValidation from "../../utils/performValidation";
 import {resetValidation, setValidation} from "../../actions/validation";
 import {validateFoedested, ValidationFoedestedProps} from "./validation";
 import {useAppDispatch} from "../../store";
+import CountryDropdown from "../CountryDropdown/CountryDropdown";
+import FlagPanel from "../FlagPanel/FlagPanel";
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
@@ -50,7 +48,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
 }: FoedestedProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const countryData = CountryData.getCountryInstance('nb')
 
   const [_newFoedested, _setNewFoedested] = useState<Foedested | undefined>(undefined)
   const [_editFoedested, _setEditFoedested] = useState<Foedested | undefined>(undefined)
@@ -164,6 +161,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const inEditMode = index < 0 || _editMode
     const _foedested = index < 0 ? _newFoedested : (inEditMode ? _editFoedested : foedested)
     const _v: Validation = index < 0 ? _validation : validation
+
     return (
       <RepeatableRow
         id={'repeatablerow-' + namespace}
@@ -212,29 +210,20 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
-                  data-testid={namespace + '-land'}
+                <CountryDropdown
+                  dataTestId={namespace + '-land'}
                   error={_v[namespace + '-land']?.feilmelding}
                   id={namespace + '-land'}
-                  includeList={CountryFilter.STANDARD({})}
                   label={t('label:land')}
                   hideLabel={index >= 0}
-                  menuPortalTarget={document.body}
                   onOptionSelected={(e: Country) => setLand(e.value, index)}
                   values={_foedested?.land}
+                  countryCodeListName="verdensLandHistorisk"
                 />
                 )
-              : (
-                <FlexCenterDiv id={namespace + '-land'}>
-                  {_foedested?.land && (
-                    <>
-                      <Flag size='S' country={_foedested?.land!} />
-                      <HorizontalSeparatorDiv />
-                    </>
-                  )}
-                  {countryData.findByValue(_foedested?.land)?.label ?? _foedested?.land}
-                </FlexCenterDiv>
-                )}
+              :
+                <FlagPanel land={_foedested?.land} id={namespace + '-land'}/>
+            }
           </Column>
         </Row>
         <PaddedRow size='0.5'>

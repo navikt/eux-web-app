@@ -244,6 +244,7 @@ export interface Sak {
   ikkeJournalfoerteSedListFailed?:boolean
   sedUnderJournalfoeringEllerUkjentStatus?:Array<string>
   relaterteRinasakIder?: Array<string>
+  cdmVersjon: string
 }
 
 export interface NavInstitusjon {

@@ -215,15 +215,12 @@ const loadingReducer = (
         gettingFagsaker: false
       }
 
-    case types.SVARSED_INSTITUSJONER_REQUEST:
     case types.SAK_INSTITUSJONER_REQUEST:
       return {
         ...state,
         gettingInstitusjoner: true
       }
 
-    case types.SVARSED_INSTITUSJONER_SUCCESS:
-    case types.SVARSED_INSTITUSJONER_FAILURE:
     case types.SAK_INSTITUSJONER_SUCCESS:
     case types.SAK_INSTITUSJONER_FAILURE:
       return {
