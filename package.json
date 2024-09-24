@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.4.0-TEN-876-RinaCountryCodes",
+  "version": "9.4.0",
   "private": true,
   "type": "module",
   "scripts": {
