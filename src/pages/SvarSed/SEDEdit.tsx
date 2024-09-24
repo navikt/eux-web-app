@@ -57,7 +57,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import {F002Sed, FSed, ReplySed} from 'declarations/sed'
+import {F002Sed, F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -71,7 +71,9 @@ import {
   cleanReplySed,
   isF001Sed,
   isF002Sed,
-  isF003Sed, isF026Sed,
+  isF003Sed,
+  isF026Sed,
+  isF027Sed,
   isFSed,
   isH002Sed,
   isPreviewableSed,
@@ -84,8 +86,9 @@ import {JoarkBrowserItem} from "declarations/attachments";
 import VedtakForF003 from 'applications/SvarSed/VedtakForF003/VedtakForF003'
 import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
 import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilYtelserFSED'
-import FamilieRelasjonF003 from "../../applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
-import EtterspurtInformasjon from "../../applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
+import FamilieRelasjonF003 from "applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
+import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
+import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -359,6 +362,22 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
+        {isF027Sed(replySed) && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='svarpaaanmodningominformasjon'
+              loggingNamespace='svarpaaanmodningominformasjonmanager'
+              forms={[
+                { label: t('el:option-mainform-svarpaaanmodningominformasjon'), value: 'svarpaaanmodningominformasjon', component: SvarPaaAnmodningOmInformasjon },
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
         {showMainForm() && (
           <>
             <MainForm<ReplySed>
@@ -502,7 +521,44 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isH002Sed(replySed)) && (
+        {isF027Sed(replySed) &&
+          <>
+            <MainForm
+              type='twolevelmenus'
+              menuDefaultClosed={true}
+              namespace='svarpaaetterspurtinformasjon'
+              deselectedMenu={deselectedFormaal}
+              menuItems={[
+                {key: "adopsjon", label:"Svar på forespørsel om adopsjon" , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
+                {key: "inntekt", label:"Svar på anmodning om inntekt", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
+                {key: "ytelseTilForeldreloese", label:"Svar på anmodning om barnepensjon", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
+                {key: "annenInformasjonBarnet", label:"Svar på anmodning om annen informasjon angående barnet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
+                {key: "utdanningsinstitusjon", label:"Svar om fremmøte på skole / høyskole / opplæring / arbeidsledighet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanningsinstitusjon},
+                {key: "deltakelsePaaUtdanning", label:"Datoer for deltakelse på skole / høyskole / opplæring / arbeidsledighet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
+              ]}
+              forms={[
+                {
+                  label: t('el:option-mainform-etterspurtinformasjon'),
+                  value: 'etterspurtinformasjon',
+                  component: EtterspurtInformasjon,
+                  type: ['adopsjon', 'inntekt'],
+                },
+                {
+                  label: "Nasjonaliteter",
+                  value: 'nasjonaliteter',
+                  component: Nasjonaliteter,
+                  type: ['adopsjon'],
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='svarpaaetterspurtinformasjonmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>

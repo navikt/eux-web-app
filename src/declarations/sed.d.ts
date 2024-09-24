@@ -569,24 +569,47 @@ export interface F026Sed extends BaseReplySed {
   anmodningOmMerInformasjon?: AnmodningOmMerInformasjon
 }
 
+export interface F027Sed extends BaseReplySed {
+  bruker: PersonBruker
+  ytterligereInfo?: string
+  krav: {
+    kravMottattDato: string
+  }
+  erKravEllerSvarPaaKrav: string
+  anmodningOmMerInformasjon?: {
+    svar?: {
+      adopsjon?: {
+        dokumentasjonAdopsjonErLovlig: string
+        adoptivforeldreOmsorgFradato: string
+        bevillingRegistreringsdato: string
+        ytterligereInformasjon: string
+      }
+      inntekt?: {
+        periode: string
+        aarlig: {
+          beloep: string
+          valuta: string
+        }
+        kilde: string
+        inntektkilde: string
+        ytterligereInformasjon: string
+      }
+      ytelseTilForeldreloese?: {}
+      annenInformasjonBarnet?: {}
+      utdanning?: Utdanning
+      utdanningsinstitusjon?: UtdanningInstitusjon
+      deltakelsePaaUtdanning: Array<Periode>
+    }
+  }
+}
+
 export interface AnmodningOmMerInformasjon {
   adopsjon?: EtterspurtInformasjon
   inntekt?: EtterspurtInformasjon
   ytelseTilForeldreLoese?: EtterspurtInformasjon
   annenInformasjonOmBarnet?: EtterspurtInformasjon
-  utdanning?: {
-    timerPr?: 'dag' | 'uke' | 'maaned',
-    ytterligereInformasjon?: string
-    typeDeltakelse?: 'heltid' | 'deltid'
-    timer?: string
-    type?: UtdanningType
-  }
-  utdanningsinstitusjon?: {
-    adresse?: Adresse
-    ytterligereInformasjon?: string
-    navn?: string
-    identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
-  }
+  utdanning?: Utdanning
+  utdanningsinstitusjon?: UtdanningInstitusjon
 }
 
 export interface EtterspurtInformasjon {
@@ -594,6 +617,21 @@ export interface EtterspurtInformasjon {
   etterspurtInformasjonType?: {
     typer?: Array<string>
   }
+}
+
+export interface Utdanning {
+  timerPr?: 'dag' | 'uke' | 'maaned',
+  ytterligereInformasjon?: string
+  typeDeltakelse?: 'heltid' | 'deltid'
+  timer?: string
+  type?: UtdanningType
+}
+
+export interface UtdanningInstitusjon {
+  adresse?: Adresse
+  ytterligereInformasjon?: string
+  navn?: string
+  identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
 }
 
 export interface UtdanningsInstitusjonsIndentifikator {

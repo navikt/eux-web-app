@@ -86,6 +86,7 @@
   "dagpenger": "Dagpenger",
   "damn-really": "OK \uD83D\uDE1E",
   "dato": "Dato",
+  "dato-for-krav": "Dato for krav",
   "dato-for-relasjon": "Dato for relasjon",
   "dato-opprettet": "Dato opprettet",
   "dekkede": "Dekkede",
@@ -241,6 +242,10 @@
   "kopiere": "Kopiere",
   "krav-ikke-framsatt": "Krav ikke framsatt",
   "krav-mottatt-dato": "Krav mottatt dato",
+  "krav-eller-svar-paa-krav": "Krav eller svar på krav",
+  "krav-eller-svar-paa-krav-nytt_krav": "Nytt krav",
+  "krav-eller-svar-paa-krav-svar-paa-krav": "Svar på krav",
+
   "kravType-nytt_krav" : "Nytt krav",
   "kravType-endrede_omstendigheter" : "Endrede omstendigheter",
   "krav-om-refusjon": "Krav om refusjon",

@@ -153,8 +153,9 @@ const BlankContentDiv = styled(FlexCenterDiv)`
   background-color: var(--a-bg-default);
 `
 export interface MainFormFCProps<T> {
+  menuItems?: Array<MenuItem>
   forms: Array<Form>
-  type: 'onelevel' | 'twolevel'
+  type: 'onelevel' | 'twolevel' | 'twolevelmenus'
   firstForm?: string
   replySed: T | null | undefined
   setReplySed: (replySed: T) => ActionWithPayload<T>
@@ -194,11 +195,18 @@ export interface Form extends Option {
   options?: any
 }
 
+export interface MenuItem {
+  key: string
+  label: string
+  condition?: () => void
+}
+
 export const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
 const MainForm = <T extends StorageTypes>({
+  menuItems,
   forms,
   firstForm,
   type,
@@ -238,6 +246,9 @@ const MainForm = <T extends StorageTypes>({
 
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
+
+  const visibleMenu = menuItems && type === "twolevelmenus" ? menuItems?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true).length > 0 : true
+
   useEffect(() => {
     dispatch(startMenuStatistic(loggingNamespace, undefined))
     return () => {
@@ -268,11 +279,12 @@ const MainForm = <T extends StorageTypes>({
     }
 
     let form: Form | undefined
-    if (type === 'twolevel') {
+    if (type === 'twolevel' || type === 'twolevelmenus') {
       form = _.find(forms, o => o.value === menuOption)
     } else {
       form = _.find(forms, o => o.value === menu)
     }
+
     if (form) {
       const Component = form.component
       return (
@@ -557,6 +569,97 @@ const MainForm = <T extends StorageTypes>({
   }
 
   useEffect(() => {
+    // Close all submenus if checkbox for menu is deselected
+    if(type === 'twolevelmenus' && deselectedMenu){
+      // @ts-ignore
+      const formsInDeSelectedMenu: Array<Form> = _.filter(forms, (f) => {
+        if(f.type){
+          return _.isString(f.type) ? f.type === deselectedMenu : f.type.includes(deselectedMenu)
+        }
+      })
+
+      if(deselectedMenu === currentMenu && formsInDeSelectedMenu?.length > 0){
+        const isCurrentMenuOptionInFormsInDeSelectedMenu = _.find(formsInDeSelectedMenu, (f) => f.value === currentMenuOption)
+        if(isCurrentMenuOptionInFormsInDeSelectedMenu){
+          setCurrentMenuOption(initialMenuOption)
+        }
+      }
+    }
+  }, [deselectedMenu])
+
+  const renderTwoLevelMenuItems = (menuItem: MenuItem, forms: Array<Form>) => {
+    const open: boolean = _.find(openMenus, _id => _id === menuItem.key) !== undefined
+    const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key))
+    const isValidated = validationKeys.length > 0
+    const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+
+    return(
+      <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === menuItem.key })}>
+        <NameDiv
+          onClick={() => {
+            changeMenu(menuItem.key, undefined, 'click')
+            return false
+          }}
+        >
+          <NameLabelDiv
+            className={classNames({
+              selected: focusedMenu === menuItem.key
+            })}
+          >
+            {isValidated
+              ? validationHasErrors
+                ? <XMarkOctagonFillIcon height={20} color='red' />
+                : <CheckmarkCircleFillIcon color='green' height={20} />
+              : null}
+            <>
+              <HorizontalSeparatorDiv size='0.5' />
+              <MenuLabelText>
+                {menuItem.label}
+              </MenuLabelText>
+            </>
+          </NameLabelDiv>
+          <MenuArrowDiv>
+            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
+          </MenuArrowDiv>
+        </NameDiv>
+        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
+        {open && forms
+          .filter(o => {
+            const _type = menuItem.key
+            return _.isString(o.type)
+              ? _type.startsWith(o.type)
+              : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
+          })
+          .filter(o => _.isFunction(o.condition) ? o.condition() : true)
+          .map((o, i) => {
+            const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key + '-' + o.value))
+            const isValidated = validationKeys.length > 0
+            const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+            return (
+              <OptionDiv
+                className={classNames({
+                  selected: currentMenu === menuItem.key && currentMenuOption === o.value,
+                  first: i === 0
+                })}
+                key={namespace + '-' + menuItem.key + '-' + o.value}
+                onClick={() => changeMenu(menuItem.key, o.value, 'click')}
+                role='button'
+              >
+                {isValidated
+                  ? validationHasErrors
+                    ? <XMarkOctagonFillIcon color='red' height={20} />
+                    : <CheckmarkCircleFillIcon color='green' height={20} />
+                  : <MenuElipsisHorizontalCircleIcon height={20} />}
+                <HorizontalSeparatorDiv size='0.5' />
+                {o.label}
+              </OptionDiv>
+            )
+          })}
+      </NameAndOptionsDiv>
+    )
+  }
+
+  useEffect(() => {
     document.addEventListener('feillenke', handleFeilLenke)
     return () => {
       document.removeEventListener('feillenke', handleFeilLenke)
@@ -600,6 +703,17 @@ const MainForm = <T extends StorageTypes>({
                 </LastDivWithButton>
               </>
             )}
+            {type === 'twolevelmenus' && (
+              <>
+                {menuItems
+                  ?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true)
+                  ?.map((menuItem) => {
+                    return renderTwoLevelMenuItems(menuItem, forms)
+                  })
+                }
+                {visibleMenu && <LastDiv />}
+              </>
+            )}
             {type === 'onelevel' && (
               <>
                 {renderOneLevelMenu(forms)}
@@ -607,24 +721,27 @@ const MainForm = <T extends StorageTypes>({
               </>
             )}
           </LeftDiv>
-          <RightDiv>
-            {!currentMenu
-              ? (
-                <BlankDiv>
-                  <BlankContentDiv>
-                    {t('label:velg-meny')}
-                  </BlankContentDiv>
-                </BlankDiv>
-                )
-              : (
-                <RightActiveDiv
-                  key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
-                  className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
-                >
-                  {getForm(currentMenu, currentMenuOption)}
-                </RightActiveDiv>
-                )}
-          </RightDiv>
+
+          {visibleMenu &&
+            <RightDiv>
+              {!currentMenu
+                ? (
+                  <BlankDiv>
+                    <BlankContentDiv>
+                      {t('label:velg-meny')}
+                    </BlankContentDiv>
+                  </BlankDiv>
+                  )
+                : (
+                  <RightActiveDiv
+                    key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
+                    className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
+                  >
+                    {getForm(currentMenu, currentMenuOption)}
+                  </RightActiveDiv>
+                  )}
+            </RightDiv>
+          }
         </FlexCenterSpacedDiv>
       </WithErrorPanel>
     </PileDiv>
