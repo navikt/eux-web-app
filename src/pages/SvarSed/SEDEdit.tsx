@@ -89,6 +89,8 @@ import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilY
 import FamilieRelasjonF003 from "applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
 import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
+import SvarPaaForespoerselOmAdopsjon
+  from "../../applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -537,16 +539,11 @@ const SEDEdit = (): JSX.Element => {
               ]}
               forms={[
                 {
-                  label: t('el:option-mainform-etterspurtinformasjon'),
-                  value: 'etterspurtinformasjon',
-                  component: EtterspurtInformasjon,
-                  type: ['adopsjon', 'inntekt'],
-                },
-                {
-                  label: "Nasjonaliteter",
-                  value: 'nasjonaliteter',
-                  component: Nasjonaliteter,
+                  label: t('el:option-mainform-svarpaaforespoerselomadopsjon'),
+                  value: 'svarpaaforespoerselomadopsjon',
+                  component: SvarPaaForespoerselOmAdopsjon,
                   type: ['adopsjon'],
+                  options: {cdmVersjon: currentSak?.cdmVersjon}
                 }
               ]}
               replySed={replySed}

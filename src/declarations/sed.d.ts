@@ -578,12 +578,7 @@ export interface F027Sed extends BaseReplySed {
   erKravEllerSvarPaaKrav: string
   anmodningOmMerInformasjon?: {
     svar?: {
-      adopsjon?: {
-        dokumentasjonAdopsjonErLovlig: string
-        adoptivforeldreOmsorgFradato: string
-        bevillingRegistreringsdato: string
-        ytterligereInformasjon: string
-      }
+      adopsjon?: SvarAdopsjon
       inntekt?: {
         periode: string
         aarlig: {
@@ -637,6 +632,13 @@ export interface UtdanningInstitusjon {
 export interface UtdanningsInstitusjonsIndentifikator {
   type?: string
   id?: string
+}
+
+export interface SvarAdopsjon {
+  dokumentasjonAdopsjonErLovlig?: string
+  adoptivforeldreOmsorgFradato?: string
+  bevillingRegistreringsdato?: string
+  ytterligereInformasjon?: string
 }
 
 export interface USed extends BaseReplySed {
