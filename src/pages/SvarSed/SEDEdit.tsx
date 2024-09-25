@@ -91,6 +91,7 @@ import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/Et
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 import SvarPaaForespoerselOmAdopsjon
   from "../../applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
+import SvarPaaAnmodningOmInntekt from "../../applications/SvarSed/SvarPaaAnmodninglOmInntekt/SvarPaaAnmodningOmInntekt";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -543,6 +544,12 @@ const SEDEdit = (): JSX.Element => {
                   value: 'svarpaaforespoerselomadopsjon',
                   component: SvarPaaForespoerselOmAdopsjon,
                   type: ['adopsjon'],
+                },
+                {
+                  label: t('el:option-mainform-svarpaaanmodningominntekt'),
+                  value: 'svarpaaanmodningavinntekt',
+                  component: SvarPaaAnmodningOmInntekt,
+                  type: ['inntekt'],
                 }
               ]}
               replySed={replySed}

@@ -579,16 +579,7 @@ export interface F027Sed extends BaseReplySed {
   anmodningOmMerInformasjon?: {
     svar?: {
       adopsjon?: SvarAdopsjon
-      inntekt?: {
-        periode: Periode
-        aarlig: {
-          beloep: string
-          valuta: string
-        }
-        kilde?: string
-        inntektskilde: string
-        ytterligereinformasjon: string
-      }
+      inntekt?: SvarInntekt
       ytelseTilForeldreloese?: {}
       annenInformasjonBarnet?: {}
       utdanning?: Utdanning
@@ -638,6 +629,17 @@ export interface SvarAdopsjon {
   dokumentasjonAdopsjonErLovlig?: string
   adoptivforeldreOmsorgFradato?: string
   bevillingRegistreringsdato?: string
+  ytterligereInformasjon?: string
+}
+
+export interface SvarInntekt {
+  periode?: Periode
+  aarlig?: {
+    beloep?: string
+    valuta?: string
+  }
+  kilde?: string
+  inntektskilde?: string
   ytterligereInformasjon?: string
 }
 

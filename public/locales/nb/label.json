@@ -213,6 +213,7 @@
   "inntekt-og-time-info": "Type ansettelse/selvstendig næringsvirksomhet",
   "inntekter": "Inntekter",
   "inntektsfilter": "Inntekts filter",
+  "inntektskilde": "Inntektskilde",
   "innvilgelse" : "innvilgelse",
   "institusjon" : "Institusjon",
   "institusjonens-adresse" : "Institusjonens adresse",
@@ -324,6 +325,7 @@
   "pdl-adresse-til": "Adresse hentet fra PDL til {{person}}",
   "periode": "Periode",
   "periode-avgrensing": "Avgrensning av periode",
+  "periode-det-kreves-opplysninger-om": "Periode det kreves opplysninger om",
   "periode-for-dagpenger": "Periode for dagpenger",
   "periode-trygdeordning-avsenderlandet": "Periode med trygdeordning i avsenderlandet",
   "periode-pensjon-avsenderlandet": "Periode med mottatt pensjon i avsenderlandet",
@@ -507,6 +509,7 @@
   "åpne_sak_i_RINA": "Åpne sak i RINA",
   "åpen_sluttdato": "Åpen sluttdato",
   "årlig": "Årlig",
+  "årlig-inntekt": "Årlig inntekt",
   "årsak-til-avslutning-av-arbeidsforhold" : "Årsak til avslutning av arbeidsforhold",
   "årsak-til-avsluttet-arbeidsforhold" : "Årsak til avsluttet arbeidsforhold",
   "årsak-til-avslutning-av-selvstendig-næringsvirksomhet" : "Årsak til avslutning av selvstendig næringsvirksomhet"

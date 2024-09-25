@@ -49,7 +49,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
                 error={validation[namespace + '-adoptivforeldreOmsorgFradato']?.feilmelding}
                 namespace={namespace}
                 id='adoptivforeldreOmsorgFradato'
-                label={t('dato-adoptivforeldre-omsorg-fradato')}
+                label={t('label:dato-adoptivforeldre-omsorg-fradato')}
                 onChanged={(v) => setAdopsjonProperty('adoptivforeldreOmsorgFradato', v)}
                 dateValue={svarAdopsjon?.adoptivforeldreOmsorgFradato}
               />
