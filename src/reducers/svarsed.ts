@@ -10,7 +10,7 @@ import {
   X011Sed,
   X012Sed,
   XSed,
-  Person
+  Person, F026Sed, F027Sed
 } from 'declarations/sed.d'
 import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -431,7 +431,7 @@ const svarsedReducer = (
     case types.SVARSED_FSED_CREATE: {
       const sedType = (action as ActionWithPayload).payload.sedType
       const sak = (action as ActionWithPayload).payload.sak
-      const replySed: F002Sed = createReplySedTemplate<any>(sak, sedType)
+      const replySed: F002Sed | F026Sed | F027Sed = createReplySedTemplate<F002Sed | F026Sed | F027Sed>(sak, sedType)
       return {
         ...state,
         replySed
