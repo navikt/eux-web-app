@@ -531,11 +531,11 @@ const SEDEdit = (): JSX.Element => {
               namespace='svarpaaanmodningominformasjon'
               deselectedMenu={deselectedMenu}
               menuItems={[
-                {key: "adopsjon", label:"Svar på forespørsel om adopsjon" , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
-                {key: "inntekt", label:"Svar på anmodning om inntekt", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
-                {key: "ytelseTilForeldreloese", label:"Svar på anmodning om barnepensjon", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
-                {key: "annenInformasjonBarnet", label:"Svar på anmodning om annen informasjon angående barnet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
-                {key: "utdanningsinstitusjon", label:"Svar om fremmøte på skole / høyskole / opplæring / arbeidsledighet", condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanningsinstitusjon},
+                {key: "adopsjon", label:t('label:svar-på-anmodning-om-adopsjon') , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
+                {key: "inntekt", label:t('label:svar-på-anmodning-om-inntekt'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
+                {key: "ytelseTilForeldreloese", label:t('label:svar-på-anmodning-om-barnepensjon'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
+                {key: "annenInformasjonBarnet", label:t('label:svar-på-anmodning-om-annen-informasjon-om-barnet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
+                {key: "utdanningsinstitusjon", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanningsinstitusjon},
               ]}
               forms={[
                 {
@@ -543,7 +543,6 @@ const SEDEdit = (): JSX.Element => {
                   value: 'svarpaaforespoerselomadopsjon',
                   component: SvarPaaForespoerselOmAdopsjon,
                   type: ['adopsjon'],
-                  options: {cdmVersjon: currentSak?.cdmVersjon}
                 }
               ]}
               replySed={replySed}

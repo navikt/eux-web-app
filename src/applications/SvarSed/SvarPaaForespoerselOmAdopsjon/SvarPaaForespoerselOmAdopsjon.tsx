@@ -9,6 +9,7 @@ import {TextAreaDiv} from "../../../components/StyledComponents";
 import TextArea from "../../../components/Forms/TextArea";
 import {SvarAdopsjon} from "../../../declarations/sed";
 import DateField from "../../../components/DateField/DateField";
+import {useTranslation} from "react-i18next";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -20,26 +21,26 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
   personID,
   replySed,
   updateReplySed,
-  options
 }: MainFormProps): JSX.Element => {
   const { validation } = useAppSelector(mapState)
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-svarpaaforespoerselomadopsjon`
   const target = `anmodningOmMerInformasjon.svar.adopsjon`
   const svarAdopsjon: SvarAdopsjon | undefined = _.get(replySed, target)
 
-  const setYtterligeInfo = (newInfo: string) => {
-    dispatch(updateReplySed(`${target}.ytterligereInformasjon`, newInfo.trim()))
+  const setAdopsjonProperty = (property: string, value: string) => {
+    dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
 
-  //TODO: LABELS --> TRANSLATION FILES
-  //TODO: SET-METHODS for dates
+  //TODO: VALIDATION
+
 
   return (
     <PaddedDiv>
       <VStack gap="4">
         <Heading size='small'>
-          {label} (CDM-{options.cdmVersjon})
+          {label}
         </Heading>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <Row>
@@ -48,8 +49,8 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
                 error={validation[namespace + '-adoptivforeldreOmsorgFradato']?.feilmelding}
                 namespace={namespace}
                 id='adoptivforeldreOmsorgFradato'
-                label={"Dato da adoptivforeldrene fikk omsorg for det adopterte barnet"}
-                onChanged={()=>{}}
+                label={t('dato-adoptivforeldre-omsorg-fradato')}
+                onChanged={(v) => setAdopsjonProperty('adoptivforeldreOmsorgFradato', v)}
                 dateValue={svarAdopsjon?.adoptivforeldreOmsorgFradato}
               />
             </Column>
@@ -58,8 +59,8 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
                 error={validation[namespace + '-bevillingRegistreringsdato']?.feilmelding}
                 namespace={namespace}
                 id='bevillingRegistreringsdato'
-                label={"Dato da adopsjonsbevillingen ble offentlig registrert"}
-                onChanged={()=>{}}
+                label={t('label:dato-bevilling-registrering')}
+                onChanged={(v) => setAdopsjonProperty('bevillingRegistreringsdato', v)}
                 dateValue={svarAdopsjon?.bevillingRegistreringsdato}
               />
             </Column>
@@ -71,8 +72,8 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
               error={validation[namespace + '-ytterligereInfo']?.feilmelding}
               namespace={namespace}
               id='ytterligereInfo'
-              label="Ytterligere informasjon"
-              onChanged={setYtterligeInfo}
+              label={t('label:extra-information')}
+              onChanged={(v) => setAdopsjonProperty('ytterligereInformasjon', v)}
               value={svarAdopsjon?.ytterligereInformasjon}
             />
           </TextAreaDiv>

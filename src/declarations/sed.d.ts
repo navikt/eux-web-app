@@ -17,7 +17,7 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | F003Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
 export type SedTypes = 'F001' | 'F002' | 'F003' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
@@ -580,14 +580,14 @@ export interface F027Sed extends BaseReplySed {
     svar?: {
       adopsjon?: SvarAdopsjon
       inntekt?: {
-        periode: string
+        periode: Periode
         aarlig: {
           beloep: string
           valuta: string
         }
-        kilde: string
-        inntektkilde: string
-        ytterligereInformasjon: string
+        kilde?: string
+        inntektskilde: string
+        ytterligereinformasjon: string
       }
       ytelseTilForeldreloese?: {}
       annenInformasjonBarnet?: {}

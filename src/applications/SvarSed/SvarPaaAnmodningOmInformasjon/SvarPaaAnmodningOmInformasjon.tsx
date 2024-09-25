@@ -126,31 +126,31 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 value="adopsjon"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("adopsjon", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}>
-                Svar på forespørsel om adopsjon
+                {t('label:svar-på-anmodning-om-adopsjon') }
               </Checkbox>
               <Checkbox
                 value="inntekt"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("inntekt", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}>
-                Svar på anmodning om inntekt
+                {t('label:svar-på-anmodning-om-inntekt')}
               </Checkbox>
               <Checkbox
                 value="ytelseTilForeldreloese"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("ytelseTilForeldreloese", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.ytelseTilForeldreloese}>
-                Svar på anmodning om barnepensjon
+                {t('label:svar-på-anmodning-om-barnepensjon')}
               </Checkbox>
               <Checkbox
                 value="annenInformasjonBarnet"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("annenInformasjonBarnet", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.annenInformasjonBarnet}>
-                Svar på anmodning om annen informasjon angående barnet
+                {t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')}
               </Checkbox>
               <Checkbox
                 value="utdanningsinstitusjon"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanningsinstitusjon", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.utdanningsinstitusjon}>
-                Svar om fremmøte på skole / høyskole / opplæring / arbeidsledighet
+                {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
               </Checkbox>
           </Box>
         </VStack>
