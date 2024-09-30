@@ -638,7 +638,7 @@ export interface SvarInntekt {
     beloep?: string
     valuta?: string
   }
-  kilde?: string
+  annenkilde?: string
   inntektskilde?: string
   ytterligereInformasjon?: string
 }

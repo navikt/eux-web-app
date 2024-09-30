@@ -52,18 +52,18 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
               legend={t('inntektskilde')}
               onChange={(v:string)=>setInntektProperty("inntektskilde", v)}
             >
-                <Radio value='01'>Ytelse fra arbeid eller selvstendig næringsinntekt</Radio>
-                <Radio value='02'>Fra eiendom, verdivurdering av tomt/eiendom, ektefellebidrag/barnebidrag</Radio>
-                <Radio value='99'>Annet</Radio>
+                <Radio value='loenn_eller_naering'>Ytelse fra arbeid eller selvstendig næringsinntekt</Radio>
+                <Radio value='eiendom_eller_bidrag'>Fra eiendom, verdivurdering av tomt/eiendom, ektefellebidrag/barnebidrag</Radio>
+                <Radio value='annet'>Annet</Radio>
             </RadioGroup>
-            {svarInntekt?.inntektskilde === "99" &&
+            {svarInntekt?.inntektskilde === "annet" &&
               <Input
-                error={validation[namespace + '-kilde']?.feilmelding}
-                id='kilde'
+                error={validation[namespace + '-annenkilde']?.feilmelding}
+                id='annenkilde'
                 label={t('label:annet')}
                 namespace={namespace}
-                onChanged={(v: string) => setInntektProperty("kilde", v)}
-                value={svarInntekt?.kilde ?? ''}
+                onChanged={(v: string) => setInntektProperty("annenkilde", v)}
+                value={svarInntekt?.annenkilde ?? ''}
               />
             }
           </VStack>
