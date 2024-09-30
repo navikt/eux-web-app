@@ -89,9 +89,8 @@ import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilY
 import FamilieRelasjonF003 from "applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
 import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
-import SvarPaaForespoerselOmAdopsjon
-  from "../../applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
-import SvarPaaAnmodningOmInntekt from "../../applications/SvarSed/SvarPaaAnmodninglOmInntekt/SvarPaaAnmodningOmInntekt";
+import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
+import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -539,18 +538,21 @@ const SEDEdit = (): JSX.Element => {
                 {key: "utdanningsinstitusjon", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanningsinstitusjon},
               ]}
               forms={[
-                {
-                  label: t('el:option-mainform-svarpaaforespoerselomadopsjon'),
-                  value: 'svarpaaforespoerselomadopsjon',
-                  component: SvarPaaForespoerselOmAdopsjon,
-                  type: ['adopsjon'],
-                },
-                {
-                  label: t('el:option-mainform-svarpaaanmodningominntekt'),
-                  value: 'svarpaaanmodningavinntekt',
-                  component: SvarPaaAnmodningOmInntekt,
-                  type: ['inntekt'],
-                }
+                {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
+                {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'svarpaaanmodningominntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
+                {label: t('el:option-barnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'den-foreldreloeses-barnets-aktivitet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-skole'), value: 'skole', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-opplaering'), value: 'opplaering', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-ufoerhet'), value: 'ufoerhet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-arbeidsledighet'), value: 'arbeidsledighet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'svarpaaanmodningomytelsertilforeldreloese', component: null, type:['ytelseTilForeldreloese']}
               ]}
               replySed={replySed}
               updateReplySed={updateReplySed}
