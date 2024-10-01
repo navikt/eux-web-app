@@ -115,6 +115,12 @@ const OptionDiv = styled.div`
     margin-top: -1px;
   }
 `
+
+const OptionWithIconDiv = styled(OptionDiv)`
+  white-space: wrap;
+  align-items: start;
+`
+
 const LastDivWithButton = styled.div`
   flex: 1;
   padding: 1rem 0.5rem;
@@ -640,7 +646,7 @@ const MainForm = <T extends StorageTypes>({
             const isValidated = validationKeys.length > 0
             const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
             return (
-              <OptionDiv
+              <OptionWithIconDiv
                 className={classNames({
                   selected: currentMenu === menuItem.key && currentMenuOption === o.value,
                   first: i === 0
@@ -649,14 +655,17 @@ const MainForm = <T extends StorageTypes>({
                 onClick={() => changeMenu(menuItem.key, o.value, 'click')}
                 role='button'
               >
-                {isValidated
-                  ? validationHasErrors
-                    ? <XMarkOctagonFillIcon color='red' height={20} />
-                    : <CheckmarkCircleFillIcon color='green' height={20} />
-                  : <MenuElipsisHorizontalCircleIcon height={20} />}
+                <div>
+                  {isValidated
+                    ? validationHasErrors
+                      ? <XMarkOctagonFillIcon color='red' height={20} />
+                      : <CheckmarkCircleFillIcon color='green' height={20} />
+                    : <MenuElipsisHorizontalCircleIcon height={20} />
+                  }
+                </div>
                 <HorizontalSeparatorDiv size='0.5' />
                 {o.label}
-              </OptionDiv>
+              </OptionWithIconDiv>
             )
           })}
       </NameAndOptionsDiv>
