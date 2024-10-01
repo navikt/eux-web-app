@@ -109,10 +109,10 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                   value={erKravEllerSvarPaaKrav}
                 >
                   <FlexRadioPanels>
-                    <RadioPanel value='01'>
+                    <RadioPanel value='krav'>
                       {t('label:krav-eller-svar-paa-krav-nytt_krav')}
                     </RadioPanel>
-                    <RadioPanel value='02'>
+                    <RadioPanel value='svar_paa_krav'>
                       {t('label:krav-eller-svar-paa-krav-svar-paa-krav')}
                     </RadioPanel>
                   </FlexRadioPanels>

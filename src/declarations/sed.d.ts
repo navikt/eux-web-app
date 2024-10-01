@@ -1,6 +1,5 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { Sak, Sed } from 'declarations/types'
-import Identifikator from "../applications/SvarSed/Identifikator/Identifikator";
 
 export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'
 
@@ -580,7 +579,7 @@ export interface F027Sed extends BaseReplySed {
     svar?: {
       adopsjon?: SvarAdopsjon
       inntekt?: SvarInntekt
-      ytelseTilForeldreloese?: {}
+      ytelseTilForeldreloese?: SvarYtelseTilForeldreloese_V42 | SvarYtelseTilForeldreloese_V43
       annenInformasjonBarnet?: {}
       utdanning?: Utdanning
       utdanningsinstitusjon?: UtdanningInstitusjon
@@ -642,6 +641,86 @@ export interface SvarInntekt {
   inntektskilde?: string
   ytterligereInformasjon?: string
 }
+
+export interface SvarYtelseTilForeldreloese_V42 {
+  barnet: {
+    skole?: string
+    ytelser?: string
+    aktivitet?: string
+    arbeidsledighet?: string
+    ufoerhet?: string
+    opplaering?: string
+    inntektfritekst?: string
+    relasjontilavdoedefritekst?: string
+    bostedfritekst?: string
+  },
+  identifisering: {
+    avdoedefritekst?: string
+    barnafritekst?: string
+    andrepersonerfritekst?: string
+  },
+  "annenPerson": {
+    relasjontilavdoedefritekst: string
+  }
+}
+
+export interface SvarYtelseTilForeldreloese_V43 {
+    barnet?: {
+      inntekt?: {
+        beloep?: string
+        valuta?: string
+      },
+      adresse?: {
+        gate?: string
+        postnummer?: string
+        by?: string
+        land?: string
+        bygning?: string
+        region?: string
+      },
+      skole?: string
+      ytelser?: string
+      aktivitet?: string
+      arbeidsledighet?: string
+      ufoerhet?: string
+      opplaering?: string
+    },
+    barnMedRelasjonTilAvdoede?: [
+      {
+        borISammeHusstandSomKravstiller?: string
+        periode?: Periode
+        typeRelasjon?: string
+        relasjonTilPerson?: string
+        borISammeHusstandSomEktefelle?: string
+        borPaaInstitusjon?: string
+        borISammeHusstandSomAnnenPerson?: string
+        fellesOmsorg?: string
+      }
+    ],
+
+    identifisering?: {
+      avdoede?: PersonInfo
+      annenPerson?: PersonInfo,
+      fornavn?: string
+      foedselsdato?: string
+      etternavn?: string
+    },
+    annenPerson?: {
+      relasjonTilAvdoede?: [
+        {
+          varKravstillerISammeHushold?: string
+          personnavn?: string
+          familierelasjonstype?: string
+          annenRelasjon?: string
+          periode?: Periode,
+          relasjonsstartdato?: string
+          annenPerson?: string
+        }
+      ]
+    }
+}
+
+
 
 export interface USed extends BaseReplySed {
   bruker: Person

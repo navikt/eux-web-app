@@ -21,14 +21,13 @@ const mapState = (state: State): MainFormSelector => ({
 const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
-  personID,
   replySed,
   updateReplySed,
 }: MainFormProps): JSX.Element => {
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-${personID}-svarpaaanmodningominntekt`
+  const namespace = `${parentNamespace}-svarpaaanmodningominntekt`
   const target = `anmodningOmMerInformasjon.svar.inntekt`
   const svarInntekt: SvarInntekt | undefined = _.get(replySed, target)
 

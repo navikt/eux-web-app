@@ -91,6 +91,8 @@ import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/Et
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
 import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
+import IdentifiseringAvDenAvdoede
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -540,7 +542,7 @@ const SEDEdit = (): JSX.Element => {
               forms={[
                 {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
                 {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'svarpaaanmodningominntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
-                {label: t('el:option-barnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-barnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese']},
                 {label: t('el:option-barnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: null, type:['ytelseTilForeldreloese']},
                 {label: t('el:option-barnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: null, type:['ytelseTilForeldreloese']},
                 {label: t('el:option-barnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: null, type:['ytelseTilForeldreloese']},
