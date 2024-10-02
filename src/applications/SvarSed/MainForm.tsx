@@ -326,7 +326,7 @@ const MainForm = <T extends StorageTypes>({
       if (currentMenu !== menu) {
         setCurrentMenu(menu)
       } else if (currentMenu === menu){
-        setCurrentMenu(initialMenu)
+        setCurrentMenu(undefined)
       }
       menuRef.current = menu
       return
@@ -347,7 +347,7 @@ const MainForm = <T extends StorageTypes>({
       }
     } else if(sameMenu){
       if (!changedMenuOption){
-        setCurrentMenu(initialMenu)
+        setCurrentMenu(undefined)
       }
     }
 
