@@ -528,7 +528,7 @@ const SEDEdit = (): JSX.Element => {
         {isF027Sed(replySed) &&
           <>
             <MainForm
-              type='twolevelmenus'
+              type='menuitems'
               menuDefaultClosed={true}
               namespace='svarpaaanmodningominformasjon'
               deselectedMenu={deselectedMenu}

@@ -161,7 +161,7 @@ const BlankContentDiv = styled(FlexCenterDiv)`
 export interface MainFormFCProps<T> {
   menuItems?: Array<MenuItem>
   forms: Array<Form>
-  type: 'onelevel' | 'twolevel' | 'twolevelmenus'
+  type: 'onelevel' | 'twolevel' | 'menuitems'
   firstForm?: string
   replySed: T | null | undefined
   setReplySed: (replySed: T) => ActionWithPayload<T>
@@ -253,7 +253,7 @@ const MainForm = <T extends StorageTypes>({
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
 
-  const visibleMenu = menuItems && type === "twolevelmenus" ? menuItems?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true).length > 0 : true
+  const visibleMenu = menuItems && type === "menuitems" ? menuItems?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true).length > 0 : true
 
   useEffect(() => {
     dispatch(startMenuStatistic(loggingNamespace, undefined))
@@ -285,7 +285,7 @@ const MainForm = <T extends StorageTypes>({
     }
 
     let form: Form | undefined
-    if (type === 'twolevel' || type === 'twolevelmenus') {
+    if (type === 'twolevel' || type === 'menuitems') {
       form = _.find(forms, o => o.value === menuOption)
     } else {
       form = _.find(forms, o => o.value === menu)
@@ -422,7 +422,7 @@ const MainForm = <T extends StorageTypes>({
         >
           <NameDiv
             onClick={() => {
-              changeMenu(form.value, undefined, 'click')
+              changeMenu(form.value, form.value, 'click')
               return false
             }}
           >
@@ -576,7 +576,7 @@ const MainForm = <T extends StorageTypes>({
 
   useEffect(() => {
     // Close all submenus if checkbox for menu is deselected
-    if(type === 'twolevelmenus' && deselectedMenu){
+    if(type === 'menuitems' && deselectedMenu){
       // @ts-ignore
       const formsInDeSelectedMenu: Array<Form> = _.filter(forms, (f) => {
         if(f.type){
@@ -595,13 +595,23 @@ const MainForm = <T extends StorageTypes>({
     }
   }, [deselectedMenu])
 
-  const renderTwoLevelMenuItems = (menuItem: MenuItem, forms: Array<Form>) => {
+  const renderMenuItems = (menuItem: MenuItem, forms: Array<Form>) => {
     const open: boolean = _.find(openMenus, _id => _id === menuItem.key) !== undefined
     const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key))
     const isValidated = validationKeys.length > 0
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
-    console.log(validation)
+
+    const menuItemForms = _.filter(forms, (f) => {
+      if(f.type){
+        return _.isString(f.type) ? f.type === menuItem.key : f.type.includes(menuItem.key)
+      }
+    })
+
+    if(menuItemForms.length === 1){
+      return renderOneLevelMenu(menuItemForms as Array<Form>)
+    }
+
 
     return(
       <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === menuItem.key })}>
@@ -716,12 +726,12 @@ const MainForm = <T extends StorageTypes>({
                 </LastDivWithButton>
               </>
             )}
-            {type === 'twolevelmenus' && (
+            {type === 'menuitems' && (
               <>
                 {menuItems
                   ?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true)
                   ?.map((menuItem) => {
-                    return renderTwoLevelMenuItems(menuItem, forms)
+                    return renderMenuItems(menuItem, forms)
                   })
                 }
                 {visibleMenu && <LastDiv />}
