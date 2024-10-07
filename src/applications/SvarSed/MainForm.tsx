@@ -602,11 +602,13 @@ const MainForm = <T extends StorageTypes>({
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
 
 
-    const menuItemForms = _.filter(forms, (f) => {
-      if(f.type){
-        return _.isString(f.type) ? f.type === menuItem.key : f.type.includes(menuItem.key)
-      }
-    })
+    const menuItemForms = forms
+      .filter((f) => _.isFunction(f.condition) ? f.condition() : true)
+      .filter((f) => {
+        if(f.type){
+          return _.isString(f.type) ? f.type === menuItem.key : f.type.includes(menuItem.key)
+        }
+      })
 
     if(menuItemForms.length === 1){
       return renderOneLevelMenu(menuItemForms as Array<Form>)

@@ -4,8 +4,8 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import React from 'react'
-import { useAppSelector } from 'store'
-import {F027Sed, SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "../../../declarations/sed";
+import {useAppSelector} from 'store'
+import {SvarYtelseTilForeldreloese_V43} from "../../../declarations/sed";
 //import {useTranslation} from "react-i18next";
 
 const mapState = (state: State): MainFormSelector => ({
@@ -21,15 +21,13 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   //const { t } = useTranslation()
   //const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavavdoede`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
-  const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V42 | SvarYtelseTilForeldreloese_V43 | undefined = _.get(replySed, target)
+  const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | undefined = _.get(replySed, target)
 
-/*
-  const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
+/*  const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
-  }
-*/
+  }*/
 
   console.log(validation)
   console.log(namespace)
@@ -45,17 +43,9 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
         <Heading size='small'>
           {label}
         </Heading>
-        {(replySed as F027Sed)?.sedVersjon === "4.2" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <Heading size="small">4.2</Heading>
-          </Box>
-        }
-        {(replySed as F027Sed)?.sedVersjon === "4.3" &&
-          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <Heading size="small">4.3</Heading>
-          </Box>
-        }
-
+        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <Heading size="small">4.3</Heading>
+        </Box>
       </VStack>
     </PaddedDiv>
   )
