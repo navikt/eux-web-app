@@ -36,10 +36,6 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
   const cdm = replySed?.sak?.cdmVersjon ? replySed?.sak?.cdmVersjon : cdmVersjonApp
   const version = cdm ? "v" + cdm : undefined
 
-  console.log("replySed?.sak?.cdmVersjon: " + replySed?.sak?.cdmVersjon)
-  console.log("cdmVersjonApp: " + cdmVersjonApp)
-  console.log("version:" + version)
-
   let includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
 
   if(countryCodeListName && excludeNorway){
