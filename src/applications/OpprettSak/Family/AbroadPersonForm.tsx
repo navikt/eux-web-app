@@ -19,7 +19,6 @@ import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown
 
 export interface AbroadPersonFormSelector {
   kjoennList: Array<Kodeverk> | undefined
-  cdmVersjon: string | undefined
 }
 
 export interface AbroadPersonFormProps {
@@ -40,7 +39,6 @@ export interface AbroadPersonFormProps {
 
 const mapState = (state: State): AbroadPersonFormSelector => ({
   kjoennList: state.app.kjoenn,
-  cdmVersjon: state.app.cdmVersjon
 })
 
 const emptyFamilieRelasjon: OldFamilieRelasjon = {
@@ -84,7 +82,7 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
 }: AbroadPersonFormProps): JSX.Element => {
   const { t } = useTranslation()
   const namespace = 'familierelasjoner'
-  const { kjoennList, cdmVersjon }: AbroadPersonFormSelector = useAppSelector(mapState)
+  const { kjoennList }: AbroadPersonFormSelector = useAppSelector(mapState)
   const [_relation, setRelation] = useState<OldFamilieRelasjon>(emptyFamilieRelasjon)
   const [_validation, resetValidation, performValidation] = useLocalValidation<AbroadPersonFormValidationProps>(validateAbroadPersonForm, namespace)
 
@@ -190,7 +188,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             label={t('label:land')}
             countryCodeListName="euEftaLand"
             excludeNorway={true}
-            cdmVersion={cdmVersjon}
             onOptionSelected={(e: Country) => {
               updateCountry('land', e.value)
               resetValidation('land')
@@ -205,7 +202,6 @@ const AbroadPersonForm: React.FC<AbroadPersonFormProps> = ({
             data-testid={namespace + '-statsborgerskap'}
             error={_validation[namespace + '-statsborgerskap']?.feilmelding}
             countryCodeListName="statsborgerskap"
-            cdmVersion={cdmVersjon}
             label={t('label:statsborgerskap')}
             onOptionSelected={(e: Country) => {
               updateCountry('statsborgerskap', e.value)

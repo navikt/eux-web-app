@@ -8,37 +8,38 @@ import {CountryCodeLists, CountryCodes, SimpleCountry} from "../../declarations/
 export interface CountryDropdownSelector {
   replySed: ReplySed | null | undefined
   countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
 }
 
 const mapState = (state: State): CountryDropdownSelector => ({
   replySed: state.svarsed.replySed,
-  countryCodes: state.app.countryCodes
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
+
 })
 
 export interface CountryDropdownProps extends CountrySelectProps<any>{
   dataTestId?: string
   countryCodeListName?: string
   excludeNorway?: boolean
-  cdmVersion?: string
 }
 
 const CountryDropdown : React.FC<CountryDropdownProps> = ({
   countryCodeListName,
   dataTestId,
   excludeNorway = false,
-  cdmVersion,
   ...rest
 }: CountryDropdownProps) => {
 
-  const {replySed, countryCodes} = useAppSelector(mapState)
+  const {replySed, countryCodes, cdmVersjonApp} = useAppSelector(mapState)
 
-  const cdm = cdmVersion ? cdmVersion : replySed?.sak?.cdmVersjon
+  const cdm = replySed?.sak?.cdmVersjon ? replySed?.sak?.cdmVersjon : cdmVersjonApp
   const version = cdm ? "v" + cdm : undefined
 
   console.log("replySed?.sak?.cdmVersjon: " + replySed?.sak?.cdmVersjon)
-  console.log("cdmVersion: " + cdmVersion)
+  console.log("cdmVersjonApp: " + cdmVersjonApp)
   console.log("version:" + version)
-  
+
   let includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
 
   if(countryCodeListName && excludeNorway){
