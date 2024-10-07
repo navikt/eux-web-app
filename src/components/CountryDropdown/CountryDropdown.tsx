@@ -31,7 +31,7 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
 }: CountryDropdownProps) => {
 
   const {replySed, countryCodes} = useAppSelector(mapState)
-  const cdm = cdmVersion ? cdmVersion : replySed?.sedVersjon ? replySed?.sedVersjon : replySed?.sak?.cdmVersjon
+  const cdm = cdmVersion ? cdmVersion : replySed?.sak?.cdmVersjon
   const version = cdm ? "v" + cdm : undefined
 
   let includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
