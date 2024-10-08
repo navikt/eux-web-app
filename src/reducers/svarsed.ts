@@ -10,7 +10,9 @@ import {
   X011Sed,
   X012Sed,
   XSed,
-  Person, F026Sed, F027Sed
+  Person,
+  F026Sed,
+  F027Sed
 } from 'declarations/sed.d'
 import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -106,7 +108,7 @@ const trimPin = (bruker:Person):Person => {
   let brukerWithTrimmedPin = bruker
   if(bruker && bruker.personInfo && bruker.personInfo.pin) {
     let personInfo = bruker.personInfo
-    let trimmedPins = personInfo.pin.map((pin: any) => {
+    let trimmedPins = personInfo?.pin?.map((pin: any) => {
       return {
         ...pin,
         identifikator: pin.identifikator ? pin.identifikator.trim() : null

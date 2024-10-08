@@ -91,10 +91,7 @@ import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/Et
 import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
 import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
 import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
-import IdentifiseringAvDenAvdoede
-  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
-import SvarPaaAnmodningOmBarnepensjon
-  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/SvarPaaAnmodningOmBarnepensjon";
+import IdentifiseringAvDenAvdoede from "applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -544,20 +541,20 @@ const SEDEdit = (): JSX.Element => {
               forms={[
                 {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
                 {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'svarpaaanmodningominntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon'), value: 'svarpaaanmodningombarnepensjon', component: SvarPaaAnmodningOmBarnepensjon, type: ['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.2"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'den-foreldreloeses-barnets-aktivitet', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'skole', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'opplaering', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'ufoerhet', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'arbeidsledighet', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'svarpaaanmodningomytelsertilforeldreloese', component: null, type:['ytelseTilForeldreloese'], condition: () => (replySed as F027Sed).sedVersjon === "4.3"}
+
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'den-foreldreloeses-barnets-aktivitet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'skole', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'opplaering', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'ufoerhet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'arbeidsledighet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'svarpaaanmodningomytelsertilforeldreloese', component: null, type:['ytelseTilForeldreloese']}
               ]}
               replySed={replySed}
               updateReplySed={updateReplySed}

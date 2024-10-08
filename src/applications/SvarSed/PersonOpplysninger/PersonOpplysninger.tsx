@@ -28,6 +28,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import DateField from 'components/DateField/DateField'
 
+
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
@@ -38,7 +39,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
@@ -51,6 +53,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
 
   const [gradering, setGradering] = useState<string | null>(null)
+
+  const showFoedested = options && options.hasOwnProperty("showFoedested") ? options["showFoedested"] : true
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -90,14 +94,18 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   }
 
   const fillOutPerson = (searchedPerson: Person) => {
-    const newPersonInfo = _.cloneDeep(personInfo)
+    let newPersonInfo = _.cloneDeep(personInfo)
+    if(!newPersonInfo){
+      newPersonInfo = {fornavn: "", etternavn: ""}
+    }
+
 
     setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
 
     if (searchedPerson.fnr) {
       const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
       if (index >= 0) {
-        newPersonInfo!.pin[index].identifikator = searchedPerson.fnr
+        newPersonInfo!.pin![index].identifikator = searchedPerson.fnr
       } else if (newPersonInfo!.pin){
         newPersonInfo!.pin.push({
           identifikator: searchedPerson.fnr,
@@ -281,20 +289,24 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         validation={validation}
         personName={personName}
       />
-      <PaddedDiv>
-        <VerticalSeparatorDiv />
-        <Heading size='small'>
-          {t('label:fødested')}
-        </Heading>
-      </PaddedDiv>
-      <FoedestedFC
-        loggingNamespace='svarsed.editor.fodested'
-        foedested={personInfo?.pinMangler?.foedested}
-        onFoedestedChanged={setFoedsted}
-        namespace={namespace + '-foedested'}
-        personName={personName}
-        validation={validation}
-      />
+      {showFoedested &&
+        <>
+          <PaddedDiv>
+            <VerticalSeparatorDiv />
+            <Heading size='small'>
+              {t('label:fødested')}
+            </Heading>
+          </PaddedDiv>
+          <FoedestedFC
+            loggingNamespace='svarsed.editor.fodested'
+            foedested={personInfo?.pinMangler?.foedested}
+            onFoedestedChanged={setFoedsted}
+            namespace={namespace + '-foedested'}
+            personName={personName}
+            validation={validation}
+          />
+        </>
+      }
     </>
   )
 }

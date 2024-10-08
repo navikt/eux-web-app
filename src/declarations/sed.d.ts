@@ -174,11 +174,11 @@ export interface Foedested {
 export interface PersonInfo {
   fornavn: string
   etternavn: string
-  kjoenn: Kjoenn
-  foedselsdato: string
-  statsborgerskap: Array<Statsborgerskap>
+  kjoenn?: Kjoenn
+  foedselsdato?: string
+  statsborgerskap?: Array<Statsborgerskap>
   adressebeskyttelse?: string
-  pin: Array<Pin>
+  pin?: Array<Pin>
   pinMangler?: {
     foedested: Foedested
     far: {
@@ -437,9 +437,12 @@ export interface PeriodeDagpenger extends PeriodePeriode {
   institusjon: Institusjon
 }
 
-export interface Inntekt {
+export interface Inntekt extends BaseInntekt{
   type: string
   typeAnnen?: string
+}
+
+export interface BaseInntekt {
   beloep: string
   valuta: string
 }
@@ -580,7 +583,7 @@ export interface F027Sed extends BaseReplySed {
       adopsjon?: SvarAdopsjon
       inntekt?: SvarInntekt
       ytelseTilForeldreloese?: SvarYtelseTilForeldreloese_V42 | SvarYtelseTilForeldreloese_V43
-      annenInformasjonBarnet?: {}
+      annenInformasjonBarnet?: AnnenInformasjonBarnet_V42 | AnnenInformasjonBarnet_V43
       utdanning?: Utdanning
       utdanningsinstitusjon?: UtdanningInstitusjon
       deltakelsePaaUtdanning: Array<Periode>
@@ -633,17 +636,14 @@ export interface SvarAdopsjon {
 
 export interface SvarInntekt {
   periode?: Periode
-  aarlig?: {
-    beloep?: string
-    valuta?: string
-  }
+  aarlig?: BaseInntekt
   annenkilde?: string
   inntektskilde?: string
   ytterligereInformasjon?: string
 }
 
 export interface SvarYtelseTilForeldreloese_V42 {
-  barnet: {
+  barnet?: {
     skole?: string
     ytelser?: string
     aktivitet?: string
@@ -653,73 +653,86 @@ export interface SvarYtelseTilForeldreloese_V42 {
     inntektfritekst?: string
     relasjontilavdoedefritekst?: string
     bostedfritekst?: string
+    identifiseringFritekst?: string
   },
-  identifisering: {
-    avdoedefritekst?: string
-    barnafritekst?: string
-    andrepersonerfritekst?: string
-  },
-  "annenPerson": {
-    relasjontilavdoedefritekst: string
+  annenPerson?: {
+    relasjontilavdoedefritekst?: string
+    identifiseringFritekst?: string
+  }
+  avdoede?:{
+    identifiseringFritekst?: string
   }
 }
 
 export interface SvarYtelseTilForeldreloese_V43 {
-    barnet?: {
-      inntekt?: {
-        beloep?: string
-        valuta?: string
-      },
-      adresse?: {
-        gate?: string
-        postnummer?: string
-        by?: string
-        land?: string
-        bygning?: string
-        region?: string
-      },
-      skole?: string
-      ytelser?: string
-      aktivitet?: string
-      arbeidsledighet?: string
-      ufoerhet?: string
-      opplaering?: string
-    },
-    barnMedRelasjonTilAvdoede?: [
-      {
-        borISammeHusstandSomKravstiller?: string
-        periode?: Periode
-        typeRelasjon?: string
-        relasjonTilPerson?: string
-        borISammeHusstandSomEktefelle?: string
-        borPaaInstitusjon?: string
-        borISammeHusstandSomAnnenPerson?: string
-        fellesOmsorg?: string
-      }
-    ],
-
-    identifisering?: {
-      avdoede?: PersonInfo
-      annenPerson?: PersonInfo,
-      fornavn?: string
-      foedselsdato?: string
-      etternavn?: string
-    },
-    annenPerson?: {
-      relasjonTilAvdoede?: [
-        {
-          varKravstillerISammeHushold?: string
-          personnavn?: string
-          familierelasjonstype?: string
-          annenRelasjon?: string
-          periode?: Periode,
-          relasjonsstartdato?: string
-          annenPerson?: string
-        }
-      ]
-    }
+  barnet?: {
+    personInfo?: PersonInfo
+    adresse?: Adresse
+    skole?: string
+    ytelser?: string
+    aktivitet?: string
+    arbeidsledighet?: string
+    ufoerhet?: string
+    opplaering?: string
+    inntekt?: BaseInntekt
+    relasjoner?: Array<RelasjonBarn>
+  },
+  annenPerson?: {
+    personInfo?: PersonInfo
+    relasjoner?: Array<RelasjonAnnenPerson>
+  },
+  avdoede?:{
+    personInfo?: PersonInfo
+  }
 }
 
+export interface AnnenInformasjonBarnet_V42 {
+  foreldreansvar?: string
+  informasjonombarnehagefritekst?: string
+  datoEndredeForhold?: string
+  dagligOmsorg?: string
+  eradoptertfritekst?: string
+  forsoergesavdetoffentligefritekst?: string
+  sivilstandfritekst?: string
+  ytterligereInformasjon?: string
+}
+
+export interface AnnenInformasjonBarnet_V43 {
+  foreldreansvar?: string
+  barnehage?: {
+    timer?: string
+    mottarOffentligStoette?: string
+    timerPr?: string
+    gaarIBarnehage?: string
+  },
+  datoEndredeForhold?: string
+  dagligOmsorg?: string
+  erAdoptert?: string
+  forsoergesAvDetOffentlige?: string
+  sivilstand?: string
+  ytterligereInformasjon?: string
+}
+
+export interface RelasjonBarn {
+  borISammeHusstandSomKravstiller?: string
+  periode?: Periode
+  typeRelasjon?: string
+  relasjonTilPerson?: string
+  borISammeHusstandSomEktefelle?: string
+  borPaaInstitusjon?: string
+  borISammeHusstandSomAnnenPerson?: string
+  fellesOmsorg?: string
+}
+
+export interface RelasjonAnnenPerson {
+  varKravstillerISammeHushold?: string
+  personnavn?: string
+  familierelasjonstype?: string
+  annenRelasjon?: string
+  periode?: Periode
+  relasjonsstartdato?: string
+  annenPerson?: string
+}
 
 
 export interface USed extends BaseReplySed {
