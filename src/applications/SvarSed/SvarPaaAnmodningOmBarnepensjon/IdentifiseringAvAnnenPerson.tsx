@@ -9,8 +9,8 @@ import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "de
 import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
-import PersonOpplysninger from "../PersonOpplysninger/PersonOpplysninger";
 import {setReplySed} from "../../../actions/svarsed";
+import PersonBasic from "../PersonBasic/PersonBasic";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -26,8 +26,8 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavavdoede`
-  const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.avdoede`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavannenperson`
+  const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.annenPerson`
   const CDM_VERSJON = options.cdmVersjon
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, target)
 
@@ -55,27 +55,25 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <TextAreaDiv>
               <TextArea
-                error={validation[namespace + '-avdoede-identifisering']?.feilmelding}
+                error={validation[namespace + '-barnet-identifisering']?.feilmelding}
                 namespace={namespace}
-                id='avdoede-identifisering'
-                label={t('label:identifisering-av-den-avdoede')}
+                id='barnet-identifisering'
+                label={t('label:identifisering-av-de-beroerte-barna')}
                 hideLabel={true}
                 onChanged={(v) => setYtelseTilForeldreloeseProperty('identifiseringFritekst', v)}
-                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.avdoede?.identifiseringFritekst ?? ''}
+                value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.annenPerson?.identifiseringFritekst ?? ''}
               />
             </TextAreaDiv>
           </Box>
         }
         {CDM_VERSJON === "4.3" &&
-          <Box padding="0" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
-            <PersonOpplysninger
-              label={"Personopplysninger"}
+          <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+            <PersonBasic
               setReplySed={setReplySed}
               replySed={replySed}
               personID={target}
               parentNamespace={namespace}
               updateReplySed={updateReplySed}
-              options={{showFoedested: false}}
             />
           </Box>
         }
