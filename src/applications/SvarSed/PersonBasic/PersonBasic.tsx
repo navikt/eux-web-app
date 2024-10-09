@@ -24,7 +24,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
   const {t} = useTranslation()
   const {validation} = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target: string = `${personID}`
+  const target: string = `${personID}.personInfo`
   const person: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personbasic`
 

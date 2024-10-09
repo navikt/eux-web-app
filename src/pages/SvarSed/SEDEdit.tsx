@@ -96,6 +96,8 @@ import IdentifiseringAvDeBeroerteBarna
   from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDeBeroerteBarna";
 import IdentifiseringAvAnnenPerson
   from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvAnnenPerson";
+import DenForeldreloesesBarnetsBosted
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/DenForeldreloesesBarnetsBosted";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -549,7 +551,7 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: null, type:['ytelseTilForeldreloese']},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'den-foreldreloeses-barnets-aktivitet', component: null, type:['ytelseTilForeldreloese']},
