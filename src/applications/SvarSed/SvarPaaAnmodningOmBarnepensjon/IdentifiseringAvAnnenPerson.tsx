@@ -1,5 +1,4 @@
 import {VStack, Box, Heading} from '@navikt/ds-react'
-import {PaddedDiv} from '@navikt/hoykontrast'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -28,8 +27,9 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavannenperson`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.annenPerson`
+  const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
-  const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, target)
+  const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
 
 
   const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
@@ -46,7 +46,7 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
 
 
   return (
-    <PaddedDiv>
+    <Box padding="4">
       <VStack gap="4">
         <Heading size='small'>
           {label}
@@ -78,7 +78,7 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
           </Box>
         }
       </VStack>
-    </PaddedDiv>
+    </Box>
   )
 }
 

@@ -8,7 +8,6 @@ import {F027Sed} from "../../../declarations/sed";
 import {
   Row,
   Column,
-  PaddedDiv,
   RadioPanelGroup,
   FlexRadioPanels,
   RadioPanel
@@ -85,7 +84,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <PaddedDiv>
+      <Box padding="4">
         <VStack gap="4">
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <Row>
@@ -154,7 +153,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
               </Checkbox>
           </Box>
         </VStack>
-      </PaddedDiv>
+      </Box>
     </>
   );
 }

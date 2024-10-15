@@ -1,5 +1,5 @@
 import {VStack, Box, Heading, Radio, RadioGroup, Label} from '@navikt/ds-react'
-import {Column, PaddedDiv, Row} from '@navikt/hoykontrast'
+import {Column, Row} from '@navikt/hoykontrast'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -39,7 +39,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
 
 
   return (
-    <PaddedDiv>
+    <Box padding="4">
       <VStack gap="4">
         <Heading size='small'>
           {label}
@@ -139,7 +139,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
           </TextAreaDiv>
         </Box>
       </VStack>
-    </PaddedDiv>
+    </Box>
   )
 }
 

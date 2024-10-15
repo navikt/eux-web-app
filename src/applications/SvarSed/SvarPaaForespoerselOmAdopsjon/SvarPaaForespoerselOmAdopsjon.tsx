@@ -1,5 +1,5 @@
 import {VStack, Box, Heading} from '@navikt/ds-react'
-import {Column, PaddedDiv, Row} from '@navikt/hoykontrast'
+import {Column, Row} from '@navikt/hoykontrast'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
@@ -36,7 +36,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
 
 
   return (
-    <PaddedDiv>
+    <Box padding="4">
       <VStack gap="4">
         <Heading size='small'>
           {label}
@@ -78,7 +78,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
           </TextAreaDiv>
         </Box>
       </VStack>
-    </PaddedDiv>
+    </Box>
   )
 }
 
