@@ -99,7 +99,7 @@ import IdentifiseringAvAnnenPerson
 import DenForeldreloesesBarnetsBosted
   from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/DenForeldreloesesBarnetsBosted";
 import RelasjonForeldreloeseBarnetOgAvdoede
-  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/RelasjonForeldreloeseBarnetOgAvdoede";
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/RelasjonForeldreloeseBarnetOgAvdoede/RelasjonForeldreloeseBarnetOgAvdoede";
 
 export interface SEDEditSelector {
   alertType: string | undefined

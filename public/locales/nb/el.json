@@ -239,6 +239,15 @@
   "option-relasjon-barnebarn_bror_søster_nevø_niese": "Barnebarn, bror eller søster, nevø eller niese som den aktuelle personen har i sin busstand",
   "option-relasjon-fosterbarn": "Fosterbarn",
 
+  "option-relasjonbarn-type-daglig-omsorg": "Daglig omsorg",
+  "option-relasjonbarn-type-født-i-ekteskap": "Født i ekteskap",
+  "option-relasjonbarn-type-eget-barn": "Eget barn",
+  "option-relasjonbarn-type-adoptert-barn": "Adoptert barn",
+  "option-relasjonbarn-type-født-utenfor-ekteskap": "Født utenfor ekteskap",
+  "option-relasjonbarn-type-barn-av-ektefelle": "Barn av ektefelle",
+  "option-relasjonbarn-type-barnebarn-bror-søster-nevø-niese": "Barnebarn/bror/søster/nevø/niese",
+  "option-relasjonbarn-type-fosterbarn": "Fosterbarn",
+
   "option-svar-1": "Positivt svar på etterspurt informasjon",
   "option-svar-2": "Negativt svar på etterspurt informasjon",
 
