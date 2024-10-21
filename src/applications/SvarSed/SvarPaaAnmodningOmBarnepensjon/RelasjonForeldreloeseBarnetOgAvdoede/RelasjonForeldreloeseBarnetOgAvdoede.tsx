@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store";
 import {useTranslation} from "react-i18next";
 import {
+  Periode,
   RelasjonBarn,
   SvarYtelseTilForeldreloese_V42,
   SvarYtelseTilForeldreloese_V43
@@ -15,7 +16,7 @@ import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
 import {getIdx} from "../../../../utils/namespace";
 import {Validation} from "../../../../declarations/types";
-import {AlignEndColumn, RadioPanel, RadioPanelGroup} from "@navikt/hoykontrast";
+import {AlignEndColumn, RadioPanel, RadioPanelGroup, AlignStartRow} from "@navikt/hoykontrast";
 import AddRemovePanel from "../../../../components/AddRemovePanel/AddRemovePanel";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../../utils/validation";
@@ -24,6 +25,7 @@ import {validateRelasjon, validateRelasjoner, ValidationRelasjonerProps, Validat
 import useUnmount from "../../../../hooks/useUnmount";
 import performValidation from "../../../../utils/performValidation";
 import {resetValidation, setValidation} from "../../../../actions/validation";
+import PeriodeInput from "../../../../components/Forms/PeriodeInput";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -164,6 +166,22 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
     }
   }
 
+  const setPeriode = (periode: Periode, index: number) => {
+    if (index < 0) {
+      _setNewRelasjon({
+        ..._newRelasjon,
+        periode
+      } as RelasjonBarn)
+      _resetValidation(namespace + '-periode')
+      return
+    }
+    _setEditRelasjon({
+      ..._editRelasjon,
+      periode
+    } as RelasjonBarn)
+    dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
+  }
+
   const renderRow = (relasjon: RelasjonBarn | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
@@ -249,6 +267,19 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     <option value="barnebarn_bror_søster_nevø_niese" key="barnebarn_bror_søster_nevø_niese">{t('el:option-relasjonbarn-type-barnebarn-bror-søster-nevø-niese')}</option>
                     <option value="fosterbarn" key="fosterbarn">{t('el:option-relasjonbarn-type-fosterbarn')}</option>
                   </Select>
+                  <AlignStartRow>
+                    <PeriodeInput
+                      namespace={_namespace + '-periode'}
+                      error={{
+                        startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                        sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                      }}
+                      hideLabel={false}
+                      requiredStartDato={false}
+                      setPeriode={(p: Periode) => setPeriode(p, index)}
+                      value={_relasjon?.periode}
+                    />
+                  </AlignStartRow>
                   {addremovepanel}
                 </VStack>
 

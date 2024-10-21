@@ -300,9 +300,6 @@ const SEDEdit = (): JSX.Element => {
   const disableSave = !textFieldDirty && !textAreaDirty && ((!replySedChanged && !!replySed.sed?.sedId) || creatingSvarSed || updatingSvarSed);
   const disableSend  = textFieldDirty || textAreaDirty || sendingSed || !replySed?.sed?.sedId || (replySed?.sed?.status === "sent" &&_.isEmpty(sedCreatedResponse)) || !_.isEmpty(sedSendResponse) || !disableSave;
 
-
-  console.log("STATUS: " + replySed?.sed?.status)
-
   const formaalToMenuMap: any = {
     "vedtak": {
       menu: "vedtak",
