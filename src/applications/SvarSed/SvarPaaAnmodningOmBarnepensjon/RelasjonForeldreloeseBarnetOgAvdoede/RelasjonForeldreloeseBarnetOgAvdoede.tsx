@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store";
 import {useTranslation} from "react-i18next";
 import {
+  JaNei,
   Periode,
   RelasjonBarn,
   SvarYtelseTilForeldreloese_V42,
@@ -130,42 +131,6 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
     }
   }
 
-  const setRelasjonTilPerson = (relasjonTilPerson: string, index: number) => {
-    if (index < 0) {
-      _setNewRelasjon({
-        ..._newRelasjon,
-        relasjonTilPerson: relasjonTilPerson
-      } as RelasjonBarn)
-      _resetValidation(namespace + '-relasjon-til-person')
-      return
-    }
-    _setEditRelasjon({
-      ..._editRelasjon,
-      relasjonTilPerson: relasjonTilPerson
-    } as RelasjonBarn)
-    if (validation[namespace + getIdx(index) + '-relasjon-til-person']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-relasjon-til-person'))
-    }
-  }
-
-  const setTypeRelasjon = (type: string, index: number) => {
-    if (index < 0) {
-      _setNewRelasjon({
-        ..._newRelasjon,
-        typeRelasjon: type
-      } as RelasjonBarn)
-      _resetValidation(namespace + '-type-relasjon')
-      return
-    }
-    _setEditRelasjon({
-      ..._editRelasjon,
-      typeRelasjon: type
-    } as RelasjonBarn)
-    if (validation[namespace + getIdx(index) + '-type-relasjon']) {
-      dispatch(resetValidation(namespace + getIdx(index) + '-type-relasjon'))
-    }
-  }
-
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewRelasjon({
@@ -180,6 +145,23 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
       periode
     } as RelasjonBarn)
     dispatch(resetValidation(namespace + getIdx(index) + '-periode'))
+  }
+
+
+  const setRelasjonProperty = (property: string, value: string, id: string, index: number) => {
+    if (index < 0) {
+      _setNewRelasjon({
+        ..._newRelasjon,
+        [property]: value
+      } as RelasjonBarn)
+      _resetValidation(namespace + '-' + id)
+      return
+    }
+    _setEditRelasjon({
+      ..._editRelasjon,
+      [property]: value
+    } as RelasjonBarn)
+    dispatch(resetValidation(namespace + getIdx(index) + '-' + id))
   }
 
   const renderRow = (relasjon: RelasjonBarn | null, index: number) => {
@@ -229,25 +211,25 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     id={namespace + '-relasjon-til-person'}
                     legend={t('label:relasjon-med') + ' *'}
                     name={namespace + '-relasjon-til-person'}
-                    onChange={(e:string) => setRelasjonTilPerson(e, index)}
+                    onChange={(e:string) => setRelasjonProperty("relasjonTilPerson",  e,"relasjon-til-person", index)}
                   >
                     <VStack gap="2">
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='soeker'>
-                        Søker
-                      </RadioPanel>
-                      <RadioPanel value='ektefelle_partner'>
-                        Ektefelle/partner
-                      </RadioPanel>
-                    </HGrid>
-                    <HGrid gap="1" columns={2}>
-                      <RadioPanel value='avdoed'>
-                        Avdød
-                      </RadioPanel>
-                      <RadioPanel value='annen_person'>
-                        Annen person
-                      </RadioPanel>
-                    </HGrid>
+                      <HGrid gap="1" columns={2}>
+                        <RadioPanel value='soeker'>
+                          Søker
+                        </RadioPanel>
+                        <RadioPanel value='ektefelle_partner'>
+                          Ektefelle/partner
+                        </RadioPanel>
+                      </HGrid>
+                      <HGrid gap="1" columns={2}>
+                        <RadioPanel value='avdoed'>
+                          Avdød
+                        </RadioPanel>
+                        <RadioPanel value='annen_person'>
+                          Annen person
+                        </RadioPanel>
+                      </HGrid>
                     </VStack>
                   </RadioPanelGroup>
                   <Select
@@ -255,7 +237,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     id={namespace + '-type-relasjon'}
                     error={_v[namespace + '-type-relasjon']?.feilmelding}
                     label={t('label:type')}
-                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTypeRelasjon(e.target.value, index)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRelasjonProperty("typeRelasjon",  e.target.value,"type-relasjon", index)}
                   >
                     <option value="" key="">{t('el:placeholder-select-default')}</option>
                     <option value="daglig_omsorg" key="daglig_omsorg">{t('el:option-relasjonbarn-type-daglig-omsorg')}</option>
@@ -280,6 +262,101 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                       value={_relasjon?.periode}
                     />
                   </AlignStartRow>
+                  <RadioPanelGroup
+                    value={_relasjon?.fellesOmsorg ?? ''}
+                    data-no-border
+                    data-testid={namespace + '-felles-omsorg'}
+                    error={_v[namespace + '-felles-omsorg']?.feilmelding}
+                    id={namespace + '-felles-omsorg'}
+                    legend={t('label:delt-foreldreansvar')}
+                    name={namespace + '-felles-omsorg'}
+                    onChange={(e:string) => setRelasjonProperty("fellesOmsorg",  e as JaNei,"felles-omsorg", index)}
+                  >
+                    <HGrid gap="1" columns={2}>
+                      <RadioPanel value='ja'>
+                        Ja
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
+                        Nei
+                      </RadioPanel>
+                    </HGrid>
+                  </RadioPanelGroup>
+                  <RadioPanelGroup
+                    value={_relasjon?.borISammeHusstandSomKravstiller ?? ''}
+                    data-no-border
+                    data-testid={namespace + '-bor-i-samme-hustand-som-kravstiller'}
+                    error={_v[namespace + '-bor-i-samme-hustand-som-kravstiller']?.feilmelding}
+                    id={namespace + '-bor-i-samme-hustand-som-kravstiller'}
+                    legend={t('label:bor-i-samme-hustand-som-søkeren')}
+                    name={namespace + '-bor-i-samme-hustand-som-kravstiller'}
+                    onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomKravstiller",  e as JaNei,"bor-i-samme-hustand-som-kravstiller", index)}
+                  >
+                    <HGrid gap="1" columns={2}>
+                      <RadioPanel value='ja'>
+                        Ja
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
+                        Nei
+                      </RadioPanel>
+                    </HGrid>
+                  </RadioPanelGroup>
+                  <RadioPanelGroup
+                    value={_relasjon?.borISammeHusstandSomEktefelle ?? ''}
+                    data-no-border
+                    data-testid={namespace + '-bor-i-samme-hustand-som-ektefelle'}
+                    error={_v[namespace + '-bor-i-samme-hustand-som-ektefelle']?.feilmelding}
+                    id={namespace + '-bor-i-samme-hustand-som-ektefelle'}
+                    legend={t('label:bor-i-samme-hustand-som-ektefelle-partneren')}
+                    name={namespace + '-bor-i-samme-hustand-som-ektefelle'}
+                    onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomEktefelle",  e as JaNei,"bor-i-samme-hustand-som-ektefelle", index)}
+                  >
+                    <HGrid gap="1" columns={2}>
+                      <RadioPanel value='ja'>
+                        Ja
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
+                        Nei
+                      </RadioPanel>
+                    </HGrid>
+                  </RadioPanelGroup>
+                  <RadioPanelGroup
+                    value={_relasjon?.borISammeHusstandSomAnnenPerson ?? ''}
+                    data-no-border
+                    data-testid={namespace + '-bor-i-samme-hustand-som-annen-person'}
+                    error={_v[namespace + '-bor-i-samme-hustand-som-annen-person']?.feilmelding}
+                    id={namespace + '-bor-i-samme-hustand-som-annen-person'}
+                    legend={t('label:bor-i-samme-hustand-som-den-andre-aktuelle-personen')}
+                    name={namespace + '-bor-i-samme-hustand-som-annen-person'}
+                    onChange={(e:string) => setRelasjonProperty("borISammeHusstandSomAnnenPerson",  e as JaNei,"bor-i-samme-hustand-som-annen-person", index)}
+                  >
+                    <HGrid gap="1" columns={2}>
+                      <RadioPanel value='ja'>
+                        Ja
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
+                        Nei
+                      </RadioPanel>
+                    </HGrid>
+                  </RadioPanelGroup>
+                  <RadioPanelGroup
+                    value={_relasjon?.borPaaInstitusjon ?? ''}
+                    data-no-border
+                    data-testid={namespace + '-bor-paa-institusjon'}
+                    error={_v[namespace + '-bor-paa-institusjon']?.feilmelding}
+                    id={namespace + '-bor-paa-institusjon'}
+                    legend={t('label:bor-barnet-paa-institusjon')}
+                    name={namespace + '-bor-paa-institusjon'}
+                    onChange={(e:string) => setRelasjonProperty("borPaaInstitusjon",  e as JaNei,"bor-paa-institusjon", index)}
+                  >
+                    <HGrid gap="1" columns={2}>
+                      <RadioPanel value='ja'>
+                        Ja
+                      </RadioPanel>
+                      <RadioPanel value='nei'>
+                        Nei
+                      </RadioPanel>
+                    </HGrid>
+                  </RadioPanelGroup>
                   {addremovepanel}
                 </VStack>
 
