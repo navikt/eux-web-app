@@ -420,7 +420,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
               ? (
                   <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                     <BodyLong>
-                      {t('message:warning-no-familierelasjon')}
+                      {t('message:warning-no-relasjon')}
                     </BodyLong>
                   </Box>
                   )
