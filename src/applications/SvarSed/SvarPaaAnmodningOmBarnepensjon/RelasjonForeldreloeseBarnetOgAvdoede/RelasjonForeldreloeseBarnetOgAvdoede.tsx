@@ -11,7 +11,7 @@ import {
   SvarYtelseTilForeldreloese_V43
 } from "../../../../declarations/sed";
 import _ from "lodash";
-import {BodyLong, Box, Button, Heading, VStack, HGrid, Select} from "@navikt/ds-react";
+import {BodyLong, Box, Button, Heading, VStack, HGrid, Select, Label} from "@navikt/ds-react";
 import {RepeatableBox, TextAreaDiv} from "../../../../components/StyledComponents";
 import TextArea from "../../../../components/Forms/TextArea";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
@@ -27,6 +27,7 @@ import useUnmount from "../../../../hooks/useUnmount";
 import performValidation from "../../../../utils/performValidation";
 import {resetValidation, setValidation} from "../../../../actions/validation";
 import PeriodeInput from "../../../../components/Forms/PeriodeInput";
+import PeriodeText from "../../../../components/Forms/PeriodeText";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -216,18 +217,18 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     <VStack gap="2">
                       <HGrid gap="1" columns={2}>
                         <RadioPanel value='soeker'>
-                          Søker
+                          {t('el:option-relasjonbarn-relasjontilperson-soeker')}
                         </RadioPanel>
                         <RadioPanel value='ektefelle_partner'>
-                          Ektefelle/partner
+                          {t('el:option-relasjonbarn-relasjontilperson-ektefelle_partner')}
                         </RadioPanel>
                       </HGrid>
                       <HGrid gap="1" columns={2}>
                         <RadioPanel value='avdoed'>
-                          Avdød
+                          {t('el:option-relasjonbarn-relasjontilperson-avdoed')}
                         </RadioPanel>
                         <RadioPanel value='annen_person'>
-                          Annen person
+                          {t('el:option-relasjonbarn-relasjontilperson-annen_person')}
                         </RadioPanel>
                       </HGrid>
                     </VStack>
@@ -240,13 +241,13 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setRelasjonProperty("typeRelasjon",  e.target.value,"type-relasjon", index)}
                   >
                     <option value="" key="">{t('el:placeholder-select-default')}</option>
-                    <option value="daglig_omsorg" key="daglig_omsorg">{t('el:option-relasjonbarn-type-daglig-omsorg')}</option>
-                    <option value="født_i_ekteskap" key="født_i_ekteskap">{t('el:option-relasjonbarn-type-født-i-ekteskap')}</option>
-                    <option value="eget_barn" key="eget_barn">{t('el:option-relasjonbarn-type-eget-barn')}</option>
-                    <option value="adoptert_barn" key="adoptert_barn">{t('el:option-relasjonbarn-type-adoptert-barn')}</option>
-                    <option value="født_utenfor_ekteskap" key="født_utenfor_ekteskap">{t('el:option-relasjonbarn-type-født-utenfor-ekteskap')}</option>
-                    <option value="barn_av_ektefelle" key="barn_av_ektefelle">{t('el:option-relasjonbarn-type-barn-av-ektefelle')}</option>
-                    <option value="barnebarn_bror_søster_nevø_niese" key="barnebarn_bror_søster_nevø_niese">{t('el:option-relasjonbarn-type-barnebarn-bror-søster-nevø-niese')}</option>
+                    <option value="daglig_omsorg" key="daglig_omsorg">{t('el:option-relasjonbarn-type-daglig_omsorg')}</option>
+                    <option value="født_i_ekteskap" key="født_i_ekteskap">{t('el:option-relasjonbarn-type-født_i_ekteskap')}</option>
+                    <option value="eget_barn" key="eget_barn">{t('el:option-relasjonbarn-type-eget_barn')}</option>
+                    <option value="adoptert_barn" key="adoptert_barn">{t('el:option-relasjonbarn-type-adoptert_barn')}</option>
+                    <option value="født_utenfor_ekteskap" key="født_utenfor_ekteskap">{t('el:option-relasjonbarn-type-født_utenfor_ekteskap')}</option>
+                    <option value="barn_av_ektefelle" key="barn_av_ektefelle">{t('el:option-relasjonbarn-type-barn_av_ektefelle')}</option>
+                    <option value="barnebarn_bror_søster_nevø_niese" key="barnebarn_bror_søster_nevø_niese">{t('el:option-relasjonbarn-type-barnebarn_bror_søster_nevø_niese')}</option>
                     <option value="fosterbarn" key="fosterbarn">{t('el:option-relasjonbarn-type-fosterbarn')}</option>
                   </Select>
                   <AlignStartRow>
@@ -363,8 +364,28 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
           )
           : (
             <>
-              {_relasjon?.relasjonTilPerson}
-              {addremovepanel}
+              <VStack gap="1">
+                <div><Label>{t('label:relasjon-med')}:</Label> {t('el:option-relasjonbarn-relasjontilperson-' + _relasjon?.relasjonTilPerson)}</div>
+                <div><Label>{t('label:type')}:</Label> {t('el:option-relasjonbarn-type-' + _relasjon?.typeRelasjon)}</div>
+                <div>
+                  <Label>Periode</Label>
+                  <PeriodeText
+                    error={{
+                      startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                      sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                    }}
+                    namespace={_namespace + '-periode'}
+                    periode={_relasjon?.periode}
+                  />
+                </div>
+                <div><Label>{t('label:delt-foreldreansvar')}: </Label>{_relasjon?.fellesOmsorg?.toUpperCase()}</div>
+                <div><Label>{t('label:bor-i-samme-hustand-som-søkeren')}: </Label>{_relasjon?.borISammeHusstandSomKravstiller?.toUpperCase()}</div>
+                <div><Label>{t('label:bor-i-samme-hustand-som-ektefelle-partneren')}: </Label>{_relasjon?.borISammeHusstandSomEktefelle?.toUpperCase()}</div>
+                <div><Label>{t('label:bor-i-samme-hustand-som-den-andre-aktuelle-personen')}: </Label>{_relasjon?.borISammeHusstandSomAnnenPerson?.toUpperCase()}</div>
+                <div><Label>{t('label:bor-barnet-paa-institusjon')}: </Label>{_relasjon?.borPaaInstitusjon?.toUpperCase()}</div>
+                {addremovepanel}
+              </VStack>
+
             </>
           )
         }
