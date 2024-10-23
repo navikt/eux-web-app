@@ -566,7 +566,7 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'opplaering', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'opplaering'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'ufoerhet', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'ufoerhet'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'arbeidsledighet', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'arbeidsledighet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: null, type:['ytelseTilForeldreloese']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'svarpaaanmodningomytelsertilforeldreloese', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'ytelser'}}
               ]}
               replySed={replySed}
