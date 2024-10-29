@@ -108,6 +108,13 @@ import InntektForeldreloeseBarnet
 import AnnenInformasjonOmBarnetFritekst
   from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/AnnenInformasjonOmBarnetFritekst";
 import ErBarnetAdoptert from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/ErBarnetAdoptert";
+import ForsoergesAvDetOffentlige
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/ForsoergesAvDetOffentlige";
+import InformasjonOmBarnehage
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/InformasjonOmBarnehage";
+import BarnetsSivilstand from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/BarnetsSivilstand";
+import DatoEndredeForhold
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/DatoEndredeForhold";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -575,6 +582,11 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'daglig-omsorg', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'dagligOmsorg'}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'foreldreansvar'}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-barnet-adoptert', component: ErBarnetAdoptert, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['annenInformasjonBarnet']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'svarpaaanmodningomanneninformasjonangaaendebarnet', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'ytterligereInformasjon'}}
               ]}
               replySed={replySed}
               updateReplySed={updateReplySed}

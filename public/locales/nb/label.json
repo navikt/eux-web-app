@@ -32,6 +32,7 @@
   "annet-opphør": "Annet opphør",
   "ansettelsesperioder" : "Ansettelsesperiode(r)",
   "antall-innvilges" : "Antall det innvilges for",
+  "antall-timer": "Antall timer",
   "antall-treff-for" : "Antall treff for {{saksnummerOrFnr}}: ",
   "arbeidsdager": "Arbeidsdager",
   "arbeidsforhold-type": "Type arbeidsforhold",
@@ -187,6 +188,7 @@
   "gå-til-A-inntekt" : "Gå til A-inntekt",
   "gå-til-draft": "gå til lagret utkast",
   "gå-til-rina": "gå til RINA",
+  "gaar-barnet-i-barnehage": "Går barnet i barnehage?",
 
   "H001-er-sendt": "H001 er sendt",
   "hele-familien" : "Hele familien",
@@ -296,6 +298,7 @@
   "mottakers-navn": "Mottakers navn",
   "mottakers-navn-naar-annen-enn-soker": "Mottakers navn når annen enn søker",
   "mottaksdato": "Mottaksdato",
+  "mottar-barnehagen-offentlig-stoette": "Mottar barnehagen offentlig støtte?",
   "mottatte-dagpenger": "Mottatte dagpenger",
 
   "nasjonalitet": "Nasjonalitet",
@@ -442,6 +445,7 @@
   "tilknyttet-sak": "Tilknyttet sak",
   "tilknyttede-saker": "Tilknyttede saker",
   "tittel" : "Tittel",
+  "timer-pr": "Timer pr",
   "trygdeperiode-i-avsenderlandet": "Trygdeperiode i avsenderlandet",
   "trygdeordningen-dekkede": "Dekkede perioder",
   "trygdeordningen-familieYtelse": "Periode for rett til familieytelser",
