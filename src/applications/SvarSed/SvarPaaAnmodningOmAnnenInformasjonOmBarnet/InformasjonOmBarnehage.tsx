@@ -88,7 +88,7 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
             <>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <RadioPanelGroup
-                  legend={t('label:gaar-barnet-i-barnehage')}
+                  legend={t('label:mottar-barnehagen-offentlig-stoette')}
                   value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.mottarOffentligStoette ?? ''}
                   error={validation[namespace + '-mottar-offentlig-stoette']?.feilmelding}
                   id='mottar-offentlig-stoette'
