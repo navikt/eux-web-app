@@ -176,6 +176,7 @@ export interface MainFormFCProps<T> {
 export interface MainFormProps {
   replySed: ReplySed | PDU1 | null | undefined
   parentNamespace: string
+  parentTarget?: string
   personID?: string | undefined
   personName?: string
   label?: string
