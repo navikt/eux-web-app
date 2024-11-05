@@ -146,9 +146,9 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 {t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')}
               </Checkbox>
               <Checkbox
-                value="utdanningsinstitusjon"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanningsinstitusjon", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.utdanningsinstitusjon}>
+                value="utdanning"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
+                checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning}>
                 {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
               </Checkbox>
           </Box>
