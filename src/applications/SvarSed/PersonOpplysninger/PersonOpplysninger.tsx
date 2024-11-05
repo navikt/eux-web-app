@@ -220,7 +220,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setFornavn(e.target.value)
               }}
-              required
               value={personInfo?.fornavn ?? ''}
             />
           </Column>
@@ -232,7 +231,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setEtternavn(e.target.value)
               }}
-              required
               value={personInfo?.etternavn ?? ''}
             />
           </Column>
@@ -244,7 +242,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               label={t('label:fødselsdato')}
               onChanged={setFodselsdato}
               dateValue={personInfo?.foedselsdato}
-              required
             />
           </Column>
         </AlignStartRow>

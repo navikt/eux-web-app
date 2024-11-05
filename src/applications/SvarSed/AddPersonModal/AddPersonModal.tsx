@@ -336,7 +336,6 @@ const AddPersonModal = <T extends StorageTypes>({
                 id={namespace + '-fornavn'}
                 label={t('label:fornavn')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFornavn(e.target.value)}
-                required
                 value={_newPersonFornavn}
               />
               <HorizontalSeparatorDiv />
@@ -347,7 +346,6 @@ const AddPersonModal = <T extends StorageTypes>({
                 id={namespace + '-etternavn'}
                 label={t('label:etternavn')}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEtternavn(e.target.value)}
-                required
                 value={_newPersonEtternavn}
               />
               <HorizontalSeparatorDiv />
@@ -359,7 +357,6 @@ const AddPersonModal = <T extends StorageTypes>({
                 namespace={namespace}
                 label={t('label:fødselsdato')}
                 onChanged={setFoedselsdato}
-                required
                 dateValue={_newPersonFodselsdato}
               />
               <HorizontalSeparatorDiv />
@@ -409,7 +406,6 @@ const AddPersonModal = <T extends StorageTypes>({
                 label={t('label:familierelasjon')}
                 onChange={setRelation}
                 options={relationOptions}
-                required
                 value={_.find(relationOptions, o => o.value === _newPersonRelation)}
                 defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
               />
