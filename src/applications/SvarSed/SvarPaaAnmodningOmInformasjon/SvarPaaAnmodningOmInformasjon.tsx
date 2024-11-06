@@ -79,7 +79,10 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
       dispatch(setDeselectedMenu(undefined))
     }
 
-    dispatch(updateReplySed(`${target}.${item}`, checked ? {} : undefined))
+    if(item === "utdanning"){
+      dispatch(updateReplySed(`${target}.utdanning`, checked ? {} : undefined))
+      dispatch(updateReplySed(`${target}.deltakelsePaaUtdanning`, checked ? [] : undefined))
+    }
   }
 
   return (
@@ -148,7 +151,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
               <Checkbox
                 value="utdanning"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning}>
+                checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning || !!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
                 {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
               </Checkbox>
           </Box>
