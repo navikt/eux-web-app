@@ -82,6 +82,8 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
     if(item === "utdanning"){
       dispatch(updateReplySed(`${target}.utdanning`, checked ? {} : undefined))
       dispatch(updateReplySed(`${target}.deltakelsePaaUtdanning`, checked ? [] : undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.${item}`, checked ? {} : undefined))
     }
   }
 

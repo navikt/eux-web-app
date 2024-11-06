@@ -1,6 +1,6 @@
 import {BodyLong, Box, Button, Heading, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import React, {useState} from "react";
-import {MainFormProps} from "../MainForm";
+import {MainFormProps, MainFormSelector} from "../MainForm";
 import {setReplySed} from "../../../actions/svarsed";
 import Utdanning from "../Utdanning/Utdanning";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
@@ -14,9 +14,18 @@ import classNames from "classnames";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import AddRemovePanel from "../../../components/AddRemovePanel/AddRemovePanel";
 import {periodeSort} from "../../../utils/sort";
-import {useAppDispatch} from "../../../store";
-import {resetValidation} from "../../../actions/validation";
+import {useAppDispatch, useAppSelector} from "../../../store";
+import {resetValidation, setValidation} from "../../../actions/validation";
+import useLocalValidation from "../../../hooks/useLocalValidation";
+import {validatePeriode, ValidationPeriodeProps} from "./validation";
+import {State} from "../../../declarations/reducers";
+import performValidation from "../../../utils/performValidation";
+import {Validation} from "../../../declarations/types";
+import {hasNamespaceWithErrors} from "../../../utils/validation";
 
+const mapState = (state: State): MainFormSelector => ({
+  validation: state.validation.status
+})
 
 const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   label,
@@ -25,6 +34,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   updateReplySed,
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
+  const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}-svaromfremmoeteutdanning`
@@ -38,15 +48,17 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   const [_newPeriodeForm, _setNewPeriodeForm] = useState<boolean>(false)
   const [_editPeriodeIndex, _setEditPeriodeIndex] = useState<number | undefined>(undefined)
 
+  const [_validationPeriode, _resetValidationPeriode, _performValidationPeriode] = useLocalValidation<ValidationPeriodeProps>(validatePeriode, namespace + '-deltakelse-paa-utdanning')
+
   const addPeriode = () => {
-    //dispatch(resetValidation(namespace + '-deltakelse-paa-utdanning'))
+    dispatch(resetValidation(namespace + '-deltakelse-paa-utdanning'))
     _setNewPeriodeForm(true)
   }
 
   const onClosePeriodeNew = () => {
     _setNewPeriode(undefined)
     _setNewPeriodeForm(false)
-    //_resetValidationVedtakPeriode()
+    _resetValidationPeriode()
   }
 
   const onClosePeriodeEdit = (namespace: string) => {
@@ -65,15 +77,12 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   }
 
   const onAddPeriodeNew = () => {
-  /*
-      const valid: boolean = _performValidationVedtakPeriode({
-        periode: _newVedtakPeriode,
-        perioder: vedtak?.vedtaksperioder,
-        formalName: personName
-      })
-  */
+    const valid: boolean = _performValidationPeriode({
+      periode: _newPeriode,
+      perioder: deltakelsePaaUtdanning
+    })
 
-    const valid = true
+    console.log(_validationPeriode)
 
     if (!!_newPeriode && valid) {
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(deltakelsePaaUtdanning)
@@ -88,19 +97,18 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   }
 
   const onSavePeriodeEdit = () => {
-    //const clonedValidation = _.cloneDeep(validation)
-    /*const hasErrors = performValidation<ValidationVedtakPeriodeProps>(
-      clonedValidation, namespace, validateVedtakPeriode, {
-        periode: _editVedtakPeriode,
-        perioder: vedtak?.vedtaksperioder,
-        index: _editVedtakPeriodeIndex,
-        formalName: personName
-      })*/
-    if (true) {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = performValidation<ValidationPeriodeProps>(
+      clonedValidation, namespace + '-deltakelse-paa-utdanning', validatePeriode, {
+        periode: _editPeriode,
+        perioder: deltakelsePaaUtdanning,
+        index: _editPeriodeIndex
+      })
+    if (!hasErrors) {
       dispatch(updateReplySed(`${target}.deltakelsePaaUtdanning[${_editPeriodeIndex}]`, _editPeriode))
       onClosePeriodeEdit(namespace + '-deltakelse-paa-utdanning' + getIdx(_editPeriodeIndex))
     } else {
-      //dispatch(setValidation(clonedValidation))
+      dispatch(setValidation(clonedValidation))
     }
   }
 
@@ -112,17 +120,17 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
       _setNewPeriode(periode)
-      //_resetValidationVedtakPeriode(namespace + '-deltakelse-paa-utdanning')
+      _resetValidationPeriode(namespace + '-deltakelse-paa-utdanning')
       return
     }
     _setEditPeriode(periode)
-    //dispatch(resetValidation(namespace + '-deltakelse-paa-utdanning' + getIdx(index)))
+    dispatch(resetValidation(namespace + '-deltakelse-paa-utdanning' + getIdx(index)))
   }
 
 
   const renderPeriodeRow = (periode: Periode | null, index: number) => {
     const _namespace = namespace + '-deltakelse-paa-utdanning' + getIdx(index)
-    //const _v: Validation = index < 0 ? _validationVedtakPeriode : validation
+    const _v: Validation = index < 0 ? _validationPeriode : validation
     const inEditMode = index < 0 || _editPeriodeIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
 
@@ -132,7 +140,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
         key={getPeriodeId(periode)}
         className={classNames({
           new: index < 0,
-          //error: hasNamespaceWithErrors(_v, _namespace)
+          error: hasNamespaceWithErrors(_v, _namespace)
         })}
         padding="4"
       >
@@ -142,8 +150,8 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
               <PeriodeInput
                 namespace={_namespace}
                 error={{
-                  startdato: undefined,
-                  sluttdato: undefined
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
                 hideLabel={index >= 0}
                 setPeriode={(p: Periode) => setPeriode(p, index)}
@@ -167,8 +175,8 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
             <HStack gap="4">
               <PeriodeText
                 error={{
-                  startdato: undefined,
-                  sluttdato: undefined
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
                 namespace={_namespace}
                 periode={_periode}
