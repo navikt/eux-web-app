@@ -560,7 +560,7 @@ const SEDEdit = (): JSX.Element => {
                 {key: "inntekt", label:t('label:svar-på-anmodning-om-inntekt'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
                 {key: "ytelseTilForeldreloese", label:t('label:svar-på-anmodning-om-barnepensjon'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
                 {key: "annenInformasjonBarnet", label:t('label:svar-på-anmodning-om-annen-informasjon-om-barnet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
-                {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning},
+                {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
               ]}
               forms={[
                 {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
