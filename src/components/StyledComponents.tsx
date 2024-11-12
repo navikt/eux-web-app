@@ -3,7 +3,7 @@ import {
   fadeIn,
   fadeOut, PaddedHorizontallyDiv
 } from '@navikt/hoykontrast'
-import { Panel } from '@navikt/ds-react'
+import {Box, Panel} from '@navikt/ds-react'
 
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;
@@ -120,6 +120,18 @@ export const RepeatableRow = styled(PaddedHorizontallyDiv)`
   &:not(:hover) .control-buttons {
     position: absolute;
     margin-left: -10000px;
+  }
+`
+
+export const RepeatableBox = styled(Box)`
+  &.new {
+    background-color: rgba(236, 243, 153, 0.5);
+  };
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+  &:hover:not(.new):not(.error) {
+    background-color: var(--a-gray-100);
   }
 `
 

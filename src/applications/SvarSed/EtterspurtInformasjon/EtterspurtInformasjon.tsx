@@ -2,16 +2,17 @@ import {State} from "declarations/reducers";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "store";
-import {Box, Checkbox, Heading, Label, VStack} from "@navikt/ds-react";
-import {PaddedDiv, RadioPanel, RadioPanelGroup, FlexRadioPanels} from "@navikt/hoykontrast";
+import {Box, Checkbox, Heading, VStack} from "@navikt/ds-react";
+import {PaddedDiv} from "@navikt/hoykontrast";
 import useUnmount from "hooks/useUnmount";
 import _ from "lodash";
 import {AnmodningOmMerInformasjon} from "declarations/sed";
 import EtterspurtInformasjonTyper from "./EtterspurtInformasjonTyper";
 import TextArea from "../../../components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
-import Input from "../../../components/Forms/Input";
 import {resetValidation} from "../../../actions/validation";
+import Utdanning from "../Utdanning/Utdanning";
+import {setReplySed} from "../../../actions/svarsed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -52,13 +53,6 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${target}.${type}.ytterligereInformasjon`, value))
     if(validation[namespace + '-' + type + '-ytterligereinformasjon']){
       dispatch(resetValidation(namespace + '-' + type + '-ytterligereinformasjon'))
-    }
-  }
-
-  const setUtdanning = (prop:string, value: string) => {
-    dispatch(updateReplySed(`${target}.utdanning.${prop}`, value))
-    if(validation[namespace + '-utdanning-' + prop.toLowerCase()]){
-      dispatch(resetValidation(namespace + '-utdanning-' + prop.toLowerCase()))
     }
   }
 
@@ -236,64 +230,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
               Fremmøte på skole/høyskole/opplæring/arbeidsledighet
             </Checkbox>
             {!!anmodningOmMerInformasjon?.utdanning &&
-              <VStack gap="4">
-                <RadioPanelGroup
-                  id={namespace + '-utdanning-type'}
-                  value={anmodningOmMerInformasjon?.utdanning.type}
-                  legend="Type opplæringsinstitusjon"
-                  onChange={(v:string)=>setUtdanning("type", v)}
-                  error={validation[namespace + '-utdanning-type']?.feilmelding}
-                >
-                  <FlexRadioPanels>
-                    <RadioPanel value='skole'>Skole</RadioPanel>
-                    <RadioPanel value='høyskole'>Høyskole</RadioPanel>
-                    <RadioPanel value='universitet'>Universitet</RadioPanel>
-                    <RadioPanel value='yrkesrettet_opplæring'>Yrkesrettet opplæring</RadioPanel>
-                    <RadioPanel value='barnehage_daghjem'>Barnehage/Daghjem</RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-                <RadioPanelGroup
-                  id={namespace + '-utdanning-typedeltakelse'}
-                  value={anmodningOmMerInformasjon?.utdanning.typeDeltakelse}
-                  legend="Type deltakelse"
-                  onChange={(v:string)=>setUtdanning("typeDeltakelse", v)}
-                  error={validation[namespace + '-utdanning-typedeltakelse']?.feilmelding}
-                >
-                  <FlexRadioPanels>
-                    <RadioPanel value='deltid'>Deltid</RadioPanel>
-                    <RadioPanel value='heltid'>Heltid</RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-                <Label>Faktisk deltakelse</Label>
-                <RadioPanelGroup
-                  value={anmodningOmMerInformasjon?.utdanning.timerPr}
-                  legend="Timer pr"
-                  onChange={(v:string)=>setUtdanning("timerPr", v)}
-                >
-                  <FlexRadioPanels>
-                    <RadioPanel value='dag'>Dag</RadioPanel>
-                    <RadioPanel value='uke'>Uke</RadioPanel>
-                    <RadioPanel value='maaned'>Måned</RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-                <Input
-                  error={validation[namespace + '-utdanning-timer']?.feilmelding}
-                  namespace={namespace}
-                  id='timer'
-                  label="Antall timer"
-                  onChanged={(v: string) => setUtdanning("timer", v)}
-                  value={anmodningOmMerInformasjon?.utdanning.timer}
-                />
-                <TextArea
-                  maxLength={255}
-                  error={validation[namespace + '-utdanning-ytterligereinformasjon']?.feilmelding}
-                  namespace={namespace}
-                  id='utdanning-ytterligereinformasjon'
-                  label={t('label:ytterligere-informasjon')}
-                  onChanged={(v) => setYtterligereInfo("utdanning", v)}
-                  value={anmodningOmMerInformasjon.utdanning.ytterligereInformasjon ?? ''}
-                />
-              </VStack>
+              <Utdanning replySed={replySed} setReplySed={setReplySed} parentNamespace={namespace} parentTarget={target} updateReplySed={updateReplySed}/>
             }
           </Box>
         </VStack>

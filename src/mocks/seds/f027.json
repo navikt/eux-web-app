@@ -1,0 +1,257 @@
+{
+  "sedType": "F027",
+  "sedVersjon": "4.3",
+  "bruker": {
+    "adresser": [
+      {
+        "type": "kontakt",
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "BG",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ],
+    "telefon": [
+      {
+        "type": "arbeid",
+        "nummer": "04722222222"
+      }
+    ],
+    "epost": [
+      {
+        "adresse": "a@nav.no"
+      }
+    ],
+    "perioderMedITrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderUtenforTrygdeordning": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "perioderMedYtelser": [
+      {
+        "startdato": "2001-01-01",
+        "sluttdato": "2001-01-01"
+      }
+    ],
+    "ikkeRettTilYtelser": {
+      "typeGrunnAnnen": "æøå",
+      "typeGrunnForVedtak": "annen_grunn"
+    },
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "U",
+      "foedselsdato": "2001-01-01",
+      "statsborgerskap": [
+        {
+          "land": "BG",
+          "fraDato": "2001-01-01"
+        }
+      ],
+      "pin": [
+        {
+          "land": "BG",
+          "sektor": "alle",
+          "identifikator": "æøå",
+          "institusjonsid": "FI:0100222222",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "BG"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    }
+  },
+  "krav": {
+    "kravMottattDato": "2001-01-01"
+  },
+  "ytterligereInfo": "æøå",
+  "anmodningOmMerInformasjon": {
+    "svar": {
+      "utdanning": {
+        "timerPr": "maaned",
+        "ytterligereInformasjon": "æøå",
+        "typeDeltakelse": "deltid",
+        "timer": "40",
+        "type": "universitet"
+      },
+      "utdanningsinstitusjon": {
+        "adresse": {
+          "gate": "æøå",
+          "postnummer": "æøå",
+          "by": "æøå",
+          "land": "BG",
+          "bygning": "æøå",
+          "region": "æøå"
+        },
+        "ytterligereInformasjon": "æøå",
+        "navn": "æøå",
+        "identifikator": [
+          {
+            "id": "æøå",
+            "type": "skatt"
+          }
+        ]
+      },
+      "annenInformasjonBarnet": {
+        "foreldreansvar": "æøå",
+        "barnehage": {
+          "timer": "40",
+          "mottarOffentligStoette": "1",
+          "timerPr": "maaned",
+          "gaarIBarnehage": "1"
+        },
+        "forsoergesAvDetOffentlige": "1",
+        "sivilstand": "03",
+        "erAdoptert": "1",
+        "ytterligereInformasjon": "æøå",
+        "datoEndredeForhold": "2001-01-01",
+        "dagligOmsorg": "æøå"
+      },
+      "ytelseTilForeldreloese": {
+        "barnMedRelasjonTilAvdoede": [
+          {
+            "borISammeHusstandSomKravstiller": "1",
+            "periode": {
+              "startdato": "2001-01-01",
+              "sluttdato": "2001-01-01"
+            },
+            "typeRelasjon": "03",
+            "relasjonTilPerson": "03",
+            "borISammeHusstandSomEktefelle": "1",
+            "borPaaInstitusjon": "1",
+            "borISammeHusstandSomAnnenPerson": "1",
+            "fellesOmsorg": "1"
+          }
+        ],
+        "barnet": {
+          "inntekt": {
+            "beloep": "æøå",
+            "valuta": "CZK"
+          },
+          "adresse": {
+            "gate": "æøå",
+            "postnummer": "æøå",
+            "by": "æøå",
+            "land": "BG",
+            "bygning": "æøå",
+            "region": "æøå"
+          },
+          "skole": "æøå",
+          "ytelser": "æøå",
+          "aktivitet": "æøå",
+          "arbeidsledighet": "æøå",
+          "ufoerhet": "æøå",
+          "opplaering": "æøå"
+        },
+        "identifisering": {
+          "avdoede": {
+            "fornavn": "æøå",
+            "far": {
+              "etternavnVedFoedsel": "æøå",
+              "fornavn": "æøå"
+            },
+            "pin": [
+              {
+                "land": "BG",
+                "sektor": "alle",
+                "identifikator": "æøå",
+                "institusjonsid": "FI:0100222222",
+                "institusjonsnavn": "æøå"
+              }
+            ],
+            "kjoenn": "U",
+            "foedested": {
+              "by": "æøå",
+              "region": "æøå",
+              "land": "BG"
+            },
+            "fornavnVedFoedsel": "æøå",
+            "etternavnVedFoedsel": "æøå",
+            "etternavn": "æøå",
+            "mor": {
+              "etternavnVedFoedsel": "æøå",
+              "fornavn": "æøå"
+            },
+            "foedselsdato": "2001-01-01"
+          },
+          "annenPerson": {
+            "fornavn": "æøå",
+            "etternavn": "æøå",
+            "foedselsdato": "2001-01-01"
+          },
+          "fornavn": "æøå",
+          "foedselsdato": "2001-01-01",
+          "etternavn": "æøå"
+        },
+        "annenPerson": {
+          "relasjonTilAvdoede": [
+            {
+              "varKravstillerISammeHushold": "1",
+              "personnavn": "æøå",
+              "familierelasjonstype": "03",
+              "annenRelasjon": "æøå",
+              "periode": {
+                "startdato": "2001-01-01",
+                "aapenPeriodeType": "åpen_sluttdato"
+              },
+              "relasjonsstartdato": "2001-01-01",
+              "annenPerson": "æøå"
+            }
+          ]
+        }
+      },
+      "adopsjon": {
+        "dokumentasjonAdopsjonErLovlig": "æøå",
+        "adoptivforeldreOmsorgFradato": "2001-01-01",
+        "bevillingRegistreringsdato": "2001-01-01",
+        "ytterligereInformasjon": "æøå"
+      },
+      "inntekt": {
+        "periode": {
+          "startdato": "2001-01-01",
+          "sluttdato": "2001-01-01"
+        },
+        "ytterligereInformasjon": "æøå",
+        "aarlig": {
+          "beloep": "æøå",
+          "valuta": "CZK"
+        },
+        "kilde": "æøå",
+        "inntektskilde": "99"
+      },
+      "deltakelsePaaUtdanning": [
+        {
+          "periode": {
+            "startdato": "2001-01-01",
+            "aapenPeriodeType": "åpen_sluttdato"
+          }
+        }
+      ]
+    }
+  },
+  "erKravEllerSvarPaaKrav": "01"
+}

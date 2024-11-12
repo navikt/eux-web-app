@@ -115,6 +115,12 @@ const OptionDiv = styled.div`
     margin-top: -1px;
   }
 `
+
+const OptionWithIconDiv = styled(OptionDiv)`
+  white-space: wrap;
+  align-items: start;
+`
+
 const LastDivWithButton = styled.div`
   flex: 1;
   padding: 1rem 0.5rem;
@@ -153,8 +159,9 @@ const BlankContentDiv = styled(FlexCenterDiv)`
   background-color: var(--a-bg-default);
 `
 export interface MainFormFCProps<T> {
+  menuItems?: Array<MenuItem>
   forms: Array<Form>
-  type: 'onelevel' | 'twolevel'
+  type: 'onelevel' | 'twolevel' | 'menuitems'
   firstForm?: string
   replySed: T | null | undefined
   setReplySed: (replySed: T) => ActionWithPayload<T>
@@ -169,6 +176,7 @@ export interface MainFormFCProps<T> {
 export interface MainFormProps {
   replySed: ReplySed | PDU1 | null | undefined
   parentNamespace: string
+  parentTarget?: string
   personID?: string | undefined
   personName?: string
   label?: string
@@ -194,11 +202,18 @@ export interface Form extends Option {
   options?: any
 }
 
+export interface MenuItem {
+  key: string
+  label: string
+  condition?: () => void
+}
+
 export const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
 const MainForm = <T extends StorageTypes>({
+  menuItems,
   forms,
   firstForm,
   type,
@@ -238,6 +253,9 @@ const MainForm = <T extends StorageTypes>({
 
   const alreadyOpenMenu = (menu: string) => _.find(openMenus, _id => _id === menu) !== undefined
 
+
+  const visibleMenu = menuItems && type === "menuitems" ? menuItems?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true).length > 0 : true
+
   useEffect(() => {
     dispatch(startMenuStatistic(loggingNamespace, undefined))
     return () => {
@@ -268,11 +286,12 @@ const MainForm = <T extends StorageTypes>({
     }
 
     let form: Form | undefined
-    if (type === 'twolevel') {
+    if (type === 'twolevel' || type === 'menuitems') {
       form = _.find(forms, o => o.value === menuOption)
     } else {
       form = _.find(forms, o => o.value === menu)
     }
+
     if (form) {
       const Component = form.component
       return (
@@ -308,7 +327,7 @@ const MainForm = <T extends StorageTypes>({
       if (currentMenu !== menu) {
         setCurrentMenu(menu)
       } else if (currentMenu === menu){
-        setCurrentMenu(initialMenu)
+        setCurrentMenu(undefined)
       }
       menuRef.current = menu
       return
@@ -329,7 +348,7 @@ const MainForm = <T extends StorageTypes>({
       }
     } else if(sameMenu){
       if (!changedMenuOption){
-        setCurrentMenu(initialMenu)
+        setCurrentMenu(undefined)
       }
     }
 
@@ -404,7 +423,7 @@ const MainForm = <T extends StorageTypes>({
         >
           <NameDiv
             onClick={() => {
-              changeMenu(form.value, undefined, 'click')
+              changeMenu(form.value, form.value, 'click')
               return false
             }}
           >
@@ -557,6 +576,116 @@ const MainForm = <T extends StorageTypes>({
   }
 
   useEffect(() => {
+    // Close all submenus if checkbox for menu is deselected
+    if(type === 'menuitems' && deselectedMenu){
+      // @ts-ignore
+      const formsInDeSelectedMenu: Array<Form> = _.filter(forms, (f) => {
+        if(f.type){
+          return _.isString(f.type) ? f.type === deselectedMenu : f.type.includes(deselectedMenu)
+        }
+      })
+
+      setOpenMenus(_.filter(openMenus, _id => _id !== deselectedMenu))
+
+      if(deselectedMenu === currentMenu && formsInDeSelectedMenu?.length > 0){
+        const isCurrentMenuOptionInFormsInDeSelectedMenu = _.find(formsInDeSelectedMenu, (f) => f.value === currentMenuOption)
+        if(isCurrentMenuOptionInFormsInDeSelectedMenu){
+          setCurrentMenuOption(initialMenuOption)
+        }
+      }
+    }
+  }, [deselectedMenu])
+
+  const renderMenuItems = (menuItem: MenuItem, forms: Array<Form>) => {
+    const open: boolean = _.find(openMenus, _id => _id === menuItem.key) !== undefined
+    const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key))
+    const isValidated = validationKeys.length > 0
+    const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+
+
+    const menuItemForms = forms
+      .filter((f) => _.isFunction(f.condition) ? f.condition() : true)
+      .filter((f) => {
+        if(f.type){
+          return _.isString(f.type) ? f.type === menuItem.key : f.type.includes(menuItem.key)
+        }
+      })
+
+    if(menuItemForms.length === 1){
+      return renderOneLevelMenu(menuItemForms as Array<Form>)
+    }
+
+
+    return(
+      <NameAndOptionsDiv className={classNames({ selected: !open && currentMenu === menuItem.key })}>
+        <NameDiv
+          onClick={() => {
+            changeMenu(menuItem.key, undefined, 'click')
+            return false
+          }}
+        >
+          <NameLabelDiv
+            className={classNames({
+              selected: focusedMenu === menuItem.key
+            })}
+          >
+            {isValidated
+              ? validationHasErrors
+                ? <XMarkOctagonFillIcon height={20} color='red' />
+                : <CheckmarkCircleFillIcon color='green' height={20} />
+              : null}
+            <>
+              <HorizontalSeparatorDiv size='0.5' />
+              <MenuLabelText>
+                {menuItem.label}
+              </MenuLabelText>
+            </>
+          </NameLabelDiv>
+          <MenuArrowDiv>
+            {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
+          </MenuArrowDiv>
+        </NameDiv>
+        {open && <PaddedHorizontallyDiv><HorizontalLineSeparator /></PaddedHorizontallyDiv>}
+        {open && forms
+          .filter(o => {
+            const _type = menuItem.key
+            return _.isString(o.type)
+              ? _type.startsWith(o.type)
+              : _.find(o.type, (t: string) => _type.startsWith(t)) !== undefined
+          })
+          .filter(o => _.isFunction(o.condition) ? o.condition() : true)
+          .map((o, i) => {
+            const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key + '-' + o.value))
+            const isValidated = validationKeys.length > 0
+            const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
+            return (
+              <OptionWithIconDiv
+                className={classNames({
+                  selected: currentMenu === menuItem.key && currentMenuOption === o.value,
+                  first: i === 0
+                })}
+                key={namespace + '-' + menuItem.key + '-' + o.value}
+                onClick={() => changeMenu(menuItem.key, o.value, 'click')}
+                role='button'
+              >
+                <div>
+                  {isValidated
+                    ? validationHasErrors
+                      ? <XMarkOctagonFillIcon color='red' height={20} />
+                      : <CheckmarkCircleFillIcon color='green' height={20} />
+                    : <MenuElipsisHorizontalCircleIcon height={20} />
+                  }
+                </div>
+                <HorizontalSeparatorDiv size='0.5' />
+                {o.label}
+              </OptionWithIconDiv>
+            )
+          })}
+      </NameAndOptionsDiv>
+    )
+  }
+
+  useEffect(() => {
     document.addEventListener('feillenke', handleFeilLenke)
     return () => {
       document.removeEventListener('feillenke', handleFeilLenke)
@@ -600,6 +729,17 @@ const MainForm = <T extends StorageTypes>({
                 </LastDivWithButton>
               </>
             )}
+            {type === 'menuitems' && (
+              <>
+                {menuItems
+                  ?.filter(menuItem => _.isFunction(menuItem.condition) ? menuItem.condition() : true)
+                  ?.map((menuItem) => {
+                    return renderMenuItems(menuItem, forms)
+                  })
+                }
+                {visibleMenu && <LastDiv />}
+              </>
+            )}
             {type === 'onelevel' && (
               <>
                 {renderOneLevelMenu(forms)}
@@ -607,24 +747,27 @@ const MainForm = <T extends StorageTypes>({
               </>
             )}
           </LeftDiv>
-          <RightDiv>
-            {!currentMenu
-              ? (
-                <BlankDiv>
-                  <BlankContentDiv>
-                    {t('label:velg-meny')}
-                  </BlankContentDiv>
-                </BlankDiv>
-                )
-              : (
-                <RightActiveDiv
-                  key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
-                  className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
-                >
-                  {getForm(currentMenu, currentMenuOption)}
-                </RightActiveDiv>
-                )}
-          </RightDiv>
+
+          {visibleMenu &&
+            <RightDiv>
+              {!currentMenu
+                ? (
+                  <BlankDiv>
+                    <BlankContentDiv>
+                      {t('label:velg-meny')}
+                    </BlankContentDiv>
+                  </BlankDiv>
+                  )
+                : (
+                  <RightActiveDiv
+                    key={`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`}
+                    className={classNames(`active-${currentMenu}${currentMenuOption ? '-' + currentMenuOption : ''}`, 'right')}
+                  >
+                    {getForm(currentMenu, currentMenuOption)}
+                  </RightActiveDiv>
+                  )}
+            </RightDiv>
+          }
         </FlexCenterSpacedDiv>
       </WithErrorPanel>
     </PileDiv>

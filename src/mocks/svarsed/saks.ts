@@ -198,7 +198,204 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }
       ]
-    }, {
+    },
+    {
+      cdmVersjon:'4.3',
+      fornavn: 'Ola',
+      etternavn: 'Nordmenn',
+      kjoenn: 'M',
+      foedselsdato: '1970-01-01',
+      fnr: '12345678901',
+      adressebeskyttelse: 'STRENGT_FORTROLIG',
+      sakTittel: 'Beslutte komponent myndighet',
+      sakType: 'FB_BUC_01',
+      sakId: '2266592',
+      internasjonalSakId: 'abvcdefghijklm',
+      sakUrl: 'http://foo.com',
+      sistEndretDato: '2020-01-01',
+      erSakseier: 'ja',
+      sensitiv: true,
+      navinstitusjon: {
+        id: "NO:NAVAT07",
+        navn: "NAV ACC 07"
+      },
+      motparter: [
+        {
+          formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
+          motpartId: "RO:70005",
+          motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO"
+        },
+        {
+          formatertNavn: "Test institusjon",
+          motpartId: "RO:70005",
+          motpartNavn: "Test institusjon",
+          motpartLand: "RO"
+        }
+      ],
+      fagsak: {
+        "id": "140282517",
+        "tema": "KON",
+        "type": "FAGSAK",
+        "nr": "1/2023",
+        "system": "AO11",
+        "fnr": "12345678901"
+      },
+      sakshandlinger: [
+        'H001', 'F002', 'F026', 'F027', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
+      ],
+      sedListe: [
+        {
+          sedTittel: 'Påminnelse',
+          sedType: 'X009',
+          sedId: '46f4ea863edd4106bd20b36675315008',
+          sedUrl: 'https://rina-ss1-q.adeo.no/portal_new/case-management/1441020',
+          status: 'received',
+          sistEndretDato: '2022-07-18',
+          sedHandlinger: ['X010', 'Read']
+        }, {
+          sedTittel: 'Description for new F001',
+          status: 'new',
+          sedType: 'F001',
+          sedId: 'f001new',
+          sistEndretDato: '2020-01-02',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          vedlegg: [
+            {
+              "id": "3666a09dee604440a44dc9a51abf685a",
+              "navn": "Påminnelse.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "7b41e7ed544f4cd4b568dcbc48266cef",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": true
+            },
+            {
+              "id": "8b81b7003e354d32ad9385876a948bea",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": false
+            },
+            {
+              "id": "9bfabcd05fb9466693e55592bb8845fb",
+              "navn": "H001.pdf",
+              "sensitivt": true
+            }
+          ]
+        }, {
+          sedTittel: 'Description for sent F001',
+          status: 'sent',
+          sedType: 'F001',
+          sedId: 'f001sent',
+          sistEndretDato: '2020-01-02',
+          svarsedType: 'F002',
+          svarsedDisplay: 'Description for F002',
+          svarsedId: 'f001receivedSvar',
+          sedHandlinger: ['F002', 'Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Description for received F001',
+          status: 'received',
+          sedType: 'F001',
+          sedId: 'f001received',
+          sistEndretDato: '2020-01-02',
+          sedHandlinger: ['X008', 'X011', 'X012', 'Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Description for new F002',
+          status: 'new',
+          sedType: 'F002',
+          sedId: 'f002new',
+          sistEndretDato: '2020-01-01',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete', "ReadParticipants"]
+        }, {
+          sedTittel: 'Description for received F002 with sedIdParent',
+          status: 'received',
+          sedType: 'F002',
+          sedId: 'f002received',
+          sedIdParent: 'f002receivedParent',
+          sistEndretDato: '2020-01-03',
+          svarsedType: 'F002',
+          svarsedDisplay: 'Description for F002',
+          svarsedId: 'f002receivedSvar',
+          sedHandlinger: ['F002', 'Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Description for sent F002 with X008',
+          status: 'sent',
+          sedType: 'F002',
+          sedId: 'f002sent',
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Ugyldiggjøre SED',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled',
+          sedIdParent: 'f002sent',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 2',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled2',
+          sedIdParent: 'x008cancelled',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 3',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled3',
+          sedIdParent: 'x008cancelled2',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Ugyldiggjøre SED 4',
+          sedType: 'X008',
+          status: 'new',
+          sedId: 'x008cancelled3´´',
+          sedIdParent: 'x008cancelled3',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Unntaksfeil',
+          sedType: 'X050',
+          status: 'new',
+          sedId: 'x050cancelled',
+          sedIdParent: 'f002sent',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Unntaksfeil 2',
+          sedType: 'X050',
+          status: 'new',
+          sedId: 'x050cancelled2',
+          sedIdParent: 'x050cancelled',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete'],
+          sistEndretDato: '2020-01-03'
+        },
+        {
+          sedTittel: 'Description for sent F002 without X008',
+          status: 'sent',
+          sedType: 'F002',
+          sedId: 'f002sent2',
+          sistEndretDato: '2020-01-04',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }, {
+          sedTittel: 'Description for active F002',
+          status: 'active',
+          sedType: 'F002',
+          sedId: 'f002active',
+          sistEndretDato: '2020-01-05',
+          sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
+        }
+      ]
+    },
+    {
       cdmVersjon: '4.2',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',

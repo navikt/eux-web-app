@@ -57,7 +57,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import {F002Sed, FSed, ReplySed} from 'declarations/sed'
+import {F002Sed, F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger, standardLogger } from 'metrics/loggers'
@@ -71,7 +71,9 @@ import {
   cleanReplySed,
   isF001Sed,
   isF002Sed,
-  isF003Sed, isF026Sed,
+  isF003Sed,
+  isF026Sed,
+  isF027Sed,
   isFSed,
   isH002Sed,
   isPreviewableSed,
@@ -84,8 +86,36 @@ import {JoarkBrowserItem} from "declarations/attachments";
 import VedtakForF003 from 'applications/SvarSed/VedtakForF003/VedtakForF003'
 import YtterligereInfo from "applications/SvarSed/YtterligereInfo/YtterligereInfo";
 import RettTilYtelserFSED from 'applications/SvarSed/RettTilYtelserFSED/RettTilYtelserFSED'
-import FamilieRelasjonF003 from "../../applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
-import EtterspurtInformasjon from "../../applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
+import FamilieRelasjonF003 from "applications/SvarSed/FamilieRelasjonF003/FamilieRelasjonF003";
+import EtterspurtInformasjon from "applications/SvarSed/EtterspurtInformasjon/EtterspurtInformasjon";
+import SvarPaaAnmodningOmInformasjon from "applications/SvarSed/SvarPaaAnmodningOmInformasjon/SvarPaaAnmodningOmInformasjon";
+import SvarPaaForespoerselOmAdopsjon from "applications/SvarSed/SvarPaaForespoerselOmAdopsjon/SvarPaaForespoerselOmAdopsjon";
+import SvarPaaAnmodningOmInntekt from "applications/SvarSed/SvarPaaAnmodningOmInntekt/SvarPaaAnmodningOmInntekt";
+import IdentifiseringAvDenAvdoede from "applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDenAvdoede";
+import IdentifiseringAvDeBeroerteBarna
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvDeBeroerteBarna";
+import IdentifiseringAvAnnenPerson
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/IdentifiseringAvAnnenPerson";
+import DenForeldreloesesBarnetsBosted
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/DenForeldreloesesBarnetsBosted";
+import RelasjonForeldreloeseBarnetOgAvdoede
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/RelasjonForeldreloeseBarnetOgAvdoede/RelasjonForeldreloeseBarnetOgAvdoede";
+import RelasjonAnnenPersonOgAvdoede
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/RelasjonAnnenPersonOgAvdoede/RelasjonAnnenPersonOgAvdoede";
+import BarnetFritekst from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/BarnetFritekst";
+import InntektForeldreloeseBarnet
+  from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/InntektForeldreloeseBarnet";
+import AnnenInformasjonOmBarnetFritekst
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/AnnenInformasjonOmBarnetFritekst";
+import ErBarnetAdoptert from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/ErBarnetAdoptert";
+import ForsoergesAvDetOffentlige
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/ForsoergesAvDetOffentlige";
+import InformasjonOmBarnehage
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/InformasjonOmBarnehage";
+import BarnetsSivilstand from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/BarnetsSivilstand";
+import DatoEndredeForhold
+  from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/DatoEndredeForhold";
+import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/SvarOmFremmoeteUtdanning";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -104,7 +134,7 @@ export interface SEDEditSelector {
   attachmentRemoved: JoarkBrowserItem | null | undefined
   textAreaDirty: boolean
   textFieldDirty: boolean
-  deselectedFormaal: string | undefined
+  deselectedMenu: string | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -124,7 +154,7 @@ const mapState = (state: State): SEDEditSelector => ({
   attachmentRemoved: state.svarsed.attachmentRemoved,
   textAreaDirty: state.ui.textAreaDirty,
   textFieldDirty: state.ui.textFieldDirty,
-  deselectedFormaal: state.svarsed.deselectedFormaal
+  deselectedMenu: state.svarsed.deselectedMenu
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -149,7 +179,7 @@ const SEDEdit = (): JSX.Element => {
     setVedleggSensitiv,
     textAreaDirty,
     textFieldDirty,
-    deselectedFormaal
+    deselectedMenu
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
@@ -359,6 +389,22 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
+        {isF027Sed(replySed) && (
+          <>
+            <MainForm
+              type='onelevel'
+              namespace='svarpaaanmodningominformasjon'
+              loggingNamespace='svarpaaanmodningominformasjonmanager'
+              forms={[
+                { label: t('el:option-mainform-svarpaaanmodningominformasjon'), value: 'svarpaaanmodningominformasjon', component: SvarPaaAnmodningOmInformasjon },
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        )}
         {showMainForm() && (
           <>
             <MainForm<ReplySed>
@@ -366,7 +412,7 @@ const SEDEdit = (): JSX.Element => {
               namespace='svarsed'
               loggingNamespace='personmanager'
               firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
-              deselectedMenuOption={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menuOption : undefined}
+              deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
               forms={[
                 { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
                 { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
@@ -413,7 +459,7 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='onelevel'
               namespace='formål2'
-              deselectedMenu={deselectedFormaal && formaalToMenuMap[deselectedFormaal] ? formaalToMenuMap[deselectedFormaal].menu : undefined}
+              deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
@@ -502,7 +548,58 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isH002Sed(replySed)) && (
+        {isF027Sed(replySed) &&
+          <>
+            <MainForm
+              type='menuitems'
+              menuDefaultClosed={true}
+              namespace='svarpaaanmodningominformasjon'
+              deselectedMenu={deselectedMenu}
+              menuItems={[
+                {key: "adopsjon", label:t('label:svar-på-anmodning-om-adopsjon') , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
+                {key: "inntekt", label:t('label:svar-på-anmodning-om-inntekt'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
+                {key: "ytelseTilForeldreloese", label:t('label:svar-på-anmodning-om-barnepensjon'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
+                {key: "annenInformasjonBarnet", label:t('label:svar-på-anmodning-om-annen-informasjon-om-barnet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
+                {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
+              ]}
+              forms={[
+                {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
+                {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'svarpaaanmodningominntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
+
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'den-foreldreloeses-barnets-aktivitet', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'aktivitet'}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'skole', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'skole'}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'opplaering', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'opplaering'}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'ufoerhet', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'ufoerhet'}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'arbeidsledighet', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'arbeidsledighet'}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'svarpaaanmodningomytelsertilforeldreloese', component: BarnetFritekst, type:['ytelseTilForeldreloese'], options: {fieldname: 'ytelser'}},
+
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'daglig-omsorg', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'dagligOmsorg'}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'foreldreansvar'}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-barnet-adoptert', component: ErBarnetAdoptert, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['annenInformasjonBarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['annenInformasjonBarnet']},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'svarpaaanmodningomanneninformasjonangaaendebarnet', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'ytterligereInformasjon'}},
+
+                {label: t('el:option-mainform-svaromfremmoeteutdanning'), value: 'svaromfremmoeteutdanning', component: SvarOmFremmoeteUtdanning, type: ['utdanning']},
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='svarpaaetterspurtinformasjonmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>

@@ -10,7 +10,9 @@ import {
   X011Sed,
   X012Sed,
   XSed,
-  Person
+  Person,
+  F026Sed,
+  F027Sed
 } from 'declarations/sed.d'
 import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -41,7 +43,7 @@ export interface SvarsedState {
   sedCreatedResponse: CreateSedResponse | null | undefined
   sedSendResponse: any | null | undefined
   sedStatus: {[k in string]: string | null}
-  deselectedFormaal: string | undefined
+  deselectedMenu: string | undefined
 }
 
 export const initialSvarsedState: SvarsedState = {
@@ -69,7 +71,7 @@ export const initialSvarsedState: SvarsedState = {
   sedCreatedResponse: undefined,
   sedSendResponse: undefined,
   sedStatus: {},
-  deselectedFormaal: undefined
+  deselectedMenu: undefined
 }
 
 const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
@@ -106,7 +108,7 @@ const trimPin = (bruker:Person):Person => {
   let brukerWithTrimmedPin = bruker
   if(bruker && bruker.personInfo && bruker.personInfo.pin) {
     let personInfo = bruker.personInfo
-    let trimmedPins = personInfo.pin.map((pin: any) => {
+    let trimmedPins = personInfo?.pin?.map((pin: any) => {
       return {
         ...pin,
         identifikator: pin.identifikator ? pin.identifikator.trim() : null
@@ -431,7 +433,7 @@ const svarsedReducer = (
     case types.SVARSED_FSED_CREATE: {
       const sedType = (action as ActionWithPayload).payload.sedType
       const sak = (action as ActionWithPayload).payload.sak
-      const replySed: F002Sed = createReplySedTemplate<any>(sak, sedType)
+      const replySed: F002Sed | F026Sed | F027Sed = createReplySedTemplate<F002Sed | F026Sed | F027Sed>(sak, sedType)
       return {
         ...state,
         replySed
@@ -795,11 +797,11 @@ const svarsedReducer = (
         }
       }
 
-    case types.SVARSED_DESELECTED_FORMAAL_SET:
-      const deselectedFormaal = (action as ActionWithPayload).payload
+    case types.SVARSED_DESELECTED_MENU_SET:
+      const deselectedMenu = (action as ActionWithPayload).payload
       return {
         ...state,
-        deselectedFormaal
+        deselectedMenu
       }
 
     default:

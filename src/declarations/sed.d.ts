@@ -1,6 +1,5 @@
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { Sak, Sed } from 'declarations/types'
-import Identifikator from "../applications/SvarSed/Identifikator/Identifikator";
 
 export type AapenPeriodeType = 'ukjent_sluttdato' | 'åpen_sluttdato'
 
@@ -17,7 +16,7 @@ export type Kjoenn = 'K' | 'M' | 'U'
 
 export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
-export type ReplySed = F001Sed | F002Sed | F003Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
+export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | U002Sed | U004Sed | U017Sed | H001Sed | H002Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
 export type SedTypes = 'F001' | 'F002' | 'F003' | 'U002' | 'U004' | 'U017' | 'H001' | 'H002' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
@@ -175,11 +174,11 @@ export interface Foedested {
 export interface PersonInfo {
   fornavn: string
   etternavn: string
-  kjoenn: Kjoenn
-  foedselsdato: string
-  statsborgerskap: Array<Statsborgerskap>
+  kjoenn?: Kjoenn
+  foedselsdato?: string
+  statsborgerskap?: Array<Statsborgerskap>
   adressebeskyttelse?: string
-  pin: Array<Pin>
+  pin?: Array<Pin>
   pinMangler?: {
     foedested: Foedested
     far: {
@@ -438,9 +437,12 @@ export interface PeriodeDagpenger extends PeriodePeriode {
   institusjon: Institusjon
 }
 
-export interface Inntekt {
+export interface Inntekt extends BaseInntekt{
   type: string
   typeAnnen?: string
+}
+
+export interface BaseInntekt {
   beloep: string
   valuta: string
 }
@@ -569,24 +571,33 @@ export interface F026Sed extends BaseReplySed {
   anmodningOmMerInformasjon?: AnmodningOmMerInformasjon
 }
 
+export interface F027Sed extends BaseReplySed {
+  bruker: PersonBruker
+  ytterligereInfo?: string
+  krav: {
+    kravMottattDato: string
+  }
+  erKravEllerSvarPaaKrav: string
+  anmodningOmMerInformasjon?: {
+    svar?: {
+      adopsjon?: SvarAdopsjon
+      inntekt?: SvarInntekt
+      ytelseTilForeldreloese?: SvarYtelseTilForeldreloese_V42 | SvarYtelseTilForeldreloese_V43
+      annenInformasjonBarnet?: AnnenInformasjonBarnet_V42 | AnnenInformasjonBarnet_V43
+      utdanning?: Utdanning
+      utdanningsinstitusjon?: UtdanningInstitusjon
+      deltakelsePaaUtdanning: Array<Periode>
+    }
+  }
+}
+
 export interface AnmodningOmMerInformasjon {
   adopsjon?: EtterspurtInformasjon
   inntekt?: EtterspurtInformasjon
   ytelseTilForeldreLoese?: EtterspurtInformasjon
   annenInformasjonOmBarnet?: EtterspurtInformasjon
-  utdanning?: {
-    timerPr?: 'dag' | 'uke' | 'maaned',
-    ytterligereInformasjon?: string
-    typeDeltakelse?: 'heltid' | 'deltid'
-    timer?: string
-    type?: UtdanningType
-  }
-  utdanningsinstitusjon?: {
-    adresse?: Adresse
-    ytterligereInformasjon?: string
-    navn?: string
-    identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
-  }
+  utdanning?: Utdanning
+  utdanningsinstitusjon?: UtdanningInstitusjon
 }
 
 export interface EtterspurtInformasjon {
@@ -596,10 +607,133 @@ export interface EtterspurtInformasjon {
   }
 }
 
+export interface Utdanning {
+  timerPr?: 'dag' | 'uke' | 'maaned',
+  ytterligereInformasjon?: string
+  typeDeltakelse?: 'heltid' | 'deltid'
+  timer?: string
+  type?: UtdanningType
+}
+
+export interface UtdanningInstitusjon {
+  adresse?: Adresse
+  ytterligereInformasjon?: string
+  navn?: string
+  identifikator?: Array<UtdanningsInstitusjonsIndentifikator>
+}
+
 export interface UtdanningsInstitusjonsIndentifikator {
   type?: string
   id?: string
 }
+
+export interface SvarAdopsjon {
+  dokumentasjonAdopsjonErLovlig?: string
+  adoptivforeldreOmsorgFradato?: string
+  bevillingRegistreringsdato?: string
+  ytterligereInformasjon?: string
+}
+
+export interface SvarInntekt {
+  periode?: Periode
+  aarlig?: BaseInntekt
+  annenkilde?: string
+  inntektskilde?: string
+  ytterligereInformasjon?: string
+}
+
+export interface SvarYtelseTilForeldreloese_V42 {
+  barnet?: {
+    skole?: string
+    ytelser?: string
+    aktivitet?: string
+    arbeidsledighet?: string
+    ufoerhet?: string
+    opplaering?: string
+    inntektfritekst?: string
+    relasjontilavdoedefritekst?: string
+    bostedfritekst?: string
+    identifiseringFritekst?: string
+  },
+  annenPerson?: {
+    relasjontilavdoedefritekst?: string
+    identifiseringFritekst?: string
+  }
+  avdoede?:{
+    identifiseringFritekst?: string
+  }
+}
+
+export interface SvarYtelseTilForeldreloese_V43 {
+  barnet?: {
+    personInfo?: PersonInfo
+    adresse?: Adresse
+    skole?: string
+    ytelser?: string
+    aktivitet?: string
+    arbeidsledighet?: string
+    ufoerhet?: string
+    opplaering?: string
+    inntekt?: BaseInntekt
+    relasjoner?: Array<RelasjonBarn>
+  },
+  annenPerson?: {
+    personInfo?: PersonInfo
+    relasjoner?: Array<RelasjonAnnenPerson>
+  },
+  avdoede?:{
+    personInfo?: PersonInfo
+  }
+}
+
+export interface AnnenInformasjonBarnet_V42 {
+  foreldreansvar?: string
+  informasjonombarnehagefritekst?: string
+  datoEndredeForhold?: string
+  dagligOmsorg?: string
+  eradoptertfritekst?: string
+  forsoergesavdetoffentligefritekst?: string
+  sivilstandfritekst?: string
+  ytterligereInformasjon?: string
+}
+
+export interface AnnenInformasjonBarnet_V43 {
+  foreldreansvar?: string
+  barnehage?: {
+    timer?: string
+    mottarOffentligStoette?: string
+    timerPr?: string
+    gaarIBarnehage?: string
+  },
+  datoEndredeForhold?: string
+  dagligOmsorg?: string
+  erAdoptert?: string
+  forsoergesAvDetOffentlige?: string
+  sivilstand?: string
+  ytterligereInformasjon?: string
+}
+
+export interface RelasjonBarn {
+  borISammeHusstandSomKravstiller?: string
+  periode?: Periode
+  typeRelasjon?: string
+  relasjonTilPerson?: string
+  borISammeHusstandSomEktefelle?: string
+  borPaaInstitusjon?: string
+  borISammeHusstandSomAnnenPerson?: string
+  fellesOmsorg?: string
+}
+
+export interface RelasjonAnnenPerson {
+  varKravstillerISammeHushold?: string
+  personnavn?: string
+  familierelasjonstype?: string
+  annenRelasjon?: string
+  periode?: Periode
+  relasjonsstartdato?: string
+  annenPerson?: string
+}
+
 
 export interface USed extends BaseReplySed {
   bruker: Person

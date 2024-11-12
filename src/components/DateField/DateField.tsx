@@ -123,7 +123,6 @@ const DateField = ({
       error={error || _error}
       label={(label ?? t('label:dato')) + (required ? ' *' : '')}
       placeholder={t('el:placeholder-date-default')}
-      required={required}
       onBlur={onDateBlur}
       onChange={onDateChange}
       value={_dato}
