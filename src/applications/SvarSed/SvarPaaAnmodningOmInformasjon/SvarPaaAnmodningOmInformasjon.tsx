@@ -20,6 +20,7 @@ import performValidation from "../../../utils/performValidation";
 import { validateKrav, ValidationKravProps } from "./validation";
 import {Box, Checkbox, VStack} from "@navikt/ds-react";
 import {setDeselectedMenu} from "../../../actions/svarsed";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 interface KravSelector {
   validation: Validation
@@ -129,26 +130,34 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
               <Checkbox
                 value="adopsjon"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("adopsjon", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}>
+                checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}
+              >
                 {t('label:svar-på-anmodning-om-adopsjon') }
+                <br/><ErrorLabel error={validation[parentNamespace + '-svarpaaforespoerselomadopsjon-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="inntekt"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("inntekt", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}>
+                checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}
+              >
                 {t('label:svar-på-anmodning-om-inntekt')}
+                <br/><ErrorLabel error={validation[parentNamespace + '-svarpaaanmodningominntekt-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="ytelseTilForeldreloese"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("ytelseTilForeldreloese", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.ytelseTilForeldreloese}>
+                checked={!!svarPaaAnmodningOmMerInformasjon?.ytelseTilForeldreloese}
+              >
                 {t('label:svar-på-anmodning-om-barnepensjon')}
+                <br/><ErrorLabel error={validation[parentNamespace + '-ytelsetilforeldreloese-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="annenInformasjonBarnet"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("annenInformasjonBarnet", e.target.checked)}
-                checked={!!svarPaaAnmodningOmMerInformasjon?.annenInformasjonBarnet}>
+                checked={!!svarPaaAnmodningOmMerInformasjon?.annenInformasjonBarnet}
+              >
                 {t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')}
+                <br/><ErrorLabel error={validation[parentNamespace + '-anneninformasjonbarnet-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="utdanning"

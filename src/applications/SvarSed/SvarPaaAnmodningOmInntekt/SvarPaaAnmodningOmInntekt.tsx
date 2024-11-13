@@ -13,6 +13,10 @@ import Input from "../../../components/Forms/Input";
 import DateField from "../../../components/DateField/DateField";
 import CountrySelect from "@navikt/landvelger";
 import {Currency} from "@navikt/land-verktoy";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {setValidation} from "../../../actions/validation";
+import {validateInntekt, ValidationInntektProps} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -31,12 +35,20 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
   const target = `anmodningOmMerInformasjon.svar.inntekt`
   const svarInntekt: SvarInntekt | undefined = _.get(replySed, target)
 
+  useUnmount(() => {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationInntektProps>(
+      clonedvalidation, namespace, validateInntekt, {
+        svarInntekt: svarInntekt,
+        label: label
+      }, true)
+
+    dispatch(setValidation(clonedvalidation))
+  })
+
   const setInntektProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-  //TODO: VALIDATION
-
 
   return (
     <Box padding="4">

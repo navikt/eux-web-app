@@ -22,7 +22,7 @@ const AnnenInformasjonOmBarnetFritekst: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-annenInformasjonBarnet-${options.fieldname}`
+  const namespace = `${parentNamespace}-anneninformasjonbarnet-${options.fieldname}`
   const target = `anmodningOmMerInformasjon.svar.annenInformasjonBarnet.${options.fieldname}`
   const fritekst: string =  _.get(replySed, target)
 

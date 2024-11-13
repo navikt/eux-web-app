@@ -10,6 +10,10 @@ import TextArea from "../../../components/Forms/TextArea";
 import {SvarAdopsjon} from "../../../declarations/sed";
 import DateField from "../../../components/DateField/DateField";
 import {useTranslation} from "react-i18next";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {setValidation} from "../../../actions/validation";
+import {validateAdopsjon, ValidationAdopsjonProps} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -28,12 +32,20 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
   const target = `anmodningOmMerInformasjon.svar.adopsjon`
   const svarAdopsjon: SvarAdopsjon | undefined = _.get(replySed, target)
 
+  useUnmount(() => {
+    const clonedvalidation = _.cloneDeep(validation)
+    performValidation<ValidationAdopsjonProps>(
+      clonedvalidation, namespace, validateAdopsjon, {
+        svarAdopsjon: svarAdopsjon,
+        label: label
+      }, true)
+
+    dispatch(setValidation(clonedvalidation))
+  })
+
   const setAdopsjonProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-  //TODO: VALIDATION
-
 
   return (
     <Box padding="4">

@@ -73,7 +73,7 @@ import {
   Adresse,
   Barnetilhoerighet,
   Epost,
-  F002Sed, F003Sed, F026Sed,
+  F002Sed, F003Sed, F026Sed, F027Sed,
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
@@ -94,7 +94,7 @@ import i18n from 'i18n'
 import _ from 'lodash'
 import performValidation from 'utils/performValidation'
 import {
-  isF001Sed, isF002Sed, isF003Sed, isF026Sed,
+  isF001Sed, isF002Sed, isF003Sed, isF026Sed, isF027Sed,
   isFSed,
   isH001Sed,
   isH002Sed,
@@ -108,23 +108,21 @@ import {
 } from 'utils/sed'
 import { checkLength } from 'utils/validation'
 import {getAllArbeidsPerioderHaveSluttDato, getNrOfArbeidsPerioder} from "../../utils/arbeidsperioder";
-import {
-  validateYtterligereInfo,
-  ValidationYtterligereInfoProps
-} from "../../applications/SvarSed/YtterligereInfo/validation";
+import {validateYtterligereInfo, ValidationYtterligereInfoProps} from "../../applications/SvarSed/YtterligereInfo/validation";
 import { validateVedtak as validateVedtakF003, ValidationVedtakProps as ValidationVedtakF003Props } from 'applications/SvarSed/VedtakForF003/validation'
+import {validateTrygdeOrdninger, ValidationTrygdeOrdningerProps} from "../../applications/SvarSed/RettTilYtelserFSED/validation";
+import {validateFamilierelasjon, ValidationFamilierelasjonProps} from "../../applications/SvarSed/FamilieRelasjonF003/validation";
+import {validateEtterspurtInformasjon, ValidationEtterspurtInformasjonProps} from "../../applications/SvarSed/EtterspurtInformasjon/validation";
+import {validateAdopsjon, ValidationAdopsjonProps} from "../../applications/SvarSed/SvarPaaForespoerselOmAdopsjon/validation";
+import {validateInntekt, ValidationInntektProps} from "../../applications/SvarSed/SvarPaaAnmodningOmInntekt/validation";
 import {
-  validateTrygdeOrdninger,
-  ValidationTrygdeOrdningerProps
-} from "../../applications/SvarSed/RettTilYtelserFSED/validation";
+  validateYtelseTilForeldreloese,
+  ValidationYtelseTilForeldreloeseProps
+} from "../../applications/SvarSed/SvarPaaAnmodningOmBarnepensjon/validation";
 import {
-  validateFamilierelasjon,
-  ValidationFamilierelasjonProps
-} from "../../applications/SvarSed/FamilieRelasjonF003/validation";
-import {
-  validateEtterspurtInformasjon,
-  ValidationEtterspurtInformasjonProps
-} from "../../applications/SvarSed/EtterspurtInformasjon/validation";
+  validateAnnenInformasjonBarnet,
+  ValidationAnnenInformasjonBarnetProps
+} from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -454,6 +452,36 @@ export const validateSEDEdit = (
     if((replySed as F026Sed).anmodningOmMerInformasjon){
       hasErrors.push(performValidation<ValidationEtterspurtInformasjonProps>(v, 'etterspurtinformasjon-etterspurtinformasjon', validateEtterspurtInformasjon, {
         anmodningOmMerInformasjon: (replySed as F026Sed).anmodningOmMerInformasjon!
+      }, true))
+    }
+  }
+
+  if(isF027Sed(replySed)){
+    if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon){
+      hasErrors.push(performValidation<ValidationAdopsjonProps>(v, 'svarpaaanmodningominformasjon-svarpaaforespoerselomadopsjon', validateAdopsjon, {
+        svarAdopsjon: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon,
+        label: i18n.t('label:svar-på-anmodning-om-adopsjon')
+      }, true))
+    }
+
+    if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt){
+      hasErrors.push(performValidation<ValidationInntektProps>(v, 'svarpaaanmodningominformasjon-svarpaaanmodningominntekt', validateInntekt, {
+        svarInntekt: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt,
+        label: i18n.t('label:svar-på-anmodning-om-inntekt')
+      }, true))
+    }
+
+    if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese){
+      hasErrors.push(performValidation<ValidationYtelseTilForeldreloeseProps>(v, 'svarpaaanmodningominformasjon-ytelsetilforeldreloese', validateYtelseTilForeldreloese, {
+        svarYtelseTilForeldreloese: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese,
+        label: i18n.t('label:svar-på-anmodning-om-barnepensjon')
+      }, true))
+    }
+
+    if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet){
+      hasErrors.push(performValidation<ValidationAnnenInformasjonBarnetProps>(v, 'svarpaaanmodningominformasjon-anneninformasjonbarnet', validateAnnenInformasjonBarnet, {
+        annenInformasjonBarnet: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet,
+        label: i18n.t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')
       }, true))
     }
   }

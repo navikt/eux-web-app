@@ -168,5 +168,7 @@
   "tooManyPeriodsMaxIs" : "For mange {{type}} perioder, maks er {{max}}",
 
   "uncheckedFnr": "Uverifisert fødselsnummer",
-  "unverifiedSaksnummer": "Uverifisert RINA saksnummer"
+  "unverifiedSaksnummer": "Uverifisert RINA saksnummer",
+
+  "du-maa-fylle-ut": "Du må fylle ut {{type}}"
 }

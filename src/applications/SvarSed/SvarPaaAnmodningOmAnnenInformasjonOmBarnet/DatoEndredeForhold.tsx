@@ -24,7 +24,7 @@ const DatoEndredeForhold: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-annenInformasjonBarnet-datoendredeforhold`
+  const namespace = `${parentNamespace}-anneninformasjonbarnet-datoendredeforhold`
   const target = `anmodningOmMerInformasjon.svar.annenInformasjonBarnet`
   const annenInformasjonBarnet: AnnenInformasjonBarnet_V43 | AnnenInformasjonBarnet_V42 | undefined = _.get(replySed, target)
 

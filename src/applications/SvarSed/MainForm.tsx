@@ -598,10 +598,9 @@ const MainForm = <T extends StorageTypes>({
 
   const renderMenuItems = (menuItem: MenuItem, forms: Array<Form>) => {
     const open: boolean = _.find(openMenus, _id => _id === menuItem.key) !== undefined
-    const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key))
+    const validationKeys = Object.keys(validation).filter(k => k.startsWith(namespace + '-' + menuItem.key.toLowerCase()))
     const isValidated = validationKeys.length > 0
     const validationHasErrors = isValidated && _.some(validationKeys, v => validation[v]?.feilmelding !== 'ok')
-
 
     const menuItemForms = forms
       .filter((f) => _.isFunction(f.condition) ? f.condition() : true)
