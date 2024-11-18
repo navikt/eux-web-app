@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import {checkIfDuplicate, checkIfFilledOut} from 'utils/validation'
+import {addError, checkIfDuplicate} from 'utils/validation'
 import {getIdx} from "../../../utils/namespace";
 import {validatePeriode as validatePeriodeInput} from "../../../components/Forms/validation";
 import {Periode, Utdanning as UtdanningDTO} from "../../../declarations/sed";
@@ -12,6 +12,7 @@ export interface ValidationPeriodeProps {
 
 export interface ValidationUtdanningProps {
   utdanning: UtdanningDTO | undefined
+  deltakelsePaaUtdanning: Array<Periode> | undefined
   label: string | undefined
 }
 
@@ -48,20 +49,22 @@ export const validateUtdanning = (
   namespace: string,
   {
     utdanning,
+    deltakelsePaaUtdanning,
     label
   }: ValidationUtdanningProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  //NEED TO CHECK THAT BOTH UTDANNING AND DELTAKELSEPAAUTDANNING IS EMPTY
-  hasErrors.push(checkIfFilledOut(v, {
-    needle: utdanning,
-    id: namespace + '-content',
-    message: 'validation:du-maa-fylle-ut',
-    extra: {
-      type: label?.toLowerCase()
-    }
-  }))
+  if(utdanning && deltakelsePaaUtdanning && Object.keys(utdanning).length < 1 && deltakelsePaaUtdanning.length < 1){
+    hasErrors.push(true)
+    addError(v, {
+      id: namespace + '-content',
+      message: 'validation:du-maa-fylle-ut',
+      extra: {
+        type: label?.toLowerCase()
+      }
+    })
+  }
 
   return hasErrors.find(value => value) !== undefined
 }

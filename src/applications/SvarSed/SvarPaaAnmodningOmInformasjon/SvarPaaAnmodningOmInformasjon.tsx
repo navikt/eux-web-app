@@ -164,6 +164,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning || !!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
                 {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
+                <br/><ErrorLabel error={validation[parentNamespace + '-svaromfremmoeteutdanning-content']?.feilmelding}/>
               </Checkbox>
           </Box>
         </VStack>

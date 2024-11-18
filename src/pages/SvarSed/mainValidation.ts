@@ -123,6 +123,10 @@ import {
   validateAnnenInformasjonBarnet,
   ValidationAnnenInformasjonBarnetProps
 } from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/validation";
+import {
+  validateUtdanning,
+  ValidationUtdanningProps
+} from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -484,6 +488,16 @@ export const validateSEDEdit = (
         label: i18n.t('label:svar-på-anmodning-om-annen-informasjon-om-barnet')
       }, true))
     }
+
+    if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning){
+      hasErrors.push(performValidation<ValidationUtdanningProps>(v, 'svarpaaanmodningominformasjon-svaromfremmoeteutdanning', validateUtdanning, {
+        utdanning: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning,
+        deltakelsePaaUtdanning: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning,
+        label: i18n.t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')
+      }, true))
+    }
+
+
   }
 
   if (!isH001Sed(replySed)) {
