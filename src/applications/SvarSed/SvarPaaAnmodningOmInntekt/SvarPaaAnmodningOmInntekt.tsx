@@ -48,6 +48,9 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
 
   const setInntektProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
+    if(property === "inntektskilde" && value !== "annet" && svarInntekt?.annenkilde){
+      dispatch(updateReplySed(`${target}.annenkilde`, undefined))
+    }
   }
 
   return (
@@ -68,7 +71,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
                 <Radio value='annet'>Annet</Radio>
             </RadioGroup>
             {svarInntekt?.inntektskilde === "annet" &&
-              <Input
+              <TextArea
                 error={validation[namespace + '-annenkilde']?.feilmelding}
                 id='annenkilde'
                 label={t('label:annet')}
