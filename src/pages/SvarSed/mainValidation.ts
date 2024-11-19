@@ -462,14 +462,14 @@ export const validateSEDEdit = (
 
   if(isF027Sed(replySed)){
     if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon){
-      hasErrors.push(performValidation<ValidationAdopsjonProps>(v, 'svarpaaanmodningominformasjon-svarpaaforespoerselomadopsjon', validateAdopsjon, {
+      hasErrors.push(performValidation<ValidationAdopsjonProps>(v, 'svarpaaanmodningominformasjon-adopsjon', validateAdopsjon, {
         svarAdopsjon: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon,
         label: i18n.t('label:svar-på-anmodning-om-adopsjon')
       }, true))
     }
 
     if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt){
-      hasErrors.push(performValidation<ValidationInntektProps>(v, 'svarpaaanmodningominformasjon-svarpaaanmodningominntekt', validateInntekt, {
+      hasErrors.push(performValidation<ValidationInntektProps>(v, 'svarpaaanmodningominformasjon-inntekt', validateInntekt, {
         svarInntekt: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt,
         label: i18n.t('label:svar-på-anmodning-om-inntekt')
       }, true))
@@ -490,7 +490,7 @@ export const validateSEDEdit = (
     }
 
     if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning){
-      hasErrors.push(performValidation<ValidationUtdanningProps>(v, 'svarpaaanmodningominformasjon-svaromfremmoeteutdanning', validateUtdanning, {
+      hasErrors.push(performValidation<ValidationUtdanningProps>(v, 'svarpaaanmodningominformasjon-utdanning', validateUtdanning, {
         utdanning: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning,
         deltakelsePaaUtdanning: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning,
         label: i18n.t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')

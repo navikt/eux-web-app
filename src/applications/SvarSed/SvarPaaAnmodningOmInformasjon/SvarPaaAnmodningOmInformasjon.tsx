@@ -133,7 +133,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 checked={!!svarPaaAnmodningOmMerInformasjon?.adopsjon}
               >
                 {t('label:svar-på-anmodning-om-adopsjon') }
-                <br/><ErrorLabel error={validation[parentNamespace + '-svarpaaforespoerselomadopsjon-content']?.feilmelding}/>
+                <br/><ErrorLabel error={validation[parentNamespace + '-adopsjon-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="inntekt"
@@ -141,7 +141,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 checked={!!svarPaaAnmodningOmMerInformasjon?.inntekt}
               >
                 {t('label:svar-på-anmodning-om-inntekt')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-svarpaaanmodningominntekt-content']?.feilmelding}/>
+                <br/><ErrorLabel error={validation[parentNamespace + '-inntekt-content']?.feilmelding}/>
               </Checkbox>
               <Checkbox
                 value="ytelseTilForeldreloese"
@@ -164,7 +164,7 @@ const SvarPaaAnmodningOmInformasjon: React.FC<MainFormProps> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSvarPaaAnmodning("utdanning", e.target.checked)}
                 checked={!!svarPaaAnmodningOmMerInformasjon?.utdanning || !!svarPaaAnmodningOmMerInformasjon?.deltakelsePaaUtdanning}>
                 {t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet')}
-                <br/><ErrorLabel error={validation[parentNamespace + '-svaromfremmoeteutdanning-content']?.feilmelding}/>
+                <br/><ErrorLabel error={validation[parentNamespace + '-utdanning-content']?.feilmelding}/>
               </Checkbox>
           </Box>
         </VStack>

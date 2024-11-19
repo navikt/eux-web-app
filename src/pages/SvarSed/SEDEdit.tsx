@@ -563,8 +563,8 @@ const SEDEdit = (): JSX.Element => {
                 {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
               ]}
               forms={[
-                {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'svarpaaforespoerselomadopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
-                {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'svarpaaanmodningominntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
+                {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'adopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
+                {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'inntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
 
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelseTilForeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
@@ -589,7 +589,7 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['annenInformasjonBarnet']},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'svarpaaanmodningomanneninformasjonangaaendebarnet', component: AnnenInformasjonOmBarnetFritekst, type:['annenInformasjonBarnet'], options: {fieldname: 'ytterligereInformasjon'}},
 
-                {label: t('el:option-mainform-svaromfremmoeteutdanning'), value: 'svaromfremmoeteutdanning', component: SvarOmFremmoeteUtdanning, type: ['utdanning']},
+                {label: t('el:option-mainform-svaromfremmoeteutdanning'), value: 'utdanning', component: SvarOmFremmoeteUtdanning, type: ['utdanning']},
               ]}
               replySed={replySed}
               updateReplySed={updateReplySed}

@@ -59,7 +59,7 @@ export const checkLength = (v: Validation, {
 }
 
 export const checkIfFilledOut = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
-  if (Object.keys(needle).length < 1) {
+  if (needle && Object.keys(needle).length < 1) {
     return addError(v, { id, personName, message, extra })
   }
   return false

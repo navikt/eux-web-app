@@ -37,7 +37,7 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-svaromfremmoeteutdanning`
+  const namespace = `${parentNamespace}-utdanning`
   const target = 'anmodningOmMerInformasjon.svar'
   const deltakelsePaaUtdanning: Array<Periode> = _.get(replySed, target + '.deltakelsePaaUtdanning')
   const getPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'

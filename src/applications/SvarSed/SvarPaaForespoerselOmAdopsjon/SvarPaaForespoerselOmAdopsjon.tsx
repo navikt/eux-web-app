@@ -28,7 +28,7 @@ const SvarPaaForespoerselOmAdopsjon: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-svarpaaforespoerselomadopsjon`
+  const namespace = `${parentNamespace}-adopsjon`
   const target = `anmodningOmMerInformasjon.svar.adopsjon`
   const svarAdopsjon: SvarAdopsjon | undefined = _.get(replySed, target)
 

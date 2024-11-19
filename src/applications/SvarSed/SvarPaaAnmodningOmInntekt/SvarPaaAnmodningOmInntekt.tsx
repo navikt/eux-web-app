@@ -31,7 +31,7 @@ const SvarPaaAnmodningOmInntekt: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-svarpaaanmodningominntekt`
+  const namespace = `${parentNamespace}-inntekt`
   const target = `anmodningOmMerInformasjon.svar.inntekt`
   const svarInntekt: SvarInntekt | undefined = _.get(replySed, target)
 
