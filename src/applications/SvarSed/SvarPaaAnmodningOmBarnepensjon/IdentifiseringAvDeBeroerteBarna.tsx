@@ -10,6 +10,13 @@ import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {setReplySed} from "../../../actions/svarsed";
 import PersonBasic from "../PersonBasic/PersonBasic";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {
+  validateIdentifiseringAvDeBeroerteBarna,
+  ValidationYtelseTilForeldreloeseProps
+} from "./validation";
+import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -25,25 +32,24 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavdeberoertebarna`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifisering-av-de-beroerte-barna`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.barnet`
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
 
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationYtelseTilForeldreloeseProps>(clonedValidation, namespace, validateIdentifiseringAvDeBeroerteBarna, {
+      svarYtelseTilForeldreloese,
+      CDM_VERSJON
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-
-  console.log(validation)
-  console.log(namespace)
-  console.log(svarYtelseTilForeldreloese)
-
-
-  //TODO: VALIDATION
-
 
   return (
     <Box padding="4">

@@ -3,7 +3,7 @@ import {
   fadeIn,
   fadeOut, PaddedHorizontallyDiv
 } from '@navikt/hoykontrast'
-import {Box, Panel} from '@navikt/ds-react'
+import {Box, HGrid, Panel} from '@navikt/ds-react'
 
 export const FadingLineSeparator = styled.div`
    border-left-width: 1px;
@@ -133,6 +133,10 @@ export const RepeatableBox = styled(Box)`
   &:hover:not(.new):not(.error) {
     background-color: var(--a-gray-100);
   }
+`
+
+export const TopAlignedGrid = styled(HGrid)`
+  align-items: start
 `
 
 export const RepRow = styled(PaddedHorizontallyDiv)`

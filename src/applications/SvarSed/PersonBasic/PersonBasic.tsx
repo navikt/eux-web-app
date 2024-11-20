@@ -9,7 +9,7 @@ import {PersonInfo} from 'declarations/sed.d'
 import _ from 'lodash'
 import {useTranslation} from 'react-i18next'
 import {useAppDispatch, useAppSelector} from 'store'
-import {HGrid} from "@navikt/ds-react";
+import {TopAlignedGrid} from "../../../components/StyledComponents";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -29,21 +29,33 @@ const PersonBasic: React.FC<MainFormProps> = ({
   const namespace: string = `${parentNamespace}-${personID}-personbasic`
 
   const setFornavn = (newFornavn: string) => {
-    dispatch(updateReplySed(`${target}.fornavn`, newFornavn.trim()))
+    if(newFornavn === ""){
+      dispatch(updateReplySed(`${target}.fornavn`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.fornavn`, newFornavn))
+    }
     if (validation[namespace + '-fornavn']) {
       dispatch(resetValidation(namespace + '-fornavn'))
     }
   }
 
   const setEtternavn = (newEtternavn: string) => {
-    dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
+    if(newEtternavn === ""){
+      dispatch(updateReplySed(`${target}.etternavn`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
+    }
     if (validation[namespace + '-etternavn']) {
       dispatch(resetValidation(namespace + '-etternavn'))
     }
   }
 
   const setFodselsdato = (dato: string) => {
-    dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
+    if(dato === ""){
+      dispatch(updateReplySed(`${target}.foedselsdato`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
+    }
     if (validation[namespace + '-foedselsdato']) {
       dispatch(resetValidation(namespace + '-foedselsdato'))
     }
@@ -51,7 +63,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <HGrid gap="4" columns={3}>
+      <TopAlignedGrid gap="4" columns={3}>
         <Input
           error={validation[namespace + '-fornavn']?.feilmelding}
           id='fornavn'
@@ -79,7 +91,7 @@ const PersonBasic: React.FC<MainFormProps> = ({
           required
           dateValue={person?.foedselsdato ?? ''}
         />
-      </HGrid>
+      </TopAlignedGrid>
     </>
   )
 }
