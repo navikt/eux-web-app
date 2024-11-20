@@ -55,32 +55,47 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const [gradering, setGradering] = useState<string | null>(null)
 
   const showFoedested = options && options.hasOwnProperty("showFoedested") ? options["showFoedested"] : true
+  const validateOnUnmount = options && options.hasOwnProperty("validateOnUnmount") ? options["validateOnUnmount"] : true
 
   useUnmount(() => {
-    const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationPersonopplysningerProps>(clonedValidation, namespace, validatePersonopplysninger, {
-      personInfo,
-      personName
-    }, true)
-    dispatch(setValidation(clonedValidation))
+    if(validateOnUnmount){
+      const clonedValidation = _.cloneDeep(validation)
+      performValidation<ValidationPersonopplysningerProps>(clonedValidation, namespace, validatePersonopplysninger, {
+        personInfo,
+        personName
+      }, true)
+      dispatch(setValidation(clonedValidation))
+    }
   })
 
   const setFornavn = (newFornavn: string) => {
-    dispatch(updateReplySed(`${target}.fornavn`, newFornavn))
+    if(newFornavn === ""){
+      dispatch(updateReplySed(`${target}.fornavn`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.fornavn`, newFornavn))
+    }
     if (validation[namespace + '-fornavn']) {
       dispatch(resetValidation(namespace + '-fornavn'))
     }
   }
 
   const setEtternavn = (newEtternavn: string) => {
-    dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
+    if(newEtternavn === ""){
+      dispatch(updateReplySed(`${target}.etternavn`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.etternavn`, newEtternavn.trim()))
+    }
     if (validation[namespace + '-etternavn']) {
       dispatch(resetValidation(namespace + '-etternavn'))
     }
   }
 
   const setFodselsdato = (dato: string) => {
-    dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
+    if(dato === ""){
+      dispatch(updateReplySed(`${target}.foedselsdato`, undefined))
+    } else {
+      dispatch(updateReplySed(`${target}.foedselsdato`, dato.trim()))
+    }
     if (validation[namespace + '-foedselsdato']) {
       dispatch(resetValidation(namespace + '-foedselsdato'))
     }

@@ -478,7 +478,8 @@ export const validateSEDEdit = (
     if((replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese){
       hasErrors.push(performValidation<ValidationYtelseTilForeldreloeseProps>(v, 'svarpaaanmodningominformasjon-ytelsetilforeldreloese', validateYtelseTilForeldreloese, {
         svarYtelseTilForeldreloese: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese,
-        label: i18n.t('label:svar-på-anmodning-om-barnepensjon')
+        label: i18n.t('label:svar-på-anmodning-om-barnepensjon'),
+        CDM_VERSJON: (replySed as F027Sed).sak?.cdmVersjon
       }, true))
     }
 

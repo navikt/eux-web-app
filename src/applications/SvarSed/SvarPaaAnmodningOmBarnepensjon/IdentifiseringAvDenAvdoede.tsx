@@ -2,7 +2,7 @@ import {VStack, Box, Heading} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "declarations/sed";
 import {TextAreaDiv} from "components/StyledComponents";
@@ -10,6 +10,13 @@ import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import PersonOpplysninger from "../PersonOpplysninger/PersonOpplysninger";
 import {setReplySed} from "../../../actions/svarsed";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {setValidation} from "../../../actions/validation";
+import {
+  validateIdentifiseringAvAvdoede,
+  ValidationYtelseTilForeldreloeseProps
+} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -25,25 +32,24 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifiseringavavdoede`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-identifisering-av-den-avdoede`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.avdoede`
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
 
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationYtelseTilForeldreloeseProps>(clonedValidation, namespace, validateIdentifiseringAvAvdoede, {
+      svarYtelseTilForeldreloese,
+      CDM_VERSJON
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-
-  console.log(validation)
-  console.log(namespace)
-  console.log(svarYtelseTilForeldreloese)
-
-
-  //TODO: VALIDATION
-
 
   return (
     <Box padding="4">
@@ -75,7 +81,7 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
               personID={target}
               parentNamespace={namespace}
               updateReplySed={updateReplySed}
-              options={{showFoedested: false}}
+              options={{showFoedested: false, validateOnUnmount:false}}
             />
           </Box>
         }
