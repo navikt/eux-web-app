@@ -2,7 +2,7 @@ import {VStack, Box, Heading} from '@navikt/ds-react'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useAppDispatch, useAppSelector} from 'store'
 import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "declarations/sed";
 import {TextAreaDiv} from "components/StyledComponents";
