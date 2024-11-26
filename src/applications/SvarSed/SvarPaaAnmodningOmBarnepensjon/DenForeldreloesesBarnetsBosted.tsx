@@ -8,8 +8,14 @@ import {Adresse, SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43}
 import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
-import {resetValidation} from "../../../actions/validation";
+import {resetValidation, setValidation} from "../../../actions/validation";
 import AdresseForm from "../Adresser/AdresseForm";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {
+  validateForeldreloesesBarnetsBosted,
+  ValidationYtelseTilForeldreloeseProps
+} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -25,12 +31,22 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-denforeldreloesesbarnetsbosted`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-den-foreldreloeses-barnets-bosted`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.barnet`
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
   const adresse: Adresse = _.get(replySed, `${target}.adresse`)
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationYtelseTilForeldreloeseProps>(clonedValidation, namespace, validateForeldreloesesBarnetsBosted, {
+      svarYtelseTilForeldreloese,
+      CDM_VERSJON
+    }, true)
+    console.log(clonedValidation)
+    dispatch(setValidation(clonedValidation))
+  })
 
 
   const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
@@ -43,15 +59,6 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
       dispatch(resetValidation(namespace + '-' + whatChanged))
     }
   }
-
-
-  console.log(validation)
-  console.log(namespace)
-  console.log(svarYtelseTilForeldreloese)
-
-
-  //TODO: VALIDATION
-
 
   return (
     <Box padding="4">

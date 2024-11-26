@@ -22,12 +22,13 @@ import AddRemovePanel from "../../../../components/AddRemovePanel/AddRemovePanel
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../../utils/validation";
 import useLocalValidation from "../../../../hooks/useLocalValidation";
-import {validateRelasjon, validateRelasjoner, ValidationRelasjonerProps, ValidationRelasjonProps} from "./validation";
+import {validateRelasjon, validateRelasjoner, ValidationRelasjonProps} from "./validation";
 import useUnmount from "../../../../hooks/useUnmount";
 import performValidation from "../../../../utils/performValidation";
 import {resetValidation, setValidation} from "../../../../actions/validation";
 import PeriodeInput from "../../../../components/Forms/PeriodeInput";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
+import {ValidationYtelseTilForeldreloeseProps} from "../validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -43,7 +44,7 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
   const {validation} = useAppSelector(mapState)
   const {t} = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-relasjonforeldreloesebarnetogavdoede`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.barnet`
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
@@ -58,9 +59,10 @@ const RelasjonForeldreloeseBarnetOgAvdoede: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationRelasjonerProps>(
+    performValidation<ValidationYtelseTilForeldreloeseProps>(
       clonedValidation, namespace, validateRelasjoner, {
-        relasjoner
+        svarYtelseTilForeldreloese,
+        CDM_VERSJON
       }, true
     )
     dispatch(setValidation(clonedValidation))

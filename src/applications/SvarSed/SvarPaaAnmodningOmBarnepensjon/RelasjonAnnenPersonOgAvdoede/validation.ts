@@ -1,8 +1,13 @@
 import { validatePeriode } from 'components/Forms/validation'
-import {RelasjonAnnenPerson} from 'declarations/sed'
+import {
+  RelasjonAnnenPerson,
+  SvarYtelseTilForeldreloese_V42,
+  SvarYtelseTilForeldreloese_V43
+} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import {checkIfDuplicate, checkIfNotEmpty, checkLength} from 'utils/validation'
+import {ValidationYtelseTilForeldreloeseProps} from "../validation";
 
 export interface ValidationRelasjonProps {
   relasjon: RelasjonAnnenPerson | undefined
@@ -54,16 +59,30 @@ export const validateRelasjoner = (
   validation: Validation,
   namespace: string,
   {
-    relasjoner
-  }: ValidationRelasjonerProps
+    svarYtelseTilForeldreloese,
+    CDM_VERSJON
+  }: ValidationYtelseTilForeldreloeseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  relasjoner?.forEach((relasjon: RelasjonAnnenPerson, index: number) => {
-    hasErrors.push(validateRelasjon(validation, namespace, {
-      relasjon,
-      relasjoner,
-      index
+
+  if(CDM_VERSJON === "4.3"){
+    const relasjoner = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.annenPerson?.relasjoner
+    relasjoner?.forEach((relasjon: RelasjonAnnenPerson, index: number) => {
+      hasErrors.push(validateRelasjon(validation, namespace, {
+        relasjon,
+        relasjoner,
+        index
+      }))
+    })
+  } else {
+    const relasjonTilAvdoedeFritekst = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.annenPerson?.relasjontilavdoedefritekst
+    hasErrors.push(checkLength(validation, {
+      needle: relasjonTilAvdoedeFritekst,
+      max: 500,
+      id: namespace + '-annen-person-relasjoner',
+      message: 'validation:textOverX'
     }))
-  })
+  }
+
   return hasErrors.find(value => value) !== undefined
 }

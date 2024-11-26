@@ -1,17 +1,14 @@
 import { validatePeriode } from 'components/Forms/validation'
-import {RelasjonBarn} from 'declarations/sed'
+import {RelasjonBarn, SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
-import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
+import {checkIfDuplicate, checkIfNotEmpty, checkLength} from 'utils/validation'
+import {ValidationYtelseTilForeldreloeseProps} from "../validation";
 
 export interface ValidationRelasjonProps {
   relasjon: RelasjonBarn | undefined
   relasjoner: Array<RelasjonBarn> | undefined
   index?: number
-}
-
-export interface ValidationRelasjonerProps {
-  relasjoner: Array<RelasjonBarn> | undefined
 }
 
 export const validateRelasjon = (
@@ -60,16 +57,30 @@ export const validateRelasjoner = (
   validation: Validation,
   namespace: string,
   {
-    relasjoner
-  }: ValidationRelasjonerProps
+    svarYtelseTilForeldreloese,
+    CDM_VERSJON
+  }: ValidationYtelseTilForeldreloeseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  relasjoner?.forEach((relasjon: RelasjonBarn, index: number) => {
-    hasErrors.push(validateRelasjon(validation, namespace, {
-      relasjon,
-      relasjoner,
-      index
+
+  if(CDM_VERSJON === "4.3"){
+    const relasjoner = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.relasjoner
+    relasjoner?.forEach((relasjon: RelasjonBarn, index: number) => {
+      hasErrors.push(validateRelasjon(validation, namespace, {
+        relasjon,
+        relasjoner,
+        index
+      }))
+    })
+  } else {
+    const relasjonTilAvdoedeFritekst = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.barnet?.relasjontilavdoedefritekst
+    hasErrors.push(checkLength(validation, {
+      needle: relasjonTilAvdoedeFritekst,
+      max: 500,
+      id: namespace + '-barnet-relasjoner',
+      message: 'validation:textOverX'
     }))
-  })
+  }
+
   return hasErrors.find(value => value) !== undefined
 }

@@ -61,10 +61,10 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <TextAreaDiv>
               <TextArea
-                error={validation[namespace + '-barnet-identifisering']?.feilmelding}
+                error={validation[namespace + '-annen-person-identifisering']?.feilmelding}
                 namespace={namespace}
                 id='barnet-identifisering'
-                label={t('label:identifisering-av-de-beroerte-barna')}
+                label={t('label:identifisering-av-annen-person')}
                 hideLabel={true}
                 onChanged={(v) => setYtelseTilForeldreloeseProperty('identifiseringFritekst', v)}
                 value={(svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V42)?.annenPerson?.identifiseringFritekst ?? ''}
