@@ -11,6 +11,13 @@ import {SvarYtelseTilForeldreloese_V42, SvarYtelseTilForeldreloese_V43} from "..
 import Input from "../../../components/Forms/Input";
 import CountrySelect from "@navikt/landvelger";
 import {Currency} from "@navikt/land-verktoy";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {
+  validateInntektForeldreloesesBarnet,
+  ValidationYtelseTilForeldreloeseProps
+} from "./validation";
+import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -26,11 +33,20 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ytelsetilforeldreloese-barnet-inntekt`
+  const namespace = `${parentNamespace}-ytelsetilforeldreloese-inntekt-til-den-foreldreloese-barnet`
   const target = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.barnet`
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
   const CDM_VERSJON = options.cdmVersjon
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationYtelseTilForeldreloeseProps>(clonedValidation, namespace, validateInntektForeldreloesesBarnet, {
+      svarYtelseTilForeldreloese,
+      CDM_VERSJON
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setYtelseTilForeldreloeseProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
@@ -61,8 +77,8 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <HGrid gap="4" columns={2}>
               <Input
-                error={validation[namespace + '-barnet-inntekt-beloep']?.feilmelding}
-                id='barnet-inntekt-beloep'
+                error={validation[namespace + '-beloep']?.feilmelding}
+                id='beloep'
                 label={t('label:beløp')}
                 namespace={namespace}
                 onChanged={(v) => setYtelseTilForeldreloeseProperty('inntekt.beloep', v)}
@@ -71,9 +87,9 @@ const InntektForeldreloeseBarnet: React.FC<MainFormProps> = ({
               <CountrySelect
                 closeMenuOnSelect
                 ariaLabel={t('label:valuta')}
-                data-testid={namespace + '-barnet-inntekt-valuta'}
-                error={validation[namespace + '-barnet-inntekt-valuta']?.feilmelding}
-                id={namespace + '-barnet-inntekt-valuta'}
+                data-testid={namespace + '-valuta'}
+                error={validation[namespace + '-valuta']?.feilmelding}
+                id={namespace + '-valuta'}
                 label={t('label:valuta')}
                 locale='nb'
                 menuPortalTarget={document.body}
