@@ -210,7 +210,6 @@ export const validateForeldreloesesBarnetsBosted = (
 
   if(CDM_VERSJON === "4.3"){
     const adresse = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.adresse
-    console.log(adresse)
     if(adresse && Object.values(adresse).every(el => (el !== undefined && el !== ""))){
       hasErrors.push(performValidation<ValidationAdresseProps>(v, namespace, validateAdresse, {
         adresse,

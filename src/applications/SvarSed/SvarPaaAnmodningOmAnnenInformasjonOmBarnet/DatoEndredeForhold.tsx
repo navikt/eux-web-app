@@ -10,6 +10,13 @@ import {
 } from "declarations/sed";
 import {useTranslation} from "react-i18next";
 import DateField from "../../../components/DateField/DateField";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {
+  validateDatoForEndredeForhold,
+  ValidationAnnenInformasjonBarnetProps
+} from "./validation";
+import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -24,16 +31,21 @@ const DatoEndredeForhold: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-anneninformasjonbarnet-datoendredeforhold`
+  const namespace = `${parentNamespace}-anneninformasjonbarnet-dato-for-endrede-forhold`
   const target = `anmodningOmMerInformasjon.svar.annenInformasjonBarnet`
   const annenInformasjonBarnet: AnnenInformasjonBarnet_V43 | AnnenInformasjonBarnet_V42 | undefined = _.get(replySed, target)
 
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationAnnenInformasjonBarnetProps>(clonedValidation, namespace, validateDatoForEndredeForhold, {
+      annenInformasjonBarnet
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setAnnenInformasjonBarnetProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-  //TODO: VALIDATION
 
   return (
     <Box padding="4">
@@ -45,7 +57,7 @@ const DatoEndredeForhold: React.FC<MainFormProps> = ({
           <DateField
             error={validation[namespace + '-dato-for-endrede-forhold']?.feilmelding}
             namespace={namespace}
-            id='dato-for-endrede-forhold'
+            id={namespace + '-dato-for-endrede-forhold'}
             label={t('label:dato-for-endrede-forhold')}
             hideLabel={true}
             onChanged={(v) => setAnnenInformasjonBarnetProperty('datoEndredeForhold', v)}

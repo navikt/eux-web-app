@@ -12,6 +12,10 @@ import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {Options} from "../../../declarations/app";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {validateBarnetsSivilstand, validateErAdoptert, ValidationAnnenInformasjonBarnetProps} from "./validation";
+import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -27,17 +31,23 @@ const BarnetsSivilstand: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-anneninformasjonbarnet-barnetssivilstand`
+  const namespace = `${parentNamespace}-anneninformasjonbarnet-barnets-sivilstand`
   const target = `anmodningOmMerInformasjon.svar.annenInformasjonBarnet`
   const CDM_VERSJON = options.cdmVersjon
   const annenInformasjonBarnet: AnnenInformasjonBarnet_V43 | AnnenInformasjonBarnet_V42 | undefined = _.get(replySed, target)
 
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationAnnenInformasjonBarnetProps>(clonedValidation, namespace, validateBarnetsSivilstand, {
+      annenInformasjonBarnet,
+      CDM_VERSJON
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setAnnenInformasjonBarnetProperty = (property: string, value: string) => {
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-  //TODO: VALIDATION
 
   const sivilstandOptions: Options = [
     { label: t('el:option-familierelasjon-gift'), value: 'gift' },

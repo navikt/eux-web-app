@@ -12,6 +12,13 @@ import {TextAreaDiv} from "components/StyledComponents";
 import TextArea from "components/Forms/TextArea";
 import {useTranslation} from "react-i18next";
 import {RadioPanel, RadioPanelGroup} from '@navikt/hoykontrast'
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {
+  validateInformasjonOmBarnehage,
+  ValidationAnnenInformasjonBarnetProps
+} from "./validation";
+import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -27,11 +34,19 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-anneninformasjonbarnet-informasjonombarnehage`
+  const namespace = `${parentNamespace}-anneninformasjonbarnet-informasjon-om-barnehage`
   const target = `anmodningOmMerInformasjon.svar.annenInformasjonBarnet`
   const CDM_VERSJON = options.cdmVersjon
   const annenInformasjonBarnet: AnnenInformasjonBarnet_V43 | AnnenInformasjonBarnet_V42 | undefined = _.get(replySed, target)
 
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationAnnenInformasjonBarnetProps>(clonedValidation, namespace, validateInformasjonOmBarnehage, {
+      annenInformasjonBarnet,
+      CDM_VERSJON
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const setAnnenInformasjonBarnetProperty = (property: string, value: string) => {
     if(property === 'barnehage.gaarIBarnehage' && value === 'nei'){
@@ -39,8 +54,6 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
     }
     dispatch(updateReplySed(`${target}.${property}`, value.trim()))
   }
-
-  //TODO: VALIDATION
 
   return (
     <Box padding="4">
@@ -52,9 +65,9 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <TextAreaDiv>
               <TextArea
-                error={validation[namespace + '-informasjon-om-barnehage-fritekst']?.feilmelding}
+                error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
                 namespace={namespace}
-                id='informasjon-om-barnehage-fritekst'
+                id='informasjon-om-barnehage'
                 label={t('label:informasjon-om-barnehage')}
                 hideLabel={true}
                 onChanged={(v) => setAnnenInformasjonBarnetProperty('informasjonombarnehagefritekst', v)}
@@ -69,9 +82,9 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
             <RadioPanelGroup
               legend={t('label:gaar-barnet-i-barnehage')}
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.barnehage?.gaarIBarnehage ?? ''}
-              error={validation[namespace + '-gaar-barnet-i-barnehage']?.feilmelding}
-              id='gaar-barnet-i-barnehage'
-              name={namespace + '-gaar-barnet-i-barnehage'}
+              error={validation[namespace + '-informasjon-om-barnehage']?.feilmelding}
+              id={namespace + '-informasjon-om-barnehage'}
+              name={namespace + '-informasjon-om-barnehage'}
               onChange={(e:string) => setAnnenInformasjonBarnetProperty('barnehage.gaarIBarnehage', e as JaNei)}
             >
               <HGrid gap="1" columns={2}>

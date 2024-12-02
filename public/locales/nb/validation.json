@@ -107,6 +107,7 @@
 
   "noMottakere": "Ingen mottakerere",
   "noMottakersNavn": "Ingen mottakers navn",
+  "noMottarOffentligStoette": "Mangler svar på om det mottas offentlig støtte",
   "noName": "Ingen navn",
   "noNationality": "Du har ikke valg statsborgerskap",
   "noNavn": "Ingen navn på person",
@@ -145,6 +146,8 @@
   "noTelephoneNumber": "Du må taste inn en telefonnummer",
   "noTelephoneType": "Du må velge en telefon type til",
   "noTema": "Du må velge et tema",
+  "noTimer": "Mangler timer",
+  "noTimerPr": "Mangler timer pr",
   "noType": "Du må velge en type",
   "noUnit": "Du må velge enhet",
   "noUtbetalingshyppighet": "Du må velge en utbetalingshyppighet",
