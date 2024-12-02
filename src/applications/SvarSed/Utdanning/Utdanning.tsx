@@ -24,7 +24,7 @@ const Utdanning: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-utdanning`
+  const namespace = `${parentNamespace}`
   const target = `${parentTarget}.utdanning`
   const utdanning: UtdanningDTO = _.get(replySed, target)
 
@@ -69,6 +69,8 @@ const Utdanning: React.FC<MainFormProps> = ({
         value={utdanning?.timerPr}
         legend="Timer pr"
         onChange={(v:string)=>setUtdanning("timerPr", v)}
+        error={validation[namespace + '-timer-pr']?.feilmelding}
+        id={namespace + '-timer-pr'}
       >
         <FlexRadioPanels>
           <RadioPanel value='dag'>Dag</RadioPanel>
@@ -79,7 +81,7 @@ const Utdanning: React.FC<MainFormProps> = ({
       <Input
         error={validation[namespace + '-timer']?.feilmelding}
         namespace={namespace}
-        id='timer'
+        id={namespace + '-timer'}
         label="Antall timer"
         onChanged={(v: string) => setUtdanning("timer", v)}
         value={utdanning?.timer}
@@ -88,7 +90,7 @@ const Utdanning: React.FC<MainFormProps> = ({
         maxLength={255}
         error={validation[namespace + '-ytterligereinformasjon']?.feilmelding}
         namespace={namespace}
-        id='utdanning-ytterligereinformasjon'
+        id='ytterligereinformasjon'
         label={t('label:ytterligere-informasjon')}
         onChanged={(v) => setUtdanning("ytterligereInformasjon", v)}
         value={utdanning?.ytterligereInformasjon ?? ''}

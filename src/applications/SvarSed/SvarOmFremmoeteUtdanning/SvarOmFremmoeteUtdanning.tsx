@@ -6,7 +6,7 @@ import Utdanning from "../Utdanning/Utdanning";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import _ from "lodash";
 import {PlusCircleIcon} from "@navikt/aksel-icons";
-import {Periode} from "../../../declarations/sed";
+import {Periode, Utdanning as UtdanningDTO} from "../../../declarations/sed";
 import {useTranslation} from "react-i18next";
 import {getIdx} from "../../../utils/namespace";
 import {RepeatableBox} from "../../../components/StyledComponents";
@@ -17,11 +17,12 @@ import {periodeSort} from "../../../utils/sort";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {resetValidation, setValidation} from "../../../actions/validation";
 import useLocalValidation from "../../../hooks/useLocalValidation";
-import {validatePeriode, ValidationPeriodeProps} from "./validation";
+import {validatePeriode, validateUtdanning, ValidationPeriodeProps, ValidationUtdanningProps} from "./validation";
 import {State} from "../../../declarations/reducers";
 import performValidation from "../../../utils/performValidation";
 import {Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
+import useUnmount from "../../../hooks/useUnmount";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -40,6 +41,8 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-utdanning`
   const target = 'anmodningOmMerInformasjon.svar'
   const deltakelsePaaUtdanning: Array<Periode> = _.get(replySed, target + '.deltakelsePaaUtdanning')
+  const utdanning: UtdanningDTO = _.get(replySed, target + '.utdanning')
+
   const getPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
 
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
@@ -49,6 +52,15 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
   const [_editPeriodeIndex, _setEditPeriodeIndex] = useState<number | undefined>(undefined)
 
   const [_validationPeriode, _resetValidationPeriode, _performValidationPeriode] = useLocalValidation<ValidationPeriodeProps>(validatePeriode, namespace + '-deltakelse-paa-utdanning')
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationUtdanningProps>(clonedValidation, namespace, validateUtdanning, {
+      utdanning,
+      deltakelsePaaUtdanning,
+    }, true)
+    dispatch(setValidation(clonedValidation))
+  })
 
   const addPeriode = () => {
     dispatch(resetValidation(namespace + '-deltakelse-paa-utdanning'))
@@ -81,8 +93,6 @@ const SvarOmFremmoeteUtdanning: React.FC<MainFormProps> = ({
       periode: _newPeriode,
       perioder: deltakelsePaaUtdanning
     })
-
-    console.log(_validationPeriode)
 
     if (!!_newPeriode && valid) {
       let newPerioder: Array<Periode> | undefined = _.cloneDeep(deltakelsePaaUtdanning)

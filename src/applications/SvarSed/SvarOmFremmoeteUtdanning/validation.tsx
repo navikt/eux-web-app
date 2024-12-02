@@ -1,5 +1,5 @@
 import { Validation } from 'declarations/types'
-import {addError, checkIfDuplicate} from 'utils/validation'
+import {addError, checkIfDuplicate, checkIfNotEmpty, checkLength} from 'utils/validation'
 import {getIdx} from "../../../utils/namespace";
 import {validatePeriode as validatePeriodeInput} from "../../../components/Forms/validation";
 import {Periode, Utdanning as UtdanningDTO} from "../../../declarations/sed";
@@ -11,9 +11,9 @@ export interface ValidationPeriodeProps {
 }
 
 export interface ValidationUtdanningProps {
-  utdanning: UtdanningDTO | undefined
-  deltakelsePaaUtdanning: Array<Periode> | undefined
-  label: string | undefined
+  utdanning?: UtdanningDTO | undefined
+  deltakelsePaaUtdanning?: Array<Periode> | undefined
+  label?: string | undefined
 }
 
 export const validatePeriode = (
@@ -65,6 +65,31 @@ export const validateUtdanning = (
       }
     })
   }
+
+  if(utdanning?.timerPr){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: utdanning?.timer,
+      id: namespace + '-timer',
+      message: 'validation:noTimer'
+    }))
+  }
+
+  if(utdanning?.timer){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: utdanning?.timerPr,
+      id: namespace + '-timer-pr',
+      message: 'validation:noTimerPr'
+    }))
+  }
+
+  hasErrors.push(checkLength(v, {
+    needle: utdanning?.ytterligereInformasjon,
+    max: 500,
+    id: namespace + '-ytterligereinformasjon',
+    message: 'validation:textOverX'
+  }))
+
+
 
   return hasErrors.find(value => value) !== undefined
 }
