@@ -14,7 +14,7 @@ import {useTranslation} from "react-i18next";
 import {Options} from "../../../declarations/app";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
-import {validateBarnetsSivilstand, validateErAdoptert, ValidationAnnenInformasjonBarnetProps} from "./validation";
+import {validateBarnetsSivilstand, ValidationAnnenInformasjonBarnetProps} from "./validation";
 import {setValidation} from "../../../actions/validation";
 
 const mapState = (state: State): MainFormSelector => ({
