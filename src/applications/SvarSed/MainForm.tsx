@@ -628,17 +628,17 @@ const MainForm = <T extends StorageTypes>({
               selected: focusedMenu === menuItem.key
             })}
           >
+            <div>
             {isValidated
               ? validationHasErrors
                 ? <XMarkOctagonFillIcon height={20} color='red' />
                 : <CheckmarkCircleFillIcon color='green' height={20} />
               : null}
-            <>
-              <HorizontalSeparatorDiv size='0.5' />
-              <MenuLabelText>
-                {menuItem.label}
-              </MenuLabelText>
-            </>
+            </div>
+            <HorizontalSeparatorDiv size='0.5' />
+            <MenuLabelText>
+              {menuItem.label}
+            </MenuLabelText>
           </NameLabelDiv>
           <MenuArrowDiv>
             {open ? <ChevronDownIcon /> : <ChevronRightIcon />}
