@@ -430,17 +430,18 @@ const MainForm = <T extends StorageTypes>({
             <NameLabelDiv
               className={classNames({ selected })}
             >
+              <div>
               {!isValidated
                 ? null
                 : validationHasErrors
                   ? <XMarkOctagonFillIcon height={20} color='red' />
-                  : <CheckmarkCircleFillIcon color='green' height={20} />}
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <MenuLabelText className={classNames({ selected })}>
-                  {form.label}
-                </MenuLabelText>
-              </>
+                  : <CheckmarkCircleFillIcon color='green' height={20} />
+              }
+              </div>
+              <HorizontalSeparatorDiv size='0.5' />
+              <MenuLabelText className={classNames({ selected })}>
+                {form.label}
+              </MenuLabelText>
             </NameLabelDiv>
             <MenuArrowDiv>
               <ChevronRightIcon />
