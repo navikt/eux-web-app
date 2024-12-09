@@ -364,7 +364,7 @@ const svarsedReducer = (
       saks = saks.map((s: Sak) => {
         let motpart: Array<string> = []
         s.motparter?.forEach((m:Motpart) => {
-          motpart.push(m.motpartNavn)
+          motpart.push(m.formatertNavn)
         })
         s.motpart = motpart
         return s
@@ -401,7 +401,7 @@ const svarsedReducer = (
       saks = saks.map((s: Sak) => {
         let motpart: Array<string> = []
         s.motparter?.forEach((m:Motpart) => {
-          motpart.push(m.motpartNavn)
+          motpart.push(m.formatertNavn)
         })
         s.motpart = motpart
         return s

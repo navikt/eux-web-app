@@ -28,13 +28,13 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         },
         {
           formatertNavn: "Test institusjon",
           motpartId: "RO:70005",
           motpartNavn: "Test institusjon",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       fagsak: {
@@ -224,13 +224,13 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         },
         {
           formatertNavn: "Test institusjon",
           motpartId: "RO:70005",
           motpartNavn: "Test institusjon",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       fagsak: {
@@ -418,7 +418,7 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       sakshandlinger: [
@@ -501,7 +501,7 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       sakshandlinger: [
@@ -626,7 +626,7 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       sakshandlinger: [
@@ -687,7 +687,7 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       "sakshandlinger": [
@@ -786,13 +786,13 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         },
         {
           formatertNavn: "Test institusjon",
           motpartId: "RO:70005",
           motpartNavn: "Test institusjon",
-          motpartLand: "RO"
+          motpartLandkode: "ROM"
         }
       ],
       fagsak: {

@@ -256,7 +256,7 @@ export interface Motpart {
   formatertNavn: string
   motpartId: string
   motpartNavn: string
-  motpartLand: string
+  motpartLandkode: string
 }
 
 export type Saks = Array<Sak>

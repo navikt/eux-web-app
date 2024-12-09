@@ -5,7 +5,6 @@ export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.locatio
 export const API_BASE_URL = '/api'
 export const V2_BASE_URL = '/v2'
 export const V3_BASE_URL = '/v3'
-export const V4_BASE_URL = '/v4'
 
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
@@ -14,7 +13,7 @@ export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso2'
 export const API_ALL_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V3_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
-export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V4_BASE_URL + '/rina/sak/%(rinaSakId)s/oversikt'
+export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = V2_BASE_URL + '/rina/sak'
 export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed'
