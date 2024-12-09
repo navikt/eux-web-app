@@ -133,8 +133,8 @@ const InformasjonOmBarnehage: React.FC<MainFormProps> = ({
                   >
                     <option value="" key="">{t('el:placeholder-select-default')}</option>
                     <option value="dag">Dag</option>
+                    <option value="uke">Uke</option>
                     <option value="maaned">Måned</option>
-                    <option value="aar">År</option>
                   </Select>
                   <TextField
                     id={namespace + '-timer'}
