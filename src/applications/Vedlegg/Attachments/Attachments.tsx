@@ -147,6 +147,9 @@ const Attachments: React.FC<AttachmentsProps> = ({
         label={t("label:vis-vedlegg-tabell-for")}
         onChange={fnrSelect}
       >
+        <option selected={_fnr === ""} value="">
+          {t('label:velg-en-person')}
+        </option>
         {FNRSelectOptions}
       </Select>
     )
