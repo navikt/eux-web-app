@@ -11,6 +11,7 @@ import {Attachment} from "../../../declarations/types";
 import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
 import {Barn, F001Sed, ReplySed} from "../../../declarations/sed";
 import {getFnr} from "../../../utils/fnr";
+import {isFSed} from "../../../utils/sed";
 
 export interface AttachmentsProps {
   replySed: ReplySed | null | undefined
@@ -184,15 +185,19 @@ const Attachments: React.FC<AttachmentsProps> = ({
               </BodyLong>
               <HStack gap="4">
                 <FNRSelectColumn/>
-                <span style={{display:'flex', alignItems:'center', paddingTop: '1.5rem'}}>evt.</span>
-                <TextField
-                  id='fnr'
-                  label={t('label:fnr')}
-                  hideLabel={false}
-                  onChange={(e) => setFnrField(e.target.value)}
-                  onBlur={(e) => setFnr(e.target.value)}
-                  value={_fnrField}
-                />
+                {isFSed(replySed) &&
+                  <>
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
+                    <TextField
+                      id='fnr'
+                      label={t('label:fnr')}
+                      hideLabel={false}
+                      onChange={(e) => setFnrField(e.target.value)}
+                      onBlur={(e) => setFnr(e.target.value)}
+                      value={_fnrField}
+                    />
+                  </>
+                }
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
@@ -221,15 +226,19 @@ const Attachments: React.FC<AttachmentsProps> = ({
               />
               <HStack gap="4">
                 <FNRSelectColumn/>
-                <span style={{display:'flex', alignItems:'center', paddingTop: '1.5rem'}}>evt.</span>
-                <TextField
-                  id='fnr'
-                  label={t('label:fnr')}
-                  hideLabel={false}
-                  onChange={(e) => setFnrField(e.target.value)}
-                  onBlur={(e) => setFnr(e.target.value)}
-                  value={_fnrField}
-                />
+                {isFSed(replySed) &&
+                  <>
+                    <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
+                    <TextField
+                    id='fnr'
+                    label={t('label:fnr')}
+                    hideLabel={false}
+                    onChange={(e) => setFnrField(e.target.value)}
+                    onBlur={(e) => setFnr(e.target.value)}
+                    value={_fnrField}
+                    />
+                  </>
+                }
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
