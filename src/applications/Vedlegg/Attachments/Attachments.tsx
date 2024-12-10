@@ -1,5 +1,4 @@
-import {BodyLong, Button, Heading, Panel, Select} from '@navikt/ds-react'
-import { VerticalSeparatorDiv, AlignStartRow, Column } from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HStack, Select, TextField, VStack} from '@navikt/ds-react'
 import { JoarkBrowser } from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttachmentModal'
 import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
@@ -45,6 +44,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
   const aFnr = getFnr(replySed, 'annenPerson')
 
   const [_fnr, setFnr] = useState<string | undefined>(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : undefined)
+  const [_fnrField, setFnrField] = useState<string | undefined>(undefined)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
     if (b.type === 'joark' && a.type === 'sed') return -1
@@ -143,44 +143,53 @@ const Attachments: React.FC<AttachmentsProps> = ({
     if(FNRSelectOptions.length === 0) return null
 
     return(
-      <Column flex="0.5">
-        <Select
-          label={t("label:vis-vedlegg-tabell-for")}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFnr(e.currentTarget.value)}
-        >
-          {FNRSelectOptions}
-        </Select>
-      </Column>
+      <Select
+        label={t("label:vis-vedlegg-tabell-for")}
+        onChange={fnrSelect}
+      >
+        {FNRSelectOptions}
+      </Select>
     )
   }
 
+  const fnrSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFnr(e.currentTarget.value);
+    setFnrField("")
+  }
+
   return (
-    <Panel border>
-      <Heading size='small'>
-        {t('label:vedlegg')}
-      </Heading>
-      <VerticalSeparatorDiv />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv />
-      <SEDAttachmentModal
-        open={_attachmentsTableVisible}
-        fnr={_fnr!}
-        onModalClose={() => setAttachmentsTableVisible(false)}
-        onFinishedSelection={onJoarkAttachmentsChanged}
-        sedAttachments={_items}
-        tableId='vedlegg-modal'
-      />
-      {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
-        ? (
-          <>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-attachments')}
-            </BodyLong>
-            <VerticalSeparatorDiv/>
-            <AlignStartRow>
-              <FNRSelectColumn/>
-              <Column>
+    <Box padding="4" borderWidth="1" background="bg-default">
+      <VStack gap="4">
+        <Heading size='small'>
+          {t('label:vedlegg')}
+        </Heading>
+        <HorizontalLineSeparator />
+        <SEDAttachmentModal
+          open={_attachmentsTableVisible}
+          fnr={_fnr!}
+          onModalClose={() => setAttachmentsTableVisible(false)}
+          onFinishedSelection={onJoarkAttachmentsChanged}
+          sedAttachments={_items}
+          tableId='vedlegg-modal'
+        />
+        {_.isEmpty(_items) && _.isEmpty(attachmentsFromRina)
+          ? (
+            <>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-attachments')}
+              </BodyLong>
+              <HStack gap="4">
+                <FNRSelectColumn/>
+                <span style={{display:'flex', alignItems:'center', paddingTop: '1.5rem'}}>evt.</span>
+                <TextField
+                  id='fnr'
+                  label={t('label:fnr')}
+                  hideLabel={false}
+                  onChange={(e) => setFnrField(e.target.value)}
+                  onBlur={(e) => setFnr(e.target.value)}
+                  value={_fnrField}
+                />
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
@@ -194,24 +203,30 @@ const Attachments: React.FC<AttachmentsProps> = ({
                     {t('label:vis-vedlegg-tabell')}
                   </Button>
                 </div>
-              </Column>
-            </AlignStartRow>
-          </>
-          )
-        : (
-          <>
-            <h4>Vedlegg som legges til etter lagring av SED</h4>
-            <JoarkBrowser
-              existingItems={_items}
-              fnr={_fnr}
-              mode='view'
-              tableId='vedlegg-view'
-              onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
-            />
-            <VerticalSeparatorDiv />
-            <AlignStartRow>
-              <FNRSelectColumn/>
-              <Column>
+              </HStack>
+            </>
+            )
+          : (
+            <>
+              <Heading size="xsmall">Vedlegg som legges til etter lagring av SED</Heading>
+              <JoarkBrowser
+                existingItems={_items}
+                fnr={_fnr}
+                mode='view'
+                tableId='vedlegg-view'
+                onUpdateAttachmentSensitivt={onUpdateAttachmentSensitivt}
+              />
+              <HStack gap="4">
+                <FNRSelectColumn/>
+                <span style={{display:'flex', alignItems:'center', paddingTop: '1.5rem'}}>evt.</span>
+                <TextField
+                  id='fnr'
+                  label={t('label:fnr')}
+                  hideLabel={false}
+                  onChange={(e) => setFnrField(e.target.value)}
+                  onBlur={(e) => setFnr(e.target.value)}
+                  value={_fnrField}
+                />
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
@@ -225,13 +240,13 @@ const Attachments: React.FC<AttachmentsProps> = ({
                     {t('label:vis-vedlegg-tabell')}
                   </Button>
                 </div>
-              </Column>
-            </AlignStartRow>
-            <h4>Vedlegg lagret i RINA</h4>
-            <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
-          </>
-          )}
-    </Panel>
+              </HStack>
+              <Heading size="xsmall">Vedlegg lagret i RINA</Heading>
+              <AttachmentsFromRinaTable sedId={sedId} rinaSakId={rinaSakId} attachmentsFromRina={attachmentsFromRina}/>
+            </>
+            )}
+      </VStack>
+    </Box>
   )
 }
 
