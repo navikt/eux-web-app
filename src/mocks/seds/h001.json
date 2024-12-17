@@ -9,12 +9,14 @@
       "foedselsdato": "æøå",
       "statsborgerskap": [
         {
-          "land": "NO"
+          "land": "NO",
+          "landkode": "NOR"
         }
       ],
       "pin": [
         {
           "land": "NO",
+          "landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "æøå",
@@ -27,7 +29,8 @@
         "foedested": {
           "by": "æøå",
           "region": "æøå",
-          "land": "NO"
+          "land": "NO",
+          "landkode": "NOR"
         },
         "far": {
           "fornavn": "æøå",
@@ -46,6 +49,7 @@
         "postnummer": "æøå",
         "by": "æøå",
         "land": "NO",
+        "landkode": "NOR",
         "bygning": "æøå",
         "region": "æøå"
       }

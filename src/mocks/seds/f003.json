@@ -20,6 +20,7 @@
       "pin": [
         {
           "land": "NO",
+"landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "0101200143456",
           "institusjonsid": "æøå",
@@ -51,6 +52,7 @@
         "postnummer": "0101",
         "by": "Oslo",
         "land": "NO",
+"landkode": "NOR",
         "bygning": "B",
         "region": "Oslo"
       }
@@ -92,6 +94,7 @@
       "pin": [
         {
           "land": "NO",
+"landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "æøå",
@@ -123,6 +126,7 @@
         "postnummer": "æøå",
         "by": "æøå",
         "land": "NO",
+"landkode": "NOR",
         "bygning": "æøå",
         "region": "æøå"
       }
@@ -154,6 +158,7 @@
       "pin": [
         {
           "land": "NO",
+"landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "æøå",
@@ -185,6 +190,7 @@
         "postnummer": "æøå",
         "by": "æøå",
         "land": "NO",
+"landkode": "NOR",
         "bygning": "æøå",
         "region": "æøå"
       }
@@ -224,6 +230,7 @@
         "pin": [
           {
             "land": "NO",
+"landkode": "NOR",
             "sektor": "yrkesskade_og_yrkessykdom",
             "identifikator": "æøå",
             "institusjonsid": "æøå",
@@ -255,6 +262,7 @@
           "postnummer": "æøå",
           "by": "æøå",
           "land": "NO",
+"landkode": "NOR",
           "bygning": "æøå",
           "region": "æøå"
         }

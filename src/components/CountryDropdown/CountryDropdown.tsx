@@ -39,9 +39,9 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
   let includeList = countryCodeListName && countryCodes && version ? countryCodes[version as keyof CountryCodes][countryCodeListName as keyof CountryCodeLists] : rest.includeList
 
   if(countryCodeListName && excludeNorway){
-    includeList = includeList?.filter((country: SimpleCountry) => country.landkode !== 'NO')
+    includeList = includeList?.filter((country: SimpleCountry) => country.landkode !== 'NOR')
   } else {!countryCodeListName && excludeNorway} {
-    includeList = includeList?.filter((it: string) => it !== 'NO')
+    includeList = includeList?.filter((it: string) => it !== 'NOR')
   }
 
   return(
@@ -50,6 +50,7 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
       menuPortalTarget={document.body}
       data-testid={dataTestId}
       includeList={includeList}
+      useAlpha3Value={true}
     />
   )
 

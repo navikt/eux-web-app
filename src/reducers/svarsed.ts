@@ -83,6 +83,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     ...(sak.fnr && sak.fnr !== "" &&
       {pin: [{
         land: 'NO',
+        landkode: 'NOR',
         identifikator: sak.fnr
       }]})
   }
@@ -234,6 +235,7 @@ const svarsedReducer = (
           ...((action as ActionWithPayload).payload.sedType.startsWith('X') && {
             pin: [{
               land: 'NO',
+              landkode: 'NOR',
               identifikator: (action as ActionWithPayload).context.sak.fnr
             }]})
         },

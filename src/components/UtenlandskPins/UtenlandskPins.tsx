@@ -52,7 +52,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
 }: UtenlandskPinProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const getId = (p: Pin | null): string => p ? p.land + '-' + p.identifikator : 'new'
+  const getId = (p: Pin | null): string => p ? p.landkode + '-' + p.identifikator : 'new'
 
   const [_newPin, _setNewPin] = useState<Pin | undefined>(undefined)
   const [_editPin, _setEditPin] = useState<Pin | undefined>(undefined)
@@ -81,14 +81,14 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     if (index < 0) {
       _setNewPin({
         ..._newPin,
-        land: newLand.trim()
+        landkode: newLand.trim()
       })
       _resetValidation(namespace + '-land')
       return
     }
     _setEditPin({
       ..._editPin,
-      land: newLand.trim()
+      landkode: newLand.trim()
     })
     dispatch(resetValidation(namespace + getIdx(index) + '-land'))
   }
@@ -187,8 +187,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   hideLabel={index >= 0}
                   label={t('label:land')}
                   menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => setUtenlandskeLand(e.value, index)}
-                  values={_pin?.land}
+                  onOptionSelected={(e: Country) => setUtenlandskeLand(e.value3, index)}
+                  values={_pin?.landkode}
                 />
                 )
               : (
@@ -196,8 +196,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   error={_validation[_namespace + '-land']?.feilmelding}
                   id={_namespace + '-land'}
                 >
-                  {_pin?.land
-                    ? <FlagPanel land={_pin?.land}/>
+                  {_pin?.landkode
+                    ? <FlagPanel land={_pin?.landkode}/>
                     : (
                       <FlexCenterDiv/>
                       )

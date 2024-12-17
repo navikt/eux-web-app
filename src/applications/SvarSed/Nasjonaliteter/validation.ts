@@ -29,7 +29,7 @@ export const validateNasjonalitet = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: statsborgerskap?.land,
+    needle: statsborgerskap?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:noBirthCountry',
     personName
@@ -38,7 +38,7 @@ export const validateNasjonalitet = (
   hasErrors.push(checkIfDuplicate(v, {
     needle: statsborgerskap,
     haystack: statsborgerskaper,
-    matchFn: (s: Statsborgerskap) => s.land === statsborgerskap?.land,
+    matchFn: (s: Statsborgerskap) => s.landkode === statsborgerskap?.landkode,
     id: namespace + idx + '-land',
     index,
     message: 'validation:duplicateBirthCountry',

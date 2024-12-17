@@ -9,12 +9,14 @@
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
         {
-          "land": "NO"
+          "land": "NO",
+          "landkode": "NOR"
         }
       ],
       "pin": [
         {
           "land": "NO",
+          "landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "ES:3100",
@@ -25,7 +27,8 @@
         "foedested": {
           "by": "æøå",
           "region": "æøå",
-          "land": "NO"
+          "land": "NO",
+          "landkode": "NOR"
         },
         "far": {
           "fornavn": "æøå",
@@ -49,7 +52,8 @@
       "saksnummer": "æøå",
       "institusjonsnavn": "æøå",
       "institusjonsid": "ES:3100",
-      "land": "NO"
+      "land": "NO",
+      "landkode": "NOR"
     }
   ],
   "loennsopplysninger": [

@@ -24,11 +24,11 @@ const FlagPanel: React.FC<FlagPanelProps> = ({
 }: FlagPanelProps): JSX.Element => {
   const { countryCodeMap } = useAppSelector(mapState)
   const countryData = CountryData.getCountryInstance('nb')
-  const country = countryData.findByValue(land)
+  const country = countryData.findByValue3(land)
 
   return(
     <FlexCenterDiv id={id}>
-      {land && <Flag size='S' country={country ? land : "XU"} />}
+      {land && <Flag size='S' country={country ? country.value : "XU"} />}
       <HorizontalSeparatorDiv />
       {country ? country.label : countryCodeMap && land ? countryCodeMap[land as keyof typeof countryCodeMap] : land}
     </FlexCenterDiv>

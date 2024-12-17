@@ -60,7 +60,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   const emptyFoedsted: boolean = (
     _.isEmpty(foedested?.by?.trim()) &&
     _.isEmpty(foedested?.region?.trim()) &&
-    _.isEmpty(foedested?.land?.trim())
+    _.isEmpty(foedested?.landkode?.trim())
   )
 
   const setBy = (by: string, index: number) => {
@@ -95,14 +95,14 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     if (index < 0) {
       _setNewFoedested({
         ..._newFoedested,
-        land: land.trim()
+        landkode: land.trim()
       })
       _resetValidation(namespace + '-land')
       return
     }
     _setEditFoedested({
       ..._editFoedested,
-      land: land.trim()
+      landkode: land.trim()
     })
     dispatch(resetValidation(namespace + '-land'))
   }
@@ -216,13 +216,13 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   id={namespace + '-land'}
                   label={t('label:land')}
                   hideLabel={index >= 0}
-                  onOptionSelected={(e: Country) => setLand(e.value, index)}
-                  values={_foedested?.land}
+                  onOptionSelected={(e: Country) => setLand(e.value3, index)}
+                  values={_foedested?.landkode}
                   countryCodeListName="verdensLandHistorisk"
                 />
                 )
               :
-                <FlagPanel land={_foedested?.land} id={namespace + '-land'}/>
+                <FlagPanel land={_foedested?.landkode} id={namespace + '-land'}/>
             }
           </Column>
         </Row>

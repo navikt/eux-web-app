@@ -15,7 +15,8 @@ export default {
       gate: 'TORGVEIEN 11',
       postnummer: '8470',
       by: 'BØ I VESTERÅLEN',
-      land: 'NO'
+      land: 'NO',
+      landkode: 'NOR'
     }
   ],
   utenlandskePin: [

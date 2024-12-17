@@ -129,7 +129,7 @@ describe('applications/SvarSed/Kontoopplysning/validation', () => {
           kontonummer: '123',
           swift: 'ABCDEFGH',
           adresse: {
-            land: 'NO', region: 'region', by: 'by', bygning: 'bygning', postnummer: '123', gate: 'gate', type: 'bosted'
+            land: 'NO', landkode: 'NOR', region: 'region', by: 'by', bygning: 'bygning', postnummer: '123', gate: 'gate', type: 'bosted'
           }
         }
       },

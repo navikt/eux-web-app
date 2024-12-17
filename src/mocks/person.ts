@@ -6,8 +6,8 @@ export default {
   kjoenn: 'K',
   adressebeskyttelse: 'STRENGT_FORTROLIG',
   statsborgerskap: [
-    {"land": "NO"},
-    {"land": "SE"},
+    {"land": "NO", "landkode": "NOR"},
+    {"land": "SE", "landkode": "SWE"},
   ],
   relasjoner: [
     {

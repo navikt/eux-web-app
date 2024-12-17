@@ -46,7 +46,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
       {oneLine && ', \u00A0'}
       <BodyLong>
         {adresse?.region ? adresse?.region + ', ' : ''}
-        {countryData.findByValue(adresse?.land)?.label ?? adresse?.land}
+        {countryData.findByValue3(adresse?.landkode)?.label ?? adresse?.landkode}
       </BodyLong>
     </TransparentPanel>
   )

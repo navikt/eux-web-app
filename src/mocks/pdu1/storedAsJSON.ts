@@ -12,7 +12,8 @@ export default {
       gate: 'Bøveien 111',
       postnr: '8475',
       poststed: 'STRAUMSJØEN',
-      land: 'SE'
+      land: 'SE',
+      landkode: 'SWE'
     }
   },
   nav: {
@@ -27,7 +28,8 @@ export default {
       gate: 'Postboks 6600 Etterstad',
       postnr: '0607',
       poststed: 'Oslo',
-      land: 'NO'
+      land: 'NO',
+      landkode: 'NOR'
     }
   },
   saksreferanse: '140274852',

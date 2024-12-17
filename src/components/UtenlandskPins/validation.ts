@@ -44,21 +44,21 @@ export const validateUtenlandskPin = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: pin?.land,
+    needle: pin?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:noLand',
     personName
   }))
 
   hasErrors.push(checkIfValidLand(v, {
-    needle: pin?.land,
+    needle: pin?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:invalidLand'
   }))
 
 /*
   hasErrors.push(checkIfNotGB(v, {
-    needle: pin?.land,
+    needle: pin?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:invalidLand',
     personName
@@ -66,9 +66,9 @@ export const validateUtenlandskPin = (
 */
 
   hasErrors.push(checkIfDuplicate(v, {
-    needle: pin?.land,
+    needle: pin?.landkode,
     haystack: utenlandskePins,
-    matchFn: (_pin: Pin) => _pin.land === pin?.land,
+    matchFn: (_pin: Pin) => _pin.landkode === pin?.landkode,
     index,
     id: namespace + idx + '-land',
     message: 'validation:duplicateLand',

@@ -494,7 +494,7 @@ const MainForm = <T extends StorageTypes>({
               <HorizontalSeparatorDiv size='0.5' />
               {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
                 <LandSpan>
-                  {' (' + (personInfo?.statsborgerskap?.map(s => s.land)?.join(', ') ?? '-') + ')'}
+                  {' (' + (personInfo?.statsborgerskap?.map(s => s.landkode)?.join(', ') ?? '-') + ')'}
                 </LandSpan>
               )}
             </>

@@ -59,7 +59,7 @@ export const validatePersonLight = (
     personName
   }))
 
-  const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
+  const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.landkode === 'NOR')
 
   if (!_.isEmpty(norwegianPin?.identifikator)) {
     const result = validateFnrDnrNpid(norwegianPin!.identifikator!)

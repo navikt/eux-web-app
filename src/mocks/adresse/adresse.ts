@@ -4,33 +4,38 @@ export default [{
   postnummer: '1211',
   by: 'Lillestrøm',
   region: 'region',
-  land: 'NO'
+  land: 'NO',
+  landkode: 'NOR'
 }, {
   type: 'bosted',
   gate: 'Bosted Gatenavn etasje postboksnr',
   postnummer: '1212',
   by: 'Oslo',
   region: 'region',
-  land: 'NO'
+  land: 'NO',
+  landkode: 'NOR'
 }, {
   type: 'opphold',
   gate: 'Opphold gatenavn etasje postboksnr',
   postnummer: '1213',
   by: 'Bergen',
   region: 'region',
-  land: 'NO'
+  land: 'NO',
+  landkode: 'NOR'
 }, {
   type: 'kontakt',
   gate: 'Kontakt Gatenavn etasje postboksnr',
   postnummer: '1214',
   by: 'Stavanger',
   region: 'region',
-  land: 'NO'
+  land: 'NO',
+  landkode: 'NOR'
 }, {
   type: 'annet',
   gate: 'Annet gatenavn etasje postboksnr',
   postnummer: '1215',
   by: 'Trømso',
   region: 'region',
-  land: 'NO'
+  land: 'NO',
+  landkode: 'NOR'
 }]

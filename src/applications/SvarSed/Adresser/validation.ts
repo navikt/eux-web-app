@@ -39,7 +39,7 @@ export const validateAdresse = (
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.land,
+    needle: adresse?.landkode,
     id: namespace + idx + '-land',
     message: 'validation:noAddressCountry',
     personName
