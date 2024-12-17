@@ -98,6 +98,7 @@ export interface Adresse {
   bygning?: string
   gate?: string
   land?: string
+  landkode?: string
   postnummer?: string
   region?: string
   type?: AdresseType
@@ -155,6 +156,7 @@ export interface FamilieRelasjon extends PeriodePeriode {
 
 export interface Pin {
   land ?: string
+  landkode?: string
   sektor ?: string
   identifikator ?: string
   institusjonsid ?: string
@@ -162,13 +164,15 @@ export interface Pin {
 }
 
 export interface Statsborgerskap {
-  land: string,
+  land?: string
+  landkode?: string
 }
 
 export interface Foedested {
   by?: string
   region?: string
   land?: string
+  landkode?: string
 }
 
 export interface PersonInfo {
@@ -476,6 +480,7 @@ export interface LokaleSakId {
   institusjonsnavn: string
   institusjonsid: string
   land: string
+  landkode?: string
 }
 
 export interface InntektOgTime {

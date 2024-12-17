@@ -90,7 +90,7 @@ const Person: React.FC<MainFormProps> = ({
   }
 
   const onUtenlandskPinChange = (newUtenlandskPins: Array<Pin>) => {
-    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.land + ' ' + pin.identifikator)))
+    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.landkode + ' ' + pin.identifikator)))
     dispatch(resetValidation(namespace + '-utenlandskePin'))
   }
 
@@ -221,7 +221,7 @@ const Person: React.FC<MainFormProps> = ({
         pins={pdu1Person?.utenlandskePin?.map((pin: string) => {
           const els = pin.split(/\s+/)
           return {
-            land: els[0],
+            landkode: els[0],
             identifikator: els[1]
           } as Pin
         })}

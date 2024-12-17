@@ -55,7 +55,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-nasjonaliteter`
   const target = `${personID}.personInfo.statsborgerskap`
   const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, target)
-  const getId = (s: Statsborgerskap | null): string => s ? s.land : 'new'
+  const getId = (s: Statsborgerskap | null): string => s && s.landkode ? s.landkode : 'new'
 
   const [_newStatsborgerskap, _setNewStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
   const [_editStatsborgerskap, _setEditStatsborgerskap] = useState<Statsborgerskap | undefined>(undefined)
@@ -79,14 +79,14 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     if (index < 0) {
       _setNewStatsborgerskap({
         ..._newStatsborgerskap,
-        land: land.trim()
+        landkode: land.trim()
       })
       _resetValidation(namespace + '-land')
       return
     }
     _setEditStatsborgerskap({
       ..._editStatsborgerskap,
-      land: land.trim()
+      landkode: land.trim()
     })
     if (validation[namespace + getIdx(index) + '-land']) {
       dispatch(resetValidation(namespace + getIdx(index) + '-land'))
@@ -185,9 +185,9 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   flagWave
                   id={_namespace + '-land'}
                   countryCodeListName="statsborgerskap"
-                  onOptionSelected={(e: Country) => setLand(e.value, index)}
+                  onOptionSelected={(e: Country) => setLand(e.value3, index)}
                   required
-                  values={_statsborgerskap?.land}
+                  values={_statsborgerskap?.landkode}
                 />
                 )
               : (
@@ -195,7 +195,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   error={_v[_namespace + '-land']?.feilmelding}
                   id={_namespace + '-land'}
                 >
-                  <FlagPanel land={_statsborgerskap?.land}/>
+                  <FlagPanel land={_statsborgerskap?.landkode}/>
                 </FormText>
                 )}
           </Column>

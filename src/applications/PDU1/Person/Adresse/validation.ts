@@ -39,19 +39,19 @@ export const validateAdresse = (
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: adresse?.land,
+    needle: adresse?.landkode,
     id: namespace + '-land',
     message: 'validation:noAddressCountry'
   }))
 
   if (adresse?.land && adresse?.land?.length > 0) {
     hasErrors.push(checkIfValidLand(v, {
-      needle: adresse?.land,
+      needle: adresse?.landkode,
       id: namespace + '-land',
       message: 'validation:invalidLand'
     }))
     hasErrors.push(checkIfNotGB(v, {
-      needle: adresse?.land,
+      needle: adresse?.landkode,
       id: namespace + '-land',
       message: 'validation:invalidLand'
     }))
