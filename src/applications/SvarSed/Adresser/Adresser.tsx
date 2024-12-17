@@ -55,7 +55,7 @@ const Adresser: React.FC<MainFormProps> = ({
 
   const checkAdresseType: boolean = !isFSed(replySed)
   const fnr = getFnr(replySed, personID)
-  const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.land ?? '') : 'new'
+  const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.landkode ?? '') : 'new'
 
   const [_newAdresse, _setNewAdresse] = useState<Adresse | undefined>(undefined)
   const [_editAdresse, _setEditAdresse] = useState<Adresse | undefined>(undefined)

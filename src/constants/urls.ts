@@ -10,7 +10,7 @@ export const V3_BASE_URL = '/v3'
 
 // RINA
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
-export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso2'
+export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
 export const API_ALL_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/oversikt'
@@ -22,7 +22,7 @@ export const API_SED_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(s
 export const API_SED_UPDATE_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s'
 export const API_SED_SEND_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/send'
 export const API_SED_STATUS_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/status'
-export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
+export const API_RINASAK_SVARSED_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s/svarsed/%(sedType)s'
 export const API_PREVIEW_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/utkast/pdf'
 export const API_PDF_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/sed/%(sedId)s/pdf'
 export const API_SAK_DELETE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s'

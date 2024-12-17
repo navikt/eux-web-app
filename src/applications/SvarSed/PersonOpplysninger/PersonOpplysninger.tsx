@@ -49,8 +49,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
   const personInfo: PersonInfo | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personopplysninger`
 
-  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
-  const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
+  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.landkode === 'NOR')
+  const utenlandskPins: Array<Pin> = _.filter(personInfo?.pin, p => p.landkode !== 'NOR')
 
   const [gradering, setGradering] = useState<string | null>(null)
 
@@ -118,18 +118,18 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
 
     if (searchedPerson.fnr) {
-      const index = _.findIndex(newPersonInfo?.pin, p => p.land === 'NO')
+      const index = _.findIndex(newPersonInfo?.pin, p => p.landkode === 'NOR')
       if (index >= 0) {
         newPersonInfo!.pin![index].identifikator = searchedPerson.fnr
       } else if (newPersonInfo!.pin){
         newPersonInfo!.pin.push({
           identifikator: searchedPerson.fnr,
-          land: 'NO'
+          landkode: 'NOR'
         })
       } else {
         newPersonInfo!.pin = [{
           identifikator: searchedPerson.fnr,
-          land: 'NO'
+          landkode: 'NOR'
         }]
       }
     }
@@ -164,7 +164,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (_.isNil(pins)) {
       pins = []
     }
-    const norwegianPin: Pin | undefined = _.find(personInfo!.pin, p => p.land === 'NO')
+    const norwegianPin: Pin | undefined = _.find(personInfo!.pin, p => p.landkode === 'NOR')
     if (!_.isEmpty(norwegianPin)) {
       pins.unshift(norwegianPin!)
     }
@@ -181,13 +181,13 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (_.isNil(pins)) {
       pins = []
     }
-    const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
+    const norwegianPinIndex = _.findIndex(pins, p => p.landkode === 'NOR')
     if (norwegianPinIndex >= 0) {
       pins[norwegianPinIndex].identifikator = newPin!.trim()
     } else {
       pins.push({
         identifikator: newPin!.trim(),
-        land: 'NO'
+        landkode: 'NOR'
       })
     }
     dispatch(updateReplySed(`${target}.pin`, pins))

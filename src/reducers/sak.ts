@@ -136,7 +136,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_FILLOUTINFO_SUCCESS: {
       const fillOutInfoPayload: FillOutInfoPayload = (action as ActionWithPayload).payload
       const template = (action as ActionWithPayload).context.template
-      const norwegianPin = fillOutInfoPayload.bruker.personInfo.pin?.filter((p) => (p.land === 'NO'))
+      const norwegianPin = fillOutInfoPayload.bruker.personInfo.pin?.filter((p) => (p.landkode === 'NOR'))
       return {
         ...state,
         filloutinfo: {

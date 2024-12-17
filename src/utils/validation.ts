@@ -166,7 +166,7 @@ export const checkIfValidLand = (v: Validation, {
   message,
   extra
 }: any): boolean => {
-  if (!_.isEmpty(needle) && needle?.trim()?.length !== 2) {
+  if (!_.isEmpty(needle) && needle?.trim()?.length !== 3) {
     return addError(v, { id, personName, message, extra })
   }
   return false
@@ -179,7 +179,7 @@ export const checkIfNotGB = (v: Validation, {
   message,
   extra
 }: any): boolean => {
-  if (!_.isEmpty(needle) && needle?.trim()?.toLowerCase() === 'gb') {
+  if (!_.isEmpty(needle) && needle?.trim()?.toLowerCase() === 'gbr') {
     return addError(v, { id, personName, message, extra })
   }
   return false
