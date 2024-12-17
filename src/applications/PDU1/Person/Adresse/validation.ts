@@ -44,7 +44,7 @@ export const validateAdresse = (
     message: 'validation:noAddressCountry'
   }))
 
-  if (adresse?.land && adresse?.land?.length > 0) {
+  if (adresse?.landkode && adresse?.landkode?.length > 0) {
     hasErrors.push(checkIfValidLand(v, {
       needle: adresse?.landkode,
       id: namespace + '-land',

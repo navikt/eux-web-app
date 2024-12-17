@@ -20,7 +20,7 @@ export const validateFoedested = (
 
   if(!_.isEmpty(foedested)){
     hasErrors.push(checkIfNotEmpty(v, {
-      needle: foedested?.land,
+      needle: foedested?.landkode,
       id: namespace + '-land',
       message: 'validation:noLand',
       personName
