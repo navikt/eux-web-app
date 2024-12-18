@@ -11,8 +11,7 @@ import {
   PaddedHorizontallyDiv, PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CountryData, { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -38,6 +37,7 @@ import {
 } from './validation'
 import Modal from "../../../../components/Modal/Modal";
 import {setStatsborgerskapModalShown} from "../../../../actions/pdu1";
+import CountryDropdown from "../../../../components/CountryDropdown/CountryDropdown";
 
 export interface StatsborgerskapSelector {
   statsborgerskapModalShown: boolean
@@ -198,23 +198,22 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
-                  ariaLabel={t('label:statsborgerskap')}
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-statsborgerskap'}
-                  error={_v[_namespace + '-statsborgerskap']?.feilmelding}
-                  flagWave
-                  key={_namespace + '-statsborgerskap' + _statsborgerskap}
-                  id={_namespace + '-statsborgerskap'}
-                  label={t('label:land')}
-                  hideLabel={false}
-                  includeList={CountryFilter.STANDARD({ useUK: false })}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value3, index)}
-                  required
-                  values={_statsborgerskap}
-                  useAlpha3Value={true}
-                />
+                  <CountryDropdown
+                    ariaLabel={t('label:statsborgerskap')}
+                    closeMenuOnSelect
+                    data-testid={_namespace + '-statsborgerskap'}
+                    error={_v[_namespace + '-statsborgerskap']?.feilmelding}
+                    flagWave
+                    key={_namespace + '-statsborgerskap' + _statsborgerskap}
+                    id={_namespace + '-statsborgerskap'}
+                    label={t('label:land')}
+                    hideLabel={false}
+                    countryCodeListName="verdensLand"
+                    menuPortalTarget={document.body}
+                    onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value3, index)}
+                    required
+                    values={_statsborgerskap}
+                  />
                 )
               : (
                   <FormText
