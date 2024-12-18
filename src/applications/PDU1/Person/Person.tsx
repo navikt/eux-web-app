@@ -90,7 +90,7 @@ const Person: React.FC<MainFormProps> = ({
   }
 
   const onUtenlandskPinChange = (newUtenlandskPins: Array<Pin>) => {
-    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins.map((pin: Pin) => pin.landkode + ' ' + pin.identifikator)))
+    dispatch(updateReplySed(`${target}.utenlandskePin`, newUtenlandskPins))
     dispatch(resetValidation(namespace + '-utenlandskePin'))
   }
 
@@ -218,13 +218,7 @@ const Person: React.FC<MainFormProps> = ({
       <UtenlandskPins
         limit={1}
         loggingNamespace='pdu1.editor.person'
-        pins={pdu1Person?.utenlandskePin?.map((pin: string) => {
-          const els = pin.split(/\s+/)
-          return {
-            landkode: els[0],
-            identifikator: els[1]
-          } as Pin
-        })}
+        pins={pdu1Person?.utenlandskePin}
         onPinsChanged={onUtenlandskPinChange}
         namespace={namespace + '-utenlandskePin'}
         validation={validation}

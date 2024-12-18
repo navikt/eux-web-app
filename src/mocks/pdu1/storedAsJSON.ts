@@ -7,7 +7,7 @@ export default {
     fornavn: 'ABSURD',
     etternavn: 'VEGGPRYD',
     foedselsdato: '31.10.1981',
-    statsborgerskap: ['SE'],
+    statsborgerskap: ['SWE'],
     adresse: {
       gate: 'Bøveien 111',
       postnr: '8475',

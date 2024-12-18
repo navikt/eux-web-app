@@ -9,6 +9,11 @@ export interface PDPeriode extends Periode {
   info: string
 }
 
+export interface Pin {
+  landkode?: string
+  identifikator ?: string
+}
+
 export interface Pdu1Person {
   fnr: string
   adressebeskyttelse?: string
@@ -19,7 +24,7 @@ export interface Pdu1Person {
   statsborgerskap: Array<string>
   etternavnVedFoedsel: string
   adresse: Adresse
-  utenlandskePin: Array<string>
+  utenlandskePin: Array<Pin>
 }
 
 export interface NavInfo {

@@ -63,8 +63,16 @@ export const API_JOARK_GET_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpost
 export const API_JOARK_ATTACHMENT_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
 // PD U1
-export const PDU1_GET_URL = API_BASE_URL + '/dokument/%(journalpostId)s/%(dokumentId)s/%(variant)s' // GET
-export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/pdf/journalpost' // POST
-export const PDU1_INFO_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET
+//export const PDU1_INFO_URL = API_BASE_URL + '/person/%(fnr)s/info/pdu1' // GET (1)
+export const PDU1_INFO_URL = API_BASE_URL + '/person/%(fnr)s/pdu1/innhold' // GET (1)
+
+//export const PDU1_PREVIEW_URL = V2_BASE_URL + '/pdu1/pdf/utkast' // POST (2)
+export const PDU1_PREVIEW_URL = API_BASE_URL + '/pdu1/pdf/utkast' // POST (2)
+
+//export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/pdf/journalpost' // POST (3)
+export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/journalpost' // POST (3)
+
+//export const PDU1_GET_URL = API_BASE_URL + '/dokument/%(journalpostId)s/%(dokumentId)s/%(variant)s' // GET (4)
+export const PDU1_GET_URL = API_BASE_URL + '/pdu1/journalpost/%(journalpostId)s/dokumentInfoId/%(dokumentId)s/json' // GET (4)
+
 export const PDU1_SEARCH_URL = API_BASE_URL + '/person/%(fnr)s/dokumenter?dokumenttype=DAG_EOS_U1' // GET
-export const PDU1_PREVIEW_URL = V2_BASE_URL + '/pdu1/pdf/utkast' // POST
