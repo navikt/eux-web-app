@@ -80,7 +80,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
     etternavn: sak.etternavn,
     kjoenn: sak.kjoenn as Kjoenn,
     foedselsdato: sak.foedselsdato,
-    ...(sak.fnr && sak.fnr !== "" &&
+    ...(!sedType.startsWith('X') && sak.fnr && sak.fnr !== "" &&
       {pin: [{
         land: 'NO',
         landkode: 'NOR',
