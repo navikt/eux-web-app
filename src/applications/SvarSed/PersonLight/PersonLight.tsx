@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePersonLight, ValidationPersonLightProps } from './validation'
+import {isXSed} from "../../../utils/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -145,13 +146,15 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           {label}
         </Heading>
       </PaddedDiv>
-      <NorskPin
-        norwegianPin={norwegianPin}
-        error={validation[namespace + '-norskpin']?.feilmelding}
-        namespace={namespace}
-        onNorwegianPinSave={saveNorwegianPin}
-        onFillOutPerson={fillOutPerson}
-      />
+      {!isXSed(replySed) &&
+        <NorskPin
+          norwegianPin={norwegianPin}
+          error={validation[namespace + '-norskpin']?.feilmelding}
+          namespace={namespace}
+          onNorwegianPinSave={saveNorwegianPin}
+          onFillOutPerson={fillOutPerson}
+        />
+      }
       <VerticalSeparatorDiv />
       {gradering &&
         <PaddedDiv>
