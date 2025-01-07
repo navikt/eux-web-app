@@ -839,6 +839,7 @@ export interface BesvarelseUmulig extends Purring {
 export interface X010Sed extends XSed {
   besvarelseKommer: Array<BesvarelseKommer>
   besvarelseUmulig: Array<BesvarelseUmulig>
+  besvarSedId: string
 }
 
 export interface KlargjoerInfoItem {
@@ -849,4 +850,5 @@ export interface KlargjoerInfoItem {
 }
 export interface X012Sed extends XSed {
   klargjoerInfo: Array<KlargjoerInfoItem>
+  avklarInnholdISedId: string
 }

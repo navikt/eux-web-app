@@ -470,8 +470,9 @@ const svarsedReducer = (
     }
 
     case types.SVARSED_SED_REMIND: {
-      const { sak } = action.payload
+      const { connectedSed, sak } = action.payload
       const replySed: X010Sed = createReplySedTemplate<X010Sed>(sak, 'X010')
+      replySed.besvarSedId = connectedSed.sedId
       return {
         ...state,
         replySed
@@ -489,8 +490,9 @@ const svarsedReducer = (
     }
 
     case types.SVARSED_SED_CLARIFY: {
-      const { sak } = action.payload
+      const { connectedSed, sak } = action.payload
       const replySed: X012Sed = createReplySedTemplate<X012Sed>(sak, 'X012')
+      replySed.avklarInnholdISedId = connectedSed.sedId
       return {
         ...state,
         replySed
