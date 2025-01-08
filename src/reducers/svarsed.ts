@@ -12,7 +12,7 @@ import {
   XSed,
   Person,
   F026Sed,
-  F027Sed
+  F027Sed, F001Sed
 } from 'declarations/sed.d'
 import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -429,10 +429,42 @@ const svarsedReducer = (
     case types.SVARSED_FSED_CREATE: {
       const sedType = (action as ActionWithPayload).payload.sedType
       const sak = (action as ActionWithPayload).payload.sak
-      const replySed: F002Sed | F026Sed | F027Sed = createReplySedTemplate<F002Sed | F026Sed | F027Sed>(sak, sedType)
+      const replySed: F026Sed | F027Sed = createReplySedTemplate<F026Sed | F027Sed>(sak, sedType)
       return {
         ...state,
         replySed
+      }
+    }
+
+    case types.SVARSED_F002SED_CREATE_REQUEST: {
+      return {
+        ...state,
+        replySed: undefined
+      }
+    }
+
+    case types.SVARSED_F002SED_CREATE_FAILURE: {
+      return {
+        ...state,
+        replySed: null
+      }
+    }
+
+    case types.SVARSED_F002SED_CREATE_SUCCESS: {
+      const F001SED: F001Sed = (action as ActionWithPayload).payload
+      const sedType = (action as ActionWithPayload).context.sedType
+      const sak = (action as ActionWithPayload).context.sak
+      let replySed: F002Sed = createReplySedTemplate<F002Sed>(sak, sedType)
+      replySed = {
+        ...replySed,
+        ...(F001SED.bruker && {bruker: F001SED.bruker}),
+        ...(F001SED.ektefelle && {ektefelle: F001SED.ektefelle}),
+        ...(F001SED.annenPerson && {annenPerson: F001SED.annenPerson}),
+        ...(F001SED.barn && {barn: F001SED.barn}),
+      }
+      return {
+        ...state,
+        replySed,
       }
     }
 

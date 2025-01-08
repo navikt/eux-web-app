@@ -211,6 +211,25 @@ export const createFSed = (
   payload: { sedType, sak }
 })
 
+export const createF002Sed = (
+  connectedSed: Sed,
+  sedType: string,
+  sak: Sak
+): ActionWithPayload<ReplySed> => {
+  return call({
+    url: sprintf(urls.API_SED_EDIT_URL, { rinaSakId: sak.sakId, sedId: connectedSed.sedId }),
+    expectedPayload: mockReplySed(connectedSed.sedType ?? 'F001'),
+    context: {
+      sak,
+      sedType
+    },
+    type: {
+      request: types.SVARSED_F002SED_CREATE_REQUEST,
+      success: types.SVARSED_F002SED_CREATE_SUCCESS,
+      failure: types.SVARSED_F002SED_CREATE_FAILURE
+    }
+  })
+}
 
 
 export const querySaks = (
