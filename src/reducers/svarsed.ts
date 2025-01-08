@@ -461,6 +461,7 @@ const svarsedReducer = (
       const { connectedSed, sak } = action.payload
       const replySed: X008Sed = createReplySedTemplate<X008Sed>(sak, 'X008')
       replySed.kansellerSedId = connectedSed.sedId
+      replySed.kansellerSedtype  = connectedSed.sedType
       replySed.utstedelsesdato = moment(connectedSed.sistEndretDato).format('YYYY-MM-DD')
 
       return {
