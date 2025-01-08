@@ -232,12 +232,6 @@ const svarsedReducer = (
         ...payload,
         bruker: {
           ...bruker,
-          ...((action as ActionWithPayload).payload.sedType.startsWith('X') && {
-            pin: [{
-              land: 'NO',
-              landkode: 'NOR',
-              identifikator: (action as ActionWithPayload).context.sak.fnr
-            }]})
         },
         sak: (action as ActionWithPayload).context.sak,
         sed: (action as ActionWithPayload).context.sed
