@@ -810,6 +810,7 @@ export interface X008Sed extends XSed {
   begrunnelseType: string
   begrunnelseAnnen?: string
   kansellerSedId: string
+  kansellerSedtype: string
 }
 
 export interface X011Sed extends XSed {
