@@ -810,11 +810,11 @@ export interface X008Sed extends XSed {
   begrunnelseType: string
   begrunnelseAnnen?: string
   kansellerSedId: string
-  kansellerSedtype: string
+  kansellerSedtype?: string
 }
 
 export interface X011Sed extends XSed {
-  avvisSedId: string
+  avvisSedId?: string
   begrunnelseType: string
   begrunnelseAnnen?: string
 }
@@ -840,7 +840,7 @@ export interface BesvarelseUmulig extends Purring {
 export interface X010Sed extends XSed {
   besvarelseKommer: Array<BesvarelseKommer>
   besvarelseUmulig: Array<BesvarelseUmulig>
-  besvarSedId: string
+  besvarSedId?: string
 }
 
 export interface KlargjoerInfoItem {
@@ -851,5 +851,5 @@ export interface KlargjoerInfoItem {
 }
 export interface X012Sed extends XSed {
   klargjoerInfo: Array<KlargjoerInfoItem>
-  avklarInnholdISedId: string
+  avklarInnholdISedId?: string
 }

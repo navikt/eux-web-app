@@ -17,12 +17,14 @@ export const validateAvvis = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
+/*
   hasErrors.push(checkIfNotEmpty(v, {
     needle: (replySed as X011Sed).avvisSedId,
     id: namespace + '-kansellerSedId',
     message: 'validation:noId',
     personName
   }))
+*/
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: replySed.begrunnelseType,
