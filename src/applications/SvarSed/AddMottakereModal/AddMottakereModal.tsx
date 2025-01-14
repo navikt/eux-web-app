@@ -18,11 +18,11 @@ import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Institusjon, Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {setInstitusjonerByLandkode} from "actions/sak";
+import {setInstitusjonerAndLandkoderByBucType, setInstitusjonerByLandkode} from "actions/sak";
 
 const MinimalModalDiv = styled.div`
   min-height: 250px;
@@ -70,7 +70,8 @@ const mapState = (state: State): AddDeltakereModalSelector => ({
 const AddMottakereModal = ({
   rinaSakId,
   sakshandlinger,
-  onClose
+  onClose,
+  bucType
 }: AddDeltakereModalProps): JSX.Element => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -84,9 +85,9 @@ const AddMottakereModal = ({
 
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
 
-/*  useEffect(() => {
-    dispatch(getInstitusjoner(bucType))
-  }, [])*/
+  useEffect(() => {
+    dispatch(setInstitusjonerAndLandkoderByBucType(bucType))
+  }, [])
 
   const performValidation = (): boolean => {
     const validation: Validation = {}
