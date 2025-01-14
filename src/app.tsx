@@ -13,6 +13,7 @@ import {
   resetLoginRedirect,
   setStatusParam
 } from "actions/app";
+import {getInstitusjoner} from "./actions/sak";
 import {State} from "./declarations/reducers";
 import {ReplySed} from "./declarations/sed";
 import {Sak} from "./declarations/types";
@@ -44,6 +45,7 @@ export const App = () => {
       dispatch(getEnheter())
       dispatch(getServerinfo())
       dispatch(getUtgaarDato())
+      dispatch(getInstitusjoner())
       dispatch(getCountryCodes())
       dispatch(getCDMVersjon())
     }, [])

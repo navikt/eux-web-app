@@ -13,6 +13,7 @@ export interface SakState {
   fnr: string | undefined
   institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
+  institusjonListByBucType: Array<Institusjon> | undefined
   institusjonListByLandkode: Array<Institusjon> | undefined
   landkoder: Array<string> | undefined
   landkode: string | undefined
@@ -33,6 +34,7 @@ export const initialSakState: SakState = {
   familierelasjoner: [],
   fnr: undefined,
   institusjonList: undefined,
+  institusjonListByBucType: undefined,
   institusjonListByLandkode:undefined,
   institusjon: undefined,
   landkoder: undefined,
@@ -51,7 +53,10 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
   switch (action.type) {
     case types.APP_RESET:
     case types.SAK_RESET:
-      return initialSakState
+      return {
+        ...initialSakState,
+        institusjonList: state.institusjonList
+      }
 
     case types.SAK_FAGSAKER_RESET:
     case types.SAK_FAGSAKER_REQUEST:
@@ -110,14 +115,22 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       return {
         ...state,
         institusjonList: (action as ActionWithPayload).payload,
-        landkoder: _.uniq((action as ActionWithPayload).payload.map((institusjon: any) => institusjon.landkode))
+      }
+
+    case types.SAK_INSTITUSJONER_AND_LANDKODER_BY_BUCTYPE_SET:
+      const buctype = (action as ActionWithPayload).payload
+      const institusjonListByBucType=  state.institusjonList?.filter((i) => i.buctype === buctype)
+      return {
+        ...state,
+        institusjonListByBucType: institusjonListByBucType,
+        landkoder: institusjonListByBucType ? _.uniq(institusjonListByBucType.map((institusjon: any) => institusjon.landkode)) : undefined
       }
 
     case types.SAK_INSTITUSJONER_BY_LANDKODE_SET:
       const landkode = (action as ActionWithPayload).payload
       return {
         ...state,
-        institusjonListByLandkode: state.institusjonList?.filter((i) => i.landkode === landkode)
+        institusjonListByLandkode: state.institusjonListByBucType?.filter((i) => i.landkode === landkode)
       }
 
     case types.SAK_FILLOUTINFO_RESET:

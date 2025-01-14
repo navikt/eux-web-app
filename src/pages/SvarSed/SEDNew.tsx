@@ -300,7 +300,7 @@ const SEDNew = (): JSX.Element => {
     dispatch(sakActions.setProperty('buctype', undefined))
     dispatch(sakActions.setProperty('landkode', undefined))
     dispatch(sakActions.setProperty('institusjon', undefined))
-    dispatch(sakActions.setProperty('institusjonList', undefined))
+    dispatch(sakActions.setProperty('institusjonListByBucType', undefined))
     dispatch(sakActions.setProperty('tema', undefined))
     dispatch(sakActions.resetFagsaker())
     dispatch(sakActions.setProperty('sektor', e.target.value))
@@ -313,7 +313,7 @@ const SEDNew = (): JSX.Element => {
     const buctype = event.target.value
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
-    dispatch(sakActions.getInstitusjoner(buctype))
+    dispatch(sakActions.setInstitusjonerAndLandkoderByBucType(buctype))
     if (validation[namespace + '-buctype']) {
       dispatch(resetValidation(namespace + '-buctype'))
     }
