@@ -11,7 +11,6 @@ export const V3_BASE_URL = '/v3'
 // RINA
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
-export const API_ALL_INSTITUSJONER_URL = API_BASE_URL + '/institusjoner/%(buctype)s'
 export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/oversikt'
