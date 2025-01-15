@@ -10,7 +10,6 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { Country } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import { addMottakere, resetMottakere } from 'actions/svarsed'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import * as types from 'constants/actionTypes'
@@ -18,11 +17,12 @@ import { ErrorElement } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Institusjon, Validation } from 'declarations/types'
 import _ from 'lodash'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
-import {getInstitusjoner, setInstitusjonerByLandkode} from "actions/sak";
+import {getInstitusjoner} from "actions/sak";
+import CountryDropdown from "../../../components/CountryDropdown/CountryDropdown";
 
 const MinimalModalDiv = styled.div`
   min-height: 250px;
@@ -62,7 +62,7 @@ const mapState = (state: State): AddDeltakereModalSelector => ({
   alertType: state.alert.type,
   landkoder: state.sak.landkoder,
   mottakere: state.svarsed.mottakere,
-  institusjoner: state.sak.institusjonListByLandkode,
+  institusjoner: state.sak.institusjonList,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
   addingMottakere: state.loading.addingMottakere
 })
@@ -75,7 +75,7 @@ const AddMottakereModal = ({
 }: AddDeltakereModalProps): JSX.Element => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
-  const { alertMessage, alertType, gettingInstitusjoner, institusjoner, landkoder, addingMottakere, mottakere } = useAppSelector(mapState)
+  const { alertMessage, alertType, gettingInstitusjoner, institusjoner, addingMottakere, mottakere } = useAppSelector(mapState)
   const [landkode, setLandkode] = useState<string | undefined>(undefined)
   const [newMottakere, setNewMottakere] = useState<Array<{id: string, name: string}>>([])
   const [_validation, setValidation] = useState<Validation>({})
@@ -84,10 +84,6 @@ const AddMottakereModal = ({
   const type = sakshandlinger?.includes("multipleParticipants") ? "multiple" : "single"
 
   const hasNoValidationErrors = (validation: Validation): boolean => _.find(validation, (it) => (it !== undefined)) === undefined
-
-  useEffect(() => {
-    dispatch(getInstitusjoner(bucType))
-  }, [])
 
   const performValidation = (): boolean => {
     const validation: Validation = {}
@@ -115,7 +111,7 @@ const AddMottakereModal = ({
   const onLandkodeChange = (country: Country): void => {
     const landKode = country.value
     setLandkode(landKode)
-    dispatch(setInstitusjonerByLandkode(landKode))
+    dispatch(getInstitusjoner(bucType!, landkode!))
     setValidation({
       ..._validation,
       [namespace + '-landkode']: undefined,
@@ -176,17 +172,16 @@ const AddMottakereModal = ({
             <PileDiv style={{ width: '100%', lignItems: 'flex-start' }}>
               <Row>
                 <Column>
-                  <CountrySelect
+                  <CountryDropdown
                     closeMenuOnSelect
                     data-testid={namespace + '-landkode'}
                     error={_validation[namespace + '-landkode']?.feilmelding}
                     id={namespace + '-landkode'}
-                    includeList={landkoder ? landkoder : []}
+                    countryCodeListName="euEftaLand"
                     label={t('label:land')}
-                    lang='nb'
                     onOptionSelected={onLandkodeChange}
                     flagWave
-                    value={landkode ?? null}
+                    values={landkode ?? null}
                   />
                   <VerticalSeparatorDiv />
                 </Column>

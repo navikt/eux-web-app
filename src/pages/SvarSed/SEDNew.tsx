@@ -13,7 +13,6 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import { Country } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
 import * as appActions from 'actions/app'
 import * as personActions from 'actions/person'
 import { personReset } from 'actions/person'
@@ -66,6 +65,7 @@ import performValidation from 'utils/performValidation'
 import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
+import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -151,7 +151,7 @@ const mapState = (state: State): SEDNewSelector => ({
   filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
   valgtInstitusjon: state.sak.institusjon,
-  institusjoner: state.sak.institusjonListByLandkode,
+  institusjoner: state.sak.institusjonList,
   landkoder: state.sak.landkoder,
   valgtLandkode: state.sak.landkode,
   opprettetSak: state.sak.opprettetSak,
@@ -202,7 +202,6 @@ const SEDNew = (): JSX.Element => {
     sedtyper,
     institusjoner,
     kodemaps,
-    landkoder,
     opprettetSak,
     person,
     personRelatert,
@@ -313,7 +312,6 @@ const SEDNew = (): JSX.Element => {
     const buctype = event.target.value
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('buctype', buctype))
-    dispatch(sakActions.getInstitusjoner(buctype))
     if (validation[namespace + '-buctype']) {
       dispatch(resetValidation(namespace + '-buctype'))
     }
@@ -337,7 +335,7 @@ const SEDNew = (): JSX.Element => {
     dispatch(sakActions.setProperty('institusjon', ''))
     const landKode = country.value
     dispatch(sakActions.setProperty('landkode', landKode))
-    dispatch(sakActions.setInstitusjonerByLandkode(landKode))
+    dispatch(sakActions.getInstitusjoner(valgtBucType!, landKode))
     if (validation[namespace + '-landkode']) {
       dispatch(resetValidation(namespace + '-landkode'))
     }
@@ -591,19 +589,18 @@ const SEDNew = (): JSX.Element => {
         <VerticalSeparatorDiv />
         <Row>
           <Column>
-            <CountrySelect
+            <CountryDropdown
               closeMenuOnSelect
               data-testid={namespace + '-landkode'}
               error={validation[namespace + '-landkode']?.feilmelding}
               id={namespace + '-landkode'}
-              includeList={landkoder ? landkoder : []}
+              countryCodeListName="euEftaLand"
               label={t('label:land')}
-              lang='nb'
               isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}
               menuPortalTarget={document.body}
               onOptionSelected={onLandkodeChange}
               flagWave
-              value={valgtLandkode}
+              values={valgtLandkode}
             />
             <VerticalSeparatorDiv />
           </Column>
