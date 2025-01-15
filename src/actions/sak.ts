@@ -138,10 +138,10 @@ export const createFagsakDagpenger = (
 }
 
 export const getInstitusjoner = (
-  buctype: string
+  buctype: string, landkode: string
 ): ActionWithPayload<Institusjoner> => {
   return call({
-    url: sprintf(urls.API_ALL_INSTITUSJONER_URL, { buctype }),
+    url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode }),
     expectedPayload: mockInstitusjon(),
     type: {
       request: types.SAK_INSTITUSJONER_REQUEST,
@@ -150,13 +150,6 @@ export const getInstitusjoner = (
     }
   })
 }
-
-export const setInstitusjonerByLandkode: ActionCreator<ActionWithPayload> = (
-   landkode: string
-): ActionWithPayload => ({
-  type: types.SAK_INSTITUSJONER_BY_LANDKODE_SET,
-  payload: landkode
-})
 
 export const resetFilloutInfo = () => ({
   type: types.SAK_FILLOUTINFO_RESET
