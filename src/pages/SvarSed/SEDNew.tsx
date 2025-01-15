@@ -333,7 +333,7 @@ const SEDNew = (): JSX.Element => {
 
   const onLandkodeChange = (country: Country): void => {
     dispatch(sakActions.setProperty('institusjon', ''))
-    const landKode = country.value
+    const landKode = country.value3
     dispatch(sakActions.setProperty('landkode', landKode))
     dispatch(sakActions.getInstitusjoner(valgtBucType!, landKode))
     if (validation[namespace + '-landkode']) {
