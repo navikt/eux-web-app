@@ -130,6 +130,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
       }}
       onModalClose={onModalClose}
       onBeforeClose={_preview ? resetPreview : resetPreviewAndReturnTrue}
+      width="1000px"
     />
 
   )
