@@ -10,7 +10,8 @@ import {
   JoarkBrowserItems,
   JoarkDoc,
   JoarkFileVariant,
-  JoarkPoster
+  JoarkPoster,
+  JoarkRelevantDato
 } from 'declarations/attachments'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
@@ -212,8 +213,10 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
 
           title: post.tittel,
           tema: post.tema,
+          status: post?.journalstatus,
+          saksid: post?.sak?.arkivsaksnummer,
+          regSentDate: getMottattSendtDato(post),
           date: new Date(Date.parse(post.datoOpprettet)),
-
           disabled: false,
           hasSubrows: true
         } as JoarkBrowserItem)
@@ -246,6 +249,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           title: doc.tittel || '-',
           tema: post.tema,
           date: new Date(Date.parse(post.datoOpprettet)),
+          status: post?.journalstatus,
+          saksid: post?.sak?.arkivsaksnummer,
+          regSentDate: getMottattSendtDato(post),
 
           selected,
           disabled,
@@ -261,6 +267,44 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     })
 
     return items
+  }
+
+  const getMottattSendtDato = (journalpost: JoarkPoster) : Date | null => {
+    let calMottattSendtDato: Date | null = null;
+    let journalposttype = journalpost.journalposttype.toUpperCase();
+
+    switch (journalposttype) {
+      case 'I':
+        calMottattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_REGISTRERT');
+        break;
+      case 'N':
+        if (journalpost.dokumenter.length > 0
+          && journalpost.dokumenter[0].datoFerdigstilt) {
+          calMottattSendtDato = new Date(Date.parse(journalpost.dokumenter[0].datoFerdigstilt));
+        }
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
+        break;
+      case 'U':
+        calMottattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_EKSPEDERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_SENDT_PRINT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
+        break;
+    }
+
+    return calMottattSendtDato
+
+  }
+
+  const getRelevantDato = (datoer: Array<JoarkRelevantDato> | null | undefined, type: String): Date | null => {
+    if (datoer) {
+      let relevantDato = datoer.find((d) => d.datotype.toUpperCase() === type);
+      if (relevantDato !== undefined) {
+        return new Date(Date.parse(relevantDato.dato))
+      }
+    }
+    return null;
   }
 
   const getItemsForViewMode = (list: Array<JoarkPoster> | undefined, existingItems: JoarkBrowserItems): JoarkBrowserItems => {
@@ -409,8 +453,28 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
                 type: 'string',
                 render: renderTittel
               }, {
+                id: 'status',
+                label: t('label:status'),
+                type: 'string',
+                render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => <Label>{value}</Label>
+              }, {
+                id: 'saksid',
+                label: t('label:saksid'),
+                type: 'string',
+                render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => <Label>{value}</Label>
+              }, {
                 id: 'date',
                 label: t('label:dato'),
+                type: 'date',
+                render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
+                  return (
+                    <Label>{moment(value).format('DD.MM.YYYY') ?? '-'}</Label>
+                  )
+                },
+                dateFormat: 'DD.MM.YYYY'
+              }, {
+                id: 'regSentDate',
+                label: t('label:regSendtDato'),
                 type: 'date',
                 render: ({ value }: RenderOptions<JoarkBrowserItem, JoarkBrowserContext, string>) => {
                   return (

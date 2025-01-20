@@ -60,6 +60,7 @@ const ModalFC: React.FC<ModalProps> = ({
       header={{heading: modal?.modalTitle ?? '', icon: icon ?? undefined}}
       portal={true}
       id="neessiModal"
+      width="1000px"
     >
       <Modal.Body>
         <ContentDiv className={classNames({ icon: !!icon })}>

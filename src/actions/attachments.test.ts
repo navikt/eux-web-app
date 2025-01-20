@@ -85,7 +85,10 @@ describe('actions/attachments', () => {
       variant: 'variant' as unknown as JoarkFileVariant,
       title: 'title',
       tema: 'tema',
-      date: new Date(1970, 1, 1)
+      date: new Date(1970, 1, 1),
+      status: 'Ferdigstilt',
+      saksid: '1A2B3C4D',
+      regSentDate: new Date(1970, 1, 1)
     }
     attachmentsActions.sendAttachmentToSed(params, joarkBrowserItem)
     expect(call).toBeCalledWith(expect.objectContaining({

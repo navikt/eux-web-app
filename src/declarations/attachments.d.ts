@@ -10,15 +10,30 @@ export interface JoarkDoc {
   dokumentInfoId: string
   tittel?: string | null | undefined
   dokumentvarianter: Array<JoarkFileVariant>
+  dokumentstatus: string | null
+  datoFerdigstilt: string | null
 }
 
 export interface JoarkPoster {
   journalpostId: string
+  journalstatus: string
+  journalposttype: string
   tittel: string
   tema: string
   datoOpprettet: string
   tilleggsopplysninger?: Array<any> | null
   dokumenter: Array<JoarkDoc>
+  sak: JoarkSak | null
+  relevanteDatoer: Array<JoarkRelevantDato>
+}
+
+export interface JoarkSak {
+  arkivsaksnummer: string | undefined
+}
+
+export interface JoarkRelevantDato {
+  dato: string
+  datotype: string
 }
 
 export type JoarkType = 'joark'
@@ -56,6 +71,9 @@ export interface JoarkBrowserItem extends Item {
   title: string
   tema: string | undefined
   date: Date
+  status: string | undefined
+  saksid: string | undefined
+  regSentDate: Date | undefined | null
   sensitivt?: boolean
 }
 
