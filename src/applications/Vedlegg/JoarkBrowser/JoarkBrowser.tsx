@@ -270,31 +270,30 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   }
 
   const getMottattSendtDato = (journalpost: JoarkPoster) : Date | null => {
-    let calMotattSendtDato: Date | null = null;
+    let calMottattSendtDato: Date | null = null;
     let journalposttype = journalpost.journalposttype.toUpperCase();
 
     switch (journalposttype) {
       case 'I':
-        calMotattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_REGISTRERT');
+        calMottattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_REGISTRERT');
         break;
       case 'N':
         if (journalpost.dokumenter.length > 0
-          && journalpost.dokumenter[0].datoFerdigstilt != null
-          && journalpost.dokumenter[0].datoFerdigstilt != undefined) {
-          calMotattSendtDato = new Date(Date.parse(journalpost.dokumenter[0].datoFerdigstilt));
+          && journalpost.dokumenter[0].datoFerdigstilt) {
+          calMottattSendtDato = new Date(Date.parse(journalpost.dokumenter[0].datoFerdigstilt));
         }
-        calMotattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
-        calMotattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
         break;
       case 'U':
-        calMotattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_EKSPEDERT');
-        calMotattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_SENDT_PRINT');
-        calMotattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
-        calMotattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
+        calMottattSendtDato = getRelevantDato(journalpost.relevanteDatoer, 'DATO_EKSPEDERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_SENDT_PRINT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_JOURNALFOERT');
+        calMottattSendtDato ??= getRelevantDato(journalpost.relevanteDatoer, 'DATO_DOKUMENT');
         break;
     }
 
-    return calMotattSendtDato
+    return calMottattSendtDato
 
   }
 
