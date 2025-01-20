@@ -95,4 +95,5 @@ export interface PDU1 {
   perioderDagpengerMottatt: Array<PDPeriode> // Dagpenger => 5
   rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6
   ikkeRettTilDagpenger?: IkkeRettTilDagpenger // RettTilDagpenger => 6
+  versjon?: string
 }

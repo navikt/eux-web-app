@@ -37,7 +37,7 @@ export const getStoredPdu1AsJSON = (
   journalpostId: string, dokumentId: string, fagsak: string
 ): Action => {
   return call({
-    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ORIGINAL' }),
+    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'json' }),
     expectedPayload: mockStoredPdu1AsJSON,
     context: {
       fagsak,
@@ -56,7 +56,7 @@ export const getStoredPdu1AsPDF = (
   journalpostId: string, dokumentId: string
 ): Action => {
   return call({
-    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'ARKIV' }),
+    url: sprintf(urls.PDU1_GET_URL, { journalpostId, dokumentId, variant: 'pdf' }),
     expectedPayload: mockPreviewPdu1(),
     responseType: 'pdf',
     type: {

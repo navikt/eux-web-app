@@ -128,6 +128,8 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
       const pdu1: PDU1 = convertDatesInPeriodeArrays((action as ActionWithPayload).payload)
       pdu1.saksreferanse = (action as ActionWithPayload).payload.saksreferanse
       pdu1.fagsakId = (action as ActionWithPayload).payload.fagsakId
+      pdu1.versjon = (action as ActionWithPayload).payload.versjon ? (action as ActionWithPayload).payload.versjon : "2"
+
       pdu1.__fagsak = (action as ActionWithPayload).context.fagsak
       pdu1.__dokumentId = (action as ActionWithPayload).context.dokumentId
       pdu1.__journalpostId = (action as ActionWithPayload).context.journalpostId

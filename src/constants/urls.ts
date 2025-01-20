@@ -73,6 +73,6 @@ export const PDU1_PREVIEW_URL = API_BASE_URL + '/pdu1/pdf/utkast' // POST (2)
 export const PDU1_JOURNALPOST_URL = API_BASE_URL + '/pdu1/journalpost' // POST (3)
 
 //export const PDU1_GET_URL = API_BASE_URL + '/dokument/%(journalpostId)s/%(dokumentId)s/%(variant)s' // GET (4)
-export const PDU1_GET_URL = API_BASE_URL + '/pdu1/journalpost/%(journalpostId)s/dokumentInfoId/%(dokumentId)s/json' // GET (4)
+export const PDU1_GET_URL = API_BASE_URL + '/pdu1/journalpost/%(journalpostId)s/dokumentInfoId/%(dokumentId)s/%(variant)s' // GET (4)
 
 export const PDU1_SEARCH_URL = API_BASE_URL + '/person/%(fnr)s/dokumenter?dokumenttype=DAG_EOS_U1' // GET
