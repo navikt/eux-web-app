@@ -815,6 +815,7 @@ export interface X008Sed extends XSed {
 
 export interface X011Sed extends XSed {
   avvisSedId?: string
+  avvisSedtype?: string
   begrunnelseType: string
   begrunnelseAnnen?: string
 }

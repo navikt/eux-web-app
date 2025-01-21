@@ -510,6 +510,7 @@ const svarsedReducer = (
       const { connectedSed, sak } = action.payload
       const replySed: X011Sed = createReplySedTemplate<X011Sed>(sak, 'X011')
       replySed.avvisSedId = connectedSed.sedId
+      replySed.avvisSedtype = connectedSed.sedType
       return {
         ...state,
         replySed
