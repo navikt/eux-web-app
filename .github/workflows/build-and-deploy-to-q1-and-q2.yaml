@@ -15,7 +15,7 @@ on:
         required: false
         default: ''
 
-env:
+#env:
 #  APP_NAME: eux-web-app
 #  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
 #  READER_TOKEN: ${{ secrets.READER_TOKEN }}
