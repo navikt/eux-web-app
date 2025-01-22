@@ -11,7 +11,7 @@ export default {
     ],
     adresse: {
       gate: "TORGVEIEN 11",
-      postNr: "8470",
+      postnr: "8470",
       poststed: "BØ I VESTERÅLEN",
       landkode: "NOR"
     },
@@ -32,7 +32,7 @@ export default {
     navTlf: "+47 210 73 700",
     adresse: {
       gate: "Postboks 6600 Etterstad",
-      postNr: "0607",
+      postnr: "0607",
       poststed: "Oslo",
       landkode: "NOR"
     }

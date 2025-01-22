@@ -9,7 +9,7 @@ export default {
     "etternavn": "RISPBÆRBUSK",
     "adresse": {
       "gate": "Omvei 1",
-      "postNr": "1234",
+      "postnr": "1234",
       "poststed": "Poststedet",
       "landkode": "NOR"
     },
@@ -30,7 +30,7 @@ export default {
     "navOrgNr": "889640782",
     "adresse": {
       "gate": "Postboks 6600 Etterstad",
-      "postNr": "0607",
+      "postnr": "0607",
       "poststed": "Oslo",
       "landkode": "NOR"
     },

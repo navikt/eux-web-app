@@ -39,7 +39,7 @@ const AvsenderFC: React.FC<MainFormProps> = ({
       clonedvalidation, namespace, validateAvsender, {
         avsender: avsender,
         keyForCity: 'poststed',
-        keyforZipCode: 'postNr'
+        keyforZipCode: 'postnr'
       }, true
     )
     dispatch(setValidation(clonedvalidation))
@@ -180,7 +180,7 @@ const AvsenderFC: React.FC<MainFormProps> = ({
             required={['gate', 'postnummer', 'by', 'land']}
             namespace={namespace + '-adresse'}
             keyForCity='poststed'
-            keyforZipCode='postNr'
+            keyforZipCode='postnr'
             validation={validation}
             adresse={avsender?.adresse}
             onAdressChanged={setAdresse}

@@ -47,7 +47,7 @@ export const validatePDU1Edit = (v: Validation, namespace: string, {
 
   const avsender: Avsender = _.get(pdu1, 'avsender')
   hasErrors.push(performValidation<ValidationAvsenderProps>(v,
-    `${namespace}-${personID}-avsender`, validateAvsender, { avsender, keyForCity: 'poststed', keyforZipCode: 'postNr' }, true))
+    `${namespace}-${personID}-avsender`, validateAvsender, { avsender, keyForCity: 'poststed', keyforZipCode: 'postnr' }, true))
 
   return hasErrors.find(value => value) !== undefined
 }

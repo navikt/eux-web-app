@@ -48,7 +48,7 @@ export const validatePerson = (
 
   hasErrors.push(validateStatsborgerskaper(v, namespace + '-statsborgerskap', { statsborgerskaper: person?.statsborgerskap ? person?.statsborgerskap.filter((s) => s) : person?.statsborgerskap}))
 
-  hasErrors.push(validateAdresse(v, namespace + '-adresse', { adresse: person?.adresse, keyForCity: 'poststed', keyforZipCode: 'postNr' }))
+  hasErrors.push(validateAdresse(v, namespace + '-adresse', { adresse: person?.adresse, keyForCity: 'poststed', keyforZipCode: 'postnr' }))
 
   return hasErrors.find(value => value) !== undefined
 }
