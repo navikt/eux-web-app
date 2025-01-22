@@ -16,9 +16,9 @@ on:
         default: ''
 
 env:
-  APP_NAME: eux-web-app
-  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
-  READER_TOKEN: ${{ secrets.READER_TOKEN }}
+#  APP_NAME: eux-web-app
+#  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
+#  READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
 jobs:
   build:
@@ -91,7 +91,7 @@ jobs:
 
     outputs:
       docker-image: >
-        ${{ env.IMAGE }}:${{ steps.versions.outputs.version }}
+        ${{ env.IMAGE }}
 
 #  deploy-q1:
 #    name: 'Deploy to q1'
