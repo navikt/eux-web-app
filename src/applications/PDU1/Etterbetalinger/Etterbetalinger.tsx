@@ -1,10 +1,10 @@
 import { Checkbox, Heading } from '@navikt/ds-react'
 import { AlignStartRow, Column, FlexDiv, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
-import { validateUtbetaling, ValidationUtbetalingProps } from 'applications/PDU1/Utbetaling/validation'
+import { validateEtterbetalinger, ValidationUtbetalingProps } from 'applications/PDU1/Etterbetalinger/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
-import { AndreMottatteUtbetalinger } from 'declarations/pd'
+import { Etterbetalinger } from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -17,7 +17,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const UtbetalingFC: React.FC<MainFormProps> = ({
+const EtterbetalingerFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
@@ -25,24 +25,24 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'andreMottatteUtbetalinger'
-  const andreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.get(replySed, target)
-  const namespace = `${parentNamespace}-utbetaling`
+  const target = 'etterbetalinger'
+  const etterbetalinger: Etterbetalinger | undefined = _.get(replySed, target)
+  const namespace = `${parentNamespace}-etterbetalinger`
 
   useUnmount(() => {
     const clonedvalidation = _.cloneDeep(validation)
     performValidation<ValidationUtbetalingProps>(
-      clonedvalidation, namespace, validateUtbetaling, {
-        utbetaling: andreMottatteUtbetalinger
+      clonedvalidation, namespace, validateEtterbetalinger, {
+        etterbetalinger: etterbetalinger
       }, true
     )
     dispatch(setValidation(clonedvalidation))
   })
 
   useEffect(() => {
-    let newAndreMottatteUtbetalinger: AndreMottatteUtbetalinger | undefined = _.cloneDeep(andreMottatteUtbetalinger)
+    let newAndreMottatteUtbetalinger: Etterbetalinger | undefined = _.cloneDeep(etterbetalinger)
     if (_.isUndefined(newAndreMottatteUtbetalinger)) {
-      newAndreMottatteUtbetalinger = {} as AndreMottatteUtbetalinger
+      newAndreMottatteUtbetalinger = {} as Etterbetalinger
     }
     if (!_.isEmpty(newAndreMottatteUtbetalinger)) {
       if (newAndreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox === undefined) {
@@ -75,7 +75,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setUtbetalingEtterEndtArbeidsforhold = (utbetalingEtterEndtArbeidsforhold: string) => {
-    if (!andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox) {
+    if (!etterbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox) {
       setUtbetalingEtterEndtArbeidsforholdCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.utbetalingEtterEndtArbeidsforhold`, utbetalingEtterEndtArbeidsforhold.trim()))
@@ -95,7 +95,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setKompensasjonForEndtArbeidsforhold = (kompensasjonForEndtArbeidsforhold: string) => {
-    if (!andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox) {
+    if (!etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox) {
       setKompensasjonForEndtArbeidsforholdCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.kompensasjonForEndtArbeidsforhold`, kompensasjonForEndtArbeidsforhold.trim()))
@@ -116,7 +116,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setKompensasjonForFeriedagerAntallDager = (antallDager: string) => {
-    if (!andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox) {
+    if (!etterbetalinger?._kompensasjonForFeriedagerCheckbox) {
       setKompensasjonForFeriedagerCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.kompensasjonForFeriedager.antallDager`, antallDager.trim()))
@@ -126,7 +126,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setKompensasjonForFeriedagerBeloep = (beloep: string) => {
-    if (!andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox) {
+    if (!etterbetalinger?._kompensasjonForFeriedagerCheckbox) {
       setKompensasjonForFeriedagerCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.kompensasjonForFeriedager.beloep`, beloep.trim()))
@@ -146,7 +146,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setAvkallKompensasjonBegrunnelse = (avkallKompensasjonBegrunnelse: string) => {
-    if (!andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox) {
+    if (!etterbetalinger?._avkallKompensasjonBegrunnelseCheckbox) {
       setAvkallKompensasjonBegrunnelseCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.avkallKompensasjonBegrunnelse`, avkallKompensasjonBegrunnelse.trim()))
@@ -166,7 +166,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   }
 
   const setAndreYtelserSomMottasForTiden = (andreYtelserSomMottasForTiden: string) => {
-    if (!andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox) {
+    if (!etterbetalinger?._andreYtelserSomMottasForTidenCheckbox) {
       setAndreYtelserSomMottasForTidenCheckbox(true)
     }
     dispatch(updateReplySed(`${target}.andreYtelserSomMottasForTiden`, andreYtelserSomMottasForTiden.trim()))
@@ -184,7 +184,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <Checkbox
-            checked={andreMottatteUtbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
+            checked={etterbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox}
             data-testid={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
             id={namespace + '-utbetalingEtterEndtArbeidsforholdCheckbox'}
             error={!!validation[namespace + '-utbetalingEtterEndtArbeidsforhold']?.feilmelding}
@@ -199,7 +199,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setUtbetalingEtterEndtArbeidsforhold}
-                value={andreMottatteUtbetalinger?.utbetalingEtterEndtArbeidsforhold}
+                value={etterbetalinger?.utbetalingEtterEndtArbeidsforhold}
               />
             </FlexDiv>
           </Checkbox>
@@ -209,7 +209,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <Checkbox
-            checked={andreMottatteUtbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
+            checked={etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox}
             data-testid={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
             error={!!validation[namespace + '-kompensasjonForEndtArbeidsforhold']?.feilmelding}
             id={namespace + '-kompensasjonForEndtArbeidsforholdCheckbox'}
@@ -224,7 +224,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setKompensasjonForEndtArbeidsforhold}
-                value={andreMottatteUtbetalinger?.kompensasjonForEndtArbeidsforhold}
+                value={etterbetalinger?.kompensasjonForEndtArbeidsforhold}
               />
             </FlexDiv>
           </Checkbox>
@@ -234,7 +234,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <Checkbox
-            checked={andreMottatteUtbetalinger?._kompensasjonForFeriedagerCheckbox}
+            checked={etterbetalinger?._kompensasjonForFeriedagerCheckbox}
             data-testid={namespace + '-kompensasjonForFeriedagerCheckbox'}
             error={!!validation[namespace + '-kompensasjonForFeriedager']?.feilmelding}
             id={namespace + '-kompensasjonForFeriedagerCheckbox'}
@@ -249,7 +249,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setKompensasjonForFeriedagerBeloep}
-                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.beloep}
+                value={etterbetalinger?.kompensasjonForFeriedager?.beloep}
               />
               <PaddedDiv size='0.5'>
                 for
@@ -261,7 +261,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setKompensasjonForFeriedagerAntallDager}
-                value={andreMottatteUtbetalinger?.kompensasjonForFeriedager?.antallDager}
+                value={etterbetalinger?.kompensasjonForFeriedager?.antallDager}
               />
               <PaddedDiv size='0.5'>
                 dager
@@ -274,7 +274,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <Checkbox
-            checked={andreMottatteUtbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
+            checked={etterbetalinger?._avkallKompensasjonBegrunnelseCheckbox}
             data-testid={namespace + '-avkallKompensasjonBegrunnelseCheckbox'}
             error={!!validation[namespace + '-avkallKompensasjonBegrunnelseCheckbox']?.feilmelding}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvkallKompensasjonBegrunnelseCheckbox(e.target.checked)}
@@ -288,7 +288,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setAvkallKompensasjonBegrunnelse}
-                value={andreMottatteUtbetalinger?.avkallKompensasjonBegrunnelse}
+                value={etterbetalinger?.avkallKompensasjonBegrunnelse}
               />
             </FlexDiv>
           </Checkbox>
@@ -298,7 +298,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <Checkbox
-            checked={andreMottatteUtbetalinger?._andreYtelserSomMottasForTidenCheckbox}
+            checked={etterbetalinger?._andreYtelserSomMottasForTidenCheckbox}
             data-testid={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
             error={!!validation[namespace + '-andreYtelserSomMottasForTidenCheckbox']?.feilmelding}
             id={namespace + '-andreYtelserSomMottasForTidenCheckbox'}
@@ -313,7 +313,7 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
                 label=''
                 hideLabel
                 onChanged={setAndreYtelserSomMottasForTiden}
-                value={andreMottatteUtbetalinger?.andreYtelserSomMottasForTiden}
+                value={etterbetalinger?.andreYtelserSomMottasForTiden}
               />
             </FlexDiv>
           </Checkbox>
@@ -324,4 +324,4 @@ const UtbetalingFC: React.FC<MainFormProps> = ({
   )
 }
 
-export default UtbetalingFC
+export default EtterbetalingerFC

@@ -1,10 +1,10 @@
 import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
-import { NavInfo } from 'declarations/pd'
+import {Avsender} from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAvsenderProps {
-  nav: NavInfo
+  avsender: Avsender
   keyForCity?: string
   keyforZipCode?: string
 }
@@ -13,7 +13,7 @@ export const validateAvsender = (
   v: Validation,
   namespace: string,
   {
-    nav,
+    avsender,
     keyForCity = 'by',
     keyforZipCode = 'postnummer'
   }: ValidationAvsenderProps
@@ -21,37 +21,37 @@ export const validateAvsender = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: nav?.enhetNavn,
+    needle: avsender?.navEnhetNavn,
     id: namespace + '-enhetNavn',
     message: 'validation:noEnhetNavn'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: nav?.enhetId,
-    id: namespace + '-enhetId',
+    needle: avsender?.navOrgNr,
+    id: namespace + '-orgNr',
     message: 'validation:noEnhetId'
   }))
 
   hasErrors.push(validateAdresse(v, namespace + '-adresse', {
-    adresse: nav?.adresse,
+    adresse: avsender?.adresse,
     keyforZipCode,
     keyForCity
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: nav?.tlf,
+    needle: avsender?.navTlf,
     id: namespace + '-tlf',
     message: 'validation:noTelephoneNumber'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: nav?.saksbehandler?.navn,
+    needle: avsender?.saksbehandler?.navn,
     id: namespace + '-saksbehandler-navn',
     message: 'validation:noNavn'
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: nav?.saksbehandler?.enhet,
+    needle: avsender?.saksbehandler?.enhetNavn,
     id: namespace + '-saksbehandler-enhet',
     message: 'validation:noEnhet'
   }))

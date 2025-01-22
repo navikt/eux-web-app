@@ -3,15 +3,15 @@ import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPdu1Template, getStoredPdu1AsJSON, jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { setValidation } from 'actions/validation'
-import Avsender from 'applications/PDU1/Avsender/Avsender'
+import AvsenderFC from 'applications/PDU1/Avsender/AvsenderFC'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
 import Person from 'applications/PDU1/Person/Person'
 import PreviewPDU1 from 'applications/PDU1/PreviewPDU1/PreviewPDU1'
 import RettTilDagpenger from 'applications/PDU1/RettTilDagpenger/RettTilDagpenger'
-import SisteAnsettelseInfo from 'applications/PDU1/SisteAnsettelseInfo/SisteAnsettelseInfo'
-import Utbetaling from 'applications/PDU1/Utbetaling/Utbetaling'
+import OppsigelsesGrunn from 'applications/PDU1/OppsigelsesGrunn/OppsigelsesGrunn'
+import Etterbetalinger from 'applications/PDU1/Etterbetalinger/Etterbetalinger'
 import MainForm from 'applications/SvarSed/MainForm'
 import Modal from 'components/Modal/Modal'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
@@ -80,12 +80,12 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         // clean up PDU1 before sending it
-        if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
-          delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
+        if (!_.isEmpty(newPdu1.etterbetalinger)) {
+          delete newPdu1.etterbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
+          delete newPdu1.etterbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
+          delete newPdu1.etterbetalinger._kompensasjonForFeriedagerCheckbox
+          delete newPdu1.etterbetalinger._avkallKompensasjonBegrunnelseCheckbox
+          delete newPdu1.etterbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
         delete newPdu1.__journalpostId
         delete newPdu1.__dokumentId
@@ -181,11 +181,11 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           { label: t('el:option-mainform-perioder'), value: 'perioder', component: Perioder, type: 'PD' },
           {
             label: t('el:option-mainform-arsak-til-avsluttet'),
-            value: 'sisteansettelseinfo',
-            component: SisteAnsettelseInfo,
+            value: 'oppsigelsesgrunn',
+            component: OppsigelsesGrunn,
             type: 'PD'
           },
-          { label: t('el:option-mainform-utbetaling'), value: 'utbetaling', component: Utbetaling, type: 'PD' },
+          { label: t('el:option-mainform-utbetaling'), value: 'etterbetalinger', component: Etterbetalinger, type: 'PD' },
           { label: t('el:option-mainform-dagpenger'), value: 'dagpenger', component: Dagpenger, type: 'PD' },
           {
             label: t('el:option-mainform-retttildagpenger'),
@@ -193,7 +193,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
             component: RettTilDagpenger,
             type: 'PD'
           },
-          { label: t('el:option-mainform-avsender'), value: 'avsender', component: Avsender, type: 'PD' },
+          { label: t('el:option-mainform-avsender'), value: 'avsender', component: AvsenderFC, type: 'PD' },
           { label: t('el:option-mainform-coverletter'), value: 'coverletter', component: CoverLetter, type: 'PD' }
         ]}
         replySed={pdu1}

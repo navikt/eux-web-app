@@ -5,7 +5,7 @@ import { validateAvsender, ValidationAvsenderProps } from 'applications/PDU1/Avs
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
-import { NavInfo } from 'declarations/pd'
+import {Avsender} from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
@@ -19,7 +19,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Avsender: React.FC<MainFormProps> = ({
+const AvsenderFC: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
@@ -27,8 +27,8 @@ const Avsender: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const target = 'nav'
-  const nav: NavInfo = _.get(replySed, target)
+  const target = 'avsender'
+  const avsender: Avsender = _.get(replySed, target)
   const namespace = `${parentNamespace}-avsender`
 
   const [allowEdit, setAllowEdit] = useState<boolean>(false)
@@ -37,25 +37,25 @@ const Avsender: React.FC<MainFormProps> = ({
     const clonedvalidation = _.cloneDeep(validation)
     performValidation<ValidationAvsenderProps>(
       clonedvalidation, namespace, validateAvsender, {
-        nav,
+        avsender: avsender,
         keyForCity: 'poststed',
-        keyforZipCode: 'postnr'
+        keyforZipCode: 'postNr'
       }, true
     )
     dispatch(setValidation(clonedvalidation))
   })
 
   const setEnhetNavn = (enhetNavn: string) => {
-    dispatch(updateReplySed(`${target}.enhetNavn`, enhetNavn.trim()))
+    dispatch(updateReplySed(`${target}.navEnhetNavn`, enhetNavn.trim()))
     if (validation[namespace + '-enhetNavn']) {
       dispatch(resetValidation(namespace + '-enhetNavn'))
     }
   }
 
-  const setEnhetId = (enhetId: string) => {
-    dispatch(updateReplySed(`${target}.enhetId`, enhetId.trim()))
-    if (validation[namespace + '-enhetId']) {
-      dispatch(resetValidation(namespace + '-enhetId'))
+  const setOrgNr = (orgNr: string) => {
+    dispatch(updateReplySed(`${target}.navOrgNr`, orgNr.trim()))
+    if (validation[namespace + '-orgNr']) {
+      dispatch(resetValidation(namespace + '-orgNr'))
     }
   }
 
@@ -67,7 +67,7 @@ const Avsender: React.FC<MainFormProps> = ({
   }
 
   const setTlf = (tlf: string) => {
-    dispatch(updateReplySed(`${target}.tlf`, tlf.trim()))
+    dispatch(updateReplySed(`${target}.navTlf`, tlf.trim()))
     if (validation[namespace + '-tlf']) {
       dispatch(resetValidation(namespace + '-tlf'))
     }
@@ -81,7 +81,7 @@ const Avsender: React.FC<MainFormProps> = ({
   }
 
   const setSaksbehandlerEnhet = (enhet: string) => {
-    dispatch(updateReplySed(`${target}.saksbehandler.enhet`, enhet.trim()))
+    dispatch(updateReplySed(`${target}.saksbehandler.enhetNavn`, enhet.trim()))
     if (validation[namespace + '-saksbehandler-enhet']) {
       dispatch(resetValidation(namespace + '-saksbehandler-enhet'))
     }
@@ -110,7 +110,7 @@ const Avsender: React.FC<MainFormProps> = ({
             label={t('label:enhet-navn')}
             onChanged={setEnhetNavn}
             required
-            value={nav?.enhetNavn}
+            value={avsender?.navEnhetNavn}
           />
         </Column>
       </AlignStartRow>
@@ -119,13 +119,13 @@ const Avsender: React.FC<MainFormProps> = ({
         <Column>
           <Input
             disabled={!allowEdit}
-            error={validation[namespace + '-enhetId']?.feilmelding}
+            error={validation[namespace + '-orgNr']?.feilmelding}
             namespace={namespace}
-            id='enhetId'
+            id='orgNr'
             label={t('label:enhet-id')}
-            onChanged={setEnhetId}
+            onChanged={setOrgNr}
             required
-            value={nav?.enhetId}
+            value={avsender?.navOrgNr}
           />
         </Column>
         <Column>
@@ -137,7 +137,7 @@ const Avsender: React.FC<MainFormProps> = ({
             label={t('label:telefonnummer')}
             onChanged={setTlf}
             required
-            value={nav?.tlf}
+            value={avsender?.navTlf}
           />
         </Column>
       </AlignStartRow>
@@ -152,7 +152,7 @@ const Avsender: React.FC<MainFormProps> = ({
             label={t('label:saksbehandlers-navn')}
             onChanged={setSaksbehandlerNavn}
             required
-            value={nav?.saksbehandler?.navn}
+            value={avsender?.saksbehandler?.navn}
           />
         </Column>
         <Column>
@@ -164,7 +164,7 @@ const Avsender: React.FC<MainFormProps> = ({
             label={t('label:saksbehandlers-enhet')}
             onChanged={setSaksbehandlerEnhet}
             required
-            value={nav?.saksbehandler?.enhet}
+            value={avsender?.saksbehandler?.enhetNavn}
           />
         </Column>
       </AlignStartRow>
@@ -180,9 +180,9 @@ const Avsender: React.FC<MainFormProps> = ({
             required={['gate', 'postnummer', 'by', 'land']}
             namespace={namespace + '-adresse'}
             keyForCity='poststed'
-            keyforZipCode='postnr'
+            keyforZipCode='postNr'
             validation={validation}
-            adresse={nav?.adresse}
+            adresse={avsender?.adresse}
             onAdressChanged={setAdresse}
           />
         </Column>
@@ -191,4 +191,4 @@ const Avsender: React.FC<MainFormProps> = ({
   )
 }
 
-export default Avsender
+export default AvsenderFC

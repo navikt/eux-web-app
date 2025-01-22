@@ -6,7 +6,7 @@ import {addError, checkIfInteger, checkIfNotEmpty, checkIfNotNumber, checkLength
 
 
 export interface ValidationUtbetalingProps {
-  utbetaling: Utbetaling | undefined
+  etterbetalinger: Utbetaling | undefined
   index?: number
   personName ?: string
 }
@@ -25,7 +25,7 @@ export const validateUtbetaling = (
   v: Validation,
   namespace: string,
   {
-    utbetaling,
+    etterbetalinger,
     index,
     personName
   }: ValidationUtbetalingProps
@@ -34,15 +34,15 @@ export const validateUtbetaling = (
   const idx = getIdx(index)
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: utbetaling?.utbetalingType,
+    needle: etterbetalinger?.utbetalingType,
     id: namespace + idx + '-utbetalingType',
     message: 'validation:noUtbetalingType',
     personName
   }))
 
-  if (!_.isEmpty(utbetaling?.utbetalingType?.trim())) {
-    if (utbetaling?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
-      _.isEmpty(utbetaling?.loennTilDato?.trim())) {
+  if (!_.isEmpty(etterbetalinger?.utbetalingType?.trim())) {
+    if (etterbetalinger?.utbetalingType?.trim() === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' &&
+      _.isEmpty(etterbetalinger?.loennTilDato?.trim())) {
       hasErrors.push(addError(v, {
         id: namespace + idx + '-loennTilDato',
         message: 'validation:noLoennTilDato',
@@ -51,10 +51,10 @@ export const validateUtbetaling = (
     }
   }
 
-  if (utbetaling?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'){
-    if(!_.isEmpty(utbetaling?.feriedagerTilGode)){
+  if (etterbetalinger?.utbetalingType?.trim() === 'vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'){
+    if(!_.isEmpty(etterbetalinger?.feriedagerTilGode)){
       hasErrors.push(checkIfInteger(v, {
-        needle: utbetaling?.feriedagerTilGode,
+        needle: etterbetalinger?.feriedagerTilGode,
         id: namespace + idx + '-feriedagerTilGode',
         message: 'validation:notInteger',
         personName
@@ -64,21 +64,21 @@ export const validateUtbetaling = (
   }
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: utbetaling?.beloep,
+    needle: etterbetalinger?.beloep,
     id: namespace + '-beloep',
     message: 'validation:noBeløp',
     personName
   }))
 
   hasErrors.push(checkIfNotNumber(v, {
-    needle: utbetaling?.beloep,
+    needle: etterbetalinger?.beloep,
     id: namespace + '-beloep',
     message: 'validation:invalidBeløp',
     personName
   }))
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: utbetaling?.valuta,
+    needle: etterbetalinger?.valuta,
     id: namespace + '-valuta',
     message: 'validation:noValuta',
     personName
@@ -98,7 +98,7 @@ export const validateUtbetalinger = (
   let hasErrors: boolean = false
   utbetalinger?.forEach((utbetaling: Utbetaling, index: number) => {
     const _errors: boolean = validateUtbetaling(validation, namespace, {
-      utbetaling,
+      etterbetalinger: utbetaling,
       index,
       personName
     })
