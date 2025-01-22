@@ -114,12 +114,14 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: 'Calling nais deploy action for q2'
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais.yaml
           VAR: image=${{ needs.build.outputs.docker-image }}
-          #VARS: .nais/q2.yaml
+          VARS: .nais/q2.yaml
           PRINT_PAYLOAD: true
 
