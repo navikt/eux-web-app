@@ -200,6 +200,8 @@ const apiProxy = function (target, pathRewrite) {
         "Authorization",
         res.locals.on_behalf_of_authorization
       )
+      delete proxyReq.headers['io.nais.wonderwall.session']
+      delete proxyReq.headers['JSESSIONID']
     }
   })
 }
