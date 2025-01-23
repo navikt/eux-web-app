@@ -15,9 +15,9 @@ on:
         required: false
         default: ''
 
-#env:
+env:
+  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
 #  APP_NAME: eux-web-app
-#  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
 #  READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: 'Setter Image'
-        run: echo "IMAGE=europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app:${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
+        run: echo "TAG=${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_ENV
 
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -82,7 +82,7 @@ jobs:
         id: docker-build-push
         with:
           team: eessibasis
-          tag: ${{ steps.versions.outputs.version }}
+          tag: ${{ env.TAG }}
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
@@ -91,7 +91,7 @@ jobs:
 
     outputs:
       docker-image: >
-        ${{ env.IMAGE }}
+        ${{ env.IMAGE }}:${{ env.TAG }}
 
 #  deploy-q1:
 #    name: 'Deploy to q1'
