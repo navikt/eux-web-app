@@ -91,8 +91,6 @@ const mainPageAuth = async function(req, res, next) {
     (avdodFnr !== undefined && avdodFnr !== '' ? avdodFnr :  '-') + '/' +
     (fnr !== undefined && fnr !== '' ? fnr : '-') + '/'
 
-  const gjenny = req.originalUrl.indexOf('gjenny') > 0 ? 'GJENNY': '-' + '/'
-
   const loginPath = '/oauth2/login?redirect=/callback/' + newPath + gjenny
   logger.debug('mainPageAuth: loginPath = ' + loginPath)
   const {authorization} = req.headers
@@ -136,15 +134,6 @@ const handleCallback = (req, res) => {
   }
   if(aktoerId !== "" && sakId !== "" && vedtakId !== ""){
     redirectPath = redirectPath + "&vedtakId=" + vedtakId
-  }
-
-
-  if(paths[9] === 'GJENNY'){
-    if(fnr !== "" && sakId !== "" && sakType !== "" && avdodFnr !== ""){
-      redirectPath = '/gjenny/?fnr=' +  fnr  + '&sakId=' + sakId + '&sakType=' + sakType + '&avdodFnr=' + avdodFnr
-    } else {
-      redirectPath = '/gjenny/'
-    }
   }
 
   //logger.debug('handleCallback: redirecting to ' + redirectPath)
@@ -200,8 +189,8 @@ const apiProxy = function (target, pathRewrite) {
         "Authorization",
         res.locals.on_behalf_of_authorization
       )
-      delete proxyReq.headers['io.nais.wonderwall.session']
-      delete proxyReq.headers['JSESSIONID']
+      proxyReq.removeHeader('io.nais.wonderwall.session')
+      proxyReq.removeHeader('JSESSIONID')
     }
   })
 }
@@ -230,7 +219,7 @@ app.get('/callback/*', handleCallback);
 
 app.get('/internal/isAlive|isReady|metrics', (req, res) => res.sendStatus(200));
 
-app.use('/assets', express.static(path.join(__dirname, "build", "assets")));
+// app.use('/assets', express.static(path.join(__dirname, "build", "assets")));
 
 app.use('/static', express.static(path.join(__dirname, "build", "static")));
 
