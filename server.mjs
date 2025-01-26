@@ -189,8 +189,8 @@ const apiProxy = function (target, pathRewrite) {
         "Authorization",
         res.locals.on_behalf_of_authorization
       )
-      proxyReq.removeHeader('io.nais.wonderwall.session')
-      proxyReq.removeHeader('JSESSIONID')
+      //proxyReq.removeHeader('io.nais.wonderwall.session')
+      //proxyReq.removeHeader('JSESSIONID')
     }
   })
 }
