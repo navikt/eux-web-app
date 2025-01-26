@@ -111,34 +111,12 @@ const mainPageAuth = async function(req, res, next) {
 }
 
 const handleCallback = (req, res) => {
-  let paths = req.originalUrl.split('/')
+  //let paths = req.originalUrl.split('/')
   // /callback/123/456/789/012/Uføretrygd/ => ['', 'callback', '123', '456', '789', '012', 'Uføretrygd']
-  let aktoerId = (paths[2] === '-' ? '' : paths[2])
-  let sakId = (paths[3] === '-' ? '' : paths[3])
-  let kravId = (paths[4] === '-' ? '' : paths[4])
-  let vedtakId = (paths[5] === '-' ? '' : paths[5])
-  let sakType = (paths[6] === '-' ? '' : paths[6])
-  let avdodFnr = (paths[7] === '-' ? '' : paths[7])
-  let fnr = (paths[8] === '-' ? '' : paths[8])
-
-  let redirectPath = "/"
-  if(aktoerId !== "" && sakId !== ""){
-    redirectPath = '/?aktoerId=' +  aktoerId  + '&sakId=' + sakId
-  }
-
-  if(aktoerId !== "" && sakId !== "" && sakType !== ""){
-    redirectPath = redirectPath + "&sakType=" + sakType
-  }
-  if(aktoerId !== "" && sakId !== "" && kravId !== ""){
-    redirectPath = redirectPath + "&kravId=" + kravId
-  }
-  if(aktoerId !== "" && sakId !== "" && vedtakId !== ""){
-    redirectPath = redirectPath + "&vedtakId=" + vedtakId
-  }
 
   //logger.debug('handleCallback: redirecting to ' + redirectPath)
   logger.debug('handleCallback: redirecting to redirect path')
-  res.redirect(redirectPath)
+  res.redirect("/")
 }
 
 // require token
