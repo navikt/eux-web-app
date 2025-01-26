@@ -91,7 +91,7 @@ const mainPageAuth = async function(req, res, next) {
     (avdodFnr !== undefined && avdodFnr !== '' ? avdodFnr :  '-') + '/' +
     (fnr !== undefined && fnr !== '' ? fnr : '-') + '/'
 
-  const loginPath = '/oauth2/login?redirect=/callback/' + newPath + gjenny
+  const loginPath = '/oauth2/login?redirect=/callback/' + newPath
   logger.debug('mainPageAuth: loginPath = ' + loginPath)
   const {authorization} = req.headers
 
@@ -189,8 +189,8 @@ const apiProxy = function (target, pathRewrite) {
         "Authorization",
         res.locals.on_behalf_of_authorization
       )
-      //proxyReq.removeHeader('io.nais.wonderwall.session')
-      //proxyReq.removeHeader('JSESSIONID')
+      proxyReq.removeHeader('io.nais.wonderwall.session')
+      proxyReq.removeHeader('JSESSIONID')
     }
   })
 }
