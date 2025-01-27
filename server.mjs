@@ -225,7 +225,7 @@ app.use('/v4',
 
 // app.use('/websocket', socketProxy)
 
-app.use('*', mainPageAuth, express.static(path.join(__dirname, "build")));
+app.use('*', express.static(path.join(__dirname, "build")));
 
 // start express server on port 8080
 app.listen(8080, () => {
