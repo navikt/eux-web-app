@@ -16,7 +16,7 @@ import Modal from 'components/Modal/Modal'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import AvsenderFC from "applications/PDU1/Avsender/AvsenderFC"
-import {Avsender, PDU1} from 'declarations/pd'
+import {Avsender, PDU1, Pdu1Person} from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -77,6 +77,7 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     if (pdu1) {
       let newPdu1: PDU1 = _.cloneDeep(pdu1)
       const avsender: Avsender = newPdu1.avsender
+      const bruker: Pdu1Person = newPdu1.bruker
       const clonedValidation = _.cloneDeep(validation)
       const hasErrors = performValidation<ValidationPDU1EditProps>(clonedValidation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
@@ -98,6 +99,13 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
 
         newPdu1 = {
           ...newPdu1,
+          bruker : {
+            ...bruker,
+            adresse: {
+              ...bruker.adresse,
+              landnavn: countryCodeMap && bruker.adresse?.landkode ? countryCodeMap[bruker.adresse?.landkode as keyof typeof countryCodeMap] : bruker.adresse?.landkode
+            }
+          },
           avsender: {
             ...avsender,
             adresse :{
