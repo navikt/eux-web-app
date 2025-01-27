@@ -80,26 +80,6 @@ const validateAuthorization = async (authorization) => {
   }
 }
 
-const mainPageAuth = async function(req, res, next) {
-  const loginPath = '/oauth2/login?redirect=/callback/'
-  logger.info('mainPageAuth: loginPath = ' + loginPath)
-  const {authorization} = req.headers
-
-  // Not logged in - log in with wonderwall
-  if (!authorization) {
-    logger.info ('mainPageAuth: no auth, redirect to login ' + loginPath)
-    res.redirect(loginPath)
-  } else {
-    // Validate token and continue to app
-    if(await validateAuthorization(authorization)) {
-      next();
-    } else {
-      logger.debug('mainPageAuth: auth Invalid, 302 to login ' + loginPath)
-      res.redirect(loginPath)
-    }
-  }
-}
-
 const handleCallback = (req, res) => {
   //let paths = req.originalUrl.split('/')
   // /callback/123/456/789/012/Uføretrygd/ => ['', 'callback', '123', '456', '789', '012', 'Uføretrygd']
@@ -159,6 +139,8 @@ const apiProxy = function (target, pathRewrite) {
       )
       proxyReq.removeHeader('io.nais.wonderwall.session')
       proxyReq.removeHeader('JSESSIONID')
+      proxyReq.removeHeader('cookie')
+      req.cookies
     }
   })
 }
