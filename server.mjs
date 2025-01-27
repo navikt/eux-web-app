@@ -82,12 +82,12 @@ const validateAuthorization = async (authorization) => {
 
 const mainPageAuth = async function(req, res, next) {
   const loginPath = '/oauth2/login?redirect=/callback/'
-  logger.debug('mainPageAuth: loginPath = ' + loginPath)
+  logger.info('mainPageAuth: loginPath = ' + loginPath)
   const {authorization} = req.headers
 
   // Not logged in - log in with wonderwall
   if (!authorization) {
-    logger.debug ('mainPageAuth: no auth, redirect to login ' + loginPath)
+    logger.info ('mainPageAuth: no auth, redirect to login ' + loginPath)
     res.redirect(loginPath)
   } else {
     // Validate token and continue to app
