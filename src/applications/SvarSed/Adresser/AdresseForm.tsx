@@ -79,11 +79,10 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
     }, 'region')
   }
 
-  const setLand = (land: Country) => {
+  const setLand = (land: string) => {
     onAdressChanged({
       ...adresse,
-      landkode: land.value3.trim(),
-      land: land.label.trim()
+      landkode: land.trim(),
     }, 'land')
   }
 
@@ -194,7 +193,7 @@ const AdresseForm: React.FC<AdresseFormProps> = ({
               flagWave
               id={namespace + '-land'}
               label={t('label:land')}
-              onOptionSelected={(e: Country) => setLand(e)}
+              onOptionSelected={(e: Country) => setLand(e.value3)}
               required={required.indexOf('land') >= 0}
               values={adresse?.landkode}
             />

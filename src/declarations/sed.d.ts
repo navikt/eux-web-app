@@ -98,6 +98,7 @@ export interface Adresse {
   bygning?: string
   gate?: string
   land?: string
+  landnavn?: string
   landkode?: string
   postnummer?: string
   region?: string

@@ -3,7 +3,6 @@ import { FlexDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPdu1Template, getStoredPdu1AsJSON, jornalførePdu1, resetJornalførePdu1, setPdu1, updatePdu1 } from 'actions/pdu1'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { setValidation } from 'actions/validation'
-import AvsenderFC from 'applications/PDU1/Avsender/AvsenderFC'
 import CoverLetter from 'applications/PDU1/CoverLetter/CoverLetter'
 import Dagpenger from 'applications/PDU1/Dagpenger/Dagpenger'
 import Perioder from 'applications/PDU1/Perioder/Perioder'
@@ -16,7 +15,8 @@ import MainForm from 'applications/SvarSed/MainForm'
 import Modal from 'components/Modal/Modal'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
-import { PDU1 } from 'declarations/pd'
+import AvsenderFC from "applications/PDU1/Avsender/AvsenderFC"
+import {Avsender, PDU1} from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -37,6 +37,7 @@ export interface PDU1EditSelector {
   jornalførePdu1Response: any
   validation: Validation
   saksbehandlerNavn: string | undefined
+  countryCodeMap: {key?: string} | null | undefined
 }
 
 export interface PDU1EditProps {
@@ -49,7 +50,8 @@ const mapState = (state: State): any => ({
   pdu1: state.pdu1.pdu1,
   jornalførePdu1Response: state.pdu1.jornalførePdu1Response,
   validation: state.validation.status,
-  saksbehandlerNavn: state.app.navn
+  saksbehandlerNavn: state.app.navn,
+  countryCodeMap: state.app.countryCodeMap
 })
 
 const PDU1Edit: React.FC<PDU1EditProps> = ({
@@ -65,14 +67,16 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
     pdu1,
     jornalførePdu1Response,
     validation,
-    saksbehandlerNavn
+    saksbehandlerNavn,
+    countryCodeMap
   }: PDU1EditSelector = useAppSelector(mapState)
   const namespace = 'pdu1'
   const [completeModal, setCompleteModal] = useState<boolean>(false)
 
   const jornalførePdu1Clicked = (e: any): void => {
     if (pdu1) {
-      const newPdu1: PDU1 = _.cloneDeep(pdu1)
+      let newPdu1: PDU1 = _.cloneDeep(pdu1)
+      const avsender: Avsender = newPdu1.avsender
       const clonedValidation = _.cloneDeep(validation)
       const hasErrors = performValidation<ValidationPDU1EditProps>(clonedValidation, namespace, validatePDU1Edit, {
         pdu1: newPdu1
@@ -91,6 +95,17 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         delete newPdu1.__dokumentId
         delete newPdu1.__fagsak
         delete newPdu1.__fnr
+
+        newPdu1 = {
+          ...newPdu1,
+          avsender: {
+            ...avsender,
+            adresse :{
+              ...avsender.adresse,
+              landnavn: countryCodeMap && avsender.adresse?.landkode ? countryCodeMap[avsender.adresse?.landkode as keyof typeof countryCodeMap] : avsender.adresse?.landkode
+            }
+          }
+        }
 
         dispatch(jornalførePdu1(newPdu1))
         buttonLogger(e)
