@@ -1,5 +1,4 @@
 import {
-  SisteAnsettelseInfo,
   JaNei,
   Periode,
   Adresse
@@ -7,6 +6,11 @@ import {
 
 export interface PDPeriode extends Periode {
   info: string
+}
+
+export interface Pin {
+  landkode?: string
+  identifikator ?: string
 }
 
 export interface Pdu1Person {
@@ -19,21 +23,21 @@ export interface Pdu1Person {
   statsborgerskap: Array<string>
   etternavnVedFoedsel: string
   adresse: Adresse
-  utenlandskePin: Array<string>
+  utenlandskePin: Array<Pin>
 }
 
-export interface NavInfo {
-  enhetNavn: string,
-  enhetId: string,
-  adresse: Adresse,
-  tlf: string,
+export interface Avsender {
   saksbehandler: { // cover letter
     navn: string
-    enhet: string
-  }
+    enhetNavn: string
+  },
+  navEnhetNavn: string
+  navOrgNr: string
+  navTlf: string
+  adresse: Adresse
 }
 
-export interface AndreMottatteUtbetalinger {
+export interface Etterbetalinger {
   utbetalingEtterEndtArbeidsforhold: string // 4.1
   kompensasjonForEndtArbeidsforhold: string// 4.2
   kompensasjonForFeriedager: { // 4.3
@@ -47,6 +51,12 @@ export interface AndreMottatteUtbetalinger {
   _kompensasjonForFeriedagerCheckbox: boolean | undefined
   _avkallKompensasjonBegrunnelseCheckbox: boolean | undefined
   _andreYtelserSomMottasForTidenCheckbox: boolean | undefined
+}
+
+export interface Oppsigelsesgrunn {
+  typeGrunnAnsatt: string
+  annenGrunnAnsatt?: string
+  grunnSelvstendig?: string
 }
 
 export interface RettTilDagpenger {
@@ -72,22 +82,28 @@ export interface PDU1 {
   __fagsak?: string
   __fnr?: string
 
+  versjon?: string
   saksreferanse: string, // Nav => cover letter,
   fagsakId: string,
   dato: string, // Nav => cover letter, 7.10
   bruker: Pdu1Person, // Person, Adresse => cover letter, section 1
-  nav: NavInfo // NAV => cover letter, section 7
+  avsender: Avsender
+  info: string
+
   perioderAnsattMedForsikring: Array<PDPeriode>, // Perioder => 2.1.1
+  perioderAnsattUtenForsikring: Array<PDPeriode> // Perioder 2.2.1
   perioderSelvstendigMedForsikring: Array<PDPeriode>, // Perioder 2.1.2
+  perioderSelvstendigUtenForsikring?: Array<PDPeriode> // Perioder 2.2.2
   perioderAndreForsikringer: Array<PDPeriode> // Perioder 2.1.3
   perioderAnsettSomForsikret: Array<PDPeriode> // Perioder 2.1.4?
-  perioderAnsattUtenForsikring: Array<PDPeriode> // Perioder 2.2.1
-  perioderSelvstendigUtenForsikring?: Array<PDPeriode> // Perioder 2.2.2
   perioderLoennSomAnsatt: Array<PDPeriode> // Perioder 2.3.1
   perioderInntektSomSelvstendig: Array<PDPeriode> // Perioder 2.3.2
-  opphoer: SisteAnsettelseInfo // SisteAnsettelseInfo => 3
-  andreMottatteUtbetalinger: AndreMottatteUtbetalinger // Utbetaling => 4
   perioderDagpengerMottatt: Array<PDPeriode> // Dagpenger => 5
+
+  oppsigelsesgrunn: Oppsigelsesgrunn
+
+  etterbetalinger: Etterbetalinger // Utbetaling => 4
+
   rettTilDagpenger?: RettTilDagpenger // RettTilDagpenger => 6
   ikkeRettTilDagpenger?: IkkeRettTilDagpenger // RettTilDagpenger => 6
 }

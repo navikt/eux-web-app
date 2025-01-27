@@ -98,6 +98,7 @@ export interface Adresse {
   bygning?: string
   gate?: string
   land?: string
+  landkode?: string
   postnummer?: string
   region?: string
   type?: AdresseType
@@ -155,6 +156,7 @@ export interface FamilieRelasjon extends PeriodePeriode {
 
 export interface Pin {
   land ?: string
+  landkode?: string
   sektor ?: string
   identifikator ?: string
   institusjonsid ?: string
@@ -162,13 +164,15 @@ export interface Pin {
 }
 
 export interface Statsborgerskap {
-  land: string,
+  land?: string
+  landkode?: string
 }
 
 export interface Foedested {
   by?: string
   region?: string
   land?: string
+  landkode?: string
 }
 
 export interface PersonInfo {
@@ -476,6 +480,7 @@ export interface LokaleSakId {
   institusjonsnavn: string
   institusjonsid: string
   land: string
+  landkode?: string
 }
 
 export interface InntektOgTime {
@@ -805,10 +810,13 @@ export interface X008Sed extends XSed {
   begrunnelseType: string
   begrunnelseAnnen?: string
   kansellerSedId: string
+  kansellerSedtype?: string
 }
 
 export interface X011Sed extends XSed {
-  avvisSedId: string
+  avvisSedId?: string
+  avvisSedtype?: string
+  utstedelsesdato?: string
   begrunnelseType: string
   begrunnelseAnnen?: string
 }
@@ -834,6 +842,7 @@ export interface BesvarelseUmulig extends Purring {
 export interface X010Sed extends XSed {
   besvarelseKommer: Array<BesvarelseKommer>
   besvarelseUmulig: Array<BesvarelseUmulig>
+  besvarSedId?: string
 }
 
 export interface KlargjoerInfoItem {
@@ -844,4 +853,5 @@ export interface KlargjoerInfoItem {
 }
 export interface X012Sed extends XSed {
   klargjoerInfo: Array<KlargjoerInfoItem>
+  avklarInnholdISedId?: string
 }

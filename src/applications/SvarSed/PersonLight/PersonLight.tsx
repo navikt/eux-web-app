@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePersonLight, ValidationPersonLightProps } from './validation'
+import {isXSed} from "../../../utils/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -43,7 +44,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   const personLight: PersonLight | undefined = _.get(replySed, target) // undefined for a brief time when switching to 'familie'
   const namespace: string = `${parentNamespace}-${personID}-personlight`
 
-  const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.land === 'NO')
+  const norwegianPin: Pin | undefined = _.find(personLight?.pin, p => p.landkode === 'NOR')
   const [gradering, setGradering] = useState<string | null>(null)
 
   useUnmount(() => {
@@ -91,7 +92,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
       newPersonLight = {} as PersonLight
     }
     if (searchedPerson.fnr) {
-      const index = _.findIndex(newPersonLight?.pin, p => p.land === 'NO')
+      const index = _.findIndex(newPersonLight?.pin, p => p.landkode === 'NOR')
       if (index >= 0) {
         _.set(newPersonLight, `pin[${index}].identifikator`, searchedPerson.fnr)
       }
@@ -123,13 +124,13 @@ const PersonLightFC: React.FC<MainFormProps> = ({
     if (_.isNil(pins)) {
       pins = []
     }
-    const norwegianPinIndex = _.findIndex(pins, p => p.land === 'NO')
+    const norwegianPinIndex = _.findIndex(pins, p => p.landkode === 'NOR')
     if (norwegianPinIndex >= 0) {
       pins[norwegianPinIndex].identifikator = newPin!.trim()
     } else {
       pins.push({
         identifikator: newPin!.trim(),
-        land: 'NO'
+        landkode: 'NOR'
       })
     }
     dispatch(updateReplySed(`${target}.pin`, pins))
@@ -145,13 +146,15 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           {label}
         </Heading>
       </PaddedDiv>
-      <NorskPin
-        norwegianPin={norwegianPin}
-        error={validation[namespace + '-norskpin']?.feilmelding}
-        namespace={namespace}
-        onNorwegianPinSave={saveNorwegianPin}
-        onFillOutPerson={fillOutPerson}
-      />
+      {!isXSed(replySed) &&
+        <NorskPin
+          norwegianPin={norwegianPin}
+          error={validation[namespace + '-norskpin']?.feilmelding}
+          namespace={namespace}
+          onNorwegianPinSave={saveNorwegianPin}
+          onFillOutPerson={fillOutPerson}
+        />
+      }
       <VerticalSeparatorDiv />
       {gradering &&
         <PaddedDiv>

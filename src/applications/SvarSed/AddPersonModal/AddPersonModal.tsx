@@ -143,7 +143,7 @@ const AddPersonModal = <T extends StorageTypes>({
       let pin
       if(!_.isEmpty(_newPersonFnr?.trim())){
         pin = [{
-          land: "NO",
+          landkode: "NOR",
           identifikator: _newPersonFnr.trim()
         }]
       }

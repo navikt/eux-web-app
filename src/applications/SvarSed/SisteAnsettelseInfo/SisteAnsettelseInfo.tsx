@@ -223,7 +223,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationUtbetalingProps>(
       clonedValidation, namespace, validateUtbetaling, {
-        utbetaling: _editUtbetaling,
+        etterbetalinger: _editUtbetaling,
         index: _editIndex,
         personName
       })
@@ -243,7 +243,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
 
   const onAddNew = () => {
     const valid: boolean = _performValidation({
-      utbetaling: _newUtbetaling,
+      etterbetalinger: _newUtbetaling,
       personName
     })
     if (!!_newUtbetaling && valid) {

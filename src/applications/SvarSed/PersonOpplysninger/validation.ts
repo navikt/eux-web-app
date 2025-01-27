@@ -75,8 +75,8 @@ export const validatePersonopplysninger = (
     personName
   }))
 
-  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.land === 'NO')
-  const utenlandskePins: Array<Pin> = _.filter(personInfo?.pin, p => p.land !== 'NO')
+  const norwegianPin: Pin | undefined = _.find(personInfo?.pin, p => p.landkode === 'NOR')
+  const utenlandskePins: Array<Pin> = _.filter(personInfo?.pin, p => p.landkode !== 'NOR')
 
   if (!_.isEmpty(norwegianPin?.identifikator)) {
     const result = validateFnrDnrNpid(norwegianPin!.identifikator!)

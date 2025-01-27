@@ -1,8 +1,8 @@
 import { BodyLong, Heading, Link, Panel, ReadMore, Tooltip } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import {createFSed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
+import {createF002Sed, createFSed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
-import { Sak } from 'declarations/types'
+import {Sak, Sed} from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -57,6 +57,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     dispatch(createFSed(sedType, sak))
   }
 
+  const _createF002Sed = (sedType: string) => {
+    setWaitingForOperation(true)
+    const connectedSed: Sed = sak.sedListe.find((s: Sed) => s.sedType === 'F001')!
+    dispatch(createF002Sed(connectedSed, sedType, sak))
+  }
+
   const createDisabledSakshandlingFragment = (sakshandling: string) => {
     return(
       <>
@@ -78,8 +84,10 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
       onClickFunction = () => deleteCase();
     } else  if (sakshandling === "H001"){
       onClickFunction = () => _createH001Sed()
-    } else  if (sakshandling === "F002" || sakshandling === "F026" || sakshandling === "F027"){
+    } else  if (sakshandling === "F026" || sakshandling === "F027"){
       onClickFunction = () => _createFSed(sakshandling)
+    } else if (sakshandling === "F002"){
+      onClickFunction = () => _createF002Sed(sakshandling)
     }
 
     return(

@@ -13,7 +13,6 @@ export interface SakState {
   fnr: string | undefined
   institusjon: string | undefined
   institusjonList: Array<Institusjon> | undefined
-  institusjonListByLandkode: Array<Institusjon> | undefined
   landkoder: Array<string> | undefined
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
@@ -33,7 +32,6 @@ export const initialSakState: SakState = {
   familierelasjoner: [],
   fnr: undefined,
   institusjonList: undefined,
-  institusjonListByLandkode:undefined,
   institusjon: undefined,
   landkoder: undefined,
   landkode: undefined,
@@ -110,15 +108,8 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       return {
         ...state,
         institusjonList: (action as ActionWithPayload).payload,
-        landkoder: _.uniq((action as ActionWithPayload).payload.map((institusjon: any) => institusjon.landkode))
       }
 
-    case types.SAK_INSTITUSJONER_BY_LANDKODE_SET:
-      const landkode = (action as ActionWithPayload).payload
-      return {
-        ...state,
-        institusjonListByLandkode: state.institusjonList?.filter((i) => i.landkode === landkode)
-      }
 
     case types.SAK_FILLOUTINFO_RESET:
     case types.SAK_FILLOUTINFO_REQUEST:
@@ -136,7 +127,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_FILLOUTINFO_SUCCESS: {
       const fillOutInfoPayload: FillOutInfoPayload = (action as ActionWithPayload).payload
       const template = (action as ActionWithPayload).context.template
-      const norwegianPin = fillOutInfoPayload.bruker.personInfo.pin?.filter((p) => (p.land === 'NO'))
+      const norwegianPin = fillOutInfoPayload.bruker.personInfo.pin?.filter((p) => (p.landkode === 'NOR'))
       return {
         ...state,
         filloutinfo: {

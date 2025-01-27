@@ -1,44 +1,44 @@
-import { AndreMottatteUtbetalinger } from 'declarations/pd'
+import { Etterbetalinger } from 'declarations/pd'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { addError } from 'utils/validation'
 
 export interface ValidationUtbetalingProps {
-  utbetaling: AndreMottatteUtbetalinger | undefined
+  etterbetalinger: Etterbetalinger | undefined
 }
 
-export const validateUtbetaling = (
+export const validateEtterbetalinger = (
   v: Validation,
   namespace: string,
   {
-    utbetaling
+    etterbetalinger
   }: ValidationUtbetalingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if (utbetaling?._utbetalingEtterEndtArbeidsforholdCheckbox && _.isEmpty(utbetaling?.utbetalingEtterEndtArbeidsforhold)) {
+  if (etterbetalinger?._utbetalingEtterEndtArbeidsforholdCheckbox && _.isEmpty(etterbetalinger?.utbetalingEtterEndtArbeidsforhold)) {
     hasErrors.push(addError(v, {
       id: namespace + '-utbetalingEtterEndtArbeidsforhold',
       message: 'validation:emptyField'
     }))
   }
 
-  if (utbetaling?._kompensasjonForEndtArbeidsforholdCheckbox && _.isEmpty(utbetaling?.kompensasjonForEndtArbeidsforhold)) {
+  if (etterbetalinger?._kompensasjonForEndtArbeidsforholdCheckbox && _.isEmpty(etterbetalinger?.kompensasjonForEndtArbeidsforhold)) {
     hasErrors.push(addError(v, {
       id: namespace + '-kompensasjonForEndtArbeidsforhold',
       message: 'validation:emptyField'
     }))
   }
 
-  if (utbetaling?._kompensasjonForFeriedagerCheckbox) {
-    if (_.isEmpty(utbetaling?.kompensasjonForFeriedager?.antallDager)) {
+  if (etterbetalinger?._kompensasjonForFeriedagerCheckbox) {
+    if (_.isEmpty(etterbetalinger?.kompensasjonForFeriedager?.antallDager)) {
       hasErrors.push(addError(v, {
         id: namespace + '-kompensasjonForFeriedager-antallDager',
         message: 'validation:emptyField'
       }))
     }
 
-    if (_.isEmpty(utbetaling?.kompensasjonForFeriedager?.beloep)) {
+    if (_.isEmpty(etterbetalinger?.kompensasjonForFeriedager?.beloep)) {
       hasErrors.push(addError(v, {
         id: namespace + '-kompensasjonForFeriedager-beloep',
         message: 'validation:emptyField'
@@ -46,13 +46,13 @@ export const validateUtbetaling = (
     }
   }
 
-  if (utbetaling?._avkallKompensasjonBegrunnelseCheckbox && _.isEmpty(utbetaling?.avkallKompensasjonBegrunnelse)) {
+  if (etterbetalinger?._avkallKompensasjonBegrunnelseCheckbox && _.isEmpty(etterbetalinger?.avkallKompensasjonBegrunnelse)) {
     hasErrors.push(addError(v, {
       id: namespace + '-avkallKompensasjonBegrunnelse', message: 'validation:emptyField'
     }))
   }
 
-  if (utbetaling?._andreYtelserSomMottasForTidenCheckbox && _.isEmpty(utbetaling?.andreYtelserSomMottasForTiden)) {
+  if (etterbetalinger?._andreYtelserSomMottasForTidenCheckbox && _.isEmpty(etterbetalinger?.andreYtelserSomMottasForTiden)) {
     hasErrors.push(addError(v, {
       id: namespace + '-andreYtelserSomMottasForTiden',
       message: 'validation:emptyField'

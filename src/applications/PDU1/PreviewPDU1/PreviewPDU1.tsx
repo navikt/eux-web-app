@@ -59,12 +59,12 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
       })
       dispatch(setValidation(clonedvalidation))
       if (!hasErrors) {
-        if (!_.isEmpty(newPdu1.andreMottatteUtbetalinger)) {
-          delete newPdu1.andreMottatteUtbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._kompensasjonForFeriedagerCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._avkallKompensasjonBegrunnelseCheckbox
-          delete newPdu1.andreMottatteUtbetalinger._andreYtelserSomMottasForTidenCheckbox
+        if (!_.isEmpty(newPdu1.etterbetalinger)) {
+          delete newPdu1.etterbetalinger._utbetalingEtterEndtArbeidsforholdCheckbox
+          delete newPdu1.etterbetalinger._kompensasjonForEndtArbeidsforholdCheckbox
+          delete newPdu1.etterbetalinger._kompensasjonForFeriedagerCheckbox
+          delete newPdu1.etterbetalinger._avkallKompensasjonBegrunnelseCheckbox
+          delete newPdu1.etterbetalinger._andreYtelserSomMottasForTidenCheckbox
         }
 
         dispatch(previewPdu1(newPdu1))

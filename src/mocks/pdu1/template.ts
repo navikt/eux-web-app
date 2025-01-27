@@ -1,35 +1,40 @@
 export default {
-  dato: '24.06.2022',
+  dato: "12.11.2024",
   bruker: {
-    fnr: '31108121370',
-    adressebeskyttelse: "STRENGT_FORTROLIG",
-    kjoenn: 'M',
-    fornavn: 'ABSURD',
-    etternavn: 'VEGGPRYD',
-    foedselsdato: '31.10.1981',
+    fnr: "01015000232",
+    kjoenn: "K",
+    fornavn: "KORRUPT liten",
+    etternavn: "RISPBÆRBUSK",
+    foedselsdato: "1962-10-15",
     statsborgerskap: [
-      null
+      "SWE"
     ],
     adresse: {
-      gate: 'Bøveien 1117',
-      postnr: '8475',
-      poststed: 'STRAUMSJØEN',
-      land: 'NO'
-    }
-  },
-  nav: {
-    saksbehandler: {
-      navn: 'F_Z991455 E_Z991455',
-      enhet: 'NAV Arbeid og ytelser Innlandet'
+      gate: "TORGVEIEN 11",
+      postnr: "8470",
+      poststed: "BØ I VESTERÅLEN",
+      landkode: "NOR"
     },
-    enhetNavn: 'NAV Work and benefits',
-    enhetId: '889640782',
-    tlf: '+47 210 73 700',
+    utenlandskePin: [
+      {
+        identifikator: "122553622555",
+        landkode: "DEU"
+      }
+    ]
+  },
+  avsender: {
+    saksbehandler: {
+      navn: "Saks Behandler",
+      enhetNavn: "Nav Arbeid og ytelser Innlandet"
+    },
+    navOrgNr: "889640782",
+    navEnhetNavn: "Nav Work and benefits",
+    navTlf: "+47 210 73 700",
     adresse: {
-      gate: 'Postboks 6600 Etterstad',
-      postnr: '0607',
-      poststed: 'Oslo',
-      land: 'NO'
+      gate: "Postboks 6600 Etterstad",
+      postnr: "0607",
+      poststed: "Oslo",
+      landkode: "NOR"
     }
   }
 }

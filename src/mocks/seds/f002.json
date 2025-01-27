@@ -10,16 +10,19 @@
       "statsborgerskap": [
         {
           "land": "NO",
+          "landkode": "NOR",
           "fradato": "1901-01-01"
         },
         {
-          "land": "SE"
+          "land": "SE",
+          "landkode": "SWE"
         }
       ],
       "adressebeskyttelse": "STRENGT_FORTROLIG",
       "pin": [
         {
           "land": "NO",
+          "landkode": "NOR",
           "sektor": "Folkeregistrer",
           "identifikator": "10000000001",
           "institusjonsid": "NO:DEMO01",
@@ -27,6 +30,7 @@
         },
         {
           "land": "SE",
+          "landkode": "SWE",
           "sektor": "Registry",
           "identifikator": "20000000001",
           "institusjonsid": "US:DEMO01",
@@ -39,7 +43,8 @@
         "foedested": {
           "by": "Springfield",
           "region": "Springfield",
-          "land": "SE"
+          "land": "SE",
+          "landkode": "SWE"
         },
         "far": {
           "fornavn": "Abe",
@@ -58,6 +63,7 @@
         "postnummer": "89011",
         "by": "Springfield",
         "land": "SE",
+        "landkode": "SWE",
         "bygning": "",
         "region": "Springfield"
       }
@@ -251,13 +257,15 @@
       "foedselsdato": "1993-01-01",
       "statsborgerskap": [
         {
-          "land": "SE"
+          "land": "SE",
+          "landkode": "SWE"
         }
       ],
       "adressebeskyttelse": "HEMMELIG",
       "pin": [
         {
           "land": "DK",
+          "landkode": "DNK",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "20000000002",
           "institusjonsid": "F002 ektefelle institusjons ID 2",
@@ -270,7 +278,8 @@
         "foedested": {
           "by": "F002 ektefelle foedested by",
           "region": "F002 ektefelle foedested region",
-          "land": "NO"
+          "land": "NO",
+          "landkode": "NOR"
         },
         "far": {
           "fornavn": "F002 ektefelle far fornavn",
@@ -289,6 +298,7 @@
         "postnummer": "F002 ektefelle adresse1 postnummer",
         "by": "F002 ektefelle adresse1 by",
         "land": "NO",
+        "landkode": "NOR",
         "bygning": "F002 ektefelle adresse1 bygning",
         "region": "F002 ektefelle adresse1 region"
       },
@@ -298,6 +308,7 @@
         "postnummer": "F002 ektefelle adresse2 postnummer",
         "by": "F002 ektefelle adresse2 by",
         "land": "NO",
+        "landkode": "NOR",
         "bygning": "F002 ektefelle adresse2 bygning",
         "region": "F002 ektefelle adresse2 region"
       }
@@ -399,15 +410,18 @@
         "foedselsdato": "2036-01-01",
         "statsborgerskap": [
           {
-            "land": "NO"
+            "land": "NO",
+            "landkode": "NOR"
           },
           {
-            "land": "SE"
+            "land": "SE",
+            "landkode": "SWE"
           }
         ],
         "pin": [
           {
             "land": "NO",
+            "landkode": "NOR",
             "sektor": "yrkesskade_og_yrkessykdom",
             "identifikator": "10000000004",
             "institusjonsid": "F002 barn1 institusjons ID 1",
@@ -415,6 +429,7 @@
           },
           {
             "land": "SE",
+            "landkode": "SWE",
             "sektor": "yrkesskade_og_yrkessykdom",
             "identifikator": "20000000004",
             "institusjonsid": "F002 barn1 institusjons ID 2",
@@ -427,7 +442,8 @@
           "foedested": {
             "by": "F002 barn1 foedested by",
             "region": "F002 barn1 foedested region",
-            "land": "NO"
+            "land": "NO",
+            "landkode": "NOR"
           },
           "far": {
             "fornavn": "F002 barn1 far fornavn",
@@ -446,6 +462,7 @@
           "postnummer": "F002 barn1 adresse1 postnummer",
           "by": "F002 barn1 adresse1 by",
           "land": "NO",
+          "landkode": "NOR",
           "bygning": "F002 barn1 adresse1 bygning",
           "region": "F002 barn1 adresse1 region"
         },
@@ -455,6 +472,7 @@
           "postnummer": "F002 barn1 adresse2 postnummer",
           "by": "F002 barn1 adresse2 by",
           "land": "NO",
+          "landkode": "NOR",
           "bygning": "F002 barn1 adresse2 bygning",
           "region": "F002 barn1 adresse2 region"
         }
@@ -507,15 +525,18 @@
         "foedselsdato": "2036-01-01",
         "statsborgerskap": [
           {
-            "land": "NO"
+            "land": "NO",
+            "landkode": "NOR"
           },
           {
-            "land": "SE"
+            "land": "SE",
+            "landkode": "SWE"
           }
         ],
         "pin": [
           {
             "land": "NO",
+            "landkode": "NOR",
             "sektor": "yrkesskade_og_yrkessykdom",
             "identifikator": "10000000004",
             "institusjonsid": "F002 barn1 institusjons ID 1",
@@ -523,6 +544,7 @@
           },
           {
             "land": "SE",
+            "landkode": "SWE",
             "sektor": "yrkesskade_og_yrkessykdom",
             "identifikator": "20000000004",
             "institusjonsid": "F002 barn1 institusjons ID 2",
@@ -535,7 +557,8 @@
           "foedested": {
             "by": "F002 barn1 foedested by",
             "region": "F002 barn1 foedested region",
-            "land": "NO"
+            "land": "NO",
+            "landkode": "NOR"
           },
           "far": {
             "fornavn": "F002 barn1 far fornavn",
@@ -554,6 +577,7 @@
           "postnummer": "F002 barn1 adresse1 postnummer",
           "by": "F002 barn1 adresse1 by",
           "land": "NO",
+          "landkode": "NOR",
           "bygning": "F002 barn1 adresse1 bygning",
           "region": "F002 barn1 adresse1 region"
         },
@@ -563,6 +587,7 @@
           "postnummer": "F002 barn1 adresse2 postnummer",
           "by": "F002 barn1 adresse2 by",
           "land": "NO",
+          "landkode": "NOR",
           "bygning": "F002 barn1 adresse2 bygning",
           "region": "F002 barn1 adresse2 region"
         }
@@ -644,6 +669,7 @@
         "postnummer": "F002 kontoOrdinaer postnummer",
         "by": "F002 kontoOrdinaer by",
         "land": "NO",
+        "landkode": "NOR",
         "bygning": "F002 kontoOrdinaer bygning",
         "region": "F002 kontoOrdinaer region"
       }

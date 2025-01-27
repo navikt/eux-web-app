@@ -73,7 +73,8 @@ describe('actions/sak', () => {
 
   it('getInstitusjoner()', () => {
     const buctype = 'P_BUC_MOCK'
-    sakActions.getInstitusjoner(buctype)
+    const landkode = "NOR"
+    sakActions.getInstitusjoner(buctype, landkode)
     expect(call)
       .toBeCalledWith(expect.objectContaining({
         type: {
@@ -81,7 +82,7 @@ describe('actions/sak', () => {
           success: types.SAK_INSTITUSJONER_SUCCESS,
           failure: types.SAK_INSTITUSJONER_FAILURE
         },
-        url: sprintf(urls.API_ALL_INSTITUSJONER_URL, { buctype })
+        url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
   })
 

@@ -1,7 +1,6 @@
 import { validateAdresse } from 'applications/PDU1/Person/Adresse/validation'
 import { validateUtenlandskPins } from 'components/UtenlandskPins/validation'
 import { Pdu1Person } from 'declarations/pd'
-import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import { checkIfNotEmpty } from 'utils/validation'
 import { validateStatsborgerskaper } from './Statsborgerskap/validation'
@@ -44,13 +43,7 @@ export const validatePerson = (
   }))
 
   hasErrors.push(validateUtenlandskPins(v, namespace + '-utenlandskePin', {
-    utenlandskePins: person?.utenlandskePin?.map((pin: string) => {
-      const els = pin.split(/\s+/)
-      return {
-        land: els[0],
-        identifikator: els[1]
-      } as Pin
-    })
+    utenlandskePins: person?.utenlandskePin
   }))
 
   hasErrors.push(validateStatsborgerskaper(v, namespace + '-statsborgerskap', { statsborgerskaper: person?.statsborgerskap ? person?.statsborgerskap.filter((s) => s) : person?.statsborgerskap}))

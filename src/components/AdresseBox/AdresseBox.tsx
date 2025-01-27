@@ -5,6 +5,8 @@ import { Adresse } from 'declarations/sed'
 import React from 'react'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { useTranslation } from 'react-i18next'
+import {State} from "../../declarations/reducers";
+import {useAppSelector} from "../../store";
 
 interface AdresseBoxProps {
   adresse: Adresse | null | undefined
@@ -14,8 +16,18 @@ interface AdresseBoxProps {
   seeType?: boolean
 }
 
+export interface AdresseBoxSelector {
+  countryCodeMap: {key?: string} | null | undefined
+}
+
+const mapState = (state: State): AdresseBoxSelector => ({
+  countryCodeMap: state.app.countryCodeMap
+})
+
 const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeType = false }: AdresseBoxProps) => {
+  const { countryCodeMap } = useAppSelector(mapState)
   const countryData = CountryData.getCountryInstance('nb')
+  const country = countryData.findByValue3(adresse?.landkode)
   const { t } = useTranslation()
   if (!adresse) {
     return null
@@ -46,7 +58,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
       {oneLine && ', \u00A0'}
       <BodyLong>
         {adresse?.region ? adresse?.region + ', ' : ''}
-        {countryData.findByValue(adresse?.land)?.label ?? adresse?.land}
+        {country ? country.label : countryCodeMap && adresse?.landkode ? countryCodeMap[adresse?.landkode as keyof typeof countryCodeMap] : adresse?.landkode}
       </BodyLong>
     </TransparentPanel>
   )

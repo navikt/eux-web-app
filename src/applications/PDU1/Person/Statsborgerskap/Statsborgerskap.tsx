@@ -11,8 +11,7 @@ import {
   PaddedHorizontallyDiv, PileDiv,
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
-import CountryData, { Country, CountryFilter } from '@navikt/land-verktoy'
-import CountrySelect from '@navikt/landvelger'
+import CountryData, { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -38,12 +37,15 @@ import {
 } from './validation'
 import Modal from "../../../../components/Modal/Modal";
 import {setStatsborgerskapModalShown} from "../../../../actions/pdu1";
+import CountryDropdown from "../../../../components/CountryDropdown/CountryDropdown";
 
 export interface StatsborgerskapSelector {
   statsborgerskapModalShown: boolean
+  countryCodeMap: {key?: string} | null | undefined
 }
 const mapStatsborgerskapState = (state: State): StatsborgerskapSelector => ({
-  statsborgerskapModalShown: state.pdu1.statsborgerskapModalShown
+  statsborgerskapModalShown: state.pdu1.statsborgerskapModalShown,
+  countryCodeMap: state.app.countryCodeMap
 })
 
 const mapState = (state: State): MainFormSelector => ({
@@ -57,7 +59,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
-  const { statsborgerskapModalShown } = useAppSelector(mapStatsborgerskapState)
+  const { statsborgerskapModalShown, countryCodeMap } = useAppSelector(mapStatsborgerskapState)
 
   const dispatch = useAppDispatch()
   const target = 'bruker.statsborgerskap'
@@ -179,6 +181,8 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
 
+    const country = countryData.findByValue3(statsborgerskap)
+
     if(!inEditMode && !statsborgerskap) return
     return (
       <RepeatableRow
@@ -194,22 +198,22 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
           <Column>
             {inEditMode
               ? (
-                <CountrySelect
-                  ariaLabel={t('label:statsborgerskap')}
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-statsborgerskap'}
-                  error={_v[_namespace + '-statsborgerskap']?.feilmelding}
-                  flagWave
-                  key={_namespace + '-statsborgerskap' + _statsborgerskap}
-                  id={_namespace + '-statsborgerskap'}
-                  label={t('label:land')}
-                  hideLabel={false}
-                  includeList={CountryFilter.STANDARD({ useUK: false })}
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value, index)}
-                  required
-                  values={_statsborgerskap}
-                />
+                  <CountryDropdown
+                    ariaLabel={t('label:statsborgerskap')}
+                    closeMenuOnSelect
+                    data-testid={_namespace + '-statsborgerskap'}
+                    error={_v[_namespace + '-statsborgerskap']?.feilmelding}
+                    flagWave
+                    key={_namespace + '-statsborgerskap' + _statsborgerskap}
+                    id={_namespace + '-statsborgerskap'}
+                    label={t('label:land')}
+                    hideLabel={false}
+                    countryCodeListName="verdensLand"
+                    menuPortalTarget={document.body}
+                    onOptionSelected={(e: Country) => onStatsborgerskapSelected(e.value3, index)}
+                    required
+                    values={_statsborgerskap}
+                  />
                 )
               : (
                   <FormText
@@ -217,9 +221,9 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
                     error={_v[_namespace + '-statsborgerskap']?.feilmelding}
                   >
                     <FlexCenterDiv>
-                      <Flag size='S' country={_statsborgerskap ?? ''} />
+                      <Flag size='S' country={country ? country.value : "XU"} />
                       <HorizontalSeparatorDiv />
-                      {countryData.findByValue(_statsborgerskap)?.label ?? _statsborgerskap}
+                      {country ? country.label : countryCodeMap && _statsborgerskap ? countryCodeMap[_statsborgerskap as keyof typeof countryCodeMap] : _statsborgerskap}
                     </FlexCenterDiv>
                   </FormText>
                 )}

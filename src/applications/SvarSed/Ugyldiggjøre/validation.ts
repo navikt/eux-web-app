@@ -18,13 +18,6 @@ export const validateUgyldiggjøre = (
   const hasErrors: Array<boolean> = []
 
   hasErrors.push(checkIfNotEmpty(v, {
-    needle: (replySed as X008Sed).kansellerSedId,
-    id: namespace + '-kansellerSedId',
-    message: 'validation:noId',
-    personName
-  }))
-
-  hasErrors.push(checkIfNotEmpty(v, {
     needle: replySed.begrunnelseType,
     id: namespace + '-begrunnelseType',
     message: 'validation:noBegrunnelse',

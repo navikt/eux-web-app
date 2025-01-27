@@ -1,109 +1,123 @@
 export default {
-  dato: '23.05.2022',
-  bruker: {
-    fnr: '31108121370',
-    adressebeskyttelse: "STRENGT_FORTROLIG",
-    kjoenn: 'M',
-    fornavn: 'ABSURD',
-    etternavn: 'VEGGPRYD',
-    foedselsdato: '31.10.1981',
-    statsborgerskap: ['SE'],
-    adresse: {
-      gate: 'Bøveien 111',
-      postnr: '8475',
-      poststed: 'STRAUMSJØEN',
-      land: 'SE'
+  "versjon": "2",
+  "saksreferanse": "1/2024",
+  "fagsakId": "12341234",
+  "dato": "24.09.2024",
+  "bruker": {
+    "fnr": "01015000232",
+    "fornavn": "KORRUPT",
+    "etternavn": "RISPBÆRBUSK",
+    "adresse": {
+      "gate": "Omvei 1",
+      "postnr": "1234",
+      "poststed": "Poststedet",
+      "landkode": "NOR"
+    },
+    "foedselsdato": "1962-10-15",
+    "kjoenn": "K",
+    "statsborgerskap": [
+      "NOR"
+    ],
+    "utenlandskePin": [
+      {
+        "identifikator": "55-555-5555",
+        "landkode": "DNK"
+      }
+    ]
+  },
+  "avsender": {
+    "navEnhetNavn": "Nav Work and benefits",
+    "navOrgNr": "889640782",
+    "adresse": {
+      "gate": "Postboks 6600 Etterstad",
+      "postnr": "0607",
+      "poststed": "Oslo",
+      "landkode": "NOR"
+    },
+    "navTlf": "+47 210 73 700",
+    "saksbehandler": {
+      "navn": "Saks Behandler",
+      "enhetNavn": "Nav Arbeid og ytelser Innlandet"
     }
   },
-  nav: {
-    saksbehandler: {
-      navn: 'F_Z991455 E_Z991455',
-      enhet: 'NAV Arbeid og ytelser Innlandet'
-    },
-    enhetNavn: 'NAV Work and benefits',
-    enhetId: '889640782',
-    tlf: '+47 210 73 700',
-    adresse: {
-      gate: 'Postboks 6600 Etterstad',
-      postnr: '0607',
-      poststed: 'Oslo',
-      land: 'NO'
+  "info": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11",
+  "perioderAnsattMedForsikring": [
+    {
+      "startdato": "2001-01-13",
+      "sluttdato": "2002-02-13"
     }
+  ],
+  "perioderAnsattUtenForsikring": [
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "info": "aktivitet...2"
+    }
+  ],
+  "perioderSelvstendigUtenForsikring": [
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "info": "aktivitet...3"
+    }
+  ],
+  "perioderAndreForsikringer": [
+    {
+      "startdato": "2013-03-03",
+      "sluttdato": "2014-04-04",
+      "info": "annet"
+    }
+  ],
+  "perioderAnsettSomForsikret": [
+    {
+      "startdato": "2003-03-03",
+      "sluttdato": "2004-04-04",
+      "info": "Under utdanning"
+    }
+  ],
+  "perioderLoennSomAnsatt": [
+    {
+      "startdato": "2003-03-03",
+      "sluttdato": "2004-04-04",
+      "info": "Utlånt"
+    }
+  ],
+  "perioderInntektSomSelvstendig": [
+    {
+      "startdato": "2010-01-01",
+      "sluttdato": "2020-02-02",
+      "info": "almisser, lommerusk og vekslepenger"
+    }
+  ],
+  "oppsigelsesgrunn": {
+    "typeGrunnAnsatt": "avsluttet_etter_felles_overenskomst",
+    "annenGrunnAnsatt": "Gikk lei",
+    "grunnSelvstendig": "Fikk nok"
   },
-  saksreferanse: '140274852',
-  perioderAnsattMedForsikring: [{
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'åpen_sluttdato',
-    info: 'trall3'
-  }, {
-    startdato: '2019-01-02',
-    sluttdato: '2019-01-02',
-    info: 'trall2'
-  }, {
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'ukjent_sluttdato',
-    info: 'trall1'
-  }],
-  opphoer: {
-    typeGrunnOpphoerAnsatt: 'oppsagt_av_arbeidsgiver'
-  },
-  andreMottatteUtbetalinger: {
-    utbetalingEtterEndtArbeidsforhold: '1',
-    kompensasjonForFeriedager: {
-      beloep: '3',
-      antallDager: '4'
+  "etterbetalinger": {
+    "utbetalingEtterEndtArbeidsforhold": "100 NOK",
+    "kompensasjonForEndtArbeidsforhold": "100 NOK",
+    "kompensasjonForFeriedager": {
+      "antallDager": 5,
+      "beloep": "1000 NOK"
     },
-    kompensasjonForEndtArbeidsforhold: '2',
-    avkallKompensasjonBegrunnelse: '5',
-    andreYtelserSomMottasForTiden: '6'
+    "avkallKompensasjonBegrunnelse": "Hadde glemt det",
+    "andreYtelserSomMottasForTiden": "Ingen"
   },
-  perioderDagpengerMottatt: [{
-    startdato: '2019-01-01',
-    sluttdato: '2019-01-01',
-    info: 'sfdsfsdf6000'
-  }, {
-    startdato: '2019-01-01',
-    info: 'sfdsfsdf',
-    sluttdato: '2019-01-01'
-  }],
-  ikkeRettTilDagpenger: {
-    ihhTilLovgivning: 'ja',
-    ikkeSoekt: 'ja'
+  "perioderDagpengerMottatt": [
+    {
+      "startdato": "2014-04-04",
+      "sluttdato": "2015-05-05"
+    }
+  ],
+  "rettTilDagpenger": {
+    "startdato": "2013-03-03",
+    "sluttdato": "2014-04-04",
+    "ihhTilArtikkel64": "ja",
+    "ihhTilArtikkel65": "ja"
   },
-  info: '1441679',
-  perioderAndreForsikringer: [{
-    startdato: '2019-01-02',
-    sluttdato: '2019-01-02',
-    info: 'trall2'
-  }],
-  perioderSelvstendigMedForsikring: [{
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'ukjent_sluttdato',
-    info: 'trall2'
-  }],
-  perioderAnsettSomForsikret: [{
-    info: '3333',
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'åpen_sluttdato'
-  }],
-  perioderSelvstendigUtenForsikring: [{
-    info: '443346',
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'åpen_sluttdato'
-  }],
-  perioderLoennSomAnsatt: [{
-    info: '235235235',
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'åpen_sluttdato'
-  }],
-  perioderInntektSomSelvstendig: [{
-    info: '4t4634634',
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'ukjent_sluttdato'
-  }],
-  perioderAnsattUtenForsikring: [{
-    startdato: '2019-01-02',
-    aapenPeriodeType: 'åpen_sluttdato',
-    info: 'sfsdfsdfs'
-  }]
+  "ikkeRettTilDagpenger": {
+    "ihhTilLovgivning": "ja",
+    "ikkeSoekt": "ja"
+  }
 }
