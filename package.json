@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.6.0-TEN-966-READ-WRITE-FHUX-SED",
+  "version": "9.6.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -223,6 +223,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@9.6.0-TEN-966-READ-WRITE-FHUX-SED",
+  "_id": "neessi@9.6.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
