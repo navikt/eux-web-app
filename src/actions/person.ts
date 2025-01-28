@@ -32,6 +32,7 @@ export const searchPerson = (
   })
 }
 
+
 export const searchPersonRelated = (
   fnr: string
 ): ActionWithPayload => {
@@ -46,6 +47,21 @@ export const searchPersonRelated = (
       request: types.PERSON_RELATERT_SEARCH_REQUEST,
       success: types.PERSON_RELATERT_SEARCH_SUCCESS,
       failure: types.PERSON_RELATERT_SEARCH_FAILURE
+    }
+  })
+}
+
+export const searchFamilieRelasjoner = (
+  fnr: string
+): ActionWithPayload => {
+  return call({
+    url: sprintf(urls.API_FAMILIERELASJONER_URL, { fnr }),
+    expectedPayload: mockPerson,
+    cascadeFailureError: true,
+    type: {
+      request: types.FAMILIERELASJONER_SEARCH_REQUEST,
+      success: types.FAMILIERELASJONER_SEARCH_SUCCESS,
+      failure: types.FAMILIERELASJONER_SEARCH_FAILURE
     }
   })
 }
