@@ -1,0 +1,76 @@
+kind: Application
+apiVersion: nais.io/v1alpha1
+metadata:
+  name: {{name}}
+  namespace: eessibasis
+  labels:
+    team: eessibasis
+spec:
+  azure:
+    sidecar:
+      enabled: true
+      autoLogin: true
+      autoLoginIgnorePaths:
+        - /api/**
+        - /v2/**
+        - /v3/**
+        - /v4/**
+    application:
+      enabled: true
+      claims:
+        groups:
+          - id: "{{ aad.groups.basis }}"
+          - id: "{{ aad.groups.yrkesskade }}"
+          - id: "{{ aad.groups.aap }}"
+          - id: "{{ aad.groups.sykepenger }}"
+          - id: "{{ aad.groups.pensjon }}"
+          - id: "{{ aad.groups.ufore }}"
+          - id: "{{ aad.groups.sykdom }}"
+          - id: "{{ aad.groups.tilbakekreving }}"
+          - id: "{{ aad.groups.diverse }}"
+          - id: "{{ aad.groups.familie }}"
+          - id: "{{ aad.groups.clerk }}"
+          - id: "{{ aad.groups.arbeidsledighet }}"
+          - id: "{{ aad.groups.horisontal }}"
+          - id: "{{ aad.groups.sammenlegging }}"
+          - id: "{{ aad.groups.sykemelding }}"
+          - id: "{{ aad.groups.lovvalg }}"
+          - id: "{{ aad.groups.kode6 }}"
+        extra:
+          - NAVident
+  accessPolicy:
+    outbound:
+      rules:
+        - application: {{ application.eux-neessi-backend.name }}
+  env:
+    - name: NEESSI_BACKEND_URL
+      value: http://{{ application.eux-neessi-backend.name }}
+    - name: NEESSI_BACKEND_TOKEN_SCOPE
+      value: {{ application.eux-neessi-backend.scope }}
+  image: {{ image }}
+  ingresses:
+    - {{ ingress.intern }}
+    - {{ ingress.ansatt }}
+  liveness:
+    path: internal/isAlive
+    port: 8080
+    initialDelay: 45
+  port: 8080
+  prometheus:
+    enabled: true
+    path: internal/metrics
+  readiness:
+    path: internal/isReady
+    port: 8080
+    initialDelay: 45
+  replicas:
+    min: 1
+    max: 1
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 128Mi
+    requests:
+      cpu: 200m
+      memory: 128Mi

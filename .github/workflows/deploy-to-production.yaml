@@ -1,0 +1,36 @@
+name: Deploy to prod
+run-name: Deploy version ${{ github.event.inputs.version }} to NAIS, dev-gcp, prod
+
+permissions:
+  deployments: write
+  packages: read
+  contents: read
+  id-token: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version to deploy'
+        required: true
+
+env:
+  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
+  READER_TOKEN: ${{ secrets.READER_TOKEN }}
+
+jobs:
+  deploy-prod:
+    name: 'Deploy to prod'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 'Calling nais deploy action for prod'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais.yaml
+          VAR: "image=${{ env.IMAGE }}:${{ github.event.inputs.version }}"
+          VARS: .nais/prod.yaml
+          PRINT_PAYLOAD: true
