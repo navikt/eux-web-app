@@ -470,7 +470,34 @@ const SEDNew = (): JSX.Element => {
               person={personMedFamilie}
             />
           </Column>
-          <Column/>
+          <Column>
+            <PersonSearch
+              key={namespace + '-fnr-' + valgtFnr}
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
+              data-testid={namespace + '-fnr'}
+              error={validation[namespace + '-fnr']?.feilmelding}
+              searchingPerson={searchingPerson}
+              id={namespace + '-fnr'}
+              initialFnr=''
+              value={valgtFnr}
+              parentNamespace={namespace}
+              onFnrChange={() => {
+                if (isFnrValid) {
+                  setIsFnrValid(false)
+                  dispatch(appActions.appReset()) // cleans person and sak reducer
+                }
+              }}
+              onPersonFound={() => {
+                setIsFnrValid(true)
+              }}
+              onSearchPerformed={(fnr: string) => {
+                dispatch(personActions.searchFamilieRelasjoner(fnr))
+              }}
+              person={person}
+            />
+          </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">
