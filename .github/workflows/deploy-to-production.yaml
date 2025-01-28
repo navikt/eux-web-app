@@ -5,7 +5,7 @@ permissions:
   deployments: write
   packages: read
   contents: read
-  id-token: read
+  id-token: write
 
 on:
   workflow_dispatch:
