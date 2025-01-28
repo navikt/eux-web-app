@@ -41,6 +41,7 @@ export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'
 export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 export const API_PDL_PERSON_URL = API_BASE_URL + '/person/%(fnr)s/personInfo'
+export const API_FAMILIERELASJONER_URL = API_BASE_URL + '/person/%(fnr)s/familierelasjoner'
 export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'
 
 // Saksbehandler
