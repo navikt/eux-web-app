@@ -33,7 +33,7 @@ describe('pages/SEDNew/SEDNew', () => {
     gettingFagsaker: false,
     creatingFagsak: false,
     gettingInstitusjoner: false,
-    
+
     valgtBucType: undefined,
     valgteFamilieRelasjoner: [],
     fagsaker: undefined,
