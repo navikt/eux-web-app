@@ -1,5 +1,5 @@
 import { Alert, Loader, Search } from '@navikt/ds-react'
-import { Person } from 'declarations/types'
+import {Person, PersonMedFamilie} from 'declarations/types'
 import _ from 'lodash'
 import { PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
@@ -19,7 +19,7 @@ export interface PersonSearchProps {
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
-  person?: Person | null | undefined
+  person?: Person | PersonMedFamilie | null | undefined
   value: string | undefined
 }
 
@@ -40,7 +40,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [fnr, setFnr] = useState<string>(initialFnr ?? value)
-  const [_person, setPerson] = useState<Person | null | undefined>(undefined)
+  const [_person, setPerson] = useState<Person | PersonMedFamilie | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
 
@@ -48,7 +48,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     setFnr(value ?? initialFnr)
   }, [value])
 
-  const isPersonValid = useCallback((person: Person) =>
+  const isPersonValid = useCallback((person: Person | PersonMedFamilie) =>
     person?.fnr !== undefined,
   []
   )

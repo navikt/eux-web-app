@@ -1,7 +1,7 @@
 import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
-import {JaNei, ReplySed, Statsborgerskap} from 'declarations/sed'
+import {Adresse, JaNei, PersonEktefelle, ReplySed, Statsborgerskap} from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
@@ -120,6 +120,25 @@ export interface Person {
   relasjoner?: Array<OldFamilieRelasjon>
   adressebeskyttelse?: string
   statsborgerskapList?: Array<Statsborgerskap>
+}
+
+export interface PersonInfoPDL {
+  fnr?: string
+  foedselsdato?: string
+  fornavn?: string
+  mellomnavn?: string
+  forOgMellomnavn?: string
+  etternavn?: string
+  kjoenn?: string
+  statsborgerskap?: Array<string>
+  adresser?: Array<Adresse>
+  utenlandskePin?: Array<Pin>
+  adressebeskyttelse?: string
+}
+
+export interface PersonMedFamilie extends PersonInfoPDL {
+  ektefelle?: PersonInfoPDL
+  barn?: Array<PersonInfoPDL>
 }
 
 export interface Fagsak {
