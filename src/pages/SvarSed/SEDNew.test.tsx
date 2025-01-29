@@ -46,6 +46,7 @@ describe('pages/SEDNew/SEDNew', () => {
     valgtLandkode: undefined,
     opprettetSak: undefined,
     person: undefined,
+    personMedFamilie: undefined,
     personRelatert: undefined,
     valgtSaksId: undefined,
     valgtSedType: undefined,
