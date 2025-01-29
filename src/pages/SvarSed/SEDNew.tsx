@@ -268,15 +268,16 @@ const SEDNew = (): JSX.Element => {
     if (!hasErrors) {
       dispatch(sakActions.createSak({
         buctype: valgtBucType,
-        fnr: valgtFnr,
-        landKode: valgtLandkode,
-        institusjonsID: valgtInstitusjon,
-        fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
         sedtype: valgtSedType,
-        sektor: valgtSektor,
-        tema: valgtTema,
+        mottakerId: valgtInstitusjon,
+        mottakerlandkode: valgtLandkode,
+        fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
+        enhet: valgtUnit,
+        bruker: {
+          fnr: valgtFnr
+        },
+
         familierelasjoner: valgteFamilieRelasjoner,
-        enhet: valgtUnit
       }))
     }
   }
@@ -521,11 +522,11 @@ const SEDNew = (): JSX.Element => {
                   {t('label:velg')}
                 </option>
                 {sektor &&
-                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                        <option value={e.enhetId} key={e.enhetId}>
-                          {e.navn}
-                        </option>
-                      ))}
+                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                      <option value={e.enhetId} key={e.enhetId}>
+                        {e.navn}
+                      </option>
+                    ))}
               </Select>
             )}
             <VerticalSeparatorDiv />
