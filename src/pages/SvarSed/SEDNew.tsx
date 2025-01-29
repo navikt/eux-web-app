@@ -29,7 +29,6 @@ import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
 import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
-import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
@@ -48,7 +47,7 @@ import {
   Kodeverk,
   OldFamilieRelasjon,
   OpprettetSak,
-  Person,
+  Person, PersonMedFamilie,
   Sak, Saks,
   Sed,
   ServerInfo,
@@ -66,6 +65,7 @@ import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
 import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
+import PersonPanel from "../../applications/OpprettSak/PersonPanel/PersonPanel";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -92,8 +92,10 @@ export interface SEDNewSelector {
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<string> | undefined
   opprettetSak: OpprettetSak | undefined
+
   person: Person | null | undefined
   personRelatert: Person | null | undefined
+  personMedFamilie: PersonMedFamilie | null | undefined
   sedtyper: Array<Kodeverk> | undefined
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined
@@ -143,6 +145,7 @@ const mapState = (state: State): SEDNewSelector => ({
 
   person: state.person.person,
   personRelatert: state.person.personRelatert,
+  personMedFamilie: state.person.personMedFamilie,
 
   valgteArbeidsperioder: state.sak.arbeidsperioder,
   valgtBucType: state.sak.buctype,
@@ -203,8 +206,11 @@ const SEDNew = (): JSX.Element => {
     institusjoner,
     kodemaps,
     opprettetSak,
+
     person,
     personRelatert,
+    personMedFamilie,
+
     sektor,
     tema,
     valgteArbeidsperioder,
@@ -472,44 +478,19 @@ const SEDNew = (): JSX.Element => {
               onSearchPerformed={(fnr: string) => {
                 dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
-                dispatch(personActions.searchPerson(fnr))
+                dispatch(personActions.searchPersonMedFamilie(fnr))
               }}
-              person={person}
+              person={personMedFamilie}
             />
           </Column>
-          <Column>
-            <PersonSearch
-              key={namespace + '-fnr-' + valgtFnr}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
-              data-testid={namespace + '-fnr'}
-              error={validation[namespace + '-fnr']?.feilmelding}
-              searchingPerson={searchingPerson}
-              id={namespace + '-fnr'}
-              initialFnr=''
-              value={valgtFnr}
-              parentNamespace={namespace}
-              onFnrChange={() => {
-                if (isFnrValid) {
-                  setIsFnrValid(false)
-                  dispatch(appActions.appReset()) // cleans person and sak reducer
-                }
-              }}
-              onPersonFound={() => {
-                setIsFnrValid(true)
-              }}
-              onSearchPerformed={(fnr: string) => {
-                dispatch(personActions.searchFamilieRelasjoner(fnr))
-              }}
-              person={person}
-            />
-          </Column>
+          <Column/>
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">
           <Column>
-            <SakSidebar />
+            {personMedFamilie &&
+              <PersonPanel className='neutral' person={personMedFamilie}/>
+            }
           </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
@@ -517,7 +498,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sektor'}
-              disabled={_.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-sektor']?.feilmelding}
               id={namespace + '-sektor'}
               label={t('label:sektor')}
@@ -566,7 +547,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-buctype'}
-              disabled={_.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-buctype']?.feilmelding}
               id={namespace + '-buctype'}
               label={t('label:buc')}
@@ -588,7 +569,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sedtype'}
-              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-sedtype']?.feilmelding}
               id={namespace + '-sedtype'}
               label={t('label:sed')}
@@ -623,7 +604,7 @@ const SEDNew = (): JSX.Element => {
               id={namespace + '-landkode'}
               countryCodeListName="euEftaLand"
               label={t('label:land')}
-              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}
+              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               menuPortalTarget={document.body}
               onOptionSelected={onLandkodeChange}
               flagWave
@@ -635,7 +616,7 @@ const SEDNew = (): JSX.Element => {
             <FlexCenterDiv>
               <Select
                 data-testid={namespace + '-institusjon'}
-                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person) || !!opprettetSak}
+                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(personMedFamilie) || !!opprettetSak}
                 error={validation[namespace + '-institusjon']?.feilmelding}
                 id={namespace + '-institusjon'}
                 label={t('label:mottaker-institusjon')}
@@ -737,7 +718,7 @@ const SEDNew = (): JSX.Element => {
                     id={namespace + '-tema'}
                     label={t('label:velg-tema')}
                     onChange={onTemaChange}
-                    disabled={_.isEmpty(person) || !!opprettetSak}
+                    disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
                     value={valgtTema}
                   >
                     <option value=''>
@@ -757,7 +738,7 @@ const SEDNew = (): JSX.Element => {
                     <Button
                       variant='secondary'
                       onClick={onViewFagsakerClick}
-                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(person) || !!opprettetSak}
+                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(personMedFamilie) || !!opprettetSak}
                     >
                       {gettingFagsaker && <Loader />}
                       {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
@@ -822,7 +803,7 @@ const SEDNew = (): JSX.Element => {
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={sendingSak || !!opprettetSak || _.isEmpty(person)}
+                disabled={sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}
@@ -832,7 +813,7 @@ const SEDNew = (): JSX.Element => {
 
               <Button
                 variant='tertiary'
-                disabled={_.isEmpty(person)}
+                disabled={_.isEmpty(personMedFamilie)}
                 onClick={() => {
                   dispatch(personReset())
                   dispatch(sakReset())
@@ -900,7 +881,9 @@ const SEDNew = (): JSX.Element => {
         )}
       </MyContent>
       <PersonInfoContent style={{ flex: 2 }}>
-        <SakSidebar />
+        {personMedFamilie &&
+          <PersonPanel className='neutral' person={personMedFamilie}/>
+        }
       </PersonInfoContent>
       <Margin />
     </Container>

@@ -2,6 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockPerson from 'mocks/person'
+import mockPersonMedFamilie from 'mocks/personmedfamilie'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
 
@@ -51,17 +52,17 @@ export const searchPersonRelated = (
   })
 }
 
-export const searchFamilieRelasjoner = (
+export const searchPersonMedFamilie = (
   fnr: string
 ): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_FAMILIERELASJONER_URL, { fnr }),
-    expectedPayload: mockPerson,
+    url: sprintf(urls.API_PERSON_MED_FAMILIE_URL, { fnr }),
+    expectedPayload: mockPersonMedFamilie,
     cascadeFailureError: true,
     type: {
-      request: types.FAMILIERELASJONER_SEARCH_REQUEST,
-      success: types.FAMILIERELASJONER_SEARCH_SUCCESS,
-      failure: types.FAMILIERELASJONER_SEARCH_FAILURE
+      request: types.PERSON_MED_FAMILIE_SEARCH_REQUEST,
+      success: types.PERSON_MED_FAMILIE_SEARCH_SUCCESS,
+      failure: types.PERSON_MED_FAMILIE_SEARCH_FAILURE
     }
   })
 }

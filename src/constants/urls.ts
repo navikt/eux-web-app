@@ -1,3 +1,5 @@
+import {PERSON_MED_FAMILIE_SEARCH_REQUEST} from "./actionTypes";
+
 export const HOST = window.location.hostname
 const FULL_HOST = window.location.protocol + '//' + HOST
 export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.location.port : '')
@@ -41,7 +43,7 @@ export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'
 export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
 export const API_PDL_PERSON_URL = API_BASE_URL + '/person/%(fnr)s/personInfo'
-export const API_FAMILIERELASJONER_URL = API_BASE_URL + '/person/%(fnr)s/familierelasjoner'
+export const API_PERSON_MED_FAMILIE_URL = API_BASE_URL + '/person/%(fnr)s/familierelasjoner'
 export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'
 
 // Saksbehandler
