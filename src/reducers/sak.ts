@@ -163,18 +163,6 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         [(action as ActionWithPayload).payload.key]: (action as ActionWithPayload).payload.value
       }
 
-    case types.SAK_ARBEIDSPERIODER_ADD:
-      return {
-        ...state,
-        arbeidsperioder: (state.arbeidsperioder || []).concat((action as ActionWithPayload).payload)
-      }
-
-    case types.SAK_ARBEIDSPERIODER_REMOVE:
-      return {
-        ...state,
-        arbeidsperioder: _.reject(state.arbeidsperioder, i => _.isEqual(i, (action as ActionWithPayload).payload))
-      }
-
     case types.SAK_FAMILIERELASJONER_ADD:
       return {
         ...state,

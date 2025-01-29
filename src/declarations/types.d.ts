@@ -1,7 +1,7 @@
 import { FeatureToggles } from 'declarations/app'
 import { ErrorElement } from 'declarations/app.d'
 import { PDU1 } from 'declarations/pd'
-import {Adresse, JaNei, PersonEktefelle, ReplySed, Statsborgerskap} from 'declarations/sed'
+import {Adresse, JaNei, ReplySed, Statsborgerskap} from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
