@@ -32,11 +32,8 @@ describe('pages/SEDNew/SEDNew', () => {
     searchingRelatertPerson: false,
     gettingFagsaker: false,
     creatingFagsak: false,
-    gettingArbeidsperioder: false,
     gettingInstitusjoner: false,
-
-    arbeidsperioder: undefined,
-    valgteArbeidsperioder: [],
+    
     valgtBucType: undefined,
     valgteFamilieRelasjoner: [],
     fagsaker: undefined,

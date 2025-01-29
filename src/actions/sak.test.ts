@@ -2,7 +2,6 @@ import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
-import mockArbeidsperiode from 'mocks/arbeidsperioder/arbeidsperiode'
 import mockFamilierelasjon from 'mocks/familierelasjon'
 import mockOpprettSak from 'mocks/opprettSak'
 
@@ -19,13 +18,6 @@ describe('actions/sak', () => {
 
   afterAll(() => {
     call.mockRestore()
-  })
-
-  it('addArbeidsperiode()', () => {
-    expect(sakActions.addArbeidsperiode(mockArbeidsperiode)).toMatchObject({
-      type: types.SAK_ARBEIDSPERIODER_ADD,
-      payload: mockArbeidsperiode
-    })
   })
 
   it('addFamilierelasjoner()', () => {
@@ -84,13 +76,6 @@ describe('actions/sak', () => {
         },
         url: sprintf(urls.API_INSTITUSJONER_URL, { buctype, landkode })
       }))
-  })
-
-  it('removeArbeidsperiode()', () => {
-    expect(sakActions.removeArbeidsperiode(mockArbeidsperiode)).toMatchObject({
-      type: types.SAK_ARBEIDSPERIODER_REMOVE,
-      payload: mockArbeidsperiode
-    })
   })
 
   it('removeFamilierelasjoner()', () => {
