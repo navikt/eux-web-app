@@ -35,8 +35,6 @@ import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 
 import {
-  ArbeidsperiodeFraAA,
-  ArbeidsperioderFraAA,
   BucTyper,
   Enhet,
   Enheter,
@@ -80,10 +78,8 @@ export interface SEDNewSelector {
   creatingFagsak: boolean
   searchingPerson: boolean
   searchingRelatertPerson: boolean
-  gettingArbeidsperioder: boolean
   gettingInstitusjoner: boolean
 
-  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   buctyper: BucTyper | undefined
   fagsaker: Fagsaker | undefined | null
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -100,7 +96,6 @@ export interface SEDNewSelector {
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined
 
-  valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
   valgtBucType: string | undefined
   valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
   valgtFnr: string | undefined
@@ -138,16 +133,12 @@ const mapState = (state: State): SEDNewSelector => ({
   creatingFagsak: state.loading.creatingFagsak,
   searchingPerson: state.loading.searchingPerson,
   searchingRelatertPerson: state.loading.searchingRelatertPerson,
-  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
-
-  arbeidsperioder: state.arbeidsperioder,
 
   person: state.person.person,
   personRelatert: state.person.personRelatert,
   personMedFamilie: state.person.personMedFamilie,
 
-  valgteArbeidsperioder: state.sak.arbeidsperioder,
   valgtBucType: state.sak.buctype,
   valgteFamilieRelasjoner: state.sak.familierelasjoner,
   fagsaker: state.sak.fagsaker,
@@ -213,7 +204,6 @@ const SEDNew = (): JSX.Element => {
 
     sektor,
     tema,
-    valgteArbeidsperioder,
     valgtBucType,
     valgteFamilieRelasjoner,
     valgtFnr,
@@ -286,7 +276,6 @@ const SEDNew = (): JSX.Element => {
         sektor: valgtSektor,
         tema: valgtTema,
         familierelasjoner: valgteFamilieRelasjoner,
-        arbeidsperioder: valgteArbeidsperioder,
         enhet: valgtUnit
       }))
     }

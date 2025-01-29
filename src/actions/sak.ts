@@ -1,6 +1,5 @@
 import { ParamPayload } from 'declarations/app'
 import {
-  ArbeidsperiodeFraAA,
   Fagsaker,
   OldFamilieRelasjon,
   Institusjoner,
@@ -15,18 +14,11 @@ import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import mockFagsakGenerell from "../mocks/fagsak_generell";
 import {FagsakPayload} from "../declarations/pd";
+import mockFagsakGenerell from "../mocks/fagsak_generell";
 import mockFagsakDagpenger from "../mocks/fagsak";
 
 const sprintf = require('sprintf-js').sprintf
-
-export const addArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
-  payload: ArbeidsperiodeFraAA
-): ActionWithPayload<ArbeidsperiodeFraAA> => ({
-  type: types.SAK_ARBEIDSPERIODER_ADD,
-  payload
-})
 
 export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
   payload: OldFamilieRelasjon
@@ -171,13 +163,6 @@ export const editSed = (
     }
   })
 }
-
-export const removeArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
-  payload: ArbeidsperiodeFraAA
-): ActionWithPayload<ArbeidsperiodeFraAA> => ({
-  type: types.SAK_ARBEIDSPERIODER_REMOVE,
-  payload
-})
 
 export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
   payload: OldFamilieRelasjon
