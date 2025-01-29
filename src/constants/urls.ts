@@ -1,5 +1,3 @@
-import {PERSON_MED_FAMILIE_SEARCH_REQUEST} from "./actionTypes";
-
 export const HOST = window.location.hostname
 const FULL_HOST = window.location.protocol + '//' + HOST
 export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.location.port : '')
