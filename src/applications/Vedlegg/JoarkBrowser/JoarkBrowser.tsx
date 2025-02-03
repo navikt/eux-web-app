@@ -198,11 +198,17 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     const selectedItems: JoarkBrowserItems = _.filter(existingItems,
       (item: JoarkBrowserItem) => item.type === 'joark')
 
+    let documentCount = 0
+    let journalCount = 0
+    let multiCount = 0
+
     list.forEach((post: JoarkPoster) => {
       let multipleDocuments: boolean = false
+      journalCount++
 
       if (post.dokumenter.length > 1) {
         multipleDocuments = true
+        multiCount++
         items.push({
           key: 'joark-group-' + post.journalpostId,
           type: 'joark',
@@ -262,9 +268,14 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
         }
 
         selected ? items.unshift(item) : items.push(item)
+        documentCount++
 
       })
+
     })
+    console.log("Documentcount " + documentCount)
+    console.log("Journalcount " + journalCount)
+    console.log("Multicount " + multiCount)
 
     return items
   }
@@ -311,12 +322,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     const items: JoarkBrowserItems = []
     existingItems.forEach((existingItem: JoarkBrowserItem) => {
       const match = existingItem.title.match(/^(\d+)_ARKIV\.pdf$/)
-      if (list && match) {
-        const id = match[1]
+      if (list != null && match != null) {
+        const id = match[1] // number
         let journalpostDoc: JoarkDoc | undefined
-        for (const jp of list) {
-          for (const doc of jp.dokumenter) {
-            if (doc.dokumentInfoId === id) {
+        for (const jp of list) { // iterate joarkposts
+          for (const doc of jp.dokumenter) { // iterate documents
+            if (doc.dokumentInfoId === id) {  // if dokumentInfoId == eksisterende id
               journalpostDoc = doc
               if (doc.tittel) {
                 existingItem.title = doc.tittel
@@ -351,9 +362,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     let items: JoarkBrowserItems = []
     if (mode === 'select') {
       items = getItemsForSelectMode(list, existingItems)
+      console.log("select items " + items.length)
+
     }
     if (mode === 'view') {
       items = getItemsForViewMode(list, existingItems)
+      console.log("view items " + items.length)
     }
     setItems(items)
     setTableKey('' + md5(JSON.stringify(list) + JSON.stringify(existingItems)))
