@@ -175,13 +175,15 @@ const svarsedReducer = (
 
     case types.SVARSED_REPLYTOSED_SUCCESS: {
       const payload = (action as ActionWithPayload).payload
-      let lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
+
 
       // trim fnr - might contain whitespace if entered in RINA
       let bruker = trimPin(payload.bruker)
+      let lokaleSakIder;
 
       if(isUSed(payload)){
         //Add Norsk Saksnummer for U-Seds - TEN-24
+        lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
         lokaleSakIder.push({
           saksnummer: state.currentSak?.fagsak?.nr ? state.currentSak?.fagsak?.nr : state.currentSak?.fagsak?.id,
@@ -194,7 +196,7 @@ const svarsedReducer = (
       const newReplySed: ReplySed | null | undefined = {
         ...payload,
         bruker,
-        lokaleSakIder,
+        ...(lokaleSakIder && { lokaleSakIder }),
         sak: (action as ActionWithPayload).context.sak,
         sed: undefined // so we can signal this SED as a SED that needs to be created, not updated
       }
