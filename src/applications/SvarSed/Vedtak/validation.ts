@@ -198,6 +198,8 @@ export const validateVedtak = (
         nsIndex,
         formalName
       }))
+      delete vp.periode.__index
+      delete vp.periode.__type
     })
   })
 
