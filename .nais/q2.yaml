@@ -1,13 +1,14 @@
 name: eux-neessi-frontend-q2
 
 ingress:
-  intern: https://eux-neessi-frontend-q2.intern.dev.nav.no
-  ansatt: https://eux-neessi-frontend-q2.ansatt.dev.nav.no
+  intern: https://eux-neessi-q2.intern.dev.nav.no
+  ansatt: https://eux-neessi-q2.ansatt.dev.nav.no
 
 
 application:
   eux-neessi-backend:
     name: eux-neessi-q2
+    url: eux-neessi-backend-q2
     scope: api://dev-gcp.eessibasis.eux-neessi-q2/.default
 
 aad:
