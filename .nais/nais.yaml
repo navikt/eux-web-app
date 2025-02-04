@@ -44,7 +44,7 @@ spec:
         - application: {{ application.eux-neessi-backend.name }}
   env:
     - name: NEESSI_BACKEND_URL
-      value: http://{{ application.eux-neessi-backend.url }}
+      value: http://{{ application.eux-neessi-backend.name }}
     - name: NEESSI_BACKEND_TOKEN_SCOPE
       value: {{ application.eux-neessi-backend.scope }}
   image: {{ image }}

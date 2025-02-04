@@ -8,7 +8,6 @@ ingress:
 application:
   eux-neessi-backend:
     name: eux-neessi
-    url: eux-neessi-backend
     scope: api://prod-gcp.eessibasis.eux-neessi/.default
 
 aad:
