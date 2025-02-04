@@ -1,0 +1,129 @@
+name: Build and deploy to q1
+run-name: Build and deploy to nais, dev-gcp, q1
+
+permissions:
+  deployments: write
+  packages: write
+  contents: write
+  id-token: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version number, leave blank for auto increment.'
+        required: false
+        default: ''
+
+env:
+  IMAGE: europe-north1-docker.pkg.dev/nais-management-233d/eessibasis/eux-web-app
+#  APP_NAME: eux-web-app
+#  READER_TOKEN: ${{ secrets.READER_TOKEN }}
+
+jobs:
+  build:
+    name: 'Build Docker Image'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git User
+        uses: fregante/setup-git-user@v2
+
+      - name: 'Setter dato og commit variabel'
+        run: |
+          export TZ=CET
+          echo "DATE=$(date "+%Y-%m-%d--%H-%M-%S")" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: 'Setter Image'
+        id: versions
+        run: echo "version=${{ env.DATE }}---${{ env.COMMIT_HASH }}" >> $GITHUB_OUTPUT
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 'Setup Node'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: https://npm.pkg.github.com/
+          scope: "@navikt"
+
+      - name: 'Install'
+        run: npm install --force
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: 'Bygg'
+        run: npm run build
+
+#      - name: 'Build and publish Docker image'
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${{ secrets.GITHUB_TOKEN }}
+#          docker build --tag ${{ env.IMAGE }} .
+#          docker push ${{ env.IMAGE }}
+
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: eessibasis
+          tag: ${{ steps.versions.outputs.version }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Echo Version
+        run: echo "### Version ${{ steps.versions.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+
+    outputs:
+      docker-image: >
+        ${{ env.IMAGE }}:${{ steps.versions.outputs.version }}
+
+#  deploy-q1:
+#    name: 'Deploy to q1'
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: 'Calling nais deploy action for q1'
+#        uses: nais/deploy/actions/deploy@v2
+#        with:
+#          fetch-depth: 0
+#        env:
+#          CLUSTER: dev-gcp
+#          RESOURCE: .nais/nais.yaml
+#          VAR: image=${{ needs.build.outputs.docker-image }}
+#          VARS: .nais/q1.yaml
+#          PRINT_PAYLOAD: true
+
+  deploy-q1:
+    name: 'Deploy to q1'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 'Calling nais deploy action for q1'
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais.yaml
+          VAR: image=${{ needs.build.outputs.docker-image }}
+          VARS: .nais/q1.yaml
+          PRINT_PAYLOAD: true
+
