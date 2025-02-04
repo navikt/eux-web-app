@@ -192,6 +192,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     if (newForsikringPeriode) {
       delete newForsikringPeriode.__index
       delete newForsikringPeriode.__type
+      if ((newForsikringPeriode as PeriodeMedForsikring).extra) delete (newForsikringPeriode as PeriodeMedForsikring).extra
       newPerioderMedforsikring.push(newForsikringPeriode)
       newPerioderMedforsikring = newPerioderMedforsikring.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioderMedforsikring))
