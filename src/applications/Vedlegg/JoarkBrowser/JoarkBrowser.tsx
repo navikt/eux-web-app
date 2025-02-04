@@ -203,9 +203,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     let multiCount = 0
 
     list.forEach((post: JoarkPoster) => {
-      let multipleDocuments: boolean = false
+      //let multipleDocuments: boolean = false
       journalCount++
-
+/*
       if (post.dokumenter.length > 1) {
         multipleDocuments = true
         multiCount++
@@ -226,7 +226,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           disabled: false,
           hasSubrows: true
         } as JoarkBrowserItem)
-      }
+      }*/
 
       post.dokumenter.forEach((doc: JoarkDoc) => {
         const variant = getVariantFromJoarkDoc(doc)
@@ -263,9 +263,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           disabled,
           hasSubrows: false
         }
+        /*
         if (multipleDocuments) {
           item.parentKey = 'joark-group-' + post.journalpostId
         }
+
+         */
 
         selected ? items.unshift(item) : items.push(item)
         documentCount++
