@@ -67,7 +67,7 @@ export const createSak = (data: any): ActionWithPayload<any> => {
 
   return call({
     url: urls.API_SAK_SEND_URL,
-    method: 'POST',
+    method: 'PUT',
     payload,
     expectedPayload: mockSendSak,
     type: {
