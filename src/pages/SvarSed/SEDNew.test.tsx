@@ -42,7 +42,6 @@ describe('pages/SEDNew/SEDNew', () => {
     institusjoner: undefined,
     valgtLandkode: undefined,
     opprettetSak: undefined,
-    person: undefined,
     personMedFamilie: undefined,
     personRelatert: undefined,
     valgtSaksId: undefined,
