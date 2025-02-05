@@ -89,7 +89,6 @@ export interface SEDNewSelector {
   landkoder: Array<string> | undefined
   opprettetSak: OpprettetSak | undefined
 
-  person: Person | null | undefined
   personRelatert: Person | null | undefined
   personMedFamilie: PersonMedFamilie | null | undefined
   sedtyper: Array<Kodeverk> | undefined
@@ -135,7 +134,6 @@ const mapState = (state: State): SEDNewSelector => ({
   searchingRelatertPerson: state.loading.searchingRelatertPerson,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
-  person: state.person.person,
   personRelatert: state.person.personRelatert,
   personMedFamilie: state.person.personMedFamilie,
 
@@ -198,7 +196,6 @@ const SEDNew = (): JSX.Element => {
     kodemaps,
     opprettetSak,
 
-    person,
     personRelatert,
     personMedFamilie,
 
@@ -361,8 +358,8 @@ const SEDNew = (): JSX.Element => {
 
   const onViewFagsakerClick = (): void => {
     setFagsakDagpengerYear(currentYear);
-    if (!!person?.fnr && valgtSektor && valgtTema) {
-      dispatch(sakActions.getFagsaker(person.fnr!, valgtSektor!, valgtTema!))
+    if (!!personMedFamilie?.fnr && valgtSektor && valgtTema) {
+      dispatch(sakActions.getFagsaker(personMedFamilie.fnr!, valgtSektor!, valgtTema!))
     }
   }
 
@@ -374,14 +371,14 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onCreateFagsak = () => {
-    if (!!person?.fnr && valgtTema) {
-      dispatch(createFagsakGenerell(person.fnr!, valgtTema!))
+    if (!!personMedFamilie?.fnr && valgtTema) {
+      dispatch(createFagsakGenerell(personMedFamilie.fnr!, valgtTema!))
     }
   }
 
   const onCreateFagsakDagpenger = () => {
-    if (!!person?.fnr) {
-      dispatch(createFagsakDagpenger(person.fnr!, {aar: fagsakDagpengerYear}))
+    if (!!personMedFamilie?.fnr) {
+      dispatch(createFagsakDagpenger(personMedFamilie.fnr!, {aar: fagsakDagpengerYear}))
     }
   }
 
@@ -657,7 +654,7 @@ const SEDNew = (): JSX.Element => {
               familierelasjonKodeverk={familierelasjonKodeverk}
               personRelatert={personRelatert}
               searchingRelatertPerson={searchingRelatertPerson}
-              person={person}
+              person={personMedFamilie}
               valgteFamilieRelasjoner={valgteFamilieRelasjoner}
               onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
               onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
