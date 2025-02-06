@@ -1,8 +1,8 @@
 name: eux-neessi-frontend-q1
 
 ingress:
-  intern: https://eux-neessi-frontend-q1.intern.dev.nav.no
-  ansatt: https://eux-neessi-frontend-q1.ansatt.dev.nav.no
+  intern: https://eux-neessi-q1.intern.dev.nav.no
+  ansatt: https://eux-neessi-q1.ansatt.dev.nav.no
 
 
 application:
