@@ -1,5 +1,5 @@
-name: Deploy to q2
-run-name: Deploy version ${{ github.event.inputs.version }} to NAIS, dev-gcp, q2
+name: Deploy to q1
+run-name: Deploy version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}
 
 permissions:
   deployments: write
@@ -10,8 +10,18 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        type: choice
+        description: 'Miljø det skal deployes til'
+        default: 'q2'
+        required: true
+        options:
+          - 'q1'
+          - 'q2'
+          - 'q1-experimental'
+          - 'q2-experimental'
       version:
-        description: 'New version to deploy'
+        description: 'Version to deploy'
         required: true
 
 env:
@@ -19,18 +29,18 @@ env:
   READER_TOKEN: ${{ secrets.READER_TOKEN }}
 
 jobs:
-  deploy-q2:
-    name: 'Deploy to q2'
+  deploy:
+    name: 'Deploy to ${{ github.event.inputs.environment }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: 'Calling nais deploy action for q2'
+      - name: 'Calling nais deploy action'
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais.yaml
           VAR: "image=${{ env.IMAGE }}:${{ github.event.inputs.version }}"
-          VARS: .nais/q2.yaml
+          VARS: .nais/${{ github.event.inputs.environment }}.yaml
           PRINT_PAYLOAD: true
