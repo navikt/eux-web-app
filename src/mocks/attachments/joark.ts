@@ -14709,7 +14709,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140263372o"
+            "arkivsaksnummer": "140263372"
           },
           "dokumenter": [
             {
@@ -14755,7 +14755,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140271142n"
+            "arkivsaksnummer": "140271142"
           },
           "dokumenter": [
             {
@@ -14801,7 +14801,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262420m"
+            "arkivsaksnummer": "140262420"
           },
           "dokumenter": [
             {
@@ -14843,7 +14843,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262420l"
+            "arkivsaksnummer": "140262420"
           },
           "dokumenter": [
             {
@@ -14885,7 +14885,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683k"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
@@ -14927,7 +14927,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683j"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
@@ -14969,7 +14969,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683i"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
@@ -15011,7 +15011,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683h"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
@@ -15057,7 +15057,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140263372g"
+            "arkivsaksnummer": "140263372"
           },
           "dokumenter": [
             {
@@ -15099,7 +15099,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140265036f"
+            "arkivsaksnummer": "140265036"
           },
           "dokumenter": [
             {
@@ -15145,7 +15145,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683e"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
@@ -15187,7 +15187,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262420d"
+            "arkivsaksnummer": "140262420"
           },
           "dokumenter": [
             {
@@ -15233,7 +15233,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262420c"
+            "arkivsaksnummer": "140262420"
           },
           "dokumenter": [
             {
@@ -15279,7 +15279,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262420b"
+            "arkivsaksnummer": "140262420"
           },
           "dokumenter": [
             {
@@ -15325,7 +15325,7 @@ export default {
             }
           ],
           "sak": {
-            "arkivsaksnummer": "140262683a"
+            "arkivsaksnummer": "140262683"
           },
           "dokumenter": [
             {
