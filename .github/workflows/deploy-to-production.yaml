@@ -1,5 +1,5 @@
 name: Deploy to production
-run-name: Deploy version ${{ github.event.inputs.version }} to production
+run-name: Deploy to prod version ${{ github.event.inputs.version }}
 
 permissions:
   deployments: write

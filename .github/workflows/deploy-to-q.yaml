@@ -1,5 +1,5 @@
-name: Deploy to q1
-run-name: Deploy version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}
+name: Deploy to q
+run-name: Deploy to ${{ github.event.inputs.environment }} version ${{ github.event.inputs.version }}
 
 permissions:
   deployments: write
