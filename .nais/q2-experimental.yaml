@@ -1,0 +1,31 @@
+name: eux-neessi-frontend-experimental-q2
+
+ingress:
+  intern: https://eux-neessi-experimental-q2.intern.dev.nav.no
+  ansatt: https://eux-neessi-experimental-q2.ansatt.dev.nav.no
+
+
+application:
+  eux-neessi-backend:
+    name: eux-neessi-q2
+    scope: api://dev-gcp.eessibasis.eux-neessi-q2/.default
+
+aad:
+  groups:
+    basis: "6dc6c3f0-bac5-4268-9c26-e4a5b7d9c5a6"
+    clerk: "bb6bd55d-442c-4bc0-afc6-07feba98f707"
+    kode6: "87ea7c87-08a2-43bc-83d6-0bfeee92185d"
+    aap: "0b740125-d021-4ea4-8b5f-99d2b6afc3ee"
+    arbeidsledighet: "c0bc79fe-4b6e-4aaf-81ab-785b82cecacf"
+    diverse: "85b01b82-354b-4a4f-995b-594c91eb1429"
+    familie: "8f19d459-2312-4c04-9e6c-e5411790970c"
+    horisontal: "e3538326-db18-4929-8903-345baf39e0a8"
+    lovvalg: "fc1fb4d4-5ff0-475f-8493-d4bfc80ae20d"
+    pensjon: "6e921c7e-7b22-4c9a-9ff6-ee3719e3c4ba"
+    sammenlegging: "e9af43c2-36f3-4085-9321-be44bcb8489c"
+    sykdom: "7ad900f7-8256-4c1c-be3d-18863905cd22"
+    sykemelding: "fc18ee4a-68ce-431c-850f-b4c8c1bb52a8"
+    sykepenger: "4b2cf5c3-1711-4b07-89bb-b98fa47b711d"
+    tilbakekreving: "7eed81d2-0c56-4aae-b944-8db543fe97a5"
+    ufore: "79c6b5b5-1144-495c-a2c9-78aebfb5faf4"
+    yrkesskade: "044d1494-7e95-4392-86b1-555f4aa6d5c5"

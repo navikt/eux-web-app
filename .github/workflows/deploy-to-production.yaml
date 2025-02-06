@@ -1,5 +1,5 @@
-name: Deploy to prod
-run-name: Deploy version ${{ github.event.inputs.version }} to NAIS, prod-gcp
+name: Deploy to production
+run-name: Deploy version ${{ github.event.inputs.version }} to production
 
 permissions:
   deployments: write
