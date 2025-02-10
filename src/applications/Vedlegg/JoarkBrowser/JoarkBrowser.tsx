@@ -198,13 +198,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     const selectedItems: JoarkBrowserItems = _.filter(existingItems,
       (item: JoarkBrowserItem) => item.type === 'joark')
 
-    let documentCount = 0
-    let journalCount = 0
-    let multiCount = 0
-
     list.forEach((post: JoarkPoster) => {
-      journalCount++
-
       post.dokumenter.forEach((doc: JoarkDoc) => {
         const variant = getVariantFromJoarkDoc(doc)
 
@@ -241,14 +235,9 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           hasSubrows: false
         }
         selected ? items.unshift(item) : items.push(item)
-        documentCount++
 
       })
-
     })
-    console.log("Documentcount " + documentCount)
-    console.log("Journalcount " + journalCount)
-    console.log("Multicount " + multiCount)
 
     return items
   }
