@@ -88,6 +88,8 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const [_editKompetansePeriodeTypeAndIndex, _setEditKompetansePeriodeTypeAndIndex] = useState<string | undefined>(undefined)
   const [_validationKompetansePeriode, _resetValidationKompetansePeriode, _performValidationKompetansePeriode] = useLocalValidation<ValidationKompetansePeriodeProps>(validateKompetansePeriode, namespace)
 
+  const [_showSkalYtelseUtbetales, setShowSkalYtelseUtbetales]= useState<boolean>(false)
+
   const [_sort, _setSort] = useState<PeriodeSort>('time')
 
   const vedtaksTypeOptions: Options = [
@@ -196,7 +198,18 @@ const VedtakFC: React.FC<MainFormProps> = ({
   }
 
   const setKompetansePeriodeType = (newType: string, index: number) => {
+    let deleteSkalYtelseUtbetalesProp = false
+    if(newType === "primaerkompetanseArt68" || newType === "sekundaerkompetanseArt68" ){
+      setShowSkalYtelseUtbetales(true)
+    } else {
+      setShowSkalYtelseUtbetales(false)
+      deleteSkalYtelseUtbetalesProp = true
+    }
+
     if (index < 0) {
+      if(deleteSkalYtelseUtbetalesProp){
+        delete _newKompetansePeriode?.skalYtelseUtbetales
+      }
       _setNewKompetansePeriode({
         ..._newKompetansePeriode,
         periode: {
@@ -208,6 +221,11 @@ const VedtakFC: React.FC<MainFormProps> = ({
       return
     }
     const oldType: string | undefined = _editKompetansePeriode?.periode.__type
+
+    if(deleteSkalYtelseUtbetalesProp){
+      delete _editKompetansePeriode?.skalYtelseUtbetales
+    }
+
     _setEditKompetansePeriode({
       ..._editKompetansePeriode,
       periode: {
@@ -522,16 +540,18 @@ const VedtakFC: React.FC<MainFormProps> = ({
                   />
                 </Column>
                 <Column>
-                  <FormText
-                    error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
-                    id={_namespace + '-skalYtelseUtbetales'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {t('label:' + _periode?.skalYtelseUtbetales)}
-                    </FlexDiv>
-                  </FormText>
+                  {_periode?.skalYtelseUtbetales &&
+                    <FormText
+                      error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
+                      id={_namespace + '-skalYtelseUtbetales'}
+                    >
+                      <FlexDiv>
+                        <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
+                        <HorizontalSeparatorDiv size='0.5' />
+                        {t('label:' + _periode?.skalYtelseUtbetales)}
+                      </FlexDiv>
+                    </FormText>
+                  }
                 </Column>
               </>
               )}
@@ -570,21 +590,23 @@ const VedtakFC: React.FC<MainFormProps> = ({
                   />
                 </Column>
                 <Column>
-                  <RadioPanelGroup
-                    value={_periode?.skalYtelseUtbetales}
-                    data-testid={_namespace + '-skalYtelseUtbetales'}
-                    data-no-border
-                    error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
-                    id={_namespace + '-skalYtelseUtbetales'}
-                    legend={t('label:skal-ytelse-utbetales') + ' *'}
-                    name={_namespace + '-borSammen'}
-                    onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                      <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
+                  {(_showSkalYtelseUtbetales || _periode?.skalYtelseUtbetales) &&
+                    <RadioPanelGroup
+                      value={_periode?.skalYtelseUtbetales}
+                      data-testid={_namespace + '-skalYtelseUtbetales'}
+                      data-no-border
+                      error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
+                      id={_namespace + '-skalYtelseUtbetales'}
+                      legend={t('label:skal-ytelse-utbetales') + ' *'}
+                      name={_namespace + '-borSammen'}
+                      onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
+                    >
+                      <FlexRadioPanels>
+                        <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
+                        <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
+                      </FlexRadioPanels>
+                    </RadioPanelGroup>
+                  }
                 </Column>
               </>
               )
@@ -805,7 +827,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
           <PaddedDiv>
             <Button
               variant='tertiary'
-              onClick={() => _setNewKompetansePeriodeForm(true)}
+              onClick={() => {_setNewKompetansePeriodeForm(true); setShowSkalYtelseUtbetales(false)}}
               icon={<PlusCircleIcon/>}
             >
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}

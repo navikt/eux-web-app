@@ -102,12 +102,14 @@ export const validateKompetansePeriode = (
     }))
   }
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: kompetanseperiode?.skalYtelseUtbetales,
-    id: namespace + (nsIndex ?? '') + '-skalYtelseUtbetales',
-    message: 'validation:noSkalYtelseUtbetales',
-    personName: formalName
-  }))
+  if(kompetanseperiode?.periode.__type === "primaerkompetanseArt68" || kompetanseperiode?.periode.__type === "sekundaerkompetanseArt68"){
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: kompetanseperiode?.skalYtelseUtbetales,
+      id: namespace + (nsIndex ?? '') + '-skalYtelseUtbetales',
+      message: 'validation:noSkalYtelseUtbetales',
+      personName: formalName
+    }))
+  }
 
   return hasErrors.find(value => value) !== undefined
 }
