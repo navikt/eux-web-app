@@ -199,29 +199,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       (item: JoarkBrowserItem) => item.type === 'joark')
 
     list.forEach((post: JoarkPoster) => {
-      let multipleDocuments: boolean = false
-
-      if (post.dokumenter.length > 1) {
-        multipleDocuments = true
-        items.push({
-          key: 'joark-group-' + post.journalpostId,
-          type: 'joark',
-
-          journalpostId: post.journalpostId,
-          dokumentInfoId: undefined,
-          variant: undefined,
-
-          title: post.tittel,
-          tema: post.tema,
-          status: post?.journalstatus,
-          saksid: post?.sak?.arkivsaksnummer,
-          regSentDate: getMottattSendtDato(post),
-          date: new Date(Date.parse(post.datoOpprettet)),
-          disabled: false,
-          hasSubrows: true
-        } as JoarkBrowserItem)
-      }
-
       post.dokumenter.forEach((doc: JoarkDoc) => {
         const variant = getVariantFromJoarkDoc(doc)
 
@@ -257,10 +234,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           disabled,
           hasSubrows: false
         }
-        if (multipleDocuments) {
-          item.parentKey = 'joark-group-' + post.journalpostId
-        }
-
         selected ? items.unshift(item) : items.push(item)
 
       })
@@ -312,11 +285,11 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
     existingItems.forEach((existingItem: JoarkBrowserItem) => {
       const match = existingItem.title.match(/^(\d+)_ARKIV\.pdf$/)
       if (list && match) {
-        const id = match[1]
+        const id = match[1] // number
         let journalpostDoc: JoarkDoc | undefined
-        for (const jp of list) {
-          for (const doc of jp.dokumenter) {
-            if (doc.dokumentInfoId === id) {
+        for (const jp of list) { // iterate joarkposts
+          for (const doc of jp.dokumenter) { // iterate documents
+            if (doc.dokumentInfoId === id) {  // if dokumentInfoId == eksisterende id
               journalpostDoc = doc
               if (doc.tittel) {
                 existingItem.title = doc.tittel
