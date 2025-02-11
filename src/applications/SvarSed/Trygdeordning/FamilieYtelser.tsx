@@ -253,8 +253,9 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           : (_editPeriode as Periode).__type
       ) as string
 
-      if(type === "perioderMedArbeid") {
+      if(_editType === "perioderMedArbeid") {
         onCloseEdit(namespace + _editTypeAndIndex)
+        return
       }
 
       if (type !== _editType) {
@@ -309,6 +310,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
 
       if(type === "perioderMedArbeid") {
         onCloseNew()
+        return
       }
 
       let newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type))
