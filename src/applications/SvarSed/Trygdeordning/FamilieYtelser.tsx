@@ -254,6 +254,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       ) as string
 
       if(_editType === "perioderMedArbeid") {
+        // Backend fails for perioderMedArbeid - property does not exist.
         onCloseEdit(namespace + _editTypeAndIndex)
         return
       }
@@ -309,6 +310,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
         : (_newPeriode as Periode).__type) as string
 
       if(type === "perioderMedArbeid") {
+        // Backend fails for perioderMedArbeid - property does not exist.
         onCloseNew()
         return
       }
@@ -410,7 +412,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
                     onChange={(newType: string) => setType(newType, index)}
                   >
                     <FlexRadioPanels>
-                      <RadioPanel value='perioderMedArbeid'>
+                      <RadioPanel value='perioderMedArbeid' disabled>
                         {t('el:option-trygdeordning-perioderMedArbeid')}
                       </RadioPanel>
                       <RadioPanel value='perioderMedTrygd'>
