@@ -95,6 +95,8 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
     let oldType: string | undefined
     let oldIndex: number
 
+    //if(newType === 'perioderMedArbeid') return
+
     if (index < 0) {
       if (newType === 'perioderMedPensjon') {
         _setNewPeriode({
@@ -251,6 +253,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
           : (_editPeriode as Periode).__type
       ) as string
 
+      if(type === "perioderMedArbeid") {
+        onCloseEdit(namespace + _editTypeAndIndex)
+      }
+
       if (type !== _editType) {
         const oldPeriods: Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type))
         let newPeriods: Array<Periode | PensjonPeriode> | undefined = _.cloneDeep(_.get(person, _editType))
@@ -300,6 +306,10 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
       const type: string = (isPensjonPeriode(_newPeriode)
         ? (_newPeriode as PensjonPeriode).periode.__type
         : (_newPeriode as Periode).__type) as string
+
+      if(type === "perioderMedArbeid") {
+        onCloseNew()
+      }
 
       let newPerioder: Array<Periode | PensjonPeriode> = _.cloneDeep(_.get(person, type))
       if (_.isNil(newPerioder)) {
