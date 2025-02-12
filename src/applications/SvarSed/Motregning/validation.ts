@@ -178,6 +178,10 @@ export const validateMotregninger = (
         motregning,
         formalName
       }))
+
+      delete motregning.__index
+      delete motregning.__type
+
     })
   })
 
@@ -199,6 +203,9 @@ export const validateMotregninger = (
         motregning,
         formalName
       }))
+
+      delete motregning.__index
+      delete motregning.__type
     })
   }
   return hasErrors.find(value => value) !== undefined
