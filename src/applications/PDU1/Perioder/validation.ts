@@ -62,6 +62,9 @@ export const validatePDPerioder = (
       periode,
       nsIndex: getNSIdx(periode.__type, periode.__index)
     }))
+
+    delete periode.__type
+    delete periode.__index
   })
 
   let max: number = 0

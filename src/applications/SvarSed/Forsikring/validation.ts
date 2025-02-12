@@ -81,6 +81,9 @@ export const validateForsikringPerioder = (
       nsIndex: getNSIdx(periode.__type, index),
       personName
     }))
+
+    delete periode.__type
+    delete periode.__index
   })
   return hasErrors.find(value => value) !== undefined
 }

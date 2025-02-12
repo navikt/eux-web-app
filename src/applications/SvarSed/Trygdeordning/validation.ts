@@ -179,6 +179,10 @@ export const validateTrygdeordning = (
         nsIndex: getNSIdx(type, index),
         personName
       }))
+
+      delete (periode as PensjonPeriode).periode.__type
+      delete (periode as PensjonPeriode).periode.__index
+
     } else {
       hasErrors.push(validateDekkedePeriode(v, namespace, {
         periode: (periode as Periode),
@@ -186,8 +190,14 @@ export const validateTrygdeordning = (
         nsIndex: getNSIdx(type, index),
         personName
       }))
+
+      delete (periode as Periode).__type
+      delete (periode as Periode).__index
     }
   })
+
+
+
   return hasErrors.find(value => value) !== undefined
 }
 
