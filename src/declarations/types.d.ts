@@ -134,6 +134,7 @@ export interface PersonInfoPDL {
   adresser?: Array<Adresse>
   utenlandskePin?: Array<Pin>
   adressebeskyttelse?: string
+  __rolle?: string
 }
 
 export interface PersonMedFamilie extends PersonInfoPDL {

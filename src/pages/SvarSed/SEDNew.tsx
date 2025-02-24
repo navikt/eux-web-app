@@ -64,6 +64,7 @@ import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
 import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
 import PersonPanel from "../../applications/OpprettSak/PersonPanel/PersonPanel";
+import FamilieRelasjoner from "../../applications/OpprettSak/FamilieRelasjoner/FamilieRelasjoner";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -663,6 +664,9 @@ const SEDNew = (): JSX.Element => {
             <Heading size='medium'>
               {t('label:familierelasjon')}
             </Heading>
+            <VerticalSeparatorDiv />
+            <FamilieRelasjoner validation={validation} namespace={namespace} personMedFamilie={personMedFamilie}/>
+
             <VerticalSeparatorDiv />
             <Family
               namespace={namespace}

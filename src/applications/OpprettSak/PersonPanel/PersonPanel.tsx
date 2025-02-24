@@ -4,9 +4,11 @@ import {useTranslation} from "react-i18next";
 import ukjent from "assets/icons/Unknown.png";
 import kvinne from "assets/icons/Woman.png";
 import mann from "assets/icons/Man.png";
-import {Alert, Box, Heading, HStack, VStack} from "@navikt/ds-react";
+import {Alert, Box, Heading, HStack, VStack, Button, Spacer} from "@navikt/ds-react";
+import { TrashIcon, PlusCircleIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components'
 import {toDateFormat} from "components/DateField/DateField";
+import _ from "lodash";
 
 const PersonBox = styled(Box)`
   min-width: 400px;
@@ -30,7 +32,7 @@ export interface PersonPanelProps {
 }
 
 const PersonPanel: React.FC<PersonPanelProps> = ({
- className, person
+ className, person, onAddClick, onRemoveClick
 }: PersonPanelProps): JSX.Element => {
   const {fnr, foedselsdato, fornavn, etternavn, kjoenn} = (person)
   const {t} = useTranslation()
@@ -69,6 +71,24 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
             </Alert>
           }
         </VStack>
+        <Spacer/>
+        {_.isFunction(onRemoveClick) && (
+          <Box>
+            <Button
+              onClick={() => onRemoveClick(person)}
+              icon={<TrashIcon/>}
+            />
+          </Box>
+        )}
+        {_.isFunction(onAddClick) && (
+          <Box>
+            <Button
+              variant='secondary'
+              onClick={() => onAddClick(person)}
+              icon={<PlusCircleIcon/>}
+            />
+          </Box>
+        )}
       </HStack>
     </PersonBox>
   )
