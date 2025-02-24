@@ -166,6 +166,10 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         personName
       })
     if (!hasErrors) {
+      delete editForsikringPeriode.__index
+      delete editForsikringPeriode.__type
+      if ((editForsikringPeriode as PeriodeMedForsikring).extra) delete (editForsikringPeriode as PeriodeMedForsikring).extra
+
       dispatch(updateReplySed(`${target}[${editIndex}]`, editForsikringPeriode))
       onCloseEdit(namespace + getIdx(editIndex))
     } else {
