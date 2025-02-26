@@ -1,14 +1,14 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import { FillOutInfoPayload } from 'declarations/sed'
-import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak} from 'declarations/types'
+import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak, PersonInfoPDL} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface SakState {
   arbeidsperioder: Array<ArbeidsperiodeFraAA>
   buctype: any
-  familierelasjoner: Array<OldFamilieRelasjon>
+  familierelasjoner: Array<PersonInfoPDL>
   fagsaker: Fagsaker | undefined | null
   fnr: string | undefined
   institusjon: string | undefined

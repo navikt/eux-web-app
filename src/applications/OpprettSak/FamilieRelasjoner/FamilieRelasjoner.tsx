@@ -1,15 +1,18 @@
-import React from "react";
-import { HStack, Box, VStack, Heading, Ingress, Spacer} from "@navikt/ds-react";
+import React, {useState} from "react";
+import {Box, VStack, Heading, BodyLong, HGrid, HStack, Spacer, Ingress} from "@navikt/ds-react";
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'
 import styled from "styled-components";
 import {PersonInfoPDL, PersonMedFamilie, Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PersonPanel from "../PersonPanel/PersonPanel";
+import {useAppDispatch} from "../../../store";
+import {addFamilierelasjoner, removeFamilierelasjoner} from "../../../actions/sak";
 import {FadingLineSeparator} from "../../../components/StyledComponents";
 
 export interface FamilieRelasjonerProps {
   personMedFamilie: PersonMedFamilie | null | undefined
+  valgteFamilieRelasjoner: Array<PersonInfoPDL> | undefined
   namespace?: string
   validation: Validation
 }
@@ -23,23 +26,60 @@ export const WithErrorBox = styled(Box)`
 
 
 const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
-  personMedFamilie, namespace, validation
+  personMedFamilie, valgteFamilieRelasjoner, namespace, validation
 }: FamilieRelasjonerProps): JSX.Element => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
 
   const familieRelasjoner: Array<PersonInfoPDL> = [];
+  const [_ikkeValgteFamilieRelasjoner, setIkkeValgteFamilieRelasjoner] = useState<Array<PersonInfoPDL>>(familieRelasjoner)
+
 
   personMedFamilie?.barn?.forEach((barn) => {
-    barn.__rolle = "BARN"
+    barn = {
+      ...barn,
+      __rolle:"BARN",
+      __fraPDL:true
+    }
     familieRelasjoner.push(barn)
   })
 
   if(personMedFamilie?.ektefelle){
     let ektefelle: PersonInfoPDL = personMedFamilie?.ektefelle
-    ektefelle.__rolle = "EKTE"
+    ektefelle = {
+      ...ektefelle,
+      __rolle:"EKTE",
+      __fraPDL:true
+    }
     familieRelasjoner.push(ektefelle)
   }
 
+  if(personMedFamilie?.annenperson){
+    let annenperson: PersonInfoPDL = personMedFamilie?.annenperson
+    annenperson = {
+      ...annenperson,
+      __rolle:"ANNEN",
+      __fraPDL:true
+    }
+    familieRelasjoner.push(annenperson)
+  }
+
+  const addRelasjon = (relasjon: PersonInfoPDL) => {
+    console.log("ADD: " + relasjon.fnr)
+    dispatch(addFamilierelasjoner(relasjon))
+    setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.filter(r => r.fnr !== relasjon.fnr))
+  }
+
+  const removeRelasjon = (relasjon: PersonInfoPDL) => {
+    const a: Array<PersonInfoPDL> = []
+    a.push(relasjon)
+
+    dispatch(removeFamilierelasjoner(relasjon))
+
+    if(relasjon.__fraPDL){
+      setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.concat(a))
+    }
+  }
 
   return(
     <WithErrorBox
@@ -85,6 +125,31 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
             )}
           </VStack>
         </HStack>
+        <HGrid gap="4" columns={2}>
+          <VStack gap="4">
+            <BodyLong size="large">
+              {t('label:familierelasjon-i-pdl')}
+            </BodyLong>
+            {_ikkeValgteFamilieRelasjoner.map((r) =>
+              <PersonPanel
+                person={r}
+                onAddClick={(r: PersonInfoPDL)=> addRelasjon(r)}
+              />
+            )}
+          </VStack>
+          <VStack gap="4">
+            <BodyLong size="large">
+              {t('label:valgt-familie')}&nbsp;(0)
+            </BodyLong>
+            {valgteFamilieRelasjoner?.map((r) =>
+              <PersonPanel
+                className='personSelected'
+                person={r}
+                onRemoveClick={(r: PersonInfoPDL)=> removeRelasjon(r)}
+              />
+            )}
+          </VStack>
+        </HGrid>
       </VStack>
     </WithErrorBox>
 
