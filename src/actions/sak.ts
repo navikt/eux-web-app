@@ -1,9 +1,10 @@
 import { ParamPayload } from 'declarations/app'
 import {
   Fagsaker,
-  OldFamilieRelasjon,
   Institusjoner,
-  Kodeverk, OpprettetSak
+  Kodeverk,
+  OpprettetSak,
+  PersonInfoPDL
 } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
@@ -18,13 +19,6 @@ import mockFagsakGenerell from "../mocks/fagsak_generell";
 import mockFagsakDagpenger from "../mocks/fagsak";
 
 const sprintf = require('sprintf-js').sprintf
-
-export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
-  payload: OldFamilieRelasjon
-): ActionWithPayload<OldFamilieRelasjon> => ({
-  type: types.SAK_FAMILIERELASJONER_ADD,
-  payload
-})
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET
@@ -161,9 +155,16 @@ export const editSed = (
   })
 }
 
-export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
-  payload: OldFamilieRelasjon
-): ActionWithPayload<OldFamilieRelasjon> => ({
+export const addFamilierelasjoner: ActionCreator<ActionWithPayload<PersonInfoPDL>> = (
+  payload: PersonInfoPDL
+): ActionWithPayload<PersonInfoPDL> => ({
+  type: types.SAK_FAMILIERELASJONER_ADD,
+  payload
+})
+
+export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<PersonInfoPDL>> = (
+  payload: PersonInfoPDL
+): ActionWithPayload<PersonInfoPDL> => ({
   type: types.SAK_FAMILIERELASJONER_REMOVE,
   payload
 })

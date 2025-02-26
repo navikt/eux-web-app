@@ -27,7 +27,6 @@ import {
 } from 'actions/sak'
 import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
-import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
@@ -43,9 +42,8 @@ import {
   Institusjon,
   Kodemaps,
   Kodeverk,
-  OldFamilieRelasjon,
   OpprettetSak,
-  Person, PersonMedFamilie,
+  Person, PersonInfoPDL, PersonMedFamilie,
   Sak, Saks,
   Sed,
   ServerInfo,
@@ -97,7 +95,7 @@ export interface SEDNewSelector {
   tema: Tema | undefined
 
   valgtBucType: string | undefined
-  valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
+  valgteFamilieRelasjoner: Array<PersonInfoPDL>
   valgtFnr: string | undefined
   valgtInstitusjon: string | undefined
   valgtLandkode: string | undefined
@@ -178,26 +176,25 @@ export const PersonInfoContent = styled(Content)`
 
 const SEDNew = (): JSX.Element => {
   const {
-    alertVariant,
+
     alertMessage,
     alertType,
     gettingFagsaker,
     creatingFagsak,
     gettingInstitusjoner,
     searchingPerson,
-    searchingRelatertPerson,
+
     enheter,
     sendingSak,
     buctyper,
     fagsaker,
-    familierelasjonKodeverk,
+
     filloutinfo,
     sedtyper,
     institusjoner,
     kodemaps,
     opprettetSak,
 
-    personRelatert,
     personMedFamilie,
 
     sektor,
@@ -471,34 +468,6 @@ const SEDNew = (): JSX.Element => {
               person={personMedFamilie}
             />
           </Column>
-          <Column>
-            <PersonSearch
-              key={namespace + '-fnr-' + valgtFnr}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
-              data-testid={namespace + '-fnr'}
-              error={validation[namespace + '-fnr']?.feilmelding}
-              searchingPerson={searchingPerson}
-              id={namespace + '-fnr'}
-              initialFnr=''
-              value={valgtFnr}
-              parentNamespace={namespace}
-              onFnrChange={() => {
-                if (isFnrValid) {
-                  setIsFnrValid(false)
-                  dispatch(appActions.appReset()) // cleans person and sak reducer
-                }
-              }}
-              onPersonFound={() => {
-                setIsFnrValid(true)
-              }}
-              onSearchPerformed={(fnr: string) => {
-                dispatch(personActions.searchFamilieRelasjoner(fnr))
-              }}
-              person={person}
-            />
-          </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">
@@ -665,62 +634,11 @@ const SEDNew = (): JSX.Element => {
               {t('label:familierelasjon')}
             </Heading>
             <VerticalSeparatorDiv />
-            <FamilieRelasjoner validation={validation} namespace={namespace} personMedFamilie={personMedFamilie}/>
-
-            <VerticalSeparatorDiv />
-            <Family
-              namespace={namespace}
+            <FamilieRelasjoner
               validation={validation}
-              disableAll={!!opprettetSak}
-              alertVariant={alertVariant}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              abroadPersonFormAlertTypesWatched={[
-                types.SAK_ABROADPERSON_ADD_FAILURE
-              ]}
-              TPSPersonFormAlertTypesWatched={[
-                types.PERSON_RELATERT_SEARCH_FAILURE,
-                types.SAK_TPSPERSON_ADD_FAILURE
-              ]}
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              personRelatert={personRelatert}
-              searchingRelatertPerson={searchingRelatertPerson}
-              person={personMedFamilie}
+              namespace={namespace}
+              personMedFamilie={personMedFamilie}
               valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-              onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
-              onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                dispatch(sakActions.addFamilierelasjoner(relation))
-                dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onRelationAdded={(relation: OldFamilieRelasjon) => {
-                /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-                dispatch(
-                  sakActions.addFamilierelasjoner({
-                    ...relation,
-                    nasjonalitet: 'NO'
-                  })
-                )
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
-              onRelationReset={() => dispatch(personActions.resetPersonRelated())}
-              onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-              onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                dispatch(sakActions.addFamilierelasjoner(relation))
-                dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onSearchFnr={(fnrQuery: string) => {
-                dispatch(personActions.resetPersonRelated())
-                dispatch(personActions.searchPersonRelated(fnrQuery.trim()))
-              }}
             />
           </>
         )}

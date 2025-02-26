@@ -135,10 +135,12 @@ export interface PersonInfoPDL {
   utenlandskePin?: Array<Pin>
   adressebeskyttelse?: string
   __rolle?: string
+  __fraPDL?: boolean
 }
 
 export interface PersonMedFamilie extends PersonInfoPDL {
   ektefelle?: PersonInfoPDL
+  annenperson?: PersonInfoPDL
   barn?: Array<PersonInfoPDL>
 }
 
