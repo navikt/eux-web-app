@@ -1,0 +1,28 @@
+# .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Oslo"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "npm"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      nav-components:
+        patterns:
+          - "@navikt/*"
+      react-packages:
+        patterns:
+          - "react*"
+          - "@types/react*"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
