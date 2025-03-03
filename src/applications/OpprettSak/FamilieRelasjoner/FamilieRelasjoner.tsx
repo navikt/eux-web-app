@@ -125,7 +125,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
             )}
           </VStack>
         </HStack>
-        <HGrid gap="4" columns={2}>
+        <HGrid gap="4" columns={'auto 21px auto'}>
           <VStack gap="4">
             <BodyLong size="large">
               {t('label:familierelasjon-i-pdl')}
@@ -137,6 +137,10 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               />
             )}
           </VStack>
+          <FadingLineSeparator style={{ marginLeft: '10px', marginRight: '10px' }} className='fadeIn'>
+            &nbsp;
+          </FadingLineSeparator>
+
           <VStack gap="4">
             <BodyLong size="large">
               {t('label:valgt-familie')}&nbsp;(0)
