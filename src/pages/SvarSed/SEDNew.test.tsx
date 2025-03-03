@@ -19,7 +19,6 @@ describe('pages/SEDNew/SEDNew', () => {
     enheter: undefined,
     serverInfo: undefined,
     buctyper: undefined,
-    familierelasjonKodeverk: undefined,
     filloutinfo: undefined,
     kodemaps: undefined,
     landkoder: undefined,

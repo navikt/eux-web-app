@@ -1,5 +1,5 @@
 import React from "react";
-import {PersonInfoPDL, PersonMedFamilie} from "declarations/types";
+import {Kodeverk, PersonInfoPDL, PersonMedFamilie} from "declarations/types";
 import {useTranslation} from "react-i18next";
 import ukjent from "assets/icons/Unknown.png";
 import kvinne from "assets/icons/Woman.png";
@@ -28,11 +28,13 @@ export interface PersonPanelProps {
   onAddClick?: (p: PersonInfoPDL) => void
   onRemoveClick?: (p: PersonInfoPDL) => void
   person: PersonMedFamilie | PersonInfoPDL
+  familierelasjonKodeverk?: Array<Kodeverk>
+  rolleList?: Array<Kodeverk>,
   disableAll?: boolean
 }
 
 const PersonPanel: React.FC<PersonPanelProps> = ({
- className, person, onAddClick, onRemoveClick
+ className, person, familierelasjonKodeverk, rolleList, onAddClick, onRemoveClick
 }: PersonPanelProps): JSX.Element => {
   const {fnr, foedselsdato, fornavn, etternavn, kjoenn} = (person)
   const {t} = useTranslation()
@@ -45,6 +47,29 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
   } else if (kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
+  }
+
+  let rolleTerm
+
+  if ((person as PersonInfoPDL).__rolle && (familierelasjonKodeverk || rolleList)) {
+    let rolleObjekt
+    if (familierelasjonKodeverk) {
+      rolleObjekt = familierelasjonKodeverk.find((item: any) => item.kode === (person as PersonInfoPDL).__rolle)
+    }
+    if (rolleList) {
+      rolleObjekt = rolleList.find((item: any) => item.kode === (person as PersonInfoPDL).__rolle)
+    }
+    const kodeverkObjektTilTerm = (kodeverkObjekt: any) => {
+      if (!kodeverkObjekt || !kodeverkObjekt.term) {
+        return undefined
+      }
+      return Object.keys(kodeverkObjekt).includes('term') ? kodeverkObjekt.term : undefined
+    }
+
+    rolleTerm = kodeverkObjektTilTerm(rolleObjekt)
+    if (!rolleTerm) {
+      rolleTerm = t('label:ukjent-rolle')
+    }
   }
 
   return (
@@ -60,6 +85,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
           <Heading size='small' data-testid='panelheader__tittel__hoved'>
             {fornavn ? fornavn + ' ' : ''}
             {etternavn}
+            {(person as PersonInfoPDL).__rolle ? ' - ' + rolleTerm : ''}
           </Heading>
           <Box>
             <div>{t('label:fnr') + ' : ' + fnr}</div>

@@ -3,12 +3,22 @@ import {Box, VStack, Heading, BodyLong, HGrid, HStack, Spacer, Ingress} from "@n
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'
 import styled from "styled-components";
-import {PersonInfoPDL, PersonMedFamilie, Validation} from "../../../declarations/types";
+import {Kodeverk, PersonInfoPDL, PersonMedFamilie, Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PersonPanel from "../PersonPanel/PersonPanel";
-import {useAppDispatch} from "../../../store";
+import {useAppDispatch, useAppSelector} from "../../../store";
 import {addFamilierelasjoner, removeFamilierelasjoner} from "../../../actions/sak";
 import {FadingLineSeparator} from "../../../components/StyledComponents";
+import {State} from "../../../declarations/reducers";
+import _ from "lodash";
+
+export interface FamilieRelasjonerSelector {
+  familierelasjonKodeverk: Array<Kodeverk> | undefined
+}
+
+const mapState = (state: State): FamilieRelasjonerSelector => ({
+  familierelasjonKodeverk: state.app.familierelasjoner,
+})
 
 export interface FamilieRelasjonerProps {
   personMedFamilie: PersonMedFamilie | null | undefined
@@ -28,6 +38,10 @@ export const WithErrorBox = styled(Box)`
 const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   personMedFamilie, valgteFamilieRelasjoner, namespace, validation
 }: FamilieRelasjonerProps): JSX.Element => {
+  const {
+    familierelasjonKodeverk
+  }: FamilieRelasjonerSelector = useAppSelector(mapState)
+
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -65,7 +79,6 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   }
 
   const addRelasjon = (relasjon: PersonInfoPDL) => {
-    console.log("ADD: " + relasjon.fnr)
     dispatch(addFamilierelasjoner(relasjon))
     setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.filter(r => r.fnr !== relasjon.fnr))
   }
@@ -80,6 +93,21 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
       setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.concat(a))
     }
   }
+
+  const ekskluderteVerdier: Array<string> = ["SAMB", 'REPA']
+  if (!_.isEmpty(valgteFamilieRelasjoner)) {
+    // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+    if (valgteFamilieRelasjoner?.find((relation: PersonInfoPDL) => relation.__rolle === 'EKTE')) {
+      ekskluderteVerdier.push('EKTE')
+    }
+    // Det skal kun være mulig å legge til en relasjon av typen annen
+    if (valgteFamilieRelasjoner?.find((relation: PersonInfoPDL) => relation.__rolle === 'ANNEN')) {
+      ekskluderteVerdier.push('ANNEN')
+    }
+  }
+
+  const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => !ekskluderteVerdier.includes(kt.kode))
+  console.log(rolleList)
 
   return(
     <WithErrorBox
@@ -134,6 +162,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               <PersonPanel
                 person={r}
                 onAddClick={(r: PersonInfoPDL)=> addRelasjon(r)}
+                familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
           </VStack>
@@ -150,6 +179,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
                 className='personSelected'
                 person={r}
                 onRemoveClick={(r: PersonInfoPDL)=> removeRelasjon(r)}
+                familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
           </VStack>

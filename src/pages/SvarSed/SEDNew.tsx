@@ -81,7 +81,7 @@ export interface SEDNewSelector {
 
   buctyper: BucTyper | undefined
   fagsaker: Fagsaker | undefined | null
-  familierelasjonKodeverk: Array<Kodeverk> | undefined
+
   filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
@@ -120,7 +120,7 @@ const mapState = (state: State): SEDNewSelector => ({
   enheter: state.app.enheter,
   serverInfo: state.app.serverinfo,
   buctyper: state.app.buctyper,
-  familierelasjonKodeverk: state.app.familierelasjoner,
+
   kodemaps: state.app.kodemaps,
   sedtyper: state.app.sedtyper,
   sektor: state.app.sektor,
