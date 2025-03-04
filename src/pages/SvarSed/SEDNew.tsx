@@ -477,6 +477,7 @@ const SEDNew = (): JSX.Element => {
               person={personMedFamilie}
             />
           </Column>
+          <Column/>
         </Row>
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">

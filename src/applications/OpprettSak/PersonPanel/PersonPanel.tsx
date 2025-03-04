@@ -91,7 +91,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
             <div>{t('label:fnr') + ' : ' + fnr}</div>
             <div>{t('label:fødselsdato') + ': ' + toDateFormat(foedselsdato, 'DD.MM.YYYY')}</div>
           </Box>
-          {person.adressebeskyttelse &&
+          {person.adressebeskyttelse && person.adressebeskyttelse !== "UGRADERT" &&
             <Alert size="small" variant='warning'>
               {t('label:sensitivPerson', {gradering: person.adressebeskyttelse})}
             </Alert>
