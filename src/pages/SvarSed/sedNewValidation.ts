@@ -1,4 +1,4 @@
-import {OldFamilieRelasjon, Validation} from 'declarations/types'
+import {OldFamilieRelasjon, PersonInfoPDL, Validation} from 'declarations/types'
 import {addError, checkIfNotEmpty, checkIfNotTrue, ValidateValueParams} from 'utils/validation'
 import _, {isEmpty} from "lodash";
 
@@ -11,7 +11,7 @@ export interface ValidationSEDNewProps {
   landkode: string
   institusjon: string
   tema: string
-  familierelasjoner:Array<OldFamilieRelasjon>
+  familierelasjoner:Array<PersonInfoPDL>
   saksId: string
   visEnheter: boolean
   unit: string
@@ -38,8 +38,8 @@ export const validateSEDNew = (
   const hasErrors: Array<boolean> = []
 
   const checkIfHasChildren = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
-    const barn = needle.filter((relasjon: OldFamilieRelasjon) => {
-      return relasjon.rolle === "BARN"
+    const barn = needle.filter((relasjon: PersonInfoPDL) => {
+      return relasjon.__rolle === "BARN"
     })
 
     if (isEmpty(barn)) {
@@ -49,8 +49,8 @@ export const validateSEDNew = (
   }
 
   const checkIfOnlyOneEKTESAMBREPA = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
-    const ekteSambRepa = needle.filter((relasjon: OldFamilieRelasjon) => {
-      return (relasjon.rolle === "EKTE" || relasjon.rolle === "SAMB" || relasjon.rolle === "REPA")
+    const ekteSambRepa = needle.filter((relasjon: PersonInfoPDL) => {
+      return (relasjon.__rolle === "EKTE")
     })
 
     if (ekteSambRepa.length > 1) {

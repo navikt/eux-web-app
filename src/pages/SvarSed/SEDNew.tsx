@@ -260,20 +260,29 @@ const SEDNew = (): JSX.Element => {
       unit: valgtUnit
     } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
-    if (!hasErrors) {
-      dispatch(sakActions.createSak({
-        buctype: valgtBucType,
-        sedtype: valgtSedType,
-        mottakerId: valgtInstitusjon,
-        mottakerlandkode: valgtLandkode,
-        fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
-        enhet: valgtUnit,
-        bruker: {
-          fnr: valgtFnr
-        },
 
-        familierelasjoner: valgteFamilieRelasjoner,
-      }))
+    const ektefelle = valgteFamilieRelasjoner!.find((r) => r.__rolle === "EKTE")
+    const annenperson = valgteFamilieRelasjoner!.find((r) => r.__rolle === "ANNEN")
+    const barn = valgteFamilieRelasjoner.filter((r) => r.__rolle === "BARN").map((barn) => {return {fnr: barn.fnr}})
+
+    const payload = {
+      buctype: valgtBucType,
+      sedtype: valgtSedType,
+      mottakerId: valgtInstitusjon,
+      mottakerlandkode: valgtLandkode,
+      fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
+      ...(valgtUnit && {enhet: valgtUnit}),
+
+      bruker: {
+        fnr: valgtFnr
+      },
+      ...(ektefelle && { ektefelle: {fnr: ektefelle.fnr} }),
+      ...(annenperson && { annenperson: {fnr: annenperson.fnr} }),
+      ...(barn && { barn: barn }),
+    }
+
+    if (!hasErrors) {
+      dispatch(sakActions.createSak(payload))
     }
   }
 

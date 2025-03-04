@@ -24,41 +24,7 @@ export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET
 })
 
-export const createSak = (data: any): ActionWithPayload<any> => {
-  const payload = {
-    buctype: data.buctype,
-    sedtype: data.sedtype,
-    mottakerId: data.mottakerId, //institusjonsID: data.institusjonsID,
-    mottakerlandkode: data.mottakerlandkode, //landKode: data.landKode,
-    fagsak: data.fagsak,
-    bruker: data.bruker,
-  } as any
-
-  if (data.enhet) {
-    payload.enhet = data.enhet
-  }
-
-  //TODO: ADD ektefelle, barn and annenPerson
-
-  /*
-  if (data.familierelasjoner && data.familierelasjoner.length > 0) {
-    let relasjoner = data.familierelasjoner.map((relasjon: any) => ({
-      ...relasjon,
-      fdato: relasjon.fdato.indexOf('-') > 0
-        ? relasjon.fdato
-        : moment(relasjon.fdato, ['DD.MM.YYYY HH:mm', 'DD.MM.YYYY']).format('YYYY-MM-DD')
-    }))
-
-    relasjoner.forEach((r:any) => {
-      if(r.statsborgerskap && r.statsborgerskapList){
-        delete r.statsborgerskapList
-      }
-    })
-
-    payload.tilleggsopplysninger.familierelasjoner = relasjoner
-  }
-  */
-
+export const createSak = (payload: any): ActionWithPayload<any> => {
   return call({
     url: urls.API_SAK_SEND_URL,
     method: 'POST',
