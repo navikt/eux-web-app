@@ -124,26 +124,36 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
         <Heading size='small'>
           {t('label:family-description')}
         </Heading>
-        <HGrid gap="4" columns={'auto 21px auto'}>
+        <HGrid gap="4" columns={'minmax(450px, auto) 21px minmax(450px, auto)'}>
           <VStack gap="4">
             <BodyLong size="large">
               {t('label:familierelasjon-i-pdl')}
             </BodyLong>
             {_ikkeValgteFamilieRelasjoner.map((r) =>
               <PersonPanel
+                className='personNotSelected'
                 person={r}
                 onAddClick={(r: PersonInfoPDL)=> addRelasjon(r)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
+            {!_.isEmpty(familieRelasjoner) && _.isEmpty(_ikkeValgteFamilieRelasjoner) && (
+              <BodyLong>
+                ({t('label:familie-alle-lagt-inn')})
+              </BodyLong>
+            )}
+            {_.isEmpty(familieRelasjoner) && (
+              <BodyLong>
+                ({t('label:ingen-familie-i-pdl')})
+              </BodyLong>
+            )}
           </VStack>
           <FadingLineSeparator style={{ marginLeft: '10px', marginRight: '10px' }} className='fadeIn'>
             &nbsp;
           </FadingLineSeparator>
-
           <VStack gap="4">
             <BodyLong size="large">
-              {t('label:valgt-familie')}&nbsp;(0)
+              {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
             </BodyLong>
             {valgteFamilieRelasjoner?.map((r) =>
               <PersonPanel
