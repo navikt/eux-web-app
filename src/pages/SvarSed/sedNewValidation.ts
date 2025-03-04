@@ -1,4 +1,4 @@
-import {OldFamilieRelasjon, PersonInfoPDL, Validation} from 'declarations/types'
+import {PersonInfoPDL, Validation} from 'declarations/types'
 import {addError, checkIfNotEmpty, checkIfNotTrue, ValidateValueParams} from 'utils/validation'
 import _, {isEmpty} from "lodash";
 
