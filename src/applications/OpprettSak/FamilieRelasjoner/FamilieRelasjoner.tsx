@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Box, VStack, Heading, BodyLong, HGrid, HStack, Spacer, Ingress} from "@navikt/ds-react";
+import {Box, VStack, Heading, BodyLong, HGrid} from "@navikt/ds-react";
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'
 import styled from "styled-components";
@@ -124,35 +124,6 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
         <Heading size='small'>
           {t('label:family-description')}
         </Heading>
-        <HStack gap="4">
-          <VStack gap="4">
-            <Ingress>
-              {t('label:familierelasjon-i-pdl')}
-            </Ingress>
-            {familieRelasjoner.map((r) =>
-              <PersonPanel
-                person={r}
-                onAddClick={()=>{}}
-              />
-            )}
-          </VStack>
-          <Spacer/>
-          <FadingLineSeparator className='fadeIn'>
-            &nbsp;
-          </FadingLineSeparator>
-          <Spacer/>
-          <VStack gap="4">
-            <Ingress>
-              {t('label:valgt-familie')}&nbsp;(0)
-            </Ingress>
-            {familieRelasjoner.map((r) =>
-              <PersonPanel
-                person={r}
-                onRemoveClick={() => {}}
-              />
-            )}
-          </VStack>
-        </HStack>
         <HGrid gap="4" columns={'auto 21px auto'}>
           <VStack gap="4">
             <BodyLong size="large">
