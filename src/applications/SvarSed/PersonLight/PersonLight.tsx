@@ -86,7 +86,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
 
   const fillOutPerson = (searchedPerson: Person) => {
     let newPersonLight: PersonLight | undefined = _.cloneDeep(personLight)
-    setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
+    setGradering(searchedPerson?.adressebeskyttelse && searchedPerson?.adressebeskyttelse !== "UGRADERT" ? searchedPerson.adressebeskyttelse : null)
 
     if (!newPersonLight) {
       newPersonLight = {} as PersonLight
@@ -163,7 +163,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
           </Alert>
         </PaddedDiv>
       }
-      {personLight?.adressebeskyttelse && !gradering &&
+      {personLight?.adressebeskyttelse && personLight?.adressebeskyttelse !== "UGRADERT" && !gradering &&
         <PaddedDiv>
           <Alert size="small" variant='warning'>
             {t('label:sensitivPerson', {gradering: personLight?.adressebeskyttelse})}

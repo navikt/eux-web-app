@@ -145,7 +145,7 @@ const TPSPersonForm: React.FC<TPSPersonFormProps> = ({
               </span>
             </>
           )}
-          {_personRelatert?.adressebeskyttelse &&
+          {_personRelatert?.adressebeskyttelse && _personRelatert?.adressebeskyttelse !== "UGRADERT" &&
             <>
               <VerticalSeparatorDiv size='0.5' />
               <Alert size="small" variant='warning'>

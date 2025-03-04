@@ -197,7 +197,7 @@ const Person: React.FC<MainFormProps> = ({
               onChanged={onFnrChange}
               value={pdu1Person?.fnr}
             />
-            {pdu1Person?.adressebeskyttelse &&
+            {pdu1Person?.adressebeskyttelse && pdu1Person?.adressebeskyttelse !== "UGRADERT" &&
               <>
                 <VerticalSeparatorDiv/>
                 <Alert size="small" variant='warning'>

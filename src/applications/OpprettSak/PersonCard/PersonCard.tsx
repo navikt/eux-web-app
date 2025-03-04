@@ -132,7 +132,7 @@ const PersonCard: React.FC<PersonCardProps> = ({
               <div>{t('label:fnr') + ' : ' + fnr}</div>
               <div>{t('label:fødselsdato') + ': ' + toDateFormat(fdato, 'DD.MM.YYYY')}</div>
             </Undertitle>
-            {person.adressebeskyttelse &&
+            {person.adressebeskyttelse && person.adressebeskyttelse !== "UGRADERT" &&
               <Alert size="small" variant='warning'>
                 {t('label:sensitivPerson', {gradering: person.adressebeskyttelse})}
               </Alert>

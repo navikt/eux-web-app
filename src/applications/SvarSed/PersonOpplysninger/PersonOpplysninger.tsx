@@ -115,7 +115,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
 
 
-    setGradering(searchedPerson?.adressebeskyttelse ? searchedPerson.adressebeskyttelse : null)
+    setGradering(searchedPerson?.adressebeskyttelse && searchedPerson?.adressebeskyttelse !== "UGRADERT" ? searchedPerson.adressebeskyttelse : null)
 
     if (searchedPerson.fnr) {
       const index = _.findIndex(newPersonInfo?.pin, p => p.landkode === 'NOR')
@@ -218,7 +218,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
           </Alert>
         </PaddedDiv>
       }
-      {personInfo?.adressebeskyttelse && !gradering &&
+      {personInfo?.adressebeskyttelse && personInfo?.adressebeskyttelse !== "UGRADERT" && !gradering &&
         <PaddedDiv>
           <Alert size="small" variant='warning'>
             {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}

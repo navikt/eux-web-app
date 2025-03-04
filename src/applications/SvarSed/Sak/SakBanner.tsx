@@ -109,7 +109,7 @@ const SakBanner = () => {
           <HorizontalSeparatorDiv />
           {toDateFormat(currentSak.foedselsdato, 'DD.MM.YYYY')}
         </FlexDiv>
-        {currentSak.adressebeskyttelse &&
+        {currentSak.adressebeskyttelse && currentSak.adressebeskyttelse !== "UGRADERT" &&
           <FlexDiv>
             <Alert size="small" variant='warning'>
               <span>{t('label:sensitivPerson', {gradering: currentSak.adressebeskyttelse})}</span>
