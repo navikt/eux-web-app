@@ -98,7 +98,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
             countryCodeListName="euEftaLand"
             excludeNorway={true}
             onOptionSelected={(e: Country) => {
-              updateRelation('pinLandkode', e.value)
+              updateRelation('pinLandkode', e.value3)
             }}
             values={_relation.pinLandkode ?? ''}
           />
@@ -108,7 +108,7 @@ const RelasjonUtland: React.FC<RelasjonUtlandProps> =({
             countryCodeListName="statsborgerskap"
             label={t('label:statsborgerskap')}
             onOptionSelected={(e: Country) => {
-              updateRelation('statsborgerskap', e.value)
+              updateRelation('statsborgerskap', e.value3)
             }}
             values={_relation.statsborgerskap ?? ''}
           />

@@ -258,7 +258,7 @@ const SEDNew = (): JSX.Element => {
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
       tema: valgtTema,
-      familierelasjoner: valgteFamilieRelasjonerPDL,
+      familierelasjoner: [...valgteFamilieRelasjonerPDL, ...valgteFamilieRelasjonerUtland],
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit

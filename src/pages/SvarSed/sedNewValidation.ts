@@ -1,4 +1,4 @@
-import {PersonInfoPDL, Validation} from 'declarations/types'
+import {PersonInfoPDL, PersonInfoUtland, Validation} from 'declarations/types'
 import {addError, checkIfNotEmpty, checkIfNotTrue, ValidateValueParams} from 'utils/validation'
 import _, {isEmpty} from "lodash";
 
@@ -38,7 +38,7 @@ export const validateSEDNew = (
   const hasErrors: Array<boolean> = []
 
   const checkIfHasChildren = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
-    const barn = needle.filter((relasjon: PersonInfoPDL) => {
+    const barn = needle.filter((relasjon: PersonInfoPDL | PersonInfoUtland) => {
       return relasjon.__rolle === "BARN"
     })
 
@@ -49,7 +49,7 @@ export const validateSEDNew = (
   }
 
   const checkIfOnlyOneEKTESAMBREPA = (v: Validation, { needle, id, personName, message, extra }: ValidateValueParams): boolean => {
-    const ekteSambRepa = needle.filter((relasjon: PersonInfoPDL) => {
+    const ekteSambRepa = needle.filter((relasjon: PersonInfoPDL | PersonInfoUtland) => {
       return (relasjon.__rolle === "EKTE")
     })
 

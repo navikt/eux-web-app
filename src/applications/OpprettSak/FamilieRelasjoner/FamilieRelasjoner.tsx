@@ -148,6 +148,10 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   }
 
   const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => !ekskluderteVerdier.includes(kt.kode))
+  let totalValgt = 0
+
+  if(valgteFamilieRelasjonerPDL && valgteFamilieRelasjonerPDL.length > 0) totalValgt = totalValgt + valgteFamilieRelasjonerPDL.length
+  if(valgteFamilieRelasjonerUtland && valgteFamilieRelasjonerUtland.length > 0) totalValgt = totalValgt + valgteFamilieRelasjonerUtland.length
 
   const disableAddPerson = (rolle: string) => {
     return !!ekskluderteVerdier.find((ekskludertRolle: string) => ekskludertRolle === rolle)
@@ -198,7 +202,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
           </FadingLineSeparator>
           <VStack gap="4">
             <BodyLong size="large">
-              {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjonerPDL ? valgteFamilieRelasjonerPDL.length : 0})
+              {t('label:valgt-familie')}&nbsp;({totalValgt})
             </BodyLong>
             {valgteFamilieRelasjonerPDL?.map((r) =>
               <PersonPanel
