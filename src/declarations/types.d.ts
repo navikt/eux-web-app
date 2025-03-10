@@ -135,7 +135,23 @@ export interface PersonInfoPDL {
   utenlandskePin?: Array<Pin>
   adressebeskyttelse?: string
   __rolle?: string
-  __fraPDL?: boolean
+  __fraPersonMedFamilie?: boolean
+}
+
+export interface PersonInfoUtland {
+  fornavn?: string,
+  etternavn?: string,
+  kjoenn?: string,
+  statsborgerskap?: string,
+  foedselsdato?: string,
+  pin?: string,
+  pinLandkode?: string,
+  __rolle?: string
+}
+
+export interface Pin {
+  identifikator: string
+  landkode: string
 }
 
 export interface PersonMedFamilie extends PersonInfoPDL {

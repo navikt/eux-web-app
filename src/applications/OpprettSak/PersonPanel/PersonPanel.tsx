@@ -1,5 +1,5 @@
 import React from "react";
-import {Kodeverk, PersonInfoPDL, PersonMedFamilie} from "declarations/types";
+import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie} from "declarations/types";
 import {useTranslation} from "react-i18next";
 import ukjent from "assets/icons/Unknown.png";
 import kvinne from "assets/icons/Woman.png";
@@ -25,26 +25,33 @@ const PersonBox = styled(Box)`
 
 export interface PersonPanelProps {
   className?: string
-  onAddClick?: (p: PersonInfoPDL) => void
-  onRemoveClick?: (p: PersonInfoPDL) => void
-  person: PersonMedFamilie | PersonInfoPDL
+  onAddClick?: (p: PersonInfoPDL | PersonInfoUtland) => void
+  onRemoveClick?: (p: PersonInfoPDL | PersonInfoUtland) => void
+  person: PersonMedFamilie | PersonInfoPDL | PersonInfoUtland
   familierelasjonKodeverk?: Array<Kodeverk>
   rolleList?: Array<Kodeverk>,
   disableAll?: boolean
 }
 
 const PersonPanel: React.FC<PersonPanelProps> = ({
- className, person, familierelasjonKodeverk, rolleList, onAddClick, onRemoveClick
+ className, person, familierelasjonKodeverk, rolleList, onAddClick, onRemoveClick, disableAll
 }: PersonPanelProps): JSX.Element => {
-  const {fnr, foedselsdato, fornavn, etternavn, kjoenn} = (person)
   const {t} = useTranslation()
+
+  const isPersonPDL = (person: PersonInfoPDL | PersonInfoUtland) => {
+    return ("fnr" in person)
+  }
+
+  const isPersonUtland = (person: PersonInfoPDL | PersonInfoUtland) => {
+    return ("pin" in person)
+  }
 
   let kind: string = 'nav-unknown-icon'
   let src = ukjent
-  if (kjoenn === 'K') {
+  if (person.kjoenn === 'K') {
     kind = 'nav-woman-icon'
     src = kvinne
-  } else if (kjoenn === 'M') {
+  } else if (person.kjoenn === 'M') {
     kind = 'nav-man-icon'
     src = mann
   }
@@ -83,17 +90,22 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
         />
         <VStack>
           <Heading size='small' data-testid='panelheader__tittel__hoved'>
-            {fornavn ? fornavn + ' ' : ''}
-            {etternavn}
+            {person.fornavn ? person.fornavn + ' ' : ''}
+            {person.etternavn}
             {(person as PersonInfoPDL).__rolle ? ' - ' + rolleTerm : ''}
           </Heading>
           <Box>
-            <div>{t('label:fnr') + ' : ' + fnr}</div>
-            <div>{t('label:fødselsdato') + ': ' + toDateFormat(foedselsdato, 'DD.MM.YYYY')}</div>
+            {isPersonPDL(person) &&
+              <div>{t('label:fnr') + ' : ' + (person as PersonInfoPDL).fnr}</div>
+            }
+            {isPersonUtland(person) &&
+                <div>{t('label:pin') + ' : ' + (person as PersonInfoUtland).pin}</div>
+            }
+            <div>{t('label:fødselsdato') + ': ' + toDateFormat(person.foedselsdato, 'DD.MM.YYYY')}</div>
           </Box>
-          {person.adressebeskyttelse && person.adressebeskyttelse !== "UGRADERT" &&
+          {isPersonPDL(person) && (person as PersonInfoPDL).adressebeskyttelse && (person as PersonInfoPDL).adressebeskyttelse !== "UGRADERT" &&
             <Alert size="small" variant='warning'>
-              {t('label:sensitivPerson', {gradering: person.adressebeskyttelse})}
+              {t('label:sensitivPerson', {gradering: (person as PersonInfoPDL).adressebeskyttelse})}
             </Alert>
           }
         </VStack>
@@ -103,6 +115,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
             <Button
               onClick={() => onRemoveClick(person)}
               icon={<TrashIcon/>}
+              disabled={disableAll}
             />
           </Box>
         )}
@@ -112,6 +125,7 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
               variant='secondary'
               onClick={() => onAddClick(person)}
               icon={<PlusCircleIcon/>}
+              disabled={disableAll}
             />
           </Box>
         )}

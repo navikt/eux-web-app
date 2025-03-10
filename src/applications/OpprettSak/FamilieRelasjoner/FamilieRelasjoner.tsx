@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import {Box, VStack, Heading, BodyLong, HGrid} from "@navikt/ds-react";
+import React, {useEffect, useState} from "react";
+import {Box, VStack, Heading, BodyLong, HGrid, Button} from "@navikt/ds-react";
 import classNames from "classnames";
 import { useTranslation } from 'react-i18next'
 import styled from "styled-components";
-import {Kodeverk, PersonInfoPDL, PersonMedFamilie, Validation} from "../../../declarations/types";
+import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie, Validation} from "../../../declarations/types";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PersonPanel from "../PersonPanel/PersonPanel";
 import {useAppDispatch, useAppSelector} from "../../../store";
@@ -11,6 +11,7 @@ import {addFamilierelasjoner, removeFamilierelasjoner} from "../../../actions/sa
 import {FadingLineSeparator} from "../../../components/StyledComponents";
 import {State} from "../../../declarations/reducers";
 import _ from "lodash";
+import RelasjonUtland from "./RelasjonUtland";
 
 export interface FamilieRelasjonerSelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -22,8 +23,9 @@ const mapState = (state: State): FamilieRelasjonerSelector => ({
 
 export interface FamilieRelasjonerProps {
   personMedFamilie: PersonMedFamilie | null | undefined
-  valgteFamilieRelasjoner: Array<PersonInfoPDL> | undefined
-  namespace?: string
+  valgteFamilieRelasjonerPDL: Array<PersonInfoPDL> | undefined
+  valgteFamilieRelasjonerUtland: Array<PersonInfoUtland> | undefined
+  namespace: string
   validation: Validation
 }
 
@@ -36,7 +38,7 @@ export const WithErrorBox = styled(Box)`
 
 
 const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
-  personMedFamilie, valgteFamilieRelasjoner, namespace, validation
+  personMedFamilie, valgteFamilieRelasjonerPDL, valgteFamilieRelasjonerUtland, namespace, validation
 }: FamilieRelasjonerProps): JSX.Element => {
   const {
     familierelasjonKodeverk
@@ -44,16 +46,36 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+  namespace = namespace + '-familierelasjoner'
 
   const familieRelasjoner: Array<PersonInfoPDL> = [];
   const [_ikkeValgteFamilieRelasjoner, setIkkeValgteFamilieRelasjoner] = useState<Array<PersonInfoPDL>>(familieRelasjoner)
+  const [_viewRelasjonUtland, setViewRelasjonUtland] = useState<boolean>(false)
+  const [_openAgain, setOpenAgain] = useState<boolean | null>(null)
 
+  const toggleViewRelasjonUtland = (): void => setViewRelasjonUtland(!_viewRelasjonUtland)
+
+  const closeAndOpen = (): void => {
+    setViewRelasjonUtland(false)
+    setOpenAgain(false)
+  }
+
+  const openAgain = (): void => {
+    setViewRelasjonUtland(true)
+    setOpenAgain(true)
+  }
+
+  useEffect(() => {
+    if(_openAgain === false){
+      setTimeout(openAgain, 500)
+    }
+  }, [_openAgain])
 
   personMedFamilie?.barn?.forEach((barn) => {
     barn = {
       ...barn,
       __rolle:"BARN",
-      __fraPDL:true
+      __fraPersonMedFamilie:true
     }
     familieRelasjoner.push(barn)
   })
@@ -63,7 +85,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     ektefelle = {
       ...ektefelle,
       __rolle:"EKTE",
-      __fraPDL:true
+      __fraPersonMedFamilie:true
     }
     familieRelasjoner.push(ektefelle)
   }
@@ -73,41 +95,63 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     annenperson = {
       ...annenperson,
       __rolle:"ANNEN",
-      __fraPDL:true
+      __fraPersonMedFamilie:true
     }
     familieRelasjoner.push(annenperson)
   }
 
-  const addRelasjon = (relasjon: PersonInfoPDL) => {
+  const addRelasjonFromPDL = (relasjon: PersonInfoPDL) => {
     dispatch(addFamilierelasjoner(relasjon))
     setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.filter(r => r.fnr !== relasjon.fnr))
   }
 
-  const removeRelasjon = (relasjon: PersonInfoPDL) => {
+  const removeRelasjonFromPDL = (relasjon: PersonInfoPDL) => {
     const a: Array<PersonInfoPDL> = []
     a.push(relasjon)
 
     dispatch(removeFamilierelasjoner(relasjon))
 
-    if(relasjon.__fraPDL){
+    if(relasjon.__fraPersonMedFamilie){
       setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.concat(a))
     }
   }
 
+  const addRelasjonFromUtland = (relasjon: PersonInfoUtland) => {
+    dispatch(addFamilierelasjoner(relasjon))
+  }
+
+  const removeRelasjonFromUtland = (relasjon: PersonInfoUtland) => {
+    dispatch(removeFamilierelasjoner(relasjon))
+  }
+
   const ekskluderteVerdier: Array<string> = ["SAMB", 'REPA']
-  if (!_.isEmpty(valgteFamilieRelasjoner)) {
+  if (!_.isEmpty(valgteFamilieRelasjonerPDL)) {
     // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
-    if (valgteFamilieRelasjoner?.find((relation: PersonInfoPDL) => relation.__rolle === 'EKTE')) {
+    if (valgteFamilieRelasjonerPDL?.find((relation: PersonInfoPDL) => relation.__rolle === 'EKTE')) {
       ekskluderteVerdier.push('EKTE')
     }
     // Det skal kun være mulig å legge til en relasjon av typen annen
-    if (valgteFamilieRelasjoner?.find((relation: PersonInfoPDL) => relation.__rolle === 'ANNEN')) {
+    if (valgteFamilieRelasjonerPDL?.find((relation: PersonInfoPDL) => relation.__rolle === 'ANNEN')) {
+      ekskluderteVerdier.push('ANNEN')
+    }
+  }
+
+  if (!_.isEmpty(valgteFamilieRelasjonerUtland)) {
+    // Hvis ektefelle allerede er lagt til, fjern mulighet for andre typer samlivspartnere
+    if (valgteFamilieRelasjonerUtland?.find((relation: PersonInfoUtland) => relation.__rolle === 'EKTE')) {
+      ekskluderteVerdier.push('EKTE')
+    }
+    // Det skal kun være mulig å legge til en relasjon av typen annen
+    if (valgteFamilieRelasjonerUtland?.find((relation: PersonInfoUtland) => relation.__rolle === 'ANNEN')) {
       ekskluderteVerdier.push('ANNEN')
     }
   }
 
   const rolleList: Array<Kodeverk> = familierelasjonKodeverk!.filter((kt: Kodeverk) => !ekskluderteVerdier.includes(kt.kode))
-  console.log(rolleList)
+
+  const disableAddPerson = (rolle: string) => {
+    return !!ekskluderteVerdier.find((ekskludertRolle: string) => ekskludertRolle === rolle)
+  }
 
   return(
     <WithErrorBox
@@ -133,8 +177,9 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               <PersonPanel
                 className='personNotSelected'
                 person={r}
-                onAddClick={(r: PersonInfoPDL)=> addRelasjon(r)}
+                onAddClick={(r: PersonInfoPDL | PersonInfoUtland)=> addRelasjonFromPDL(r as PersonInfoPDL)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
+                disableAll={disableAddPerson(r.__rolle!)}
               />
             )}
             {!_.isEmpty(familieRelasjoner) && _.isEmpty(_ikkeValgteFamilieRelasjoner) && (
@@ -153,18 +198,51 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
           </FadingLineSeparator>
           <VStack gap="4">
             <BodyLong size="large">
-              {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjoner ? valgteFamilieRelasjoner.length : 0})
+              {t('label:valgt-familie')}&nbsp;({valgteFamilieRelasjonerPDL ? valgteFamilieRelasjonerPDL.length : 0})
             </BodyLong>
-            {valgteFamilieRelasjoner?.map((r) =>
+            {valgteFamilieRelasjonerPDL?.map((r) =>
               <PersonPanel
                 className='personSelected'
                 person={r}
-                onRemoveClick={(r: PersonInfoPDL)=> removeRelasjon(r)}
+                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland)=> removeRelasjonFromPDL(r as PersonInfoPDL)}
+                familierelasjonKodeverk={familierelasjonKodeverk}
+              />
+            )}
+            {valgteFamilieRelasjonerUtland?.map((r) =>
+              <PersonPanel
+                className='personSelected'
+                person={r}
+                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland)=> removeRelasjonFromUtland(r as PersonInfoUtland)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
           </VStack>
         </HGrid>
+        <BodyLong size="large">
+          {t('label:family-utland')}
+        </BodyLong>
+        {_viewRelasjonUtland &&
+          <RelasjonUtland
+            onAddClick={(r: PersonInfoUtland) => addRelasjonFromUtland(r)}
+            validation={validation}
+            namespace={namespace}
+            rolleList={rolleList}
+            valgteFamilieRelasjonerUtland={valgteFamilieRelasjonerUtland}
+            closeAndOpen={closeAndOpen}
+            setOpenAgain={setOpenAgain}
+            flashBackground={_openAgain}
+          />
+        }
+        <div>
+          <Button
+            variant='secondary'
+            onClick={toggleViewRelasjonUtland}
+          >
+            {_viewRelasjonUtland
+              ? t('label:skjul-skjema')
+              : t('label:vis-skjema')}
+          </Button>
+        </div>
       </VStack>
     </WithErrorBox>
 

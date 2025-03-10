@@ -43,14 +43,14 @@ import {
   Kodemaps,
   Kodeverk,
   OpprettetSak,
-  Person, PersonInfoPDL, PersonMedFamilie,
+  Person, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie,
   Sak, Saks,
   Sed,
   ServerInfo,
   Tema,
   Validation
 } from 'declarations/types'
-import _ from 'lodash'
+import _, {cloneDeep} from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -95,7 +95,8 @@ export interface SEDNewSelector {
   tema: Tema | undefined
 
   valgtBucType: string | undefined
-  valgteFamilieRelasjoner: Array<PersonInfoPDL>
+  valgteFamilieRelasjonerPDL: Array<PersonInfoPDL>
+  valgteFamilieRelasjonerUtland: Array<PersonInfoUtland>
   valgtFnr: string | undefined
   valgtInstitusjon: string | undefined
   valgtLandkode: string | undefined
@@ -137,7 +138,9 @@ const mapState = (state: State): SEDNewSelector => ({
   personMedFamilie: state.person.personMedFamilie,
 
   valgtBucType: state.sak.buctype,
-  valgteFamilieRelasjoner: state.sak.familierelasjoner,
+  valgteFamilieRelasjonerPDL: state.sak.familierelasjonerPDL,
+  valgteFamilieRelasjonerUtland: state.sak.familierelasjonerUtland,
+
   fagsaker: state.sak.fagsaker,
   filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
@@ -200,7 +203,8 @@ const SEDNew = (): JSX.Element => {
     sektor,
     tema,
     valgtBucType,
-    valgteFamilieRelasjoner,
+    valgteFamilieRelasjonerPDL,
+    valgteFamilieRelasjonerUtland,
     valgtFnr,
     valgtInstitusjon,
     valgtLandkode,
@@ -254,16 +258,34 @@ const SEDNew = (): JSX.Element => {
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
       tema: valgtTema,
-      familierelasjoner: valgteFamilieRelasjoner,
+      familierelasjoner: valgteFamilieRelasjonerPDL,
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit
     } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
 
-    const ektefelle = valgteFamilieRelasjoner!.find((r) => r.__rolle === "EKTE")
-    const annenperson = valgteFamilieRelasjoner!.find((r) => r.__rolle === "ANNEN")
-    const barn = valgteFamilieRelasjoner.filter((r) => r.__rolle === "BARN").map((barn) => {return {fnr: barn.fnr}})
+    const ektefellePDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "EKTE")
+    const annenpersonPDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "ANNEN")
+    const barnPDL = valgteFamilieRelasjonerPDL!.filter((r) => r.__rolle === "BARN").map((barn) => {return {fnr: barn.fnr}})
+    const barnUtland = valgteFamilieRelasjonerUtland!.filter((r) => r.__rolle === "BARN").map((barn) => {
+      const barnInfo: PersonInfoUtland = cloneDeep(barn)
+      delete barnInfo.__rolle
+      return {
+        info: barnInfo
+      }
+    })
+
+    const barn = [...barnPDL, ...barnUtland]
+
+    const ektefelleUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "EKTE")
+    const annenpersonUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "ANNEN")
+
+    const ektefelleInfo = cloneDeep(ektefelleUtland)
+    delete ektefelleInfo?.__rolle
+
+    const annenpersonInfo = cloneDeep(annenpersonUtland)
+    delete annenpersonInfo?.__rolle
 
     const payload = {
       buctype: valgtBucType,
@@ -276,9 +298,11 @@ const SEDNew = (): JSX.Element => {
       bruker: {
         fnr: valgtFnr
       },
-      ...(ektefelle && { ektefelle: {fnr: ektefelle.fnr} }),
-      ...(annenperson && { annenperson: {fnr: annenperson.fnr} }),
-      ...(barn && { barn: barn }),
+      ...(ektefellePDL && { ektefelle: {fnr: ektefellePDL.fnr} }),
+      ...(annenpersonPDL && { annenperson: {fnr: annenpersonPDL.fnr} }),
+      ...(ektefelleUtland && { ektefelle: {info: ektefelleInfo} }),
+      ...(annenpersonUtland && { annenperson: {info: annenpersonInfo} }),
+      ...(barn && barn.length > 0 && { barn: barn }),
     }
 
     if (!hasErrors) {
@@ -648,7 +672,8 @@ const SEDNew = (): JSX.Element => {
               validation={validation}
               namespace={namespace}
               personMedFamilie={personMedFamilie}
-              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
+              valgteFamilieRelasjonerPDL={valgteFamilieRelasjonerPDL}
+              valgteFamilieRelasjonerUtland={valgteFamilieRelasjonerUtland}
             />
           </>
         )}

@@ -127,7 +127,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: '1' }]
+        familierelasjonerPDL: [{ fnr: '1' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_ADD,
         payload: { fnr: '2' }
@@ -142,7 +142,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: '1' }, { fnr: '2' }]
+        familierelasjonerPDL: [{ fnr: '1' }, { fnr: '2' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_REMOVE,
         payload: { fnr: '2' }

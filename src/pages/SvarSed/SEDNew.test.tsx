@@ -34,7 +34,8 @@ describe('pages/SEDNew/SEDNew', () => {
     gettingInstitusjoner: false,
 
     valgtBucType: undefined,
-    valgteFamilieRelasjoner: [],
+    valgteFamilieRelasjonerPDL: [],
+    valgteFamilieRelasjonerUtland: [],
     fagsaker: undefined,
     valgtFnr: undefined,
     valgtInstitusjon: undefined,
