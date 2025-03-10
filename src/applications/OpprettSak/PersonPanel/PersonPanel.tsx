@@ -95,12 +95,8 @@ const PersonPanel: React.FC<PersonPanelProps> = ({
             {(person as PersonInfoPDL).__rolle ? ' - ' + rolleTerm : ''}
           </Heading>
           <Box>
-            {isPersonPDL(person) &&
-              <div>{t('label:fnr') + ' : ' + (person as PersonInfoPDL).fnr}</div>
-            }
-            {isPersonUtland(person) &&
-                <div>{t('label:pin') + ' : ' + (person as PersonInfoUtland).pin}</div>
-            }
+            {isPersonPDL(person) && <div>{t('label:fnr') + ' : ' + (person as PersonInfoPDL).fnr}</div>}
+            {isPersonUtland(person) && <div>{t('label:pin') + ' : ' + (person as PersonInfoUtland).pin}</div>}
             <div>{t('label:fødselsdato') + ': ' + toDateFormat(person.foedselsdato, 'DD.MM.YYYY')}</div>
           </Box>
           {isPersonPDL(person) && (person as PersonInfoPDL).adressebeskyttelse && (person as PersonInfoPDL).adressebeskyttelse !== "UGRADERT" &&
