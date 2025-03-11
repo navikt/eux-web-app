@@ -43,7 +43,6 @@ describe('pages/SEDNew/SEDNew', () => {
     valgtLandkode: undefined,
     opprettetSak: undefined,
     personMedFamilie: undefined,
-    personRelatert: undefined,
     valgtSaksId: undefined,
     valgtSedType: undefined,
     valgtSektor: undefined,

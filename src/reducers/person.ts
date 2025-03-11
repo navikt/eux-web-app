@@ -5,13 +5,11 @@ import { AnyAction } from 'redux'
 
 export interface PersonState {
   person: Person | null | undefined
-  personRelatert: Person | null | undefined
   personMedFamilie: PersonMedFamilie | null | undefined
 }
 
 export const initialPersonState: PersonState = {
   person: undefined,
-  personRelatert: undefined,
   personMedFamilie: undefined
 }
 
@@ -45,28 +43,6 @@ const personReducer = (
       return {
         ...state,
         person: null
-      }
-
-    case types.PERSON_RELATERT_SEARCH_REQUEST:
-      return {
-        ...state,
-        personRelatert: undefined
-      }
-
-    case types.PERSON_RELATERT_SEARCH_FAILURE:
-      return {
-        ...state,
-        personRelatert: null
-      }
-
-    case types.PERSON_RELATERT_SEARCH_SUCCESS:
-      const relatertPayload = (action as ActionWithPayload).payload
-      return {
-        ...state,
-        personRelatert: {
-          ...relatertPayload,
-          statsborgerskapList: relatertPayload.statsborgerskap
-        }
       }
 
     case types.PERSON_MED_FAMILIE_SEARCH_REQUEST:

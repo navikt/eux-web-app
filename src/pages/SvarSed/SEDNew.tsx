@@ -88,7 +88,6 @@ export interface SEDNewSelector {
   landkoder: Array<string> | undefined
   opprettetSak: OpprettetSak | undefined
 
-  personRelatert: Person | null | undefined
   personMedFamilie: PersonMedFamilie | null | undefined
   sedtyper: Array<Kodeverk> | undefined
   sektor: Array<Kodeverk> | undefined
@@ -134,7 +133,6 @@ const mapState = (state: State): SEDNewSelector => ({
   searchingRelatertPerson: state.loading.searchingRelatertPerson,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
-  personRelatert: state.person.personRelatert,
   personMedFamilie: state.person.personMedFamilie,
 
   valgtBucType: state.sak.buctype,

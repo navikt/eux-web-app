@@ -1,7 +1,7 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import { FillOutInfoPayload } from 'declarations/sed'
-import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
+import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
@@ -18,7 +18,6 @@ export interface SakState {
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
   filloutinfo: any | null | undefined
-  personRelatert: OldFamilieRelasjon | null | undefined
   saksId: any
   sektor: any
   sedtype: any
@@ -39,7 +38,6 @@ export const initialSakState: SakState = {
   landkode: undefined,
   opprettetSak: undefined,
   filloutinfo: undefined,
-  personRelatert: undefined,
   saksId: undefined,
   sedtype: undefined,
   sektor: undefined,

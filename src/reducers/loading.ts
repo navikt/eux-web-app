@@ -358,19 +358,6 @@ const loadingReducer = (
         searchingPerson: false
       }
 
-    case types.PERSON_RELATERT_SEARCH_REQUEST:
-      return {
-        ...state,
-        searchingRelatertPerson: true
-      }
-
-    case types.PERSON_RELATERT_SEARCH_SUCCESS:
-    case types.PERSON_RELATERT_SEARCH_FAILURE:
-      return {
-        ...state,
-        searchingRelatertPerson: false
-      }
-
     case types.SVARSED_SAK_DELETE_REQUEST:
       return {
         ...state,

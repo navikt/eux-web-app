@@ -33,25 +33,6 @@ export const searchPerson = (
   })
 }
 
-
-export const searchPersonRelated = (
-  fnr: string
-): ActionWithPayload => {
-  return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr }),
-    expectedPayload: mockPerson,
-    cascadeFailureError: true,
-    context: {
-      fnr
-    },
-    type: {
-      request: types.PERSON_RELATERT_SEARCH_REQUEST,
-      success: types.PERSON_RELATERT_SEARCH_SUCCESS,
-      failure: types.PERSON_RELATERT_SEARCH_FAILURE
-    }
-  })
-}
-
 export const searchPersonMedFamilie = (
   fnr: string
 ): ActionWithPayload => {

@@ -33,7 +33,6 @@ export interface SvarsedState {
   attachmentRemoved: any | null | undefined
   institusjoner: Array<Institusjon> | undefined
   mottakere: any | undefined
-  personRelatert: any
   previewFile: Blob | null | undefined
   replySed: ReplySed | null | undefined
   originalReplySed: ReplySed | null | undefined
@@ -57,7 +56,6 @@ export const initialSvarsedState: SvarsedState = {
   attachmentRemoved: undefined,
   institusjoner: undefined,
   mottakere: undefined,
-  personRelatert: undefined,
   // binary PDF file for SED preview,
   previewFile: undefined,
   // the working reply sed
