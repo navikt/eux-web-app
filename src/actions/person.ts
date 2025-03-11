@@ -14,10 +14,6 @@ export const resetPerson: ActionCreator<Action> = () => ({
   type: types.PERSON_SEARCH_RESET
 })
 
-export const resetPersonRelated: ActionCreator<Action> = () => ({
-  type: types.PERSON_RELATERT_SEARCH_RESET
-})
-
 export const searchPerson = (
   fnr: string
 ): ActionWithPayload => {
