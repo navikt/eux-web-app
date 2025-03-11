@@ -2,7 +2,6 @@ import { Alert, Loader, Search } from '@navikt/ds-react'
 import {Person, PersonMedFamilie} from 'declarations/types'
 import _ from 'lodash'
 import { PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -122,13 +121,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
       )}
     </PileDiv>
   )
-}
-
-PersonSearch.propTypes = {
-  className: PT.string,
-  onFnrChange: PT.func,
-  onPersonFound: PT.func
-  // validation: ErrorElementPropType
 }
 
 export default PersonSearch

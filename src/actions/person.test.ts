@@ -37,18 +37,4 @@ describe('actions/persons', () => {
         url: sprintf(urls.API_PERSONER_URL, { fnr })
       }))
   })
-
-  it('searchPersonRelated()', () => {
-    const fnr = 'mockFnr'
-    personActions.searchPersonRelated(fnr)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.PERSON_RELATERT_SEARCH_REQUEST,
-          success: types.PERSON_RELATERT_SEARCH_SUCCESS,
-          failure: types.PERSON_RELATERT_SEARCH_FAILURE
-        },
-        url: sprintf(urls.API_PERSONER_URL, { fnr })
-      }))
-  })
 })

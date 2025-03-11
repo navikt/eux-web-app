@@ -1,4 +1,3 @@
-import * as types from 'constants/actionTypes'
 import { familierelasjoner } from '@navikt/eessi-kodeverk/lib/familierelasjoner'
 import { render } from '@testing-library/react'
 import React from 'react'
@@ -9,7 +8,7 @@ describe('components/Family/TPSPersonForm', () => {
   let wrapper: any
   const initialMockProps: TPSPersonFormProps = {
     alertMessage: 'Message',
-    alertType: types.PERSON_RELATERT_SEARCH_FAILURE,
+    alertType: undefined,
     alertTypesWatched: [],
     existingFamilyRelationships: [],
     onRelationReset: jest.fn(),
