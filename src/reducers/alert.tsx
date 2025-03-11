@@ -109,10 +109,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         stripeMessage = i18n.t('message:error-person-notFound')
         break
 
-      case types.PERSON_RELATERT_SEARCH_FAILURE:
-        stripeMessage = i18n.t('message:error-personRelated-notFound')
-        break
-
       case types.SAK_ABROADPERSON_ADD_FAILURE:
         stripeMessage = i18n.t('message:error-abroadperson-exists')
         break
