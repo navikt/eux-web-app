@@ -1,7 +1,6 @@
-import { Alert, Loader, Search } from '@navikt/ds-react'
+import {Alert, Loader, Search, VStack} from '@navikt/ds-react'
 import {Person, PersonMedFamilie} from 'declarations/types'
 import _ from 'lodash'
-import { PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -88,7 +87,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }
 
   return (
-    <PileDiv style={{ alignItems: 'flex-start' }}>
+    <VStack gap="1">
       <Search
         label={t('label:søker')}
         /* error={error ?? localValidation} */
@@ -107,19 +106,16 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         </Search.Button>
       </Search>
       {(error ?? localValidation) && (
-        <>
-          <VerticalSeparatorDiv size='0.5' />
-          <span className='navds-error-message navds-error-message--medium'>
-            {error ?? localValidation}
-          </span>
-        </>
+        <span className='navds-error-message navds-error-message--medium'>
+          {error ?? localValidation}
+        </span>
       )}
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <Alert variant='warning'>
           {alertMessage}
         </Alert>
       )}
-    </PileDiv>
+    </VStack>
   )
 }
 
