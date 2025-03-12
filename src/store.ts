@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import reducers from 'reducers'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import {IS_PRODUCTION} from "./constants/environment";
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
@@ -13,7 +14,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
 
 const store = configureStore({
   reducer: reducers,
-  devTools: process.env.NODE_ENV !== 'production'
+  devTools: !IS_PRODUCTION
 })
 
 export default store
