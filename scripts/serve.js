@@ -9,7 +9,7 @@ const STATIC_BUILD_DIR = path.join(PROJECT_ROOT, 'build');
 const envfile = `${PROJECT_ROOT}/.env`;
 require('dotenv').config({ path: envfile });
 
-const isLocalJavaDevEnv = () => `${process.env.REACT_APP_BUILD_VERSION}` === 'java_local';
+const isLocalJavaDevEnv = () => `${import.meta.env.VITE_APP_BUILD_VERSION}` === 'java_local';
 const context = isLocalJavaDevEnv() ? '/melosys' : '';
 
 if (!isLocalJavaDevEnv()) {
