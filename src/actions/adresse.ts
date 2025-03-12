@@ -4,7 +4,8 @@ import { Adresse } from 'declarations/sed'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockAdresse from 'mocks/adresse/adresse'
 import { Action, ActionCreator } from 'redux'
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const resetAdresse: ActionCreator<Action> = (): Action => ({
   type: types.ADRESSE_SEARCH_RESET

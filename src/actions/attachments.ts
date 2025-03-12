@@ -13,7 +13,8 @@ import mockJoark from 'mocks/attachments/joark'
 import mockPreview from 'mocks/attachments/preview'
 import { Action, ActionCreator } from 'redux'
 import {AttachmentTableItem} from "../declarations/types";
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const createSavingAttachmentJob: ActionCreator<ActionWithPayload<JoarkBrowserItems>> = (
   joarkBrowserItems: JoarkBrowserItems

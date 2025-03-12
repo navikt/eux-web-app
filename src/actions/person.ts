@@ -5,7 +5,8 @@ import mockPerson from 'mocks/person'
 import mockPersonInfo from 'mocks/personInfo'
 import mockPersonMedFamilie from 'mocks/personmedfamilie'
 import { Action, ActionCreator } from 'redux'
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const personReset: ActionCreator<Action> = () => ({
   type: types.PERSON_RESET

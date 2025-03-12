@@ -11,7 +11,8 @@ import mockFagsakGenerell from 'mocks/fagsak_generell'
 import {FagsakPayload} from "../declarations/pd";
 import mockFagsakDagpenger from "../mocks/fagsak";
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const journalfoeringReset: ActionCreator<Action> = (): Action => ({
   type: types.JOURNALFOERING_RESET
