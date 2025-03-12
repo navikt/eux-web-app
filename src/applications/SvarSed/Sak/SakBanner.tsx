@@ -1,5 +1,6 @@
+/// <reference types="vite-plugin-svgr/client" />
 import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
-import {ReactComponent as InformationIcon} from 'assets/icons/InformationIconOld.svg'
+import InformationIcon from 'assets/icons/InformationIconOld.svg?react'
 import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
