@@ -2,6 +2,7 @@ import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockPerson from 'mocks/person'
+import mockPersonInfo from 'mocks/personInfo'
 import mockPersonMedFamilie from 'mocks/personmedfamilie'
 import { Action, ActionCreator } from 'redux'
 const sprintf = require('sprintf-js').sprintf
@@ -43,3 +44,25 @@ export const searchPersonMedFamilie = (
     }
   })
 }
+
+export const searchPersonRelatert = (
+    fnr: string
+  ): ActionWithPayload => {
+    return call({
+      url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
+      expectedPayload: mockPersonInfo,
+      cascadeFailureError: true,
+      type: {
+        request: types.PERSON_RELATERT_SEARCH_REQUEST,
+        success: types.PERSON_RELATERT_SEARCH_SUCCESS,
+        failure: types.PERSON_RELATERT_SEARCH_FAILURE
+      }
+    })
+}
+
+export const personRelatertReset: ActionCreator<Action> = (): Action => ({
+  type: types.PERSON_RELATERT_RESET
+})
+
+
+

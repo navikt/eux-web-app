@@ -76,7 +76,6 @@ export interface SEDNewSelector {
   gettingFagsaker: boolean
   creatingFagsak: boolean
   searchingPerson: boolean
-  searchingRelatertPerson: boolean
   gettingInstitusjoner: boolean
 
   buctyper: BucTyper | undefined
@@ -130,7 +129,6 @@ const mapState = (state: State): SEDNewSelector => ({
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingFagsak: state.loading.creatingFagsak,
   searchingPerson: state.loading.searchingPerson,
-  searchingRelatertPerson: state.loading.searchingRelatertPerson,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
   personMedFamilie: state.person.personMedFamilie,

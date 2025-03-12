@@ -94,7 +94,6 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         data-testid={id ?? namespace + '-saksnummerOrFnr'}
         id={id ?? namespace + '-saksnummerOrFnr'}
         onChange={onChange}
-        required
         hideLabel={false}
         value={fnr || ''}
         disabled={searchingPerson}

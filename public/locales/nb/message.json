@@ -3,6 +3,8 @@
   "error-abroadperson-exists": "Du kan ikke legge til samme person flere ganger",
   "error-fagsak-notFound": "Det finnes ikke sak på bruker med det valgte temaet.  Sak må opprettes manuelt i Gosys eller tema må endres. ",
   "error-fnr-is-user": "FNR {{sok}} tilhører bruker",
+  "error-fnr-is-in-existing-relation": "FNR {{sok}} tilhører en eksisterende familierealsjon",
+  "error-fnr-already-added": "Du kan ikke legge til samme person flere ganger",
   "error-header": "Feilmeldingsdetaljer. Vennligst del denne informasjonen til utvikleren",
   "error-mottakere-add": "Det oppsto en feil under å legge til mottakere",
   "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",

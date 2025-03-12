@@ -1,16 +1,19 @@
 import * as types from 'constants/actionTypes'
-import {Person, PersonMedFamilie} from 'declarations/types.d'
+import {Person, PersonInfoPDL, PersonMedFamilie} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import { AnyAction } from 'redux'
 
 export interface PersonState {
   person: Person | null | undefined
   personMedFamilie: PersonMedFamilie | null | undefined
+  personRelatert: PersonInfoPDL | null | undefined
 }
 
 export const initialPersonState: PersonState = {
   person: undefined,
-  personMedFamilie: undefined
+  personMedFamilie: undefined,
+  personRelatert: undefined
+
 }
 
 const personReducer = (
@@ -43,6 +46,25 @@ const personReducer = (
       return {
         ...state,
         person: null
+      }
+
+    case types.PERSON_RELATERT_SEARCH_REQUEST:
+    case types.PERSON_RELATERT_RESET:
+      return {
+        ...state,
+        personRelatert: undefined
+      }
+
+    case types.PERSON_RELATERT_SEARCH_FAILURE:
+      return {
+        ...state,
+        personRelatert: null
+      }
+
+    case types.PERSON_RELATERT_SEARCH_SUCCESS:
+      return {
+        ...state,
+        personRelatert: (action as ActionWithPayload).payload
       }
 
     case types.PERSON_MED_FAMILIE_SEARCH_REQUEST:

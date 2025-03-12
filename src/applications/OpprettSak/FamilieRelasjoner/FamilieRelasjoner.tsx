@@ -12,6 +12,8 @@ import {FadingLineSeparator} from "../../../components/StyledComponents";
 import {State} from "../../../declarations/reducers";
 import _ from "lodash";
 import RelasjonUtland from "./RelasjonUtland";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import SearchPersonRelatert from "./SearchPersonRelatert";
 
 export interface FamilieRelasjonerSelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
@@ -23,8 +25,8 @@ const mapState = (state: State): FamilieRelasjonerSelector => ({
 
 export interface FamilieRelasjonerProps {
   personMedFamilie: PersonMedFamilie | null | undefined
-  valgteFamilieRelasjonerPDL: Array<PersonInfoPDL> | undefined
-  valgteFamilieRelasjonerUtland: Array<PersonInfoUtland> | undefined
+  valgteFamilieRelasjonerPDL: Array<PersonInfoPDL>
+  valgteFamilieRelasjonerUtland: Array<PersonInfoUtland>
   namespace: string
   validation: Validation
 }
@@ -51,9 +53,12 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   const familieRelasjoner: Array<PersonInfoPDL> = [];
   const [_ikkeValgteFamilieRelasjoner, setIkkeValgteFamilieRelasjoner] = useState<Array<PersonInfoPDL>>(familieRelasjoner)
   const [_viewRelasjonUtland, setViewRelasjonUtland] = useState<boolean>(false)
+  const [_viewPersonRelatert, setViewPersonRelatert] = useState<boolean>(false)
   const [_openAgain, setOpenAgain] = useState<boolean | null>(null)
 
   const toggleViewRelasjonUtland = (): void => setViewRelasjonUtland(!_viewRelasjonUtland)
+  const toggleViewPersonRelatert = (): void => setViewPersonRelatert(!_viewPersonRelatert)
+
 
   const closeAndOpen = (): void => {
     setViewRelasjonUtland(false)
@@ -181,7 +186,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               <PersonPanel
                 className='personNotSelected'
                 person={r}
-                onAddClick={(r: PersonInfoPDL | PersonInfoUtland)=> addRelasjonFromPDL(r as PersonInfoPDL)}
+                onAddClick={(r: PersonInfoPDL | PersonInfoUtland) => addRelasjonFromPDL(r as PersonInfoPDL)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
                 disableAll={disableAddPerson(r.__rolle!)}
               />
@@ -197,7 +202,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               </BodyLong>
             )}
           </VStack>
-          <FadingLineSeparator style={{ marginLeft: '10px', marginRight: '10px' }} className='fadeIn'>
+          <FadingLineSeparator style={{marginLeft: '10px', marginRight: '10px'}} className='fadeIn'>
             &nbsp;
           </FadingLineSeparator>
           <VStack gap="4">
@@ -208,7 +213,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               <PersonPanel
                 className='personSelected'
                 person={r}
-                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland)=> removeRelasjonFromPDL(r as PersonInfoPDL)}
+                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland) => removeRelasjonFromPDL(r as PersonInfoPDL)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
@@ -216,7 +221,7 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               <PersonPanel
                 className='personSelected'
                 person={r}
-                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland)=> removeRelasjonFromUtland(r as PersonInfoUtland)}
+                onRemoveClick={(r: PersonInfoPDL | PersonInfoUtland) => removeRelasjonFromUtland(r as PersonInfoUtland)}
                 familierelasjonKodeverk={familierelasjonKodeverk}
               />
             )}
@@ -247,6 +252,29 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
               : t('label:vis-skjema')}
           </Button>
         </div>
+        <BodyLong size="large">
+          {t('label:family-pdl')}
+        </BodyLong>
+        {_viewPersonRelatert &&
+          <SearchPersonRelatert
+            parentNamespace={namespace}
+            rolleList={rolleList}
+            onAddClick={(r: PersonInfoPDL | PersonInfoUtland) => addRelasjonFromPDL(r as PersonInfoPDL)}
+            valgteFamilieRelasjonerPDL={valgteFamilieRelasjonerPDL}
+            familieRelasjonerPDL={familieRelasjoner}
+          />
+        }
+        <div>
+          <Button
+            variant='secondary'
+            onClick={toggleViewPersonRelatert}
+          >
+            {_viewPersonRelatert
+              ? t('label:skjul-skjema')
+              : t('label:vis-skjema')}
+          </Button>
+        </div>
+        <ErrorLabel error={validation[namespace + '-familieRelasjoner']?.feilmelding}/>
       </VStack>
     </WithErrorBox>
 
