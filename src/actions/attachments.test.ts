@@ -5,7 +5,8 @@ import { JoarkBrowserItem, JoarkFileVariant, SEDAttachmentPayloadWithFile } from
 import { call as originalCall } from '@navikt/fetch'
 import mockItems from 'mocks/attachments/items'
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))

@@ -2,7 +2,8 @@ import * as inntektActions from 'actions/inntekt'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 jest.mock('@navikt/fetch', () => ({ call: jest.fn() }))
 const call = originalCall as jest.Mock<typeof originalCall>

@@ -18,7 +18,8 @@ import {FagsakPayload} from "../declarations/pd";
 import mockFagsakGenerell from "../mocks/fagsak_generell";
 import mockFagsakDagpenger from "../mocks/fagsak";
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET

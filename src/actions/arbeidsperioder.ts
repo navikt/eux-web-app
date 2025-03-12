@@ -4,7 +4,8 @@ import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockArbeidsperioder from 'mocks/arbeidsperioder/arbeidsperioder'
 import { ActionCreator } from 'redux'
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export interface GetArbeidsperiodeOptions {
   fnr: string

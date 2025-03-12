@@ -4,7 +4,8 @@ import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
 import {API_PDL_PERSON_URL} from "constants/urls";
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))
