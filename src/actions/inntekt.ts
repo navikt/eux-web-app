@@ -3,7 +3,8 @@ import * as urls from 'constants/urls'
 import { IInntekter } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockInntekt from 'mocks/inntekt/inntekt'
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const fetchInntekt = (
   fnr: string, fom?: string, tom?: string, inntektsliste?: string

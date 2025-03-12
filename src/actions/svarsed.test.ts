@@ -5,7 +5,8 @@ import { ReplySed } from 'declarations/sed'
 import { Sak, Sed } from 'declarations/types'
 import { call as originalCall } from '@navikt/fetch'
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))

@@ -12,7 +12,8 @@ import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
 import _ from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js';
 
 export const addMottakere = (
   rinaSakId: string, mottakere: Array<{id: string, name: string}>
