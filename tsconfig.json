@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "target": "ESNext",
+    "types": ["vite/client"],
     "baseUrl": "src/",
-    "target": "es5",
+    "paths": {
+      "src/*": ["./src/*"],
+      "components":["./src/components/*"],
+      "assets": ["./src/assets/*"]
+    },
     "lib": [
       "dom",
       "dom.iterable",
