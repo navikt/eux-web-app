@@ -32,4 +32,11 @@ export default defineConfig({
   define: {
     'process.env': process.env
   },
+  build:{
+    outDir: "build",
+    assetsDir: 'assets',
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
 })
