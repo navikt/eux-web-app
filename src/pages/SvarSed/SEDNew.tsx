@@ -43,7 +43,7 @@ import {
   Kodemaps,
   Kodeverk,
   OpprettetSak,
-  Person, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie,
+  PersonInfoPDL, PersonInfoUtland, PersonMedFamilie,
   Sak, Saks,
   Sed,
   ServerInfo,
