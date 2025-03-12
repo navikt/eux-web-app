@@ -39,12 +39,12 @@ const Version = () => {
     setVisVersjonDetaljer(!visVersjonDetaljer)
   }
 
-  const versjon = process.env.REACT_APP_VERSION ? `v${process.env.REACT_APP_VERSION}` : '(ukjent)'
-  const byggTidspunkt = () => process.env.REACT_APP_BUILD_DATETIME || '(ukjent)'
-  const byggVersjon = () => process.env.REACT_APP_BUILD_VERSION || '(ukjent)'
-  const branchVersjon = () => process.env.REACT_APP_BRANCH_NAME || '(lokal)'
-  const eessiKodeverk = () => process.env.REACT_APP_EESSI_KODEVERK || '(ukjent)'
-  const reactLibVersion = () => process.env.REACT_APP_REACT_LIB || '(ukjent)'
+  const versjon = import.meta.env.REACT_APP_VERSION ? `v${import.meta.env.REACT_APP_VERSION}` : '(ukjent)'
+  const byggTidspunkt = () => import.meta.env.REACT_APP_BUILD_DATETIME || '(ukjent)'
+  const byggVersjon = () => import.meta.env.REACT_APP_BUILD_VERSION || '(ukjent)'
+  const branchVersjon = () => import.meta.env.REACT_APP_BRANCH_NAME || '(lokal)'
+  const eessiKodeverk = () => import.meta.env.REACT_APP_EESSI_KODEVERK || '(ukjent)'
+  const reactLibVersion = () => import.meta.env.REACT_APP_REACT_LIB || '(ukjent)'
 
   const copyToClipBoard = () => {
     const clientVersionString = `WEB; Versjon: ${versjon}, Byggetidspunkt: ${byggTidspunkt()}, Byggeversjon: ${byggVersjon()}, Branch: ${branchVersjon()}, eessi-kodeverk:${eessiKodeverk()}, React:${reactLibVersion()}`
