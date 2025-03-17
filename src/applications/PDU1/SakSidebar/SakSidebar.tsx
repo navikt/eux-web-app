@@ -1,8 +1,8 @@
-import PersonCard from 'applications/OpprettSak/PersonCard/PersonCard'
 import { State } from 'declarations/reducers'
 import { Person } from 'declarations/types'
 import React, { useCallback } from 'react'
 import { useAppSelector } from 'store'
+import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 
 interface SakSidebarSelector {
   person: Person |null |undefined
@@ -21,7 +21,7 @@ const SakSidebar = () => {
 
   if (person && isPersonValid(person)) {
     return (
-      <PersonCard
+      <PersonPanel
         className='neutral'
         person={person}
       />
