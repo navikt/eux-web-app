@@ -5,8 +5,8 @@ export default {
   etternavn: 'BLYANT',
   kjoenn: 'K',
   statsborgerskap: [
-    {"land": "NO", "landkode": "NOR"},
-    {"land": "SE", "landkode": "SWE"},
+    {"fraDato": "1982-01-01", "landkode": "NOR"},
+    {"fraDato": "1975-01-01", "landkode": "SWE"},
   ],
   ektefelle: {fnr: "18066521482"},
   barn: [

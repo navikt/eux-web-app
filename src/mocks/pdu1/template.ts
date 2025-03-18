@@ -7,7 +7,8 @@ export default {
     etternavn: "RISPBÆRBUSK",
     foedselsdato: "1962-10-15",
     statsborgerskap: [
-      "SWE"
+      {"fraDato": "1982-01-01", "landkode": "NOR"},
+      {"fraDato": "1975-01-01", "landkode": "SWE"},
     ],
     adresse: {
       gate: "TORGVEIEN 11",

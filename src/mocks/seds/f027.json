@@ -52,10 +52,8 @@
       "kjoenn": "U",
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
-        {
-          "land": "BG",
-          "fraDato": "2001-01-01"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "pin": [
         {

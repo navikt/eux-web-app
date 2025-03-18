@@ -12,15 +12,14 @@
       "kjoenn": "M",
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
-        {
-          "land": "NO"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
 
       "pin": [
         {
           "land": "NO",
-"landkode": "NOR",
+          "landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "0101200143456",
           "institusjonsid": "æøå",
@@ -52,7 +51,7 @@
         "postnummer": "0101",
         "by": "Oslo",
         "land": "NO",
-"landkode": "NOR",
+        "landkode": "NOR",
         "bygning": "B",
         "region": "Oslo"
       }
@@ -87,14 +86,13 @@
       "kjoenn": "M",
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
-        {
-          "land": "NO"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "pin": [
         {
           "land": "NO",
-"landkode": "NOR",
+          "landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "æøå",
@@ -126,7 +124,7 @@
         "postnummer": "æøå",
         "by": "æøå",
         "land": "NO",
-"landkode": "NOR",
+        "landkode": "NOR",
         "bygning": "æøå",
         "region": "æøå"
       }
@@ -151,14 +149,13 @@
       "kjoenn": "M",
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
-        {
-          "land": "NO"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "pin": [
         {
           "land": "NO",
-"landkode": "NOR",
+          "landkode": "NOR",
           "sektor": "yrkesskade_og_yrkessykdom",
           "identifikator": "æøå",
           "institusjonsid": "æøå",
@@ -223,9 +220,8 @@
         "kjoenn": "M",
         "foedselsdato": "2001-01-01",
         "statsborgerskap": [
-          {
-            "land": "NO"
-          }
+          {"fraDato": "1982-01-01", "landkode": "NOR"},
+          {"fraDato": "1975-01-01", "landkode": "SWE"}
         ],
         "pin": [
           {

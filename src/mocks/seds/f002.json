@@ -8,15 +8,8 @@
       "kjoenn": "M",
       "foedselsdato": "1900-01-01",
       "statsborgerskap": [
-        {
-          "land": "NO",
-          "landkode": "NOR",
-          "fradato": "1901-01-01"
-        },
-        {
-          "land": "SE",
-          "landkode": "SWE"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "adressebeskyttelse": "STRENGT_FORTROLIG",
       "pin": [
@@ -256,10 +249,8 @@
       "kjoenn": "K",
       "foedselsdato": "1993-01-01",
       "statsborgerskap": [
-        {
-          "land": "SE",
-          "landkode": "SWE"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "adressebeskyttelse": "HEMMELIG",
       "pin": [
@@ -409,14 +400,8 @@
         "kjoenn": "M",
         "foedselsdato": "2036-01-01",
         "statsborgerskap": [
-          {
-            "land": "NO",
-            "landkode": "NOR"
-          },
-          {
-            "land": "SE",
-            "landkode": "SWE"
-          }
+          {"fraDato": "1982-01-01", "landkode": "NOR"},
+          {"fraDato": "1975-01-01", "landkode": "SWE"}
         ],
         "pin": [
           {
@@ -524,14 +509,8 @@
         "kjoenn": "K",
         "foedselsdato": "2036-01-01",
         "statsborgerskap": [
-          {
-            "land": "NO",
-            "landkode": "NOR"
-          },
-          {
-            "land": "SE",
-            "landkode": "SWE"
-          }
+          {"fraDato": "1982-01-01", "landkode": "NOR"},
+          {"fraDato": "1975-01-01", "landkode": "SWE"}
         ],
         "pin": [
           {

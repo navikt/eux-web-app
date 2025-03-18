@@ -8,10 +8,8 @@
       "kjoenn": "M",
       "foedselsdato": "2001-01-01",
       "statsborgerskap": [
-        {
-          "land": "NO",
-          "landkode": "NOR"
-        }
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
       ],
       "pin": [
         {

@@ -130,7 +130,7 @@ export interface PersonInfoPDL {
   forOgMellomnavn?: string
   etternavn?: string
   kjoenn?: string
-  statsborgerskap?: Array<string>
+  statsborgerskap?: Array<Statsborgerskap>
   adresser?: Array<AdressePDL>
   utenlandskePin?: Array<Pin>
   adressebeskyttelse?: string
