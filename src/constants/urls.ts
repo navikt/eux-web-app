@@ -39,7 +39,9 @@ export const API_CREATE_FAGSAK_GENERELL_URL = API_BASE_URL + '/person/%(fnr)s/fa
 export const API_PDU1_CREATE_FAGSAK_URL = API_BASE_URL + '/person/%(fnr)s/fagsak/dagpenger'
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
 export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s?fom=%(fom)s&tom=%(tom)s'
+
 export const API_PERSONER_URL = API_BASE_URL + '/personer?fnr=%(fnr)s' //SKAL FJERNES
+
 export const API_PDL_PERSON_URL = API_BASE_URL + '/person/%(fnr)s/personInfo'
 export const API_PERSON_MED_FAMILIE_URL = API_BASE_URL + '/person/%(fnr)s/familierelasjoner'
 export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'

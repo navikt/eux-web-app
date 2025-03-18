@@ -26,7 +26,7 @@ import { HorizontalLineSeparator } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
-import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak, Person} from 'declarations/types'
+import {Fagsaker, PDU1SearchResult, PDU1SearchResults, Fagsak, PersonInfoPDL} from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ export interface PDU1SearchSelector {
   gettingPreviewStoredPdu1: boolean
   pdu1results: PDU1SearchResults | null | undefined
 
-  person: Person | null | undefined
+  person: PersonInfoPDL | null | undefined
   searchingPerson: boolean
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined

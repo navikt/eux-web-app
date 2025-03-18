@@ -15,7 +15,7 @@ import Input from 'components/Forms/Input'
 import NorskPin from 'components/NorskPin/NorskPin'
 import { State } from 'declarations/reducers'
 import { Kjoenn, PersonLight, Pin } from 'declarations/sed.d'
-import { Person } from 'declarations/types'
+import {PersonInfoPDL} from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -84,7 +84,7 @@ const PersonLightFC: React.FC<MainFormProps> = ({
     }
   }
 
-  const fillOutPerson = (searchedPerson: Person) => {
+  const fillOutPerson = (searchedPerson: PersonInfoPDL) => {
     let newPersonLight: PersonLight | undefined = _.cloneDeep(personLight)
     setGradering(searchedPerson?.adressebeskyttelse && searchedPerson?.adressebeskyttelse !== "UGRADERT" ? searchedPerson.adressebeskyttelse : null)
 
@@ -97,8 +97,8 @@ const PersonLightFC: React.FC<MainFormProps> = ({
         _.set(newPersonLight, `pin[${index}].identifikator`, searchedPerson.fnr)
       }
     }
-    if (searchedPerson.fdato) {
-      newPersonLight!.foedselsdato = searchedPerson.fdato
+    if (searchedPerson.foedselsdato) {
+      newPersonLight!.foedselsdato = searchedPerson.foedselsdato
     }
     if (searchedPerson.fornavn) {
       newPersonLight!.fornavn = searchedPerson.fornavn
