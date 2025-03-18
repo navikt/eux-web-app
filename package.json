@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.7.0-TEN-968-NY-SAK-SED",
+  "version": "9.7.0",
   "private": true,
   "type": "module",
   "scripts": {
