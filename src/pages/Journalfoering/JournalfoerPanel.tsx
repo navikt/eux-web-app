@@ -5,7 +5,7 @@ import {
   JournalfoeringLogg,
   Kodemaps,
   Kodeverk,
-  Person,
+  PersonInfoPDL,
   Sak,
   Tema
 } from "../../declarations/types";
@@ -53,7 +53,7 @@ export interface JournalfoerPanelProps {
 }
 
 interface JournalfoerPanelSelector {
-  person: Person | null | undefined
+  person: PersonInfoPDL | null | undefined
   searchingJournalfoeringPerson: boolean
   gettingFagsaker: boolean
   creatingFagsak: boolean

@@ -1,11 +1,11 @@
 import { State } from 'declarations/reducers'
-import { Person } from 'declarations/types'
+import {PersonInfoPDL} from 'declarations/types'
 import React, { useCallback } from 'react'
 import { useAppSelector } from 'store'
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 
 interface SakSidebarSelector {
-  person: Person |null |undefined
+  person: PersonInfoPDL |null |undefined
 }
 
 const mapState = (state: State):SakSidebarSelector => ({
@@ -14,7 +14,7 @@ const mapState = (state: State):SakSidebarSelector => ({
 
 const SakSidebar = () => {
   const { person }: SakSidebarSelector = useAppSelector(mapState)
-  const isPersonValid = useCallback((person: Person) =>
+  const isPersonValid = useCallback((person: PersonInfoPDL) =>
     person?.fnr !== undefined,
   []
   )
