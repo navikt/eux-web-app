@@ -52,7 +52,10 @@ describe('pages/SEDNew/SEDNew', () => {
     currentSak: undefined,
 
     validation: {},
-    featureToggles: undefined
+    featureToggles: undefined,
+
+    cdmVersjonApp: undefined,
+    countryCodes: undefined
   }
 
   beforeAll(() => {

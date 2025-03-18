@@ -34,7 +34,8 @@ import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 
 import {
-  BucTyper,
+  AdressePDL,
+  BucTyper, CountryCodeLists, CountryCodes,
   Enhet,
   Enheter,
   Fagsak,
@@ -108,7 +109,10 @@ export interface SEDNewSelector {
   currentSak: Sak | undefined
 
   validation: Validation
-  featureToggles: FeatureToggles | null | undefined
+  featureToggles: FeatureToggles | null | undefined,
+
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
 }
 
 const mapState = (state: State): SEDNewSelector => ({
@@ -155,7 +159,10 @@ const mapState = (state: State): SEDNewSelector => ({
   currentSak: state.svarsed.currentSak,
 
   validation: state.validation.status,
-  featureToggles: state.app.featureToggles
+  featureToggles: state.app.featureToggles,
+
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 export const MyContent = styled(Content)`
@@ -212,7 +219,10 @@ const SEDNew = (): JSX.Element => {
     saks,
     currentSak,
     validation,
-    featureToggles
+    featureToggles,
+
+    cdmVersjonApp,
+    countryCodes
   }: SEDNewSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -221,6 +231,22 @@ const SEDNew = (): JSX.Element => {
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
   const currentYear = new Date().getFullYear()
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
+
+  let euEftaCountries = countryCodes ? countryCodes["v" + cdmVersjonApp as keyof CountryCodes]["euEftaLand" as keyof CountryCodeLists] : []
+  const euEftaCountryCodes = euEftaCountries.map((c) => {
+    return c.landkode
+  })
+
+  const SedTypesWithEUEFTAOnlyAddress = [
+    "F018", "F019", "F020",
+    "H003", "H004",
+    "M040",
+    "R001", "R002", "R003", "R004", "R005", "R006", "R008", "R009", "R010", "R011", "R012", "R014", "R015", "R016", "R017", "R018", "R019", "R025", "R028", "R029", "R033", "R034", "R036",
+    "S011", "S016", "S018", "S071", "S072", "S0732", "S130", "S131",
+    "U001", "U001CB", "U002", "U003", "U004", "U005", "U006", "U007", "U008", "U009", "U010", "U011", "U012", "U013", "U014", "U015", "U016", "U017", "U018", "U019", "U020", "U029"
+  ]
+  const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
+
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
     return k.kode !== "GEN"
@@ -314,6 +340,7 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setShowNonEUEftaAddressWarning(false)
     dispatch(sakActions.setProperty('unit', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('buctype', undefined))
@@ -344,6 +371,19 @@ const SEDNew = (): JSX.Element => {
     dispatch(sakActions.setProperty('sedtype', e))
     if (validation[namespace + '-sedtype']) {
       dispatch(resetValidation(namespace + '-sedtype'))
+    }
+
+    setShowNonEUEftaAddressWarning(false)
+    if(SedTypesWithEUEFTAOnlyAddress.includes(e)){
+      const nonEuEftaAddresses = personMedFamilie?.adresser?.filter((a: AdressePDL) => {
+        if(a.landkode && !(euEftaCountryCodes.indexOf(a.landkode) > -1)) {
+          return a
+        }
+      })
+
+      if(nonEuEftaAddresses && nonEuEftaAddresses.length > 0){
+        setShowNonEUEftaAddressWarning(true)
+      }
     }
   }
 
@@ -608,6 +648,11 @@ const SEDNew = (): JSX.Element => {
             <VerticalSeparatorDiv />
           </Column>
         </Row>
+        {_showNonEUEftaAddressWarning &&
+          <Alert variant='error'>
+            {t('message:error-non-euefta-address')}
+          </Alert>
+        }
         <VerticalSeparatorDiv />
         <Row>
           <Column>
@@ -770,7 +815,7 @@ const SEDNew = (): JSX.Element => {
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
+                disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}
@@ -782,6 +827,7 @@ const SEDNew = (): JSX.Element => {
                 variant='tertiary'
                 disabled={_.isEmpty(personMedFamilie)}
                 onClick={() => {
+                  setShowNonEUEftaAddressWarning(false)
                   dispatch(personReset())
                   dispatch(sakReset())
                 }}

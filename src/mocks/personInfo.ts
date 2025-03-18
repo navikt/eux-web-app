@@ -31,23 +31,23 @@ export default {
     {
       type: "bosted",
       gate: "ØVE KLEKKENV 2",
-      postnummer: "8470",
-      by: "BØ I VESTERÅLEN",
-      land: "NOR"
+      postNr: "8470",
+      postSted: "BØ I VESTERÅLEN",
+      landkode: "NOR"
     },
     {
       type: "opphold",
       gate: "Sollia 12 Hjemme",
-      postnummer: "4480",
-      by: "Kvinesdal",
-      land: "BEL"
+      postNr: "4480",
+      postSted: "Kvinesdal",
+      landkode: "BEL"
     },
     {
       type: "kontakt",
       gate: "Testbyen v. Siri ",
-      postnummer: "52663-4",
-      by: "Tullebyen",
-      land: "LTU"
+      postNr: "52663-4",
+      postSted: "Tullebyen",
+      landkode: "LTU"
     }
   ],
 }
