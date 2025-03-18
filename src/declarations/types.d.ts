@@ -111,6 +111,7 @@ export interface Enhet {
 
 export type Enheter = Array<Enhet>
 
+//TODO - REMOVE
 export interface Person {
   fnr?: string
   fdato?: string
