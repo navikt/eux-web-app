@@ -521,6 +521,7 @@ const SEDNew = (): JSX.Element => {
               value={valgtFnr}
               parentNamespace={namespace}
               onFnrChange={() => {
+                setShowNonEUEftaAddressWarning(false)
                 if (isFnrValid) {
                   setIsFnrValid(false)
                   dispatch(appActions.appReset()) // cleans person and sak reducer
@@ -530,6 +531,7 @@ const SEDNew = (): JSX.Element => {
                 setIsFnrValid(true)
               }}
               onSearchPerformed={(fnr: string) => {
+                setShowNonEUEftaAddressWarning(false)
                 dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
                 dispatch(personActions.searchPersonMedFamilie(fnr))
