@@ -111,18 +111,6 @@ export interface Enhet {
 
 export type Enheter = Array<Enhet>
 
-//TODO - REMOVE
-export interface Person {
-  fnr?: string
-  fdato?: string
-  fornavn?: string
-  etternavn?: string
-  kjoenn?: string
-  relasjoner?: Array<OldFamilieRelasjon>
-  adressebeskyttelse?: string
-  statsborgerskapList?: Array<Statsborgerskap>
-}
-
 export interface PersonInfoPDL {
   fnr?: string
   foedselsdato?: string
@@ -212,13 +200,6 @@ export interface PDU1SearchResult {
 export type PDU1SearchResults = Array<PDU1SearchResult>
 
 export type Fagsaker = Array<Fagsak>
-
-export interface OldFamilieRelasjon extends Person {
-  land?: string | null | undefined
-  statsborgerskap?: string | null | undefined
-  rolle?: string
-  nasjonalitet?: string
-}
 
 export interface IInntekt {
   orgNr: string
