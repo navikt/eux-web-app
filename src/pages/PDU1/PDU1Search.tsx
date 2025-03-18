@@ -39,7 +39,7 @@ import { validatePdu1Search, ValidationPdu1SearchProps } from './mainValidation'
 import PersonSearch from "../../applications/OpprettSak/PersonSearch/PersonSearch";
 import * as types from "../../constants/actionTypes";
 import * as personActions from "../../actions/person";
-import SakSidebar from "../../applications/OpprettSak/SakSidebar/SakSidebar";
+import SakSidebar from "../../applications/PDU1/SakSidebar/SakSidebar";
 import moment from "moment";
 
 const ContainerDiv = styled(PileCenterDiv)`

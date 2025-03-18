@@ -11,10 +11,10 @@ export const V3_BASE_URL = '/v3'
 // RINA
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
-export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s/?landkode=%(landkode)s&domene=nav'
+export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s?landkode=%(landkode)s&domene=nav'
 export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
 export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/oversikt'
-export const API_SAK_SEND_URL = V2_BASE_URL + '/rina/sak'
+export const API_SAK_SEND_URL = API_BASE_URL + '/rinasak/sed'
 export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed'
 export const API_SED_EDIT_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed/%(sedId)s'
@@ -34,13 +34,14 @@ export const API_ADD_RELATED_RINASAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId
 export const API_FEILREGISTRER_JOURNALPOSTER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/feilregistrerjournalposter'
 
 // Registre
-export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker/?tema=%(tema)s'
+export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker?tema=%(tema)s'
 export const API_CREATE_FAGSAK_GENERELL_URL = API_BASE_URL + '/person/%(fnr)s/fagsak/generell'
 export const API_PDU1_CREATE_FAGSAK_URL = API_BASE_URL + '/person/%(fnr)s/fagsak/dagpenger'
 export const API_INNTEKT_FOM_TOM_URL = API_BASE_URL + '/person/%(fnr)s/inntekter/oversikt?fom=%(fom)s&tom=%(tom)s&inntektsliste=%(inntektsliste)s'
-export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s/?fom=%(fom)s&tom=%(tom)s'
-export const API_PERSONER_URL = API_BASE_URL + '/personer/?fnr=%(fnr)s'
+export const API_ARBEIDSPERIODER_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/arbeidsperioder/inntektsperioder/%(inntektslistetype)s?fom=%(fom)s&tom=%(tom)s'
+export const API_PERSONER_URL = API_BASE_URL + '/personer?fnr=%(fnr)s' //SKAL FJERNES
 export const API_PDL_PERSON_URL = API_BASE_URL + '/person/%(fnr)s/personInfo'
+export const API_PERSON_MED_FAMILIE_URL = API_BASE_URL + '/person/%(fnr)s/familierelasjoner'
 export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'
 
 // Saksbehandler
@@ -55,7 +56,7 @@ export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'
 
 // Vedlegg
 export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
-export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter/?rinasaksnummer=%(rinasaksnummer)s'
+export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter?rinasaksnummer=%(rinasaksnummer)s'
 
 // Joark
 export const API_ATTACHMENT_LIST_URL = API_BASE_URL + '/vedlegg/dokumentoversikt/%(fnr)s?tema=%(tema)s'

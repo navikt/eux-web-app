@@ -19,7 +19,6 @@ describe('pages/SEDNew/SEDNew', () => {
     enheter: undefined,
     serverInfo: undefined,
     buctyper: undefined,
-    familierelasjonKodeverk: undefined,
     filloutinfo: undefined,
     kodemaps: undefined,
     landkoder: undefined,
@@ -29,24 +28,20 @@ describe('pages/SEDNew/SEDNew', () => {
 
     sendingSak: false,
     searchingPerson: false,
-    searchingRelatertPerson: false,
     gettingFagsaker: false,
     creatingFagsak: false,
-    gettingArbeidsperioder: false,
     gettingInstitusjoner: false,
 
-    arbeidsperioder: undefined,
-    valgteArbeidsperioder: [],
     valgtBucType: undefined,
-    valgteFamilieRelasjoner: [],
+    valgteFamilieRelasjonerPDL: [],
+    valgteFamilieRelasjonerUtland: [],
     fagsaker: undefined,
     valgtFnr: undefined,
     valgtInstitusjon: undefined,
     institusjoner: undefined,
     valgtLandkode: undefined,
     opprettetSak: undefined,
-    person: undefined,
-    personRelatert: undefined,
+    personMedFamilie: undefined,
     valgtSaksId: undefined,
     valgtSedType: undefined,
     valgtSektor: undefined,
@@ -57,7 +52,10 @@ describe('pages/SEDNew/SEDNew', () => {
     currentSak: undefined,
 
     validation: {},
-    featureToggles: undefined
+    featureToggles: undefined,
+
+    cdmVersjonApp: undefined,
+    countryCodes: undefined
   }
 
   beforeAll(() => {

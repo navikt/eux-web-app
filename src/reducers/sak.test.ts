@@ -123,97 +123,11 @@ describe('reducers/sak', () => {
     })
   })
 
-  it('SAK_ARBEIDSPERIODER_ADD', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        arbeidsperioder: [{
-          fraDato: '1',
-          tilDato: '1',
-          fraInntektsregisteret: 'ja',
-          fraArbeidsgiverregisteret: 'ja',
-          arbeidsgiversOrgnr: '123',
-          arbeidsgiversNavn: 'abc'
-        }]
-      }, {
-        type: types.SAK_ARBEIDSPERIODER_ADD,
-        payload: {
-          fraDato: '2',
-          tilDato: '2',
-          fraInntektsregisteret: 'ja',
-          fraArbeidsgiverregisteret: 'ja',
-          arbeidsgiversOrgnr: '456',
-          arbeidsgiversNavn: 'def'
-        }
-      })
-    ).toEqual({
-      ...initialSakState,
-      arbeidsperioder: [{
-        fraDato: '1',
-        tilDato: '1',
-        fraInntektsregisteret: 'ja',
-        fraArbeidsgiverregisteret: 'ja',
-        arbeidsgiversOrgnr: '123',
-        arbeidsgiversNavn: 'abc'
-      }, {
-        fraDato: '2',
-        tilDato: '2',
-        fraInntektsregisteret: 'ja',
-        fraArbeidsgiverregisteret: 'ja',
-        arbeidsgiversOrgnr: '456',
-        arbeidsgiversNavn: 'def'
-      }]
-    })
-  })
-
-  it('SAK_ARBEIDSPERIODER_REMOVE', () => {
-    expect(
-      sakReducer({
-        ...initialSakState,
-        arbeidsperioder: [{
-          fraDato: '1',
-          tilDato: '1',
-          fraInntektsregisteret: 'ja',
-          fraArbeidsgiverregisteret: 'ja',
-          arbeidsgiversOrgnr: '123',
-          arbeidsgiversNavn: 'abc'
-        }, {
-          fraDato: '2',
-          tilDato: '2',
-          fraInntektsregisteret: 'ja',
-          fraArbeidsgiverregisteret: 'ja',
-          arbeidsgiversOrgnr: '456',
-          arbeidsgiversNavn: 'def'
-        }]
-      }, {
-        type: types.SAK_ARBEIDSPERIODER_REMOVE,
-        payload: {
-          fraDato: '2',
-          tilDato: '2',
-          fraInntektsregisteret: 'ja',
-          fraArbeidsgiverregisteret: 'ja',
-          arbeidsgiversOrgnr: '456',
-          arbeidsgiversNavn: 'def'
-        }
-      })
-    ).toEqual({
-      ...initialSakState,
-      arbeidsperioder: [{
-        fraDato: '1',
-        tilDato: '1',
-        fraInntektsregisteret: 'ja',
-        fraArbeidsgiverregisteret: 'ja',
-        arbeidsgiversOrgnr: '123',
-        arbeidsgiversNavn: 'abc'
-      }]
-    })
-  })
-
   it('SAK_FAMILIERELASJONER_ADD', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: '1' }]
+        familierelasjonerPDL: [{ fnr: '1' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_ADD,
         payload: { fnr: '2' }
@@ -228,7 +142,7 @@ describe('reducers/sak', () => {
     expect(
       sakReducer({
         ...initialSakState,
-        familierelasjoner: [{ fnr: '1' }, { fnr: '2' }]
+        familierelasjonerPDL: [{ fnr: '1' }, { fnr: '2' }]
       }, {
         type: types.SAK_FAMILIERELASJONER_REMOVE,
         payload: { fnr: '2' }

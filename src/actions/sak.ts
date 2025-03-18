@@ -1,81 +1,30 @@
 import { ParamPayload } from 'declarations/app'
 import {
-  ArbeidsperiodeFraAA,
   Fagsaker,
-  OldFamilieRelasjon,
   Institusjoner,
-  Kodeverk, OpprettetSak
+  Kodeverk,
+  OpprettetSak,
+  PersonInfoPDL
 } from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockSendSak from 'mocks/sak/sendSak'
 import mockFagsakerList from 'mocks/fagsakerList'
 import { mockInstitusjon } from 'mocks/institutionList'
 import mockReplySed from 'mocks/svarsed/replySed'
-import moment from 'moment'
 import { Action, ActionCreator } from 'redux'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import mockFagsakGenerell from "../mocks/fagsak_generell";
 import {FagsakPayload} from "../declarations/pd";
+import mockFagsakGenerell from "../mocks/fagsak_generell";
 import mockFagsakDagpenger from "../mocks/fagsak";
 
 const sprintf = require('sprintf-js').sprintf
-
-export const addArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
-  payload: ArbeidsperiodeFraAA
-): ActionWithPayload<ArbeidsperiodeFraAA> => ({
-  type: types.SAK_ARBEIDSPERIODER_ADD,
-  payload
-})
-
-export const addFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
-  payload: OldFamilieRelasjon
-): ActionWithPayload<OldFamilieRelasjon> => ({
-  type: types.SAK_FAMILIERELASJONER_ADD,
-  payload
-})
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET
 })
 
-export const createSak = (data: any): ActionWithPayload<any> => {
-  const payload = {
-    buctype: data.buctype,
-    fnr: data.fnr,
-    landKode: data.landKode,
-    institusjonsID: data.institusjonsID,
-    fagsak: data.fagsak,
-    sedtype: data.sedtype,
-    sektor: data.sektor,
-    tilleggsopplysninger: {
-      arbeidsforhold: [],
-      familierelasjoner: []
-    } as any
-  } as any
-  if (data.enhet) {
-    payload.enhet = data.enhet
-  }
-  if (data.arbeidsperioder && data.arbeidsperioder.length > 0) {
-    payload.tilleggsopplysninger.arbeidsforhold = data.arbeidsperioder
-  }
-  if (data.familierelasjoner && data.familierelasjoner.length > 0) {
-    let relasjoner = data.familierelasjoner.map((relasjon: any) => ({
-      ...relasjon,
-      fdato: relasjon.fdato.indexOf('-') > 0
-        ? relasjon.fdato
-        : moment(relasjon.fdato, ['DD.MM.YYYY HH:mm', 'DD.MM.YYYY']).format('YYYY-MM-DD')
-    }))
-
-    relasjoner.forEach((r:any) => {
-      if(r.statsborgerskap && r.statsborgerskapList){
-        delete r.statsborgerskapList
-      }
-    })
-
-    payload.tilleggsopplysninger.familierelasjoner = relasjoner
-  }
-
+export const createSak = (payload: any): ActionWithPayload<any> => {
   return call({
     url: urls.API_SAK_SEND_URL,
     method: 'POST',
@@ -172,16 +121,16 @@ export const editSed = (
   })
 }
 
-export const removeArbeidsperiode: ActionCreator<ActionWithPayload<ArbeidsperiodeFraAA>> = (
-  payload: ArbeidsperiodeFraAA
-): ActionWithPayload<ArbeidsperiodeFraAA> => ({
-  type: types.SAK_ARBEIDSPERIODER_REMOVE,
+export const addFamilierelasjoner: ActionCreator<ActionWithPayload<PersonInfoPDL>> = (
+  payload: PersonInfoPDL
+): ActionWithPayload<PersonInfoPDL> => ({
+  type: types.SAK_FAMILIERELASJONER_ADD,
   payload
 })
 
-export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<OldFamilieRelasjon>> = (
-  payload: OldFamilieRelasjon
-): ActionWithPayload<OldFamilieRelasjon> => ({
+export const removeFamilierelasjoner: ActionCreator<ActionWithPayload<PersonInfoPDL>> = (
+  payload: PersonInfoPDL
+): ActionWithPayload<PersonInfoPDL> => ({
   type: types.SAK_FAMILIERELASJONER_REMOVE,
   payload
 })

@@ -1,8 +1,6 @@
-import { Alert, Loader, Search } from '@navikt/ds-react'
-import { Person } from 'declarations/types'
+import {Alert, Loader, Search, VStack} from '@navikt/ds-react'
+import {Person, PersonMedFamilie} from 'declarations/types'
 import _ from 'lodash'
-import { PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -19,7 +17,7 @@ export interface PersonSearchProps {
   onFnrChange?: (newFnr: string) => void
   onPersonFound?: (person: Person) => void
   onSearchPerformed: (fnr: any) => void
-  person?: Person | null | undefined
+  person?: Person | PersonMedFamilie | null | undefined
   value: string | undefined
 }
 
@@ -40,7 +38,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
   const [fnr, setFnr] = useState<string>(initialFnr ?? value)
-  const [_person, setPerson] = useState<Person | null | undefined>(undefined)
+  const [_person, setPerson] = useState<Person | PersonMedFamilie | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
 
@@ -48,7 +46,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
     setFnr(value ?? initialFnr)
   }, [value])
 
-  const isPersonValid = useCallback((person: Person) =>
+  const isPersonValid = useCallback((person: Person | PersonMedFamilie) =>
     person?.fnr !== undefined,
   []
   )
@@ -89,14 +87,13 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   }
 
   return (
-    <PileDiv style={{ alignItems: 'flex-start' }}>
+    <VStack gap="1">
       <Search
         label={t('label:søker')}
         /* error={error ?? localValidation} */
         data-testid={id ?? namespace + '-saksnummerOrFnr'}
         id={id ?? namespace + '-saksnummerOrFnr'}
         onChange={onChange}
-        required
         hideLabel={false}
         value={fnr || ''}
         disabled={searchingPerson}
@@ -108,27 +105,17 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
         </Search.Button>
       </Search>
       {(error ?? localValidation) && (
-        <>
-          <VerticalSeparatorDiv size='0.5' />
-          <span className='navds-error-message navds-error-message--medium'>
-            {error ?? localValidation}
-          </span>
-        </>
+        <span className='navds-error-message navds-error-message--medium'>
+          {error ?? localValidation}
+        </span>
       )}
       {alertMessage && alertType && alertTypesWatched.indexOf(alertType) >= 0 && (
         <Alert variant='warning'>
           {alertMessage}
         </Alert>
       )}
-    </PileDiv>
+    </VStack>
   )
-}
-
-PersonSearch.propTypes = {
-  className: PT.string,
-  onFnrChange: PT.func,
-  onPersonFound: PT.func
-  // validation: ErrorElementPropType
 }
 
 export default PersonSearch

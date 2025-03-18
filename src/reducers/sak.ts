@@ -1,14 +1,15 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import { FillOutInfoPayload } from 'declarations/sed'
-import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OldFamilieRelasjon, OpprettetSak} from 'declarations/types'
+import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
 export interface SakState {
   arbeidsperioder: Array<ArbeidsperiodeFraAA>
   buctype: any
-  familierelasjoner: Array<OldFamilieRelasjon>
+  familierelasjonerPDL: Array<PersonInfoPDL>
+  familierelasjonerUtland: Array<PersonInfoUtland>
   fagsaker: Fagsaker | undefined | null
   fnr: string | undefined
   institusjon: string | undefined
@@ -17,7 +18,6 @@ export interface SakState {
   landkode: string | undefined
   opprettetSak: OpprettetSak | undefined
   filloutinfo: any | null | undefined
-  personRelatert: OldFamilieRelasjon | null | undefined
   saksId: any
   sektor: any
   sedtype: any
@@ -29,7 +29,8 @@ export const initialSakState: SakState = {
   arbeidsperioder: [],
   buctype: undefined,
   fagsaker: undefined,
-  familierelasjoner: [],
+  familierelasjonerPDL: [],
+  familierelasjonerUtland: [],
   fnr: undefined,
   institusjonList: undefined,
   institusjon: undefined,
@@ -37,7 +38,6 @@ export const initialSakState: SakState = {
   landkode: undefined,
   opprettetSak: undefined,
   filloutinfo: undefined,
-  personRelatert: undefined,
   saksId: undefined,
   sedtype: undefined,
   sektor: undefined,
@@ -163,29 +163,41 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         [(action as ActionWithPayload).payload.key]: (action as ActionWithPayload).payload.value
       }
 
-    case types.SAK_ARBEIDSPERIODER_ADD:
-      return {
-        ...state,
-        arbeidsperioder: (state.arbeidsperioder || []).concat((action as ActionWithPayload).payload)
+    case types.SAK_FAMILIERELASJONER_ADD: {
+      const relasjon: PersonInfoPDL | PersonInfoUtland = (action as ActionWithPayload).payload
+      let relasjonPDL: PersonInfoPDL | undefined = undefined
+      let relasjonUtland: PersonInfoUtland | undefined = undefined;
+
+      if("fnr" in relasjon){
+        relasjonPDL = relasjon
+      } else if ("pin" in relasjon) {
+        relasjonUtland = relasjon
       }
 
-    case types.SAK_ARBEIDSPERIODER_REMOVE:
       return {
         ...state,
-        arbeidsperioder: _.reject(state.arbeidsperioder, i => _.isEqual(i, (action as ActionWithPayload).payload))
+        familierelasjonerPDL: relasjonPDL ? (state.familierelasjonerPDL || []).concat(relasjonPDL) : state.familierelasjonerPDL,
+        familierelasjonerUtland: relasjonUtland ? (state.familierelasjonerUtland || []).concat(relasjonUtland) : state.familierelasjonerUtland
+      }
+    }
+
+    case types.SAK_FAMILIERELASJONER_REMOVE: {
+      const relasjon: PersonInfoPDL | PersonInfoUtland = (action as ActionWithPayload).payload
+      let relasjonPDL: PersonInfoPDL | undefined = undefined
+      let relasjonUtland: PersonInfoUtland | undefined = undefined;
+
+      if ("fnr" in relasjon) {
+        relasjonPDL = relasjon
+      } else if ("pin" in relasjon) {
+        relasjonUtland = relasjon
       }
 
-    case types.SAK_FAMILIERELASJONER_ADD:
       return {
         ...state,
-        familierelasjoner: (state.familierelasjoner || []).concat((action as ActionWithPayload).payload)
+        familierelasjonerPDL: _.reject(state.familierelasjonerPDL, i => i.fnr === relasjonPDL?.fnr),
+        familierelasjonerUtland: _.reject(state.familierelasjonerUtland, i => i.pin === relasjonUtland?.pin)
       }
-
-    case types.SAK_FAMILIERELASJONER_REMOVE:
-      return {
-        ...state,
-        familierelasjoner: _.reject(state.familierelasjoner, i => i.fnr === (action as ActionWithPayload).payload.fnr)
-      }
+    }
 
     default:
 

@@ -27,18 +27,15 @@ import {
 } from 'actions/sak'
 import {loadReplySed, resetSaks, setCurrentSak} from 'actions/svarsed'
 import { resetValidation, setValidation } from 'actions/validation'
-import Family from 'applications/OpprettSak/Family/Family'
 import PersonSearch from 'applications/OpprettSak/PersonSearch/PersonSearch'
-import SakSidebar from 'applications/OpprettSak/SakSidebar/SakSidebar'
 import ValidationBox from 'components/ValidationBox/ValidationBox'
 import * as types from 'constants/actionTypes'
 import { AlertVariant } from 'declarations/components'
 import { State } from 'declarations/reducers'
 
 import {
-  ArbeidsperiodeFraAA,
-  ArbeidsperioderFraAA,
-  BucTyper,
+  AdressePDL,
+  BucTyper, CountryCodeLists, CountryCodes,
   Enhet,
   Enheter,
   Fagsak,
@@ -46,16 +43,15 @@ import {
   Institusjon,
   Kodemaps,
   Kodeverk,
-  OldFamilieRelasjon,
   OpprettetSak,
-  Person,
+  PersonInfoPDL, PersonInfoUtland, PersonMedFamilie,
   Sak, Saks,
   Sed,
   ServerInfo,
   Tema,
   Validation
 } from 'declarations/types'
-import _ from 'lodash'
+import _, {cloneDeep} from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -66,6 +62,8 @@ import { validateSEDNew, ValidationSEDNewProps } from './sedNewValidation'
 import {FeatureToggles} from "../../declarations/app";
 import {getAllowed} from "utils/allowedFeatures";
 import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
+import PersonPanel from "../../applications/OpprettSak/PersonPanel/PersonPanel";
+import FamilieRelasjoner from "../../applications/OpprettSak/FamilieRelasjoner/FamilieRelasjoner";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -79,28 +77,25 @@ export interface SEDNewSelector {
   gettingFagsaker: boolean
   creatingFagsak: boolean
   searchingPerson: boolean
-  searchingRelatertPerson: boolean
-  gettingArbeidsperioder: boolean
   gettingInstitusjoner: boolean
 
-  arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   buctyper: BucTyper | undefined
   fagsaker: Fagsaker | undefined | null
-  familierelasjonKodeverk: Array<Kodeverk> | undefined
+
   filloutinfo: any | null | undefined
   kodemaps: Kodemaps | undefined
   institusjoner: Array<Institusjon> | undefined
   landkoder: Array<string> | undefined
   opprettetSak: OpprettetSak | undefined
-  person: Person | null | undefined
-  personRelatert: Person | null | undefined
+
+  personMedFamilie: PersonMedFamilie | null | undefined
   sedtyper: Array<Kodeverk> | undefined
   sektor: Array<Kodeverk> | undefined
   tema: Tema | undefined
 
-  valgteArbeidsperioder: Array<ArbeidsperiodeFraAA>
   valgtBucType: string | undefined
-  valgteFamilieRelasjoner: Array<OldFamilieRelasjon>
+  valgteFamilieRelasjonerPDL: Array<PersonInfoPDL>
+  valgteFamilieRelasjonerUtland: Array<PersonInfoUtland>
   valgtFnr: string | undefined
   valgtInstitusjon: string | undefined
   valgtLandkode: string | undefined
@@ -114,7 +109,10 @@ export interface SEDNewSelector {
   currentSak: Sak | undefined
 
   validation: Validation
-  featureToggles: FeatureToggles | null | undefined
+  featureToggles: FeatureToggles | null | undefined,
+
+  countryCodes: CountryCodes | null | undefined
+  cdmVersjonApp: string | undefined
 }
 
 const mapState = (state: State): SEDNewSelector => ({
@@ -125,7 +123,7 @@ const mapState = (state: State): SEDNewSelector => ({
   enheter: state.app.enheter,
   serverInfo: state.app.serverinfo,
   buctyper: state.app.buctyper,
-  familierelasjonKodeverk: state.app.familierelasjoner,
+
   kodemaps: state.app.kodemaps,
   sedtyper: state.app.sedtyper,
   sektor: state.app.sektor,
@@ -135,18 +133,14 @@ const mapState = (state: State): SEDNewSelector => ({
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingFagsak: state.loading.creatingFagsak,
   searchingPerson: state.loading.searchingPerson,
-  searchingRelatertPerson: state.loading.searchingRelatertPerson,
-  gettingArbeidsperioder: state.loading.gettingArbeidsperioder,
   gettingInstitusjoner: state.loading.gettingInstitusjoner,
 
-  arbeidsperioder: state.arbeidsperioder,
+  personMedFamilie: state.person.personMedFamilie,
 
-  person: state.person.person,
-  personRelatert: state.person.personRelatert,
-
-  valgteArbeidsperioder: state.sak.arbeidsperioder,
   valgtBucType: state.sak.buctype,
-  valgteFamilieRelasjoner: state.sak.familierelasjoner,
+  valgteFamilieRelasjonerPDL: state.sak.familierelasjonerPDL,
+  valgteFamilieRelasjonerUtland: state.sak.familierelasjonerUtland,
+
   fagsaker: state.sak.fagsaker,
   filloutinfo: state.sak.filloutinfo,
   valgtFnr: state.sak.fnr,
@@ -165,7 +159,10 @@ const mapState = (state: State): SEDNewSelector => ({
   currentSak: state.svarsed.currentSak,
 
   validation: state.validation.status,
-  featureToggles: state.app.featureToggles
+  featureToggles: state.app.featureToggles,
+
+  countryCodes: state.app.countryCodes,
+  cdmVersjonApp: state.app.cdmVersjon
 })
 
 export const MyContent = styled(Content)`
@@ -185,31 +182,32 @@ export const PersonInfoContent = styled(Content)`
 
 const SEDNew = (): JSX.Element => {
   const {
-    alertVariant,
+
     alertMessage,
     alertType,
     gettingFagsaker,
     creatingFagsak,
     gettingInstitusjoner,
     searchingPerson,
-    searchingRelatertPerson,
+
     enheter,
     sendingSak,
     buctyper,
     fagsaker,
-    familierelasjonKodeverk,
+
     filloutinfo,
     sedtyper,
     institusjoner,
     kodemaps,
     opprettetSak,
-    person,
-    personRelatert,
+
+    personMedFamilie,
+
     sektor,
     tema,
-    valgteArbeidsperioder,
     valgtBucType,
-    valgteFamilieRelasjoner,
+    valgteFamilieRelasjonerPDL,
+    valgteFamilieRelasjonerUtland,
     valgtFnr,
     valgtInstitusjon,
     valgtLandkode,
@@ -221,7 +219,10 @@ const SEDNew = (): JSX.Element => {
     saks,
     currentSak,
     validation,
-    featureToggles
+    featureToggles,
+
+    cdmVersjonApp,
+    countryCodes
   }: SEDNewSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -230,6 +231,22 @@ const SEDNew = (): JSX.Element => {
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
   const currentYear = new Date().getFullYear()
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
+
+  let euEftaCountries = countryCodes ? countryCodes["v" + cdmVersjonApp as keyof CountryCodes]["euEftaLand" as keyof CountryCodeLists] : []
+  const euEftaCountryCodes = euEftaCountries.map((c) => {
+    return c.landkode
+  })
+
+  const SedTypesWithEUEFTAOnlyAddress = [
+    "F018", "F019", "F020",
+    "H003", "H004",
+    "M040",
+    "R001", "R002", "R003", "R004", "R005", "R006", "R008", "R009", "R010", "R011", "R012", "R014", "R015", "R016", "R017", "R018", "R019", "R025", "R028", "R029", "R033", "R034", "R036",
+    "S011", "S016", "S018", "S071", "S072", "S0732", "S130", "S131",
+    "U001", "U001CB", "U002", "U003", "U004", "U005", "U006", "U007", "U008", "U009", "U010", "U011", "U012", "U013", "U014", "U015", "U016", "U017", "U018", "U019", "U020", "U029"
+  ]
+  const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
+
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
     return k.kode !== "GEN"
@@ -263,26 +280,55 @@ const SEDNew = (): JSX.Element => {
       landkode: valgtLandkode,
       institusjon: valgtInstitusjon,
       tema: valgtTema,
-      familierelasjoner: valgteFamilieRelasjoner,
+      familierelasjoner: [...valgteFamilieRelasjonerPDL, ...valgteFamilieRelasjonerUtland],
       saksId: valgtSaksId,
       visEnheter,
       unit: valgtUnit
     } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
+
+    const ektefellePDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "EKTE")
+    const annenpersonPDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "ANNEN")
+    const barnPDL = valgteFamilieRelasjonerPDL!.filter((r) => r.__rolle === "BARN").map((barn) => {return {fnr: barn.fnr}})
+    const barnUtland = valgteFamilieRelasjonerUtland!.filter((r) => r.__rolle === "BARN").map((barn) => {
+      const barnInfo: PersonInfoUtland = cloneDeep(barn)
+      delete barnInfo.__rolle
+      return {
+        info: barnInfo
+      }
+    })
+
+    const barn = [...barnPDL, ...barnUtland]
+
+    const ektefelleUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "EKTE")
+    const annenpersonUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "ANNEN")
+
+    const ektefelleInfo = cloneDeep(ektefelleUtland)
+    delete ektefelleInfo?.__rolle
+
+    const annenpersonInfo = cloneDeep(annenpersonUtland)
+    delete annenpersonInfo?.__rolle
+
+    const payload = {
+      buctype: valgtBucType,
+      sedtype: valgtSedType,
+      mottakerId: valgtInstitusjon,
+      mottakerlandkode: valgtLandkode,
+      fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
+      ...(valgtUnit && {enhet: valgtUnit}),
+
+      bruker: {
+        fnr: valgtFnr
+      },
+      ...(ektefellePDL && { ektefelle: {fnr: ektefellePDL.fnr} }),
+      ...(annenpersonPDL && { annenperson: {fnr: annenpersonPDL.fnr} }),
+      ...(ektefelleUtland && { ektefelle: {info: ektefelleInfo} }),
+      ...(annenpersonUtland && { annenperson: {info: annenpersonInfo} }),
+      ...(barn && barn.length > 0 && { barn: barn }),
+    }
+
     if (!hasErrors) {
-      dispatch(sakActions.createSak({
-        buctype: valgtBucType,
-        fnr: valgtFnr,
-        landKode: valgtLandkode,
-        institusjonsID: valgtInstitusjon,
-        fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
-        sedtype: valgtSedType,
-        sektor: valgtSektor,
-        tema: valgtTema,
-        familierelasjoner: valgteFamilieRelasjoner,
-        arbeidsperioder: valgteArbeidsperioder,
-        enhet: valgtUnit
-      }))
+      dispatch(sakActions.createSak(payload))
     }
   }
 
@@ -294,6 +340,7 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onSektorChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    setShowNonEUEftaAddressWarning(false)
     dispatch(sakActions.setProperty('unit', undefined))
     dispatch(sakActions.setProperty('sedtype', undefined))
     dispatch(sakActions.setProperty('buctype', undefined))
@@ -324,6 +371,19 @@ const SEDNew = (): JSX.Element => {
     dispatch(sakActions.setProperty('sedtype', e))
     if (validation[namespace + '-sedtype']) {
       dispatch(resetValidation(namespace + '-sedtype'))
+    }
+
+    setShowNonEUEftaAddressWarning(false)
+    if(SedTypesWithEUEFTAOnlyAddress.includes(e)){
+      const nonEuEftaAddresses = personMedFamilie?.adresser?.filter((a: AdressePDL) => {
+        if(a.landkode && !(euEftaCountryCodes.indexOf(a.landkode) > -1)) {
+          return a
+        }
+      })
+
+      if(nonEuEftaAddresses && nonEuEftaAddresses.length > 0){
+        setShowNonEUEftaAddressWarning(true)
+      }
     }
   }
 
@@ -365,8 +425,8 @@ const SEDNew = (): JSX.Element => {
 
   const onViewFagsakerClick = (): void => {
     setFagsakDagpengerYear(currentYear);
-    if (!!person?.fnr && valgtSektor && valgtTema) {
-      dispatch(sakActions.getFagsaker(person.fnr!, valgtSektor!, valgtTema!))
+    if (!!personMedFamilie?.fnr && valgtSektor && valgtTema) {
+      dispatch(sakActions.getFagsaker(personMedFamilie.fnr!, valgtSektor!, valgtTema!))
     }
   }
 
@@ -378,14 +438,14 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onCreateFagsak = () => {
-    if (!!person?.fnr && valgtTema) {
-      dispatch(createFagsakGenerell(person.fnr!, valgtTema!))
+    if (!!personMedFamilie?.fnr && valgtTema) {
+      dispatch(createFagsakGenerell(personMedFamilie.fnr!, valgtTema!))
     }
   }
 
   const onCreateFagsakDagpenger = () => {
-    if (!!person?.fnr) {
-      dispatch(createFagsakDagpenger(person.fnr!, {aar: fagsakDagpengerYear}))
+    if (!!personMedFamilie?.fnr) {
+      dispatch(createFagsakDagpenger(personMedFamilie.fnr!, {aar: fagsakDagpengerYear}))
     }
   }
 
@@ -472,9 +532,9 @@ const SEDNew = (): JSX.Element => {
               onSearchPerformed={(fnr: string) => {
                 dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
-                dispatch(personActions.searchPerson(fnr))
+                dispatch(personActions.searchPersonMedFamilie(fnr))
               }}
-              person={person}
+              person={personMedFamilie}
             />
           </Column>
           <Column/>
@@ -482,7 +542,9 @@ const SEDNew = (): JSX.Element => {
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">
           <Column>
-            <SakSidebar />
+            {personMedFamilie &&
+              <PersonPanel className='neutral' person={personMedFamilie}/>
+            }
           </Column>
         </Row>
         <VerticalSeparatorDiv size='2' />
@@ -490,7 +552,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sektor'}
-              disabled={_.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-sektor']?.feilmelding}
               id={namespace + '-sektor'}
               label={t('label:sektor')}
@@ -524,11 +586,11 @@ const SEDNew = (): JSX.Element => {
                   {t('label:velg')}
                 </option>
                 {sektor &&
-                      _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                        <option value={e.enhetId} key={e.enhetId}>
-                          {e.navn}
-                        </option>
-                      ))}
+                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                      <option value={e.enhetId} key={e.enhetId}>
+                        {e.navn}
+                      </option>
+                    ))}
               </Select>
             )}
             <VerticalSeparatorDiv />
@@ -539,7 +601,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-buctype'}
-              disabled={_.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-buctype']?.feilmelding}
               id={namespace + '-buctype'}
               label={t('label:buc')}
@@ -561,7 +623,7 @@ const SEDNew = (): JSX.Element => {
           <Column>
             <Select
               data-testid={namespace + '-sedtype'}
-              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(person) || !!opprettetSak}
+              disabled={_.isEmpty(valgtBucType) || _.isEmpty(valgtSektor) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               error={validation[namespace + '-sedtype']?.feilmelding}
               id={namespace + '-sedtype'}
               label={t('label:sed')}
@@ -586,6 +648,11 @@ const SEDNew = (): JSX.Element => {
             <VerticalSeparatorDiv />
           </Column>
         </Row>
+        {_showNonEUEftaAddressWarning &&
+          <Alert variant='error'>
+            {t('message:error-non-euefta-address')}
+          </Alert>
+        }
         <VerticalSeparatorDiv />
         <Row>
           <Column>
@@ -596,7 +663,7 @@ const SEDNew = (): JSX.Element => {
               id={namespace + '-landkode'}
               countryCodeListName="euEftaLand"
               label={t('label:land')}
-              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(person) || !!opprettetSak}
+              isDisabled={_.isEmpty(valgtBucType) || _.isEmpty(personMedFamilie) || !!opprettetSak}
               menuPortalTarget={document.body}
               onOptionSelected={onLandkodeChange}
               flagWave
@@ -608,7 +675,7 @@ const SEDNew = (): JSX.Element => {
             <FlexCenterDiv>
               <Select
                 data-testid={namespace + '-institusjon'}
-                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(person) || !!opprettetSak}
+                disabled={_.isEmpty(valgtLandkode) || gettingInstitusjoner || _.isEmpty(personMedFamilie) || !!opprettetSak}
                 error={validation[namespace + '-institusjon']?.feilmelding}
                 id={namespace + '-institusjon'}
                 label={t('label:mottaker-institusjon')}
@@ -642,59 +709,12 @@ const SEDNew = (): JSX.Element => {
               {t('label:familierelasjon')}
             </Heading>
             <VerticalSeparatorDiv />
-            <Family
-              namespace={namespace}
+            <FamilieRelasjoner
               validation={validation}
-              disableAll={!!opprettetSak}
-              alertVariant={alertVariant}
-              alertMessage={alertMessage}
-              alertType={alertType}
-              abroadPersonFormAlertTypesWatched={[
-                types.SAK_ABROADPERSON_ADD_FAILURE
-              ]}
-              TPSPersonFormAlertTypesWatched={[
-                types.PERSON_RELATERT_SEARCH_FAILURE,
-                types.SAK_TPSPERSON_ADD_FAILURE
-              ]}
-              familierelasjonKodeverk={familierelasjonKodeverk}
-              personRelatert={personRelatert}
-              searchingRelatertPerson={searchingRelatertPerson}
-              person={person}
-              valgteFamilieRelasjoner={valgteFamilieRelasjoner}
-              onAbroadPersonAddedFailure={() => dispatch({ type: types.SAK_ABROADPERSON_ADD_FAILURE })}
-              onAbroadPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                dispatch(sakActions.addFamilierelasjoner(relation))
-                dispatch({ type: types.SAK_ABROADPERSON_ADD_SUCCESS })
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onRelationAdded={(relation: OldFamilieRelasjon) => {
-                /* Person fra TPS har alltid norsk nasjonalitet. Derfor default til denne. */
-                dispatch(
-                  sakActions.addFamilierelasjoner({
-                    ...relation,
-                    nasjonalitet: 'NO'
-                  })
-                )
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onRelationRemoved={(relation: OldFamilieRelasjon) => dispatch(sakActions.removeFamilierelasjoner(relation))}
-              onRelationReset={() => dispatch(personActions.resetPersonRelated())}
-              onTPSPersonAddedFailure={() => dispatch({ type: types.SAK_TPSPERSON_ADD_FAILURE })}
-              onTPSPersonAddedSuccess={(relation: OldFamilieRelasjon) => {
-                dispatch(sakActions.addFamilierelasjoner(relation))
-                dispatch({ type: types.SAK_TPSPERSON_ADD_SUCCESS })
-                if (validation[namespace + '-familieRelasjoner']) {
-                  dispatch(resetValidation(namespace + '-familieRelasjoner'))
-                }
-              }}
-              onSearchFnr={(fnrQuery: string) => {
-                dispatch(personActions.resetPersonRelated())
-                dispatch(personActions.searchPersonRelated(fnrQuery.trim()))
-              }}
+              namespace={namespace}
+              personMedFamilie={personMedFamilie}
+              valgteFamilieRelasjonerPDL={valgteFamilieRelasjonerPDL}
+              valgteFamilieRelasjonerUtland={valgteFamilieRelasjonerUtland}
             />
           </>
         )}
@@ -710,7 +730,7 @@ const SEDNew = (): JSX.Element => {
                     id={namespace + '-tema'}
                     label={t('label:velg-tema')}
                     onChange={onTemaChange}
-                    disabled={_.isEmpty(person) || !!opprettetSak}
+                    disabled={_.isEmpty(personMedFamilie) || !!opprettetSak}
                     value={valgtTema}
                   >
                     <option value=''>
@@ -730,7 +750,7 @@ const SEDNew = (): JSX.Element => {
                     <Button
                       variant='secondary'
                       onClick={onViewFagsakerClick}
-                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(person) || !!opprettetSak}
+                      disabled={gettingFagsaker || _.isEmpty(valgtTema) || _.isEmpty(personMedFamilie) || !!opprettetSak}
                     >
                       {gettingFagsaker && <Loader />}
                       {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
@@ -795,7 +815,7 @@ const SEDNew = (): JSX.Element => {
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={sendingSak || !!opprettetSak || _.isEmpty(person)}
+                disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}
@@ -805,8 +825,9 @@ const SEDNew = (): JSX.Element => {
 
               <Button
                 variant='tertiary'
-                disabled={_.isEmpty(person)}
+                disabled={_.isEmpty(personMedFamilie)}
                 onClick={() => {
+                  setShowNonEUEftaAddressWarning(false)
                   dispatch(personReset())
                   dispatch(sakReset())
                 }}
@@ -873,7 +894,9 @@ const SEDNew = (): JSX.Element => {
         )}
       </MyContent>
       <PersonInfoContent style={{ flex: 2 }}>
-        <SakSidebar />
+        {personMedFamilie &&
+          <PersonPanel className='neutral' person={personMedFamilie}/>
+        }
       </PersonInfoContent>
       <Margin />
     </Container>

@@ -122,6 +122,53 @@ export interface Person {
   statsborgerskapList?: Array<Statsborgerskap>
 }
 
+export interface PersonInfoPDL {
+  fnr?: string
+  foedselsdato?: string
+  fornavn?: string
+  mellomnavn?: string
+  forOgMellomnavn?: string
+  etternavn?: string
+  kjoenn?: string
+  statsborgerskap?: Array<string>
+  adresser?: Array<AdressePDL>
+  utenlandskePin?: Array<Pin>
+  adressebeskyttelse?: string
+  __rolle?: string
+  __fraPersonMedFamilie?: boolean
+}
+
+export interface PersonInfoUtland {
+  fornavn?: string,
+  etternavn?: string,
+  kjoenn?: string,
+  statsborgerskap?: string,
+  foedselsdato?: string,
+  pin?: string,
+  pinLandkode?: string,
+  __rolle?: string
+}
+
+export interface AdressePDL {
+  type?: string,
+  gate?: string,
+  postNr?: string,
+  postSted?: string,
+  region?: string,
+  landkode?: string
+}
+
+export interface Pin {
+  identifikator: string
+  landkode: string
+}
+
+export interface PersonMedFamilie extends PersonInfoPDL {
+  ektefelle?: PersonInfoPDL
+  annenperson?: PersonInfoPDL
+  barn?: Array<PersonInfoPDL>
+}
+
 export interface Fagsak {
   id: string
   aktoerId?: string | null | undefined
