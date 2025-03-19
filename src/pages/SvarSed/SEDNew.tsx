@@ -64,6 +64,7 @@ import {getAllowed} from "utils/allowedFeatures";
 import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
 import PersonPanel from "../../applications/OpprettSak/PersonPanel/PersonPanel";
 import FamilieRelasjoner from "../../applications/OpprettSak/FamilieRelasjoner/FamilieRelasjoner";
+import {Statsborgerskap} from "../../declarations/sed";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -236,6 +237,10 @@ const SEDNew = (): JSX.Element => {
   const euEftaCountryCodes = euEftaCountries.map((c) => {
     return c.landkode
   })
+  let statsborgerskapCountries = countryCodes ? countryCodes["v" + cdmVersjonApp as keyof CountryCodes]["statsborgerskap" as keyof CountryCodeLists] : []
+  const statsborgerskapCountryCodes = statsborgerskapCountries.map((c) => {
+    return c.landkode
+  })
 
   const SedTypesWithEUEFTAOnlyAddress = [
     "F018", "F019", "F020",
@@ -246,6 +251,7 @@ const SEDNew = (): JSX.Element => {
     "U001", "U001CB", "U002", "U003", "U004", "U005", "U006", "U007", "U008", "U009", "U010", "U011", "U012", "U013", "U014", "U015", "U016", "U017", "U018", "U019", "U020", "U029"
   ]
   const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
+  const [_notValidNationalityWarning, setNotValidNationalityWarning] = useState<string | undefined>(undefined)
 
 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !valgtSektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[valgtSektor] as keyof Tema].filter((k:Kodeverk) => {
@@ -449,6 +455,21 @@ const SEDNew = (): JSX.Element => {
     }
   }
 
+  let nonValidNationalityCountries: any[] | undefined = []
+  const onPersonFound = () => {
+    setIsFnrValid(true)
+
+    nonValidNationalityCountries = personMedFamilie?.statsborgerskap?.filter((s: Statsborgerskap) => {
+      if(s.landkode && !(statsborgerskapCountryCodes.indexOf(s.landkode) > -1)) {
+        return s
+      }
+    })
+
+    if(nonValidNationalityCountries && nonValidNationalityCountries.length > 0){
+      setNotValidNationalityWarning(t('message:error-non-valid-nationality', {statsborgerskap: nonValidNationalityCountries.map(s=> s.landkode).join(',')}))
+    }
+  }
+
   const fillOutSed = (opprettetSak: OpprettetSak) => {
     dispatch(personReset())
     dispatch(resetSentSed())
@@ -522,16 +543,16 @@ const SEDNew = (): JSX.Element => {
               parentNamespace={namespace}
               onFnrChange={() => {
                 setShowNonEUEftaAddressWarning(false)
+                setNotValidNationalityWarning(undefined)
                 if (isFnrValid) {
                   setIsFnrValid(false)
                   dispatch(appActions.appReset()) // cleans person and sak reducer
                 }
               }}
-              onPersonFound={() => {
-                setIsFnrValid(true)
-              }}
+              onPersonFound={onPersonFound}
               onSearchPerformed={(fnr: string) => {
                 setShowNonEUEftaAddressWarning(false)
+                setNotValidNationalityWarning(undefined)
                 dispatch(sakActions.sakReset())
                 dispatch(sakActions.setProperty('fnr', fnr))
                 dispatch(personActions.searchPersonMedFamilie(fnr))
@@ -541,6 +562,14 @@ const SEDNew = (): JSX.Element => {
           </Column>
           <Column/>
         </Row>
+        {!!_notValidNationalityWarning &&
+          <>
+            <VerticalSeparatorDiv size='2' />
+            <Alert variant='error'>
+              {_notValidNationalityWarning}
+            </Alert>
+          </>
+        }
         <VerticalSeparatorDiv size='2' />
         <Row className="personInfo">
           <Column>
@@ -817,7 +846,7 @@ const SEDNew = (): JSX.Element => {
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
+                disabled={_showNonEUEftaAddressWarning || !!_notValidNationalityWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}
@@ -830,6 +859,7 @@ const SEDNew = (): JSX.Element => {
                 disabled={_.isEmpty(personMedFamilie)}
                 onClick={() => {
                   setShowNonEUEftaAddressWarning(false)
+                  setNotValidNationalityWarning(undefined)
                   dispatch(personReset())
                   dispatch(sakReset())
                 }}
