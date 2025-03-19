@@ -1,4 +1,4 @@
-import { PlusCircleIcon, Buldings3Icon } from '@navikt/aksel-icons';
+import { PlusCircleIcon, Buildings3Icon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
 import { FlexCenterSpacedDiv, PaddedDiv, PaddedHorizontallyDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
@@ -297,7 +297,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           onForsikringPeriodeNewClose={onCloseNew}
           onForsikringPeriodeDelete={onRemove}
           namespace={namespace}
-          icon={<Buldings3Icon width='20' height='20' />}
+          icon={<Buildings3Icon width='20' height='20' />}
           validation={_validation}
           resetValidation={doResetValidation}
           setValidation={doSetValidation}
