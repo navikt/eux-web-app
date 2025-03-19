@@ -1,4 +1,4 @@
-import { PlusCircleIcon, PersonSuitIcon, GavelSoundBlockIcon, WalletIcon, Buldings3Icon,SackPensionIcon } from '@navikt/aksel-icons';
+import { PlusCircleIcon, PersonSuitIcon, GavelSoundBlockIcon, WalletIcon, Buildings3Icon,SackPensionIcon } from '@navikt/aksel-icons';
 import { BodyLong, Button, Checkbox, Heading, Ingress, Tooltip } from '@navikt/ds-react'
 import {
   AlignStartRow,
@@ -244,7 +244,7 @@ const Perioder: React.FC<MainFormProps> = ({
     let icon;
     switch (type) {
       case 'perioderAnsattMedForsikring':
-        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><Buldings3Icon width={size} height={size}/></FlexDiv>
+        icon = <FlexDiv><SackPensionIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></FlexDiv>
         break;
       case 'perioderSelvstendigMedForsikring':
         icon = <FlexDiv><SackPensionIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>
@@ -256,13 +256,13 @@ const Perioder: React.FC<MainFormProps> = ({
         icon = <FlexDiv><SackPensionIcon width={size} height={size}/><GavelSoundBlockIcon width={size} height={size}/></FlexDiv>
         break;
       case 'perioderAnsattUtenForsikring':
-        icon = <Buldings3Icon width={size} height={size}/>
+        icon = <Buildings3Icon width={size} height={size}/>
         break;
       case 'perioderSelvstendigUtenForsikring':
         icon = <PersonSuitIcon width={size} height={size}/>
         break;
       case 'perioderLoennSomAnsatt':
-        icon = <FlexDiv><WalletIcon width={size} height={size}/><Buldings3Icon width={size} height={size}/></FlexDiv>
+        icon = <FlexDiv><WalletIcon width={size} height={size}/><Buildings3Icon width={size} height={size}/></FlexDiv>
         break;
       case 'perioderInntektSomSelvstendig':
         icon = <FlexDiv><WalletIcon width={size} height={size}/><PersonSuitIcon width={size} height={size}/></FlexDiv>

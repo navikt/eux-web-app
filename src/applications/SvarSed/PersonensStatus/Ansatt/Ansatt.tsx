@@ -1,4 +1,4 @@
-import { PlusCircleIcon, Buldings3Icon } from '@navikt/aksel-icons'
+import { PlusCircleIcon, Buildings3Icon } from '@navikt/aksel-icons'
 import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
 import {
   AlignEndColumn,
@@ -275,7 +275,7 @@ const Ansatt: React.FC<MainFormProps> = ({
         <ForsikringPeriodeBox
           forsikringPeriode={periode}
           allowEdit
-          icon={<Buldings3Icon width='20' height='20' />}
+          icon={<Buildings3Icon width='20' height='20' />}
           editable='only_period'
           showArbeidsgiver
           showAddress={false}

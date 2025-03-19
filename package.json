@@ -27,8 +27,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@navikt/ds-css": "^6.0.0",
-    "@navikt/ds-react": "^6.0.0",
+    "@navikt/ds-css": "^7.0.0",
+    "@navikt/ds-react": "^7.0.0",
     "@navikt/eessi-kodeverk": "^2.1.0",
     "@navikt/fetch": "^2.1.14",
     "@navikt/flagg-ikoner": "^4.0.0",

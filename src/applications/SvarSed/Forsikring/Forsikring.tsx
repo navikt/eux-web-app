@@ -3,8 +3,8 @@ import {
   BriefcaseIcon,
   HospitalIcon,
   GavelSoundBlockIcon,
-  Buldings3Icon,
-  Buldings2Icon,
+  Buildings3Icon,
+  Buildings2Icon,
   SackPensionIcon,
   ReceiptIcon,
   BackpackIcon,
@@ -224,13 +224,13 @@ const Forsikring: React.FC<MainFormProps> = ({
     let icon;
     switch (type) {
       case 'perioderAnsattMedForsikring':
-        icon = <Buldings3Icon width={size} height={size} />
+        icon = <Buildings3Icon width={size} height={size} />
         break;
       case 'perioderSelvstendigMedForsikring':
         icon = <SackPensionIcon width={size} height={size} />
         break;
       case 'perioderAnsattUtenForsikring':
-        icon = <Buldings2Icon width={size} height={size} />
+        icon = <Buildings2Icon width={size} height={size} />
         break;
       case 'perioderSelvstendigUtenForsikring':
         icon = <BriefcaseIcon width={size} height={size} />
