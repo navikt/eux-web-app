@@ -11,9 +11,12 @@ import * as Utils from 'utils/utils'
 import i18n from './i18n'
 import { unregister } from './registerServiceWorker'
 import '@navikt/ds-css'
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 import store from 'store'
 import {App} from "./app";
+import {pdfjs} from 'react-pdf'
 
 if (!IS_PRODUCTION) {
   // const axe = require('react-axe')
@@ -24,6 +27,11 @@ if (!IS_PRODUCTION) {
 }
 
 (window as any).frontendlogger.info(Utils.buildinfo())
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 const container = document.getElementById('root')
 const root = createRoot(container!)
