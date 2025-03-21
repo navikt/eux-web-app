@@ -168,6 +168,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               onChanged={setBegrunnelse}
               required
               value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
+              maxLength={255}
             />
           </TextAreaDiv>
         </Column>
@@ -183,7 +184,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             namespace={namespace}
             onChanged={setId}
             required
-            value={utbetalingTilInstitusjon?.id ?? ''}
+            value={utbetalingTilInstitusjon?.id ?? 'NO:889640782'}
           />
         </Column>
         <Column>
@@ -194,7 +195,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             namespace={namespace}
             onChanged={setNavn}
             required
-            value={utbetalingTilInstitusjon?.navn ?? ''}
+            value={utbetalingTilInstitusjon?.navn ?? 'The Norwegian Labour and Welfare Administration'}
           />
         </Column>
       </AlignStartRow>
@@ -209,6 +210,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             legend={t('label:konto-type') + ' *'}
             name={namespace + '-kontotype'}
             onChange={(e: string | number | boolean) => setKontoType(e as KontoType)}
+            defaultValue='sepa'
           >
             <Radio
               value='ordinaer'
@@ -278,7 +280,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 namespace={namespace}
                 onChanged={setSepaIban}
                 required
-                value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
+                value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? 'NO6476940520041'}
               />
             </Column>
             <Column />
@@ -292,7 +294,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 label={t('label:swift') + (!_.isEmpty(utbetalingTilInstitusjon?.kontoSepa?.iban) ? '' : ' *')}
                 namespace={namespace}
                 onChanged={setSepaSwift}
-                value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
+                value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? 'DNBANOKKXXX'}
               />
             </Column>
             <Column />
