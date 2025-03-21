@@ -1,6 +1,5 @@
 import { EyeWithPupilIcon } from '@navikt/aksel-icons'
 import { Button } from '@navikt/ds-react'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { getPreviewFile, previewSed, resetPreviewSvarSed } from 'actions/svarsed'
 import Modal from 'components/Modal/Modal'
@@ -14,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'
 import { cleanReplySed } from 'utils/sed'
+import {Document, Page} from "react-pdf";
 
 export interface PreviewSedProps {
   rinaSakId?: string | undefined
@@ -64,7 +64,7 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
+      /*const file: File = {
         id: '' + new Date().getTime(),
         size: previewFile.size,
         name: '',
@@ -72,24 +72,16 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
         content: {
           base64: base64.replaceAll('octet-stream', 'pdf')
         }
-      }
-
+      }*/
       setPreviewModal({
         closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
           >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
-              width={600}
-              height={1200}
-              tema='simple'
-              viewOnePage={false}
-            />
+            <Document file={base64.replaceAll('octet-stream', 'pdf')}>
+              <Page pageNumber={1}/>
+            </Document>
           </div>
         )
       })
