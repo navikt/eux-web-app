@@ -11,7 +11,6 @@ import mockTemplatePdu1 from 'mocks/pdu1/template'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
 import { Action, ActionCreator } from 'redux'
-import File from '@navikt/forhandsvisningsfil'
 
 // @ts-ignore
 import { sprintf } from 'sprintf-js'

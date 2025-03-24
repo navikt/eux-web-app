@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'
 import { cleanReplySed } from 'utils/sed'
 import {Document, Page} from "react-pdf";
+import PDFViewer from "components/PDFViewer/PDFViewer";
 
 export interface PreviewSedProps {
   rinaSakId?: string | undefined
@@ -64,24 +65,19 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
-      /*const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }*/
       setPreviewModal({
         closeButton: true,
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
           >
-            <Document file={base64.replaceAll('octet-stream', 'pdf')}>
-              <Page pageNumber={1}/>
-            </Document>
+            <PDFViewer
+              file={base64.replaceAll('octet-stream', 'pdf')}
+              name=""
+              size={previewFile.size}
+              width={600}
+              height={1200}
+            />
           </div>
         )
       })

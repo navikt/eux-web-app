@@ -1,5 +1,4 @@
 import {Alert, BodyLong, Button, Heading, Label, Loader, Panel, Select} from '@navikt/ds-react'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import {
   AlignStartRow,
   Column,
@@ -41,6 +40,7 @@ import * as types from "../../constants/actionTypes";
 import * as personActions from "../../actions/person";
 import SakSidebar from "../../applications/PDU1/SakSidebar/SakSidebar";
 import moment from "moment";
+import PDFViewer from "../../components/PDFViewer/PDFViewer";
 
 const ContainerDiv = styled(PileCenterDiv)`
   width: 780px;
@@ -199,30 +199,17 @@ const PDU1Search = (): JSX.Element => {
 
   const showPreviewModal = (previewFile: Blob) => {
     blobToBase64(previewFile).then((base64: any) => {
-      const file: File = {
-        id: '' + new Date().getTime(),
-        size: previewFile.size,
-        name: '',
-        mimetype: 'application/pdf',
-        content: {
-          base64: base64.replaceAll('octet-stream', 'pdf')
-        }
-      }
-
       setPreviewModal({
         modalContent: (
           <div
             style={{ cursor: 'pointer' }}
           >
-            <FileFC
-              file={{
-                ...file,
-                mimetype: 'application/pdf'
-              }}
+            <PDFViewer
+              file={base64.replaceAll('octet-stream', 'pdf')}
+              name=""
+              size={previewFile.size}
               width={600}
               height={1200}
-              tema='simple'
-              viewOnePage={false}
             />
           </div>
         )

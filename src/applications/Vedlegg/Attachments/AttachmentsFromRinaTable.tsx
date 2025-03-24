@@ -6,7 +6,6 @@ import {Button, Loader, Checkbox} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {blobToBase64} from "../../../utils/blob";
-import FileFC, {File} from "@navikt/forhandsvisningsfil";
 import Modal from "../../../components/Modal/Modal";
 import {ModalContent} from "../../../declarations/components";
 import {useAppDispatch, useAppSelector} from "../../../store";
@@ -14,6 +13,7 @@ import {State} from "../../../declarations/reducers";
 import {getAttachmentFromRinaPreview, setAttachmentFromRinaPreview} from "../../../actions/attachments";
 import { TrashIcon } from '@navikt/aksel-icons';
 import {deleteAttachment, setAttachmentSensitive} from "../../../actions/svarsed";
+import PDFViewer from "../../../components/PDFViewer/PDFViewer";
 
 
 const ButtonsDiv = styled.div`
@@ -61,7 +61,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
 
   const [_clickedAttachmentItem, setClickedAttachmentItem] = useState<AttachmentTableItem | undefined>(undefined)
   const [_attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
-  const [_previewAttachmentFile, setPreviewAttachmentFile] = useState<File | undefined>(undefined)
+  const [_previewAttachmentFile, setPreviewAttachmentFile] = useState<any | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
 
   const context: AttachmentContext = {
@@ -163,7 +163,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
         setConvertingRawToFile(true)
 
         blobToBase64(previewAttachmentFileRaw).then((base64: any) => {
-          const file: File = {
+          const file: any = {
             id: '' + new Date().getTime(),
             size: previewAttachmentFileRaw.size,
             name: '',
@@ -186,12 +186,12 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
           <div
             style={{ cursor: 'pointer' }}
           >
-            <FileFC
-              file={_previewAttachmentFile}
+            <PDFViewer
+              file={_previewAttachmentFile.content.base64!}
+              name=""
+              size={_previewAttachmentFile.size}
               width={600}
               height={800}
-              tema='simple'
-              viewOnePage={false}
             />
           </div>
         )

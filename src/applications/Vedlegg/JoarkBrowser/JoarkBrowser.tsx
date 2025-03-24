@@ -1,5 +1,4 @@
 import {BodyLong, Button, Checkbox, Label, Loader} from '@navikt/ds-react'
-import FileFC, { File } from '@navikt/forhandsvisningsfil'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import Table, { RenderOptions } from '@navikt/tabell'
 import { getJoarkItemPreview, listJoarkItems, setJoarkItemPreview } from 'actions/attachments'
@@ -26,6 +25,7 @@ import styled from 'styled-components'
 import { blobToBase64 } from 'utils/blob'
 import { TrashIcon } from '@navikt/aksel-icons';
 import {removeAttachment} from "../../../actions/svarsed";
+import PDFViewer from "../../../components/PDFViewer/PDFViewer";
 
 const ButtonsDiv = styled.div`
   display: flex;
@@ -87,7 +87,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
   const [_items, setItems] = useState<JoarkBrowserItems | undefined>(undefined)
   const [_modal, setModal] = useState<ModalContent | undefined>(undefined)
   const [_modalInViewMode, setModalInViewMode] = useState<boolean>(false)
-  const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
+  const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
   const [_tableKey, setTableKey] = useState<string>('')
 
@@ -345,7 +345,7 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           setConvertingRawToFile(true)
 
           blobToBase64(previewFileRaw).then((base64: any) => {
-            const file: File = {
+            const file: any = {
               id: '' + new Date().getTime(),
               size: previewFileRaw.size,
               name: '',
@@ -369,12 +369,12 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
           <div
             style={{ cursor: 'pointer' }}
           >
-            <FileFC
-              file={_previewFile}
+            <PDFViewer
+              file={_previewFile.content.base64!}
+              name=""
+              size={_previewFile.size}
               width={600}
               height={800}
-              tema='simple'
-              viewOnePage={false}
             />
           </div>
         )
