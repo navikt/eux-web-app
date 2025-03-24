@@ -243,12 +243,9 @@ const SEDNew = (): JSX.Element => {
   })
 
   const SedTypesWithEUEFTAOnlyAddress = [
-    "F018", "F019", "F020",
-    "H003", "H004",
-    "M040",
-    "R001", "R002", "R003", "R004", "R005", "R006", "R008", "R009", "R010", "R011", "R012", "R014", "R015", "R016", "R017", "R018", "R019", "R025", "R028", "R029", "R033", "R034", "R036",
-    "S011", "S016", "S018", "S071", "S072", "S0732", "S130", "S131",
-    "U001", "U001CB", "U002", "U003", "U004", "U005", "U006", "U007", "U008", "U009", "U010", "U011", "U012", "U013", "U014", "U015", "U016", "U017", "U018", "U019", "U020", "U029"
+    "DA006", "DA007", "DA008", "DA009",
+    "S071", "S072", "S073", "S130", "S131",
+    "U001", "U001CB", "U003", "U005", "U007", "U009"
   ]
   const [_showNonEUEftaAddressWarning, setShowNonEUEftaAddressWarning] = useState<boolean>(false)
   const [_notValidNationalityWarning, setNotValidNationalityWarning] = useState<string | undefined>(undefined)
