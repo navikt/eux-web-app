@@ -5,6 +5,8 @@ import React, {useState} from "react";
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import _ from "lodash";
 import bytes from 'bytes'
+import styled, { keyframes } from 'styled-components'
+import classNames from 'classnames'
 
 export interface PreviewPDFProps {
   file?: string
@@ -13,6 +15,26 @@ export interface PreviewPDFProps {
   width?: string | number
   height?: string | number
 }
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+`
+export const PDFDiv = styled.div`
+  position: relative;
+  &.animate {
+    animation: ${fadeIn} 0.4s;
+  }
+`
 
 const PDFViewer: React.FC<PreviewPDFProps> = ({
   file, name, size, width, height
@@ -42,7 +64,10 @@ const PDFViewer: React.FC<PreviewPDFProps> = ({
   }
 
   return(
-    <div title={'' + name + '\n Sider: ' + (numPages || '0') + '\n Størrelse: ' + _size}>
+    <PDFDiv
+      className={classNames({ animate: true })}
+      title={'' + name + '\n Sider: ' + (numPages || '0') + '\n Størrelse: ' + _size}
+    >
       <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
         {pages.map(currentPage => (
           <Page
@@ -53,7 +78,7 @@ const PDFViewer: React.FC<PreviewPDFProps> = ({
           />)
         )}
       </Document>
-    </div>
+    </PDFDiv>
   )
 }
 
