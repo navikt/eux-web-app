@@ -3,7 +3,7 @@ import {
   Fagsaker,
   FeilregistrerJournalposterLogg,
   JournalfoeringLogg,
-  Person,
+  PersonInfoPDL,
   Sak
 } from "../declarations/types";
 import {AnyAction} from "redux";
@@ -14,7 +14,7 @@ import _ from "lodash";
 
 
 export interface JournalfoeringState {
-  person: Person | null | undefined
+  person: PersonInfoPDL | null | undefined
   fagsaker: Fagsaker | undefined | null
   fagsak: Fagsak | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null

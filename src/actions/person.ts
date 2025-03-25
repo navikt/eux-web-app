@@ -1,7 +1,6 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ActionWithPayload, call } from '@navikt/fetch'
-import mockPerson from 'mocks/person'
 import mockPersonInfo from 'mocks/personInfo'
 import mockPersonMedFamilie from 'mocks/personmedfamilie'
 import { Action, ActionCreator } from 'redux'
@@ -19,8 +18,8 @@ export const searchPerson = (
   fnr: string
 ): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr }),
-    expectedPayload: mockPerson,
+    url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
+    expectedPayload: mockPersonInfo,
     cascadeFailureError: true,
     type: {
       request: types.PERSON_SEARCH_REQUEST,

@@ -165,7 +165,7 @@ export interface Pin {
 }
 
 export interface Statsborgerskap {
-  land?: string
+  fraDato?: string
   landkode?: string
 }
 

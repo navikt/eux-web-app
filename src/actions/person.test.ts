@@ -2,6 +2,7 @@ import * as personActions from 'actions/person'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
+import {API_PDL_PERSON_URL} from "constants/urls";
 
 const sprintf = require('sprintf-js').sprintf
 jest.mock('@navikt/fetch', () => ({
@@ -34,7 +35,7 @@ describe('actions/persons', () => {
           success: types.PERSON_SEARCH_SUCCESS,
           failure: types.PERSON_SEARCH_FAILURE
         },
-        url: sprintf(urls.API_PERSONER_URL, { fnr })
+        url: sprintf(urls.API_PDL_PERSON_URL, { fnr })
       }))
   })
 })

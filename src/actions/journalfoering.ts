@@ -3,13 +3,13 @@ import {CreateSedResponse, Fagsak, Fagsaker, Sak} from "../declarations/types";
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
-import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
-import mockPerson from "../mocks/person";
 import {H001Sed} from "../declarations/sed";
+import {mockJournalfoeringFagsaker} from "../mocks/journalfoeringFagsakList";
 import mockSendSak from "../mocks/sak/sendSak";
 import mockFagsakGenerell from 'mocks/fagsak_generell'
-import {FagsakPayload} from "../declarations/pd";
 import mockFagsakDagpenger from "../mocks/fagsak";
+import mockPersonInfo from "../mocks/personInfo";
+import {FagsakPayload} from "../declarations/pd";
 
 const sprintf = require('sprintf-js').sprintf
 
@@ -26,8 +26,8 @@ export const searchJournalfoeringPerson = (
   fnr: string
 ): ActionWithPayload => {
   return call({
-    url: sprintf(urls.API_PERSONER_URL, { fnr }),
-    expectedPayload: mockPerson,
+    url: sprintf(urls.API_PDL_PERSON_URL, { fnr }),
+    expectedPayload: mockPersonInfo,
     cascadeFailureError: true,
     type: {
       request: types.JOURNALFOERING_PERSON_SEARCH_REQUEST,

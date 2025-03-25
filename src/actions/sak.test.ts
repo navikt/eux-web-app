@@ -2,8 +2,6 @@ import * as sakActions from 'actions/sak'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
-import mockFamilierelasjon from 'mocks/familierelasjon'
-import mockOpprettSak from 'mocks/opprettSak'
 
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
@@ -20,31 +18,10 @@ describe('actions/sak', () => {
     call.mockRestore()
   })
 
-  it('addFamilierelasjoner()', () => {
-    expect(sakActions.addFamilierelasjoner(mockFamilierelasjon)).toMatchObject({
-      type: types.SAK_FAMILIERELASJONER_ADD,
-      payload: mockFamilierelasjon
-    })
-  })
-
   it('sakReset()', () => {
     expect(sakActions.sakReset()).toMatchObject({
       type: types.SAK_RESET
     })
-  })
-
-  it('createSak()', () => {
-    sakActions.createSak(mockOpprettSak)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        method: 'POST',
-        type: {
-          request: types.SAK_SEND_REQUEST,
-          success: types.SAK_SEND_SUCCESS,
-          failure: types.SAK_SEND_FAILURE
-        },
-        url: sprintf(urls.API_SAK_SEND_URL)
-      }))
   })
 
   it('getFagsaker()', () => {
@@ -78,12 +55,6 @@ describe('actions/sak', () => {
       }))
   })
 
-  it('removeFamilierelasjoner()', () => {
-    expect(sakActions.removeFamilierelasjoner(mockFamilierelasjon)).toMatchObject({
-      type: types.SAK_FAMILIERELASJONER_REMOVE,
-      payload: mockFamilierelasjon
-    })
-  })
 
   it('resetFagsaker()', () => {
     expect(sakActions.resetFagsaker())

@@ -19,7 +19,7 @@ import NorskPin from 'components/NorskPin/NorskPin'
 import UtenlandskPins from 'components/UtenlandskPins/UtenlandskPins'
 import { State } from 'declarations/reducers'
 import { Foedested, Kjoenn, PersonInfo, Pin } from 'declarations/sed.d'
-import { Person } from 'declarations/types'
+import {PersonInfoPDL} from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -108,7 +108,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     }
   }
 
-  const fillOutPerson = (searchedPerson: Person) => {
+  const fillOutPerson = (searchedPerson: PersonInfoPDL) => {
     let newPersonInfo = _.cloneDeep(personInfo)
     if(!newPersonInfo){
       newPersonInfo = {fornavn: "", etternavn: ""}
@@ -133,8 +133,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
         }]
       }
     }
-    if (searchedPerson.fdato) {
-      newPersonInfo!.foedselsdato = searchedPerson.fdato
+    if (searchedPerson.foedselsdato) {
+      newPersonInfo!.foedselsdato = searchedPerson.foedselsdato
     }
     if (searchedPerson.fornavn) {
       newPersonInfo!.fornavn = searchedPerson.fornavn
@@ -145,8 +145,8 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
     if (searchedPerson.kjoenn) {
       newPersonInfo!.kjoenn = searchedPerson.kjoenn as Kjoenn
     }
-    if (searchedPerson.statsborgerskapList) {
-      newPersonInfo!.statsborgerskap = searchedPerson.statsborgerskapList
+    if (searchedPerson.statsborgerskap) {
+      newPersonInfo!.statsborgerskap = searchedPerson.statsborgerskap
     }
 
     dispatch(updateReplySed(target, newPersonInfo))

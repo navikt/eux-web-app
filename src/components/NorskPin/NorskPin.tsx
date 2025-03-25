@@ -16,7 +16,7 @@ import Input from 'components/Forms/Input'
 import { RepRow, ShadowPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
-import { Person } from 'declarations/types'
+import {PersonInfoPDL} from 'declarations/types'
 import _ from 'lodash'
 import {buttonLogger} from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
@@ -29,12 +29,12 @@ export interface NorskPinProps {
   error: string | undefined
   namespace: string
   onNorwegianPinSave: (fnr: string) => void
-  onFillOutPerson: (p: Person) => void
+  onFillOutPerson: (p: PersonInfoPDL) => void
 }
 
 interface NorskPinSelector {
   searchingPerson: boolean
-  searchedPerson: Person | null | undefined
+  searchedPerson: PersonInfoPDL | null | undefined
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
 }

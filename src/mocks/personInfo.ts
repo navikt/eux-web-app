@@ -1,12 +1,13 @@
 export default {
   fnr: '02026100715',
-  foedselsdato: '1961-02-02',
+  foedselsdato: '1968-02-02',
   fornavn: 'STOR',
   etternavn: 'BLYANT',
   kjoenn: 'K',
   statsborgerskap: [
-    {"land": "NO", "landkode": "NOR"},
-    {"land": "SE", "landkode": "SWE"},
+    {"fraDato": "1982-01-01", "landkode": "NOR"},
+    {"fraDato": "1975-01-01", "landkode": "SWE"},
+    {"fraDato": "1975-01-01", "landkode": "DNK"},
   ],
   ektefelle: {fnr: "18066521482"},
   barn: [

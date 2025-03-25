@@ -6,7 +6,8 @@ export default {
   kjoenn: "K",
   foedselsdato: "1968-08-25",
   statsborgerskap: [
-    "NOR"
+    {"fraDato": "1982-01-01", "landkode": "NOR"},
+    {"fraDato": "1975-01-01", "landkode": "SWE"}
   ],
   adresser: [
     {
