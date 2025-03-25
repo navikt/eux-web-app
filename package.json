@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "9.8.0-TEN-1043-PERSONINFO",
+  "version": "9.8.0",
   "private": true,
   "type": "module",
   "scripts": {
