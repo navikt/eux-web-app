@@ -5,20 +5,22 @@ module.exports = {
     '<rootDir>'
   ],
   modulePaths: [
-    '<rootDir>'
+    '<rootDir>/src'
   ],
   testMatch: [
     '**/__tests__/**/*.+(ts|tsx)',
     '**/?(*.)+(spec|test).+(ts|tsx)'
   ],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.svg(\\?react)?$': 'jest-transformer-svg'
   },
   moduleDirectories: [
     'node_modules'
   ],
   moduleNameMapper: {
-    '^.+\\.(jpg|jpeg|png|gif|svg|css|less)$': 'identity-obj-proxy'
+    '^.+\\.(jpg|jpeg|png|gif|css|less)$': "<rootDir>/__mocks__/fileMock.js",
+    '^(.*).svg\\?react$': '$1.svg'
   },
   setupFilesAfterEnv: [
     '<rootDir>/src/setupTests.ts'
