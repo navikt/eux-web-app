@@ -9,10 +9,14 @@ import { JoarkBrowser, JoarkBrowserProps, JoarkBrowserSelector } from './JoarkBr
 import TableSorter from '@navikt/tabell'
 import _ from 'lodash'
 
-jest.mock('actions/joark', () => ({
-  getJoarkItemPreview: jest.fn(),
-  listJoarkItems: jest.fn()
-}))
+jest.mock("react-pdf", () => ({
+  pdfjs: { GlobalWorkerOptions: { workerSrc: "abc" } },
+  Document: ({ onLoadSuccess = (pdf = { numPages: 4 }) => pdf.numPages }) => {
+    return <div>{onLoadSuccess({ numPages: 4 })}</div>;
+  },
+  Outline: null,
+  Page: () => <div>def</div>,
+}));
 
 const files: Array<JoarkPoster> = _.cloneDeep(mockJoark.data.dokumentoversiktBruker.journalposter)
 

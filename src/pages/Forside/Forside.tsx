@@ -1,3 +1,4 @@
+/// <reference types="vite-plugin-svgr/client" />
 import { State } from 'declarations/reducers'
 import {Container, Content, Margin, VerticalSeparatorDiv} from '@navikt/hoykontrast'
 import TopContainer from 'components/TopContainer/TopContainer'
@@ -8,9 +9,9 @@ import {Heading, Link} from '@navikt/ds-react'
 import { FeatureToggles } from 'declarations/app'
 import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
-import {ReactComponent as OpprettSak} from 'assets/icons/OpprettSak.svg'
-import {ReactComponent as Dokument} from 'assets/icons/Dokument.svg'
-import {ReactComponent as Binders} from 'assets/icons/Binders.svg'
+import OpprettSak from 'assets/icons/OpprettSak.svg?react'
+import Dokument from 'assets/icons/Dokument.svg?react'
+import Binders from 'assets/icons/Binders.svg?react'
 import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
 import {querySaks, setCurrentSak} from "../../actions/svarsed";

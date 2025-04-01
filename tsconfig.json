@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "target": "ESNext",
+    "types": ["node", "vite/client", "jest", "@types/node","@testing-library/jest-dom"],
     "baseUrl": "src/",
-    "target": "es5",
+    "paths": {
+      "src/*": ["./src/*"],
+      "components":["./src/components/*"],
+      "assets": ["./src/assets/*"]
+    },
     "lib": [
       "dom",
       "dom.iterable",
@@ -24,6 +30,6 @@
     "noEmit": true
   },
   "include": [
-    "src"
+    "src",
   ]
 }

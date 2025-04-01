@@ -7,9 +7,9 @@ import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import {State} from "../../../declarations/reducers";
 import {useDispatch, useSelector} from "react-redux";
-import FileFC, {File} from "@navikt/forhandsvisningsfil";
 import _ from "lodash";
 import {blobToBase64} from "utils/blob";
+import PDFViewer from "../../../components/PDFViewer/PDFViewer";
 
 export interface SEDAttachmentModalProps {
   open: boolean
@@ -36,7 +36,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
   const { previewFileRaw } = useSelector<State, SEDAttachmentModalSelector>(mapState)
   const [_items, setItems] = useState<JoarkBrowserItems>(sedAttachments)
   const [_preview, setPreview] = useState<any | undefined>(undefined)
-  const [_previewFile, setPreviewFile] = useState<File | undefined>(undefined)
+  const [_previewFile, setPreviewFile] = useState<any | undefined>(undefined)
   const [_convertingRawToFile, setConvertingRawToFile] = useState<boolean>(false)
 
   const onRowSelectChange = (items: JoarkBrowserItems): void => {
@@ -68,7 +68,7 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
         setConvertingRawToFile(true)
 
         blobToBase64(previewFileRaw).then((base64: any) => {
-          const file: File = {
+          const file: any = {
             id: '' + new Date().getTime(),
             size: previewFileRaw.size,
             name: '',
@@ -92,12 +92,12 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
       <div
         style={{ cursor: 'pointer'}}
       >
-        <FileFC
-          file={_previewFile}
+        <PDFViewer
+          file={_previewFile.content.base64!}
+          name=""
+          size={_previewFile.size}
           width={600}
           height={800}
-          tema='simple'
-          viewOnePage={false}
         />
       </div>
     )

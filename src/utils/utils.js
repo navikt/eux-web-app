@@ -1,9 +1,9 @@
 import moment from 'moment';
 
-const versjon = (process.env.REACT_APP_VERSION ? `v${process.env.REACT_APP_VERSION}` : '(ukjent)');
-const byggTidspunkt = process.env.REACT_APP_BUILD_DATETIME || '(ukjent)';
-const byggVersjon = process.env.REACT_APP_BUILD_VERSION || '(ukjent)';
-const branchVersjon = process.env.REACT_APP_BRANCH_NAME || '(lokal)';
+const versjon = (import.meta.env.VITE_APP_VERSION ? `v${import.meta.env.VITE_APP_VERSION}` : '(ukjent)');
+const byggTidspunkt = import.meta.env.VITE_APP_BUILD_DATETIME || '(ukjent)';
+const byggVersjon = import.meta.env.VITE_APP_BUILD_VERSION || '(ukjent)';
+const branchVersjon = import.meta.env.VITE_APP_BRANCH_NAME || '(lokal)';
 
 export function buildinfo() {
   if (byggVersjon === 'local') {

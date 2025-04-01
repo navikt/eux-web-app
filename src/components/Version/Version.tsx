@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { useAppSelector } from 'store'
 import styled from 'styled-components'
 import Clipboard from './Clipboard'
+import {APP_BRANCH_NAME, APP_BUILD_DATETIME, APP_BUILD_VERSION, APP_EESSI_KODEVERK, APP_REACT_LIB, APP_VERSION} from "../../constants/environment";
 
 export interface VersjonSelector {
   serverInfo: ServerInfo | undefined
@@ -39,12 +40,12 @@ const Version = () => {
     setVisVersjonDetaljer(!visVersjonDetaljer)
   }
 
-  const versjon = process.env.REACT_APP_VERSION ? `v${process.env.REACT_APP_VERSION}` : '(ukjent)'
-  const byggTidspunkt = () => process.env.REACT_APP_BUILD_DATETIME || '(ukjent)'
-  const byggVersjon = () => process.env.REACT_APP_BUILD_VERSION || '(ukjent)'
-  const branchVersjon = () => process.env.REACT_APP_BRANCH_NAME || '(lokal)'
-  const eessiKodeverk = () => process.env.REACT_APP_EESSI_KODEVERK || '(ukjent)'
-  const reactLibVersion = () => process.env.REACT_APP_REACT_LIB || '(ukjent)'
+  const versjon = APP_VERSION ? `v${APP_VERSION}` : '(ukjent)'
+  const byggTidspunkt = () => APP_BUILD_DATETIME || '(ukjent)'
+  const byggVersjon = () => APP_BUILD_VERSION || '(ukjent)'
+  const branchVersjon = () => APP_BRANCH_NAME || '(lokal)'
+  const eessiKodeverk = () => APP_EESSI_KODEVERK || '(ukjent)'
+  const reactLibVersion = () => APP_REACT_LIB || '(ukjent)'
 
   const copyToClipBoard = () => {
     const clientVersionString = `WEB; Versjon: ${versjon}, Byggetidspunkt: ${byggTidspunkt()}, Byggeversjon: ${byggVersjon()}, Branch: ${branchVersjon()}, eessi-kodeverk:${eessiKodeverk()}, React:${reactLibVersion()}`

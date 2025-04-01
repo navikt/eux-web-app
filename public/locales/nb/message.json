@@ -10,7 +10,7 @@
   "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-non-euefta-address": "Bruker har en adresse utenfor EU/EFTA. Valgt SED type krever adresser innen EU/EFTA.  Sak må opprettes direkte i RINA.",
-  "error-non-valid-nationality": "Bruker har et statsborgerskap som ikke er gyldig i RINA ({{statsborgerskap}}).  Sak må opprettes direkte i RINA.",
+  "error-non-valid-nationality": "Bruker har et statsborgerskap som ikke er gyldig i RINA ({{statsborgerskap}}).  Statsborgerskapet settes til blank ved opprettelse av sak",
   "error-page-description" : "Vennligst rapporter feilen i Porten slik at vi kan rette den. Kopier innholdet i detaljert feilmelding under og lim det inn i saken i Porten.",
   "error-page-footer" : "",
   "error-page-title" : "Teknisk feil",

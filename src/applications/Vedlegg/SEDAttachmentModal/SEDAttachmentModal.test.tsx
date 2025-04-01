@@ -4,9 +4,18 @@ import React from 'react'
 import { stageSelector } from 'setupTests'
 import SEDAttachmentModal, { SEDAttachmentModalProps } from './SEDAttachmentModal'
 
-jest.mock('components/JoarkBrowser/JoarkBrowser', () => {
+jest.mock('applications/Vedlegg/JoarkBrowser/JoarkBrowser', () => {
   return () => <div data-testid='mock-joarkbrowser' />
 })
+
+jest.mock("react-pdf", () => ({
+  pdfjs: { GlobalWorkerOptions: { workerSrc: "abc" } },
+  Document: ({ onLoadSuccess = (pdf = { numPages: 4 }) => pdf.numPages }) => {
+    return <div>{onLoadSuccess({ numPages: 4 })}</div>;
+  },
+  Outline: null,
+  Page: () => <div>def</div>,
+}));
 
 const defaultSelector = {
   clientErrorParam: undefined,

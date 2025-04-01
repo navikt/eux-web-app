@@ -11,9 +11,9 @@ import mockTemplatePdu1 from 'mocks/pdu1/template'
 import mockPreviewPdu1 from 'mocks/pdu1/preview'
 import mockJornalførePdu1 from 'mocks/pdu1/journalfore'
 import { Action, ActionCreator } from 'redux'
-import File from '@navikt/forhandsvisningsfil'
 
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 export const cleanUpPDU1 = ():Action => ({
   type: types.PDU1_RESET

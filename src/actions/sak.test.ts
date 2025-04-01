@@ -7,7 +7,8 @@ jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
 }))
 const call: jest.Mock = originalCall as unknown as jest.Mock<typeof originalCall>
-const sprintf = require('sprintf-js').sprintf
+// @ts-ignore
+import { sprintf } from 'sprintf-js'
 
 describe('actions/sak', () => {
   afterEach(() => {

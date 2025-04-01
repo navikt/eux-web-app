@@ -1,5 +1,6 @@
+/// <reference types="vite-plugin-svgr/client" />
 import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
-import {ReactComponent as InformationIcon} from 'assets/icons/InformationIconOld.svg'
+import InformationIcon from 'assets/icons/InformationIconOld.svg?react'
 import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
@@ -11,8 +12,8 @@ import _ from 'lodash'
 import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import { toDateFormat } from 'components/DateField/DateField'
+import styled from 'styled-components'
 
 const Panel = styled(FullWidthDiv)`
   background-color: var(--a-bg-default);

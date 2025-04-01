@@ -1,14 +1,22 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# compiled output
+src/main/js/build
+src/main/resources/public
+/dist
+/dist-server
+/tmp
+/out-tsc
+/build
+/out
+build
+
 # dependencies
 node_modules
 node_modules.old
 
 # testing
 test/coverage
-
-# production
-build
 
 # misc
 .idea

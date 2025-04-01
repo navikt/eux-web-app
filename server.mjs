@@ -169,7 +169,7 @@ app.get('/callback/*', handleCallback);
 
 app.get('/internal/isAlive|isReady|metrics', (req, res) => res.sendStatus(200));
 
-// app.use('/assets', express.static(path.join(__dirname, "build", "assets")));
+app.use('/assets', express.static(path.join(__dirname, "build", "assets")));
 
 app.use('/static', express.static(path.join(__dirname, "build", "static")));
 
@@ -186,23 +186,23 @@ app.get(["/oauth2/login"], async (req, res) => {
 
 app.use('/api',
   timedOut,
-  apiAuth(process.env.NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
 )
 app.use('/v2',
   timedOut,
-  apiAuth(process.env.NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
 )
 app.use('/v3',
   timedOut,
-  apiAuth(process.env.NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
 )
 app.use('/v4',
   timedOut,
-  apiAuth(process.env.NEESSI_BACKEND_TOKEN_SCOPE),
-  apiProxy(process.env.NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
 )
 
 // app.use('/websocket', socketProxy)

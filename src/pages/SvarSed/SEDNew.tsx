@@ -562,7 +562,7 @@ const SEDNew = (): JSX.Element => {
         {!!_notValidNationalityWarning &&
           <>
             <VerticalSeparatorDiv size='2' />
-            <Alert variant='error'>
+            <Alert variant='warning'>
               {_notValidNationalityWarning}
             </Alert>
           </>
@@ -843,7 +843,7 @@ const SEDNew = (): JSX.Element => {
             <FlexDiv>
               <Button
                 variant='primary'
-                disabled={_showNonEUEftaAddressWarning || !!_notValidNationalityWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
+                disabled={_showNonEUEftaAddressWarning || sendingSak || !!opprettetSak || _.isEmpty(personMedFamilie)}
                 onClick={skjemaSubmit}
               >
                 {sendingSak && <Loader />}

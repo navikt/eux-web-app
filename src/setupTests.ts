@@ -3,6 +3,9 @@ import { act } from 'react-dom/test-utils'
 import { useDispatch, useSelector } from 'react-redux'
 import 'jest-styled-components'
 import '@testing-library/jest-dom/extend-expect'
+import { TextEncoder, TextDecoder } from 'util';
+(global as any).TextEncoder = TextEncoder;
+(global as any).TextDecoder = TextDecoder;
 
 jest.mock('react-redux');
 
@@ -18,6 +21,20 @@ Object.defineProperty(window, 'getComputedStyle', {
   value: () => ({
     getPropertyValue: () => ('')
   })
+})
+
+jest.mock('constants/environment.ts', () => {
+  return {
+    IS_DEVELOPMENT: 'development',
+    IS_PRODUCTION: 'production',
+    IS_TEST: true,
+    APP_VERSION: "TEST",
+    APP_BUILD_DATETIME: "01-01-2025",
+    APP_BUILD_VERSION: "TEST",
+    APP_BRANCH_NAME: "TEST",
+    APP_EESSI_KODEVERK: "TEST",
+    APP_REACT_LIB: "TEST"
+  };
 })
 
 jest.mock('amplitude-js', () => ({
