@@ -16,7 +16,9 @@ import SEDQuery from "../../applications/SvarSed/SEDQuery/SEDQuery";
 import {appReset} from "../../actions/app";
 import {querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
-import {Sak, Saks} from "../../declarations/types";
+import {Sak, Saks, Saksbehandler} from "../../declarations/types";
+import NEESSILogo from 'assets/logos/nEESSI';
+import VIFLogo from "assets/logos/vif.png"
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -24,6 +26,7 @@ interface ForsideSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   saks: Saks | null | undefined
+  saksbehandler: Saksbehandler | undefined
 }
 
 const mapState = (state: State): ForsideSelector => ({
@@ -31,7 +34,8 @@ const mapState = (state: State): ForsideSelector => ({
   queryingSaks: state.loading.queryingSaks,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  saks: state.svarsed.saks
+  saks: state.svarsed.saks,
+  saksbehandler: state.app.saksbehandler,
 })
 
 const WhiteContainer = styled(Container)`
@@ -86,16 +90,31 @@ const StyledLink = styled(Link)`
   };
 `
 
+const LogoDiv = styled.div`
+  display: flex;
+  margin-top: 3rem;
+  margin-bottom: -3rem;
+`
+
 const Forside: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
   const navigate = useNavigate()
-  const { featureToggles, queryingSaks, alertMessage, alertType, saks}: ForsideSelector = useAppSelector(mapState)
+  const { saksbehandler, featureToggles, queryingSaks, alertMessage, alertType, saks}: ForsideSelector = useAppSelector(mapState)
   const params: URLSearchParams = new URLSearchParams(window.location.search)
   const [_query, _setQuery] = useState<string | null>(params.get('q'))
   const [_queryType, _setQueryType] = useState<string | undefined>(undefined)
   const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
+
+  const getLogo = (saksbehandler: Saksbehandler | undefined) => {
+    if(saksbehandler && saksbehandler.brukernavn && (saksbehandler.brukernavn === "Z992666" || saksbehandler.brukernavn === "A142467")){
+      return(
+        <img width="150" src={VIFLogo} alt="VIF"/>
+      )
+    }
+    return (<NEESSILogo/>)
+  }
 
   useEffect(() => {
     if(currentSak){
@@ -135,6 +154,11 @@ const Forside: React.FC = (): JSX.Element => {
 
   return (
     <TopContainer title={t('app:page-title-forside')}>
+      <LogoDiv>
+        <Margin />
+        {getLogo(saksbehandler)}
+        <Margin />
+      </LogoDiv>
       <Container>
         <Margin />
         <Content style={{ minWidth: '800px' }}>

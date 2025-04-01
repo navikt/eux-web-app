@@ -169,8 +169,11 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
 
       return {
         ...state,
-        brukernavn,
-        navn,
+        saksbehandler: {
+          brukernavn,
+          navn,
+          featureToggles: newFeatureToggles
+        },
         featureToggles: newFeatureToggles
       }
     }

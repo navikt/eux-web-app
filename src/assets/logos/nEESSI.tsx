@@ -1,7 +1,7 @@
 import React from 'react'
 
-const nEESSILogo = (props: any) => (
-  <svg width={props.width | 70} height={props.height | 70} viewBox='0 0 1877 1181' version='1.1'>
+const nEESSILogo = () => (
+  <svg width={150} height={150} viewBox='0 0 1877 1181' version='1.1'>
     <title>nEESSI__</title>
     <desc>Created with Sketch.</desc>
     <g id='Page-1' stroke='none' strokeWidth='1' fill='none' fillRule='evenodd'>

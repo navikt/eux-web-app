@@ -1,40 +1,31 @@
-import { ChevronLeftIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
-import { FlexCenterDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon } from '@navikt/aksel-icons'
+import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import { Saksbehandler } from 'declarations/types'
-import { Button, Heading, Link } from '@navikt/ds-react'
+import {BodyShort, Button, Detail, Dropdown, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link as DomLink } from 'react-router-dom'
-import NEESSILogo from 'assets/logos/nEESSI'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
 import { appReset } from 'actions/app'
 
 const HeaderContent = styled.header`
-  background-color: var(--a-blue-200);
+  background-color: var(--a-bg-subtle);
   color: var(--a-text-default);
   display: flex;
   flex-direction: row;
-  height: 4rem;
+  height: 3rem;
   justify-content: space-between;
   align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
 `
-const SaksbehandlerDiv = styled.div`
-  align-items: flex-end;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-const Name = styled.div`
-  color: var(--a-text-default);
-  font-weight: bold;
-  display: flex;
-  margin: auto 0;
-  padding: 0.3em;
+
+const MyInternalHeader = styled(InternalHeader)`
+  > button > div {
+    width: max-content;
+  }
 `
 
 export interface HeaderSelector {
@@ -66,53 +57,69 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   return (
-    <HeaderContent>
-      <div>
-        {backButton && (
+    <>
+      <MyInternalHeader>
+        <InternalHeader.Title href="/" onClick={resetApp}>
+          nEESSI
+        </InternalHeader.Title>
+        <HStack align="center" paddingInline="4 0" width="100%">
+          <Heading size='small'>
+            {title}
+          </Heading>
+        </HStack>
+        <Spacer/>
+        <Dropdown>
+          <InternalHeader.Button as={Dropdown.Toggle}>
+            <MenuGridIcon
+              style={{fontSize: "1.5rem"}}
+              title="Systemer og oppslagsverk"
+            />
+          </InternalHeader.Button>
+          <Dropdown.Menu>
+            <Dropdown.Menu.GroupedList>
+              <Dropdown.Menu.GroupedList.Heading>
+                Systemer og oppslagsverk
+              </Dropdown.Menu.GroupedList.Heading>
+              <Dropdown.Menu.GroupedList.Item as="a" target="_blank" href="https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx">
+                {t('label:brukerveiledning')} <ExternalLinkIcon aria-hidden/>
+              </Dropdown.Menu.GroupedList.Item>
+              <Dropdown.Menu.GroupedList.Item as="a" target="_blank" href="https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en">
+                {t('label:cai')}<ExternalLinkIcon aria-hidden/>
+              </Dropdown.Menu.GroupedList.Item>
+            </Dropdown.Menu.GroupedList>
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown>
+          <InternalHeader.UserButton
+            name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : "DUMMY SAKSBEHANDLER"}
+            description="Enhet: DUMMY"
+            as={Dropdown.Toggle}
+          />
+          <Dropdown.Menu>
+            <dl>
+              <BodyShort as="dt" size="small">
+                {saksbehandler && saksbehandler.navn ? saksbehandler.navn : "DUMMY SAKSBEHANDLER"}
+              </BodyShort>
+              <Detail as="dd">Enhet: DUMMY</Detail>
+            </dl>
+            <Dropdown.Menu.Divider />
+          </Dropdown.Menu>
+        </Dropdown>
+      </MyInternalHeader>
+      {backButton && (
+        <HeaderContent>
           <Button
             variant='secondary'
             onClick={onGoBackClick}
             icon={<ChevronLeftIcon/>}
+            size="small"
           >
-            <HorizontalSeparatorDiv size='0.5' />
+            <HorizontalSeparatorDiv size='0.5'/>
             {t('label:tilbake')}
           </Button>
-        )}
-      </div>
-      <div />
-      <FlexCenterDiv>
-        <DomLink to='/' onClick={resetApp}>
-          <NEESSILogo />
-        </DomLink>
-        <HorizontalSeparatorDiv />
-        <Heading size='small'>
-          {title}
-        </Heading>
-      </FlexCenterDiv>
-      <SaksbehandlerDiv>
-        {saksbehandler && saksbehandler.navn && (
-          <Name>
-            {saksbehandler.navn}
-          </Name>
-        )}
-        <Link
-          target='_blank'
-          href='https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx'
-        >
-          {t('label:brukerveiledning')}
-          <ExternalLinkIcon />
-        </Link>
-        <HorizontalSeparatorDiv />
-        <Link
-          target='_blank'
-          href='https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en'
-        >
-          {t('label:cai')}
-          <ExternalLinkIcon />
-        </Link>
-
-      </SaksbehandlerDiv>
-    </HeaderContent>
+        </HeaderContent>
+      )}
+    </>
   )
 }
 
