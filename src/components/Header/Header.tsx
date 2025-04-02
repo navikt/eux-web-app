@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon } from '@navikt/aksel-icons'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
-import { Saksbehandler } from 'declarations/types'
+import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {BodyShort, Button, Detail, Dropdown, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,6 +30,9 @@ const MyInternalHeader = styled(InternalHeader)`
 
 export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
+  enheter: Enheter | null | undefined
+  selectedEnhet: Enhet | null | undefined
+  favouriteEnhet: Enhet | null | undefined
 }
 
 export interface HeaderProps {
@@ -40,7 +43,10 @@ export interface HeaderProps {
 }
 
 export const mapState = (state: State): HeaderSelector => ({
-  saksbehandler: state.app.saksbehandler
+  saksbehandler: state.app.saksbehandler,
+  enheter: state.app.enheter,
+  selectedEnhet: state.app.selectedEnhet,
+  favouriteEnhet: state.app.favouriteEnhet
 })
 
 const Header: React.FC<HeaderProps> = ({
@@ -48,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
   onGoBackClick,
   title
 }: HeaderProps): JSX.Element => {
-  const { saksbehandler }: HeaderSelector = useAppSelector(mapState)
+  const { saksbehandler, enheter, selectedEnhet }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -91,18 +97,23 @@ const Header: React.FC<HeaderProps> = ({
         </Dropdown>
         <Dropdown>
           <InternalHeader.UserButton
-            name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : "DUMMY SAKSBEHANDLER"}
-            description="Enhet: DUMMY"
+            name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
+            description={selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}
             as={Dropdown.Toggle}
           />
           <Dropdown.Menu>
             <dl>
               <BodyShort as="dt" size="small">
-                {saksbehandler && saksbehandler.navn ? saksbehandler.navn : "DUMMY SAKSBEHANDLER"}
+                {saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
               </BodyShort>
-              <Detail as="dd">Enhet: DUMMY</Detail>
+              <Detail as="dd">{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
             </dl>
             <Dropdown.Menu.Divider />
+            <Dropdown.Menu.List>
+              {enheter?.map((e) => {
+                return(<Dropdown.Menu.List.Item>{e.navn}</Dropdown.Menu.List.Item>)
+              })}
+            </Dropdown.Menu.List>
           </Dropdown.Menu>
         </Dropdown>
       </MyInternalHeader>

@@ -9,7 +9,7 @@ import {
   Kodeverk,
   Saksbehandler,
   ServerInfo,
-  Tema
+  Tema, Enhet
 } from 'declarations/types'
 import _ from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
@@ -18,6 +18,8 @@ import { AnyAction } from 'redux'
 export interface AppState {
   buctyper: BucTyper | undefined
   enheter: Enheter | null | undefined
+  selectedEnhet: Enhet | null | undefined
+  favouriteEnhet: Enhet | null | undefined
   cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
   countryCodeMap: {key?: string} | null | undefined
@@ -47,6 +49,8 @@ export const initialAppState: AppState = {
   saksbehandler: undefined,
   serverinfo: undefined,
   enheter: undefined,
+  selectedEnhet: undefined,
+  favouriteEnhet: undefined,
   cdmVersjon: undefined,
   countryCodes: undefined,
   countryCodeMap: undefined,
