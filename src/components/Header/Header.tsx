@@ -2,7 +2,7 @@ import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon } from '@navikt/aksel-i
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
-import {BodyShort, Button, Detail, Dropdown, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
+import {ActionMenu, BodyShort, Button, Detail, Dropdown, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -74,48 +74,45 @@ const Header: React.FC<HeaderProps> = ({
           </Heading>
         </HStack>
         <Spacer/>
-        <Dropdown>
-          <InternalHeader.Button as={Dropdown.Toggle}>
-            <MenuGridIcon
-              style={{fontSize: "1.5rem"}}
-              title="Systemer og oppslagsverk"
+        <ActionMenu>
+          <ActionMenu.Trigger>
+            <InternalHeader.Button>
+              <MenuGridIcon
+                style={{fontSize: "1.5rem"}}
+                title="Systemer og oppslagsverk"
+              />
+            </InternalHeader.Button>
+          </ActionMenu.Trigger>
+          <ActionMenu.Content>
+            <ActionMenu.Group label="Systemer og oppslagsverk">
+              <ActionMenu.Item as="a" target="_blank" href="https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx" icon={<ExternalLinkIcon aria-hidden/>}>
+                {t('label:brukerveiledning')}
+              </ActionMenu.Item>
+              <ActionMenu.Item as="a" target="_blank" href="https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en" icon={<ExternalLinkIcon aria-hidden/>}>
+                {t('label:cai')}
+              </ActionMenu.Item>
+            </ActionMenu.Group>
+          </ActionMenu.Content>
+        </ActionMenu>
+
+        <ActionMenu>
+          <ActionMenu.Trigger>
+            <InternalHeader.UserButton
+              name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
+              description={selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}
             />
-          </InternalHeader.Button>
-          <Dropdown.Menu>
-            <Dropdown.Menu.GroupedList>
-              <Dropdown.Menu.GroupedList.Heading>
-                Systemer og oppslagsverk
-              </Dropdown.Menu.GroupedList.Heading>
-              <Dropdown.Menu.GroupedList.Item as="a" target="_blank" href="https://navno.sharepoint.com/sites/fag-og-ytelser-regelverk-og-rutiner/SitePages/Brukerveiledning-nEESSI.aspx">
-                {t('label:brukerveiledning')} <ExternalLinkIcon aria-hidden/>
-              </Dropdown.Menu.GroupedList.Item>
-              <Dropdown.Menu.GroupedList.Item as="a" target="_blank" href="https://ec.europa.eu/social/social-security-directory/cai/select-country/language/en">
-                {t('label:cai')}<ExternalLinkIcon aria-hidden/>
-              </Dropdown.Menu.GroupedList.Item>
-            </Dropdown.Menu.GroupedList>
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown>
-          <InternalHeader.UserButton
-            name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
-            description={selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}
-            as={Dropdown.Toggle}
-          />
-          <Dropdown.Menu>
-            <dl>
-              <BodyShort as="dt" size="small">
-                {saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
-              </BodyShort>
-              <Detail as="dd">{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
-            </dl>
-            <Dropdown.Menu.Divider />
-            <Dropdown.Menu.List>
-              {enheter?.map((e) => {
-                return(<Dropdown.Menu.List.Item>{e.navn}</Dropdown.Menu.List.Item>)
-              })}
-            </Dropdown.Menu.List>
-          </Dropdown.Menu>
-        </Dropdown>
+          </ActionMenu.Trigger>
+          <ActionMenu.Content>
+            <BodyShort size="small">
+              {saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
+            </BodyShort>
+            <Detail>{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
+            <ActionMenu.Divider/>
+            {enheter?.map((e) => {
+              return(<ActionMenu.Item>{e.navn}</ActionMenu.Item>)
+            })}
+          </ActionMenu.Content>
+        </ActionMenu>
       </MyInternalHeader>
       {backButton && (
         <HeaderContent>
