@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
-import { Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo } from 'declarations/types'
+import {Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
@@ -28,6 +28,11 @@ export const getEnheter = (): ActionWithPayload<Enheter> => {
     }
   })
 }
+
+export const setSelectedEnhet = (enhet: Enhet) => ({
+  type: types.APP_SELECTED_ENHET_SET,
+  payload: enhet
+})
 
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
   // origin: http://{host:port} pathname: /pdu1, no hash

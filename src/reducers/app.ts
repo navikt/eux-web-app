@@ -98,6 +98,12 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         enheter: action.payload
       }
 
+    case types.APP_SELECTED_ENHET_SET:
+      return {
+        ...state,
+        selectedEnhet: action.payload
+      }
+
     case types.APP_CDMVERSJON_SUCCESS: {
       return {
         ...state,

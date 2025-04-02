@@ -2,13 +2,14 @@ import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon } from '@navikt/aksel-i
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
-import {ActionMenu, BodyShort, Button, Detail, Dropdown, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
+import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
-import { appReset } from 'actions/app'
+import {appReset, setSelectedEnhet} from 'actions/app'
+
 
 const HeaderContent = styled.header`
   background-color: var(--a-bg-subtle);
@@ -25,6 +26,12 @@ const HeaderContent = styled.header`
 const MyInternalHeader = styled(InternalHeader)`
   > button > div {
     width: max-content;
+  }
+`
+
+const ActionMenuItem = styled(ActionMenu.Item)`
+  &.selectedEnhet {
+    background-color: var(--a-surface-selected);
   }
 `
 
@@ -60,6 +67,10 @@ const Header: React.FC<HeaderProps> = ({
 
   const resetApp = () => {
     dispatch(appReset())
+  }
+
+  const setSelected = (enhet: Enhet) => {
+    dispatch(setSelectedEnhet(enhet))
   }
 
   return (
@@ -109,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({
             <Detail>{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
             <ActionMenu.Divider/>
             {enheter?.map((e) => {
-              return(<ActionMenu.Item>{e.navn}</ActionMenu.Item>)
+              return(<ActionMenuItem onSelect={() => setSelected(e)} className={e.enhetId === selectedEnhet?.enhetId ? "selectedEnhet" : ""}>{e.navn}</ActionMenuItem>)
             })}
           </ActionMenu.Content>
         </ActionMenu>
