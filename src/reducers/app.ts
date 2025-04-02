@@ -92,11 +92,15 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         enheter: null
       }
 
-    case types.APP_ENHETER_SUCCESS:
+    case types.APP_ENHETER_SUCCESS:{
+      const favouriteEnhet = (action.payload as Enheter).find((e: Enhet) => e.erFavoritt)
       return {
         ...state,
-        enheter: action.payload
+        enheter: action.payload,
+        selectedEnhet: favouriteEnhet,
+        favouriteEnhet: favouriteEnhet
       }
+    }
 
     case types.APP_SELECTED_ENHET_SET:
       return {

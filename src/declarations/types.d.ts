@@ -107,6 +107,8 @@ export interface Dokument {
 export interface Enhet {
   enhetId: string
   navn: string
+  erFavoritt: boolean
+  fagomrader?: Array<string>
 }
 
 export type Enheter = Array<Enhet>

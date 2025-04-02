@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon } from '@navikt/aksel-icons'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
@@ -120,7 +120,14 @@ const Header: React.FC<HeaderProps> = ({
             <Detail>{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
             <ActionMenu.Divider/>
             {enheter?.map((e) => {
-              return(<ActionMenuItem onSelect={() => setSelected(e)} className={e.enhetId === selectedEnhet?.enhetId ? "selectedEnhet" : ""}>{e.navn}</ActionMenuItem>)
+              return(
+                <ActionMenuItem
+                  onSelect={() => setSelected(e)}
+                  className={e.enhetId === selectedEnhet?.enhetId ? "selectedEnhet" : ""}
+                  icon={e.erFavoritt ? <StarFillIcon/> : <StarIcon/>}
+                >
+                  {e.enhetId + " - " + e.navn}
+                </ActionMenuItem>)
             })}
           </ActionMenu.Content>
         </ActionMenu>
