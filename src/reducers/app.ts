@@ -11,15 +11,15 @@ import {
   ServerInfo,
   Tema, Enhet
 } from 'declarations/types'
-import _ from 'lodash'
+import _, {cloneDeep} from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
 import { AnyAction } from 'redux'
+import {setSelectedEnhet} from "../actions/app";
 
 export interface AppState {
   buctyper: BucTyper | undefined
   enheter: Enheter | null | undefined
   selectedEnhet: Enhet | null | undefined
-  favouriteEnhet: Enhet | null | undefined
   cdmVersjon: string | undefined
   countryCodes: CountryCodes | null | undefined
   countryCodeMap: {key?: string} | null | undefined
@@ -50,7 +50,6 @@ export const initialAppState: AppState = {
   serverinfo: undefined,
   enheter: undefined,
   selectedEnhet: undefined,
-  favouriteEnhet: undefined,
   cdmVersjon: undefined,
   countryCodes: undefined,
   countryCodeMap: undefined,
@@ -98,9 +97,35 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         enheter: action.payload,
         selectedEnhet: favouriteEnhet,
-        favouriteEnhet: favouriteEnhet
       }
     }
+
+    case types.APP_FAVORITTENHET_SUCCESS:
+      const enheterCopy = cloneDeep(state.enheter)
+      const updatedEnheter = enheterCopy?.map((enhet:Enhet) => {
+        if(enhet.enhetId === state.selectedEnhet?.enhetId){
+          return {
+            ...enhet,
+            erFavoritt: !!action.context.enhet
+          }
+        } else {
+          return {
+            ...enhet,
+            erFavoritt: false
+          }
+        }
+      })
+
+      return {
+        ...state,
+        enheter: updatedEnheter,
+        selectedEnhet: {
+          ...state.selectedEnhet,
+          enhetId: state.selectedEnhet!.enhetId,
+          navn: state.selectedEnhet!.navn,
+          erFavoritt: !!action.context.enhet
+        }
+      }
 
     case types.APP_SELECTED_ENHET_SET:
       return {

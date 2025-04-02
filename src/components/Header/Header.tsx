@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
-import {appReset, setSelectedEnhet} from 'actions/app'
+import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
 
 
 const HeaderContent = styled.header`
@@ -39,7 +39,6 @@ export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
   enheter: Enheter | null | undefined
   selectedEnhet: Enhet | null | undefined
-  favouriteEnhet: Enhet | null | undefined
 }
 
 export interface HeaderProps {
@@ -53,7 +52,6 @@ export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler,
   enheter: state.app.enheter,
   selectedEnhet: state.app.selectedEnhet,
-  favouriteEnhet: state.app.favouriteEnhet
 })
 
 const Header: React.FC<HeaderProps> = ({
@@ -71,6 +69,10 @@ const Header: React.FC<HeaderProps> = ({
 
   const setSelected = (enhet: Enhet) => {
     dispatch(setSelectedEnhet(enhet))
+  }
+
+  const setFavourite = (enhet: Enhet | undefined | null) => {
+    dispatch(setFavouriteEnhet(enhet))
   }
 
   return (
@@ -131,6 +133,22 @@ const Header: React.FC<HeaderProps> = ({
             })}
           </ActionMenu.Content>
         </ActionMenu>
+        <InternalHeader.Button>
+          {selectedEnhet?.erFavoritt &&
+            <StarFillIcon
+              style={{fontSize: "1.5rem"}}
+              title={"Fjern som favorittenhet"}
+              onClick={() => setFavourite(undefined)}
+            />
+          }
+          {!selectedEnhet?.erFavoritt &&
+            <StarIcon
+              style={{fontSize: "1.5rem"}}
+              title={"Merk enheten som favorittenhet"}
+              onClick={() => setFavourite(selectedEnhet)}
+            />
+          }
+        </InternalHeader.Button>
       </MyInternalHeader>
       {backButton && (
         <HeaderContent>

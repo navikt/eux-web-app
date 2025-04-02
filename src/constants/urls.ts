@@ -47,6 +47,7 @@ export const API_ADRESSE_URL = API_BASE_URL + '/person/%(fnr)s/adresser'
 // Saksbehandler
 export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'
 export const API_ENHETER_URL = API_BASE_URL + '/saksbehandler/enheter'
+export const API_FAVORITTENHET_URL = API_BASE_URL + '/saksbehandler/favorittenhet'
 export const API_REAUTENTISERING_URL = API_BASE_URL + '/saksbehandler/reautentisering'
 // export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
 export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'

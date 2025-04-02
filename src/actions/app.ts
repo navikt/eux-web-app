@@ -34,6 +34,25 @@ export const setSelectedEnhet = (enhet: Enhet) => ({
   payload: enhet
 })
 
+export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPayload => {
+  return call({
+    url: urls.API_FAVORITTENHET_URL,
+    expectedPayload: {favorittEnhetNr: enhet ? '123' : undefined},
+    method: "PUT",
+    context: {
+      enhet: enhet ? enhet : undefined
+    },
+    body: {
+      favorittEnhetNr: enhet ? enhet.enhetId : undefined
+    },
+    type: {
+      request: types.APP_FAVORITTENHET_REQUEST,
+      success: types.APP_FAVORITTENHET_SUCCESS,
+      failure: types.APP_FAVORITTENHET_FAILURE
+    }
+  })
+}
+
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
   // origin: http://{host:port} pathname: /pdu1, no hash
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
