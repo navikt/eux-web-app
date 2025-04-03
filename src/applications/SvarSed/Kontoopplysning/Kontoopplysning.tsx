@@ -10,13 +10,14 @@ import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
+import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon, KontoSepa } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import {setReplySed} from "../../../actions/svarsed";
 
 const Kontoopplysning: React.FC<MainFormProps> = ({
   label,
@@ -55,6 +56,23 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     )
     dispatch(setValidation(clonedValidation))
   })
+
+  useEffect(() => {
+    if (utbetalingTilInstitusjon == null) {
+
+    } else {
+
+      if (utbetalingTilInstitusjon.kontoSepa == null && utbetalingTilInstitusjon.kontoOrdinaer == null) {
+        let kontoSepa: KontoSepa = KontoSepa;
+      }
+        //utbetalingTilInstitusjon.kontoSepa =
+      }
+      dispatch(updateReplySed(utbetalingTilInstitusjon.kontoSepa.iban`, newIban.trim()))
+
+      dispatch(setReplySed("target", ""))
+
+    }
+  }, [])
 
   // caches konto information while switching from konto ordinær to sepa, so that we do not
   // throw away completely all information added
