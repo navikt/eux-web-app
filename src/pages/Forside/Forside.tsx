@@ -18,7 +18,7 @@ import {querySaks, setCurrentSak} from "../../actions/svarsed";
 import * as types from "../../constants/actionTypes";
 import {Sak, Saks, Saksbehandler} from "../../declarations/types";
 import NEESSILogo from 'assets/logos/nEESSI';
-import VIFLogo from "assets/logos/vif.png"
+import BrannLogo from "assets/logos/brann.png"
 
 interface ForsideSelector {
   featureToggles: FeatureToggles | null | undefined
@@ -108,16 +108,16 @@ const Forside: React.FC = (): JSX.Element => {
   const currentSak: Sak | undefined = useAppSelector(state => state.svarsed.currentSak)
 
   const getLogo = (saksbehandler: Saksbehandler | undefined) => {
-    if(saksbehandler && saksbehandler.brukernavn && (saksbehandler.brukernavn === "Z992666" || saksbehandler.brukernavn === "A142467")){
-      return(
-        <img width="150" src={VIFLogo} alt="VIF"/>
+    if (saksbehandler && saksbehandler.brukernavn && (saksbehandler.brukernavn === "Z992666" || saksbehandler.brukernavn === "A142467")) {
+      return (
+        <img width="150" src={BrannLogo} alt="Brann"/>
       )
     }
     return (<NEESSILogo/>)
   }
 
   useEffect(() => {
-    if(currentSak){
+    if (currentSak) {
       dispatch(setCurrentSak(undefined))
     }
   }, [])
