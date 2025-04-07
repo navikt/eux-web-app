@@ -65,6 +65,7 @@ import CountryDropdown from "../../components/CountryDropdown/CountryDropdown";
 import PersonPanel from "../../applications/OpprettSak/PersonPanel/PersonPanel";
 import FamilieRelasjoner from "../../applications/OpprettSak/FamilieRelasjoner/FamilieRelasjoner";
 import {Statsborgerskap} from "../../declarations/sed";
+import {setSelectedEnhet} from "actions/app";
 
 export interface SEDNewSelector {
   alertVariant: AlertVariant | undefined
@@ -104,7 +105,7 @@ export interface SEDNewSelector {
   valgtSedType: string | undefined
   valgtSektor: string | undefined
   valgtTema: string | undefined
-  valgtUnit: string | undefined
+  valgtUnit: Enhet | undefined | null
 
   saks: Saks | null | undefined
   currentSak: Sak | undefined
@@ -154,7 +155,7 @@ const mapState = (state: State): SEDNewSelector => ({
   valgtSedType: state.sak.sedtype,
   valgtSektor: state.sak.sektor,
   valgtTema: state.sak.tema,
-  valgtUnit: state.sak.unit,
+  valgtUnit: state.app.selectedEnhet,
 
   saks: state.svarsed.saks,
   currentSak: state.svarsed.currentSak,
@@ -286,7 +287,7 @@ const SEDNew = (): JSX.Element => {
       familierelasjoner: [...valgteFamilieRelasjonerPDL, ...valgteFamilieRelasjonerUtland],
       saksId: valgtSaksId,
       visEnheter,
-      unit: valgtUnit
+      unit: valgtUnit?.enhetId
     } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
 
@@ -318,7 +319,7 @@ const SEDNew = (): JSX.Element => {
       mottakerId: valgtInstitusjon,
       mottakerlandkode: valgtLandkode,
       fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
-      ...(valgtUnit && {enhet: valgtUnit}),
+      ...(valgtUnit && {enhet: valgtUnit.enhetId}),
 
       bruker: {
         fnr: valgtFnr
@@ -336,7 +337,8 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    dispatch(sakActions.setProperty('unit', e.target.value))
+    const selectedEnhet: Enhet = enheter?.find((enhet: Enhet) => enhet.enhetId === e.target.value)!
+    dispatch(setSelectedEnhet(selectedEnhet))
     if (validation[namespace + '-unit']) {
       dispatch(resetValidation(namespace + '-unit'))
     }
@@ -607,18 +609,19 @@ const SEDNew = (): JSX.Element => {
                 id={namespace + '-unit'}
                 label={t('label:enhet')}
                 onChange={onUnitChange}
-                value={valgtUnit}
+                value={valgtUnit?.enhetId}
                 disabled={!!opprettetSak}
               >
                 <option value=''>
                   {t('label:velg')}
                 </option>
                 {sektor &&
-                    _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                      <option value={e.enhetId} key={e.enhetId}>
-                        {e.navn}
-                      </option>
-                    ))}
+                  _.orderBy(enheter, 'navn').map((e: Enhet) => (
+                    <option value={e.enhetId} key={e.enhetId}>
+                      {e.navn}
+                    </option>
+                  ))
+                }
               </Select>
             )}
             <VerticalSeparatorDiv />
