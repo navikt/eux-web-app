@@ -113,23 +113,23 @@ const Header: React.FC<HeaderProps> = ({
           <ActionMenu.Trigger>
             <InternalHeader.UserButton
               name={saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
-              description={selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}
+              description={selectedEnhet ? "Enhet: " + selectedEnhet.enhetNr + ' - ' + selectedEnhet.navn : ""}
             />
           </ActionMenu.Trigger>
           <ActionMenu.Content>
             <BodyShort size="small">
               {saksbehandler && saksbehandler.navn ? saksbehandler.navn : ""}
             </BodyShort>
-            <Detail>{selectedEnhet ? "Enhet: " + selectedEnhet.enhetId + ' - ' + selectedEnhet.navn : ""}</Detail>
+            <Detail>{selectedEnhet ? "Enhet: " + selectedEnhet.enhetNr + ' - ' + selectedEnhet.navn : ""}</Detail>
             <ActionMenu.Divider/>
             {enheter?.map((e) => {
               return(
                 <ActionMenuItem
                   onSelect={() => setSelected(e)}
-                  className={e.enhetId === selectedEnhet?.enhetId ? "selectedEnhet" : ""}
+                  className={e.enhetNr === selectedEnhet?.enhetNr ? "selectedEnhet" : ""}
                   icon={e.erFavoritt ? <StarFillIcon/> : <StarIcon/>}
                 >
-                  {e.enhetId + " - " + e.navn}
+                  {e.enhetNr + " - " + e.navn}
                 </ActionMenuItem>)
             })}
           </ActionMenu.Content>

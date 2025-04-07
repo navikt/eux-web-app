@@ -43,7 +43,7 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
       enhet: enhet ? enhet : undefined
     },
     body: {
-      favorittEnhetNr: enhet ? enhet.enhetId : ""
+      favorittEnhetNr: enhet ? enhet.enhetNr : ""
     },
     type: {
       request: types.APP_FAVORITTENHET_REQUEST,

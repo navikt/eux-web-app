@@ -287,7 +287,7 @@ const SEDNew = (): JSX.Element => {
       familierelasjoner: [...valgteFamilieRelasjonerPDL, ...valgteFamilieRelasjonerUtland],
       saksId: valgtSaksId,
       visEnheter,
-      unit: valgtUnit?.enhetId
+      unit: valgtUnit?.enhetNr
     } as ValidationSEDNewProps)
     dispatch(setValidation(clonedvalidation))
 
@@ -319,7 +319,7 @@ const SEDNew = (): JSX.Element => {
       mottakerId: valgtInstitusjon,
       mottakerlandkode: valgtLandkode,
       fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
-      ...(valgtUnit && {enhet: valgtUnit.enhetId}),
+      ...(valgtUnit && {enhetNr: valgtUnit.enhetNr}),
 
       bruker: {
         fnr: valgtFnr
@@ -337,7 +337,7 @@ const SEDNew = (): JSX.Element => {
   }
 
   const onUnitChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    const selectedEnhet: Enhet = enheter?.find((enhet: Enhet) => enhet.enhetId === e.target.value)!
+    const selectedEnhet: Enhet = enheter?.find((enhet: Enhet) => enhet.enhetNr === e.target.value)!
     dispatch(setSelectedEnhet(selectedEnhet))
     if (validation[namespace + '-unit']) {
       dispatch(resetValidation(namespace + '-unit'))
@@ -609,7 +609,7 @@ const SEDNew = (): JSX.Element => {
                 id={namespace + '-unit'}
                 label={t('label:enhet')}
                 onChange={onUnitChange}
-                value={valgtUnit?.enhetId}
+                value={valgtUnit?.enhetNr}
                 disabled={!!opprettetSak}
               >
                 <option value=''>
@@ -617,7 +617,7 @@ const SEDNew = (): JSX.Element => {
                 </option>
                 {sektor &&
                   _.orderBy(enheter, 'navn').map((e: Enhet) => (
-                    <option value={e.enhetId} key={e.enhetId}>
+                    <option value={e.enhetNr} key={e.enhetNr}>
                       {e.navn}
                     </option>
                   ))
