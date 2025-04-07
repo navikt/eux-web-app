@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import PT from 'prop-types'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
+import {NavLink} from "react-router-dom";
 
 
 const HeaderContent = styled.header`
@@ -78,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <MyInternalHeader>
-        <InternalHeader.Title href="/" onClick={resetApp}>
+        <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
         <HStack align="center" paddingInline="4 0" width="100%">
