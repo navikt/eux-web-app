@@ -100,7 +100,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       }
     }
 
-    case types.APP_FAVORITTENHET_SUCCESS:
+    case types.APP_FAVORITTENHET_REQUEST:
       const enheterCopy = cloneDeep(state.enheter)
       const updatedEnheter = enheterCopy?.map((enhet:Enhet) => {
         if(enhet.enhetId === state.selectedEnhet?.enhetId){
@@ -126,6 +126,9 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
           erFavoritt: !!action.context.enhet
         }
       }
+
+    case types.APP_FAVORITTENHET_SUCCESS:
+      return state
 
     case types.APP_SELECTED_ENHET_SET:
       return {
