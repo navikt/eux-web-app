@@ -9,8 +9,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {Row, Column, VerticalSeparatorDiv, HorizontalSeparatorDiv} from "@navikt/hoykontrast";
-import {Alert, Button, Heading, Loader, Panel, Select, TextField} from "@navikt/ds-react";
+import {Alert, Box, Button, Heading, HGrid, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -253,15 +252,15 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   if(_isLoading){
     return(
-      <Panel border>
-        <Heading size='small'>
-          {t('label:journalfoer')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        <Loader/>
-      </Panel>
+      <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default" background="surface-default">
+        <VStack gap="4">
+          <Heading size='small'>
+            {t('label:journalfoer')}
+          </Heading>
+          <HorizontalLineSeparator />
+          <Loader/>
+        </VStack>
+      </Box>
     )
   }
 
@@ -283,18 +282,17 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   </ul>
                 </>
               }
-              {oppgaverFerdigstilt && oppgaverFerdigstilt.length > 0 &&
-                <>
+              <VStack gap="2">
+                {oppgaverFerdigstilt && oppgaverFerdigstilt.length > 0 &&
                   <Heading size="small">{t('label:tilhorende-oppgaver-ferdigstilt', {NO_OF_OPPGAVE: oppgaverFerdigstilt.length})}</Heading>
-                  <VerticalSeparatorDiv size='1' />
-                </>
-              }
-              {ferdigstillingFeilet && ferdigstillingFeilet.length > 0 &&
-                <>
-                  <Heading size="small">{t('label:ferdigstilling-av-tilhorende-oppgave-feilet', {NO_OF_OPPGAVE: ferdigstillingFeilet.length})}</Heading>
-                  {t('label:oppgavene-maa-lukkes-i-gosys')}
-                </>
-              }
+                }
+                {ferdigstillingFeilet && ferdigstillingFeilet.length > 0 &&
+                  <>
+                    <Heading size="small">{t('label:ferdigstilling-av-tilhorende-oppgave-feilet', {NO_OF_OPPGAVE: ferdigstillingFeilet.length})}</Heading>
+                    {t('label:oppgavene-maa-lukkes-i-gosys')}
+                  </>
+                }
+              </VStack>
             </>
           ),
           modalButtons: [
@@ -308,38 +306,29 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             }]
         }}
       />
-      <Panel border>
-        <Heading size='small'>
-          {t('label:journalfoer')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column flex={1}>
+      <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default" background="surface-default">
+        <VStack gap="4">
+          <Heading size='small'>
+            {t('label:journalfoer')}
+          </Heading>
+          <HorizontalLineSeparator />
+          <HGrid columns={3} gap="4">
             <TextField label={t("label:fnr-dnr")} onChange={onFnrChange} error={localValidation} defaultValue={sak.fagsak &&  sak.fagsak.fnr ? sak.fagsak.fnr : ""}/>
-          </Column>
-          <Column flex={1}>
             <FullWidthButton variant="secondary" onClick={onSearch} loading={searchingJournalfoeringPerson} className='nolabel'>
               {t("el:button-search-i-x", {x: "PDL"})}
             </FullWidthButton>
-          </Column>
-          <Column flex={1}>
             {person &&
               <div className='nolabel'>
                 <ImgContainer><img alt={kind} width={25} height={25} src={src}/></ImgContainer>
-                <HorizontalSeparatorDiv />
+                &nbsp;&nbsp;
                 {person.etternavn}, {person.fornavn}
               </div>
             }
             {alertMessage && alertType && [types.JOURNALFOERING_PERSON_SEARCH_FAILURE].indexOf(alertType) >= 0 &&
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
-          </Column>
-        </Row>
-        <VerticalSeparatorDiv />
-        <Row>
-          <Column flex={1}>
+          </HGrid>
+          <HGrid columns={3} gap="4">
             <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
               <option value=''>
                 {t('label:velg')}
@@ -350,13 +339,9 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </option>
               ))}
             </Select>
-          </Column>
-          <Column flex={1}>
             <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
               {t("el:button-finn-x", {x: "fagsaker"})}
             </FullWidthButton>
-          </Column>
-          <Column flex={1}>
             {showFagsaker &&
               <Select
                 label={t('label:velg-fagsak')}
@@ -373,38 +358,40 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                   ))}
               </Select>
             }
-            {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
-              <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
-                {t("el:button-create-x", {x: "fagsak"})}
-              </Button>
-            }
-
-            {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-              <>
-                <VerticalSeparatorDiv/>
-                <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+          </HGrid>
+          <HGrid columns={3} gap="4">
+            <Spacer/>
+            <Spacer/>
+            <div>
+              {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
                   {t("el:button-create-x", {x: "fagsak"})}
-                </FullWidthButton>
-                <VerticalSeparatorDiv size={0.2}/>
-                <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
-                  <option value={currentYear}>{currentYear}</option>
-                  <option value={currentYear - 1}>{currentYear - 1}</option>
-                  <option value={currentYear - 2}>{currentYear - 2}</option>
-                  <option value={currentYear - 3}>{currentYear - 3}</option>
-                  <option value={currentYear - 4}>{currentYear - 4}</option>
-                </Select>
-              </>
-            }
-            </Column>
-        </Row>
-        <Row>
-          <Column>
+                </Button>
+              }
+              {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+                <VStack gap="2">
+                  <Spacer/>
+                  <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                    {t("el:button-create-x", {x: "fagsak"})}
+                  </FullWidthButton>
+                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                  </Select>
+                </VStack>
+              }
+            </div>
+          </HGrid>
+          <HGrid columns={3} gap="4">
             <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak)}>
               {t("el:button-journalfoer")}
             </Button>
-          </Column>
-        </Row>
-      </Panel>
+          </HGrid>
+        </VStack>
+      </Box>
     </>
   )
 }
