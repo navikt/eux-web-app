@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
 import InformationIcon from 'assets/icons/InformationIconOld.svg?react'
-import {BodyLong, Label, Heading, Link, Popover, Alert} from '@navikt/ds-react'
+import {BodyLong, Label, Heading, Link, Popover, Alert, Button} from '@navikt/ds-react'
 import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
 import { copyToClipboard } from 'actions/app'
 import mann from 'assets/icons/Man.png'
@@ -22,9 +22,17 @@ const Panel = styled(FullWidthDiv)`
   padding: 0.5rem 3rem;
 `
 
-const InformationIconPadded = styled(InformationIcon)`
-  margin-top: 0.2rem;
-  margin-left: 0.3  rem;
+const PopOverButton = styled(Button)`
+  color: black;
+  background-color: transparent;
+  padding: 0;
+  &:hover {
+    background-color: transparent;
+  }
+
+  > .navds-button__icon {
+    width: 20px
+  }
 `
 
 const SakBanner = () => {
@@ -160,11 +168,8 @@ const SakBanner = () => {
                   {t('message:help-international-id')}
                 </Popover.Content>
               </Popover>
-              <InformationIconPadded
-                style={{ cursor: 'pointer' }}
-                ref={iconRef}
-                onClick={() => setPopoverOpen(!popoverOpen)}
-              />
+              &nbsp;
+              <PopOverButton icon={<InformationIcon/>} ref={iconRef} onClick={() => setPopoverOpen(!popoverOpen)} />
             </>
           )}
         </FlexDiv>
