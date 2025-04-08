@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
+  Enhet, Enheter,
   Fagsak,
   Fagsaker,
   JournalfoeringLogg,
@@ -9,7 +10,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {Alert, Box, Button, Heading, HGrid, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
+import {ActionMenu, Alert, BodyShort, Box, Button, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -34,6 +35,8 @@ import styled from "styled-components";
 import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
+import {ChevronDownIcon, StarFillIcon, StarIcon} from "@navikt/aksel-icons";
+import {setSelectedEnhet} from "../../actions/app";
 
 const ImgContainer = styled.span`
   position: relative;
@@ -43,6 +46,27 @@ const ImgContainer = styled.span`
 const FullWidthButton = styled(Button)`
   display: block;
   width: 100%
+`
+
+const ActionMenuItem = styled(ActionMenu.Item)`
+  &.selectedEnhet {
+    background-color: var(--a-surface-selected);
+  }
+`
+const ActionMenuButton = styled(Button)`
+  width: 100%;
+  box-shadow: inset 0 0 0 1px var(--a-border-strong);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  justify-content: space-between;
+  &:hover {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px var(--a-border-action-hover);
+  }
+
+  > .navds-label {
+    font-weight: normal;
+  }
 `
 
 export interface JournalfoerPanelProps {
@@ -61,6 +85,8 @@ interface JournalfoerPanelSelector {
   tema: Tema | undefined
   fagsaker: Fagsaker | undefined | null
   fagsak: Fagsak | undefined | null
+  enheter: Enheter | null | undefined
+  enhet: Enhet | undefined | null
   journalfoeringLogg: JournalfoeringLogg | undefined | null
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
@@ -76,6 +102,8 @@ const mapState = (state: State) => ({
   tema: state.app.tema,
   fagsaker: state.journalfoering.fagsaker,
   fagsak: state.journalfoering.fagsak,
+  enheter: state.app.enheter,
+  enhet: state.app.selectedEnhet,
   journalfoeringLogg: state.journalfoering.journalfoeringLogg,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type
@@ -85,7 +113,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentYear = new Date().getFullYear()
-  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, enheter, enhet, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -214,8 +242,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     dispatch(setJournalfoeringFagsak(fagsak))
   }
 
+  const setSelected = (enhet: Enhet) => {
+    dispatch(setSelectedEnhet(enhet))
+  }
+
   const onJournalfoerClick = () => {
-    dispatch(journalfoer(sak.sakId, fagsak!))
+    dispatch(journalfoer(sak.sakId, fagsak!, enhet!))
   }
 
   const onJournalfoerModalClose = () => {
@@ -328,11 +360,43 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
             }
           </HGrid>
+          <HStack gap="4">
+            <VStack gap="2" width="66%">
+              <Label>Enhet</Label>
+              <ActionMenu>
+                <ActionMenu.Trigger>
+                  <ActionMenuButton
+                    variant="secondary-neutral"
+                    icon={<ChevronDownIcon aria-hidden/>}
+                    iconPosition="right"
+                  >
+                    {enhet ? enhet.enhetNr + ' - ' + enhet.navn : "Velg"}
+                  </ActionMenuButton>
+                </ActionMenu.Trigger>
+                <ActionMenu.Content>
+                  <Detail>{enhet ? "Enhet: " + enhet.enhetNr + ' - ' + enhet.navn : ""}</Detail>
+                  <ActionMenu.Divider/>
+                  {enheter?.map((e) => {
+                    return (
+                      <ActionMenuItem
+                        onSelect={() => setSelected(e)}
+                        className={e.enhetNr === enhet?.enhetNr ? "selectedEnhet" : ""}
+                        icon={e.erFavoritt ? <StarFillIcon/> : <StarIcon/>}
+                      >
+                        {e.enhetNr + " - " + e.navn}
+                      </ActionMenuItem>)
+                  })}
+                </ActionMenu.Content>
+              </ActionMenu>
+            </VStack>
+            <Spacer/>
+          </HStack>
           <HGrid columns={3} gap="4">
             <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
               <option value=''>
                 {t('label:velg')}
-              </option>)
+              </option>
+              )
               {temaer && temaer.map((k: Kodeverk) => (
                 <option value={k.kode} key={k.kode} selected={k.kode === _tema}>
                   {k.term}
@@ -386,7 +450,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             </div>
           </HGrid>
           <HGrid columns={3} gap="4">
-            <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak)}>
+            <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak && enhet)}>
               {t("el:button-journalfoer")}
             </Button>
           </HGrid>

@@ -1,5 +1,5 @@
 import {ActionWithPayload, call} from "@navikt/fetch";
-import {CreateSedResponse, Fagsak, Fagsaker, Sak} from "../declarations/types";
+import {CreateSedResponse, Enhet, Fagsak, Fagsaker, Sak} from "../declarations/types";
 import * as urls from "../constants/urls";
 import * as types from "../constants/actionTypes";
 import {Action, ActionCreator} from "redux";
@@ -98,11 +98,11 @@ export const setJournalfoeringFagsak: ActionCreator<Action> = (
 })
 
 export const journalfoer = (
-  sakId: string, fagsak: Fagsak
+  sakId: string, fagsak: Fagsak, enhet: Enhet
 ): ActionWithPayload => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId }),
+    url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId, enhetNr: enhet.enhetNr }),
     body: fagsak,
     expectedPayload: {
       journalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
