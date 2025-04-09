@@ -34,6 +34,8 @@ export const isH001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean
 
 export const isH002Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'H002'
 
+export const isS040Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'S040'
+
 export const isX001Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X001'
 
 export const isX008Sed = (replySed: ReplySed | PDU1 | null | undefined): boolean => (replySed as ReplySed)?.sedType === 'X008'
