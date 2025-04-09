@@ -793,7 +793,13 @@ export interface H002Sed extends HSed {
 
 export interface S040Sed extends BaseReplySed {
   bruker: Person
-  forespoersel: any
+  forespoersel: {
+    ytelse: {
+      type: string,
+      kontantellernatural: string
+    },
+    periode: Periode
+  }
   ytterligereInfo?: string
 }
 

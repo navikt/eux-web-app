@@ -53,6 +53,15 @@
       }
     ]
   },
-  "forespoersel":{},
+  "forespoersel":{
+    "ytelse": {
+      "type": "sykdom",
+      "kontantellernatural": "natural"
+    },
+    "periode": {
+      "startdato": "2024-01-01",
+      "sluttdato": "2024-12-01"
+    }
+  },
   "ytterligereinfo": "æøå"
 }

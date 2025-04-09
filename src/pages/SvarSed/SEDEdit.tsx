@@ -116,6 +116,7 @@ import BarnetsSivilstand from "../../applications/SvarSed/SvarPaaAnmodningOmAnne
 import DatoEndredeForhold
   from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/DatoEndredeForhold";
 import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/SvarOmFremmoeteUtdanning";
+import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -595,6 +596,27 @@ const SEDEdit = (): JSX.Element => {
               updateReplySed={updateReplySed}
               setReplySed={setReplySed}
               loggingNamespace='svarpaaetterspurtinformasjonmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {isS040Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              menuDefaultClosed={true}
+              namespace='forespoersel'
+              forms={[
+                {
+                  label: t('el:option-mainform-forespoersel'),
+                  value: 'forespoersel',
+                  component: Forespoersel,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='forespoerselmanager'
             />
             <VerticalSeparatorDiv size='2' />
           </>
