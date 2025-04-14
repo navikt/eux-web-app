@@ -1,4 +1,4 @@
-import {Box, Heading, VStack} from '@navikt/ds-react'
+import {Box, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
@@ -30,25 +30,40 @@ const Forespoersel: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const forespoersel: any | undefined = (replySed as S040Sed)?.forespoersel
+  const sykdom: any | undefined = (replySed as S040Sed)?.sykdom
   const namespace: string = `${parentNamespace}-forespoersel`
-
-  console.log(forespoersel)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationForespoerselProps>(clonedValidation, namespace, validateForespoersel, {
-      forespoersel: (replySed as S040Sed).forespoersel
+      sykdom: (replySed as S040Sed).sykdom
     }, true)
     dispatch(setValidation(clonedValidation))
   })
 
+  const setSykdomProperty = (prop: string, value: string | Periode) => {
+    dispatch(updateReplySed('sykdom.' + prop, value))
+  }
+  
   return (
     <Box padding="4">
       <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
+        <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+          <HGrid columns={2} gap="4">
+            <RadioGroup value={sykdom?.ytelse?.type} legend="Type ytelse det gjelder" onChange={(v: string) => setSykdomProperty("ytelse.type", v)}>
+              <Radio value="sykdom">Sykdom</Radio>
+              <Radio value="foreldrepenger_til_mor">Foreldrepenger til mor</Radio>
+              <Radio value="foreldrepenger_til_far">Foreldrepenger til far</Radio>
+            </RadioGroup>
+            <RadioGroup value={sykdom?.ytelse?.kontantellernatural} legend="Kontant- eller naturalytelse?" onChange={(v: string) => setSykdomProperty("ytelse.kontantellernatural", v)}>
+              <Radio value="kontant">Kontant</Radio>
+              <Radio value="natural">Natural</Radio>
+            </RadioGroup>
+          </HGrid>
+        </Box>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <PeriodeInput
             namespace={namespace + '-periode'}
@@ -58,8 +73,8 @@ const Forespoersel: React.FC<MainFormProps> = ({
               sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
             }}
             hideLabel={false}
-            setPeriode={(p: Periode) => {console.log(p)}}
-            value={forespoersel?.periode}
+            setPeriode={(p: Periode) => setSykdomProperty("forespoerselomperiode", p)}
+            value={sykdom?.forespoerselomperiode}
           />
         </Box>
       </VStack>

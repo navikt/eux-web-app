@@ -40,7 +40,7 @@
         }
       }
     },
-    "adresser": [
+    "adresse":
       {
         "type": "bosted",
         "gate": "æøå",
@@ -49,19 +49,19 @@
         "land": "NO",
         "landkode": "NOR",
         "bygning": "æøå",
-        "region": "æøå"
+        "region": "æøå",
+        "botidilandetsiden": "2020-03-01"
       }
-    ]
   },
-  "forespoersel":{
+  "sykdom":{
     "ytelse": {
       "type": "sykdom",
       "kontantellernatural": "natural"
     },
-    "periode": {
+    "forespoerselomperiode": {
       "startdato": "2024-01-01",
       "sluttdato": "2024-12-01"
     }
   },
-  "ytterligereinfo": "æøå"
+  "ytterligereInfo": "æøå"
 }

@@ -1,19 +1,19 @@
 import { Validation } from 'declarations/types'
 
 export interface ValidationForespoerselProps {
-  forespoersel: any | undefined
+  sykdom: any | undefined
 }
 
 export const validateForespoersel = (
   v: Validation,
   namespace: string,
   {
-    forespoersel
+    sykdom
   }: ValidationForespoerselProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  console.log(v, namespace, forespoersel)
+  console.log(v, namespace, sykdom)
 
   return hasErrors.find(value => value) !== undefined
 }

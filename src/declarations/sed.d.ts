@@ -103,6 +103,7 @@ export interface Adresse {
   postnummer?: string
   region?: string
   type?: AdresseType
+  botidilandetsiden?: string
 }
 
 export interface Periode {
@@ -283,6 +284,11 @@ export interface PersonBarn {
   }
   adresser?: Array<Adresse>
   ytelser?: Array<Ytelse>
+}
+
+export interface BrukerS040 {
+  personInfo?: PersonInfo
+  adresse?: Adresse
 }
 
 export interface Telefon {
@@ -792,13 +798,13 @@ export interface H002Sed extends HSed {
 }
 
 export interface S040Sed extends BaseReplySed {
-  bruker: Person
-  forespoersel: {
+  bruker: BrukerS040
+  sykdom: {
+    forespoerselomperiode: Periode
     ytelse: {
       type: string,
       kontantellernatural: string
-    },
-    periode: Periode
+    }
   }
   ytterligereInfo?: string
 }
