@@ -24,7 +24,8 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
-import {isFSed} from "../../../utils/sed";
+import {isFSed, isS040Sed} from "../../../utils/sed";
+import DateField from "../../../components/DateField/DateField";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -46,6 +47,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
+  const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
   const checkAdresseType: boolean = !isFSed(replySed)
   const fnr = getFnr(replySed, personID)
@@ -151,6 +153,13 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(target, [selectedAdresser[0]]))
   }
 
+  const onDateChange = (dato: string) => {
+    dispatch(updateReplySed(`${personID}.botidilandetsiden`, dato.trim()))
+    if (validation[namespace + '-botidilandetsiden']) {
+      dispatch(resetValidation(namespace + '-botidilandetsiden'))
+    }
+  }
+
   const renderRow = (adresse: Adresse | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
@@ -254,6 +263,16 @@ const Adresser: React.FC<MainFormProps> = ({
               </Button>
             </Box>
           )
+        }
+        {isS040Sed(replySed) &&
+          <DateField
+            namespace={namespace}
+            error={validation[namespace + '-botidilandetsiden']?.feilmelding}
+            id="botidilandetsiden"
+            label={t('label:botidilandetsiden')}
+            onChanged={onDateChange}
+            dateValue={botidilandetsiden}
+          />
         }
       </VStack>
     </Box>
