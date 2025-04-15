@@ -257,7 +257,7 @@ const Adresser: React.FC<MainFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setNewForm(true)}
                 icon={<PlusCircleIcon/>}
-                disabled={adresser ? adresser?.length > 0 : false}
+                disabled={singleAdress && adresser ? adresser?.length > 0 : false}
               >
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </Button>
