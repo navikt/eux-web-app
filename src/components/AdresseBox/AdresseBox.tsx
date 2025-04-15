@@ -1,9 +1,8 @@
-import { BodyLong, Tag } from '@navikt/ds-react'
+import {BodyLong, Tag} from '@navikt/ds-react'
 import CountryData from '@navikt/land-verktoy'
 import { TransparentPanel } from 'components/StyledComponents'
 import { Adresse } from 'declarations/sed'
 import React from 'react'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { useTranslation } from 'react-i18next'
 import {State} from "../../declarations/reducers";
 import {useAppSelector} from "../../store";
@@ -44,7 +43,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
       {seeType && !!adresse.type && (
         <>
           <Tag size='small' variant='info'>{t('label:' + adresse.type)}</Tag>
-          <HorizontalSeparatorDiv size='0.5' />
+          &nbsp;&nbsp;
         </>
       )}
       <BodyLong>
