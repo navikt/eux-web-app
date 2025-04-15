@@ -816,6 +816,68 @@ export default (saksnummer: string, type: string) => {
           sedHandlinger: ['Read', 'Update', 'Send', 'Delete']
         }
       ]
+    },
+    {
+      "fnr": "25086820857",
+      "fornavn": "LEALAUS",
+      "etternavn": "KOPP",
+      "foedselsdato": "1968-08-25",
+      "kjoenn": "f",
+      "adressebeskyttelse": "UGRADERT",
+      "erSakseier": "ja",
+      "sakseier": {
+        "id": "NO:NAVAT07",
+        "navn": "NAV ACC 07"
+      },
+      "navinstitusjon": {
+        "id": "NO:NAVAT07",
+        "navn": "NAV ACC 07"
+      },
+      "sakTittel": "Sammenlegging av perioder - ved sykdom, svangerskap eller fødsel",
+      "sakType": "S_BUC_24",
+      "sakId": "1451972",
+      "internasjonalSakId": "798934cebe4d413b9a93a7a572345ffd",
+      "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1451972",
+      "sistEndretDato": "2025-04-14",
+      "motparter": [
+        {
+          "formatertNavn": "NAV ACC 05 (Norge)",
+          "motpartId": "NO:NAVAT05",
+          "motpartNavn": "NAV ACC 05",
+          "motpartLand": "NO",
+          "motpartLandkode": "NOR"
+        }
+      ],
+      "sakshandlinger": [
+        "Delete_Case",
+        "singleParticipant"
+      ],
+      "sedListe": [
+        {
+          "sedTittel": "Forespørsel om perioder - trygdeytelse: sykdom, svangerskap og fødsel.",
+          "sedType": "S040",
+          "sedId": "d1ea214561ce4bcaa3bad3651fe15624",
+          "status": "new",
+          "sistEndretDato": "2025-04-14",
+          "sedHandlinger": [
+            "Update",
+            "Delete",
+            "Read",
+            "Send"
+          ]
+        }
+      ],
+      "fagsak": {
+        "id": "140265036",
+        "tema": "SYM",
+        "type": "GENERELL_SAK",
+        "system": "FS22",
+        "arkiv": "GSAK",
+        "fnr": "25086820857"
+      },
+      "ikkeJournalfoerteSedListFailed": false,
+      "sensitiv": false,
+      "cdmVersjon": "4.3"
     }
   ]
 

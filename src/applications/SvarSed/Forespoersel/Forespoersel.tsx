@@ -1,4 +1,4 @@
-import {Box, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {Box, Heading, HGrid, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { setValidation } from 'actions/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
@@ -44,7 +44,7 @@ const Forespoersel: React.FC<MainFormProps> = ({
   const setSykdomProperty = (prop: string, value: string | Periode) => {
     dispatch(updateReplySed('sykdom.' + prop, value))
   }
-  
+
   return (
     <Box padding="4">
       <VStack gap="4">
