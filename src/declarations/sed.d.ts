@@ -103,7 +103,6 @@ export interface Adresse {
   postnummer?: string
   region?: string
   type?: AdresseType
-  botidilandetsiden?: string
 }
 
 export interface Periode {
@@ -288,7 +287,8 @@ export interface PersonBarn {
 
 export interface BrukerS040 {
   personInfo?: PersonInfo
-  adresse?: Adresse
+  botidilandetsiden?: string
+  adresser?: Array<Adresse>
 }
 
 export interface Telefon {

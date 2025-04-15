@@ -40,7 +40,8 @@
         }
       }
     },
-    "adresse":
+    "botidilandetsiden": "2020-03-01",
+    "adresser":[
       {
         "type": "bosted",
         "gate": "æøå",
@@ -49,9 +50,9 @@
         "land": "NO",
         "landkode": "NOR",
         "bygning": "æøå",
-        "region": "æøå",
-        "botidilandetsiden": "2020-03-01"
+        "region": "æøå"
       }
+    ]
   },
   "sykdom":{
     "ytelse": {

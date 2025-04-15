@@ -36,7 +36,8 @@ const Adresser: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
@@ -44,6 +45,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const target = `${personID}.adresser`
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
+  const singleAdress = options && options.singleAdress ? options.singleAdress : false
 
   const checkAdresseType: boolean = !isFSed(replySed)
   const fnr = getFnr(replySed, personID)
@@ -145,6 +147,10 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(target, selectedAdresser))
   }
 
+  const setPDLSingleAddress = (selectedAdresser: Array<Adresse>) => {
+    dispatch(updateReplySed(target, [selectedAdresser[0]]))
+  }
+
   const renderRow = (adresse: Adresse | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
@@ -220,7 +226,8 @@ const Adresser: React.FC<MainFormProps> = ({
           fnr={fnr!}
           selectedAdresser={adresser ?? []}
           personName={personName}
-          onAdresserChanged={setPDLAdresser}
+          onAdresserChanged={singleAdress ? setPDLSingleAddress : setPDLAdresser}
+          singleAdress={singleAdress}
         />
         {_.isEmpty(adresser)
           ? (
@@ -241,6 +248,7 @@ const Adresser: React.FC<MainFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setNewForm(true)}
                 icon={<PlusCircleIcon/>}
+                disabled={adresser ? adresser?.length > 0 : false}
               >
                 {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
               </Button>

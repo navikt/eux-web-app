@@ -1,5 +1,5 @@
 import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons'
-import { Alert, Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
+import {Alert, Button, Checkbox, Ingress, Label, Loader, Radio, RadioGroup} from '@navikt/ds-react'
 import { AlignStartRow, Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
@@ -21,6 +21,7 @@ export interface AdresseFromPDLProps {
   fnr: string
   selectedAdresser: Array<Adresse>
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void
+  singleAdress?: boolean
 }
 
 const mapState = (state: State): AdresseFromPDLSelector => ({
@@ -31,7 +32,7 @@ const mapState = (state: State): AdresseFromPDLSelector => ({
 export type AdresseMap = {[k in AdresseType]?: Array<Adresse>}
 
 const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
-  personName, fnr, selectedAdresser, onAdresserChanged
+  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress
 }: AdresseFromPDLProps) => {
   const { t } = useTranslation()
   const { adresser, gettingAdresser } = useAppSelector(mapState)
@@ -86,6 +87,31 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
     </>
   )
 
+  const renderAdressesRadio = (key: AdresseType, adresser: Array<Adresse>) => (
+    <>
+      {adresser?.map(adresse => (
+        <Radio
+          key={key + '-adresser-checkbox-' + adresse.gate}
+          name={key + '-adresser'}
+          checked={hasAddress(adresse)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresserChanged([adresse])}
+          value={adresse}
+        >
+          <AdresseBox
+            border={false}
+            seeType
+            adresse={{
+              ...adresse,
+              type: key
+            }}
+            padding='0'
+            oneLine
+          />
+        </Radio>
+      ))}
+    </>
+  )
+
   useEffect(() => {
     if (gettingAdresser === false && !_.isEmpty(adresser)) {
       _setOpen(true)
@@ -109,7 +135,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
         <Column>
           <Button
             variant='primary'
-            disabled={gettingAdresser || _.isNil(fnr)}
+            disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && selectedAdresser ? selectedAdresser.length > 0 : false)}
             onClick={getAdresse}
             icon={<MagnifyingGlassIcon/>}
           >
@@ -148,10 +174,22 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
           <Ingress>
             {t('label:hvilke-adresser-skal-registreres')}
           </Ingress>
-          {adresseMap.bosted && renderAdresses('bosted', adresseMap.bosted)}
-          {adresseMap.opphold && renderAdresses('opphold', adresseMap.opphold)}
-          {adresseMap.kontakt && renderAdresses('kontakt', adresseMap.kontakt)}
-          {adresseMap.annet && renderAdresses('annet', adresseMap.annet)}
+          {!singleAdress &&
+            <>
+              {adresseMap.bosted && renderAdresses('bosted', adresseMap.bosted)}
+              {adresseMap.opphold && renderAdresses('opphold', adresseMap.opphold)}
+              {adresseMap.kontakt && renderAdresses('kontakt', adresseMap.kontakt)}
+              {adresseMap.annet && renderAdresses('annet', adresseMap.annet)}
+            </>
+          }
+          {singleAdress &&
+            <RadioGroup value={selectedAdresser[0]} legend="Adresser">
+              {adresseMap.bosted && renderAdressesRadio('bosted', adresseMap.bosted)}
+              {adresseMap.opphold && renderAdressesRadio('opphold', adresseMap.opphold)}
+              {adresseMap.kontakt && renderAdressesRadio('kontakt', adresseMap.kontakt)}
+              {adresseMap.annet && renderAdressesRadio('annet', adresseMap.annet)}
+            </RadioGroup>
+          }
         </GrayPanel>
       )}
     </>
