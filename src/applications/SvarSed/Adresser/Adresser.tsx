@@ -1,13 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseFromPDL from 'applications/SvarSed/Adresser/AdresseFromPDL'
@@ -15,7 +7,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -175,7 +167,8 @@ const Adresser: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(adresse)}
         className={classNames({
@@ -183,7 +176,7 @@ const Adresser: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
+
         {inEditMode
           ? (
             <AdresseForm
@@ -195,71 +188,67 @@ const Adresser: React.FC<MainFormProps> = ({
             />
             )
           : (
-            <AlignStartRow>
-              <Column flex='2'>
+            <HStack gap="4">
+              <Box width="65%">
                 <AdresseBox adresse={_adresse} seeType />
-              </Column>
-              <AlignEndColumn>
+              </Box>
+              <Spacer/>
+              <Box>
                 {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
+              </Box>
+            </HStack>
             )}
         {inEditMode && (
-          <>
-            <VerticalSeparatorDiv size='0.5' />
-            <AlignStartRow>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
-          </>
+          <HStack gap="4">
+            <Spacer/>
+            <Box>
+              {addremovepanel}
+            </Box>
+          </HStack>
         )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-        <VerticalSeparatorDiv />
         <AdresseFromPDL
           fnr={fnr!}
           selectedAdresser={adresser ?? []}
           personName={personName}
           onAdresserChanged={setPDLAdresser}
         />
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(adresser)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-address')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {_.isEmpty(adresser)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-address')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : adresser?.map(renderRow)}
+        {_seeNewForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
+              </Button>
+            </Box>
           )
-        : adresser?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        }
+      </VStack>
+    </Box>
   )
 }
 
