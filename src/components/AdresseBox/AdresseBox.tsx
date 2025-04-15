@@ -43,7 +43,7 @@ const AdresseBox = ({ adresse, border = true, padding = 1, oneLine = false, seeT
       {seeType && !!adresse.type && (
         <>
           <Tag size='small' variant='info'>{t('label:' + adresse.type)}</Tag>
-          &nbsp;&nbsp;
+          {oneLine && <>&nbsp;&nbsp;</>}
         </>
       )}
       <BodyLong>

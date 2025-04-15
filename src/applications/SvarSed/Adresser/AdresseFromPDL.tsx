@@ -160,7 +160,7 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
       </HStack>
       {_open && (
         <Box padding="4" borderWidth="1" background="bg-subtle">
-          <VStack gap="4">
+          <VStack gap="1">
             <Label>
               {t('label:pdl-adresse-til', { person: personName })}
             </Label>
