@@ -53,14 +53,14 @@ const Forespoersel: React.FC<MainFormProps> = ({
         </Heading>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <HGrid columns={2} gap="4">
-            <RadioGroup value={sykdom?.ytelse?.type} legend="Type ytelse det gjelder" onChange={(v: string) => setSykdomProperty("ytelse.type", v)}>
-              <Radio value="sykdom">Sykdom</Radio>
-              <Radio value="foreldrepenger_til_mor">Foreldrepenger til mor</Radio>
-              <Radio value="foreldrepenger_til_far">Foreldrepenger til far</Radio>
+            <RadioGroup value={sykdom?.ytelse?.type} legend={t('label:type-ytelse-det-gjelder')} onChange={(v: string) => setSykdomProperty("ytelse.type", v)}>
+              <Radio value="sykdom">{t('label:sykdom')}</Radio>
+              <Radio value="foreldrepenger_til_mor">{t('label:foreldrepenger-til-mor')}</Radio>
+              <Radio value="foreldrepenger_til_far">{t('label:foreldrepenger-til-far')}</Radio>
             </RadioGroup>
-            <RadioGroup value={sykdom?.ytelse?.kontantellernatural} legend="Kontant- eller naturalytelse?" onChange={(v: string) => setSykdomProperty("ytelse.kontantellernatural", v)}>
-              <Radio value="kontant">Kontant</Radio>
-              <Radio value="natural">Natural</Radio>
+            <RadioGroup value={sykdom?.ytelse?.kontantellernatural} legend={t('label:kontant-eller-naturalytelse')} onChange={(v: string) => setSykdomProperty("ytelse.kontantellernatural", v)}>
+              <Radio value="kontant">{t('label:kontant')}</Radio>
+              <Radio value="natural">{t('label:natural')}</Radio>
             </RadioGroup>
           </HGrid>
         </Box>
