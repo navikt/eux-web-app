@@ -31,7 +31,7 @@ const Forespoersel: React.FC<MainFormProps> = ({
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const sykdom: any | undefined = (replySed as S040Sed)?.sykdom
-  const namespace: string = `${parentNamespace}-forespoersel`
+  const namespace: string = `${parentNamespace}-forespoersel-sykdom`
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -53,12 +53,24 @@ const Forespoersel: React.FC<MainFormProps> = ({
         </Heading>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <HGrid columns={2} gap="4">
-            <RadioGroup value={sykdom?.ytelse?.type} legend={t('label:type-ytelse-det-gjelder')} onChange={(v: string) => setSykdomProperty("ytelse.type", v)}>
+            <RadioGroup
+              value={sykdom?.ytelse?.type}
+              legend={t('label:type-ytelse-det-gjelder')}
+              onChange={(v: string) => setSykdomProperty("ytelse.type", v)}
+              id={namespace + '-ytelse-type'}
+              error={validation[namespace + '-ytelse-type']?.feilmelding}
+            >
               <Radio value="sykdom">{t('label:sykdom')}</Radio>
               <Radio value="foreldrepenger_til_mor">{t('label:foreldrepenger-til-mor')}</Radio>
               <Radio value="foreldrepenger_til_far">{t('label:foreldrepenger-til-far')}</Radio>
             </RadioGroup>
-            <RadioGroup value={sykdom?.ytelse?.kontantellernatural} legend={t('label:kontant-eller-naturalytelse')} onChange={(v: string) => setSykdomProperty("ytelse.kontantellernatural", v)}>
+            <RadioGroup
+              value={sykdom?.ytelse?.kontantellernatural}
+              legend={t('label:kontant-eller-naturalytelse')}
+              onChange={(v: string) => setSykdomProperty("ytelse.kontantellernatural", v)}
+              id={namespace + '-ytelse-kontantellernatural'}
+              error={validation[namespace + '-ytelse-kontantellernatural']?.feilmelding}
+            >
               <Radio value="kontant">{t('label:kontant')}</Radio>
               <Radio value="natural">{t('label:natural')}</Radio>
             </RadioGroup>
@@ -66,11 +78,11 @@ const Forespoersel: React.FC<MainFormProps> = ({
         </Box>
         <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
           <PeriodeInput
-            namespace={namespace + '-periode'}
+            namespace={namespace + '-forespoerselomperiode'}
             periodeType="withcheckbox"
             error={{
-              startdato: validation[namespace + '-periode-startdato']?.feilmelding,
-              sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
+              startdato: validation[namespace + '-forespoerselomperiode-startdato']?.feilmelding,
+              sluttdato: validation[namespace + '-forespoerselomperiode-sluttdato']?.feilmelding
             }}
             hideLabel={false}
             setPeriode={(p: Periode) => setSykdomProperty("forespoerselomperiode", p)}
