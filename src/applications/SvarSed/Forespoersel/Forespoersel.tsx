@@ -31,7 +31,7 @@ const Forespoersel: React.FC<MainFormProps> = ({
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const sykdom: any | undefined = (replySed as S040Sed)?.sykdom
-  const namespace: string = `${parentNamespace}-forespoersel-sykdom`
+  const namespace: string = `${parentNamespace}-sykdom`
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)

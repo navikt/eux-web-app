@@ -605,7 +605,7 @@ const SEDEdit = (): JSX.Element => {
           <>
             <MainForm
               type='onelevel'
-              menuDefaultClosed={true}
+              menuDefaultClosed={false}
               namespace='forespoersel'
               forms={[
                 {

@@ -79,7 +79,7 @@ const PeriodeInput = <T extends Periode>({
   }
 
   return (
-    <HStack gap="4" wrap={false}>
+    <HStack gap="4" wrap={false} align={"start"}>
       <DateField
         key={namespace + '-startdato-' + value?.startdato}
         id='startdato'

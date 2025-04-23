@@ -28,5 +28,11 @@ export const validateForespoersel = (
     message: 'validation:noType'
   }))
 
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: sykdom?.forespoerselomperiode?.startdato,
+    id: namespace + '-forespoerselomperiode-startdato',
+    message: 'validation:noStartdato'
+  }))
+
   return hasErrors.find(value => value) !== undefined
 }
