@@ -189,11 +189,11 @@ export const sendH001SedInRina = (rinaSakId: string, sedId: string): ActionWithP
 
 export const createHBUC01 = (data: any): ActionWithPayload<any> => {
   const payload = {
+    cdmVersjon: data.cdmVersjon,
     buctype: "H_BUC_01",
-    sektor: "HZ",
     sedtype: "H001",
-    institusjonsID: data.institusjonsID,
-    fnr: "",
+    mottakerId: data.mottakerId,
+    mottakerlandkode: data.mottakerlandkode
   } as any
 
   return call({

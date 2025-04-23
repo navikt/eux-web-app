@@ -92,7 +92,11 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
     if(sak.sakshandlinger?.includes("H001")){
       dispatch(createH001(sak, _fritekst !== "" ? _fritekst : standardText))
     } else {
-      dispatch(createHBUC01({institusjonsID: sak.sakseier?.id}))
+      dispatch(createHBUC01({
+        cdmVersjon: sak.cdmVersjon,
+        mottakerId: sak.motparter[0].motpartId,
+        mottakerlandkode: sak.motparter[0].motpartLandkode
+      }))
     }
   }
 
