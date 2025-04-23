@@ -49,7 +49,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
   const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
-  const checkAdresseType: boolean = !isFSed(replySed)
+  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed))
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.landkode ?? '') : 'new'
 
@@ -200,12 +200,13 @@ const Adresser: React.FC<MainFormProps> = ({
               adresse={_adresse}
               onAdressChanged={(a: Adresse) => setAdresse(a, index)}
               validation={_v}
+              type={!isS040Sed(replySed)}
             />
             )
           : (
             <HStack gap="4">
               <Box width="65%">
-                <AdresseBox adresse={_adresse} seeType />
+                <AdresseBox adresse={_adresse} seeType={false} />
               </Box>
               <Spacer/>
               <Box>
