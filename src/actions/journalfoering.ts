@@ -193,7 +193,10 @@ export const createHBUC01 = (data: any): ActionWithPayload<any> => {
     buctype: "H_BUC_01",
     sedtype: "H001",
     mottakerId: data.mottakerId,
-    mottakerlandkode: data.mottakerlandkode
+    mottakerlandkode: data.mottakerlandkode,
+    bruker: {
+      fnr: ""
+    }
   } as any
 
   return call({
