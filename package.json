@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "10.1.0-TEN-928-S040",
+  "version": "10.1.0",
   "private": true,
   "type": "module",
   "scripts": {
