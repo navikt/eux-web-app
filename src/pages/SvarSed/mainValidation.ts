@@ -80,7 +80,7 @@ import {
   H001Sed, Periode,
   Person, PersonBarn,
   PersonInfo,
-  ReplySed,
+  ReplySed, S040Sed,
   Statsborgerskap,
   Telefon,
   U002Sed,
@@ -98,7 +98,7 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
-  isHSed,
+  isHSed, isS040Sed,
   isUSed,
   isX001Sed,
   isX008Sed,
@@ -127,6 +127,7 @@ import {
   validateUtdanning,
   ValidationUtdanningProps
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
+import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -499,6 +500,12 @@ export const validateSEDEdit = (
     }
 
 
+  }
+
+  if(isS040Sed(replySed)){
+    hasErrors.push(performValidation<ValidationForespoerselProps>(v, 'forespoersel-sykdom', validateForespoersel, {
+      sykdom: (replySed as S040Sed).sykdom
+    }, true))
   }
 
   if (!isH001Sed(replySed)) {

@@ -1,8 +1,7 @@
-import { Checkbox } from '@navikt/ds-react'
+import {Checkbox, HStack} from '@navikt/ds-react'
 import classNames from 'classnames'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
-import { Column } from '@navikt/hoykontrast'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -41,7 +40,6 @@ export interface PeriodeProps<T> {
 
 const PeriodeInput = <T extends Periode>({
   error,
-  breakInTwo = false,
   label = {},
   namespace,
   periodeType = 'withcheckbox',
@@ -81,34 +79,29 @@ const PeriodeInput = <T extends Periode>({
   }
 
   return (
-    <>
-      <Column>
-        <DateField
-          key={namespace + '-startdato-' + value?.startdato}
-          id='startdato'
-          namespace={namespace}
-          error={error.startdato}
-          label={label?.startdato ?? t('label:startdato')}
-          onChanged={onStartDatoChanged}
-          dateValue={value?.startdato}
-          hideLabel={hideLabel}
-          required={requiredStartDato}
-        />
-      </Column>
-      <Column>
-        <DateField
-          key={namespace + '-sluttdato-' + value?.sluttdato}
-          namespace={namespace}
-          id='sluttdato'
-          error={error.sluttdato}
-          label={label?.sluttdato ?? t('label:sluttdato')}
-          onChanged={onEndDatoChanged}
-          dateValue={value?.sluttdato}
-          hideLabel={hideLabel}
-          required={requiredSluttDato}
-        />
-      </Column>
-      {breakInTwo && <div />}
+    <HStack gap="4" wrap={false} align={"start"}>
+      <DateField
+        key={namespace + '-startdato-' + value?.startdato}
+        id='startdato'
+        namespace={namespace}
+        error={error.startdato}
+        label={label?.startdato ?? t('label:startdato')}
+        onChanged={onStartDatoChanged}
+        dateValue={value?.startdato}
+        hideLabel={hideLabel}
+        required={requiredStartDato}
+      />
+      <DateField
+        key={namespace + '-sluttdato-' + value?.sluttdato}
+        namespace={namespace}
+        id='sluttdato'
+        error={error.sluttdato}
+        label={label?.sluttdato ?? t('label:sluttdato')}
+        onChanged={onEndDatoChanged}
+        dateValue={value?.sluttdato}
+        hideLabel={hideLabel}
+        required={requiredSluttDato}
+      />
       {periodeType === 'withcheckbox' && (
         <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
           {_.isEmpty(value?.sluttdato) && (
@@ -122,7 +115,7 @@ const PeriodeInput = <T extends Periode>({
           )}
         </WrapperDiv>
       )}
-    </>
+    </HStack>
   )
 }
 

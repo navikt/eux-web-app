@@ -76,7 +76,7 @@ import {
   isF027Sed,
   isFSed,
   isH002Sed,
-  isPreviewableSed,
+  isPreviewableSed, isS040Sed,
   isSed,
   isXSed
 } from 'utils/sed'
@@ -116,6 +116,7 @@ import BarnetsSivilstand from "../../applications/SvarSed/SvarPaaAnmodningOmAnne
 import DatoEndredeForhold
   from "../../applications/SvarSed/SvarPaaAnmodningOmAnnenInformasjonOmBarnet/DatoEndredeForhold";
 import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/SvarOmFremmoeteUtdanning";
+import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -414,10 +415,11 @@ const SEDEdit = (): JSX.Element => {
               firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
               deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
               forms={[
-                { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H'], adult: true, barn: true },
+                { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
                 { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
-                { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H'], adult: true, barn: true },
+                { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
                 { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
+                { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
                 { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F001', 'F002', 'F026'], adult: true },
@@ -599,7 +601,28 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed)) && (
+        {isS040Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              menuDefaultClosed={false}
+              namespace='forespoersel'
+              forms={[
+                {
+                  label: t('el:option-mainform-forespoersel'),
+                  value: 'forespoersel',
+                  component: Forespoersel,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='forespoerselmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>

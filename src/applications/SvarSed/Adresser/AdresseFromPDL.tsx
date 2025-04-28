@@ -1,9 +1,8 @@
 import { EyeIcon, EyeSlashIcon, MagnifyingGlassIcon } from '@navikt/aksel-icons'
-import { Alert, Button, Checkbox, Ingress, Label, Loader } from '@navikt/ds-react'
-import { AlignStartRow, Column, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Alert, BodyLong, Box, Button, Checkbox, HStack, Label, Loader, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { searchAdresse } from 'actions/adresse'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import { GrayPanel, SpacedHr } from 'components/StyledComponents'
+import {SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse, AdresseType } from 'declarations/sed'
 import _ from 'lodash'
@@ -21,6 +20,7 @@ export interface AdresseFromPDLProps {
   fnr: string
   selectedAdresser: Array<Adresse>
   onAdresserChanged: (selectedAdresser: Array<Adresse>) => void
+  singleAdress?: boolean
 }
 
 const mapState = (state: State): AdresseFromPDLSelector => ({
@@ -31,7 +31,7 @@ const mapState = (state: State): AdresseFromPDLSelector => ({
 export type AdresseMap = {[k in AdresseType]?: Array<Adresse>}
 
 const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
-  personName, fnr, selectedAdresser, onAdresserChanged
+  personName, fnr, selectedAdresser, onAdresserChanged, singleAdress
 }: AdresseFromPDLProps) => {
   const { t } = useTranslation()
   const { adresser, gettingAdresser } = useAppSelector(mapState)
@@ -86,6 +86,31 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
     </>
   )
 
+  const renderAdressesRadio = (key: AdresseType, adresser: Array<Adresse>) => (
+    <>
+      {adresser?.map(adresse => (
+        <Radio
+          key={key + '-adresser-checkbox-' + adresse.gate}
+          name={key + '-adresser'}
+          checked={hasAddress(adresse)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onAdresserChanged([adresse])}
+          value={adresse}
+        >
+          <AdresseBox
+            border={false}
+            seeType
+            adresse={{
+              ...adresse,
+              type: key
+            }}
+            padding='0'
+            oneLine
+          />
+        </Radio>
+      ))}
+    </>
+  )
+
   useEffect(() => {
     if (gettingAdresser === false && !_.isEmpty(adresser)) {
       _setOpen(true)
@@ -104,57 +129,65 @@ const AdresseFromPDL: React.FC<AdresseFromPDLProps> = ({
   }, [adresser])
 
   return (
-    <>
-      <AlignStartRow>
-        <Column>
-          <Button
-            variant='primary'
-            disabled={gettingAdresser || _.isNil(fnr)}
-            onClick={getAdresse}
-            icon={<MagnifyingGlassIcon/>}
-          >
-            {gettingAdresser
-              ? t('message:loading-searching')
-              : t('label:søk-pdl-adresse-til', { person: personName })}
-            {gettingAdresser && <Loader />}
+    <VStack gap="4">
+      <HStack gap="4">
+        <Button
+          variant='primary'
+          disabled={gettingAdresser || _.isNil(fnr) || (singleAdress && selectedAdresser ? selectedAdresser.length > 0 : false)}
+          onClick={getAdresse}
+          icon={<MagnifyingGlassIcon/>}
+        >
+          {gettingAdresser
+            ? t('message:loading-searching')
+            : t('label:søk-pdl-adresse-til', { person: personName })}
+          {gettingAdresser && <Loader />}
+        </Button>
+        {!_.isNil(adresser) && adresser.length === 0 && (
+          <Alert variant='warning'>
+            {t('message:warning-no-pdl-address')}
+          </Alert>
+        )}
+        {!_.isEmpty(adresser) && !_open && (
+          <Button variant='secondary' onClick={() => _setOpen(true)} icon={<EyeIcon/>}>
+            {t('el:button-show')}
           </Button>
-        </Column>
-        <Column flex='2'>
-          {!_.isNil(adresser) && adresser.length === 0 && (
-            <Alert variant='warning'>
-              {t('message:warning-no-pdl-address')}
-            </Alert>
-          )}
-          {!_.isEmpty(adresser) && !_open && (
-            <Button variant='secondary' onClick={() => _setOpen(true)} icon={<EyeIcon/>}>
-              {t('el:button-show')}
-            </Button>
-          )}
-          {!_.isEmpty(adresser) && _open && (
-            <Button variant='secondary' onClick={() => _setOpen(false)} icon={<EyeSlashIcon/>}>
-              {t('el:button-hide')}
-            </Button>
-          )}
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
+        )}
+        {!_.isEmpty(adresser) && _open && (
+          <Button variant='secondary' onClick={() => _setOpen(false)} icon={<EyeSlashIcon/>}>
+            {t('el:button-hide')}
+          </Button>
+        )}
+      </HStack>
       {_open && (
-        <GrayPanel border>
-          <Label>
-            {t('label:pdl-adresse-til', { person: personName })}
-          </Label>
-          <SpacedHr />
-          <VerticalSeparatorDiv />
-          <Ingress>
-            {t('label:hvilke-adresser-skal-registreres')}
-          </Ingress>
-          {adresseMap.bosted && renderAdresses('bosted', adresseMap.bosted)}
-          {adresseMap.opphold && renderAdresses('opphold', adresseMap.opphold)}
-          {adresseMap.kontakt && renderAdresses('kontakt', adresseMap.kontakt)}
-          {adresseMap.annet && renderAdresses('annet', adresseMap.annet)}
-        </GrayPanel>
+        <Box padding="4" borderWidth="1" background="bg-subtle">
+          <VStack gap="1">
+            <Label>
+              {t('label:pdl-adresse-til', { person: personName })}
+            </Label>
+            <SpacedHr />
+            <BodyLong size="large">
+              {t('label:hvilke-adresser-skal-registreres')}
+            </BodyLong>
+            {!singleAdress &&
+              <>
+                {adresseMap.bosted && renderAdresses('bosted', adresseMap.bosted)}
+                {adresseMap.opphold && renderAdresses('opphold', adresseMap.opphold)}
+                {adresseMap.kontakt && renderAdresses('kontakt', adresseMap.kontakt)}
+                {adresseMap.annet && renderAdresses('annet', adresseMap.annet)}
+              </>
+            }
+            {singleAdress &&
+              <RadioGroup value={selectedAdresser[0]} legend="Adresser" hideLegend={true}>
+                {adresseMap.bosted && renderAdressesRadio('bosted', adresseMap.bosted)}
+                {adresseMap.opphold && renderAdressesRadio('opphold', adresseMap.opphold)}
+                {adresseMap.kontakt && renderAdressesRadio('kontakt', adresseMap.kontakt)}
+                {adresseMap.annet && renderAdressesRadio('annet', adresseMap.annet)}
+              </RadioGroup>
+            }
+          </VStack>
+        </Box>
       )}
-    </>
+    </VStack>
   )
 }
 

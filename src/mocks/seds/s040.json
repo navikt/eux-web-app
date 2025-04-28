@@ -1,0 +1,67 @@
+{
+  "sedType": "S040",
+  "sedVersjon": "4.3",
+  "bruker": {
+    "personInfo": {
+      "fornavn": "æøå",
+      "etternavn": "æøå",
+      "kjoenn": "M",
+      "foedselsdato": "æøå",
+      "statsborgerskap": [
+        {"fraDato": "1982-01-01", "landkode": "NOR"},
+        {"fraDato": "1975-01-01", "landkode": "SWE"}
+      ],
+      "pin": [
+        {
+          "land": "NO",
+          "landkode": "NOR",
+          "sektor": "yrkesskade_og_yrkessykdom",
+          "identifikator": "æøå",
+          "institusjonsid": "æøå",
+          "institusjonsnavn": "æøå"
+        }
+      ],
+      "pinMangler": {
+        "etternavnVedFoedsel": "æøå",
+        "fornavnVedFoedsel": "æøå",
+        "foedested": {
+          "by": "æøå",
+          "region": "æøå",
+          "land": "NO",
+          "landkode": "NOR"
+        },
+        "far": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        },
+        "mor": {
+          "fornavn": "æøå",
+          "etternavnVedFoedsel": "æøå"
+        }
+      }
+    },
+    "botidilandetsiden": "2020-03-01",
+    "adresser":[
+      {
+        "gate": "æøå",
+        "postnummer": "æøå",
+        "by": "æøå",
+        "land": "NO",
+        "landkode": "NOR",
+        "bygning": "æøå",
+        "region": "æøå"
+      }
+    ]
+  },
+  "sykdom":{
+    "ytelse": {
+      "type": "sykdom",
+      "kontantellernatural": "natural"
+    },
+    "forespoerselomperiode": {
+      "startdato": "2024-01-01",
+      "sluttdato": "2024-12-01"
+    }
+  },
+  "ytterligereInfo": "æøå"
+}

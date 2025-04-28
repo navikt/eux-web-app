@@ -1,13 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseFromPDL from 'applications/SvarSed/Adresser/AdresseFromPDL'
@@ -15,7 +7,7 @@ import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import AdresseBox from 'components/AdresseBox/AdresseBox'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Adresse } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -32,7 +24,8 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
-import {isFSed} from "../../../utils/sed";
+import {isFSed, isS040Sed} from "../../../utils/sed";
+import DateField from "../../../components/DateField/DateField";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -44,7 +37,8 @@ const Adresser: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
@@ -52,8 +46,10 @@ const Adresser: React.FC<MainFormProps> = ({
   const target = `${personID}.adresser`
   const adresser: Array<Adresse> | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-adresser`
+  const singleAdress = options && options.singleAdress ? options.singleAdress : false
+  const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
-  const checkAdresseType: boolean = !isFSed(replySed)
+  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed))
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.landkode ?? '') : 'new'
 
@@ -153,6 +149,17 @@ const Adresser: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(target, selectedAdresser))
   }
 
+  const setPDLSingleAddress = (selectedAdresser: Array<Adresse>) => {
+    dispatch(updateReplySed(target, [selectedAdresser[0]]))
+  }
+
+  const onDateChange = (dato: string) => {
+    dispatch(updateReplySed(`${personID}.botidilandetsiden`, dato.trim()))
+    if (validation[namespace + '-botidilandetsiden']) {
+      dispatch(resetValidation(namespace + '-botidilandetsiden'))
+    }
+  }
+
   const renderRow = (adresse: Adresse | null, index: number) => {
     const _namespace = namespace + getIdx(index)
     const _v: Validation = index < 0 ? _validation : validation
@@ -175,7 +182,8 @@ const Adresser: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(adresse)}
         className={classNames({
@@ -183,7 +191,7 @@ const Adresser: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
+
         {inEditMode
           ? (
             <AdresseForm
@@ -192,74 +200,83 @@ const Adresser: React.FC<MainFormProps> = ({
               adresse={_adresse}
               onAdressChanged={(a: Adresse) => setAdresse(a, index)}
               validation={_v}
+              type={!isS040Sed(replySed)}
             />
             )
           : (
-            <AlignStartRow>
-              <Column flex='2'>
-                <AdresseBox adresse={_adresse} seeType />
-              </Column>
-              <AlignEndColumn>
+            <HStack gap="4">
+              <Box width="65%">
+                <AdresseBox adresse={_adresse} seeType={false} />
+              </Box>
+              <Spacer/>
+              <Box>
                 {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
+              </Box>
+            </HStack>
             )}
         {inEditMode && (
-          <>
-            <VerticalSeparatorDiv size='0.5' />
-            <AlignStartRow>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
-          </>
+          <HStack gap="4">
+            <Spacer/>
+            <Box>
+              {addremovepanel}
+            </Box>
+          </HStack>
         )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-        <VerticalSeparatorDiv />
         <AdresseFromPDL
           fnr={fnr!}
           selectedAdresser={adresser ?? []}
           personName={personName}
-          onAdresserChanged={setPDLAdresser}
+          onAdresserChanged={singleAdress ? setPDLSingleAddress : setPDLAdresser}
+          singleAdress={singleAdress}
         />
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(adresser)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-address')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {_.isEmpty(adresser)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-address')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : adresser?.map(renderRow)}
+        {_seeNewForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+                disabled={singleAdress && adresser ? adresser?.length > 0 : false}
+              >
+                {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
+              </Button>
+            </Box>
           )
-        : adresser?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_seeNewForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:adresse').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        }
+        {isS040Sed(replySed) &&
+          <DateField
+            namespace={namespace}
+            error={validation[namespace + '-botidilandetsiden']?.feilmelding}
+            id="botidilandetsiden"
+            label={t('label:botidilandetsiden')}
+            onChanged={onDateChange}
+            dateValue={botidilandetsiden}
+          />
+        }
+      </VStack>
+    </Box>
   )
 }
 
