@@ -75,7 +75,7 @@
     "stacktracey": "^2.1.8",
     "styled-components": "^5.3.5",
     "url": "^0.11.0",
-    "vite": "^6.2.1",
+    "vite": "^6.3.3",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
     "winston": "^3.8.1"
