@@ -6,7 +6,7 @@ import { MainFormProps } from 'applications/SvarSed/MainForm'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
-import {Barn, F002Sed, FSed} from 'declarations/sed'
+import {Barn, F002Sed, FSed, UtbetalingTilInstitusjon} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -111,6 +111,19 @@ const Formål: React.FC<MainFormProps> = ({
       if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
       }
+    }
+
+    if(item === "motregning" && checked){
+      let uti : UtbetalingTilInstitusjon =  {
+          begrunnelse: '',
+          id: 'NO:889640782',
+          navn: 'The Norwegian Labour and Welfare Administration',
+          kontoSepa: {
+            iban: 'NO6476940520041',
+            swift: 'DNBANOKKXXX'
+          }
+        }
+      dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
     }
 
     if(item === "prosedyre_ved_uenighet" && !checked){

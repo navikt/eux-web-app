@@ -168,6 +168,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               onChanged={setBegrunnelse}
               required
               value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
+              maxLength={255}
             />
           </TextAreaDiv>
         </Column>
