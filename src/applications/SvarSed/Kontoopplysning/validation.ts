@@ -35,7 +35,7 @@ export const validateKontoopplysning = (
   if (!_.isEmpty(uti?.begrunnelse?.trim())) {
     hasErrors.push(checkLength(v, {
       needle: uti?.begrunnelse,
-      max: 500,
+      max: 255,
       id: namespace + '-begrunnelse',
       message: 'validation:textOverX',
       personName: formalName
