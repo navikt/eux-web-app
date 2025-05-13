@@ -199,6 +199,12 @@ export interface PersonInfo {
   }
 }
 
+export interface Aktivtitet {
+  status: string
+  perioder?: Array<Periode>
+  type?: string
+}
+
 export interface FillOutInfoPayload {
   bruker: {
     adresser: Array<Adresse>
@@ -206,45 +212,82 @@ export interface FillOutInfoPayload {
   }
 }
 
-export interface Person {
-  adresser ?: Array<Adresse>
-  epost ?: Array<Epost>
+export interface PersonType {
+  personInfo: PersonInfo
+}
+
+export interface PersonTypeH extends PersonType {
+  adresser?: Array<Adresse>
+}
+
+export interface PersonTypeU extends PersonType {
+  adresser?: Array<Adresse>
+  epost?: Array<Epost>
+  telefon?: Array<Telefon>
+}
+
+export interface PersonTypeS extends PersonType{
+  adresser?: Array<Adresse>
+  botidilandetsiden?: string
+}
+
+export interface PersonTypeF extends PersonType {
+  adresser?: Array<Adresse>
+  epost?: Array<Epost>
+  telefon?: Array<Telefon>
+}
+
+export interface PersonTypeF001 extends PersonTypeF {
+  ikkeRettTilYtelser?: {
+    typeGrunn?: string
+    typeGrunnAnnen?: string
+    typeGrunnForVedtak?: string
+  }
+
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
-  ikkeRettTilYtelser ?: {
-    typeGrunn: string
-    typeGrunnAnnen: string
+
+  aktivitet: Aktivtitet
+  trygdeperioder: {
+
   }
+
   perioderMedArbeid ?: Array<Periode>
-  perioderMedITrygdeordning ?: Array<Periode>
   perioderMedPensjon ?: Array<PensjonPeriode>
   perioderMedTrygd ?: Array<Periode>
   perioderMedYtelser ?: Array<Periode>
-  perioderUtenforTrygdeordning ?: Array<Periode>
   perioderSomAnsatt?: Array<Periode>
   perioderSomSelvstendig?: Array<Periode>
   perioderSomSykMedLoenn?: Array<Periode>
   perioderSomPermittertMedLoenn?: Array<Periode>
   perioderSomPermittertUtenLoenn?: Array<Periode>
-  personInfo: PersonInfo
-  telefon ?: Array<Telefon>
+  perioderMedITrygdeordning ?: Array<Periode>
+  perioderUtenforTrygdeordning ?: Array<Periode>
 }
 
-export interface PersonLight {
-  fornavn: string
-  etternavn: string
-  kjoenn: Kjoenn
-  foedselsdato: string
-  statsborgerskap?: Array<Statsborgerskap>
-  pin?: Array<Pin>
-  adressebeskyttelse?: string
+export interface PersonTypeBrukerF026 extends PersonTypeF {
+  ikkeRettTilYtelser?: {
+    typeGrunn?: string
+    typeGrunnAnnen?: string
+    typeGrunnForVedtak?: string
+  }
+  perioderMedYtelser?: Array<Periode> | null
+  perioderMedITrygdeordning ?: Array<Periode>
+  perioderUtenforTrygdeordning ?: Array<Periode>
 }
 
-export interface PersonBruker {
-  personInfo?: PersonInfo
-  adresser?: Array<Adresse>
-  telefon?: Array<Telefon>
-  epost?: Array<Epost>
+export interface PersonTypeBrukerF027 extends PersonTypeF {
+  ikkeRettTilYtelser?: {
+    typeGrunn?: string
+    typeGrunnAnnen?: string
+    typeGrunnForVedtak?: string
+  }
+  perioderMedYtelser?: Array<Periode> | null
+  perioderMedITrygdeordning ?: Array<Periode>
+  perioderUtenforTrygdeordning ?: Array<Periode>
+}
+
+export interface PersonTypeBrukerF003 extends PersonTypeF {
   ikkeRettTilYtelser?: {
     typeGrunn?: string
     typeGrunnForVedtak?: string
@@ -255,19 +298,11 @@ export interface PersonBruker {
   perioderUtenforTrygdeordning?: Array<Periode> | null
 }
 
-export interface PersonEktefelle {
-  personInfo?: PersonInfo
-  adresser?: Array<Adresse>
-  telefon?: Array<Telefon>
-  epost?: Array<Epost>
+export interface PersonTypeEktefelleF003 extends  PersonTypeF {
   ytterligereInfo?: string
 }
 
-export interface PersonAnnenPerson {
-  personInfo?: PersonInfo
-  adresser?: Array<Adresse>
-  telefon?: Array<Telefon>
-  epost?: Array<Epost>
+export interface PersonTypeAnnenPersonF003 extends PersonTypeF {
   familierelasjon?: FamilieRelasjon
 }
 
@@ -285,10 +320,14 @@ export interface PersonBarn {
   ytelser?: Array<Ytelse>
 }
 
-export interface BrukerS040 {
-  personInfo?: PersonInfo
-  botidilandetsiden?: string
-  adresser?: Array<Adresse>
+export interface PersonLight {
+  fornavn: string
+  etternavn: string
+  kjoenn: Kjoenn
+  foedselsdato: string
+  statsborgerskap?: Array<Statsborgerskap>
+  pin?: Array<Pin>
+  adressebeskyttelse?: string
 }
 
 export interface Telefon {
@@ -531,16 +570,16 @@ export interface UenighetKonklusjon {
 }
 
 export interface FSed extends BaseReplySed {
-  bruker: Person
+  bruker: PersonTypeF001
   anmodningsperioder: Array<Periode>
   formaal: Array<string>
   ytterligereInfo?: string
 }
 
 export interface F001Sed extends FSed {
-  annenPerson?: Person
+  annenPerson?: PersonTypeF001
   barn?: Array<Barn>
-  ektefelle?: Person
+  ektefelle?: PersonTypeF001
   endredeForhold?: Array<string>
   familie?: {
     motregninger?: Array<Motregning>
@@ -563,9 +602,9 @@ export interface F002Sed extends F001Sed {
 }
 
 export interface F003Sed extends BaseReplySed {
-  bruker: PersonBruker
-  ektefelle?: PersonEktefelle
-  annenPerson?: PersonAnnenPerson
+  bruker: PersonTypeBrukerF003
+  ektefelle?: PersonTypeEktefelleF003
+  annenPerson?: PersonTypeAnnenPersonF003
   barn?: Array<PersonBarn>
   familie?: {
     ytelser?: Array<Ytelse>
@@ -578,13 +617,13 @@ export interface F003Sed extends BaseReplySed {
 }
 
 export interface F026Sed extends BaseReplySed {
-  bruker: PersonBruker
+  bruker: PersonTypeBrukerF026
   ytterligereInfo?: string
   anmodningOmMerInformasjon?: AnmodningOmMerInformasjon
 }
 
 export interface F027Sed extends BaseReplySed {
-  bruker: PersonBruker
+  bruker: PersonTypeBrukerF027
   ytterligereInfo?: string
   krav: {
     kravMottattDato: string
@@ -748,7 +787,7 @@ export interface RelasjonAnnenPerson {
 
 
 export interface USed extends BaseReplySed {
-  bruker: Person
+  bruker: PersonTypeU
   anmodningsperiode: Periode
   lokaleSakIder: Array<LokaleSakId>
 }
@@ -779,7 +818,7 @@ export interface U017Sed extends U002Sed {
 }
 
 export interface HSed extends BaseReplySed {
-  bruker: Person
+  bruker: PersonTypeH
   ytterligereInfo?: string
 }
 
@@ -798,7 +837,7 @@ export interface H002Sed extends HSed {
 }
 
 export interface S040Sed extends BaseReplySed {
-  bruker: BrukerS040
+  bruker: PersonTypeS
   sykdom: {
     forespoerselomperiode: Periode
     ytelse: {

@@ -20,7 +20,7 @@ import {
 import WithSubsidies from 'applications/SvarSed/PersonensStatus/WithSubsidies/WithSubsidies'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import { Person } from 'declarations/sed'
+import { PersonTypeF001 } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, { useState } from 'react'
@@ -50,7 +50,7 @@ const PersonensStatus: React.FC<MainFormProps> = ({
   const dispatch = useDispatch()
 
   useUnmount(() => {
-    const person: Person = _.get(replySed, personID!)
+    const person: PersonTypeF001 = _.get(replySed, personID!)
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationPersonensStatusProps>(
       clonedValidation, namespace, validatePersonensStatusPerioder, {

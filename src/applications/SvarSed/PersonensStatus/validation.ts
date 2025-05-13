@@ -3,12 +3,12 @@ import { validateGrunnlagForBosetting } from 'applications/SvarSed/GrunnlagForBo
 import { validateAvsenderlandetPerioder } from 'applications/SvarSed/PersonensStatus/Avsenderlandet/validation'
 import { validateNotAnsattPerioder } from 'applications/SvarSed/PersonensStatus/NotAnsatt/validation'
 import { validateWithSubsidiesPerioder } from 'applications/SvarSed/PersonensStatus/WithSubsidies/validation'
-import { Flyttegrunn, PensjonPeriode, Periode, Person } from 'declarations/sed'
+import { Flyttegrunn, PensjonPeriode, Periode, PersonTypeF001 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 
 export interface ValidationPersonensStatusProps {
-  person: Person
+  person: PersonTypeF001
   personName ?: string
 }
 export const validatePersonensStatusPerioder = (

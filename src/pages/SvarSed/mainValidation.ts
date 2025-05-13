@@ -73,21 +73,33 @@ import {
   Adresse,
   Barnetilhoerighet,
   Epost,
-  F002Sed, F003Sed, F026Sed, F027Sed,
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
-  H001Sed, Periode,
-  Person, PersonBarn,
+  Periode,
+  PersonTypeF001,
+  PersonBarn,
   PersonInfo,
-  ReplySed, S040Sed,
+  ReplySed,
   Statsborgerskap,
   Telefon,
+  F002Sed,
+  F003Sed,
+  F026Sed,
+  F027Sed,
+  H001Sed,
+  S040Sed,
+  USed,
   U002Sed,
   U004Sed,
   U017Sed,
-  USed, X001Sed, X008Sed, X009Sed, X010Sed, X011Sed, X012Sed,
-  Ytelse
+  X001Sed,
+  X008Sed,
+  X009Sed,
+  X010Sed,
+  X011Sed,
+  X012Sed,
+  Ytelse, Barn
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -235,7 +247,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
         }, true))
-        const person: Person = _.get(replySed, `${personID}`)
+        const person: PersonTypeF001 = _.get(replySed, `${personID}`)
         hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
           person, personName
         }, true))
@@ -425,7 +437,7 @@ export const validateSEDEdit = (
     if ((replySed as F002Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
-    (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
+    (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
     })
     if ((replySed as F002Sed).familie) {

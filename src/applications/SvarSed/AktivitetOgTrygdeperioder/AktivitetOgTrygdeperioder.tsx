@@ -10,8 +10,7 @@ import {resetValidation, setValidation} from "../../../actions/validation";
 import {Box, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
-import {Aktivtitet} from "../../../declarations/fsed";
-import Ansatt from "../PersonensStatus/Ansatt/Ansatt";
+import {Aktivtitet} from "../../../declarations/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status

@@ -20,7 +20,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
-import { PensjonPeriode, PensjonsType, Periode, PeriodeSort, Person } from 'declarations/sed'
+import { PensjonPeriode, PensjonsType, Periode, PeriodeSort, PersonTypeF001 } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -36,8 +36,9 @@ import { validateFamilieytelserPeriode, ValidationFamilieytelsePeriodeProps } fr
 
 interface FamilieYtelserProps extends MainFormProps {
   validation: Validation
-}
+};
 
+{/*TODO: REMOVE THIS FILE WHEN AKTIVITETOGTRYGDEPERIODER IS DONE*/}
 const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   parentNamespace,
   personID,
@@ -50,7 +51,7 @@ const FamilieYtelser: React.FC<FamilieYtelserProps> = ({
   const dispatch = useAppDispatch()
   const target = `${personID}`
   const namespace = `${parentNamespace}-familieytelser`
-  const person: Person = _.get(replySed, target)
+  const person: PersonTypeF001 = _.get(replySed, target)
 
   const [_allPeriods, _setAllPeriods] = useState<Array<Periode | PensjonPeriode>>([])
   const [_newPeriode, _setNewPeriode] = useState<Periode | PensjonPeriode | undefined>(undefined)

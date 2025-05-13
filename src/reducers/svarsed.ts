@@ -10,9 +10,10 @@ import {
   X011Sed,
   X012Sed,
   XSed,
-  Person,
   F026Sed,
-  F027Sed, F001Sed
+  F027Sed,
+  F001Sed,
+  PersonType
 } from 'declarations/sed.d'
 import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
@@ -103,7 +104,7 @@ const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
   return replySed
 }
 
-const trimPin = (bruker:Person):Person => {
+const trimPin = (bruker:PersonType):PersonType => {
   let brukerWithTrimmedPin = bruker
   if(bruker && bruker.personInfo && bruker.personInfo.pin) {
     let personInfo = bruker.personInfo
