@@ -62,6 +62,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         validation={validation}
       />
+      {/*TODO: REMOVE THIS BLOCK OF CODE WHEN AKTIVITETOGTRYGDEPERIODER IS DONE*/}
       {(isF001Sed(replySed) || isF002Sed(replySed)) &&
         <>
           <PaddedDiv>
@@ -81,6 +82,7 @@ const Trygdeordning: React.FC<MainFormProps> = ({
           />
         </>
       }
+
       {isF026Sed(replySed) &&
         <RettTilYtelserFSED
           parentNamespace={namespace}

@@ -31,8 +31,9 @@ import performValidation from 'utils/performValidation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
-})
+});
 
+{/*TODO: REMOVE THIS FILE WHEN AKTIVITETOGTRYGDEPERIODER IS DONE*/}
 const PersonensStatus: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
