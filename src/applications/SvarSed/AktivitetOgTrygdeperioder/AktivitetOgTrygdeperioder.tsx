@@ -12,6 +12,7 @@ import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
 import {Aktivtitet} from "../../../declarations/sed";
 import Ansatt from "./Ansatt/Ansatt";
+import AktivitetPerioder from "./AktivitetPerioder/AktivitetPerioder";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -151,13 +152,31 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     setReplySed={setReplySed}
                   />
                 }
+                {aktivitet?.type !== 'ansatt' &&
+                  <AktivitetPerioder
+                    parentNamespace={namespace + '-' + aktivitet?.type}
+                    personID={personID}
+                    personName={personName}
+                    replySed={replySed}
+                    updateReplySed={updateReplySed}
+                    setReplySed={setReplySed}
+                  />
+                }
               </Box>
             }
             {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'inaktiv' &&
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+              <Box padding="4" borderWidth="1" borderColor="border-subtle">
                 <Heading size='xsmall'>
                   Perioder uten aktivitet
                 </Heading>
+                <AktivitetPerioder
+                  parentNamespace={namespace + '-' + aktivitet?.type}
+                  personID={personID}
+                  personName={personName}
+                  replySed={replySed}
+                  updateReplySed={updateReplySed}
+                  setReplySed={setReplySed}
+                />
               </Box>
             }
           </VStack>
