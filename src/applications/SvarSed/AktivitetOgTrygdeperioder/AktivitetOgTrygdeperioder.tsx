@@ -11,6 +11,7 @@ import {Box, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react"
 import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
 import {Aktivtitet} from "../../../declarations/sed";
+import Ansatt from "./Ansatt/Ansatt";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -136,10 +137,20 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               </VStack>
             </Box>
             {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'aktiv' &&
-              <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
+              <Box padding="4"   borderWidth="1" borderColor="border-subtle">
                 <Heading size='xsmall'>
                   Ansettelsesperioder
                 </Heading>
+                {aktivitet?.type === 'ansatt' &&
+                  <Ansatt
+                    parentNamespace={namespace}
+                    personID={personID}
+                    personName={personName}
+                    replySed={replySed}
+                    updateReplySed={updateReplySed}
+                    setReplySed={setReplySed}
+                  />
+                }
               </Box>
             }
             {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'inaktiv' &&

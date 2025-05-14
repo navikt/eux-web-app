@@ -6,8 +6,7 @@ import { State } from 'declarations/reducers'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
-import { Button, BodyLong, Loader } from '@navikt/ds-react'
-import { AlignEndRow, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Button, BodyLong, HStack, VStack} from '@navikt/ds-react'
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -92,80 +91,64 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   }
 
   return (
-    <>
-      <AlignStartRow>
-        <Column>
-          <Input
-            namespace={namespace + '-arbeidssok'}
-            error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
-            id='startdato'
-            label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
-            onChanged={setArbeidssøkStartDato}
-            value={_arbeidssøkStartDato}
-          />
-        </Column>
-        <Column>
-          <Input
-            namespace={namespace + '-arbeidssok'}
-            error={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
-            id='sluttdato'
-            label={t('label:til') + ' (ÅÅÅÅ-MM)'}
-            onChanged={setArbeidssøkSluttDato}
-            value={_arbeidssøkSluttDato}
-          />
-        </Column>
-        <Column>
-          <Select
-            data-testid={namespace + '-arbeidssok-inntektsliste'}
-            error={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
-            id={namespace + '-arbeidssok-inntektsliste'}
-            label={t('label:filter')}
-            menuPortalTarget={document.body}
-            onChange={(o: unknown) => setArbeidssøkInntektslistetype((o as Option).value)}
-            options={inntektslistetypeOptions}
-            value={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
-            defaultValue={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
-          />
-        </Column>
-        <Column>
-          <Button
-            variant='secondary'
-            className='nolabel'
-            disabled={gettingArbeidsperioder || _.isNil(fnr)}
-            onClick={getArbeidsperioder}
-            icon={<MagnifyingGlassIcon/>}
-          >
-            {gettingArbeidsperioder
-              ? t('message:loading-searching')
-              : t('el:button-get-x', { x: t('label:arbeidsperioder') })}
-            {gettingArbeidsperioder && <Loader />}
-          </Button>
-        </Column>
-      </AlignStartRow>
+    <VStack gap="4">
+      <HStack gap="2" align="start">
+        <Input
+          namespace={namespace + '-arbeidssok'}
+          error={_validation[namespace + '-arbeidssok-startdato']?.feilmelding}
+          id='startdato'
+          label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
+          onChanged={setArbeidssøkStartDato}
+          value={_arbeidssøkStartDato}
+        />
+        <Input
+          namespace={namespace + '-arbeidssok'}
+          error={_validation[namespace + '-arbeidssok-sluttdato']?.feilmelding}
+          id='sluttdato'
+          label={t('label:til') + ' (ÅÅÅÅ-MM)'}
+          onChanged={setArbeidssøkSluttDato}
+          value={_arbeidssøkSluttDato}
+        />
+        <Select
+          data-testid={namespace + '-arbeidssok-inntektsliste'}
+          error={_validation[namespace + '-arbeidssok-inntektsliste']?.feilmelding}
+          id={namespace + '-arbeidssok-inntektsliste'}
+          label={t('label:filter')}
+          menuPortalTarget={document.body}
+          onChange={(o: unknown) => setArbeidssøkInntektslistetype((o as Option).value)}
+          options={inntektslistetypeOptions}
+          value={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
+          defaultValue={_.find(inntektslistetypeOptions, b => b.value === _arbeidssøkInntektslistetype)}
+        />
+
+        <Button
+          loading={gettingArbeidsperioder}
+          variant='secondary'
+          className='nolabel'
+          disabled={gettingArbeidsperioder || _.isNil(fnr)}
+          onClick={getArbeidsperioder}
+          icon={<MagnifyingGlassIcon/>}
+        >
+          {t('el:button-search')}
+        </Button>
+      </HStack>
       {_.isNil(fnr) && _.isFunction(fillOutFnr) && (
-        <>
-          <VerticalSeparatorDiv size='0.5' />
-          <AlignEndRow>
-            <Column>
-              <HorizontalSeparatorDiv size='0.35' />
-              <BodyLong>
-                {t('message:error-no-fnr')}
-              </BodyLong>
-              <HorizontalSeparatorDiv size='0.35' />
-              <Link
-                to='#' onClick={() => {
-                  if (_.isFunction(fillOutFnr)) {
-                    fillOutFnr()
-                  }
-                }}
-              >
-                {t('label:fill-fnr')}
-              </Link>
-            </Column>
-          </AlignEndRow>
-        </>
+        <HStack gap="4">
+          <BodyLong>
+            {t('message:error-no-fnr')}
+          </BodyLong>
+          <Link
+            to='#' onClick={() => {
+            if (_.isFunction(fillOutFnr)) {
+              fillOutFnr()
+            }
+          }}
+          >
+            {t('label:fill-fnr')}
+          </Link>
+        </HStack>
       )}
-    </>
+    </VStack>
   )
 }
 

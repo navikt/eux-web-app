@@ -7,7 +7,7 @@
   "error-fnr-already-added": "Du kan ikke legge til samme person flere ganger",
   "error-header": "Feilmeldingsdetaljer. Vennligst del denne informasjonen til utvikleren",
   "error-mottakere-add": "Det oppsto en feil under å legge til mottakere",
-  "error-no-fnr": "Ingen fnr i personen, derfor kan ikke fortsette",
+  "error-no-fnr": "Ingen fnr i personen, kan derfor ikke fortsette",
   "error-noDocumentFound": "Ingen dokumenter funnet",
   "error-non-euefta-address": "Bruker har en adresse utenfor EU/EFTA. Valgt SED type krever adresser innen EU/EFTA.  Sak må opprettes direkte i RINA.",
   "error-non-valid-nationality": "Bruker har et statsborgerskap som ikke er gyldig i RINA ({{statsborgerskap}}).  Statsborgerskapet settes til blank ved opprettelse av sak",
