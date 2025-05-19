@@ -248,9 +248,8 @@ export interface PersonTypeF001 extends PersonTypeF {
   flyttegrunn ?: Flyttegrunn
 
   aktivitet: Aktivtitet
-  trygdeperioder: {
-
-  }
+  trygdeperioder: Array<Periode>
+  perioderMedMottattPensjon: Array<PensjonPeriode>
 
   perioderMedArbeid ?: Array<Periode>
   perioderMedPensjon ?: Array<PensjonPeriode>

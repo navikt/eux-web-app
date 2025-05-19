@@ -164,7 +164,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 }
               </Box>
             }
-            {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'inaktiv' &&
+            {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingeninfo")) &&
               <Box padding="4" borderWidth="1" borderColor="border-subtle">
                 <Heading size='xsmall'>
                   Perioder uten aktivitet
