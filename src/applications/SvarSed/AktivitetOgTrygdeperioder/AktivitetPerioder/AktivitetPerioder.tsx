@@ -27,6 +27,7 @@ const mapState = (state: State): MainFormSelector => ({
 
 const AktivitetPerioder: React.FC<MainFormProps> = ({
   parentNamespace,
+  parentTarget,
   personID,
   personName,
   replySed,
@@ -37,7 +38,7 @@ const AktivitetPerioder: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
 
   const namespace = `${parentNamespace}`
-  const target: string = `${personID}.aktivitet.perioder`
+  const target: string = `${personID}.${parentTarget}`
   const perioder: Array<Periode> | undefined = _.get(replySed, target)
   const getId = (p: Periode | null): string => p ? parentNamespace + '-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
