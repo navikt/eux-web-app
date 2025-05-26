@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, HStack, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -201,7 +201,7 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
             </VStack>
             )
           : (
-              <HStack gap="8"align="center">
+              <HStack gap="4" align="center">
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -210,9 +210,8 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_pensjonPeriode?.periode}
                 />
-                <BodyLong>
-                  {t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}
-                </BodyLong>
+                <Spacer/>
+                <Tag variant="info">{t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}</Tag>
               </HStack>
           )
         }
