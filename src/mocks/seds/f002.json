@@ -79,130 +79,10 @@
         "nummer": "+4790000002"
       }
     ],
-    "perioderMedArbeid": [
-      {
-        "startdato": "1970-01-01",
-        "sluttdato": "1970-12-31"
-      },
-      {
-        "startdato": "1971-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderMedTrygd": [
-      {
-        "startdato": "1972-01-01",
-        "sluttdato": "1972-12-31"
-      },
-      {
-        "startdato": "1973-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderMedITrygdeordning": [
-      {
-        "startdato": "1974-01-01",
-        "sluttdato": "1974-12-31"
-      },
-      {
-        "startdato": "1975-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderUtenforTrygdeordning": [
-      {
-        "startdato": "1976-01-01",
-        "sluttdato": "1976-12-31"
-      },
-      {
-        "startdato": "1977-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderMedYtelser": [
-      {
-        "startdato": "1978-01-01",
-        "sluttdato": "1978-12-31"
-      },
-      {
-        "startdato": "1979-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
     "ikkeRettTilYtelser": {
       "typeGrunn": "type grunn",
       "typeGrunnAnnen": "type grunn annen"
     },
-    "perioderMedPensjon": [
-      {
-        "pensjonstype": "alderspensjon",
-        "periode": {
-          "startdato": "1980-01-01",
-          "sluttdato": "1980-12-31"
-        }
-      },
-      {
-        "pensjonstype": "uførhet",
-        "periode": {
-          "startdato": "1981-01-01",
-          "aapenPeriodeType": "åpen_sluttdato"
-        }
-      }
-    ],
-    "perioderSomAnsatt": [
-      {
-        "startdato": "1970-01-01",
-        "sluttdato": "1970-12-31"
-      },
-      {
-        "startdato": "1971-01-01",
-        "sluttdato": "1971-12-31"
-      },
-      {
-        "startdato": "1972-01-01",
-        "sluttdato": "1972-12-31"
-      }
-    ],
-    "perioderSomSelvstendig": [
-      {
-        "startdato": "1973-01-01",
-        "sluttdato": "1973-12-30"
-      },
-      {
-        "startdato": "1974-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderSomSykMedLoenn": [
-      {
-        "startdato": "1975-01-01",
-        "sluttdato": "1975-12-30"
-      },
-      {
-        "startdato": "1976-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderSomPermittertMedLoenn": [
-      {
-        "startdato": "1977-01-01",
-        "sluttdato": "1977-12-30"
-      },
-      {
-        "startdato": "1978-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
-    "perioderSomPermittertUtenLoenn": [
-      {
-        "startdato": "1979-01-01",
-        "sluttdato": "1979-12-30"
-      },
-      {
-        "startdato": "1980-01-01",
-        "aapenPeriodeType": "åpen_sluttdato"
-      }
-    ],
     "flyttegrunn": {
       "personligSituasjon": "F002 bruker personligSituasjon",
       "perioder": [
@@ -322,22 +202,10 @@
         "nummer": "+4790000004"
       }
     ],
-    "perioderMedArbeid": [
-    ],
-    "perioderMedTrygd": [
-    ],
-    "perioderMedITrygdeordning": [
-    ],
-    "perioderUtenforTrygdeordning": [
-    ],
-    "perioderMedYtelser": [
-    ],
     "ikkeRettTilYtelser": {
       "typeGrunn": "krav_ikke_framsatt",
       "typeGrunnAnnen": "F002 ektefelle typeGrunnAnnen"
     },
-    "perioderMedPensjon": [
-    ],
     "flyttegrunn": {
       "personligSituasjon": "F002 ektfelle flyttegrunn personligSituasjon",
       "perioder": [
@@ -381,14 +249,6 @@
     "adresser": [],
     "epost": [],
     "telefon": [],
-    "perioderMedArbeid": [],
-    "perioderMedTrygd": [],
-    "perioderMedITrygdeordning": [],
-    "perioderUtenforTrygdeordning": [],
-    "perioderMedYtelser": [],
-    "perioderMedPensjon": [],
-    "perioderSomAnsatt": [],
-    "perioderSomSelvstendig": [],
     "familierelasjoner": [],
     "ytterligereInfo": ""
   },

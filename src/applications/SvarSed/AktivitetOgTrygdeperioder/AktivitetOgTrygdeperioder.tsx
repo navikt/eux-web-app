@@ -16,7 +16,7 @@ import AktivitetPerioder from "./AktivitetPerioder/AktivitetPerioder";
 import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
 import Modal from "../../../components/Modal/Modal";
 import PeriodeText from "../../../components/Forms/PeriodeText";
-import PerioderMedMottattPensjon from "./PerioderMedMottattPensjon/PerioderMedMottattPensjon";
+import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -43,14 +43,14 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetTrygdeperioder = `${personID}.trygdeperioder`
   const trygdeperioder: Array<Periode> | undefined = _.get(replySed, targetTrygdeperioder)
 
-  const targetPerioderMedMottattPensjon = `${personID}.perioderMedMottattPensjon`
-  const perioderMedMottattPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedMottattPensjon)
+  const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
+  const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
 
   const [_showTransferTrygdePerioderModal, _setShowTransferTrygdePerioderModal] = useState<boolean>(false)
   const [_valgteTrygdePerioder, _setValgteTrygdeperioder] = useState<Array<Periode>>([])
 
-  const [_showTransferPerioderMedMottattPensjonModal, _setShowTransferPerioderMedMottattPensjonModal] = useState<boolean>(false)
-  const [_valgtePerioderMedMottattPensjon, _setValgtePerioderMedMottattPensjon] = useState<any>(undefined)
+  const [_showTransferPerioderMedPensjonModal, _setShowTransferPerioderMedPensjonModal] = useState<boolean>(false)
+  const [_valgtePerioderMedPensjon, _setValgtePerioderMedPensjon] = useState<any>(undefined)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -87,12 +87,12 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
     onTrygdePerioderModalClose()
   }
 
-  const onPerioderMedMottattPensjonModalClose = () => {
-    _setValgtePerioderMedMottattPensjon(undefined)
-    _setShowTransferPerioderMedMottattPensjonModal(false)
+  const onPerioderMedPensjonModalClose = () => {
+    _setValgtePerioderMedPensjon(undefined)
+    _setShowTransferPerioderMedPensjonModal(false)
   }
 
-  const onValgtePerioderMedMottattPensjonChanged = (checked: boolean, valgtPeriode: Periode, index: number) => {
+  const onValgtePerioderMedPensjonChanged = (checked: boolean, valgtPeriode: Periode, index: number) => {
     if(checked){
       const valgtPensjonsPeriode = {
         periode: {
@@ -100,32 +100,32 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         },
         pensjonstype: undefined
       }
-      _setValgtePerioderMedMottattPensjon({
-        ..._valgtePerioderMedMottattPensjon,
+      _setValgtePerioderMedPensjon({
+        ..._valgtePerioderMedPensjon,
         ["periode-" + index]: valgtPensjonsPeriode
       })
     } else {
-      let copy = _.cloneDeep(_valgtePerioderMedMottattPensjon)
+      let copy = _.cloneDeep(_valgtePerioderMedPensjon)
       copy = _.omit(copy, "periode-" + index)
-      _setValgtePerioderMedMottattPensjon(copy)
+      _setValgtePerioderMedPensjon(copy)
     }
   }
 
   const onSetPensjonstype = (pensjonstype: string, index: number) => {
-    _setValgtePerioderMedMottattPensjon({
-      ..._valgtePerioderMedMottattPensjon,
+    _setValgtePerioderMedPensjon({
+      ..._valgtePerioderMedPensjon,
       ["periode-" + index]: {
-        ..._valgtePerioderMedMottattPensjon["periode-" + index],
+        ..._valgtePerioderMedPensjon["periode-" + index],
         pensjonstype: pensjonstype
       }
     })
   }
 
-  const onTransferPerioderMedMottattPensjon = () => {
-    const perioderMedMottattPensjon = Object.values(_valgtePerioderMedMottattPensjon)
-    dispatch(updateReplySed(`${targetPerioderMedMottattPensjon}`, undefined))
-    dispatch(updateReplySed(`${targetPerioderMedMottattPensjon}`, perioderMedMottattPensjon))
-    onPerioderMedMottattPensjonModalClose()
+  const onTransferPerioderMedPensjon = () => {
+    const perioderMedPensjon = Object.values(_valgtePerioderMedPensjon)
+    dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
+    dispatch(updateReplySed(`${targetPerioderMedPensjon}`, perioderMedPensjon))
+    onPerioderMedPensjonModalClose()
   }
 
 
@@ -172,9 +172,9 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         onModalClose={() => onTrygdePerioderModalClose()}
       />
       <Modal
-        open={_showTransferPerioderMedMottattPensjonModal}
+        open={_showTransferPerioderMedPensjonModal}
         modal={{
-          modalTitle: "Overfør til perioder med mottatt pensjon",
+          modalTitle: "Overfør til perioder med pensjon",
           modalContent: (
             <Box borderWidth="1" borderColor="border-subtle" padding="4">
               {trygdeperioder?.map((p, i) => {
@@ -182,8 +182,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   <HStack gap="4" align={"start"}>
                     <Checkbox
                       key={getId(p)}
-                      checked={!!(_valgtePerioderMedMottattPensjon && _valgtePerioderMedMottattPensjon["periode-" + i])}
-                      onChange={(e) => onValgtePerioderMedMottattPensjonChanged(e.target.checked, p, i)}
+                      checked={!!(_valgtePerioderMedPensjon && _valgtePerioderMedPensjon["periode-" + i])}
+                      onChange={(e) => onValgtePerioderMedPensjonChanged(e.target.checked, p, i)}
                     >
                       <PeriodeText
                         periode={p}
@@ -195,7 +195,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       />
                     </Checkbox>
                     <Spacer/>
-                    {_valgtePerioderMedMottattPensjon && _valgtePerioderMedMottattPensjon["periode-" + i] &&
+                    {_valgtePerioderMedPensjon && _valgtePerioderMedPensjon["periode-" + i] &&
                       <RadioGroup legend="Grunnlag" hideLegend={true} onChange={(pensjonsType: string) => onSetPensjonstype(pensjonsType, i)}>
                         <HStack gap="4">
                           <Radio value="alderspensjon">{t('el:option-trygdeordning-alderspensjon')}</Radio>
@@ -211,20 +211,20 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
           modalButtons: [
             {
               main: true,
-              text: 'Overfør til perioder med mottatt pensjon',
-              onClick: () => onTransferPerioderMedMottattPensjon()
+              text: 'Overfør til perioder med pensjon',
+              onClick: () => onTransferPerioderMedPensjon()
             },
             {
               text: 'Lukk',
-              onClick: () => onPerioderMedMottattPensjonModalClose()
+              onClick: () => onPerioderMedPensjonModalClose()
             },
           ]
         }}
         width="medium"
-        onModalClose={() => onPerioderMedMottattPensjonModalClose()}
+        onModalClose={() => onPerioderMedPensjonModalClose()}
       />
       <Box padding="4">
-        <VStack gap="8">
+        <VStack gap="4">
           <Box>
             <VStack gap="4">
               <Heading size='small'>
@@ -375,61 +375,59 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
             </VStack>
           </Box>
-            <Box>
-              <VStack gap="4">
-                <Heading size='small'>
-                  Trygdeperioder
-                </Heading>
-                {trygdeperioder && trygdeperioder.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
-                      <Heading size='xsmall'>
-                        <HStack gap="4" align="center">
-                          Medlemsperioder
+          <Box>
+            <VStack gap="4">
+              {trygdeperioder && trygdeperioder.length > 0 &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      <HStack gap="4" align="center">
+                        Trygdeperioder
+                        {aktivitet?.status && aktivitet?.status !== 'aktiv' &&
                           <Button
                             size={"xsmall"}
                             variant='tertiary'
-                            onClick={() => _setShowTransferPerioderMedMottattPensjonModal(true)}
+                            onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
                             icon={<ArrowRightLeftIcon/>}
                             disabled={!trygdeperioder || trygdeperioder?.length === 0}
                           >
-                            Overfør til perioder med mottatt pensjon
+                            Overfør til perioder med pensjon
                           </Button>
-                        </HStack>
-                      </Heading>
-                      <AktivitetPerioder
-                        parentNamespace={namespace + '-trygdeperioder'}
-                        parentTarget={"trygdeperioder"}
-                        personID={personID}
-                        personName={personName}
-                        replySed={replySed}
-                        updateReplySed={updateReplySed}
-                        setReplySed={setReplySed}
-                      />
-                    </VStack>
-                  </Box>
-                }
-                {perioderMedMottattPensjon && perioderMedMottattPensjon.length > 0 &&
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                    <VStack gap="4">
-                      <Heading size='xsmall'>
-                        Perioder med mottatt pensjon
-                      </Heading>
-                      <PerioderMedMottattPensjon
-                        parentNamespace={namespace}
-                        parentTarget={"perioderMedMottattPensjon"}
-                        personID={personID}
-                        personName={personName}
-                        replySed={replySed}
-                        updateReplySed={updateReplySed}
-                        setReplySed={setReplySed}
-                      />
-                    </VStack>
-                  </Box>
-                }
+                        }
+                      </HStack>
+                    </Heading>
+                    <AktivitetPerioder
+                      parentNamespace={namespace + '-trygdeperioder'}
+                      parentTarget={"trygdeperioder"}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                    />
+                  </VStack>
+                </Box>
+              }
+              {perioderMedPensjon && perioderMedPensjon.length > 0 &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      Perioder med pensjon
+                    </Heading>
+                    <PerioderMedPensjon
+                      parentNamespace={namespace}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                    />
+                  </VStack>
+                </Box>
+              }
 
-              </VStack>
-            </Box>
+            </VStack>
+          </Box>
         </VStack>
       </Box>
     </>

@@ -20,13 +20,13 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validatePerioderMedMottattPensjonPeriode, ValidationPerioderMedMottattPensjonProps } from './validation'
+import { validatePerioderMedPensjonPeriode, ValidationPerioderMedPensjonProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
+const PerioderMedPensjon: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
   personName,
@@ -37,8 +37,8 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-periodermedmottattpensjon`
-  const target: string = `${personID}.perioderMedMottattPensjon`
+  const namespace = `${parentNamespace}-periodermedpensjon`
+  const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, target)
   const getId = (p: PensjonPeriode | null): string => p ? p.pensjonstype + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new'
 
@@ -47,7 +47,7 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPerioderMedMottattPensjonProps>(validatePerioderMedMottattPensjonPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPerioderMedPensjonProps>(validatePerioderMedPensjonPeriode, namespace)
 
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -106,8 +106,8 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
 
   const onSaveEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationPerioderMedMottattPensjonProps>(
-      clonedValidation, namespace, validatePerioderMedMottattPensjonPeriode, {
+    const hasErrors = performValidation<ValidationPerioderMedPensjonProps>(
+      clonedValidation, namespace, validatePerioderMedPensjonPeriode, {
         pensjonPeriode: _editPensjonPeriode,
         perioder: perioderMedPensjon,
         index: _editIndex,
@@ -265,4 +265,4 @@ const PerioderMedMottattPensjon: React.FC<MainFormProps> = ({
   )
 }
 
-export default PerioderMedMottattPensjon
+export default PerioderMedPensjon

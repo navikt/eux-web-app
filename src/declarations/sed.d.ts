@@ -247,21 +247,12 @@ export interface PersonTypeF001 extends PersonTypeF {
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
 
-  aktivitet: Aktivtitet
-  trygdeperioder: Array<Periode>
-  perioderMedMottattPensjon: Array<PensjonPeriode>
-
-  perioderMedArbeid ?: Array<Periode>
-  perioderMedPensjon ?: Array<PensjonPeriode>
-  perioderMedTrygd ?: Array<Periode>
-  perioderMedYtelser ?: Array<Periode>
-  perioderSomAnsatt?: Array<Periode>
-  perioderSomSelvstendig?: Array<Periode>
-  perioderSomSykMedLoenn?: Array<Periode>
-  perioderSomPermittertMedLoenn?: Array<Periode>
-  perioderSomPermittertUtenLoenn?: Array<Periode>
-  perioderMedITrygdeordning ?: Array<Periode>
-  perioderUtenforTrygdeordning ?: Array<Periode>
+  aktivitet?: Aktivtitet
+  trygdeperioder?: Array<Periode>
+  perioderMedPensjon?: Array<PensjonPeriode>
+  perioderMedRettTilFamilieytelser?: Array<Periode>
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeBrukerF026 extends PersonTypeF {
@@ -271,8 +262,8 @@ export interface PersonTypeBrukerF026 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning ?: Array<Periode>
-  perioderUtenforTrygdeordning ?: Array<Periode>
+  perioderMedITrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som dekkedePerioder (F001/F002)
+  perioderUtenforTrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som udekkedePerioder (F001/F002)
 }
 
 export interface PersonTypeBrukerF027 extends PersonTypeF {
