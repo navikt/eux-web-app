@@ -1,22 +1,20 @@
 import React, {useState} from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
-import {useTranslation} from "react-i18next";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
 import {PensjonPeriode, Periode, ReplySed} from "../../../declarations/sed";
 import {setValidation} from "../../../actions/validation";
-import {Box, Button, Checkbox, CheckboxGroup, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from "@navikt/ds-react";
+import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
 import {Aktivtitet} from "../../../declarations/sed";
 import Ansatt from "./Ansatt/Ansatt";
 import AktivitetPerioder from "./AktivitetPerioder/AktivitetPerioder";
 import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
-import Modal from "../../../components/Modal/Modal";
-import PeriodeText from "../../../components/Forms/PeriodeText";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
+import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -32,10 +30,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   setReplySed
 }:MainFormProps): JSX.Element => {
   const { validation } = useAppSelector(mapState)
-  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-aktivitetogtrygdeperioder`
-  const getId = (p: Periode | null): string => p ? parentNamespace + '-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
   const targetAktivitet = `${personID}.aktivitet`
   const aktivitet: Aktivtitet | undefined = _.get(replySed, targetAktivitet)
@@ -46,11 +42,15 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
 
-  const [_showTransferTrygdePerioderModal, _setShowTransferTrygdePerioderModal] = useState<boolean>(false)
-  const [_valgteTrygdePerioder, _setValgteTrygdeperioder] = useState<Array<Periode>>([])
+  const targetDekkedePerioder = `${personID}.dekkedePerioder`
+  const targetUdekkedePerioder = `${personID}.udekkedePerioder`
+  const dekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetDekkedePerioder)
+  const udekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetUdekkedePerioder)
 
+
+  const [_showTransferTrygdePerioderModal, _setShowTransferTrygdePerioderModal] = useState<boolean>(false)
   const [_showTransferPerioderMedPensjonModal, _setShowTransferPerioderMedPensjonModal] = useState<boolean>(false)
-  const [_valgtePerioderMedPensjon, _setValgtePerioderMedPensjon] = useState<any>(undefined)
+  const [_showTransferPerioderMedRettTilFamilieytelserModal, _setShowTransferPerioderMedRettTilFamilieytelserModal] = useState<boolean>(false)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -72,156 +72,33 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
     }
   }
 
-  const onTrygdePerioderModalClose = () => {
-    _setValgteTrygdeperioder([])
-    _setShowTransferTrygdePerioderModal(false)
-  }
-
-  const onValgteTrygdePerioderChanged = (valgtePerioder: Array<Periode>) => {
-    _setValgteTrygdeperioder(valgtePerioder)
-  }
-
-  const onTransferTrygdeperioder = () => {
-    dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
-    dispatch(updateReplySed(`${targetTrygdeperioder}`, _valgteTrygdePerioder))
-    onTrygdePerioderModalClose()
-  }
-
-  const onPerioderMedPensjonModalClose = () => {
-    _setValgtePerioderMedPensjon(undefined)
-    _setShowTransferPerioderMedPensjonModal(false)
-  }
-
-  const onValgtePerioderMedPensjonChanged = (checked: boolean, valgtPeriode: Periode, index: number) => {
-    if(checked){
-      const valgtPensjonsPeriode = {
-        periode: {
-          ...valgtPeriode
-        },
-        pensjonstype: undefined
-      }
-      _setValgtePerioderMedPensjon({
-        ..._valgtePerioderMedPensjon,
-        ["periode-" + index]: valgtPensjonsPeriode
-      })
-    } else {
-      let copy = _.cloneDeep(_valgtePerioderMedPensjon)
-      copy = _.omit(copy, "periode-" + index)
-      _setValgtePerioderMedPensjon(copy)
-    }
-  }
-
-  const onSetPensjonstype = (pensjonstype: string, index: number) => {
-    _setValgtePerioderMedPensjon({
-      ..._valgtePerioderMedPensjon,
-      ["periode-" + index]: {
-        ..._valgtePerioderMedPensjon["periode-" + index],
-        pensjonstype: pensjonstype
-      }
-    })
-  }
-
-  const onTransferPerioderMedPensjon = () => {
-    const perioderMedPensjon = Object.values(_valgtePerioderMedPensjon)
-    dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
-    dispatch(updateReplySed(`${targetPerioderMedPensjon}`, perioderMedPensjon))
-    onPerioderMedPensjonModalClose()
-  }
-
-
-
   return (
     <>
-      <Modal
-        open={_showTransferTrygdePerioderModal}
-        modal={{
-          modalTitle: "Overfør til trygdeperioder",
-          modalContent: (
-            <Box borderWidth="1" borderColor="border-subtle" padding="4">
-              <CheckboxGroup legend={""} hideLegend={true} onChange={onValgteTrygdePerioderChanged} value={_valgteTrygdePerioder}>
-                {aktivitet?.perioder?.map((p) => {
-                  return (
-                    <Checkbox value={p} key={getId(p)}>
-                      <PeriodeText
-                        periode={p}
-                        namespace={namespace + 'overfør'}
-                        error={{
-                          startdato: undefined,
-                          sluttdato: undefined
-                       }}
-                      />
-                    </Checkbox>
-                  )
-              })}
-              </CheckboxGroup>
-            </Box>
-          ),
-          modalButtons: [
-            {
-              main: true,
-              text: 'Overfør til trygdeperioder',
-              onClick: () => onTransferTrygdeperioder()
-            },
-            {
-              text: 'Lukk',
-              onClick: () => onTrygdePerioderModalClose()
-            },
-          ]
-        }}
-        width="medium"
-        onModalClose={() => onTrygdePerioderModalClose()}
+      <TransferPerioderModal
+        namespace={namespace}
+        title="Overfør til trygdeperioder"
+        modalOpen={_showTransferTrygdePerioderModal}
+        setModalOpen={_setShowTransferTrygdePerioderModal}
+        target={targetTrygdeperioder}
+        perioder={aktivitet?.perioder}
       />
-      <Modal
-        open={_showTransferPerioderMedPensjonModal}
-        modal={{
-          modalTitle: "Overfør til perioder med pensjon",
-          modalContent: (
-            <Box borderWidth="1" borderColor="border-subtle" padding="4">
-              {trygdeperioder?.map((p, i) => {
-                return (
-                  <HStack gap="4" align={"start"}>
-                    <Checkbox
-                      key={getId(p)}
-                      checked={!!(_valgtePerioderMedPensjon && _valgtePerioderMedPensjon["periode-" + i])}
-                      onChange={(e) => onValgtePerioderMedPensjonChanged(e.target.checked, p, i)}
-                    >
-                      <PeriodeText
-                        periode={p}
-                        namespace={namespace + 'overfør'}
-                        error={{
-                          startdato: undefined,
-                          sluttdato: undefined
-                        }}
-                      />
-                    </Checkbox>
-                    <Spacer/>
-                    {_valgtePerioderMedPensjon && _valgtePerioderMedPensjon["periode-" + i] &&
-                      <RadioGroup legend="Grunnlag" hideLegend={true} onChange={(pensjonsType: string) => onSetPensjonstype(pensjonsType, i)}>
-                        <HStack gap="4">
-                          <Radio value="alderspensjon">{t('el:option-trygdeordning-alderspensjon')}</Radio>
-                          <Radio value="uførhet">{t('el:option-trygdeordning-uførhet')}</Radio>
-                        </HStack>
-                      </RadioGroup>
-                    }
-                  </HStack>
-                )
-              })}
-            </Box>
-          ),
-          modalButtons: [
-            {
-              main: true,
-              text: 'Overfør til perioder med pensjon',
-              onClick: () => onTransferPerioderMedPensjon()
-            },
-            {
-              text: 'Lukk',
-              onClick: () => onPerioderMedPensjonModalClose()
-            },
-          ]
-        }}
-        width="medium"
-        onModalClose={() => onPerioderMedPensjonModalClose()}
+      <TransferPerioderModal
+        namespace={namespace}
+        title="Overfør til perioder med pensjon"
+        modalOpen={_showTransferPerioderMedPensjonModal}
+        setModalOpen={_setShowTransferPerioderMedPensjonModal}
+        target={targetPerioderMedPensjon}
+        perioder={trygdeperioder}
+        periodeType="pensjon"
+      />
+      <TransferPerioderModal
+        namespace={namespace}
+        title="Overfør til perioder  med rett til familieytelser"
+        modalOpen={_showTransferPerioderMedRettTilFamilieytelserModal}
+        setModalOpen={_setShowTransferPerioderMedRettTilFamilieytelserModal}
+        perioder={trygdeperioder}
+        target={personID}
+        periodeType="dekketUdekket"
       />
       <Box padding="4">
         <VStack gap="4">
@@ -380,22 +257,44 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
               {trygdeperioder && trygdeperioder.length > 0 &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
-                    <Heading size='xsmall'>
+                      <Heading size='xsmall'>
+                        <HStack gap="4" align="center">
+                          Trygdeperioder
+                          {aktivitet?.status && aktivitet?.status === 'aktiv' &&
+                            <Button
+                              size={"xsmall"}
+                              variant='tertiary'
+                              onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
+                              icon={<ArrowRightLeftIcon/>}
+                              disabled={!trygdeperioder || trygdeperioder?.length === 0}
+                            >
+                              Overfør til perioder med rett til familieytelser
+                            </Button>
+                          }
+                        </HStack>
+                      </Heading>
+                    {aktivitet?.status && aktivitet?.status !== 'aktiv' &&
                       <HStack gap="4" align="center">
-                        Trygdeperioder
-                        {aktivitet?.status && aktivitet?.status !== 'aktiv' &&
-                          <Button
-                            size={"xsmall"}
-                            variant='tertiary'
-                            onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
-                            icon={<ArrowRightLeftIcon/>}
-                            disabled={!trygdeperioder || trygdeperioder?.length === 0}
-                          >
-                            Overfør til perioder med pensjon
-                          </Button>
-                        }
+                        <Button
+                          size={"xsmall"}
+                          variant='tertiary'
+                          onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
+                          icon={<ArrowRightLeftIcon/>}
+                          disabled={!trygdeperioder || trygdeperioder?.length === 0}
+                        >
+                          Overfør til perioder med pensjon
+                        </Button>
+                        <Button
+                          size={"xsmall"}
+                          variant='tertiary'
+                          onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
+                          icon={<ArrowRightLeftIcon/>}
+                          disabled={!trygdeperioder || trygdeperioder?.length === 0}
+                        >
+                          Overfør til perioder med rett til familieytelser
+                        </Button>
                       </HStack>
-                    </Heading>
+                    }
                     <AktivitetPerioder
                       parentNamespace={namespace + '-trygdeperioder'}
                       parentTarget={"trygdeperioder"}
@@ -416,6 +315,44 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     </Heading>
                     <PerioderMedPensjon
                       parentNamespace={namespace}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                    />
+                  </VStack>
+                </Box>
+              }
+
+              {dekkedePerioder && dekkedePerioder.length > 0 &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      Dekkede perioder
+                    </Heading>
+                    <AktivitetPerioder
+                      parentNamespace={namespace + '-dekkedeperioder'}
+                      parentTarget={"dekkedePerioder"}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                    />
+                  </VStack>
+                </Box>
+              }
+
+              {udekkedePerioder && udekkedePerioder.length > 0 &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      Udekkede perioder
+                    </Heading>
+                    <AktivitetPerioder
+                      parentNamespace={namespace + '-udekkedeperioder'}
+                      parentTarget={"udekkedePerioder"}
                       personID={personID}
                       personName={personName}
                       replySed={replySed}
