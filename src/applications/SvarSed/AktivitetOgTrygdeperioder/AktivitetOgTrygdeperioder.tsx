@@ -42,8 +42,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
 
+  const targetPerioderMedRettTilFamilieytelser = `${personID}.perioderMedRettTilFamilieytelser`
   const targetDekkedePerioder = `${personID}.dekkedePerioder`
   const targetUdekkedePerioder = `${personID}.udekkedePerioder`
+  const perioderMedRettTilFamilieytelser: Array<Periode> | undefined = _.get(replySed, targetPerioderMedRettTilFamilieytelser)
   const dekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetDekkedePerioder)
   const udekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetUdekkedePerioder)
 
@@ -315,6 +317,25 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     </Heading>
                     <PerioderMedPensjon
                       parentNamespace={namespace}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                    />
+                  </VStack>
+                </Box>
+              }
+
+              {perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0 &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      Perioder med rett til familieytelser
+                    </Heading>
+                    <AktivitetPerioder
+                      parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
+                      parentTarget={"perioderMedRettTilFamilieytelser"}
                       personID={personID}
                       personName={personName}
                       replySed={replySed}

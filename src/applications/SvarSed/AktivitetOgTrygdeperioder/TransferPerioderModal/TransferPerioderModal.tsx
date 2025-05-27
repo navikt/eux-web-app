@@ -52,31 +52,39 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   }
 
   const onTransferPerioder = () => {
-    let perioder: Array<Periode | PensjonPeriode> = []
+
 
     if(periodeType && periodeType === "pensjon") {
-      perioder = Object.values(_valgtePerioder)
+      const perioderMedPensjon: Array<PensjonPeriode> = Object.values(_valgtePerioder)
+
+      dispatch(updateReplySed(`${target}`, undefined))
+      dispatch(updateReplySed(`${target}`, perioderMedPensjon))
     } else if(periodeType && periodeType === "dekketUdekket") {
+      const perioderMedRettTilFamilieytelser: Array<Periode> = []
       const dekket: Array<Periode> = []
       const udekket: Array<Periode> = []
 
       Object.values(_valgtePerioder).forEach((p: any) => {
+        perioderMedRettTilFamilieytelser.push(p.periode)
         p.dekketUdekket === "dekket" ? dekket.push(p.periode) : udekket.push(p.periode)
       })
 
+      dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, undefined))
       dispatch(updateReplySed(`${target}.dekkedePerioder`, undefined))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, undefined))
+      dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, udekket))
-      onModalClose()
-      return
     } else {
+      const perioder: Array<Periode> = []
       Object.values(_valgtePerioder).forEach((p: any) => {
         perioder.push(p.periode)
       })
+
+      dispatch(updateReplySed(`${target}`, undefined))
+      dispatch(updateReplySed(`${target}`, perioder))
     }
-    dispatch(updateReplySed(`${target}`, undefined))
-    dispatch(updateReplySed(`${target}`, perioder))
+
     onModalClose()
   }
 
