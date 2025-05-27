@@ -25,7 +25,7 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const AktivitetPerioder: React.FC<MainFormProps> = ({
+const Perioder: React.FC<MainFormProps> = ({
   parentNamespace,
   parentTarget,
   personID,
@@ -212,4 +212,4 @@ const AktivitetPerioder: React.FC<MainFormProps> = ({
   )
 }
 
-export default AktivitetPerioder
+export default Perioder

@@ -11,7 +11,7 @@ import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
 import {Aktivtitet} from "../../../declarations/sed";
 import Ansatt from "./Ansatt/Ansatt";
-import AktivitetPerioder from "./AktivitetPerioder/AktivitetPerioder";
+import Perioder from "./Perioder/Perioder";
 import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
@@ -210,7 +210,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       />
                     }
                     {aktivitet?.type !== 'ansatt' &&
-                      <AktivitetPerioder
+                      <Perioder
                         parentNamespace={namespace + '-' + aktivitet?.type}
                         parentTarget={"aktivitet.perioder"}
                         personID={personID}
@@ -240,7 +240,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                         </Button>
                       </HStack>
                     </Heading>
-                    <AktivitetPerioder
+                    <Perioder
                       parentNamespace={namespace + '-' + aktivitet?.type}
                       parentTarget={"aktivitet.perioder"}
                       personID={personID}
@@ -297,7 +297,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                         </Button>
                       </HStack>
                     }
-                    <AktivitetPerioder
+                    <Perioder
                       parentNamespace={namespace + '-trygdeperioder'}
                       parentTarget={"trygdeperioder"}
                       personID={personID}
@@ -333,7 +333,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     <Heading size='xsmall'>
                       Perioder med rett til familieytelser
                     </Heading>
-                    <AktivitetPerioder
+                    <Perioder
                       parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
                       parentTarget={"perioderMedRettTilFamilieytelser"}
                       personID={personID}
@@ -352,7 +352,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     <Heading size='xsmall'>
                       Dekkede perioder
                     </Heading>
-                    <AktivitetPerioder
+                    <Perioder
                       parentNamespace={namespace + '-dekkedeperioder'}
                       parentTarget={"dekkedePerioder"}
                       personID={personID}
@@ -371,7 +371,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     <Heading size='xsmall'>
                       Udekkede perioder
                     </Heading>
-                    <AktivitetPerioder
+                    <Perioder
                       parentNamespace={namespace + '-udekkedeperioder'}
                       parentTarget={"udekkedePerioder"}
                       personID={personID}
