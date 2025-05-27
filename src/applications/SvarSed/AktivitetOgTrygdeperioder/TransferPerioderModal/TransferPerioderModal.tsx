@@ -7,6 +7,7 @@ import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
+import moment from "moment";
 
 export interface TransferPerioderModalProps {
   namespace: string
@@ -65,8 +66,14 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       const udekket: Array<Periode> = []
 
       Object.values(_valgtePerioder).forEach((p: any) => {
-        perioderMedRettTilFamilieytelser.push(p.periode)
-        p.dekketUdekket === "dekket" ? dekket.push(p.periode) : udekket.push(p.periode)
+        let lukketPeriode: Periode = _.cloneDeep(p.periode)
+        if(lukketPeriode.aapenPeriodeType){
+          const today = new Date()
+          delete lukketPeriode.aapenPeriodeType
+          lukketPeriode.sluttdato = moment(today).format('YYYY-MM-DD')
+        }
+        perioderMedRettTilFamilieytelser.push(lukketPeriode)
+        p.dekketUdekket === "dekket" ? dekket.push(lukketPeriode) : udekket.push(lukketPeriode)
       })
 
       dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, undefined))
