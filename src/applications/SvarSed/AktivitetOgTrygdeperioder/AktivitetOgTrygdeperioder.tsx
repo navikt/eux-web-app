@@ -68,6 +68,15 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   })
 
   const onAktivitetChange = (property: string, value: string) => {
+    if(property === "status"){
+      dispatch(updateReplySed(`${targetAktivitet}.perioder`, undefined))
+      dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
+      dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
+      dispatch(updateReplySed(`${targetPerioderMedRettTilFamilieytelser}`, undefined))
+      dispatch(updateReplySed(`${targetDekkedePerioder}`, undefined))
+      dispatch(updateReplySed(`${targetUdekkedePerioder}`, undefined))
+    }
+
     dispatch(updateReplySed(`${targetAktivitet}.${property}`, value.trim()))
     if(property === "status"){
       dispatch(updateReplySed(`${targetAktivitet}.type`, undefined))
@@ -83,6 +92,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         setModalOpen={_setShowTransferTrygdePerioderModal}
         target={targetTrygdeperioder}
         perioder={aktivitet?.perioder}
+        resetPerioder={[targetTrygdeperioder, targetPerioderMedPensjon, targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
+        resetWarning={trygdeperioder && trygdeperioder.length > 0}
       />
       <TransferPerioderModal
         namespace={namespace}
@@ -92,6 +103,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         target={targetPerioderMedPensjon}
         perioder={trygdeperioder}
         periodeType="pensjon"
+        resetPerioder={[targetPerioderMedPensjon]}
+        resetWarning={perioderMedPensjon && perioderMedPensjon.length > 0}
       />
       <TransferPerioderModal
         namespace={namespace}
@@ -101,13 +114,15 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         perioder={trygdeperioder}
         target={personID}
         periodeType="dekketUdekket"
+        resetPerioder={[targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
+        resetWarning={perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0}
       />
       <Box padding="4">
         <VStack gap="4">
           <Box>
             <VStack gap="4">
               <Heading size='small'>
-                Aktivitet
+                Aktivitet og trygdeperioder
               </Heading>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">

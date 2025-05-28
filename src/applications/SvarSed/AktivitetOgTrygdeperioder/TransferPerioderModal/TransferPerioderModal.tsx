@@ -17,6 +17,8 @@ export interface TransferPerioderModalProps {
   target?: any
   perioder: Array<Periode> | undefined
   periodeType?: string
+  resetPerioder?: Array<string>
+  resetWarning?: boolean
 }
 
 const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
@@ -26,7 +28,9 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   setModalOpen,
   target,
   perioder,
-  periodeType = undefined
+  periodeType = undefined,
+  resetPerioder,
+  resetWarning
 }: TransferPerioderModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -53,12 +57,12 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   }
 
   const onTransferPerioder = () => {
-
+    resetPerioder?.forEach((target) => {
+      dispatch(updateReplySed(`${target}`, undefined))
+    })
 
     if(periodeType && periodeType === "pensjon") {
       const perioderMedPensjon: Array<PensjonPeriode> = Object.values(_valgtePerioder)
-
-      dispatch(updateReplySed(`${target}`, undefined))
       dispatch(updateReplySed(`${target}`, perioderMedPensjon))
     } else if(periodeType && periodeType === "dekketUdekket") {
       const perioderMedRettTilFamilieytelser: Array<Periode> = []
@@ -75,10 +79,6 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
         perioderMedRettTilFamilieytelser.push(lukketPeriode)
         p.dekketUdekket === "dekket" ? dekket.push(lukketPeriode) : udekket.push(lukketPeriode)
       })
-
-      dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, undefined))
-      dispatch(updateReplySed(`${target}.dekkedePerioder`, undefined))
-      dispatch(updateReplySed(`${target}.udekkedePerioder`, undefined))
       dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, udekket))
@@ -87,8 +87,6 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       Object.values(_valgtePerioder).forEach((p: any) => {
         perioder.push(p.periode)
       })
-
-      dispatch(updateReplySed(`${target}`, undefined))
       dispatch(updateReplySed(`${target}`, perioder))
     }
 
@@ -123,6 +121,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   return(
     <Modal
       open={modalOpen}
+      description={resetWarning ? "OBS! Allerede overførte perioder vil bli overskrevet!" : undefined}
       modal={{
         modalTitle: title,
         modalContent: (
