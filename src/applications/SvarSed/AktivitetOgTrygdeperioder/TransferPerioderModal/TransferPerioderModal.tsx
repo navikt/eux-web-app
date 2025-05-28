@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
-import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {Box, Checkbox, ErrorMessage, HStack, Radio, RadioGroup, Spacer, VStack} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
 import {PensjonPeriode, Periode} from "../../../../declarations/sed";
 import _ from "lodash";
@@ -41,8 +41,10 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
     if(checked){
       const valgtPeriode = {
         periode: {
-          ...periode
-        }
+          ...periode,
+        },
+        ...(periodeType && periodeType === "pensjon" && {pensjonstype: undefined}),
+        ...(periodeType && periodeType === "dekketUdekket" && {dekketUdekket: undefined})
       }
 
       _setValgtePerioder({
@@ -54,6 +56,11 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       copy = _.omit(copy, "periode-" + index)
       _setValgtePerioder(copy)
     }
+  }
+  const isAllPropertiesDefined = (arr: any): boolean => {
+    return arr.every((obj:any) =>
+      Object.values(obj).every(value => value !== undefined)
+    );
   }
 
   const onTransferPerioder = () => {
@@ -169,6 +176,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
           {
             main: true,
             text: title,
+            disabled: !_valgtePerioder || Object.values(_valgtePerioder).length === 0 || !isAllPropertiesDefined(Object.values(_valgtePerioder)),
             onClick: () => onTransferPerioder()
           },
           {
