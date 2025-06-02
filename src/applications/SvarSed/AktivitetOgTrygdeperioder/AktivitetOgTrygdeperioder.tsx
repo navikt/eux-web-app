@@ -86,7 +86,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const hasOpenPeriods = (periods: Array<Periode> | undefined) => {
     return periods?.find((p) => p.aapenPeriodeType)
   }
-  
+
   return (
     <>
       <TransferPerioderModal

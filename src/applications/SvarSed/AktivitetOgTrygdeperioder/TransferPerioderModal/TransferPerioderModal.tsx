@@ -96,7 +96,8 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
           lukketPeriode.sluttdato = moment(today).format('YYYY-MM-DD')
         }
         perioderMedRettTilFamilieytelser.push(lukketPeriode)
-        p.dekketUdekket === "dekket" ? dekket.push(lukketPeriode) : udekket.push(lukketPeriode)
+        if(p.dekketUdekket === "dekket") dekket.push(lukketPeriode)
+        if(p.dekketUdekket === "udekket") udekket.push(lukketPeriode)
       })
       dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
