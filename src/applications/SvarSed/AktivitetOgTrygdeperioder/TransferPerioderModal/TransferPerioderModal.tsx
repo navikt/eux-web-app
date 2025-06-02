@@ -58,8 +58,13 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
     }
   }
   const isAllPropertiesDefined = (arr: any): boolean => {
-    return arr.every((obj:any) =>
-      Object.values(obj).every(value => value !== undefined)
+    return arr.every((obj:any) =>{
+        if(Object.hasOwn(obj, "dekketUdekket")){
+          return true
+        } else {
+          return Object.values(obj).every(value => value !== undefined)
+        }
+    }
     );
   }
 
