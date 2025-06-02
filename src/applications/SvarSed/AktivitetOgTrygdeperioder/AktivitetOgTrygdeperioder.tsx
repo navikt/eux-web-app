@@ -83,6 +83,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
     }
   }
 
+  const hasOpenPeriods = (periods: Array<Periode> | undefined) => {
+    return periods?.find((p) => p.aapenPeriodeType)
+  }
+  
   return (
     <>
       <TransferPerioderModal
@@ -116,6 +120,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
         periodeType="dekketUdekket"
         resetPerioder={[targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
         resetWarning={perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0}
+        closedPeriodsWarning={!!hasOpenPeriods(trygdeperioder)}
       />
       <Box padding="4">
         <VStack gap="4">

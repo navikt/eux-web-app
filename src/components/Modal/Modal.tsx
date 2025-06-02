@@ -42,7 +42,7 @@ export interface ModalProps {
   open: boolean,
   modal: ModalContent | undefined
   width?: number | "small" | "medium" | `${number}${string}` | undefined
-  description?: string
+  description?: Array<string>
 }
 
 const ModalFC: React.FC<ModalProps> = ({
@@ -68,7 +68,11 @@ const ModalFC: React.FC<ModalProps> = ({
     >
       <Modal.Header>
         <Heading size="medium">{modal?.modalTitle ?? ''}</Heading>
-        {description && <BodyShort size="small">{description}</BodyShort>}
+        <>
+          {description?.map((d) => {
+            return <BodyShort size="small">{d}</BodyShort>
+          })}
+        </>
       </Modal.Header>
       <Modal.Body>
         <ContentDiv className={classNames({ icon: !!icon })}>

@@ -19,6 +19,7 @@ export interface TransferPerioderModalProps {
   periodeType?: string
   resetPerioder?: Array<string>
   resetWarning?: boolean
+  closedPeriodsWarning?: boolean
 }
 
 const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
@@ -30,12 +31,18 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   perioder,
   periodeType = undefined,
   resetPerioder,
-  resetWarning
+  resetWarning,
+  closedPeriodsWarning
 }: TransferPerioderModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const getId = (p: Periode | null): string => p ? namespace + '-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
   const [_valgtePerioder, _setValgtePerioder] = useState<any>(undefined)
+  const warnings: Array<string> = []
+
+  if(resetWarning) warnings.push("OBS! Allerede overførte perioder vil bli overskrevet!")
+  if(closedPeriodsWarning) warnings.push("OBS! Åpne perioder vil få satt sluttdato til dagens dato!")
+
 
   const onValgtePerioderChanged = (checked: boolean, periode: Periode, index: number) => {
     if(checked){
@@ -133,7 +140,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   return(
     <Modal
       open={modalOpen}
-      description={resetWarning ? "OBS! Allerede overførte perioder vil bli overskrevet!" : undefined}
+      description={warnings.length > 0  ? warnings : undefined}
       modal={{
         modalTitle: title,
         modalContent: (
