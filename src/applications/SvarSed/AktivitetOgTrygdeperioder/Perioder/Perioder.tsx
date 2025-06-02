@@ -31,7 +31,8 @@ const Perioder: React.FC<MainFormProps> = ({
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
@@ -48,6 +49,9 @@ const Perioder: React.FC<MainFormProps> = ({
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAktivitetPeriodeProps>(validateAktivitetPeriode, namespace)
+
+  const periodeType = options && options.periodeType ? options.periodeType : "withcheckbox"
+  const requiredSluttDato = options && options.requiredSluttDato ? options.requiredSluttDato : false
 
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -136,7 +140,7 @@ const Perioder: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false}>
+        <HStack gap="4" wrap={false} align={"start"}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -149,6 +153,8 @@ const Perioder: React.FC<MainFormProps> = ({
                 hideLabel={false}
                 setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periode}
+                requiredSluttDato={requiredSluttDato}
+                periodeType={periodeType}
               />
               )
             : (

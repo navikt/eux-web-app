@@ -356,6 +356,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       replySed={replySed}
                       updateReplySed={updateReplySed}
                       setReplySed={setReplySed}
+                      options={{
+                        periodeType: "simple",
+                        requiredSluttDato: true
+                      }}
                     />
                   </VStack>
                 </Box>
@@ -375,6 +379,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       replySed={replySed}
                       updateReplySed={updateReplySed}
                       setReplySed={setReplySed}
+                      options={{
+                        periodeType: "simple",
+                        requiredSluttDato: true
+                      }}
                     />
                   </VStack>
                 </Box>
@@ -394,6 +402,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       replySed={replySed}
                       updateReplySed={updateReplySed}
                       setReplySed={setReplySed}
+                      options={{
+                        periodeType: "simple",
+                        requiredSluttDato: true
+                      }}
                     />
                   </VStack>
                 </Box>
