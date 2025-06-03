@@ -15,6 +15,7 @@ import Perioder from "./Perioder/Perioder";
 import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
+import {useTranslation} from "react-i18next";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -29,6 +30,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   updateReplySed,
   setReplySed
 }:MainFormProps): JSX.Element => {
+  const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-aktivitetogtrygdeperioder`
@@ -90,7 +92,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
     <>
       <TransferPerioderModal
         namespace={namespace}
-        title="Overfør til trygdeperioder"
+        title={t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
         modalOpen={_showTransferTrygdePerioderModal}
         setModalOpen={_setShowTransferTrygdePerioderModal}
         target={targetTrygdeperioder}
@@ -100,7 +102,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
       />
       <TransferPerioderModal
         namespace={namespace}
-        title="Overfør til perioder med pensjon"
+        title={t('label:overfør-perioder-til', {periodeType: "perioder med pensjon"})}
         modalOpen={_showTransferPerioderMedPensjonModal}
         setModalOpen={_setShowTransferPerioderMedPensjonModal}
         target={targetPerioderMedPensjon}
@@ -111,7 +113,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
       />
       <TransferPerioderModal
         namespace={namespace}
-        title="Overfør til perioder  med rett til familieytelser"
+        title={t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
         modalOpen={_showTransferPerioderMedRettTilFamilieytelserModal}
         setModalOpen={_setShowTransferPerioderMedRettTilFamilieytelserModal}
         perioder={trygdeperioder}
@@ -126,12 +128,12 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
           <Box>
             <VStack gap="4">
               <Heading size='small'>
-                Aktivitet og trygdeperioder
+                {t('label:aktivitet-og-trygdeperioder')}
               </Heading>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">
                   <RadioGroup
-                    legend="Personens status"
+                    legend={t('label:personens-status')}
                     value={aktivitet?.status}
                     error={validation[namespace + '-aktivitet-status']?.feilmelding}
                     id={namespace + '-aktivitet-status'}
@@ -139,18 +141,18 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     onChange={(value) => onAktivitetChange("status", value)}
                   >
                     <Radio value='aktiv'>
-                      Personen betraktes som aktiv
+                      {t('el:radio-aktivitet-status-aktiv')}
                     </Radio>
                     <Radio value='inaktiv'>
-                      Personen betraktes som inaktiv
+                      {t('el:radio-aktivitet-status-inaktiv')}
                     </Radio>
                     <Radio value='ingeninfo'>
-                      Ingen informasjon om personens aktivitet
+                      {t('el:radio-aktivitet-status-ingeninfo')}
                     </Radio>
                   </RadioGroup>
                   {aktivitet?.status && aktivitet?.status === 'aktiv' &&
                     <RadioGroup
-                      legend="Type arbeidsforhold"
+                      legend={t('label:arbeidsforhold-type')}
                       value={aktivitet?.type}
                       error={validation[namespace + '-aktivitet-type']?.feilmelding}
                       id={namespace + '-aktivitet-type'}
@@ -158,28 +160,25 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       onChange={(value) => onAktivitetChange("type", value)}
                     >
                       <Radio value='ansatt'>
-                        Ansatt
+                        {t('el:radio-aktivitet-type-ansatt')}
                       </Radio>
                       <Radio value='selvstendig_næringsdrivende'>
-                        Selvstendig næringsdrivende
+                        {t('el:radio-aktivitet-type-selvstendig-naeringsdrivende')}
                       </Radio>
                       <Radio value='opphør_aktivitet_sykdom_med_lønn'>
-                        Personen mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for
-                        ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke,
-                        yrkessykdom eller arbeidsledighet.
+                        {t('el:radio-aktivitet-type-mottar-loenn')}
                       </Radio>
                       <Radio value='permisjon_med_lønnn'>
-                        Personen har permisjon med lønn, er i streik eller lockout.
+                        {t('el:radio-aktivitet-type-permisjon-med-loenn')}
                       </Radio>
                       <Radio value='permisjon_uten_lønnn'>
-                        Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i
-                        samsvar med lovgivningen i avsenderlandet.
+                        {t('el:radio-aktivitet-type-permisjon-uten-loenn')}
                       </Radio>
                     </RadioGroup>
                   }
                   {aktivitet?.status && aktivitet?.status === 'inaktiv' &&
                     <RadioGroup
-                      legend="Inaktiv person"
+                      legend={t('label:inaktiv-person')}
                       value={aktivitet?.type}
                       error={validation[namespace + '-aktivitet-type']?.feilmelding}
                       id={namespace + '-aktivitet-type'}
@@ -188,13 +187,13 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     >
                       <HStack gap="4">
                         <Radio value='inaktiv'>
-                          Personen er inaktiv
+                          {t('el:radio-aktivitet-type-inaktiv')}
                         </Radio>
                         <Radio value='inaktiv_rett_til_familieytelse'>
-                          Personen er inaktiv og har rett til familieytelser
+                          {t('el:radio-aktivitet-type-inaktiv-rett-til-familieytelser')}
                         </Radio>
                         <Radio value='annet'>
-                          Annet
+                          {t('el:radio-aktivitet-type-annet')}
                         </Radio>
                       </HStack>
                     </RadioGroup>
@@ -206,7 +205,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   <VStack gap="4">
                     <Heading size='xsmall'>
                       <HStack gap="4" align="center">
-                        Ansettelsesperioder
+                        {t('label:ansettelsesperioder')}
                         <Button
                           size={"xsmall"}
                           variant='tertiary'
@@ -214,7 +213,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
                         >
-                          Overfør til trygdeperioder
+                          {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
                         </Button>
                       </HStack>
                     </Heading>
@@ -247,7 +246,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   <VStack gap="4">
                     <Heading size='xsmall'>
                       <HStack gap="4" align="center">
-                        Perioder uten aktivitet
+                        {t('label:perioder-uten-aktivitet')}
                         <Button
                           size={"xsmall"}
                           variant='tertiary'
@@ -255,7 +254,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
                         >
-                          Overfør til trygdeperioder
+                          {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
                         </Button>
                       </HStack>
                     </Heading>
@@ -280,7 +279,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   <VStack gap="4">
                       <Heading size='xsmall'>
                         <HStack gap="4" align="center">
-                          Trygdeperioder
+                          {t('label:trygdeperioder')}
                           {aktivitet?.status && aktivitet?.status === 'aktiv' &&
                             <Button
                               size={"xsmall"}
@@ -289,7 +288,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                               icon={<ArrowRightLeftIcon/>}
                               disabled={!trygdeperioder || trygdeperioder?.length === 0}
                             >
-                              Overfør til perioder med rett til familieytelser
+                              {t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
                             </Button>
                           }
                         </HStack>
@@ -303,7 +302,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!trygdeperioder || trygdeperioder?.length === 0}
                         >
-                          Overfør til perioder med pensjon
+                          {t('label:overfør-perioder-til', {periodeType: "perioder med pensjon"})}
                         </Button>
                         <Button
                           size={"xsmall"}
@@ -312,7 +311,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!trygdeperioder || trygdeperioder?.length === 0}
                         >
-                          Overfør til perioder med rett til familieytelser
+                          {t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
                         </Button>
                       </HStack>
                     }
@@ -332,7 +331,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
                     <Heading size='xsmall'>
-                      Perioder med pensjon
+                      {t('label:perioder-med-pensjon')}
                     </Heading>
                     <PerioderMedPensjon
                       parentNamespace={namespace}
@@ -350,7 +349,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
                     <Heading size='xsmall'>
-                      Perioder med rett til familieytelser
+                      {t('label:perioder-med-rett-til-familieytelser')}
                     </Heading>
                     <Perioder
                       parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
@@ -373,7 +372,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
                     <Heading size='xsmall'>
-                      Dekkede perioder
+                      {t('label:dekkede-perioder')}
                     </Heading>
                     <Perioder
                       parentNamespace={namespace + '-dekkedeperioder'}
@@ -396,7 +395,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
                     <Heading size='xsmall'>
-                      Udekkede perioder
+                      {t('label:udekkede-perioder')}
                     </Heading>
                     <Perioder
                       parentNamespace={namespace + '-udekkedeperioder'}

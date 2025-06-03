@@ -254,12 +254,6 @@
   "option-person-avdød" : "Avdød",
   "option-person-annen-person" : "Annen person",
 
-  "option-personensstatus-1": "Ansatt",
-  "option-personensstatus-2": "Selvstendig næringsdrivende",
-  "option-personensstatus-3": "Mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
-  "option-personensstatus-4": "Personen har permisjon med lønn, er i streik eller lockout",
-  "option-personensstatus-5": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
-
   "option-svarpåminnelse-01" : "Kan ikke fremlegge etterspurt informasjonen",
   "option-svarpåminnelse-02" : "Kan ikke fremlegge etterspurte dokumenter",
   "option-svarpåminnelse-03" : "Personen samarbeidet ikke",
@@ -300,6 +294,9 @@
   "option-trygdeordning-perioderMedPensjon": "Pensjon",
   "option-trygdeordning-alderspensjon": "Alderspensjon",
   "option-trygdeordning-uførhet": "Uførhet",
+  "option-trygdeordning-dekket": "Dekket",
+  "option-trygdeordning-udekket": "Udekket",
+
 
   "option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet" : "Inntekt for periode etter avslutning av arbeidsforhold eller opphør i selvstendig næringsvirksomhet",
   "option-typebeløp-vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie" : "Vederlag for ferie som ikke er tatt ut (årlig ferie)",
@@ -323,6 +320,19 @@
 
   "option-ytterligere-1" : "Melding om mer informasjon",
   "option-ytterligere-2" : "Anmodning om tilleggsinformasjon",
+
+  "radio-aktivitet-type-ansatt": "Ansatt",
+  "radio-aktivitet-type-selvstendig-naeringsdrivende": "Selvstendig næringsdrivende",
+  "radio-aktivitet-type-mottar-loenn": "Personen mottar lønn eller ytelser, unntatt pensjon, i en periode med opphør i aktivitet for ansatt eller selvstendig næringsdrivende på grunn av sykdom, omsorg for barn, arbeidsulykke, yrkessykdom eller arbeidsledighet.",
+  "radio-aktivitet-type-permisjon-med-loenn": "Personen har permisjon med lønn, er i streik eller lockout",
+  "radio-aktivitet-type-permisjon-uten-loenn": "Personen har permisjon uten lønn på grunn av omsorg for barn eller en tilsvarende periode i samsvar med lovgivningen i avsenderlandet",
+  "radio-aktivitet-type-inaktiv": "Personen er inaktiv",
+  "radio-aktivitet-type-inaktiv-rett-til-familieytelser": "Personen er inaktiv og har rett til familieytelser",
+  "radio-aktivitet-type-annet": "Annet",
+
+  "radio-aktivitet-status-aktiv": "Personen betraktes som aktiv",
+  "radio-aktivitet-status-inaktiv": "Personen betraktes som inaktiv",
+  "radio-aktivitet-status-ingeninfo": "Ingen informasjon om personens aktivitet",
 
   "placeholder-select-default": "Velg...",
   "placeholder-date-default": "DD.MM.ÅÅÅÅ"

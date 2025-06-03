@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
-import {Box, Checkbox, ErrorMessage, HStack, Radio, RadioGroup, Spacer, VStack} from "@navikt/ds-react";
+import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
 import {PensjonPeriode, Periode} from "../../../../declarations/sed";
 import _ from "lodash";
@@ -175,8 +175,8 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
                   {periodeType && periodeType === "dekketUdekket" && _valgtePerioder && _valgtePerioder["periode-" + i] &&
                     <RadioGroup legend="Dekket/Udekket" hideLegend={true} onChange={(dekketUdekket: string) => onSetDekketUdekketPeriode(dekketUdekket, i)}>
                       <HStack gap="4">
-                        <Radio value="dekket">Dekket</Radio>
-                        <Radio value="udekket">Udekket</Radio>
+                        <Radio value="dekket">{t('el:option-trygdeordning-dekket')}</Radio>
+                        <Radio value="udekket">{t('el:option-trygdeordning-udekket')}</Radio>
                       </HStack>
                     </RadioGroup>
                   }
@@ -193,7 +193,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
             onClick: () => onTransferPerioder()
           },
           {
-            text: 'Lukk',
+            text: t('el:buton-close'),
             onClick: () => onModalClose()
           },
         ]
