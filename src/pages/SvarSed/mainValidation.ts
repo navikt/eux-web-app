@@ -43,10 +43,6 @@ import {
   validatePerioderDagpenger,
   ValidatePerioderDagpengerProps
 } from 'applications/SvarSed/PeriodeForDagpenger/validation'
-import {
-  validatePersonensStatusPerioder,
-  ValidationPersonensStatusProps
-} from 'applications/SvarSed/PersonensStatus/validation'
 import { validatePersonLight, ValidationPersonLightProps } from 'applications/SvarSed/PersonLight/validation'
 import {
   validatePersonopplysninger,
@@ -77,7 +73,6 @@ import {
   Flyttegrunn,
   FSed,
   Periode,
-  PersonTypeF001,
   PersonBarn,
   PersonInfo,
   ReplySed,
@@ -247,10 +242,12 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
         }, true))
+/*
         const person: PersonTypeF001 = _.get(replySed, `${personID}`)
         hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
           person, personName
         }, true))
+*/
 
         // Specific to F003
         if(isF003Sed(replySed)){

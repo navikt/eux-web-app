@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
-import {PensjonPeriode, Periode, ReplySed} from "../../../declarations/sed";
+import {PensjonPeriode, Periode, PersonTypeF001, ReplySed} from "../../../declarations/sed";
 import {setValidation} from "../../../actions/validation";
 import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
@@ -56,11 +56,10 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
+    const person: PersonTypeF001 = _.get(replySed, personID!)
     performValidation<ValidateAktivitetOgTrygdeperioderProps>(
       clonedValidation, namespace, validateAktivitetOgTrygdeperioder, {
-        // clone it, or we can have some state inconsistences between dispatches
-        replySed: _.cloneDeep(replySed as ReplySed),
-        personID: personID!,
+        person,
         personName
       }, true
     )
