@@ -19,7 +19,7 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateAktivitetPeriode, ValidationAktivitetPeriodeProps } from './validation'
+import { validateThePeriode, ValidationAktivitetPeriodeProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -48,7 +48,7 @@ const Perioder: React.FC<MainFormProps> = ({
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAktivitetPeriodeProps>(validateAktivitetPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAktivitetPeriodeProps>(validateThePeriode, namespace)
 
   const periodeType = options && options.periodeType ? options.periodeType : "withcheckbox"
   const requiredSluttDato = options && options.requiredSluttDato ? options.requiredSluttDato : false
@@ -87,7 +87,7 @@ const Perioder: React.FC<MainFormProps> = ({
   const onSaveEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
     const hasErrors = performValidation<ValidationAktivitetPeriodeProps>(
-      clonedValidation, namespace, validateAktivitetPeriode, {
+      clonedValidation, namespace, validateThePeriode, {
         periode: _editPeriode,
         perioder,
         index: _editIndex,

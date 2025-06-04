@@ -17,7 +17,7 @@ export interface ValidationAktivitetPerioderProps {
   personName?: string
 }
 
-export const validateAktivitetPeriode = (
+export const validateThePeriode = (
   v: Validation,
   namespace: string,
   {
@@ -51,7 +51,7 @@ export const validateAktivitetPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateAktivitetPerioder = (
+export const validatePerioder = (
   v: Validation,
   namespace: string,
   {
@@ -61,7 +61,7 @@ export const validateAktivitetPerioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode, index: number) => {
-    hasErrors.push(validateAktivitetPeriode(v, namespace, { periode, perioder, index, personName }))
+    hasErrors.push(validateThePeriode(v, namespace, { periode, perioder, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

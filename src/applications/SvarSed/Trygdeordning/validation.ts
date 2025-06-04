@@ -4,7 +4,6 @@ import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { getNSIdx } from 'utils/namespace'
 import { addError, checkIfNotEmpty } from 'utils/validation'
-import {isF026Sed} from "../../../utils/sed";
 import performValidation from "../../../utils/performValidation";
 import {validateTrygdeOrdninger, ValidationTrygdeOrdningerProps} from "../RettTilYtelserFSED/validation";
 
@@ -118,19 +117,19 @@ export const validateTrygdeordninger = (
   hasErrors.push(validateTrygdeordning(v, namespace, 'perioderUtenforTrygdeordning', _.get(replySed, `${personID}.perioderUtenforTrygdeordning`), personName))
   hasErrors.push(validateTrygdeordning(v, namespace, 'perioderMedYtelser', _.get(replySed, `${personID}.perioderMedYtelser`), personName))
 
-  if(isF026Sed(replySed)){
-    const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
-    const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
-    let rettTilFamilieYtelser;
-    if(perioderMedYtelser && perioderMedYtelser.length >= 0){
-      rettTilFamilieYtelser = "ja"
-    } else if(ikkeRettTilYtelser){
-      rettTilFamilieYtelser = "nei"
-    }
-    hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `${namespace}-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
-      perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
-    }, true))
+
+  const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+  const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
+  let rettTilFamilieYtelser;
+  if(perioderMedYtelser && perioderMedYtelser.length >= 0){
+    rettTilFamilieYtelser = "ja"
+  } else if(ikkeRettTilYtelser){
+    rettTilFamilieYtelser = "nei"
   }
+  hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `${namespace}-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
+    perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
+  }, true))
+
 
   return hasErrors.find(value => value) !== undefined
 }

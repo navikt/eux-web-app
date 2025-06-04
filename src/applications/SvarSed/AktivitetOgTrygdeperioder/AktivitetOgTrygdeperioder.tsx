@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
-import {PensjonPeriode, Periode, PersonTypeF001, ReplySed} from "../../../declarations/sed";
+import {PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
 import {setValidation} from "../../../actions/validation";
 import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
@@ -219,7 +219,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     </Heading>
                     {aktivitet?.type === 'ansatt' &&
                       <Ansatt
-                        parentNamespace={namespace}
+                        parentNamespace={namespace + '-' + aktivitet?.type}
                         personID={personID}
                         personName={personName}
                         replySed={replySed}
@@ -334,7 +334,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       {t('label:perioder-med-pensjon')}
                     </Heading>
                     <PerioderMedPensjon
-                      parentNamespace={namespace}
+                      parentNamespace={namespace + '-periodermedpensjon'}
                       personID={personID}
                       personName={personName}
                       replySed={replySed}

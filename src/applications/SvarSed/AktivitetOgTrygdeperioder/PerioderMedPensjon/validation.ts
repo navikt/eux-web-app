@@ -54,7 +54,7 @@ export const validatePerioderMedPensjonPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validatePerioderMedMottattPensjonPerioder = (
+export const validatePerioderMedPensjonPerioder = (
   v: Validation,
   namespace: string,
   {

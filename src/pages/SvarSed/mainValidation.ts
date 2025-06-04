@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn
+  Ytelse, Barn, PersonTypeF001
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -135,6 +135,7 @@ import {
   ValidationUtdanningProps
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
+import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -234,20 +235,24 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidateEposterProps>(v, `svarsed-${personID}-kontaktinformasjon-epost`, validateKontaktsinformasjonEposter, {
           eposter, personName
         }, true))
-        hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
-          replySed, personID, personName
-        }, true))
+
+        if(isF001Sed(replySed) || isF002Sed(replySed)){
+          const person: PersonTypeF001 = _.get(replySed, `${personID}`)
+          hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
+            person, personName
+          }, true))
+        }
+
+        if(isF026Sed(replySed)){
+          hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
+            replySed, personID, personName
+          }, true))
+        }
 
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
         }, true))
-/*
-        const person: PersonTypeF001 = _.get(replySed, `${personID}`)
-        hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
-          person, personName
-        }, true))
-*/
 
         // Specific to F003
         if(isF003Sed(replySed)){

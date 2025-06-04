@@ -37,7 +37,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-periodermedpensjon`
+  const namespace = `${parentNamespace}`
   const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, target)
   const getId = (p: PensjonPeriode | null): string => p ? p.pensjonstype + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new'
