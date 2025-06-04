@@ -1,5 +1,5 @@
 import { PlusCircleIcon, Buildings3Icon } from '@navikt/aksel-icons'
-import {BodyLong, Box, Button, Checkbox, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -63,18 +63,15 @@ const Ansatt: React.FC<MainFormProps> = ({
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnsattPeriodeProps>(validateAnsattPeriode, namespace)
 
-  const [_sort, _setSort] = useState<PeriodeSort>('time')
-  const [_view, _setView] = useState<PeriodeView>('all')
-
   useEffect(() => {
     const spikedPeriods: Array<Periode> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
     const plan: Array<PlanItem<Periode>> = makeRenderPlan<Periode>({
       perioder: spikedPeriods,
       arbeidsperioder,
-      sort: _sort
+      sort: "time"
     } as RenderPlanProps<Periode>)
     _setPlan(plan)
-  }, [replySed, _sort, arbeidsperioder])
+  }, [replySed, arbeidsperioder])
 
   const onPeriodeChanged = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -220,11 +217,6 @@ const Ansatt: React.FC<MainFormProps> = ({
   const renderPlan = (item: PlanItem<Periode | ForsikringPeriode>, index: number, previousItem: PlanItem<Periode | ForsikringPeriode> | undefined) => {
     return (
       <div key={getId(item)}>
-        {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <Box paddingBlock="4">
-            <Label>{t('label:' + item.type)}</Label>
-          </Box>
-        )}
         {renderPlanItem(item)}
       </div>
     )
@@ -238,15 +230,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       return renderRowPeriode(item.item as Periode)
     }
     if (item.type === 'forsikringPeriode') {
-      if (_view === 'all') {
-        return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
-      }
-      // show the arbeidsperiode as periode, but only if it is selected (i.e., there is a real period associated)
-      const index: number = item.item ? item.item.__index! : -1
-      if (!_.isNil(index) && index >= 0) {
-        return renderRowPeriode(item.item as Periode)
-      }
-      return null
+      return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
     }
   }
 
@@ -369,20 +353,6 @@ const Ansatt: React.FC<MainFormProps> = ({
           )
         : (
           <VStack gap="4">
-            <Box borderWidth="1" borderColor="border-subtle" paddingInline="4">
-              <Checkbox
-                checked={_sort === 'group'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-              >
-                {t('label:group-by-type')}
-              </Checkbox>
-              <Checkbox
-                checked={_view === 'periods'}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
-              >
-                {t('label:se-kun-perioder')}
-              </Checkbox>
-            </Box>
             {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
           </VStack>
           )}
