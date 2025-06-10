@@ -146,7 +146,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                     <Radio value='inaktiv'>
                       {t('el:radio-aktivitet-status-inaktiv')}
                     </Radio>
-                    <Radio value='ingeninfo'>
+                    <Radio value='ingenInfo'>
                       {t('el:radio-aktivitet-status-ingeninfo')}
                     </Radio>
                   </RadioGroup>
@@ -241,7 +241,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   </VStack>
                 </Box>
               }
-              {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingeninfo")) &&
+              {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
                     <Heading size='xsmall'>
