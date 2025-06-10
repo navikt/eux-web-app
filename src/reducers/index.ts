@@ -1,3 +1,4 @@
+import admin from './admin'
 import adresse from './adresse'
 import alert from './alert'
 import app from './app'
@@ -16,5 +17,5 @@ import validation from './validation'
 import vedlegg from './vedlegg'
 
 export default {
-  adresse, alert, app, arbeidsperioder, attachments, inntekt, journalfoering, loading, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
+  admin, adresse, alert, app, arbeidsperioder, attachments, inntekt, journalfoering, loading, pdu1, person, sak, statistics, svarsed, ui, validation, vedlegg
 }

@@ -8,6 +8,9 @@ export const V3_BASE_URL = '/v3'
 
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
+// ADMIN
+export const ADMIN_PUBLISH_SED_EVENTS_URL = API_BASE_URL + '/sed-events/publish'
+
 // RINA
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
