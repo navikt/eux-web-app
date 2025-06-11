@@ -27,21 +27,30 @@ export const AdminPage: React.FC = (): JSX.Element => {
 
   const [_dokumentListe, _setDokumentListe] = useState<string>("")
   const [_missingValues, _setMissingValues] = useState<boolean>(false)
+  const [_documentsWithErrors, _setDocumentsWithErrors] = useState<Array<string> | undefined>(undefined)
 
   const onPublishSedEvents = () => {
     _setMissingValues(false)
+    _setDocumentsWithErrors(undefined)
     if(publishingSedEventsStatus) dispatch(adminResetStatus())
     if(_dokumentListe !== ""){
-      const documentArray = _dokumentListe.split("\n")
+      const documentArray = _dokumentListe.trim().split("\n")
+      let documentsWithErrors: Array<string> = []
       const sedEvents = documentArray.map((d) => {
         const docParts = d.split("_")
+        if(docParts &&  docParts[0] !== "" && docParts.length !== 3) documentsWithErrors.push(d)
         return {
           rinasakId: docParts[0],
           documentId: docParts[1],
           documentVersion: docParts[2]
         }
       })
-      dispatch(publishSedEvents(sedEvents))
+
+      if(documentsWithErrors.length > 0){
+        _setDocumentsWithErrors(documentsWithErrors)
+      } else {
+        dispatch(publishSedEvents(sedEvents))
+      }
     } else {
       _setMissingValues(true)
     }
@@ -82,21 +91,35 @@ export const AdminPage: React.FC = (): JSX.Element => {
                   Publiserer SED hendelser til Kafka emnene <code>eessibasis.sedmottatt-v1</code> eller <code>eessibasis.sedsendt-v1</code>
                 </BodyLong>
               </div>
-              <HStack gap="4" align="end">
+
                 <Textarea
                   label="SED hendelser"
                   description="<rinasakId>_<documentId>_<documentVersion>"
                   resize
-                  style={{width: "28rem", height: ""}}
+                  style={{height: "200px"}}
                   onChange={(e) => {
                     if(publishingSedEventsStatus) dispatch(adminResetStatus())
                     _setDokumentListe(e.target.value)
+                    _setDocumentsWithErrors(undefined)
                   }}
+                  error={_documentsWithErrors && _documentsWithErrors.length > 0}
                 />
                 <Button variant="primary" onClick={onPublishSedEvents} loading={publishingSedEvents} disabled={_dokumentListe === ""}>Publiser</Button>
-              </HStack>
+
               {_missingValues &&
                 <ErrorMessage>List cannot be empty</ErrorMessage>
+              }
+              {_documentsWithErrors && _documentsWithErrors.length > 0 &&
+                <ErrorMessage>
+                  Følgende SED hendelser har feil format: <br/>
+                  <ul>
+                    {
+                      _documentsWithErrors.map((d) => {
+                        return <li>{d}</li>
+                      })
+                    }
+                  </ul>
+                </ErrorMessage>
               }
               {publishingSedEventsStatus && (publishingSedEventsStatus.status === "SUCCESS" || publishingSedEventsStatus.status === "PARTIAL SUCCESS") &&
                 <Alert variant="success">
