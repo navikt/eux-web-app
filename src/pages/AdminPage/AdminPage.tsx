@@ -121,24 +121,21 @@ export const AdminPage: React.FC = (): JSX.Element => {
                   </ul>
                 </ErrorMessage>
               }
-              {publishingSedEventsStatus && (publishingSedEventsStatus.status === "SUCCESS" || publishingSedEventsStatus.status === "PARTIAL SUCCESS") &&
+              {publishingSedEventsStatus && publishingSedEventsStatus.status === "SUCCESS" &&
                 <Alert variant="success">
                   {publishingSedEventsStatus.message}
-                  {publishingSedEventsStatus.status === "SUCCESS" &&
-                    <>
-                      <p>
-                        Antall SED hendelser publisert: {publishingSedEventsStatus.successCount}<br/>
-                      </p>
-                    </>
-                  }
-                  {publishingSedEventsStatus.status === "PARTIAL SUCCESS" &&
-                    <>
-                      <p>
-                        Antall SED hendelser uten feil: {publishingSedEventsStatus.successCount}<br/>
-                        Antall SED hendelser med feil: {publishingSedEventsStatus.failureCount}
-                      </p>
-                    </>
-                  }
+                  <p>
+                    Antall SED hendelser publisert: {publishingSedEventsStatus.successCount}<br/>
+                  </p>
+                </Alert>
+              }
+              {publishingSedEventsStatus && publishingSedEventsStatus.status === "PARTIAL SUCCESS" &&
+                <Alert variant="warning">
+                  {publishingSedEventsStatus.message}
+                  <p>
+                    Antall SED hendelser uten feil: {publishingSedEventsStatus.successCount}<br/>
+                    Antall SED hendelser med feil: {publishingSedEventsStatus.failureCount}
+                  </p>
                 </Alert>
               }
               {publishingSedEventsStatus && publishingSedEventsStatus.status === "FAILURE" &&
