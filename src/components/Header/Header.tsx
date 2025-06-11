@@ -114,7 +114,7 @@ const Header: React.FC<HeaderProps> = ({
                 <ActionMenu.Divider />
                 <ActionMenu.Group label="Administrative verktøy">
                   <ActionMenu.Item as="a" href={"/admin"} icon={<WrenchIcon aria-hidden/>}>
-                    Administrative verktøy
+                    Publiser SED hendelser
                   </ActionMenu.Item>
                 </ActionMenu.Group>
               </>
