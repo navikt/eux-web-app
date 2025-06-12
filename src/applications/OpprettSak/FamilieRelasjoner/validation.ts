@@ -1,5 +1,6 @@
 import {PersonInfoUtland, Validation} from 'declarations/types'
-import { checkIfNotEmpty } from 'utils/validation'
+import {checkIfNotEmpty, checkValidDateFormat} from 'utils/validation'
+import _ from "lodash";
 
 export interface RelasjonUtlandValidationProps {
   relation: PersonInfoUtland,
@@ -44,6 +45,14 @@ export const validateRelasjonUtland = (
     id: namespace + '-foedselsdato',
     message: 'validation:noDate'
   }))
+
+  if (!_.isEmpty(relation.foedselsdato?.trim())) {
+    hasErrors.push(checkValidDateFormat(v, {
+      needle: relation.foedselsdato,
+      message: 'validation:invalidDateFormat',
+      id: namespace + '-foedselsdato'
+    }))
+  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: relation.__rolle,
