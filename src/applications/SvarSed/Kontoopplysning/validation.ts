@@ -49,6 +49,16 @@ export const validateKontoopplysning = (
     personName: formalName
   }))
 
+  if (!_.isEmpty(uti?.id.trim())) {
+    if (!uti?.id.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
+      hasErrors.push(addError(v, {
+        id: namespace + '-id',
+        message: 'validation:invalidInstitusjonsID',
+        personName: formalName
+      }))
+    }
+  }
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: uti?.navn,
     id: namespace + '-navn',
