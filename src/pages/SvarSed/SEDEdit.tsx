@@ -422,7 +422,7 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
                 { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
-                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026'], adult: true },
+                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
                 { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
