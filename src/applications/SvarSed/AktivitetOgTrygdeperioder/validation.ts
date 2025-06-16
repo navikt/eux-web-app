@@ -24,6 +24,11 @@ export const validateAktivitetOgTrygdeperioder = (
     perioder: aktivitetPerioder, personName
   }))
 
+  const perioderMedAktivitetForInaktivPerson: Array<Periode> | undefined = _.get(person, 'perioderMedAktivitetForInaktivPerson')
+  hasErrors.push(validatePerioder(v, `${namespace + '-perioderMedAktivitetForInaktivPerson'}`, {
+    perioder: perioderMedAktivitetForInaktivPerson, personName
+  }))
+
   const trygdePerioder: Array<Periode> | undefined = _.get(person, 'trygdeperioder')
   hasErrors.push(validatePerioder(v, `${namespace + '-trygdeperioder'}`, {
     perioder: trygdePerioder, personName

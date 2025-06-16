@@ -4,8 +4,8 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
-import {PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
-import {setValidation} from "../../../actions/validation";
+import {FSed, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
+import {resetValidation, setValidation} from "../../../actions/validation";
 import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
@@ -16,6 +16,8 @@ import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 import {useTranslation} from "react-i18next";
+import TextArea from "../../../components/Forms/TextArea";
+import {updateReplySed} from "../../../actions/svarsed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -34,6 +36,12 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-aktivitetogtrygdeperioder`
+
+  const targetYtterligereInfo = `${personID}.ytterligereInfo`
+  const ytterligereInfo: string | undefined = _.get(replySed, targetYtterligereInfo)
+
+  const targetIngenInfoBegrunnelse = `${personID}.aktivitet.begrunnelse`
+  const ingenInfoBegrunnelse: string | undefined = _.get(replySed, targetIngenInfoBegrunnelse)
 
   const targetAktivitet = `${personID}.aktivitet`
   const aktivitet: Aktivtitet | undefined = _.get(replySed, targetAktivitet)
@@ -73,6 +81,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const onAktivitetChange = (property: string, value: string) => {
     if(property === "status"){
       dispatch(updateReplySed(`${targetAktivitet}.perioder`, undefined))
+      dispatch(updateReplySed(`${targetAktivitet}.begrunnelse`, undefined))
       dispatch(updateReplySed(`${targetPerioderMedAktivitetForInaktivPerson}`, undefined))
       dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
       dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
@@ -89,6 +98,20 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
 
   const hasOpenPeriods = (periods: Array<Periode> | undefined) => {
     return periods?.find((p) => p.aapenPeriodeType)
+  }
+
+  const setYtterligereInfo = (ytterligereInfo: string) => {
+    dispatch(updateReplySed(`${targetYtterligereInfo}`, ytterligereInfo))
+    if (validation[namespace + '-ytterligereInfo']) {
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
+    }
+  }
+
+  const setIngenInfoBegrunnelse = (begrunnelse: string) => {
+    dispatch(updateReplySed(`${targetIngenInfoBegrunnelse}`, begrunnelse))
+    if (validation[namespace + '-ingeninfo-begrunnelse']) {
+      dispatch(resetValidation(namespace + '-ingeninfo-begrunnelse'))
+    }
   }
 
   return (
@@ -200,6 +223,14 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   }
                 </VStack>
               </Box>
+              <TextArea
+                namespace={namespace}
+                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+                id='ytterligereInfo'
+                label={t('label:ytterligere-informasjon')}
+                onChanged={setYtterligereInfo}
+                value={ytterligereInfo}
+              />
               {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'aktiv' &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
@@ -267,6 +298,16 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       updateReplySed={updateReplySed}
                       setReplySed={setReplySed}
                     />
+                    {aktivitet?.status === "ingenInfo" &&
+                      <TextArea
+                        namespace={namespace + '-ingeninfo-begrunnelse'}
+                        error={validation[namespace + '-ingeninfo-begrunnelse']?.feilmelding}
+                        id='begrunnelse'
+                        label={t('label:begrunnelse')}
+                        onChanged={setIngenInfoBegrunnelse}
+                        value={ingenInfoBegrunnelse}
+                      />
+                    }
                   </VStack>
                 </Box>
               }
