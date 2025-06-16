@@ -193,7 +193,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
             onClick: () => onTransferPerioder()
           },
           {
-            text: t('el:buton-close'),
+            text: t('el:button-close'),
             onClick: () => onModalClose()
           },
         ]
