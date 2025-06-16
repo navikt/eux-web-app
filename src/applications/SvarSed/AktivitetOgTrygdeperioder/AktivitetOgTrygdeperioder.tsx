@@ -38,6 +38,8 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetAktivitet = `${personID}.aktivitet`
   const aktivitet: Aktivtitet | undefined = _.get(replySed, targetAktivitet)
 
+  const targetPerioderMedAktivitetForInaktivPerson = `${personID}.perioderMedAktivitetForInaktivPerson`
+
   const targetTrygdeperioder = `${personID}.trygdeperioder`
   const trygdeperioder: Array<Periode> | undefined = _.get(replySed, targetTrygdeperioder)
 
@@ -71,6 +73,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const onAktivitetChange = (property: string, value: string) => {
     if(property === "status"){
       dispatch(updateReplySed(`${targetAktivitet}.perioder`, undefined))
+      dispatch(updateReplySed(`${targetPerioderMedAktivitetForInaktivPerson}`, undefined))
       dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
       dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
       dispatch(updateReplySed(`${targetPerioderMedRettTilFamilieytelser}`, undefined))
@@ -192,9 +195,6 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                         <Radio value='inaktiv_rett_til_familieytelse'>
                           {t('el:radio-aktivitet-type-inaktiv-rett-til-familieytelser')}
                         </Radio>
-                        <Radio value='annet'>
-                          {t('el:radio-aktivitet-type-annet')}
-                        </Radio>
                       </HStack>
                     </RadioGroup>
                   }
@@ -270,10 +270,6 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                   </VStack>
                 </Box>
               }
-            </VStack>
-          </Box>
-          <Box>
-            <VStack gap="4">
               {trygdeperioder && trygdeperioder.length > 0 &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
                   <VStack gap="4">
@@ -414,6 +410,30 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 </Box>
               }
 
+              {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
+                <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                  <VStack gap="4">
+                    <Heading size='xsmall'>
+                      <HStack gap="4" align="center">
+                        {t('label:perioder-med-aktivitet')}
+                      </HStack>
+                    </Heading>
+                    <Perioder
+                      parentNamespace={namespace + '-' + 'perioderMedAktivitetForInaktivPerson'}
+                      parentTarget={"perioderMedAktivitetForInaktivPerson"}
+                      personID={personID}
+                      personName={personName}
+                      replySed={replySed}
+                      updateReplySed={updateReplySed}
+                      setReplySed={setReplySed}
+                      options={{
+                        periodeType: "simple",
+                        requiredSluttDato: true
+                      }}
+                    />
+                  </VStack>
+                </Box>
+              }
             </VStack>
           </Box>
         </VStack>
