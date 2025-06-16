@@ -203,6 +203,7 @@ export interface Aktivtitet {
   status: string
   perioder?: Array<Periode>
   type?: string
+  begrunnelse?: string
 }
 
 export interface FillOutInfoPayload {
@@ -243,11 +244,12 @@ export interface PersonTypeF001 extends PersonTypeF {
     typeGrunnAnnen?: string
     typeGrunnForVedtak?: string
   }
-
+  perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
 
   aktivitet?: Aktivtitet
+  ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
   perioderMedRettTilFamilieytelser?: Array<Periode>
