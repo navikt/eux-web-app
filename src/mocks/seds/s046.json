@@ -1,0 +1,44 @@
+{
+  "sedType": "S046",
+  "sedVersjon": "4.3",
+  "bruker": {
+    "adresser": [
+      {
+        "gate": "Bøveien 20",
+        "postnummer": "8470",
+        "by": "BØ I VESTERÅLEN",
+        "land": "NO",
+        "landkode": "NOR"
+      }
+    ],
+    "personInfo": {
+      "fornavn": "KORREKT",
+      "etternavn": "INNHEGNING",
+      "kjoenn": "K",
+      "foedselsdato": "1967-10-28",
+      "pin": [
+        {
+          "land": "NO",
+          "landkode": "NOR",
+          "identifikator": "28506726605"
+        }
+      ],
+      "adressebeskyttelsesgrad": "UGRADERT"
+    }
+  },
+  "sykdom": {
+    "informasjonOmUtbetaling": {
+      "ytelse": {
+        "type": "sykdom"
+      },
+      "forespoerselomperiode": {
+        "startdato": "2021-02-03",
+        "sluttdato": "2022-03-04"
+      },
+      "vedtak": {
+        "type": "utbetale_kontantytelser"
+      }
+    }
+  },
+  "ytterligereInfo": "MER OG MER"
+}

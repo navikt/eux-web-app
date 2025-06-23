@@ -844,7 +844,6 @@ export default (saksnummer: string, type: string) => {
           "formatertNavn": "NAV ACC 05 (Norge)",
           "motpartId": "NO:NAVAT05",
           "motpartNavn": "NAV ACC 05",
-          "motpartLand": "NO",
           "motpartLandkode": "NOR"
         }
       ],
@@ -872,8 +871,66 @@ export default (saksnummer: string, type: string) => {
         "tema": "SYM",
         "type": "GENERELL_SAK",
         "system": "FS22",
-        "arkiv": "GSAK",
         "fnr": "25086820857"
+      },
+      "ikkeJournalfoerteSedListFailed": false,
+      "sensitiv": false,
+      "cdmVersjon": "4.3"
+    },
+    {
+      "fnr": "28506726605",
+      "fornavn": "KORREKT",
+      "etternavn": "INNHEGNING",
+      "foedselsdato": "1967-10-28",
+      "kjoenn": "f",
+      "adressebeskyttelse": "UGRADERT",
+      "erSakseier": "ja",
+      "sakseier": {
+        "id": "NO:NAVAT07",
+        "navn": "NAV ACC 07"
+      },
+      "navinstitusjon": {
+        "id": "NO:NAVAT07",
+        "navn": "NAV ACC 07"
+      },
+      "sakTittel": "Informasjon om hvorvidt det er utbetalt kontantytelser ved arbeidsuførhet",
+      "sakType": "S_BUC_14",
+      "sakId": "1452402",
+      "internasjonalSakId": "e42581455ddd4e09802715ddbb32d3ab",
+      "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1452402",
+      "sistEndretDato": "2025-06-23",
+      "motparter": [
+        {
+          "formatertNavn": "NAV ACC 05 (Norge)",
+          "motpartId": "NO:NAVAT05",
+          "motpartNavn": "NAV ACC 05",
+          "motpartLandkode": "NOR"
+        }
+      ],
+      "sakshandlinger": [
+        "Delete_Case",
+        "singleParticipant"
+      ],
+      "sedListe": [
+        {
+          "sedTittel": "Informasjon om utbetaling eller ikke utbetaling av kontantytelser",
+          "sedType": "S046",
+          "sedId": "805ca15c55314e278d8304349bd33096",
+          "status": "new",
+          "sistEndretDato": "2025-06-23",
+          "sedHandlinger": [
+            "Delete",
+            "Read",
+            "Send",
+            "Update"
+          ]
+        }
+      ],
+      "fagsak": {
+        "id": "140341649",
+        "tema": "SYK",
+        "type": "GENERELL_SAK",
+        "fnr": "28506726605"
       },
       "ikkeJournalfoerteSedListFailed": false,
       "sensitiv": false,

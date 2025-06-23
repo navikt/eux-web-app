@@ -75,7 +75,7 @@ import {
   isF027Sed,
   isFSed,
   isH002Sed,
-  isPreviewableSed, isS040Sed,
+  isPreviewableSed, isS040Sed, isS046Sed,
   isSed,
   isXSed
 } from 'utils/sed'
@@ -117,6 +117,7 @@ import DatoEndredeForhold
 import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/SvarOmFremmoeteUtdanning";
 import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetOgTrygdeperioder";
+import VedtakS046 from "../../applications/SvarSed/VedtakS046/VedtakS046";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -622,7 +623,28 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed)) && (
+        {isS046Sed(replySed) &&
+          <>
+            <MainForm
+              type='onelevel'
+              menuDefaultClosed={false}
+              namespace='vedtakS046'
+              forms={[
+                {
+                  label: t('el:option-mainform-vedtak'),
+                  value: 'vedtakS046',
+                  component: VedtakS046,
+                }
+              ]}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+              loggingNamespace='forespoerselmanager'
+            />
+            <VerticalSeparatorDiv size='2' />
+          </>
+        }
+        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
           <>
             <VerticalSeparatorDiv />
             <TextAreaDiv>
