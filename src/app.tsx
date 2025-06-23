@@ -64,6 +64,7 @@ export const App = () => {
 
     return (
         <Routes>
+            <Route path='/admin' element={<Pages.AdminPage />} />
             <Route path='/vedlegg' element={<Pages.Vedlegg />} />
             <Route path='/svarsed/new' element={<Pages.SvarSed type='new' />} />
             <Route path='/svarsed/search' element={<Pages.SvarSed type='search' />} />

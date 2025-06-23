@@ -4,6 +4,7 @@ import UkjentSide from './UkjentSide/UkjentSide'
 import SvarSed from './SvarSed/SvarSed'
 import PDU1 from './PDU1/PDU1'
 import Journalfoering from "./Journalfoering/Journalfoering";
+import AdminPage from "./AdminPage/AdminPage";
 
 export default {
   Forside,
@@ -11,5 +12,6 @@ export default {
   UkjentSide,
   SvarSed,
   JournalFoering: Journalfoering,
-  PDU1
+  PDU1,
+  AdminPage
 }

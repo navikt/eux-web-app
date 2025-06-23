@@ -35,7 +35,7 @@ export const validateKontoopplysning = (
   if (!_.isEmpty(uti?.begrunnelse?.trim())) {
     hasErrors.push(checkLength(v, {
       needle: uti?.begrunnelse,
-      max: 500,
+      max: 255,
       id: namespace + '-begrunnelse',
       message: 'validation:textOverX',
       personName: formalName
@@ -48,6 +48,16 @@ export const validateKontoopplysning = (
     message: 'validation:noInstitusjonensId',
     personName: formalName
   }))
+
+  if (!_.isEmpty(uti?.id.trim())) {
+    if (!uti?.id.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
+      hasErrors.push(addError(v, {
+        id: namespace + '-id',
+        message: 'validation:invalidInstitusjonsID',
+        personName: formalName
+      }))
+    }
+  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: uti?.navn,

@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon } from '@navikt/aksel-icons'
+import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon } from '@navikt/aksel-icons'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import PT from 'prop-types'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
 import {NavLink} from "react-router-dom";
+import {FeatureToggles} from "../../declarations/app";
 
 
 const HeaderContent = styled.header`
@@ -40,6 +41,7 @@ export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
   enheter: Enheter | null | undefined
   selectedEnhet: Enhet | null | undefined
+  featureToggles: FeatureToggles | null | undefined
 }
 
 export interface HeaderProps {
@@ -53,6 +55,7 @@ export const mapState = (state: State): HeaderSelector => ({
   saksbehandler: state.app.saksbehandler,
   enheter: state.app.enheter,
   selectedEnhet: state.app.selectedEnhet,
+  featureToggles: state.app.featureToggles
 })
 
 const Header: React.FC<HeaderProps> = ({
@@ -60,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({
   onGoBackClick,
   title
 }: HeaderProps): JSX.Element => {
-  const { saksbehandler, enheter, selectedEnhet }: HeaderSelector = useAppSelector(mapState)
+  const { saksbehandler, enheter, selectedEnhet, featureToggles }: HeaderSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
@@ -106,6 +109,16 @@ const Header: React.FC<HeaderProps> = ({
                 {t('label:cai')}
               </ActionMenu.Item>
             </ActionMenu.Group>
+            {featureToggles?.featureAdmin &&
+              <>
+                <ActionMenu.Divider />
+                <ActionMenu.Group label="Administrative verktøy">
+                  <ActionMenu.Item as="a" href={"/admin"} icon={<WrenchIcon aria-hidden/>}>
+                    Publiser SED hendelser
+                  </ActionMenu.Item>
+                </ActionMenu.Group>
+              </>
+            }
           </ActionMenu.Content>
         </ActionMenu>
 
