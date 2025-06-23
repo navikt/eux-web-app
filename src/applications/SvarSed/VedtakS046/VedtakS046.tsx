@@ -66,13 +66,13 @@ const VedtakS046: React.FC<MainFormProps> = ({
             </RadioGroup>
             <RadioGroup
               value={informasjonOmUtbetaling?.vedtak?.type}
-              legend={t('label:vedtak')}
+              legend={t('label:vedtak-om-aa')}
               onChange={(v: string) => setInformasjonOmUtbetalingProperty("vedtak.type", v)}
               id={namespace + '-vedtak-type'}
               error={validation[namespace + '-vedtak-type']?.feilmelding}
             >
-              <Radio value="utbetale_kontantytelser">{t('label:utbetalte-kontantytelser')}</Radio>
-              <Radio value="ikke_utbetale_kontantytelser_kopi_er_vedlagt">{t('label:ikke_utbetale_kontantytelser')}</Radio>
+              <Radio value="utbetale_kontantytelser">{t('label:utbetale-kontantytelser')}</Radio>
+              <Radio value="ikke_utbetale_kontantytelser_kopi_er_vedlagt">{t('label:ikke-utbetale-kontantytelser')}</Radio>
             </RadioGroup>
           </HGrid>
         </Box>
