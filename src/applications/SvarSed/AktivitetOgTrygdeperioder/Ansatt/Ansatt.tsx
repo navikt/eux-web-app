@@ -1,14 +1,5 @@
 import { PlusCircleIcon, Buildings3Icon } from '@navikt/aksel-icons'
-import { BodyLong, Button, Checkbox, Heading, Ingress, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterSpacedDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { updateArbeidsperioder } from 'actions/arbeidsperioder'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -18,7 +9,7 @@ import ArbeidsperioderSøk from 'components/Arbeidsperioder/ArbeidsperioderSøk'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
@@ -56,9 +47,9 @@ const Ansatt: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { arbeidsperioder, validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const namespace = `${parentNamespace}-ansatt`
-  const target = `${personID}.perioderSomAnsatt`
-  const perioderSomAnsatt: Array<Periode> | undefined = _.get(replySed, target)
+  const namespace = `${parentNamespace}`
+  const target = `${personID}.aktivitet.perioder`
+  const perioder: Array<Periode> | undefined = _.get(replySed, target)
   const fnr = getFnr(replySed, personID)
   const getId = (item: PlanItem<Periode | ForsikringPeriode> | null): string => (item
     ? item.type + '-' + (item.item as Periode | ForsikringPeriode)?.startdato + '-' + (item.item as Periode | ForsikringPeriode).sluttdato
@@ -72,18 +63,15 @@ const Ansatt: React.FC<MainFormProps> = ({
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnsattPeriodeProps>(validateAnsattPeriode, namespace)
 
-  const [_sort, _setSort] = useState<PeriodeSort>('time')
-  const [_view, _setView] = useState<PeriodeView>('all')
-
   useEffect(() => {
-    const spikedPeriods: Array<Periode> | undefined = perioderSomAnsatt?.map((p, index) => ({ ...p, __index: index }))
+    const spikedPeriods: Array<Periode> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
     const plan: Array<PlanItem<Periode>> = makeRenderPlan<Periode>({
       perioder: spikedPeriods,
       arbeidsperioder,
-      sort: _sort
+      sort: "time"
     } as RenderPlanProps<Periode>)
     _setPlan(plan)
-  }, [replySed, _sort, arbeidsperioder])
+  }, [replySed, arbeidsperioder])
 
   const onPeriodeChanged = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -128,7 +116,7 @@ const Ansatt: React.FC<MainFormProps> = ({
     const hasErrors = performValidation<ValidationAnsattPeriodeProps>(
       clonedValidation, namespace, validateAnsattPeriode, {
         periode: __editPeriode,
-        perioder: perioderSomAnsatt,
+        perioder: perioder,
         index: __editIndex,
         personName
       })
@@ -143,7 +131,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const onRemove = (deletedPeriode: Periode) => {
     const index: number | undefined = deletedPeriode.__index
     if (index !== undefined && index >= 0) {
-      const newPerioder = _.cloneDeep(perioderSomAnsatt) as Array<Periode>
+      const newPerioder = _.cloneDeep(perioder) as Array<Periode>
       newPerioder.splice(index, 1)
       dispatch(updateReplySed(target, newPerioder))
       standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
@@ -159,12 +147,12 @@ const Ansatt: React.FC<MainFormProps> = ({
 
     const valid: boolean = _performValidation({
       periode: __newPeriode,
-      perioder: perioderSomAnsatt,
+      perioder: perioder,
       personName
     })
 
     if (!!__newPeriode && valid) {
-      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioderSomAnsatt)
+      let newPerioder: Array<Periode> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPerioder)) {
         newPerioder = []
       }
@@ -203,7 +191,7 @@ const Ansatt: React.FC<MainFormProps> = ({
 
   const onArbeidsgiverEdit = (newArbeidsgiver: ForsikringPeriode, oldArbeidsgiver: ForsikringPeriode) => {
     // if selected, let's find the same period.
-    const selectedIndex: number | undefined = _.findIndex(perioderSomAnsatt, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
+    const selectedIndex: number | undefined = _.findIndex(perioder, p => p.startdato === oldArbeidsgiver.startdato && p.sluttdato === oldArbeidsgiver.sluttdato)
 
     if (selectedIndex !== undefined && selectedIndex >= 0) {
       onSaveEdit({
@@ -229,14 +217,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const renderPlan = (item: PlanItem<Periode | ForsikringPeriode>, index: number, previousItem: PlanItem<Periode | ForsikringPeriode> | undefined) => {
     return (
       <div key={getId(item)}>
-        {_sort === 'group' && (previousItem === undefined || previousItem.type !== item.type) && (
-          <PaddedHorizontallyDiv>
-            <Label>{t('label:' + item.type)}</Label>
-            <VerticalSeparatorDiv />
-          </PaddedHorizontallyDiv>
-        )}
         {renderPlanItem(item)}
-        <VerticalSeparatorDiv />
       </div>
     )
   }
@@ -249,15 +230,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       return renderRowPeriode(item.item as Periode)
     }
     if (item.type === 'forsikringPeriode') {
-      if (_view === 'all') {
-        return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
-      }
-      // show the arbeidsperiode as periode, but only if it is selected (i.e., there is a real period associated)
-      const index: number = item.item ? item.item.__index! : -1
-      if (!_.isNil(index) && index >= 0) {
-        return renderRowPeriode(item.item as Periode)
-      }
-      return null
+      return renderRowArbeidsperiode(item.item as PeriodeMedForsikring)
     }
   }
 
@@ -271,23 +244,21 @@ const Ansatt: React.FC<MainFormProps> = ({
       (periode.__index ? 'periode' + getIdx(periode.__index) : '')
 
     return (
-      <Column>
-        <ForsikringPeriodeBox
-          forsikringPeriode={periode}
-          allowEdit
-          icon={<Buildings3Icon width='20' height='20' />}
-          editable='only_period'
-          showArbeidsgiver
-          showAddress={false}
-          selectable
-          onForsikringPeriodeSelect={onArbeidsgiverSelect}
-          onForsikringPeriodeEdit={onArbeidsgiverEdit}
-          namespace={_namespace}
-          validation={validation}
-          resetValidation={doResetValidation}
-          setValidation={doSetValidation}
-        />
-      </Column>
+      <ForsikringPeriodeBox
+        forsikringPeriode={periode}
+        allowEdit
+        icon={<Buildings3Icon width='20' height='20' />}
+        editable='only_period'
+        showArbeidsgiver
+        showAddress={false}
+        selectable
+        onForsikringPeriodeSelect={onArbeidsgiverSelect}
+        onForsikringPeriodeEdit={onArbeidsgiverEdit}
+        namespace={_namespace}
+        validation={validation}
+        resetValidation={doResetValidation}
+        setValidation={doSetValidation}
+      />
     )
   }
 
@@ -299,15 +270,15 @@ const Ansatt: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : p)
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="2"
         id={'repeatablerow-' + _namespace}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HStack gap="4" wrap={false}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -323,7 +294,6 @@ const Ansatt: React.FC<MainFormProps> = ({
               />
               )
             : (
-              <Column>
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -332,91 +302,64 @@ const Ansatt: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_periode}
                 />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Periode>
-              item={p}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={() => onAddNew()}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+              )
+          }
+          <Spacer/>
+          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <AddRemovePanel<Periode>
+            item={p}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={() => onAddNew()}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:oversikt-brukers-arbeidsperioder')}
-        </Heading>
-        <VerticalSeparatorDiv size='2' />
-        <Ingress>
-          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-        </Ingress>
-        <VerticalSeparatorDiv size='2' />
-        <ArbeidsperioderSøk
-          amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
-          fnr={fnr}
-          fillOutFnr={() => {
-            document.dispatchEvent(new CustomEvent('feillenke', {
-              detail: {
-                skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin`,
-                feilmelding: ''
-              } as ErrorElement
-            }))
-          }}
-          namespace={namespace}
-        />
-      </PaddedDiv>
-      <VerticalSeparatorDiv size='2' />
+    <VStack gap="4">
+      <BodyLong>
+        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+      </BodyLong>
+      <ArbeidsperioderSøk
+        amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
+        fnr={fnr}
+        fillOutFnr={() => {
+          document.dispatchEvent(new CustomEvent('feillenke', {
+            detail: {
+              skjemaelementId: `MainForm-${personID}-personopplysninger-norskpin`,
+              feilmelding: ''
+            } as ErrorElement
+          }))
+        }}
+        namespace={namespace}
+      />
       {_.isEmpty(_plan)
         ? (
-          <PaddedHorizontallyDiv>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </Box>
           )
         : (
-          <>
-            <PaddedHorizontallyDiv>
-              <FlexCenterSpacedDiv>
-                <Checkbox
-                  checked={_sort === 'group'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-                >
-                  {t('label:group-by-type')}
-                </Checkbox>
-                <Checkbox
-                  checked={_view === 'periods'}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setView(e.target.checked ? 'periods' : 'all')}
-                >
-                  {t('label:se-kun-perioder')}
-                </Checkbox>
-              </FlexCenterSpacedDiv>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv />
+          <VStack gap="4">
             {_plan?.map((item, index) => renderPlan(item, index, (index > 0 ? _plan![index - 1] : undefined)))}
-          </>
+          </VStack>
           )}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderPlanItem(null)
         : (
-          <PaddedDiv>
+          <Box>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
@@ -424,9 +367,9 @@ const Ansatt: React.FC<MainFormProps> = ({
             >
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
-          </PaddedDiv>
+          </Box>
           )}
-    </>
+    </VStack>
   )
 }
 

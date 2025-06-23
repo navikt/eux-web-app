@@ -18,7 +18,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatablePeriodeRow} from 'components/StyledComponents'
-import { Periode, PeriodeSort, Person } from 'declarations/sed'
+import {Periode, PeriodeSort, PersonTypeBrukerF026, PersonTypeF001} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -59,7 +59,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
   const dispatch = useAppDispatch()
   const target = `${personID}`
   const namespace = `${parentNamespace}-dekkede`
-  const person: Person = _.get(replySed, target)
+  const person: PersonTypeBrukerF026 = _.get(replySed, target)
   const getId = (p: Periode | null): string => p ? '[' + (p.__type ?? '') + ']-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<Periode>>([])

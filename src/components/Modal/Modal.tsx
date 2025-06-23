@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Button, Modal } from '@navikt/ds-react'
+import {BodyShort, Button, Heading, HStack, Modal} from '@navikt/ds-react'
 import { ModalContent } from 'declarations/components'
 import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
@@ -42,11 +42,13 @@ export interface ModalProps {
   open: boolean,
   modal: ModalContent | undefined
   width?: number | "small" | "medium" | `${number}${string}` | undefined
+  description?: Array<string>
 }
 
 const ModalFC: React.FC<ModalProps> = ({
   className,
   icon = undefined,
+  description,
   onModalClose = () => {},
   onBeforeClose = () => true,
   open,
@@ -59,11 +61,19 @@ const ModalFC: React.FC<ModalProps> = ({
       open={open}
       onClose={onModalClose}
       onBeforeClose={onBeforeClose}
-      header={{heading: modal?.modalTitle ?? '', icon: icon ?? undefined}}
       portal={true}
       id="neessiModal"
       width={width}
+      header={undefined}
     >
+      <Modal.Header>
+        <Heading size="medium">{modal?.modalTitle ?? ''}</Heading>
+        <>
+          {description?.map((d) => {
+            return <BodyShort size="small">{d}</BodyShort>
+          })}
+        </>
+      </Modal.Header>
       <Modal.Body>
         <ContentDiv className={classNames({ icon: !!icon })}>
           {modal?.modalContent || (

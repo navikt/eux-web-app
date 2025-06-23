@@ -43,10 +43,6 @@ import {
   validatePerioderDagpenger,
   ValidatePerioderDagpengerProps
 } from 'applications/SvarSed/PeriodeForDagpenger/validation'
-import {
-  validatePersonensStatusPerioder,
-  ValidationPersonensStatusProps
-} from 'applications/SvarSed/PersonensStatus/validation'
 import { validatePersonLight, ValidationPersonLightProps } from 'applications/SvarSed/PersonLight/validation'
 import {
   validatePersonopplysninger,
@@ -73,21 +69,32 @@ import {
   Adresse,
   Barnetilhoerighet,
   Epost,
-  F002Sed, F003Sed, F026Sed, F027Sed,
   FamilieRelasjon,
   Flyttegrunn,
   FSed,
-  H001Sed, Periode,
-  Person, PersonBarn,
+  Periode,
+  PersonBarn,
   PersonInfo,
-  ReplySed, S040Sed,
+  ReplySed,
   Statsborgerskap,
   Telefon,
+  F002Sed,
+  F003Sed,
+  F026Sed,
+  F027Sed,
+  H001Sed,
+  S040Sed,
+  USed,
   U002Sed,
   U004Sed,
   U017Sed,
-  USed, X001Sed, X008Sed, X009Sed, X010Sed, X011Sed, X012Sed,
-  Ytelse
+  X001Sed,
+  X008Sed,
+  X009Sed,
+  X010Sed,
+  X011Sed,
+  X012Sed,
+  Ytelse, Barn, PersonTypeF001
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -128,6 +135,7 @@ import {
   ValidationUtdanningProps
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
+import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -227,17 +235,23 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         hasErrors.push(performValidation<ValidateEposterProps>(v, `svarsed-${personID}-kontaktinformasjon-epost`, validateKontaktsinformasjonEposter, {
           eposter, personName
         }, true))
-        hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
-          replySed, personID, personName
-        }, true))
+
+        if(isF001Sed(replySed) || isF002Sed(replySed)){
+          const person: PersonTypeF001 = _.get(replySed, `${personID}`)
+          hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
+            person, personName
+          }, true))
+        }
+
+        if(isF026Sed(replySed)){
+          hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
+            replySed, personID, personName
+          }, true))
+        }
 
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
-        }, true))
-        const person: Person = _.get(replySed, `${personID}`)
-        hasErrors.push(performValidation<ValidationPersonensStatusProps>(v, `svarsed-${personID}-personensstatus`, validatePersonensStatusPerioder, {
-          person, personName
         }, true))
 
         // Specific to F003
@@ -425,7 +439,7 @@ export const validateSEDEdit = (
     if ((replySed as F002Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
-    (replySed as F002Sed).barn?.forEach((b: Person, i: number) => {
+    (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
     })
     if ((replySed as F002Sed).familie) {

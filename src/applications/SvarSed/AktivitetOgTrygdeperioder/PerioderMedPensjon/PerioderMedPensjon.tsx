@@ -1,24 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  FlexStartDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HStack, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -32,13 +20,13 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateWithSubsidiesPeriode, ValidationWithSubsidiesProps } from './validation'
+import { validatePerioderMedPensjonPeriode, ValidationPerioderMedPensjonProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const WithSubsidies: React.FC<MainFormProps> = ({
+const PerioderMedPensjon: React.FC<MainFormProps> = ({
   parentNamespace,
   personID,
   personName,
@@ -49,7 +37,7 @@ const WithSubsidies: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-withsubsidies`
+  const namespace = `${parentNamespace}`
   const target: string = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, target)
   const getId = (p: PensjonPeriode | null): string => p ? p.pensjonstype + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new'
@@ -59,7 +47,7 @@ const WithSubsidies: React.FC<MainFormProps> = ({
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationWithSubsidiesProps>(validateWithSubsidiesPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationPerioderMedPensjonProps>(validatePerioderMedPensjonPeriode, namespace)
 
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -118,8 +106,8 @@ const WithSubsidies: React.FC<MainFormProps> = ({
 
   const onSaveEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationWithSubsidiesProps>(
-      clonedValidation, namespace, validateWithSubsidiesPeriode, {
+    const hasErrors = performValidation<ValidationPerioderMedPensjonProps>(
+      clonedValidation, namespace, validatePerioderMedPensjonPeriode, {
         pensjonPeriode: _editPensjonPeriode,
         perioder: perioderMedPensjon,
         index: _editIndex,
@@ -165,25 +153,9 @@ const WithSubsidies: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _pensjonPeriode = index < 0 ? _newPensjonPeriode : (inEditMode ? _editPensjonPeriode : pensjonPeriode)
 
-    const addremovepanel = (
-      <AlignEndColumn>
-        <AddRemovePanel<PensjonPeriode>
-          item={pensjonPeriode}
-          marginTop={inEditMode}
-          index={index}
-          inEditMode={inEditMode}
-          onRemove={onRemove}
-          onAddNew={onAddNew}
-          onCancelNew={onCloseNew}
-          onStartEdit={onStartEdit}
-          onConfirmEdit={onSaveEdit}
-          onCancelEdit={() => onCloseEdit(_namespace)}
-        />
-      </AlignEndColumn>
-    )
-
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="2"
         id={'repeatablerow-' + _namespace}
         key={getId(pensjonPeriode)}
         className={classNames({
@@ -191,57 +163,45 @@ const WithSubsidies: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
+        <HStack gap="4" wrap={false} align="start">
         {inEditMode
           ? (
-            <>
-              <AlignStartRow>
-                <PeriodeInput
-                  namespace={_namespace}
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  breakInTwo
-                  hideLabel={false}
-                  setPeriode={(p: Periode) => setPeriode(p, index)}
-                  value={_pensjonPeriode?.periode}
-                />
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-              <VerticalSeparatorDiv size='0.5' />
-              <AlignStartRow>
-                <Column>
-                  <RadioPanelGroup
-                    value={_pensjonPeriode?.pensjonstype}
-                    data-no-border
-                    data-testid={_namespace + '-pensjonstype'}
-                    error={_v[_namespace + '-pensjonstype']?.feilmelding}
-                    id={_namespace + '-pensjonstype'}
-                    legend=''
-                    hideLabel
-                    name={_namespace + '-pensjonstype'}
-                    onChange={(newPensjonsType: PensjonsType) => setPensjonsType(newPensjonsType, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='alderspensjon'>
-                        {t('el:option-trygdeordning-alderspensjon')}
-                      </RadioPanel>
-                      <RadioPanel value='uførhet'>
-                        {t('el:option-trygdeordning-uførhet')}
-                      </RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </>
+            <VStack gap="4">
+              <PeriodeInput
+                namespace={_namespace}
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                breakInTwo
+                hideLabel={false}
+                setPeriode={(p: Periode) => setPeriode(p, index)}
+                value={_pensjonPeriode?.periode}
+              />
+              <RadioGroup
+                value={_pensjonPeriode?.pensjonstype}
+                data-no-border
+                data-testid={_namespace + '-pensjonstype'}
+                error={_v[_namespace + '-pensjonstype']?.feilmelding}
+                id={_namespace + '-pensjonstype'}
+                legend=''
+                hideLegend={true}
+                name={_namespace + '-pensjonstype'}
+                onChange={(newPensjonsType: PensjonsType) => setPensjonsType(newPensjonsType, index)}
+              >
+                <HStack gap="4" paddingInline="1">
+                  <Radio value='alderspensjon'>
+                    {t('el:option-trygdeordning-alderspensjon')}
+                  </Radio>
+                  <Radio value='uførhet'>
+                    {t('el:option-trygdeordning-uførhet')}
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </VStack>
             )
           : (
-            <AlignStartRow>
-              <Column>
+              <HStack gap="4" align="center">
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -250,48 +210,47 @@ const WithSubsidies: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_pensjonPeriode?.periode}
                 />
-              </Column>
-              <Column>
-                <FlexStartDiv>
-                  <BodyLong>
-                    {t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}
-                  </BodyLong>
-                </FlexStartDiv>
-              </Column>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                <Spacer/>
+                <Tag variant="info">{t('el:option-trygdeordning-' + pensjonPeriode?.pensjonstype)}</Tag>
+              </HStack>
+          )
+        }
+          <Spacer/>
+          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <AddRemovePanel<PensjonPeriode>
+            item={pensjonPeriode}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={onAddNew}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:periode-pensjon-avsenderlandet')}
-        </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
+    <VStack gap="4">
       {_.isEmpty(perioderMedPensjon)
         ? (
-          <PaddedHorizontallyDiv>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </Box>
           )
         : perioderMedPensjon?.map(renderRow)}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <Box>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
@@ -299,11 +258,11 @@ const WithSubsidies: React.FC<MainFormProps> = ({
             >
               {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-    </>
+          </Box>
+          )
+      }
+    </VStack>
   )
 }
 
-export default WithSubsidies
+export default PerioderMedPensjon

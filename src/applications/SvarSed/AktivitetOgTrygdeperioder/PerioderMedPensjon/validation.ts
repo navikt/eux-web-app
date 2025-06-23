@@ -4,7 +4,7 @@ import { Validation } from 'declarations/types'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate, checkIfNotEmpty } from 'utils/validation'
 
-export interface ValidationWithSubsidiesProps {
+export interface ValidationPerioderMedPensjonProps {
   pensjonPeriode: PensjonPeriode | undefined
   perioder: Array<PensjonPeriode> | undefined
   index?: number
@@ -16,7 +16,7 @@ export interface ValidateWithSubsidiesPerioderProps {
   personName?: string
 }
 
-export const validateWithSubsidiesPeriode = (
+export const validatePerioderMedPensjonPeriode = (
   v: Validation,
   namespace: string,
   {
@@ -24,7 +24,7 @@ export const validateWithSubsidiesPeriode = (
     perioder,
     index,
     personName
-  }: ValidationWithSubsidiesProps
+  }: ValidationPerioderMedPensjonProps
 ): boolean => {
   const idx = getIdx(index)
   const hasErrors: Array<boolean> = []
@@ -54,7 +54,7 @@ export const validateWithSubsidiesPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateWithSubsidiesPerioder = (
+export const validatePerioderMedPensjonPerioder = (
   v: Validation,
   namespace: string,
   {
@@ -64,7 +64,7 @@ export const validateWithSubsidiesPerioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((pensjonPeriode: PensjonPeriode, index: number) => {
-    hasErrors.push(validateWithSubsidiesPeriode(v, namespace, { pensjonPeriode, perioder, index, personName }))
+    hasErrors.push(validatePerioderMedPensjonPeriode(v, namespace, { pensjonPeriode, perioder, index, personName }))
   })
 
   return hasErrors.find(value => value) !== undefined

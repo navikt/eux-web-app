@@ -50,18 +50,3 @@ export const validateAnsattPeriode = (
 
   return hasErrors.find(value => value) !== undefined
 }
-
-export const validateAnsattPerioder = (
-  v: Validation,
-  namespace: string,
-  {
-    perioder,
-    personName
-  }: ValidationAnsattPerioderProps
-): boolean => {
-  const hasErrors: Array<boolean> = []
-  perioder?.forEach((periode: Periode | PensjonPeriode, index: number) => {
-    hasErrors.push(validateAnsattPeriode(v, namespace, { periode: (periode as Periode), perioder, index, personName }))
-  })
-  return hasErrors.find(value => value) !== undefined
-}

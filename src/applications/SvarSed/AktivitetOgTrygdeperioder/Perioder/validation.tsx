@@ -5,19 +5,19 @@ import _ from 'lodash'
 import { getIdx } from 'utils/namespace'
 import { checkIfDuplicate } from 'utils/validation'
 
-export interface ValidationNotAnsattPeriodeProps {
+export interface ValidationAktivitetPeriodeProps {
   periode: Periode | undefined
   perioder: Array<Periode> | undefined,
   index?: number
   personName?: string
 }
 
-export interface ValidationNotAnsattPerioderProps {
+export interface ValidationAktivitetPerioderProps {
   perioder: Array<Periode> | undefined
   personName?: string
 }
 
-export const validateNotAnsattPeriode = (
+export const validateThePeriode = (
   v: Validation,
   namespace: string,
   {
@@ -25,7 +25,7 @@ export const validateNotAnsattPeriode = (
     perioder,
     index,
     personName
-  }: ValidationNotAnsattPeriodeProps
+  }: ValidationAktivitetPeriodeProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   const idx = getIdx(index)
@@ -51,17 +51,17 @@ export const validateNotAnsattPeriode = (
   return hasErrors.find(value => value) !== undefined
 }
 
-export const validateNotAnsattPerioder = (
+export const validatePerioder = (
   v: Validation,
   namespace: string,
   {
     perioder,
     personName
-  }: ValidationNotAnsattPerioderProps
+  }: ValidationAktivitetPerioderProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
   perioder?.forEach((periode: Periode, index: number) => {
-    hasErrors.push(validateNotAnsattPeriode(v, namespace, { periode, perioder, index, personName }))
+    hasErrors.push(validateThePeriode(v, namespace, { periode, perioder, index, personName }))
   })
   return hasErrors.find(value => value) !== undefined
 }

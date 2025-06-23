@@ -1,26 +1,17 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -28,34 +19,39 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
-import { validateAvsenderlandetPeriode, ValidationAvsenderlandetProps } from './validation'
+import { validateThePeriode, ValidationAktivitetPeriodeProps } from './validation'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Avsenderlandet: React.FC<MainFormProps> = ({
+const Perioder: React.FC<MainFormProps> = ({
   parentNamespace,
+  parentTarget,
   personID,
   personName,
   replySed,
-  updateReplySed
+  updateReplySed,
+  options
 }:MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
-  const namespace = `${parentNamespace}-avsenderlandet`
-  const target: string = `${personID}.perioderMedTrygd`
-  const perioder: Array<Periode> = _.get(replySed, target)
-  const getId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
+  const namespace = `${parentNamespace}`
+  const target: string = `${personID}.${parentTarget}`
+  const perioder: Array<Periode> | undefined = _.get(replySed, target)
+  const getId = (p: Periode | null): string => p ? parentNamespace + '-' + p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new'
 
   const [_newPeriode, _setNewPeriode] = useState<Periode | undefined>(undefined)
   const [_editPeriode, _setEditPeriode] = useState<Periode | undefined>(undefined)
 
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_newForm, _setNewForm] = useState<boolean>(false)
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAvsenderlandetProps>(validateAvsenderlandetPeriode, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAktivitetPeriodeProps>(validateThePeriode, namespace)
+
+  const periodeType = options && options.periodeType ? options.periodeType : "withcheckbox"
+  const requiredSluttDato = options && options.requiredSluttDato ? options.requiredSluttDato : false
 
   const setPeriode = (periode: Periode, index: number) => {
     if (index < 0) {
@@ -90,8 +86,8 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
 
   const onSaveEdit = () => {
     const clonedValidation = _.cloneDeep(validation)
-    const hasErrors = performValidation<ValidationAvsenderlandetProps>(
-      clonedValidation, namespace, validateAvsenderlandetPeriode, {
+    const hasErrors = performValidation<ValidationAktivitetPeriodeProps>(
+      clonedValidation, namespace, validateThePeriode, {
         periode: _editPeriode,
         perioder,
         index: _editIndex,
@@ -108,7 +104,6 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
   const onRemove = (removedPeriode: Periode) => {
     const newPerioder: Array<Periode> = _.reject(perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderMedTrygd' })
   }
 
   const onAddNew = () => {
@@ -126,7 +121,6 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
       newPerioder.push(_newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderMedTrygd' })
       onCloseNew()
     }
   }
@@ -137,7 +131,8 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="2"
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
@@ -145,8 +140,7 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HStack gap="4" wrap={false} align={"start"}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -159,80 +153,69 @@ const Avsenderlandet: React.FC<MainFormProps> = ({
                 hideLabel={false}
                 setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periode}
+                requiredSluttDato={requiredSluttDato}
+                periodeType={periodeType}
               />
               )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_periode}
-                />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Periode>
-              item={periode}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                namespace={_namespace}
+                periode={_periode}
+              />
+              )
+          }
+          <Spacer/>
+          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+          <AddRemovePanel<Periode>
+            item={periode}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={onAddNew}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:periods-in-sender-country')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <Detail>
-          {t('label:medlemsperiode')}
-        </Detail>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
+    <VStack gap="4">
       {_.isEmpty(perioder)
         ? (
-          <PaddedHorizontallyDiv>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-periods')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </Box>
           )
         : perioder?.map(renderRow)}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <Box>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
               icon={<PlusCircleIcon/>}
             >
-              {t('el:button-add-new-x', { x: t('label:trygdeperiode-i-avsenderlandet').toLowerCase() })}
+              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
             </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-    </>
+          </Box>
+          )
+      }
+    </VStack>
   )
 }
 
-export default Avsenderlandet
+export default Perioder

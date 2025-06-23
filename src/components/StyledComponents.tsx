@@ -133,6 +133,10 @@ export const RepeatableBox = styled(Box)`
   &:hover:not(.new):not(.error) {
     background-color: var(--a-gray-100);
   }
+  &:not(:hover) .control-buttons {
+    position: absolute;
+    margin-left: -10000px;
+  }
 `
 
 export const TopAlignedGrid = styled(HGrid)`
