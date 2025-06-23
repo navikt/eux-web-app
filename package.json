@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "10.3.0-TEN-1053-AKTIVITET-OG-TRYGDEPERIODER",
+  "version": "10.3.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -216,6 +216,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@10.2.0-TEN-1053-AKTIVITET-OG-TRYGDEPERIODER",
+  "_id": "neessi@10.3.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
