@@ -13,11 +13,11 @@ import performValidation from 'utils/performValidation'
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "./validation";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 
-interface VedtakS046Selector {
+interface InformasjonOmUtbetalingSelector {
   validation: Validation
 }
 
-const mapState = (state: State): VedtakS046Selector => ({
+const mapState = (state: State): InformasjonOmUtbetalingSelector => ({
   validation: state.validation.status
 })
 
@@ -30,13 +30,13 @@ const InformasjonOmUtbetaling: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
-  const informasjonOmUtbetaling: any | undefined = (replySed as S046Sed)?.sykdom.informasjonOmUtbetaling
+  const informasjonOmUtbetaling: any | undefined = (replySed as S046Sed)?.sykdom?.informasjonOmUtbetaling
   const namespace: string = `${parentNamespace}-sykdom`
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationInformasjonOmUtbetalingProps>(clonedValidation, namespace, validateInformasjonOmUtbetaling, {
-      informasjonOmUtbetaling: (replySed as S046Sed).sykdom.informasjonOmUtbetaling
+      informasjonOmUtbetaling: (replySed as S046Sed).sykdom?.informasjonOmUtbetaling
     }, true)
     dispatch(setValidation(clonedValidation))
   })

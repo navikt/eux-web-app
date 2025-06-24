@@ -75,7 +75,9 @@ import {
   isF027Sed,
   isFSed,
   isH002Sed,
-  isPreviewableSed, isS040Sed, isS046Sed,
+  isPreviewableSed,
+  isS040Sed,
+  isS046Sed,
   isSed,
   isXSed
 } from 'utils/sed'
@@ -639,7 +641,7 @@ const SEDEdit = (): JSX.Element => {
               replySed={replySed}
               updateReplySed={updateReplySed}
               setReplySed={setReplySed}
-              loggingNamespace='forespoerselmanager'
+              loggingNamespace='informasjonomutbetalingmanager'
             />
             <VerticalSeparatorDiv size='2' />
           </>
