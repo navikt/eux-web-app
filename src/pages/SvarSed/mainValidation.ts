@@ -527,7 +527,7 @@ export const validateSEDEdit = (
 
   if(isS046Sed(replySed)){
     hasErrors.push(performValidation<ValidationInformasjonOmUtbetalingProps>(v, 'informasjonOmUtbetaling-sykdom', validateInformasjonOmUtbetaling, {
-      informasjonOmUtbetaling: (replySed as S046Sed).sykdom.informasjonOmUtbetaling
+      informasjonOmUtbetaling: (replySed as S046Sed).sykdom?.informasjonOmUtbetaling
     }, true))
   }
 
