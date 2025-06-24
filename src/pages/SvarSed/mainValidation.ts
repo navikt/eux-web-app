@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn, PersonTypeF001
+  Ytelse, Barn, PersonTypeF001, S046Sed
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -105,7 +105,9 @@ import {
   isFSed,
   isH001Sed,
   isH002Sed,
-  isHSed, isS040Sed,
+  isHSed,
+  isS040Sed,
+  isS046Sed,
   isUSed,
   isX001Sed,
   isX008Sed,
@@ -136,6 +138,7 @@ import {
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
+import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -521,6 +524,13 @@ export const validateSEDEdit = (
       sykdom: (replySed as S040Sed).sykdom
     }, true))
   }
+
+  if(isS046Sed(replySed)){
+    hasErrors.push(performValidation<ValidationInformasjonOmUtbetalingProps>(v, 'informasjonOmUtbetaling-sykdom', validateInformasjonOmUtbetaling, {
+      informasjonOmUtbetaling: (replySed as S046Sed).sykdom.informasjonOmUtbetaling
+    }, true))
+  }
+
 
   if (!isH001Sed(replySed)) {
     hasErrors.push(checkLength(v, {

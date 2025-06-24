@@ -10,7 +10,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import {validateVedtakS046, ValidationVedtakS046Props} from "./validation";
+import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "./validation";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 
 interface VedtakS046Selector {
@@ -21,7 +21,7 @@ const mapState = (state: State): VedtakS046Selector => ({
   validation: state.validation.status
 })
 
-const VedtakS046: React.FC<MainFormProps> = ({
+const InformasjonOmUtbetaling: React.FC<MainFormProps> = ({
    label,
    replySed,
    parentNamespace,
@@ -31,11 +31,11 @@ const VedtakS046: React.FC<MainFormProps> = ({
   const { validation }: any = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const informasjonOmUtbetaling: any | undefined = (replySed as S046Sed)?.sykdom.informasjonOmUtbetaling
-  const namespace: string = `${parentNamespace}-sykdom-informasjonOmUtbetaling`
+  const namespace: string = `${parentNamespace}-sykdom`
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationVedtakS046Props>(clonedValidation, namespace, validateVedtakS046, {
+    performValidation<ValidationInformasjonOmUtbetalingProps>(clonedValidation, namespace, validateInformasjonOmUtbetaling, {
       informasjonOmUtbetaling: (replySed as S046Sed).sykdom.informasjonOmUtbetaling
     }, true)
     dispatch(setValidation(clonedValidation))
@@ -94,4 +94,4 @@ const VedtakS046: React.FC<MainFormProps> = ({
   )
 }
 
-export default VedtakS046
+export default InformasjonOmUtbetaling

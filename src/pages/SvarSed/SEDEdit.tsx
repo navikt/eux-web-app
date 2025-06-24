@@ -117,7 +117,7 @@ import DatoEndredeForhold
 import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/SvarOmFremmoeteUtdanning";
 import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetOgTrygdeperioder";
-import VedtakS046 from "../../applications/SvarSed/VedtakS046/VedtakS046";
+import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -628,12 +628,12 @@ const SEDEdit = (): JSX.Element => {
             <MainForm
               type='onelevel'
               menuDefaultClosed={false}
-              namespace='vedtakS046'
+              namespace='informasjonOmUtbetaling'
               forms={[
                 {
                   label: t('el:option-mainform-vedtak'),
-                  value: 'vedtakS046',
-                  component: VedtakS046,
+                  value: 'informasjonOmUtbetaling',
+                  component: InformasjonOmUtbetaling,
                 }
               ]}
               replySed={replySed}

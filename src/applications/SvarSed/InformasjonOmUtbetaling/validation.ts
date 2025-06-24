@@ -1,16 +1,16 @@
 import { Validation } from 'declarations/types'
 import {checkIfNotEmpty} from "../../../utils/validation";
 
-export interface ValidationVedtakS046Props {
+export interface ValidationInformasjonOmUtbetalingProps {
   informasjonOmUtbetaling: any | undefined
 }
 
-export const validateVedtakS046 = (
+export const validateInformasjonOmUtbetaling = (
   v: Validation,
   namespace: string,
   {
     informasjonOmUtbetaling
-  }: ValidationVedtakS046Props
+  }: ValidationInformasjonOmUtbetalingProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
