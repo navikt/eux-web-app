@@ -22,12 +22,6 @@ export const initialVedleggState: VedleggState = {
 const vedleggReducer = (state: VedleggState = initialVedleggState, action: AnyAction): VedleggState => {
   switch (action.type) {
 
-    case types.VEDLEGG_POST_SUCCESS:
-      return {
-        ...state,
-        vedleggResponse: action.payload
-      }
-
     case types.VEDLEGG_DOKUMENT_REQUEST:
       return {
         ...state,

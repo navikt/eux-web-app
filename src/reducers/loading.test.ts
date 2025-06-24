@@ -108,18 +108,6 @@ describe('reducers/loading', () => {
     simulateFailure(types.SAK_SEND_FAILURE, 'sendingSak')
   })
 
-  it('VEDLEGG_POST_REQUEST', () => {
-    simulateRequest(types.VEDLEGG_POST_REQUEST, 'sendingVedlegg')
-  })
-
-  it('VEDLEGG_POST_SUCCESS', () => {
-    simulateSuccess(types.VEDLEGG_POST_SUCCESS, 'sendingVedlegg')
-  })
-
-  it('VEDLEGG_POST_FAILURE', () => {
-    simulateFailure(types.VEDLEGG_POST_FAILURE, 'sendingVedlegg')
-  })
-
   it('APP_SAKSBEHANDLER_REQUEST', () => {
     simulateRequest(types.APP_SAKSBEHANDLER_REQUEST, 'gettingSaksbehandler')
   })

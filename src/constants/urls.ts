@@ -59,12 +59,12 @@ export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'
 export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'
 
 // Vedlegg
-export const API_VEDLEGG_POST_URL = API_BASE_URL + '/rina/vedlegg'
+export const API_JOARK_GET_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
+
 export const API_VEDLEGG_DOKUMENT_URL = API_BASE_URL + '/rina/dokumenter?rinasaksnummer=%(rinasaksnummer)s'
 
 // Joark
 export const API_ATTACHMENT_LIST_URL = API_BASE_URL + '/vedlegg/dokumentoversikt/%(fnr)s?tema=%(tema)s'
-export const API_JOARK_GET_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s'
 export const API_JOARK_ATTACHMENT_URL = API_BASE_URL + '/vedlegg/dokument/%(journalpostId)s/%(dokumentInfoId)s/%(variantformat)s/rina/%(rinaId)s/%(rinaDokumentId)s/%(filnavn)s'
 
 // PD U1

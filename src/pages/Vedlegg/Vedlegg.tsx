@@ -1,4 +1,4 @@
-import {Alert, Button, Link, Loader, TextField} from '@navikt/ds-react'
+import {Alert, Button, Link, TextField} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -34,7 +34,6 @@ export interface VedleggSelector {
   alertType: string | undefined
   rinadokumentID: string | undefined
   rinasaksnummer: string | undefined
-  sendingVedlegg: boolean
   vedleggResponse: VedleggSendResponse | undefined
   validation: Validation
 }
@@ -42,7 +41,6 @@ export interface VedleggSelector {
 const mapState = (state: State): VedleggSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  sendingVedlegg: state.loading.sendingVedlegg,
   rinadokumentID: state.vedlegg.rinadokumentID,
   rinasaksnummer: state.vedlegg.rinasaksnummer,
   vedleggResponse: state.vedlegg.vedleggResponse,
@@ -61,7 +59,7 @@ const Vedlegg: React.FC = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const namespace = 'vedlegg'
   const { t } = useTranslation()
-  const { alertMessage, alertType, rinasaksnummer, rinadokumentID, sendingVedlegg, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
+  const { alertMessage, alertType, rinasaksnummer, rinadokumentID, vedleggResponse, validation }: VedleggSelector = useAppSelector(mapState)
 
   const [_fnr, setFnr] = useState<string | undefined>(undefined)
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
@@ -205,15 +203,13 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <Button
                 variant='primary'
                 onClick={sendSkjema}
-                disabled={sendingVedlegg}
               >
-                {sendingVedlegg ? t('message:loading-sending-vedlegg') : t('label:send-vedlegg')}
-                {sendingVedlegg && <Loader />}
+                {t('label:send-vedlegg')}
               </Button>
             </Column>
           </AlignStartRow>
           <VerticalSeparatorDiv size='2' />
-          {alertMessage && alertType && [types.VEDLEGG_POST_FAILURE].indexOf(alertType) >= 0 && (
+          {alertMessage && alertType && [types.ATTACHMENT_SEND_FAILURE].indexOf(alertType) >= 0 && (
             <>
               <Alert variant='warning'>
                 {alertMessage}

@@ -479,19 +479,6 @@ const loadingReducer = (
         updatingSvarSed: false
       }
 
-    case types.VEDLEGG_POST_REQUEST:
-      return {
-        ...state,
-        sendingVedlegg: true
-      }
-
-    case types.VEDLEGG_POST_SUCCESS:
-    case types.VEDLEGG_POST_FAILURE:
-      return {
-        ...state,
-        sendingVedlegg: false
-      }
-
     case types.JOURNALFOERING_PERSON_SEARCH_REQUEST:
     return {
       ...state,

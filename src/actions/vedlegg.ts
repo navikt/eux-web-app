@@ -32,17 +32,3 @@ export const propertySet = (key: string, value: string | boolean | undefined | J
     value
   }
 })
-
-export const sendVedlegg = (payload: VedleggPayload): ActionWithPayload => {
-  return call({
-    url: urls.API_VEDLEGG_POST_URL,
-    method: 'POST',
-    payload,
-    expectedPayload: mockSendVedlegg,
-    type: {
-      request: types.VEDLEGG_POST_REQUEST,
-      success: types.VEDLEGG_POST_SUCCESS,
-      failure: types.VEDLEGG_POST_FAILURE
-    }
-  })
-}

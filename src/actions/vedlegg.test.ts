@@ -2,7 +2,6 @@ import * as vedleggActions from 'actions/vedlegg'
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { call as originalCall } from '@navikt/fetch'
-import mockVedleggPayload from 'mocks/vedlegg/vedlegg'
 
 jest.mock('@navikt/fetch', () => ({
   call: jest.fn()
@@ -43,18 +42,5 @@ describe('actions/vedlegg', () => {
         value: 'value'
       }
     })
-  })
-
-  it('sendVedlegg()', () => {
-    vedleggActions.sendVedlegg(mockVedleggPayload)
-    expect(call)
-      .toBeCalledWith(expect.objectContaining({
-        type: {
-          request: types.VEDLEGG_POST_REQUEST,
-          success: types.VEDLEGG_POST_SUCCESS,
-          failure: types.VEDLEGG_POST_FAILURE
-        },
-        url: urls.API_VEDLEGG_POST_URL
-      }))
   })
 })

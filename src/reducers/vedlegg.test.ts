@@ -3,24 +3,6 @@ import { Dokument } from 'declarations/types'
 import vedleggReducer, { initialVedleggState, VedleggState } from './vedlegg'
 
 describe('reducers/app', () => {
-  it('VEDLEGG_POST_SUCCESS', () => {
-    const payload = {
-      filnavn: 'filnavn',
-      vedleggID: '123',
-      url: 'url'
-    }
-    expect(
-      vedleggReducer({
-        ...initialVedleggState
-      }, {
-        type: types.VEDLEGG_POST_SUCCESS,
-        payload
-      })
-    ).toEqual({
-      ...initialVedleggState,
-      vedlegg: payload
-    })
-  })
 
   it('VEDLEGG_DOKUMENT_REQUEST', () => {
     const payload = 'mockPayload'
