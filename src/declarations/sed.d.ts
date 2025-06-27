@@ -18,7 +18,7 @@ export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
 export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'H001' | 'H002' | 'S040'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -839,6 +839,23 @@ export interface S040Sed extends BaseReplySed {
   }
   ytterligereInfo?: string
 }
+
+export interface S046Sed extends BaseReplySed {
+  bruker: PersonTypeS
+  sykdom: {
+    "informasjonOmUtbetaling": {
+      forespoerselomperiode: Periode
+      ytelse: {
+        type: string,
+      }
+      vedtak: {
+        type: string
+      }
+    }
+  }
+  ytterligereInfo?: string
+}
+
 
 export interface XSed extends BaseReplySed {
   bruker: PersonLight

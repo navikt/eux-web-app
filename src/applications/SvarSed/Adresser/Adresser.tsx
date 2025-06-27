@@ -24,7 +24,7 @@ import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import AdresseForm from './AdresseForm'
 import { validateAdresse, validateAdresser, ValidationAdresseProps, ValidationAdresserProps } from './validation'
-import {isFSed, isS040Sed} from "../../../utils/sed";
+import {isFSed, isS040Sed, isS046Sed} from "../../../utils/sed";
 import DateField from "../../../components/DateField/DateField";
 
 const mapState = (state: State): MainFormSelector => ({
@@ -49,7 +49,7 @@ const Adresser: React.FC<MainFormProps> = ({
   const singleAdress = options && options.singleAdress ? options.singleAdress : false
   const botidilandetsiden: string | undefined = _.get(replySed, `${personID}.botidilandetsiden`)
 
-  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed))
+  const checkAdresseType: boolean = (!isFSed(replySed) && !isS040Sed(replySed) && !isS046Sed(replySed))
   const fnr = getFnr(replySed, personID)
   const getId = (a: Adresse | null | undefined): string => a ? (a?.type ?? '') + '-' + (a?.by ?? '') + '-' + (a?.landkode ?? '') : 'new'
 
@@ -200,7 +200,7 @@ const Adresser: React.FC<MainFormProps> = ({
               adresse={_adresse}
               onAdressChanged={(a: Adresse) => setAdresse(a, index)}
               validation={_v}
-              type={!isS040Sed(replySed)}
+              type={!isS040Sed(replySed) && !isS046Sed(replySed)}
             />
             )
           : (
