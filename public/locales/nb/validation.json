@@ -174,5 +174,7 @@
   "uncheckedFnr": "Uverifisert fødselsnummer",
   "unverifiedSaksnummer": "Uverifisert RINA saksnummer",
 
-  "du-maa-fylle-ut": "Du må fylle ut {{type}}"
+  "du-maa-fylle-ut": "Du må fylle ut {{type}}",
+
+  "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv"
 }
