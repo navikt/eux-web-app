@@ -3,6 +3,7 @@ import {Validation} from "../../../declarations/types";
 import _ from "lodash";
 import {validatePerioder} from "./Perioder/validation";
 import {validatePerioderMedPensjonPerioder} from "./PerioderMedPensjon/validation";
+import {addError} from "../../../utils/validation";
 
 export interface ValidateAktivitetOgTrygdeperioderProps {
   person: PersonTypeF001
@@ -19,7 +20,21 @@ export const validateAktivitetOgTrygdeperioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
+  // Validation for inactive person requiring at least one period
+  const aktivitetStatus = _.get(person, 'aktivitet.status')
+  const aktivitetType = _.get(person, 'aktivitet.type')
   const aktivitetPerioder: Array<Periode> | undefined = _.get(person, 'aktivitet.perioder')
+
+  if (aktivitetStatus === 'inaktiv' && aktivitetType) {
+    if (!aktivitetPerioder || aktivitetPerioder.length === 0) {
+      hasErrors.push(addError(v, {
+        id: namespace + '-aktivitet-perioder',
+        message: 'validation:requiredPerioderForInaktivPerson',
+        personName
+      }))
+    }
+  }
+
   hasErrors.push(validatePerioder(v, `${namespace + '-' + _.get(person, 'aktivitet.type')}`, {
     perioder: aktivitetPerioder, personName
   }))
