@@ -20,7 +20,6 @@ export const validateAktivitetOgTrygdeperioder = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  // Validation for inactive person requiring at least one period
   const aktivitetStatus = _.get(person, 'aktivitet.status')
   const aktivitetType = _.get(person, 'aktivitet.type')
   const aktivitetPerioder: Array<Periode> | undefined = _.get(person, 'aktivitet.perioder')
