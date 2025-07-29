@@ -24,6 +24,14 @@ export const validateAktivitetOgTrygdeperioder = (
   const aktivitetType = _.get(person, 'aktivitet.type')
   const aktivitetPerioder: Array<Periode> | undefined = _.get(person, 'aktivitet.perioder')
 
+  if (aktivitetStatus === 'inaktiv' && !aktivitetType) {
+    hasErrors.push(addError(v, {
+      id: namespace + '-aktivitet-type',
+      message: 'validation:requiredTypeForInaktivPerson',
+      personName
+    }))
+
+  }
   if (aktivitetStatus === 'inaktiv' && aktivitetType) {
     if (!aktivitetPerioder || aktivitetPerioder.length === 0) {
       hasErrors.push(addError(v, {

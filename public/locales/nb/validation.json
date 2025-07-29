@@ -176,5 +176,6 @@
 
   "du-maa-fylle-ut": "Du må fylle ut {{type}}",
 
-  "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv"
+  "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv",
+  "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut"
 }

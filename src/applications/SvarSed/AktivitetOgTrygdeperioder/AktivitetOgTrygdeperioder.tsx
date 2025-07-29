@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import performValidation from "../../../utils/performValidation";
-import {FSed, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
+import {PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
 import {resetValidation, setValidation} from "../../../actions/validation";
 import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
@@ -17,7 +17,7 @@ import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 import {useTranslation} from "react-i18next";
 import TextArea from "../../../components/Forms/TextArea";
-import {updateReplySed} from "../../../actions/svarsed";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -273,43 +273,51 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 </Box>
               }
               {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
-                    <Heading size='xsmall'>
-                      <HStack gap="4" align="center">
-                        {t('label:perioder-uten-aktivitet')}
-                        <Button
-                          size={"xsmall"}
-                          variant='tertiary'
-                          onClick={() => _setShowTransferTrygdePerioderModal(true)}
-                          icon={<ArrowRightLeftIcon/>}
-                          disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
-                        >
-                          {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
-                        </Button>
-                      </HStack>
-                    </Heading>
-                    <Perioder
-                      parentNamespace={namespace + '-' + aktivitet?.type}
-                      parentTarget={"aktivitet.perioder"}
-                      personID={personID}
-                      personName={personName}
-                      replySed={replySed}
-                      updateReplySed={updateReplySed}
-                      setReplySed={setReplySed}
-                    />
-                    {aktivitet?.status === "ingenInfo" &&
-                      <TextArea
-                        namespace={namespace + '-ingeninfo-begrunnelse'}
-                        error={validation[namespace + '-ingeninfo-begrunnelse']?.feilmelding}
-                        id='begrunnelse'
-                        label={t('label:begrunnelse')}
-                        onChanged={setIngenInfoBegrunnelse}
-                        value={ingenInfoBegrunnelse}
+                <>
+                  <Box
+                    padding="4"
+                    borderWidth={validation[namespace + '-aktivitet-perioder']?.feilmelding ? '2' : '1'}
+                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                    id={namespace + '-aktivitet-perioder'}
+                  >
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        <HStack gap="4" align="center">
+                          {t('label:perioder-uten-aktivitet')}
+                          <Button
+                            size={"xsmall"}
+                            variant='tertiary'
+                            onClick={() => _setShowTransferTrygdePerioderModal(true)}
+                            icon={<ArrowRightLeftIcon/>}
+                            disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
+                          >
+                            {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
+                          </Button>
+                        </HStack>
+                      </Heading>
+                      <Perioder
+                        parentNamespace={namespace + '-' + aktivitet?.type}
+                        parentTarget={"aktivitet.perioder"}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
                       />
-                    }
-                  </VStack>
-                </Box>
+                      {aktivitet?.status === "ingenInfo" &&
+                        <TextArea
+                          namespace={namespace + '-ingeninfo-begrunnelse'}
+                          error={validation[namespace + '-ingeninfo-begrunnelse']?.feilmelding}
+                          id='begrunnelse'
+                          label={t('label:begrunnelse')}
+                          onChanged={setIngenInfoBegrunnelse}
+                          value={ingenInfoBegrunnelse}
+                        />
+                      }
+                    </VStack>
+                  </Box>
+                  <ErrorLabel error={validation[namespace + '-aktivitet-perioder']?.feilmelding}/>
+                </>
               }
               {trygdeperioder && trygdeperioder.length > 0 &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle">
