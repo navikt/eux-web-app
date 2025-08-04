@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { blobToBase64 } from 'utils/blob'
 import { cleanReplySed } from 'utils/sed'
-import {Document, Page} from "react-pdf";
 import PDFViewer from "components/PDFViewer/PDFViewer";
 
 export interface PreviewSedProps {
@@ -121,10 +120,10 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       <Button
         variant='tertiary'
         size={size}
-        disabled={gettingPreviewFile || gettingPreviewSed || disabled}
+        disabled={disabled}
         data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
-        loading={(short && (gettingPreviewFile || gettingPreviewSed)) || (!short && gettingPreviewFile)}
+        loading={requestPreview && (gettingPreviewFile || gettingPreviewSed)}
         icon={<EyeWithPupilIcon />}
       >
         {!short && (

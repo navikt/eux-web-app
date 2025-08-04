@@ -9,6 +9,7 @@ import {
   rejectingSed,
   remindSed,
   replyToSed,
+  previewSed,
 } from 'actions/svarsed'
 import PreviewSED from 'applications/SvarSed/PreviewSED/PreviewSED'
 import { State } from 'declarations/reducers'
@@ -26,6 +27,8 @@ import {FeatureToggles} from "../../../declarations/app";
 import Modal from "../../../components/Modal/Modal";
 import {ModalContent} from "../../../declarations/components";
 import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromRinaTable";
+import { saveAs } from 'file-saver'
+import moment from 'moment'
 
 const MyPanel = styled(Panel)`
   transition: all 0.15s ease-in-out;
@@ -68,6 +71,8 @@ interface SEDPanelSelector {
   replySed: ReplySed | null | undefined
   deletedSed: boolean | null | undefined
   featureToggles: FeatureToggles | null | undefined
+  gettingPreviewFile: boolean
+  previewFile: Blob | null | undefined
 }
 
 interface SEDPanelProps {
@@ -78,7 +83,9 @@ interface SEDPanelProps {
 const mapState = (state: State): SEDPanelSelector => ({
   replySed: state.svarsed.replySed,
   deletedSed: state.svarsed.deletedSed,
-  featureToggles: state.app.featureToggles
+  featureToggles: state.app.featureToggles,
+  gettingPreviewFile: state.loading.gettingPreviewFile,
+  previewFile: state.svarsed.previewFile
 })
 
 const SEDPanel = ({
@@ -89,7 +96,7 @@ const SEDPanel = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { replySed, deletedSed, featureToggles } = useAppSelector(mapState)
+  const { replySed, deletedSed, featureToggles, gettingPreviewFile, previewFile } = useAppSelector(mapState)
 
   const [_loadingDraftSed, _setLoadingDraftSed] = useState<boolean>(false)
   const [_editingSed, _setEditingSed] = useState<boolean>(false)
@@ -101,6 +108,7 @@ const SEDPanel = ({
   const [_clarifyingSed, _setClarifyingSed] = useState<boolean>(false)
   const [_reminderSed, _setReminderSed] = useState<boolean>(false)
   const [attachmentModal, setAttachmentModal] = useState<ModalContent | undefined>(undefined)
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState<boolean>(false)
 
   const ALLOWED_SED_HANDLINGER = getAllowed("ALLOWED_SED_HANDLINGER", !!featureToggles?.featureAdmin)
   const ALLOWED_SED_EDIT_AND_UPDATE = getAllowed("ALLOWED_SED_EDIT_AND_UPDATE", !!featureToggles?.featureAdmin)
@@ -132,6 +140,19 @@ const SEDPanel = ({
     }
   }, [deletedSed])
 
+  const downloadPDF = () => {
+    setIsDownloadingPDF(true)
+    dispatch(previewSed(sed.sedId, currentSak.sakId))
+  }
+
+  // Handle PDF download when preview file is available
+  useEffect(() => {
+    if (isDownloadingPDF && previewFile && !gettingPreviewFile) {
+      const fileName = `SED_${sed.sedId}_${moment(sed.sistEndretDato).format('YYYYMMDD_HHmmss')}.pdf`
+      saveAs(previewFile, fileName)
+      setIsDownloadingPDF(false)
+    }
+  }, [isDownloadingPDF, previewFile, gettingPreviewFile, sed.sedId, sed.sistEndretDato])
 
   const onEditingSedClick = (sed: Sed, sak: Sak) => {
     _setEditingSed(true)
@@ -232,6 +253,17 @@ const SEDPanel = ({
               sedId={sed.sedId}
               disabled={!hasSedHandlinger}
             />
+            <Button
+              variant='tertiary'
+              size='small'
+              disabled={!hasSedHandlinger || isDownloadingPDF}
+              data-amplitude='svarsed.selection.download'
+              onClick={downloadPDF}
+              icon={<DownloadIcon />}
+              loading={isDownloadingPDF}
+              title={t('label:last-ned-pdf')}
+            >
+            </Button>
             {sed.vedlegg && sed.vedlegg.length > 0 && (
               <AttachmentDiv>
                 <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
