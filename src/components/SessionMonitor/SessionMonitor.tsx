@@ -120,13 +120,18 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
         const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
         console.log('Wonderwall minutes left', diffMinutes)
+        const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
 
+        initialAppState.expirationTime = expirationTime
+        /*
         app(initialAppState, {
           type: types.APP_UTGAARDATO_SUCCESS,
           payload: {
             utgaarDato: tokens.expire_at
           }
         })
+
+         */
         /*
         app(initialAppState, {
           type: types.APP_UTGAARDATO_SUCCESS,
