@@ -71,7 +71,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
   }, [alertMessage])
 
   const setNorwegianPin = (newPin: string) => {
-    _setTempNorwegianPin(newPin)
+    _setTempNorwegianPin(newPin.trim())
   }
 
   const cleanUp = () => {
