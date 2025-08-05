@@ -98,6 +98,7 @@ const apiAuth = function (scope) {
     } else {
       try {
         //logger.debug('apiAuth: trying onBehalfOf with ' + req.headers.authorization)
+        logger.error("header ", req.headers.authorization.substring("Bearer ".length))
         const response = await onBehalfOf(
           scope,
           req.headers.authorization.substring("Bearer ".length)
