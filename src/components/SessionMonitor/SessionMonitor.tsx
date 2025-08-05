@@ -11,6 +11,9 @@ import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
+import { API_REAUTENTISERING_URL } from 'constants/urls'
+import app, {initialAppState} from "../../reducers/app";
+import * as types from "../../constants/actionTypes";
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -21,12 +24,32 @@ export interface SessionMonitorProps {
   expirationTime?: number
   millisecondsForWarning?: number
   sessionExpiredReload?: number
+  sessionAutoRenew?: number
   now?: Date
 }
 
 export interface SessionMonitorSelector {
   pdu1: PDU1 | null | undefined
   replySed: ReplySed | null | undefined
+}
+
+export interface WonderwallResponse {
+  session: {
+    created_at: string
+    ends_at: string
+    timeout_at: string
+    ends_in_seconds: number
+    active: true
+    timeout_in_seconds: number
+  }
+  tokens: {
+    expire_at: string
+    refreshed_at: string
+    expire_in_seconds: number
+    next_auto_refresh_in_seconds: number
+    refresh_cooldown: boolean
+    refresh_cooldown_seconds: number
+  }
 }
 
 const mapState = (state: State): SessionMonitorSelector => ({
@@ -43,6 +66,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   millisecondsForWarning = 5 * 1000 * 60,
   /* Reload under a minute */
   sessionExpiredReload = 1000,
+  /* Automatically try to renew session in background under 30 minutes */
+  sessionAutoRenew = 60 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
@@ -76,8 +101,40 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       if (diff < millisecondsForWarning) {
         setModal(true)
       }
+      if (diff < sessionAutoRenew) {
+        checkWonderwallTimeout()
+      }
       checkTimeout()
     }, checkInterval)
+  }
+
+  async function checkWonderwallTimeout() {
+    const response = await fetch(API_REAUTENTISERING_URL,  {
+      method: "POST"
+    })
+    const wonderwallResponse: WonderwallResponse = await response.json()
+    if (response.ok) {
+      const tokens = wonderwallResponse?.tokens
+      if (tokens) {
+        const nowDate: Date = new Date()
+        const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
+        console.log('minutes left', Math.ceil(diffMillis / 1000 / 60))
+        const diffMinutes = Math.ceil(diffMillis / 1000 / 60);
+
+        app(initialAppState, {
+          type: types.APP_SESSION_SET,
+          payload: {
+            minutes: diffMinutes
+          }
+        })
+      } else {
+        console.log('No content')
+      }
+    } else {
+      console.log('Failed call')
+
+    }
+
   }
 
   useEffect(() => {
@@ -139,6 +196,7 @@ SessionMonitor.propTypes = {
   expirationTime: PT.number,
   millisecondsForWarning: PT.number,
   sessionExpiredReload: PT.number,
+  sessionAutoRenew: PT.number,
   now: PT.instanceOf(Date)
 }
 export default SessionMonitor
