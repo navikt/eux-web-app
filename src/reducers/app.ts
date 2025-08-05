@@ -233,6 +233,7 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       }
 
     case types.APP_UTGAARDATO_SUCCESS: {
+      console.log('Payload ', action.payload)
       const now = new Date()
       const expirationTime = action.payload.tokens?.expire_at
         ? new Date(action.payload.tokens.expire_at)
