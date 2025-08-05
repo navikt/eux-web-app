@@ -53,7 +53,7 @@ export const API_ENHETER_URL = API_BASE_URL + '/saksbehandler/enheter'
 export const API_FAVORITTENHET_URL = API_BASE_URL + '/saksbehandler/favorittenhet'
 export const API_REAUTENTISERING_URL = '/oauth2/session/refresh'
 // export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
-export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'
+export const API_UTGAARDATO_URL = '/oauth2/session'
 
 // Server informasjon
 export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'
