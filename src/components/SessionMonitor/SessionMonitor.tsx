@@ -31,6 +31,7 @@ export interface SessionMonitorProps {
 export interface SessionMonitorSelector {
   pdu1: PDU1 | null | undefined
   replySed: ReplySed | null | undefined
+  state: State | null | undefined
 }
 
 export interface WonderwallResponse {
@@ -54,7 +55,8 @@ export interface WonderwallResponse {
 
 const mapState = (state: State): SessionMonitorSelector => ({
   pdu1: state.pdu1.pdu1,
-  replySed: state.svarsed.replySed
+  replySed: state.svarsed.replySed,
+  state: state
 })
 
 const SessionMonitor: React.FC<SessionMonitorProps> = ({
@@ -72,7 +74,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
-  const { pdu1, replySed }: SessionMonitorSelector = useAppSelector(mapState)
+  const { pdu1, replySed, state }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -122,7 +124,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         console.log('Wonderwall minutes left', diffMinutes)
         const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
 
-        initialAppState.expirationTime = expirationTime
+        if (state && state.app) {
+          console.log('Wonderwall setting', diffMinutes)
+
+          state.app.expirationTime = expirationTime
+        }
         /*
         app(initialAppState, {
           type: types.APP_UTGAARDATO_SUCCESS,
