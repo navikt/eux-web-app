@@ -1,6 +1,6 @@
 import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
-import {Button, Detail, Heading, HelpText, Loader, Panel} from '@navikt/ds-react'
-import { FlexDiv, FlexBaseDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Button, Detail, Heading, HelpText, HStack, Loader, Panel} from '@navikt/ds-react'
+import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import {
   clarifyingSed,
   deleteSed,
@@ -54,11 +54,6 @@ const AttachmentButton = styled(Button)`
 const AttachmentIcon = styled(PaperclipIcon)`
   position: relative;
   top: 3px;
-`
-
-const AttachmentDiv = styled.div`
-  position: relative;
-  top: -5px;
 `
 
 const MyHelpText = styled(HelpText)`
@@ -242,7 +237,7 @@ const SEDPanel = ({
         </IconDiv>
         <HorizontalSeparatorDiv />
         <PileDiv>
-          <FlexBaseDiv>
+          <HStack align="center">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
             </Heading>
@@ -265,14 +260,14 @@ const SEDPanel = ({
             >
             </Button>
             {sed.vedlegg && sed.vedlegg.length > 0 && (
-              <AttachmentDiv>
+              <div className="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
                 <AttachmentButton variant="tertiary" onClick={openAttachmentModal} disabled={!hasSedHandlinger}>
                   <AttachmentIcon/><span>({sed?.vedlegg?.length})</span>
                 </AttachmentButton>
-              </AttachmentDiv>
+              </div>
             )}
             {sedHandlingerRINA && sedHandlingerRINA.length > 0 &&
-              <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"}>
+              <MyHelpText title="Handlinger tilgjengelig i RINA" placement={"right"} wrapperClassName="navds-button navds-button--tertiary navds-button--small navds-button--icon-only">
                 <Heading size="xsmall">Handlinger tilgjengelig i RINA</Heading>
                 <ul>
                   {sedHandlingerRINA.map((sedhandling) => {
@@ -283,7 +278,7 @@ const SEDPanel = ({
                 </ul>
               </MyHelpText>
             }
-          </FlexBaseDiv>
+          </HStack>
           <VerticalSeparatorDiv size='0.5' />
           <FlexDiv>
             {showEditButton && (
