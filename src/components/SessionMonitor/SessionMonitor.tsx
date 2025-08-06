@@ -99,7 +99,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (!_.isNumber(wonderwallTimeout)) {
       return
     }
-    wonderwallTimeout = wonderwallTimeout * 1000
     setTimeout(() => {
       const diff = getDiff(wonderwallTimeout, now)
       console.log('diff', diff)
