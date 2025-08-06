@@ -185,7 +185,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
           state.app.expirationTime = expirationTime
         }
-        return diffMinutes
+        return expirationTime
         /*
         app(initialAppState, {
           type: types.APP_UTGAARDATO_SUCCESS,
