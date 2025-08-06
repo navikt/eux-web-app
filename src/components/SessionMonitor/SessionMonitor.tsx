@@ -80,7 +80,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const dispatch = useAppDispatch()
 
   const getDiff = (expirationTime: number, now: any) => {
-    const _now: Date = now || new Date()
+    const _now: Date = new Date()
     console.log('expirationTime', expirationTime)
     const diff: number = expirationTime - _now.getTime()
     console.log('minutes left', Math.ceil(diff / 1000 / 60))
