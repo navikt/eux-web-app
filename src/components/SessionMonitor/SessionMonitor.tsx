@@ -179,10 +179,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
         const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
         console.log('Wonderwall minutes left', diffMinutes)
-        const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
+        const diffSeconds: number = tokens.expire_in_seconds
+        console.log('Wonderwall seconds left', diffSeconds)
+        const expirationTime = new Date().setTime(new Date().getTime() + diffMinutes * 60 * 1000)
 
         if (state && state.app) {
           console.log('Wonderwall setting', diffMinutes)
+          console.log('Wonderwall expirationTime', expirationTime)
 
           state.app.expirationTime = expirationTime
         }
