@@ -93,7 +93,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   async function checkTimeout () {
     let wonderwallTimeout = await currentWonderwallTimeout()
-    console.log('currentWonderwallTimeout', currentWonderwallTimeout)
+    console.log('currentWonderwallTimeout', wonderwallTimeout)
     if (!_.isNumber(wonderwallTimeout)) {
       return
     }
