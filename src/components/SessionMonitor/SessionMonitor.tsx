@@ -81,6 +81,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   const getDiff = (expirationTime: number, now: any) => {
     const _now: Date = now || new Date()
+    console.log('expirationTime', expirationTime)
     const diff: number = expirationTime - _now.getTime()
     console.log('minutes left', Math.ceil(diff / 1000 / 60))
     setDiff(diff)
@@ -100,6 +101,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     wonderwallTimeout = wonderwallTimeout * 1000
     setTimeout(() => {
       const diff = getDiff(wonderwallTimeout, now)
+      console.log('diff', diff)
+
       if (diff < sessionExpiredReload) {
         triggerReload()
       }
