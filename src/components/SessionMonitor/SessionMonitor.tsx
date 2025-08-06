@@ -11,7 +11,7 @@ import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
-import { API_REAUTENTISERING_URL } from 'constants/urls'
+import {API_REAUTENTISERING_URL, API_UTGAARDATO_URL} from 'constants/urls'
 import app, {initialAppState} from "../../reducers/app";
 import * as types from "../../constants/actionTypes";
 
@@ -92,7 +92,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   async function checkTimeout () {
-    let wonderwallTimeout = await checkWonderwallTimeout()
+    let wonderwallTimeout = await currentWonderwallTimeout()
+    console.log('currentWonderwallTimeout', currentWonderwallTimeout)
     if (!_.isNumber(wonderwallTimeout)) {
       return
     }
@@ -115,6 +116,56 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   async function checkWonderwallTimeout() {
     const response = await fetch(API_REAUTENTISERING_URL,  {
       method: "POST"
+    })
+    const wonderwallResponse: WonderwallResponse = await response.json()
+    if (response.ok) {
+      const tokens = wonderwallResponse?.tokens
+      if (tokens) {
+        const nowDate: Date = new Date()
+        const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
+        const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
+        console.log('Wonderwall minutes left', diffMinutes)
+        const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
+
+        if (state && state.app) {
+          console.log('Wonderwall setting', diffMinutes)
+
+          state.app.expirationTime = expirationTime
+        }
+        return diffMinutes
+        /*
+        app(initialAppState, {
+          type: types.APP_UTGAARDATO_SUCCESS,
+          payload: {
+            utgaarDato: tokens.expire_at
+          }
+        })
+
+         */
+        /*
+        app(initialAppState, {
+          type: types.APP_UTGAARDATO_SUCCESS,
+          payload: {
+            minutes: diffMinutes
+          }
+        })
+
+         */
+      } else {
+        console.log('No content')
+        return -1
+      }
+    } else {
+      console.log('Failed call')
+
+    }
+    return -1
+
+  }
+
+  async function currentWonderwallTimeout() {
+    const response = await fetch(API_UTGAARDATO_URL,  {
+      method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
     if (response.ok) {
