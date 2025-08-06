@@ -69,7 +69,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* Reload under a minute */
   sessionExpiredReload = 1000,
   /* Automatically try to renew session in background under 30 minutes */
-  sessionAutoRenew = 60 * 1000 * 60,
+  sessionAutoRenew = 70 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
@@ -91,12 +91,14 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     window.location.reload()
   }
 
-  const checkTimeout = () => {
-    if (!_.isNumber(expirationTime)) {
+  async function checkTimeout () {
+    let wonderwallTimeout = await checkWonderwallTimeout()
+    if (!_.isNumber(wonderwallTimeout)) {
       return
     }
+    wonderwallTimeout = wonderwallTimeout * 1000
     setTimeout(() => {
-      const diff = getDiff(expirationTime, now)
+      const diff = getDiff(wonderwallTimeout, now)
       if (diff < sessionExpiredReload) {
         triggerReload()
       }
@@ -129,6 +131,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
           state.app.expirationTime = expirationTime
         }
+        return diffMinutes
         /*
         app(initialAppState, {
           type: types.APP_UTGAARDATO_SUCCESS,
@@ -149,11 +152,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
          */
       } else {
         console.log('No content')
+        return -1
       }
     } else {
       console.log('Failed call')
 
     }
+    return -1
 
   }
 
