@@ -67,14 +67,17 @@ function extractedTime(response: Response, wonderwallResponse: WonderwallRespons
       const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
       const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
       console.log('Wonderwall minutes left', diffMinutes)
-      const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
+      const diffSeconds: number = tokens.expire_in_seconds
+      console.log('Wonderwall seconds left', diffSeconds)
+      const expirationTime = new Date().setTime(new Date().getTime() + diffMinutes * 60 * 1000)
 
       if (state && state.app) {
         console.log('Wonderwall setting', diffMinutes)
+        console.log('Wonderwall expirationTime', expirationTime)
 
         state.app.expirationTime = expirationTime
       }
-      return diffMinutes
+      return expirationTime
     } else {
       console.log('No content')
       return -1
@@ -160,34 +163,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    if (response.ok) {
-      const tokens = wonderwallResponse?.tokens
-      if (tokens) {
-        const nowDate: Date = new Date()
-        const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
-        const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
-        console.log('Wonderwall minutes left', diffMinutes)
-        const diffSeconds: number = tokens.expire_in_seconds
-        console.log('Wonderwall seconds left', diffSeconds)
-        const expirationTime = new Date().setTime(new Date().getTime() + diffMinutes * 60 * 1000)
-
-        if (state && state.app) {
-          console.log('Wonderwall setting', diffMinutes)
-          console.log('Wonderwall expirationTime', expirationTime)
-
-          state.app.expirationTime = expirationTime
-        }
-        return expirationTime
-      } else {
-        console.log('No content')
-        return -1
-      }
-    } else {
-      console.log('Failed call')
-
-    }
-    return -1
-
+    return extractedTime(response, wonderwallResponse, state)
   }
 
   useEffect(() => {
