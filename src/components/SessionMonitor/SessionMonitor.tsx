@@ -59,6 +59,33 @@ const mapState = (state: State): SessionMonitorSelector => ({
   state: state
 })
 
+function extractedTime(response: Response, wonderwallResponse: WonderwallResponse, state: State | null | undefined) {
+  if (response.ok) {
+    const tokens = wonderwallResponse?.tokens
+    if (tokens) {
+      const nowDate: Date = new Date()
+      const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
+      const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
+      console.log('Wonderwall minutes left', diffMinutes)
+      const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
+
+      if (state && state.app) {
+        console.log('Wonderwall setting', diffMinutes)
+
+        state.app.expirationTime = expirationTime
+      }
+      return diffMinutes
+    } else {
+      console.log('No content')
+      return -1
+    }
+  } else {
+    console.log('Failed call')
+
+  }
+  return -1
+}
+
 const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* check every minute */
   checkInterval = 1000 * 60,
@@ -104,12 +131,15 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       console.log('diff', diff)
 
       if (diff < sessionExpiredReload) {
+        console.log('trigger reload')
         triggerReload()
       }
       if (diff < millisecondsForWarning) {
+        console.log('trigger modal')
         setModal(true)
       }
       if (diff < sessionAutoRenew) {
+        console.log('trigger checkWonderwallTimeout')
         checkWonderwallTimeout()
       }
       checkTimeout()
@@ -121,52 +151,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "POST"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    if (response.ok) {
-      const tokens = wonderwallResponse?.tokens
-      if (tokens) {
-        const nowDate: Date = new Date()
-        const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
-        const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
-        console.log('Wonderwall minutes left', diffMinutes)
-        const expirationTime = new Date(new Date().setMinutes(new Date().getMinutes() + diffMinutes)).getTime()
-
-        if (state && state.app) {
-          console.log('Wonderwall setting', diffMinutes)
-
-          state.app.expirationTime = expirationTime
-        }
-        return diffMinutes
-        /*
-        app(initialAppState, {
-          type: types.APP_UTGAARDATO_SUCCESS,
-          payload: {
-            utgaarDato: tokens.expire_at
-          }
-        })
-
-         */
-        /*
-        app(initialAppState, {
-          type: types.APP_UTGAARDATO_SUCCESS,
-          payload: {
-            minutes: diffMinutes
-          }
-        })
-
-         */
-      } else {
-        console.log('No content')
-        return -1
-      }
-    } else {
-      console.log('Failed call')
-
-    }
-    return -1
+    return extractedTime(response, wonderwallResponse, state);
 
   }
 
-  async function currentWonderwallTimeout() {
+  async function currentWonderwallTimeout() { // return tuple
     const response = await fetch(API_UTGAARDATO_URL,  {
       method: "GET"
     })
@@ -189,24 +178,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
           state.app.expirationTime = expirationTime
         }
         return expirationTime
-        /*
-        app(initialAppState, {
-          type: types.APP_UTGAARDATO_SUCCESS,
-          payload: {
-            utgaarDato: tokens.expire_at
-          }
-        })
-
-         */
-        /*
-        app(initialAppState, {
-          type: types.APP_UTGAARDATO_SUCCESS,
-          payload: {
-            minutes: diffMinutes
-          }
-        })
-
-         */
       } else {
         console.log('No content')
         return -1
