@@ -59,17 +59,25 @@ const mapState = (state: State): SessionMonitorSelector => ({
   state: state
 })
 
-function extractedTime(response: Response, wonderwallResponse: WonderwallResponse, state: State | null | undefined) {
+function extractTime(response: Response, wonderwallResponse: WonderwallResponse, state: State | null | undefined) {
+  let timeTuple: [number, number];
+  timeTuple = [-1, -1]
   if (response.ok) {
     const tokens = wonderwallResponse?.tokens
     if (tokens) {
       const nowDate: Date = new Date()
       const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
+      const expirationTime = new Date(tokens.expire_at).getTime()
+
+      const session = wonderwallResponse?.session
+
+      const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : 0;
+//      const expirationTime = new Date().setTime(new Date().getTime() + diffMillis)
+
+      timeTuple = [expirationTime, sessionEndsAt];
+
       const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
       console.log('Wonderwall minutes left', diffMinutes)
-      const diffSeconds: number = tokens.expire_in_seconds
-      console.log('Wonderwall seconds left', diffSeconds)
-      const expirationTime = new Date().setTime(new Date().getTime() + diffMinutes * 60 * 1000)
 
       if (state && state.app) {
         console.log('Wonderwall setting', diffMinutes)
@@ -77,16 +85,14 @@ function extractedTime(response: Response, wonderwallResponse: WonderwallRespons
 
         state.app.expirationTime = expirationTime
       }
-      return expirationTime
     } else {
       console.log('No content')
-      return -1
     }
   } else {
     console.log('Failed call')
 
   }
-  return -1
+  return timeTuple
 }
 
 const SessionMonitor: React.FC<SessionMonitorProps> = ({
@@ -126,11 +132,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   async function checkTimeout () {
     let wonderwallTimeout = await currentWonderwallTimeout()
     console.log('currentWonderwallTimeout', wonderwallTimeout)
-    if (!_.isNumber(wonderwallTimeout)) {
+    if (!_.isNumber(wonderwallTimeout[0])) {
       return
     }
     setTimeout(() => {
-      const diff = getDiff(wonderwallTimeout, now)
+      const diff = getDiff(wonderwallTimeout[0], now)
       console.log('diff', diff)
 
       if (diff < sessionExpiredReload) {
@@ -142,8 +148,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         setModal(true)
       }
       if (diff < sessionAutoRenew) {
-        console.log('trigger checkWonderwallTimeout')
-        checkWonderwallTimeout()
+        if (wonderwallTimeout[0] < (wonderwallTimeout[1] - 1000)) {
+          console.log('trigger checkWonderwallTimeout')
+          checkWonderwallTimeout()
+        } else {
+          console.log('trigger nothing. session max')
+        }
       }
       checkTimeout()
     }, checkInterval)
@@ -154,7 +164,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "POST"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractedTime(response, wonderwallResponse, state);
+    return extractTime(response, wonderwallResponse, state);
 
   }
 
@@ -163,7 +173,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractedTime(response, wonderwallResponse, state)
+    return extractTime(response, wonderwallResponse, state)
   }
 
   useEffect(() => {
