@@ -14,6 +14,7 @@ import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
 import {API_REAUTENTISERING_URL, API_UTGAARDATO_URL} from 'constants/urls'
 import app, {initialAppState} from "../../reducers/app";
 import * as types from "../../constants/actionTypes";
+import { setTimeout } from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -132,11 +133,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   async function checkTimeout () {
     let wonderwallTimeout = await currentWonderwallTimeout()
     console.log('currentWonderwallTimeout', wonderwallTimeout)
-    if (!_.isNumber(wonderwallTimeout[0])) {
+    let tokenExpirationTime = wonderwallTimeout[0];
+    if (!_.isNumber(tokenExpirationTime)) {
       return
     }
     setTimeout(() => {
-      const diff = getDiff(wonderwallTimeout[0], now)
+      const diff = getDiff(tokenExpirationTime, now)
       console.log('diff', diff)
 
       if (diff < sessionExpiredReload) {
@@ -148,7 +150,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         setModal(true)
       }
       if (diff < sessionAutoRenew) {
-        if (wonderwallTimeout[0] < (wonderwallTimeout[1] - 1000)) {
+        let sessionEndTime = wonderwallTimeout[1];
+        if (tokenExpirationTime < (sessionEndTime - 1000)) {
           console.log('trigger checkWonderwallTimeout')
           checkWonderwallTimeout()
         } else {
