@@ -14,7 +14,7 @@ import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
 import {API_REAUTENTISERING_URL, API_UTGAARDATO_URL} from 'constants/urls'
 import app, {initialAppState} from "../../reducers/app";
 import * as types from "../../constants/actionTypes";
-import { setTimeout } from 'worker-timers';
+import { setTimeout, setInterval } from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -137,29 +137,26 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (!_.isNumber(tokenExpirationTime)) {
       return
     }
-    setTimeout(() => {
-      const diff = getDiff(tokenExpirationTime, now)
-      console.log('diff', diff)
+    const diff = getDiff(tokenExpirationTime, now)
+    console.log('diff', diff)
 
-      if (diff < sessionExpiredReload) {
-        console.log('trigger reload')
-        triggerReload()
+    if (diff < sessionExpiredReload) {
+      console.log('trigger reload')
+      triggerReload()
+    }
+    if (diff < millisecondsForWarning) {
+      console.log('trigger modal')
+      setModal(true)
+    }
+    if (diff < sessionAutoRenew) {
+      let sessionEndTime = wonderwallTimeout[1];
+      if (tokenExpirationTime < (sessionEndTime - 1000)) {
+        console.log('trigger checkWonderwallTimeout')
+        checkWonderwallTimeout()
+      } else {
+        console.log('trigger nothing. session max')
       }
-      if (diff < millisecondsForWarning) {
-        console.log('trigger modal')
-        setModal(true)
-      }
-      if (diff < sessionAutoRenew) {
-        let sessionEndTime = wonderwallTimeout[1];
-        if (tokenExpirationTime < (sessionEndTime - 1000)) {
-          console.log('trigger checkWonderwallTimeout')
-          checkWonderwallTimeout()
-        } else {
-          console.log('trigger nothing. session max')
-        }
-      }
-      checkTimeout()
-    }, checkInterval)
+    }
   }
 
   async function checkWonderwallTimeout() {
@@ -182,7 +179,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   useEffect(() => {
     if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
-      checkTimeout()
+      setInterval(checkTimeout(), checkInterval)
     }
   }, [expirationTime])
 
