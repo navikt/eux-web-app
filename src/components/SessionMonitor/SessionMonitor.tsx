@@ -159,6 +159,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     }
   }
 
+  function checkTimeoutWrapper() {
+    checkTimeout()
+    return 0
+  }
+
   async function checkWonderwallTimeout() {
     const response = await fetch(API_REAUTENTISERING_URL,  {
       method: "POST"
@@ -179,7 +184,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   useEffect(() => {
     if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
-      setInterval(checkTimeout(), checkInterval)
+      setInterval(checkTimeoutWrapper(), checkInterval)
     }
   }, [expirationTime])
 
