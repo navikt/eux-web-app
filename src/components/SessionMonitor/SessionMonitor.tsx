@@ -2,7 +2,7 @@ import { logMeAgain, reduceSessionTime } from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, {CSSProperties, useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
@@ -250,7 +250,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       />
       <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
         Token utløper om {Math.ceil(diff / 1000 / 60)} min.
-        Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
+        { sessionEndsAt != null && (sessionEndsAt < 380) ? <span color="red">Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min</span> : ''}
+
       </Button>
     </SessionMonitorDiv>
   )
