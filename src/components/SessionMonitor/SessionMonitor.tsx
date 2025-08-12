@@ -23,6 +23,7 @@ font-size: 80%;
 export interface SessionMonitorProps {
   checkInterval?: number
   expirationTime?: number
+  sessionEndsAt?: number
   millisecondsForWarning?: number
   sessionExpiredReload?: number
   sessionAutoRenew?: number
@@ -85,6 +86,7 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
         console.log('Wonderwall expirationTime', expirationTime)
 
         state.app.expirationTime = expirationTime
+        state.app.sessionEndsAt = sessionEndsAt;
       }
     } else {
       console.log('No content')
@@ -99,8 +101,10 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
 const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* check every minute */
   checkInterval = 1000 * 60,
-  /* When session will expire */
+  /* When token will expire */
   expirationTime,
+  /* When session will expire */
+  sessionEndsAt,
   /* Warnings should start under 5 minutes */
   millisecondsForWarning = 5 * 1000 * 60,
   /* Reload under a minute */
@@ -110,6 +114,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   now
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
+  const [sessionDiff, setSessionDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
   const { pdu1, replySed, state }: SessionMonitorSelector = useAppSelector(mapState)
 
@@ -126,6 +131,16 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
+  const getSessionDiff = (expirationTime: number, now: any) => {
+    const _now: Date = new Date()
+    console.log('sessionEndsAt', expirationTime)
+    console.log('now', _now.getTime())
+    const diff: number = expirationTime - _now.getTime()
+    console.log('minutes left', Math.ceil(diff / 1000 / 60))
+    setSessionDiff(diff)
+    return diff
+  }
+
   const triggerReload = () => {
     window.location.reload()
   }
@@ -134,11 +149,14 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     let wonderwallTimeout = await currentWonderwallTimeout()
     console.log('currentWonderwallTimeout', wonderwallTimeout)
     let tokenExpirationTime = wonderwallTimeout[0];
+    let sessionEndTime = wonderwallTimeout[1];
     if (!_.isNumber(tokenExpirationTime)) {
       return
     }
     const diff = getDiff(tokenExpirationTime, now)
     console.log('diff', diff)
+    const sessionDiff = getSessionDiff(sessionEndTime, now)
+    console.log('sessionDiff', sessionDiff)
 
     if (diff < sessionExpiredReload) {
       console.log('trigger reload')
@@ -149,7 +167,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       setModal(true)
     }
     if (diff < sessionAutoRenew) {
-      let sessionEndTime = wonderwallTimeout[1];
       if (tokenExpirationTime < (sessionEndTime - 1000)) {
         console.log('trigger checkWonderwallTimeout')
         checkWonderwallTimeout()
@@ -184,9 +201,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   useEffect(() => {
     if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
+      getSessionDiff(expirationTime, now)
       setInterval(checkTimeout, checkInterval)
     }
-  }, [expirationTime])
+  }, [expirationTime, sessionEndsAt])
 
   const title = t(diff > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
   const text = []
@@ -229,7 +247,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
         }}
       />
       <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
-        Sesjon utløper om {Math.ceil(diff / 1000 / 60)} min
+        Token utløper om {Math.ceil(diff / 1000 / 60)} min.
+        Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
       </Button>
     </SessionMonitorDiv>
   )
@@ -238,6 +257,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 SessionMonitor.propTypes = {
   checkInterval: PT.number,
   expirationTime: PT.number,
+  sessionEndsAt: PT.number,
   millisecondsForWarning: PT.number,
   sessionExpiredReload: PT.number,
   sessionAutoRenew: PT.number,
