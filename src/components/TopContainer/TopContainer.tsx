@@ -114,6 +114,7 @@ export interface TopContainerSelector {
   bannerMessage: string | JSX.Element | undefined
   error: any | undefined
   expirationTime: number | undefined
+  sessionEndsAt: number | undefined
 }
 
 const mapState = (state: State): TopContainerSelector => ({
@@ -121,6 +122,7 @@ const mapState = (state: State): TopContainerSelector => ({
   bannerMessage: state.alert.bannerMessage,
   error: state.alert.error,
   expirationTime: state.app.expirationTime,
+  sessionEndsAt: state.app.sessionEndsAt,
 })
 
 export const TopContainer: React.FC<TopContainerProps> = ({

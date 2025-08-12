@@ -27,6 +27,7 @@ export interface AppState {
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
   expirationTime: number | undefined
+  sessionEndsAt: number | undefined
 
   navn: string | undefined
   brukernavn: string | undefined
@@ -54,6 +55,7 @@ export const initialAppState: AppState = {
   countryCodes: undefined,
   countryCodeMap: undefined,
   expirationTime: undefined,
+  sessionEndsAt: undefined,
 
   // comes from eessi-kodeverk
   landkoder: undefined,
