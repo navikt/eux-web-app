@@ -201,7 +201,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   useEffect(() => {
     if (expirationTime !== undefined) {
       getDiff(expirationTime, now)
-      getSessionDiff(expirationTime, now)
+      if (sessionEndsAt !== undefined) {
+        getSessionDiff(sessionEndsAt, now)
+      }
       setInterval(checkTimeout, checkInterval)
     }
   }, [expirationTime, sessionEndsAt])
