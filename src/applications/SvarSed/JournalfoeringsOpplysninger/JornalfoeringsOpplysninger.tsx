@@ -41,8 +41,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const namespace = 'changetemafagsak'
   const sektor = sak.sakType.split("_")[0]
 
-  const visFagsakerListe: false | undefined | null | boolean = !_.isEmpty(sektor) && !_.isEmpty(currentFagsak.tema) && (!_.isEmpty(fagsaker) || (sektor === "UB" && fagsaker && fagsaker.length >= 0))
-
   const currentYear = new Date().getFullYear()
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
 
@@ -58,10 +56,11 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     setCurrentFagsak(fagsak)
   }
 
-  const onViewFagsakerClick = (): void => {
-    setFagsakDagpengerYear(currentYear);
-    if (currentFagsak?.fnr && currentFagsak?.tema) {
-      dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
+  const onTemaChange = (value: string) => {
+    setFagsakProp("tema", value);
+    setFagsakProp("id", "");
+    if (value && currentFagsak?.fnr) {
+      dispatch(getFagsaker(currentFagsak?.fnr, sektor, value))
     }
   }
 
@@ -81,11 +80,11 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 onChange={(e) => setFagsakProp("fnr", e.target.value)}
               />
             </HStack>
-            <HStack gap="4" align="end">
+            <HStack gap="4" align="center">
               <Select
                 id={namespace + '-tema'}
                 label={t('label:velg-tema')}
-                onChange={(e)=> setFagsakProp("tema", e.target.value)}
+                onChange={(e) => onTemaChange(e.target.value)}
                 value={currentFagsak?.tema ?? ''}
               >
                 <option value=''>
@@ -97,31 +96,26 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   </option>
                 ))}
               </Select>
-              <Button
-                variant='secondary'
-                onClick={onViewFagsakerClick}
-                disabled={gettingFagsaker || _.isEmpty(currentFagsak?.tema)}
-              >
-                {gettingFagsaker && <Loader />}
-                {gettingFagsaker ? t('message:loading-saker') : t('label:vis-saker')}
-              </Button>
-              <Select
-                id={namespace + '-nr'}
-                label={t('label:velg-fagsak')}
-                onChange={(e)=> setFagsakProp("nr", e.target.value)}
-                value={currentFagsak?.id ?? ''}
-              >
-                <option value=''>
-                  {t('label:velg')}
-                </option>
-                {fagsaker &&
-                  fagsaker.map((f: Fagsak) => (
-                    <option value={f.id} key={f.id}>
-                      {f.nr || f.id}
-                    </option>
-                  ))
-                }
-              </Select>
+              {gettingFagsaker && <Loader/>}
+              {!gettingFagsaker &&
+                <Select
+                  id={namespace + '-nr'}
+                  label={t('label:velg-fagsak')}
+                  onChange={(e)=> setFagsakProp("id", e.target.value)}
+                  value={currentFagsak?.id ?? ''}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {fagsaker &&
+                    fagsaker.map((f: Fagsak) => (
+                      <option value={f.id} key={f.id}>
+                        {f.nr || f.id}
+                      </option>
+                    ))
+                  }
+                </Select>
+              }
 
             </HStack>
           </VStack>
