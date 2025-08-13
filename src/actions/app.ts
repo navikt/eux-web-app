@@ -53,8 +53,19 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
   })
 }
 
-export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
-  // origin: http://{host:port} pathname: /pdu1, no hash
+async function utlogging() {
+  return await call({
+    url: urls.API_UTLOGGING_URL,
+    expectedPayload: mockReautorisering,
+    type: {
+      request: types.APP_LOGMEAGAIN_REQUEST,
+      success: types.APP_LOGMEAGAIN_SUCCESS,
+      failure: types.APP_LOGMEAGAIN_FAILURE
+    }
+  });
+}
+
+function callReautentisering(name ?: string) : ActionWithPayload<LogMeAgainPayload> {
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {
     redirectUrl += '?name=' + name
@@ -74,6 +85,15 @@ export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload>
   })
 }
 
+
+export const logMeAgain = async (name ?: string): Promise<ActionWithPayload<LogMeAgainPayload>> => {
+  try {
+    await utlogging();
+    return callReautentisering(name);
+  } catch (error) {
+    return callReautentisering(name);
+  }
+}
 export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string,
   value: any
