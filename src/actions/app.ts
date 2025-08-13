@@ -62,7 +62,6 @@ function utlogging() {
       success: types.APP_LOGMEAGAIN_SUCCESS,
       failure: types.APP_LOGMEAGAIN_FAILURE
     }
-  }).resolve(() => {
   }).then(() => {}).catch((error: Error) => {})
 }
 
