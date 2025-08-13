@@ -109,7 +109,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 id={namespace + '-nr'}
                 label={t('label:velg-fagsak')}
                 onChange={(e)=> setFagsakProp("nr", e.target.value)}
-                value={currentFagsak?.nr ?? ''}
+                value={currentFagsak?.id ?? ''}
               >
                 <option value=''>
                   {t('label:velg')}
