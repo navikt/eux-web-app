@@ -53,8 +53,8 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
   })
 }
 
-async function utlogging() {
-  return await call({
+function utlogging() {
+  call({
     url: urls.API_UTLOGGING_URL,
     expectedPayload: mockReautorisering,
     type: {
@@ -62,7 +62,8 @@ async function utlogging() {
       success: types.APP_LOGMEAGAIN_SUCCESS,
       failure: types.APP_LOGMEAGAIN_FAILURE
     }
-  });
+  }).resolve(() => {
+  }).then(() => {}).catch((error: Error) => {})
 }
 
 function callReautentisering(name ?: string) : ActionWithPayload<LogMeAgainPayload> {
@@ -86,14 +87,27 @@ function callReautentisering(name ?: string) : ActionWithPayload<LogMeAgainPaylo
 }
 
 
-export const logMeAgain = async (name ?: string): Promise<ActionWithPayload<LogMeAgainPayload>> => {
-  try {
-    await utlogging();
-    return callReautentisering(name);
-  } catch (error) {
-    return callReautentisering(name);
+export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
+  utlogging()
+  let redirectUrl = (window.location as any).origin + (window.location as any).pathname
+  if (name) {
+    redirectUrl += '?name=' + name
   }
+
+  return call({
+    url: urls.API_REAUTENTISERING_URL,
+    expectedPayload: mockReautorisering,
+    context: {
+      redirectUrl
+    },
+    type: {
+      request: types.APP_LOGMEAGAIN_REQUEST,
+      success: types.APP_LOGMEAGAIN_SUCCESS,
+      failure: types.APP_LOGMEAGAIN_FAILURE
+    }
+  })
 }
+
 export const setStatusParam: ActionCreator<ActionWithPayload<ParamPayload>> = (
   key: string,
   value: any
