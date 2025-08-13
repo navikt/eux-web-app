@@ -28,6 +28,7 @@ import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaS
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import {Alert} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
+import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -169,6 +170,8 @@ const SEDView = (): JSX.Element => {
         </Content>
         <Content style={{ flex: 2 }}>
           <Saksopplysninger sak={currentSak} />
+          <VerticalSeparatorDiv />
+          <JournalfoeringsOpplysninger sak={currentSak} />
           {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
             <>
               <VerticalSeparatorDiv />
