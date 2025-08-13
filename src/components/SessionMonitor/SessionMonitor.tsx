@@ -250,8 +250,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       />
       <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
         Token utløper om {Math.ceil(diff / 1000 / 60)} min.
-        { sessionDiff && (sessionDiff < 380) ? <span color="red">Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min</span> : ''}
-
+      </Button>
+      <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
+        Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
       </Button>
     </SessionMonitorDiv>
   )
