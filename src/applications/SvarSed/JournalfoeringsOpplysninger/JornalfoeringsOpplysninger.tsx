@@ -44,7 +44,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const currentYear = new Date().getFullYear()
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
 
-  const temaer: Array<Kodeverk> = !kodemaps ? [] : !sektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[sektor] as keyof Tema].filter((k:Kodeverk) => {
+  const temaer: Array<Kodeverk> = !kodemaps ? [] : !sektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[sektor] as keyof Tema]?.filter((k:Kodeverk) => {
     return k.kode !== "GEN"
   })
 
