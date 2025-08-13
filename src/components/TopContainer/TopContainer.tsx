@@ -134,7 +134,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   title
 }: TopContainerProps): JSX.Element => {
   const {
-    bannerStatus, bannerMessage, error, expirationTime
+    bannerStatus, bannerMessage, error, expirationTime, sessionEndsAt
   }: TopContainerSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
@@ -193,6 +193,7 @@ export const TopContainer: React.FC<TopContainerProps> = ({
         <Debug>
           <SessionMonitor
             expirationTime={expirationTime!}
+            sessionEndsAt={sessionEndsAt!}
           />
           <Version />
         </Debug>

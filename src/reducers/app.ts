@@ -240,9 +240,13 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       const expirationTime = action.payload.tokens?.expire_at
         ? new Date(action.payload.tokens.expire_at)
         : new Date(new Date().setMinutes(now.getMinutes() + 60))
+      const sessionEndsAt = action.payload.session?.ends_at
+        ? new Date(action.payload.session.ends_at)
+        : new Date(new Date().setMinutes(now.getMinutes() + 60))
       return {
         ...state,
-        expirationTime: expirationTime.getTime()
+        expirationTime: expirationTime.getTime(),
+        sessionEndsAt: sessionEndsAt.getTime()
       }
     }
 

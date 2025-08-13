@@ -84,6 +84,7 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
       if (state && state.app) {
         console.log('Wonderwall setting', diffMinutes)
         console.log('Wonderwall expirationTime', expirationTime)
+        console.log('Wonderwall sessionEndsAt', sessionEndsAt)
 
         state.app.expirationTime = expirationTime
         state.app.sessionEndsAt = sessionEndsAt;
@@ -131,11 +132,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
-  const getSessionDiff = (expirationTime: number, now: any) => {
+  const getSessionDiff = (sessionEndsAt: number, now: any) => {
     const _now: Date = new Date()
-    console.log('sessionEndsAt', expirationTime)
+    console.log('sessionEndsAt', sessionEndsAt)
     console.log('now', _now.getTime())
-    const diff: number = expirationTime - _now.getTime()
+    const diff: number = sessionEndsAt - _now.getTime()
     console.log('minutes left', Math.ceil(diff / 1000 / 60))
     setSessionDiff(diff)
     return diff
