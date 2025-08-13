@@ -11,6 +11,7 @@ import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
 import { Action, ActionCreator } from 'redux'
+import {API_REAUTENTISERING_URL} from "constants/urls";
 
 export const copyToClipboard = (text?: string) => ({
   type: types.APP_CLIPBOARD_COPY,
@@ -53,38 +54,11 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
   })
 }
 
-function utlogging() {
-  call({
-    url: urls.API_UTLOGGING_URL,
-    expectedPayload: mockReautorisering,
-    type: {
-      request: types.APP_LOGMEAGAIN_REQUEST,
-      success: types.APP_LOGMEAGAIN_SUCCESS,
-      failure: types.APP_LOGMEAGAIN_FAILURE
-    }
-  }).then(() => {}).catch((error: Error) => {})
+function utlogging()  {
+  fetch(urls.API_UTLOGGING_URL,  {
+    method: "GET"
+  }).then()
 }
-
-function callReautentisering(name ?: string) : ActionWithPayload<LogMeAgainPayload> {
-  let redirectUrl = (window.location as any).origin + (window.location as any).pathname
-  if (name) {
-    redirectUrl += '?name=' + name
-  }
-
-  return call({
-    url: urls.API_REAUTENTISERING_URL,
-    expectedPayload: mockReautorisering,
-    context: {
-      redirectUrl
-    },
-    type: {
-      request: types.APP_LOGMEAGAIN_REQUEST,
-      success: types.APP_LOGMEAGAIN_SUCCESS,
-      failure: types.APP_LOGMEAGAIN_FAILURE
-    }
-  })
-}
-
 
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
   utlogging()
