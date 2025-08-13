@@ -58,8 +58,13 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   }
 
   const onTemaChange = (value: string) => {
-    setFagsakProp("tema", value);
-    setFagsakProp("id", "");
+    const fagsak = {
+      ...currentFagsak,
+      tema: value,
+      id: ""
+    }
+    setCurrentFagsak(fagsak)
+    
     if (value && currentFagsak?.fnr) {
       dispatch(getFagsaker(currentFagsak?.fnr, sektor, value))
     }
@@ -117,7 +122,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   }
                 </Select>
               }
-
             </HStack>
           </VStack>
         </Modal.Body>
