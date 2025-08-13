@@ -39,7 +39,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
 
   const namespace = 'changetemafagsak'
-  const sektor = sak.sakType.split("_")[0]
+  let sektor = sak.sakType.split("_")[0]
+  if (sektor === 'H') { sektor = 'HZ' }
 
   const currentYear = new Date().getFullYear()
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
