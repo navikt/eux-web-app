@@ -26,7 +26,8 @@ export interface SessionMonitorProps {
   sessionEndsAt?: number
   millisecondsForWarning?: number
   sessionExpiredReload?: number
-  sessionAutoRenew?: number
+  sessionStatusWarning?: number
+  tokenAutoRenew?: number
   now?: Date
 }
 
@@ -110,8 +111,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   millisecondsForWarning = 5 * 1000 * 60,
   /* Reload under a minute */
   sessionExpiredReload = 1000,
-  /* Automatically try to renew session in background under 30 minutes */
-  sessionAutoRenew = 70 * 1000 * 60,
+  /* Display session expiration warning under 30 minutes */
+  sessionStatusWarning = 70 * 1000 * 60,
+  /* Automatically try to renew token in background under 30 minutes */
+  tokenAutoRenew = 70 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
@@ -167,7 +170,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       console.log('trigger modal')
       setModal(true)
     }
-    if (diff < sessionAutoRenew) {
+    if (diff < tokenAutoRenew) {
       if (tokenExpirationTime < (sessionEndTime - 1000)) {
         console.log('trigger checkWonderwallTimeout')
         checkWonderwallTimeout()
@@ -233,25 +236,43 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     })
   }
 
-  return (
-    <SessionMonitorDiv>
-      <Modal
-        open={modal}
-        onModalClose={() => setModal(false)}
-        modal={{
-          modalTitle: title,
-          modalText: (<>{text.map(t => <BodyLong key={t}>{t}</BodyLong>)}</>),
-          modalButtons
-        }}
-      />
-      <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
-        Token utløper om {Math.ceil(diff / 1000 / 60)} min.
-      </Button>
-      <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
-        Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
-      </Button>
-    </SessionMonitorDiv>
+  const button1 = (
+    <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
+    Token utløper om {Math.ceil(diff / 1000 / 60)} min.
+    </Button>
   )
+  const button2 = (
+    <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
+      Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
+    </Button>
+  )
+  const modalButton = (
+    <Modal
+      open={modal}
+      onModalClose={() => setModal(false)}
+      modal={{
+        modalTitle: title,
+        modalText: (<>{text.map(t => <BodyLong key={t}>{t}</BodyLong>)}</>),
+        modalButtons
+      }}
+    />
+  )
+  if ( sessionDiff != undefined && sessionStatusWarning != undefined && sessionDiff < sessionStatusWarning) {
+    return (
+      <SessionMonitorDiv>
+        {modalButton}
+        {button1}
+        {button2}
+      </SessionMonitorDiv>
+    )
+  } else {
+    return (
+      <SessionMonitorDiv>
+        {modalButton}
+        {button1}
+      </SessionMonitorDiv>
+    )
+  }
 }
 
 SessionMonitor.propTypes = {
@@ -260,7 +281,8 @@ SessionMonitor.propTypes = {
   sessionEndsAt: PT.number,
   millisecondsForWarning: PT.number,
   sessionExpiredReload: PT.number,
-  sessionAutoRenew: PT.number,
+  sessionStatusWarning: PT.number,
+  tokenAutoRenew: PT.number,
   now: PT.instanceOf(Date)
 }
 export default SessionMonitor
