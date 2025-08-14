@@ -257,6 +257,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       }}
     />
   )
+  console.log("sessionDiff", sessionDiff);
+  console.log("sessionStatusWarning", sessionStatusWarning);
   if ( sessionDiff != undefined && sessionStatusWarning != undefined && sessionDiff < sessionStatusWarning) {
     return (
       <SessionMonitorDiv>
