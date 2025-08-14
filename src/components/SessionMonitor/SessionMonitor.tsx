@@ -112,9 +112,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* Reload under a minute */
   sessionExpiredReload = 1000,
   /* Display session expiration warning under 30 minutes */
-  sessionStatusWarning = 70 * 1000 * 60,
+  sessionStatusWarning = 595 * 1000 * 60,
   /* Automatically try to renew token in background under 30 minutes */
-  tokenAutoRenew = 595 * 1000 * 60,
+  tokenAutoRenew = 70 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
   const [diff, setDiff] = useState<number>(0)
