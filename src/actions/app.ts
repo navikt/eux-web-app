@@ -55,16 +55,13 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
 }
 
 function utlogging()  {
-  console.log("Utlogging start")
   fetch(urls.API_UTLOGGING_URL,  {
     method: "GET"
   }).then()
-  console.log("Utlogging end")
 }
 
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
   utlogging()
-  console.log("Reautentisering")
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {
     redirectUrl += '?name=' + name
