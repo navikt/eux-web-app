@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Heading, HStack, Loader, Modal, Select, Spacer, TextField, VStack} from '@navikt/ds-react'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
-import {Fagsak, Fagsaker, Kodemaps, Kodeverk, Sak, Tema} from 'declarations/types'
+import {Fagsak, Fagsaker, Kodemaps, Kodeverk, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import { useRef } from "react";
-import _ from "lodash";
-import * as sakActions from "../../../actions/sak";
 import {getFagsaker} from "../../../actions/sak";
-import Input from "../../../components/Forms/Input";
+import * as types from "../../../constants/actionTypes";
+import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
+import {searchPerson} from "../../../actions/person";
+import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -21,22 +22,33 @@ interface ChangeTemaFagsakModalSelector {
   tema: Tema | undefined
   gettingFagsaker: boolean
   fagsaker: Fagsaker | undefined | null
+
+  person: PersonInfoPDL | null | undefined
+  searchingPerson: boolean
+  alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
 }
 
 const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   kodemaps: state.app.kodemaps,
   tema: state.app.tema,
   gettingFagsaker: state.loading.gettingFagsaker,
-  fagsaker: state.sak.fagsaker
+  fagsaker: state.sak.fagsaker,
+
+  person: state.person.person,
+  searchingPerson: state.loading.searchingPerson,
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type
 })
 
 const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, gettingFagsaker }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, gettingFagsaker, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
+  const [validFnr, setValidFnr] = useState<boolean>(false)
 
   const namespace = 'changetemafagsak'
   let sektor = sak.sakType.split("_")[0]
@@ -50,6 +62,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   })
 
   const setFagsakProp = (prop: string, value: string): void => {
+    console.log(`Setting fagsak prop ${prop} to value ${value}`)
     const fagsak = {
       ...currentFagsak,
       [prop]: value
@@ -64,7 +77,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       id: ""
     }
     setCurrentFagsak(fagsak)
-    
+
     if (value && currentFagsak?.fnr) {
       dispatch(getFagsaker(currentFagsak?.fnr, sektor, value))
     }
@@ -72,20 +85,47 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   useEffect(() => {
     dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
+    dispatch(searchPerson(currentFagsak?.fnr))
   }, [])
+
+  const onModalClose = () => {
+    setCurrentFagsak(sak.fagsak)
+  }
 
   return (
     <>
-      <Modal ref={ref} header={{ heading: t('label:endre-tema-fagsak') }} width="medium">
+      <Modal ref={ref} header={{ heading: t('label:endre-tema-fagsak') }} width="medium" onClose={onModalClose}>
         <Modal.Body>
           <VStack gap="4" padding="4">
-            <HStack gap="4" align="end">
-              <TextField
-                id={namespace + '-fnr'}
-                label="FNR" value={currentFagsak?.fnr ?? ''}
-                onChange={(e) => setFagsakProp("fnr", e.target.value)}
-              />
-            </HStack>
+            <PersonSearch
+              key={namespace + '-fnr'}
+              error={undefined}
+              alertMessage={alertMessage}
+              alertType={alertType}
+              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
+              data-testid={namespace + '-fnr'}
+              searchingPerson={searchingPerson}
+              id={namespace + '-fnr'}
+              initialFnr=''
+              value={currentFagsak?.fnr ?? ''}
+              parentNamespace={namespace}
+              onFnrChange={() => {
+                if (validFnr) {
+                  setValidFnr(false)
+                }
+              }}
+              onPersonFound={() => {
+                setValidFnr(true)
+                setFagsakProp("fnr", person?.fnr!)
+              }}
+              onSearchPerformed={(fnr: string) => {
+                dispatch(searchPerson(fnr))
+              }}
+              person={person}
+            />
+            {person &&
+              <PersonPanel className='neutral' person={person}/>
+            }
             <HStack gap="4" align="center">
               <Select
                 id={namespace + '-tema'}
@@ -123,6 +163,14 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 </Select>
               }
             </HStack>
+            <Button
+              variant='primary'
+              disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak.id && currentFagsak.fnr)}
+              loading={false}
+              onClick={()=> {}}
+            >
+              Oppdater tema/fagsak
+            </Button>
           </VStack>
         </Modal.Body>
         <Modal.Footer>
