@@ -133,6 +133,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               onPersonFound={() => {
                 setValidFnr(true)
                 setFagsakProp("fnr", person?.fnr!)
+                if(currentFagsak.tema) {
+                  dispatch(getFagsaker(person?.fnr!, sektor, currentFagsak.tema))
+                }
               }}
               onSearchPerformed={(fnr: string) => {
                 dispatch(searchPerson(fnr))
