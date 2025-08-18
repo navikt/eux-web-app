@@ -62,7 +62,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   })
 
   const setFagsakProp = (prop: string, value: string): void => {
-    console.log(`Setting fagsak prop ${prop} to value ${value}`)
     const fagsak = {
       ...currentFagsak,
       [prop]: value
@@ -74,13 +73,24 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     const fagsak = {
       ...currentFagsak,
       tema: value,
-      id: ""
+      id: "",
+      nr: ""
     }
     setCurrentFagsak(fagsak)
 
     if (value && currentFagsak?.fnr) {
       dispatch(getFagsaker(currentFagsak?.fnr, sektor, value))
     }
+  }
+
+  const onFagsakChange = (value: string) => {
+    const fSak: Fagsak | undefined = fagsaker?.find((f) => f.id === value)
+    const fagsak = {
+      ...currentFagsak,
+      id: fSak ? fSak.id : "",
+      nr: fSak ? fSak.nr : ""
+    }
+    setCurrentFagsak(fagsak)
   }
 
   useEffect(() => {
@@ -90,6 +100,12 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onModalClose = () => {
     setCurrentFagsak(sak.fagsak)
+    dispatch(getFagsaker(sak.fagsak?.fnr!, sektor, sak.fagsak?.tema!))
+    dispatch(searchPerson(sak.fagsak?.fnr!))
+  }
+
+  const onUpdateButtonClick = () => {
+    console.log(currentFagsak)
   }
 
   return (
@@ -147,7 +163,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 <Select
                   id={namespace + '-nr'}
                   label={t('label:velg-fagsak')}
-                  onChange={(e)=> setFagsakProp("id", e.target.value)}
+                  onChange={(e)=> onFagsakChange(e.target.value)}
                   value={currentFagsak?.id ?? ''}
                 >
                   <option value=''>
@@ -167,7 +183,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               variant='primary'
               disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak.id && currentFagsak.fnr)}
               loading={false}
-              onClick={()=> {}}
+              onClick={onUpdateButtonClick}
             >
               Oppdater tema/fagsak
             </Button>
