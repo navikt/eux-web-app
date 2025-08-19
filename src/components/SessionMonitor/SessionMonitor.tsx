@@ -1,18 +1,18 @@
-import { logMeAgain, reduceSessionTime } from 'actions/app'
-import { PDU1 } from 'declarations/pd'
-import { ReplySed } from 'declarations/sed'
+import * as urls from 'constants/urls'
+import {logMeAgain, reduceSessionTime} from 'actions/app'
+import {PDU1} from 'declarations/pd'
+import {ReplySed} from 'declarations/sed'
 import PT from 'prop-types'
-import React, { useEffect, useState} from 'react'
-import { useTranslation } from 'react-i18next'
-import { useAppDispatch, useAppSelector } from 'store'
+import React, {useEffect, useState} from 'react'
+import {useTranslation} from 'react-i18next'
+import {useAppDispatch, useAppSelector} from 'store'
 import styled from 'styled-components'
 import Modal from 'components/Modal/Modal'
-import { BodyLong, Button } from '@navikt/ds-react'
-import { State } from 'declarations/reducers'
+import {BodyLong, Button} from '@navikt/ds-react'
+import {State} from 'declarations/reducers'
 import _ from 'lodash'
-import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
-import { API_REAUTENTISERING_URL, API_UTGAARDATO_URL} from 'constants/urls'
-import { setInterval } from 'worker-timers';
+import {IS_DEVELOPMENT, IS_Q} from 'constants/environment'
+import {setInterval} from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -71,15 +71,15 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
       const expirationTime = new Date(tokens.expire_at).getTime()
 
       const session = wonderwallResponse?.session
-      const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : 0;
+      const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : 0
 
       timeTuple = [expirationTime, sessionEndsAt];
 
-      const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60);
+      const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60)
 
       if (state && state.app) {
         state.app.expirationTime = expirationTime
-        state.app.sessionEndsAt = sessionEndsAt;
+        state.app.sessionEndsAt = sessionEndsAt
       }
     } else {
       console.log('No content')
@@ -158,7 +158,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   async function checkWonderwallTimeout() {
-    const response = await fetch(API_REAUTENTISERING_URL,  {
+    const response = await fetch(urls.API_REAUTENTISERING_URL,  {
       method: "POST"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
@@ -167,7 +167,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   async function currentWonderwallTimeout() {
-    const response = await fetch(API_UTGAARDATO_URL,  {
+    const response = await fetch(urls.API_UTGAARDATO_URL,  {
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
