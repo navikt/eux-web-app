@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Button, Heading, HStack, Loader, Modal, Select, Spacer, TextField, VStack} from '@navikt/ds-react'
+import {Box, Button, Heading, HGrid, HStack, Loader, Modal, Select, VStack} from '@navikt/ds-react'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import {Fagsak, Fagsaker, Kodemaps, Kodeverk, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import { useRef } from "react";
-import {getFagsaker} from "../../../actions/sak";
+import {createFagsakDagpenger, createFagsakGenerell, getFagsaker} from "../../../actions/sak";
 import * as types from "../../../constants/actionTypes";
 import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
 import {searchPerson} from "../../../actions/person";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
+import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -21,6 +22,7 @@ interface ChangeTemaFagsakModalSelector {
   kodemaps: Kodemaps | undefined
   tema: Tema | undefined
   gettingFagsaker: boolean
+  creatingFagsak: boolean
   fagsaker: Fagsaker | undefined | null
 
   person: PersonInfoPDL | null | undefined
@@ -33,6 +35,7 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   kodemaps: state.app.kodemaps,
   tema: state.app.tema,
   gettingFagsaker: state.loading.gettingFagsaker,
+  creatingFagsak: state.loading.creatingFagsak,
   fagsaker: state.sak.fagsaker,
 
   person: state.person.person,
@@ -45,7 +48,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, gettingFagsaker, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -60,6 +63,11 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const temaer: Array<Kodeverk> = !kodemaps ? [] : !sektor ? [] : !tema ? [] : tema[kodemaps.SEKTOR2FAGSAK[sektor] as keyof Tema]?.filter((k:Kodeverk) => {
     return k.kode !== "GEN"
   })
+
+  useEffect(() => {
+    dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
+    dispatch(searchPerson(currentFagsak?.fnr))
+  }, [])
 
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
@@ -93,10 +101,18 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     setCurrentFagsak(fagsak)
   }
 
-  useEffect(() => {
-    dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
-    dispatch(searchPerson(currentFagsak?.fnr))
-  }, [])
+  const onCreateFagsak = () => {
+    if (currentFagsak?.fnr && currentFagsak?.tema) {
+      dispatch(createFagsakGenerell(currentFagsak?.fnr, currentFagsak?.tema))
+    }
+  }
+
+  const onCreateFagsakDagpenger = () => {
+    if (currentFagsak?.fnr) {
+      dispatch(createFagsakDagpenger(currentFagsak?.fnr, {aar: fagsakDagpengerYear}))
+    }
+  }
+
 
   const onModalClose = () => {
     setCurrentFagsak(sak.fagsak)
@@ -145,7 +161,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             {person &&
               <PersonPanel className='neutral' person={person}/>
             }
-            <HStack gap="4" align="center">
+            <HGrid gap="4" align="center" columns={2}>
               <Select
                 id={namespace + '-tema'}
                 label={t('label:velg-tema')}
@@ -162,7 +178,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 ))}
               </Select>
               {gettingFagsaker && <Loader/>}
-              {!gettingFagsaker &&
+              {!gettingFagsaker && fagsaker && fagsaker.length > 0 &&
                 <Select
                   id={namespace + '-nr'}
                   label={t('label:velg-fagsak')}
@@ -181,7 +197,26 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   }
                 </Select>
               }
-            </HStack>
+              {!gettingFagsaker && sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </Button>
+              }
+            </HGrid>
+            {!gettingFagsaker && sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+                <HGrid gap="4" align="end" columns={2}>
+                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                    {t("el:button-create-x", {x: "fagsak"})}
+                  </Button>
+                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                    <option value={currentYear}>{currentYear}</option>
+                    <option value={currentYear - 1}>{currentYear - 1}</option>
+                    <option value={currentYear - 2}>{currentYear - 2}</option>
+                    <option value={currentYear - 3}>{currentYear - 3}</option>
+                    <option value={currentYear - 4}>{currentYear - 4}</option>
+                  </Select>
+                </HGrid>
+            }
             <Button
               variant='primary'
               disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak.id && currentFagsak.fnr)}
