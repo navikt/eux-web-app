@@ -25,6 +25,7 @@ import {isUSed} from "../utils/sed";
 
 export interface SvarsedState {
   fagsaker: Fagsaker | null | undefined
+  fagsakUpdated: boolean | undefined
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
   deletedVedlegg: any | null | undefined
@@ -48,6 +49,7 @@ export interface SvarsedState {
 
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
+  fagsakUpdated: undefined,
   deletedSak: undefined,
   deletedSed: undefined,
   deletedVedlegg: undefined,
@@ -836,6 +838,28 @@ const svarsedReducer = (
       return {
         ...state,
         deselectedMenu
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_REQUEST:
+      return {
+        ...state,
+        fagsakUpdated: undefined
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_SUCCESS:
+      return {
+        ...state,
+        fagsakUpdated: true,
+        currentSak: {
+          ...(state.currentSak as Sak),
+          fagsak: (action as ActionWithPayload).context.fagsak,
+        }
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_FAILURE:
+      return {
+        ...state,
+        fagsakUpdated: false
       }
 
     default:

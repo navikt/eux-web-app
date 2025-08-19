@@ -35,6 +35,7 @@ export const API_RINA_ATTACHMENT_SENSITIVE_URL = API_BASE_URL + '/rina/%(rinaSak
 export const API_RINA_JOURNALFOER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/journalfoer?enhetNr=%(enhetNr)s'
 export const API_ADD_RELATED_RINASAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/relaterte/%(relatertRinaSakId)s'
 export const API_FEILREGISTRER_JOURNALPOSTER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/feilregistrerjournalposter'
+export const API_UPDATE_FAGSAK_URL = API_BASE_URL + '/api/rina/sak/%(rinaSakId)s/fagsak'
 
 // Registre
 export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker?tema=%(tema)s'

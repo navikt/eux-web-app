@@ -11,7 +11,7 @@ import * as types from "../../../constants/actionTypes";
 import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
 import {searchPerson} from "../../../actions/person";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
-import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
+import {updateFagsak} from "../../../actions/svarsed";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -24,6 +24,7 @@ interface ChangeTemaFagsakModalSelector {
   gettingFagsaker: boolean
   creatingFagsak: boolean
   fagsaker: Fagsaker | undefined | null
+  fagsakUpdated: boolean | undefined
 
   person: PersonInfoPDL | null | undefined
   searchingPerson: boolean
@@ -37,6 +38,7 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   gettingFagsaker: state.loading.gettingFagsaker,
   creatingFagsak: state.loading.creatingFagsak,
   fagsaker: state.sak.fagsaker,
+  fagsakUpdated: state.svarsed.fagsakUpdated,
 
   person: state.person.person,
   searchingPerson: state.loading.searchingPerson,
@@ -48,7 +50,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -68,6 +70,14 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
     dispatch(searchPerson(currentFagsak?.fnr))
   }, [])
+
+  useEffect(() => {
+    if(fagsakUpdated){
+      ref.current?.close()
+    }
+  }, [fagsakUpdated])
+
+
 
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
@@ -121,8 +131,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   }
 
   const onUpdateButtonClick = () => {
-    console.log(currentFagsak)
+    dispatch(updateFagsak(sak.sakId, currentFagsak))
   }
+
+
 
   return (
     <>
@@ -130,6 +142,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
         <Modal.Body>
           <VStack gap="4" padding="4">
             <PersonSearch
+              label={t('label:person')}
               key={namespace + '-fnr'}
               error={undefined}
               alertMessage={alertMessage}
@@ -234,12 +247,18 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       <Box borderWidth="1" borderRadius="small" padding="4" background="surface-default">
         <VStack gap="4">
           <Heading size='small'>
-            {t('label:journalfoering')}
+            {t('label:journalfoeres-paa')}
           </Heading>
           <HorizontalLineSeparator />
         </VStack>
         <VStack gap="4">
           <Dl>
+            <Dt>
+              {t('label:person')}:
+            </Dt>
+            <Dd>
+              {sak.fagsak?.fnr ? sak.fagsak?.fnr : ""}
+            </Dd>
             <Dt>
               {t('label:tema')}:
             </Dt>
@@ -251,12 +270,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             </Dt>
             <Dd>
               {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id}
-            </Dd>
-            <Dt>
-              {t('label:journalfoert-paa')}:
-            </Dt>
-            <Dd>
-              {sak.fagsak?.fnr ? sak.fagsak?.fnr : ""}
             </Dd>
           </Dl>
           <Button

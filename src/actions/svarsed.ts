@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ReplySed } from 'declarations/sed'
-import { Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak } from 'declarations/types'
+import {Sed, CreateSedResponse, Fagsaker, UpdateReplySedPayload, Sak, Fagsak} from 'declarations/types'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockFagsakerList from 'mocks/fagsakerList'
 import mockReplySed from 'mocks/svarsed/replySed'
@@ -465,3 +465,22 @@ export const setDeselectedMenu = (menu: string | undefined) => ({
   type: types.SVARSED_DESELECTED_MENU_SET,
   payload: menu
 })
+
+export const updateFagsak = (
+  rinaSakId: string, fagsak: Fagsak
+): ActionWithPayload<Fagsak> => {
+  return call({
+    method: 'PATCH',
+    url: sprintf(urls.API_UPDATE_FAGSAK_URL, { rinaSakId }),
+    body: fagsak,
+    context: {
+      fagsak
+    },
+    expectedPayload: fagsak,
+    type: {
+      request: types.SVARSED_UPDATE_FAGSAK_REQUEST,
+      success: types.SVARSED_UPDATE_FAGSAK_SUCCESS,
+      failure: types.SVARSED_UPDATE_FAGSAK_FAILURE
+    }
+  })
+}
