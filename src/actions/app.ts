@@ -1,17 +1,16 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ParamPayload } from 'declarations/app'
+import {ParamPayload} from 'declarations/app'
 import {Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
-import { ActionWithPayload, call } from '@navikt/fetch'
+import {ActionWithPayload, call} from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
 import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
-import { Action, ActionCreator } from 'redux'
-import {API_REAUTENTISERING_URL} from "constants/urls";
+import {Action, ActionCreator} from 'redux'
 
 export const copyToClipboard = (text?: string) => ({
   type: types.APP_CLIPBOARD_COPY,
@@ -190,4 +189,11 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
 
 export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
   type: types.APP_LOGINREDIRECT_RESET
+})
+
+export const setSessionExpiration: ActionCreator<ActionWithPayload> = (): ActionWithPayload => ({
+  type: types.APP_SESSIONEXPIRATION_SET,
+  payload: {
+    minutes: 6
+  }
 })
