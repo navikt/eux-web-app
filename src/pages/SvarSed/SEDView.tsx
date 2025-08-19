@@ -42,6 +42,7 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
 interface SEDViewSelector {
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
+  fagsakUpdated: boolean | undefined
   queryingSaks: boolean
   refreshingSaks: boolean
 }
@@ -49,6 +50,7 @@ interface SEDViewSelector {
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
   deletedSed: state.svarsed.deletedSed,
+  fagsakUpdated: state.svarsed.fagsakUpdated,
   queryingSaks: state.loading.queryingSaks,
   refreshingSaks: state.loading.refreshingSaks
 })
@@ -57,7 +59,7 @@ const SEDView = (): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -110,6 +112,22 @@ const SEDView = (): JSX.Element => {
       }
     }
   }, [deletedSed])
+
+
+  useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if (fagsakUpdated && currentSak) {
+      dispatch(querySaks(currentSak?.sakId, 'refresh', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [fagsakUpdated])
 
 
 
