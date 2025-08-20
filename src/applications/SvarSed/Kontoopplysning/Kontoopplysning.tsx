@@ -152,7 +152,15 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
   }
 
   const emptyKontoopplysninger = () => {
-    let uti: UtbetalingTilInstitusjon = { }
+    let uti: UtbetalingTilInstitusjon = {
+      begrunnelse: null,
+        id: null,
+      navn: null,
+      kontoSepa: {
+        iban: null,
+        swift: null
+      }
+    }
     dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
   }
 
