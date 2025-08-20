@@ -1,4 +1,4 @@
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, Button } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
