@@ -36,7 +36,6 @@ export default (saksnummer: string, type: string) => {
         }
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -186,7 +185,6 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -267,7 +265,6 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -388,7 +385,6 @@ export default (saksnummer: string, type: string) => {
       ],
       erSakseier: 'nei',
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -422,7 +418,6 @@ export default (saksnummer: string, type: string) => {
       "erSakseier": "nei",
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",

@@ -1,5 +1,4 @@
 export default {
-  "id": "1223344556",
   "type": "GENERELL",
   "system": "NEESSI",
   "arkiv": "GSAK",

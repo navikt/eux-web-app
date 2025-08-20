@@ -238,7 +238,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   const onFagsakChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const fagsakId = e.target.value
-    const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak.id === fagsakId})
+    const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak._id === fagsakId})
     dispatch(setJournalfoeringFagsak(fagsak))
   }
 
@@ -416,8 +416,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </option>
                 {fagsaker &&
                   fagsaker.map((f: Fagsak) => (
-                    <option value={f.id} key={f.id} selected={f.id === fagsak?.id && _fagsakSelected}>
-                      {f.nr || f.id}
+                    <option value={f._id} key={f._id} selected={f._id === fagsak?._id && _fagsakSelected}>
+                      {f.nr || f._id}
                     </option>
                   ))}
               </Select>

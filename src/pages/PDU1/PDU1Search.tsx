@@ -359,10 +359,10 @@ const PDU1Search = (): JSX.Element => {
             }
             {fagsaker?.filter((f: Fagsak) => f.type === "FAGSAK").map((f: Fagsak) => (
               <FagsakPanel
-                key={f.id}
+                key={f._id}
                 border
                 className={classNames({
-                  new: createdFagsak === f.id
+                  new: createdFagsak === f._id
                 })}
               >
                 <FlexDiv>
@@ -382,7 +382,7 @@ const PDU1Search = (): JSX.Element => {
                     <Button
                       variant='primary'
                       disabled={!tema || creatingPdu1}
-                      onClick={() => onCreatingPdu1(f.id, f.nr)}
+                      onClick={() => onCreatingPdu1(f._id!, f.nr)}
                     >
                       {creatingPdu1 && <Loader />}
                       {creatingPdu1 ? t('label:laster') : t('el:button-create-x', { x: 'PD U1' })}

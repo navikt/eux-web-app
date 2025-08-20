@@ -61,7 +61,12 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_FAGSAKER_SUCCESS:
       return {
         ...state,
-        fagsaker: (action as ActionWithPayload).payload
+        fagsaker: (action as ActionWithPayload).payload.map((f: Fagsak) => {
+          return {
+            ...f,
+            _id: f.nr ? f.nr : "GENERELL_SAK",
+          }
+        })
       }
 
     case types.SAK_FAGSAKER_FAILURE:
@@ -78,10 +83,14 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       }
 
     case types.SAK_CREATE_FAGSAK_GENERELL_SUCCESS:
+      const fagsakGenerell:Fagsak = (action as ActionWithPayload).payload
       return {
         ...state,
-        fagsaker: [(action as ActionWithPayload).payload],
-        saksId: (action as ActionWithPayload).payload.id
+        fagsaker: [{
+          ...fagsakGenerell,
+          _id: fagsakGenerell.nr ? fagsakGenerell.nr : "GENERELL_SAK",
+        }],
+        saksId: fagsakGenerell.nr ? fagsakGenerell.nr : "GENERELL_SAK",
       }
 
     case types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS:
@@ -92,7 +101,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       return {
         ...state,
         fagsaker: fSaker,
-        saksId: fagsak.id
+        saksId: fagsak.nr ? fagsak.nr : "GENERELL_SAK",
       }
 
     case types.SAK_CREATE_FAGSAK_GENERELL_FAILURE:

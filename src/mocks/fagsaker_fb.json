@@ -1,6 +1,5 @@
 [
   {
-    "id": "fbBAR:7865457854345",
     "tema": "BAR",
     "system": "IT01",
     "aktoerId": "1350969741332",
@@ -8,7 +7,6 @@
     "opprettetTidspunkt": "2021-12-31T14:02:53"
   },
   {
-    "id": "fbGEN:73465",
     "tema": "GEN",
     "system": "Gosys",
     "aktoerId": "1350969741332",
@@ -16,7 +14,6 @@
     "opprettetTidspunkt": "2022-07-01T14:02:53"
   },
   {
-    "id": "fbKON:7865457854366",
     "tema": "KON",
     "system": "IT01",
     "aktoerId": "1350969741332",

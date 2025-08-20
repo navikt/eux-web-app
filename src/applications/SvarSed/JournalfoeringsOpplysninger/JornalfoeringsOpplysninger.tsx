@@ -91,7 +91,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     const fagsak = {
       ...currentFagsak,
       tema: value,
-      id: "",
+      _id: "",
       nr: ""
     }
     setCurrentFagsak(fagsak)
@@ -102,10 +102,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   }
 
   const onFagsakChange = (value: string) => {
-    const fSak: Fagsak | undefined = fagsaker?.find((f) => f.id === value)
+    const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
     const fagsak = {
       ...currentFagsak,
-      id: fSak ? fSak.id : "",
+      _id: fSak ? fSak._id : "",
       nr: fSak ? fSak.nr : ""
     }
     setCurrentFagsak(fagsak)
@@ -196,15 +196,15 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   id={namespace + '-nr'}
                   label={t('label:velg-fagsak')}
                   onChange={(e)=> onFagsakChange(e.target.value)}
-                  value={currentFagsak?.id ?? ''}
+                  value={currentFagsak?._id ?? ''}
                 >
                   <option value=''>
                     {t('label:velg')}
                   </option>
                   {fagsaker &&
                     fagsaker.map((f: Fagsak) => (
-                      <option value={f.id} key={f.id}>
-                        {f.nr || f.id}
+                      <option value={f._id} key={f._id}>
+                        {f.nr || f._id}
                       </option>
                     ))
                   }
@@ -232,7 +232,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             }
             <Button
               variant='primary'
-              disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak.id && currentFagsak.fnr)}
+              disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak._id && currentFagsak.fnr)}
               loading={false}
               onClick={onUpdateButtonClick}
             >
@@ -269,7 +269,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               {t('label:fagsak')}:
             </Dt>
             <Dd>
-              {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.id}
+              {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?._id}
             </Dd>
           </Dl>
           <Button

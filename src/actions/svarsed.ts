@@ -10,7 +10,7 @@ import mockSaks2 from 'mocks/svarsed/saks_2'
 import { Action, ActionCreator } from 'redux'
 import {validateFnrDnrNpid} from 'utils/fnrValidator'
 import mockPreview from 'mocks/previewFile'
-import _ from 'lodash'
+import _, {cloneDeep} from 'lodash'
 import {JoarkBrowserItem} from "../declarations/attachments";
 // @ts-ignore
 import { sprintf } from 'sprintf-js';
@@ -469,14 +469,19 @@ export const setDeselectedMenu = (menu: string | undefined) => ({
 export const updateFagsak = (
   rinaSakId: string, fagsak: Fagsak
 ): ActionWithPayload<Fagsak> => {
+  let fagsakCopy = _.cloneDeep(fagsak)
+  delete fagsakCopy._id
+
+  console.log(fagsakCopy)
+
   return call({
     method: 'PATCH',
     url: sprintf(urls.API_UPDATE_FAGSAK_URL, { rinaSakId }),
-    body: fagsak,
+    body: fagsakCopy,
     context: {
       fagsak
     },
-    expectedPayload: fagsak,
+    expectedPayload: fagsakCopy,
     type: {
       request: types.SVARSED_UPDATE_FAGSAK_REQUEST,
       success: types.SVARSED_UPDATE_FAGSAK_SUCCESS,

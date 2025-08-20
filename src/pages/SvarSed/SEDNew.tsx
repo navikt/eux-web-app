@@ -318,7 +318,7 @@ const SEDNew = (): JSX.Element => {
       sedtype: valgtSedType,
       mottakerId: valgtInstitusjon,
       mottakerlandkode: valgtLandkode,
-      fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
+      fagsak: fagsaker!.find((f) => f._id === valgtSaksId),
       ...(valgtUnit && {enhetNr: valgtUnit.enhetNr}),
 
       bruker: {
@@ -518,7 +518,7 @@ const SEDNew = (): JSX.Element => {
 
   useEffect(() => {
     if(fagsaker && fagsaker.length === 1){
-      dispatch(sakActions.setProperty('saksId', fagsaker[0].id))
+      dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
     }
   }, [fagsaker])
 
@@ -809,8 +809,8 @@ const SEDNew = (): JSX.Element => {
                     </option>
                     {fagsaker &&
                       fagsaker.map((f: Fagsak) => (
-                        <option value={f.id} key={f.id}>
-                          {f.nr || f.id}
+                        <option value={f._id} key={f._id}>
+                          {f.nr || f._id}
                         </option>
                       ))
                     }

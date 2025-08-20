@@ -161,7 +161,6 @@ export interface PersonMedFamilie extends PersonInfoPDL {
 }
 
 export interface Fagsak {
-  id: string
   aktoerId?: string | null | undefined
   tema?: string | null | undefined
   type?: string | null | undefined
@@ -169,6 +168,7 @@ export interface Fagsak {
   system?: string | null | undefined
   fnr?: string | null | undefined
   opprettetTidspunkt?: string | null | undefined
+  _id?: string
 }
 
 export interface JournalfoeringLogg {
