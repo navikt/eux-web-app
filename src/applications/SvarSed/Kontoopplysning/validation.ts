@@ -35,13 +35,6 @@ export const validateKontoopplysning = (
     }))
   }
 
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: uti?.id,
-    id: namespace + '-id',
-    message: 'validation:noInstitusjonensId',
-    personName: formalName
-  }))
-
   if (!_.isEmpty(uti?.id.trim())) {
     if (!uti?.id.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
       hasErrors.push(addError(v, {
@@ -51,13 +44,6 @@ export const validateKontoopplysning = (
       }))
     }
   }
-
-  hasErrors.push(checkIfNotEmpty(v, {
-    needle: uti?.navn,
-    id: namespace + '-navn',
-    message: 'validation:noInstitusjonensNavn',
-    personName: formalName
-  }))
 
   if (!kontoType) {
     hasErrors.push(addError(v, {

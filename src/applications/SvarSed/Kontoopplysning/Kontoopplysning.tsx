@@ -151,6 +151,12 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     }
   }
 
+  const emptyKontoopplysninger = () => {
+    let uti: UtbetalingTilInstitusjon = { }
+    dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
+  }
+
+
   return (
     <PaddedDiv>
       <Heading size='small'>
@@ -295,6 +301,14 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 onChanged={setSepaSwift}
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
               />
+            </Column>
+            <Column />
+          </AlignStartRow>
+          <AlignStartRow>
+            <Column flex='2'>
+              <Button variant='tertiary' size='small' onClick={() => emptyKontoopplysninger()} >
+                Tøm kontoopplysninger
+              </Button>
             </Column>
             <Column />
           </AlignStartRow>
