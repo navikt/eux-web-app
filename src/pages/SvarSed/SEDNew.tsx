@@ -313,12 +313,16 @@ const SEDNew = (): JSX.Element => {
     const annenpersonInfo = cloneDeep(annenpersonUtland)
     delete annenpersonInfo?.__rolle
 
+    const fagsak = fagsaker!.find((f) => f._id === valgtSaksId)
+    const fagsakCopy = cloneDeep(fagsak)
+    delete fagsakCopy?._id
+
     const payload = {
       buctype: valgtBucType,
       sedtype: valgtSedType,
       mottakerId: valgtInstitusjon,
       mottakerlandkode: valgtLandkode,
-      fagsak: fagsaker!.find((f) => f._id === valgtSaksId),
+      fagsak: fagsakCopy,
       ...(valgtUnit && {enhetNr: valgtUnit.enhetNr}),
 
       bruker: {

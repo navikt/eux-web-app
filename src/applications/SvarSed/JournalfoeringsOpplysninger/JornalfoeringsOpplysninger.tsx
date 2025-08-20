@@ -162,8 +162,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               onPersonFound={() => {
                 setValidFnr(true)
                 setFagsakProp("fnr", person?.fnr!)
-                if(currentFagsak.tema) {
-                  dispatch(getFagsaker(person?.fnr!, sektor, currentFagsak.tema))
+                if(currentFagsak?.tema) {
+                  dispatch(getFagsaker(person?.fnr!, sektor, currentFagsak?.tema))
                 }
               }}
               onSearchPerformed={(fnr: string) => {
@@ -232,7 +232,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             }
             <Button
               variant='primary'
-              disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak.tema && currentFagsak._id && currentFagsak.fnr)}
+              disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak?.tema && currentFagsak?._id && currentFagsak?.fnr)}
               loading={false}
               onClick={onUpdateButtonClick}
             >

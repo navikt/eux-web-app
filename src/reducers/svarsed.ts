@@ -308,10 +308,12 @@ const svarsedReducer = (
         ...state,
         currentSak: {
           ...payload,
-          fagsak: {
-            ...payload.fagsak,
-            _id: payload.fagsak.nr ? payload.fagsak.nr : "GENERELL_SAK"
-          }
+          ...(payload.fagsak && {
+            fagsak: {
+              ...payload.fagsak,
+              _id: payload.fagsak?.nr ? payload.fagsak.nr : "GENERELL_SAK"
+            }
+          }),
         }
       }
     }
