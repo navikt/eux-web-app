@@ -182,6 +182,7 @@ const AddMottakereModal = ({
                     onOptionSelected={onLandkodeChange}
                     flagWave
                     values={landkode ?? null}
+                    menuPortalTarget={null}
                   />
                   <VerticalSeparatorDiv />
                 </Column>
