@@ -109,9 +109,8 @@ const AddMottakereModal = ({
   }
 
   const onLandkodeChange = (country: Country): void => {
-    const landKode = country.value
-    setLandkode(landKode)
-    dispatch(getInstitusjoner(bucType!, landkode!))
+    setLandkode(country.value)
+    dispatch(getInstitusjoner(bucType!, country.value!))
     setValidation({
       ..._validation,
       [namespace + '-landkode']: undefined,
