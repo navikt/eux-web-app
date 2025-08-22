@@ -155,7 +155,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     let uti: UtbetalingTilInstitusjon = {
       begrunnelse: '',
         id: '',
-      navn: '',
+        navn: '',
       kontoSepa: null
     }
     dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
@@ -309,16 +309,17 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             </Column>
             <Column />
           </AlignStartRow>
-          <AlignStartRow>
-            <Column flex='2'>
-              <Button variant='tertiary' size='small' onClick={() => emptyKontoopplysninger()} >
-                Tøm kontoopplysninger
-              </Button>
-            </Column>
-            <Column />
-          </AlignStartRow>
         </>
       )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow>
+        <Column flex='2'>
+          <Button variant='secondary' size='small' onClick={() => emptyKontoopplysninger()} >
+            Tøm kontoopplysninger
+          </Button>
+        </Column>
+        <Column />
+      </AlignStartRow>
       <VerticalSeparatorDiv />
     </PaddedDiv>
   )

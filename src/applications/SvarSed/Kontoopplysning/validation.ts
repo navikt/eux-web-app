@@ -44,7 +44,7 @@ export const validateKontoopplysning = (
       }))
     }
   }
-
+/*
   if (!kontoType) {
     hasErrors.push(addError(v, {
       id: namespace + '-kontotype',
@@ -52,7 +52,7 @@ export const validateKontoopplysning = (
       personName: formalName
     }))
   }
-
+*/
   if (kontoType === 'ordinaer') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: uti?.kontoOrdinaer?.swift,
