@@ -56,7 +56,9 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
 function utlogging()  {
   fetch(urls.API_UTLOGGING_URL,  {
     method: "GET"
-  }).then()
+  }).catch((error) => {
+    console.error('Failed to log out:', error);
+  });
 }
 
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
