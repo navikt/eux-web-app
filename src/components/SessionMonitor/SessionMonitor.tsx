@@ -77,10 +77,10 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
 
       const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60)
 
-      if (state && state.app) {
-        state.app.expirationTime = expirationTime
-        state.app.sessionEndsAt = sessionEndsAt
-      }
+//      if (state && state.app) {
+//        state.app.expirationTime = expirationTime
+//        state.app.sessionEndsAt = sessionEndsAt
+//      }
     } else {
       console.log('No content')
     }
