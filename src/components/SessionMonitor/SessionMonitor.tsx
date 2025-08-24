@@ -234,7 +234,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       }}
     />
   )
-  if ( sessionDiff != undefined && sessionStatusWarning != undefined && sessionDiff < sessionStatusWarning) {
+  if ( sessionDiff !== undefined && sessionStatusWarning !== undefined && sessionDiff < sessionStatusWarning) {
     return (
       <SessionMonitorDiv>
         {modalButton}
