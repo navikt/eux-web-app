@@ -1,16 +1,16 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
-import { ParamPayload } from 'declarations/app'
+import {ParamPayload} from 'declarations/app'
 import {Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
-import { ActionWithPayload, call } from '@navikt/fetch'
+import {ActionWithPayload, call} from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
 import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
-import { Action, ActionCreator } from 'redux'
+import {Action, ActionCreator} from 'redux'
 
 export const copyToClipboard = (text?: string) => ({
   type: types.APP_CLIPBOARD_COPY,
@@ -53,8 +53,16 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
   })
 }
 
+function utlogging()  {
+  fetch(urls.API_UTLOGGING_URL,  {
+    method: "GET"
+  }).catch((error) => {
+    console.error('Failed to log out:', error);
+  });
+}
+
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
-  // origin: http://{host:port} pathname: /pdu1, no hash
+  utlogging()
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {
     redirectUrl += '?name=' + name
@@ -183,4 +191,11 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
 
 export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
   type: types.APP_LOGINREDIRECT_RESET
+})
+
+export const setSessionExpiration: ActionCreator<ActionWithPayload> = (): ActionWithPayload => ({
+  type: types.APP_SESSIONEXPIRATION_SET,
+  payload: {
+    minutes: 6
+  }
 })

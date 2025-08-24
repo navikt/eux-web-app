@@ -78,7 +78,8 @@
     "vite": "^6.2.1",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "winston": "^3.8.1"
+    "winston": "^3.8.1",
+    "worker-timers": "^8.0.23"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
