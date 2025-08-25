@@ -1,5 +1,5 @@
 import { Textarea } from '@navikt/ds-react'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {useAppDispatch} from "../../store";
 import {setTextAreaDirty} from "../../actions/ui";
 
@@ -41,6 +41,13 @@ const TextArea: React.FC<TextAreaProps> = ({
     _setDirty(isDirty)
     dispatch(setTextAreaDirty(isDirty))
   }
+
+  // Sync internal state with external value prop
+  useEffect(() => {
+    if (value !== _value && !_dirty) {
+      _setValue(value ?? '')
+    }
+  }, [value, _value, _dirty])
 
   return (
     <Textarea

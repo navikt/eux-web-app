@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField } from '@navikt/ds-react'
 import {useAppDispatch} from "../../store";
 import {setTextFieldDirty} from "../../actions/ui";
@@ -43,6 +43,13 @@ const Input: React.FC<InputProps> = ({
   const [_dirty, _setDirty] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
+
+  // Sync internal state with external value prop
+  useEffect(() => {
+    if (value !== _value && !_dirty) {
+      _setValue(value ?? '')
+    }
+  }, [value, _value, _dirty])
 
   const doSetDirty = (isDirty: boolean) => {
     _setDirty(isDirty)

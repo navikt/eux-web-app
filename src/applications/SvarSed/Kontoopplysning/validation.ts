@@ -18,10 +18,10 @@ export const validateKontoopplysning = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
   let kontoType
-  if (uti && Object.prototype.hasOwnProperty.call(uti, 'kontoOrdinaer')) {
+  if (uti && uti.kontoOrdinaer) {
     kontoType = 'ordinaer'
   }
-  if (uti && Object.prototype.hasOwnProperty.call(uti, 'kontoSepa')) {
+  if (uti && uti.kontoSepa) {
     kontoType = 'sepa'
   }
 
