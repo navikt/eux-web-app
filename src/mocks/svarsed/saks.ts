@@ -17,7 +17,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'ja',
+      erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -212,7 +212,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'ja',
+      erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -405,7 +405,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '1166593',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'nei',
+      erSakseier: false,
       sensitiv: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -483,7 +483,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      erSakseier: 'ja',
+      erSakseier: true,
       sensitiv: false,
       sakseier: {
         id: "NO:NAVAT07",
@@ -515,7 +515,6 @@ export default (saksnummer: string, type: string) => {
       ikkeJournalfoerteSed: [
         "F001 - Anmodning om avgjørelse av kompetanse",
       ],
-      ikkeJournalfoerteSedListFailed: true,
       sedUnderJournalfoeringEllerUkjentStatus : [
         "H001 - Melding/anmodning om informasjon",
       ],
@@ -628,7 +627,7 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
-      erSakseier: 'nei',
+      erSakseier: false,
       fagsak: {
         "tema": "KON",
         "type": "FAGSAK",
@@ -656,12 +655,12 @@ export default (saksnummer: string, type: string) => {
       "fornavn": "LEALAUS",
       "etternavn": "KOPP",
       "foedselsdato": "1968-08-25",
-      "kjoenn": "f",
+      "kjoenn": "K",
       "sakTittel": "Adhoc informasjonsutveksling",
       "sakType": "H_BUC_01",
       "sakId": "1442979",
       "internasjonalSakId": "2663a13d3fa443ca8970be821c7ba2cc",
-      "erSakseier": "nei",
+      "erSakseier": false,
       "sensitiv": false,
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       fagsak: {
@@ -769,7 +768,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'ja',
+      erSakseier: true,
       sensitiv: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -780,12 +779,14 @@ export default (saksnummer: string, type: string) => {
           formatertNavn: "ACC_County Agency For Employment Bihor (Romania)",
           motpartId: "RO:70005",
           motpartNavn: "ACC_County Agency For Employment Bihor",
+          motpartLand: "RO",
           motpartLandkode: "ROM"
         },
         {
           formatertNavn: "Test institusjon",
           motpartId: "RO:70005",
           motpartNavn: "Test institusjon",
+          motpartLand: "RO",
           motpartLandkode: "ROM"
         }
       ],
@@ -815,9 +816,9 @@ export default (saksnummer: string, type: string) => {
       "fornavn": "LEALAUS",
       "etternavn": "KOPP",
       "foedselsdato": "1968-08-25",
-      "kjoenn": "f",
+      "kjoenn": "K",
       "adressebeskyttelse": "UGRADERT",
-      "erSakseier": "ja",
+      "erSakseier": true,
       "sakseier": {
         "id": "NO:NAVAT07",
         "navn": "NAV ACC 07"
@@ -837,6 +838,7 @@ export default (saksnummer: string, type: string) => {
           "formatertNavn": "NAV ACC 05 (Norge)",
           "motpartId": "NO:NAVAT05",
           "motpartNavn": "NAV ACC 05",
+          "motpartLand": "NO",
           "motpartLandkode": "NOR"
         }
       ],
@@ -865,7 +867,6 @@ export default (saksnummer: string, type: string) => {
         "system": "FS22",
         "fnr": "25086820857"
       },
-      "ikkeJournalfoerteSedListFailed": false,
       "sensitiv": false,
       "cdmVersjon": "4.3"
     },
@@ -874,9 +875,9 @@ export default (saksnummer: string, type: string) => {
       "fornavn": "KORREKT",
       "etternavn": "INNHEGNING",
       "foedselsdato": "1967-10-28",
-      "kjoenn": "f",
+      "kjoenn": "K",
       "adressebeskyttelse": "UGRADERT",
-      "erSakseier": "ja",
+      "erSakseier": true,
       "sakseier": {
         "id": "NO:NAVAT07",
         "navn": "NAV ACC 07"
@@ -896,6 +897,7 @@ export default (saksnummer: string, type: string) => {
           "formatertNavn": "NAV ACC 05 (Norge)",
           "motpartId": "NO:NAVAT05",
           "motpartNavn": "NAV ACC 05",
+          "motpartLand": "NO",
           "motpartLandkode": "NOR"
         }
       ],
@@ -923,7 +925,159 @@ export default (saksnummer: string, type: string) => {
         "type": "GENERELL_SAK",
         "fnr": "28506726605"
       },
-      "ikkeJournalfoerteSedListFailed": false,
+      "sensitiv": false,
+      "cdmVersjon": "4.3"
+    },
+
+    {
+      "fnr": "14086025796",
+      "fornavn": "Vet Ikke",
+      "etternavn": "Uklart",
+      "foedselsdato": "1980-03-07",
+      "kjoenn": "K",
+      "adressebeskyttelse": "UGRADERT",
+      "erSakseier": false,
+      "sakseier": {
+        "id": "NO:NAVAT05",
+        "navn": "NAV ACC 05"
+      },
+      "navinstitusjon": {
+        "id": "NO:NAVAT07",
+        "navn": "NAV ACC 07"
+      },
+      "sakTittel": "Beslutte kompetent myndighet",
+      "sakType": "FB_BUC_01",
+      "sakId": "1451323",
+      "internasjonalSakId": "526fdb2aa00142fda4e24bd64839e2de",
+      "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1451323",
+      "sistEndretDato": "2025-07-30",
+      "motparter": [
+        {
+          "formatertNavn": "NAV ACC 05 (NO)",
+          "motpartId": "NO:NAVAT05",
+          "motpartNavn": "NAV ACC 05",
+          "motpartLand": "NO",
+          "motpartLandkode": "NOR"
+        }
+      ],
+      "sakshandlinger": [
+        "X005",
+        "X007",
+        "X009",
+        "H001",
+        "H003",
+        "H004",
+        "H005",
+        "H010",
+        "H011",
+        "H061",
+        "H065",
+        "H070",
+        "H120",
+        "H121",
+        "F004",
+        "F022",
+        "F023",
+        "F026"
+      ],
+      "sedListe": [
+        {
+          "sedTittel": "Svar om avgjørelse av kompetanse",
+          "sedType": "F002",
+          "sedId": "111f0543711146da8cf2958bea08995a",
+          "sedIdParent": "12f40e1ab72e42878af78a895a8ea13f",
+          "status": "new",
+          "sistEndretDato": "2025-07-30",
+          "svarsedType": null,
+          "svarsedId": null,
+          "sedHandlinger": [
+            "Delete",
+            "Read",
+            "Send",
+            "Update"
+          ],
+          "vedlegg": [
+            {
+              "id": "409f10dfe006418fa686c4def4a20c0f",
+              "navn": "Forespørsel_om_perioder_-_trygdeytelse:_sykdom__svangerskap_og_fødsel..pdf",
+              "sensitivt": false
+            },
+            {
+              "id": "dc58f2c46064462babca20c7c5c77798",
+              "navn": "Svar_om_avgjørelse_av_kompetanse.pdf",
+              "sensitivt": false
+            }
+          ],
+          "manglerInformasjonOmEktefelleEllerAnnenPerson": false,
+          "fagsak": null
+        },
+        {
+          "sedTittel": "Svar på mer informasjon",
+          "sedType": "F027",
+          "sedId": "92d5c100bca24eb49dc99d5d143ed147",
+          "sedIdParent": null,
+          "status": "new",
+          "sistEndretDato": "2025-06-24",
+          "svarsedType": null,
+          "svarsedId": null,
+          "sedHandlinger": [
+            "Update",
+            "Delete",
+            "Read",
+            "Participants_Send"
+          ],
+          "vedlegg": [
+            {
+              "id": "64f96d0e101e40f28a46a9311664b2a0",
+              "navn": "Melding_anmodning_om_informasjon.pdf",
+              "sensitivt": false
+            },
+            {
+              "id": "df59a9b5188b4f3b961b98045a3c38c9",
+              "navn": "Klargjør_innhold.pdf",
+              "sensitivt": false
+            }
+          ],
+          "manglerInformasjonOmEktefelleEllerAnnenPerson": false,
+          "fagsak": null
+        },
+        {
+          "sedTittel": "Anmodning om avgjørelse av kompetanse",
+          "sedType": "F001",
+          "sedId": "12f40e1ab72e42878af78a895a8ea13f",
+          "sedIdParent": null,
+          "status": "received",
+          "sistEndretDato": "2025-02-03",
+          "svarsedType": null,
+          "svarsedId": null,
+          "sedHandlinger": [
+            "Read",
+            "ReadParticipants"
+          ],
+          "vedlegg": [],
+          "manglerInformasjonOmEktefelleEllerAnnenPerson": true,
+          "fagsak": {
+            "tema": "BAR",
+            "type": "FAGSAK",
+            "nr": "0331A01",
+            "arkiv": "GSAK",
+            "fnr": "1768259612910",
+            "system": "IT01"
+          }
+        }
+      ],
+      "fagsak": {
+        "tema": "KON",
+        "type": "FAGSAK",
+        "nr": null,
+        "arkiv": null,
+        "fnr": "28506726605",
+        "system": "IT01"
+      },
+      "journalpoststatus": null,
+      "relaterteRinasakIder": [],
+      "ikkeJournalfoerteSed": [],
+      "sedUnderJournalfoeringEllerUkjentStatus": [],
       "sensitiv": false,
       "cdmVersjon": "4.3"
     }

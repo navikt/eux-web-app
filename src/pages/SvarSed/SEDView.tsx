@@ -26,8 +26,6 @@ import { useNavigate } from 'react-router-dom'
 import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
-import {Alert} from "@navikt/ds-react";
-import {useTranslation} from "react-i18next";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
 
 export const PileStartDiv = styled(PileDiv)`
@@ -56,7 +54,6 @@ const mapState = (state: State) => ({
 })
 
 const SEDView = (): JSX.Element => {
-  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
   const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
@@ -194,14 +191,6 @@ const SEDView = (): JSX.Element => {
             <>
               <VerticalSeparatorDiv />
               <IkkeJournalfoerteSed sak={currentSak}/>
-            </>
-          }
-          {currentSak.ikkeJournalfoerteSedListFailed &&
-            <>
-              <VerticalSeparatorDiv />
-              <Alert variant="error">
-                {t('journalfoering:kunne-ikke-hente-liste')}
-              </Alert>
             </>
           }
           {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&

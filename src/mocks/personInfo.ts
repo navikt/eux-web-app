@@ -3,7 +3,7 @@ export default {
   foedselsdato: '1968-02-02',
   fornavn: 'STOR',
   etternavn: 'BLYANT',
-  kjoenn: 'K',
+  kjoenn: 'KVINNE',
   statsborgerskap: [
     {"fraDato": "1982-01-01", "landkode": "NOR"},
     {"fraDato": "1975-01-01", "landkode": "SWE"},

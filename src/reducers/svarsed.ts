@@ -367,10 +367,6 @@ const svarsedReducer = (
           s.kjoenn = s.kjoenn.toUpperCase()
           return s
         }
-        if (s.kjoenn === 'f') {
-          s.kjoenn = 'K'
-          return s
-        }
         s.kjoenn = 'U'
         return s
       })
@@ -402,10 +398,6 @@ const svarsedReducer = (
         }
         if (['k', 'm', 'u'].indexOf(s.kjoenn) >= 0) {
           s.kjoenn = s.kjoenn.toUpperCase()
-          return s
-        }
-        if (s.kjoenn === 'f') {
-          s.kjoenn = 'K'
           return s
         }
         s.kjoenn = 'U'

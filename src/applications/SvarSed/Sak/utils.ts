@@ -15,5 +15,5 @@ export const isSedEditable = (
   !!sak.ikkeJournalfoerteSed?.length ||
   !hasSentStatus(connectedSed.svarsedId!, sedStatus) ||
   (connectedSed.sedHandlinger && connectedSed.sedHandlinger?.indexOf('Update') >= 0) ||
-  (connectedSed.svarsedType && (!sak.ikkeJournalfoerteSed?.length || !sak.ikkeJournalfoerteSedListFailed))
+  (connectedSed.svarsedType && !sak.ikkeJournalfoerteSed?.length)
 )
