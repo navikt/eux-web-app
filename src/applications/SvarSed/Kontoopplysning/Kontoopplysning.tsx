@@ -317,7 +317,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column flex='2'>
           <Button variant='secondary' size='small' onClick={() => emptyKontoopplysninger()} >
-            Tøm kontoopplysninger
+            {t('el:button-remove-account-info')}
           </Button>
         </Column>
         <Column />

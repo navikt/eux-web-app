@@ -30,6 +30,7 @@
   "button-ok" : "Ok",
   "button-remove" : "Fjern",
   "button-remove-all" : "Fjern alle",
+  "button-remove-account-info" : "Tøm kontoopplysninger",
   "button-reset-form" : "Nullstill skjema",
   "button-preview-x" : "Forhåndsvis kopien av {{x}}",
   "button-save" : "Lagre",
