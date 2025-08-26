@@ -123,7 +123,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 
   async function checkTimeout () {
-    let wonderwallTimeout = await currentWonderwallTimeout()
+    let wonderwallTimeout = await fetchWonderwallTimeout()
     let tokenExpirationTime = wonderwallTimeout[0];
     let sessionEndTime = wonderwallTimeout[1];
     if (!_.isNumber(tokenExpirationTime)) {
@@ -138,14 +138,28 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (diff < millisecondsForWarning) {
       setModal(true)
     }
+    if (diff < tokenAutoRenew) {
+      if (tokenExpirationTime < (sessionEndTime - 1000)) {
+        await refreshWonderwallTimeout()
+      }
+    }
+
   }
 
-  async function currentWonderwallTimeout() {
+  async function fetchWonderwallTimeout() {
     const response = await fetch(urls.API_UTGAARDATO_URL,  {
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
     return extractTime(response, wonderwallResponse)
+  }
+
+  async function refreshWonderwallTimeout() {
+    const response = await fetch(urls.API_REAUTENTISERING_URL,  {
+      method: "POST"
+    })
+    const wonderwallResponse: WonderwallResponse = await response.json()
+    return extractTime(response, wonderwallResponse);
   }
 
   useEffect(() => {
