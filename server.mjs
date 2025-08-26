@@ -204,6 +204,11 @@ app.use('/v4',
   apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
   apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
 )
+app.use('/v5',
+  timedOut,
+  apiAuth(process.env.VITE_NEESSI_BACKEND_TOKEN_SCOPE),
+  apiProxy(process.env.VITE_NEESSI_BACKEND_URL,{ '^/frontend/' : '/' })
+)
 
 // app.use('/websocket', socketProxy)
 
