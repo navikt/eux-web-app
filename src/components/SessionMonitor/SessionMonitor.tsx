@@ -1,18 +1,18 @@
 import * as urls from 'constants/urls'
-import {logMeAgain, reduceSessionTime} from 'actions/app'
-import {PDU1} from 'declarations/pd'
-import {ReplySed} from 'declarations/sed'
+import { logMeAgain, reduceSessionTime } from 'actions/app'
+import { PDU1 } from 'declarations/pd'
+import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
-import React, {useEffect, useState} from 'react'
-import {useTranslation} from 'react-i18next'
-import {useAppDispatch, useAppSelector} from 'store'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useAppDispatch, useAppSelector } from 'store'
 import styled from 'styled-components'
 import Modal from 'components/Modal/Modal'
-import {BodyLong, Button} from '@navikt/ds-react'
-import {State} from 'declarations/reducers'
+import { BodyLong, Button } from '@navikt/ds-react'
+import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import {IS_DEVELOPMENT, IS_Q} from 'constants/environment'
-import {setInterval} from 'worker-timers';
+import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
+import { setInterval } from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
 font-size: 80%;
@@ -32,7 +32,6 @@ export interface SessionMonitorProps {
 export interface SessionMonitorSelector {
   pdu1: PDU1 | null | undefined
   replySed: ReplySed | null | undefined
-  state: State | null | undefined
 }
 
 export interface WonderwallResponse {
@@ -56,31 +55,20 @@ export interface WonderwallResponse {
 
 const mapState = (state: State): SessionMonitorSelector => ({
   pdu1: state.pdu1.pdu1,
-  replySed: state.svarsed.replySed,
-  state: state
+  replySed: state.svarsed.replySed
 })
 
-function extractTime(response: Response, wonderwallResponse: WonderwallResponse, state: State | null | undefined) {
+function extractTime(response: Response, wonderwallResponse: WonderwallResponse) {
   let timeTuple: [number, number];
   timeTuple = [-1, -1]
   if (response.ok) {
     const tokens = wonderwallResponse?.tokens
     if (tokens) {
-      const nowDate: Date = new Date()
-      const diffMillis: number = new Date(tokens.expire_at).getTime() - nowDate.getTime()
       const expirationTime = new Date(tokens.expire_at).getTime()
-
       const session = wonderwallResponse?.session
-      const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : 0
+      const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : -1
 
       timeTuple = [expirationTime, sessionEndsAt];
-
-      const diffMinutes: number = Math.ceil(diffMillis / 1000 / 60)
-
-//      if (state && state.app) {
-//        state.app.expirationTime = expirationTime
-//        state.app.sessionEndsAt = sessionEndsAt
-//      }
     } else {
       console.log('No content')
     }
@@ -110,12 +98,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   const [diff, setDiff] = useState<number>(0)
   const [sessionDiff, setSessionDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
-  const { pdu1, replySed, state }: SessionMonitorSelector = useAppSelector(mapState)
+  const { pdu1, replySed }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const getDiff = (expirationTime: number, now: any) => {
+  const updateTokenDiff = (expirationTime: number) => {
     const _now: Date = new Date()
     const diff: number = expirationTime - _now.getTime()
     console.log('minutes left', Math.ceil(diff / 1000 / 60))
@@ -123,7 +111,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
-  const getSessionDiff = (sessionEndsAt: number, now: any) => {
+  const updateSessionDiff = (sessionEndsAt: number) => {
     const _now: Date = new Date()
     const diff: number = sessionEndsAt - _now.getTime()
     setSessionDiff(diff)
@@ -141,29 +129,15 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (!_.isNumber(tokenExpirationTime)) {
       return
     }
-    const diff = getDiff(tokenExpirationTime, now)
-    const sessionDiff = getSessionDiff(sessionEndTime, now)
+    const diff = updateTokenDiff(tokenExpirationTime)
+    const sessionDiff = updateSessionDiff(sessionEndTime)
 
-    if (diff < sessionExpiredReload) {
+    if (diff < sessionExpiredReload || sessionDiff < sessionExpiredReload) {
       triggerReload()
     }
     if (diff < millisecondsForWarning) {
       setModal(true)
     }
-    if (diff < tokenAutoRenew) {
-      if (tokenExpirationTime < (sessionEndTime - 1000)) {
-        console.log('trigger checkWonderwallTimeout')
-      }
-    }
-  }
-
-  async function checkWonderwallTimeout() {
-    const response = await fetch(urls.API_REAUTENTISERING_URL,  {
-      method: "POST"
-    })
-    const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractTime(response, wonderwallResponse, state);
-
   }
 
   async function currentWonderwallTimeout() {
@@ -171,15 +145,15 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractTime(response, wonderwallResponse, state)
+    return extractTime(response, wonderwallResponse)
   }
 
   useEffect(() => {
     let intervalId: number = -1
     if (expirationTime !== undefined) {
-      getDiff(expirationTime, now)
+      updateTokenDiff(expirationTime)
       if (sessionEndsAt !== undefined) {
-        getSessionDiff(sessionEndsAt, now)
+        updateSessionDiff(sessionEndsAt)
       }
       intervalId = setInterval(checkTimeout, checkInterval)
     }
