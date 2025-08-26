@@ -103,12 +103,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onFagsakChange = (value: string) => {
     const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
-    const fagsak = {
-      ...currentFagsak,
-      _id: fSak ? fSak._id : "",
-      nr: fSak ? fSak.nr : ""
-    }
-    setCurrentFagsak(fagsak)
+    setCurrentFagsak(fSak)
   }
 
   const onCreateFagsak = () => {

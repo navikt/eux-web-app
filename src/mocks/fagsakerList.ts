@@ -28,5 +28,11 @@ export default ({ fnr, sektor, tema }: any) => {
       break
   }
 
-  return module
+  return module.map((f) => {
+    return {
+      ...f,
+      fnr,
+      tema
+    }
+  })
 }

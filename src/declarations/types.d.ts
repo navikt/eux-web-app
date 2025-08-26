@@ -164,7 +164,6 @@ export interface PersonMedFamilie extends PersonInfoPDL {
 export interface Fagsak {
   aktoerId?: string | null | undefined
   tema?: string | null | undefined
-  arkiv?: string | null | undefined
   type?: string | null | undefined
   nr?: string | null | undefined
   system?: string | null | undefined

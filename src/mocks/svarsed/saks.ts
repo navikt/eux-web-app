@@ -1060,7 +1060,6 @@ export default (saksnummer: string, type: string) => {
             "tema": "BAR",
             "type": "FAGSAK",
             "nr": "0331A01",
-            "arkiv": "GSAK",
             "fnr": "1768259612910",
             "system": "IT01"
           }
@@ -1070,7 +1069,6 @@ export default (saksnummer: string, type: string) => {
         "tema": "KON",
         "type": "FAGSAK",
         "nr": null,
-        "arkiv": null,
         "fnr": "28506726605",
         "system": "IT01"
       },
