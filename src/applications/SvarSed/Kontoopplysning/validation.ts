@@ -44,15 +44,7 @@ export const validateKontoopplysning = (
       }))
     }
   }
-/*
-  if (!kontoType) {
-    hasErrors.push(addError(v, {
-      id: namespace + '-kontotype',
-      message: 'validation:noKontotype',
-      personName: formalName
-    }))
-  }
-*/
+
   if (kontoType === 'ordinaer') {
     hasErrors.push(checkIfNotEmpty(v, {
       needle: uti?.kontoOrdinaer?.swift,
