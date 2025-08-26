@@ -134,7 +134,7 @@ const SEDView = (): JSX.Element => {
   const arrayToTree = (arr:any, parent = undefined) =>{
     let newArr = []
     if(arr){
-      newArr = arr.filter((item:any) => item.sedIdParent === parent)
+      newArr = arr.filter((item:any) => item.sedIdParent == parent)
         .map((child:any) => ({ ...child, children: arrayToTree(arr,
             child.sedId) }));
     }
@@ -204,7 +204,7 @@ const SEDView = (): JSX.Element => {
               </Alert>
             </>
           }
-          {currentSak.sedUnderJournalfoeringEllerUkjentStatus && !currentSak.ikkeJournalfoerteSedListFailed &&
+          {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
             <>
               <VerticalSeparatorDiv />
               <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
