@@ -122,32 +122,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     window.location.reload()
   }
 
-  async function checkTimeout () {
-    let wonderwallTimeout = await fetchWonderwallTimeout()
-    let tokenExpirationTime = wonderwallTimeout[0];
-    let sessionEndTime = wonderwallTimeout[1];
-    if (!_.isNumber(tokenExpirationTime)) {
-      return
-    }
-    console.log('checkTimeout expirationtime', tokenExpirationTime)
-
-    const diff = updateTokenDiff(tokenExpirationTime)
-    const sessionDiff = updateSessionDiff(sessionEndTime)
-
-    if (diff < sessionExpiredReload || sessionDiff < sessionExpiredReload) {
-      triggerReload()
-    }
-    if (diff < millisecondsForWarning) {
-      setModal(true)
-    }
-    if (diff < tokenAutoRenew) {
-      if (tokenExpirationTime < (sessionEndTime - 1000)) {
-        await refreshWonderwallTimeout()
-      }
-    }
-
-  }
-
   async function fetchWonderwallTimeout() {
     const response = await fetch(urls.API_UTGAARDATO_URL,  {
       method: "GET"
@@ -164,10 +138,40 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return extractTime(response, wonderwallResponse);
   }
 
+  async function checkTimeout () {
+    let wonderwallTimeout = await fetchWonderwallTimeout()
+    let tokenExpirationTime = wonderwallTimeout[0];
+    let sessionEndTime = wonderwallTimeout[1];
+    if (!_.isNumber(tokenExpirationTime)) {
+      return
+    }
+    console.log('checkTimeout expirationtime', tokenExpirationTime)
+    console.log('checkTimeout old diff', diff)
+
+    const diff1 = updateTokenDiff(tokenExpirationTime)
+    const sessionDiff1 = updateSessionDiff(sessionEndTime)
+
+    console.log('checkTimeout new diff', diff)
+
+    if (diff1 < sessionExpiredReload || sessionDiff1 < sessionExpiredReload) {
+      triggerReload()
+    }
+    if (sessionDiff1 < millisecondsForWarning) {
+      setModal(true)
+    }
+    if (diff1 < tokenAutoRenew) {
+      if (tokenExpirationTime < (sessionEndTime - 1000)) {
+        await refreshWonderwallTimeout()
+      }
+    }
+
+  }
+
   useEffect(() => {
     let intervalId: number = -1
     if (expirationTime !== undefined) {
       console.log('useEffect expirationtime', expirationTime )
+      console.log('useEffect diff', diff )
 
       if (diff > 0) {
         setDiff(diff)
