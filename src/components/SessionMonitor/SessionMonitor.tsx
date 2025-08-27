@@ -169,7 +169,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (expirationTime !== undefined) {
       console.log('useEffect expirationtime', expirationTime )
 
-      updateTokenDiff(expirationTime)
+      if (diff > 0) {
+        setDiff(diff)
+      } else {
+        updateTokenDiff(expirationTime)
+      }
       if (sessionEndsAt !== undefined) {
         updateSessionDiff(sessionEndsAt)
       }
