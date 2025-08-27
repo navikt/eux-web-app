@@ -129,6 +129,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (!_.isNumber(tokenExpirationTime)) {
       return
     }
+    console.log('checkTimeout expirationtime', tokenExpirationTime)
+
     const diff = updateTokenDiff(tokenExpirationTime)
     const sessionDiff = updateSessionDiff(sessionEndTime)
 
@@ -165,6 +167,8 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   useEffect(() => {
     let intervalId: number = -1
     if (expirationTime !== undefined) {
+      console.log('useEffect expirationtime', expirationTime )
+
       updateTokenDiff(expirationTime)
       if (sessionEndsAt !== undefined) {
         updateSessionDiff(sessionEndsAt)
