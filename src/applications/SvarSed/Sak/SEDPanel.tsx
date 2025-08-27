@@ -259,7 +259,7 @@ const SEDPanel = ({
         <VStack gap="2">
           {hasDeviatedFagsak && sed.fagsak &&
             <HStack>
-              <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.tema} // {sed.fagsak?.nr ? sed.fagsak?.nr : "GENERELL SAK"}</Tag>
+              <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)} // {sed.fagsak?.nr ? sed.fagsak?.nr : "GENERELL SAK"}</Tag>
             </HStack>
           }
           <HStack align="center">
