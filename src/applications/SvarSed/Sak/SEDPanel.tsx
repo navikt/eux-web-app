@@ -232,7 +232,7 @@ const SEDPanel = ({
       padding="4"
       background="surface-default"
       className={classNames({
-        deviation: hasDeviatedFagsak
+        deviation: sed.fagsak && hasDeviatedFagsak
       })}
     >
       <Modal
