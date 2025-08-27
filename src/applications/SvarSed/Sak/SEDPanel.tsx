@@ -1,6 +1,5 @@
 import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
-import {Button, Detail, Heading, HelpText, HStack, Loader, Panel} from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Button, Detail, Heading, HelpText, HStack, Loader, Tag, VStack} from '@navikt/ds-react'
 import {
   clarifyingSed,
   deleteSed,
@@ -29,16 +28,20 @@ import {ModalContent} from "../../../declarations/components";
 import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromRinaTable";
 import { saveAs } from 'file-saver'
 import moment from 'moment'
+import classNames from "classnames";
 
-const MyPanel = styled(Panel)`
+const SedBox = styled(Box)`
   transition: all 0.15s ease-in-out;
+  &.deviation {
+    border-left: 5px solid var(--a-surface-warning);
+  }
   &:hover {
     color: var(--a-text-default) !important;
     background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 
-const IconDiv = styled(PileCenterDiv)`
+const IconDiv = styled(VStack)`
   align-items: center;
   margin-left: -1rem;
   margin-top: -1rem;
@@ -47,6 +50,11 @@ const IconDiv = styled(PileCenterDiv)`
   background-color: var(--a-surface-subtle);
   padding: 1rem;
 `
+
+const IconSpacerDiv = styled.div`
+  margin-bottom: 0.35rem;
+`
+
 const AttachmentButton = styled(Button)`
   padding:0
 `
@@ -212,22 +220,35 @@ const SEDPanel = ({
   const hasSedHandlinger = sed.sedHandlinger && sed.sedHandlinger.length > 0
   const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
 
+  const currentFagsak = _.cloneDeep(currentSak.fagsak)
+  delete currentFagsak?._id
+  const hasDeviatedFagsak = !(_.isEqual(sed.fagsak, currentFagsak))
+
   return (
-    <MyPanel border>
+    <SedBox
+      borderWidth="1"
+      borderRadius="small"
+      borderColor="border-default"
+      padding="4"
+      background="surface-default"
+      className={classNames({
+        deviation: hasDeviatedFagsak
+      })}
+    >
       <Modal
         open={!_.isNil(attachmentModal)}
         modal={attachmentModal}
         onModalClose={() => setAttachmentModal(undefined)}
       />
-      <FlexDiv>
-        <IconDiv>
+      <HStack gap="4" wrap={false}>
+        <IconDiv align="center">
           {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
           {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
           {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
           {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
           {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
-          <VerticalSeparatorDiv size='0.35' />
+          <IconSpacerDiv/>
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
           </Detail>
@@ -235,8 +256,12 @@ const SEDPanel = ({
             {sed.sistEndretDato}
           </Detail>
         </IconDiv>
-        <HorizontalSeparatorDiv />
-        <PileDiv>
+        <VStack gap="2">
+          {hasDeviatedFagsak && sed.fagsak &&
+            <HStack>
+              <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.tema} // {sed.fagsak?.nr ? sed.fagsak?.nr : "GENERELL SAK"}</Tag>
+            </HStack>
+          }
           <HStack align="center">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
@@ -279,8 +304,8 @@ const SEDPanel = ({
               </MyHelpText>
             }
           </HStack>
-          <VerticalSeparatorDiv size='0.5' />
-          <FlexDiv>
+
+          <HStack gap="2">
             {showEditButton && (
               <>
                 <Button
@@ -303,7 +328,6 @@ const SEDPanel = ({
                       )
                     : t('label:edit-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showUpdateButton && (
@@ -328,7 +352,6 @@ const SEDPanel = ({
                       )
                     : t('label:oppdater-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showDeleteButton && (
@@ -353,7 +376,6 @@ const SEDPanel = ({
                     )
                     : t('label:slett-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showInvalidateButton && (
@@ -378,7 +400,6 @@ const SEDPanel = ({
                       )
                     : t('label:invalidate-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showRejectButton && (
@@ -403,7 +424,6 @@ const SEDPanel = ({
                       )
                     : t('label:reject-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showClarifyButton && (
@@ -428,7 +448,6 @@ const SEDPanel = ({
                       )
                     : t('label:klarkjør-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showRemindButton && (
@@ -453,7 +472,6 @@ const SEDPanel = ({
                       )
                     : t('label:svar-på-påminnelse')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showReplyToSedButton && (
@@ -482,13 +500,12 @@ const SEDPanel = ({
                       sedtype: sed.svarsedType
                     })}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-          </FlexDiv>
-        </PileDiv>
-      </FlexDiv>
-    </MyPanel>
+          </HStack>
+        </VStack>
+      </HStack>
+    </SedBox>
   )
 }
 

@@ -1009,7 +1009,13 @@ export default (saksnummer: string, type: string) => {
             }
           ],
           "manglerInformasjonOmEktefelleEllerAnnenPerson": false,
-          "fagsak": null
+          "fagsak": {
+            "tema": "KON",
+            "type": "FAGSAK",
+            "nr": null,
+            "fnr": "28506726605",
+            "system": "IT01"
+          }
         },
         {
           "sedTittel": "Svar på mer informasjon",
@@ -1039,7 +1045,13 @@ export default (saksnummer: string, type: string) => {
             }
           ],
           "manglerInformasjonOmEktefelleEllerAnnenPerson": false,
-          "fagsak": null
+          "fagsak": {
+            "tema": "KON",
+            "type": "FAGSAK",
+            "nr": null,
+            "fnr": "28506726605",
+            "system": "IT01"
+          }
         },
         {
           "sedTittel": "Anmodning om avgjørelse av kompetanse",

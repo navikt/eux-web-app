@@ -239,7 +239,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
         </Modal.Footer>
       </Modal>
 
-      <Box borderWidth="1" borderRadius="small" padding="4" background="surface-default">
+      <Box borderWidth="1" borderRadius="small" borderColor="border-default" padding="4" background="surface-default">
         <VStack gap="4">
           <Heading size='small'>
             {t('label:journalfoeres-paa')}
