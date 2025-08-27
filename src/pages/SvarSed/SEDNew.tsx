@@ -814,7 +814,7 @@ const SEDNew = (): JSX.Element => {
                     {fagsaker &&
                       fagsaker.map((f: Fagsak) => (
                         <option value={f._id} key={f._id}>
-                          {f.nr || f._id}
+                          {f.nr || "GENERELL SAK"}  
                         </option>
                       ))
                     }

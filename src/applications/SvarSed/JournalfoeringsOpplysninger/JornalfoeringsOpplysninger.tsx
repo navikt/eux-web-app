@@ -199,7 +199,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   {fagsaker &&
                     fagsaker.map((f: Fagsak) => (
                       <option value={f._id} key={f._id}>
-                        {f.nr || f._id}
+                        {f.nr || "GENERELL SAK"}
                       </option>
                     ))
                   }
@@ -264,7 +264,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               {t('label:fagsak')}:
             </Dt>
             <Dd>
-              {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?._id}
+              {sak.fagsak?.nr ? sak.fagsak?.nr : "GENERELL SAK"}
             </Dd>
           </Dl>
           <Button

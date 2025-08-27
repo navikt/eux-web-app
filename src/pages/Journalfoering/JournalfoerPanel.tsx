@@ -417,7 +417,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 {fagsaker &&
                   fagsaker.map((f: Fagsak) => (
                     <option value={f._id} key={f._id} selected={f._id === fagsak?._id && _fagsakSelected}>
-                      {f.nr || f._id}
+                      {f.nr || "GENERELL SAK"}
                     </option>
                   ))}
               </Select>
