@@ -192,3 +192,8 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
 export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
   type: types.APP_LOGINREDIRECT_RESET
 })
+
+export const setExpirationTime: ActionCreator<ActionWithPayload> = (expirationTime: number): ActionWithPayload => ({
+  type: types.APP_EXPIRATION_TIME_SET,
+  payload: expirationTime
+})
