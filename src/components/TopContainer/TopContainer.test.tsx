@@ -12,6 +12,7 @@ const defaultSelector: TopContainerSelector = {
   bannerMessage: undefined,
   bannerStatus: undefined,
   expirationTime: undefined,
+  sessionEndsAt: undefined,
   error: undefined
 }
 
