@@ -1,5 +1,5 @@
 import * as urls from 'constants/urls'
-import { logMeAgain, reduceSessionTime } from 'actions/app'
+import { logMeAgain, reduceSessionTime, setExpirationTime } from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
@@ -71,11 +71,12 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
       const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : -1
 
       timeTuple = [expirationTime, sessionEndsAt];
+/*
       if (state && state.app) {
         state.app.expirationTime = expirationTime
         state.app.sessionEndsAt = sessionEndsAt
       }
-
+*/
 
     } else {
       console.log('No content')
@@ -167,8 +168,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       setModal(true)
     }
     if (diff1 < tokenAutoRenew) {
-      if (tokenExpirationTime < (sessionEndTime - 1000)) {
-        await refreshWonderwallTimeout()
+      const tuple = await refreshWonderwallTimeout()
+      let tokenExpiration = tuple[0];
+      let sessionEnd = tuple[1];
+      if (_.isNumber(tokenExpiration) && tokenExpiration > 0) {
+        dispatch(setExpirationTime(tokenExpiration))
+        console.log('checkTimeout new expirationTime local', tokenExpiration)
+        console.log('checkTimeout new expirationTime state', state?.app.expirationTime)
       }
     }
 

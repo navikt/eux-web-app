@@ -234,6 +234,12 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes)).getTime()
       }
 
+    case types.APP_EXPIRATION_TIME_SET:
+      return {
+        ...state,
+        expirationTime: action.payload
+      }
+
     case types.APP_UTGAARDATO_SUCCESS: {
       const now = new Date()
       const expirationTime = action.payload.tokens?.expire_at
