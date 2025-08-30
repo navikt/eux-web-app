@@ -127,6 +127,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
+  const calculateDiff = (endTime: number) => {
+    const _now: Date = new Date()
+    return endTime - _now.getTime()
+  }
+
   const triggerReload = () => {
     window.location.reload()
   }
@@ -157,17 +162,19 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     console.log('checkTimeout expirationtime', tokenExpirationTime)
     console.log('checkTimeout old diff', diff)
 
-    const diff1 = updateTokenDiff(tokenExpirationTime)
-    const sessionDiff1 = updateSessionDiff(sessionEndTime)
+//    const diff1 = updateTokenDiff(tokenExpirationTime)
+//    const sessionDiff1 = updateSessionDiff(sessionEndTime)
+    const tokenDiff = calculateDiff(tokenExpirationTime)
+    const sessionDiff = calculateDiff(sessionEndTime)
 
     console.log('checkTimeout new diff', diff)
-    if (diff1 < sessionExpiredReload || sessionDiff1 < sessionExpiredReload) {
+    if (tokenDiff < sessionExpiredReload || sessionDiff < sessionExpiredReload) {
       triggerReload()
     }
-    if (sessionDiff1 < millisecondsForWarning) {
+    if (sessionDiff < millisecondsForWarning) {
       setModal(true)
     }
-    if (diff1 < tokenAutoRenew) {
+    if (tokenDiff < tokenAutoRenew) {
       const tuple = await refreshWonderwallTimeout()
       let tokenExpiration = tuple[0];
       let sessionEnd = tuple[1];
@@ -186,14 +193,14 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       console.log('useEffect expirationtime', expirationTime )
       console.log('useEffect diff', diff )
 
-      if (diff > 0) {
-        setDiff(diff)
-      } else {
-        updateTokenDiff(expirationTime)
-      }
-      if (sessionEndsAt !== undefined) {
-        updateSessionDiff(sessionEndsAt)
-      }
+//      if (diff > 0) {
+//        setDiff(diff)
+//      } else {
+//        updateTokenDiff(expirationTime)
+//      }
+  //    if (sessionEndsAt !== undefined) {
+  //      updateSessionDiff(sessionEndsAt)
+  //    }
       intervalId = setInterval(checkTimeout, checkInterval)
     }
     return () => {

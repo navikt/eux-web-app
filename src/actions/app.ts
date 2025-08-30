@@ -197,3 +197,8 @@ export const setExpirationTime: ActionCreator<ActionWithPayload> = (expirationTi
   type: types.APP_EXPIRATION_TIME_SET,
   payload: expirationTime
 })
+
+export const setSessionEndsAt: ActionCreator<ActionWithPayload> = (sessionEndsAt: number): ActionWithPayload => ({
+  type: types.APP_SESSIONEXPIRATION_SET,
+  payload: sessionEndsAt
+})
