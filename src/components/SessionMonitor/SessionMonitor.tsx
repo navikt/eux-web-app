@@ -127,9 +127,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return diff
   }
 
-  const calculateDiff = (endTime: number) => {
-    const _now: Date = new Date()
-    return endTime - _now.getTime()
+  const calculateDiff = (endTime: number | undefined) => {
+    if (endTime) {
+      const _now: Date = new Date()
+      return endTime - _now.getTime()
+    } else {
+      return 0
+    }
   }
 
   const triggerReload = () => {
@@ -241,12 +245,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   const tokenButton = (
     <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
-    Token utløper om {Math.ceil(diff / 1000 / 60)} min.
+    Token utløper om {Math.ceil(calculateDiff(expirationTime) / 1000 / 60)} min.
     </Button>
   )
   const sessionButton = (
     <Button variant='tertiary' size='small' onClick={() => setModal(true)}  style={{color: 'red'}}>
-      Sesjon utløper om {Math.ceil(sessionDiff / 1000 / 60)} min
+      Sesjon utløper om {Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60)} min
     </Button>
   )
   const modalButton = (
