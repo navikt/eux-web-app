@@ -1,5 +1,5 @@
 import * as urls from 'constants/urls'
-import { logMeAgain, reduceSessionTime, setExpirationTime } from 'actions/app'
+import {logMeAgain, reduceSessionTime, setExpirationTime, setSessionEndsAt} from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
@@ -178,6 +178,13 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     if (sessionDiff < millisecondsForWarning) {
       setModal(true)
     }
+    if (expirationTime != undefined && tokenExpirationTime != expirationTime) {
+      dispatch(setExpirationTime(tokenExpirationTime))
+    }
+    if (sessionEndTime != undefined && sessionEndsAt != undefined && sessionEndTime != sessionEndsAt) {
+      dispatch(setSessionEndsAt(sessionEndTime))
+    }
+
     if (tokenDiff < tokenAutoRenew) {
       const tuple = await refreshWonderwallTimeout()
       let tokenExpiration = tuple[0];
