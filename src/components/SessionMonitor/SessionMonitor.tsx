@@ -224,7 +224,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
 
   const title = t(diff > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
   const text = []
-  text.push(t(diff > millisecondsForWarning ? 'app:session-ok-text' : 'app:session-expire-text', { minutes: Math.ceil(diff / 1000 / 60) }))
+  text.push(t(diff > millisecondsForWarning ? 'app:session-ok-text' : 'app:session-expire-text', { minutes: Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60) }))
   const hasDraft = !_.isNil(pdu1) || !_.isNil(replySed)
 
   if (hasDraft) {
@@ -272,7 +272,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       }}
     />
   )
-  if ( sessionDiff !== undefined && sessionStatusWarning !== undefined && sessionDiff < sessionStatusWarning) {
+  if ( sessionEndsAt !== undefined && sessionStatusWarning !== undefined && calculateDiff(sessionEndsAt) < sessionStatusWarning) {
     return (
       <SessionMonitorDiv>
         {modalButton}
