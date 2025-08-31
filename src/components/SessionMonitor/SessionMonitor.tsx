@@ -104,28 +104,11 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   tokenAutoRenew = 70 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
-  const [diff, setDiff] = useState<number>(0)
-  const [sessionDiff, setSessionDiff] = useState<number>(0)
   const [modal, setModal] = useState<boolean>(false)
   const { pdu1, replySed, state }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-
-  const updateTokenDiff = (expirationTime: number) => {
-    const _now: Date = new Date()
-    const diff: number = expirationTime - _now.getTime()
-    console.log('minutes left', Math.ceil(diff / 1000 / 60))
-    setDiff(diff)
-    return diff
-  }
-
-  const updateSessionDiff = (sessionEndsAt: number) => {
-    const _now: Date = new Date()
-    const diff: number = sessionEndsAt - _now.getTime()
-    setSessionDiff(diff)
-    return diff
-  }
 
   const calculateDiff = (endTime: number | undefined) => {
     if (endTime) {
@@ -164,14 +147,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       return
     }
     console.log('checkTimeout expirationtime', tokenExpirationTime)
-    console.log('checkTimeout old diff', diff)
-
-//    const diff1 = updateTokenDiff(tokenExpirationTime)
-//    const sessionDiff1 = updateSessionDiff(sessionEndTime)
+    console.log('checkTimeout sessionEndTime', sessionEndTime)
     const tokenDiff = calculateDiff(tokenExpirationTime)
     const sessionDiff = calculateDiff(sessionEndTime)
 
-    console.log('checkTimeout new diff', diff)
     if (tokenDiff < sessionExpiredReload || sessionDiff < sessionExpiredReload) {
       triggerReload()
     }
@@ -192,27 +171,18 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       if (_.isNumber(tokenExpiration) && tokenExpiration > 0) {
         dispatch(setExpirationTime(tokenExpiration))
         dispatch(setSessionEndsAt(sessionEnd))
-        console.log('checkTimeout new expirationTime local', tokenExpiration)
-        console.log('checkTimeout new expirationTime state', state?.app.expirationTime)
+        console.log('checkTimeout refresh expirationTime', tokenExpiration)
+        console.log('checkTimeout refresh sessionEnd', sessionEnd)
       }
     }
-
   }
 
   useEffect(() => {
     let intervalId: number = -1
     if (expirationTime !== undefined) {
-      console.log('useEffect expirationtime', expirationTime )
-      console.log('useEffect diff', diff )
+      console.log('checkTimeout expirationtime', expirationTime)
+      console.log('checkTimeout sessionEndTime', sessionEndsAt)
 
-//      if (diff > 0) {
-//        setDiff(diff)
-//      } else {
-//        updateTokenDiff(expirationTime)
-//      }
-  //    if (sessionEndsAt !== undefined) {
-  //      updateSessionDiff(sessionEndsAt)
-  //    }
       intervalId = setInterval(checkTimeout, checkInterval)
     }
     return () => {
@@ -222,9 +192,9 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     }
   }, [expirationTime, sessionEndsAt])
 
-  const title = t(diff > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
+  const title = t(calculateDiff(sessionEndsAt) > millisecondsForWarning ? 'app:session-ok-title' : 'app:session-expire-title')
   const text = []
-  text.push(t(diff > millisecondsForWarning ? 'app:session-ok-text' : 'app:session-expire-text', { minutes: Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60) }))
+  text.push(t(calculateDiff(sessionEndsAt) > millisecondsForWarning ? 'app:session-ok-text' : 'app:session-expire-text', { minutes: Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60) }))
   const hasDraft = !_.isNil(pdu1) || !_.isNil(replySed)
 
   if (hasDraft) {
