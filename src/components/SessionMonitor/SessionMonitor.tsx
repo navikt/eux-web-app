@@ -221,11 +221,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     })
   }
 
-  const tokenButton = (
-    <Button variant='tertiary' size='small' onClick={() => setModal(true)}>
-    Token utløper om {Math.ceil(calculateDiff(expirationTime) / 1000 / 60)} min.
-    </Button>
-  )
   const sessionButton = (
     <Button variant='tertiary' size='small' onClick={() => setModal(true)}  style={{color: 'red'}}>
       Sesjon utløper om {Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60)} min
@@ -246,15 +241,12 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     return (
       <SessionMonitorDiv>
         {modalButton}
-        {tokenButton}
         {sessionButton}
       </SessionMonitorDiv>
     )
   } else {
     return (
       <SessionMonitorDiv>
-        {modalButton}
-        {tokenButton}
       </SessionMonitorDiv>
     )
   }
