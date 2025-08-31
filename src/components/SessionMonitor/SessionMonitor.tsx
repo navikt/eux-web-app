@@ -191,6 +191,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       let sessionEnd = tuple[1];
       if (_.isNumber(tokenExpiration) && tokenExpiration > 0) {
         dispatch(setExpirationTime(tokenExpiration))
+        dispatch(setSessionEndsAt(sessionEnd))
         console.log('checkTimeout new expirationTime local', tokenExpiration)
         console.log('checkTimeout new expirationTime state', state?.app.expirationTime)
       }
