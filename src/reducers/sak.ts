@@ -89,6 +89,7 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         fagsaker: [{
           ...fagsakGenerell,
           _id: fagsakGenerell.nr ? fagsakGenerell.nr : "GENERELL_SAK",
+          system: fagsakGenerell.system ? fagsakGenerell.system : "FS22"
         }],
         saksId: fagsakGenerell.nr ? fagsakGenerell.nr : "GENERELL_SAK",
       }
