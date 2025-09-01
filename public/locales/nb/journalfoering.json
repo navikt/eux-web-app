@@ -8,5 +8,8 @@
   "kunne-ikke-hente-liste": "Kunne ikke hente liste med ikke journalførte sed",
 
   "radio-option-standardtekst": "Standardtekst",
-  "radio-option-fritekst": "Tilpasset informasjon (fritekst)"
+  "radio-option-fritekst": "Tilpasset informasjon (fritekst)",
+
+  "FAGSAK": "Fagsak",
+  "GENERELL_SAK": "Generell sak"
 }

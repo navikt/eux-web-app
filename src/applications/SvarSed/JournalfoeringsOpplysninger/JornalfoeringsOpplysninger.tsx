@@ -264,7 +264,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               {t('label:fagsak')}:
             </Dt>
             <Dd>
-              {sak.fagsak?.nr ? sak.fagsak?.nr : "GENERELL SAK"}
+              {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.type ? t('journalfoering:' + sak.fagsak?.type) : ""}
             </Dd>
           </Dl>
           <Button

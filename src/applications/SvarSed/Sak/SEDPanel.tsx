@@ -259,8 +259,10 @@ const SEDPanel = ({
         <VStack gap="2">
           {hasDeviatedFagsak && sed.fagsak &&
             <HStack gap="1">
-              <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>
-              <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr ? sed.fagsak?.nr : "GENERELL SAK"}</Tag>
+              {sed.fagsak.fnr !== currentFagsak?.fnr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak.fnr}</Tag>}
+              {sed.fagsak.tema !== currentFagsak?.tema && <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
+              {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr}</Tag>}
+              {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag size="xsmall" variant={"warning-moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
             </HStack>
           }
           <HStack align="center">
