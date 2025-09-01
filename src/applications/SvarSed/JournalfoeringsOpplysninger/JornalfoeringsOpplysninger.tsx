@@ -67,8 +67,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   })
 
   useEffect(() => {
-    dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
-    dispatch(searchPerson(currentFagsak?.fnr))
+    if(currentFagsak?.fnr){
+      dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
+      dispatch(searchPerson(currentFagsak?.fnr))
+    }
   }, [])
 
   useEffect(() => {
@@ -121,8 +123,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onModalClose = () => {
     setCurrentFagsak(sak.fagsak)
-    dispatch(getFagsaker(sak.fagsak?.fnr!, sektor, sak.fagsak?.tema!))
-    dispatch(searchPerson(sak.fagsak?.fnr!))
+    if(sak.fagsak?.fnr){
+      dispatch(getFagsaker(sak.fagsak?.fnr, sektor, sak.fagsak?.tema!))
+      dispatch(searchPerson(sak.fagsak?.fnr))
+    }
   }
 
   const onUpdateButtonClick = () => {
@@ -162,7 +166,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 }
               }}
               onSearchPerformed={(fnr: string) => {
-                dispatch(searchPerson(fnr))
+                if(fnr){
+                  dispatch(searchPerson(fnr))
+                }
               }}
               person={person}
             />
