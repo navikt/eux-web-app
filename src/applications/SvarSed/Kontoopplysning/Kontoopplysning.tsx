@@ -1,4 +1,4 @@
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, Button } from '@navikt/ds-react'
 import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
@@ -36,10 +36,10 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     if (_.isNil(utbetalingTilInstitusjon)) {
       return undefined
     }
-    if (Object.prototype.hasOwnProperty.call(utbetalingTilInstitusjon, 'kontoOrdinaer')) {
+    if (utbetalingTilInstitusjon.kontoOrdinaer) {
       return 'ordinaer'
     }
-    if (Object.prototype.hasOwnProperty.call(utbetalingTilInstitusjon, 'kontoSepa')) {
+    if (utbetalingTilInstitusjon.kontoSepa) {
       return 'sepa'
     }
     return undefined
@@ -63,7 +63,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     sepa: utbetalingTilInstitusjon?.kontoSepa
   })
 
-  const setKontoType = (kontoType: KontoType) => {
+  const setKontoType = (kontoType: KontoType | undefined) => {
     let newUti: UtbetalingTilInstitusjon | undefined = _.cloneDeep(utbetalingTilInstitusjon)
     if (!newUti) {
       newUti = {} as UtbetalingTilInstitusjon
@@ -74,7 +74,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         sepa: utbetalingTilInstitusjon?.kontoSepa
       })
       delete newUti!.kontoSepa
-      newUti.kontoOrdinaer = _cacheKonto.ordinaer
+      newUti.kontoOrdinaer = _cacheKonto.ordinaer ? _cacheKonto.ordinaer : {}
     }
     if (kontoType === 'sepa') {
       _setCacheKonto({
@@ -82,7 +82,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
         ordinaer: utbetalingTilInstitusjon?.kontoOrdinaer
       })
       delete newUti.kontoOrdinaer
-      newUti.kontoSepa = _cacheKonto.sepa
+      newUti.kontoSepa = _cacheKonto.sepa ? _cacheKonto.sepa : {}
     }
     dispatch(updateReplySed(target, newUti))
     _setKontoType(kontoType)
@@ -151,6 +151,19 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     }
   }
 
+  const emptyKontoopplysninger = () => {
+    let uti: UtbetalingTilInstitusjon = {
+      begrunnelse: '',
+      id: '',
+      navn: '',
+      kontoSepa: undefined,
+      kontoOrdinaer: undefined
+    }
+    setKontoType(undefined)
+    dispatch(updateReplySed('utbetalingTilInstitusjon', uti));
+  }
+
+
   return (
     <PaddedDiv>
       <Heading size='small'>
@@ -203,7 +216,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
       <AlignStartRow>
         <Column>
           <RadioGroup
-            value={_kontoType}
+            value={_kontoType ?? ""}
             data-testid={namespace + '-kontotype'}
             error={validation[namespace + '-kontotype']?.feilmelding}
             id={namespace + '-kontotype'}
@@ -300,6 +313,15 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
           </AlignStartRow>
         </>
       )}
+      <VerticalSeparatorDiv />
+      <AlignStartRow>
+        <Column flex='2'>
+          <Button variant='secondary' size='small' onClick={() => emptyKontoopplysninger()} >
+            {t('el:button-remove-account-info')}
+          </Button>
+        </Column>
+        <Column />
+      </AlignStartRow>
       <VerticalSeparatorDiv />
     </PaddedDiv>
   )

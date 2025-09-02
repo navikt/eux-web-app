@@ -1,11 +1,10 @@
-import { BodyLong, Button, Heading, Panel } from '@navikt/ds-react'
+import {BodyLong, Button, Heading, Modal, Panel} from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import AddMottakereModal from 'applications/SvarSed/AddMottakereModal/AddMottakereModal'
-import Modal from 'components/Modal/Modal'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import { Sak } from 'declarations/types'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, {useRef} from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface SaksopplysningerProps {
@@ -14,29 +13,23 @@ interface SaksopplysningerProps {
 
 const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
   const { t } = useTranslation()
-
-  const [showAddMottakereModal, setShowAddMottakereModal] = useState<boolean>(false)
+  const ref = useRef<HTMLDialogElement>(null);
 
   const canChangeParticipants = _.find(sak.sakshandlinger, s => s === "singleParticipant" || s === "multipleParticipants")  !== undefined
   const type = sak.sakshandlinger?.includes("multipleParticipants") ? "multiple" : "single"
 
   return (
     <>
-      <Modal
-        open={showAddMottakereModal}
-        onModalClose={() => setShowAddMottakereModal(false)}
-        modal={{
-          modalTitle: type === "multiple" ? t('label:add-deltakere-modal') : t('label:add-deltaker-modal'),
-          modalContent: (
-            <AddMottakereModal
-              bucType={sak.sakType}
-              rinaSakId={sak.sakId}
-              sakshandlinger={sak.sakshandlinger}
-              onClose={() => setShowAddMottakereModal(false)}
-            />
-          )
-        }}
-      />
+      <Modal ref={ref} header={{ heading: type === "multiple" ? t('label:add-deltakere-modal') : t('label:add-deltaker-modal') }} width="medium" style={{overflow: "visible"}}>
+        <Modal.Body style={{overflow: "visible"}}>
+          <AddMottakereModal
+            bucType={sak.sakType}
+            rinaSakId={sak.sakId}
+            sakshandlinger={sak.sakshandlinger}
+            onClose={() => ref.current?.close()}
+          />
+        </Modal.Body>
+      </Modal>
       <Panel border>
         <Heading size='small'>
           {t('label:saksopplysninger')}
@@ -64,7 +57,7 @@ const Saksopplysninger = ({ sak }: SaksopplysningerProps) => {
         {canChangeParticipants && (
           <Button
             variant='secondary'
-            onClick={() => setShowAddMottakereModal(true)}
+            onClick={() => ref.current?.showModal()}
           >
             {t('el:button-change-participants')}
           </Button>

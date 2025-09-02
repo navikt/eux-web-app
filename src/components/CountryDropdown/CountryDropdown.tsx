@@ -22,12 +22,14 @@ export interface CountryDropdownProps extends CountrySelectProps<any>{
   dataTestId?: string
   countryCodeListName?: string
   excludeNorway?: boolean
+  menuPortalTarget?: HTMLElement | null
 }
 
 const CountryDropdown : React.FC<CountryDropdownProps> = ({
   countryCodeListName,
   dataTestId,
   excludeNorway = false,
+  menuPortalTarget = document.body,
   ...rest
 }: CountryDropdownProps) => {
 
@@ -47,7 +49,7 @@ const CountryDropdown : React.FC<CountryDropdownProps> = ({
   return(
     <CountrySelect
       {...rest}
-      menuPortalTarget={document.body}
+      menuPortalTarget={menuPortalTarget}
       data-testid={dataTestId}
       includeList={includeList}
       useAlpha3Value={true}
