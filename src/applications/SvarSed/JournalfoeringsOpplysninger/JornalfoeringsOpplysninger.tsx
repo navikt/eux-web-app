@@ -194,9 +194,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             }
             {!gettingFagsaker && sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
               <HGrid gap="4" align="end" columns={2}>
-                <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
-                  {t("el:button-create-x", {x: "fagsak"})}
-                </Button>
                 <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
                   <option value={currentYear}>{currentYear}</option>
                   <option value={currentYear - 1}>{currentYear - 1}</option>
@@ -204,6 +201,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   <option value={currentYear - 3}>{currentYear - 3}</option>
                   <option value={currentYear - 4}>{currentYear - 4}</option>
                 </Select>
+                <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </Button>
               </HGrid>
             }
             <HGrid gap="4" align="center" columns={2}>
