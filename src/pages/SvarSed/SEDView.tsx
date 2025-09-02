@@ -186,7 +186,7 @@ const SEDView = (): JSX.Element => {
         <Content style={{ flex: 2 }}>
           <Saksopplysninger sak={currentSak} />
           <VerticalSeparatorDiv />
-          {!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0 &&
+          {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
             <JournalfoeringsOpplysninger sak={currentSak} />
           }
           {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
