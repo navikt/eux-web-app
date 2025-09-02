@@ -145,8 +145,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     if(fagsaker && fagsaker.length === 1){
       dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
       onFagsakChange(fagsaker[0]._id!)
+    } else if(chosenFagsakId){
+      onFagsakChange(chosenFagsakId)
     }
-  }, [fagsaker])
+  }, [fagsaker, chosenFagsakId])
 
   return (
     <>
@@ -187,6 +189,20 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             />
             {person &&
               <PersonPanel className='neutral' person={person}/>
+            }
+            {!gettingFagsaker && sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+              <HGrid gap="4" align="end" columns={2}>
+                <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                  {t("el:button-create-x", {x: "fagsak"})}
+                </Button>
+                <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                  <option value={currentYear}>{currentYear}</option>
+                  <option value={currentYear - 1}>{currentYear - 1}</option>
+                  <option value={currentYear - 2}>{currentYear - 2}</option>
+                  <option value={currentYear - 3}>{currentYear - 3}</option>
+                  <option value={currentYear - 4}>{currentYear - 4}</option>
+                </Select>
+              </HGrid>
             }
             <HGrid gap="4" align="center" columns={2}>
               <Select
@@ -230,20 +246,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 </Button>
               }
             </HGrid>
-            {!gettingFagsaker && sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-                <HGrid gap="4" align="end" columns={2}>
-                  <Button variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
-                    {t("el:button-create-x", {x: "fagsak"})}
-                  </Button>
-                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
-                    <option value={currentYear}>{currentYear}</option>
-                    <option value={currentYear - 1}>{currentYear - 1}</option>
-                    <option value={currentYear - 2}>{currentYear - 2}</option>
-                    <option value={currentYear - 3}>{currentYear - 3}</option>
-                    <option value={currentYear - 4}>{currentYear - 4}</option>
-                  </Select>
-                </HGrid>
-            }
             <Button
               variant='primary'
               disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak?.tema && currentFagsak?._id && currentFagsak?.fnr)}
