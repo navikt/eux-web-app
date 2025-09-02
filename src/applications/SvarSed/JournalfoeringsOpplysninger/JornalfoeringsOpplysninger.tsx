@@ -12,6 +12,7 @@ import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
 import {searchPerson} from "../../../actions/person";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 import {updateFagsak} from "../../../actions/svarsed";
+import * as sakActions from "../../../actions/sak";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -25,6 +26,7 @@ interface ChangeTemaFagsakModalSelector {
   creatingFagsak: boolean
   fagsaker: Fagsaker | undefined | null
   fagsakUpdated: boolean | undefined
+  chosenFagsakId: string | undefined
 
   person: PersonInfoPDL | null | undefined
   searchingPerson: boolean
@@ -39,6 +41,7 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   creatingFagsak: state.loading.creatingFagsak,
   fagsaker: state.sak.fagsaker,
   fagsakUpdated: state.svarsed.fagsakUpdated,
+  chosenFagsakId: state.sak.saksId,
 
   person: state.person.person,
   searchingPerson: state.loading.searchingPerson,
@@ -50,7 +53,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, chosenFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -131,13 +134,19 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       dispatch(getFagsaker(sak.fagsak?.fnr, sektor, sak.fagsak?.tema!))
       dispatch(searchPerson(sak.fagsak?.fnr))
     }
+    dispatch(sakActions.setProperty('saksId', ""))
   }
 
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
   }
 
-
+  useEffect(() => {
+    if(fagsaker && fagsaker.length === 1){
+      dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
+      onFagsakChange(fagsaker[0]._id!)
+    }
+  }, [fagsaker])
 
   return (
     <>
@@ -201,7 +210,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   id={namespace + '-nr'}
                   label={t('label:velg-fagsak')}
                   onChange={(e)=> onFagsakChange(e.target.value)}
-                  value={currentFagsak?._id ?? ''}
+                  value={chosenFagsakId ? chosenFagsakId : currentFagsak?._id ?? ''}
                 >
                   <option value=''>
                     {t('label:velg')}

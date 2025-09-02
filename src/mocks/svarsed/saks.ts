@@ -1078,9 +1078,9 @@ export default (saksnummer: string, type: string) => {
         }
       ],
       "fagsak": {
-        "tema": "KON",
+        "tema": "BAR",
         "type": "FAGSAK",
-        "nr": null,
+        "nr": "0331D17",
         "fnr": "28506726605",
         "system": "IT01"
       },
