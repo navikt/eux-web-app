@@ -11,7 +11,7 @@ import Modal from 'components/Modal/Modal'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { IS_DEVELOPMENT, IS_Q } from 'constants/environment'
+import { IS_DEVELOPMENT, IS_Q, IS_Q1_EXPERIMENTAL } from 'constants/environment'
 import { setInterval } from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
@@ -90,7 +90,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   /* Reload under a minute */
   sessionExpiredReload = 1000,
   /* Display session expiration warning under 30 minutes */
-  sessionStatusWarning = 595 * 1000 * 60,
+  sessionStatusWarning = 60 * 1000 * 60,
   /* Automatically try to renew token in background under 30 minutes */
   tokenAutoRenew = 70 * 1000 * 60,
   now
@@ -204,14 +204,6 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
     }
   ]
 
-  if (IS_Q || IS_DEVELOPMENT) {
-    modalButtons.splice(2, 0, {
-      main: false,
-      text: t('app:session-reduce-to-6-min'),
-      onClick: () => dispatch(reduceSessionTime())
-    })
-  }
-
   const sessionButton = (
     <Button variant='tertiary' size='small' onClick={() => setModal(true)}  style={{color: 'red'}}>
       Sesjon utløper om {Math.ceil(calculateDiff(sessionEndsAt) / 1000 / 60)} min
@@ -228,7 +220,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       }}
     />
   )
-  if ( sessionEndsAt !== undefined && sessionStatusWarning !== undefined && calculateDiff(sessionEndsAt) < sessionStatusWarning) {
+  if ( sessionEndsAt !== undefined && sessionStatusWarning !== undefined && calculateDiff(sessionEndsAt) < ( IS_Q1_EXPERIMENTAL ? 595 * 1000 * 60 : sessionStatusWarning)) {
     return (
       <SessionMonitorDiv>
         {modalButton}
