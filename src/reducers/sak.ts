@@ -97,7 +97,10 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
     case types.SAK_CREATE_FAGSAK_DAGPENGER_SUCCESS:
       const fagsak:Fagsak = (action as ActionWithPayload).payload
       let fSaker = _.cloneDeep(state.fagsaker)
-      fSaker?.unshift(fagsak)
+      fSaker?.unshift({
+        ...fagsak,
+        _id: fagsak.nr ? fagsak.nr : "GENERELL_SAK"
+      })
 
       return {
         ...state,
