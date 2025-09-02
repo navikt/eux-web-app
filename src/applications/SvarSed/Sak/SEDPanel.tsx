@@ -1,5 +1,5 @@
 import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
-import {Box, Button, Detail, Heading, HelpText, HStack, Loader, Tag, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Detail, Heading, HelpText, HGrid, HStack, Loader, Spacer, Tag, VStack} from '@navikt/ds-react'
 import {
   clarifyingSed,
   deleteSed,
@@ -16,7 +16,7 @@ import { ReplySed } from 'declarations/sed'
 import {Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -29,6 +29,7 @@ import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromR
 import { saveAs } from 'file-saver'
 import moment from 'moment'
 import classNames from "classnames";
+import {Dd, Dl, Dt} from "../../../components/StyledComponents";
 
 const SedBox = styled(Box)`
   transition: all 0.15s ease-in-out;
@@ -67,6 +68,16 @@ const AttachmentIcon = styled(PaperclipIcon)`
 const MyHelpText = styled(HelpText)`
   & svg {
     width: 0.7em
+  }
+`
+
+const DeviationHelpText = styled(HelpText)`
+  color: var(--a-surface-warning);
+  &:hover > svg {
+    color: var(--a-surface-warning);
+  }
+  &.navds-help-text__button[aria-expanded="true"] > svg {
+    color: var(--a-surface-warning);
   }
 `
 
@@ -263,6 +274,29 @@ const SEDPanel = ({
               {sed.fagsak.tema !== currentFagsak?.tema && <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
               {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr}</Tag>}
               {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag size="xsmall" variant={"warning-moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
+              <DeviationHelpText title={t('journalfoering:avvikende-journalfoering')}>
+                <VStack gap="2">
+                  <Heading size={"xsmall"}>{t('journalfoering:avvikende-journalfoering')}</Heading>
+                  <HStack gap="4">
+
+                    <div>
+                      <BodyLong size={"small"}>
+                        <div>{t('label:person')}:</div>
+                        <div>{t('label:tema')}:</div>
+                        <div>{t('label:fagsak')}:</div>
+                      </BodyLong>
+                    </div>
+                    <div>
+                      <BodyLong size={"small"}>
+                        <div>{sed.fagsak?.fnr ? sed.fagsak?.fnr : ""}</div>
+                        <div>{sed.fagsak?.tema ? t('tema:' + sed.fagsak.tema) : ""}</div>
+                        <div>{sed.fagsak?.nr ? sed.fagsak?.nr : sed.fagsak?.type ? t('journalfoering:' + sed.fagsak?.type) : ""}</div>
+                      </BodyLong>
+                    </div>
+
+                  </HStack>
+                </VStack>
+              </DeviationHelpText>
             </HStack>
           }
           <HStack align="center">
