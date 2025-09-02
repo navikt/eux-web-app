@@ -237,7 +237,7 @@ const SEDPanel = ({
     sed.fagsak?.fnr !== currentFagsak?.fnr ||
     sed.fagsak?.tema !== currentFagsak?.tema ||
     sed.fagsak?.nr !== currentFagsak?.nr)
-  
+
   return (
     <SedBox
       borderWidth="1"
