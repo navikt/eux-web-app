@@ -27,6 +27,7 @@ export interface AppState {
   saksbehandler: Saksbehandler | undefined
   serverinfo: ServerInfo | undefined
   expirationTime: number | undefined
+  sessionEndsAt: number | undefined
 
   navn: string | undefined
   brukernavn: string | undefined
@@ -54,6 +55,7 @@ export const initialAppState: AppState = {
   countryCodes: undefined,
   countryCodeMap: undefined,
   expirationTime: undefined,
+  sessionEndsAt: undefined,
 
   // comes from eessi-kodeverk
   landkoder: undefined,
@@ -232,14 +234,30 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         expirationTime: new Date(new Date().setMinutes(new Date().getMinutes() + action.payload.minutes)).getTime()
       }
 
+    case types.APP_EXPIRATION_TIME_SET:
+      return {
+        ...state,
+        expirationTime: action.payload
+      }
+
+    case types.APP_SESSIONEXPIRATION_SET:
+      return {
+        ...state,
+        sessionEndsAt: action.payload
+      }
+
     case types.APP_UTGAARDATO_SUCCESS: {
-      const now = action.payload.naa ? new Date(action.payload.naa) : new Date()
-      const expirationTime = action.payload.utgaarDato
-        ? new Date(action.payload.utgaarDato)
+      const now = new Date()
+      const expirationTime = action.payload.tokens?.expire_at
+        ? new Date(action.payload.tokens.expire_at)
+        : new Date(new Date().setMinutes(now.getMinutes() + 60))
+      const sessionEndsAt = action.payload.session?.ends_at
+        ? new Date(action.payload.session.ends_at)
         : new Date(new Date().setMinutes(now.getMinutes() + 60))
       return {
         ...state,
-        expirationTime: expirationTime.getTime()
+        expirationTime: expirationTime.getTime(),
+        sessionEndsAt: sessionEndsAt.getTime()
       }
     }
 

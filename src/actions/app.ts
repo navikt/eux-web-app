@@ -53,8 +53,16 @@ export const setFavouriteEnhet = (enhet: Enhet | undefined | null): ActionWithPa
   })
 }
 
+function utlogging()  {
+  fetch(urls.API_UTLOGGING_URL,  {
+    method: "GET"
+  }).catch((error) => {
+    console.error('Failed to log out:', error);
+  });
+}
+
 export const logMeAgain = (name ?: string): ActionWithPayload<LogMeAgainPayload> => {
-  // origin: http://{host:port} pathname: /pdu1, no hash
+  utlogging()
   let redirectUrl = (window.location as any).origin + (window.location as any).pathname
   if (name) {
     redirectUrl += '?name=' + name
@@ -183,4 +191,14 @@ export const reduceSessionTime: ActionCreator<ActionWithPayload> = (): ActionWit
 
 export const resetLoginRedirect: ActionCreator<Action> = (): Action => ({
   type: types.APP_LOGINREDIRECT_RESET
+})
+
+export const setExpirationTime: ActionCreator<ActionWithPayload> = (expirationTime: number): ActionWithPayload => ({
+  type: types.APP_EXPIRATION_TIME_SET,
+  payload: expirationTime
+})
+
+export const setSessionEndsAt: ActionCreator<ActionWithPayload> = (sessionEndsAt: number): ActionWithPayload => ({
+  type: types.APP_SESSIONEXPIRATION_SET,
+  payload: sessionEndsAt
 })
