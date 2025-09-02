@@ -233,8 +233,11 @@ const SEDPanel = ({
 
   const currentFagsak = _.cloneDeep(currentSak.fagsak)
   delete currentFagsak?._id
-  const hasDeviatedFagsak = !(_.isEqual(sed.fagsak, currentFagsak))
-
+  const hasDeviatedFagsak = (
+    sed.fagsak?.fnr !== currentFagsak?.fnr ||
+    sed.fagsak?.tema !== currentFagsak?.tema ||
+    sed.fagsak?.nr !== currentFagsak?.nr)
+  
   return (
     <SedBox
       borderWidth="1"
