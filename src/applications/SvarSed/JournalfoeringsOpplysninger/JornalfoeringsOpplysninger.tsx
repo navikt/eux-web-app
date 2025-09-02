@@ -145,11 +145,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     if(fagsaker && fagsaker.length === 1){
       dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
       onFagsakChange(fagsaker[0]._id!)
-    } else if(chosenFagsakId){
-      onFagsakChange(chosenFagsakId)
     }
-  }, [fagsaker, chosenFagsakId])
-
+  }, [fagsaker])
+  
   return (
     <>
       <Modal ref={ref} header={{ heading: t('label:endre-tema-fagsak') }} width="medium" onClose={onModalClose}>
