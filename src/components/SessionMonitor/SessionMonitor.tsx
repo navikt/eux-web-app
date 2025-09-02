@@ -1,5 +1,5 @@
 import * as urls from 'constants/urls'
-import {logMeAgain, reduceSessionTime, setExpirationTime, setSessionEndsAt} from 'actions/app'
+import { logMeAgain, reduceSessionTime, setExpirationTime, setSessionEndsAt } from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
 import PT from 'prop-types'
@@ -32,7 +32,6 @@ export interface SessionMonitorProps {
 export interface SessionMonitorSelector {
   pdu1: PDU1 | null | undefined
   replySed: ReplySed | null | undefined
-  state: State | null | undefined
 }
 
 export interface WonderwallResponse {
@@ -56,11 +55,10 @@ export interface WonderwallResponse {
 
 const mapState = (state: State): SessionMonitorSelector => ({
   pdu1: state.pdu1.pdu1,
-  replySed: state.svarsed.replySed,
-  state: state
+  replySed: state.svarsed.replySed
 })
 
-function extractTime(response: Response, wonderwallResponse: WonderwallResponse, state: State | null | undefined) {
+function extractTime(response: Response, wonderwallResponse: WonderwallResponse) {
   let timeTuple: [number, number];
   timeTuple = [-1, -1]
   if (response.ok) {
@@ -71,13 +69,6 @@ function extractTime(response: Response, wonderwallResponse: WonderwallResponse,
       const sessionEndsAt: number = (session) ? new Date(session.ends_at).getTime()  : -1
 
       timeTuple = [expirationTime, sessionEndsAt];
-/*
-      if (state && state.app) {
-        state.app.expirationTime = expirationTime
-        state.app.sessionEndsAt = sessionEndsAt
-      }
-*/
-
     } else {
       console.log('No content')
     }
@@ -105,7 +96,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   now
 }: SessionMonitorProps): JSX.Element => {
   const [modal, setModal] = useState<boolean>(false)
-  const { pdu1, replySed, state }: SessionMonitorSelector = useAppSelector(mapState)
+  const { pdu1, replySed }: SessionMonitorSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -128,7 +119,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "GET"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractTime(response, wonderwallResponse, state)
+    return extractTime(response, wonderwallResponse)
   }
 
   async function refreshWonderwallTimeout() {
@@ -136,7 +127,7 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
       method: "POST"
     })
     const wonderwallResponse: WonderwallResponse = await response.json()
-    return extractTime(response, wonderwallResponse, state);
+    return extractTime(response, wonderwallResponse);
   }
 
   async function checkTimeout () {

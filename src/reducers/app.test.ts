@@ -99,8 +99,6 @@ describe('reducers/app', () => {
     })
   })
 
-
-
   it('APP_LOGMEAGAIN_SUCCESS', () => {
     const mockPayload = {
       Location: 'http://mockurl.no'
