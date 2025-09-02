@@ -146,6 +146,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
       onFagsakChange(fagsaker[0]._id!)
     }
+
+    if(sektor === "UB" && fagsaker && fagsaker.length > 1 && chosenFagsakId){
+      onFagsakChange(chosenFagsakId)
+    }
   }, [fagsaker])
   
   return (
