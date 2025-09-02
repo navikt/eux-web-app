@@ -112,6 +112,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onFagsakChange = (value: string) => {
     const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
+    console.log(fSak)
+    console.log(fagsaker)
     setCurrentFagsak(fSak)
   }
 
@@ -151,7 +153,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       onFagsakChange(chosenFagsakId)
     }
   }, [fagsaker])
-  
+
   return (
     <>
       <Modal ref={ref} header={{ heading: t('label:endre-tema-fagsak') }} width="medium" onClose={onModalClose}>
