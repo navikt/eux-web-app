@@ -81,17 +81,17 @@ const DeviationHelpText = styled(HelpText)`
   }
 
   &[aria-expanded="true"] ~ .navds-popover .navds-popover__content {
-    background-color: var(--a-surface-warning-moderate) !important;
+    background-color: var(--a-surface-warning-moderate);
+    border-radius: var(--a-border-radius-large);
   }
 
   &[aria-expanded="true"] ~ .navds-popover .navds-popover__arrow {
-    background-color: var(--a-surface-warning-moderate) !important;
-    border-color: var(--a-surface-warning-moderate) !important;
+    background-color: var(--a-surface-warning-moderate);
+    border-color: var(--a-border-warning);
   }
 
-  /* Target the popover container for border styling */
   &[aria-expanded="true"] ~ .navds-popover {
-    border-color: var(--a-surface-warning-moderate) !important;
+    border-color: var(--a-border-warning)
   }
 `
 
