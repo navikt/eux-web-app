@@ -57,6 +57,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const namespace = 'changetemafagsak'
   let sektor = sak.sakType.split("_")[0]
@@ -130,6 +131,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
 
   const onModalClose = () => {
+    setIsModalOpen(false)
     setCurrentFagsak(sak.fagsak)
     if(sak.fagsak?.fnr){
       dispatch(getFagsaker(sak.fagsak?.fnr, sektor, sak.fagsak?.tema!))
@@ -160,7 +162,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
           <VStack gap="4" padding="4">
             <PersonSearch
               label={t('label:person')}
-              key={`${namespace}-fnr-${currentFagsak?.fnr || 'empty'}`}
+              key={`${namespace}-fnr-${currentFagsak?.fnr || 'empty'}-${isModalOpen ? 'open' : 'closed'}`}
               error={undefined}
               alertMessage={alertMessage}
               alertType={alertType}
@@ -293,7 +295,10 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
           </Dl>
           <Button
             variant='secondary'
-            onClick={() => ref.current?.showModal()}
+            onClick={() => {
+              setIsModalOpen(true)
+              ref.current?.showModal()
+            }}
           >
             {t('el:button-change-tema-fagsak')}
           </Button>
