@@ -29,7 +29,7 @@ import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromR
 import { saveAs } from 'file-saver'
 import moment from 'moment'
 import classNames from "classnames";
-import {Dd, Dl, Dt} from "../../../components/StyledComponents";
+
 
 const SedBox = styled(Box)`
   transition: all 0.15s ease-in-out;
@@ -78,6 +78,20 @@ const DeviationHelpText = styled(HelpText)`
   }
   &.navds-help-text__button[aria-expanded="true"] > svg {
     color: var(--a-surface-warning);
+  }
+
+  &[aria-expanded="true"] ~ .navds-popover .navds-popover__content {
+    background-color: var(--a-surface-warning-moderate) !important;
+  }
+
+  &[aria-expanded="true"] ~ .navds-popover .navds-popover__arrow {
+    background-color: var(--a-surface-warning-moderate) !important;
+    border-color: var(--a-surface-warning-moderate) !important;
+  }
+
+  /* Target the popover container for border styling */
+  &[aria-expanded="true"] ~ .navds-popover {
+    border-color: var(--a-surface-warning-moderate) !important;
   }
 `
 
