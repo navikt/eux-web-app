@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Button, Heading, HGrid, HStack, Loader, Modal, Select, VStack} from '@navikt/ds-react'
+import {Box, Button, Heading, HGrid, Loader, Modal, Select, VStack} from '@navikt/ds-react'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
 import {Fagsak, Fagsaker, Kodemaps, Kodeverk, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
@@ -160,7 +160,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
           <VStack gap="4" padding="4">
             <PersonSearch
               label={t('label:person')}
-              key={namespace + '-fnr'}
+              key={`${namespace}-fnr-${currentFagsak?.fnr || 'empty'}`}
               error={undefined}
               alertMessage={alertMessage}
               alertType={alertType}
