@@ -39,14 +39,24 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   label
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [fnr, setFnr] = useState<string>(initialFnr ?? value)
+  const [fnr, setFnr] = useState<string>(value ?? initialFnr)
   const [_person, setPerson] = useState<PersonInfoPDL | PersonMedFamilie | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
 
+  // Reset fnr when value prop changes or when component mounts
   useEffect(() => {
+    console.log("Setting fnr from value prop:", value);
     setFnr(value ?? initialFnr)
-  }, [value])
+  }, [value, initialFnr])
+
+  // Additional effect to ensure field is always reset to the value prop on mount
+  useEffect(() => {
+    console.log("Setting initial fnr from value prop on mount:", value);
+    if (value !== undefined && value !== null) {
+      setFnr(value)
+    }
+  }, [])
 
   const isPersonValid = useCallback((person: PersonInfoPDL | PersonMedFamilie) =>
     person?.fnr !== undefined,
