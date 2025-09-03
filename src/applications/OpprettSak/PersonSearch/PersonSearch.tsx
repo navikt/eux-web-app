@@ -46,13 +46,11 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
 
   // Reset fnr when value prop changes or when component mounts
   useEffect(() => {
-    console.log("Setting fnr from value prop:", value);
     setFnr(value ?? initialFnr)
   }, [value, initialFnr])
 
   // Additional effect to ensure field is always reset to the value prop on mount
   useEffect(() => {
-    console.log("Setting initial fnr from value prop on mount:", value);
     if (value !== undefined && value !== null) {
       setFnr(value)
     }
