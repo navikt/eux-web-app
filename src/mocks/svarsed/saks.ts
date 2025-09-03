@@ -423,11 +423,11 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       fagsak: {
-        "tema": "KON",
+        "tema": "DAG",
         "type": "FAGSAK",
-        "nr": "1/2023",
-        "system": "AO11",
-        "fnr": "12345678901"
+        "nr": "0331D17",
+        "fnr": "28506726605",
+        "system": "IT01"
       },
       sedListe: [
         {

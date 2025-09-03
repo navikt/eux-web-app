@@ -26,7 +26,7 @@ interface ChangeTemaFagsakModalSelector {
   creatingFagsak: boolean
   fagsaker: Fagsaker | undefined | null
   fagsakUpdated: boolean | undefined
-  chosenFagsakId: string | undefined
+  createdFagsakId: string | undefined
 
   person: PersonInfoPDL | null | undefined
   searchingPerson: boolean
@@ -41,7 +41,7 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   creatingFagsak: state.loading.creatingFagsak,
   fagsaker: state.sak.fagsaker,
   fagsakUpdated: state.svarsed.fagsakUpdated,
-  chosenFagsakId: state.sak.saksId,
+  createdFagsakId: state.sak.saksId,
 
   person: state.person.person,
   searchingPerson: state.loading.searchingPerson,
@@ -53,7 +53,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, chosenFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
 
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
@@ -111,6 +111,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   }
 
   const onFagsakChange = (value: string) => {
+    if(!value || value === "") return
     const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
     setCurrentFagsak(fSak)
   }
@@ -147,8 +148,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       onFagsakChange(fagsaker[0]._id!)
     }
 
-    if(sektor === "UB" && fagsaker && fagsaker.length > 1 && chosenFagsakId){
-      onFagsakChange(chosenFagsakId)
+    if(sektor === "UB" && fagsaker && fagsaker.length > 1 && createdFagsakId){
+      onFagsakChange(createdFagsakId)
     }
   }, [fagsaker])
 
@@ -228,7 +229,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                   id={namespace + '-nr'}
                   label={t('label:velg-fagsak')}
                   onChange={(e)=> onFagsakChange(e.target.value)}
-                  value={chosenFagsakId ? chosenFagsakId : currentFagsak?._id ?? ''}
+                  value={currentFagsak?._id ?? ''}
                 >
                   <option value=''>
                     {t('label:velg')}

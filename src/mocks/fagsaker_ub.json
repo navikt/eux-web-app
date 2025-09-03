@@ -4,6 +4,7 @@
     "tema": "DAG",
     "system": "Arena",
     "nr": "0331D17",
+    "fnr": "28506726605",
     "opprettetTidspunkt": "2019-08-30T15:05:53"
   },
   {
@@ -11,6 +12,7 @@
     "tema": "DAG",
     "system": "Gosys",
     "nr": "0441D17",
+    "fnr": "28506726605",
     "opprettetTidspunkt": "2020-11-30T14:02:53"
   },
   {
@@ -18,12 +20,14 @@
     "tema": "GEN",
     "system": "Gosys",
     "nr": "0441G17",
+    "fnr": "28506726605",
     "opprettetTidspunkt": "2020-11-30T14:02:53"
   },
   {
     "type": "GENERELL_SAK",
     "tema": "GEN",
     "system": "Gosys",
+    "fnr": "28506726605",
     "opprettetTidspunkt": "2020-11-30T14:02:53"
   }
 ]
