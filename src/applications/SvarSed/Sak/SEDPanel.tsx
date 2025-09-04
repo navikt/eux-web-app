@@ -76,6 +76,18 @@ const DeviationHelpText = styled(HelpText)`
   &:hover > svg {
     color: var(--a-surface-warning);
   }
+
+  &:focus-visible > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &.navds-help-text__button:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 1px var(--a-surface-warning),
+    inset 0 0 0 1px var(--a-surface-warning);
+  }
+
+
   &.navds-help-text__button[aria-expanded="true"] > svg {
     color: var(--a-surface-warning);
   }
