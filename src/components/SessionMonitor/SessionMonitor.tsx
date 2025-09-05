@@ -89,10 +89,10 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   millisecondsForWarning = 5 * 1000 * 60,
   /* Reload under a minute */
   sessionExpiredReload = 1000,
-  /* Display session expiration warning under 30 minutes */
+  /* Display session expiration warning under 60 minutes */
   sessionStatusWarning = 60 * 1000 * 60,
   /* Automatically try to renew token in background under 30 minutes */
-  tokenAutoRenew = 70 * 1000 * 60,
+  tokenAutoRenew = 30 * 1000 * 60,
   now
 }: SessionMonitorProps): JSX.Element => {
   const [modal, setModal] = useState<boolean>(false)
