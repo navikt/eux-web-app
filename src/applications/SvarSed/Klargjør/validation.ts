@@ -1,6 +1,7 @@
 import { X012Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
-import { checkIfNotEmpty } from 'utils/validation'
+import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import _ from 'lodash'
 
 export interface ValidationKlargjørProps {
   replySed: X012Sed
@@ -25,12 +26,32 @@ export const validateKlargjør = (
     personName
   }))
 
+  if (!_.isEmpty(klargjoerInfoItem?.del.trim())) {
+    hasErrors.push(checkLength(v, {
+      needle: klargjoerInfoItem?.del,
+      max: 65,
+      id: namespace + '-del',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
   hasErrors.push(checkIfNotEmpty(v, {
     needle: klargjoerInfoItem?.punkt,
     id: namespace + '-punkt',
     message: 'validation:noPunkt',
     personName
   }))
+
+  if (!_.isEmpty(klargjoerInfoItem?.punkt.trim())) {
+    hasErrors.push(checkLength(v, {
+      needle: klargjoerInfoItem?.punkt,
+      max: 65,
+      id: namespace + '-punkt',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
 
   hasErrors.push(checkIfNotEmpty(v, {
     needle: klargjoerInfoItem?.begrunnelseType,
