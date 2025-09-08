@@ -107,7 +107,10 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_CREATE_FAGSAK_SUCCESS:
       const fagsak:Fagsak = (action as ActionWithPayload).payload
       let fSaker = _.cloneDeep(state.fagsaker)
-      fSaker?.unshift(fagsak)
+      fSaker?.unshift({
+        ...fagsak,
+        _id: fagsak.nr ? fagsak.nr : "GENERELL_SAK"
+      })
       return {
         ...state,
         fagsaker: fSaker,
