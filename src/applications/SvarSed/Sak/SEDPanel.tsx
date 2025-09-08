@@ -1,6 +1,5 @@
 import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
-import {Button, Detail, Heading, HelpText, HStack, Loader, Panel} from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv, PileCenterDiv, PileDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Detail, Heading, HelpText, HGrid, HStack, Loader, Spacer, Tag, VStack} from '@navikt/ds-react'
 import {
   clarifyingSed,
   deleteSed,
@@ -17,7 +16,7 @@ import { ReplySed } from 'declarations/sed'
 import {Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
 import { buttonLogger } from 'metrics/loggers'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -29,16 +28,21 @@ import {ModalContent} from "../../../declarations/components";
 import AttachmentsFromRinaTable from "../../Vedlegg/Attachments/AttachmentsFromRinaTable";
 import { saveAs } from 'file-saver'
 import moment from 'moment'
+import classNames from "classnames";
 
-const MyPanel = styled(Panel)`
+
+const SedBox = styled(Box)`
   transition: all 0.15s ease-in-out;
+  &.deviation {
+    border-left: 5px solid var(--a-surface-warning);
+  }
   &:hover {
     color: var(--a-text-default) !important;
     background-color: var(--a-surface-action-subtle-hover) !important;
   }
 `
 
-const IconDiv = styled(PileCenterDiv)`
+const IconDiv = styled(VStack)`
   align-items: center;
   margin-left: -1rem;
   margin-top: -1rem;
@@ -47,6 +51,11 @@ const IconDiv = styled(PileCenterDiv)`
   background-color: var(--a-surface-subtle);
   padding: 1rem;
 `
+
+const IconSpacerDiv = styled.div`
+  margin-bottom: 0.35rem;
+`
+
 const AttachmentButton = styled(Button)`
   padding:0
 `
@@ -59,6 +68,42 @@ const AttachmentIcon = styled(PaperclipIcon)`
 const MyHelpText = styled(HelpText)`
   & svg {
     width: 0.7em
+  }
+`
+
+const DeviationHelpText = styled(HelpText)`
+  color: var(--a-surface-warning);
+  &:hover > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &:focus-visible > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &.navds-help-text__button:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 1px var(--a-surface-warning),
+    inset 0 0 0 1px var(--a-surface-warning);
+  }
+
+
+  &.navds-help-text__button[aria-expanded="true"] > svg {
+    color: var(--a-surface-warning);
+  }
+
+  &[aria-expanded="true"] ~ .navds-popover .navds-popover__content {
+    background-color: var(--a-surface-warning-moderate);
+    border-radius: var(--a-border-radius-large);
+  }
+
+  &[aria-expanded="true"] ~ .navds-popover .navds-popover__arrow {
+    background-color: var(--a-surface-warning-moderate);
+    border-color: var(--a-border-warning);
+  }
+
+  &[aria-expanded="true"] ~ .navds-popover {
+    border-color: var(--a-border-warning)
   }
 `
 
@@ -199,7 +244,7 @@ const SEDPanel = ({
     })
   }
 
-  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed
+  const hasIkkeJournalfoerteSed = !!currentSak.ikkeJournalfoerteSed?.length
   const showEditButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && sed.status === 'new' && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showUpdateButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Update') >= 0) && (sed.status === 'sent' || sed.status === 'active') && ALLOWED_SED_EDIT_AND_UPDATE.includes(sed.sedType)
   const showDeleteButton = (sed.sedHandlinger && sed.sedHandlinger?.indexOf('Delete') >= 0) && sed.status === 'new' && ALLOWED_SED_HANDLINGER.includes("Delete")
@@ -212,22 +257,38 @@ const SEDPanel = ({
   const hasSedHandlinger = sed.sedHandlinger && sed.sedHandlinger.length > 0
   const sedHandlingerRINA = sed.sedHandlinger?.filter((h) => !ALLOWED_SED_HANDLINGER.includes(h))
 
+  const currentFagsak = _.cloneDeep(currentSak.fagsak)
+  delete currentFagsak?._id
+  const hasDeviatedFagsak = (
+    sed.fagsak?.fnr !== currentFagsak?.fnr ||
+    sed.fagsak?.tema !== currentFagsak?.tema ||
+    sed.fagsak?.nr !== currentFagsak?.nr)
+
   return (
-    <MyPanel border>
+    <SedBox
+      borderWidth="1"
+      borderRadius="small"
+      borderColor="border-default"
+      padding="4"
+      background="surface-default"
+      className={classNames({
+        deviation: sed.fagsak && hasDeviatedFagsak
+      })}
+    >
       <Modal
         open={!_.isNil(attachmentModal)}
         modal={attachmentModal}
         onModalClose={() => setAttachmentModal(undefined)}
       />
-      <FlexDiv>
-        <IconDiv>
+      <HStack gap="4" wrap={false}>
+        <IconDiv align="center">
           {sed.status === 'received' && <DownloadIcon color='var(--a-surface-action)' width='32' height='32' />}
           {sed.status === 'sent' && <PaperplaneIcon color='green' width='32' height='32' />}
           {sed.status === 'new' && <StarIcon color='orange' width='32' height='32' />}
           {sed.status === 'active' && <PencilIcon width='32' height='32' />}
           {sed.status === 'cancelled' && <XMarkIcon color='red' width='32' height='32' />}
           {!sed.status && <QuestionmarkDiamondIcon color='black' width='32' height='32' />}
-          <VerticalSeparatorDiv size='0.35' />
+          <IconSpacerDiv/>
           <Detail>
             {t('app:status-received-' + (sed.status?.toLowerCase() ?? 'unknown'))}
           </Detail>
@@ -235,8 +296,38 @@ const SEDPanel = ({
             {sed.sistEndretDato}
           </Detail>
         </IconDiv>
-        <HorizontalSeparatorDiv />
-        <PileDiv>
+        <VStack gap="2">
+          {hasDeviatedFagsak && sed.fagsak &&
+            <HStack gap="1">
+              {sed.fagsak.fnr !== currentFagsak?.fnr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak.fnr}</Tag>}
+              {sed.fagsak.tema !== currentFagsak?.tema && <Tag size="xsmall" variant={"warning-moderate"}>{t('tema:' + sed.fagsak.tema)}</Tag>}
+              {sed.fagsak?.nr && sed.fagsak?.nr !== currentFagsak?.nr && <Tag size="xsmall" variant={"warning-moderate"}>{sed.fagsak?.nr}</Tag>}
+              {!sed.fagsak?.nr && sed.fagsak?.type && sed.fagsak?.type !== currentFagsak?.type && <Tag size="xsmall" variant={"warning-moderate"}>{t('journalfoering:' + sed.fagsak?.type)}</Tag>}
+              <DeviationHelpText title={t('journalfoering:avvikende-journalfoering')}>
+                <VStack gap="2">
+                  <Heading size={"xsmall"}>{t('journalfoering:avvikende-journalfoering')}</Heading>
+                  <HStack gap="4">
+
+                    <div>
+                      <BodyLong size={"small"}>
+                        <div>{t('label:person')}:</div>
+                        <div>{t('label:tema')}:</div>
+                        <div>{t('label:fagsak')}:</div>
+                      </BodyLong>
+                    </div>
+                    <div>
+                      <BodyLong size={"small"}>
+                        <div>{sed.fagsak?.fnr ? sed.fagsak?.fnr : ""}</div>
+                        <div>{sed.fagsak?.tema ? t('tema:' + sed.fagsak.tema) : ""}</div>
+                        <div>{sed.fagsak?.nr ? sed.fagsak?.nr : sed.fagsak?.type ? t('journalfoering:' + sed.fagsak?.type) : ""}</div>
+                      </BodyLong>
+                    </div>
+
+                  </HStack>
+                </VStack>
+              </DeviationHelpText>
+            </HStack>
+          }
           <HStack align="center">
             <Heading size='small'>
               {sed.sedType} - {sed.sedTittel}
@@ -279,8 +370,8 @@ const SEDPanel = ({
               </MyHelpText>
             }
           </HStack>
-          <VerticalSeparatorDiv size='0.5' />
-          <FlexDiv>
+
+          <HStack gap="2">
             {showEditButton && (
               <>
                 <Button
@@ -303,7 +394,6 @@ const SEDPanel = ({
                       )
                     : t('label:edit-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showUpdateButton && (
@@ -328,7 +418,6 @@ const SEDPanel = ({
                       )
                     : t('label:oppdater-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showDeleteButton && (
@@ -353,7 +442,6 @@ const SEDPanel = ({
                     )
                     : t('label:slett-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showInvalidateButton && (
@@ -378,7 +466,6 @@ const SEDPanel = ({
                       )
                     : t('label:invalidate-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showRejectButton && (
@@ -403,7 +490,6 @@ const SEDPanel = ({
                       )
                     : t('label:reject-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showClarifyButton && (
@@ -428,7 +514,6 @@ const SEDPanel = ({
                       )
                     : t('label:klarkjør-sed')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showRemindButton && (
@@ -453,14 +538,13 @@ const SEDPanel = ({
                       )
                     : t('label:svar-på-påminnelse')}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
             {showReplyToSedButton && (
               <>
                 <Button
                   variant='primary'
-                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length || currentSak.ikkeJournalfoerteSedListFailed}
+                  disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length}
                   data-amplitude='svarsed.selection.replysed'
                   title={!!currentSak.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
@@ -482,13 +566,12 @@ const SEDPanel = ({
                       sedtype: sed.svarsedType
                     })}
                 </Button>
-                <HorizontalSeparatorDiv size='0.5' />
               </>
             )}
-          </FlexDiv>
-        </PileDiv>
-      </FlexDiv>
-    </MyPanel>
+          </HStack>
+        </VStack>
+      </HStack>
+    </SedBox>
   )
 }
 

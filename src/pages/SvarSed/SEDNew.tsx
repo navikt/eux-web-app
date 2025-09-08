@@ -313,12 +313,16 @@ const SEDNew = (): JSX.Element => {
     const annenpersonInfo = cloneDeep(annenpersonUtland)
     delete annenpersonInfo?.__rolle
 
+    const fagsak = fagsaker!.find((f) => f._id === valgtSaksId)
+    const fagsakCopy = cloneDeep(fagsak)
+    delete fagsakCopy?._id
+
     const payload = {
       buctype: valgtBucType,
       sedtype: valgtSedType,
       mottakerId: valgtInstitusjon,
       mottakerlandkode: valgtLandkode,
-      fagsak: fagsaker!.find((f) => f.id === valgtSaksId),
+      fagsak: fagsakCopy,
       ...(valgtUnit && {enhetNr: valgtUnit.enhetNr}),
 
       bruker: {
@@ -484,7 +488,7 @@ const SEDNew = (): JSX.Element => {
         sakUrl: opprettetSak.sakUrl,
         sakType: valgtBucType,
         sakTittel: _.find(_buctyper, s => s.kode === valgtBucType)?.term as string,
-        erSakseier: "ja",
+        erSakseier: true,
         motpart: [_.find(institusjoner, i => i.institusjonsID === valgtInstitusjon)?.navn as string]
       } as Sak
     }))
@@ -518,7 +522,7 @@ const SEDNew = (): JSX.Element => {
 
   useEffect(() => {
     if(fagsaker && fagsaker.length === 1){
-      dispatch(sakActions.setProperty('saksId', fagsaker[0].id))
+      dispatch(sakActions.setProperty('saksId', fagsaker[0]._id))
     }
   }, [fagsaker])
 
@@ -809,8 +813,8 @@ const SEDNew = (): JSX.Element => {
                     </option>
                     {fagsaker &&
                       fagsaker.map((f: Fagsak) => (
-                        <option value={f.id} key={f.id}>
-                          {f.nr || f.id}
+                        <option value={f._id} key={f._id}>
+                          {f.nr || "GENERELL SAK"}  
                         </option>
                       ))
                     }

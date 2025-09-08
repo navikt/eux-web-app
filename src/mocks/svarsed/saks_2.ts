@@ -16,7 +16,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: 'abvcdefghijklm',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'ja',
+      erSakseier: true,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -36,7 +36,6 @@ export default (saksnummer: string, type: string) => {
         }
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -169,7 +168,7 @@ export default (saksnummer: string, type: string) => {
       sakId: '1166593',
       sakUrl: 'http://foo.com',
       sistEndretDato: '2020-01-01',
-      erSakseier: 'nei',
+      erSakseier: false,
       navinstitusjon: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -186,7 +185,6 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -246,7 +244,7 @@ export default (saksnummer: string, type: string) => {
       internasjonalSakId: "2663a13d3fa443ca8970be821c7ba2cc",
       sakUrl: 'https://rina-ss3-q.adeo.no/portal/#/caseManagement/398793?rightView=filtering',
       sistEndretDato: '2021-04-07',
-      erSakseier: 'ja',
+      erSakseier: true,
       sakseier: {
         id: "NO:NAVAT07",
         navn: "NAV ACC 07"
@@ -267,7 +265,6 @@ export default (saksnummer: string, type: string) => {
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -386,9 +383,8 @@ export default (saksnummer: string, type: string) => {
       sakshandlinger: [
         'H001', 'X005', 'X007', 'X009', 'X012', 'Close_Case'
       ],
-      erSakseier: 'nei',
+      erSakseier: false,
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",
@@ -419,10 +415,9 @@ export default (saksnummer: string, type: string) => {
       "sakType": "H_BUC_01",
       "sakId": "1442979",
       "internasjonalSakId": "2663a13d3fa443ca8970be821c7ba2cc",
-      "erSakseier": "nei",
+      "erSakseier": false,
       "sakUrl": "https://rina-ss1-q.adeo.no/portal_new/case-management/1442979",
       fagsak: {
-        "id": "140282517",
         "tema": null,
         "type": "FAGSAK",
         "nr": "1/2023",

@@ -26,8 +26,7 @@ import { useNavigate } from 'react-router-dom'
 import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
-import {Alert} from "@navikt/ds-react";
-import {useTranslation} from "react-i18next";
+import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -41,6 +40,7 @@ export const MyRadioPanelGroup = styled(RadioPanelGroup)`
 interface SEDViewSelector {
   currentSak: Sak | undefined
   deletedSed: Boolean | undefined | null
+  fagsakUpdated: boolean | undefined
   queryingSaks: boolean
   refreshingSaks: boolean
 }
@@ -48,15 +48,15 @@ interface SEDViewSelector {
 const mapState = (state: State) => ({
   currentSak: state.svarsed.currentSak,
   deletedSed: state.svarsed.deletedSed,
+  fagsakUpdated: state.svarsed.fagsakUpdated,
   queryingSaks: state.loading.queryingSaks,
   refreshingSaks: state.loading.refreshingSaks
 })
 
 const SEDView = (): JSX.Element => {
-  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, deletedSed,queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -111,11 +111,27 @@ const SEDView = (): JSX.Element => {
   }, [deletedSed])
 
 
+  useEffect(() => {
+    let controller = new AbortController();
+    const signal = controller.signal;
+
+    if (fagsakUpdated && currentSak) {
+      dispatch(querySaks(currentSak?.sakId, 'refresh', false, signal))
+    }
+
+    return () => {
+      if(controller){
+        controller.abort();
+      }
+    }
+  }, [fagsakUpdated])
+
+
 
   const arrayToTree = (arr:any, parent = undefined) =>{
     let newArr = []
     if(arr){
-      newArr = arr.filter((item:any) => item.sedIdParent === parent)
+      newArr = arr.filter((item:any) => item.sedIdParent == parent)
         .map((child:any) => ({ ...child, children: arrayToTree(arr,
             child.sedId) }));
     }
@@ -169,21 +185,17 @@ const SEDView = (): JSX.Element => {
         </Content>
         <Content style={{ flex: 2 }}>
           <Saksopplysninger sak={currentSak} />
+          <VerticalSeparatorDiv />
+          {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
+            <JournalfoeringsOpplysninger sak={currentSak} />
+          }
           {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
             <>
               <VerticalSeparatorDiv />
               <IkkeJournalfoerteSed sak={currentSak}/>
             </>
           }
-          {currentSak.ikkeJournalfoerteSedListFailed &&
-            <>
-              <VerticalSeparatorDiv />
-              <Alert variant="error">
-                {t('journalfoering:kunne-ikke-hente-liste')}
-              </Alert>
-            </>
-          }
-          {currentSak.sedUnderJournalfoeringEllerUkjentStatus && !currentSak.ikkeJournalfoerteSedListFailed &&
+          {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
             <>
               <VerticalSeparatorDiv />
               <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>

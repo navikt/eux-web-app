@@ -84,7 +84,12 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_FAGSAKER_SUCCESS:
       return {
         ...state,
-        fagsaker: (action as ActionWithPayload).payload
+        fagsaker: (action as ActionWithPayload).payload.map((f: Fagsak) => {
+          return {
+            ...f,
+            _id: f.nr ? f.nr : "GENERELL_SAK",
+          }
+        })
       }
 
     case types.PDU1_FAGSAKER_FAILURE:
@@ -102,11 +107,14 @@ const pdu1Reducer = (state: Pdu1State = initialPdu1State, action: AnyAction): Pd
     case types.PDU1_CREATE_FAGSAK_SUCCESS:
       const fagsak:Fagsak = (action as ActionWithPayload).payload
       let fSaker = _.cloneDeep(state.fagsaker)
-      fSaker?.unshift(fagsak)
+      fSaker?.unshift({
+        ...fagsak,
+        _id: fagsak.nr ? fagsak.nr : "GENERELL_SAK"
+      })
       return {
         ...state,
         fagsaker: fSaker,
-        createdFagsak: fagsak.id
+        createdFagsak: fagsak.nr ? fagsak.nr : "GENERELL_SAK"
       }
 
     case types.PDU1_CREATE_FAGSAK_FAILURE:

@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "10.4.2",
+  "version": "10.5.0-TEN-1210-ENDRE-TEMA-FAGSAK",
   "private": true,
   "type": "module",
   "scripts": {
@@ -78,7 +78,8 @@
     "vite": "^6.2.1",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",
-    "winston": "^3.8.1"
+    "winston": "^3.8.1",
+    "worker-timers": "^8.0.23"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -216,6 +217,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@10.4.2",
+  "_id": "neessi@10.5.0-TEN-1210-ENDRE-TEMA-FAGSAK",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

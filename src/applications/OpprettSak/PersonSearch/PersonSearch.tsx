@@ -19,6 +19,7 @@ export interface PersonSearchProps {
   onSearchPerformed: (fnr: any) => void
   person?: PersonInfoPDL | PersonMedFamilie | null | undefined
   value: string | undefined
+  label?: string
 }
 
 const PersonSearch: React.FC<PersonSearchProps> = ({
@@ -34,17 +35,26 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   onPersonFound,
   onSearchPerformed,
   person,
-  value
+  value,
+  label
 }: PersonSearchProps): JSX.Element => {
   const { t } = useTranslation()
-  const [fnr, setFnr] = useState<string>(initialFnr ?? value)
+  const [fnr, setFnr] = useState<string>(value ?? initialFnr)
   const [_person, setPerson] = useState<PersonInfoPDL | PersonMedFamilie | null | undefined>(undefined)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const namespace = parentNamespace + '-personSearch'
 
+  // Reset fnr when value prop changes or when component mounts
   useEffect(() => {
     setFnr(value ?? initialFnr)
-  }, [value])
+  }, [value, initialFnr])
+
+  // Additional effect to ensure field is always reset to the value prop on mount
+  useEffect(() => {
+    if (value !== undefined && value !== null) {
+      setFnr(value)
+    }
+  }, [])
 
   const isPersonValid = useCallback((person: PersonInfoPDL | PersonMedFamilie) =>
     person?.fnr !== undefined,
@@ -89,7 +99,7 @@ const PersonSearch: React.FC<PersonSearchProps> = ({
   return (
     <VStack gap="1">
       <Search
-        label={t('label:søker')}
+        label={label ? label : t('label:søker')}
         /* error={error ?? localValidation} */
         data-testid={id ?? namespace + '-saksnummerOrFnr'}
         id={id ?? namespace + '-saksnummerOrFnr'}

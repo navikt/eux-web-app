@@ -5,7 +5,7 @@ import {JaNei, ReplySed, Statsborgerskap} from 'declarations/sed'
 import {Context, Item} from "@navikt/tabell";
 
 export type StorageTypes = PDU1 | ReplySed
-export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants'
+export type SedAction = 'X008' | 'X010' | 'X011' | 'X012' | 'U002' | 'U004' | 'U017' | 'F002' | 'H002' | 'Read' | 'Update' | 'Delete' | 'Send' | 'ReadParticipants' | 'Participants_Send'
 
 export interface ArbeidsperiodeFraAA {
   fraDato?: string
@@ -66,16 +66,17 @@ export interface Sed {
   sedType: string
   sedId: string
   sedUrl ?: string
-  sedIdParent?: string
+  sedIdParent?: string | null
   status: string
   sistEndretDato: string
-  svarsedType?: string
-  svarsedId?: string
+  svarsedType?: string | null
+  svarsedId?: string | null
   svarsedDisplay?: string
   sedHandlinger?: Array<SedAction>
   vedlegg?: Array<Attachment>
   children ?: Array<Sed>,
   manglerInformasjonOmEktefelleEllerAnnenPerson? : boolean
+  fagsak?: Fagsak | null
 }
 
 export interface Attachment {
@@ -161,7 +162,6 @@ export interface PersonMedFamilie extends PersonInfoPDL {
 }
 
 export interface Fagsak {
-  id: string
   aktoerId?: string | null | undefined
   tema?: string | null | undefined
   type?: string | null | undefined
@@ -169,6 +169,7 @@ export interface Fagsak {
   system?: string | null | undefined
   fnr?: string | null | undefined
   opprettetTidspunkt?: string | null | undefined
+  _id?: string
 }
 
 export interface JournalfoeringLogg {
@@ -255,7 +256,7 @@ export interface Sak {
   kjoenn: string
   fnr?: string
   adressebeskyttelse?: string
-  erSakseier? : JaNei
+  erSakseier? : boolean
   sakseier?: NavInstitusjon
   sakType: string
   sakTittel: string
@@ -269,11 +270,11 @@ export interface Sak {
   sistEndretDato: string
   sakshandlinger?: Array<string>
   sensitiv?: boolean
-  fagsak?: Fagsak
+  fagsak?: Fagsak | null
   sedListe: Array<Sed>
   ikkeJournalfoerteSed?:Array<string>
-  ikkeJournalfoerteSedListFailed?:boolean
   sedUnderJournalfoeringEllerUkjentStatus?:Array<string>
+  journalpoststatus?: string | null
   relaterteRinasakIder?: Array<string>
   cdmVersjon: string
 }
@@ -287,7 +288,8 @@ export interface Motpart {
   formatertNavn: string
   motpartId: string
   motpartNavn: string
-  motpartLandkode: string
+  motpartLand?: string //Two letter code
+  motpartLandkode: string //Three letter code
 }
 
 export type Saks = Array<Sak>

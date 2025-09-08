@@ -102,21 +102,30 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
       }
 
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_SUCCESS:
+      const payloadFagsakGenerell = (action as ActionWithPayload).payload
+      const fagsakGenerell: Fagsak = {
+        ...payloadFagsakGenerell,
+        _id: payloadFagsakGenerell.nr ? payloadFagsakGenerell.nr : "GENERELL_SAK",
+      }
       return {
         ...state,
-        fagsaker: [(action as ActionWithPayload).payload],
-        fagsak: (action as ActionWithPayload).payload
+        fagsaker: [fagsakGenerell],
+        fagsak: fagsakGenerell
       }
 
     case types.JOURNALFOERING_CREATE_FAGSAK_DAGPENGER_SUCCESS:
-      const fagsak:Fagsak = (action as ActionWithPayload).payload
+      const payloadFagsakDagpenger = (action as ActionWithPayload).payload
+      const fagsakDagpenger: Fagsak = {
+        ...payloadFagsakDagpenger,
+        _id: payloadFagsakDagpenger.nr ? payloadFagsakDagpenger.nr : "GENERELL_SAK",
+      }
       let fSaker = _.cloneDeep(state.fagsaker)
-      fSaker?.unshift(fagsak)
+      fSaker?.unshift(fagsakDagpenger)
 
       return {
         ...state,
         fagsaker: fSaker,
-        fagsak: fagsak
+        fagsak: fagsakDagpenger
       }
 
     case types.JOURNALFOERING_CREATE_FAGSAK_GENERELL_FAILURE:
@@ -139,7 +148,12 @@ const journalfoeringReducer = (state: JournalfoeringState = initialJournalfoerin
     case types.JOURNALFOERING_FAGSAKER_SUCCESS:
       return {
         ...state,
-        fagsaker: (action as ActionWithPayload).payload
+        fagsaker: (action as ActionWithPayload).payload.map((f: Fagsak) => {
+          return {
+            ...f,
+            _id: f.nr ? f.nr : "GENERELL_SAK",
+          }
+        })
       }
 
     case types.JOURNALFOERING_FAGSAKER_FAILURE:

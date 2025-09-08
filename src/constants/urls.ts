@@ -5,6 +5,7 @@ export const BASE_URL = FULL_HOST + (window.location.port ? ':' + window.locatio
 export const API_BASE_URL = '/api'
 export const V2_BASE_URL = '/v2'
 export const V3_BASE_URL = '/v3'
+export const V5_BASE_URL = '/v5'
 
 // See https://eux-helloeu-app-q2.nais.preprod.local/swagger-ui.html
 
@@ -15,8 +16,8 @@ export const ADMIN_PUBLISH_SED_EVENTS_URL = API_BASE_URL + '/sed-events/publish'
 export const API_CDMVERSJON_RINA_URL = API_BASE_URL + '/rina/cdmversjon'
 export const API_LANDKODER_RINA_URL = API_BASE_URL + '/landkoder/rina?format=iso3'
 export const API_INSTITUSJONER_URL= API_BASE_URL + '/institusjoner/%(buctype)s?landkode=%(landkode)s&domene=nav'
-export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = API_BASE_URL + '/person/%(fnr)s/rinasaker/oversikt'
-export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/oversikt'
+export const API_RINASAKER_OVERSIKT_FNR_DNR_NPID_QUERY_URL = V5_BASE_URL + '/personer/%(fnr)s/rinasaker/oversikt'
+export const API_RINASAKER_OVERSIKT_SAKID_QUERY_URL = V5_BASE_URL + '/rinasaker/%(rinaSakId)s/oversikt'
 export const API_SAK_SEND_URL = API_BASE_URL + '/rinasak/sed'
 export const API_MOTTAKERE_URL = V2_BASE_URL + '/rina/sak/%(rinaSakId)s/mottakere'
 export const API_SED_CREATE_URL = API_BASE_URL + '/rinasak/%(rinaSakId)s/sed'
@@ -35,6 +36,7 @@ export const API_RINA_ATTACHMENT_SENSITIVE_URL = API_BASE_URL + '/rina/%(rinaSak
 export const API_RINA_JOURNALFOER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/journalfoer?enhetNr=%(enhetNr)s'
 export const API_ADD_RELATED_RINASAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/relaterte/%(relatertRinaSakId)s'
 export const API_FEILREGISTRER_JOURNALPOSTER_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/feilregistrerjournalposter'
+export const API_UPDATE_FAGSAK_URL = API_BASE_URL + '/rina/sak/%(rinaSakId)s/fagsak'
 
 // Registre
 export const API_GET_FAGSAKER_URL = V3_BASE_URL + '/person/%(fnr)s/fagsaker?tema=%(tema)s'
@@ -52,8 +54,9 @@ export const API_SAKSBEHANDLER_URL = API_BASE_URL + '/saksbehandler'
 export const API_ENHETER_URL = API_BASE_URL + '/saksbehandler/enheter'
 export const API_FAVORITTENHET_URL = API_BASE_URL + '/saksbehandler/favorittenhet'
 export const API_REAUTENTISERING_URL = '/oauth2/session/refresh'
+export const API_UTLOGGING_URL = '/oauth2/logout/local'
 // export const API_DELETE_TOKEN_URL = API_BASE_URL + '/saksbehandler/token'
-export const API_UTGAARDATO_URL = API_BASE_URL + '/saksbehandler/utgaarDato'
+export const API_UTGAARDATO_URL = '/oauth2/session'
 
 // Server informasjon
 export const API_SERVERINFO_URL = API_BASE_URL + '/serverinfo'

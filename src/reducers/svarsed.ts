@@ -15,7 +15,7 @@ import {
   F001Sed,
   PersonType
 } from 'declarations/sed.d'
-import {CreateSedResponse, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
+import {CreateSedResponse, Fagsak, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
 import { standardLogger } from 'metrics/loggers'
@@ -25,6 +25,7 @@ import {isUSed} from "../utils/sed";
 
 export interface SvarsedState {
   fagsaker: Fagsaker | null | undefined
+  fagsakUpdated: boolean | undefined
   deletedSak: any | null | undefined
   deletedSed: any | null | undefined
   deletedVedlegg: any | null | undefined
@@ -48,6 +49,7 @@ export interface SvarsedState {
 
 export const initialSvarsedState: SvarsedState = {
   fagsaker: undefined,
+  fagsakUpdated: undefined,
   deletedSak: undefined,
   deletedSed: undefined,
   deletedVedlegg: undefined,
@@ -153,7 +155,12 @@ const svarsedReducer = (
     case types.SVARSED_FAGSAKER_SUCCESS:
       return {
         ...state,
-        fagsaker: (action as ActionWithPayload).payload
+        fagsaker: (action as ActionWithPayload).payload.map((f: Fagsak) => {
+          return {
+            ...f,
+            _id: f.nr ? f.nr : "GENERELL_SAK"
+          }
+        })
       }
 
     case types.SVARSED_FAGSAKER_FAILURE:
@@ -185,7 +192,7 @@ const svarsedReducer = (
         lokaleSakIder = payload.lokaleSakIder ? payload.lokaleSakIder : []
         const idParts = state.currentSak?.navinstitusjon.id.split(":")
         lokaleSakIder.push({
-          saksnummer: state.currentSak?.fagsak?.nr ? state.currentSak?.fagsak?.nr : state.currentSak?.fagsak?.id,
+          saksnummer: state.currentSak?.fagsak?._id,
           institusjonsnavn: state.currentSak?.navinstitusjon.navn,
           institusjonsid: state.currentSak?.navinstitusjon.id,
           land: idParts ? idParts[0] : ""
@@ -295,11 +302,21 @@ const svarsedReducer = (
         previewFile: undefined
       }
 
-    case types.SVARSED_CURRENTSAK_SET:
+    case types.SVARSED_CURRENTSAK_SET:{
+      const payload = (action as ActionWithPayload).payload
       return {
         ...state,
-        currentSak: (action as ActionWithPayload).payload
+        currentSak: {
+          ...payload,
+          ...(payload.fagsak && {
+            fagsak: {
+              ...payload.fagsak,
+              _id: payload.fagsak?.nr ? payload.fagsak.nr : "GENERELL_SAK"
+            }
+          }),
+        }
       }
+    }
 
     case types.SVARSED_SAK_DELETE_REQUEST:
       return {
@@ -350,10 +367,6 @@ const svarsedReducer = (
           s.kjoenn = s.kjoenn.toUpperCase()
           return s
         }
-        if (s.kjoenn === 'f') {
-          s.kjoenn = 'K'
-          return s
-        }
         s.kjoenn = 'U'
         return s
       })
@@ -387,10 +400,6 @@ const svarsedReducer = (
           s.kjoenn = s.kjoenn.toUpperCase()
           return s
         }
-        if (s.kjoenn === 'f') {
-          s.kjoenn = 'K'
-          return s
-        }
         s.kjoenn = 'U'
         return s
       })
@@ -407,7 +416,13 @@ const svarsedReducer = (
       return {
         ...state,
         saks,
-        currentSak: saks[0]
+        currentSak: {
+          ...saks[0],
+          fagsak: {
+            ...saks[0].fagsak,
+            _id: saks[0].fagsak.nr ? saks[0].fagsak.nr : "GENERELL_SAK"
+          }
+        }
       }
     }
 
@@ -836,6 +851,28 @@ const svarsedReducer = (
       return {
         ...state,
         deselectedMenu
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_REQUEST:
+      return {
+        ...state,
+        fagsakUpdated: undefined
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_SUCCESS:
+      return {
+        ...state,
+        fagsakUpdated: true,
+        currentSak: {
+          ...(state.currentSak as Sak),
+          fagsak: (action as ActionWithPayload).context.fagsak,
+        }
+      }
+
+    case types.SVARSED_UPDATE_FAGSAK_FAILURE:
+      return {
+        ...state,
+        fagsakUpdated: false
       }
 
     default:
