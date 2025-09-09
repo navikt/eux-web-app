@@ -28,6 +28,6 @@ export const validateFnrDnrNpid = (value: string):ValidationResult | NPIDValidat
   } else {
     result = idnr(value)
   }
-  
+
   return result
 }
