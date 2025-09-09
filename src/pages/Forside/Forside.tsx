@@ -127,7 +127,7 @@ const Forside: React.FC = (): JSX.Element => {
     const signal = controller.signal;
 
     if(_query){
-      dispatch(querySaks(_query, 'new', false, signal))
+      dispatch(querySaks(_query, 'new', false, signal, true))
     }
 
     return () => {

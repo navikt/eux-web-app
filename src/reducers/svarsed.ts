@@ -45,6 +45,7 @@ export interface SvarsedState {
   sedSendResponse: any | null | undefined
   sedStatus: {[k in string]: string | null}
   deselectedMenu: string | undefined
+  searchedFromFrontpage: boolean
 }
 
 export const initialSvarsedState: SvarsedState = {
@@ -72,7 +73,8 @@ export const initialSvarsedState: SvarsedState = {
   sedCreatedResponse: undefined,
   sedSendResponse: undefined,
   sedStatus: {},
-  deselectedMenu: undefined
+  deselectedMenu: undefined,
+  searchedFromFrontpage: false
 }
 
 const createReplySedTemplate = <T>(sak: Sak, sedType: string): T => {
@@ -351,7 +353,8 @@ const svarsedReducer = (
     case types.SVARSED_SAKS_TIMER_REFRESH_FAILURE:
       return {
         ...state,
-        saks: null
+        saks: null,
+        searchedFromFrontpage: false
       }
 
     case types.SVARSED_SAKS_SUCCESS: {
@@ -382,7 +385,8 @@ const svarsedReducer = (
 
       return {
         ...state,
-        saks
+        saks,
+        searchedFromFrontpage: (action as ActionWithPayload).context.searchedFromFrontpage
       }
     }
 
@@ -416,6 +420,7 @@ const svarsedReducer = (
       return {
         ...state,
         saks,
+        searchedFromFrontpage: (action as ActionWithPayload).context.searchedFromFrontpage,
         currentSak: {
           ...saks[0],
           fagsak: {

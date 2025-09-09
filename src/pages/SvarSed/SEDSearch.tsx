@@ -50,7 +50,8 @@ const mapState = (state: State): any => ({
   rinasaksnummerOrFnrParam: state.app.params.rinasaksnummerOrFnr,
   deletedSak: state.svarsed.deletedSak,
   saks: state.svarsed.saks,
-  sedStatus: state.svarsed.sedStatus
+  sedStatus: state.svarsed.sedStatus,
+  searchedFromFrontpage: state.svarsed.searchedFromFrontpage
 })
 
 const SEDSearch = (): JSX.Element => {
@@ -64,7 +65,8 @@ const SEDSearch = (): JSX.Element => {
     queryingSaks,
     rinasaksnummerOrFnrParam,
     saks,
-    sedStatus
+    sedStatus,
+    searchedFromFrontpage
   }: any = useAppSelector(mapState)
 
   const params: URLSearchParams = new URLSearchParams(window.location.search)
@@ -117,7 +119,7 @@ const SEDSearch = (): JSX.Element => {
     let controller = new AbortController();
     const signal = controller.signal;
 
-    if(_query){
+    if(!searchedFromFrontpage && _query){
       dispatch(querySaks(_query, 'new', false, signal))
     }
 
@@ -225,7 +227,6 @@ const SEDSearch = (): JSX.Element => {
                               <SakPanel
                                 sak={sak}
                                 onSelected={() => {
-                                  dispatch(setCurrentSak(sak))
                                   navigate({
                                     pathname: '/svarsed/view/sak/' + sak.sakId,
                                     search: _query ? '?q=' + _query : ''

@@ -234,7 +234,7 @@ export const createF002Sed = (
 
 
 export const querySaks = (
-  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' | 'timer' = 'new', mock2: boolean = false, signal?: AbortSignal
+  saksnummerOrFnr: string, actiontype: 'new' | 'refresh' | 'timer' = 'new', mock2: boolean = false, signal?: AbortSignal, searchedFromFrontpage: boolean = false
 ): ActionWithPayload<Sed> => {
   let url, type
   const result = validateFnrDnrNpid(saksnummerOrFnr)
@@ -273,7 +273,8 @@ export const querySaks = (
     expectedPayload: mock2 ? mockSaks2(saksnummerOrFnr, type) : mockSaks(saksnummerOrFnr, type),
     context: {
       type,
-      saksnummerOrFnr
+      saksnummerOrFnr,
+      searchedFromFrontpage
     },
     type: myActionType,
     signal

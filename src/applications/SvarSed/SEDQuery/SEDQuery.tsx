@@ -50,6 +50,9 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       if (result.type === 'npid') {
         queryType = 'npid'
         message = t('label:valid-npid')
+      } else {
+        queryType = result.type
+        message = result.type
       }
     }
     _setQueryType(queryType)
