@@ -232,45 +232,53 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                 value={ytterligereInfo}
               />
               {aktivitet?.status && aktivitet?.type && aktivitet?.status === 'aktiv' &&
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
-                    <Heading size='xsmall'>
-                      <HStack gap="4" align="center">
-                        {t('label:ansettelsesperioder')}
-                        <Button
-                          size={"xsmall"}
-                          variant='tertiary'
-                          onClick={() => _setShowTransferTrygdePerioderModal(true)}
-                          icon={<ArrowRightLeftIcon/>}
-                          disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
-                        >
-                          {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
-                        </Button>
-                      </HStack>
-                    </Heading>
-                    {aktivitet?.type === 'ansatt' &&
-                      <Ansatt
-                        parentNamespace={namespace + '-' + aktivitet?.type}
-                        personID={personID}
-                        personName={personName}
-                        replySed={replySed}
-                        updateReplySed={updateReplySed}
-                        setReplySed={setReplySed}
-                      />
-                    }
-                    {aktivitet?.type !== 'ansatt' &&
-                      <Perioder
-                        parentNamespace={namespace + '-' + aktivitet?.type}
-                        parentTarget={"aktivitet.perioder"}
-                        personID={personID}
-                        personName={personName}
-                        replySed={replySed}
-                        updateReplySed={updateReplySed}
-                        setReplySed={setReplySed}
-                      />
-                    }
-                  </VStack>
-                </Box>
+                <>
+                  <Box
+                    padding="4"
+                    borderWidth={validation[namespace + '-aktivitet-perioder']?.feilmelding ? '2' : '1'}
+                    borderColor={validation[namespace + '-aktivitet-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                    id={namespace + '-aktivitet-perioder'}
+                  >
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        <HStack gap="4" align="center">
+                          {t('label:ansettelsesperioder')}
+                          <Button
+                            size={"xsmall"}
+                            variant='tertiary'
+                            onClick={() => _setShowTransferTrygdePerioderModal(true)}
+                            icon={<ArrowRightLeftIcon/>}
+                            disabled={!aktivitet?.perioder || aktivitet?.perioder.length === 0}
+                          >
+                            {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
+                          </Button>
+                        </HStack>
+                      </Heading>
+                      {aktivitet?.type === 'ansatt' &&
+                        <Ansatt
+                          parentNamespace={namespace + '-' + aktivitet?.type}
+                          personID={personID}
+                          personName={personName}
+                          replySed={replySed}
+                          updateReplySed={updateReplySed}
+                          setReplySed={setReplySed}
+                        />
+                      }
+                      {aktivitet?.type !== 'ansatt' &&
+                        <Perioder
+                          parentNamespace={namespace + '-' + aktivitet?.type}
+                          parentTarget={"aktivitet.perioder"}
+                          personID={personID}
+                          personName={personName}
+                          replySed={replySed}
+                          updateReplySed={updateReplySed}
+                          setReplySed={setReplySed}
+                        />
+                      }
+                    </VStack>
+                  </Box>
+                  <ErrorLabel error={validation[namespace + '-aktivitet-perioder']?.feilmelding}/>
+                </>
               }
               {aktivitet?.status && ((aktivitet?.status === 'inaktiv' && aktivitet?.type) || (aktivitet?.status === "ingenInfo")) &&
                 <>

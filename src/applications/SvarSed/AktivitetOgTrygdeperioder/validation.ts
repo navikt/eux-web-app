@@ -42,6 +42,16 @@ export const validateAktivitetOgTrygdeperioder = (
     }
   }
 
+  if(aktivitetStatus === "aktiv" && (aktivitetType === "ansatt" || aktivitetType === "selvstendig_næringsdrivende")) {
+    if (!aktivitetPerioder || aktivitetPerioder.length === 0) {
+      hasErrors.push(addError(v, {
+        id: namespace + '-aktivitet-perioder',
+        message: 'validation:requiredPerioderForAktivPerson',
+        personName
+      }))
+    }
+  }
+
   hasErrors.push(validatePerioder(v, `${namespace + '-' + _.get(person, 'aktivitet.type')}`, {
     perioder: aktivitetPerioder, personName
   }))

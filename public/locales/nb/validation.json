@@ -177,5 +177,6 @@
   "du-maa-fylle-ut": "Du må fylle ut {{type}}",
 
   "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv",
+  "requiredPerioderForAktivPerson": "Periode for aktivitet må fylles ut når personen er ansatt eller selvstendig næringsdrivende",
   "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut"
 }
