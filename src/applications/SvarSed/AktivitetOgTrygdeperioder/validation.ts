@@ -42,7 +42,7 @@ export const validateAktivitetOgTrygdeperioder = (
     }
   }
 
-  if(aktivitetStatus === "aktiv" && (aktivitetType === "ansatt" || aktivitetType === "selvstendig_næringsdrivende")) {
+  if(aktivitetStatus === "aktiv" && aktivitetType) {
     if (!aktivitetPerioder || aktivitetPerioder.length === 0) {
       hasErrors.push(addError(v, {
         id: namespace + '-aktivitet-perioder',
