@@ -14,7 +14,6 @@ import {
 import _, {cloneDeep} from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
 import { AnyAction } from 'redux'
-import {setSelectedEnhet} from "../actions/app";
 
 export interface AppState {
   buctyper: BucTyper | undefined
@@ -39,6 +38,8 @@ export interface AppState {
   sedtyper: Array<Kodeverk> | undefined
   tema: Tema | undefined
   kodemaps: Kodemaps | undefined
+
+  opprettOppgave: boolean | undefined
 
   params: Params
   featureToggles: FeatureToggles
@@ -66,6 +67,8 @@ export const initialAppState: AppState = {
   sedtyper: undefined,
   tema: undefined,
   kodemaps: undefined,
+
+  opprettOppgave: undefined,
 
   brukernavn: undefined,
   navn: undefined,

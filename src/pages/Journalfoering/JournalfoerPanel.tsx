@@ -10,7 +10,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {ActionMenu, Alert, BodyShort, Box, Button, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
+import {ActionMenu, Alert, BodyShort, Box, Button, Checkbox, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -90,6 +90,7 @@ interface JournalfoerPanelSelector {
   journalfoeringLogg: JournalfoeringLogg | undefined | null
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
+  opprettOppgave: boolean | undefined
 }
 
 const mapState = (state: State) => ({
@@ -106,14 +107,15 @@ const mapState = (state: State) => ({
   enhet: state.app.selectedEnhet,
   journalfoeringLogg: state.journalfoering.journalfoeringLogg,
   alertMessage: state.alert.stripeMessage,
-  alertType: state.alert.type
+  alertType: state.alert.type,
+  opprettOppgave: state.app.opprettOppgave
 })
 
 export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const currentYear = new Date().getFullYear()
-  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, enheter, enhet, journalfoeringLogg, alertMessage, alertType }: JournalfoerPanelSelector = useAppSelector(mapState)
+  const { person, searchingJournalfoeringPerson, gettingFagsaker, creatingFagsak, isJournalfoering, kodemaps, tema, fagsaker, fagsak, enheter, enhet, journalfoeringLogg, alertMessage, alertType, opprettOppgave }: JournalfoerPanelSelector = useAppSelector(mapState)
   const [localValidation, setLocalValidation] = useState<string | undefined>(undefined)
   const [_fnr, setfnr] = useState<string | undefined>(sak.fagsak && sak.fagsak.fnr ? sak.fagsak.fnr : undefined)
   const [isFnrValid, setIsFnrValid] = useState<boolean>(false)
@@ -122,6 +124,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [_isLoading, setIsLoading] = useState(false)
   const [_fagsakSelected, setFagsakSelected] = useState(false)
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
+  const [_opprettOppgave, setOpprettOppgave] = useState<boolean>(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -241,13 +244,17 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak._id === fagsakId})
     dispatch(setJournalfoeringFagsak(fagsak))
   }
+/*
+  const onOpprettOppgaveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
+  }
+*/
   const setSelected = (enhet: Enhet) => {
     dispatch(setSelectedEnhet(enhet))
   }
 
   const onJournalfoerClick = () => {
-    dispatch(journalfoer(sak.sakId, fagsak!, enhet!))
+    dispatch(journalfoer(sak.sakId, fagsak!, enhet!, opprettOppgave!))
   }
 
   const onJournalfoerModalClose = () => {
@@ -448,6 +455,14 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </VStack>
               }
             </div>
+          </HGrid>
+          <HGrid columns={3} gap="4">
+              <Checkbox
+                checked={_opprettOppgave !== undefined && _opprettOppgave }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOpprettOppgave(!_opprettOppgave)}
+              >
+                {t('label:opprett-oppgave')}
+              </Checkbox>
           </HGrid>
           <HGrid columns={3} gap="4">
             <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak && enhet)}>

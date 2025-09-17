@@ -98,11 +98,11 @@ export const setJournalfoeringFagsak: ActionCreator<Action> = (
 })
 
 export const journalfoer = (
-  sakId: string, fagsak: Fagsak, enhet: Enhet
+  sakId: string, fagsak: Fagsak, enhet: Enhet, opprettOppgave: boolean
 ): ActionWithPayload => {
   return call({
     method: 'POST',
-    url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId, enhetNr: enhet.enhetNr }),
+    url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId, enhetNr: enhet.enhetNr, opprettOppgave: opprettOppgave }),
     body: fagsak,
     expectedPayload: {
       journalfoert: ["H001 - Melding/Anmoding om informasjon", "X009 - Påminnelse"],
