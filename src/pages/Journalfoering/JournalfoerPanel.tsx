@@ -259,7 +259,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   const onJournalfoerClick = () => {
-    dispatch(journalfoer(sak.sakId, fagsak!, enhet!, opprettOppgave!))
+    dispatch(journalfoer(sak.sakId, fagsak!, enhet!, _opprettOppgaveSelected!))
   }
 
   const onJournalfoerModalClose = () => {
