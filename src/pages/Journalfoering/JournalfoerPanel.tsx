@@ -124,7 +124,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [_isLoading, setIsLoading] = useState(false)
   const [_fagsakSelected, setFagsakSelected] = useState(false)
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
-  const [_opprettOppgave, setOpprettOppgave] = useState<boolean>(false)
+  const [_opprettOppgaveSelected, setOpprettOppgaveSelected] = useState<boolean>(!opprettOppgave)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -176,6 +176,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
       setFagsakSelected(true)
     }
   }, [fagsak])
+
+  useEffect(() => {
+    if(opprettOppgave){
+      setOpprettOppgaveSelected(true)
+    }
+  }, [opprettOppgave])
 
   useEffect(() => {
     if(fagsaker && fagsaker.length === 1){
@@ -244,11 +250,10 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak._id === fagsakId})
     dispatch(setJournalfoeringFagsak(fagsak))
   }
-/*
   const onOpprettOppgaveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+    setOpprettOppgaveSelected(e.target.checked)
   }
-*/
+
   const setSelected = (enhet: Enhet) => {
     dispatch(setSelectedEnhet(enhet))
   }
@@ -458,8 +463,8 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
           </HGrid>
           <HGrid columns={3} gap="4">
               <Checkbox
-                checked={_opprettOppgave !== undefined && _opprettOppgave }
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOpprettOppgave(!_opprettOppgave)}
+                checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
+                onChange={onOpprettOppgaveChange}
               >
                 {t('label:opprett-oppgave')}
               </Checkbox>
