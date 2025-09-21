@@ -39,8 +39,6 @@ export interface AppState {
   tema: Tema | undefined
   kodemaps: Kodemaps | undefined
 
-  opprettOppgave: boolean | undefined
-
   params: Params
   featureToggles: FeatureToggles
 
@@ -67,8 +65,6 @@ export const initialAppState: AppState = {
   sedtyper: undefined,
   tema: undefined,
   kodemaps: undefined,
-
-  opprettOppgave: undefined,
 
   brukernavn: undefined,
   navn: undefined,
