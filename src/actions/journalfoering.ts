@@ -100,7 +100,6 @@ export const setJournalfoeringFagsak: ActionCreator<Action> = (
 export const journalfoer = (
   sakId: string, fagsak: Fagsak, enhet: Enhet, opprettOppgave: boolean
 ): ActionWithPayload => {
-  console.log("journalfoer opprettOppgave: " + opprettOppgave)
   return call({
     method: 'POST',
     url: sprintf(urls.API_RINA_JOURNALFOER_URL, { rinaSakId: sakId, enhetNr: enhet.enhetNr, opprettOppgave: opprettOppgave }),

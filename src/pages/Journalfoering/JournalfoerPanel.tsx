@@ -176,16 +176,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }, [fagsak])
 
   useEffect(() => {
-    console.log("useEffect _opprettOppgaveSelected: " + _opprettOppgaveSelected)
-/*
-    if(_opprettOppgaveSelected){
-      setOpprettOppgaveSelected(true)
-    }
-
- */
-  }, [_opprettOppgaveSelected])
-
-  useEffect(() => {
     if(fagsaker && fagsaker.length === 1){
       dispatch(setJournalfoeringFagsak(fagsaker[0]))
     }
@@ -253,8 +243,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     dispatch(setJournalfoeringFagsak(fagsak))
   }
   const onOpprettOppgaveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("onOpprettOppgaveChange e.target.checked: " + e.target.checked)
-
     setOpprettOppgaveSelected(e.target.checked)
   }
 
@@ -263,8 +251,6 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
 
   const onJournalfoerClick = () => {
-    console.log("onJournalfoerClick _opprettOppgaveSelected: " + _opprettOppgaveSelected)
-
     dispatch(journalfoer(sak.sakId, fagsak!, enhet!, _opprettOppgaveSelected!))
   }
 
