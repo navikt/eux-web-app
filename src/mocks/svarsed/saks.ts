@@ -44,9 +44,6 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11",
         "fnr": "12345678901"
       },
-      ikkeJournalfoerteSed: [
-        "F001 - Anmodning om avgjørelse av kompetanse",
-      ],
       sakshandlinger: [
         'H001', 'F002', 'F026', 'F027', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
@@ -242,9 +239,6 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11",
         "fnr": "12345678901"
       },
-      ikkeJournalfoerteSed: [
-        "F001 - Anmodning om avgjørelse av kompetanse",
-      ],
       sakshandlinger: [
         'H001', 'F002', 'F026', 'F027', 'X001', 'X005', 'X007', 'X008', 'X009', 'X012', 'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
@@ -435,9 +429,6 @@ export default (saksnummer: string, type: string) => {
         "fnr": "28506726605",
         "system": "IT01"
       },
-      ikkeJournalfoerteSed: [
-        "F001 - Anmodning om avgjørelse av kompetanse",
-      ],
       sedListe: [
         {
           sedTittel: 'Description for U001',
@@ -644,9 +635,6 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11",
         "fnr": "12345678901"
       },
-      "ikkeJournalfoerteSed": [
-        "H001 - Melding/anmodning om informasjon"
-      ],
       sedListe: [
         {
           sedTittel: 'Anmodning om trygdehistorikk',
@@ -682,9 +670,6 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11",
         "fnr": "12345678901"
       },
-      "ikkeJournalfoerteSed": [
-        "H001 - Melding/anmodning om informasjon"
-      ],
       "sistEndretDato": "2022-10-03",
       navinstitusjon: {
         id: "NO:NAVAT07",
@@ -812,9 +797,6 @@ export default (saksnummer: string, type: string) => {
         "system": "AO11",
         "fnr": "12345678901"
       },
-      ikkeJournalfoerteSed: [
-        "H001 - Melding/anmodning om informasjon"
-      ],
       sakshandlinger: [
         'Close_Case', 'singleParticipant', 'Delete_Case'
       ],
@@ -885,9 +867,6 @@ export default (saksnummer: string, type: string) => {
         "system": "FS22",
         "fnr": "25086820857"
       },
-      "ikkeJournalfoerteSed": [
-        "H001 - Melding/anmodning om informasjon"
-      ],
       "sensitiv": false,
       "cdmVersjon": "4.3"
     },
@@ -946,9 +925,6 @@ export default (saksnummer: string, type: string) => {
         "type": "GENERELL_SAK",
         "fnr": "28506726605"
       },
-      "ikkeJournalfoerteSed": [
-        "H001 - Melding/anmodning om informasjon"
-      ],
       "sensitiv": false,
       "cdmVersjon": "4.3"
     },
@@ -1110,9 +1086,7 @@ export default (saksnummer: string, type: string) => {
       },
       "journalpoststatus": null,
       "relaterteRinasakIder": [],
-      "ikkeJournalfoerteSed": [
-        "H001 - Melding/anmodning om informasjon"
-      ],
+      "ikkeJournalfoerteSed": [],
       "sedUnderJournalfoeringEllerUkjentStatus": [],
       "sensitiv": false,
       "cdmVersjon": "4.3"
