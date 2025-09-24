@@ -5,7 +5,7 @@ import _ from "lodash";
 import {Aktivitet, AktivtitetStatus} from "../../../declarations/sed";
 import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
-import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon} from "@navikt/aksel-icons";
+import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon, TrashIcon, PencilIcon} from "@navikt/aksel-icons";
 import {useTranslation} from "react-i18next";
 import styles from "./AktivitetStatusOgTrygdeperioder.module.css";
 import Perioder from "./Perioder/Perioder";
@@ -38,6 +38,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const [_selectedStatus, _setSelectedStatus] = useState<string>("")
 
   const [_showAddActivityType, _setShowShowAddActivityType] = useState<boolean>(false)
+  const [_editActivityIndex, _setEditActivityIndex] = useState<number | undefined>(undefined)
   const [_selectedActivityType, _setSelectedActivityType] = useState<string>("")
 
   const addStatus = () => {
@@ -45,6 +46,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   }
 
   const addActivityType = () => {
+    _setEditActivityIndex(undefined)
+    _setSelectedActivityType("")
     _setShowShowAddActivityType(true)
   }
 
@@ -101,6 +104,60 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     _setSelectedActivityType("")
     _setShowShowAddActivityType(false)
     _setCurrentStatus(status)
+  }
+
+  const getAktivitetTyper = (status: string, hideLegend: boolean = false) => {
+    if(status === "aktiv"){
+      return (
+        <RadioGroup
+          legend={t('label:arbeidsforhold-type')}
+          hideLegend={hideLegend}
+          value={_selectedActivityType}
+          error={validation[namespace + '-aktivitet-type']?.feilmelding}
+          id={namespace + '-aktivitet-type'}
+          name={namespace + '-aktivitet-type'}
+          onChange={(value) => _setSelectedActivityType(value)}
+        >
+          <Radio value='ansatt'>
+            {t('el:radio-aktivitet-type-ansatt')}
+          </Radio>
+          <Radio value='selvstendig_næringsdrivende'>
+            {t('el:radio-aktivitet-type-selvstendig-naeringsdrivende')}
+          </Radio>
+          <Radio value='opphør_aktivitet_sykdom_med_lønn'>
+            {t('el:radio-aktivitet-type-mottar-loenn')}
+          </Radio>
+          <Radio value='permisjon_med_lønnn'>
+            {t('el:radio-aktivitet-type-permisjon-med-loenn')}
+          </Radio>
+          <Radio value='permisjon_uten_lønnn'>
+            {t('el:radio-aktivitet-type-permisjon-uten-loenn')}
+          </Radio>
+        </RadioGroup>
+      )
+    } else if (status === "inaktiv") {
+      return (
+        <RadioGroup
+          legend={t('label:inaktiv-person')}
+          hideLegend={true}
+          value={_selectedActivityType}
+          error={validation[namespace + '-aktivitet-type']?.feilmelding}
+          id={namespace + '-aktivitet-type'}
+          name={namespace + '-aktivitet-type'}
+          onChange={(value) => _setSelectedActivityType(value)}
+        >
+          <HStack gap="4">
+            <Radio value='inaktiv'>
+              {t('el:radio-aktivitet-type-inaktiv')}
+            </Radio>
+            <Radio value='inaktiv_rett_til_familieytelse'>
+              {t('el:radio-aktivitet-type-inaktiv-rett-til-familieytelser')}
+            </Radio>
+          </HStack>
+        </RadioGroup>
+      )
+    }
+
   }
 
   useEffect(() => {
@@ -218,51 +275,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                         {_showAddActivityType && aktivitetStatus.status !== "ingenInfo" &&
                           <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%" className={styles.statusBoxOpen}>
                             <VStack>
-                              {aktivitetStatus?.status && aktivitetStatus?.status === 'aktiv' &&
-                                <RadioGroup
-                                  legend={t('label:arbeidsforhold-type')}
-                                  value={_selectedActivityType}
-                                  error={validation[namespace + '-aktivitet-type']?.feilmelding}
-                                  id={namespace + '-aktivitet-type'}
-                                  name={namespace + '-aktivitet-type'}
-                                  onChange={(value) => _setSelectedActivityType(value)}
-                                >
-                                  <Radio value='ansatt'>
-                                    {t('el:radio-aktivitet-type-ansatt')}
-                                  </Radio>
-                                  <Radio value='selvstendig_næringsdrivende'>
-                                    {t('el:radio-aktivitet-type-selvstendig-naeringsdrivende')}
-                                  </Radio>
-                                  <Radio value='opphør_aktivitet_sykdom_med_lønn'>
-                                    {t('el:radio-aktivitet-type-mottar-loenn')}
-                                  </Radio>
-                                  <Radio value='permisjon_med_lønnn'>
-                                    {t('el:radio-aktivitet-type-permisjon-med-loenn')}
-                                  </Radio>
-                                  <Radio value='permisjon_uten_lønnn'>
-                                    {t('el:radio-aktivitet-type-permisjon-uten-loenn')}
-                                  </Radio>
-                                </RadioGroup>
-                              }
-                              {aktivitetStatus?.status && aktivitetStatus?.status === 'inaktiv' &&
-                                <RadioGroup
-                                  legend={t('label:inaktiv-person')}
-                                  value={_selectedActivityType}
-                                  error={validation[namespace + '-aktivitet-type']?.feilmelding}
-                                  id={namespace + '-aktivitet-type'}
-                                  name={namespace + '-aktivitet-type'}
-                                  onChange={(value) => _setSelectedActivityType(value)}
-                                >
-                                  <HStack gap="4">
-                                    <Radio value='inaktiv'>
-                                      {t('el:radio-aktivitet-type-inaktiv')}
-                                    </Radio>
-                                    <Radio value='inaktiv_rett_til_familieytelse'>
-                                      {t('el:radio-aktivitet-type-inaktiv-rett-til-familieytelser')}
-                                    </Radio>
-                                  </HStack>
-                                </RadioGroup>
-                              }
+                              {getAktivitetTyper(aktivitetStatus.status)}
                               <HStack gap="4">
                                 <Button
                                   variant='primary'
@@ -302,9 +315,53 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                             <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%">
                               <VStack gap="4" width="100%">
                                 <VStack>
-                                  {typeLabel && <Label>{typeLabel}:</Label>}
-                                  {type}
+                                  <HStack gap="4" width="100%" align="start">
+                                    {typeLabel && <Label>{typeLabel}:</Label>}
+                                    <Spacer/>
+                                    <Button
+                                      variant='tertiary'
+                                      size="xsmall"
+                                      onClick={() => {
+                                        _setSelectedActivityType(aktivitet.type!)
+                                        _setEditActivityIndex(aktivitetIdx)
+                                      }}
+                                      icon={<PencilIcon/>}
+                                    >
+                                      Endre
+                                    </Button>
+                                    <Button
+                                      variant='tertiary'
+                                      size="xsmall"
+                                      onClick={() => {}}
+                                      icon={<TrashIcon/>}
+                                    >
+                                      Slett
+                                    </Button>
+                                  </HStack>
+                                  {aktivitetIdx !== _editActivityIndex && type}
                                 </VStack>
+                                {aktivitetIdx === _editActivityIndex &&
+                                  <>
+                                    {getAktivitetTyper(aktivitetStatus.status, true)}
+                                    <HStack gap="4">
+                                      <Button
+                                        variant='primary'
+                                        onClick={() => {}}
+                                      >
+                                        Endre type
+                                      </Button>
+                                      <Button
+                                        variant='secondary'
+                                        onClick={() => {
+                                          _setSelectedActivityType("");
+                                          _setEditActivityIndex(undefined)
+                                        }}
+                                      >
+                                        Lukk
+                                      </Button>
+                                    </HStack>
+                                  </>
+                                }
                                 <Heading size='xsmall'>
                                   <HStack gap="4" align="center">
                                     {title}
