@@ -120,6 +120,7 @@ import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoete
 import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetOgTrygdeperioder";
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
+import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -427,6 +428,7 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
                 { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true },
+                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
                 { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true },
