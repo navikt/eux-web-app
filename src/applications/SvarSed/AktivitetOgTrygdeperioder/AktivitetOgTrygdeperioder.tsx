@@ -9,7 +9,7 @@ import {resetValidation, setValidation} from "../../../actions/validation";
 import {Box, Button, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "./validation";
-import {Aktivtitet} from "../../../declarations/sed";
+import {Aktivitet} from "../../../declarations/sed";
 import Ansatt from "./Ansatt/Ansatt";
 import Perioder from "./Perioder/Perioder";
 import {ArrowRightLeftIcon} from "@navikt/aksel-icons";
@@ -44,7 +44,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
   const ingenInfoBegrunnelse: string | undefined = _.get(replySed, targetIngenInfoBegrunnelse)
 
   const targetAktivitet = `${personID}.aktivitet`
-  const aktivitet: Aktivtitet | undefined = _.get(replySed, targetAktivitet)
+  const aktivitet: Aktivitet | undefined = _.get(replySed, targetAktivitet)
 
   const targetPerioderMedAktivitetForInaktivPerson = `${personID}.perioderMedAktivitetForInaktivPerson`
 
@@ -257,6 +257,7 @@ const AktivitetOgTrygdeperioder: React.FC<MainFormProps> = ({
                       {aktivitet?.type === 'ansatt' &&
                         <Ansatt
                           parentNamespace={namespace + '-' + aktivitet?.type}
+                          parentTarget={"aktivitet.perioder"}
                           personID={personID}
                           personName={personName}
                           replySed={replySed}

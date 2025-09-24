@@ -199,11 +199,16 @@ export interface PersonInfo {
   }
 }
 
-export interface Aktivtitet {
+export interface AktivtitetStatus {
   status: string
-  perioder?: Array<Periode>
+  aktiviteter: Array<Aktivitet>
+}
+
+export interface Aktivitet {
+  status?: string  // TO BE REMOVED AFTER REWRITE CDM 4.4
+  begrunnelse?: string // NOT PRESENT IN CDM 4.4??
   type?: string
-  begrunnelse?: string
+  perioder?: Array<Periode>
 }
 
 export interface FillOutInfoPayload {
@@ -244,11 +249,11 @@ export interface PersonTypeF001 extends PersonTypeF {
     typeGrunnAnnen?: string
     typeGrunnForVedtak?: string
   }
-  perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA
+  perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA - UTGÅR I CDM 4.4
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
-
-  aktivitet?: Aktivtitet
+  aktivitet?: Aktivitet // TO BE REMOVED AFTER REWRITE CDM 4.4
+  aktivitetStatuser?: Array<AktivtitetStatus>
   ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
