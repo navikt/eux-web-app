@@ -38,6 +38,7 @@ const mapState = (state: State): AnsattSelector => ({
 
 const Ansatt: React.FC<MainFormProps> = ({
   parentNamespace,
+  parentTarget,
   personID,
   personName,
   replySed,
@@ -47,7 +48,7 @@ const Ansatt: React.FC<MainFormProps> = ({
   const { arbeidsperioder, validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}`
-  const target = `${personID}.aktivitet.perioder`
+  const target = `${personID}.${parentTarget}`
   const perioder: Array<Periode> | undefined = _.get(replySed, target)
   const fnr = getFnr(replySed, personID)
   const getId = (item: PlanItem<Periode | ForsikringPeriode> | null): string => (item
