@@ -122,7 +122,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [_isLoading, setIsLoading] = useState(false)
   const [_fagsakSelected, setFagsakSelected] = useState(false)
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
-  const [_opprettOppgaveSelected, setOpprettOppgaveSelected] = useState<boolean>(!false)
+  const [_opprettOppgaveSelected, setOpprettOppgaveSelected] = useState<boolean>(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
