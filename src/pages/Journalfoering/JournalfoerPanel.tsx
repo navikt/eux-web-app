@@ -10,7 +10,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {ActionMenu, Alert, BodyShort, Box, Button, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
+import {ActionMenu, Alert, BodyShort, Box, Button, Checkbox, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -122,6 +122,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   const [_isLoading, setIsLoading] = useState(false)
   const [_fagsakSelected, setFagsakSelected] = useState(false)
   const [fagsakDagpengerYear, setFagsakDagpengerYear] = useState<any>(currentYear)
+  const [_opprettOppgaveSelected, setOpprettOppgaveSelected] = useState<boolean>(false)
 
   const [kind, setKind] = useState<string>('nav-unknown-icon')
   const [src, setSrc] = useState<string>(ukjent)
@@ -241,13 +242,16 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
     const fagsak: Fagsak | undefined = _.find(fagsaker, (fagsak) => {return fagsak._id === fagsakId})
     dispatch(setJournalfoeringFagsak(fagsak))
   }
+  const onOpprettOppgaveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOpprettOppgaveSelected(e.target.checked)
+  }
 
   const setSelected = (enhet: Enhet) => {
     dispatch(setSelectedEnhet(enhet))
   }
 
   const onJournalfoerClick = () => {
-    dispatch(journalfoer(sak.sakId, fagsak!, enhet!))
+    dispatch(journalfoer(sak.sakId, fagsak!, enhet!, _opprettOppgaveSelected!))
   }
 
   const onJournalfoerModalClose = () => {
@@ -448,6 +452,14 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 </VStack>
               }
             </div>
+          </HGrid>
+          <HGrid columns={3} gap="4">
+              <Checkbox
+                checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
+                onChange={onOpprettOppgaveChange}
+              >
+                {t('label:opprett-oppgave')}
+              </Checkbox>
           </HGrid>
           <HGrid columns={3} gap="4">
             <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak && enhet)}>

@@ -14,7 +14,6 @@ import {
 import _, {cloneDeep} from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
 import { AnyAction } from 'redux'
-import {setSelectedEnhet} from "../actions/app";
 
 export interface AppState {
   buctyper: BucTyper | undefined
