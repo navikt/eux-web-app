@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Aktivitet, AktivtitetStatus} from "../../../declarations/sed";
+import {Aktivitet, AktivitetStatus} from "../../../declarations/sed";
 import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon, TrashIcon, PencilIcon} from "@navikt/aksel-icons";
@@ -30,8 +30,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-aktivitetstatusogtrygdeperioder`
 
   const targetAktivitetStatuser = `${personID}.aktivitetStatuser`
-  const aktivitetStatuser: Array<AktivtitetStatus> | undefined = _.get(replySed, targetAktivitetStatuser)
-  const prevAktivitetStatuserRef = useRef<Array<AktivtitetStatus> | undefined>(undefined);
+  const aktivitetStatuser: Array<AktivitetStatus> | undefined = _.get(replySed, targetAktivitetStatuser)
+  const prevAktivitetStatuserRef = useRef<Array<AktivitetStatus> | undefined>(undefined);
 
   const [_showAddStatus, _setShowShowAddStatus] = useState<boolean>(false)
   const [_currentStatus, _setCurrentStatus] = useState<string>("")
@@ -67,7 +67,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       aktiviteter.push(aktivitet)
     }
 
-    const aktivitetStatus: AktivtitetStatus = {
+    const aktivitetStatus: AktivitetStatus = {
       status: status,
       aktiviteter
     }
@@ -97,6 +97,20 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
 
     dispatch(updateReplySed(`${targetAktivitetStatuser}`, newAktivitetStatuser))
     _setSelectedActivityType("")
+    _setShowShowAddActivityType(false)
+  }
+
+  const onActivityTypeChange = (statusIdx: number) => {
+    const aktivitetStatuserCopy = _.cloneDeep(aktivitetStatuser)
+    const aktivitet = aktivitetStatuserCopy ? aktivitetStatuserCopy[statusIdx].aktiviteter[_editActivityIndex!] : undefined
+
+    if(aktivitet) {
+      aktivitet.type = _selectedActivityType
+      dispatch(updateReplySed(`${targetAktivitetStatuser}`, aktivitetStatuserCopy))
+    }
+
+    _setSelectedActivityType("")
+    _setEditActivityIndex(undefined)
     _setShowShowAddActivityType(false)
   }
 
@@ -237,11 +251,11 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
               }
               <Tabs value={_currentStatus} onChange={(value) => onTabChange(value)}>
                 <Tabs.List>
-                  {aktivitetStatuser?.map((aktivitetStatus: AktivtitetStatus, idx: number) => {
+                  {aktivitetStatuser?.map((aktivitetStatus: AktivitetStatus, idx: number) => {
                     return <Tabs.Tab value={aktivitetStatus.status + '-' + idx} label={t('label:status-'+aktivitetStatus.status)}/>
                   })}
                 </Tabs.List>
-                {aktivitetStatuser?.map((aktivitetStatus: AktivtitetStatus, idx: number) => {
+                {aktivitetStatuser?.map((aktivitetStatus: AktivitetStatus, idx: number) => {
                   return (
                     <Tabs.Panel value={aktivitetStatus.status + '-' + idx}>
                       <VStack gap="4" marginBlock="4" align="start">
@@ -314,39 +328,41 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           return (
                             <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%">
                               <VStack gap="4" width="100%">
-                                <VStack>
-                                  <HStack gap="4" width="100%" align="start">
-                                    {typeLabel && <Label>{typeLabel}:</Label>}
-                                    <Spacer/>
-                                    <Button
-                                      variant='tertiary'
-                                      size="xsmall"
-                                      onClick={() => {
-                                        _setSelectedActivityType(aktivitet.type!)
-                                        _setEditActivityIndex(aktivitetIdx)
-                                      }}
-                                      icon={<PencilIcon/>}
-                                    >
-                                      Endre
-                                    </Button>
-                                    <Button
-                                      variant='tertiary'
-                                      size="xsmall"
-                                      onClick={() => {}}
-                                      icon={<TrashIcon/>}
-                                    >
-                                      Slett
-                                    </Button>
-                                  </HStack>
-                                  {aktivitetIdx !== _editActivityIndex && type}
-                                </VStack>
+                                {aktivitetStatus.status !== "ingenInfo" &&
+                                  <VStack>
+                                    <HStack gap="4" width="100%" align="start">
+                                      {typeLabel && <Label>{typeLabel}:</Label>}
+                                      <Spacer/>
+                                      <Button
+                                        variant='tertiary'
+                                        size="xsmall"
+                                        onClick={() => {
+                                          _setSelectedActivityType(aktivitet.type!)
+                                          _setEditActivityIndex(aktivitetIdx)
+                                        }}
+                                        icon={<PencilIcon/>}
+                                      >
+                                        Endre
+                                      </Button>
+                                      <Button
+                                        variant='tertiary'
+                                        size="xsmall"
+                                        onClick={() => {}}
+                                        icon={<TrashIcon/>}
+                                      >
+                                        Slett
+                                      </Button>
+                                    </HStack>
+                                    {aktivitetIdx !== _editActivityIndex && type}
+                                  </VStack>
+                                }
                                 {aktivitetIdx === _editActivityIndex &&
                                   <>
                                     {getAktivitetTyper(aktivitetStatus.status, true)}
                                     <HStack gap="4">
                                       <Button
                                         variant='primary'
-                                        onClick={() => {}}
+                                        onClick={() => onActivityTypeChange(idx)}
                                       >
                                         Endre type
                                       </Button>
@@ -387,7 +403,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                     setReplySed={setReplySed}
                                   />
                                 }
-                                {(aktivitetStatus.status === 'aktiv' && aktivitet.type && aktivitet.type !== "ansatt" ||aktivitetStatus.status === "inaktiv" || aktivitetStatus.status === "ingenInfo") &&
+                                {(aktivitetStatus.status === 'aktiv' && aktivitet.type && aktivitet.type !== "ansatt" || aktivitetStatus.status === "inaktiv" || aktivitetStatus.status === "ingenInfo") &&
                                   <Perioder
                                     parentNamespace={namespace + '-' + aktivitet?.type}
                                     parentTarget={"aktivitetStatuser[" + idx + "].aktiviteter[" + aktivitetIdx + "].perioder"}

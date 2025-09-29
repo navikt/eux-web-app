@@ -199,7 +199,7 @@ export interface PersonInfo {
   }
 }
 
-export interface AktivtitetStatus {
+export interface AktivitetStatus {
   status: string
   aktiviteter: Array<Aktivitet>
 }
@@ -253,7 +253,7 @@ export interface PersonTypeF001 extends PersonTypeF {
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
   aktivitet?: Aktivitet // TO BE REMOVED AFTER REWRITE CDM 4.4
-  aktivitetStatuser?: Array<AktivtitetStatus>
+  aktivitetStatuser?: Array<AktivitetStatus>
   ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
