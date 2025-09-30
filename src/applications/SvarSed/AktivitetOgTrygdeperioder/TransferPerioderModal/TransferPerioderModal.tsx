@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
-import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer, Tag} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
 import {PensjonPeriode, Periode} from "../../../../declarations/sed";
 import _ from "lodash";
@@ -148,7 +148,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
           <Box borderWidth="1" borderColor="border-subtle" padding="4">
             {perioder?.map((p, i) => {
               return (
-                <HStack gap="4" align={"start"}>
+                <HStack gap="4" align={"center"}>
                   <Checkbox
                     key={getId(p)}
                     checked={!!(_valgtePerioder && _valgtePerioder["periode-" + i])}
@@ -163,6 +163,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
                       }}
                     />
                   </Checkbox>
+                  {p.__type && <Tag variant={"warning-moderate"} size="xsmall">{t('label:status-' + p.__type)}</Tag>}
                   <Spacer/>
                   {periodeType && periodeType === "pensjon" && _valgtePerioder && _valgtePerioder["periode-" + i] &&
                     <RadioGroup legend="Grunnlag" hideLegend={true} onChange={(pensjonsType: string) => onSetPensjonstype(pensjonsType, i)}>
