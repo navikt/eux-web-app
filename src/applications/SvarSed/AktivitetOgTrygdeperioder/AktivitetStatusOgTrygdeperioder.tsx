@@ -3,7 +3,7 @@ import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
 import {Aktivitet, AktivitetStatus, Periode} from "../../../declarations/sed";
-import {Alert, Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
+import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon, TrashIcon, PencilIcon} from "@navikt/aksel-icons";
 import {useTranslation} from "react-i18next";
@@ -12,7 +12,7 @@ import Perioder from "./Perioder/Perioder";
 import Ansatt from "./Ansatt/Ansatt";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 import {periodeSort} from "../../../utils/sort";
-import {HorizontalLineSeparator} from "../../../components/StyledComponents";
+import AddRemove from "../../../components/AddRemovePanel/AddRemove";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -262,17 +262,15 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                 <HStack gap="4" align="center">
                   Aktivitet
                   <Spacer/>
-                  {aktivitetStatuser && aktivitetStatuser.length > 0 &&
-                    <Button
-                      size={"xsmall"}
-                      variant='tertiary'
-                      onClick={() => _setShowTransferTrygdePerioderModal(true)}
-                      icon={<ArrowRightLeftIcon/>}
-                      disabled={false}
-                    >
-                      {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
-                    </Button>
-                  }
+                  <Button
+                    size={"xsmall"}
+                    variant='tertiary'
+                    onClick={() => _setShowTransferTrygdePerioderModal(true)}
+                    icon={<ArrowRightLeftIcon/>}
+                    disabled={!_transferToTrygdeperioderPeriods || _transferToTrygdeperioderPeriods.length === 0}
+                  >
+                    {t('label:overfør-perioder-til', {periodeType: "trygdeperioder"})}
+                  </Button>
                 </HStack>
               </Heading>
               <Box padding="4" borderWidth="1" borderColor="border-info" background="surface-info-subtle">OBS! Ved sletting av status eller endringer i perioder må trygdeperioder overføres på nytt</Box>
@@ -308,6 +306,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           _setSelectedStatus("");
                           _setShowShowAddStatus(false)
                         }}
+                        disabled={!aktivitetStatuser || aktivitetStatuser.length === 0}
                       >
                         Lukk
                       </Button>
@@ -340,14 +339,16 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                   return (
                     <Tabs.Panel value={aktivitetStatus.status + '-' + idx}>
                       <VStack gap="4" marginBlock="4" align="start">
-                        <Button
-                          size={"xsmall"}
-                          variant='tertiary'
-                          onClick={() => removeStatus(idx)}
-                          icon={<MinusCircleIcon/>}
-                        >
-                          Fjern status
-                        </Button>
+                        <HStack padding="0">
+                          <AddRemove<AktivitetStatus>
+                            item={aktivitetStatus}
+                            index={idx}
+                            onRemove={() => removeStatus(idx)}
+                            allowEdit={false}
+                            labels={{remove: "Fjern status"}}
+                          />
+                          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+                        </HStack>
                         <Box padding="4" background="surface-neutral-moderate" borderWidth="1" borderColor="border-subtle" width="100%">
                           <VStack gap="4">
                             <HStack gap="4">
@@ -425,14 +426,14 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                         Endre
                                       </Button>
                                       <Spacer/>
-                                      <Button
-                                        variant='tertiary'
-                                        size="xsmall"
-                                        onClick={() => deleteActivity(idx, aktivitetIdx)}
-                                        icon={<TrashIcon/>}
-                                      >
-                                        Fjern aktivitet
-                                      </Button>
+                                      <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+                                      <AddRemove<Aktivitet>
+                                        item={aktivitet}
+                                        index={idx}
+                                        onRemove={() => deleteActivity(idx, aktivitetIdx)}
+                                        allowEdit={false}
+                                        labels={{remove: "Fjern aktivitet"}}
+                                      />
                                     </HStack>
                                     {aktivitetIdx !== _editActivityIndex && type}
                                   </VStack>
