@@ -20,6 +20,7 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateThePeriode, ValidationAktivitetPeriodeProps } from './validation'
+import AddRemove from "../../../../components/AddRemovePanel/AddRemove";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -140,7 +141,7 @@ const Perioder: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false} align={"start"}>
+        <HStack gap="4" wrap={false} align={"center"}>
           {inEditMode
             ? (
               <PeriodeInput
@@ -170,9 +171,8 @@ const Perioder: React.FC<MainFormProps> = ({
           }
           <Spacer/>
           <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
-          <AddRemovePanel<Periode>
+          <AddRemove<Periode>
             item={periode}
-            marginTop={inEditMode}
             index={index}
             inEditMode={inEditMode}
             onRemove={onRemove}
