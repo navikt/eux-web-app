@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Aktivitet, AktivitetStatus, Periode} from "../../../declarations/sed";
+import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode} from "../../../declarations/sed";
 import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon, TrashIcon, PencilIcon} from "@navikt/aksel-icons";
@@ -13,6 +13,9 @@ import Ansatt from "./Ansatt/Ansatt";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 import {periodeSort} from "../../../utils/sort";
 import AddRemove from "../../../components/AddRemovePanel/AddRemove";
+import TextArea from "../../../components/Forms/TextArea";
+import {resetValidation} from "../../../actions/validation";
+import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -32,6 +35,9 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-aktivitetstatusogtrygdeperioder`
 
+  const targetYtterligereInfo = `${personID}.ytterligereInfo`
+  const ytterligereInfo: string | undefined = _.get(replySed, targetYtterligereInfo)
+
   const targetAktivitetStatuser = `${personID}.aktivitetStatuser`
   const aktivitetStatuser: Array<AktivitetStatus> | undefined = _.get(replySed, targetAktivitetStatuser)
   const prevAktivitetStatuserRef = useRef<Array<AktivitetStatus> | undefined>(undefined);
@@ -39,6 +45,15 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetTrygdeperioder = `${personID}.trygdeperioder`
   const trygdeperioder: Array<Periode> | undefined = _.get(replySed, targetTrygdeperioder)
 
+  const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
+  const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
+
+  const targetPerioderMedRettTilFamilieytelser = `${personID}.perioderMedRettTilFamilieytelser`
+  const targetDekkedePerioder = `${personID}.dekkedePerioder`
+  const targetUdekkedePerioder = `${personID}.udekkedePerioder`
+  const perioderMedRettTilFamilieytelser: Array<Periode> | undefined = _.get(replySed, targetPerioderMedRettTilFamilieytelser)
+  const dekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetDekkedePerioder)
+  const udekkedePerioder: Array<Periode> | undefined = _.get(replySed, targetUdekkedePerioder)
 
   const [_showAddStatus, _setShowShowAddStatus] = useState<boolean>(false)
   const [_currentStatus, _setCurrentStatus] = useState<string>("")
@@ -49,7 +64,11 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const [_selectedActivityType, _setSelectedActivityType] = useState<string>("")
 
   const [_showTransferTrygdePerioderModal, _setShowTransferTrygdePerioderModal] = useState<boolean>(false)
+  const [_showTransferPerioderMedPensjonModal, _setShowTransferPerioderMedPensjonModal] = useState<boolean>(false)
+  const [_showTransferPerioderMedRettTilFamilieytelserModal, _setShowTransferPerioderMedRettTilFamilieytelserModal] = useState<boolean>(false)
+
   const [_transferToTrygdeperioderPeriods, _setTransferToTrygdeperioderPeriods] = useState<Array<Periode> | undefined>(undefined)
+  const [_transferToPerioderMedPensjonPeriods, _setTransferToPerioderMedPensjonPeriods] = useState<Array<Periode> | undefined>(undefined)
 
   const getTransferToTrygdeperioderPeriods = (aktivitetStatuser: Array<AktivitetStatus>) => {
     if(aktivitetStatuser && aktivitetStatuser?.length > 0) {
@@ -66,6 +85,13 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       return transferToTrygdeperioderPeriods.flat(1).sort(periodeSort)
     }
     return []
+  }
+
+  const setYtterligereInfo = (ytterligereInfo: string) => {
+    dispatch(updateReplySed(`${targetYtterligereInfo}`, ytterligereInfo))
+    if (validation[namespace + '-ytterligereInfo']) {
+      dispatch(resetValidation(namespace + '-ytterligereInfo'))
+    }
   }
 
   const addStatus = () => {
@@ -108,6 +134,15 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const allStatusesAdded = aktivitetStatuser && aktivitetStatuser.length >= 3 && ['aktiv', 'inaktiv', 'ingenInfo'].every(status => aktivitetStatuser.some(as => as.status === status));
   const hasStatus = (status: string) => {
     return aktivitetStatuser && aktivitetStatuser.some(as => as.status === status);
+  }
+
+  const hasOpenPeriods = (periods: Array<Periode> | undefined) => {
+    return periods?.find((p) => p.aapenPeriodeType)
+  }
+
+  const getInaktivPeriods = (periods: Array<Periode> | undefined) => {
+    let inaktivPeriods: Array<Periode> | undefined = periods?.filter((p) => p.__type === "inaktiv")
+    return inaktivPeriods ? inaktivPeriods : []
   }
 
   const onActivityTypeAdd = (activityType: string, statusIdx: number) => {
@@ -250,10 +285,32 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         setModalOpen={_setShowTransferTrygdePerioderModal}
         target={targetTrygdeperioder}
         perioder={_transferToTrygdeperioderPeriods}
-        resetPerioder={[targetTrygdeperioder]}
+        resetPerioder={[targetTrygdeperioder, targetPerioderMedPensjon, targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
         resetWarning={trygdeperioder && trygdeperioder.length > 0}
       />
-
+      <TransferPerioderModal
+        namespace={namespace}
+        title={t('label:overfør-perioder-til', {periodeType: "perioder med pensjon"})}
+        modalOpen={_showTransferPerioderMedPensjonModal}
+        setModalOpen={_setShowTransferPerioderMedPensjonModal}
+        target={targetPerioderMedPensjon}
+        perioder={getInaktivPeriods(trygdeperioder)}
+        periodeType="pensjon"
+        resetPerioder={[targetPerioderMedPensjon]}
+        resetWarning={perioderMedPensjon && perioderMedPensjon.length > 0}
+      />
+      <TransferPerioderModal
+        namespace={namespace}
+        title={t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
+        modalOpen={_showTransferPerioderMedRettTilFamilieytelserModal}
+        setModalOpen={_setShowTransferPerioderMedRettTilFamilieytelserModal}
+        perioder={trygdeperioder}
+        target={personID}
+        periodeType="dekketUdekket"
+        resetPerioder={[targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
+        resetWarning={perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0}
+        closedPeriodsWarning={!!hasOpenPeriods(trygdeperioder)}
+      />
       <Box padding="4">
         <VStack gap="4">
           <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-subtle">
@@ -498,6 +555,20 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
               </Tabs>
             </VStack>
           </Box>
+          <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-default">
+            <VStack gap="4">
+              <Heading size={"small"}>{t('label:ytterligere-informasjon')}</Heading>
+              <TextArea
+                namespace={namespace}
+                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+                id='ytterligereInfo'
+                label={t('label:ytterligere-informasjon')}
+                hideLabel={true}
+                onChanged={setYtterligereInfo}
+                value={ytterligereInfo}
+              />
+            </VStack>
+          </Box>
           {trygdeperioder && trygdeperioder.length > 0 &&
             <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-default">
               <VStack gap="4">
@@ -507,11 +578,11 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                     <Heading size='xsmall'>
                       <HStack gap="4" align="center">
                         {t('label:trygdeperioder')}
-                        {1!==1 &&
+                        {getInaktivPeriods(trygdeperioder).length === 0 &&
                           <Button
                             size={"xsmall"}
                             variant='tertiary'
-                            onClick={() => {}}
+                            onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
                             icon={<ArrowRightLeftIcon/>}
                             disabled={!trygdeperioder || trygdeperioder?.length === 0}
                           >
@@ -520,12 +591,12 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                         }
                       </HStack>
                     </Heading>
-                    {1===1 &&
+                    {getInaktivPeriods(trygdeperioder).length > 0 &&
                       <HStack gap="4" align="center">
                         <Button
                           size={"xsmall"}
                           variant='tertiary'
-                          onClick={() => {}}
+                          onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!trygdeperioder || trygdeperioder?.length === 0}
                         >
@@ -534,7 +605,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                         <Button
                           size={"xsmall"}
                           variant='tertiary'
-                          onClick={() => {}}
+                          onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
                           icon={<ArrowRightLeftIcon/>}
                           disabled={!trygdeperioder || trygdeperioder?.length === 0}
                         >
@@ -553,6 +624,92 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                     />
                   </VStack>
                 </Box>
+                {perioderMedPensjon && perioderMedPensjon.length > 0 &&
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        {t('label:perioder-med-pensjon')}
+                      </Heading>
+                      <PerioderMedPensjon
+                        parentNamespace={namespace + '-periodermedpensjon'}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
+                      />
+                    </VStack>
+                  </Box>
+                }
+
+                {perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0 &&
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        {t('label:perioder-med-rett-til-familieytelser')}
+                      </Heading>
+                      <Perioder
+                        parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
+                        parentTarget={"perioderMedRettTilFamilieytelser"}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
+                        options={{
+                          periodeType: "simple",
+                          requiredSluttDato: true
+                        }}
+                      />
+                    </VStack>
+                  </Box>
+                }
+
+                {dekkedePerioder && dekkedePerioder.length > 0 &&
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        {t('label:dekkede-perioder')}
+                      </Heading>
+                      <Perioder
+                        parentNamespace={namespace + '-dekkedeperioder'}
+                        parentTarget={"dekkedePerioder"}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
+                        options={{
+                          periodeType: "simple",
+                          requiredSluttDato: true
+                        }}
+                      />
+                    </VStack>
+                  </Box>
+                }
+
+                {udekkedePerioder && udekkedePerioder.length > 0 &&
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        {t('label:udekkede-perioder')}
+                      </Heading>
+                      <Perioder
+                        parentNamespace={namespace + '-udekkedeperioder'}
+                        parentTarget={"udekkedePerioder"}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
+                        options={{
+                          periodeType: "simple",
+                          requiredSluttDato: true
+                        }}
+                      />
+                    </VStack>
+                  </Box>
+                }
               </VStack>
             </Box>
           }
