@@ -9,7 +9,6 @@ import { useRef } from "react";
 import {createFagsakDagpenger, createFagsakGenerell, getFagsaker} from "../../../actions/sak";
 import * as types from "../../../constants/actionTypes";
 import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
-import {searchPerson} from "../../../actions/person";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 import {updateFagsak} from "../../../actions/svarsed";
 import * as sakActions from "../../../actions/sak";
@@ -136,7 +135,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     setCurrentFagsak(sak.fagsak)
     if(sak.fagsak?.fnr){
       dispatch(getFagsaker(sak.fagsak?.fnr, sektor, sak.fagsak?.tema!))
-      dispatch(searchPerson(sak.fagsak?.fnr))
+      dispatch(searchJournalfoeringPerson(sak.fagsak?.fnr))
     }
     dispatch(sakActions.setProperty('saksId', ""))
   }
@@ -188,7 +187,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               }}
               onSearchPerformed={(fnr: string) => {
                 if(fnr){
-                  dispatch(searchPerson(fnr))
+                  dispatch(searchJournalfoeringPerson(fnr))
                 }
               }}
               person={person}
