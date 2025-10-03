@@ -13,6 +13,7 @@ import {searchPerson} from "../../../actions/person";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 import {updateFagsak} from "../../../actions/svarsed";
 import * as sakActions from "../../../actions/sak";
+import {searchJournalfoeringPerson} from "../../../actions/journalfoering";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -43,7 +44,7 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   fagsakUpdated: state.svarsed.fagsakUpdated,
   createdFagsakId: state.sak.saksId,
 
-  person: state.person.person,
+  person: state.journalfoering.person,
   searchingPerson: state.loading.searchingPerson,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type
@@ -77,7 +78,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   useEffect(() => {
     if(currentFagsak?.fnr){
       dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
-      dispatch(searchPerson(currentFagsak?.fnr))
+      dispatch(searchJournalfoeringPerson(currentFagsak?.fnr))
     }
   }, [])
 
