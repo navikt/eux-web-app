@@ -5,7 +5,7 @@ import _ from "lodash";
 import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode} from "../../../declarations/sed";
 import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
-import {PlusCircleIcon, MinusCircleIcon, ArrowRightLeftIcon, TrashIcon, PencilIcon} from "@navikt/aksel-icons";
+import {PlusCircleIcon, ArrowRightLeftIcon, PencilIcon} from "@navikt/aksel-icons";
 import {useTranslation} from "react-i18next";
 import styles from "./AktivitetStatusOgTrygdeperioder.module.css";
 import Perioder from "./Perioder/Perioder";
@@ -68,7 +68,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const [_showTransferPerioderMedRettTilFamilieytelserModal, _setShowTransferPerioderMedRettTilFamilieytelserModal] = useState<boolean>(false)
 
   const [_transferToTrygdeperioderPeriods, _setTransferToTrygdeperioderPeriods] = useState<Array<Periode> | undefined>(undefined)
-  const [_transferToPerioderMedPensjonPeriods, _setTransferToPerioderMedPensjonPeriods] = useState<Array<Periode> | undefined>(undefined)
 
   const getTransferToTrygdeperioderPeriods = (aktivitetStatuser: Array<AktivitetStatus>) => {
     if(aktivitetStatuser && aktivitetStatuser?.length > 0) {
@@ -195,6 +194,22 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     _setCurrentStatus(status)
   }
 
+  const hasTransferedPeriods = () => {
+    return (trygdeperioder && trygdeperioder.length > 0) ||
+      (perioderMedPensjon && perioderMedPensjon.length > 0) ||
+      (perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0) ||
+      (dekkedePerioder && dekkedePerioder.length > 0) ||
+      (udekkedePerioder && udekkedePerioder.length > 0)
+  }
+
+  const resetAllPeriods = () => {
+    dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
+    dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
+    dispatch(updateReplySed(`${targetPerioderMedRettTilFamilieytelser}`, undefined))
+    dispatch(updateReplySed(`${targetDekkedePerioder}`, undefined))
+    dispatch(updateReplySed(`${targetUdekkedePerioder}`, undefined))
+  }
+
   const getAktivitetTyper = (status: string, hideLegend: boolean = false) => {
     if(status === "aktiv"){
       return (
@@ -268,6 +283,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       if (statusAdded) {
         _setCurrentStatus(aktivitetStatuser[aktivitetStatuser?.length-1].status + '-' + (aktivitetStatuser?.length - 1))
       } else if(statusRemoved) {
+        resetAllPeriods()
         _setCurrentStatus(aktivitetStatuser[0].status + '-0')
       }
     }
@@ -569,61 +585,61 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
               />
             </VStack>
           </Box>
-          {trygdeperioder && trygdeperioder.length > 0 &&
+          {hasTransferedPeriods() &&
             <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-default">
               <VStack gap="4">
                 <Heading size={"small"}>Trygdeperioder</Heading>
-                <Box padding="4" borderWidth="1" borderColor="border-subtle">
-                  <VStack gap="4">
-                    <Heading size='xsmall'>
-                      <HStack gap="4" align="center">
-                        {t('label:trygdeperioder')}
-                        {getInaktivPeriods(trygdeperioder).length === 0 &&
+                {trygdeperioder && trygdeperioder.length > 0 &&
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle">
+                    <VStack gap="4">
+                      <Heading size='xsmall'>
+                        <HStack gap="4" align="center">
+                          {t('label:trygdeperioder')}
+                          {getInaktivPeriods(trygdeperioder).length === 0 &&
+                            <Button
+                              size={"xsmall"}
+                              variant='tertiary'
+                              onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
+                              icon={<ArrowRightLeftIcon/>}
+                              disabled={!trygdeperioder || trygdeperioder?.length === 0}
+                            >
+                              {t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
+                            </Button>
+                          }
+                        </HStack>
+                      </Heading>
+                      {getInaktivPeriods(trygdeperioder).length > 0 &&
+                        <HStack gap="4" align="center">
+                          <Button
+                            size={"xsmall"}
+                            variant='tertiary'
+                            onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
+                            icon={<ArrowRightLeftIcon/>}
+                          >
+                            {t('label:overfør-perioder-til', {periodeType: "perioder med pensjon"})}
+                          </Button>
                           <Button
                             size={"xsmall"}
                             variant='tertiary'
                             onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
                             icon={<ArrowRightLeftIcon/>}
-                            disabled={!trygdeperioder || trygdeperioder?.length === 0}
                           >
                             {t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
                           </Button>
-                        }
-                      </HStack>
-                    </Heading>
-                    {getInaktivPeriods(trygdeperioder).length > 0 &&
-                      <HStack gap="4" align="center">
-                        <Button
-                          size={"xsmall"}
-                          variant='tertiary'
-                          onClick={() => _setShowTransferPerioderMedPensjonModal(true)}
-                          icon={<ArrowRightLeftIcon/>}
-                          disabled={!trygdeperioder || trygdeperioder?.length === 0}
-                        >
-                          {t('label:overfør-perioder-til', {periodeType: "perioder med pensjon"})}
-                        </Button>
-                        <Button
-                          size={"xsmall"}
-                          variant='tertiary'
-                          onClick={() => _setShowTransferPerioderMedRettTilFamilieytelserModal(true)}
-                          icon={<ArrowRightLeftIcon/>}
-                          disabled={!trygdeperioder || trygdeperioder?.length === 0}
-                        >
-                          {t('label:overfør-perioder-til', {periodeType: "perioder med rett til familieytelser"})}
-                        </Button>
-                      </HStack>
-                    }
-                    <Perioder
-                      parentNamespace={namespace + '-trygdeperioder'}
-                      parentTarget={"trygdeperioder"}
-                      personID={personID}
-                      personName={personName}
-                      replySed={replySed}
-                      updateReplySed={updateReplySed}
-                      setReplySed={setReplySed}
-                    />
-                  </VStack>
-                </Box>
+                        </HStack>
+                      }
+                      <Perioder
+                        parentNamespace={namespace + '-trygdeperioder'}
+                        parentTarget={"trygdeperioder"}
+                        personID={personID}
+                        personName={personName}
+                        replySed={replySed}
+                        updateReplySed={updateReplySed}
+                        setReplySed={setReplySed}
+                      />
+                    </VStack>
+                  </Box>
+                }
                 {perioderMedPensjon && perioderMedPensjon.length > 0 &&
                   <Box padding="4" borderWidth="1" borderColor="border-subtle">
                     <VStack gap="4">
