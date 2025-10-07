@@ -110,5 +110,7 @@
   "warning-unknown-address": "Ukjent adresse",
   "warning-unknown-statsborgerskap": "Ukjent statsborgerskap",
   "warning-unknown-statsborgerskap-text1": "Personen har et eller flere ukjente statsborgerskap.",
-  "warning-unknown-statsborgerskap-text2": "Disse må legges inn manuelt."
+  "warning-unknown-statsborgerskap-text2": "Disse må legges inn manuelt.",
+
+  "info-trygdeperioder-maa-overfoeres-paa-nytt": "Trygdeperioder må overføres på nytt"
 }
