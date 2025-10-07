@@ -1,7 +1,7 @@
 import { ActionWithPayload } from '@navikt/fetch'
 import * as types from 'constants/actionTypes'
 import { FillOutInfoPayload } from 'declarations/sed'
-import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
+import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, NavRinasak, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
 
@@ -23,6 +23,7 @@ export interface SakState {
   sedtype: any
   tema: any
   unit: any
+  fagsakTema: NavRinasak | null | undefined
 }
 
 export const initialSakState: SakState = {
@@ -42,7 +43,8 @@ export const initialSakState: SakState = {
   sedtype: undefined,
   sektor: undefined,
   tema: undefined,
-  unit: undefined
+  unit: undefined,
+  fagsakTema: undefined
 }
 
 const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakState => {
@@ -115,6 +117,26 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
         fagsaker: null,
         saksId: null
       }
+
+    case types.SAK_GET_FAGSAKTEMA_FAILURE:
+      return {
+        ...state,
+        fagsakTema: null
+      }
+
+    case types.SAK_GET_FAGSAKTEMA_SUCCESS:{
+      return {
+        ...state,
+        fagsakTema: action.payload
+      }
+    }
+
+    case types.SAK_FAGSAKTEMA_UPDATE:{
+      return {
+        ...state,
+        fagsakTema: action.payload
+      }
+    }
 
 
     case types.SAK_INSTITUSJONER_SUCCESS:
