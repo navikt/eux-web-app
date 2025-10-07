@@ -1,7 +1,7 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
-import {Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
+import {Enhet, Enheter, LogMeAgainPayload, NavRinasak, Saksbehandler, ServerInfo} from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
@@ -10,7 +10,9 @@ import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
+import mockNavrinasak from "../mocks/app/navrinasak";
 import { Action, ActionCreator } from 'redux'
+import { sprintf } from 'sprintf-js'
 
 export const copyToClipboard = (text?: string) => ({
   type: types.APP_CLIPBOARD_COPY,
@@ -25,6 +27,32 @@ export const getEnheter = (): ActionWithPayload<Enheter> => {
       request: types.APP_ENHETER_REQUEST,
       success: types.APP_ENHETER_SUCCESS,
       failure: types.APP_ENHETER_FAILURE
+    }
+  })
+}
+
+export const getAlleEnheter = (): ActionWithPayload<Enheter> => {
+  console.log("getAlleEnheter")
+  return call({
+    url: urls.API_ALLE_ENHETER_URL,
+    expectedPayload: mockEnhet,
+    type: {
+      request: types.APP_ALLE_ENHETER_REQUEST,
+      success: types.APP_ALLE_ENHETER_SUCCESS,
+      failure: types.APP_ALLE_ENHETER_FAILURE
+    }
+  })
+}
+
+export const getFagsakTema = (rinaSakId: String): ActionWithPayload<NavRinasak> => {
+  console.log("getFagsakTema")
+  return call({
+    url: sprintf(urls.API_GET_FAGSAK_URL, { rinaSakId }),
+    expectedPayload: mockNavrinasak,
+    type: {
+      request: types.APP_GET_FAGSAK_REQUEST,
+      success: types.APP_GET_FAGSAK_SUCCESS,
+      failure: types.APP_GET_FAGSAK_FAILURE
     }
   })
 }

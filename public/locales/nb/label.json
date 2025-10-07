@@ -344,6 +344,7 @@
   "organisasjonsnummer": "Org.nr.",
   "overfør-perioder-til": "Overfør til {{periodeType}}",
   "oversikt-brukers-arbeidsperioder": "Oversikt over brukers arbeidsperioder",
+  "overstyrt-enhet": "Overstyrt enhet",
 
   "partner": "Ektefelle/partner",
   "pdu1": "PDU1",
@@ -528,6 +529,7 @@
   "velg-en-person" : "Velg person",
   "velg-barn-som-motregning" : "Velg barn som motregningen skal kobles til",
   "velg-tema" : "Velg tema",
+  "velg-overstyrt-enhet" : "Velg enhet for journalføring",
   "velg-vedlegg-til-sed" : "Velg vedlegg til SED",
   "vi-sender-informasjon": "Vi sender følgende informasjon",
   "vi-vedlegger-dokumenter": "Vi vedlegger følgende dokument(er)",
