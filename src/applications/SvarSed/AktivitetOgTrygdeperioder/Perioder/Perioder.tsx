@@ -206,6 +206,7 @@ const Perioder: React.FC<MainFormProps> = ({
           <Box>
             <Button
               variant='tertiary'
+              size={"small"}
               onClick={() => _setNewForm(true)}
               icon={<PlusCircleIcon/>}
             >

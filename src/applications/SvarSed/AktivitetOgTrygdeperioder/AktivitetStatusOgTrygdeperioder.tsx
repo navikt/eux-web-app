@@ -3,7 +3,7 @@ import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
 import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode} from "../../../declarations/sed";
-import {Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
+import {Alert, Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, ArrowRightLeftIcon, PencilIcon} from "@navikt/aksel-icons";
 import {useTranslation} from "react-i18next";
@@ -279,14 +279,18 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       // 1. There was no previous aktivitetStatuser (first item)
       // 2. Current length is greater than previous length (item was added)
       const statusAdded = !prevAktivitetStatuser || (prevAktivitetStatuser.length < aktivitetStatuser.length);
-      const statusRemoved = prevAktivitetStatuser && (prevAktivitetStatuser.length > aktivitetStatuser.length);
       if (statusAdded) {
         _setCurrentStatus(aktivitetStatuser[aktivitetStatuser?.length-1].status + '-' + (aktivitetStatuser?.length - 1))
-      } else if(statusRemoved) {
-        resetAllPeriods()
-        _setCurrentStatus(aktivitetStatuser[0].status + '-0')
       }
     }
+
+    const statusRemoved = prevAktivitetStatuser && (!aktivitetStatuser || prevAktivitetStatuser.length > aktivitetStatuser.length);
+    if(statusRemoved) {
+      resetAllPeriods()
+      _setCurrentStatus(aktivitetStatuser && aktivitetStatuser.length > 0 ? aktivitetStatuser[0].status + '-0' : "")
+    }
+
+
 
     // Store current value as previous for next comparison
     prevAktivitetStatuserRef.current = aktivitetStatuser;
@@ -346,7 +350,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                   </Button>
                 </HStack>
               </Heading>
-              <Box padding="4" borderWidth="1" borderColor="border-info" background="surface-info-subtle">OBS! Ved sletting av status eller endringer i perioder må trygdeperioder overføres på nytt</Box>
+
               {_showAddStatus &&
                 <Box padding="4" borderWidth="1" borderColor="border-subtle" className={styles.statusBoxOpen}>
                   <VStack gap="4">
@@ -419,8 +423,9 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                             onRemove={() => removeStatus(idx)}
                             allowEdit={false}
                             labels={{remove: "Fjern status"}}
+                            alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
                           />
-                          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
+                          <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                         </HStack>
                         <Box padding="4" background="surface-neutral-moderate" borderWidth="1" borderColor="border-subtle" width="100%">
                           <VStack gap="4">
@@ -481,87 +486,96 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           }
 
                           return (
-                            <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%">
-                              <VStack gap="4" width="100%">
-                                {aktivitetStatus.status !== "ingenInfo" &&
-                                  <VStack>
-                                    <HStack gap="4" width="100%" align="start">
-                                      {typeLabel && <Label>{typeLabel}:</Label>}
-                                      <Button
-                                        variant='tertiary'
-                                        size="xsmall"
-                                        onClick={() => {
-                                          _setSelectedActivityType(aktivitet.type!)
-                                          _setEditActivityIndex(aktivitetIdx)
-                                        }}
-                                        icon={<PencilIcon/>}
-                                      >
-                                        Endre
-                                      </Button>
-                                      <Spacer/>
-                                      <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
-                                      <AddRemove<Aktivitet>
-                                        item={aktivitet}
-                                        index={idx}
-                                        onRemove={() => deleteActivity(idx, aktivitetIdx)}
-                                        allowEdit={false}
-                                        labels={{remove: "Fjern aktivitet"}}
-                                      />
-                                    </HStack>
-                                    {aktivitetIdx !== _editActivityIndex && type}
-                                  </VStack>
-                                }
-                                {aktivitetIdx === _editActivityIndex &&
-                                  <Box className={styles.statusBoxOpen}>
+                            <VStack width="100%">
+                              <HStack paddingBlock="0 1" paddingInline="0">
+                                <AddRemove<Aktivitet>
+                                  item={aktivitet}
+                                  index={idx}
+                                  onRemove={() => deleteActivity(idx, aktivitetIdx)}
+                                  allowEdit={false}
+                                  labels={{remove: "Fjern aktivitet"}}
+                                  alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
+                                />
+                                <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                              </HStack>
+                              <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%">
+                                <VStack gap="4" width="100%">
+                                  {aktivitetStatus.status !== "ingenInfo" &&
                                     <VStack>
-                                      {getAktivitetTyper(aktivitetStatus.status, true)}
-                                      <HStack gap="4">
+                                      <HStack gap="4" width="100%" align="start">
+                                        {typeLabel && <Label>{typeLabel}:</Label>}
                                         <Button
-                                          variant='primary'
-                                          onClick={() => onActivityTypeChange(idx)}
-                                        >
-                                          Endre type
-                                        </Button>
-                                        <Button
-                                          variant='secondary'
+                                          variant='tertiary'
+                                          size="xsmall"
                                           onClick={() => {
-                                            _setSelectedActivityType("");
-                                            _setEditActivityIndex(undefined)
+                                            _setSelectedActivityType(aktivitet.type!)
+                                            _setEditActivityIndex(aktivitetIdx)
                                           }}
+                                          icon={<PencilIcon/>}
                                         >
-                                          Lukk
+                                          Endre
                                         </Button>
                                       </HStack>
+                                      {aktivitetIdx !== _editActivityIndex && type}
                                     </VStack>
-                                  </Box>
-                                }
-                                <Heading size='xsmall'>
-                                  {title}
-                                </Heading>
-                                {aktivitet.type && aktivitet.type === "ansatt" &&
-                                  <Ansatt
-                                    parentNamespace={namespace + '-' + aktivitet?.type}
-                                    parentTarget={"aktivitetStatuser[" + idx + "].aktiviteter[" + aktivitetIdx + "].perioder"}
-                                    personID={personID}
-                                    personName={personName}
-                                    replySed={replySed}
-                                    updateReplySed={updateReplySed}
-                                    setReplySed={setReplySed}
-                                  />
-                                }
-                                {(aktivitetStatus.status === 'aktiv' && aktivitet.type && aktivitet.type !== "ansatt" || aktivitetStatus.status === "inaktiv" || aktivitetStatus.status === "ingenInfo") &&
-                                  <Perioder
-                                    parentNamespace={namespace + '-' + aktivitet?.type}
-                                    parentTarget={"aktivitetStatuser[" + idx + "].aktiviteter[" + aktivitetIdx + "].perioder"}
-                                    personID={personID}
-                                    personName={personName}
-                                    replySed={replySed}
-                                    updateReplySed={updateReplySed}
-                                    setReplySed={setReplySed}
-                                  />
-                                }
-                              </VStack>
-                            </Box>
+                                  }
+                                  {aktivitetIdx === _editActivityIndex &&
+                                    <Box className={styles.statusBoxOpen}>
+                                      <VStack>
+                                        {getAktivitetTyper(aktivitetStatus.status, true)}
+                                        <HStack gap="4">
+                                          <Button
+                                            variant='primary'
+                                            onClick={() => onActivityTypeChange(idx)}
+                                          >
+                                            Endre type
+                                          </Button>
+                                          <Button
+                                            variant='secondary'
+                                            onClick={() => {
+                                              _setSelectedActivityType("");
+                                              _setEditActivityIndex(undefined)
+                                            }}
+                                          >
+                                            Lukk
+                                          </Button>
+                                        </HStack>
+                                      </VStack>
+                                    </Box>
+                                  }
+                                  <Heading size='xsmall'>
+                                    {title}
+                                  </Heading>
+                                  {aktivitet.type && aktivitet.type === "ansatt" &&
+                                    <Ansatt
+                                      parentNamespace={namespace + '-' + aktivitet?.type}
+                                      parentTarget={"aktivitetStatuser[" + idx + "].aktiviteter[" + aktivitetIdx + "].perioder"}
+                                      personID={personID}
+                                      personName={personName}
+                                      replySed={replySed}
+                                      updateReplySed={updateReplySed}
+                                      setReplySed={setReplySed}
+                                    />
+                                  }
+                                  {(aktivitetStatus.status === 'aktiv' && aktivitet.type && aktivitet.type !== "ansatt" || aktivitetStatus.status === "inaktiv" || aktivitetStatus.status === "ingenInfo") &&
+                                    <Perioder
+                                      parentNamespace={namespace + '-' + aktivitet?.type}
+                                      parentTarget={"aktivitetStatuser[" + idx + "].aktiviteter[" + aktivitetIdx + "].perioder"}
+                                      personID={personID}
+                                      personName={personName}
+                                      replySed={replySed}
+                                      updateReplySed={updateReplySed}
+                                      setReplySed={setReplySed}
+                                    />
+                                  }
+                                  {1!==1 &&
+                                    <Alert  variant="info" size="small">
+                                      Trygdeperioder må overføres på nytt ved endring.
+                                    </Alert>
+                                  }
+                                </VStack>
+                              </Box>
+                            </VStack>
                           )}
                         )}
                       </VStack>

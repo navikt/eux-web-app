@@ -1,7 +1,7 @@
 import { PlusCircleIcon, ArrowUndoIcon, TrashIcon, PencilIcon, CheckmarkIcon, FilesIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
-import {Button, BodyLong, HStack} from '@navikt/ds-react'
+import {Button, BodyLong, HStack, Alert} from '@navikt/ds-react'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +21,7 @@ export interface AddRemovePanelProps<T> {
   onCancelEdit?: () => void
   onCancelNew?: () => void
   onRemove: (item: T) => void
+  alertOnDelete?: string
 }
 
 const AddRemove = <T extends any>({
@@ -36,7 +37,8 @@ const AddRemove = <T extends any>({
   onRemove,
   onAddNew,
   onCopy,
-  onCancelNew
+  onCancelNew,
+  alertOnDelete
 }: AddRemovePanelProps<T>): JSX.Element | null => {
   const { t } = useTranslation()
 
@@ -66,6 +68,11 @@ const AddRemove = <T extends any>({
         >
           {labels?.no ?? t('label:nei')}
         </Button>
+        {alertOnDelete &&
+          <Alert  variant="info" size="small">
+            {alertOnDelete}
+          </Alert>
+        }
       </HStack>
     )
   }
