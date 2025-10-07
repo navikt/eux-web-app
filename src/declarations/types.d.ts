@@ -174,6 +174,18 @@ export interface Fagsak {
   fnr?: string | null | undefined
   opprettetTidspunkt?: string | null | undefined
   _id?: string
+  overstyrtEnhetsnummer?: string | null | undefined
+}
+
+export interface NavRinasak {
+  rinasakId?: string | null | undefined
+  overstyrtEnhetsnummer?: string | null | undefined
+  initiellFagsak?: Fagsak | null | undefined
+  fagsak?: Fagsak | null | undefined
+  dokumenter?: Array<object> | null | undefined
+  opprettetBruker?: string | null | undefined
+  opprettetTidspunkt?: string | null | undefined
+
 }
 
 export interface JournalfoeringLogg {

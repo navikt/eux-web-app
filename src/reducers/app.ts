@@ -4,12 +4,13 @@ import {
   BucTyper,
   CountryCodes,
   CountryCodeLists,
+  Enhet,
   Enheter,
   Kodemaps,
   Kodeverk,
   Saksbehandler,
   ServerInfo,
-  Tema, Enhet
+  Tema
 } from 'declarations/types'
 import _, {cloneDeep} from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'
@@ -45,6 +46,8 @@ export interface AppState {
   featureToggles: FeatureToggles
 
   loginRedirect: boolean | undefined
+  alleEnheter: Enheter | null | undefined
+  overstyrtEnhetsnummer: string | null | undefined
 }
 
 export const initialAppState: AppState = {
@@ -78,7 +81,10 @@ export const initialAppState: AppState = {
     featureSvarsedU: false,
     featureSvarsedH001: IS_DEVELOPMENT,
     featurePdu1: true
-  }
+  },
+  alleEnheter: undefined,
+  overstyrtEnhetsnummer: undefined
+
 }
 
 const appReducer = (state: AppState = initialAppState, action: AnyAction): AppState => {
@@ -101,6 +107,19 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         enheter: action.payload,
         selectedEnhet: favouriteEnhet,
+      }
+    }
+
+    case types.APP_ALLE_ENHETER_FAILURE:
+      return {
+        ...state,
+        alleEnheter: null
+      }
+
+    case types.APP_ALLE_ENHETER_SUCCESS:{
+      return {
+        ...state,
+        alleEnheter: action.payload
       }
     }
 

@@ -5,5 +5,6 @@ export default {
   "tema": "DAG",
   "system": "NEESSI",
   "arkiv": "GSAK",
-  "opprettetTidspunkt": "2021-12-30T14:02:53"
+  "opprettetTidspunkt": "2021-12-30T14:02:53",
+  "overstyrtEnhetsnummer": "4450"
 }
