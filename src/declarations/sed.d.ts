@@ -252,8 +252,8 @@ export interface PersonTypeF001 extends PersonTypeF {
   perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA - UTGÅR I CDM 4.4
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
-  aktivitet?: Aktivitet // TO BE REMOVED AFTER REWRITE CDM 4.4
-  aktivitetStatuser?: Array<AktivitetStatus>
+  aktivitet?: Aktivitet //CDM 4.3
+  aktivitetStatuser?: Array<AktivitetStatus> //CDM 4.4
   ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>

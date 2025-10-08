@@ -57,7 +57,10 @@ const AddRemove = <T extends any>({
         <Button
           size='xsmall'
           variant='tertiary'
-          onClick={() => onRemove(item!)}
+          onClick={() => {
+            onRemove(item!)
+            setInDeleteMode(false)
+          }}
         >
           {labels?.yes ?? t('label:ja')}
         </Button>
