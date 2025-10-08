@@ -112,5 +112,6 @@
   "warning-unknown-statsborgerskap-text1": "Personen har et eller flere ukjente statsborgerskap.",
   "warning-unknown-statsborgerskap-text2": "Disse må legges inn manuelt.",
 
-  "info-trygdeperioder-maa-overfoeres-paa-nytt": "Trygdeperioder må overføres på nytt"
+  "info-trygdeperioder-maa-overfoeres-paa-nytt": "Trygdeperioder må overføres på nytt.",
+  "info-trygdeperioder-maa-overfoeres-paa-nytt-ved-endring-av-perioder": "Trygdeperioder må overføres på nytt ved endring av perioder."
 }

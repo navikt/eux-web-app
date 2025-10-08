@@ -20,6 +20,7 @@ export interface TransferPerioderModalProps {
   resetPerioder?: Array<string>
   resetWarning?: boolean
   closedPeriodsWarning?: boolean
+  beforeTransfer?: () => void
 }
 
 const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
@@ -32,7 +33,8 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   periodeType = undefined,
   resetPerioder,
   resetWarning,
-  closedPeriodsWarning
+  closedPeriodsWarning,
+  beforeTransfer
 }: TransferPerioderModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -79,6 +81,8 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
     resetPerioder?.forEach((target) => {
       dispatch(updateReplySed(`${target}`, undefined))
     })
+
+    if(beforeTransfer) beforeTransfer()
 
     if(periodeType && periodeType === "pensjon") {
       const perioderMedPensjon: Array<PensjonPeriode> = Object.values(_valgtePerioder)

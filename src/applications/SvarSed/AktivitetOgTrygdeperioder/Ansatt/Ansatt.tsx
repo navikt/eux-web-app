@@ -12,7 +12,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeMedForsikring } from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -36,14 +36,19 @@ const mapState = (state: State): AnsattSelector => ({
   validation: state.validation.status
 })
 
-const Ansatt: React.FC<MainFormProps> = ({
+export interface AnsattProps extends MainFormProps {
+  onPerioderEdited?: () => void
+}
+
+const Ansatt: React.FC<AnsattProps> = ({
   parentNamespace,
   parentTarget,
   personID,
   personName,
   replySed,
-  updateReplySed
-}:MainFormProps): JSX.Element => {
+  updateReplySed,
+  onPerioderEdited
+}:AnsattProps): JSX.Element => {
   const { t } = useTranslation()
   const { arbeidsperioder, validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -123,6 +128,7 @@ const Ansatt: React.FC<MainFormProps> = ({
     if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${__editIndex}]`, __editPeriode))
       onCloseEdit(namespace + getIdx(__editIndex))
+      if(onPerioderEdited) onPerioderEdited()
     } else {
       dispatch(setValidation(clonedValidation))
     }
@@ -134,6 +140,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       const newPerioder = _.cloneDeep(perioder) as Array<Periode>
       newPerioder.splice(index, 1)
       dispatch(updateReplySed(target, newPerioder))
+      if(onPerioderEdited) onPerioderEdited()
     }
   }
 
@@ -159,6 +166,7 @@ const Ansatt: React.FC<MainFormProps> = ({
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
       onCloseNew()
+      if(onPerioderEdited) onPerioderEdited()
     }
   }
 

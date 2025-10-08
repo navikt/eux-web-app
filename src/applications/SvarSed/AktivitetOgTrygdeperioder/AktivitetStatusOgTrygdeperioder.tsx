@@ -107,6 +107,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     const newAktivitetStatuser = aktivitetStatuser ? [...aktivitetStatuser] : []
     newAktivitetStatuser?.splice(index, 1)
     dispatch(updateReplySed(`${targetAktivitetStatuser}`, newAktivitetStatuser))
+    _setPeriodeAlerts(undefined)
   }
 
   const onStatusAdd = (status: string) => {
@@ -185,6 +186,26 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     if(aktivitetStatuserCopy) {
       aktivitetStatuserCopy[statusIdx].aktiviteter.splice(activityIdx, 1)
       dispatch(updateReplySed(`${targetAktivitetStatuser}`, aktivitetStatuserCopy))
+
+      // Update _periodeAlerts by removing the deleted item and adjusting indices
+      if (_periodeAlerts) {
+        const updatedAlerts = Object.fromEntries(
+          Object.entries(_periodeAlerts)
+            .filter(([key]) => key !== `${statusIdx}-${activityIdx}`) // Remove deleted alert
+            .map(([key, alert]) => {
+              const [alertStatusIdx, alertActivityIdx] = key.split('-').map(Number)
+
+              // Adjust indices for activities that come after the deleted one
+              if (alertStatusIdx === statusIdx && alertActivityIdx > activityIdx) {
+                return [`${statusIdx}-${alertActivityIdx - 1}`, { ...alert, aktivitet: alertActivityIdx - 1 }]
+              }
+
+              return [key, alert]
+            })
+        )
+
+        _setPeriodeAlerts(updatedAlerts)
+      }
     }
   }
 
@@ -209,6 +230,21 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${targetDekkedePerioder}`, undefined))
     dispatch(updateReplySed(`${targetUdekkedePerioder}`, undefined))
   }
+
+  const onPerioderEdited = (statusIdx: number, aktivtetIdx: number) => {
+    if(hasTransferedPeriods()) {
+      _setPeriodeAlerts({
+        ..._periodeAlerts,
+        [statusIdx + "-" + aktivtetIdx]: {
+          alert: true,
+          status: statusIdx,
+          aktivitet: aktivtetIdx
+        }
+      })
+    }
+  }
+
+  const [_periodeAlerts, _setPeriodeAlerts] = useState<Record<string, any> | undefined>(undefined)
 
   const getAktivitetTyper = (status: string, hideLegend: boolean = false) => {
     if(status === "aktiv"){
@@ -290,8 +326,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       _setCurrentStatus(aktivitetStatuser && aktivitetStatuser.length > 0 ? aktivitetStatuser[0].status + '-0' : "")
     }
 
-
-
     // Store current value as previous for next comparison
     prevAktivitetStatuserRef.current = aktivitetStatuser;
   }, [aktivitetStatuser]);
@@ -307,6 +341,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         perioder={_transferToTrygdeperioderPeriods}
         resetPerioder={[targetTrygdeperioder, targetPerioderMedPensjon, targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
         resetWarning={trygdeperioder && trygdeperioder.length > 0}
+        beforeTransfer={() => _setPeriodeAlerts(undefined)}
       />
       <TransferPerioderModal
         namespace={namespace}
@@ -555,6 +590,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                       replySed={replySed}
                                       updateReplySed={updateReplySed}
                                       setReplySed={setReplySed}
+                                      onPerioderEdited={() => onPerioderEdited(idx, aktivitetIdx)}
                                     />
                                   }
                                   {(aktivitetStatus.status === 'aktiv' && aktivitet.type && aktivitet.type !== "ansatt" || aktivitetStatus.status === "inaktiv" || aktivitetStatus.status === "ingenInfo") &&
@@ -566,11 +602,12 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                       replySed={replySed}
                                       updateReplySed={updateReplySed}
                                       setReplySed={setReplySed}
+                                      onPerioderEdited={() => onPerioderEdited(idx, aktivitetIdx)}
                                     />
                                   }
-                                  {1!==1 &&
+                                  {_periodeAlerts && _periodeAlerts[`${idx}-${aktivitetIdx}`] && _periodeAlerts[`${idx}-${aktivitetIdx}`].alert &&
                                     <Alert  variant="info" size="small">
-                                      Trygdeperioder må overføres på nytt ved endring.
+                                      {t('message:info-trygdeperioder-maa-overfoeres-paa-nytt-ved-endring-av-perioder')}
                                     </Alert>
                                   }
                                 </VStack>
