@@ -3,7 +3,6 @@ import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
@@ -26,15 +25,20 @@ const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Perioder: React.FC<MainFormProps> = ({
+export interface PerioderProps extends MainFormProps {
+  onPerioderEdited?: () => void
+}
+
+const Perioder: React.FC<PerioderProps> = ({
   parentNamespace,
   parentTarget,
   personID,
   personName,
   replySed,
   updateReplySed,
-  options
-}:MainFormProps): JSX.Element => {
+  options,
+  onPerioderEdited
+}:PerioderProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -97,6 +101,7 @@ const Perioder: React.FC<MainFormProps> = ({
     if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
+      if(onPerioderEdited) onPerioderEdited()
     } else {
       dispatch(setValidation(clonedValidation))
     }
@@ -105,6 +110,7 @@ const Perioder: React.FC<MainFormProps> = ({
   const onRemove = (removedPeriode: Periode) => {
     const newPerioder: Array<Periode> = _.reject(perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(target, newPerioder))
+    if(onPerioderEdited) onPerioderEdited()
   }
 
   const onAddNew = () => {
@@ -124,6 +130,8 @@ const Perioder: React.FC<MainFormProps> = ({
       dispatch(updateReplySed(target, newPerioder))
       onCloseNew()
     }
+
+    if(onPerioderEdited) onPerioderEdited()
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
