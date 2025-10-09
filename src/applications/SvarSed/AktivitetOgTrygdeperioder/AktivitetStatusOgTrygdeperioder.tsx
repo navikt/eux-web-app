@@ -489,6 +489,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                 <Button
                                   variant='primary'
                                   onClick={() => onActivityTypeAdd(_selectedActivityType, idx)}
+                                  disabled={_selectedActivityType === ""}
                                 >
                                   Legg til aktivitet
                                 </Button>
