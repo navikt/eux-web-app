@@ -20,6 +20,8 @@ on:
           - 'q2'
           - 'q1-experimental'
           - 'q2-experimental'
+          - 'q1-parallel'
+          - 'q2-parallel'
       version:
         description: 'New version number, leave blank for auto increment.'
         required: false
