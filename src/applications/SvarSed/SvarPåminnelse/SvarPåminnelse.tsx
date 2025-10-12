@@ -63,6 +63,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const besvarelseKommer: Array<BesvarelseKommer> | undefined = _.get(replySed, targetBesvarelseKommer)
   const besvarelseUmulig: Array<BesvarelseUmulig> | undefined = _.get(replySed, targetBesvarelseUmulig)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
+  const CDM_VERSJON = (replySed as X010Sed).sak?.cdmVersjon
+  console.log("CDM_VERSJON " + CDM_VERSJON)
 
   const getBesvarelseKommerId = (d: BesvarelseKommer | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
   const getBesvarelseUmuligId = (d: BesvarelseUmulig | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
@@ -87,6 +89,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
       clonedValidation, namespace, validateSvarPåminnelse, {
         besvarelseKommer: _.get((replySed as X010Sed), targetBesvarelseKommer),
         besvarelseUmulig: _.get((replySed as X010Sed), targetBesvarelseUmulig),
+        CDM_VERSJON: CDM_VERSJON,
         personName
       }
     )
@@ -147,6 +150,24 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     }
   }
 
+  const setBesvarelseKommerYtterligereInfo = (ytterligereInfo: string, index: number) => {
+    if (index < 0) {
+      _setNewBesvarelseKommer({
+        ..._newBesvarelseKommer,
+        ytterligereinformasjon: ytterligereInfo.trim()
+      } as BesvarelseKommer)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-ytterligereinformasjon')
+      return
+    }
+    _setEditBesvarelseKommer({
+      ..._editBesvarelseKommer,
+      ytterligereinformasjon: ytterligereInfo.trim()
+    } as BesvarelseKommer)
+    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon']) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon'))
+    }
+  }
+
   const setBesvarelseUmuligInfo = (beskrivelse: string, index: number) => {
     if (index < 0) {
       _setNewBesvarelseUmulig({
@@ -180,6 +201,24 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     } as BesvarelseKommer)
     if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato']) {
       dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-innenDato'))
+    }
+  }
+
+  const setYtterligereinformasjon = (Ytterligereinformasjon: string, index: number) => {
+    if (index < 0) {
+      _setNewBesvarelseKommer({
+        ..._newBesvarelseKommer,
+        ytterligereinformasjon: Ytterligereinformasjon.trim()
+      } as BesvarelseKommer)
+      _resetValidationBesvarelseKommer(namespace + '-BesvarelseKommer-ytterligereinformasjon')
+      return
+    }
+    _setEditBesvarelseKommer({
+      ..._editBesvarelseKommer,
+      ytterligereinformasjon: Ytterligereinformasjon.trim()
+    } as BesvarelseKommer)
+    if (validation[namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon']) {
+      dispatch(resetValidation(namespace + '-BesvarelseKommer' + getIdx(index) + '-ytterligereinformasjon'))
     }
   }
 
@@ -285,6 +324,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
         dokument: _editBesvarelseUmulig,
         dokumenter: besvarelseUmulig,
         index: _editBesvarelseUmuligIndex,
+        CDM_VERSJON: CDM_VERSJON,
         personName
       })
     if (!hasErrors) {
@@ -328,6 +368,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     const valid: boolean = _performValidationBesvarelseUmulig({
       dokument: _newBesvarelseUmulig,
       dokumenter: besvarelseUmulig,
+      CDM_VERSJON: CDM_VERSJON,
       personName
     })
     if (!!_newBesvarelseUmulig && valid) {
@@ -431,6 +472,24 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   />
                 </Column>
               </AlignStartRow>
+              <VerticalSeparatorDiv />
+              {CDM_VERSJON === "4.4" &&
+                <AlignStartRow>
+                  <Column flex='2'>
+                    <TextAreaDiv>
+                      <TextArea
+                        error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
+                        id='ytterligereinformasjon'
+                        maxLength={500}
+                        label={t('label:ytterligere-informasjon')}
+                        namespace={_namespace}
+                        onChanged={(ytterligereInfo: string) => setBesvarelseKommerYtterligereInfo(ytterligereInfo, index)}
+                        value={_BesvarelseKommer?.ytterligereinformasjon}
+                      />
+                    </TextAreaDiv>
+                  </Column>
+                </AlignStartRow>
+              }
             </>
             )
           : (
@@ -579,7 +638,25 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && CDM_VERSJON === '4.4' && (
+                <AlignStartRow>
+                  <Column>
+                    <TextAreaDiv>
+                      <TextArea
+                        error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
+                        id='begrunnelseAnnen'
+                        maxLength={500}
+                        label={t('label:begrunnelseAnnen')}
+                        hideLabel
+                        namespace={_namespace}
+                        onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
+                        value={_BesvarelseUmulig?.begrunnelseAnnen}
+                      />
+                    </TextAreaDiv>
+                  </Column>
+                </AlignStartRow>
+              )}
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && CDM_VERSJON !== '4.4' && (
                 <AlignStartRow>
                   <Column>
                     <TextAreaDiv>

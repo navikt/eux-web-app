@@ -8,6 +8,7 @@ export interface ValidationBesvarelseKommerProps {
   dokumenter: Array<BesvarelseKommer> | undefined
   index?: number
   personName?: string
+  CDM_VERSJON?: string | undefined
 }
 
 export interface ValidationBesvarelseUmuligProps {
@@ -15,12 +16,14 @@ export interface ValidationBesvarelseUmuligProps {
   dokumenter: Array<BesvarelseUmulig> | undefined
   index?: number
   personName?: string
+  CDM_VERSJON?: string | undefined
 }
 
 export interface ValidationSvarPåminnelseProps {
   besvarelseKommer: Array<BesvarelseKommer> | undefined
   besvarelseUmulig: Array<BesvarelseUmulig> | undefined
   personName?: string
+  CDM_VERSJON?: string | undefined
 }
 
 export const validateBesvarelseKommer = (
@@ -30,7 +33,8 @@ export const validateBesvarelseKommer = (
     dokument,
     dokumenter,
     index,
-    personName
+    personName,
+    CDM_VERSJON
   }: ValidationBesvarelseKommerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -82,7 +86,18 @@ export const validateBesvarelseKommer = (
     personName
   }))
 
-  return hasErrors.find(value => value) !== undefined
+  if ( CDM_VERSJON !== "4.1" && CDM_VERSJON !== "4.2" && CDM_VERSJON !== "4.3") {
+    hasErrors.push(checkLength(v, {
+      needle: dokument?.ytterligereinformasjon,
+      max: 500,
+      id: namespace + idx + '-ytterligereinformasjon',
+      message: 'validation:textOverX',
+      personName
+    }))
+  }
+
+
+    return hasErrors.find(value => value) !== undefined
 }
 
 export const validateBesvarelseUmulig = (
@@ -92,7 +107,8 @@ export const validateBesvarelseUmulig = (
     dokument,
     dokumenter,
     index,
-    personName
+    personName,
+    CDM_VERSJON
   }: ValidationBesvarelseUmuligProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -135,13 +151,25 @@ export const validateBesvarelseUmulig = (
       personName
     }))
 
-    hasErrors.push(checkLength(v, {
-      needle: dokument.begrunnelseAnnen,
-      max: 255,
-      id: namespace + idx + '-begrunnelseAnnen',
-      message: 'validation:textOverX',
-      personName
-    }))
+
+    if ( CDM_VERSJON === "4.1" || CDM_VERSJON === "4.2" || CDM_VERSJON === "4.3") {
+      hasErrors.push(checkLength(v, {
+        needle: dokument.begrunnelseAnnen,
+        max: 255,
+        id: namespace + idx + '-begrunnelseAnnen',
+        message: 'validation:textOverX',
+        personName
+      }))
+    } else {
+      hasErrors.push(checkLength(v, {
+        needle: dokument.begrunnelseAnnen,
+        max: 500,
+        id: namespace + idx + '-begrunnelseAnnen',
+        message: 'validation:textOverX',
+        personName
+      }))
+
+    }
   }
 
   hasErrors.push(checkIfDuplicate(v, {
@@ -163,7 +191,8 @@ export const validateSvarPåminnelse = (
   {
     besvarelseKommer,
     besvarelseUmulig,
-    personName
+    personName,
+    CDM_VERSJON
   }: ValidationSvarPåminnelseProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -173,7 +202,7 @@ export const validateSvarPåminnelse = (
   })
   besvarelseUmulig?.forEach((dokument: BesvarelseUmulig, index: number) => {
     hasErrors.push(validateBesvarelseUmulig(validation, namespace + '-BesvarelseUmulig',
-      { dokument, dokumenter: besvarelseUmulig, index, personName }))
+      { dokument, dokumenter: besvarelseUmulig, index, personName, CDM_VERSJON }))
   })
   return hasErrors.find(value => value) !== undefined
 }

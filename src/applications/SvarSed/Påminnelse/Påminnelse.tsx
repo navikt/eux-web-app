@@ -243,7 +243,7 @@ const Påminnelse: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-beskrivelse']?.feilmelding}
                       id='beskrivelse'
                       maxLength={65}
-                      label={t('label:opplysninger')}
+                      label={t('label:opplysninger') + ' *'}
                       namespace={_namespace}
                       onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}
                       value={_purring?.beskrivelse}

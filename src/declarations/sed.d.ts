@@ -899,6 +899,7 @@ export interface X009Sed extends XSed {
 
 export interface BesvarelseKommer extends Purring {
   innenDato?: string
+  ytterligereinformasjon?: string
 }
 
 export interface BesvarelseUmulig extends Purring {
