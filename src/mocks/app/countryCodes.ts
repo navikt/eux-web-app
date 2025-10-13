@@ -56,5 +56,34 @@ export default {
       {landkode: "YUCS", landnavn: "Jugoslavia"},
       {landkode: "XKX", landnavn: "Kosovo"}
     ]
+  },
+  "v4.4": {
+    "euEftaLand": [
+      {landkode: "NOR", landnavn: "Norge"},
+      {landkode: "SWE", landnavn: "Sverige"},
+      {landkode: "DNK", landnavn: "Danmark"},
+      {landkode: "FIN", landnavn: "Finland"}
+    ],
+    "verdensLand": [
+      {landkode: "NOR", landnavn: "Norge"},
+      {landkode: "SWE", landnavn: "Sverige"},
+      {landkode: "DNK", landnavn: "Danmark"},
+      {landkode: "FIN", landnavn: "Finland"}
+    ],
+    "verdensLandHistorisk": [
+      {landkode: "NOR", landnavn: "Norge"},
+      {landkode: "SWE", landnavn: "Sverige"},
+      {landkode: "DNK", landnavn: "Danmark"},
+      {landkode: "FIN", landnavn: "Finland"},
+      {landkode: "YUCS", landnavn: "Jugoslavia"}
+    ],
+    "statsborgerskap": [
+      {landkode: "NOR", landnavn: "Norge"},
+      {landkode: "SWE", landnavn: "Sverige"},
+      {landkode: "DNK", landnavn: "Danmark"},
+      {landkode: "FIN", landnavn: "Finland"},
+      {landkode: "YUCS", landnavn: "Jugoslavia"},
+      {landkode: "XKX", landnavn: "Kosovo"}
+    ]
   }
 }

@@ -1089,7 +1089,7 @@ export default (saksnummer: string, type: string) => {
       "ikkeJournalfoerteSed": [],
       "sedUnderJournalfoeringEllerUkjentStatus": [],
       "sensitiv": false,
-      "cdmVersjon": "4.3"
+      "cdmVersjon": "4.4"
     }
   ]
 
