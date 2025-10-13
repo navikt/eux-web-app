@@ -137,7 +137,11 @@ import {
   ValidationUtdanningProps
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
-import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
+import {
+  validateAktivitetOgTrygdeperioder,
+  validateAktivitetStatusOgTrygdeperioder,
+  ValidateAktivitetOgTrygdeperioderProps,
+} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 
 export interface ValidationSEDEditProps {
@@ -241,9 +245,17 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
         if(isF001Sed(replySed) || isF002Sed(replySed)){
           const person: PersonTypeF001 = _.get(replySed, `${personID}`)
-          hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
-            person, personName
-          }, true))
+          const CDM_VERSJON = replySed.sak?.cdmVersjon
+
+          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+            hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetstatusogtrygdeperioder`, validateAktivitetStatusOgTrygdeperioder, {
+              person, personName
+            }, true))
+          } else {
+            hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
+              person, personName
+            }, true))
+          }
         }
 
         if(isF026Sed(replySed)){
