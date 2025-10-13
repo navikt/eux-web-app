@@ -179,5 +179,8 @@
 
   "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv",
   "requiredPerioderForAktivPerson": "Periode for aktivitet må fylles ut når type arbeidsforhold er valgt",
-  "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut"
+  "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut",
+
+  "requiredAktiviteterForAktivitetStatus": "Aktivitet må legges til for status {{status}}",
+  "requiredPerioderForAktivitet": "Perioder må legges til for aktivitet {{aktivitet}}"
 }

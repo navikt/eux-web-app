@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode} from "../../../declarations/sed";
+import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
 import {Alert, Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, ArrowRightLeftIcon, PencilIcon} from "@navikt/aksel-icons";
@@ -14,8 +14,12 @@ import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal
 import {periodeSort} from "../../../utils/sort";
 import AddRemove from "../../../components/AddRemovePanel/AddRemove";
 import TextArea from "../../../components/Forms/TextArea";
-import {resetValidation} from "../../../actions/validation";
+import {resetValidation, setValidation} from "../../../actions/validation";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {ValidateAktivitetOgTrygdeperioderProps, validateAktivitetStatusOgTrygdeperioder} from "./validation";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -68,6 +72,18 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const [_showTransferPerioderMedRettTilFamilieytelserModal, _setShowTransferPerioderMedRettTilFamilieytelserModal] = useState<boolean>(false)
 
   const [_transferToTrygdeperioderPeriods, _setTransferToTrygdeperioderPeriods] = useState<Array<Periode> | undefined>(undefined)
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    const person: PersonTypeF001 = _.get(replySed, personID!)
+    performValidation<ValidateAktivitetOgTrygdeperioderProps>(
+      clonedValidation, namespace, validateAktivitetStatusOgTrygdeperioder, {
+        person,
+        personName
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+  })
 
   const getTransferToTrygdeperioderPeriods = (aktivitetStatuser: Array<AktivitetStatus>) => {
     if(aktivitetStatuser && aktivitetStatuser?.length > 0) {
@@ -310,11 +326,12 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
 
     if(aktivitetStatuser && aktivitetStatuser?.length > 0) {
       _setTransferToTrygdeperioderPeriods(getTransferToTrygdeperioderPeriods(aktivitetStatuser))
+      if(!_currentStatus) _setCurrentStatus(aktivitetStatuser[0].status + '-0')
 
       // Only set current status if:
       // 1. There was no previous aktivitetStatuser (first item)
       // 2. Current length is greater than previous length (item was added)
-      const statusAdded = !prevAktivitetStatuser || (prevAktivitetStatuser.length < aktivitetStatuser.length);
+      const statusAdded = (!prevAktivitetStatuser && aktivitetStatuser && aktivitetStatuser.length === 1) || (prevAktivitetStatuser && prevAktivitetStatuser.length < aktivitetStatuser.length);
       if (statusAdded) {
         _setCurrentStatus(aktivitetStatuser[aktivitetStatuser?.length-1].status + '-' + (aktivitetStatuser?.length - 1))
       }
@@ -462,25 +479,33 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           />
                           <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                         </HStack>
-                        <Box padding="4" background="surface-neutral-moderate" borderWidth="1" borderColor="border-subtle" width="100%">
-                          <VStack gap="4">
-                            <HStack gap="4">
-                              <b>Status:</b>{t('label:status-' + aktivitetStatus.status)}
-                              <Spacer/>
-                              {aktivitetStatus.status !== "ingenInfo" &&
-                                <Button
-                                  size={"xsmall"}
-                                  variant='tertiary'
-                                  onClick={addActivityType}
-                                  icon={<PlusCircleIcon/>}
-                                >
-                                  Legg til aktivitet
-                                </Button>
-                              }
-                            </HStack>
-
-                          </VStack>
-                        </Box>
+                        <VStack gap="2" align="start" width="100%">
+                          <Box
+                            padding="4"
+                            background="surface-neutral-moderate"
+                            borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding ? '2' : '1'}
+                            borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                            width="100%"
+                          >
+                            <VStack gap="4">
+                              <HStack gap="4">
+                                <b>Status:</b>{t('label:status-' + aktivitetStatus.status)}
+                                <Spacer/>
+                                {aktivitetStatus.status !== "ingenInfo" &&
+                                  <Button
+                                    size={"xsmall"}
+                                    variant='tertiary'
+                                    onClick={addActivityType}
+                                    icon={<PlusCircleIcon/>}
+                                  >
+                                    Legg til aktivitet
+                                  </Button>
+                                }
+                              </HStack>
+                            </VStack>
+                          </Box>
+                          <ErrorLabel error={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter']?.feilmelding}/>
+                        </VStack>
                         {_showAddActivityType && aktivitetStatus.status !== "ingenInfo" &&
                           <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%" className={styles.statusBoxOpen}>
                             <VStack>
@@ -534,7 +559,12 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                 />
                                 <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
                               </HStack>
-                              <Box padding="4" borderWidth="1" borderColor="border-subtle" width="100%">
+                              <Box
+                                padding="4"
+                                borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? '2' : '1'}
+                                borderColor={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? 'border-danger' : 'border-subtle'}
+                                width="100%"
+                              >
                                 <VStack gap="4" width="100%">
                                   {aktivitetStatus.status !== "ingenInfo" &&
                                     <VStack>
@@ -613,6 +643,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                   }
                                 </VStack>
                               </Box>
+                              <ErrorLabel error={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding}/>
                             </VStack>
                           )}
                         )}
