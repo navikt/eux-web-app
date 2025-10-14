@@ -146,7 +146,7 @@ const Perioder: React.FC<PerioderProps> = ({
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+          errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align={"center"}>

@@ -182,6 +182,9 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${targetAktivitetStatuser}`, newAktivitetStatuser))
     _setSelectedActivityType("")
     _setShowShowAddActivityType(false)
+    if (validation[namespace + '-aktivitetStatus-' + statusIdx + '-aktiviteter']) {
+      dispatch(resetValidation(namespace + '-aktivitetStatus-' + statusIdx + '-aktiviteter'))
+    }
   }
 
   const onActivityTypeChange = (statusIdx: number) => {
@@ -248,16 +251,20 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${targetUdekkedePerioder}`, undefined))
   }
 
-  const onPerioderEdited = (statusIdx: number, aktivtetIdx: number) => {
+  const onPerioderEdited = (statusIdx: number, aktivitetIdx: number) => {
     if(hasTransferedPeriods()) {
       _setPeriodeAlerts({
         ..._periodeAlerts,
-        [statusIdx + "-" + aktivtetIdx]: {
+        [statusIdx + "-" + aktivitetIdx]: {
           alert: true,
           status: statusIdx,
-          aktivitet: aktivtetIdx
+          aktivitet: aktivitetIdx
         }
       })
+    }
+
+    if(validation[namespace + '-aktivitetStatus-' + statusIdx + '-aktiviteter-' + aktivitetIdx + '-perioder']){
+      dispatch(resetValidation(namespace + '-aktivitetStatus-' + statusIdx + '-aktiviteter-' + aktivitetIdx + '-perioder'))
     }
   }
 
