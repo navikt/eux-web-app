@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Aktivitet, AktivitetStatus, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
+import {Aktivitet, AktivitetStatus, F001Sed, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
 import {Alert, Box, Button, Heading, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {PlusCircleIcon, ArrowRightLeftIcon, PencilIcon} from "@navikt/aksel-icons";
@@ -52,7 +52,8 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
 
-  const targetPerioderMedRettTilFamilieytelser = `${personID}.perioderMedRettTilFamilieytelser`
+  const targetPerioderMedRettTilYtelser = `${personID}.perioderMedRettTilYtelser`
+  const targetPerioderMedRettTilFamilieytelser = `${personID}.perioderMedRettTilYtelser[0].rettTilFamilieytelser`
   const targetDekkedePerioder = `${personID}.dekkedePerioder`
   const targetUdekkedePerioder = `${personID}.udekkedePerioder`
   const perioderMedRettTilFamilieytelser: Array<Periode> | undefined = _.get(replySed, targetPerioderMedRettTilFamilieytelser)
@@ -242,7 +243,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const resetAllPeriods = () => {
     dispatch(updateReplySed(`${targetTrygdeperioder}`, undefined))
     dispatch(updateReplySed(`${targetPerioderMedPensjon}`, undefined))
-    dispatch(updateReplySed(`${targetPerioderMedRettTilFamilieytelser}`, undefined))
+    dispatch(updateReplySed(`${targetPerioderMedRettTilYtelser}`, undefined))
     dispatch(updateReplySed(`${targetDekkedePerioder}`, undefined))
     dispatch(updateReplySed(`${targetUdekkedePerioder}`, undefined))
   }
@@ -356,7 +357,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         setModalOpen={_setShowTransferTrygdePerioderModal}
         target={targetTrygdeperioder}
         perioder={_transferToTrygdeperioderPeriods}
-        resetPerioder={[targetTrygdeperioder, targetPerioderMedPensjon, targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
+        resetPerioder={[targetTrygdeperioder, targetPerioderMedPensjon, targetPerioderMedRettTilYtelser, targetDekkedePerioder, targetUdekkedePerioder]}
         resetWarning={trygdeperioder && trygdeperioder.length > 0}
         beforeTransfer={() => _setPeriodeAlerts(undefined)}
       />
@@ -379,9 +380,10 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
         perioder={trygdeperioder}
         target={personID}
         periodeType="dekketUdekket"
-        resetPerioder={[targetPerioderMedRettTilFamilieytelser, targetDekkedePerioder, targetUdekkedePerioder]}
+        resetPerioder={[targetPerioderMedRettTilYtelser, targetDekkedePerioder, targetUdekkedePerioder]}
         resetWarning={perioderMedRettTilFamilieytelser && perioderMedRettTilFamilieytelser.length > 0}
         closedPeriodsWarning={!!hasOpenPeriods(trygdeperioder)}
+        cdmVersion={(replySed as F001Sed).sak?.cdmVersjon}
       />
       <Box padding="4">
         <VStack gap="4">
@@ -749,7 +751,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                       </Heading>
                       <Perioder
                         parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
-                        parentTarget={"perioderMedRettTilFamilieytelser"}
+                        parentTarget={"perioderMedRettTilYtelser[0].rettTilFamilieytelser"}
                         personID={personID}
                         personName={personName}
                         replySed={replySed}
