@@ -244,7 +244,7 @@ export interface PersonTypeF extends PersonType {
 }
 
 export interface PersonTypeF001 extends PersonTypeF {
-  ikkeRettTilYtelser?: {
+  ikkeRettTilYtelser?: { //CDM 4.3 - IKKE I BRUK?
     typeGrunn?: string
     typeGrunnAnnen?: string
     typeGrunnForVedtak?: string
@@ -257,7 +257,13 @@ export interface PersonTypeF001 extends PersonTypeF {
   ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
-  perioderMedRettTilFamilieytelser?: Array<Periode>
+  perioderMedRettTilFamilieytelser?: Array<Periode> //CDM 4.3
+  perioderMedRettTilYtelser?: [  //CDM 4.4
+    {
+      rettTilFamilieytelser?: Array<Periode>,
+      ikkeRettTilFamilieytelser?: Array<Periode>
+    }
+  ]
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
