@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
 import moment from "moment";
+import replySed from "../../../../mocks/svarsed/replySed";
 
 export interface TransferPerioderModalProps {
   namespace: string
@@ -20,7 +21,8 @@ export interface TransferPerioderModalProps {
   resetPerioder?: Array<string>
   resetWarning?: boolean
   closedPeriodsWarning?: boolean
-  beforeTransfer?: () => void
+  beforeTransfer?: () => void,
+  cdmVersion?: string
 }
 
 const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
@@ -34,7 +36,8 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   resetPerioder,
   resetWarning,
   closedPeriodsWarning,
-  beforeTransfer
+  beforeTransfer,
+  cdmVersion
 }: TransferPerioderModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -103,7 +106,11 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
         if(p.dekketUdekket === "dekket") dekket.push(lukketPeriode)
         if(p.dekketUdekket === "udekket") udekket.push(lukketPeriode)
       })
-      dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+      if(!cdmVersion || parseFloat(cdmVersion) <= 4.3){
+        dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+      } else {
+        dispatch(updateReplySed(`${target}.perioderMedRettTilYtelser[0].rettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+      }
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, udekket))
     } else {
