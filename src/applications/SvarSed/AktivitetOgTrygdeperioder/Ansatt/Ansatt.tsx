@@ -284,7 +284,7 @@ const Ansatt: React.FC<AnsattProps> = ({
         id={'repeatablerow-' + _namespace}
         className={classNames({
           new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+          errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false}>

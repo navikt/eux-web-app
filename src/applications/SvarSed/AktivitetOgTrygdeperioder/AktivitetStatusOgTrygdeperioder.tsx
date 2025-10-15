@@ -20,6 +20,7 @@ import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {ValidateAktivitetOgTrygdeperioderProps, validateAktivitetStatusOgTrygdeperioder} from "./validation";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
+import PeriodePerioder from "./PeriodePerioder/PeriodePerioder";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -756,7 +757,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                       <Heading size='xsmall'>
                         {t('label:perioder-med-rett-til-familieytelser')}
                       </Heading>
-                      <Perioder
+                      <PeriodePerioder
                         parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
                         parentTarget={"perioderMedRettTilYtelser[0].rettTilFamilieytelser"}
                         personID={personID}

@@ -160,7 +160,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
         key={getId(pensjonPeriode)}
         className={classNames({
           new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+          errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align="start">
@@ -253,6 +253,7 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
           <Box>
             <Button
               variant='tertiary'
+              size={"small"}
               onClick={() => _setNewForm(true)}
               icon={<PlusCircleIcon/>}
             >

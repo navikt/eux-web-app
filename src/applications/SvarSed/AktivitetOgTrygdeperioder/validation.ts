@@ -1,10 +1,11 @@
-import {AktivitetStatus, PensjonPeriode, Periode, PersonTypeF001} from "../../../declarations/sed";
+import {AktivitetStatus, PensjonPeriode, Periode, PeriodePeriode, PersonTypeF001} from "../../../declarations/sed";
 import {Validation} from "../../../declarations/types";
 import _ from "lodash";
 import {validatePerioder} from "./Perioder/validation";
 import {validatePerioderMedPensjonPerioder} from "./PerioderMedPensjon/validation";
 import {addError} from "../../../utils/validation";
 import i18n from "../../../i18n";
+import {validatePeriodePerioder} from "./PeriodePerioder/validation";
 
 export interface ValidateAktivitetOgTrygdeperioderProps {
   person: PersonTypeF001
@@ -59,8 +60,8 @@ export const validateAktivitetStatusOgTrygdeperioder = (
     perioder: trygdePerioder, personName
   }))
 
-  const perioderMedRettTilFamilieytelser: Array<Periode> | undefined = _.get(person, 'perioderMedRettTilFamilieytelser')
-  hasErrors.push(validatePerioder(v, `${namespace + '-periodermedretttilfamilieytelser'}`, {
+  const perioderMedRettTilFamilieytelser: Array<PeriodePeriode> | undefined = _.get(person, 'perioderMedRettTilYtelser[0].rettTilFamilieytelser')
+  hasErrors.push(validatePeriodePerioder(v, `${namespace + '-periodermedretttilfamilieytelser'}`, {
     perioder: perioderMedRettTilFamilieytelser, personName
   }))
 
