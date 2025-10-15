@@ -48,7 +48,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const prevAktivitetStatuserRef = useRef<Array<AktivitetStatus> | undefined>(undefined);
 
   const targetTrygdeperioder = `${personID}.trygdeperioder`
-  const trygdeperioder: Array<Periode> | undefined = _.get(replySed, targetTrygdeperioder)
+  let trygdeperioder: Array<Periode> | undefined = _.get(replySed, targetTrygdeperioder)
 
   const targetPerioderMedPensjon = `${personID}.perioderMedPensjon`
   const perioderMedPensjon: Array<PensjonPeriode> | undefined = _.get(replySed, targetPerioderMedPensjon)
@@ -325,6 +325,24 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     }
 
   }
+
+  useEffect(() => {
+    if(aktivitetStatuser && aktivitetStatuser?.length > 0) {
+      const transferToTrygdeperioderPeriods = getTransferToTrygdeperioderPeriods(aktivitetStatuser)
+      _setTransferToTrygdeperioderPeriods(transferToTrygdeperioderPeriods)
+
+      // Update trygdeperioder with __type from transferToTrygdeperioderPeriods
+      if (trygdeperioder && trygdeperioder.length > 0) {
+        const updatedTrygdePerioder = trygdeperioder.map(period => {
+          const matchingPeriod = transferToTrygdeperioderPeriods.find(
+            tp => tp.startdato === period.startdato && tp.sluttdato === period.sluttdato
+          )
+          return matchingPeriod ? {...period, __type: matchingPeriod.__type} : period
+        })
+        dispatch(updateReplySed(`${targetTrygdeperioder}`, updatedTrygdePerioder))
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const prevAktivitetStatuser = prevAktivitetStatuserRef.current;
