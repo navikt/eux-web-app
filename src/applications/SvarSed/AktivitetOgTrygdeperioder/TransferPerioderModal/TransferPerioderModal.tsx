@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
 import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer, Tag} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
-import {PensjonPeriode, Periode} from "../../../../declarations/sed";
+import {PensjonPeriode, Periode, PeriodePeriode} from "../../../../declarations/sed";
 import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
@@ -92,6 +92,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       dispatch(updateReplySed(`${target}`, perioderMedPensjon))
     } else if(periodeType && periodeType === "dekketUdekket") {
       const perioderMedRettTilFamilieytelser: Array<Periode> = []
+
       const dekket: Array<Periode> = []
       const udekket: Array<Periode> = []
 
@@ -106,10 +107,11 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
         if(p.dekketUdekket === "dekket") dekket.push(lukketPeriode)
         if(p.dekketUdekket === "udekket") udekket.push(lukketPeriode)
       })
+
       if(!cdmVersion || parseFloat(cdmVersion) <= 4.3){
         dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
       } else {
-        dispatch(updateReplySed(`${target}.perioderMedRettTilYtelser[0].rettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+        dispatch(updateReplySed(`${target}.perioderMedRettTilYtelser[0].rettTilFamilieytelser`, perioderMedRettTilFamilieytelser.map(p => ({periode: p}))))
       }
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, udekket))
