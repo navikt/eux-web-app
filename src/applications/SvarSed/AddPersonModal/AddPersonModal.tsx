@@ -85,6 +85,10 @@ const AddPersonModal = <T extends StorageTypes>({
       // _unset leaves null values on array, trim them
       (newReplySed as F002Sed).barn = _.filter((newReplySed as F002Sed).barn, (b: any) => !_.isNil(b))
     }
+    if ((newReplySed as F002Sed).andrePersoner && personID.startsWith('andrePersoner[')) {
+      // _unset leaves null values on array, trim them
+      (newReplySed as F002Sed).andrePersoner = _.filter((newReplySed as F002Sed).andrePersoner, (p: any) => !_.isNil(p))
+    }
     _setReplySed(newReplySed)
   }
 
@@ -165,6 +169,19 @@ const AddPersonModal = <T extends StorageTypes>({
           })
         }
       }
+
+      if (_newPersonRelation === 'andrePersoner') {
+        if (!Object.prototype.hasOwnProperty.call(newReplySed, 'andrePersoner')) {
+          (newReplySed as F002Sed).andrePersoner = [{
+            personInfo
+          }]
+        } else {
+          (newReplySed as F002Sed).andrePersoner?.push({
+            personInfo
+          })
+        }
+      }
+
       if (_newPersonRelation === 'bruker') {
         newReplySed!.bruker = {
           personInfo
@@ -190,6 +207,8 @@ const AddPersonModal = <T extends StorageTypes>({
   }
 
   const getRelationOptions = (): Array<Option> => {
+    const cdmVersion = (_replySed as F002Sed).sak?.cdmVersjon
+
     const relationOptions: Array<Option> = []
     relationOptions.push({
       label: "Velg",
@@ -211,26 +230,42 @@ const AddPersonModal = <T extends StorageTypes>({
       isDisabled: !!(_replySed as F002Sed).ektefelle
     })
 
-    relationOptions.push({
-      label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson
-        ? '(' + t('label:ikke-tilgjengelig') + ')'
-        : ''),
-      value: 'annenPerson',
-      isDisabled: !!(_replySed as F002Sed).annenPerson
-    })
+    if(!cdmVersion || parseFloat(cdmVersion) <= 4.3) {
+      relationOptions.push({
+        label: t('el:option-familierelasjon-annenPerson') + ((_replySed as F002Sed).annenPerson
+          ? '(' + t('label:ikke-tilgjengelig') + ')'
+          : ''),
+        value: 'annenPerson',
+        isDisabled: !!(_replySed as F002Sed).annenPerson
+      })
+    } else if(parseFloat(cdmVersion) >= 4.4) {
+      relationOptions.push({
+        label: t('el:option-familierelasjon-annenPerson'),
+        value: 'andrePersoner',
+        isDisabled: false
+      })
+    }
 
     relationOptions.push({
       label: t('el:option-familierelasjon-barn'),
       value: 'barn',
       isDisabled: false
     })
+
     return relationOptions
   }
 
   const relationOptions = getRelationOptions()
 
   const getPersonLabel = (personId: string): string => {
-    const id = personId.startsWith('barn[') ? 'barn' : personId
+    let id = ''
+    if(personId.startsWith('barn[')){
+      id = 'barn'
+    } else if (personId.startsWith('andrePersoner[')){
+      id = 'annenPerson'
+    } else {
+      id = personId
+    }
     return t('el:option-familierelasjon-' + id)
   }
 
@@ -284,6 +319,7 @@ const AddPersonModal = <T extends StorageTypes>({
         {_replySed?.bruker && renderPerson('bruker')}
         {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
         {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
+        {(_replySed as F002Sed).andrePersoner?.map((p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
         {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`))}
         <VerticalSeparatorDiv />
         <HorizontalLineSeparator />

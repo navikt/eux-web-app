@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn, PersonTypeF001, S046Sed
+  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -454,9 +454,16 @@ export const validateSEDEdit = (
     if ((replySed as F002Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
+
+    (replySed as F002Sed).andrePersoner?.forEach((p: PersonTypeF001, i: number) => {
+      hasErrors.push(validateMainForm(v, replySed, `andrePersoner[${i}]`))
+    });
+
     (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
-    })
+    });
+
+
     if ((replySed as F002Sed).familie) {
       hasErrors.push(validateMainForm(v, replySed, 'familie'))
     }
@@ -475,9 +482,14 @@ export const validateSEDEdit = (
     if ((replySed as F003Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
+
+    (replySed as F003Sed).andrePersoner?.forEach((p: PersonTypeAnnenPersonF003, i: number) => {
+      hasErrors.push(validateMainForm(v, replySed, `andrePersoner[${i}]`))
+    });
+
     (replySed as F003Sed).barn?.forEach((b: PersonBarn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
-    })
+    });
 
     hasErrors.push(validateVedtakForF003(v, replySed))
   }
