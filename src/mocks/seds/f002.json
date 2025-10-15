@@ -252,6 +252,24 @@
     "familierelasjoner": [],
     "ytterligereInfo": ""
   },
+  "andrePersoner": [
+    {
+      "personInfo": {
+        "fornavn": "ANNEN",
+        "etternavn": "PERSON",
+        "kjoenn": "M",
+        "foedselsdato": "2002-02-07"
+      }
+    },
+    {
+      "personInfo": {
+        "fornavn": "ANNEN ",
+        "etternavn": "PERSON den ANDRE",
+        "kjoenn": "M",
+        "foedselsdato": "2002-04-14"
+      }
+    }
+  ],
   "barn": [
     {
       "personInfo": {

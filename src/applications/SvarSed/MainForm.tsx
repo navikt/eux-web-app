@@ -234,7 +234,7 @@ const MainForm = <T extends StorageTypes>({
   const brukerNr = 1
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
-  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0)
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0) + ((replySed as F002Sed)?.andrePersoner?.length ?? 0)
 
   // list of open menus (= persons, on two-level menus).
   // If SED only has one person (bruker), open it by default
@@ -543,6 +543,9 @@ const MainForm = <T extends StorageTypes>({
               if (personId === 'annenPerson') {
                 return !!o.other
               }
+              if (personId.startsWith("andrePersoner")) {
+                return !!o.other
+              }
             } else {
               return true
             }
@@ -714,6 +717,7 @@ const MainForm = <T extends StorageTypes>({
                 {type === 'twolevel' && replySed?.bruker && renderTwoLevelMenu(replySed, 'bruker')}
                 {type === 'twolevel' && (replySed as F002Sed)?.ektefelle && renderTwoLevelMenu(replySed!, 'ektefelle')}
                 {type === 'twolevel' && (replySed as F002Sed)?.annenPerson && renderTwoLevelMenu(replySed!, 'annenPerson')}
+                {type === 'twolevel' && (replySed as F002Sed)?.andrePersoner?.map((ap: any, i: number) => renderTwoLevelMenu(replySed!, `andrePersoner[${i}]`))}
                 {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
                 {type === 'twolevel' && (isF001Sed(replySed) || isF002Sed(replySed)) && renderTwoLevelMenu(replySed!, 'familie')}
                 <LastDivWithButton>
