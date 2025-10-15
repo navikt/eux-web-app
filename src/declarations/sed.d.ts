@@ -580,9 +580,10 @@ export interface FSed extends BaseReplySed {
 }
 
 export interface F001Sed extends FSed {
-  annenPerson?: PersonTypeF001
-  barn?: Array<Barn>
   ektefelle?: PersonTypeF001
+  annenPerson?: PersonTypeF001
+  andrePersoner?: Array<PersonTypeF001> //CDM 4.4
+  barn?: Array<Barn>
   endredeForhold?: Array<string>
   familie?: {
     motregninger?: Array<Motregning>
@@ -608,6 +609,7 @@ export interface F003Sed extends BaseReplySed {
   bruker: PersonTypeBrukerF003
   ektefelle?: PersonTypeEktefelleF003
   annenPerson?: PersonTypeAnnenPersonF003
+  andrePersoner?: Array<PersonTypeAnnenPersonF003> //CDM 4.4
   barn?: Array<PersonBarn>
   familie?: {
     ytelser?: Array<Ytelse>
