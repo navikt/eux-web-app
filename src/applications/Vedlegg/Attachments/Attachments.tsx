@@ -9,7 +9,7 @@ import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import {Attachment} from "../../../declarations/types";
 import AttachmentsFromRinaTable from "./AttachmentsFromRinaTable";
-import {Barn, F001Sed, ReplySed} from "../../../declarations/sed";
+import {Barn, F001Sed, PersonTypeF001, ReplySed} from "../../../declarations/sed";
 import {getFnr} from "../../../utils/fnr";
 import {isFSed} from "../../../utils/sed";
 
@@ -39,12 +39,14 @@ const Attachments: React.FC<AttachmentsProps> = ({
   const { t } = useTranslation()
   const [_attachmentsTableVisible, setAttachmentsTableVisible] = useState<boolean>(false)
   const [_items, setItems] = useState<JoarkBrowserItems>([])
+  const andrePersoner = (replySed as F001Sed).andrePersoner
 
   const bFnr = getFnr(replySed, 'bruker')
   const eFnr = getFnr(replySed, 'ektefelle')
   const aFnr = getFnr(replySed, 'annenPerson')
+  const apFnr = andrePersoner && andrePersoner.length > 0 ? getFnr(replySed, 'andrePersoner[0]') : undefined
 
-  const [_fnr, setFnr] = useState<string | undefined>(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : undefined)
+  const [_fnr, setFnr] = useState<string | undefined>(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : apFnr ? apFnr : undefined)
   const [_fnrField, setFnrField] = useState<string | undefined>(undefined)
 
   const sedAttachmentSorter = (a: JoarkBrowserItem, b: JoarkBrowserItem): number => {
@@ -91,7 +93,10 @@ const Attachments: React.FC<AttachmentsProps> = ({
     const eFnr = getFnr(replySed, 'ektefelle')
     const aFnr = getFnr(replySed, 'annenPerson')
 
-    setFnr(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : undefined)
+    const andrePersoner = (replySed as F001Sed).andrePersoner
+    const apFnr = andrePersoner && andrePersoner.length > 0 ? getFnr(replySed, 'andrePersoner[0]') : undefined
+
+    setFnr(bFnr ? bFnr : eFnr ? eFnr : aFnr ? aFnr : apFnr ? apFnr : undefined)
   }, [replySed])
 
   const FNRSelectColumn = () => {
@@ -127,9 +132,25 @@ const Attachments: React.FC<AttachmentsProps> = ({
       )
     }
 
+
+    if((replySed as F001Sed).andrePersoner) {
+      (replySed as F001Sed).andrePersoner?.forEach((ap: PersonTypeF001, idx: number) => {
+        const apFnr = getFnr(replySed, 'andrePersoner[' + idx + ']')
+        if (apFnr) {
+          FNRSelectOptions.push(
+            <option selected={_fnr === apFnr} value={apFnr}>
+              {ap.personInfo.fornavn}&nbsp;
+              {ap.personInfo.etternavn}
+            </option>
+          )
+        }
+      });
+    }
+
     if((replySed as F001Sed).barn){
       (replySed as F001Sed).barn?.forEach((b: Barn, idx:number) => {
         const bFnr = getFnr(replySed, 'barn[' + idx + ']')
+
         if(bFnr) {
           FNRSelectOptions.push(
             <option selected={_fnr === bFnr} value={bFnr}>
@@ -138,7 +159,7 @@ const Attachments: React.FC<AttachmentsProps> = ({
             </option>
           )
         }
-      })
+      });
     }
 
     if(FNRSelectOptions.length === 0) return null
@@ -230,12 +251,12 @@ const Attachments: React.FC<AttachmentsProps> = ({
                   <>
                     <span style={{display: 'flex', alignItems: 'center', paddingTop: '1.5rem'}}>evt.</span>
                     <TextField
-                    id='fnr'
-                    label={t('label:fnr')}
-                    hideLabel={false}
-                    onChange={(e) => setFnrField(e.target.value)}
-                    onBlur={(e) => setFnr(e.target.value)}
-                    value={_fnrField}
+                      id='fnr'
+                      label={t('label:fnr')}
+                      hideLabel={false}
+                      onChange={(e) => setFnrField(e.target.value)}
+                      onBlur={(e) => setFnr(e.target.value)}
+                      value={_fnrField}
                     />
                   </>
                 }
