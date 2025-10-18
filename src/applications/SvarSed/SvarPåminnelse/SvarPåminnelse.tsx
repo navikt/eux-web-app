@@ -516,6 +516,13 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   >
                     {_BesvarelseKommer?.beskrivelse}
                   </FormText>
+                  <HorizontalSeparatorDiv />
+                  <FormText
+                    error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
+                    id={_namespace + '-ytterligereinformasjon'}
+                  >
+                    {_BesvarelseKommer?.ytterligereinformasjon}
+                  </FormText>
                 </FlexDiv>
               </Column>
               <AlignEndColumn>
