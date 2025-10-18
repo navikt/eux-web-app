@@ -204,5 +204,8 @@ export const validateSvarPåminnelse = (
     hasErrors.push(validateBesvarelseUmulig(validation, namespace + '-BesvarelseUmulig',
       { dokument, dokumenter: besvarelseUmulig, index, personName, CDM_VERSJON }))
   })
+  if ( (besvarelseKommer === undefined || besvarelseKommer.length === 0) && (besvarelseUmulig === undefined || besvarelseUmulig.length === 0)) {
+    hasErrors.push(true)
+  }
   return hasErrors.find(value => value) !== undefined
 }
