@@ -54,6 +54,22 @@ export default {
     etternavn: "KNOTT",
     kjoenn: "K"
   },
+  annenperson: {
+    fnr: "18066531483",
+    foedselsdato: "1979-06-18",
+    fornavn: "KROKRYGGET",
+    etternavn: "DOTT",
+    kjoenn: "K"
+  },
+  andrepersoner: [
+    {
+      fnr: "19066631483",
+      foedselsdato: "1968-06-18",
+      fornavn: "PUKKELRYGGET",
+      etternavn: "HATT",
+      kjoenn: "M"
+    }
+  ],
   barn: [
     {
       fnr: "15121986016",
