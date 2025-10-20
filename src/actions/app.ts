@@ -160,7 +160,7 @@ export const getCDMVersjon = (): Action => {
   return call({
     url: urls.API_CDMVERSJON_RINA_URL,
     cascadeFailureError: true,
-    expectedPayload: "4.2",
+    expectedPayload: "4.4",
     type: {
       request: types.APP_CDMVERSJON_REQUEST,
       success: types.APP_CDMVERSJON_SUCCESS,
