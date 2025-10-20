@@ -501,8 +501,7 @@ const SEDEdit = (): JSX.Element => {
                 {
                   label: t('el:option-mainform-kontoopplysninger'),
                   value: 'kontoopplysninger',
-                  component: Kontoopplysning,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
+                  component: Kontoopplysning
                 }
               ]}
               replySed={replySed}
