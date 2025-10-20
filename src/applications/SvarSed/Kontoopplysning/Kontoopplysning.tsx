@@ -151,6 +151,27 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     }
   }
 
+  const setSepaBanknavn = (newBanknavn: string) => {
+    dispatch(updateReplySed(`${target}.kontoSepa.banknavn`, newBanknavn.trim()))
+    if (validation[namespace + '-kontoSepa-banknavn']) {
+      dispatch(resetValidation(namespace + '-kontoSepa-banknavn'))
+    }
+  }
+
+  const setSepaKontoeier = (newKontoeier: string) => {
+    dispatch(updateReplySed(`${target}.kontoSepa.kontoeier`, newKontoeier.trim()))
+    if (validation[namespace + '-kontoSepa-kontoeier']) {
+      dispatch(resetValidation(namespace + '-kontoSepa-kontoeier'))
+    }
+  }
+
+  const setSepaBetalingreferanse = (newBetalingsreferanse: string) => {
+    dispatch(updateReplySed(`${target}.kontoSepa.betalingsreferanse`, newBetalingsreferanse.trim()))
+    if (validation[namespace + '-kontoSepa-betalingsreferanse']) {
+      dispatch(resetValidation(namespace + '-kontoSepa-betalingsreferanse'))
+    }
+  }
+
   const emptyKontoopplysninger = () => {
     let uti: UtbetalingTilInstitusjon = {
       begrunnelse: '',
@@ -295,10 +316,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
               />
             </Column>
-            <Column />
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
             <Column flex='2'>
               <Input
                 error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
@@ -309,8 +326,50 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
               />
             </Column>
-            <Column />
           </AlignStartRow>
+          {parseFloat((replySed as F002Sed).sak?.cdmVersjon!) >= 4.4 &&
+            <>
+              <VerticalSeparatorDiv />
+              <AlignStartRow>
+                <Column flex='2'>
+                  <Input
+                    error={validation[namespace + '-kontoSepa-banknavn']?.feilmelding}
+                    id='kontoSepa-banknavn'
+                    label={t('label:bankens-navn')}
+                    namespace={namespace}
+                    onChanged={setSepaBanknavn}
+                    required
+                    value={utbetalingTilInstitusjon?.kontoSepa?.banknavn ?? ''}
+                  />
+                </Column>
+                <Column flex='2'>
+                  <Input
+                    error={validation[namespace + '-kontoSepa-betalingsreferanse']?.feilmelding}
+                    id='kontoSepa-swift'
+                    label={t('label:betalingsreferanse')}
+                    namespace={namespace}
+                    onChanged={setSepaBetalingreferanse}
+                    value={utbetalingTilInstitusjon?.kontoSepa?.betalingsreferanse ?? ''}
+                  />
+                </Column>
+              </AlignStartRow>
+              <VerticalSeparatorDiv />
+              <AlignStartRow>
+                <Column flex='2'>
+                  <Input
+                    error={validation[namespace + '-kontoSepa-kontoeier']?.feilmelding}
+                    id='kontoSepa-kontoeier'
+                    label={t('label:kontoeier')}
+                    namespace={namespace}
+                    onChanged={setSepaKontoeier}
+                    required
+                    value={utbetalingTilInstitusjon?.kontoSepa?.kontoeier ?? ''}
+                  />
+                </Column>
+                <Column flex="2"/>
+              </AlignStartRow>
+            </>
+          }
         </>
       )}
       <VerticalSeparatorDiv />

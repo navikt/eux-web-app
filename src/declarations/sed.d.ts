@@ -394,6 +394,9 @@ export interface KontoOrdinaer {
 export interface KontoSepa {
   swift: string
   iban: string
+  banknavn?: string //CDM4.4
+  kontoeier?: string //CDM4.4
+  betalingsreferanse?: string //CDM4.4
 }
 
 export interface UtbetalingTilInstitusjon extends Institusjon {
