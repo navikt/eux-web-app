@@ -17,10 +17,12 @@ import SearchPersonRelatert from "./SearchPersonRelatert";
 
 export interface FamilieRelasjonerSelector {
   familierelasjonKodeverk: Array<Kodeverk> | undefined
+  cdmVersjon: string | undefined
 }
 
 const mapState = (state: State): FamilieRelasjonerSelector => ({
   familierelasjonKodeverk: state.app.familierelasjoner,
+  cdmVersjon: state.app.cdmVersjon
 })
 
 export interface FamilieRelasjonerProps {
@@ -43,7 +45,8 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
   personMedFamilie, valgteFamilieRelasjonerPDL, valgteFamilieRelasjonerUtland, namespace, validation
 }: FamilieRelasjonerProps): JSX.Element => {
   const {
-    familierelasjonKodeverk
+    familierelasjonKodeverk,
+    cdmVersjon
   }: FamilieRelasjonerSelector = useAppSelector(mapState)
 
   const { t } = useTranslation()
@@ -105,6 +108,15 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     familieRelasjoner.push(annenperson)
   }
 
+  personMedFamilie?.andrepersoner?.forEach((annenPerson) => {
+    annenPerson = {
+      ...annenPerson,
+      __rolle:"ANNEN",
+      __fraPersonMedFamilie:true
+    }
+    familieRelasjoner.push(annenPerson)
+  })
+
   const addRelasjonFromPDL = (relasjon: PersonInfoPDL) => {
     dispatch(addFamilierelasjoner(relasjon))
     setIkkeValgteFamilieRelasjoner(_ikkeValgteFamilieRelasjoner.filter(r => r.fnr !== relasjon.fnr))
@@ -135,8 +147,8 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     if (valgteFamilieRelasjonerPDL?.find((relation: PersonInfoPDL) => relation.__rolle === 'EKTE')) {
       ekskluderteVerdier.push('EKTE')
     }
-    // Det skal kun være mulig å legge til en relasjon av typen annen
-    if (valgteFamilieRelasjonerPDL?.find((relation: PersonInfoPDL) => relation.__rolle === 'ANNEN')) {
+    // Det skal kun være mulig å legge til en relasjon av typen annen CDM 4.3 eller lavere
+    if (cdmVersjon && parseFloat(cdmVersjon) <= 4.3 && valgteFamilieRelasjonerPDL?.find((relation: PersonInfoPDL) => relation.__rolle === 'ANNEN')) {
       ekskluderteVerdier.push('ANNEN')
     }
   }
@@ -146,8 +158,8 @@ const FamilieRelasjoner: React.FC<FamilieRelasjonerProps> = ({
     if (valgteFamilieRelasjonerUtland?.find((relation: PersonInfoUtland) => relation.__rolle === 'EKTE')) {
       ekskluderteVerdier.push('EKTE')
     }
-    // Det skal kun være mulig å legge til en relasjon av typen annen
-    if (valgteFamilieRelasjonerUtland?.find((relation: PersonInfoUtland) => relation.__rolle === 'ANNEN')) {
+    // Det skal kun være mulig å legge til en relasjon av typen annen CDM 4.3 eller lavere
+    if (cdmVersjon && parseFloat(cdmVersjon) <= 4.3 && valgteFamilieRelasjonerUtland?.find((relation: PersonInfoUtland) => relation.__rolle === 'ANNEN')) {
       ekskluderteVerdier.push('ANNEN')
     }
   }
