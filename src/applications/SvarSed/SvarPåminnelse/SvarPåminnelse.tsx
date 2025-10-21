@@ -64,7 +64,6 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const besvarelseUmulig: Array<BesvarelseUmulig> | undefined = _.get(replySed, targetBesvarelseUmulig)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
   const CDM_VERSJON = (replySed as X010Sed).sak?.cdmVersjon
-  console.log("CDM_VERSJON " + CDM_VERSJON)
 
   const getBesvarelseKommerId = (d: BesvarelseKommer | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
   const getBesvarelseUmuligId = (d: BesvarelseUmulig | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
@@ -473,7 +472,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 </Column>
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {CDM_VERSJON === "4.4" &&
+              {(CDM_VERSJON !== '4.1' && CDM_VERSJON !== '4.2' && CDM_VERSJON !== '4.3') &&
                 <AlignStartRow>
                   <Column flex='2'>
                     <TextAreaDiv>
@@ -645,7 +644,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && CDM_VERSJON === '4.4' && (
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (CDM_VERSJON !== '4.1' && CDM_VERSJON !== '4.2' && CDM_VERSJON !== '4.3') && (
                 <AlignStartRow>
                   <Column>
                     <TextAreaDiv>
