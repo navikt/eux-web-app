@@ -238,7 +238,7 @@ const Adresser: React.FC<MainFormProps> = ({
         />
         {_.isEmpty(adresser)
           ? (
-            <Box>
+            <Box id="ingenAdresse">
               <SpacedHr />
               <BodyLong>
                 {t('message:warning-no-address')}
