@@ -205,7 +205,7 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   const getTag = (type: string) => (
     <Tag size='small' variant='info'>
-      {type === 'dekkedePeriode' && t('label:dekkede')}
+      {type === 'dekkedePerioder' && t('label:dekkede')}
       {type === 'udekkedePerioder' && t('label:udekkede')}
     </Tag>
   )
