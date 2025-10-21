@@ -113,8 +113,8 @@ export const validateTrygdeordninger = (
   } : ValidateTrygdeordningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  hasErrors.push(validateTrygdeordning(v, namespace, 'perioderMedITrygdeordning', _.get(replySed, `${personID}.perioderMedITrygdeordning`), personName))
-  hasErrors.push(validateTrygdeordning(v, namespace, 'perioderUtenforTrygdeordning', _.get(replySed, `${personID}.perioderUtenforTrygdeordning`), personName))
+  hasErrors.push(validateTrygdeordning(v, namespace, 'dekkedePerioder', _.get(replySed, `${personID}.dekkedePerioder`), personName))
+  hasErrors.push(validateTrygdeordning(v, namespace, 'udekkedePerioder', _.get(replySed, `${personID}.udekkedePerioder`), personName))
   hasErrors.push(validateTrygdeordning(v, namespace, 'perioderMedYtelser', _.get(replySed, `${personID}.perioderMedYtelser`), personName))
 
 

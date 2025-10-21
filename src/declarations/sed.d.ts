@@ -18,7 +18,7 @@ export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
 export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -270,8 +270,8 @@ export interface PersonTypeBrukerF026 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som dekkedePerioder (F001/F002)
-  perioderUtenforTrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som udekkedePerioder (F001/F002)
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeBrukerF027 extends PersonTypeF {
@@ -281,8 +281,8 @@ export interface PersonTypeBrukerF027 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning ?: Array<Periode>
-  perioderUtenforTrygdeordning ?: Array<Periode>
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeBrukerF003 extends PersonTypeF {
@@ -292,8 +292,8 @@ export interface PersonTypeBrukerF003 extends PersonTypeF {
     typeGrunnAnnen?: string
   } | null
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning?: Array<Periode> | null
-  perioderUtenforTrygdeordning?: Array<Periode> | null
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeEktefelleF003 extends  PersonTypeF {
