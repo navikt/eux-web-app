@@ -24,13 +24,13 @@
         "adresse": "a@nav.no"
       }
     ],
-    "perioderMedITrygdeordning": [
+    "dekkedePerioder": [
       {
         "startdato": "2001-01-01",
         "sluttdato": "2001-01-01"
       }
     ],
-    "perioderUtenforTrygdeordning": [
+    "udekkedePerioder": [
       {
         "startdato": "2001-01-01",
         "sluttdato": "2001-01-01"

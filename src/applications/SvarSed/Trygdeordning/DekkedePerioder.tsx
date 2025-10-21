@@ -73,8 +73,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   useEffect(() => {
     const periodes: Array<Periode> = []
-    person?.perioderMedITrygdeordning?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'perioderMedITrygdeordning' }))
-    person?.perioderUtenforTrygdeordning?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'perioderUtenforTrygdeordning' }))
+    person?.dekkedePerioder?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'dekkedePerioder' }))
+    person?.udekkedePerioder?.forEach((p: Periode, i: number) => periodes.push({ ...p, __index: i, __type: 'udekkedePerioder' }))
     _setAllPeriods(periodes.sort(periodeSort))
   }, [replySed])
 
@@ -202,8 +202,8 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
 
   const getTag = (type: string) => (
     <Tag size='small' variant='info'>
-      {type === 'perioderMedITrygdeordning' && t('label:dekkede')}
-      {type === 'perioderUtenforTrygdeordning' && t('label:udekkede')}
+      {type === 'dekkedePeriode' && t('label:dekkede')}
+      {type === 'udekkedePerioder' && t('label:udekkede')}
     </Tag>
   )
 
@@ -272,10 +272,10 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                     onChange={(newType: string) => setType(newType, index)}
                   >
                     <FlexRadioPanels>
-                      <RadioPanel value='perioderMedITrygdeordning'>
+                      <RadioPanel value='dekkedePerioder'>
                         {t('label:dekkede')}
                       </RadioPanel>
-                      <RadioPanel value='perioderUtenforTrygdeordning'>
+                      <RadioPanel value='udekkedePerioder'>
                         {t('label:udekkede')}
                       </RadioPanel>
                     </FlexRadioPanels>
@@ -343,25 +343,25 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
                 ? _allPeriods?.map(renderRow)
                 : (
                   <>
-                    {!_.isEmpty(person?.perioderMedITrygdeordning) && (
+                    {!_.isEmpty(person?.dekkedePerioder) && (
                       <PaddedDiv>
                         <Label>
                           {t('label:dekkede')}
                         </Label>
                       </PaddedDiv>
                     )}
-                    {person?.perioderMedITrygdeordning?.map((p: Periode, i: number) =>
-                      ({ ...p, __type: 'perioderMedITrygdeordning', __index: i }))
+                    {person?.dekkedePerioder?.map((p: Periode, i: number) =>
+                      ({ ...p, __type: 'dekkedePerioder', __index: i }))
                       .sort(periodeSort).map(renderRow)}
-                    {!_.isEmpty(person?.perioderUtenforTrygdeordning) && (
+                    {!_.isEmpty(person?.udekkedePerioder) && (
                       <PaddedDiv>
                         <Label>
                           {t('label:udekkede')}
                         </Label>
                       </PaddedDiv>
                     )}
-                    {person?.perioderUtenforTrygdeordning?.map((p: Periode, i: number) =>
-                      ({ ...p, __type: 'perioderUtenforTrygdeordning', __index: i }))
+                    {person?.udekkedePerioder?.map((p: Periode, i: number) =>
+                      ({ ...p, __type: 'udekkedePerioder', __index: i }))
                       .sort(periodeSort).map(renderRow)}
                   </>
                   ))}
