@@ -244,11 +244,6 @@ export interface PersonTypeF extends PersonType {
 }
 
 export interface PersonTypeF001 extends PersonTypeF {
-  ikkeRettTilYtelser?: { //CDM 4.3 - IKKE I BRUK?
-    typeGrunn?: string
-    typeGrunnAnnen?: string
-    typeGrunnForVedtak?: string
-  }
   perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA - UTGÅR I CDM 4.4
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
