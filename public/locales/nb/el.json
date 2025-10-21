@@ -60,6 +60,9 @@
   "checkbox-pdu1-6.2.1": "Det er ingen rett til stønad i henhold til landets lovgivning",
   "checkbox-pdu1-6.2.2": "Innehaveren søkte ikke om eksport av dagpenger",
 
+  "option-adresse-anmodning": "Anmodning om adresse",
+  "option-adresse-melding": "Melding om adresse",
+
   "option-avslutting-begrunnelse-01" : "Saken er løst",
   "option-avslutting-begrunnelse-02" : "Saken ble feilaktig opprettet",
   "option-avslutting-begrunnelse-03" : "Saken ble opprettet som følge av falske opplysninger",
@@ -166,6 +169,7 @@
 
   "option-mainform-adresse": "Adresse",
   "option-mainform-adresser": "Adresser",
+  "option-mainform-adresse-h001": "Anmodning om adresse",
   "option-mainform-anmodning": "Anmodning om informasjon",
   "option-mainform-aktivitetogtrygdeperioder": "Aktivitet og trygdeperioder",
   "option-mainform-arbeidsperioder": "Arbeidsperioder",
@@ -337,6 +341,10 @@
   "radio-aktivitet-status-aktiv": "Personen betraktes som aktiv",
   "radio-aktivitet-status-inaktiv": "Personen betraktes som inaktiv",
   "radio-aktivitet-status-ingeninfo": "Ingen informasjon om personens aktivitet",
+
+  "radio-adresse-anmodning-type-bosted": "Bostedsland",
+  "radio-adresse-anmodning-type-opphold": "Oppholdsland",
+  "radio-adresse-anmodning-type-kontakt": "Personens kontaktadresse",
 
   "placeholder-select-default": "Velg...",
   "placeholder-date-default": "DD.MM.ÅÅÅÅ"
