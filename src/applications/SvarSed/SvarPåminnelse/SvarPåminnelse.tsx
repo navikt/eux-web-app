@@ -64,6 +64,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
   const besvarelseUmulig: Array<BesvarelseUmulig> | undefined = _.get(replySed, targetBesvarelseUmulig)
   const namespace = `${parentNamespace}-${personID}-svarpåminnelse`
   const CDM_VERSJON = (replySed as X010Sed).sak?.cdmVersjon
+  const begrunnelseAnnenMaxLength = (CDM_VERSJON === '4.1' || CDM_VERSJON === '4.2' || CDM_VERSJON === '4.3') ? 255 : 500
 
   const getBesvarelseKommerId = (d: BesvarelseKommer | null): string => d ? d.gjelder + '-' + d.beskrivelse + '-' + d.innenDato : 'new'
   const getBesvarelseUmuligId = (d: BesvarelseUmulig | null): string => d ? d.gjelder + '-' + d.begrunnelseType : 'new'
@@ -644,32 +645,14 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                 <Column />
               </AlignStartRow>
               <VerticalSeparatorDiv />
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (CDM_VERSJON !== '4.1' && CDM_VERSJON !== '4.2' && CDM_VERSJON !== '4.3') && (
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                 <AlignStartRow>
                   <Column>
                     <TextAreaDiv>
                       <TextArea
                         error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
                         id='begrunnelseAnnen'
-                        maxLength={500}
-                        label={t('label:begrunnelseAnnen')}
-                        hideLabel
-                        namespace={_namespace}
-                        onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
-                        value={_BesvarelseUmulig?.begrunnelseAnnen}
-                      />
-                    </TextAreaDiv>
-                  </Column>
-                </AlignStartRow>
-              )}
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (CDM_VERSJON === '4.1' || CDM_VERSJON === '4.2' || CDM_VERSJON === '4.3') && (
-                <AlignStartRow>
-                  <Column>
-                    <TextAreaDiv>
-                      <TextArea
-                        error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
-                        id='begrunnelseAnnen'
-                        maxLength={255}
+                        maxLength={begrunnelseAnnenMaxLength}
                         label={t('label:begrunnelseAnnen')}
                         hideLabel
                         namespace={_namespace}
