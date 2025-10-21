@@ -640,7 +640,7 @@ export interface F027Sed extends BaseReplySed {
       annenInformasjonBarnet?: AnnenInformasjonBarnet_V42 | AnnenInformasjonBarnet_V43
       utdanning?: Utdanning
       utdanningsinstitusjon?: UtdanningInstitusjon
-      deltakelsePaaUtdanning: Array<Periode>
+      deltakelsePaaUtdanning?: Array<Periode>
     }
   }
 }
