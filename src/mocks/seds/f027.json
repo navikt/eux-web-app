@@ -243,10 +243,8 @@
       },
       "deltakelsePaaUtdanning": [
         {
-          "periode": {
-            "startdato": "2001-01-01",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
         }
       ]
     }
