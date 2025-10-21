@@ -662,7 +662,7 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                   </Column>
                 </AlignStartRow>
               )}
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && CDM_VERSJON !== '4.4' && (
+              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (CDM_VERSJON === '4.1' || CDM_VERSJON === '4.2' || CDM_VERSJON === '4.3') && (
                 <AlignStartRow>
                   <Column>
                     <TextAreaDiv>
