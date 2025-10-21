@@ -1,4 +1,5 @@
 import { validateAdresser, ValidationAdresserProps } from 'applications/SvarSed/Adresser/validation'
+import { validateAdresserH001, ValidationAdresserH001Props } from 'applications/SvarSed/Adresser/validationH001'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import {
   validateAnmodningsPerioder, validateKrav,
@@ -376,6 +377,10 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       hasErrors.push(performValidation<ValidationEndredeForholdProps>(v, `svarsed-${personID}-endredeforhold`, validateEndredeForhold, {
         replySed,
         personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
+      }, true))
+      hasErrors.push(performValidation<ValidationAdresserH001Props>(v, `svarsed-${personID}-adresser`, validateAdresserH001, {
+        adresser: _.get(replySed, `${personID}.adresser`),
+        adresseTyper: _.get(replySed, `anmodning.adresse.adresseTyper`)
       }, true))
     }
   }

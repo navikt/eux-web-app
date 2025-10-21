@@ -34,6 +34,8 @@ export type BarnEllerFamilie = 'barn' | 'familie'
 
 export type AnmodningSvarType = 'anmodning_om_motregning_per_barn' | 'svar_på_anmodning_om_motregning_per_barn' | 'anmodning_om_motregning_for_hele_familien' | 'svar_på_anmodning_om_motregning_for_hele_familien'
 
+export type AnmodningMeldingType = 'anmodning' | 'melding'
+
 export type GrunnUenighet = 'bosted' | 'medlemsperiode' | 'personligSituasjon'| 'pensjon' | 'oppholdetsVarighet' | 'ansettelse'
 
 export type TypeGrunn = 'oppsagt_av_arbeidsgiver' | 'arbeidstaker_har_sagt_opp_selv' | 'kontrakten_utløpt' |
@@ -368,7 +370,12 @@ export interface H001Svar {
     informasjon: string
     dokument: string
     sed: string
-  }
+  },
+  adresse: AdresseAnmodning
+}
+
+export interface AdresseAnmodning {
+  adresseTyper?: Array<AdresseType>
 }
 
 export interface H002Svar {
@@ -837,6 +844,11 @@ export interface HSed extends BaseReplySed {
 export interface H001Sed extends HSed {
   anmodning?: H001Svar
   ytterligereInfoType?: YtterligereInfoType
+  anmodningOmAdresse?: H001AnmodningOmAdresse
+}
+
+export interface H001AnmodningOmAdresse {
+  adresseTyper?: AdresseType
 }
 
 export interface H002Sed extends HSed {
