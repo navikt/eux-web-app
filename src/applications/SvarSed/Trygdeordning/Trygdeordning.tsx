@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import {Box, Heading, VStack} from '@navikt/ds-react'
 import { PaddedDiv } from '@navikt/hoykontrast'
 import { setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -11,8 +11,9 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import { ReplySed } from 'declarations/sed'
+import {F001Sed, F027Sed, ReplySed} from 'declarations/sed'
 import RettTilYtelserFSED from '../RettTilYtelserFSED/RettTilYtelserFSED'
+import PerioderMedRettTilYtelser from "../PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -30,6 +31,8 @@ const Trygdeordning: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
+
+  const cdmVersion=(replySed as F027Sed).sak?.cdmVersjon
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -60,14 +63,26 @@ const Trygdeordning: React.FC<MainFormProps> = ({
         setReplySed={setReplySed}
         validation={validation}
       />
-      <RettTilYtelserFSED
-        parentNamespace={namespace}
-        personID={personID}
-        personName={personName}
-        replySed={replySed}
-        updateReplySed={updateReplySed}
-        setReplySed={setReplySed}
-      />
+      {!cdmVersion || parseFloat(cdmVersion) <= 4.3 &&
+        <RettTilYtelserFSED
+          parentNamespace={namespace}
+          personID={personID}
+          personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
+        />
+      }
+      {cdmVersion && parseFloat(cdmVersion) >= 4.4 &&
+        <PerioderMedRettTilYtelser
+          parentNamespace={namespace}
+          personID={personID}
+          personName={personName}
+          replySed={replySed}
+          updateReplySed={updateReplySed}
+          setReplySed={setReplySed}
+        />
+      }
     </>
   )
 }
