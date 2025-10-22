@@ -121,6 +121,7 @@ import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetOgTrygdeperioder";
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
 import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
+import PerioderMedRettTilYtelser from "../../applications/SvarSed/PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -431,7 +432,8 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) >= 4.4 },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
-                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true },
+                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) <= 4.3 },
+                { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) >= 4.4 },
                 { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
                 { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
                 { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },

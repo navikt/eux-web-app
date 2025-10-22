@@ -271,7 +271,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
     <>
       <PaddedDiv>
         <Heading size='small'>
-          Rett til ytelser
+          {t('label:rett-til-ytelser')}
         </Heading>
         <VerticalSeparatorDiv size='2' />
         <Row>
@@ -282,7 +282,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
               data-testid={namespace + '-rettTilFamilieYtelser'}
               error={validation[namespace + '-rettTilFamilieYtelser']?.feilmelding}
               id={namespace + '-rettTilFamilieYtelser'}
-              legend={t('label:rett-til-familieytelser')}
+              legend={t('label:har-personen-rett-til-familieytelser')}
               name={namespace + '-rettTilFamilieYtelser'}
               onChange={(e: string) => setRettTilFamilieYtelser(e as JaNei)}
             >

@@ -243,6 +243,17 @@ export interface PersonTypeF extends PersonType {
   telefon?: Array<Telefon>
 }
 
+export interface PeriodeMedGrunn {
+  periode: Periode
+  typeGrunn?: string
+  annenGrunn?: string
+}
+
+export interface RettIkkeRettTilFamilieYtelse {
+  rettTilFamilieytelser?: Array<PeriodePeriode>,
+  ikkeRettTilFamilieytelser?: Array<PeriodeMedGrunn>
+}
+
 export interface PersonTypeF001 extends PersonTypeF {
   perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA - UTGÅR I CDM 4.4
   familierelasjoner ?: Array<FamilieRelasjon>
@@ -253,12 +264,7 @@ export interface PersonTypeF001 extends PersonTypeF {
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
   perioderMedRettTilFamilieytelser?: Array<Periode> //CDM 4.3
-  perioderMedRettTilYtelser?: [  //CDM 4.4
-    {
-      rettTilFamilieytelser?: Array<Periode>,
-      ikkeRettTilFamilieytelser?: Array<Periode>
-    }
-  ]
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
@@ -270,6 +276,7 @@ export interface PersonTypeBrukerF026 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
@@ -281,6 +288,7 @@ export interface PersonTypeBrukerF027 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
@@ -292,6 +300,7 @@ export interface PersonTypeBrukerF003 extends PersonTypeF {
     typeGrunnAnnen?: string
   } | null
   perioderMedYtelser?: Array<Periode> | null
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
