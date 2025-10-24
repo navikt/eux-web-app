@@ -260,8 +260,8 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
                 </VStack>
               )
             : (
-              <VStack>
-                <HStack gap="4" align="center">
+              <VStack width="100%">
+                <HStack gap="4" align="center" wrap={true}>
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-startdato']?.feilmelding,
