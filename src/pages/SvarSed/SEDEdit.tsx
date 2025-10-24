@@ -121,6 +121,7 @@ import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTry
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
 import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
 import PerioderMedRettTilYtelser from "../../applications/SvarSed/PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
+import {getCDMVersjon} from "../../actions/app";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -140,6 +141,7 @@ export interface SEDEditSelector {
   textAreaDirty: boolean
   textFieldDirty: boolean
   deselectedMenu: string | undefined
+  cdmVersjon: string | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -159,7 +161,8 @@ const mapState = (state: State): SEDEditSelector => ({
   attachmentRemoved: state.svarsed.attachmentRemoved,
   textAreaDirty: state.ui.textAreaDirty,
   textFieldDirty: state.ui.textFieldDirty,
-  deselectedMenu: state.svarsed.deselectedMenu
+  deselectedMenu: state.svarsed.deselectedMenu,
+  cdmVersjon: state.app.cdmVersjon
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -184,10 +187,12 @@ const SEDEdit = (): JSX.Element => {
     setVedleggSensitiv,
     textAreaDirty,
     textFieldDirty,
-    deselectedMenu
+    deselectedMenu,
+    cdmVersjon
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
+  const CDM_VERSJON: number = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : parseFloat(cdmVersjon!)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
@@ -425,12 +430,12 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
                 { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
-                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) <= 4.3 },
-                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) >= 4.4 },
+                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },
+                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON >= 4.4 },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
-                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) <= 4.3 },
-                { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => parseFloat(replySed.sak?.cdmVersjon!) >= 4.4 },
+                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => CDM_VERSJON <= 4.3 },
+                { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => CDM_VERSJON >= 4.4 },
                 { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
                 { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
                 { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
@@ -571,26 +576,26 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'adopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
                 {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'inntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
 
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'barnet-aktivitet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'aktivitet'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'barnet-skole', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'skole'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'barnet-opplaering', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'opplaering'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'barnet-ufoerhet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ufoerhet'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'barnet-arbeidsledighet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'arbeidsledighet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'barnet-ytelser', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ytelser'}},
 
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'dagligOmsorg', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'dagligOmsorg'}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'foreldreansvar'}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['anneninformasjonbarnet']},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'ytterligereInformasjon', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'ytterligereInformasjon'}},
 
