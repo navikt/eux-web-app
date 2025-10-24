@@ -65,7 +65,7 @@ export const validateRelasjoner = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
-  if(CDM_VERSJON === "4.3"){
+  if(parseFloat(CDM_VERSJON) >= 4.3){
     const relasjoner = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.annenPerson?.relasjoner
     relasjoner?.forEach((relasjon: RelasjonAnnenPerson, index: number) => {
       hasErrors.push(validateRelasjon(validation, namespace, {

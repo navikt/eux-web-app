@@ -72,7 +72,7 @@ const IdentifiseringAvDenAvdoede: React.FC<MainFormProps> = ({
             </TextAreaDiv>
           </Box>
         }
-        {CDM_VERSJON === "4.3" &&
+        {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <Box padding="0" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <PersonOpplysninger
               label={"Personopplysninger"}
