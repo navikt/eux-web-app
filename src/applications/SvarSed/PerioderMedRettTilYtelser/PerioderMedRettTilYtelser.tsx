@@ -7,6 +7,7 @@ import PeriodePerioder from "../AktivitetOgTrygdeperioder/PeriodePerioder/Period
 import {useTranslation} from "react-i18next";
 import {RettIkkeRettTilFamilieYtelse} from "../../../declarations/sed";
 import _ from "lodash";
+import PerioderMedGrunn from "./PerioderMedGrunn/PerioderMedGrunn";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -96,13 +97,13 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
             checked={_rettTilFamilieytelser}
             onChange= {(e: React.ChangeEvent<HTMLInputElement>) => setRettTilFamilieytelser(e.target.checked)}
           >
-            {t('label:rett-til-familieytelser')} ({_rettTilFamilieytelserIndex})
+            {t('label:rett-til-familieytelser')}
           </Checkbox>
           <Checkbox
             checked={_ikkeRettTilFamilieytelser}
             onChange= {(e: React.ChangeEvent<HTMLInputElement>) => setIkkeRettTilFamilieytelser(e.target.checked)}
           >
-            {t('label:ikke-rett-til-familieytelser')} ({_ikkeRettTilFamilieytelserIndex})
+            {t('label:ikke-rett-til-familieytelser')}
           </Checkbox>
         </HStack>
       </Box>
@@ -119,10 +120,6 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
             replySed={replySed}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
-            options={{
-              periodeType: "simple",
-              requiredSluttDato: true
-            }}
           />
         </Box>
       }
@@ -131,9 +128,7 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
           <Heading size='xsmall'>
             {t('label:perioder-uten-rett-til-familieytelser')}
           </Heading>
-
-          {/** CREATE NEW COMPONENT FOR IKKE RETT TIL FAMILIE YTELSER**/}
-          <PeriodePerioder
+          <PerioderMedGrunn
             parentNamespace={parentNamespace + '-periodermedikkeretttilfamilieytelser'}
             parentTarget={"perioderMedRettTilYtelser[" + _ikkeRettTilFamilieytelserIndex + "].ikkeRettTilFamilieytelser"}
             personID={personID}
@@ -141,10 +136,6 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
             replySed={replySed}
             updateReplySed={updateReplySed}
             setReplySed={setReplySed}
-            options={{
-              periodeType: "simple",
-              requiredSluttDato: true
-            }}
           />
         </Box>
       }
