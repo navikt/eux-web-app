@@ -8,7 +8,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import {PensjonPeriode, Periode, PeriodePeriode} from 'declarations/sed'
+import {Periode, PeriodePeriode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -59,14 +59,14 @@ const PeriodePerioder: React.FC<PerioderProps> = ({
       _setNewPeriodePeriode({
         ..._newPeriodePeriode,
         periode
-      } as PensjonPeriode)
+      } as PeriodePeriode)
       _resetValidation(namespace)
       return
     }
     _setEditPeriodePeriode({
       ..._editPeriodePeriode,
       periode
-    } as PensjonPeriode)
+    } as PeriodePeriode)
     dispatch(resetValidation(namespace + getIdx(index)))
   }
 
