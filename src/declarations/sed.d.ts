@@ -837,7 +837,12 @@ export interface HSed extends BaseReplySed {
 export interface H001Sed extends HSed {
   anmodning?: H001Svar
   ytterligereInfoType?: YtterligereInfoType
+//  anmodningOmAdresse?: H001AnmodningOmAdresse
 }
+
+//export interface H001AnmodningOmAdresse {
+//  adresseType?: AdresseType
+//}
 
 export interface H002Sed extends HSed {
   vedlagteDokumenttyper: {
