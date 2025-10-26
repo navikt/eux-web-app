@@ -370,7 +370,14 @@ export interface H001Svar {
     informasjon: string
     dokument: string
     sed: string
-  }
+  },
+  adresse: AdresseAnmodning
+}
+
+export interface AdresseAnmodning {
+  anmodningMeldingType?: AnmodningMeldingType
+  adresseType?: AdresseType
+
 }
 
 export interface H002Svar {

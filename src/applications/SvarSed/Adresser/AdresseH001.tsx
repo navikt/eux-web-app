@@ -3,13 +3,13 @@ import {MainFormProps, MainFormSelector} from "../MainForm";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
-import {H001AnmodningOmAdresse} from "../../../declarations/sed";
 import {setValidation} from "../../../actions/validation";
 import {Box, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
 import Adresser from "./Adresser";
 import {setReplySed} from "../../../actions/svarsed";
+import {AdresseAnmodning} from "../../../declarations/sed";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -28,10 +28,10 @@ const AdresseH001: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-adresseH001`
-  const target = 'anmodningOmAdresse'
+  const target = 'anmodning.adresse'
   const targetAdresser = `${personID}.adresser`
 
-  const anmodningOmAdresse: H001AnmodningOmAdresse | undefined = _.get(replySed, target)
+  const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -65,7 +65,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                 <VStack gap="4">
                   <RadioGroup
                     legend={t('label:personens-status')}
-                    value={anmodningOmAdresse?.anmodningMeldingType ?? 'melding'}
+                    value={adresseAnmodning?.anmodningMeldingType ?? 'melding'}
                     error={validation[namespace + '-aktivitet-status']?.feilmelding}
                     id={namespace + '-aktivitet-status'}
                     name={namespace + '-aktivitet-status'}
@@ -78,7 +78,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                       {t('el:option-adresse-anmodning')}
                     </Radio>
                   </RadioGroup>
-                  {((anmodningOmAdresse?.anmodningMeldingType ?? 'melding') === 'melding') &&
+                  {((adresseAnmodning?.anmodningMeldingType ?? 'melding') === 'melding') &&
                     <Adresser
                       parentNamespace={parentNamespace}
                       personID={personID}
@@ -89,13 +89,13 @@ const AdresseH001: React.FC<MainFormProps> = ({
                       setReplySed={setReplySed}
                     />
                   }
-                  {((anmodningOmAdresse?.anmodningMeldingType ?? 'melding') === 'anmodning') &&
+                  {((adresseAnmodning?.anmodningMeldingType ?? 'melding') === 'anmodning') &&
                     <RadioGroup
                       legend={t('label:anmodning-om-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
                       id={namespace + '-anmodning-type'}
                       name={namespace + '-anmodning-type'}
-                      value={anmodningOmAdresse?.adresseType ?? ''}
+                      value={adresseAnmodning?.adresseType ?? ''}
                       onChange={(value) => onAdressetypeChange(value)}
                     >
                       <HStack gap="4">
