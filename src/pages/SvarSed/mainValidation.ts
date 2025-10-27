@@ -144,10 +144,23 @@ import {
 } from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
+import {State} from "../../declarations/reducers";
+import {useAppSelector} from "../../store";
+
+
+export interface MainValidationSelector {
+  cdmVersjon: string | undefined
+}
+
+const mapState = (state: State): MainValidationSelector => ({
+  cdmVersjon: state.app.cdmVersjon
+})
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
 }
+
+const {cdmVersjon} = useAppSelector(mapState)
 
 export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolean => {
   const hasErrors: Array<boolean> = []
@@ -203,7 +216,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
-  const CDM_VERSJON = replySed.sak?.cdmVersjon
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : parseFloat(cdmVersjon!)
   const personInfo: PersonInfo =
     isXSed(replySed)
       ? _.get(replySed, 'bruker')
@@ -247,7 +260,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
         if(isF001Sed(replySed) || isF002Sed(replySed)){
           const person: PersonTypeF001 = _.get(replySed, `${personID}`)
-          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
             hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetstatusogtrygdeperioder`, validateAktivitetStatusOgTrygdeperioder, {
               person, personName
             }, true))
@@ -260,7 +273,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
         if(isF026Sed(replySed) || isF027Sed(replySed)){
 
-          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
             hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'dekkedePerioder', _.get(replySed, `${personID}.dekkedePerioder`), personName))
             hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'udekkedePerioder', _.get(replySed, `${personID}.udekkedePerioder`), personName))
 
@@ -288,7 +301,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
             replySed, personName
           }, true))
 
-          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
             const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, `${personID}.perioderMedRettTilYtelser`)
             hasErrors.push(performValidation<ValidationPerioderMedRettTilYtelserProps>(v, `svarsed-${personID}-periodermedretttilytelser`, validatePerioderMedRettTilYtelser, {
               perioderMedRettTilYtelser
