@@ -62,7 +62,7 @@ import {
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import { validateSvarPåminnelse, ValidationSvarPåminnelseProps } from 'applications/SvarSed/SvarPåminnelse/validation'
-import { validateTrygdeordninger, ValidateTrygdeordningerProps } from 'applications/SvarSed/Trygdeordning/validation'
+import {validateTrygdeordning, validateTrygdeordninger, ValidateTrygdeordningerProps} from 'applications/SvarSed/Trygdeordning/validation'
 import { validateUgyldiggjøre, ValidationUgyldiggjøreProps } from 'applications/SvarSed/Ugyldiggjøre/validation'
 import { validateVedtak, ValidationVedtakProps } from 'applications/SvarSed/Vedtak/validation'
 import {
@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003
+  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -143,6 +143,7 @@ import {
   ValidateAktivitetOgTrygdeperioderProps,
 } from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
+import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -202,6 +203,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
+  const CDM_VERSJON = replySed.sak?.cdmVersjon
   const personInfo: PersonInfo =
     isXSed(replySed)
       ? _.get(replySed, 'bruker')
@@ -245,8 +247,6 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
         if(isF001Sed(replySed) || isF002Sed(replySed)){
           const person: PersonTypeF001 = _.get(replySed, `${personID}`)
-          const CDM_VERSJON = replySed.sak?.cdmVersjon
-
           if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
             hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetstatusogtrygdeperioder`, validateAktivitetStatusOgTrygdeperioder, {
               person, personName
@@ -258,10 +258,22 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
           }
         }
 
-        if(isF026Sed(replySed)){
-          hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
-            replySed, personID, personName
-          }, true))
+        if(isF026Sed(replySed) || isF027Sed(replySed)){
+
+          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+            hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'dekkedePerioder', _.get(replySed, `${personID}.dekkedePerioder`), personName))
+            hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'udekkedePerioder', _.get(replySed, `${personID}.udekkedePerioder`), personName))
+
+            const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, `${personID}.perioderMedRettTilYtelser`)
+            hasErrors.push(performValidation<ValidationPerioderMedRettTilYtelserProps>(v, `svarsed-${personID}-trygdeordning`, validatePerioderMedRettTilYtelser, {
+              perioderMedRettTilYtelser
+            }, true))
+
+          } else {
+            hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
+              replySed, personID, personName
+            }, true))
+          }
         }
 
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
@@ -276,18 +288,25 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
             replySed, personName
           }, true))
 
-          // Trygdeordning
-          const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
-          const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
-          let rettTilFamilieYtelser;
-          if(perioderMedYtelser && perioderMedYtelser.length >= 0){
-            rettTilFamilieYtelser = "ja"
-          } else if(ikkeRettTilYtelser){
-            rettTilFamilieYtelser = "nei"
+          if(CDM_VERSJON && parseFloat(CDM_VERSJON) >= 4.4){
+            const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, `${personID}.perioderMedRettTilYtelser`)
+            hasErrors.push(performValidation<ValidationPerioderMedRettTilYtelserProps>(v, `svarsed-${personID}-periodermedretttilytelser`, validatePerioderMedRettTilYtelser, {
+              perioderMedRettTilYtelser
+            }, true))
+          } else {
+            // Trygdeordning
+            const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+            const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
+            let rettTilFamilieYtelser;
+            if(perioderMedYtelser && perioderMedYtelser.length >= 0){
+              rettTilFamilieYtelser = "ja"
+            } else if(ikkeRettTilYtelser){
+              rettTilFamilieYtelser = "nei"
+            }
+            hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
+              perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
+            }, true))
           }
-          hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
-            perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
-          }, true))
 
           //Familierelasjon Annen Person
           const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)

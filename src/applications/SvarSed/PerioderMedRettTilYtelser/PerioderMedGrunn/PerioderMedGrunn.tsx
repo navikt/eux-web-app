@@ -8,7 +8,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
-import {AnnenInformasjonBarnet_V43, Periode, PeriodeMedGrunn} from 'declarations/sed'
+import { Periode, PeriodeMedGrunn} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -20,7 +20,6 @@ import performValidation from 'utils/performValidation'
 import { periodePeriodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validatePeriodeMedGrunn, ValidationPeriodeMedGrunnProps } from './validation'
-import {RadioPanel} from "@navikt/hoykontrast";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -161,7 +160,6 @@ const PerioderMedGrunn: React.FC<PerioderMedGrunnProps> = ({
       personName
     })
 
-    console.log(_validation)
     if (!!_newPeriodeMedGrunn && valid) {
       let newPeriodeMedGrunn: Array<PeriodeMedGrunn> | undefined = _.cloneDeep(perioder)
       if (_.isNil(newPeriodeMedGrunn)) {

@@ -8,6 +8,11 @@ import {useTranslation} from "react-i18next";
 import {RettIkkeRettTilFamilieYtelse} from "../../../declarations/sed";
 import _ from "lodash";
 import PerioderMedGrunn from "./PerioderMedGrunn/PerioderMedGrunn";
+import useUnmount from "../../../hooks/useUnmount";
+import performValidation from "../../../utils/performValidation";
+import {setValidation} from "../../../actions/validation";
+import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "./validation";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -25,6 +30,11 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
+  let namespace = `${parentNamespace}-${personID}-periodermedretttilytelser`
+  if(personID && parentNamespace.indexOf(personID)>0){
+    namespace = `${parentNamespace}`
+  }
+
   const target: string = `${personID}.perioderMedRettTilYtelser`
   const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, target)
 
@@ -33,6 +43,16 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
 
   const [_rettTilFamilieytelser, _setRettTilFamilieytelser] = useState<boolean>(false)
   const [_ikkeRettTilFamilieytelser, _setIkkeRettTilFamilieytelser] = useState<boolean>(false)
+
+  useUnmount(() => {
+    const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationPerioderMedRettTilYtelserProps>(
+      clonedValidation, namespace, validatePerioderMedRettTilYtelser, {
+        perioderMedRettTilYtelser,
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+  })
 
 
   useEffect(() => {
@@ -108,36 +128,53 @@ const PerioderMedRettTilYtelser: React.FC<MainFormProps> = ({
         </HStack>
       </Box>
       {_rettTilFamilieytelser &&
-        <Box padding="4" borderWidth="1" borderColor="border-subtle">
-          <Heading size='xsmall'>
-            {t('label:perioder-med-rett-til-familieytelser')}
-          </Heading>
-          <PeriodePerioder
-            parentNamespace={parentNamespace + '-periodermedretttilfamilieytelser'}
-            parentTarget={"perioderMedRettTilYtelser[" + _rettTilFamilieytelserIndex + "].rettTilFamilieytelser"}
-            personID={personID}
-            personName={personName}
-            replySed={replySed}
-            updateReplySed={updateReplySed}
-            setReplySed={setReplySed}
-          />
-        </Box>
+        <>
+          <Box
+            padding="4"
+            borderWidth={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding ? '2' : '1'}
+            borderColor={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding ? 'border-danger' : 'border-subtle'}
+            id={namespace + '-periodermedretttilfamilieytelser'}
+          >
+            <Heading size='xsmall'>
+              {t('label:perioder-med-rett-til-familieytelser')}
+            </Heading>
+            <PeriodePerioder
+              parentNamespace={namespace + '-periodermedretttilfamilieytelser'}
+              parentTarget={"perioderMedRettTilYtelser[" + _rettTilFamilieytelserIndex + "].rettTilFamilieytelser"}
+              personID={personID}
+              personName={personName}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+          </Box>
+          <ErrorLabel error={validation[namespace + '-periodermedretttilfamilieytelser']?.feilmelding}/>
+        </>
       }
       {_ikkeRettTilFamilieytelser &&
-        <Box padding="4" borderWidth="1" borderColor="border-subtle">
-          <Heading size='xsmall'>
-            {t('label:perioder-uten-rett-til-familieytelser')}
-          </Heading>
-          <PerioderMedGrunn
-            parentNamespace={parentNamespace + '-periodermedikkeretttilfamilieytelser'}
-            parentTarget={"perioderMedRettTilYtelser[" + _ikkeRettTilFamilieytelserIndex + "].ikkeRettTilFamilieytelser"}
-            personID={personID}
-            personName={personName}
-            replySed={replySed}
-            updateReplySed={updateReplySed}
-            setReplySed={setReplySed}
-          />
-        </Box>
+        <>
+          <Box
+            padding="4"
+            borderWidth={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding ? '2' : '1'}
+            borderColor={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding ? 'border-danger' : 'border-subtle'}
+            id={namespace + '-periodermedikkeretttilfamilieytelser'}
+          >
+
+            <Heading size='xsmall'>
+              {t('label:perioder-uten-rett-til-familieytelser')}
+            </Heading>
+            <PerioderMedGrunn
+              parentNamespace={namespace + '-periodermedikkeretttilfamilieytelser'}
+              parentTarget={"perioderMedRettTilYtelser[" + _ikkeRettTilFamilieytelserIndex + "].ikkeRettTilFamilieytelser"}
+              personID={personID}
+              personName={personName}
+              replySed={replySed}
+              updateReplySed={updateReplySed}
+              setReplySed={setReplySed}
+            />
+          </Box>
+          <ErrorLabel error={validation[namespace + '-periodermedikkeretttilfamilieytelser']?.feilmelding}/>
+        </>
       }
     </VStack>
   )
