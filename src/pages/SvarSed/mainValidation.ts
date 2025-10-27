@@ -144,23 +144,11 @@ import {
 } from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
-import {State} from "../../declarations/reducers";
 import {useAppSelector} from "../../store";
-
-
-export interface MainValidationSelector {
-  cdmVersjon: string | undefined
-}
-
-const mapState = (state: State): MainValidationSelector => ({
-  cdmVersjon: state.app.cdmVersjon
-})
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
 }
-
-const {cdmVersjon} = useAppSelector(mapState)
 
 export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolean => {
   const hasErrors: Array<boolean> = []
@@ -216,7 +204,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
-  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : parseFloat(cdmVersjon!)
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
   const personInfo: PersonInfo =
     isXSed(replySed)
       ? _.get(replySed, 'bruker')
