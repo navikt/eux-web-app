@@ -64,11 +64,11 @@ const AdresseH001: React.FC<MainFormProps> = ({
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">
                   <RadioGroup
-                    legend={t('label:personens-status')}
+                    legend={t('label:anmodning-melding-om-adresse')}
                     value={adresseAnmodning?.anmodningMeldingType ?? 'melding'}
-                    error={validation[namespace + '-aktivitet-status']?.feilmelding}
-                    id={namespace + '-aktivitet-status'}
-                    name={namespace + '-aktivitet-status'}
+                    error={validation[namespace + '-anmodning-melding-type']?.feilmelding}
+                    id={namespace + '-anmodning-melding-type'}
+                    name={namespace + '-anmodning-melding-type'}
                     onChange={(value) => onAnmodningMeldingChange(value)}
                   >
                     <Radio value='melding'>
