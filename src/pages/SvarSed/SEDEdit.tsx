@@ -121,7 +121,6 @@ import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTry
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
 import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
 import PerioderMedRettTilYtelser from "../../applications/SvarSed/PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
-import {getCDMVersjon} from "../../actions/app";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -199,14 +198,7 @@ const SEDEdit = (): JSX.Element => {
   const showAttachments: boolean = !isXSed(replySed)
 
   const showMainForm = (): boolean => isSed(replySed)
-  const showBottomForm = (): boolean =>
-    isFSed(replySed) && (
-      (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
-    )
+  const showBottomForm = (): boolean => isFSed(replySed)
 
   const saveReplySed = (e: any): void => {
     if (replySed) {
