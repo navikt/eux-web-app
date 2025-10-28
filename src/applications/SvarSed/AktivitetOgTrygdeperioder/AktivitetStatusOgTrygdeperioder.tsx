@@ -13,7 +13,6 @@ import Ansatt from "./Ansatt/Ansatt";
 import TransferPerioderModal from "./TransferPerioderModal/TransferPerioderModal";
 import {periodeSort} from "../../../utils/sort";
 import AddRemove from "../../../components/AddRemovePanel/AddRemove";
-import TextArea from "../../../components/Forms/TextArea";
 import {resetValidation, setValidation} from "../../../actions/validation";
 import PerioderMedPensjon from "./PerioderMedPensjon/PerioderMedPensjon";
 import useUnmount from "../../../hooks/useUnmount";
@@ -39,9 +38,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
   const {validation} = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-aktivitetstatusogtrygdeperioder`
-
-  const targetYtterligereInfo = `${personID}.ytterligereInfo`
-  const ytterligereInfo: string | undefined = _.get(replySed, targetYtterligereInfo)
 
   const targetAktivitetStatuser = `${personID}.aktivitetStatuser`
   const aktivitetStatuser: Array<AktivitetStatus> | undefined = _.get(replySed, targetAktivitetStatuser)
@@ -102,13 +98,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
       return transferToTrygdeperioderPeriods.flat(1).sort(periodeSort)
     }
     return []
-  }
-
-  const setYtterligereInfo = (ytterligereInfo: string) => {
-    dispatch(updateReplySed(`${targetYtterligereInfo}`, ytterligereInfo))
-    if (validation[namespace + '-ytterligereInfo']) {
-      dispatch(resetValidation(namespace + '-ytterligereInfo'))
-    }
   }
 
   const addStatus = () => {
@@ -275,7 +264,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
     if(status === "aktiv"){
       return (
         <RadioGroup
-          legend={t('label:arbeidsforhold-type')}
+          legend="Type aktivitet"
           hideLegend={hideLegend}
           value={_selectedActivityType}
           error={validation[namespace + '-aktivitet-type']?.feilmelding}
@@ -565,7 +554,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           let typeLabel
                           if(aktivitetStatus.status === "aktiv"){
                             title = t('label:ansettelsesperioder')
-                            typeLabel = "Type arbeidsforhold"
+                            typeLabel = "Type aktivitet"
                             type = t('label:aktivitet-type-' + aktivitet.type)
                           }
 
@@ -576,19 +565,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
 
                           return (
                             <VStack width="100%">
-                              {aktivitetStatus.status !== "ingenInfo" &&
-                                <HStack paddingBlock="0 1" paddingInline="0">
-                                  <AddRemove<Aktivitet>
-                                    item={aktivitet}
-                                    index={idx}
-                                    onRemove={() => deleteActivity(idx, aktivitetIdx)}
-                                    allowEdit={false}
-                                    labels={{remove: "Fjern aktivitet"}}
-                                    alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
-                                  />
-                                  <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
-                                </HStack>
-                              }
                               <Box
                                 padding="4"
                                 borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? '2' : '1'}
@@ -598,7 +574,7 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                 <VStack gap="4" width="100%">
                                   {aktivitetStatus.status !== "ingenInfo" &&
                                     <VStack>
-                                      <HStack gap="4" width="100%" align="start">
+                                      <HStack gap="4" width="100%" align="center">
                                         {typeLabel && <Label>{typeLabel}:</Label>}
                                         <Button
                                           variant='tertiary'
@@ -670,6 +646,20 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                                     <Alert  variant="info" size="small">
                                       {t('message:info-trygdeperioder-maa-overfoeres-paa-nytt-ved-endring-av-perioder')}
                                     </Alert>
+                                  }
+                                  {aktivitetStatus.status !== "ingenInfo" &&
+                                    <HStack width="100%">
+                                      <Spacer/>
+                                      <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                                      <AddRemove<Aktivitet>
+                                        item={aktivitet}
+                                        index={idx}
+                                        onRemove={() => deleteActivity(idx, aktivitetIdx)}
+                                        allowEdit={false}
+                                        labels={{remove: "Fjern aktivitet"}}
+                                        alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
+                                      />
+                                    </HStack>
                                   }
                                 </VStack>
                               </Box>
