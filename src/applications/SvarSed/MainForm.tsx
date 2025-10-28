@@ -1,5 +1,8 @@
 import {
   PlusCircleIcon,
+  PersonIcon,
+  PersonGroupIcon,
+  PersonPlusIcon,
   ChildEyesIcon,
   MenuElipsisHorizontalCircleIcon,
   XMarkOctagonFillIcon,
@@ -491,17 +494,29 @@ const MainForm = <T extends StorageTypes>({
               <MenuLabelText>
                 {personName}
               </MenuLabelText>
-              <HorizontalSeparatorDiv size='0.5' />
-              {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
-                <LandSpan>
-                  {' (' + (personInfo?.statsborgerskap?.map(s => s.landkode)?.join(', ') ?? '-') + ')'}
-                </LandSpan>
-              )}
             </>
-            {personId.startsWith('barn[') && (
+            {personId.startsWith('bruker') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <ChildEyesIcon />
+                <PersonIcon title="Søker"/>
+              </>
+            )}
+            {personId.startsWith('ektefelle') && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <PersonGroupIcon title="Ektefelle"/>
+              </>
+            )}
+            {(personId.startsWith('andrePersoner') || personId.startsWith('annenPerson')) && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <PersonPlusIcon title="Annen person"/>
+              </>
+            )}
+            {personId.startsWith('barn') && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <ChildEyesIcon title="Barn"/>
               </>
             )}
           </NameLabelDiv>
