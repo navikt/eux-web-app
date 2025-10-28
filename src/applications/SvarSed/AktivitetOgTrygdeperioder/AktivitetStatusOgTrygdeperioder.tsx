@@ -576,17 +576,19 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
 
                           return (
                             <VStack width="100%">
-                              <HStack paddingBlock="0 1" paddingInline="0">
-                                <AddRemove<Aktivitet>
-                                  item={aktivitet}
-                                  index={idx}
-                                  onRemove={() => deleteActivity(idx, aktivitetIdx)}
-                                  allowEdit={false}
-                                  labels={{remove: "Fjern aktivitet"}}
-                                  alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
-                                />
-                                <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
-                              </HStack>
+                              {aktivitetStatus.status !== "ingenInfo" &&
+                                <HStack paddingBlock="0 1" paddingInline="0">
+                                  <AddRemove<Aktivitet>
+                                    item={aktivitet}
+                                    index={idx}
+                                    onRemove={() => deleteActivity(idx, aktivitetIdx)}
+                                    allowEdit={false}
+                                    labels={{remove: "Fjern aktivitet"}}
+                                    alertOnDelete={hasTransferedPeriods() ? t('message:info-trygdeperioder-maa-overfoeres-paa-nytt') : undefined}
+                                  />
+                                  <div className="navds-button--small" style={{minHeight:"2.8rem"}}/> {/* Prevent height flicker on hover */}
+                                </HStack>
+                              }
                               <Box
                                 padding="4"
                                 borderWidth={validation[namespace + '-aktivitetStatus-' + idx + '-aktiviteter-' + aktivitetIdx + '-perioder']?.feilmelding ? '2' : '1'}
@@ -680,20 +682,6 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                   )
                 })}
               </Tabs>
-            </VStack>
-          </Box>
-          <Box padding="4" borderWidth="1" borderColor="border-subtle" background="surface-default">
-            <VStack gap="4">
-              <Heading size={"small"}>{t('label:ytterligere-informasjon')}</Heading>
-              <TextArea
-                namespace={namespace}
-                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon')}
-                hideLabel={true}
-                onChanged={setYtterligereInfo}
-                value={ytterligereInfo}
-              />
             </VStack>
           </Box>
           {hasTransferedPeriods() &&
