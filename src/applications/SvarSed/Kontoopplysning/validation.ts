@@ -47,9 +47,38 @@ export const validateKontoopplysning = (
 
   if (kontoType === 'ordinaer') {
     hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.bankensNavn,
+      id: namespace + '-kontoOrdinaer-bankensNavn',
+      message: 'validation:noBankNavn',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.kontonummer,
+      id: namespace + '-kontoOrdinaer-kontonummer',
+      message: 'validation:noKontonummer',
+      personName: formalName
+    }))
+
+
+    hasErrors.push(checkIfNotEmpty(v, {
       needle: uti?.kontoOrdinaer?.swift,
       id: namespace + '-kontoOrdinaer-swift',
       message: 'validation:noSwift',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.adresse?.by,
+      id: namespace + '-kontoOrdinaer-by',
+      message: 'validation:noAddressCity',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.adresse?.landkode,
+      id: namespace + '-kontoOrdinaer-land',
+      message: 'validation:noAddressCountry',
       personName: formalName
     }))
 

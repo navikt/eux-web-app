@@ -286,7 +286,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
                 id='kontoOrdinaer-swift'
-                label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '') + ' (' + t('el:placeholder-swift') + ')'}
+                label={t('label:swift') + (_.isEmpty(utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer) ? ' *' : '')}
                 namespace={namespace}
                 onChanged={setOrdinaerSwift}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
