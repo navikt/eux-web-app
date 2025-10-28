@@ -49,6 +49,7 @@
   "noAvgrensing": "Ingen avgrensning av periode",
   "noAvvisningsgrunn": "Ingen avslagsgrunn",
 
+  "noBankNavn": "Mangler banknavn",
   "noBarnValgt": "Ingen barn valgt",
   "noBarnEllerFamilie": "Velg mellom barn eller familie",
   "noBegrunnelse": "Ingen begrunnelse",
@@ -97,6 +98,7 @@
   "noJournalpostID": "Du må taste inn en journalpostID",
 
   "noKjoenn": "Du må velge kjønn",
+  "noKontonummer": "Kontonummer mangler",
   "noKontotype": "Du må velge kontotype",
   "noKrav": "Du må skrive krav",
 
