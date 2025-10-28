@@ -299,6 +299,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             onAdressChanged={setOrdinaerAdresse}
             namespace={namespace + '-kontoOrdinaer'}
             validation={validation}
+            type={false}
           />
         </>
       )}
