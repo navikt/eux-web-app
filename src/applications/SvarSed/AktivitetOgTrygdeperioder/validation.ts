@@ -36,7 +36,7 @@ export const validateAktivitetStatusOgTrygdeperioder = (
       } else {
         aktivitetStatus.aktiviteter.forEach((aktivitet, aktivitetIndex) => {
           const aktivitetPerioder: Array<Periode> | undefined = aktivitet.perioder
-          if(!aktivitetPerioder || aktivitetPerioder.length === 0) {
+          if(aktivitetStatus.status !== "ingenInfo" && (!aktivitetPerioder || aktivitetPerioder.length === 0)) {
             hasErrors.push(addError(v, {
               id: namespace + `-aktivitetStatus-${index}-aktiviteter-${aktivitetIndex}-perioder`,
               message: 'validation:requiredPerioderForAktivitet',
