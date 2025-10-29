@@ -36,7 +36,8 @@ const Inntekter: React.FC<any> = ({
   onInntekterChanged,
   parentNamespace,
   validation,
-  personName
+  personName,
+  CDM_VERSJON
 }:any): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -51,8 +52,12 @@ const Inntekter: React.FC<any> = ({
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationInntektProps>(validateInntekt, namespace)
 
   const inntektTypeOptions = [
-    { label: t('el:option-inntekttype-nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
-    { label: t('el:option-inntekttype-bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
+    CDM_VERSJON <= 4.3
+      ? { label: t('el:option-inntekttype-nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' }
+      : { label: t('el:option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
+    CDM_VERSJON <= 4.3
+      ? { label: t('el:option-inntekttype-bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' }
+      : { label: t('el:option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet'), value: 'bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet' },
     { label: t('el:option-inntekttype-en_enkelt_utbetaling'), value: 'en_enkelt_utbetaling' },
     { label: t('el:option-inntekttype-overtidsgodtgjørelse'), value: 'overtidsgodtgjørelse' },
     { label: t('el:option-inntekttype-vederlag_for_ferie_som_ikke_er_tatt_ut'), value: 'vederlag_for_ferie_som_ikke_er_tatt_ut' },
@@ -193,6 +198,15 @@ const Inntekter: React.FC<any> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _inntekt = index < 0 ? _newInntekt : (inEditMode ? _editInntekt : inntekt)
 
+    let inntektTypeLabel = ""
+    if(CDM_VERSJON >= 4.3 && _inntekt?.type === "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+      inntektTypeLabel = t('el:option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+    } else if (CDM_VERSJON >= 4.3 && _inntekt?.type === "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+      inntektTypeLabel = t('el:option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+    } else {
+      inntektTypeLabel = t('el:option-inntekttype-' + _inntekt?.type)
+    }
+
     const addremovepanel = (
       <AlignEndColumn>
         <AddRemovePanel<Inntekt>
@@ -273,7 +287,7 @@ const Inntekter: React.FC<any> = ({
                 <Column flex='2'>
                   <PileDiv>
                     <FlexDiv>
-                      {t('el:option-inntekttype-' + _inntekt?.type)}
+                      {inntektTypeLabel}
                       {_inntekt?.type === 'annet_vederlag' && (
                         <>
                           <HorizontalSeparatorDiv size='0.5' />
