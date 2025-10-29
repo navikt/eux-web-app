@@ -31,7 +31,7 @@ import InntektFC from 'components/Inntekt/Inntekt'
 import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import { Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType } from 'declarations/sed'
+import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
 import { Inntekt } from 'declarations/sed.d'
 import { ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -82,6 +82,7 @@ const InntektForm: React.FC<MainFormProps> = ({
   } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
 
+  const CDM_VERSJON: number = parseFloat((replySed as USed)?.sak?.cdmVersjon!)
   const namespace = `${parentNamespace}-${personID}-inntekt`
   const target = 'loennsopplysninger'
   const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
@@ -416,42 +417,54 @@ const InntektForm: React.FC<MainFormProps> = ({
                 parentNamespace={namespace + '-inntekter'}
                 validation={_v}
                 personName={personName}
+                CDM_VERSJON={CDM_VERSJON}
               />
             </>
             )
           : (
             <>
-              {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => (
-                <PileDiv key={getIdInntekt(inntekt)}>
-                  <FlexCenterSpacedDiv>
-                    <BodyLong>
-                      {t('el:option-inntekttype-' + inntekt.type) + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
-                    </BodyLong>
-                  </FlexCenterSpacedDiv>
-                  <FlexDiv>
+              {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => {
+                let inntektTypeLabel = ""
+                if(CDM_VERSJON >= 4.3 && inntekt?.type === "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+                  inntektTypeLabel = t('el:option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+                } else if (CDM_VERSJON >= 4.3 && inntekt?.type === "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+                  inntektTypeLabel = t('el:option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+                } else {
+                  inntektTypeLabel = t('el:option-inntekttype-' + inntekt?.type)
+                }
+
+                return (
+                  <PileDiv key={getIdInntekt(inntekt)}>
+                    <FlexCenterSpacedDiv>
+                      <BodyLong>
+                        {inntektTypeLabel + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
+                      </BodyLong>
+                    </FlexCenterSpacedDiv>
                     <FlexDiv>
-                      <Label>{t('label:beløp') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
                       <FlexDiv>
-                        <FormText
-                          error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
-                          id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
-                        >
-                          {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
-                        </FormText>
+                        <Label>{t('label:beløp') + ':'}</Label>
                         <HorizontalSeparatorDiv size='0.5' />
-                        <FormText
-                          error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
-                          id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
-                        >
-                          {inntekt?.valuta}
-                        </FormText>
+                        <FlexDiv>
+                          <FormText
+                            error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
+                            id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
+                          >
+                            {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
+                          </FormText>
+                          <HorizontalSeparatorDiv size='0.5' />
+                          <FormText
+                            error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
+                            id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
+                          >
+                            {inntekt?.valuta}
+                          </FormText>
+                        </FlexDiv>
                       </FlexDiv>
                     </FlexDiv>
-                  </FlexDiv>
-                  <HorizontalLineSeparator size='0.5' />
-                </PileDiv>
-              ))}
+                    <HorizontalLineSeparator size='0.5' />
+                  </PileDiv>
+                )
+              })}
             </>
           )
         }

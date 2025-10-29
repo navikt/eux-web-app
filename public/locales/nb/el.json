@@ -155,8 +155,10 @@
   "option-identifikator-skattemessig" : "Skattemessig",
   "option-identifikator-ukjent" : "Ukjent",
 
-  "option-inntekttype-nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet" : "Nettoinntekt, under ansettelsesforhold eller selvstendig næringsvirksomhet",
+  "option-inntekttype-nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet" : "Nettoinntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
   "option-inntekttype-bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet" : "Bruttoinntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
+  "option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet" : "Netto gjennomsnittlig inntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
+  "option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet" : "Brutto gjennomsnittlig inntekt under ansettelsesforhold eller selvstendig næringsvirksomhet",
   "option-inntekttype-en_enkelt_utbetaling" : "En enkelt utbetaling",
   "option-inntekttype-overtidsgodtgjørelse" : "Overtidsgodtgjørelse",
   "option-inntekttype-vederlag_for_ferie_som_ikke_er_tatt_ut" : "Vederlag for ferie som ikke er tatt ut",
