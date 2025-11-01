@@ -36,6 +36,7 @@ interface InnhentMerInfoPanelSelector {
   isSendingH001: boolean
   isAddingRelatertRinaSak: boolean
   addedRelatertRinaSak: any | undefined | null
+  bucer: Array<string> | undefined | null
 }
 
 const mapState = (state: State) => ({
@@ -45,15 +46,29 @@ const mapState = (state: State) => ({
   createdHBUC01: state.journalfoering.createdHBUC01,
   isSendingH001: state.loading.isSendingH001,
   isAddingRelatertRinaSak: state.loading.isAddingRelatertRinaSak,
-  addedRelatertRinaSak: state.journalfoering.addedRelatertRinaSak
+  addedRelatertRinaSak: state.journalfoering.addedRelatertRinaSak,
+  bucer: state.app.saksbehandlerBucer
 })
 
 export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerInfoPanelProps) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak}: InnhentMerInfoPanelSelector = useAppSelector(mapState)
+  const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak, bucer }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
   const [_fritekst, setFritekst] = useState<string>("");
   const [_sendH001Modal, setSendH001Modal] = useState<boolean>(false)
+
+  const harTilgangTilBucType = (saksbehandlerBucer: Array<string> | null | undefined, sakType: string) => {
+    if (saksbehandlerBucer && sakType) {
+      for (let i = 0; i < saksbehandlerBucer.length; i++) {
+        if (sakType.startsWith(saksbehandlerBucer[i])) {
+          return true
+        }
+      }
+    }
+    return false;
+  }
+
+  const harTilgang = harTilgangTilBucType(bucer, sak.sakType)
 
   const gotoNewSak = (sakId: string) => {
     onSendH001ModalClose()
@@ -194,9 +209,11 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
           onChange={onTextChange}
         />
         <VerticalSeparatorDiv />
-        <Button variant="primary" disabled={_fritekst === ""} onClick={onSendH001} loading={isSendingH001}>
-          {t("el:button-send-x", {x: "H001"})}
-        </Button>
+        { harTilgang &&
+          <Button variant="primary" disabled={_fritekst === ""} onClick={onSendH001} loading={isSendingH001}>
+            {t("el:button-send-x", {x: "H001"})}
+          </Button>
+        }
       </Panel>
     </>
   )
