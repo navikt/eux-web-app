@@ -43,6 +43,7 @@ interface SEDViewSelector {
   fagsakUpdated: boolean | undefined
   queryingSaks: boolean
   refreshingSaks: boolean
+  bucer: Array<string> | undefined | null
 }
 
 const mapState = (state: State) => ({
@@ -50,13 +51,14 @@ const mapState = (state: State) => ({
   deletedSed: state.svarsed.deletedSed,
   fagsakUpdated: state.svarsed.fagsakUpdated,
   queryingSaks: state.loading.queryingSaks,
-  refreshingSaks: state.loading.refreshingSaks
+  refreshingSaks: state.loading.refreshingSaks,
+  bucer: state.app.saksbehandlerBucer
 })
 
 const SEDView = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -192,7 +194,7 @@ const SEDView = (): JSX.Element => {
           {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
             <>
               <VerticalSeparatorDiv />
-              <IkkeJournalfoerteSed sak={currentSak}/>
+              <IkkeJournalfoerteSed sak={currentSak} bucer={bucer}/>
             </>
           }
           {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&

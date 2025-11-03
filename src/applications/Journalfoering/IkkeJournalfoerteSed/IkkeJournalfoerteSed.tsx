@@ -8,10 +8,25 @@ import {HorizontalLineSeparator} from "../../../components/StyledComponents";
 
 interface IkkeJournalfoerteSedProps {
   sak: Sak
+  bucer: Array<string> | undefined | null
+
 }
 
-const IkkeJournalfoerteSed = ({ sak }: IkkeJournalfoerteSedProps) => {
+const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
   const { t } = useTranslation()
+  const harTilgangTilBucType = (saksbehandlerBucer: Array<string> | null | undefined, sakType: string) => {
+    if (saksbehandlerBucer && sakType) {
+      for (let i = 0; i < saksbehandlerBucer.length; i++) {
+        if (sakType.startsWith(saksbehandlerBucer[i])) {
+          return true
+        }
+      }
+    }
+    return false;
+  }
+
+  const harTilgangBuc = harTilgangTilBucType(bucer, sak.sakType)
+
   const navigate = useNavigate()
 
   const onJournalFoerClick = () => {
@@ -29,7 +44,7 @@ const IkkeJournalfoerteSed = ({ sak }: IkkeJournalfoerteSedProps) => {
         </Heading>
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
+        {harTilgangBuc && sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
           <ul>
             {sak.ikkeJournalfoerteSed.map((sedTitle) => {
               return (<li>{sedTitle}</li>)
