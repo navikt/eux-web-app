@@ -44,7 +44,7 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
         </Heading>
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv />
-        {harTilgangBuc && sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
+        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
           <ul>
             {sak.ikkeJournalfoerteSed.map((sedTitle) => {
               return (<li>{sedTitle}</li>)
@@ -52,12 +52,14 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
           </ul>
         }
         <VerticalSeparatorDiv />
-        <Button
-          variant='primary'
-          onClick={onJournalFoerClick}
-        >
-          {t('label:journalfoer')}
-        </Button>
+        {harTilgangBuc &&
+          <Button
+            variant='primary'
+            onClick={onJournalFoerClick}
+          >
+            {t('label:journalfoer')}
+          </Button>
+        }
       </Panel>
     </>
   )
