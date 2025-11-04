@@ -11,7 +11,7 @@ import Adresser from "./Adresser";
 import {setReplySed} from "../../../actions/svarsed";
 import {AdresseAnmodning} from "../../../declarations/sed";
 import useLocalValidation from "../../../hooks/useLocalValidation";
-import {validateAdresseH001, ValidationAdresseH001Props} from "./validationH001";
+import {validateAdresserH001, ValidationAdresserH001Props} from "./validationH001";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -36,7 +36,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
 
   const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
 
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseH001Props>(validateAdresseH001, namespaceAdresse)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresserH001Props>(validateAdresserH001, namespaceAdresse)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
@@ -64,7 +64,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
           <Box>
             <VStack gap="4">
               <Heading size='small'>
-                {t('label:aktivitet-og-trygdeperioder')}
+                {t('label:adresser')}
               </Heading>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">
