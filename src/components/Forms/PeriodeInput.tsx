@@ -1,4 +1,4 @@
-import {Checkbox, HStack} from '@navikt/ds-react'
+import {Checkbox, HGrid, HStack} from '@navikt/ds-react'
 import classNames from 'classnames'
 import { Periode, PeriodeInputType } from 'declarations/sed'
 import _ from 'lodash'
@@ -36,6 +36,7 @@ export interface PeriodeProps<T> {
   value: T | null | undefined
   uiFormat ?: string
   finalFormat ?: string
+  asGrid?: boolean
 }
 
 const PeriodeInput = <T extends Periode>({
@@ -49,6 +50,7 @@ const PeriodeInput = <T extends Periode>({
   hideLabel = true,
   value,
   finalFormat = 'YYYY-MM-DD',
+  asGrid = false
 }: PeriodeProps<T>) => {
   const { t } = useTranslation()
 
@@ -78,44 +80,57 @@ const PeriodeInput = <T extends Periode>({
     setPeriode(newPeriode, 'aapenPeriodeType')
   }
 
+  const dateFields = () => {
+    return (
+      <>
+        <DateField
+          key={namespace + '-startdato-' + value?.startdato}
+          id='startdato'
+          namespace={namespace}
+          error={error.startdato}
+          label={label?.startdato ?? t('label:startdato')}
+          onChanged={onStartDatoChanged}
+          dateValue={value?.startdato}
+          hideLabel={hideLabel}
+          required={requiredStartDato}
+        />
+        <DateField
+          key={namespace + '-sluttdato-' + value?.sluttdato}
+          namespace={namespace}
+          id='sluttdato'
+          error={error.sluttdato}
+          label={label?.sluttdato ?? t('label:sluttdato')}
+          onChanged={onEndDatoChanged}
+          dateValue={value?.sluttdato}
+          hideLabel={hideLabel}
+          required={requiredSluttDato}
+        />
+        {periodeType === 'withcheckbox' && (
+          <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
+            {_.isEmpty(value?.sluttdato) && (
+              <Checkbox
+                error={!!error.aapenPeriodeType}
+                id='aapenPeriodeType'
+                checked={value?.aapenPeriodeType === 'ukjent_sluttdato'}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
+              > {t('label:ukjent')}
+              </Checkbox>
+            )}
+          </WrapperDiv>
+        )}
+      </>
+    )
+  }
+
   return (
-    <HStack gap="4" wrap={false} align={"start"}>
-      <DateField
-        key={namespace + '-startdato-' + value?.startdato}
-        id='startdato'
-        namespace={namespace}
-        error={error.startdato}
-        label={label?.startdato ?? t('label:startdato')}
-        onChanged={onStartDatoChanged}
-        dateValue={value?.startdato}
-        hideLabel={hideLabel}
-        required={requiredStartDato}
-      />
-      <DateField
-        key={namespace + '-sluttdato-' + value?.sluttdato}
-        namespace={namespace}
-        id='sluttdato'
-        error={error.sluttdato}
-        label={label?.sluttdato ?? t('label:sluttdato')}
-        onChanged={onEndDatoChanged}
-        dateValue={value?.sluttdato}
-        hideLabel={hideLabel}
-        required={requiredSluttDato}
-      />
-      {periodeType === 'withcheckbox' && (
-        <WrapperDiv className={classNames({ nolabel: !hideLabel })}>
-          {_.isEmpty(value?.sluttdato) && (
-            <Checkbox
-              error={!!error.aapenPeriodeType}
-              id='aapenPeriodeType'
-              checked={value?.aapenPeriodeType === 'ukjent_sluttdato'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckboxChanged(e.target.checked)}
-            > {t('label:ukjent')}
-            </Checkbox>
-          )}
-        </WrapperDiv>
-      )}
-    </HStack>
+    asGrid ?
+      <HGrid columns={3} gap="4">
+        {dateFields()}
+      </HGrid>
+      :
+      <HStack gap="4" wrap={false} align={"start"}>
+        {dateFields()}
+      </HStack>
   )
 }
 
