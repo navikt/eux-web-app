@@ -121,6 +121,7 @@ import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTry
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
 import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
 import PerioderMedRettTilYtelser from "../../applications/SvarSed/PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
+import Motregninger from "../../applications/SvarSed/Motregninger/Motregninger";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -473,7 +474,7 @@ const SEDEdit = (): JSX.Element => {
                 {
                   label: t('el:option-mainform-motregning'),
                   value: 'motregning',
-                  component: Motregning,
+                  component: Motregninger,
                   condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
                 },
                 {

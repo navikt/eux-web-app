@@ -351,6 +351,20 @@ export interface Ytelse extends Periode {
   ytelseNavn: string
 }
 
+export interface Motregninger {
+  helefamilien?: Array<Motregning>
+  barn?: Array<Motregning>
+  helefamilienOppsummert?: MotregningOppsummert
+  barnOppsummert?: MotregningOppsummert
+}
+
+export interface MotregningOppsummert {
+  totalbeloep?: string
+  valuta?: string
+  melding?: string
+  betalingsreferanse?: string
+}
+
 export interface Motregning extends Periode {
   begrunnelse: string
   beloep: string
@@ -361,6 +375,8 @@ export interface Motregning extends Periode {
   vedtaksdato: string
   ytelseNavn?: string
   ytterligereInfo: string
+  barnetsNavn?: string
+  antallPersoner?: string
 }
 
 export interface H001Svar {
@@ -484,7 +500,6 @@ export interface Barn {
   barnetilhoerigheter?: Array<Barnetilhoerighet>
   flyttegrunn?: Flyttegrunn
   personInfo: PersonInfo
-  motregninger?: Array<Motregning>
   ytelser?: Array<Ytelse>
 }
 
@@ -593,7 +608,6 @@ export interface F001Sed extends FSed {
   barn?: Array<Barn>
   endredeForhold?: Array<string>
   familie?: {
-    motregninger?: Array<Motregning>
     ytelser?: Array<Ytelse>
   }
   krav: {
@@ -602,6 +616,7 @@ export interface F001Sed extends FSed {
     kravMottattDato: string
     kravType: string
   }
+  motregninger?: Motregninger
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
   uenighetKonklusjon?: Array<UenighetKonklusjon>
