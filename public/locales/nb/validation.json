@@ -84,7 +84,7 @@
   "noGrunnAnnet": "Du må taste inn en beskivelse",
   "noGrunnOpphorType": "Du må velge grunn til opphør",
 
-  "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
+  "noIban": "IBAN er påkrevd",
   "noId": "Du må skrive identifikatoren",
   "noInfo": "Ingen informasjon",
   "noInntekt": "Ingen inntekt",

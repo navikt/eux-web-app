@@ -94,10 +94,10 @@ export const validateKontoopplysning = (
   }
 
   if (kontoType === 'sepa') {
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim())) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-iban',
-        message: 'validation:noIbanOrSwift',
+        message: 'validation:noIban',
         personName: formalName
       }))
     }
@@ -106,14 +106,6 @@ export const validateKontoopplysning = (
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-iban',
         message: 'validation:invalidIban',
-        personName: formalName
-      }))
-    }
-
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
-      hasErrors.push(addError(v, {
-        id: namespace + '-kontoSepa-swift',
-        message: 'validation:noIbanOrSwift',
         personName: formalName
       }))
     }
