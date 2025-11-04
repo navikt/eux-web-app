@@ -321,7 +321,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
               <Input
                 error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 id='kontoSepa-swift'
-                label={t('label:swift') + (!_.isEmpty(utbetalingTilInstitusjon?.kontoSepa?.iban) ? '' : ' *')}
+                label={t('label:swift')}
                 namespace={namespace}
                 onChanged={setSepaSwift}
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
@@ -339,7 +339,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     label={t('label:bankens-navn')}
                     namespace={namespace}
                     onChanged={setSepaBanknavn}
-                    required
                     value={utbetalingTilInstitusjon?.kontoSepa?.banknavn ?? ''}
                   />
                 </Column>
@@ -363,7 +362,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     label={t('label:kontoeier')}
                     namespace={namespace}
                     onChanged={setSepaKontoeier}
-                    required
                     value={utbetalingTilInstitusjon?.kontoSepa?.kontoeier ?? ''}
                   />
                 </Column>
