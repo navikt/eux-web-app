@@ -10,6 +10,8 @@ import {useTranslation} from "react-i18next";
 import Adresser from "./Adresser";
 import {setReplySed} from "../../../actions/svarsed";
 import {AdresseAnmodning} from "../../../declarations/sed";
+import useLocalValidation from "../../../hooks/useLocalValidation";
+import {validateAdresseH001, ValidationAdresseH001Props} from "./validationH001";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -28,10 +30,13 @@ const AdresseH001: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-adresseH001`
+  const namespaceAdresse = `${parentNamespace}-${personID}-adresser`
   const target = 'anmodning.adresse'
   const targetAdresser = `${personID}.adresser`
 
   const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
+
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresseH001Props>(validateAdresseH001, namespaceAdresse)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)

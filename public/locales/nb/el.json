@@ -340,9 +340,9 @@
   "radio-aktivitet-status-inaktiv": "Personen betraktes som inaktiv",
   "radio-aktivitet-status-ingeninfo": "Ingen informasjon om personens aktivitet",
 
-  "radio-adresse-anmodning-type-bosted": "Bosted",
-  "radio-adresse-anmodning-type-opphold": "Opphold",
-  "radio-adresse-anmodning-type-kontakt": "Kontakt",
+  "radio-adresse-anmodning-type-bosted": "Bostedsland",
+  "radio-adresse-anmodning-type-opphold": "Oppholdsland",
+  "radio-adresse-anmodning-type-kontakt": "Personens kontaktadresse",
 
   "placeholder-select-default": "Velg...",
   "placeholder-date-default": "DD.MM.ÅÅÅÅ"
