@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {MainFormProps, MainFormSelector, mapState} from "../MainForm";
-import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
+import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, Radio, RadioGroup, Select, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {F001Sed, Motregning, Motregninger} from "../../../declarations/sed";
+import {Barn, BarnYtelse, F001Sed, Motregning, Motregninger} from "../../../declarations/sed";
 import {SpacedHr} from "../../../components/StyledComponents";
 import {isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
@@ -37,7 +37,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-motregninger`
   const target = 'motregninger'
   const motregninger: Motregninger | undefined = _.get((replySed as F001Sed), target)
-  //const barn: Array<Barn> = _.get((replySed as F001Sed), 'barn') || []
+  const barn: Array<Barn> = _.get((replySed as F001Sed), 'barn') || []
 
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationMotregningProps>(validateMotregning, namespace)
 
@@ -59,13 +59,27 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     const hasErrors = false // TODO: implement validation on motregning edit/save
 
     if (!!_newMotregning && !hasErrors) {
-      const clonedNewMotregning = _.cloneDeep(_newMotregning)
+      let clonedNewMotregning = _.cloneDeep(_newMotregning)
       let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
       if (_.isNil(newMotregninger)) {
         newMotregninger = []
       }
 
-      newMotregninger.push(clonedNewMotregning)
+      if(clonedNewMotregning.__barn){
+        clonedNewMotregning.__barn.forEach((b) => {
+          if(b.barnetsNavn) {
+            let copyNewMotregning = {
+              ...clonedNewMotregning,
+              barnetsNavn: b.barnetsNavn,
+              ytelseNavn: b.ytelseNavn
+            }
+            delete copyNewMotregning.__barn
+            newMotregninger?.push(copyNewMotregning)
+          }
+        })
+      } else {
+        newMotregninger.push(clonedNewMotregning)
+      }
       newMotregninger = newMotregninger.sort(periodeSort)
 
       dispatch(updateReplySed("motregninger." + type, newMotregninger))
@@ -118,7 +132,6 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (type: string, index: number) => {
-    console.log("Removing motregning at index: ", index)
     let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
     if (!_.isNil(newMotregninger)) {
       newMotregninger.splice(index, 1)
@@ -153,7 +166,43 @@ const MotregningerFC: React.FC<MainFormProps> = ({
       namespace + '[' + index + ']-startdato',
       namespace + '[' + index + ']-sluttdato'
     ]))
+  }
 
+  const setBarnYtelse = (prop: string, value: string, index: number) => {
+    let barnArray: Array<BarnYtelse> | undefined = _.cloneDeep(_newMotregning?.__barn)
+    if (_.isNil(barnArray)) {
+      barnArray = []
+      barn.forEach(() => {
+        barnArray!.push({} as BarnYtelse)
+      })
+    }
+
+    let barnYtelse = barnArray[index]
+    if (_.isNil(barnYtelse)) {
+      barnYtelse = {}
+    }
+
+    if(prop === "barnetsNavn" && value === "") {
+      barnYtelse = {
+        ...barnYtelse,
+        "barnetsNavn": undefined,
+        "ytelseNavn": undefined
+      }
+    } else {
+      barnYtelse = {
+        ...barnYtelse,
+        [prop]: value.trim()
+      }
+    }
+
+    barnArray.splice(index,1 , barnYtelse)
+
+    _setNewMotregning({
+      ..._newMotregning,
+      __barn: barnArray
+    } as Motregning)
+
+    _resetValidation(namespace + '-' + prop)
   }
 
   const renderMotregning = (motregning: Motregning | null, index: number, type: string) => {
@@ -161,6 +210,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
     const inEditMode = index < 0 || _editIndex === type + '-' + index
     const _motregning = index < 0 ? _newMotregning : (inEditMode ? _editMotregning : motregning)
+    const addingNewBarnMotregning = type === "barn" && index < 0
 
     let svarType = type === "barn" ? t('label:anmodning-barn') : t('label:anmodning-hele-familien')
 
@@ -195,18 +245,58 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               <Spacer/>
               {addRemove}
             </HStack>
-            <HGrid columns={2} gap="4">
-              {type === "barn" && // TODO: bytt ut med dropdown for å velge barnets navn fra sed
-                <Input
+            {addingNewBarnMotregning &&
+              <VStack gap="1">
+                <HGrid columns={3} gap="4" align="end">
+                  <Label>Velg barn</Label>
+                  <Label>{t('label:betegnelse-på-ytelse')}</Label>
+                </HGrid>
+                {barn.map((b, idx) => {
+                  return (
+                    <HGrid columns={3} gap="4" align="end">
+                      <Checkbox value={b.personInfo.fornavn + ' ' + b.personInfo.etternavn} onChange={(e) => setBarnYtelse("barnetsNavn", e.target.checked ? e.target.value : "", idx)}>
+                        {b.personInfo.fornavn + ' ' + b.personInfo.etternavn}
+                      </Checkbox>
+                      <Input
+                        error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                        id='ytelseNavn'
+                        label={t('label:betegnelse-på-ytelse')}
+                        hideLabel={true}
+                        namespace={_namespace}
+                        onChanged={(value: string) => setBarnYtelse("ytelseNavn", value, idx)}
+                        disabled={!_motregning || (_motregning && !_motregning.__barn) || !!(_motregning && _motregning.__barn && _motregning.__barn[idx] && !_motregning.__barn[idx].barnetsNavn)}
+                        value={_motregning && _motregning.__barn && _motregning.__barn[idx] ? _motregning.__barn[idx].ytelseNavn : ''}
+                      />
+                    </HGrid>
+                  )
+                })}
+              </VStack>
+            }
+            {!addingNewBarnMotregning && type === "barn" && // TODO: bytt ut med dropdown for å velge barnets navn fra sed
+              <HGrid columns={2} gap="4" align="center">
+                <Select
                   error={_v[_namespace + '-barnetsNavn']?.feilmelding}
                   id='barnetsNavn'
                   label="Barnets navn"
-                  namespace={_namespace}
-                  onChanged={(value: string) => setMotregningProp("barnetsNavn", value, index)}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setMotregningProp("barnetsNavn", e.currentTarget.value, index)}
                   value={_motregning?.barnetsNavn}
+                >
+                  {barn.map((b, idx) => {
+                    return (<option key={idx} value={b.personInfo.fornavn + ' ' + b.personInfo.etternavn}>{b.personInfo.fornavn + ' ' + b.personInfo.etternavn}</option>)
+                  })}
+                </Select>
+                <Input
+                  error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                  id='ytelseNavn'
+                  label={t('label:betegnelse-på-ytelse')}
+                  namespace={_namespace}
+                  onChanged={(value: string) => setMotregningProp("ytelseNavn", value, index)}
+                  value={_motregning?.ytelseNavn}
                 />
-              }
-              {type === "helefamilien" &&
+              </HGrid>
+            }
+            {type === "helefamilien" &&
+              <HGrid columns={2} gap="4" align="center">
                 <Input
                   error={_v[_namespace + '-antallPersoner']?.feilmelding}
                   id='antallPersoner'
@@ -215,16 +305,16 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   onChanged={(value: string) => setMotregningProp("antallPersoner", value, index)}
                   value={_motregning?.antallPersoner}
                 />
-              }
-              <Input
-                error={_v[_namespace + '-ytelseNavn']?.feilmelding}
-                id='ytelseNavn'
-                label={t('label:betegnelse-på-ytelse')}
-                namespace={_namespace}
-                onChanged={(value: string) => setMotregningProp("ytelseNavn", value, index)}
-                value={_motregning?.ytelseNavn}
-              />
-            </HGrid>
+                <Input
+                  error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                  id='ytelseNavn'
+                  label={t('label:betegnelse-på-ytelse')}
+                  namespace={_namespace}
+                  onChanged={(value: string) => setMotregningProp("ytelseNavn", value, index)}
+                  value={_motregning?.ytelseNavn}
+                />
+              </HGrid>
+            }
             <HGrid columns={3} gap="4">
               <DateField
                 error={_v[_namespace + '-vedtaksdato']?.feilmelding}
