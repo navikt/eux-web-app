@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {MainFormProps, MainFormSelector, mapState} from "../MainForm";
-import {BodyLong, Box, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tabs, VStack} from "@navikt/ds-react";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Barn, F001Sed, Motregning, Motregninger, Periode, ReplySed} from "../../../declarations/sed";
+import {F001Sed, Motregning, Motregninger} from "../../../declarations/sed";
 import {SpacedHr} from "../../../components/StyledComponents";
 import {isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
@@ -21,8 +21,8 @@ import TextArea from "../../../components/Forms/TextArea";
 import {Currency} from "@navikt/land-verktoy";
 import performValidation from "../../../utils/performValidation";
 import {periodeSort} from "../../../utils/sort";
-import {KeyAndYtelse} from "../Motregning/Motregning";
 import {updateReplySed} from "../../../actions/svarsed";
+import {PlusCircleIcon} from "@navikt/aksel-icons";
 
 const MotregningerFC: React.FC<MainFormProps> = ({
  label,
@@ -46,11 +46,39 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   const [_newMotregning, _setNewMotregning] = useState<Motregning | undefined>(undefined)
   const [_editMotregning, _setEditMotregning] = useState<Motregning | undefined>(undefined)
 
-  //const [_newForm, _setNewForm] = useState<boolean>(false)
+  const [_newBarnForm, _setNewBarnForm] = useState<boolean>(false)
+  const [_newHelefamilienForm, _setNewHelefamilienForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<string | undefined>(undefined)
 
   const onTabChange = (motregningType: string) => {
     _setCurrentMotregningType(motregningType)
+  }
+
+  const onAddNew = (type: string) => {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = false // TODO: implement validation on motregning edit/save
+
+    if (!!_newMotregning && !hasErrors) {
+      const clonedNewMotregning = _.cloneDeep(_newMotregning)
+      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+      if (_.isNil(newMotregninger)) {
+        newMotregninger = []
+      }
+
+      newMotregninger.push(clonedNewMotregning)
+      newMotregninger = newMotregninger.sort(periodeSort)
+
+      dispatch(updateReplySed("motregninger." + type, newMotregninger))
+      onCloseNew(type)
+    } else {
+      dispatch(setValidation(clonedValidation))
+    }
+  }
+
+  const onCloseNew = (type: string) => {
+    _setNewMotregning(undefined)
+    type === "barn" ? _setNewBarnForm(false) : _setNewHelefamilienForm(false)
+    _resetValidation()
   }
 
   const onStartEdit = (motregning: Motregning, index: string) => {
@@ -74,7 +102,6 @@ const MotregningerFC: React.FC<MainFormProps> = ({
 
     if (!!_editMotregning && !hasErrors) {
       const newEditMotregning = _.cloneDeep(_editMotregning)
-
       let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
       if (_.isNil(newMotregninger)) {
         newMotregninger = []
@@ -87,6 +114,15 @@ const MotregningerFC: React.FC<MainFormProps> = ({
       onCloseEdit(namespace + index)
     } else {
       dispatch(setValidation(clonedValidation))
+    }
+  }
+
+  const onRemove = (type: string, index: number) => {
+    console.log("Removing motregning at index: ", index)
+    let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+    if (!_.isNil(newMotregninger)) {
+      newMotregninger.splice(index, 1)
+      dispatch(updateReplySed("motregninger." + type, newMotregninger))
     }
   }
 
@@ -135,6 +171,21 @@ const MotregningerFC: React.FC<MainFormProps> = ({
       if(_motregning?.svarType === 'svar_på_anmodning_om_motregning_for_hele_familien') svarType =  t('label:anmodning-svar-hele-familien')
     }
 
+    const addRemove = (
+      <AddRemove<Motregning>
+        item={motregning}
+        index={index}
+        inEditMode={inEditMode}
+        onRemove={()=>onRemove(type, index)}
+        onAddNew={() => onAddNew(type)}
+        onCancelNew={() => onCloseNew(type)}
+        onStartEdit={(item: Motregning) => onStartEdit(item, type + '-' + index)}
+        onConfirmEdit={()=>onSaveEdit(type, index)}
+        onCancelEdit={() => onCloseEdit(_namespace)}
+        labels={{remove: "Fjern motregning"}}
+      />
+    )
+
     if (inEditMode) {
       return (
         <Box padding="4" background="surface-subtle" borderColor="border-subtle" borderWidth="1">
@@ -142,18 +193,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
             <HStack gap="4">
               <Label>{svarType}</Label>
               <Spacer/>
-              <AddRemove<Motregning>
-                item={motregning}
-                index={index}
-                inEditMode={inEditMode}
-                onRemove={() => {}}
-                onAddNew={()=>{}}
-                onCancelNew={()=>{}}
-                onStartEdit={(item: Motregning) => onStartEdit(item, type + '-' + index)}
-                onConfirmEdit={()=>onSaveEdit(type, index)}
-                onCancelEdit={() => onCloseEdit(_namespace)}
-                labels={{remove: "Fjern motregning"}}
-              />
+              {addRemove}
             </HStack>
             <HGrid columns={2} gap="4">
               {type === "barn" && // TODO: bytt ut med dropdown for å velge barnets navn fra sed
@@ -284,14 +324,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           <HStack gap="4">
             <Label>{svarType}</Label>
             <Spacer/>
-            <AddRemove<Motregning>
-              item={motregning}
-              index={index}
-              onRemove={() => {}}
-              onStartEdit={(item: Motregning) => onStartEdit(item, type + '-' + index)}
-              allowEdit={true}
-              labels={{remove: "Fjern motregning"}}
-            />
+            {addRemove}
           </HStack>
           <HGrid columns={2} gap="4">
             {type === "barn" && <VStack><Label>Barnets navn</Label>{_motregning?.barnetsNavn}</VStack>}
@@ -359,6 +392,20 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   return renderMotregning(m, i, "barn")
                 })
               }
+              {_newBarnForm
+                ? renderMotregning(null, -1, "barn")
+                : (
+                  <Box>
+                    <Button
+                      variant='tertiary'
+                      size="small"
+                      onClick={() => _setNewBarnForm(true)}
+                      icon={<PlusCircleIcon/>}
+                    >
+                      {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
+                    </Button>
+                  </Box>
+                )}
             </VStack>
           </Tabs.Panel>
           <Tabs.Panel value="helefamilienMotregninger">
@@ -377,6 +424,20 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   return renderMotregning(m, i, "helefamilien")
                 })
               }
+              {_newHelefamilienForm
+                ? renderMotregning(null, -1, "helefamilien")
+                : (
+                  <Box>
+                    <Button
+                      variant='tertiary'
+                      size="small"
+                      onClick={() => _setNewHelefamilienForm(true)}
+                      icon={<PlusCircleIcon/>}
+                    >
+                      {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
+                    </Button>
+                  </Box>
+                )}
             </VStack>
           </Tabs.Panel>
         </Tabs>
