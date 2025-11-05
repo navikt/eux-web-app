@@ -124,7 +124,7 @@ const PeriodeInput = <T extends Periode>({
 
   return (
     asGrid ?
-      <HGrid columns={3} gap="4">
+      <HGrid columns={3} gap="4" align={"start"}>
         {dateFields()}
       </HGrid>
       :
