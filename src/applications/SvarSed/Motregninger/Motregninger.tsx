@@ -4,13 +4,13 @@ import {BodyLong, Box, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer,
 import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
-import {Barn, F001Sed, Motregning, Motregninger} from "../../../declarations/sed";
+import {Barn, F001Sed, Motregning, Motregninger, Periode, ReplySed} from "../../../declarations/sed";
 import {SpacedHr} from "../../../components/StyledComponents";
 import {isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import DateField, {toDateFormat} from "../../../components/DateField/DateField";
 import AddRemove from "../../../components/AddRemovePanel/AddRemove";
-import {resetValidation} from "../../../actions/validation";
+import {resetValidation, setValidation} from "../../../actions/validation";
 import Input from "../../../components/Forms/Input";
 import {Validation} from "../../../declarations/types";
 import useLocalValidation from "../../../hooks/useLocalValidation";
@@ -18,6 +18,11 @@ import {validateMotregning, ValidationMotregningProps} from "../Motregning/valid
 import CountrySelect from "@navikt/landvelger";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import TextArea from "../../../components/Forms/TextArea";
+import {Currency} from "@navikt/land-verktoy";
+import performValidation from "../../../utils/performValidation";
+import {periodeSort} from "../../../utils/sort";
+import {KeyAndYtelse} from "../Motregning/Motregning";
+import {updateReplySed} from "../../../actions/svarsed";
 
 const MotregningerFC: React.FC<MainFormProps> = ({
  label,
@@ -63,6 +68,58 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     dispatch(resetValidation(namespace))
   }
 
+  const onSaveEdit = (type: string, index: number) => {
+    const clonedValidation = _.cloneDeep(validation)
+    const hasErrors = false // TODO: implement validation on motregning edit/save
+
+    if (!!_editMotregning && !hasErrors) {
+      const newEditMotregning = _.cloneDeep(_editMotregning)
+
+      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+      if (_.isNil(newMotregninger)) {
+        newMotregninger = []
+      }
+
+      newMotregninger.splice(index, 1, newEditMotregning)
+      newMotregninger = newMotregninger.sort(periodeSort)
+
+      dispatch(updateReplySed("motregninger." + type, newMotregninger))
+      onCloseEdit(namespace + index)
+    } else {
+      dispatch(setValidation(clonedValidation))
+    }
+  }
+
+  const setMotregningProp = (prop: string, value: string, index: number) => {
+    if (index < 0) {
+      _setNewMotregning({
+        ..._newMotregning,
+        [prop]: value.trim()
+      } as Motregning)
+      _resetValidation(namespace + '-' + prop)
+      return
+    }
+    _setEditMotregning({
+      ..._editMotregning,
+      [prop]: value.trim()
+    } as Motregning)
+    dispatch(resetValidation(namespace + '[' + index + ']-' + prop))
+  }
+
+  const setPeriode = (motregning: Motregning, index: number) => {
+    if (index < 0) {
+      _setNewMotregning(motregning)
+      _resetValidation([namespace + '-startdato', namespace + '-sluttdato'])
+      return
+    }
+    _setEditMotregning(motregning)
+    dispatch(resetValidation([
+      namespace + '[' + index + ']-startdato',
+      namespace + '[' + index + ']-sluttdato'
+    ]))
+
+  }
+
   const renderMotregning = (motregning: Motregning | null, index: number, type: string) => {
     const _namespace = namespace + index.toString()
     const _v: Validation = index < 0 ? _validation : validation
@@ -93,7 +150,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 onAddNew={()=>{}}
                 onCancelNew={()=>{}}
                 onStartEdit={(item: Motregning) => onStartEdit(item, type + '-' + index)}
-                onConfirmEdit={()=>{}}
+                onConfirmEdit={()=>onSaveEdit(type, index)}
                 onCancelEdit={() => onCloseEdit(_namespace)}
                 labels={{remove: "Fjern motregning"}}
               />
@@ -105,17 +162,17 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   id='barnetsNavn'
                   label="Barnets navn"
                   namespace={_namespace}
-                  onChanged={()=>{}}
+                  onChanged={(value: string) => setMotregningProp("barnetsNavn", value, index)}
                   value={_motregning?.barnetsNavn}
                 />
               }
-              {type === "familie" &&
+              {type === "helefamilien" &&
                 <Input
                   error={_v[_namespace + '-antallPersoner']?.feilmelding}
                   id='antallPersoner'
                   label="Antall personer det innvilges ytelse for"
                   namespace={_namespace}
-                  onChanged={()=>{}}
+                  onChanged={(value: string) => setMotregningProp("antallPersoner", value, index)}
                   value={_motregning?.antallPersoner}
                 />
               }
@@ -124,7 +181,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 id='ytelseNavn'
                 label={t('label:betegnelse-på-ytelse')}
                 namespace={_namespace}
-                onChanged={()=>{}}
+                onChanged={(value: string) => setMotregningProp("ytelseNavn", value, index)}
                 value={_motregning?.ytelseNavn}
               />
             </HGrid>
@@ -134,7 +191,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 id='vedtaksdato'
                 label={t('label:vedtaksdato')}
                 namespace={_namespace}
-                onChanged={()=>{}}
+                onChanged={(value: string) => setMotregningProp("vedtaksdato", value, index)}
                 dateValue={_motregning?.vedtaksdato}
               />
               <Input
@@ -142,7 +199,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 id='beloep'
                 label={t('label:beløp')}
                 namespace={_namespace}
-                onChanged={()=>{}}
+                onChanged={(value: string) => setMotregningProp("beloep", value, index)}
                 value={_motregning?.beloep}
               />
               <CountrySelect
@@ -154,7 +211,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 label={t('label:valuta')}
                 locale='nb'
                 menuPortalTarget={document.body}
-                onOptionSelected={()=>{}}
+                onOptionSelected={(currency: Currency) => setMotregningProp("valuta", currency.value, index)}
                 type='currency'
                 values={_motregning?.valuta}
               />
@@ -165,7 +222,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 namespace={_namespace}
                 id='mottakersNavn'
                 label={t('label:mottakers-navn')}
-                onChanged={() => {}}
+                onChanged={(value: string) => setMotregningProp("mottakersNavn", value, index)}
                 value={_motregning?.mottakersNavn}
               />
               <RadioGroup
@@ -174,7 +231,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
                 name={_namespace + '-utbetalingshyppighet'}
                 legend={t('label:periode-avgrensing')}
-                onChange={()=> {}}
+                onChange={(value: string) => setMotregningProp("utbetalingshyppighet", value, index)}
               >
                 <HStack gap="2">
                   <Radio value='Månedlig'>{t('label:månedlig')}</Radio>
@@ -197,7 +254,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               periodeType='simple'
               requiredStartDato
               requiredSluttDato
-              setPeriode={()=> {}}
+              setPeriode={(m: Motregning)=> setPeriode(m, index)}
               value={_motregning}
             />
             <TextArea
@@ -205,7 +262,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               namespace={_namespace}
               id='begrunnelse'
               label={t('label:anmodning-grunner')}
-              onChanged={() => {}}
+              onChanged={(value: string) => setMotregningProp("begrunnelse", value, index)}
               value={_motregning?.begrunnelse}
             />
             <TextArea
@@ -213,7 +270,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               namespace={_namespace}
               id='ytterligereInfo'
               label={t('label:ytterligere-informasjon')}
-              onChanged={() => {}}
+              onChanged={(value: string) => setMotregningProp("ytterligereInfo", value, index)}
               value={_motregning?.ytterligereInfo}
             />
           </VStack>
@@ -238,12 +295,12 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </HStack>
           <HGrid columns={2} gap="4">
             {type === "barn" && <VStack><Label>Barnets navn</Label>{_motregning?.barnetsNavn}</VStack>}
-            {type === "familie" && <VStack><Label>Antall personer det innvilges ytelse for</Label>{_motregning?.antallPersoner}</VStack>}
+            {type === "helefamilien" && <VStack><Label>Antall personer det innvilges ytelse for</Label>{_motregning?.antallPersoner}</VStack>}
             <VStack><Label>{t('label:betegnelse-på-ytelse')}</Label>{_motregning?.ytelseNavn}</VStack>
           </HGrid>
           <HGrid columns={2} gap="4">
-            <VStack><Label>Vedtaksdato</Label>{toDateFormat(_motregning?.vedtaksdato, "DD.MM.YYYY")}</VStack>
-            <VStack><Label>Beløp</Label>{_motregning?.beloep} {_motregning?.valuta} ({_motregning?.utbetalingshyppighet})</VStack>
+            <VStack><Label>{t('label:vedtaksdato')}</Label>{toDateFormat(_motregning?.vedtaksdato, "DD.MM.YYYY")}</VStack>
+            <VStack><Label>{t('label:beløp')}</Label>{_motregning?.beloep} {_motregning?.valuta} ({_motregning?.utbetalingshyppighet})</VStack>
           </HGrid>
           <HGrid columns={2} gap="4">
             <VStack>
@@ -257,14 +314,14 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 periode={_motregning}
               />
             </VStack>
-            <VStack><Label>Mottakers navn</Label>{_motregning?.mottakersNavn}</VStack>
+            <VStack><Label>{t('label:mottakers-navn')}</Label>{_motregning?.mottakersNavn}</VStack>
           </HGrid>
           <VStack>
-            <Label>Begrunnelse</Label>
+            <Label>{t('label:anmodning-grunner')}</Label>
             {_motregning?.begrunnelse}
           </VStack>
           <VStack>
-            <Label>Ytterligere informasjon</Label>
+            <Label>{t('label:ytterligere-informasjon')}</Label>
             {_motregning?.ytterligereInfo}
           </VStack>
         </VStack>
@@ -317,7 +374,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   </Box>
                 )
                 : motregninger?.helefamilien?.map((m: Motregning, i: number) => {
-                  return renderMotregning(m, i, "familie")
+                  return renderMotregning(m, i, "helefamilien")
                 })
               }
             </VStack>
