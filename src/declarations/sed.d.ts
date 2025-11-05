@@ -377,6 +377,12 @@ export interface Motregning extends Periode {
   ytterligereInfo: string
   barnetsNavn?: string
   antallPersoner?: string
+  __barn?: Array<BarnYtelse>
+}
+
+export interface BarnYtelse {
+  barnetsNavn?: string,
+  ytelseNavn?: string
 }
 
 export interface H001Svar {
