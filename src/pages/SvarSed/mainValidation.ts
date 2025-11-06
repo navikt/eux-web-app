@@ -379,7 +379,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         personName: i18n.t('label:ytterligere-informasjon_endrede_forhold').toLowerCase()
       }, true))
       hasErrors.push(performValidation<ValidationAdresserH001Props>(v, `svarsed-${personID}-adresser`, validateAdresserH001, {
-        adresser: _.get(replySed, `${personID}.adresser`)
+        adresser: _.get(replySed, `${personID}.adresser`),
+        anmodningMeldingType: _.get(replySed, `anmodning.adresse.anmodningMeldingType`)
       }, true))
     }
   }

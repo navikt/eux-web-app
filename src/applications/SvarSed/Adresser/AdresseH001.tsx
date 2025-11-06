@@ -34,7 +34,20 @@ const AdresseH001: React.FC<MainFormProps> = ({
   const target = 'anmodning.adresse'
   const targetAdresser = `${personID}.adresser`
 
-  const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
+  const getAdresseAnmodning = () => {
+    const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
+    if (!adresseAnmodning) {
+      const newAdresseAnmodning: AdresseAnmodning = {
+        anmodningMeldingType: 'melding'
+      }
+      dispatch(updateReplySed(`${target}.anmodningMeldingType`, 'melding'))
+
+      return newAdresseAnmodning
+    }
+    return adresseAnmodning
+  }
+
+  const adresseAnmodning: AdresseAnmodning | undefined = getAdresseAnmodning()
 
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresserH001Props>(validateAdresserH001, namespaceAdresse)
 
@@ -70,7 +83,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                 <VStack gap="4">
                   <RadioGroup
                     legend={t('label:anmodning-melding-om-adresse')}
-                    value={adresseAnmodning?.anmodningMeldingType ?? 'melding'}
+                    value={adresseAnmodning?.anmodningMeldingType}
                     error={validation[namespace + '-anmodning-melding-type']?.feilmelding}
                     id={namespace + '-anmodning-melding-type'}
                     name={namespace + '-anmodning-melding-type'}
@@ -83,7 +96,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                       {t('el:option-adresse-anmodning')}
                     </Radio>
                   </RadioGroup>
-                  {((adresseAnmodning?.anmodningMeldingType ?? 'melding') === 'melding') &&
+                  {((adresseAnmodning?.anmodningMeldingType) === 'melding') &&
                     <Adresser
                       parentNamespace={parentNamespace}
                       personID={personID}
@@ -94,7 +107,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
                       setReplySed={setReplySed}
                     />
                   }
-                  {((adresseAnmodning?.anmodningMeldingType ?? 'melding') === 'anmodning') &&
+                  {((adresseAnmodning?.anmodningMeldingType) === 'anmodning') &&
                     <RadioGroup
                       legend={t('label:anmodning-om-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
