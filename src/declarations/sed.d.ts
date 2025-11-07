@@ -352,9 +352,9 @@ export interface Ytelse extends Periode {
 }
 
 export interface Motregninger {
-  helefamilien?: Array<Motregning>
+  heleFamilien?: Array<Motregning>
   barn?: Array<Motregning>
-  helefamilienOppsummert?: MotregningOppsummert
+  heleFamilienOppsummert?: MotregningOppsummert
   barnOppsummert?: MotregningOppsummert
 }
 
