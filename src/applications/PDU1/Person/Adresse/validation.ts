@@ -50,11 +50,6 @@ export const validateAdresse = (
       id: namespace + '-land',
       message: 'validation:invalidLand'
     }))
-    hasErrors.push(checkIfNotGB(v, {
-      needle: adresse?.landkode,
-      id: namespace + '-land',
-      message: 'validation:invalidLand'
-    }))
   }
 
   return hasErrors.find(value => value) !== undefined
