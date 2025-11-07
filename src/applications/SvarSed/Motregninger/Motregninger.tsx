@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
 import {Barn, BarnYtelse, F001Sed, Motregning, Motregninger} from "../../../declarations/sed";
 import {SpacedHr} from "../../../components/StyledComponents";
-import {isF002Sed} from "../../../utils/sed";
+import {isF001Sed, isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import DateField, {toDateFormat} from "../../../components/DateField/DateField";
 import AddRemove from "../../../components/AddRemovePanel/AddRemove";
@@ -241,7 +241,17 @@ const MotregningerFC: React.FC<MainFormProps> = ({
         <Box padding="4" background="surface-subtle" borderColor="border-subtle" borderWidth="1">
           <VStack gap="4">
             <HStack gap="4">
-              <Label>{svarType}</Label>
+              {isF001Sed(replySed) && <Label>{svarType}</Label>}
+              {isF002Sed(replySed) &&
+                <RadioGroup legend="Svartype" hideLegend={true} value={_motregning?.svarType} onChange={(value: string) => setMotregningProp("svarType", value, index)}>
+                  <HStack gap="4">
+                    {type === "barn" && <Radio value="anmodning_om_motregning_per_barn">{t('label:anmodning-barn')}</Radio>}
+                    {type === "barn" && <Radio value="svar_på_anmodning_om_motregning_per_barn">{t('label:anmodning-svar-barn')}</Radio>}
+                    {type === "helefamilien" && <Radio value="anmodning_om_motregning_for_hele_familien">{t('label:anmodning-hele-familien')}</Radio>}
+                    {type === "helefamilien" && <Radio value="svar_på_anmodning_om_motregning_for_hele_familien">{t('label:anmodning-svar-hele-familien')}</Radio>}
+                  </HStack>
+                </RadioGroup>
+              }
               <Spacer/>
               {addRemove}
             </HStack>
@@ -468,9 +478,9 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </Tabs.List>
           <Tabs.Panel value="barnMotregninger">
             <VStack gap="4" marginBlock="4">
-              {_.isEmpty(motregninger?.barn)
+              {_.isEmpty(motregninger?.barn) && !_newBarnForm
                 ? (
-                  <Box padding="4">
+                  <Box paddingInline="4">
                     <SpacedHr />
                     <BodyLong>
                       {t('message:warning-no-motregning')}
@@ -500,9 +510,9 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </Tabs.Panel>
           <Tabs.Panel value="helefamilienMotregninger">
             <VStack gap="4" marginBlock="4">
-              {_.isEmpty(motregninger?.helefamilien)
+              {_.isEmpty(motregninger?.helefamilien) && !_newHelefamilienForm
                 ? (
-                  <Box padding="4">
+                  <Box paddingInline="4">
                     <SpacedHr />
                     <BodyLong>
                       {t('message:warning-no-motregning')}
