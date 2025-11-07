@@ -565,7 +565,7 @@
         "mottakersNavn": "Jon"
       }
     ],
-    "helefamilien": [
+    "heleFamilien": [
       {
         "antallPersoner": "5",
         "vedtaksdato": "2025-06-10",
@@ -581,6 +581,6 @@
       }
     ],
     "barnOppsummert": {},
-    "helefamilienOppsaummert": {}
+    "heleFamilienOppsaummert": {}
   }
 }

@@ -22,7 +22,9 @@ import {Currency} from "@navikt/land-verktoy";
 import performValidation from "../../../utils/performValidation";
 import {periodeSort} from "../../../utils/sort";
 import {updateReplySed} from "../../../actions/svarsed";
-import {PlusCircleIcon} from "@navikt/aksel-icons";
+import {ArrowRightLeftIcon, PlusCircleIcon} from "@navikt/aksel-icons";
+import TransferPerioderModal from "../AktivitetOgTrygdeperioder/TransferPerioderModal/TransferPerioderModal";
+import TransferToMotregningOppsummertModal from "./TransferToMotregningOppsummertModal/TransferToMotregningOppsummertModal";
 
 const MotregningerFC: React.FC<MainFormProps> = ({
  label,
@@ -50,6 +52,9 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   const [_newHelefamilienForm, _setNewHelefamilienForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<string | undefined>(undefined)
 
+  const [_showTransferToMotregningOppsummertBarnModal, _setShowTransferToMotregningOppsummertBarnModal] = useState<boolean>(false)
+  const [_showTransferToMotregningOppsummertHeleFamilienModal, _setShowTransferToMotregningOppsummertHeleFamilienModal] = useState<boolean>(false)
+
   const onTabChange = (motregningType: string) => {
     _setCurrentMotregningType(motregningType)
   }
@@ -60,7 +65,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
 
     if (!!_newMotregning && !hasErrors) {
       let clonedNewMotregning = _.cloneDeep(_newMotregning)
-      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "heleFamilien"]
       if (_.isNil(newMotregninger)) {
         newMotregninger = []
       }
@@ -116,7 +121,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
 
     if (!!_editMotregning && !hasErrors) {
       const newEditMotregning = _.cloneDeep(_editMotregning)
-      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "heleFamilien"]
       if (_.isNil(newMotregninger)) {
         newMotregninger = []
       }
@@ -132,7 +137,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   }
 
   const onRemove = (type: string, index: number) => {
-    let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "helefamilien"]
+    let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "heleFamilien"]
     if (!_.isNil(newMotregninger)) {
       newMotregninger.splice(index, 1)
       dispatch(updateReplySed("motregninger." + type, newMotregninger))
@@ -247,8 +252,8 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                   <HStack gap="4">
                     {type === "barn" && <Radio value="anmodning_om_motregning_per_barn">{t('label:anmodning-barn')}</Radio>}
                     {type === "barn" && <Radio value="svar_på_anmodning_om_motregning_per_barn">{t('label:anmodning-svar-barn')}</Radio>}
-                    {type === "helefamilien" && <Radio value="anmodning_om_motregning_for_hele_familien">{t('label:anmodning-hele-familien')}</Radio>}
-                    {type === "helefamilien" && <Radio value="svar_på_anmodning_om_motregning_for_hele_familien">{t('label:anmodning-svar-hele-familien')}</Radio>}
+                    {type === "heleFamilien" && <Radio value="anmodning_om_motregning_for_hele_familien">{t('label:anmodning-hele-familien')}</Radio>}
+                    {type === "heleFamilien" && <Radio value="svar_på_anmodning_om_motregning_for_hele_familien">{t('label:anmodning-svar-hele-familien')}</Radio>}
                   </HStack>
                 </RadioGroup>
               }
@@ -305,7 +310,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 />
               </HGrid>
             }
-            {type === "helefamilien" &&
+            {type === "heleFamilien" &&
               <HGrid columns={2} gap="4" align="center">
                 <Input
                   error={_v[_namespace + '-antallPersoner']?.feilmelding}
@@ -428,7 +433,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           </HStack>
           <HGrid columns={2} gap="4">
             {type === "barn" && <VStack><Label>Barnets navn</Label>{_motregning?.barnetsNavn}</VStack>}
-            {type === "helefamilien" && <VStack><Label>Antall personer det innvilges ytelse for</Label>{_motregning?.antallPersoner}</VStack>}
+            {type === "heleFamilien" && <VStack><Label>Antall personer det innvilges ytelse for</Label>{_motregning?.antallPersoner}</VStack>}
             <VStack><Label>{t('label:betegnelse-på-ytelse')}</Label>{_motregning?.ytelseNavn}</VStack>
           </HGrid>
           <HGrid columns={2} gap="4">
@@ -463,86 +468,126 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <Box padding="4">
-      <VStack gap="4">
-        <Heading size='small'>
-          {label}
-        </Heading>
-        <Tabs value={_currentMotregningType} onChange={(value) => onTabChange(value)}>
-          <Tabs.List>
-            <HStack align="center" width="100%">
-              <Tabs.Tab value="barnMotregninger" label={t('label:barn')}/>
-              <Tabs.Tab value="helefamilienMotregninger" label={t('label:hele-familien')}/>
-              <Spacer/>
-            </HStack>
-          </Tabs.List>
-          <Tabs.Panel value="barnMotregninger">
-            <VStack gap="4" marginBlock="4">
-              {_.isEmpty(motregninger?.barn) && !_newBarnForm
-                ? (
-                  <Box paddingInline="4">
-                    <SpacedHr />
-                    <BodyLong>
-                      {t('message:warning-no-motregning')}
-                    </BodyLong>
-                    <SpacedHr />
-                  </Box>
-                )
-                : motregninger?.barn?.map((m: Motregning, i: number) => {
-                  return renderMotregning(m, i, "barn")
-                })
-              }
-              {_newBarnForm
-                ? renderMotregning(null, -1, "barn")
-                : (
-                  <Box>
-                    <Button
-                      variant='tertiary'
-                      size="small"
-                      onClick={() => _setNewBarnForm(true)}
-                      icon={<PlusCircleIcon/>}
-                    >
-                      {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
-                    </Button>
-                  </Box>
-                )}
-            </VStack>
-          </Tabs.Panel>
-          <Tabs.Panel value="helefamilienMotregninger">
-            <VStack gap="4" marginBlock="4">
-              {_.isEmpty(motregninger?.helefamilien) && !_newHelefamilienForm
-                ? (
-                  <Box paddingInline="4">
-                    <SpacedHr />
-                    <BodyLong>
-                      {t('message:warning-no-motregning')}
-                    </BodyLong>
-                    <SpacedHr />
-                  </Box>
-                )
-                : motregninger?.helefamilien?.map((m: Motregning, i: number) => {
-                  return renderMotregning(m, i, "helefamilien")
-                })
-              }
-              {_newHelefamilienForm
-                ? renderMotregning(null, -1, "helefamilien")
-                : (
-                  <Box>
-                    <Button
-                      variant='tertiary'
-                      size="small"
-                      onClick={() => _setNewHelefamilienForm(true)}
-                      icon={<PlusCircleIcon/>}
-                    >
-                      {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
-                    </Button>
-                  </Box>
-                )}
-            </VStack>
-          </Tabs.Panel>
-        </Tabs>
-      </VStack>
-    </Box>
+    <>
+      <TransferToMotregningOppsummertModal
+        namespace={namespace}
+        title="Overføre til totalbeløp"
+        modalOpen={_showTransferToMotregningOppsummertBarnModal}
+        setModalOpen={_setShowTransferToMotregningOppsummertBarnModal}
+        target={target + ".barnOppsummert"}
+        motregninger={motregninger?.barn}
+      />
+      <TransferToMotregningOppsummertModal
+        namespace={namespace}
+        title="Overføre til totalbeløp"
+        modalOpen={_showTransferToMotregningOppsummertHeleFamilienModal}
+        setModalOpen={_setShowTransferToMotregningOppsummertHeleFamilienModal}
+        target={target + ".heleFamilienOppsummert"}
+        motregninger={motregninger?.heleFamilien}
+      />
+      <Box padding="4">
+        <VStack gap="4">
+          <Heading size='small'>
+            {label}
+          </Heading>
+          <Tabs value={_currentMotregningType} onChange={(value) => onTabChange(value)}>
+            <Tabs.List>
+              <HStack align="center" width="100%">
+                <Tabs.Tab value="barnMotregninger" label={t('label:barn')}/>
+                <Tabs.Tab value="heleFamilienMotregninger" label={t('label:hele-familien')}/>
+                <Spacer/>
+              </HStack>
+            </Tabs.List>
+            <Tabs.Panel value="barnMotregninger">
+              <VStack gap="4" marginBlock="4">
+                <HStack>
+                  <Spacer/>
+                  <Button
+                    size={"xsmall"}
+                    variant='tertiary'
+                    onClick={() => _setShowTransferToMotregningOppsummertBarnModal(true)}
+                    icon={<ArrowRightLeftIcon/>}
+                  >
+                    Overfør til totalbeløp
+                  </Button>
+                </HStack>
+                {_.isEmpty(motregninger?.barn) && !_newBarnForm
+                  ? (
+                    <Box paddingInline="4">
+                      <SpacedHr />
+                      <BodyLong>
+                        {t('message:warning-no-motregning')}
+                      </BodyLong>
+                      <SpacedHr />
+                    </Box>
+                  )
+                  : motregninger?.barn?.map((m: Motregning, i: number) => {
+                    return renderMotregning(m, i, "barn")
+                  })
+                }
+                {_newBarnForm
+                  ? renderMotregning(null, -1, "barn")
+                  : (
+                    <Box>
+                      <Button
+                        variant='tertiary'
+                        size="small"
+                        onClick={() => _setNewBarnForm(true)}
+                        icon={<PlusCircleIcon/>}
+                      >
+                        {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
+                      </Button>
+                    </Box>
+                  )}
+              </VStack>
+            </Tabs.Panel>
+            <Tabs.Panel value="heleFamilienMotregninger">
+              <VStack gap="4" marginBlock="4">
+                <HStack>
+                  <Spacer/>
+                  <Button
+                    size={"xsmall"}
+                    variant='tertiary'
+                    onClick={() => _setShowTransferToMotregningOppsummertHeleFamilienModal(true)}
+                    icon={<ArrowRightLeftIcon/>}
+                  >
+                    Overfør til totalbeløp
+                  </Button>
+                </HStack>
+                {_.isEmpty(motregninger?.heleFamilien) && !_newHelefamilienForm
+                  ? (
+                    <Box paddingInline="4">
+                      <SpacedHr />
+                      <BodyLong>
+                        {t('message:warning-no-motregning')}
+                      </BodyLong>
+                      <SpacedHr />
+                    </Box>
+                  )
+                  : motregninger?.heleFamilien?.map((m: Motregning, i: number) => {
+                    return renderMotregning(m, i, "heleFamilien")
+                  })
+                }
+                {_newHelefamilienForm
+                  ? renderMotregning(null, -1, "heleFamilien")
+                  : (
+                    <Box>
+                      <Button
+                        variant='tertiary'
+                        size="small"
+                        onClick={() => _setNewHelefamilienForm(true)}
+                        icon={<PlusCircleIcon/>}
+                      >
+                        {t('el:button-add-new-x', { x: t('label:motregning').toLowerCase() })}
+                      </Button>
+                    </Box>
+                  )}
+              </VStack>
+            </Tabs.Panel>
+          </Tabs>
+        </VStack>
+      </Box>
+    </>
   )
 }
 
