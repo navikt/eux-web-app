@@ -1,10 +1,11 @@
 import * as types from 'constants/actionTypes'
 import * as urls from 'constants/urls'
 import { ParamPayload } from 'declarations/app'
-import {Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
+import {Bucer, Enhet, Enheter, LogMeAgainPayload, Saksbehandler, ServerInfo} from 'declarations/types'
 import EKV from '@navikt/eessi-kodeverk'
 import { ActionWithPayload, call } from '@navikt/fetch'
 import mockEnhet from 'mocks/app/enhet'
+import mockBucer from 'mocks/app/saksbehandlerbucer'
 import mockReautorisering from 'mocks/app/reautorisering'
 import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
@@ -25,6 +26,18 @@ export const getEnheter = (): ActionWithPayload<Enheter> => {
       request: types.APP_ENHETER_REQUEST,
       success: types.APP_ENHETER_SUCCESS,
       failure: types.APP_ENHETER_FAILURE
+    }
+  })
+}
+
+export const getSaksbehandlerBucer = (): ActionWithPayload<Bucer> => {
+  return call({
+    url: urls.API_SAKSBEHANDLER_BUCER_URL,
+    expectedPayload: mockBucer,
+    type: {
+      request: types.APP_BUCER_REQUEST,
+      success: types.APP_BUCER_SUCCESS,
+      failure: types.APP_BUCER_FAILURE
     }
   })
 }
