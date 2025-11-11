@@ -210,6 +210,11 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     _resetValidation(namespace + '-' + prop)
   }
 
+  const setOppsummeringProp = (prop: string, value: string, type: string) => {
+    const target = type === "barn" ? "barnOppsummert" : "heleFamilienOppsummert"
+    dispatch(updateReplySed("motregninger." + target + "." + prop, value))
+  }
+
   const renderMotregning = (motregning: Motregning | null, index: number, type: string) => {
     const _namespace = namespace + index.toString()
     const _v: Validation = index < 0 ? _validation : validation
@@ -467,6 +472,56 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     )
   }
 
+  const renderTotalBeloep = (type: string) => {
+    const target = type === "barn" ? "barnOppsummert" : "heleFamilienOppsummert"
+    return (
+      <Box borderWidth="1" borderColor="border-subtle" padding="4">
+        <VStack gap="4">
+          <HGrid columns={2} gap="4">
+            <Input
+              error={validation[namespace + '-' + target + '-totalbeloep']?.feilmelding}
+              id= {target + '-totalbeloep'}
+              label={t('label:totalbeloep')}
+              namespace={namespace}
+              onChanged={(value: string) => setOppsummeringProp("totalbeloep", value, type)}
+              value={(motregninger as any)?.[target]?.totalbeloep || ''}
+            />
+            <CountrySelect
+              ariaLabel={t('label:valuta')}
+              closeMenuOnSelect
+              error={validation[namespace + '-' + target + '-valuta']?.feilmelding}
+              id={namespace + '-' + target + '-valuta'}
+              label={t('label:valuta')}
+              locale='nb'
+              menuPortalTarget={document.body}
+              onOptionSelected={(currency: Currency) => setOppsummeringProp("valuta", currency.value, type)}
+              type='currency'
+              values={(motregninger as any)?.[target]?.valuta}
+            />
+          </HGrid>
+          <HGrid columns={2} gap="4">
+            <Input
+              error={validation[namespace + '-' + target + '-betalingsreferanse']?.feilmelding}
+              id={target + '-betalingsreferanse'}
+              label={t('label:betalingsref')}
+              namespace={namespace}
+              onChanged={(value: string) => setOppsummeringProp("betalingsreferanse", value, type)}
+              value={(motregninger as any)?.[target]?.betalingsreferanse || ''}
+            />
+            <Input
+              error={validation[namespace + '-' + target + '-melding']?.feilmelding}
+              id={target + '-melding'}
+              label={t('label:melding-til-mottaker')}
+              namespace={namespace}
+              onChanged={(value: string) => setOppsummeringProp("melding", value, type)}
+              value={(motregninger as any)?.[target]?.melding || ''}
+            />
+          </HGrid>
+        </VStack>
+      </Box>
+    )
+  }
+
   return (
     <>
       <TransferToMotregningOppsummertModal
@@ -507,6 +562,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                     variant='tertiary'
                     onClick={() => _setShowTransferToMotregningOppsummertBarnModal(true)}
                     icon={<ArrowRightLeftIcon/>}
+                    disabled={!motregninger?.barn || motregninger?.barn.length === 0}
                   >
                     Overfør til totalbeløp
                   </Button>
@@ -539,6 +595,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                       </Button>
                     </Box>
                   )}
+                {renderTotalBeloep('barn')}
               </VStack>
             </Tabs.Panel>
             <Tabs.Panel value="heleFamilienMotregninger">
@@ -550,6 +607,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                     variant='tertiary'
                     onClick={() => _setShowTransferToMotregningOppsummertHeleFamilienModal(true)}
                     icon={<ArrowRightLeftIcon/>}
+                    disabled={!motregninger?.heleFamilien || motregninger?.heleFamilien.length === 0}
                   >
                     Overfør til totalbeløp
                   </Button>
@@ -582,6 +640,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                       </Button>
                     </Box>
                   )}
+                {renderTotalBeloep('heleFamilien')}
               </VStack>
             </Tabs.Panel>
           </Tabs>
