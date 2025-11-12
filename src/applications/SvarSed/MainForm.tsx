@@ -174,6 +174,7 @@ export interface MainFormFCProps<T> {
   deselectedMenu?: string | undefined
   deselectedMenuOption?: string | undefined
   menuDefaultClosed?: boolean
+  CDM_VERSION?: number
 }
 
 export interface MainFormProps {
@@ -186,6 +187,7 @@ export interface MainFormProps {
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
+  CDM_VERSION?: number
 }
 
 export interface MainFormSelector {
@@ -227,7 +229,8 @@ const MainForm = <T extends StorageTypes>({
   loggingNamespace,
   deselectedMenu,
   deselectedMenuOption,
-  menuDefaultClosed = false
+  menuDefaultClosed = false,
+  CDM_VERSION
 }: MainFormFCProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
@@ -307,6 +310,7 @@ const MainForm = <T extends StorageTypes>({
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
           options={form.options ?? {}}
+          CDM_VERSION={CDM_VERSION}
         />
       )
     }
