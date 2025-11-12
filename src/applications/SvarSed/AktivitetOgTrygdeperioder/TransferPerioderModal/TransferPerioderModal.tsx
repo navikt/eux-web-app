@@ -8,7 +8,6 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
 import moment from "moment";
-import replySed from "../../../../mocks/svarsed/replySed";
 
 export interface TransferPerioderModalProps {
   namespace: string
