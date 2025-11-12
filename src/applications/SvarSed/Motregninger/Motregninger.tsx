@@ -5,7 +5,6 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import _ from "lodash";
 import {Barn, BarnYtelse, F001Sed, Motregning, Motregninger, ReplySed} from "../../../declarations/sed";
-import {SpacedHr} from "../../../components/StyledComponents";
 import {isF001Sed, isF002Sed} from "../../../utils/sed";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import DateField, {toDateFormat} from "../../../components/DateField/DateField";
@@ -29,7 +28,6 @@ import {hasNamespaceWithErrors} from "../../../utils/validation";
 import classNames from "classnames";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 import useUnmount from "../../../hooks/useUnmount";
-import {resetAdresse} from "../../../actions/adresse";
 
 const MotregningerFC: React.FC<MainFormProps> = ({
  label,
@@ -601,6 +599,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
         setModalOpen={_setShowTransferToMotregningOppsummertBarnModal}
         target={target + ".barnOppsummert"}
         motregninger={motregninger?.barn}
+        resetWarning={!!motregninger?.barnOppsummert?.totalbeloep || !!motregninger?.barnOppsummert?.valuta}
       />
       <TransferToMotregningOppsummertModal
         namespace={namespace}
@@ -609,6 +608,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
         setModalOpen={_setShowTransferToMotregningOppsummertHeleFamilienModal}
         target={target + ".heleFamilienOppsummert"}
         motregninger={motregninger?.heleFamilien}
+        resetWarning={!!motregninger?.heleFamilienOppsummert?.totalbeloep || !!motregninger?.heleFamilienOppsummert?.valuta}
       />
       <Box padding="4">
         <VStack gap="4">
