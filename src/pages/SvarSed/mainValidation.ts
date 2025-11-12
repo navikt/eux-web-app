@@ -37,7 +37,7 @@ import {
   ValidationKontoopplysningProps
 } from 'applications/SvarSed/Kontoopplysning/validation'
 import { validateKravOmRefusjon, ValidationKravOmRefusjonProps } from 'applications/SvarSed/KravOmRefusjon/validation'
-import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregning/validation'
+import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
   validatePerioderDagpenger,
@@ -144,7 +144,6 @@ import {
 } from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
 import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
-import {useAppSelector} from "../../store";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -165,7 +164,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
       hasErrors.push(performValidation<ValidationMotregningerProps>(
-        v, 'formål2-motregning', validateMotregninger, {
+        v, 'formål2-motregninger', validateMotregninger, {
           replySed,
           formalName: i18n.t('label:motregning').toLowerCase()
         }, true))
