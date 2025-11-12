@@ -72,7 +72,14 @@ const MotregningerFC: React.FC<MainFormProps> = ({
   })
 
   const onTabChange = (motregningType: string) => {
+    _setNewBarnForm(false)
+    _setNewHelefamilienForm(false)
+    _setNewMotregning(undefined)
+    _setEditMotregning(undefined)
+    _setEditIndex(undefined)
+
     _setCurrentMotregningType(motregningType)
+
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationMotregningerProps>(
       clonedValidation, namespace, validateMotregninger, {
@@ -93,7 +100,8 @@ const MotregningerFC: React.FC<MainFormProps> = ({
 
     if (!!_newMotregning && valid) {
       let clonedNewMotregning = _.cloneDeep(_newMotregning)
-      let newMotregninger: Array<Motregning> | undefined = (_.cloneDeep(motregninger) as Motregninger)[type === "barn" ? "barn" : "heleFamilien"]
+      let clonedMotregninger = (_.cloneDeep(motregninger) as Motregninger)
+      let newMotregninger: Array<Motregning> | undefined = clonedMotregninger ? clonedMotregninger[type === "barn" ? "barn" : "heleFamilien"] : undefined
       if (_.isNil(newMotregninger)) {
         newMotregninger = []
       }
@@ -617,7 +625,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
             </Tabs.List>
             <Tabs.Panel value="barnMotregninger">
               <VStack gap="4" marginBlock="4">
-                {CDM_VERSION! >= 4.4 &&
+                {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.barn) &&
                   <HStack>
                     <Spacer/>
                     <Button
@@ -633,12 +641,10 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 }
                 {_.isEmpty(motregninger?.barn) && !_newBarnForm
                   ? (
-                    <Box paddingInline="4">
-                      <SpacedHr />
+                    <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
                       <BodyLong>
                         {t('message:warning-no-motregning')}
                       </BodyLong>
-                      <SpacedHr />
                     </Box>
                   )
                   : motregninger?.barn?.map((m: Motregning, i: number) => {
@@ -659,31 +665,31 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                       </Button>
                     </Box>
                   )}
-                {CDM_VERSION! >= 4.4 && renderTotalBeloep('barn')}
+                {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.barn) && renderTotalBeloep('barn')}
               </VStack>
             </Tabs.Panel>
             <Tabs.Panel value="heleFamilienMotregninger">
               <VStack gap="4" marginBlock="4">
-                <HStack>
-                  <Spacer/>
-                  <Button
-                    size={"xsmall"}
-                    variant='tertiary'
-                    onClick={() => _setShowTransferToMotregningOppsummertHeleFamilienModal(true)}
-                    icon={<ArrowRightLeftIcon/>}
-                    disabled={!motregninger?.heleFamilien || motregninger?.heleFamilien.length === 0}
-                  >
-                    Overfør til totalbeløp
-                  </Button>
-                </HStack>
+                {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.heleFamilien) &&
+                  <HStack>
+                    <Spacer/>
+                    <Button
+                      size={"xsmall"}
+                      variant='tertiary'
+                      onClick={() => _setShowTransferToMotregningOppsummertHeleFamilienModal(true)}
+                      icon={<ArrowRightLeftIcon/>}
+                      disabled={!motregninger?.heleFamilien || motregninger?.heleFamilien.length === 0}
+                    >
+                      Overfør til totalbeløp
+                    </Button>
+                  </HStack>
+                }
                 {_.isEmpty(motregninger?.heleFamilien) && !_newHelefamilienForm
                   ? (
-                    <Box paddingInline="4">
-                      <SpacedHr />
+                    <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
                       <BodyLong>
                         {t('message:warning-no-motregning')}
                       </BodyLong>
-                      <SpacedHr />
                     </Box>
                   )
                   : motregninger?.heleFamilien?.map((m: Motregning, i: number) => {
@@ -704,7 +710,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                       </Button>
                     </Box>
                   )}
-                {CDM_VERSION! >= 4.4 && renderTotalBeloep('heleFamilien')}
+                {CDM_VERSION! >= 4.4 && !_.isEmpty(motregninger?.heleFamilien) && renderTotalBeloep('heleFamilien')}
               </VStack>
             </Tabs.Panel>
           </Tabs>

@@ -535,52 +535,5 @@
   },
   "endredeForhold": [
     "hele_familien"
-  ],
-  "motregninger": {
-    "barn": [
-      {
-        "barnetsNavn": "Pernille",
-        "vedtaksdato": "2025-06-10",
-        "begrunnelse": "Ingen",
-        "ytterligereInfo": "Nop",
-        "startdato": "2016-01-03",
-        "sluttdato": "2017-01-02",
-        "beloep": "12000",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "Månedlig",
-        "ytelseNavn": "Lommepenger",
-        "mottakersNavn": "Jon"
-      },
-      {
-        "barnetsNavn": "Petter",
-        "vedtaksdato": "2025-06-10",
-        "begrunnelse": "Ingen",
-        "ytterligereInfo": "Nop",
-        "startdato": "2016-01-03",
-        "sluttdato": "2017-01-02",
-        "beloep": "12000",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "Månedlig",
-        "ytelseNavn": "Lommepenger",
-        "mottakersNavn": "Jon"
-      }
-    ],
-    "heleFamilien": [
-      {
-        "antallPersoner": "5",
-        "vedtaksdato": "2025-06-10",
-        "begrunnelse": "none",
-        "ytterligereInfo": "nn",
-        "startdato": "2017-02-07",
-        "sluttdato": "2018-03-08",
-        "beloep": "300000",
-        "valuta": "NOK",
-        "utbetalingshyppighet": "Årlig",
-        "ytelseNavn": "Lommerusk",
-        "mottakersNavn": "Hans"
-      }
-    ],
-    "barnOppsummert": {},
-    "heleFamilienOppsaummert": {}
-  }
+  ]
 }
