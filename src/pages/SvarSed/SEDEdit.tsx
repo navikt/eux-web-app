@@ -31,7 +31,6 @@ import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysnin
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import MainForm from 'applications/SvarSed/MainForm'
 import MottakAvSoknad from 'applications/SvarSed/MottakAvSoknad/MottakAvSoknad'
-import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonLight from 'applications/SvarSed/PersonLight/PersonLight'
@@ -360,6 +359,7 @@ const SEDEdit = (): JSX.Element => {
         {(isF001Sed(replySed) || isF002Sed(replySed)) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='formål1'
               loggingNamespace='formalmanager'
@@ -377,6 +377,7 @@ const SEDEdit = (): JSX.Element => {
         {isF003Sed(replySed) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='mottakavsoknad'
               loggingNamespace='mottakavsoknadmanager'
@@ -393,6 +394,7 @@ const SEDEdit = (): JSX.Element => {
         {isF027Sed(replySed) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='svarpaaanmodningominformasjon'
               loggingNamespace='svarpaaanmodningominformasjonmanager'
@@ -409,6 +411,7 @@ const SEDEdit = (): JSX.Element => {
         {showMainForm() && (
           <>
             <MainForm<ReplySed>
+              CDM_VERSION={CDM_VERSJON}
               type='twolevel'
               namespace='svarsed'
               loggingNamespace='personmanager'
@@ -461,6 +464,7 @@ const SEDEdit = (): JSX.Element => {
         {showBottomForm() && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='formål2'
               deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
@@ -473,7 +477,7 @@ const SEDEdit = (): JSX.Element => {
                 },
                 {
                   label: t('el:option-mainform-motregning'),
-                  value: 'motregning',
+                  value: 'motregninger',
                   component: Motregninger,
                   condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
                 },
@@ -512,6 +516,7 @@ const SEDEdit = (): JSX.Element => {
         {isF003Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={true}
               namespace='vedtak'
@@ -533,6 +538,7 @@ const SEDEdit = (): JSX.Element => {
         {isF026Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={true}
               namespace='etterspurtinformasjon'
@@ -554,6 +560,7 @@ const SEDEdit = (): JSX.Element => {
         {isF027Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='menuitems'
               menuDefaultClosed={true}
               namespace='svarpaaanmodningominformasjon'
@@ -605,6 +612,7 @@ const SEDEdit = (): JSX.Element => {
         {isS040Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={false}
               namespace='forespoersel'
@@ -626,6 +634,7 @@ const SEDEdit = (): JSX.Element => {
         {isS046Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={false}
               namespace='informasjonOmUtbetaling'
