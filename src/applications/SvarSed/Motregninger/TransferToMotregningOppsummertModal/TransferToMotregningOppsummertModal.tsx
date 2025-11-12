@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
 import {Alert, BodyShort, Box, Checkbox, HelpText, HStack, VStack, Tag,} from "@navikt/ds-react";
-import {Motregning} from "../../../../declarations/sed";
+import {F001Sed, Motregning, Motregninger, MotregningOppsummert} from "../../../../declarations/sed";
 import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
-import replySed from "../../../../mocks/svarsed/replySed";
 import dayjs from "dayjs";
 
 export interface TransferToMotregningOppsummertModalProps {
@@ -16,6 +15,7 @@ export interface TransferToMotregningOppsummertModalProps {
   setModalOpen: (open: boolean) => void
   target?: any
   motregninger: Array<Motregning> | undefined
+  resetWarning?: boolean
 }
 
 const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsummertModalProps> = ({
@@ -24,7 +24,8 @@ const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsumme
   modalOpen,
   setModalOpen,
   target,
-  motregninger
+  motregninger,
+  resetWarning
 }: TransferToMotregningOppsummertModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -34,6 +35,8 @@ const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsumme
   const [_totalBeloepTekst, _setTotalBeloepTekst] = useState<string>('')
   const [_totalBeloepAlert, _setTotalBeloepAlert] = useState<JSX.Element | undefined>(undefined)
   const warnings: Array<string> = []
+
+  if(resetWarning) warnings.push("OBS! Allerede registrert totalbeløp/valuta vil bli overskrevet!")
 
   const getId = (m: Motregning | null): string => m ? namespace + '-' + m.startdato + '-' + (m.sluttdato ?? m.aapenPeriodeType) : 'new'
 

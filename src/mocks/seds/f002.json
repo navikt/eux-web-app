@@ -535,5 +535,24 @@
   },
   "endredeForhold": [
     "hele_familien"
-  ]
+  ],
+  "motregninger": {
+    "heleFamilien": [
+      {
+        "antallPersoner": "5",
+        "vedtaksdato": "2025-06-10",
+        "begrunnelse": "none",
+        "ytterligereInfo": "nn",
+        "startdato": "2017-02-07",
+        "sluttdato": "2018-03-08",
+        "beloep": "300000",
+        "valuta": "NOK",
+        "utbetalingshyppighet": "Årlig",
+        "ytelseNavn": "Lommerusk",
+        "mottakersNavn": "Hans"
+      }
+    ],
+    "barnOppsummert": {},
+    "heleFamilienOppsaummert": {}
+  }
 }
