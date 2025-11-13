@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import {setValidation} from "../../../actions/validation";
-import {Box, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
+import {Box, Checkbox, CheckboxGroup, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
 import Adresser from "./Adresser";
@@ -38,7 +38,8 @@ const AdresseH001: React.FC<MainFormProps> = ({
     const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
     if (!adresseAnmodning) {
       const newAdresseAnmodning: AdresseAnmodning = {
-        anmodningMeldingType: 'melding'
+        anmodningMeldingType: 'melding',
+        adresseTyper: []
       }
       dispatch(updateReplySed(`${target}.anmodningMeldingType`, 'melding'))
 
@@ -56,17 +57,17 @@ const AdresseH001: React.FC<MainFormProps> = ({
       dispatch(setValidation(clonedValidation))
     })
 
-  const onAdressetypeChange = (value: string) => {
-    dispatch(updateReplySed(`${target}.adresseType`, value.trim()))
+  const onAdressetypeChange = (value: any[]) => {
+    dispatch(updateReplySed(`${target}.adresseTyper`, value))
   }
 
   const onAnmodningMeldingChange = (value: string) => {
-    dispatch(updateReplySed(`${target}.anmodningMeldingType`, value.trim()))
+    dispatch(updateReplySed(`${target}.anmodningMeldingType`, value))
     if(value === "anmodning"){
       dispatch(updateReplySed(targetAdresser, undefined))
-      dispatch(updateReplySed(`${target}.adresseType`, 'bosted'))
+//      dispatch(updateReplySed(`${target}.adresseTyper`, [ 'bosted' ]))
     } else if (value === "melding"){
-      dispatch(updateReplySed(`${target}.adresseType`, undefined))
+//      dispatch(updateReplySed(`${target}.adresseTyper`, undefined))
     }
   }
 
@@ -108,26 +109,26 @@ const AdresseH001: React.FC<MainFormProps> = ({
                     />
                   }
                   {((adresseAnmodning?.anmodningMeldingType) === 'anmodning') &&
-                    <RadioGroup
+                    <CheckboxGroup
                       legend={t('label:anmodning-om-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
                       id={namespace + '-anmodning-type'}
                       name={namespace + '-anmodning-type'}
-                      value={adresseAnmodning?.adresseType ?? ''}
+                      value={adresseAnmodning?.adresseTyper}
                       onChange={(value) => onAdressetypeChange(value)}
                     >
                       <HStack gap="4">
-                        <Radio value='bosted'>
+                        <Checkbox value='bosted'>
                           {t('el:radio-adresse-anmodning-type-bosted')}
-                        </Radio>
-                        <Radio value='opphold'>
+                        </Checkbox>
+                        <Checkbox value='opphold'>
                           {t('el:radio-adresse-anmodning-type-opphold')}
-                        </Radio>
-                        <Radio value='kontakt'>
+                        </Checkbox>
+                        <Checkbox value='kontakt'>
                           {t('el:radio-adresse-anmodning-type-kontakt')}
-                        </Radio>
+                        </Checkbox>
                       </HStack>
-                    </RadioGroup>
+                    </CheckboxGroup>
                   }
                 </VStack>
               </Box>
