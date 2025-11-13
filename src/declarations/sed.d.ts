@@ -375,7 +375,6 @@ export interface H001Svar {
 }
 
 export interface AdresseAnmodning {
-  anmodningMeldingType?: AnmodningMeldingType
   adresseTyper?: Array<AdresseType>
 }
 
@@ -849,7 +848,6 @@ export interface H001Sed extends HSed {
 }
 
 export interface H001AnmodningOmAdresse {
-  anmodningMeldingType?: AnmodningMeldingType
   adresseTyper?: AdresseType
 }
 

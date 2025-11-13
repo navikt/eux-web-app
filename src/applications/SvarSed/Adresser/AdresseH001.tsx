@@ -4,11 +4,9 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import useUnmount from "../../../hooks/useUnmount";
 import _ from "lodash";
 import {setValidation} from "../../../actions/validation";
-import {Box, Checkbox, CheckboxGroup, Heading, HStack, Radio, RadioGroup, VStack} from "@navikt/ds-react";
+import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
-import Adresser from "./Adresser";
-import {setReplySed} from "../../../actions/svarsed";
 import {AdresseAnmodning} from "../../../declarations/sed";
 import useLocalValidation from "../../../hooks/useLocalValidation";
 import {validateAdresserH001, ValidationAdresserH001Props} from "./validationH001";
@@ -32,17 +30,13 @@ const AdresseH001: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-adresseH001`
   const namespaceAdresse = `${parentNamespace}-${personID}-adresser`
   const target = 'anmodning.adresse'
-  const targetAdresser = `${personID}.adresser`
 
   const getAdresseAnmodning = () => {
     const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
     if (!adresseAnmodning) {
       const newAdresseAnmodning: AdresseAnmodning = {
-        anmodningMeldingType: 'melding',
         adresseTyper: []
       }
-      dispatch(updateReplySed(`${target}.anmodningMeldingType`, 'melding'))
-
       return newAdresseAnmodning
     }
     return adresseAnmodning
@@ -61,16 +55,6 @@ const AdresseH001: React.FC<MainFormProps> = ({
     dispatch(updateReplySed(`${target}.adresseTyper`, value))
   }
 
-  const onAnmodningMeldingChange = (value: string) => {
-    dispatch(updateReplySed(`${target}.anmodningMeldingType`, value))
-    if(value === "anmodning"){
-      dispatch(updateReplySed(targetAdresser, undefined))
-//      dispatch(updateReplySed(`${target}.adresseTyper`, [ 'bosted' ]))
-    } else if (value === "melding"){
-//      dispatch(updateReplySed(`${target}.adresseTyper`, undefined))
-    }
-  }
-
   return (
     <>
       <Box padding="4">
@@ -78,37 +62,10 @@ const AdresseH001: React.FC<MainFormProps> = ({
           <Box>
             <VStack gap="4">
               <Heading size='small'>
-                {t('label:adresser')}
+                {t('label:anmodning-om-adresse')}
               </Heading>
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">
-                  <RadioGroup
-                    legend={t('label:anmodning-melding-om-adresse')}
-                    value={adresseAnmodning?.anmodningMeldingType}
-                    error={validation[namespace + '-anmodning-melding-type']?.feilmelding}
-                    id={namespace + '-anmodning-melding-type'}
-                    name={namespace + '-anmodning-melding-type'}
-                    onChange={(value) => onAnmodningMeldingChange(value)}
-                  >
-                    <Radio value='melding'>
-                      {t('el:option-adresse-melding')}
-                    </Radio>
-                    <Radio value='anmodning'>
-                      {t('el:option-adresse-anmodning')}
-                    </Radio>
-                  </RadioGroup>
-                  {((adresseAnmodning?.anmodningMeldingType) === 'melding') &&
-                    <Adresser
-                      parentNamespace={parentNamespace}
-                      personID={personID}
-                      personName={personName}
-                      replySed={replySed}
-                      updateReplySed={updateReplySed}
-                      options={options}
-                      setReplySed={setReplySed}
-                    />
-                  }
-                  {((adresseAnmodning?.anmodningMeldingType) === 'anmodning') &&
                     <CheckboxGroup
                       legend={t('label:anmodning-om-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
@@ -129,7 +86,6 @@ const AdresseH001: React.FC<MainFormProps> = ({
                         </Checkbox>
                       </HStack>
                     </CheckboxGroup>
-                  }
                 </VStack>
               </Box>
             </VStack>

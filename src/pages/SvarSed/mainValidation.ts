@@ -380,7 +380,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
       }, true))
       hasErrors.push(performValidation<ValidationAdresserH001Props>(v, `svarsed-${personID}-adresser`, validateAdresserH001, {
         adresser: _.get(replySed, `${personID}.adresser`),
-        anmodningMeldingType: _.get(replySed, `anmodning.adresse.anmodningMeldingType`)
+        adresseTyper: _.get(replySed, `anmodning.adresse.adresseTyper`)
       }, true))
     }
   }
