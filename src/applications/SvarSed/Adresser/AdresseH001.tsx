@@ -67,7 +67,7 @@ const AdresseH001: React.FC<MainFormProps> = ({
               <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
                 <VStack gap="4">
                     <CheckboxGroup
-                      legend={t('label:anmodning-om-adresse')}
+                      legend={t('label:type-adresse')}
                       error={validation[namespace + '-anmodning-type']?.feilmelding}
                       id={namespace + '-anmodning-type'}
                       name={namespace + '-anmodning-type'}
