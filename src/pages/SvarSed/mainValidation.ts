@@ -36,7 +36,7 @@ import {
   validateKontoopplysning,
   ValidationKontoopplysningProps
 } from 'applications/SvarSed/Kontoopplysning/validation'
-import { validateKravOmRefusjon, ValidationKravOmRefusjonProps } from 'applications/SvarSed/KravOmRefusjon/validation'
+import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps, ValidationRefusjonProps, ValidationRefusjonsKravProps} from 'applications/SvarSed/KravOmRefusjon/validation'
 import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
@@ -186,6 +186,11 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
       hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
         kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
+        formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+      }, true))
+
+      hasErrors.push(performValidation<ValidationRefusjonProps>(v, 'formål2-refusjon', validateRefusjon, {
+        replySed,
         formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
       }, true))
     }
