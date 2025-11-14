@@ -22,7 +22,7 @@ import performValidation from "../../../utils/performValidation";
 import {periodeSort} from "../../../utils/sort";
 import {updateReplySed} from "../../../actions/svarsed";
 import {ArrowRightLeftIcon, PlusCircleIcon} from "@navikt/aksel-icons";
-import TransferToMotregningOppsummertModal from "./TransferToMotregningOppsummertModal/TransferToMotregningOppsummertModal";
+import TransferBeloepToTotalModal from "./TransferBeloepToTotalModal/TransferBeloepToTotalModal";
 import styles from "./Motregninger.module.css";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import classNames from "classnames";
@@ -592,22 +592,22 @@ const MotregningerFC: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <TransferToMotregningOppsummertModal
+      <TransferBeloepToTotalModal
         namespace={namespace}
         title="Overføre til totalbeløp"
         modalOpen={_showTransferToMotregningOppsummertBarnModal}
         setModalOpen={_setShowTransferToMotregningOppsummertBarnModal}
         target={target + ".barnOppsummert"}
-        motregninger={motregninger?.barn}
+        beloepArray={motregninger?.barn}
         resetWarning={!!motregninger?.barnOppsummert?.totalbeloep || !!motregninger?.barnOppsummert?.valuta}
       />
-      <TransferToMotregningOppsummertModal
+      <TransferBeloepToTotalModal
         namespace={namespace}
         title="Overføre til totalbeløp"
         modalOpen={_showTransferToMotregningOppsummertHeleFamilienModal}
         setModalOpen={_setShowTransferToMotregningOppsummertHeleFamilienModal}
         target={target + ".heleFamilienOppsummert"}
-        motregninger={motregninger?.heleFamilien}
+        beloepArray={motregninger?.heleFamilien}
         resetWarning={!!motregninger?.heleFamilienOppsummert?.totalbeloep || !!motregninger?.heleFamilienOppsummert?.valuta}
       />
       <Box padding="4">

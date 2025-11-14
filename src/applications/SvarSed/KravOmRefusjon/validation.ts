@@ -1,9 +1,15 @@
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import { checkIfNotEmpty, checkLength } from 'utils/validation'
+import {Refusjon} from "../../../declarations/sed";
 
 export interface ValidationKravOmRefusjonProps {
   kravOmRefusjon: string | undefined,
+  formalName: string | undefined
+}
+
+export interface ValidationRefusjonProps {
+  refusjon: Refusjon
   formalName: string | undefined
 }
 
@@ -33,6 +39,19 @@ export const validateKravOmRefusjon = (
       personName: formalName
     }))
   }
+
+  return hasErrors.find(value => value) !== undefined
+}
+
+export const validateRefusjon = (
+  v: Validation,
+  namespace: string,
+  {
+    refusjon,
+    formalName
+  }: ValidationRefusjonProps
+): boolean => {
+  const hasErrors: Array<boolean> = []
 
   return hasErrors.find(value => value) !== undefined
 }
