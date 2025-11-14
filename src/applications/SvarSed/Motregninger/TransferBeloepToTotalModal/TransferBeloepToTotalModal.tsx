@@ -1,32 +1,32 @@
 import React, {useEffect, useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
-import {Alert, BodyShort, Box, Checkbox, HelpText, HStack, VStack, Tag,} from "@navikt/ds-react";
-import {F001Sed, Motregning, Motregninger, MotregningOppsummert} from "../../../../declarations/sed";
+import {Alert, BodyShort, Box, Checkbox, HelpText, HStack, Tag,} from "@navikt/ds-react";
+import {Motregning, RefusjonsKrav} from "../../../../declarations/sed";
 import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
 import {updateReplySed} from "../../../../actions/svarsed";
 import dayjs from "dayjs";
 
-export interface TransferToMotregningOppsummertModalProps {
+export interface TransferBeloepToTotalModalProps {
   namespace: string
   title: string
   modalOpen: boolean
   setModalOpen: (open: boolean) => void
   target?: any
-  motregninger: Array<Motregning> | undefined
+  beloepArray: Array<Motregning | RefusjonsKrav> | undefined
   resetWarning?: boolean
 }
 
-const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsummertModalProps> = ({
+const TransferBeloepToTotalModal: React.FC<TransferBeloepToTotalModalProps> = ({
   namespace,
   title,
   modalOpen,
   setModalOpen,
   target,
-  motregninger,
+  beloepArray,
   resetWarning
-}: TransferToMotregningOppsummertModalProps): JSX.Element => {
+}: TransferBeloepToTotalModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const [_valgteBeloep, _setValgteBeloep] = useState<any>(undefined)
@@ -38,7 +38,7 @@ const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsumme
 
   if(resetWarning) warnings.push("OBS! Allerede registrert totalbeløp/valuta vil bli overskrevet!")
 
-  const getId = (m: Motregning | null): string => m ? namespace + '-' + m.startdato + '-' + (m.sluttdato ?? m.aapenPeriodeType) : 'new'
+  const getId = (m: Motregning | RefusjonsKrav | null): string => m ? namespace + '-' + m.startdato + '-' + (m.sluttdato ?? m.aapenPeriodeType) : 'new'
 
   const onValgteBeloepChanged = (checked: boolean, totalBeloep: number, valuta: string, index: number) => {
     if(checked){
@@ -98,43 +98,49 @@ const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsumme
         modalTitle: title,
         modalContent: (
           <Box borderWidth="1" borderColor="border-subtle" padding="4">
-            {motregninger?.map((m, i) => {
-              const fomDato = _.isString(m.startdato) ?
-                dayjs(m.startdato, 'YYYY-MM-DD') :
-                dayjs(m.startdato)
+            {beloepArray?.map((item, i) => {
+              let totalBeloep = parseFloat(item.beloep)
+              const fomDato = _.isString(item.startdato) ?
+                dayjs(item.startdato, 'YYYY-MM-DD') :
+                dayjs(item.startdato)
 
-              const tomDato = _.isString(m.sluttdato) ?
-                  dayjs(m.sluttdato, 'YYYY-MM-DD') :
-                  dayjs(m.sluttdato)
+              const tomDato = _.isString(item.sluttdato) ?
+                dayjs(item.sluttdato, 'YYYY-MM-DD') :
+                dayjs(item.sluttdato)
               const tomDatoPlusOneDay = tomDato.add(1, 'day') //Include fomDato in count
               const months = tomDatoPlusOneDay.diff(fomDato, 'month')
-              const totalMotregningBeloep = m.utbetalingshyppighet === 'Årlig' ? parseFloat(m.beloep) / 12 * months : parseFloat(m.beloep) * months
+
+              if("utbetalingshyppighet" in item) {
+                totalBeloep = item.utbetalingshyppighet === 'Årlig' ? parseFloat(item.beloep) / 12 * months : parseFloat(item.beloep) * months
+              }
 
               return (
                 <HStack gap="4" align="center">
                   <Checkbox
-                    key={getId(m)}
+                    key={getId(item)}
                     checked={!!(_valgteBeloep && _valgteBeloep["beloep-" + i])}
-                    onChange={(e) => onValgteBeloepChanged(e.target.checked, totalMotregningBeloep, m.valuta, i)}
+                    onChange={(e) => onValgteBeloepChanged(e.target.checked, totalBeloep, item.valuta, i)}
                   >
-                    {totalMotregningBeloep.toFixed(0)} {m.valuta}
+                    {totalBeloep.toFixed(0)} {item.valuta}
                   </Checkbox>
-                  {m.barnetsNavn ? <Tag size="xsmall" variant={"warning-moderate"}>{m.barnetsNavn}</Tag> : null}
-                  <HelpText>
-                    <BodyShort size="small">
-                    {fomDato.format('DD.MM.YYYY')} - {tomDato.format('DD.MM.YYYY')} ({months} mnd)<br/>
-                    {m.utbetalingshyppighet === "Månedlig" &&
-                      <>
-                        {m.beloep} {m.utbetalingshyppighet.toLowerCase()} * {months} = {totalMotregningBeloep.toFixed(0)} {m.valuta}
-                      </>
-                    }
-                      {m.utbetalingshyppighet === "Årlig" &&
+                  {"barnetsNavn" in item && item.barnetsNavn ? <Tag size="xsmall" variant={"warning-moderate"}>{item.barnetsNavn}</Tag> : null}
+                  {"utbetalingshyppighet" in item && item.utbetalingshyppighet &&
+                    <HelpText>
+                      <BodyShort size="small">
+                      {fomDato.format('DD.MM.YYYY')} - {tomDato.format('DD.MM.YYYY')} ({months} mnd)<br/>
+                      {item.utbetalingshyppighet === "Månedlig" &&
                         <>
-                          {m.beloep} {m.utbetalingshyppighet.toLowerCase()}/12 * {months} = {totalMotregningBeloep.toFixed(0)} {m.valuta}
+                          {item.beloep} {item.utbetalingshyppighet.toLowerCase()} * {months} = {totalBeloep.toFixed(0)} {item.valuta}
                         </>
                       }
-                    </BodyShort>
-                  </HelpText>
+                        {item.utbetalingshyppighet === "Årlig" &&
+                          <>
+                            {item.beloep} {item.utbetalingshyppighet.toLowerCase()}/12 * {months} = {totalBeloep.toFixed(0)} {item.valuta}
+                          </>
+                        }
+                      </BodyShort>
+                    </HelpText>
+                  }
                 </HStack>
               )
             })}
@@ -161,4 +167,4 @@ const TransferToMotregningOppsummertModal: React.FC<TransferToMotregningOppsumme
   )
 }
 
-export default TransferToMotregningOppsummertModal
+export default TransferBeloepToTotalModal
