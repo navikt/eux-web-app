@@ -182,6 +182,13 @@ const MotregningerFC: React.FC<MainFormProps> = ({
       newMotregninger.splice(index, 1)
       dispatch(updateReplySed("motregninger." + type, newMotregninger))
     }
+
+    if(_.isNil(newMotregninger) || newMotregninger.length === 0) {
+      setOppsummeringProp("totalbeloep", undefined, type)
+      setOppsummeringProp("valuta", undefined, type)
+      setOppsummeringProp("betalingsreferanse", undefined, type)
+      setOppsummeringProp("melding", undefined, type)
+    }
   }
 
   const setMotregningProp = (prop: string, value: string, index: number) => {
@@ -250,7 +257,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     _resetValidation(namespace + '-' + prop)
   }
 
-  const setOppsummeringProp = (prop: string, value: string, type: string) => {
+  const setOppsummeringProp = (prop: string, value: string | undefined, type: string) => {
     const target = type === "barn" ? "barnOppsummert" : "heleFamilienOppsummert"
     dispatch(updateReplySed("motregninger." + target + "." + prop, value))
     dispatch(resetValidation(namespace + '-' + target + '-' + prop))

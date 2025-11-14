@@ -1,8 +1,8 @@
 import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
-import {validateRefusjon, ValidationRefusjonProps} from 'applications/SvarSed/KravOmRefusjon/validation'
+import {validateRefusjon, validateRefusjonsKrav, ValidationRefusjonProps, ValidationRefusjonsKravProps} from 'applications/SvarSed/KravOmRefusjon/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
-import {F002Sed, Refusjon, RefusjonsKrav} from 'declarations/sed'
+import {F002Sed, Refusjon, RefusjonsKrav, ReplySed} from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React, {useState} from 'react'
@@ -24,6 +24,7 @@ import {periodeSort} from "../../../utils/sort";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import TextArea from "../../../components/Forms/TextArea";
 import TransferBeloepToTotalModal from "../Motregninger/TransferBeloepToTotalModal/TransferBeloepToTotalModal";
+import performValidation from "../../../utils/performValidation";
 
 const RefusjonFC: React.FC<MainFormProps> = ({
   label,
@@ -39,7 +40,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
   const refusjon: Refusjon | undefined = _.get((replySed as F002Sed), target)
   const namespace = `${parentNamespace}-refusjon`
 
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationRefusjonProps>(validateRefusjon, namespace)
+  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationRefusjonsKravProps>(validateRefusjonsKrav, namespace)
 
   const [_newRefusjonsKrav, _setNewRefusjonsKrav] = useState<RefusjonsKrav | undefined>(undefined)
   const [_editRefusjonsKrav, _setEditRefusjonsKrav] = useState<RefusjonsKrav | undefined>(undefined)
@@ -50,10 +51,16 @@ const RefusjonFC: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
+    performValidation<ValidationRefusjonProps>(
+      clonedValidation, namespace, validateRefusjon, {
+        replySed: _.cloneDeep(replySed as ReplySed),
+        formalName: personName
+      }, true
+    )
     dispatch(setValidation(clonedValidation))
   })
 
-  const setRefusjonProp = (prop: string, value: string) => {
+  const setRefusjonProp = (prop: string, value: string | undefined) => {
     dispatch(updateReplySed("refusjon." + prop, value))
     dispatch(resetValidation(namespace + '-' + prop))
   }
@@ -88,7 +95,10 @@ const RefusjonFC: React.FC<MainFormProps> = ({
   }
 
   const onAddNew = () => {
-    const valid: boolean = true
+    const valid: boolean = _performValidation({
+      refusjonsKrav: _newRefusjonsKrav,
+      formalName: personName
+    })
 
     if (!!_newRefusjonsKrav && valid) {
       let clonedNewRefusjonsKrav = _.cloneDeep(_newRefusjonsKrav)
@@ -117,6 +127,12 @@ const RefusjonFC: React.FC<MainFormProps> = ({
       newKravliste.splice(index, 1)
       dispatch(updateReplySed("refusjon.kravListe", newKravliste))
     }
+    if(_.isNil(newKravliste) || newKravliste.length === 0) {
+      setRefusjonProp("totalbeloep", undefined)
+      setRefusjonProp("valuta", undefined)
+      setRefusjonProp("betalingsreferanse", undefined)
+      setRefusjonProp("melding", undefined)
+    }
   }
 
   const onStartEdit = (refusjonsKrav: RefusjonsKrav, index: number) => {
@@ -136,8 +152,12 @@ const RefusjonFC: React.FC<MainFormProps> = ({
 
   const onSaveEdit = (index: number) => {
     const clonedValidation = _.cloneDeep(validation)
-    const hasErrors = false
-
+    const hasErrors = performValidation<ValidationRefusjonsKravProps>(
+      clonedValidation, namespace, validateRefusjonsKrav, {
+        refusjonsKrav: _editRefusjonsKrav,
+        nsIndex: _editIndex,
+        formalName: personName
+      })
 
     if (!!_editRefusjonsKrav && !hasErrors) {
       const newEditRefusjonsKrav = _.cloneDeep(_editRefusjonsKrav)
@@ -354,7 +374,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
                 variant='tertiary'
                 onClick={() => _setShowTransferBeloepToTotalModal(true)}
                 icon={<ArrowRightLeftIcon/>}
-                disabled={!refusjon?.kravListe ||refusjon?.kravListe.length === 0}
+                disabled={!refusjon?.kravListe || refusjon?.kravListe.length === 0}
               >
                 Overfør til totalbeløp
               </Button>
@@ -383,7 +403,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
                     onClick={() => _setNewRefusjonsKravForm(true)}
                     icon={<PlusCircleIcon/>}
                   >
-                    {t('el:button-add-new-x', { x: t('label:refusjonskrav').toLowerCase() })}
+                    {t('el:button-add-new-x2', { x: t('label:refusjonskrav').toLowerCase() })}
                   </Button>
                 </Box>
               )}
