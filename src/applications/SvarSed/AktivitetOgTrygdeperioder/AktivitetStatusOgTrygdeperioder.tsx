@@ -549,11 +549,11 @@ const AktivitetStatusOgTrygdeperioder: React.FC<MainFormProps> = ({
                           </Box>
                         }
                         {aktivitetStatus.aktiviteter.map((aktivitet: Aktivitet, aktivitetIdx: number) => {
-                          let title = t('label:perioder-uten-aktivitet')
+                          let title = aktivitetStatus.status === "ingenInfo" ? t('label:perioder-uten-informasjon'): t('label:perioder-uten-aktivitet')
                           let type
                           let typeLabel
                           if(aktivitetStatus.status === "aktiv"){
-                            title = t('label:ansettelsesperioder')
+                            title = t('label:perioder-med-aktivitet')
                             typeLabel = "Type aktivitet"
                             type = t('label:aktivitet-type-' + aktivitet.type)
                           }
