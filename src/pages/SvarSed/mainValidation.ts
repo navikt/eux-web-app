@@ -183,7 +183,9 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
           formalName: i18n.t('label:prosedyre-ved-uenighet').toLowerCase()
         }, true))
     }
-    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
+    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ||
+      (replySed as F002Sed).formaal.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
+    ) {
       hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
         kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
         formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
