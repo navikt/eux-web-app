@@ -1,0 +1,8 @@
+.refusjonsKravBox {
+  &.new {
+    background-color: rgba(236, 243, 153, 0.5);
+  };
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+}

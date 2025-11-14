@@ -385,6 +385,20 @@ export interface BarnYtelse {
   ytelseNavn?: string
 }
 
+export interface Refusjon {
+  kravListe: Array<RefusjonsKrav>
+  totalbeloep?: string
+  valuta?: string
+  melding?: string
+  betalingsreferanse?: string
+}
+
+export interface RefusjonsKrav extends Periode {
+  beloep: string
+  valuta: string
+  ytterligereinformasjon?: string
+}
+
 export interface H001Svar {
   dokumentasjon: {
     informasjon: string
@@ -625,6 +639,7 @@ export interface F001Sed extends FSed {
   motregninger?: Motregninger
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
+  refusjon: Refusjon
   uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }

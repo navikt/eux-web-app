@@ -1,11 +1,10 @@
-import { Heading } from '@navikt/ds-react'
-import { PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Heading, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateKravOmRefusjon, ValidationKravOmRefusjonProps } from 'applications/SvarSed/KravOmRefusjon/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
 import { TextAreaDiv } from 'components/StyledComponents'
-import { F002Sed } from 'declarations/sed'
+import {F002Sed} from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
 import React from 'react'
@@ -18,7 +17,7 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   personName,
-  updateReplySed
+  updateReplySed,
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: MainFormSelector = useAppSelector(mapState)
@@ -46,23 +45,24 @@ const KravOmRefusjon: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <TextAreaDiv>
-        <TextArea
-          error={validation[namespace + '-krav']?.feilmelding}
-          id='krav'
-          label={t('label:krav-om-refusjon-under-artikkel')}
-          namespace={namespace}
-          onChanged={setKrav}
-          required
-          value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
-        />
-      </TextAreaDiv>
-    </PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <TextAreaDiv>
+          <TextArea
+            error={validation[namespace + '-krav']?.feilmelding}
+            id='krav'
+            label={t('label:krav-om-refusjon-under-artikkel')}
+            namespace={namespace}
+            onChanged={setKrav}
+            required
+            value={refusjonIHenholdTilArtikkel58IForordningen ?? ''}
+          />
+        </TextAreaDiv>
+      </VStack>
+    </Box>
   )
 }
 
