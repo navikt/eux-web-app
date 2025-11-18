@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "ESNext",
-    "types": ["node", "vite/client", "jest", "@types/node","@testing-library/jest-dom"],
+    "types": ["node", "vite/client", "jest","@testing-library/jest-dom"],
     "baseUrl": "src/",
     "paths": {
       "src/*": ["./src/*"],
