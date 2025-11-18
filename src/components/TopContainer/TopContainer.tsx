@@ -20,7 +20,6 @@ import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
 import styled, { createGlobalStyle } from 'styled-components'
-import * as Sentry from '@sentry/browser'
 
 
 const GlobalStyle = createGlobalStyle`
@@ -149,13 +148,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
   }
 
   const ErrorFallback = ({ error, resetErrorBoundary }: any) => {
-    Sentry.captureEvent({
-      message: error.message,
-      extra: {
-        error
-      },
-      level: 'error'
-    })
     return (
       <Error error={error} resetErrorBoundary={resetErrorBoundary} />
     )
