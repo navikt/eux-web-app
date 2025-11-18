@@ -27,8 +27,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@navikt/ds-css": "^7.0.0",
-    "@navikt/ds-react": "^7.0.0",
+    "@navikt/ds-css": "^7.18.0",
+    "@navikt/ds-react": "^7.18.0",
     "@navikt/eessi-kodeverk": "^2.4.1",
     "@navikt/fetch": "^4.0.8",
     "@navikt/flagg-ikoner": "^9.0.12",
@@ -215,6 +215,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@10.5.2",
+  "_id": "neessi@10.6.0",
   "disabled-homepage": "http://eesi2.no/melosys"
 }
