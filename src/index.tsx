@@ -1,7 +1,6 @@
 import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
 import * as Amplitude from 'metrics/amplitude'
-import * as Sentry from 'metrics/sentry'
 import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
@@ -22,7 +21,6 @@ if (!IS_PRODUCTION) {
   // const axe = require('react-axe')
   // axe(React, ReactDOM, 1000)
 } else {
-  Sentry.init()
   Amplitude.init()
 }
 
