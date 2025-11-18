@@ -29,7 +29,6 @@ import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -260,7 +259,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
   const onRemove = (removed: Ytelse) => {
     const newYtelser: Array<Ytelse> = _.reject(ytelser, (y: Ytelse) => _.isEqual(removed, y))
     dispatch(updateReplySed(target, newYtelser))
-    standardLogger('svarsed.editor.ytelse.remove')
   }
 
   const onAddNew = () => {
@@ -290,7 +288,6 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
       newYtelser.push(__newYtelse)
       newYtelser = newYtelser.sort(periodeSort)
       dispatch(updateReplySed(target, newYtelser))
-      standardLogger('svarsed.editor.ytelse.add')
       onCloseNew()
     }
   }

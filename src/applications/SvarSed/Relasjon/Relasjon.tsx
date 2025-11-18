@@ -33,7 +33,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -265,7 +264,6 @@ const Relasjon: React.FC<MainFormProps> = ({
   const onRemove = (removed: Barnetilhoerighet) => {
     const newBarnetilhoerighet: Array<Barnetilhoerighet> = _.reject(barnetilhoerigheter, (b: Barnetilhoerighet) => _.isEqual(removed, b))
     dispatch(updateReplySed(target, newBarnetilhoerighet))
-    standardLogger('svarsed.editor.relasjon.remove')
   }
 
   const onAddNew = () => {
@@ -282,7 +280,6 @@ const Relasjon: React.FC<MainFormProps> = ({
       }
       newBarnetilhoerigheter.push(_newBarnetilhoerighet)
       dispatch(updateReplySed(target, newBarnetilhoerigheter))
-      standardLogger('svarsed.editor.relasjon.add')
       onCloseNew()
     }
   }

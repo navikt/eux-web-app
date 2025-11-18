@@ -24,7 +24,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -149,7 +148,6 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
   const onRemove = (removedPeriode: Periode) => {
     const newPerioder: Array<Periode> = _.reject(flyttegrunn?.perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(`${target}.perioder`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'flyttegrunn' })
   }
 
   const onAddNew = () => {
@@ -167,7 +165,6 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
       newPerioder.push(_newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(`${target}.perioder`, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'flyttegrunn' })
       onCloseNew()
     }
   }

@@ -21,7 +21,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -135,7 +134,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const newStatsborgerskaper: Array<Statsborgerskap> = _.reject(statsborgerskaper,
       (s: Statsborgerskap) => _.isEqual(removedStatsborgerskap, s))
     dispatch(updateReplySed(target, newStatsborgerskaper))
-    standardLogger('svarsed.editor.nasjonaliteter.remove')
   }
 
   const onAddNew = () => {
@@ -151,7 +149,6 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
       }
       newStatsborgerskaper.push(_newStatsborgerskap)
       dispatch(updateReplySed(target, newStatsborgerskaper))
-      standardLogger('svarsed.editor.nasjonaliteter.add')
       onCloseNew()
     }
   }

@@ -18,7 +18,6 @@ import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
 import { Foedested } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useLocalValidation from "../../hooks/useLocalValidation";
@@ -140,7 +139,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
   }
 
   const onRemove = () => {
-    standardLogger(loggingNamespace + '.foedested.remove')
     onFoedestedChanged({})
   }
 
@@ -151,7 +149,6 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
       personName
     })
     if (!!_newFoedested && valid){
-      standardLogger(loggingNamespace + '.foedested.add')
       onFoedestedChanged(_newFoedested ?? {} as Foedested)
       onCloseNew()
     }

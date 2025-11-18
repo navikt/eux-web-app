@@ -10,7 +10,6 @@ import { Validation } from 'declarations/types'
 import { saveAs } from 'file-saver'
 import performValidation from 'utils/performValidation'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
@@ -91,7 +90,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
         }
 
         dispatch(previewPdu1(newPdu1))
-        buttonLogger(e)
       }
     }
   }
@@ -112,7 +110,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
           <Button
             variant='tertiary'
             disabled={gettingPreviewDraftPdu1 || !_.isNil(previewPdu1file)}
-            data-amplitude='pdu1.editor.preview'
             onClick={onPreviewPdu1Clicked}
             icon={<EyeWithPupilIcon/>}
           >
@@ -130,7 +127,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             <Button
               variant='tertiary'
               disabled={gettingPreviewDraftPdu1}
-              data-amplitude='pdu1.editor.download'
               onClick={onDownloadPdu1Clicked}
               icon={<DownloadIcon/>}
             >
@@ -140,7 +136,6 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
             <Button
               variant='tertiary'
               disabled={gettingPreviewDraftPdu1}
-              data-amplitude='pdu1.editor.reset'
               onClick={onResetPdu1Clicked}
               icon={<XMarkOctagonFillIcon/>}
             >

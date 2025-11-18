@@ -15,7 +15,6 @@ import {ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeVi
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, {useEffect, useRef, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -183,7 +182,6 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       const newPerioder = _.cloneDeep(perioder) as Array<ForsikringPeriode>
       newPerioder.splice(index, 1)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.periode.remove', { type: 'perioderAnsattMedForsikring' })
     }
   }
 
@@ -200,7 +198,6 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       newPerioderMedforsikring.push(newForsikringPeriode)
       newPerioderMedforsikring = newPerioderMedforsikring.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioderMedforsikring))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderAnsattMedForsikring' })
       onCloseNew()
     }
   }
@@ -319,7 +316,6 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsperioderSøk
-        amplitude='svarsed.editor.arbeidsforholdmedforsikring.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}
         defaultDates={{
@@ -378,7 +374,6 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
       </Ingress>
       <VerticalSeparatorDiv />
       <InntektSearch
-        amplitude='svarsed.editor.inntekt.search'
         fnr={fnr!}
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}

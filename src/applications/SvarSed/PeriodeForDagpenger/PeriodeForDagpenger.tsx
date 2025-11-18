@@ -23,7 +23,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -178,7 +177,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     const newPerioder: Array<PeriodeDagpenger> = _.reject(perioder,
       (p: PeriodeDagpenger) => _.isEqual(removed, p))
     dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderDagpenger' })
   }
 
   const onAddNew = () => {
@@ -194,7 +192,6 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
       }
       newPerioderDagpenger.push(_newPeriodeDagpenger)
       dispatch(updateReplySed(target, newPerioderDagpenger))
-      standardLogger('svarsed.editor.newPerioderDagpenger.add', { type: 'perioderDagpenger' })
       onCloseNew()
     }
   }

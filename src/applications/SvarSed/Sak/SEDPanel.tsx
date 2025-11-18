@@ -15,7 +15,6 @@ import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import {Sak, Sed, SedAction} from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -343,7 +342,6 @@ const SEDPanel = ({
               variant='tertiary'
               size='small'
               disabled={!hasSedHandlinger || isDownloadingPDF}
-              data-amplitude='svarsed.selection.download'
               onClick={downloadPDF}
               icon={<DownloadIcon />}
               loading={isDownloadingPDF}
@@ -377,11 +375,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_editingSed}
-                  data-amplitude='svarsed.selection.editsed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onEditingSedClick(sed, currentSak)
                   }}
                 >
@@ -401,11 +395,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_updatingSed}
-                  data-amplitude='svarsed.selection.updatesed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onUpdatingSedClick(sed, currentSak)
                   }}
                 >
@@ -425,11 +415,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_deletingSed}
-                  data-amplitude='svarsed.selection.deletesed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onDeleteSedClick(currentSak.sakId, sed.sedId)
                   }}
                 >
@@ -449,11 +435,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_invalidatingSed}
-                  data-amplitude='svarsed.selection.invalidatesed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onInvalidatingSedClick(sed, currentSak)
                   }}
                 >
@@ -473,11 +455,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_rejectingSed}
-                  data-amplitude='svarsed.selection.rejectsed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onRejectingSedClick(sed, currentSak)
                   }}
                 >
@@ -497,11 +475,7 @@ const SEDPanel = ({
                 <Button
                   variant='secondary'
                   disabled={_clarifyingSed}
-                  data-amplitude='svarsed.selection.clarifysed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onClarifyingSedClick(sed, currentSak)
                   }}
                 >
@@ -521,11 +495,7 @@ const SEDPanel = ({
                 <Button
                   variant='primary'
                   disabled={_reminderSed}
-                  data-amplitude='svarsed.selection.remindsed'
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.sedType
-                    })
                     onRemindSedClick(sed, currentSak)
                   }}
                 >
@@ -545,13 +515,8 @@ const SEDPanel = ({
                 <Button
                   variant='primary'
                   disabled={_replyingToSed || !!currentSak.ikkeJournalfoerteSed?.length}
-                  data-amplitude='svarsed.selection.replysed'
                   title={!!currentSak.ikkeJournalfoerteSed?.length ? t('message:warning-spørre-sed-not-journalført') : ''}
                   onClick={(e: any) => {
-                    buttonLogger(e, {
-                      type: sed.svarsedType,
-                      parenttype: sed.sedType
-                    })
                     onReplySedClick(sed, currentSak)
                   }}
                 >

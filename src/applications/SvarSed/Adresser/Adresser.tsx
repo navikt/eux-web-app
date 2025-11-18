@@ -14,7 +14,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -124,7 +123,6 @@ const Adresser: React.FC<MainFormProps> = ({
   const onRemove = (removedAdresse: Adresse) => {
     const newAdresser: Array<Adresse> = _.reject(adresser, (a: Adresse) => _.isEqual(removedAdresse, a))
     dispatch(updateReplySed(target, newAdresser))
-    standardLogger('svarsed.editor.adresse.remove')
   }
 
   const onAddNew = () => {
@@ -140,7 +138,6 @@ const Adresser: React.FC<MainFormProps> = ({
       }
       newAdresser.push(_newAdresse!)
       dispatch(updateReplySed(target, newAdresser))
-      standardLogger('svarsed.editor.adresse.add')
       onCloseNew()
     }
   }

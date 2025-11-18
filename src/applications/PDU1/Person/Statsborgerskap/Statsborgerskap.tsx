@@ -23,7 +23,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -154,7 +153,6 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
     const newStatsborgerskaper: Array<string> = _.reject(statsborgerskaper,
       (s: string) => removed === s)
     dispatch(updateReplySed(target, newStatsborgerskaper))
-    standardLogger('pdu1.editor.statsborgerskap.remove')
   }
 
   const onAddNew = () => {
@@ -170,7 +168,6 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
       newStatsborgerskaper.push(_newStatsborgerskap)
       newStatsborgerskaper = newStatsborgerskaper.sort()
       dispatch(updateReplySed(target, newStatsborgerskaper))
-      standardLogger('pdu1.editor.statsborgerskap.add')
       onCloseNew()
     }
   }

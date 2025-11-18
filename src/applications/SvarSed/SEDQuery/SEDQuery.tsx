@@ -3,7 +3,6 @@ import { AlignStartRow, Column, HorizontalSeparatorDiv, PileDiv, VerticalSeparat
 import classNames from 'classnames'
 import { AlertstripeDiv } from 'components/StyledComponents'
 import useLocalValidation from 'hooks/useLocalValidation'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateSEDQuery } from './validation'
@@ -72,9 +71,6 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
       saksnummerOrFnr: _saksnummerOrFnr.trim()
     })
     if (valid) {
-      standardLogger('svarsed.selection.query', {
-        type: _queryType
-      })
       onQuerySubmit(_saksnummerOrFnr.trim())
     }
   }

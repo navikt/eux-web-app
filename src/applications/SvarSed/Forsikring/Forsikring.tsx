@@ -36,7 +36,6 @@ import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'decl
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, {useEffect, useRef, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -198,7 +197,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     const perioder : Array<ForsikringPeriode> = _.cloneDeep(_.get(replySed, type)) as Array<ForsikringPeriode>
     perioder.splice(index, 1)
     dispatch(updateReplySed(`${type}`, perioder))
-    standardLogger('svarsed.editor.periode.remove', { type })
   }
 
   const onAddNew = (newPeriode: ForsikringPeriode) => {
@@ -217,7 +215,6 @@ const Forsikring: React.FC<MainFormProps> = ({
     newPerioder.push(newPeriode!)
     newPerioder = newPerioder.sort(periodeSort)
     dispatch(updateReplySed(type, newPerioder))
-    standardLogger('svarsed.editor.periode.add', { type })
   }
 
   const getIcon = (type: string, size: string = '32') => {

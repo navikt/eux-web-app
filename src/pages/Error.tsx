@@ -1,7 +1,6 @@
 import Convert from 'ansi-to-html'
 import classNames from 'classnames'
 import TopContainer from 'components/TopContainer/TopContainer'
-import { standardLogger } from 'metrics/loggers'
 import { Accordion, BodyLong } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import PT from 'prop-types'
@@ -46,10 +45,6 @@ export const Error = ({ error }: ErrorProps) => {
   const title = t('message:error-page-title')
   const description = t('message:error-page-description')
   const footer = t('message:error-page-footer')
-
-  useEffect(() => {
-    standardLogger('errorpage.view')
-  }, [])
 
   const stack = new StackTracey(error).withSources()
   const msg = convert.toHtml(error.message)

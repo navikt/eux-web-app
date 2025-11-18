@@ -18,7 +18,6 @@ import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import {PersonInfoPDL} from 'declarations/types'
 import _ from 'lodash'
-import {buttonLogger} from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -100,7 +99,6 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const searchUser = (e: any) => {
     if (_tempNorwegianPin) {
-      buttonLogger(e)
       dispatch(searchPerson(_tempNorwegianPin))
     }
   }
@@ -163,7 +161,6 @@ const NorskPin: React.FC<NorskPinProps> = ({
                   <Button
                     variant='secondary'
                     disabled={_.isEmpty(_tempNorwegianPin?.trim())}
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.save'
                     onClick={saveNorwegianPin}
                     icon={<CheckmarkIcon/>}
                   >
@@ -173,7 +170,6 @@ const NorskPin: React.FC<NorskPinProps> = ({
                   <Button
                     variant='secondary'
                     disabled={searchingPerson}
-                    data-amplitude='svarsed.editor.personopplysning.norskpin.search'
                     onClick={searchUser}
                     icon={<MagnifyingGlassIcon/>}
                   >
@@ -209,9 +205,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
               <HorizontalSeparatorDiv />
               <Button
                 variant='secondary'
-                data-amplitude='svarsed.editor.personopplysning.norskpin.fill'
                 onClick={(e) => {
-                  buttonLogger(e)
                   fillOutPerson()
                 }}
               >

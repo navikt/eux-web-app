@@ -1,6 +1,5 @@
 import { IS_PRODUCTION } from 'constants/environment'
 import 'core-js'
-import * as Amplitude from 'metrics/amplitude'
 import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { I18nextProvider } from 'react-i18next'
@@ -16,13 +15,6 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 import store from 'store'
 import {App} from "./app";
 import {pdfjs} from 'react-pdf'
-
-if (!IS_PRODUCTION) {
-  // const axe = require('react-axe')
-  // axe(React, ReactDOM, 1000)
-} else {
-  Amplitude.init()
-}
 
 (window as any).frontendlogger.info(Utils.buildinfo())
 

@@ -1,7 +1,6 @@
 import * as types from 'constants/actionTypes'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import { AnyAction } from 'redux'
 
 export interface StatisticsState {
@@ -68,9 +67,6 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: AnyAc
         }
       })
 
-      Object.keys(finalObject).forEach(key => {
-        standardLogger('svarsed.editor.' + domain + '.' + key + '.time', finalObject[key])
-      })
       return {
         ...state,
         menuTime: {
@@ -82,7 +78,6 @@ const statisticReducer = (state: StatisticsState = initialUiState, action: AnyAc
 
     case types.STATISTICS_PAGE_FINISH: {
       const page = (action as ActionWithPayload).payload.page
-      standardLogger('svarsed.' + page + '.time', state.pageTime[page].total)
       return {
         ...state,
         pageTime: {

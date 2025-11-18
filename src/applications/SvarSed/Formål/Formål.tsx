@@ -10,7 +10,6 @@ import {Barn, F002Sed, FSed, UtbetalingTilInstitusjon} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -138,7 +137,6 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     dispatch(updateReplySed('formaal', newFormaals))
-    standardLogger('svarsed.fsed.formal.' + checked ? 'add' : 'remove', { item })
     dispatch(resetValidation(namespace + '-checkbox'))
   }
 

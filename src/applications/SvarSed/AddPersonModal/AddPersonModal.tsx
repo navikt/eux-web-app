@@ -23,7 +23,6 @@ import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
@@ -187,39 +186,6 @@ const AddPersonModal = <T extends StorageTypes>({
   }
 
   const onSavePersons = () => {
-    if (!_.isEmpty(replySed?.bruker) && _.isEmpty(_replySed?.bruker)) {
-      standardLogger('svarsed.editor.personmodal.remove', { person: 'bruker' })
-    }
-    if (_.isEmpty(replySed?.bruker) && !_.isEmpty(_replySed?.bruker)) {
-      standardLogger('svarsed.editor.personmodal.add', { person: 'bruker' })
-    }
-    if (!_.isEmpty((replySed as F002Sed).ektefelle) && _.isEmpty((replySed as F002Sed).ektefelle)) {
-      standardLogger('svarsed.editor.personmodal.remove', { person: 'ektefelle' })
-    }
-    if (_.isEmpty((replySed as F002Sed).ektefelle) && !_.isEmpty((replySed as F002Sed).ektefelle)) {
-      standardLogger('svarsed.editor.personmodal.add', { person: 'ektefelle' })
-    }
-    if (!_.isEmpty((replySed as F002Sed).annenPerson) && _.isEmpty((replySed as F002Sed).annenPerson)) {
-      standardLogger('svarsed.editor.personmodal.remove', { person: 'annenPerson' })
-    }
-    if (_.isEmpty((replySed as F002Sed).annenPerson) && !_.isEmpty((replySed as F002Sed).annenPerson)) {
-      standardLogger('svarsed.editor.personmodal.add', { person: 'annenPerson' })
-    }
-    const numberOfOriginalBarn = (_replySed as F002Sed)?.barn?.length ?? 0
-    const numberOfNewBarn = (replySed as F002Sed)?.barn?.length ?? 0
-
-    if (numberOfOriginalBarn !== numberOfNewBarn) {
-      if (numberOfOriginalBarn < numberOfNewBarn) {
-        for (let i = 0; i < (numberOfNewBarn - numberOfOriginalBarn); i++) {
-          standardLogger('svarsed.editor.personmodal.add', { person: 'barn' })
-        }
-      }
-      if (numberOfOriginalBarn > numberOfNewBarn) {
-        for (let j = 0; j < (numberOfOriginalBarn - numberOfNewBarn); j++) {
-          standardLogger('svarsed.editor.personmodal.remove', { person: 'barn' })
-        }
-      }
-    }
     dispatch(setReplySed(_replySed as T))
   }
 

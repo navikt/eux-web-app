@@ -37,13 +37,6 @@ jest.mock('constants/environment.ts', () => {
   };
 })
 
-jest.mock('amplitude-js', () => ({
-  getInstance: () => ({
-    init: jest.fn(),
-    logEvent: jest.fn()
-  })
-}))
-
 jest.mock('i18next', () => {
   const use = jest.fn()
   const init = jest.fn()

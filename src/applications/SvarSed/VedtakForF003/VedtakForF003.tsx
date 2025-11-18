@@ -33,7 +33,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -248,7 +247,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
   const onRemoveVedtakPeriode = (removed: Periode) => {
     const newPerioder: Array<Periode> = _.reject(vedtak?.vedtaksperioder, (p: Periode) => _.isEqual(removed, p))
     dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'vedtaksperioder' })
   }
 
   const onAddVedtakPeriodeNew = () => {
@@ -266,7 +264,6 @@ const VedtakForF003: React.FC<MainFormProps> = ({
       newPerioder.push(_newVedtakPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'vedtaksperioder' })
       onCloseVedtakPeriodeNew()
     }
   }

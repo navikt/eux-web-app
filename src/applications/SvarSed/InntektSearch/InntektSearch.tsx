@@ -8,14 +8,12 @@ import { Option } from 'declarations/app.d'
 import { Periode } from 'declarations/sed'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { validateInntektSearch, ValidationInntektSearchProps } from './validation'
 
 interface InntektSearchProps {
-  amplitude ?: string
   fnr: string
   onInntektSearch: (fnr: string, fom: string, tom: string, inntektsliste: string) => void
   gettingInntekter: boolean
@@ -23,7 +21,6 @@ interface InntektSearchProps {
 }
 
 const InntektSearch = ({
-  amplitude,
   fnr,
   onInntektSearch,
   gettingInntekter,
@@ -72,9 +69,6 @@ const InntektSearch = ({
     })
     if (valid) {
       onInntektSearch(fnr, _searchPeriode?.startdato ?? '2015-01', _searchPeriode?.sluttdato ?? '', _filter ?? '')
-      if (amplitude) {
-        standardLogger(amplitude)
-      }
     }
   }
 

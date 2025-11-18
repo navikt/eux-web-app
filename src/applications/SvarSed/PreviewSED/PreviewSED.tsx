@@ -7,7 +7,6 @@ import { ModalContent } from 'declarations/components'
 import { State } from 'declarations/reducers'
 import { ReplySed } from 'declarations/sed'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -101,7 +100,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
       delete newReplySed.sed
       delete newReplySed.attachments
       dispatch(getPreviewFile(rinaSakId!, newReplySed))
-      buttonLogger(e)
     } else {
       if (sedId && rinaSakId) {
         dispatch(previewSed(sedId, rinaSakId))
@@ -121,7 +119,6 @@ const PreviewSED: React.FC<PreviewSedProps> = ({
         variant='tertiary'
         size={size}
         disabled={disabled}
-        data-amplitude='svarsed.editor.preview'
         onClick={onPreviewSedClicked}
         loading={requestPreview && (gettingPreviewFile || gettingPreviewSed)}
         icon={<EyeWithPupilIcon />}

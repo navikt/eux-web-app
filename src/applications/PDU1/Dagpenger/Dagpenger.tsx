@@ -25,7 +25,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -141,7 +140,6 @@ const Dagpenger: React.FC<MainFormProps> = ({
   const onRemove = (removed: PDPeriode) => {
     const newPerioder: Array<PDPeriode> = _.reject(perioderDagpengerMottatt, (p: PDPeriode) => _.isEqual(removed, p))
     dispatch(updateReplySed(target, newPerioder))
-    standardLogger('pdu1.editor.dagpenger.periode.remove')
   }
 
   const onAddNew = () => {
@@ -157,7 +155,6 @@ const Dagpenger: React.FC<MainFormProps> = ({
       newPerioder.push(_newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('pdu1.editor.dagpenger.perioder.add')
       onCloseNew()
     }
   }

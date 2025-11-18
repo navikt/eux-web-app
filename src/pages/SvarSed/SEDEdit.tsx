@@ -59,7 +59,6 @@ import { State } from 'declarations/reducers'
 import {F002Sed, F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger, standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -217,7 +216,6 @@ const SEDEdit = (): JSX.Element => {
         } else {
           dispatch(createSed(newReplySed))
         }
-        buttonLogger(e)
       }
     }
   }
@@ -234,7 +232,6 @@ const SEDEdit = (): JSX.Element => {
       if (!hasErrors && replySed?.sak?.sakId && replySed?.sed?.sedId) {
         _setSendButtonClicked(true)
         dispatch(sendSedInRina(replySed.sak!.sakId!, replySed?.sed?.sedId!))
-        standardLogger('svarsed.editor.sendsvarsed.button', { type: 'editor' })
       }
     }
   }
@@ -699,7 +696,6 @@ const SEDEdit = (): JSX.Element => {
             <div>
               <Button
                 variant='primary'
-                data-amplitude='svarsed.editor.lagresvarsed'
                 onClick={saveReplySed}
                 disabled={disableSave}
               >
@@ -716,7 +712,6 @@ const SEDEdit = (): JSX.Element => {
             <div>
               <Button
                 variant='primary'
-                //amplitude is dealt on SendSedClick
                 title={t('message:help-send-sed')}
                 disabled={disableSend}
                 onClick={onSendSedClick}

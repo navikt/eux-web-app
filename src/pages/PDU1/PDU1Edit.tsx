@@ -20,7 +20,6 @@ import {Avsender, PDU1, Pdu1Person} from 'declarations/pd'
 import { State } from 'declarations/reducers'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {useNavigate, useParams} from 'react-router-dom'
@@ -116,7 +115,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
         }
 
         dispatch(jornalførePdu1(newPdu1))
-        buttonLogger(e)
       }
     }
   }
@@ -233,7 +231,6 @@ const PDU1Edit: React.FC<PDU1EditProps> = ({
           <div>
             <Button
               variant='primary'
-              data-amplitude='pdu1.editor.opprett'
               onClick={jornalførePdu1Clicked}
               disabled={completingPdu1 || !_.isEmpty(jornalførePdu1Response)}
             >

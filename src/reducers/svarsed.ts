@@ -18,7 +18,6 @@ import {
 import {CreateSedResponse, Fagsak, Fagsaker, Institusjon, Motpart, Sak, Saks, Sed} from 'declarations/types.d'
 import { ActionWithPayload } from '@navikt/fetch'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import { AnyAction } from 'redux'
 import {isUSed} from "../utils/sed";
@@ -556,7 +555,6 @@ const svarsedReducer = (
       }
       sed.sedId = (action as ActionWithPayload).payload.sedId
 
-      standardLogger('svarsed.create.success', { type: (action as ActionWithPayload).context.sedType })
       const newReplySed = {
         ...state.replySed,
         sed
@@ -572,7 +570,6 @@ const svarsedReducer = (
     }
 
     case types.SVARSED_SED_CREATE_FAILURE:
-      standardLogger('svarsed.create.failure', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
         sedCreatedResponse: null
@@ -582,7 +579,6 @@ const svarsedReducer = (
       const sedType = (action as ActionWithPayload).context.sedType
       const sedsThatCanBeResendAfterUpdate = ['H001']
       let sedSendResponse = _.cloneDeep(state.sedSendResponse)
-      standardLogger('svarsed.update.success', { type: (action as ActionWithPayload).context.sedType })
       if (sedsThatCanBeResendAfterUpdate.indexOf(sedType) >= 0) {
         // remove the previous send response so we can resend it
         sedSendResponse = undefined
@@ -597,21 +593,18 @@ const svarsedReducer = (
     }
 
     case types.SVARSED_SED_UPDATE_FAILURE:
-      standardLogger('svarsed.update.failure', { type: (action as ActionWithPayload).context.sedType })
       return {
         ...state,
         sedCreatedResponse: null
       }
 
     case types.SVARSED_SED_CREATE_REQUEST:
-      standardLogger('svarsed.create.request')
       return {
         ...state,
         sedCreatedResponse: undefined
       }
 
     case types.SVARSED_SED_UPDATE_REQUEST:
-      standardLogger('svarsed.update.request')
       return {
         ...state,
         sedCreatedResponse: undefined

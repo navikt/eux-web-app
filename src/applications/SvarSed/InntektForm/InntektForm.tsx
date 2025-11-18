@@ -37,7 +37,6 @@ import { ArbeidsperioderFraAA, IInntekter, Validation } from 'declarations/types
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -236,7 +235,6 @@ const InntektForm: React.FC<MainFormProps> = ({
     const newLoennsopplysning: Array<Loennsopplysning> = _.reject(loennsopplysninger,
       (l: Loennsopplysning) => _.isEqual(removed, l))
     dispatch(updateReplySed(target, newLoennsopplysning))
-    standardLogger('svarsed.editor.loennsopplysning.remove')
   }
 
   const onAddNew = () => {
@@ -251,7 +249,6 @@ const InntektForm: React.FC<MainFormProps> = ({
       }
       newLoennsopplysninger.push(_newLoennsopplysning)
       dispatch(updateReplySed(target, newLoennsopplysninger))
-      standardLogger('svarsed.editor.loennsopplysning.add')
       onCloseNew()
     }
   }
@@ -527,7 +524,6 @@ const InntektForm: React.FC<MainFormProps> = ({
       </Ingress>
       <VerticalSeparatorDiv />
       <ArbeidsperioderSøk
-        amplitude='svarsed.editor.inntekt.arbeidsgiver.search'
         fnr={fnr}
         namespace={namespace}
       />

@@ -355,7 +355,6 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
                     <HorizontalSeparatorDiv />
                     <Button
                       variant='primary'
-                      // amplitude is dealt on SendSedClick
                       title={t('message:help-send-sed')}
                       disabled={sendingSed || _.isEmpty(sedCreatedResponse) || !_.isEmpty(sedSendResponse)}
                       onClick={onSendSedClicked}

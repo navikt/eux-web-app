@@ -12,11 +12,10 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, Periode, PeriodeMedForsikring, PeriodeSort, PeriodeView } from 'declarations/sed'
+import { ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -134,7 +133,6 @@ const Ansatt: React.FC<MainFormProps> = ({
       const newPerioder = _.cloneDeep(perioder) as Array<Periode>
       newPerioder.splice(index, 1)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.periode.remove', { type: 'perioderSomAnsatt' })
     }
   }
 
@@ -159,7 +157,6 @@ const Ansatt: React.FC<MainFormProps> = ({
       newPerioder.push(__newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(target, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderSomAnsatt' })
       onCloseNew()
     }
   }
@@ -329,7 +326,6 @@ const Ansatt: React.FC<MainFormProps> = ({
         {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
       </BodyLong>
       <ArbeidsperioderSøk
-        amplitude='svarsed.editor.personensstatus.ansatt.arbeidsgiver.search'
         fnr={fnr}
         fillOutFnr={() => {
           document.dispatchEvent(new CustomEvent('feillenke', {

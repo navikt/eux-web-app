@@ -5,7 +5,6 @@ import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import {Button, BodyLong, HStack, VStack} from '@navikt/ds-react'
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
 import React, { useState } from 'react'
@@ -16,7 +15,6 @@ import { useAppDispatch, useAppSelector } from 'store'
 import { validateArbeidsperioderSøk, ValidationArbeidsperioderSøkProps } from './validation'
 
 interface ArbeidsperioderSøkProps {
-  amplitude ?: string
   fnr: string | undefined
   namespace: string
   fillOutFnr ?: () => void
@@ -32,7 +30,6 @@ const mapState = (state: State): ArbeidsperioderSøkSelector => ({
 })
 
 const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
-  amplitude,
   fnr,
   namespace,
   fillOutFnr,
@@ -84,9 +81,6 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
         inntektslistetype: _arbeidssøkInntektslistetype.trim()
       }
       dispatch(fetchArbeidsperioder(options))
-      if (amplitude) {
-        standardLogger(amplitude)
-      }
     }
   }
 

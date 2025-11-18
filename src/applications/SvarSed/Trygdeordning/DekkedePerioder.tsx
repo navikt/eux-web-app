@@ -18,11 +18,10 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatablePeriodeRow} from 'components/StyledComponents'
-import {Periode, PeriodeSort, PersonTypeBrukerF026, PersonTypeF001} from 'declarations/sed'
+import {Periode, PeriodeSort, PersonTypeBrukerF026} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
@@ -178,7 +177,6 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
     const newPerioder : Array<Periode> = _.cloneDeep(_.get(person, type)) as Array<Periode>
     newPerioder.splice(index, 1)
     dispatch(updateReplySed(`${target}.${type}`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type })
   }
 
   const onAddNew = () => {
@@ -198,7 +196,6 @@ const DekkedePerioder: React.FC<DekkedePerioderProps> = ({
       newPerioder.push(_newPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(`${target}.${type}`, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type })
       onCloseNew()
     }
   }

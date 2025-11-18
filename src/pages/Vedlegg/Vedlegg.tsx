@@ -171,7 +171,6 @@ const Vedlegg: React.FC = (): JSX.Element => {
               <div className='nolabel'>
                 <Button
                   variant='secondary'
-                  data-amplitude='svarsed.editor.attachments'
                   disabled={_.isNil(_fnr) || _fnr === ''}
                   onClick={() => {
                     setAttachmentsTableVisible(!_attachmentsTableVisible)

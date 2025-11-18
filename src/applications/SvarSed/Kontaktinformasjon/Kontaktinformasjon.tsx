@@ -23,7 +23,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -233,13 +232,11 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
   const onTelefonRemove = (removedTelefon: Telefon) => {
     const newTelefoner: Array<Telefon> = _.reject(telefoner, (t: Telefon) => _.isEqual(removedTelefon, t))
     dispatch(updateReplySed(targetTelefon, newTelefoner))
-    standardLogger('svarsed.editor.telefon.remove')
   }
 
   const onEpostRemove = (removedEpost: Epost) => {
     const newEposter: Array<Epost> = _.reject(eposter, (e: Epost) => _.isEqual(removedEpost, e))
     dispatch(updateReplySed(targetEpost, newEposter))
-    standardLogger('svarsed.editor.epost.remove')
   }
 
   const onTelefonAddNew = () => {
@@ -256,7 +253,6 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       }
       newTelefoner.push(_newTelefon)
       dispatch(updateReplySed(targetTelefon, newTelefoner))
-      standardLogger('svarsed.editor.telefon.add')
       onCloseNew('telefon')
     }
   }
@@ -275,7 +271,6 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
       }
       newEposter.push(_newEpost)
       dispatch(updateReplySed(targetEpost, newEposter))
-      standardLogger('svarsed.editor.epost.add')
       onCloseNew('epost')
     }
   }

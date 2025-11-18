@@ -30,7 +30,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -217,7 +216,6 @@ const Perioder: React.FC<MainFormProps> = ({
     const newPerioder: Array<PDPeriode> = _.cloneDeep(_.get(replySed, type)) as Array<PDPeriode>
     newPerioder.splice(index, 1)
     dispatch(updateReplySed(type, newPerioder))
-    standardLogger('pdu1.editor.periode.remove', { type })
   }
 
   const onAddNew = () => {
@@ -235,7 +233,6 @@ const Perioder: React.FC<MainFormProps> = ({
       newPerioder.push(_newPeriode!)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(type, newPerioder))
-      standardLogger('pdu1.editor.periode.add', { type })
       onCloseNew()
     }
   }

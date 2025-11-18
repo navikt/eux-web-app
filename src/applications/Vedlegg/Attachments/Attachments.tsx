@@ -4,7 +4,6 @@ import SEDAttachmentModal from 'applications/Vedlegg/SEDAttachmentModal/SEDAttac
 import { HorizontalLineSeparator, SpacedHr } from 'components/StyledComponents'
 import { JoarkBrowserItem, JoarkBrowserItems } from 'declarations/attachments'
 import _ from 'lodash'
-import { buttonLogger } from 'metrics/loggers'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import {Attachment} from "../../../declarations/types";
@@ -201,10 +200,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
-                    data-amplitude='svarsed.editor.attachments'
                     disabled={_.isNil(_fnr)}
                     onClick={(e: any) => {
-                      buttonLogger(e)
                       setAttachmentsTableVisible(!_attachmentsTableVisible)
                     }}
                   >
@@ -242,10 +239,8 @@ const Attachments: React.FC<AttachmentsProps> = ({
                 <div className='nolabel'>
                   <Button
                     variant='secondary'
-                    data-amplitude='svarsed.editor.attachments'
                     disabled={_.isNil(_fnr)}
                     onClick={(e: any) => {
-                      buttonLogger(e)
                       setAttachmentsTableVisible(!_attachmentsTableVisible)
                     }}
                   >

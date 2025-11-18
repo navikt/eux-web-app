@@ -42,7 +42,6 @@ import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -373,7 +372,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
   const onRemoveVedtakPeriode = (removed: Periode) => {
     const newPerioder: Array<Periode> = _.reject(vedtak?.vedtaksperioder, (p: Periode) => _.isEqual(removed, p))
     dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'vedtaksperioder' })
   }
 
   const onRemoveKompetansePeriode = (removed: KompetansePeriode) => {
@@ -382,7 +380,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const newPerioder: Array<KompetansePeriode> = _.cloneDeep(_.get(vedtak, type)) as Array<KompetansePeriode>
     newPerioder.splice(index, 1)
     dispatch(updateReplySed(`${target}.${type}`, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'vedtaksperioder' })
   }
 
   const onAddVedtakPeriodeNew = () => {
@@ -400,7 +397,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
       newPerioder.push(_newVedtakPeriode)
       newPerioder = newPerioder.sort(periodeSort)
       dispatch(updateReplySed(`${target}.vedtaksperioder`, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'vedtaksperioder' })
       onCloseVedtakPeriodeNew()
     }
   }
@@ -422,7 +418,6 @@ const VedtakFC: React.FC<MainFormProps> = ({
       newPerioder.push(_newKompetansePeriode!)
       newPerioder = newPerioder.sort(periodePeriodeSort)
       dispatch(updateReplySed(`${target}[${type}]`, newPerioder))
-      standardLogger('svarsed.editor.periode.add', { type })
       onCloseKompetansePeriodeNew()
     }
   }

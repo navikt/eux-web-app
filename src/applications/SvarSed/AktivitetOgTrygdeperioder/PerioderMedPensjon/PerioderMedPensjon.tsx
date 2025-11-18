@@ -12,7 +12,6 @@ import { PensjonPeriode, PensjonsType, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -124,7 +123,6 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
   const onRemove = (removedPeriode: PensjonPeriode) => {
     const newPerioder: Array<PensjonPeriode> = _.reject(perioderMedPensjon, (p: PensjonPeriode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(target, newPerioder))
-    standardLogger('svarsed.editor.periode.remove', { type: 'perioderMedPensjon' })
   }
 
   const onAddNew = () => {
@@ -142,7 +140,6 @@ const PerioderMedPensjon: React.FC<MainFormProps> = ({
       newPensjonPerioder.push(_newPensjonPeriode)
       newPensjonPerioder.sort(periodePeriodeSort)
       dispatch(updateReplySed(target, newPensjonPerioder))
-      standardLogger('svarsed.editor.periode.add', { type: 'perioderMedPensjon' })
       onCloseNew()
     }
   }

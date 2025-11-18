@@ -20,7 +20,6 @@ import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
-import { standardLogger } from 'metrics/loggers'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
@@ -136,7 +135,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   const onRemove = (removedPin: Pin) => {
     const newUtenlandskePins: Array<Pin> = _.reject(pins, (pin: Pin) => _.isEqual(removedPin, pin))
     onPinsChanged(newUtenlandskePins)
-    standardLogger(loggingNamespace + '.utenlandskpin.remove')
   }
 
   const onAddNew = () => {
@@ -152,7 +150,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
       }
       newUtenlandskePins.push(_newPin)
       onPinsChanged(newUtenlandskePins)
-      standardLogger(loggingNamespace + '.utenlandskpin.add')
       onCloseNew()
     }
   }
