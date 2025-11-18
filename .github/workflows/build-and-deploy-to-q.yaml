@@ -77,6 +77,9 @@ jobs:
       - name: 'Bygg'
         run: npm run build
 
+      - name: prune dev dependencies
+        run: npm prune --production
+
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
