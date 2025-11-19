@@ -63,10 +63,10 @@ jobs:
       - name: 'Bygg'
         run: npm run build
 
-      - name: prune dev dependencies
+      - name: 'Prune dev dependencies'
         run: npm prune --production
 
-      - name: Remove NPM - fix vulnerability CVE-2025-64756
+      - name: 'Remove NPM - fix vulnerability CVE-2025-64756'
         run: npm r -g npm
 
       - name: Push docker image to GAR
