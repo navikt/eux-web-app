@@ -66,9 +66,6 @@ jobs:
       - name: 'Prune dev dependencies'
         run: npm prune --production
 
-      - name: 'Remove NPM - fix vulnerability CVE-2025-64756'
-        run: npm prune npm
-
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
