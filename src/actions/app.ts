@@ -10,7 +10,6 @@ import mockSaksbehandler from 'mocks/app/saksbehandler'
 import mockServerInfo from 'mocks/app/serverinfo'
 import mockUtgaarDato from 'mocks/app/utgaarDato'
 import mockCountryCodes from 'mocks/app/countryCodes'
-import mockNavrinasak from "../mocks/app/navrinasak";
 import { Action, ActionCreator } from 'redux'
 import { sprintf } from 'sprintf-js'
 
@@ -40,19 +39,6 @@ export const getAlleEnheter = (): ActionWithPayload<Enheter> => {
       request: types.APP_ALLE_ENHETER_REQUEST,
       success: types.APP_ALLE_ENHETER_SUCCESS,
       failure: types.APP_ALLE_ENHETER_FAILURE
-    }
-  })
-}
-
-export const getFagsakTema = (rinaSakId: String): ActionWithPayload<NavRinasak> => {
-  console.log("getFagsakTema")
-  return call({
-    url: sprintf(urls.API_GET_FAGSAK_URL, { rinaSakId }),
-    expectedPayload: mockNavrinasak,
-    type: {
-      request: types.APP_GET_FAGSAK_REQUEST,
-      success: types.APP_GET_FAGSAK_SUCCESS,
-      failure: types.APP_GET_FAGSAK_FAILURE
     }
   })
 }

@@ -44,9 +44,7 @@ export interface AppState {
 
   loginRedirect: boolean | undefined
   alleEnheter: Enheter | null | undefined
-  fagsakTema: NavRinasak | null | undefined
   overstyrtEnhetsnummer: string | null | undefined
-
 }
 
 export const initialAppState: AppState = {
@@ -81,7 +79,6 @@ export const initialAppState: AppState = {
     featurePdu1: IS_DEVELOPMENT
   },
   alleEnheter: undefined,
-  fagsakTema: undefined,
   overstyrtEnhetsnummer: undefined
 
 }
@@ -119,23 +116,6 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
       return {
         ...state,
         alleEnheter: action.payload
-      }
-    }
-
-    case types.APP_GET_FAGSAK_FAILURE:
-      return {
-        ...state,
-        fagsakTema: null
-      }
-
-    case types.APP_GET_FAGSAK_SUCCESS:{
-      console.log("SVARSED_GET_FAGSAK_SUCCESS " + action.payload)
-      const navRinasak: NavRinasak | undefined = action.payload
-      console.log("SVARSED_GET_FAGSAK_SUCCESS2 " + navRinasak?.overstyrtEnhetsnummer)
-
-      return {
-        ...state,
-        fagsakTema: action.payload
       }
     }
 

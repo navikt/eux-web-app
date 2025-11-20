@@ -13,12 +13,14 @@ import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 import {updateFagsak} from "../../../actions/svarsed";
 import * as sakActions from "../../../actions/sak";
 import {getAlleEnheter} from "../../../actions/app";
-import {getFagsakTema} from "../../../actions/app";
+import {getFagsakTema} from "../../../actions/sak";
 import {searchJournalfoeringPerson} from "../../../actions/journalfoering";
+import {SakState} from "../../../reducers/sak";
 
 
 interface JournalfoeringsOpplysningerProps {
   sak: Sak
+  sakState: SakState
 }
 
 interface ChangeTemaFagsakModalSelector {
@@ -35,7 +37,6 @@ interface ChangeTemaFagsakModalSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alleEnheter: Enheter | undefined | null
-  fagsakTema: NavRinasak | undefined | null
 }
 
 const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
@@ -51,16 +52,16 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   searchingPerson: state.loading.searchingPerson,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  alleEnheter: state.app.alleEnheter,
-  fagsakTema: state.app.fagsakTema
+  alleEnheter: state.app.alleEnheter
 })
 
-const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) => {
+const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, fagsakTema }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
+  const [fagsakTema, setFagsakTema] = useState<any>(sakState.fagsakTema)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -158,6 +159,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
+    setFagsakTema(currentFagsak)
   }
 
   useEffect(() => {
@@ -331,8 +333,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
               {t('label:overstyrt-enhet')}:
             </Dt>
             <Dd>
-              {currentFagsak?.overstyrtEnhetsnummer
-                ? currentFagsak.overstyrtEnhetsnummer
+              { fagsakTema?.overstyrtEnhetsnummer
+                ? fagsakTema.overstyrtEnhetsnummer
                 : '' }
             </Dd>
           </Dl>
