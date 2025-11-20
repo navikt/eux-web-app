@@ -37,6 +37,7 @@ interface ChangeTemaFagsakModalSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alleEnheter: Enheter | undefined | null
+  otherFagsakTema: NavRinasak | undefined | null
 }
 
 const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
@@ -52,16 +53,17 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   searchingPerson: state.loading.searchingPerson,
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
-  alleEnheter: state.app.alleEnheter
+  alleEnheter: state.app.alleEnheter,
+  otherFagsakTema: state.sak.fagsakTema
 })
 
 const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, otherFagsakTema }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
-  const [fagsakTema, setFagsakTema] = useState<any>(sakState.fagsakTema)
+  const [fagsakTema, setFagsakTema] = useState<NavRinasak | undefined | null>(sakState.fagsakTema)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -97,7 +99,8 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
 
   useEffect(() => {
     console.log("Fagsaktema " + fagsakTema)
-  }, [fagsakTema])
+    console.log("Other fagsaktema " + otherFagsakTema)
+  }, [fagsakTema, otherFagsakTema])
 
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
@@ -163,7 +166,11 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
 
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
-    setFagsakTema(currentFagsak)
+    const newFagsakTema = {
+      ...fagsakTema,
+      overstyrtEnhetsnummer: currentFagsak.overstyrtEnhetsnummer
+    }
+    setFagsakTema(newFagsakTema)
   }
 
   useEffect(() => {
