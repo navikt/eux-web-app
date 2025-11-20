@@ -95,6 +95,10 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
     }
   }, [fagsakUpdated])
 
+  useEffect(() => {
+    console.log("Fagsaktema " + fagsakTema)
+  }, [fagsakTema])
+
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
       ...currentFagsak,
