@@ -126,7 +126,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
   }
 
   const onOverstyrtEnhetChange = (value: string) => {
-    if(!value || value === "") return
     const fagsak = {
       ...currentFagsak,
       overstyrtEnhetsnummer: value
@@ -275,7 +274,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 onChange={(e) => onOverstyrtEnhetChange(e.target.value)}
                 value={currentFagsak?.overstyrtEnhetsnummer
                   ? currentFagsak.overstyrtEnhetsnummer
-                  : fagsakTema?.overstyrtEnhetsnummer ?? ''}
+                  : ''}
               >
                 <option value=''>
                   {t('label:velg')}
@@ -334,7 +333,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             <Dd>
               {currentFagsak?.overstyrtEnhetsnummer
                 ? currentFagsak.overstyrtEnhetsnummer
-                : fagsakTema?.overstyrtEnhetsnummer ?? ''}
+                : '' }
             </Dd>
           </Dl>
           <Button
