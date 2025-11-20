@@ -285,7 +285,7 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
                 id={namespace + '-overstyrt-enhet'}
                 label={t('label:velg-overstyrt-enhet')}
                 onChange={(e) => onOverstyrtEnhetChange(e.target.value)}
-                value={currentFagsak == null
+                value={ (currentFagsak == null || currentFagsak.overstyrtEnhetsnummer == null)
                   ? (otherFagsakTema?.overstyrtEnhetsnummer ?? '')
                   : currentFagsak.overstyrtEnhetsnummer }
               >
