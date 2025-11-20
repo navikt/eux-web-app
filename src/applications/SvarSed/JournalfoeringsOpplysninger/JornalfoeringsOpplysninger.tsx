@@ -285,9 +285,9 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
                 id={namespace + '-overstyrt-enhet'}
                 label={t('label:velg-overstyrt-enhet')}
                 onChange={(e) => onOverstyrtEnhetChange(e.target.value)}
-                value={currentFagsak?.overstyrtEnhetsnummer
-                  ? currentFagsak.overstyrtEnhetsnummer
-                  : otherFagsakTema?.overstyrtEnhetsnummer ?? ''}
+                value={currentFagsak == null
+                  ? (otherFagsakTema?.overstyrtEnhetsnummer ?? '')
+                  : currentFagsak.overstyrtEnhetsnummer }
               >
                 <option value=''>
                   {t('label:velg')}
