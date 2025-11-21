@@ -344,8 +344,8 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
               {t('label:overstyrt-enhet')}:
             </Dt>
             <Dd>
-              { otherFagsakTema?.overstyrtEnhetsnummer
-                ? otherFagsakTema.overstyrtEnhetsnummer
+              { fagsakTema?.overstyrtEnhetsnummer
+                ? fagsakTema.overstyrtEnhetsnummer
                 : '' }
             </Dd>
           </Dl>
