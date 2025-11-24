@@ -1,6 +1,6 @@
-FROM node:20-alpine
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:22-slim
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 WORKDIR /app
 COPY package.json .
@@ -9,9 +9,8 @@ COPY node_modules/ node_modules/
 COPY server.mjs server.mjs
 COPY build build/
 # ENV DEBUG http-proxy-middleware*
-RUN npm r -g npm #Remove npm to fix vulnerabilities in npm
 
-CMD ["node", "./server.mjs"]
+CMD ["./server.mjs"]
 
 
 EXPOSE 8080
