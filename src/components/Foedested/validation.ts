@@ -26,6 +26,13 @@ export const validateFoedested = (
       personName
     }))
 
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: foedested?.by,
+      id: namespace + '-by',
+      message: 'validation:noBy',
+      personName
+    }))
+
     hasErrors.push(checkLength(v, {
       needle: foedested?.by,
       id: namespace + '-by',
