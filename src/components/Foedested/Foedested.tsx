@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
+import {BodyLong, Button, Label, VStack} from '@navikt/ds-react'
 import {
   AlignEndColumn,
   AlignStartRow,
@@ -27,6 +27,7 @@ import {validateFoedested, ValidationFoedestedProps} from "./validation";
 import {useAppDispatch} from "../../store";
 import CountryDropdown from "../CountryDropdown/CountryDropdown";
 import FlagPanel from "../FlagPanel/FlagPanel";
+import ErrorLabel from "../Forms/ErrorLabel";
 
 export interface FoedestedProps {
   foedested: Foedested | undefined
@@ -182,9 +183,12 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 />
                 )
               : (
-                <BodyLong id={namespace + '-by'}>
-                  {_foedested?.by}
-                </BodyLong>
+                <VStack>
+                  <BodyLong id={namespace + '-by'}>
+                    {_foedested?.by}
+                  </BodyLong>
+                  <ErrorLabel error={_v[namespace + '-by']?.feilmelding} />
+                </VStack>
                 )}
           </Column>
           <Column>
@@ -219,7 +223,10 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 />
                 )
               :
-                <FlagPanel land={_foedested?.landkode} id={namespace + '-land'}/>
+                <VStack>
+                  <FlagPanel land={_foedested?.landkode} id={namespace + '-land'}/>
+                  <ErrorLabel error={_v[namespace + '-land']?.feilmelding} />
+                </VStack>
             }
           </Column>
         </Row>
