@@ -89,7 +89,11 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if(!checked){
-      dispatch(setDeselectedMenu(item))
+      if((item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" || item === "refusjon_ihht_artikkel_58_i_forordning") && CDM_VERSION && CDM_VERSION >= 4.4){
+        dispatch(setDeselectedMenu("refusjon"))
+      } else {
+        dispatch(setDeselectedMenu(item))
+      }
     } else {
       dispatch(setDeselectedMenu(undefined))
     }
@@ -127,7 +131,8 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
-      CDM_VERSION! <= 4.3 ? dispatch(updateReplySed('refusjonskrav', null)) : dispatch(updateReplySed('refusjon', null))
+      dispatch(updateReplySed('refusjonskrav', null))
+      dispatch(updateReplySed('refusjon', null))
       if(!_.find(newFormaals, f => f === "motregning")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
       }
