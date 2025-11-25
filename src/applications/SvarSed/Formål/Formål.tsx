@@ -35,7 +35,8 @@ const Formål: React.FC<MainFormProps> = ({
   label,
   replySed,
   parentNamespace,
-  updateReplySed
+  updateReplySed,
+  CDM_VERSION
 }: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
@@ -101,11 +102,7 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if(item === "motregning" && !checked){
-      dispatch(updateReplySed('familie.motregninger', []));
-
-      (replySed as F002Sed).barn?.forEach((barn: Barn, barnIndex: number) => {
-        dispatch(updateReplySed('barn['+barnIndex+'].motregninger', []))
-      })
+      dispatch(updateReplySed('motregninger', []));
 
       if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
@@ -130,7 +127,7 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
-      dispatch(updateReplySed('refusjonskrav', null))
+      CDM_VERSION! <= 4.3 ? dispatch(updateReplySed('refusjonskrav', null)) : dispatch(updateReplySed('refusjon', null))
       if(!_.find(newFormaals, f => f === "motregning")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
       }
