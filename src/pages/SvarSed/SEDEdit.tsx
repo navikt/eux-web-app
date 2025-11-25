@@ -462,7 +462,7 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-        {showBottomForm() && (
+        {(isF001Sed(replySed) || isF002Sed(replySed))&& (
           <>
             <MainForm
               CDM_VERSION={CDM_VERSJON}
@@ -515,8 +515,7 @@ const SEDEdit = (): JSX.Element => {
                 {
                   label: t('el:option-mainform-kontoopplysninger'),
                   value: 'kontoopplysninger',
-                  component: Kontoopplysning,
-                  condition: () => isF001Sed(replySed) || isF002Sed(replySed)
+                  component: Kontoopplysning
                 }
               ]}
               replySed={replySed}
