@@ -515,7 +515,8 @@ const SEDEdit = (): JSX.Element => {
                 {
                   label: t('el:option-mainform-kontoopplysninger'),
                   value: 'kontoopplysninger',
-                  component: Kontoopplysning
+                  component: Kontoopplysning,
+                  condition: () => isF001Sed(replySed) || isF002Sed(replySed)
                 }
               ]}
               replySed={replySed}
