@@ -1,18 +1,10 @@
 import { FilesIcon, ExternalLinkIcon } from '@navikt/aksel-icons'
-import {Alert, BodyLong, Heading, Link} from '@navikt/ds-react'
-import {
-  FlexCenterDiv,
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  RadioPanelBorder
-} from '@navikt/hoykontrast'
+import {Alert, BodyLong, HStack, Link, Spacer, LinkCard} from '@navikt/ds-react'
 
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styles from './SakPanel.module.css'
 
 interface SakPanelProps {
   sak: Sak
@@ -20,68 +12,54 @@ interface SakPanelProps {
   onCopy: () => void
 }
 
-const RadioPanelBorderWithLinks = styled(RadioPanelBorder)`
-  .navds-radio__label:before { display: none; } // hiding the checkbox
-  .navds-radio__label {
-    padding: 1rem !important;
-  }
-  .navds-radio__content {
-     width: 100%;
-  }
-  .navds-radio__input:checked + .navds-radio__label .navds-link,
-  .navds-radio__input:checked + .navds-radio__label .navds-link svg {
-     color: var(--a-text-on-inverted);
-  }
-
-  background-color: var(--a-surface-default) !important;
-  &:hover {
-    background-color: var(--a-surface-action-subtle-hover) !important;
-  }
-`
-
 const SakPanel = ({
   sak,
   onSelected,
   onCopy
 }: SakPanelProps) => {
   const { t } = useTranslation()
-  const sakId = sak.sakId + '-' + sak.sakType
   return (
-    <RadioPanelBorderWithLinks
-      ariaLabel={sak.sakType + ' - ' + sak.sakTittel}
-      onChange={onSelected}
-      value={sakId}
+
+    <LinkCard
+      aria-label={sak.sakType + ' - ' + sak.sakTittel}
+      onClick={onSelected}
+      className={styles.sakPanel}
+      arrow={false}
     >
-      <PileDiv>
-        <Heading size='small'>
-          {sak.sakType + ' - ' + sak.sakTittel}
-        </Heading>
-        <FlexDiv>
+      <LinkCard.Title>
+        {sak.sakType + ' - ' + sak.sakTittel}
+      </LinkCard.Title>
+      <LinkCard.Description>
+        <HStack gap="2">
           <BodyLong>
             {t('label:motpart')}:
           </BodyLong>
-          <HorizontalSeparatorDiv size='0.35' />
           <BodyLong>
             {sak?.motpart?.join(', ') ?? '-'}
           </BodyLong>
-        </FlexDiv>
-        <FlexCenterSpacedDiv style={{ width: '100%' }}>
+        </HStack>
+        <HStack width="100%">
           <BodyLong>
             {t('label:sist-oppdatert') + ': ' + sak.sistEndretDato}
           </BodyLong>
-          <FlexCenterDiv>
+          <Spacer/>
+          <HStack align="center" gap="4">
             <span>
               {t('label:saksnummer') + ': '}
             </span>
-            <HorizontalSeparatorDiv />
-            <Link target='_blank' href={sak.sakUrl} rel='noreferrer'>
-              <span>
-                {sak?.sakId}
-              </span>
-              <HorizontalSeparatorDiv size='0.35' />
-              <ExternalLinkIcon />
+            <Link
+              target='_blank'
+              href={sak.sakUrl}
+              rel='noreferrer'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <HStack gap="4" align="center">
+                <span>
+                  {sak?.sakId}
+                </span>
+                <ExternalLinkIcon />
+              </HStack>
             </Link>
-            <HorizontalSeparatorDiv />
             <Link
               title={t('label:kopiere')} onClick={(e: any) => {
                 e.preventDefault()
@@ -91,15 +69,15 @@ const SakPanel = ({
             >
               <FilesIcon />
             </Link>
-          </FlexCenterDiv>
-        </FlexCenterSpacedDiv>
+          </HStack>
+        </HStack>
         {sak.sensitiv && (
           <Alert size="small" variant='warning'>
             <span>{t('label:sensitivSak')}</span>
           </Alert>
         )}
-      </PileDiv>
-    </RadioPanelBorderWithLinks>
+      </LinkCard.Description>
+    </LinkCard>
   )
 }
 
