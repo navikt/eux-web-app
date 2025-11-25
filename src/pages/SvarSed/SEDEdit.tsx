@@ -321,7 +321,7 @@ const SEDEdit = (): JSX.Element => {
       menuOption: "beløpnavnogvaluta"
     },
     "motregning": {
-      menu: "motregning",
+      menu: "motregninger",
       menuOption: undefined
     },
     "prosedyre_ved_uenighet": {
@@ -334,6 +334,10 @@ const SEDEdit = (): JSX.Element => {
     },
     "refusjon_ihht_artikkel_58_i_forordning": {
       menu: "refusjon_ihht_artikkel_58_i_forordning",
+      menuOption: undefined
+    },
+    "refusjon": {
+      menu: "refusjon",
       menuOption: undefined
     }
   }
