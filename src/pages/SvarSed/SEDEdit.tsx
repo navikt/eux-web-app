@@ -206,6 +206,8 @@ const SEDEdit = (): JSX.Element => {
       const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
         replySed: newReplySed
       })
+      console.log(hasErrors)
+      console.log(clonedValidation)
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         setViewSendSedModal(true)

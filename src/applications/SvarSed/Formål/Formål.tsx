@@ -130,7 +130,7 @@ const Formål: React.FC<MainFormProps> = ({
       dispatch(updateReplySed('uenighet', null));
     }
 
-    if(item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" && !checked){
+    if((item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" || item === "refusjon_ihht_artikkel_58_i_forordning") && !checked){
       dispatch(updateReplySed('refusjonskrav', null))
       dispatch(updateReplySed('refusjon', null))
       if(!_.find(newFormaals, f => f === "motregning")){
