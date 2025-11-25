@@ -55,7 +55,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import {F002Sed, F027Sed, FSed, ReplySed} from 'declarations/sed'
+import {F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -71,7 +71,6 @@ import {
   isF003Sed,
   isF026Sed,
   isF027Sed,
-  isFSed,
   isH002Sed,
   isPreviewableSed,
   isS040Sed,
@@ -199,7 +198,6 @@ const SEDEdit = (): JSX.Element => {
   const showAttachments: boolean = !isXSed(replySed)
 
   const showMainForm = (): boolean => isSed(replySed)
-  const showBottomForm = (): boolean => isFSed(replySed)
 
   const saveReplySed = (): void => {
     if (replySed) {
