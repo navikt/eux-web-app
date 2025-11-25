@@ -122,7 +122,6 @@ const SEDQuery = ({ parentNamespace, error, querying, onQueryChanged, initialQue
           </PileDiv>
         </Column>
       </AlignStartRow>
-      {!frontpage && <VerticalSeparatorDiv size='3' />}
       {error && (
         <>
           <AlertstripeDiv>

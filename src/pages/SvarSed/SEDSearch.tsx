@@ -1,16 +1,4 @@
-import { Checkbox, Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  FlexDiv,
-  FullWidthDiv,
-  HorizontalSeparatorDiv, Margin,
-  PileDiv,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Box, Checkbox, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { appReset, copyToClipboard } from 'actions/app'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import { querySaks, setCurrentSak } from 'actions/svarsed'
@@ -26,21 +14,6 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
-
-export const FlexRadioGroup = styled(RadioGroup)`
- .navds-radio-buttons {
-   display: flex;
- }
-`
-export const PileStartDiv = styled(PileDiv)`
- align-items: flex-start;
-`
-export const MyRadioPanelGroup = styled(RadioPanelGroup)`
-  .navds-radio-buttons {
-    margin-top: 0rem !important;
-  }
-`
 
 const mapState = (state: State): any => ({
   alertMessage: state.alert.stripeMessage,
@@ -141,112 +114,84 @@ const SEDSearch = (): JSX.Element => {
   const nrEditableSaks = _.filter(visibleSaks, (s: Sak) => _.find(s.sedListe, (sed: Sed) => isSedEditable(s, sed, sedStatus)) !== undefined)?.length ?? 0
 
   return (
-    <Container>
-      <Margin />
-      <Content style={{minWidth: '800px'}}>
-        <PileStartDiv>
-          <FullWidthDiv>
-            <Heading size='medium'>
-              {t('app:page-title-svarsed-search')}
-            </Heading>
-            <SEDQuery
-              parentNamespace={namespace}
-              initialQuery={_query ?? rinasaksnummerOrFnrParam}
-              onQueryChanged={(queryType: string) => {
-                dispatch(appReset())
-                _setQueryType(queryType)
-              }}
-              onQuerySubmit={(q: string) => {
-                _setQuery(q)
-              }}
-              querying={queryingSaks}
-              error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
-            />
-            {visibleSaks?.length > 0 && (
-              <>
-                <FlexDiv>
-                  <Checkbox
-                    checked={_onlyEditableSaks}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setOnlyEditableSeds(e.target.checked)}
-                  >
-                    {t('label:only-active-seds') + ' (' + nrEditableSaks + ')'}
-                  </Checkbox>
-                </FlexDiv>
-                <FlexRadioGroup
-                  onChange={_setFilter}
-                  legend=''
-                  value={_filter}
-                >
+    <HStack marginBlock="12">
+      <Spacer />
+      <Box minWidth="800px">
+        <VStack width="100%">
+          <Heading size='medium'>
+            {t('app:page-title-svarsed-search')}
+          </Heading>
+          <SEDQuery
+            parentNamespace={namespace}
+            initialQuery={_query ?? rinasaksnummerOrFnrParam}
+            onQueryChanged={(queryType: string) => {
+              dispatch(appReset())
+              _setQueryType(queryType)
+            }}
+            onQuerySubmit={(q: string) => {
+              _setQuery(q)
+            }}
+            querying={queryingSaks}
+            error={!!alertMessage && alertType && [types.SVARSED_SAKS_FAILURE].indexOf(alertType) >= 0 ? alertMessage : undefined}
+          />
+          {visibleSaks?.length > 0 && (
+            <>
+              <Checkbox
+                checked={_onlyEditableSaks}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setOnlyEditableSeds(e.target.checked)}
+              >
+                {t('label:only-active-seds') + ' (' + nrEditableSaks + ')'}
+              </Checkbox>
+              <RadioGroup
+                onChange={_setFilter}
+                legend=''
+                value={_filter}
+              >
+                <HStack gap="4">
                   <Radio value='all'>{t('label:alle') + ' (' + visibleSaks.length + ')'}</Radio>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  {familieytelser > 0 && (
-                    <>
-                      <Radio value='FB_'>{t('label:familieytelser') + ' (' + familieytelser + ')'}</Radio>
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                  )}
-                  {dagpenger > 0 && (
-                    <>
-                      <Radio value='UB_'>{t('label:dagpenger') + ' (' + dagpenger + ')'}</Radio>
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                  )}
-                  {horisontal > 0 && (
-                    <>
-                      <Radio value='H_'>{t('label:horisontal') + ' (' + horisontal + ')'}</Radio>
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                  )}
-                  {sykdom > 0 && (
-                    <>
-                      <Radio value='S_'>{t('label:sykdom') + ' (' + sykdom + ')'}</Radio>
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                  )}
-                  {lovvalg > 0 && (
-                    <>
-                      <Radio value='LA_'>{t('label:lovvalg') + ' (' + lovvalg + ')'}</Radio>
-                      <HorizontalSeparatorDiv size='0.5' />
-                    </>
-                  )}
-                </FlexRadioGroup>
-              </>
+                  {familieytelser > 0 && <Radio value='FB_'>{t('label:familieytelser') + ' (' + familieytelser + ')'}</Radio>}
+                  {dagpenger > 0 && <Radio value='UB_'>{t('label:dagpenger') + ' (' + dagpenger + ')'}</Radio>}
+                  {horisontal > 0 && <Radio value='H_'>{t('label:horisontal') + ' (' + horisontal + ')'}</Radio>}
+                  {sykdom > 0 && <Radio value='S_'>{t('label:sykdom') + ' (' + sykdom + ')'}</Radio>}
+                  {lovvalg > 0 && <Radio value='LA_'>{t('label:lovvalg') + ' (' + lovvalg + ')'}</Radio>}
+                </HStack>
+              </RadioGroup>
+            </>
+          )}
+          {queryingSaks
+            ? (<WaitingPanel />)
+            : (
+                <VStack gap="4">
+                  {!filteredSaks || filteredSaks?.length === 0 &&
+                    <Alert variant='warning'>
+                      Ingen saker funnet
+                    </Alert>
+                  }
+                  {filteredSaks?.map((sak: Sak) => (
+                    _onlyEditableSaks &&
+                    _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sak, sed, sedStatus)) === undefined
+                      ? <div />
+                      : (
+                        <div key={'sak-' + sak?.sakId}>
+                          <SakPanel
+                            sak={sak}
+                            onSelected={() => {
+                              navigate({
+                                pathname: '/svarsed/view/sak/' + sak.sakId,
+                                search: _query ? '?q=' + _query : ''
+                              })
+                            }}
+                            onCopy={() => dispatch(copyToClipboard(sak.sakId))}
+                          />
+                        </div>
+                        )
+                  ))}
+                </VStack>
             )}
-            {queryingSaks
-              ? (<WaitingPanel />)
-              : (
-                <AlignStartRow>
-                  <Column flex='2'>
-                    <MyRadioPanelGroup>
-                      {filteredSaks?.map((sak: Sak) => (
-                        _onlyEditableSaks &&
-                        _.find(sak?.sedListe, (sed: Sed) => isSedEditable(sak, sed, sedStatus)) === undefined
-                          ? <div />
-                          : (
-                            <div key={'sak-' + sak?.sakId}>
-                              <SakPanel
-                                sak={sak}
-                                onSelected={() => {
-                                  navigate({
-                                    pathname: '/svarsed/view/sak/' + sak.sakId,
-                                    search: _query ? '?q=' + _query : ''
-                                  })
-                                }}
-                                onCopy={() => dispatch(copyToClipboard(sak.sakId))}
-                              />
-                              <VerticalSeparatorDiv />
-                            </div>
-                            )
-                      ))}
-                    </MyRadioPanelGroup>
-                  </Column>
-                </AlignStartRow>
-                )}
-          </FullWidthDiv>
-        </PileStartDiv>
-      </Content>
-      <Margin />
-    </Container>
+        </VStack>
+      </Box>
+      <Spacer />
+    </HStack>
   )
 }
 
