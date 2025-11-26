@@ -77,15 +77,6 @@ const MotregningerFC: React.FC<MainFormProps> = ({
     _setEditIndex(undefined)
 
     _setCurrentMotregningType(motregningType)
-
-    const clonedValidation = _.cloneDeep(validation)
-    performValidation<ValidationMotregningerProps>(
-      clonedValidation, namespace, validateMotregninger, {
-        replySed: _.cloneDeep(replySed as ReplySed),
-        formalName: personName
-      }, true
-    )
-    dispatch(setValidation(clonedValidation))
   }
 
   const onAddNew = (type: string) => {
@@ -622,7 +613,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
           <Heading size='small'>
             {label}
           </Heading>
-          <Tabs value={_currentMotregningType} onChange={(value) => onTabChange(value)}>
+          <Tabs value={_currentMotregningType} onChange={(value) => onTabChange(value)} id={namespace + "-motregninger"}>
             <Tabs.List>
               <HStack align="center" width="100%">
                 <Tabs.Tab value="barnMotregninger" label={t('label:barn')}/>
@@ -648,11 +639,14 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 }
                 {_.isEmpty(motregninger?.barn) && !_newBarnForm
                   ? (
-                    <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
-                      <BodyLong>
-                        {t('message:warning-no-motregning')}
-                      </BodyLong>
-                    </Box>
+                    <>
+                      <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                        <BodyLong>
+                          {t('message:warning-no-motregning')}
+                        </BodyLong>
+                      </Box>
+                      <ErrorLabel error={validation[namespace + '-motregninger']?.feilmelding}/>
+                    </>
                   )
                   : motregninger?.barn?.map((m: Motregning, i: number) => {
                     return renderMotregning(m, i, "barn")
@@ -693,11 +687,14 @@ const MotregningerFC: React.FC<MainFormProps> = ({
                 }
                 {_.isEmpty(motregninger?.heleFamilien) && !_newHelefamilienForm
                   ? (
-                    <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
-                      <BodyLong>
-                        {t('message:warning-no-motregning')}
-                      </BodyLong>
-                    </Box>
+                    <>
+                      <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                        <BodyLong>
+                          {t('message:warning-no-motregning')}
+                        </BodyLong>
+                      </Box>
+                      <ErrorLabel error={validation[namespace + '-motregninger']?.feilmelding}/>
+                    </>
                   )
                   : motregninger?.heleFamilien?.map((m: Motregning, i: number) => {
                     return renderMotregning(m, i, "heleFamilien")
@@ -721,7 +718,6 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               </VStack>
             </Tabs.Panel>
           </Tabs>
-          <ErrorLabel error={validation[namespace + '-motregninger']?.feilmelding}/>
         </VStack>
       </Box>
     </>
