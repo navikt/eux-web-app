@@ -25,6 +25,7 @@ import PeriodeText from "../../../components/Forms/PeriodeText";
 import TextArea from "../../../components/Forms/TextArea";
 import TransferBeloepToTotalModal from "../Motregninger/TransferBeloepToTotalModal/TransferBeloepToTotalModal";
 import performValidation from "../../../utils/performValidation";
+import ErrorLabel from "../../../components/Forms/ErrorLabel";
 
 const RefusjonFC: React.FC<MainFormProps> = ({
   label,
@@ -383,11 +384,14 @@ const RefusjonFC: React.FC<MainFormProps> = ({
 
             {_.isEmpty(refusjon?.kravListe) && !_newRefusjonsKravForm
               ? (
-                <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
-                  <BodyLong>
-                    {t('message:warning-no-refusjonskrav')}
-                  </BodyLong>
-                </Box>
+                <>
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                    <BodyLong>
+                      {t('message:warning-no-refusjonskrav')}
+                    </BodyLong>
+                  </Box>
+                  <ErrorLabel error={validation[namespace + '-refusjon']?.feilmelding}/>
+                </>
               )
               : refusjon?.kravListe?.map((rk: RefusjonsKrav, i: number) => {
                 return renderRefusjonsKrav(rk, i)

@@ -1,6 +1,6 @@
 import { addError, checkIfNotEmpty, checkLength } from 'utils/validation'
 import { validatePeriode } from 'components/Forms/validation'
-import {F002Sed, Motregning, ReplySed} from 'declarations/sed'
+import {F002Sed, Motregning, Motregninger, ReplySed} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
 import {isF002Sed} from "../../../utils/sed";
@@ -144,6 +144,31 @@ export const validateMotregninger = (
   }: ValidationMotregningerProps
 ): boolean => {
   const hasErrors: Array<boolean> = [];
+
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: (replySed as F002Sed).motregninger,
+    id: namespace + '-motregninger',
+    message: 'validation:noMotregninger'
+  }))
+
+  if((replySed as F002Sed).motregninger){
+    const motregninger = (replySed as F002Sed).motregninger;
+    if(motregninger && motregninger.barn){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: motregninger.barn,
+        id: namespace + '-motregninger',
+        message: 'validation:noMotregninger'
+      }))
+    }
+    if(motregninger && motregninger.heleFamilien){
+      hasErrors.push(checkIfNotEmpty(v, {
+        needle: motregninger.heleFamilien,
+        id: namespace + '-motregninger',
+        message: 'validation:noMotregninger'
+      }))
+    }
+
+  }
 
   if((replySed as F002Sed).motregninger && (replySed as F002Sed).motregninger?.heleFamilienOppsummert){
     const heleFamilienOppsummert = (replySed as F002Sed).motregninger?.heleFamilienOppsummert;
