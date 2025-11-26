@@ -74,7 +74,7 @@ jobs:
       - name: 'Install'
         run: npm install --force
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PAT_READER_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: 'Bygg'
         run: npm run build
