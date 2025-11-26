@@ -721,6 +721,7 @@ const MotregningerFC: React.FC<MainFormProps> = ({
               </VStack>
             </Tabs.Panel>
           </Tabs>
+          <ErrorLabel error={validation[namespace + '-motregninger']?.feilmelding}/>
         </VStack>
       </Box>
     </>

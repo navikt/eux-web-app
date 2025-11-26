@@ -108,6 +108,7 @@
   "noLoennsopplysninger": "Lønnsopplysninger mangler",
   "noLoennTilDato": "Du må taste inn lønn til dato",
 
+  "noMotregninger": "Ingen motregninger lagt til",
   "noMottakere": "Ingen mottakerere",
   "noMottakersNavn": "Ingen mottakers navn",
   "noMottarOffentligStoette": "Mangler svar på om det mottas offentlig støtte",
@@ -125,6 +126,7 @@
   "noPunkt": "Ingen punkt",
   "noPurring": "Ingen purring",
 
+  "noRefusjonsKrav": "Ingen refusjonskrav lagt til",
   "noRelation": "Ingen relasjon valgt",
   "noRelationType": "Ingen type for relasjon",
   "noRettTilStønad": "Ingen informasjon om stønad",

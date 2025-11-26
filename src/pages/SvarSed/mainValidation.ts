@@ -160,6 +160,7 @@ export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolea
 }
 
 export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
   const hasErrors: Array<boolean> = []
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
@@ -186,15 +187,18 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
     if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ||
       (replySed as F002Sed).formaal.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
     ) {
-      hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
-        kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
-        formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
-      }, true))
+      if(CDM_VERSJON <= 4.3){
+        hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
+          kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
+          formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+        }, true))
+      } else {
+        hasErrors.push(performValidation<ValidationRefusjonProps>(v, 'formål2-refusjon', validateRefusjon, {
+          replySed,
+          formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+        }, true))
+      }
 
-      hasErrors.push(performValidation<ValidationRefusjonProps>(v, 'formål2-refusjon', validateRefusjon, {
-        replySed,
-        formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
-      }, true))
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
       hasErrors.push(performValidation<ValidationKontoopplysningProps>(v, 'formål2-kontoopplysninger', validateKontoopplysning, {

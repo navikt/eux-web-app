@@ -115,10 +115,15 @@ export const validateRefusjon = (
 ): boolean => {
   const hasErrors: Array<boolean> = []
 
+  hasErrors.push(checkIfNotEmpty(v, {
+    needle: (replySed as F002Sed).refusjon,
+    id: namespace + '-refusjon',
+    message: 'validation:noRefusjonsKrav',
+  }))
+
   if((replySed as F002Sed).refusjon){
     const refusjon: Refusjon = (replySed as F002Sed).refusjon as Refusjon
     if(refusjon?.totalbeloep || refusjon?.valuta || refusjon?.melding || refusjon?.betalingsreferanse){
-      console.log('Validating refusjon:', refusjon)
       if (_.isEmpty(refusjon.totalbeloep?.trim())) {
         hasErrors.push(addError(v, {
           id: namespace + '-totalbeloep',
