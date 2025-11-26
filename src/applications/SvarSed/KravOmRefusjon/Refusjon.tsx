@@ -385,7 +385,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
             {_.isEmpty(refusjon?.kravListe) && !_newRefusjonsKravForm
               ? (
                 <>
-                  <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle">
+                  <Box padding="4" borderWidth="1" borderColor="border-subtle" background="bg-subtle" id={namespace + "-refusjon"}>
                     <BodyLong>
                       {t('message:warning-no-refusjonskrav')}
                     </BodyLong>
