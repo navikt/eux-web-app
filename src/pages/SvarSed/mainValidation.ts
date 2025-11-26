@@ -591,5 +591,6 @@ export const validateSEDEdit = (
     }))
   }
 
+  console.log(hasErrors)
   return hasErrors.find(value => value) !== undefined
 }

@@ -118,6 +118,7 @@ export const validateRefusjon = (
   if((replySed as F002Sed).refusjon){
     const refusjon: Refusjon = (replySed as F002Sed).refusjon as Refusjon
     if(refusjon?.totalbeloep || refusjon?.valuta || refusjon?.melding || refusjon?.betalingsreferanse){
+      console.log('Validating refusjon:', refusjon)
       if (_.isEmpty(refusjon.totalbeloep?.trim())) {
         hasErrors.push(addError(v, {
           id: namespace + '-totalbeloep',
