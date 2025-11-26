@@ -106,7 +106,7 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if(item === "motregning" && !checked){
-      dispatch(updateReplySed('motregninger', []));
+      dispatch(updateReplySed('motregninger', null));
 
       if(!_.find(newFormaals, f => f === "refusjon_i_henhold_til_artikkel_58_i_forordningen")){
         dispatch(updateReplySed('utbetalingTilInstitusjon', null))
@@ -131,7 +131,6 @@ const Formål: React.FC<MainFormProps> = ({
     }
 
     if((item === "refusjon_i_henhold_til_artikkel_58_i_forordningen" || item === "refusjon_ihht_artikkel_58_i_forordning") && !checked){
-      console.log("RESETTING REFUSJON VALUES")
       dispatch(updateReplySed('refusjonskrav', null))
       dispatch(updateReplySed('refusjon', null))
       if(!_.find(newFormaals, f => f === "motregning")){
