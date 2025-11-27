@@ -24,6 +24,8 @@ export interface AppState {
   countryCodeMap: {key?: string} | null | undefined
 
   saksbehandler: Saksbehandler | undefined
+  saksbehandlerBucer: Array<string> | null | undefined
+
   serverinfo: ServerInfo | undefined
   expirationTime: number | undefined
   sessionEndsAt: number | undefined
@@ -47,6 +49,7 @@ export interface AppState {
 
 export const initialAppState: AppState = {
   saksbehandler: undefined,
+  saksbehandlerBucer: undefined,
   serverinfo: undefined,
   enheter: undefined,
   selectedEnhet: undefined,
@@ -98,6 +101,19 @@ const appReducer = (state: AppState = initialAppState, action: AnyAction): AppSt
         ...state,
         enheter: action.payload,
         selectedEnhet: favouriteEnhet,
+      }
+    }
+
+    case types.APP_BUCER_FAILURE:
+      return {
+        ...state,
+        saksbehandlerBucer: null
+      }
+
+    case types.APP_BUCER_SUCCESS:{
+      return {
+        ...state,
+        saksbehandlerBucer: action.payload
       }
     }
 
