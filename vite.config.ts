@@ -30,7 +30,7 @@ export default defineConfig({
     port: 3003,
   },
   define: {
-    'process.env': process.env
+    'process.env': {}
   },
   build:{
     outDir: "build",
