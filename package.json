@@ -27,12 +27,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@navikt/ds-css": "7.33.3",
-    "@navikt/ds-react": "7.33.3",
+    "@navikt/ds-css": "7.35.0",
+    "@navikt/ds-react": "7.35.0",
     "@navikt/eessi-kodeverk": "2.4.1",
-    "@navikt/fetch": "4.0.8",
+    "@navikt/fetch": "4.0.15",
     "@navikt/flagg-ikoner": "10.0.19",
-    "@navikt/fnrvalidator": "2.1.5",
+    "@navikt/fnrvalidator": "2.2.0",
     "@navikt/hoykontrast": "4.0.1",
     "@navikt/land-verktoy": "9.1.28",
     "@navikt/landvelger": "10.0.11",
