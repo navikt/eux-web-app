@@ -1,9 +1,7 @@
 import classNames from 'classnames'
-import {BodyShort, Button, Heading, HStack, Modal} from '@navikt/ds-react'
+import {BodyShort, Button, Heading, Modal} from '@navikt/ds-react'
 import { ModalContent } from 'declarations/components'
-import { ModalContentPropType } from 'declarations/components.pt'
 import _ from 'lodash'
-import PT from 'prop-types'
 import React from 'react'
 
 import styled from 'styled-components'
@@ -121,12 +119,6 @@ const ModalFC: React.FC<ModalProps> = ({
     </Modal>
 
   )
-}
-
-ModalFC.propTypes = {
-  className: PT.string,
-  onModalClose: PT.func,
-  modal: ModalContentPropType
 }
 
 export default ModalFC

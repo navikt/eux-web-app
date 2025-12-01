@@ -25,7 +25,6 @@ describe('pages/Vedlegg', () => {
     vedleggResponse: undefined,
     rinasaksnummer: undefined,
     rinadokumentID: undefined,
-    sendingVedlegg: false,
     validation: {}
   }
 

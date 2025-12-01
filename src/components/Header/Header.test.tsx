@@ -14,7 +14,10 @@ describe('components/Header/Header', () => {
   }
 
   const defaultSelector: HeaderSelector = {
-    saksbehandler: undefined
+    saksbehandler: undefined,
+    enheter: undefined,
+    selectedEnhet: undefined,
+    featureToggles: undefined
   }
 
   beforeAll(() => {

@@ -62,7 +62,7 @@ const Perioder: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-perioder`
   const getId = (p: PDPeriode | null | undefined): string =>
-    p ? (p.__type + '-' + p?.startdato ?? '') + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
+    p ? (p.__type + '-' + p?.startdato) + '-' + (p?.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 
   const [_allPeriods, _setAllPeriods] = useState<Array<PDPeriode>>([])
   const [_newPeriode, _setNewPeriode] = useState<PDPeriode | undefined>(undefined)

@@ -201,7 +201,7 @@ const SEDEdit = (): JSX.Element => {
       (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
     )
 
-  const saveReplySed = (e: any): void => {
+  const saveReplySed = (): void => {
     if (replySed) {
       const newReplySed: ReplySed = cleanReplySed(replySed)
       const clonedValidation = _.cloneDeep(validation)
@@ -429,7 +429,7 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true },
                 { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
                 { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
-                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false },
+                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
                 { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
                 { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
                 { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
@@ -467,31 +467,31 @@ const SEDEdit = (): JSX.Element => {
                   label: t('el:option-mainform-vedtak'),
                   value: 'vedtak',
                   component: Vedtak,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 ?? false
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0
                 },
                 {
                   label: t('el:option-mainform-motregning'),
                   value: 'motregning',
                   component: Motregning,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 ?? false
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
                 },
                 {
                   label: t('el:option-mainform-prosedyre'),
                   value: 'prosedyre_ved_uenighet',
                   component: ProsedyreVedUenighet,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ?? false
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0
                 },
                 {
                   label: t('el:option-mainform-refusjon'),
                   value: 'refusjon_ihht_artikkel_58_i_forordning',
                   component: KravOmRefusjon,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 ?? false
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
                 },
                 {
                   label: t('el:option-mainform-refusjon'),
                   value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
                   component: KravOmRefusjon,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ?? false
+                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
                 },
                 {
                   label: t('el:option-mainform-kontoopplysninger'),

@@ -261,8 +261,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             </Button>
           </VStack>
         </Modal.Body>
-        <Modal.Footer>
-        </Modal.Footer>
       </Modal>
 
       <Box borderWidth="1" borderRadius="small" borderColor="border-default" padding="4" background="surface-default">
