@@ -70,7 +70,7 @@ jobs:
           scope: "@navikt"
 
       - name: 'Install'
-        run: npm install --force
+        run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
