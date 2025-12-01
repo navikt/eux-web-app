@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreExportsUsedInFile": {
+    "interface": true,
+    "type": true
+  },
+  "tags": [
+    "-lintignore"
+  ],
+  "entry": ["src/index.tsx", "scripts/*.js", "server.mjs"],
+  "project": ["src/**", "scripts/**"],
+  "ignore": ["**/*.test.ts"],
+  "vite": {
+    "config": [
+      "vite.config.{js,mjs,ts,cjs,mts,cts}"
+    ]
+  }
+}
