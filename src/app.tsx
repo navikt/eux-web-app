@@ -7,6 +7,7 @@ import {
   getCountryCodes,
   getEnheter,
   getSaksbehandler,
+  getSaksbehandlerBucer,
   getServerinfo,
   getUtgaarDato,
   preload,
@@ -46,6 +47,7 @@ export const App = () => {
       dispatch(getUtgaarDato())
       dispatch(getCountryCodes())
       dispatch(getCDMVersjon())
+      dispatch(getSaksbehandlerBucer())
     }, [])
 
     useEffect(() => {

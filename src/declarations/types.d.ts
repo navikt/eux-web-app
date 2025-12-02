@@ -114,6 +114,8 @@ export interface Enhet {
 
 export type Enheter = Array<Enhet>
 
+export type Bucer = Array<string>
+
 export interface PersonInfoPDL {
   fnr?: string
   foedselsdato?: string
