@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "10.6.0-CDM-4.4-CHANGES",
+  "version": "11.0.0",
   "private": true,
   "type": "module",
   "scripts": {
