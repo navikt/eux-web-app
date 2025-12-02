@@ -18,7 +18,7 @@ export type TelefonType = 'arbeid' | 'hjem' | 'mobil'
 
 export type ReplySed = F001Sed | F002Sed | F003Sed | F026Sed | F027Sed | H001Sed | H002Sed | S040Sed | U002Sed | U004Sed | U017Sed | X008Sed | X009Sed | X010Sed | X011Sed | X012Sed
 
-export type SedTypes = 'F001' | 'F002' | 'F003' | 'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
+export type SedTypes = 'F001' | 'F002' | 'F003' | 'F026' | 'F027' |'H001' | 'H002' | 'S040'| 'S046'| 'U002' | 'U004' | 'U017' | 'X008' | 'X009' | 'X010' | 'X011' | 'X012'
 
 export type JaNei = 'ja' | 'nei'
 
@@ -199,11 +199,16 @@ export interface PersonInfo {
   }
 }
 
-export interface Aktivtitet {
+export interface AktivitetStatus {
   status: string
-  perioder?: Array<Periode>
+  aktiviteter: Array<Aktivitet>
+}
+
+export interface Aktivitet {
+  status?: string  // TO BE REMOVED AFTER REWRITE CDM 4.4
+  begrunnelse?: string // NOT PRESENT IN CDM 4.4??
   type?: string
-  begrunnelse?: string
+  perioder?: Array<Periode>
 }
 
 export interface FillOutInfoPayload {
@@ -238,21 +243,28 @@ export interface PersonTypeF extends PersonType {
   telefon?: Array<Telefon>
 }
 
+export interface PeriodeMedGrunn {
+  periode: Periode
+  typeGrunn?: string
+  annenGrunn?: string
+}
+
+export interface RettIkkeRettTilFamilieYtelse {
+  rettTilFamilieytelser?: Array<PeriodePeriode>,
+  ikkeRettTilFamilieytelser?: Array<PeriodeMedGrunn>
+}
+
 export interface PersonTypeF001 extends PersonTypeF {
-  ikkeRettTilYtelser?: {
-    typeGrunn?: string
-    typeGrunnAnnen?: string
-    typeGrunnForVedtak?: string
-  }
-  perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA
+  perioderMedAktivitetForInaktivPerson?: Array<Periode> //Ansettelsesperioder (6.7.5) i RINA - UTGÅR I CDM 4.4
   familierelasjoner ?: Array<FamilieRelasjon>
   flyttegrunn ?: Flyttegrunn
-
-  aktivitet?: Aktivtitet
+  aktivitet?: Aktivitet //CDM 4.3
+  aktivitetStatuser?: Array<AktivitetStatus> //CDM 4.4
   ytterligereInfo?: string
   trygdeperioder?: Array<Periode>
   perioderMedPensjon?: Array<PensjonPeriode>
-  perioderMedRettTilFamilieytelser?: Array<Periode>
+  perioderMedRettTilFamilieytelser?: Array<Periode> //CDM 4.3
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
   dekkedePerioder?: Array<Periode>
   udekkedePerioder?: Array<Periode>
 }
@@ -264,8 +276,9 @@ export interface PersonTypeBrukerF026 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som dekkedePerioder (F001/F002)
-  perioderUtenforTrygdeordning ?: Array<Periode> //TODO: Bør renames - det samme som udekkedePerioder (F001/F002)
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeBrukerF027 extends PersonTypeF {
@@ -275,8 +288,9 @@ export interface PersonTypeBrukerF027 extends PersonTypeF {
     typeGrunnForVedtak?: string
   }
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning ?: Array<Periode>
-  perioderUtenforTrygdeordning ?: Array<Periode>
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeBrukerF003 extends PersonTypeF {
@@ -286,8 +300,9 @@ export interface PersonTypeBrukerF003 extends PersonTypeF {
     typeGrunnAnnen?: string
   } | null
   perioderMedYtelser?: Array<Periode> | null
-  perioderMedITrygdeordning?: Array<Periode> | null
-  perioderUtenforTrygdeordning?: Array<Periode> | null
+  perioderMedRettTilYtelser?: Array<RettIkkeRettTilFamilieYtelse>
+  dekkedePerioder?: Array<Periode>
+  udekkedePerioder?: Array<Periode>
 }
 
 export interface PersonTypeEktefelleF003 extends  PersonTypeF {
@@ -336,6 +351,20 @@ export interface Ytelse extends Periode {
   ytelseNavn: string
 }
 
+export interface Motregninger {
+  heleFamilien?: Array<Motregning>
+  barn?: Array<Motregning>
+  heleFamilienOppsummert?: MotregningOppsummert
+  barnOppsummert?: MotregningOppsummert
+}
+
+export interface MotregningOppsummert {
+  totalbeloep?: string
+  valuta?: string
+  melding?: string
+  betalingsreferanse?: string
+}
+
 export interface Motregning extends Periode {
   begrunnelse: string
   beloep: string
@@ -346,6 +375,28 @@ export interface Motregning extends Periode {
   vedtaksdato: string
   ytelseNavn?: string
   ytterligereInfo: string
+  barnetsNavn?: string
+  antallPersoner?: string
+  __barn?: Array<BarnYtelse>
+}
+
+export interface BarnYtelse {
+  barnetsNavn?: string,
+  ytelseNavn?: string
+}
+
+export interface Refusjon {
+  kravListe: Array<RefusjonsKrav>
+  totalbeloep?: string
+  valuta?: string
+  melding?: string
+  betalingsreferanse?: string
+}
+
+export interface RefusjonsKrav extends Periode {
+  beloep: string
+  valuta: string
+  ytterligereinformasjon?: string
 }
 
 export interface H001Svar {
@@ -383,6 +434,9 @@ export interface KontoOrdinaer {
 export interface KontoSepa {
   swift: string
   iban: string
+  banknavn?: string //CDM4.4
+  kontoeier?: string //CDM4.4
+  betalingsreferanse?: string //CDM4.4
 }
 
 export interface UtbetalingTilInstitusjon extends Institusjon {
@@ -466,7 +520,6 @@ export interface Barn {
   barnetilhoerigheter?: Array<Barnetilhoerighet>
   flyttegrunn?: Flyttegrunn
   personInfo: PersonInfo
-  motregninger?: Array<Motregning>
   ytelser?: Array<Ytelse>
 }
 
@@ -569,12 +622,12 @@ export interface FSed extends BaseReplySed {
 }
 
 export interface F001Sed extends FSed {
-  annenPerson?: PersonTypeF001
-  barn?: Array<Barn>
   ektefelle?: PersonTypeF001
+  annenPerson?: PersonTypeF001
+  andrePersoner?: Array<PersonTypeF001> //CDM 4.4
+  barn?: Array<Barn>
   endredeForhold?: Array<string>
   familie?: {
-    motregninger?: Array<Motregning>
     ytelser?: Array<Ytelse>
   }
   krav: {
@@ -583,8 +636,10 @@ export interface F001Sed extends FSed {
     kravMottattDato: string
     kravType: string
   }
+  motregninger?: Motregninger
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
+  refusjon: Refusjon
   uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }
@@ -597,6 +652,7 @@ export interface F003Sed extends BaseReplySed {
   bruker: PersonTypeBrukerF003
   ektefelle?: PersonTypeEktefelleF003
   annenPerson?: PersonTypeAnnenPersonF003
+  andrePersoner?: Array<PersonTypeAnnenPersonF003> //CDM 4.4
   barn?: Array<PersonBarn>
   familie?: {
     ytelser?: Array<Ytelse>
@@ -629,7 +685,7 @@ export interface F027Sed extends BaseReplySed {
       annenInformasjonBarnet?: AnnenInformasjonBarnet_V42 | AnnenInformasjonBarnet_V43
       utdanning?: Utdanning
       utdanningsinstitusjon?: UtdanningInstitusjon
-      deltakelsePaaUtdanning: Array<Periode>
+      deltakelsePaaUtdanning?: Array<Periode>
     }
   }
 }
@@ -899,6 +955,7 @@ export interface X009Sed extends XSed {
 
 export interface BesvarelseKommer extends Purring {
   innenDato?: string
+  ytterligereinformasjon?: string
 }
 
 export interface BesvarelseUmulig extends Purring {

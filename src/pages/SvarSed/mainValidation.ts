@@ -36,8 +36,8 @@ import {
   validateKontoopplysning,
   ValidationKontoopplysningProps
 } from 'applications/SvarSed/Kontoopplysning/validation'
-import { validateKravOmRefusjon, ValidationKravOmRefusjonProps } from 'applications/SvarSed/KravOmRefusjon/validation'
-import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregning/validation'
+import {validateKravOmRefusjon, validateRefusjon, ValidationKravOmRefusjonProps, ValidationRefusjonProps, ValidationRefusjonsKravProps} from 'applications/SvarSed/KravOmRefusjon/validation'
+import { validateMotregninger, ValidationMotregningerProps } from 'applications/SvarSed/Motregninger/validation'
 import { validateNasjonaliteter, ValidationNasjonaliteterProps } from 'applications/SvarSed/Nasjonaliteter/validation'
 import {
   validatePerioderDagpenger,
@@ -62,7 +62,7 @@ import {
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
 import { validateSvarPåminnelse, ValidationSvarPåminnelseProps } from 'applications/SvarSed/SvarPåminnelse/validation'
-import { validateTrygdeordninger, ValidateTrygdeordningerProps } from 'applications/SvarSed/Trygdeordning/validation'
+import {validateTrygdeordning, validateTrygdeordninger, ValidateTrygdeordningerProps} from 'applications/SvarSed/Trygdeordning/validation'
 import { validateUgyldiggjøre, ValidationUgyldiggjøreProps } from 'applications/SvarSed/Ugyldiggjøre/validation'
 import { validateVedtak, ValidationVedtakProps } from 'applications/SvarSed/Vedtak/validation'
 import {
@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn, PersonTypeF001, S046Sed
+  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -137,8 +137,13 @@ import {
   ValidationUtdanningProps
 } from "../../applications/SvarSed/SvarOmFremmoeteUtdanning/validation";
 import {validateForespoersel, ValidationForespoerselProps} from "../../applications/SvarSed/Forespoersel/validation";
-import {validateAktivitetOgTrygdeperioder, ValidateAktivitetOgTrygdeperioderProps} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
+import {
+  validateAktivitetOgTrygdeperioder,
+  validateAktivitetStatusOgTrygdeperioder,
+  ValidateAktivitetOgTrygdeperioderProps,
+} from "../../applications/SvarSed/AktivitetOgTrygdeperioder/validation";
 import {validateInformasjonOmUtbetaling, ValidationInformasjonOmUtbetalingProps} from "../../applications/SvarSed/InformasjonOmUtbetaling/validation";
+import {validatePerioderMedRettTilYtelser, ValidationPerioderMedRettTilYtelserProps} from "../../applications/SvarSed/PerioderMedRettTilYtelser/validation";
 
 export interface ValidationSEDEditProps {
   replySed: ReplySed
@@ -155,11 +160,12 @@ export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolea
 }
 
 export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
   const hasErrors: Array<boolean> = []
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
       hasErrors.push(performValidation<ValidationMotregningerProps>(
-        v, 'formål2-motregning', validateMotregninger, {
+        v, 'formål2-motregninger', validateMotregninger, {
           replySed,
           formalName: i18n.t('label:motregning').toLowerCase()
         }, true))
@@ -178,11 +184,21 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
           formalName: i18n.t('label:prosedyre-ved-uenighet').toLowerCase()
         }, true))
     }
-    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0) {
-      hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
-        kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
-        formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
-      }, true))
+    if ((replySed as F002Sed).formaal.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 ||
+      (replySed as F002Sed).formaal.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
+    ) {
+      if(CDM_VERSJON <= 4.3){
+        hasErrors.push(performValidation<ValidationKravOmRefusjonProps>(v, 'formål2-refusjon_i_henhold_til_artikkel_58_i_forordningen', validateKravOmRefusjon, {
+          kravOmRefusjon: (replySed as F002Sed)?.refusjonskrav,
+          formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+        }, true))
+      } else {
+        hasErrors.push(performValidation<ValidationRefusjonProps>(v, 'formål2-refusjon', validateRefusjon, {
+          replySed,
+          formalName: i18n.t('label:krav-om-refusjon').toLowerCase()
+        }, true))
+      }
+
     }
     if (!_.isNil((replySed as F002Sed).utbetalingTilInstitusjon)) {
       hasErrors.push(performValidation<ValidationKontoopplysningProps>(v, 'formål2-kontoopplysninger', validateKontoopplysning, {
@@ -198,6 +214,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
   const personInfo: PersonInfo =
     isXSed(replySed)
       ? _.get(replySed, 'bruker')
@@ -241,15 +258,33 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
         if(isF001Sed(replySed) || isF002Sed(replySed)){
           const person: PersonTypeF001 = _.get(replySed, `${personID}`)
-          hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
-            person, personName
-          }, true))
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
+            hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetstatusogtrygdeperioder`, validateAktivitetStatusOgTrygdeperioder, {
+              person, personName
+            }, true))
+          } else {
+            hasErrors.push(performValidation<ValidateAktivitetOgTrygdeperioderProps>(v, `svarsed-${personID}-aktivitetogtrygdeperioder`, validateAktivitetOgTrygdeperioder, {
+              person, personName
+            }, true))
+          }
         }
 
-        if(isF026Sed(replySed)){
-          hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
-            replySed, personID, personName
-          }, true))
+        if(isF026Sed(replySed) || isF027Sed(replySed)){
+
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
+            hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'dekkedePerioder', _.get(replySed, `${personID}.dekkedePerioder`), personName))
+            hasErrors.push(validateTrygdeordning(v, `svarsed-${personID}-trygdeordning`, 'udekkedePerioder', _.get(replySed, `${personID}.udekkedePerioder`), personName))
+
+            const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, `${personID}.perioderMedRettTilYtelser`)
+            hasErrors.push(performValidation<ValidationPerioderMedRettTilYtelserProps>(v, `svarsed-${personID}-trygdeordning`, validatePerioderMedRettTilYtelser, {
+              perioderMedRettTilYtelser
+            }, true))
+
+          } else {
+            hasErrors.push(performValidation<ValidateTrygdeordningerProps>(v, `svarsed-${personID}-trygdeordning`, validateTrygdeordninger, {
+              replySed, personID, personName
+            }, true))
+          }
         }
 
         const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
@@ -264,18 +299,25 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
             replySed, personName
           }, true))
 
-          // Trygdeordning
-          const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
-          const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
-          let rettTilFamilieYtelser;
-          if(perioderMedYtelser && perioderMedYtelser.length >= 0){
-            rettTilFamilieYtelser = "ja"
-          } else if(ikkeRettTilYtelser){
-            rettTilFamilieYtelser = "nei"
+          if(CDM_VERSJON && CDM_VERSJON >= 4.4){
+            const perioderMedRettTilYtelser: Array<RettIkkeRettTilFamilieYtelse> | undefined = _.get(replySed, `${personID}.perioderMedRettTilYtelser`)
+            hasErrors.push(performValidation<ValidationPerioderMedRettTilYtelserProps>(v, `svarsed-${personID}-periodermedretttilytelser`, validatePerioderMedRettTilYtelser, {
+              perioderMedRettTilYtelser
+            }, true))
+          } else {
+            // Trygdeordning
+            const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+            const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
+            let rettTilFamilieYtelser;
+            if(perioderMedYtelser && perioderMedYtelser.length >= 0){
+              rettTilFamilieYtelser = "ja"
+            } else if(ikkeRettTilYtelser){
+              rettTilFamilieYtelser = "nei"
+            }
+            hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
+              perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
+            }, true))
           }
-          hasErrors.push(performValidation<ValidationTrygdeOrdningerProps>(v, `svarsed-${personID}-retttilytelserfsed`, validateTrygdeOrdninger, {
-            perioderMedYtelser, ikkeRettTilYtelser, rettTilFamilieYtelser, personName
-          }, true))
 
           //Familierelasjon Annen Person
           const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)
@@ -442,9 +484,16 @@ export const validateSEDEdit = (
     if ((replySed as F002Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
+
+    (replySed as F002Sed).andrePersoner?.forEach((p: PersonTypeF001, i: number) => {
+      hasErrors.push(validateMainForm(v, replySed, `andrePersoner[${i}]`))
+    });
+
     (replySed as F002Sed).barn?.forEach((b: Barn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
-    })
+    });
+
+
     if ((replySed as F002Sed).familie) {
       hasErrors.push(validateMainForm(v, replySed, 'familie'))
     }
@@ -463,9 +512,14 @@ export const validateSEDEdit = (
     if ((replySed as F003Sed).annenPerson) {
       hasErrors.push(validateMainForm(v, replySed, 'annenPerson'))
     }
+
+    (replySed as F003Sed).andrePersoner?.forEach((p: PersonTypeAnnenPersonF003, i: number) => {
+      hasErrors.push(validateMainForm(v, replySed, `andrePersoner[${i}]`))
+    });
+
     (replySed as F003Sed).barn?.forEach((b: PersonBarn, i: number) => {
       hasErrors.push(validateMainForm(v, replySed, `barn[${i}]`))
-    })
+    });
 
     hasErrors.push(validateVedtakForF003(v, replySed))
   }
@@ -541,5 +595,6 @@ export const validateSEDEdit = (
     }))
   }
 
+  console.log(hasErrors)
   return hasErrors.find(value => value) !== undefined
 }

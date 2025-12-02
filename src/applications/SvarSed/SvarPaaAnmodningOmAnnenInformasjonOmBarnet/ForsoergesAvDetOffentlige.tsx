@@ -72,7 +72,7 @@ const ForsoergesAvDetOffentlige: React.FC<MainFormProps> = ({
             </TextAreaDiv>
           </Box>
         }
-        {CDM_VERSJON === "4.3" &&
+        {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <RadioPanelGroup
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.forsoergesAvDetOffentlige ?? ''}

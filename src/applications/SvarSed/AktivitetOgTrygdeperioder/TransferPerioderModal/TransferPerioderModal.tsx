@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import Modal from "../../../../components/Modal/Modal";
-import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer} from "@navikt/ds-react";
+import {Box, Checkbox, HStack, Radio, RadioGroup, Spacer, Tag} from "@navikt/ds-react";
 import PeriodeText from "../../../../components/Forms/PeriodeText";
-import {PensjonPeriode, Periode} from "../../../../declarations/sed";
+import {PensjonPeriode, Periode, PeriodePeriode} from "../../../../declarations/sed";
 import _ from "lodash";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../../../store";
@@ -20,6 +20,8 @@ export interface TransferPerioderModalProps {
   resetPerioder?: Array<string>
   resetWarning?: boolean
   closedPeriodsWarning?: boolean
+  beforeTransfer?: () => void,
+  cdmVersion?: string
 }
 
 const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
@@ -32,7 +34,9 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
   periodeType = undefined,
   resetPerioder,
   resetWarning,
-  closedPeriodsWarning
+  closedPeriodsWarning,
+  beforeTransfer,
+  cdmVersion
 }: TransferPerioderModalProps): JSX.Element => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
@@ -80,11 +84,14 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
       dispatch(updateReplySed(`${target}`, undefined))
     })
 
+    if(beforeTransfer) beforeTransfer()
+
     if(periodeType && periodeType === "pensjon") {
       const perioderMedPensjon: Array<PensjonPeriode> = Object.values(_valgtePerioder)
       dispatch(updateReplySed(`${target}`, perioderMedPensjon))
     } else if(periodeType && periodeType === "dekketUdekket") {
       const perioderMedRettTilFamilieytelser: Array<Periode> = []
+
       const dekket: Array<Periode> = []
       const udekket: Array<Periode> = []
 
@@ -99,7 +106,12 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
         if(p.dekketUdekket === "dekket") dekket.push(lukketPeriode)
         if(p.dekketUdekket === "udekket") udekket.push(lukketPeriode)
       })
-      dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+
+      if(!cdmVersion || parseFloat(cdmVersion) <= 4.3){
+        dispatch(updateReplySed(`${target}.perioderMedRettTilFamilieytelser`, perioderMedRettTilFamilieytelser))
+      } else {
+        dispatch(updateReplySed(`${target}.perioderMedRettTilYtelser[0].rettTilFamilieytelser`, perioderMedRettTilFamilieytelser.map(p => ({periode: p}))))
+      }
       dispatch(updateReplySed(`${target}.dekkedePerioder`, dekket))
       dispatch(updateReplySed(`${target}.udekkedePerioder`, udekket))
     } else {
@@ -148,7 +160,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
           <Box borderWidth="1" borderColor="border-subtle" padding="4">
             {perioder?.map((p, i) => {
               return (
-                <HStack gap="4" align={"start"}>
+                <HStack gap="4" align={"center"}>
                   <Checkbox
                     key={getId(p)}
                     checked={!!(_valgtePerioder && _valgtePerioder["periode-" + i])}
@@ -163,6 +175,7 @@ const TransferPerioderModal: React.FC<TransferPerioderModalProps> = ({
                       }}
                     />
                   </Checkbox>
+                  {p.__type && <Tag variant={"warning-moderate"} size="xsmall">{t('label:status-' + p.__type)}</Tag>}
                   <Spacer/>
                   {periodeType && periodeType === "pensjon" && _valgtePerioder && _valgtePerioder["periode-" + i] &&
                     <RadioGroup legend="Grunnlag" hideLegend={true} onChange={(pensjonsType: string) => onSetPensjonstype(pensjonsType, i)}>

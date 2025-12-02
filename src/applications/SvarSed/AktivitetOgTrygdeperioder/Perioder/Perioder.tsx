@@ -3,7 +3,6 @@ import {BodyLong, Box, Button, HStack, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
-import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
@@ -20,20 +19,26 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateThePeriode, ValidationAktivitetPeriodeProps } from './validation'
+import AddRemove from "../../../../components/AddRemovePanel/AddRemove";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const Perioder: React.FC<MainFormProps> = ({
+export interface PerioderProps extends MainFormProps {
+  onPerioderEdited?: () => void
+}
+
+const Perioder: React.FC<PerioderProps> = ({
   parentNamespace,
   parentTarget,
   personID,
   personName,
   replySed,
   updateReplySed,
-  options
-}:MainFormProps): JSX.Element => {
+  options,
+  onPerioderEdited
+}:PerioderProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
@@ -96,6 +101,7 @@ const Perioder: React.FC<MainFormProps> = ({
     if (!hasErrors) {
       dispatch(updateReplySed(`${target}[${_editIndex}]`, _editPeriode))
       onCloseEdit(namespace + getIdx(_editIndex))
+      if(onPerioderEdited) onPerioderEdited()
     } else {
       dispatch(setValidation(clonedValidation))
     }
@@ -104,6 +110,7 @@ const Perioder: React.FC<MainFormProps> = ({
   const onRemove = (removedPeriode: Periode) => {
     const newPerioder: Array<Periode> = _.reject(perioder, (p: Periode) => _.isEqual(removedPeriode, p))
     dispatch(updateReplySed(target, newPerioder))
+    if(onPerioderEdited) onPerioderEdited()
   }
 
   const onAddNew = () => {
@@ -123,6 +130,8 @@ const Perioder: React.FC<MainFormProps> = ({
       dispatch(updateReplySed(target, newPerioder))
       onCloseNew()
     }
+
+    if(onPerioderEdited) onPerioderEdited()
   }
 
   const renderRow = (periode: Periode | null, index: number) => {
@@ -137,7 +146,7 @@ const Perioder: React.FC<MainFormProps> = ({
         key={getId(periode)}
         className={classNames({
           new: index < 0,
-          error: hasNamespaceWithErrors(_v, _namespace)
+          errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
         <HStack gap="4" wrap={false} align={"start"}>
@@ -170,9 +179,8 @@ const Perioder: React.FC<MainFormProps> = ({
           }
           <Spacer/>
           <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
-          <AddRemovePanel<Periode>
+          <AddRemove<Periode>
             item={periode}
-            marginTop={inEditMode}
             index={index}
             inEditMode={inEditMode}
             onRemove={onRemove}
@@ -206,6 +214,7 @@ const Perioder: React.FC<MainFormProps> = ({
           <Box>
             <Button
               variant='tertiary'
+              size={"small"}
               onClick={() => _setNewForm(true)}
               icon={<PlusCircleIcon/>}
             >

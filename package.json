@@ -1,6 +1,6 @@
 {
   "name": "neessi",
-  "version": "10.6.0",
+  "version": "11.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -208,6 +208,6 @@
     "defaults"
   ],
   "readme": "ERROR: No README data found!",
-  "_id": "neessi@10.6.0",
+  "_id": "neessi@10.6.0-CDM-4.4-CHANGES",
   "disabled-homepage": "http://eesi2.no/melosys"
 }

@@ -394,7 +394,7 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
-      cdmVersjon: '4.2',
+      cdmVersjon: '4.4',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -755,7 +755,7 @@ export default (saksnummer: string, type: string) => {
       ]
     },
     {
-      cdmVersjon: '4.2',
+      cdmVersjon: '4.4',
       fornavn: 'Ola',
       etternavn: 'Nordmenn',
       kjoenn: 'M',
@@ -1089,7 +1089,7 @@ export default (saksnummer: string, type: string) => {
       "ikkeJournalfoerteSed": [],
       "sedUnderJournalfoeringEllerUkjentStatus": [],
       "sensitiv": false,
-      "cdmVersjon": "4.3"
+      "cdmVersjon": "4.4"
     }
   ]
 

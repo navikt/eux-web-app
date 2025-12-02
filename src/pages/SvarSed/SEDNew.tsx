@@ -292,7 +292,32 @@ const SEDNew = (): JSX.Element => {
     dispatch(setValidation(clonedvalidation))
 
     const ektefellePDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "EKTE")
-    const annenpersonPDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "ANNEN")
+    const ektefelleUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "EKTE")
+    const ektefelleInfo = cloneDeep(ektefelleUtland)
+    delete ektefelleInfo?.__rolle
+
+    let annenpersonPDL: PersonInfoPDL | undefined
+    let annenpersonUtland: PersonInfoUtland | undefined
+    let annenpersonInfo: PersonInfoUtland | undefined
+    let andrepersoner
+
+    if(cdmVersjonApp && parseFloat(cdmVersjonApp) <= 4.3){
+      annenpersonPDL = valgteFamilieRelasjonerPDL!.find((r) => r.__rolle === "ANNEN")
+      annenpersonUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "ANNEN")
+      annenpersonInfo = cloneDeep(annenpersonUtland)
+      delete annenpersonInfo?.__rolle
+    } else if(cdmVersjonApp && parseFloat(cdmVersjonApp) >= 4.4){
+      const andrepersonerPDL = valgteFamilieRelasjonerPDL!.filter((r) => r.__rolle === "ANNEN").map((annenPerson) => {return {fnr: annenPerson.fnr}})
+      const andrepersonerUtland = valgteFamilieRelasjonerUtland!.filter((r) => r.__rolle === "ANNEN").map((annenPerson) => {
+        const annenPersonInfo: PersonInfoUtland = cloneDeep(annenPerson)
+        delete annenPersonInfo.__rolle
+        return {
+          info: annenPersonInfo
+        }
+      })
+      andrepersoner = [...andrepersonerPDL, ...andrepersonerUtland]
+    }
+
     const barnPDL = valgteFamilieRelasjonerPDL!.filter((r) => r.__rolle === "BARN").map((barn) => {return {fnr: barn.fnr}})
     const barnUtland = valgteFamilieRelasjonerUtland!.filter((r) => r.__rolle === "BARN").map((barn) => {
       const barnInfo: PersonInfoUtland = cloneDeep(barn)
@@ -303,15 +328,6 @@ const SEDNew = (): JSX.Element => {
     })
 
     const barn = [...barnPDL, ...barnUtland]
-
-    const ektefelleUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "EKTE")
-    const annenpersonUtland = valgteFamilieRelasjonerUtland?.find((r: PersonInfoUtland) => r.__rolle === "ANNEN")
-
-    const ektefelleInfo = cloneDeep(ektefelleUtland)
-    delete ektefelleInfo?.__rolle
-
-    const annenpersonInfo = cloneDeep(annenpersonUtland)
-    delete annenpersonInfo?.__rolle
 
     const fagsak = fagsaker!.find((f) => f._id === valgtSaksId)
     const fagsakCopy = cloneDeep(fagsak)
@@ -329,9 +345,12 @@ const SEDNew = (): JSX.Element => {
         fnr: valgtFnr
       },
       ...(ektefellePDL && { ektefelle: {fnr: ektefellePDL.fnr} }),
-      ...(annenpersonPDL && { annenperson: {fnr: annenpersonPDL.fnr} }),
       ...(ektefelleUtland && { ektefelle: {info: ektefelleInfo} }),
+
+      ...(annenpersonPDL && { annenperson: {fnr: annenpersonPDL.fnr} }),
       ...(annenpersonUtland && { annenperson: {info: annenpersonInfo} }),
+      ...(andrepersoner && andrepersoner.length > 0 && { andrepersoner: andrepersoner}),
+
       ...(barn && barn.length > 0 && { barn: barn }),
     }
 
@@ -814,7 +833,7 @@ const SEDNew = (): JSX.Element => {
                     {fagsaker &&
                       fagsaker.map((f: Fagsak) => (
                         <option value={f._id} key={f._id}>
-                          {f.nr || "GENERELL SAK"}  
+                          {f.nr || "GENERELL SAK"}
                         </option>
                       ))
                     }

@@ -352,7 +352,7 @@ const RelasjonAnnenPersonOgAvdoede: React.FC<MainFormProps> = ({
             </TextAreaDiv>
           </Box>
         }
-        {CDM_VERSJON === "4.3" &&
+        {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <>
             {_.isEmpty(relasjoner) && !_newForm
               ? (

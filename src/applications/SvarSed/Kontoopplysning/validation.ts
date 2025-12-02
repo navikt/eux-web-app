@@ -35,8 +35,8 @@ export const validateKontoopplysning = (
     }))
   }
 
-  if (!_.isEmpty(uti?.id.trim())) {
-    if (!uti?.id.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
+  if (!_.isEmpty(uti?.id?.trim())) {
+    if (!uti?.id?.trim().match(/^(AT|BE|BG|HR|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK|EU):[a-zA-Z0-9]{4,10}?$/)) {
       hasErrors.push(addError(v, {
         id: namespace + '-id',
         message: 'validation:invalidInstitusjonsID',
@@ -47,9 +47,38 @@ export const validateKontoopplysning = (
 
   if (kontoType === 'ordinaer') {
     hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.bankensNavn,
+      id: namespace + '-kontoOrdinaer-bankensNavn',
+      message: 'validation:noBankNavn',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.kontonummer,
+      id: namespace + '-kontoOrdinaer-kontonummer',
+      message: 'validation:noKontonummer',
+      personName: formalName
+    }))
+
+
+    hasErrors.push(checkIfNotEmpty(v, {
       needle: uti?.kontoOrdinaer?.swift,
       id: namespace + '-kontoOrdinaer-swift',
       message: 'validation:noSwift',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.adresse?.by,
+      id: namespace + '-kontoOrdinaer-by',
+      message: 'validation:noAddressCity',
+      personName: formalName
+    }))
+
+    hasErrors.push(checkIfNotEmpty(v, {
+      needle: uti?.kontoOrdinaer?.adresse?.landkode,
+      id: namespace + '-kontoOrdinaer-land',
+      message: 'validation:noAddressCountry',
       personName: formalName
     }))
 
@@ -65,15 +94,15 @@ export const validateKontoopplysning = (
   }
 
   if (kontoType === 'sepa') {
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
+    if (_.isEmpty(uti?.kontoSepa?.iban?.trim())) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-iban',
-        message: 'validation:noIbanOrSwift',
+        message: 'validation:noIban',
         personName: formalName
       }))
     }
 
-    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti!.kontoSepa!.iban.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
+    if (!_.isEmpty(uti?.kontoSepa?.iban?.trim()) && !uti!.kontoSepa!.iban?.trim().match(/^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}$/)) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-iban',
         message: 'validation:invalidIban',
@@ -81,15 +110,7 @@ export const validateKontoopplysning = (
       }))
     }
 
-    if (_.isEmpty(uti?.kontoSepa?.iban?.trim()) && _.isEmpty(uti?.kontoSepa?.swift?.trim())) {
-      hasErrors.push(addError(v, {
-        id: namespace + '-kontoSepa-swift',
-        message: 'validation:noIbanOrSwift',
-        personName: formalName
-      }))
-    }
-
-    if (!_.isEmpty(uti?.kontoSepa?.swift?.trim()) && _.isNil(uti!.kontoSepa!.swift.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
+    if (!_.isEmpty(uti?.kontoSepa?.swift?.trim()) && _.isNil(uti!.kontoSepa!.swift?.trim().match(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/))) {
       hasErrors.push(addError(v, {
         id: namespace + '-kontoSepa-swift',
         message: 'validation:invalidSwift',

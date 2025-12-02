@@ -480,6 +480,7 @@ const svarsedReducer = (
         ...(F001SED.bruker && {bruker: F001SED.bruker}),
         ...(F001SED.ektefelle && {ektefelle: F001SED.ektefelle}),
         ...(F001SED.annenPerson && {annenPerson: F001SED.annenPerson}),
+        ...(F001SED.andrePersoner && {andrePersoner: F001SED.andrePersoner}),
         ...(F001SED.barn && {barn: F001SED.barn}),
       }
       return {

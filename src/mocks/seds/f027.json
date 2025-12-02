@@ -24,13 +24,13 @@
         "adresse": "a@nav.no"
       }
     ],
-    "perioderMedITrygdeordning": [
+    "dekkedePerioder": [
       {
         "startdato": "2001-01-01",
         "sluttdato": "2001-01-01"
       }
     ],
-    "perioderUtenforTrygdeordning": [
+    "udekkedePerioder": [
       {
         "startdato": "2001-01-01",
         "sluttdato": "2001-01-01"
@@ -46,6 +46,36 @@
       "typeGrunnAnnen": "æøå",
       "typeGrunnForVedtak": "annen_grunn"
     },
+    "perioderMedRettTilYtelser": [
+      {
+        "ikkeRettTilFamilieytelser": [
+          {
+            "periode": {
+              "startdato": "2021-01-01",
+              "sluttdato": "2022-01-02"
+            },
+            "typeGrunn": "for_hoey_inntekt",
+            "annenGrunn": "Andre grunner...."
+          },
+          {
+            "periode": {
+              "startdato": "2016-01-01",
+              "sluttdato": "2022-03-03"
+            },
+            "typeGrunn": "krav_ikke_framsatt",
+            "annenGrunn": null
+          },
+          {
+            "periode": {
+              "startdato": "2016-01-04",
+              "sluttdato": "2017-02-01"
+            },
+            "typeGrunn": "annet",
+            "annenGrunn": "ANNEN GRUNN"
+          }
+        ]
+      }
+    ],
     "personInfo": {
       "fornavn": "æøå",
       "etternavn": "æøå",
@@ -243,10 +273,8 @@
       },
       "deltakelsePaaUtdanning": [
         {
-          "periode": {
-            "startdato": "2001-01-01",
-            "aapenPeriodeType": "åpen_sluttdato"
-          }
+          "startdato": "2001-01-01",
+          "aapenPeriodeType": "åpen_sluttdato"
         }
       ]
     }

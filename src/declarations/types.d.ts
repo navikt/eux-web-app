@@ -33,7 +33,8 @@ export interface Kodeverk {
 
 export type CountryCodes = {
   "v4.2": CountryCodeLists,
-  "v4.3": CountryCodeLists
+  "v4.3": CountryCodeLists,
+  "v4.4": CountryCodeLists
 }
 
 export type CountryCodeLists = {
@@ -159,7 +160,8 @@ export interface Pin {
 
 export interface PersonMedFamilie extends PersonInfoPDL {
   ektefelle?: PersonInfoPDL
-  annenperson?: PersonInfoPDL
+  annenperson?: PersonInfoPDL // CDM 4.3
+  andrepersoner?: Array<PersonInfoPDL> //CDM 4.4
   barn?: Array<PersonInfoPDL>
 }
 

@@ -31,7 +31,6 @@ import Kontoopplysning from 'applications/SvarSed/Kontoopplysning/Kontoopplysnin
 import KravOmRefusjon from 'applications/SvarSed/KravOmRefusjon/KravOmRefusjon'
 import MainForm from 'applications/SvarSed/MainForm'
 import MottakAvSoknad from 'applications/SvarSed/MottakAvSoknad/MottakAvSoknad'
-import Motregning from 'applications/SvarSed/Motregning/Motregning'
 import Nasjonaliteter from 'applications/SvarSed/Nasjonaliteter/Nasjonaliteter'
 import PeriodeForDagpenger from 'applications/SvarSed/PeriodeForDagpenger/PeriodeForDagpenger'
 import PersonLight from 'applications/SvarSed/PersonLight/PersonLight'
@@ -56,7 +55,7 @@ import ValidationBox from 'components/ValidationBox/ValidationBox'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import * as types from 'constants/actionTypes'
 import { State } from 'declarations/reducers'
-import {F002Sed, F027Sed, FSed, ReplySed} from 'declarations/sed'
+import {F027Sed, FSed, ReplySed} from 'declarations/sed'
 import { CreateSedResponse, Sak, Sed, Validation } from 'declarations/types'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -72,7 +71,6 @@ import {
   isF003Sed,
   isF026Sed,
   isF027Sed,
-  isFSed,
   isH002Sed,
   isPreviewableSed,
   isS040Sed,
@@ -119,6 +117,10 @@ import SvarOmFremmoeteUtdanning from "../../applications/SvarSed/SvarOmFremmoete
 import Forespoersel from "../../applications/SvarSed/Forespoersel/Forespoersel";
 import AktivitetOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetOgTrygdeperioder";
 import InformasjonOmUtbetaling from "../../applications/SvarSed/InformasjonOmUtbetaling/InformasjonOmUtbetaling";
+import AktivitetStatusOgTrygdeperioder from "../../applications/SvarSed/AktivitetOgTrygdeperioder/AktivitetStatusOgTrygdeperioder";
+import PerioderMedRettTilYtelser from "../../applications/SvarSed/PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
+import Motregninger from "../../applications/SvarSed/Motregninger/Motregninger";
+import RefusjonFC from "../../applications/SvarSed/KravOmRefusjon/Refusjon";
 
 export interface SEDEditSelector {
   alertType: string | undefined
@@ -138,6 +140,7 @@ export interface SEDEditSelector {
   textAreaDirty: boolean
   textFieldDirty: boolean
   deselectedMenu: string | undefined
+  cdmVersjon: string | undefined
 }
 
 const mapState = (state: State): SEDEditSelector => ({
@@ -157,7 +160,8 @@ const mapState = (state: State): SEDEditSelector => ({
   attachmentRemoved: state.svarsed.attachmentRemoved,
   textAreaDirty: state.ui.textAreaDirty,
   textFieldDirty: state.ui.textFieldDirty,
-  deselectedMenu: state.svarsed.deselectedMenu
+  deselectedMenu: state.svarsed.deselectedMenu,
+  cdmVersjon: state.app.cdmVersjon
 })
 
 const SEDEdit = (): JSX.Element => {
@@ -182,24 +186,18 @@ const SEDEdit = (): JSX.Element => {
     setVedleggSensitiv,
     textAreaDirty,
     textFieldDirty,
-    deselectedMenu
+    deselectedMenu,
+    cdmVersjon
   } = useAppSelector(mapState)
   const namespace = 'editor'
 
+  const CDM_VERSJON: number = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : parseFloat(cdmVersjon!)
   const [_sendButtonClicked, _setSendButtonClicked] = useState<boolean>(false)
   const [_viewSendSedModal, setViewSendSedModal] = useState<boolean>(false)
   const fnr = getFnr(replySed, 'bruker')
   const showAttachments: boolean = !isXSed(replySed)
 
   const showMainForm = (): boolean => isSed(replySed)
-  const showBottomForm = (): boolean =>
-    isFSed(replySed) && (
-      (replySed as F002Sed)?.formaal?.indexOf('motregning') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('vedtak') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 ||
-      (replySed as F002Sed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
-    )
 
   const saveReplySed = (): void => {
     if (replySed) {
@@ -208,6 +206,8 @@ const SEDEdit = (): JSX.Element => {
       const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
         replySed: newReplySed
       })
+      console.log(hasErrors)
+      console.log(clonedValidation)
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         setViewSendSedModal(true)
@@ -323,7 +323,7 @@ const SEDEdit = (): JSX.Element => {
       menuOption: "beløpnavnogvaluta"
     },
     "motregning": {
-      menu: "motregning",
+      menu: "motregninger",
       menuOption: undefined
     },
     "prosedyre_ved_uenighet": {
@@ -336,6 +336,10 @@ const SEDEdit = (): JSX.Element => {
     },
     "refusjon_ihht_artikkel_58_i_forordning": {
       menu: "refusjon_ihht_artikkel_58_i_forordning",
+      menuOption: undefined
+    },
+    "refusjon": {
+      menu: "refusjon",
       menuOption: undefined
     }
   }
@@ -360,6 +364,7 @@ const SEDEdit = (): JSX.Element => {
         {(isF001Sed(replySed) || isF002Sed(replySed)) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='formål1'
               loggingNamespace='formalmanager'
@@ -377,6 +382,7 @@ const SEDEdit = (): JSX.Element => {
         {isF003Sed(replySed) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='mottakavsoknad'
               loggingNamespace='mottakavsoknadmanager'
@@ -393,6 +399,7 @@ const SEDEdit = (): JSX.Element => {
         {isF027Sed(replySed) && (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='svarpaaanmodningominformasjon'
               loggingNamespace='svarpaaanmodningominformasjonmanager'
@@ -409,6 +416,7 @@ const SEDEdit = (): JSX.Element => {
         {showMainForm() && (
           <>
             <MainForm<ReplySed>
+              CDM_VERSION={CDM_VERSJON}
               type='twolevel'
               namespace='svarsed'
               loggingNamespace='personmanager'
@@ -423,10 +431,12 @@ const SEDEdit = (): JSX.Element => {
                 { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
                 { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
                 { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
-                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true },
+                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },
+                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON >= 4.4 },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
                 { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
-                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true },
+                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => CDM_VERSJON <= 4.3 },
+                { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => CDM_VERSJON >= 4.4 },
                 { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
                 { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
                 { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
@@ -456,9 +466,10 @@ const SEDEdit = (): JSX.Element => {
             <VerticalSeparatorDiv size='2' />
           </>
         )}
-        {showBottomForm() && (
+        {(isF001Sed(replySed) || isF002Sed(replySed))&& (
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               namespace='formål2'
               deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
@@ -471,8 +482,8 @@ const SEDEdit = (): JSX.Element => {
                 },
                 {
                   label: t('el:option-mainform-motregning'),
-                  value: 'motregning',
-                  component: Motregning,
+                  value: 'motregninger',
+                  component: Motregninger,
                   condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
                 },
                 {
@@ -485,19 +496,30 @@ const SEDEdit = (): JSX.Element => {
                   label: t('el:option-mainform-refusjon'),
                   value: 'refusjon_ihht_artikkel_58_i_forordning',
                   component: KravOmRefusjon,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
+                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON <= 4.3)
                 },
                 {
                   label: t('el:option-mainform-refusjon'),
                   value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
                   component: KravOmRefusjon,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0
+                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON <= 4.3)
+                },
+                {
+                  label: t('el:option-mainform-refusjon'),
+                  value: 'refusjon',
+                  component: RefusjonFC,
+                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON >= 4.4)
+                },
+                {
+                  label: t('el:option-mainform-refusjon'),
+                  value: 'refusjon',
+                  component: RefusjonFC,
+                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON >= 4.4)
                 },
                 {
                   label: t('el:option-mainform-kontoopplysninger'),
                   value: 'kontoopplysninger',
-                  component: Kontoopplysning,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 || (replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0
+                  component: Kontoopplysning
                 }
               ]}
               replySed={replySed}
@@ -511,6 +533,7 @@ const SEDEdit = (): JSX.Element => {
         {isF003Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={true}
               namespace='vedtak'
@@ -532,6 +555,7 @@ const SEDEdit = (): JSX.Element => {
         {isF026Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={true}
               namespace='etterspurtinformasjon'
@@ -553,6 +577,7 @@ const SEDEdit = (): JSX.Element => {
         {isF027Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='menuitems'
               menuDefaultClosed={true}
               namespace='svarpaaanmodningominformasjon'
@@ -568,26 +593,26 @@ const SEDEdit = (): JSX.Element => {
                 {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'adopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
                 {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'inntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
 
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'barnet-aktivitet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'aktivitet'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'barnet-skole', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'skole'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'barnet-opplaering', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'opplaering'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'barnet-ufoerhet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ufoerhet'}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'barnet-arbeidsledighet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'arbeidsledighet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'barnet-ytelser', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ytelser'}},
 
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'dagligOmsorg', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'dagligOmsorg'}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'foreldreansvar'}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: (replySed as F027Sed).sak?.cdmVersjon}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
                 {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['anneninformasjonbarnet']},
                 {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'ytterligereInformasjon', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'ytterligereInformasjon'}},
 
@@ -604,6 +629,7 @@ const SEDEdit = (): JSX.Element => {
         {isS040Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={false}
               namespace='forespoersel'
@@ -625,6 +651,7 @@ const SEDEdit = (): JSX.Element => {
         {isS046Sed(replySed) &&
           <>
             <MainForm
+              CDM_VERSION={CDM_VERSJON}
               type='onelevel'
               menuDefaultClosed={false}
               namespace='informasjonOmUtbetaling'

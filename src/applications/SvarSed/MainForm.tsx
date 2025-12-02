@@ -1,5 +1,8 @@
 import {
   PlusCircleIcon,
+  PersonIcon,
+  PersonGroupIcon,
+  PersonPlusIcon,
   ChildEyesIcon,
   MenuElipsisHorizontalCircleIcon,
   XMarkOctagonFillIcon,
@@ -171,6 +174,7 @@ export interface MainFormFCProps<T> {
   deselectedMenu?: string | undefined
   deselectedMenuOption?: string | undefined
   menuDefaultClosed?: boolean
+  CDM_VERSION?: number
 }
 
 export interface MainFormProps {
@@ -183,6 +187,7 @@ export interface MainFormProps {
   setReplySed: (replySed: ReplySed | PDU1) => ActionWithPayload<ReplySed | PDU1>
   updateReplySed: (needle: string, value: any) => ActionWithPayload<UpdateReplySedPayload>
   options ?: any
+  CDM_VERSION?: number
 }
 
 export interface MainFormSelector {
@@ -224,7 +229,8 @@ const MainForm = <T extends StorageTypes>({
   loggingNamespace,
   deselectedMenu,
   deselectedMenuOption,
-  menuDefaultClosed = false
+  menuDefaultClosed = false,
+  CDM_VERSION
 }: MainFormFCProps<T>) => {
   const { t } = useTranslation()
   const { validation }: any = useAppSelector(mapState)
@@ -234,7 +240,7 @@ const MainForm = <T extends StorageTypes>({
   const brukerNr = 1
   const ektefelleNr = brukerNr + ((replySed as F002Sed)?.ektefelle ? 1 : 0)
   const annenPersonNr = ektefelleNr + ((replySed as F002Sed)?.annenPerson ? 1 : 0)
-  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0)
+  const totalPeopleNr = annenPersonNr + ((replySed as F002Sed)?.barn?.length ?? 0) + ((replySed as F002Sed)?.andrePersoner?.length ?? 0)
 
   // list of open menus (= persons, on two-level menus).
   // If SED only has one person (bruker), open it by default
@@ -304,6 +310,7 @@ const MainForm = <T extends StorageTypes>({
           setReplySed={setReplySed}
           updateReplySed={updateReplySed}
           options={form.options ?? {}}
+          CDM_VERSION={CDM_VERSION}
         />
       )
     }
@@ -491,17 +498,29 @@ const MainForm = <T extends StorageTypes>({
               <MenuLabelText>
                 {personName}
               </MenuLabelText>
-              <HorizontalSeparatorDiv size='0.5' />
-              {personInfo?.statsborgerskap && !_.isEmpty(personInfo?.statsborgerskap) && (
-                <LandSpan>
-                  {' (' + (personInfo?.statsborgerskap?.map(s => s.landkode)?.join(', ') ?? '-') + ')'}
-                </LandSpan>
-              )}
             </>
-            {personId.startsWith('barn[') && (
+            {personId.startsWith('bruker') && (
               <>
                 <HorizontalSeparatorDiv size='0.5' />
-                <ChildEyesIcon />
+                <PersonIcon title="Søker"/>
+              </>
+            )}
+            {personId.startsWith('ektefelle') && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <PersonGroupIcon title="Ektefelle"/>
+              </>
+            )}
+            {(personId.startsWith('andrePersoner') || personId.startsWith('annenPerson')) && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <PersonPlusIcon title="Annen person"/>
+              </>
+            )}
+            {personId.startsWith('barn') && (
+              <>
+                <HorizontalSeparatorDiv size='0.5' />
+                <ChildEyesIcon title="Barn"/>
               </>
             )}
           </NameLabelDiv>
@@ -541,6 +560,9 @@ const MainForm = <T extends StorageTypes>({
               }
             } else if (Object.prototype.hasOwnProperty.call(o, 'other')) {
               if (personId === 'annenPerson') {
+                return !!o.other
+              }
+              if (personId.startsWith("andrePersoner")) {
                 return !!o.other
               }
             } else {
@@ -714,6 +736,7 @@ const MainForm = <T extends StorageTypes>({
                 {type === 'twolevel' && replySed?.bruker && renderTwoLevelMenu(replySed, 'bruker')}
                 {type === 'twolevel' && (replySed as F002Sed)?.ektefelle && renderTwoLevelMenu(replySed!, 'ektefelle')}
                 {type === 'twolevel' && (replySed as F002Sed)?.annenPerson && renderTwoLevelMenu(replySed!, 'annenPerson')}
+                {type === 'twolevel' && (replySed as F002Sed)?.andrePersoner?.map((ap: any, i: number) => renderTwoLevelMenu(replySed!, `andrePersoner[${i}]`))}
                 {type === 'twolevel' && (replySed as F002Sed)?.barn?.map((b: any, i: number) => renderTwoLevelMenu(replySed!, `barn[${i}]`))}
                 {type === 'twolevel' && (isF001Sed(replySed) || isF002Sed(replySed)) && renderTwoLevelMenu(replySed!, 'familie')}
                 <LastDivWithButton>

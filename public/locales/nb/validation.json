@@ -26,7 +26,7 @@
   "invalidFnr": "Fnr må ha 11 siffer",
   "invalidFoedselsdato": "Ugyldig fødselsdato",
   "invalidIban": "Ugyldig IBAN",
-  "invalidInstitusjonsID": "Ugyldid institusjonens ID",
+  "invalidInstitusjonsID": "Ugyldig institusjons ID",
   "invalidLand": "Ugyldig land",
   "invalidSwift": "Ugyldig SWIFT",
   "invalidTema": "Tema kan ikke være 'Generell'",
@@ -49,6 +49,7 @@
   "noAvgrensing": "Ingen avgrensning av periode",
   "noAvvisningsgrunn": "Ingen avslagsgrunn",
 
+  "noBankNavn": "Mangler banknavn",
   "noBarnValgt": "Ingen barn valgt",
   "noBarnEllerFamilie": "Velg mellom barn eller familie",
   "noBegrunnelse": "Ingen begrunnelse",
@@ -83,7 +84,7 @@
   "noGrunnAnnet": "Du må taste inn en beskivelse",
   "noGrunnOpphorType": "Du må velge grunn til opphør",
 
-  "noIbanOrSwift": "Du må skrive IBAN eller SWIFT",
+  "noIban": "IBAN er påkrevd",
   "noId": "Du må skrive identifikatoren",
   "noInfo": "Ingen informasjon",
   "noInntekt": "Ingen inntekt",
@@ -97,6 +98,7 @@
   "noJournalpostID": "Du må taste inn en journalpostID",
 
   "noKjoenn": "Du må velge kjønn",
+  "noKontonummer": "Kontonummer mangler",
   "noKontotype": "Du må velge kontotype",
   "noKrav": "Du må skrive krav",
 
@@ -106,6 +108,7 @@
   "noLoennsopplysninger": "Lønnsopplysninger mangler",
   "noLoennTilDato": "Du må taste inn lønn til dato",
 
+  "noMotregninger": "Ingen motregninger lagt til",
   "noMottakere": "Ingen mottakerere",
   "noMottakersNavn": "Ingen mottakers navn",
   "noMottarOffentligStoette": "Mangler svar på om det mottas offentlig støtte",
@@ -123,6 +126,7 @@
   "noPunkt": "Ingen punkt",
   "noPurring": "Ingen purring",
 
+  "noRefusjonsKrav": "Ingen refusjonskrav lagt til",
   "noRelation": "Ingen relasjon valgt",
   "noRelationType": "Ingen type for relasjon",
   "noRettTilStønad": "Ingen informasjon om stønad",
@@ -179,5 +183,8 @@
 
   "requiredPerioderForInaktivPerson": "Periode for inaktivitet må fylles ut når personen er inaktiv",
   "requiredPerioderForAktivPerson": "Periode for aktivitet må fylles ut når type arbeidsforhold er valgt",
-  "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut"
+  "requiredTypeForInaktivPerson": "Type inaktivitet må fylles ut",
+
+  "requiredAktiviteterForAktivitetStatus": "Aktivitet må legges til for status {{status}}",
+  "requiredPerioderForAktivitet": "Perioder må legges til for aktivitet {{aktivitet}}"
 }
