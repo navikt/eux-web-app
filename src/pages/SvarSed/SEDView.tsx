@@ -15,7 +15,7 @@ import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
 import Saksopplysninger from 'applications/SvarSed/Saksopplysninger/Saksopplysninger'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
-import {NavRinasak, Sak, Sed} from 'declarations/types'
+import { Sak, Sed } from 'declarations/types'
 import _ from 'lodash'
 import moment from 'moment'
 import React, { useEffect } from 'react'
@@ -27,7 +27,6 @@ import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalf
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
-import {SakState} from "../../reducers/sak";
 
 export const PileStartDiv = styled(PileDiv)`
  align-items: flex-start;
@@ -44,7 +43,6 @@ interface SEDViewSelector {
   fagsakUpdated: boolean | undefined
   queryingSaks: boolean
   refreshingSaks: boolean
-  sakState: SakState | undefined
   bucer: Array<string> | undefined | null
 }
 
@@ -54,14 +52,13 @@ const mapState = (state: State) => ({
   fagsakUpdated: state.svarsed.fagsakUpdated,
   queryingSaks: state.loading.queryingSaks,
   refreshingSaks: state.loading.refreshingSaks,
-  sakState: state.sak,
   bucer: state.app.saksbehandlerBucer
 })
 
 const SEDView = (): JSX.Element => {
   const dispatch = useAppDispatch()
   const { sakId } = useParams()
-  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, sakState, bucer }: SEDViewSelector = useAppSelector(mapState)
+  const { currentSak, deletedSed, fagsakUpdated, queryingSaks, refreshingSaks, bucer }: SEDViewSelector = useAppSelector(mapState)
   const deletedSak = useAppSelector(state => state.svarsed.deletedSak)
   const navigate = useNavigate()
 
@@ -192,7 +189,7 @@ const SEDView = (): JSX.Element => {
           <Saksopplysninger sak={currentSak} />
           <VerticalSeparatorDiv />
           {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
-            <JournalfoeringsOpplysninger sak={currentSak} sakState={sakState}/>
+            <JournalfoeringsOpplysninger sak={currentSak} />
           }
           {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
             <>

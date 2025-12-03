@@ -476,8 +476,6 @@ export const updateFagsak = (
     fagsakCopy.overstyrtEnhetsnummer = null
   }
 
-  console.log(fagsakCopy)
-
   return call({
     method: 'PATCH',
     url: sprintf(urls.API_UPDATE_FAGSAK_URL, { rinaSakId }),
