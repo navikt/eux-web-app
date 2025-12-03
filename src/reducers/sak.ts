@@ -4,6 +4,7 @@ import { FillOutInfoPayload } from 'declarations/sed'
 import {ArbeidsperiodeFraAA, Fagsak, Fagsaker, Institusjon, NavRinasak, OpprettetSak, PersonInfoPDL, PersonInfoUtland} from 'declarations/types'
 import _ from 'lodash'
 import { AnyAction } from 'redux'
+import {SAK_FAGSAKTEMA_UPDATE} from "constants/actionTypes";
 
 export interface SakState {
   arbeidsperioder: Array<ArbeidsperiodeFraAA>
@@ -128,6 +129,15 @@ const sakReducer = (state: SakState = initialSakState, action: AnyAction): SakSt
       console.log("SVARSED_GET_FAGSAK_SUCCESS " + action.payload)
       const navRinasak: NavRinasak | undefined = action.payload
       console.log("SVARSED_GET_FAGSAK_SUCCESS2 " + navRinasak?.overstyrtEnhetsnummer)
+
+      return {
+        ...state,
+        fagsakTema: action.payload
+      }
+    }
+
+    case types.SAK_FAGSAKTEMA_UPDATE:{
+      console.log("SAK_FAGSAKTEMA_UPDATE " + action.payload)
 
       return {
         ...state,

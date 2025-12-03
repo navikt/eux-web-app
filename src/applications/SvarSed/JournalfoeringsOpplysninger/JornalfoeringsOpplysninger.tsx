@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import { useRef } from "react";
-import {createFagsakDagpenger, createFagsakGenerell, getFagsaker} from "../../../actions/sak";
+import {createFagsakDagpenger, createFagsakGenerell, getFagsaker, updateFagsakTema} from "../../../actions/sak";
 import * as types from "../../../constants/actionTypes";
 import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
@@ -37,7 +37,7 @@ interface ChangeTemaFagsakModalSelector {
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
   alleEnheter: Enheter | undefined | null
-  otherFagsakTema: NavRinasak | undefined | null
+  currentFagsakTema: NavRinasak | undefined | null
 }
 
 const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
@@ -54,16 +54,16 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   alertMessage: state.alert.stripeMessage,
   alertType: state.alert.type,
   alleEnheter: state.app.alleEnheter,
-  otherFagsakTema: state.sak.fagsakTema
+  currentFagsakTema: state.sak.fagsakTema
 })
 
 const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, otherFagsakTema }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
+  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, currentFagsakTema }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
-  const [fagsakTema, setFagsakTema] = useState<NavRinasak | undefined | null>(sakState.fagsakTema)
+//  const [fagsakTema, setFagsakTema] = useState<NavRinasak | undefined | null>(sakState.fagsakTema)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -96,11 +96,6 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
       ref.current?.close()
     }
   }, [fagsakUpdated])
-
-  useEffect(() => {
-    console.log("Fagsaktema " + fagsakTema)
-    console.log("Other fagsaktema " + otherFagsakTema)
-  }, [fagsakTema, otherFagsakTema])
 
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
@@ -153,7 +148,6 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
     }
   }
 
-
   const onModalClose = () => {
     setIsModalOpen(false)
     setCurrentFagsak(sak.fagsak)
@@ -167,10 +161,11 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
     const newFagsakTema = {
-      ...fagsakTema,
+      ...currentFagsakTema,
       overstyrtEnhetsnummer: currentFagsak.overstyrtEnhetsnummer
     }
-    setFagsakTema(newFagsakTema)
+    dispatch(updateFagsakTema(newFagsakTema))
+//    setFagsakTema(newFagsakTema)
   }
 
   useEffect(() => {
@@ -286,7 +281,7 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
                 label={t('label:velg-overstyrt-enhet')}
                 onChange={(e) => onOverstyrtEnhetChange(e.target.value)}
                 value={ (currentFagsak == null || currentFagsak.overstyrtEnhetsnummer == null)
-                  ? (otherFagsakTema?.overstyrtEnhetsnummer ?? '')
+                  ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
                   : currentFagsak.overstyrtEnhetsnummer }
               >
                 <option value=''>
@@ -343,7 +338,7 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
             </Dt>
             <Dd>
               { (currentFagsak == null || currentFagsak.overstyrtEnhetsnummer == null)
-                ? (otherFagsakTema?.overstyrtEnhetsnummer ?? '')
+                ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
                 : currentFagsak.overstyrtEnhetsnummer }
             </Dd>
           </Dl>
