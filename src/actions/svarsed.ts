@@ -472,8 +472,9 @@ export const updateFagsak = (
 ): ActionWithPayload<Fagsak> => {
   let fagsakCopy = _.cloneDeep(fagsak)
   delete fagsakCopy._id
-
-  console.log(fagsakCopy)
+  if (fagsakCopy.overstyrtEnhetsnummer === '') {
+    fagsakCopy.overstyrtEnhetsnummer = null
+  }
 
   return call({
     method: 'PATCH',
