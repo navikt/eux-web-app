@@ -21,6 +21,7 @@ import mockFagsakDagpenger from "../mocks/fagsak";
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
 import mockNavrinasak from "../mocks/app/navrinasak";
+import {SAK_FAGSAKTEMA_UPDATE} from "constants/actionTypes";
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET
@@ -164,3 +165,11 @@ export const setProperty: ActionCreator<ActionWithPayload<ParamPayload>> = (
   type: types.SAK_PROPERTY_SET,
   payload: { key, value }
 })
+
+export const updateFagsakTema: ActionCreator<ActionWithPayload<NavRinasak>> = (
+  payload: NavRinasak
+): ActionWithPayload<NavRinasak> => ({
+  type: types.SAK_FAGSAKTEMA_UPDATE,
+  payload
+})
+
