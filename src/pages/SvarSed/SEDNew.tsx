@@ -556,7 +556,7 @@ const SEDNew = (): JSX.Element => {
               key={namespace + '-fnr-' + valgtFnr}
               alertMessage={alertMessage}
               alertType={alertType}
-              alertTypesWatched={[types.PERSON_SEARCH_FAILURE]}
+              alertTypesWatched={[types.PERSON_MED_FAMILIE_SEARCH_FAILURE]}
               data-testid={namespace + '-fnr'}
               error={validation[namespace + '-fnr']?.feilmelding}
               searchingPerson={searchingPerson}

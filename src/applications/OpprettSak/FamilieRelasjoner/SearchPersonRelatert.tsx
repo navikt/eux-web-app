@@ -8,6 +8,7 @@ import PersonPanel from "../PersonPanel/PersonPanel";
 import {Kodeverk, PersonInfoPDL, PersonInfoUtland, PersonMedFamilie} from "../../../declarations/types";
 import {personRelatertReset, searchPersonRelatert} from "../../../actions/person";
 import _ from "lodash";
+import * as types from "../../../constants/actionTypes";
 
 export interface SearchPersonRelatertProps{
   parentNamespace: string
@@ -21,19 +22,23 @@ export interface SearchPersonRelatertSelector {
   searchingPersonRelatert: boolean
   personRelatert: PersonInfoPDL | undefined | null
   personMedFamilie: PersonMedFamilie | null | undefined
+  alertMessage: JSX.Element | string | undefined
+  alertType: string | undefined
 }
 
 const mapState = (state: State): SearchPersonRelatertSelector => ({
   searchingPersonRelatert: state.loading.searchingPersonRelatert,
   personRelatert: state.person.personRelatert,
-  personMedFamilie: state.person.personMedFamilie
+  personMedFamilie: state.person.personMedFamilie,
+  alertMessage: state.alert.stripeMessage,
+  alertType: state.alert.type
 })
 
 
 const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
   parentNamespace, rolleList, onAddClick, valgteFamilieRelasjonerPDL, familieRelasjonerPDL
 }: SearchPersonRelatertProps): JSX.Element => {
-  const {searchingPersonRelatert, personRelatert, personMedFamilie}: SearchPersonRelatertSelector = useAppSelector(mapState)
+  const {searchingPersonRelatert, personRelatert, personMedFamilie, alertMessage, alertType}: SearchPersonRelatertSelector = useAppSelector(mapState)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const namespace = parentNamespace + '-search-person-relatert'
@@ -124,6 +129,11 @@ const SearchPersonRelatert: React.FC<SearchPersonRelatertProps> = ({
         {_alert && (
           <Alert variant='error'>
             {_alert}
+          </Alert>
+        )}
+        {alertMessage && alertType && [types.PERSON_RELATERT_SEARCH_FAILURE].indexOf(alertType) >= 0 && (
+          <Alert variant='warning'>
+            {alertMessage}
           </Alert>
         )}
       </VStack>

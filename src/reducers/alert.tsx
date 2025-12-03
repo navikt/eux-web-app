@@ -38,6 +38,9 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
     action.type === types.ALERT_RESET ||
     action.type === types.APP_RESET ||
     action.type === types.PERSON_SEARCH_REQUEST ||
+    action.type === types.PERSON_MED_FAMILIE_SEARCH_REQUEST ||
+    action.type === types.PERSON_RELATERT_SEARCH_REQUEST ||
+    action.type === types.JOURNALFOERING_PERSON_SEARCH_FAILURE ||
     action.type === types.SAK_ABROADPERSON_ADD_SUCCESS ||
     action.type === types.SAK_TPSPERSON_ADD_SUCCESS ||
     action.type === types.JOURNALFOERING_ADD_RELATED_RINASAK_FAILURE)
@@ -146,9 +149,13 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         }
         break
 
+      case types.PERSON_MED_FAMILIE_SEARCH_FAILURE:
+      case types.PERSON_RELATERT_SEARCH_FAILURE:
       case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
         if ((action as ActionWithPayload).status === 404) {
           stripeMessage = i18n.t('message:error-person-notFound')
+        } else if ((action as ActionWithPayload).status === 403) {
+          stripeMessage = i18n.t('message:error-person-forbidden')
         } else {
           bannerMessage = _.isString((action as ActionWithPayload).payload.error)
             ? (action as ActionWithPayload).payload.error
