@@ -2,7 +2,8 @@ import { ParamPayload } from 'declarations/app'
 import {
   Fagsaker,
   Institusjoner,
-  Kodeverk, NavRinasak,
+  Kodeverk,
+  NavRinasak,
   OpprettetSak,
   PersonInfoPDL
 } from 'declarations/types'
@@ -56,7 +57,6 @@ export const getFagsaker = (
 }
 
 export const getFagsakTema = (rinaSakId: String): ActionWithPayload<NavRinasak> => {
-  console.log("getFagsakTema")
   return call({
     url: sprintf(urls.API_GET_FAGSAKTEMA_URL, { rinaSakId }),
     expectedPayload: mockNavrinasak,

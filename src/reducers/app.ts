@@ -4,14 +4,13 @@ import {
   BucTyper,
   CountryCodes,
   CountryCodeLists,
+  Enhet,
   Enheter,
   Kodemaps,
   Kodeverk,
   Saksbehandler,
   ServerInfo,
-  Tema,
-  Enhet,
-  NavRinasak
+  Tema
 } from 'declarations/types'
 import _, {cloneDeep} from 'lodash'
 import { IS_DEVELOPMENT } from 'constants/environment'

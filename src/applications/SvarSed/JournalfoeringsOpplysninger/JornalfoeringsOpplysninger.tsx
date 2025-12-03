@@ -15,12 +15,10 @@ import * as sakActions from "../../../actions/sak";
 import {getAlleEnheter} from "../../../actions/app";
 import {getFagsakTema} from "../../../actions/sak";
 import {searchJournalfoeringPerson} from "../../../actions/journalfoering";
-import {SakState} from "../../../reducers/sak";
 
 
 interface JournalfoeringsOpplysningerProps {
   sak: Sak
-  sakState: SakState
 }
 
 interface ChangeTemaFagsakModalSelector {
@@ -57,13 +55,12 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   currentFagsakTema: state.sak.fagsakTema
 })
 
-const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysningerProps) => {
+const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
   const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, currentFagsakTema }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
-//  const [fagsakTema, setFagsakTema] = useState<NavRinasak | undefined | null>(sakState.fagsakTema)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -165,7 +162,6 @@ const JournalfoeringsOpplysninger = ({ sak, sakState }: JournalfoeringsOpplysnin
       overstyrtEnhetsnummer: currentFagsak.overstyrtEnhetsnummer
     }
     dispatch(updateFagsakTema(newFagsakTema))
-//    setFagsakTema(newFagsakTema)
   }
 
   useEffect(() => {
