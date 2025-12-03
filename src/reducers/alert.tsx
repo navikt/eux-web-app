@@ -107,10 +107,6 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         stripeMessage = i18n.t('message:error-attachment-send-failed')
         break
 
-      case types.PERSON_SEARCH_FAILURE:
-        stripeMessage = i18n.t('message:error-person-notFound')
-        break
-
       case types.SAK_ABROADPERSON_ADD_FAILURE:
         stripeMessage = i18n.t('message:error-abroadperson-exists')
         break
@@ -149,6 +145,7 @@ const alertReducer = (state: AlertState = initialAlertState, action: Action | Ac
         }
         break
 
+      case types.PERSON_SEARCH_FAILURE:
       case types.PERSON_MED_FAMILIE_SEARCH_FAILURE:
       case types.PERSON_RELATERT_SEARCH_FAILURE:
       case types.JOURNALFOERING_PERSON_SEARCH_FAILURE:
