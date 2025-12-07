@@ -539,6 +539,7 @@ const InntektForm: React.FC<MainFormProps> = ({
       <ArbeidsperioderSøk
         fnr={fnr}
         namespace={namespace}
+        type='dagpenger'
       />
       <VerticalSeparatorDiv size='2' />
       {arbeidsperioder?.arbeidsperioder && (

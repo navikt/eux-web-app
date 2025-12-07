@@ -322,6 +322,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
           "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
         }}
+        type='dagpenger'
       />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(_plan)
