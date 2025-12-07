@@ -345,6 +345,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           }))
         }}
         namespace={namespace}
+        type='familie'
       />
       {_.isEmpty(_plan)
         ? (
