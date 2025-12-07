@@ -19,6 +19,7 @@ interface ArbeidsperioderSøkProps {
   namespace: string
   fillOutFnr ?: () => void
   defaultDates?: { [key: string]: string | null;}
+  type: string
 }
 
 interface ArbeidsperioderSøkSelector {
@@ -33,7 +34,8 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
   fnr,
   namespace,
   fillOutFnr,
-  defaultDates
+  defaultDates,
+  type
 }: ArbeidsperioderSøkProps): JSX.Element => {
   const { t } = useTranslation()
   const { gettingArbeidsperioder }: ArbeidsperioderSøkSelector = useAppSelector(mapState)
@@ -42,15 +44,24 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>(defaultDates?.startDato ? defaultDates?.startDato : '2015-01')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(defaultDates?.sluttDato ? defaultDates?.sluttDato : moment().format('YYYY-MM'))
-  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>('DAGPENGER')
+  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>(type === 'familie' ? 'BARNETRYGD' : 'DAGPENGER')
 
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>(validateArbeidsperioderSøk, namespace + '-arbeidssok')
 
-  const inntektslistetypeOptions : Options = [
-    { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
-    { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' },
-    { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
-  ]
+  const initArbeidsperiodertypeOptions = (type: String): Options => {
+    if(type === 'familie') {
+      return [
+        { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
+        { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' }
+      ]
+    } else {
+      return [
+        { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
+      ]
+    }
+  }
+
+  const inntektslistetypeOptions : Options = initArbeidsperiodertypeOptions(type)
 
   const setArbeidssøkStartDato = (value: string) => {
     _resetValidation('arbeidssok-startdato')
