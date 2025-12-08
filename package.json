@@ -105,7 +105,7 @@
     "prop-types": "15.8.1",
     "read-pkg": "7.1.0",
     "shelljs": "0.8.5",
-    "simple-git": "3.21.0",
+    "simple-git": "3.30.0",
     "standardx": "7.0.0",
     "ts-jest": "29.2.6",
     "typescript": "5.9.3",
