@@ -160,7 +160,7 @@ export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolea
 }
 
 export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean => {
-  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : 4.4
   const hasErrors: Array<boolean> = []
   if (!_.isEmpty((replySed as F002Sed).formaal)) {
     if ((replySed as F002Sed).formaal.indexOf('motregning') >= 0) {
@@ -214,7 +214,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
 export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: string): boolean => {
   const hasErrors: Array<boolean> = []
   const replySed = _.cloneDeep(_replySed)
-  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : "4.4"
+  const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : 4.4
   const personInfo: PersonInfo =
     isXSed(replySed)
       ? _.get(replySed, 'bruker')
@@ -551,7 +551,7 @@ export const validateSEDEdit = (
       hasErrors.push(performValidation<ValidationYtelseTilForeldreloeseProps>(v, 'svarpaaanmodningominformasjon-ytelsetilforeldreloese', validateYtelseTilForeldreloese, {
         svarYtelseTilForeldreloese: (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese,
         label: i18n.t('label:svar-på-anmodning-om-barnepensjon'),
-        CDM_VERSJON: (replySed as F027Sed).sak?.cdmVersjon
+        CDM_VERSJON: (replySed as F027Sed).sak?.cdmVersjon ? parseFloat(<string>(replySed as F027Sed).sak?.cdmVersjon) : 4.4
       }, true))
     }
 

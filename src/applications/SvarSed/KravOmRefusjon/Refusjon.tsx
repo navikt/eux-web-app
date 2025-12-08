@@ -103,7 +103,7 @@ const RefusjonFC: React.FC<MainFormProps> = ({
 
     if (!!_newRefusjonsKrav && valid) {
       let clonedNewRefusjonsKrav = _.cloneDeep(_newRefusjonsKrav)
-      let newKravliste: Array<RefusjonsKrav> = _.cloneDeep(refusjon?.kravListe)
+      let newKravliste: Array<RefusjonsKrav> | undefined = _.cloneDeep(refusjon?.kravListe)
       if (_.isNil(newKravliste)) {
         newKravliste = []
       }

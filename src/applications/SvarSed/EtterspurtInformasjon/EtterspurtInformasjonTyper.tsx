@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../store";
+// @ts-ignore
 import {ComboboxOption} from "@navikt/ds-react/cjs/form/combobox/types";
 import {EtterspurtInformasjon} from "declarations/sed";
 import {ActionWithPayload} from "@navikt/fetch";

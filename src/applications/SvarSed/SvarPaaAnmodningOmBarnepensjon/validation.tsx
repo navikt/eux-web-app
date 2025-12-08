@@ -11,7 +11,7 @@ export interface ValidationYtelseTilForeldreloeseProps {
   svarYtelseTilForeldreloese?: SvarYtelseTilForeldreloese_V42 | SvarYtelseTilForeldreloese_V43 | undefined,
   label?: string | undefined,
   fieldName?: string
-  CDM_VERSJON?: string | undefined
+  CDM_VERSJON?: number
 }
 
 export interface ValidationBarnetFritekstProps {
@@ -112,7 +112,7 @@ export const validateIdentifiseringAvAvdoede = (
 
   const hasErrors: Array<boolean> = []
 
-  if(parseFloat(CDM_VERSJON) >= 4.3){
+  if(CDM_VERSJON && CDM_VERSJON >= 4.3){
     const personInfo = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.avdoede?.personInfo
     if(personInfo && Object.values(personInfo).every(el => (el !== undefined && el !== ""))){
       const pNameSpace = namespace + '-anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.avdoede-personopplysninger'
@@ -144,7 +144,7 @@ export const validateIdentifiseringAvDeBeroerteBarna = (
 
   const hasErrors: Array<boolean> = []
 
-  if(parseFloat(CDM_VERSJON) >= 4.3){
+  if(CDM_VERSJON && CDM_VERSJON >= 4.3){
     const personInfo = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.personInfo
     if(personInfo && Object.values(personInfo).every(el => (el !== undefined && el !== ""))){
       const pNameSpace = namespace + '-anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.barnet-personbasic'
@@ -176,7 +176,7 @@ export const validateIdentifiseringAvAnnenPerson = (
 
   const hasErrors: Array<boolean> = []
 
-  if(parseFloat(CDM_VERSJON) >= 4.3){
+  if(CDM_VERSJON && CDM_VERSJON >= 4.3){
     const personInfo = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.annenPerson?.personInfo
     if(personInfo && Object.values(personInfo).every(el => (el !== undefined && el !== ""))){
       const pNameSpace = namespace + '-anmodningOmMerInformasjon.svar.ytelseTilForeldreloese.annenPerson-personbasic'
@@ -208,7 +208,7 @@ export const validateForeldreloesesBarnetsBosted = (
 
   const hasErrors: Array<boolean> = []
 
-  if(parseFloat(CDM_VERSJON) >= 4.3){
+  if(CDM_VERSJON && CDM_VERSJON >= 4.3){
     const adresse = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.adresse
     if(adresse && Object.values(adresse).every(el => (el !== undefined && el !== ""))){
       hasErrors.push(performValidation<ValidationAdresseProps>(v, namespace, validateAdresse, {
@@ -241,7 +241,7 @@ export const validateInntektForeldreloesesBarnet = (
 
   const hasErrors: Array<boolean> = []
 
-  if(parseFloat(CDM_VERSJON) >= 4.3){
+  if(CDM_VERSJON && CDM_VERSJON >= 4.3){
     const inntekt = (svarYtelseTilForeldreloese as SvarYtelseTilForeldreloese_V43)?.barnet?.inntekt
     if(inntekt && Object.values(inntekt).every(el => (el !== undefined))){
       hasErrors.push(checkIfNotEmpty(v, {

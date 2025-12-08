@@ -639,7 +639,7 @@ export interface F001Sed extends FSed {
   motregninger?: Motregninger
   utbetalingTilInstitusjon?: UtbetalingTilInstitusjon
   refusjonskrav ?: string
-  refusjon: Refusjon
+  refusjon?: Refusjon
   uenighetKonklusjon?: Array<UenighetKonklusjon>
   vedtak?: Vedtak
 }

@@ -55,7 +55,7 @@ import {
 interface InntektFormSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
   gettingInntekter: boolean
-  inntekter: IInntekter | undefined
+  inntekter: IInntekter | null | undefined
 }
 
 const mapState = (state: State): InntektFormSelector => ({
