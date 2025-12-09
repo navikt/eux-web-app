@@ -334,7 +334,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             <Dd>
               {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.type ? t('journalfoering:' + sak.fagsak?.type) : ""}
             </Dd>
-            {featureToggles?.featureAdmin && (currentFagsakTema?.overstyrtEnhetsnummer !== null || currentFagsak.overstyrtEnhetsnummer !== null) &&
+            {featureToggles?.featureAdmin && (currentFagsakTema?.overstyrtEnhetsnummer != null || currentFagsak.overstyrtEnhetsnummer != null) &&
             <>
               <Dt>
                 {t('label:overstyrt-enhet')}:
