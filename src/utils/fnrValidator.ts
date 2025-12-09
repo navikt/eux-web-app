@@ -1,3 +1,4 @@
+//@ts-ignore
 import { idnr, ValidationResult } from "@navikt/fnrvalidator";
 
 type NPID_LENGTH_ERROR = 'npid must consist of 11 digits';

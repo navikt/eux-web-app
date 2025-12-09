@@ -10,7 +10,7 @@ import { Validation } from 'declarations/types'
 import { saveAs } from 'file-saver'
 import performValidation from 'utils/performValidation'
 import _ from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { validatePDU1Edit, ValidationPDU1EditProps } from 'pages/PDU1/mainValidation'
 import React, { useState } from 'react'
@@ -73,6 +73,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
 
         newPdu1 = {
           ...newPdu1,
+          dato: dayjs().format('DD.MM.YYYY'),
           bruker : {
             ...bruker,
             adresse: {
@@ -95,7 +96,7 @@ const PreviewPDU1: React.FC<PreviewPDU1Props> = ({ validation, namespace }: Prev
   }
 
   const onDownloadPdu1Clicked = () => {
-    saveAs(previewPdu1file!, 'PDU1-' + moment().format('DD.MM.YYYY') + '.pdf')
+    saveAs(previewPdu1file!, 'PDU1-' + dayjs().format('DD.MM.YYYY') + '.pdf')
   }
 
   return (
