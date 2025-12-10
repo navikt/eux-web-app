@@ -51,6 +51,7 @@ import {
   ValidationLoennsopplysningerProps,
   ValidationLoennsopplysningProps
 } from './validation'
+import {getSedCategory} from "../../../utils/sed";
 
 interface InntektFormSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -96,6 +97,7 @@ const InntektForm: React.FC<MainFormProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationLoennsopplysningProps>(validateLoennsopplysning, namespace)
+  const arbeidsperioderSøkType = getSedCategory(replySed)
 
   const ansettelsesTypeOptions = [
     { label: t('el:option-ansettelsestype-ansettelsesforhold'), value: 'ansettelsesforhold' },
@@ -539,7 +541,7 @@ const InntektForm: React.FC<MainFormProps> = ({
       <ArbeidsperioderSøk
         fnr={fnr}
         namespace={namespace}
-        type='dagpenger'
+        type={arbeidsperioderSøkType}
       />
       <VerticalSeparatorDiv size='2' />
       {arbeidsperioder?.arbeidsperioder && (

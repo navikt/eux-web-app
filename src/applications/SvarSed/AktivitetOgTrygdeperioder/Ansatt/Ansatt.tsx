@@ -12,7 +12,7 @@ import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeri
 import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { ErrorElement } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
-import { ForsikringPeriode, Periode, PeriodeMedForsikring } from 'declarations/sed'
+import {ForsikringPeriode, Periode, PeriodeMedForsikring} from 'declarations/sed'
 import { ArbeidsperiodeFraAA, ArbeidsperioderFraAA, Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
 import _ from 'lodash'
@@ -26,6 +26,7 @@ import makeRenderPlan, { PlanItem, RenderPlanProps } from 'utils/renderPlan'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateAnsattPeriode, ValidationAnsattPeriodeProps } from './validation'
+import {getSedCategory} from "../../../../utils/sed";
 
 interface AnsattSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined,
@@ -67,6 +68,8 @@ const Ansatt: React.FC<AnsattProps> = ({
   const [_newForm, _setNewForm] = useState<boolean>(false)
   const [_editIndex, _setEditIndex] = useState<number | undefined>(undefined)
   const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAnsattPeriodeProps>(validateAnsattPeriode, namespace)
+
+  const arbeidsperioderSøkType = getSedCategory(replySed)
 
   useEffect(() => {
     const spikedPeriods: Array<Periode> | undefined = perioder?.map((p, index) => ({ ...p, __index: index }))
@@ -345,7 +348,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           }))
         }}
         namespace={namespace}
-        type='familie'
+        type={arbeidsperioderSøkType}
       />
       {_.isEmpty(_plan)
         ? (
