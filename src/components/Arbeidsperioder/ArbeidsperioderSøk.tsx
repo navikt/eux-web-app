@@ -44,19 +44,32 @@ const ArbeidsperioderSøk: React.FC<ArbeidsperioderSøkProps> = ({
 
   const [_arbeidssøkStartDato, _setArbeidssøkStartDato] = useState<string>(defaultDates?.startDato ? defaultDates?.startDato : '2015-01')
   const [_arbeidssøkSluttDato, _setArbeidssøkSluttDato] = useState<string>(defaultDates?.sluttDato ? defaultDates?.sluttDato : moment().format('YYYY-MM'))
-  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>(type === 'familie' ? 'BARNETRYGD' : 'DAGPENGER')
+  const arbeidssøkInntekstslistetypeDefault = (() => {
+    switch (type) {
+      case 'F': return "BARNETRYGD";
+      case 'U': return "DAGPENGER";
+      default: return "DAGPENGER";
+    }
+  })
+  const [_arbeidssøkInntektslistetype, _setArbeidssøkInntektslistetype] = useState<string>(arbeidssøkInntekstslistetypeDefault)
 
   const [_validation, _resetValidation, performValidation] = useLocalValidation<ValidationArbeidsperioderSøkProps>(validateArbeidsperioderSøk, namespace + '-arbeidssok')
 
   const initArbeidsperiodertypeOptions = (type: String): Options => {
-    if(type === 'familie') {
+    if (type === 'F') {
       return [
         { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
         { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' }
       ]
-    } else {
+    } else if (type === 'U') {
       return [
         { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' }
+      ]
+    } else {
+      return [
+        { label: t('el:option-inntektsfilter-DAGPENGER'), value: 'DAGPENGER' },
+        { label: t('el:option-inntektsfilter-BARNETRYGD'), value: 'BARNETRYGD' },
+        { label: t('el:option-inntektsfilter-KONTANTSTOETTE'), value: 'KONTANTSTOETTE' }
       ]
     }
   }
