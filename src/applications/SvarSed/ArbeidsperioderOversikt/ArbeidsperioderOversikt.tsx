@@ -32,6 +32,7 @@ import {
 import moment from "moment";
 import {validateForsikring, ValidateForsikringProps} from "../Forsikring/validation";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
+import {getSedCategory} from "../../../utils/sed";
 import {PDPeriode} from "../../../declarations/pd";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
@@ -81,6 +82,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const [_copiedPeriod, _setCopiedPeriod] = useState<PlanItem<ForsikringPeriode> | null>(null)
 
   const ref = useRef<null | HTMLDivElement>(null);
+  const arbeidsperioderSøkType = getSedCategory(replySed)
 
   useEffect(() => {
     if(_copiedPeriod){
@@ -323,7 +325,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
           "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
           "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
         }}
-        type='dagpenger'
+        type={arbeidsperioderSøkType}
       />
       <VerticalSeparatorDiv size='2' />
       {_.isEmpty(_plan)
