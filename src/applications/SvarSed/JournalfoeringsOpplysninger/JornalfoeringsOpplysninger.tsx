@@ -121,6 +121,7 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onFagsakChange = (value: string) => {
     if(!value || value === "") return
+    console.log("onFagsakChange")
     const currentEnhet = currentFagsak?.overstyrtEnhetsnummer
     const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
     if (fSak)
@@ -160,6 +161,8 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
+    console.log("onUpdateButtonClick")
+
     const newFagsakTema = {
       ...currentFagsakTema,
       overstyrtEnhetsnummer: currentFagsak.overstyrtEnhetsnummer
