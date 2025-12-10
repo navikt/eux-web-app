@@ -343,9 +343,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 {t('label:overstyrt-enhet')}:
               </Dt>
               <Dd>
-                { (currentFagsak == null || currentFagsak.overstyrtEnhetsnummer == null)
+                { (currentFagsak == null || currentFagsak?.overstyrtEnhetsnummer == null)
                   ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
-                  : currentFagsak.overstyrtEnhetsnummer }
+                  : (currentFagsak?.overstyrtEnhetsnummer ?? '')}
               </Dd>
             </>
             }
