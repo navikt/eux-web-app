@@ -30,6 +30,18 @@ export const getEnheter = (): ActionWithPayload<Enheter> => {
   })
 }
 
+export const getAlleEnheter = (): ActionWithPayload<Enheter> => {
+  return call({
+    url: urls.API_ALLE_ENHETER_URL,
+    expectedPayload: mockEnhet,
+    type: {
+      request: types.APP_ALLE_ENHETER_REQUEST,
+      success: types.APP_ALLE_ENHETER_SUCCESS,
+      failure: types.APP_ALLE_ENHETER_FAILURE
+    }
+  })
+}
+
 export const getSaksbehandlerBucer = (): ActionWithPayload<Bucer> => {
   return call({
     url: urls.API_SAKSBEHANDLER_BUCER_URL,
