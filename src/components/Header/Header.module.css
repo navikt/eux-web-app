@@ -1,0 +1,9 @@
+.nisseOverlay {
+  &:before {
+    position: absolute;
+    content: url('/static/nisselue.svg');
+    transform: scale(2.3) rotate(45deg);
+    top: 5px;
+    left: 70px;
+  }
+}

@@ -11,6 +11,7 @@ import PT from 'prop-types'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
 import {NavLink} from "react-router-dom";
 import {FeatureToggles} from "../../declarations/app";
+import styles from './Header.module.css';
 
 
 const HeaderContent = styled.header`
@@ -81,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <MyInternalHeader>
+      <MyInternalHeader className={styles.nisseOverlay}>
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
