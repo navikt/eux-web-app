@@ -7,29 +7,33 @@ import {setValidation} from "../../../actions/validation";
 import {Box, Checkbox, CheckboxGroup, Heading, HStack, VStack} from "@navikt/ds-react";
 import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
-import {AdresseAnmodning} from "../../../declarations/sed";
+import {Adresse, AdresseAnmodning} from "../../../declarations/sed";
 import useLocalValidation from "../../../hooks/useLocalValidation";
 import {validateAdresserH001, ValidationAdresserH001Props} from "./validationH001";
+import performValidation from "../../../utils/performValidation";
+import {validateAdresser, ValidationAdresserProps} from "./validation";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
 const AdresseH001: React.FC<MainFormProps> = ({
-                                                label,
-                                                parentNamespace,
-                                                personID,
-                                                personName,
-                                                replySed,
-                                                updateReplySed,
-                                                options
-                                              }: MainFormProps): JSX.Element => {
+  label,
+  parentNamespace,
+  personID,
+  personName,
+  replySed,
+  updateReplySed,
+  options
+}: MainFormProps): JSX.Element => {
   const { t } = useTranslation()
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const namespace = `${parentNamespace}-${personID}-adresseH001`
   const namespaceAdresse = `${parentNamespace}-${personID}-adresser`
   const target = 'anmodning.adresse'
+  const adresseTarget = `${personID}.adresser`
+  const adresser: Array<Adresse> | undefined = _.get(replySed, adresseTarget)
 
   const getAdresseAnmodning = () => {
     const adresseAnmodning: AdresseAnmodning | undefined = _.get(replySed, target)
@@ -44,12 +48,18 @@ const AdresseH001: React.FC<MainFormProps> = ({
 
   const adresseAnmodning: AdresseAnmodning | undefined = getAdresseAnmodning()
 
-  const [_validation, _resetValidation, _performValidation] = useLocalValidation<ValidationAdresserH001Props>(validateAdresserH001, namespaceAdresse)
-
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-      dispatch(setValidation(clonedValidation))
-    })
+    const adresseTyper = adresseAnmodning?.adresseTyper
+    performValidation<ValidationAdresserH001Props>(
+      clonedValidation, namespace, validateAdresserH001, {
+        adresser,
+        adresseTyper
+      }, true
+    )
+    dispatch(setValidation(clonedValidation))
+
+  })
 
   const onAdressetypeChange = (value: any[]) => {
     dispatch(updateReplySed(`${target}.adresseTyper`, value))

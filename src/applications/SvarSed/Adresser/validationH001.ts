@@ -18,8 +18,6 @@ export const validateAdresserH001 = (
   }: ValidationAdresserH001Props
 ): boolean => {
   const hasErrors: Array<boolean> = []
-  console.log("validationH001");
-  console.log("adresseTyper" + adresseTyper);
   if (_.isEmpty(adresseTyper) && _.isEmpty(adresser)) {
     hasErrors.push(addError(validation, {
       id: namespace + '-ingenAdresse',
