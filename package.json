@@ -37,7 +37,7 @@
     "@navikt/land-verktoy": "9.1.28",
     "@navikt/landvelger": "10.0.11",
     "@navikt/tabell": "9.0.3",
-    "@reduxjs/toolkit": "1.9.1",
+    "@reduxjs/toolkit": "1.9.7",
     "ansi-to-html": "0.7.2",
     "bytes": "3.1.2",
     "classnames": "2.3.2",
