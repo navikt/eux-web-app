@@ -6,25 +6,17 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
+      time: "08:00"
       timezone: "Europe/Oslo"
     cooldown:
       default-days: 7
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 15
     labels:
       - "dependencies"
       - "npm"
     commit-message:
-      prefix: "chore"
+      prefix: "dependabot-bump"
       include: "scope"
-    groups:
-      nav-components:
-        patterns:
-          - "@navikt/*"
-      react-packages:
-        patterns:
-          - "react*"
-          - "@types/react*"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
