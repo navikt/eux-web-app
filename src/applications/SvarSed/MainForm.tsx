@@ -467,7 +467,7 @@ const MainForm = <T extends StorageTypes>({
     const personName = personId === 'familie'
       ? t('label:hele-familien')
       : personInfo
-        ? personInfo?.fornavn + ' ' + (personInfo?.etternavn ?? '')
+        ? (personInfo as PersonInfo).fornavn + ' ' + ((personInfo as PersonInfo).etternavn ?? '')
         : (replySed as PDU1).bruker.fornavn + ' ' + ((replySed as PDU1).bruker.etternavn ?? '')
 
     const open: boolean = _.find(openMenus, _id => _id === personId) !== undefined

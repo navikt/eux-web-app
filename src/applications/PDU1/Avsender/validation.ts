@@ -4,7 +4,7 @@ import { Validation } from 'declarations/types'
 import { checkIfNotEmpty } from 'utils/validation'
 
 export interface ValidationAvsenderProps {
-  avsender: Avsender
+  avsender: Avsender | undefined
   keyForCity?: string
   keyforZipCode?: string
 }

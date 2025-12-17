@@ -94,7 +94,7 @@ import {
   X010Sed,
   X011Sed,
   X012Sed,
-  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse
+  Ytelse, Barn, PersonTypeF001, S046Sed, PersonTypeAnnenPersonF003, RettIkkeRettTilFamilieYtelse, VedtakF003, Vedtak
 } from 'declarations/sed'
 import { Validation } from 'declarations/types.d'
 import i18n from 'i18n'
@@ -153,7 +153,7 @@ export const validateVedtakForF003 = (v: Validation, replySed: ReplySed): boolea
   const hasErrors: Array<boolean> = []
   hasErrors.push(performValidation<ValidationVedtakF003Props>(
     v, 'vedtak-vedtak', validateVedtakF003, {
-      vedtak: _.get(replySed, 'vedtak'),
+      vedtak: _.get(replySed, 'vedtak') as VedtakF003,
       formalName: i18n.t('label:vedtak').toLowerCase()
     }, true))
   return hasErrors.find(value => value) !== undefined
@@ -173,7 +173,7 @@ export const validateBottomForm = (v: Validation, replySed: ReplySed): boolean =
     if ((replySed as F002Sed).formaal.indexOf('vedtak') >= 0) {
       hasErrors.push(performValidation<ValidationVedtakProps>(
         v, 'formål2-vedtak', validateVedtak, {
-          vedtak: _.get(replySed, 'vedtak'),
+          vedtak: _.get(replySed, 'vedtak') as Vedtak,
           formalName: i18n.t('label:vedtak').toLowerCase()
         }, true))
     }
@@ -217,8 +217,8 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
   const CDM_VERSJON = replySed?.sak?.cdmVersjon ? parseFloat(replySed?.sak?.cdmVersjon) : 4.4
   const personInfo: PersonInfo =
     isXSed(replySed)
-      ? _.get(replySed, 'bruker')
-      : _.get(replySed, `${personID}.personInfo`)
+      ? _.get(replySed, 'bruker') as PersonInfo
+      : _.get(replySed, `${personID}.personInfo`) as unknown as PersonInfo
   const personName: string = personID === 'familie'
     ? i18n.t('label:familien').toLowerCase()
     : personInfo.fornavn + ' ' + (personInfo.etternavn ?? '')
@@ -229,12 +229,12 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
         personInfo, personName
       }, true))
 
-      const statsborgerskaper: Array<Statsborgerskap> = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
+      const statsborgerskaper: Array<Statsborgerskap> | undefined = _.get(replySed, `${personID}.personInfo.statsborgerskap`)
       hasErrors.push(performValidation<ValidationNasjonaliteterProps>(v, `svarsed-${personID}-nasjonaliteter`, validateNasjonaliteter, {
         statsborgerskaper, personName
       }, true))
 
-      const adresser: Array<Adresse> = _.get(replySed, `${personID}.adresser`)
+      const adresser: Array<Adresse> | undefined = _.get(replySed, `${personID}.adresser`)
       hasErrors.push(performValidation<ValidationAdresserProps>(v, `svarsed-${personID}-adresser`, validateAdresser, {
         adresser, checkAdresseType: false, personName
       }, true))
@@ -242,16 +242,16 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
 
     if (!personID.startsWith('barn')) {
       if (personID === 'familie') {
-        const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
+        const ytelser: Array<Ytelse> | undefined = _.get(replySed, `${personID}.ytelser`)
         hasErrors.push(performValidation<ValidationBeløpNavnOgValutasProps>(v, `svarsed-${personID}-familieytelser`, validateBeløpNavnOgValutas, {
           ytelser, personID, personName
         }, true))
       } else {
-        const telefoner: Array<Telefon> = _.get(replySed, `${personID}.telefon`)
+        const telefoner: Array<Telefon> | undefined = _.get(replySed, `${personID}.telefon`)
         hasErrors.push(performValidation<ValidateTelefonerProps>(v, `svarsed-${personID}-kontaktinformasjon-telefon`, validateKontaktsinformasjonTelefoner, {
           telefoner, personName
         }, true))
-        const eposter: Array<Epost> = _.get(replySed, `${personID}.epost`)
+        const eposter: Array<Epost> | undefined = _.get(replySed, `${personID}.epost`)
         hasErrors.push(performValidation<ValidateEposterProps>(v, `svarsed-${personID}-kontaktinformasjon-epost`, validateKontaktsinformasjonEposter, {
           eposter, personName
         }, true))
@@ -287,7 +287,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
           }
         }
 
-        const familierelasjoner: Array<FamilieRelasjon> = _.get(replySed, `${personID}.familierelasjoner`)
+        const familierelasjoner: Array<FamilieRelasjon> | undefined = _.get(replySed, `${personID}.familierelasjoner`)
         hasErrors.push(performValidation<ValidationFamilierelasjonerProps>(v, `svarsed-${personID}-familierelasjon`, validateFamilierelasjoner, {
           familierelasjoner, personName
         }, true))
@@ -306,7 +306,7 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
             }, true))
           } else {
             // Trygdeordning
-            const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+            const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`) as Array<Periode> | undefined
             const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
             let rettTilFamilieYtelser;
             if(perioderMedYtelser && perioderMedYtelser.length >= 0){
@@ -320,22 +320,22 @@ export const validateMainForm = (v: Validation, _replySed: ReplySed, personID: s
           }
 
           //Familierelasjon Annen Person
-          const familierelasjon: FamilieRelasjon = _.get(replySed, `${personID}.familierelasjon`)
+          const familierelasjon: FamilieRelasjon | undefined = _.get(replySed, `${personID}.familierelasjon`)
           hasErrors.push(performValidation<ValidationFamilierelasjonProps>(v, `svarsed-${personID}-familierelasjonf003`, validateFamilierelasjon, {
             familierelasjon, personName
           }, true))
         }
       }
     } else {
-      const barnetilhoerigheter : Array<Barnetilhoerighet> = _.get(replySed, `${personID}.barnetilhoerigheter`)
+      const barnetilhoerigheter : Array<Barnetilhoerighet> | undefined = _.get(replySed, `${personID}.barnetilhoerigheter`)
       hasErrors.push(performValidation<ValidationBarnetilhoerigheterProps>(v, `svarsed-${personID}-relasjon`, validateBarnetilhoerigheter, {
         barnetilhoerigheter, personName
       }, true))
-      const flyttegrunn: Flyttegrunn = _.get(replySed, `${personID}.flyttegrunn`)
+      const flyttegrunn: Flyttegrunn | undefined = _.get(replySed, `${personID}.flyttegrunn`)
       hasErrors.push(performValidation<ValidateGrunnlagForBosettingProps>(v, `svarsed-${personID}-grunnlagforbosetting`, validateGrunnlagForBosetting, {
         flyttegrunn, personName
       }, true))
-      const ytelser: Array<Ytelse> = _.get(replySed, `${personID}.ytelser`)
+      const ytelser: Array<Ytelse> | undefined = _.get(replySed, `${personID}.ytelser`)
       if ((replySed as FSed).formaal && (replySed as FSed).formaal.indexOf('vedtak') >= 0) {
         hasErrors.push(performValidation<ValidationBeløpNavnOgValutasProps>(v, `svarsed-${personID}-beløpnavnogvaluta`, validateBeløpNavnOgValutas, {
           ytelser, personID, personName

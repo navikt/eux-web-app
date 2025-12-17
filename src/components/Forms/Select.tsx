@@ -4,18 +4,19 @@ import classNames from 'classnames'
 import React from 'react'
 import ReactSelect, { Props } from 'react-select'
 
-interface SelectProps extends Props {
+type SelectProps = Props & {
+  id?: string
   error?: string
-  label?: string | undefined
-  hideLabel ?: boolean
+  label?: string
+  hideLabel?: boolean
   noMarginTop?: boolean
   size?: 'medium' | 'small'
   required?: boolean
-  style ?: any
+  style?: any
   'data-testid'?: string
 }
 
-const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
+const Select = (props: SelectProps): JSX.Element => {
   return (
     <div
       className={classNames({ 'navds-select--error': !!props.error })}
@@ -33,7 +34,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             marginTop: props.noMarginTop || props.hideLabel ? '0px' : '8px',
             minHeight: props.size === 'small' ? '35px' : '48px'
           }),
-          control: (styles: any, { isDisabled }) => ({
+          control: (styles: any, { isDisabled }: any) => ({
             ...styles,
             minHeight: props.size === 'small' ? '35px' : '48px',
             borderWidth: props.error ? '3px' : '1px',
@@ -59,7 +60,7 @@ const Select: React.FC<SelectProps> = (props: SelectProps): JSX.Element => {
             borderColor: 'var(--a-border-default)',
             backgroundColor: 'var(--a-surface-subtle)'
           }),
-          option: (styles: any, { isDisabled, isFocused, isSelected }) => ({
+          option: (styles: any, { isDisabled, isFocused, isSelected }: any) => ({
             ...styles,
             color: isFocused
               ? 'var(--a-text-on-inverted)'

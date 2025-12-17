@@ -28,7 +28,7 @@ const AvsenderFC: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'avsender'
-  const avsender: Avsender = _.get(replySed, target)
+  const avsender: Avsender | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-avsender`
 
   const [allowEdit, setAllowEdit] = useState<boolean>(false)

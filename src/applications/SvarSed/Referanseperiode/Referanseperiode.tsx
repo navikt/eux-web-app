@@ -30,7 +30,7 @@ const Referanseperiode: React.FC<MainFormProps> = ({
   const { validation } = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'anmodningsperiode'
-  const anmodningsperiode: Periode = _.get(replySed, target)
+  const anmodningsperiode: Periode | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-${personID}-referanseperiode`
 
   useUnmount(() => {

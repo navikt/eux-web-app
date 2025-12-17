@@ -70,7 +70,7 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
 
-  const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${target}.perioderMedYtelser`)
+  const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${target}.perioderMedYtelser`) as Array<Periode> | undefined
   const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${target}.ikkeRettTilYtelser`)
   const getPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-periode'
 

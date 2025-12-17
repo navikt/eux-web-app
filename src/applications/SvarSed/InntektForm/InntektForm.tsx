@@ -85,7 +85,7 @@ const InntektForm: React.FC<MainFormProps> = ({
   const CDM_VERSJON: number = parseFloat((replySed as USed)?.sak?.cdmVersjon!)
   const namespace = `${parentNamespace}-${personID}-inntekt`
   const target = 'loennsopplysninger'
-  const loennsopplysninger: Array<Loennsopplysning> = _.get(replySed, target)
+  const loennsopplysninger: Array<Loennsopplysning> | undefined = _.get(replySed, target)
   const fnr: string | undefined = getFnr(replySed, personID)
   const getId = (l: Loennsopplysning |null |undefined) => l ? l.periode?.startdato + '-' + l.periode?.sluttdato : 'new'
   const getIdInntekt = (inntekt: Inntekt | null | undefined) => inntekt ? inntekt.type + '-' + inntekt.typeAnnen + '-' + inntekt.beloep : 'new'

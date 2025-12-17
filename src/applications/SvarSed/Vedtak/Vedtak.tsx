@@ -68,7 +68,7 @@ const VedtakFC: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-vedtak`
   const target = 'vedtak'
-  const vedtak: Vedtak | undefined = _.get(replySed, target)
+  const vedtak: Vedtak | undefined = _.get(replySed, target) as Vedtak
   const getVedtakPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
   const getKompetansePeriodeId = (p: KompetansePeriode | null): string => p ? p.periode?.__type + '-' + p.periode.startdato + '-' + (p.periode.sluttdato ?? p.periode.aapenPeriodeType) : 'new-vedtakperiode'
 

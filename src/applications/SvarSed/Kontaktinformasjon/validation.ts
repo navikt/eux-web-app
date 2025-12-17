@@ -18,12 +18,12 @@ export interface ValidationKontaktsinformasjonEpostProps {
 }
 
 export interface ValidateTelefonerProps {
-  telefoner: Array<Telefon>,
+  telefoner?: Array<Telefon>,
   personName?: string
 }
 
 export interface ValidateEposterProps {
-  eposter: Array<Epost>,
+  eposter?: Array<Epost>,
   personName?: string
 }
 

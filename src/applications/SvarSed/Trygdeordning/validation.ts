@@ -72,7 +72,7 @@ export const validateTrygdeordning = (
   v: Validation,
   namespace: string,
   type: string,
-  perioder: Array<Periode>,
+  perioder: Array<Periode> | undefined,
   personName?: string
 ): boolean => {
   const hasErrors: Array<boolean> = []
@@ -118,7 +118,7 @@ export const validateTrygdeordninger = (
   hasErrors.push(validateTrygdeordning(v, namespace, 'perioderMedYtelser', _.get(replySed, `${personID}.perioderMedYtelser`), personName))
 
 
-  const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`)
+  const perioderMedYtelser: Array<Periode> | undefined = _.get(replySed, `${personID}.perioderMedYtelser`) as Array<Periode> | undefined
   const ikkeRettTilYtelser: any | undefined = _.get(replySed, `${personID}.ikkeRettTilYtelser`)
   let rettTilFamilieYtelser;
   if(perioderMedYtelser && perioderMedYtelser.length >= 0){

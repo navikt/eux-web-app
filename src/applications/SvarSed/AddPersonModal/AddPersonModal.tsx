@@ -258,7 +258,7 @@ const AddPersonModal = <T extends StorageTypes>({
   const relationOptions = getRelationOptions()
 
   const getPersonLabel = (personId: string): string => {
-    let id = ''
+    let id: string
     if(personId.startsWith('barn[')){
       id = 'barn'
     } else if (personId.startsWith('andrePersoner[')){
@@ -270,7 +270,8 @@ const AddPersonModal = <T extends StorageTypes>({
   }
 
   const renderPerson = (personId: string) => {
-    const p: PersonInfo = _.get(_replySed, `${personId}.personInfo`)
+    const p: PersonInfo | undefined = _.get(_replySed, `${personId}.personInfo`)
+    if (!p) return null
 
     return (
       <FlexDiv key={personId}>
@@ -319,8 +320,8 @@ const AddPersonModal = <T extends StorageTypes>({
         {_replySed?.bruker && renderPerson('bruker')}
         {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
         {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
-        {(_replySed as F002Sed).andrePersoner?.map((p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
-        {(_replySed as F002Sed).barn?.map((b: any, i: number) => renderPerson(`barn[${i}]`))}
+        {(_replySed as F002Sed).andrePersoner?.map((_p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
+        {(_replySed as F002Sed).barn?.map((_b: any, i: number) => renderPerson(`barn[${i}]`))}
         <VerticalSeparatorDiv />
         <HorizontalLineSeparator />
         <VerticalSeparatorDiv size='2' />

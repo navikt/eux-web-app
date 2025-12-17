@@ -73,7 +73,7 @@ const VedtakForF003: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-vedtak`
   const target = 'vedtak'
-  const vedtak: VedtakF003 | undefined = _.get(replySed, target)
+  const vedtak: VedtakF003 | undefined = _.get(replySed, target) as VedtakF003
   const getVedtakPeriodeId = (p: Periode | null): string => p ? p.startdato + '-' + (p.sluttdato ?? p.aapenPeriodeType) : 'new-peridoe'
 
   const [_newVedtakPeriode, _setNewVedtakPeriode] = useState<Periode | undefined>(undefined)

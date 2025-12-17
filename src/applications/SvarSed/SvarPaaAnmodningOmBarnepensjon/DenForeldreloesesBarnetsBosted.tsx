@@ -36,7 +36,7 @@ const DenForeldreloesesBarnetsBosted: React.FC<MainFormProps> = ({
   const svarYtelseTilForeldreloeseTarget = `anmodningOmMerInformasjon.svar.ytelseTilForeldreloese`
   const CDM_VERSJON = options.cdmVersjon
   const svarYtelseTilForeldreloese: SvarYtelseTilForeldreloese_V43 | SvarYtelseTilForeldreloese_V42 | undefined = _.get(replySed, svarYtelseTilForeldreloeseTarget)
-  const adresse: Adresse = _.get(replySed, `${target}.adresse`)
+  const adresse: Adresse | undefined = _.get(replySed, `${target}.adresse`)
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)

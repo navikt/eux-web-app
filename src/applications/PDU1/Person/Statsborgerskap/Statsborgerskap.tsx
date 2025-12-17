@@ -62,7 +62,7 @@ const Statsborgerskap: React.FC<MainFormProps> = ({
 
   const dispatch = useAppDispatch()
   const target = 'bruker.statsborgerskap'
-  const statsborgerskaper: Array<string> | undefined = _.get(replySed, target)
+  const statsborgerskaper: Array<string> | undefined = _.get(replySed, target) as Array<string> | undefined
   const namespace = `${parentNamespace}-statsborgerskap`
   const countryData = CountryData.getCountryInstance('nb')
 

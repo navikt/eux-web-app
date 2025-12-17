@@ -19,7 +19,7 @@ const Adresse: React.FC<MainFormProps> = ({
   const { validation }: MainFormSelector = useAppSelector(mapState)
   const dispatch = useAppDispatch()
   const target = 'bruker.adresse'
-  const adresse: IAdresse = _.get(replySed, target)
+  const adresse: IAdresse | undefined = _.get(replySed, target)
   const namespace = `${parentNamespace}-adresse`
 
   const setAdresse = (adresse: IAdresse, whatChanged: string | undefined) => {

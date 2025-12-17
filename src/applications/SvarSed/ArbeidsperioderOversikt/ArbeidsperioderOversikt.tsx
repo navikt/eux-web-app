@@ -32,6 +32,7 @@ import {
 import moment from "moment";
 import {validateForsikring, ValidateForsikringProps} from "../Forsikring/validation";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
+import {PDPeriode} from "../../../declarations/pd";
 
 export interface ArbeidsforholdSelector extends MainFormSelector {
   arbeidsperioder: ArbeidsperioderFraAA | null | undefined
@@ -65,8 +66,8 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
   const namespace = `${parentNamespace}-${personID}-arbeidsperioder`
   const forsikringNamespace = `${parentNamespace}-${personID}-forsikring`
   const target = 'perioderAnsattMedForsikring'
-  const perioder: Array<PeriodeMedForsikring> | undefined = _.get(replySed, target)
-  const anmodningsperiode: Periode = _.get(replySed, "anmodningsperiode")
+  const perioder: Array<PeriodeMedForsikring> | Array<PDPeriode> | undefined = _.get(replySed, target)
+  const anmodningsperiode: Periode | undefined = _.get(replySed, "anmodningsperiode")
   const fnr = getFnr(replySed, personID)
   const getId = (p: PlanItem<ForsikringPeriode> | null | undefined, index: number) => p
     ? p.type + '-' + ((p.item as PeriodeMedForsikring)?.arbeidsgiver?.navn ?? '') + '-' + p.item.startdato + '-' + (p.item.sluttdato ?? '') + "_" + index
@@ -95,7 +96,7 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
     const clonedValidation = _.cloneDeep(validation)
     performValidation<ValidationArbeidsperioderOversiktProps>(
       clonedValidation, namespace, validateArbeidsperioderOversikt, {
-        perioderMedForsikring: _periodsForValidation ? _periodsForValidation : perioder,
+        perioderMedForsikring: _periodsForValidation ? _periodsForValidation : perioder as Array<PeriodeMedForsikring>,
         personName
       }, true
     )
@@ -319,8 +320,8 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         fnr={fnr}
         namespace={namespace}
         defaultDates={{
-          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
-          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+          "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
         }}
       />
       <VerticalSeparatorDiv size='2' />
@@ -378,8 +379,8 @@ const ArbeidsperioderOversikt: React.FC<MainFormProps> = ({
         onInntektSearch={onInntektSearch}
         gettingInntekter={gettingInntekter}
         defaultDates={{
-          "startDato": anmodningsperiode.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
-          "sluttDato": anmodningsperiode.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
+          "startDato": anmodningsperiode?.startdato ? moment(anmodningsperiode.startdato).format('YYYY-MM') : null,
+          "sluttDato": anmodningsperiode?.sluttdato ? moment(anmodningsperiode.sluttdato).format('YYYY-MM') : null,
         }}
       />
       <VerticalSeparatorDiv />

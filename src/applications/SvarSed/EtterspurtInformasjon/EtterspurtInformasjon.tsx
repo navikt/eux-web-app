@@ -31,7 +31,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
 
   const namespace = `${parentNamespace}-etterspurtinformasjon`
   const target = 'anmodningOmMerInformasjon'
-  const anmodningOmMerInformasjon: AnmodningOmMerInformasjon | undefined = _.get(replySed, target)
+  const anmodningOmMerInformasjon: AnmodningOmMerInformasjon | undefined = _.get(replySed, target) as AnmodningOmMerInformasjon
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
