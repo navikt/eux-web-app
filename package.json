@@ -65,7 +65,7 @@
     "react-redux": "8.1.3",
     "react-router-dom": "7.10.1",
     "react-select": "5.10.2",
-    "redux": "4.2.0",
+    "redux": "4.2.1",
     "sprintf-js": "1.1.2",
     "stacktracey": "2.1.8",
     "styled-components": "5.3.11",
