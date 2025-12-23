@@ -149,7 +149,7 @@ const SendSEDModal: React.FC<SendSEDModalProps> = ({
       if (_.isString(summary)) {
         setFinished(summary)
       } else {
-        setFinished(t('message:success-x-attachments-total-y-saved', summary))
+        setFinished(t('message:success-x-attachments-total-y-saved', summary) as string)
       }
     }
     if (_sendingAttachments) {
