@@ -34,7 +34,7 @@
     "@navikt/flagg-ikoner": "10.0.19",
     "@navikt/fnrvalidator": "2.2.1",
     "@navikt/hoykontrast": "4.0.1",
-    "@navikt/land-verktoy": "9.1.28",
+    "@navikt/land-verktoy": "9.1.29",
     "@navikt/landvelger": "10.0.11",
     "@navikt/tabell": "10.0.8",
     "@reduxjs/toolkit": "1.9.7",
