@@ -82,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <MyInternalHeader className={styles.nisseOverlay}>
+      <MyInternalHeader>
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
