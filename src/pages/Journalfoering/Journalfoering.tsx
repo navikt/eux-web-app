@@ -5,7 +5,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../store";
 import {State} from "../../declarations/reducers";
 import {Sak} from "../../declarations/types";
-import {Content, Margin, Container, VerticalSeparatorDiv} from "@navikt/hoykontrast";
 import Saksopplysninger from "applications/SvarSed/Saksopplysninger/Saksopplysninger";
 import _ from "lodash";
 import WaitingPanel from "../../components/WaitingPanel/WaitingPanel";
@@ -14,6 +13,7 @@ import JournalfoerPanel from "./JournalfoerPanel";
 import InnhentMerInfoPanel from "./InnhentMerInfoPanel";
 import FeilregistrerJournalposterPanel from "./FeilregistrerJournalposterPanel";
 import {appReset} from "../../actions/app";
+import {Box, HGrid, Page, VStack} from "@navikt/ds-react"
 
 export interface JournalfoeringProps {
 
@@ -74,20 +74,20 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
   return (
     <TopContainer backButton={true} onGoBackClick={goBack} title={"Journalføring"}>
       <SakBanner />
-      <Container>
-        <Margin />
-        <Content style={{ flex: 6}}>
-          <JournalfoerPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
-          <VerticalSeparatorDiv />
-          <InnhentMerInfoPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
-          <VerticalSeparatorDiv />
-          <FeilregistrerJournalposterPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
-        </Content>
-        <Content style={{ flex: 2 }}>
-          <Saksopplysninger sak={currentSak} />
-        </Content>
-        <Margin />
-      </Container>
+      <Page background="bg-subtle">
+        <Page.Block width="2xl" gutters as="main">
+          <HGrid columns="2fr 1fr" gap="4" paddingBlock="12">
+            <VStack gap="4">
+              <JournalfoerPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
+              <InnhentMerInfoPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
+              <FeilregistrerJournalposterPanel sak={currentSak} gotoSak={goBack} gotoFrontpage={gotoFrontpage}/>
+            </VStack>
+            <Box>
+              <Saksopplysninger sak={currentSak} />
+            </Box>
+          </HGrid>
+        </Page.Block>
+      </Page>
     </TopContainer>
   )
 }
