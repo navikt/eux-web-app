@@ -36,30 +36,29 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
   }
 
   return (
-
-      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
-        <VStack gap="4">
-          <Heading size='small'>
-            {t('label:ikke-journalfoerte-dokumenter')}
-          </Heading>
-          <HorizontalLineSeparator />
-          {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
-            <ul>
-              {sak.ikkeJournalfoerteSed.map((sedTitle) => {
-                return (<li>{sedTitle}</li>)
-              })}
-            </ul>
-          }
-          {harTilgangBuc &&
-            <Button
-              variant='primary'
-              onClick={onJournalFoerClick}
-            >
-              {t('label:journalfoer')}
-            </Button>
-          }
-        </VStack>
-      </Box>
+    <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
+      <VStack gap="4">
+        <Heading size='small'>
+          {t('label:ikke-journalfoerte-dokumenter')}
+        </Heading>
+        <HorizontalLineSeparator />
+        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
+          <ul>
+            {sak.ikkeJournalfoerteSed.map((sedTitle) => {
+              return (<li>{sedTitle}</li>)
+            })}
+          </ul>
+        }
+        {harTilgangBuc &&
+          <Button
+            variant='primary'
+            onClick={onJournalFoerClick}
+          >
+            {t('label:journalfoer')}
+          </Button>
+        }
+      </VStack>
+    </Box>
   )
 }
 
