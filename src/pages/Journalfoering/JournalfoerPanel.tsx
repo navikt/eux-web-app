@@ -10,7 +10,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {ActionMenu, Alert, BodyShort, Box, Button, Checkbox, Detail, Heading, HGrid, HStack, InternalHeader, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
+import {ActionMenu, Alert, Box, Button, Checkbox, Detail, Heading, HGrid, HStack, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {

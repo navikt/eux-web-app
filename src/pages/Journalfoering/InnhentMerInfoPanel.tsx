@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
   Sak,
 } from "../../declarations/types";
-import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Link, Loader, Panel, Textarea} from "@navikt/ds-react";
+import {Box, Button, Heading, HStack, Link, Loader, Modal, Textarea, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
@@ -19,8 +18,6 @@ import {
 } from "../../actions/journalfoering";
 import {H001Sed} from "../../declarations/sed";
 import {State} from "../../declarations/reducers";
-import Modal from "../../components/Modal/Modal";
-
 
 export interface InnhentMerInfoPanelProps {
   sak: Sak
@@ -55,7 +52,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   const dispatch = useAppDispatch()
   const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak, bucer }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
   const [_fritekst, setFritekst] = useState<string>("");
-  const [_sendH001Modal, setSendH001Modal] = useState<boolean>(false)
+  const refModal = useRef<HTMLDialogElement>(null);
 
   const harTilgangTilBucType = (saksbehandlerBucer: Array<string> | null | undefined, sakType: string) => {
     if (saksbehandlerBucer && sakType) {
@@ -137,7 +134,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   useEffect(() => {
     if(sendH001Response){
-      setSendH001Modal(true)
+      refModal.current?.showModal()
       if(createdHBUC01){
         dispatch(addRelatedRinaSak(sak.sakId, createdHBUC01.sakId))
       }
@@ -146,7 +143,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   const onSendH001ModalClose = () => {
     dispatch(journalfoeringReset())
-    setSendH001Modal(false)
+    refModal.current?.close()
   }
 
   const closeModalAndGotoSak = () => {
@@ -156,65 +153,56 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   const closeModalAndGotoFrontpage = () => {
     onSendH001ModalClose()
-    gotoFrontpage
+    gotoFrontpage()
   }
 
   return (
     <>
-      <Modal
-        open={_sendH001Modal}
-        onModalClose={onSendH001ModalClose}
-        modal={{
-          modalTitle: t('label:H001-er-sendt'),
-          modalContent: (
+      <Modal ref={refModal} header={{ heading: t('label:H001-er-sendt') }} onClose={onSendH001ModalClose}>
+        <Modal.Body>
             <>
               {createdHBUC01 &&
                 <>
                   {isAddingRelatertRinaSak ? <Loader/> : addedRelatertRinaSak ?
-                    (<>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link></>) :
-                    (<>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link> <br/> ({t('label:obs-ta-vare-paa-saksnummeret')})</>)
+                    <>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link></> :
+                    <>{t('label:ny-buc-opprettet')} <Link href='#' onClick={() => gotoNewSak(createdHBUC01.sakId)}>{createdHBUC01.sakId}</Link> <br/> ({t('label:obs-ta-vare-paa-saksnummeret')})</>
                   }
-                  <VerticalSeparatorDiv />
                 </>
               }
             </>
-          ),
-          modalButtons: [
-            {
-              text: t('el:button-gaa-tilbake-til-saken'),
-              disabled: isAddingRelatertRinaSak,
-              onClick: closeModalAndGotoSak
-            },
-            {
-              text: t('el:button-gaa-til-forsiden'),
-              disabled: isAddingRelatertRinaSak,
-              onClick: closeModalAndGotoFrontpage
-            }]
-        }}
-      />
-      <Panel border>
-        <Heading size='small'>
-          {t('label:innhent-mer-info')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-
-        <Textarea
-          label={t('journalfoering:radio-option-fritekst')}
-          value={_fritekst}
-          hideLabel={true}
-          maxLength={255}
-          resize={true}
-          onChange={onTextChange}
-        />
-        <VerticalSeparatorDiv />
-        { harTilgang &&
-          <Button variant="primary" disabled={_fritekst === ""} onClick={onSendH001} loading={isSendingH001}>
-            {t("el:button-send-x", {x: "H001"})}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModalAndGotoFrontpage} disabled={isAddingRelatertRinaSak}>
+            {t('el:button-gaa-til-forsiden')}
           </Button>
-        }
-      </Panel>
+          <Button variant="secondary" onClick={closeModalAndGotoSak} disabled={isAddingRelatertRinaSak}>
+            {t('el:button-gaa-tilbake-til-saken')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
+        <VStack gap="4">
+          <Heading size='small'>
+            {t('label:innhent-mer-info')}
+          </Heading>
+          <HorizontalLineSeparator />
+          <Textarea
+            label={t('journalfoering:radio-option-fritekst')}
+            value={_fritekst}
+            hideLabel={true}
+            maxLength={255}
+            resize={true}
+            onChange={onTextChange}
+          />
+          { harTilgang &&
+            <HStack>
+              <Button variant="primary" disabled={_fritekst === ""} onClick={onSendH001} loading={isSendingH001}>
+                {t("el:button-send-x", {x: "H001"})}
+              </Button>
+            </HStack>
+          }
+        </VStack>
+      </Box>
     </>
   )
 }

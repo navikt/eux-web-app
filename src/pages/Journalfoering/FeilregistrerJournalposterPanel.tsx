@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {FeilregistrerJournalposterLogg, Sak} from "../../declarations/types";
-import {VerticalSeparatorDiv} from "@navikt/hoykontrast";
-import {Button, Heading, Panel} from "@navikt/ds-react";
+import {Box, Button, Heading, Modal, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {journalfoeringReset, feilregistrerJournalposter} from "../../actions/journalfoering";
 import {useAppDispatch, useAppSelector} from "../../store";
-import {State} from "../../declarations/reducers";
-import Modal from "../../components/Modal/Modal";
+import {State} from "../../declarations/reducers";;
 
 export interface FeilregistrerJournalposterPanelProps {
   sak: Sak
@@ -29,7 +27,7 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { isFeilregistreringJournalposter, feilregistrerJournalposterLogg }: FeilregistrerJournalposterPanelSelector = useAppSelector(mapState)
-  const [_feilregistrerJournalposterModal, setFeilregistrerJournalposterModal] = useState<boolean>(false)
+  const refModal = useRef<HTMLDialogElement>(null);
 
   const onSend = () => {
     dispatch(feilregistrerJournalposter(sak.sakId))
@@ -37,13 +35,13 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
 
   useEffect(() => {
     if(feilregistrerJournalposterLogg){
-      setFeilregistrerJournalposterModal(true)
+      refModal.current?.showModal()
     }
   }, [feilregistrerJournalposterLogg])
 
   const onFeilregistrerJournalposterModalClose = () => {
     dispatch(journalfoeringReset())
-    setFeilregistrerJournalposterModal(false)
+    refModal.current?.close()
   }
 
   const closeModalAndGotoSak = () => {
@@ -53,63 +51,53 @@ export const FeilregistrerJournalposterPanel = ({ sak, gotoSak, gotoFrontpage }:
 
   const closeModalAndGotoFrontpage = () => {
     onFeilregistrerJournalposterModalClose()
-    gotoFrontpage
+    gotoFrontpage()
   }
 
   return (
     <>
-      <Modal
-        open={_feilregistrerJournalposterModal}
-        onModalClose={onFeilregistrerJournalposterModalClose}
-        modal={{
-          modalContent: (
-            <>
-              {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&
-                <>
-                  <Heading size={"small"}>{t('journalfoering:modal-ble-feilregistrert-title')}</Heading>
-                    <VerticalSeparatorDiv/>
-                    {feilregistrerJournalposterLogg?.bleFeilregistrert.map((sedTittel) => {
-                      return (<>{sedTittel}<br/></>)
-                    })}
-                    <VerticalSeparatorDiv/>
-                </>
-              }
-              {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert && feilregistrerJournalposterLogg?.bleIkkeFeilregistrert?.length > 0 &&
-                <>
-                  <Heading size={"small"}>{t('journalfoering:modal-ble-ikke-feilregistrert-title')}</Heading>
-                  <VerticalSeparatorDiv/>
-                    {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert.map((sedTittel) => {
-                      return (<>{sedTittel}<br/></>)
-                    })}
-                  <VerticalSeparatorDiv/>
-                </>
-              }
-            </>
-          ),
-          modalButtons: [
-            {
-              text: t('el:button-gaa-tilbake-til-saken'),
-              onClick: closeModalAndGotoSak
-            },
-            {
-              text: t('el:button-gaa-til-forsiden'),
-              onClick: closeModalAndGotoFrontpage
-            }]
-        }}
-      />
-      <Panel border>
-        <Heading size='small'>
-          {t('label:feilregistrer-og-avslutt')}
-        </Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        {t('journalfoering:feilregistrering-journalposter-beskrivelse')}
-        <VerticalSeparatorDiv />
-        <Button variant="secondary" loading={isFeilregistreringJournalposter} onClick={onSend}>
-          {t("el:button-feilregistrer-journalposter")}
-        </Button>
-      </Panel>
+      <Modal ref={refModal} header={{ heading: "Status" }} width="medium" onClose={onFeilregistrerJournalposterModalClose}>
+        <Modal.Body>
+          <VStack gap="4">
+            {feilregistrerJournalposterLogg?.bleFeilregistrert && feilregistrerJournalposterLogg?.bleFeilregistrert?.length > 0 &&
+              <VStack gap="4">
+                <Heading size={"small"}>{t('journalfoering:modal-ble-feilregistrert-title')}</Heading>
+                {feilregistrerJournalposterLogg?.bleFeilregistrert.map((sedTittel) => {
+                  return (<>{sedTittel}<br/></>)
+                })}
+              </VStack>
+            }
+            {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert && feilregistrerJournalposterLogg?.bleIkkeFeilregistrert?.length > 0 &&
+              <VStack gap="4">
+                <Heading size={"small"}>{t('journalfoering:modal-ble-ikke-feilregistrert-title')}</Heading>
+                {feilregistrerJournalposterLogg?.bleIkkeFeilregistrert.map((sedTittel) => {
+                  return (<>{sedTittel}<br/></>)
+                })}
+              </VStack>
+            }
+          </VStack>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModalAndGotoFrontpage}>
+            {t('el:button-gaa-til-forsiden')}
+          </Button>
+          <Button variant="secondary" onClick={closeModalAndGotoSak}>
+            {t('el:button-gaa-tilbake-til-saken')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
+        <VStack gap="4" align="start">
+          <Heading size='small'>
+            {t('label:feilregistrer-og-avslutt')}
+          </Heading>
+          <HorizontalLineSeparator />
+          {t('journalfoering:feilregistrering-journalposter-beskrivelse')}
+          <Button variant="secondary" loading={isFeilregistreringJournalposter} onClick={onSend}>
+            {t("el:button-feilregistrer-journalposter")}
+          </Button>
+        </VStack>
+      </Box>
     </>
   )
 }
