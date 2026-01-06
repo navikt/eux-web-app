@@ -1,5 +1,4 @@
-import { Button, Heading, Panel } from '@navikt/ds-react'
-import {VerticalSeparatorDiv} from '@navikt/hoykontrast'
+import {Box, Button, Heading, VStack} from '@navikt/ds-react'
 import { Sak } from 'declarations/types'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -37,31 +36,30 @@ const IkkeJournalfoerteSed = ({ sak, bucer }: IkkeJournalfoerteSedProps) => {
   }
 
   return (
-    <>
-      <Panel border>
-        <Heading size='small'>
-          {t('label:ikke-journalfoerte-dokumenter')}
-        </Heading>
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
-          <ul>
-            {sak.ikkeJournalfoerteSed.map((sedTitle) => {
-              return (<li>{sedTitle}</li>)
-            })}
-          </ul>
-        }
-        <VerticalSeparatorDiv />
-        {harTilgangBuc &&
-          <Button
-            variant='primary'
-            onClick={onJournalFoerClick}
-          >
-            {t('label:journalfoer')}
-          </Button>
-        }
-      </Panel>
-    </>
+
+      <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
+        <VStack gap="4">
+          <Heading size='small'>
+            {t('label:ikke-journalfoerte-dokumenter')}
+          </Heading>
+          <HorizontalLineSeparator />
+          {sak.ikkeJournalfoerteSed && sak.ikkeJournalfoerteSed.length > 0 &&
+            <ul>
+              {sak.ikkeJournalfoerteSed.map((sedTitle) => {
+                return (<li>{sedTitle}</li>)
+              })}
+            </ul>
+          }
+          {harTilgangBuc &&
+            <Button
+              variant='primary'
+              onClick={onJournalFoerClick}
+            >
+              {t('label:journalfoer')}
+            </Button>
+          }
+        </VStack>
+      </Box>
   )
 }
 
