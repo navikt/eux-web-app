@@ -1,5 +1,4 @@
-import {Heading, Loader, Panel} from '@navikt/ds-react'
-import {VerticalSeparatorDiv, FlexCenterDiv} from '@navikt/hoykontrast'
+import {Box, Heading, HStack, Loader, Spacer, VStack} from '@navikt/ds-react'
 import {Sak} from 'declarations/types'
 import React, {useEffect} from 'react'
 import { useTranslation } from 'react-i18next'
@@ -8,11 +7,7 @@ import {HorizontalLineSeparator } from "../../../components/StyledComponents";
 import {querySaks} from "../../../actions/svarsed";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
-import styled from "styled-components";
 
-export const CenteredDiv = styled(FlexCenterDiv)`
- justify-content: center;
-`
 interface SedUnderJournalfoeringEllerUkjentStatusProps {
   sak: Sak
 }
@@ -56,13 +51,12 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
 
 
   return (
-    <>
-      <Panel border>
+    <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
+      <VStack gap="4">
         <Heading size='small'>
           {t('label:under-journalfoering-ukjent-status')}
         </Heading>
         <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
         {sak.sedUnderJournalfoeringEllerUkjentStatus && sak.sedUnderJournalfoeringEllerUkjentStatus.length > 0 &&
           <ul>
             {sak.sedUnderJournalfoeringEllerUkjentStatus.map((sedTitle) => {
@@ -71,12 +65,14 @@ const SedUnderJournalfoeringEllerUkjentStatus = ({ sak }: SedUnderJournalfoering
           </ul>
         }
         {refreshingSaks &&
-          <CenteredDiv>
+          <HStack>
+            <Spacer/>
             {t('label:sjekker-status')} &nbsp; <Loader/>
-          </CenteredDiv>
+            <Spacer/>
+          </HStack>
         }
-      </Panel>
-    </>
+      </VStack>
+    </Box>
   )
 }
 
