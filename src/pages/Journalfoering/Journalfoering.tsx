@@ -14,6 +14,7 @@ import InnhentMerInfoPanel from "./InnhentMerInfoPanel";
 import FeilregistrerJournalposterPanel from "./FeilregistrerJournalposterPanel";
 import {appReset} from "../../actions/app";
 import {Box, HGrid, Page, VStack} from "@navikt/ds-react"
+import styles from './Journalfoering.module.css'
 
 export interface JournalfoeringProps {
 
@@ -72,9 +73,9 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
   }
 
   return (
-    <TopContainer backButton={true} onGoBackClick={goBack} title={"Journalføring"}>
-      <SakBanner />
-      <Page background="bg-subtle">
+    <Page className={styles.page}>
+      <TopContainer backButton={true} onGoBackClick={goBack} title={"Journalføring"}>
+        <SakBanner />
         <Page.Block width="2xl" gutters as="main">
           <HGrid columns="2fr 1fr" gap="4" paddingBlock="12">
             <VStack gap="4">
@@ -87,8 +88,8 @@ export const Journalfoering: React.FC<JournalfoeringProps> = ({}: Journalfoering
             </Box>
           </HGrid>
         </Page.Block>
-      </Page>
-    </TopContainer>
+      </TopContainer>
+    </Page>
   )
 }
 

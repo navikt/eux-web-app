@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Sak,
 } from "../../declarations/types";
-import {Box, Button, Heading, HStack, Link, Loader, Modal, Textarea, VStack} from "@navikt/ds-react";
+import {Box, Button, Dialog, Heading, HStack, Link, Loader, Textarea, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
@@ -52,7 +52,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
   const dispatch = useAppDispatch()
   const { H001, H001Id, sendH001Response, createdHBUC01, isSendingH001, isAddingRelatertRinaSak, addedRelatertRinaSak, bucer }: InnhentMerInfoPanelSelector = useAppSelector(mapState)
   const [_fritekst, setFritekst] = useState<string>("");
-  const refModal = useRef<HTMLDialogElement>(null);
+  const [_dialogOpen, setDialogOpen] = useState<boolean>(false)
 
   const harTilgangTilBucType = (saksbehandlerBucer: Array<string> | null | undefined, sakType: string) => {
     if (saksbehandlerBucer && sakType) {
@@ -134,7 +134,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   useEffect(() => {
     if(sendH001Response){
-      refModal.current?.showModal()
+      setDialogOpen(true)
       if(createdHBUC01){
         dispatch(addRelatedRinaSak(sak.sakId, createdHBUC01.sakId))
       }
@@ -143,7 +143,7 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   const onSendH001ModalClose = () => {
     dispatch(journalfoeringReset())
-    refModal.current?.close()
+    setDialogOpen(false)
   }
 
   const closeModalAndGotoSak = () => {
@@ -158,8 +158,12 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
 
   return (
     <>
-      <Modal ref={refModal} header={{ heading: t('label:H001-er-sendt') }} onClose={onSendH001ModalClose}>
-        <Modal.Body>
+      <Dialog open={_dialogOpen} onOpenChange={onSendH001ModalClose}>
+        <Dialog.Popup>
+          <Dialog.Header>
+            <Dialog.Title>{t('label:H001-er-sendt')}</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>
             <>
               {createdHBUC01 &&
                 <>
@@ -170,16 +174,17 @@ export const InnhentMerInfoPanel = ({ sak, gotoSak, gotoFrontpage }: InnhentMerI
                 </>
               }
             </>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeModalAndGotoFrontpage} disabled={isAddingRelatertRinaSak}>
-            {t('el:button-gaa-til-forsiden')}
-          </Button>
-          <Button variant="secondary" onClick={closeModalAndGotoSak} disabled={isAddingRelatertRinaSak}>
-            {t('el:button-gaa-tilbake-til-saken')}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Button variant="secondary" onClick={closeModalAndGotoSak} disabled={isAddingRelatertRinaSak}>
+              {t('el:button-gaa-tilbake-til-saken')}
+            </Button>
+            <Button variant="secondary" onClick={closeModalAndGotoFrontpage} disabled={isAddingRelatertRinaSak}>
+              {t('el:button-gaa-til-forsiden')}
+            </Button>
+          </Dialog.Footer>
+        </Dialog.Popup>
+      </Dialog>
       <Box background="bg-default" padding="4" borderWidth="1" borderColor="border-default" borderRadius="small">
         <VStack gap="4">
           <Heading size='small'>

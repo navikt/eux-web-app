@@ -26,9 +26,9 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "7.36.0",
-    "@navikt/ds-css": "7.36.0",
-    "@navikt/ds-react": "7.36.0",
+    "@navikt/aksel-icons": "7.37.0",
+    "@navikt/ds-css": "7.37.0",
+    "@navikt/ds-react": "7.37.0",
     "@navikt/eessi-kodeverk": "2.4.1",
     "@navikt/fetch": "5.0.12",
     "@navikt/flagg-ikoner": "10.0.20",

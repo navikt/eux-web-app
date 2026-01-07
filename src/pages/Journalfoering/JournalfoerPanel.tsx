@@ -10,7 +10,7 @@ import {
   Sak,
   Tema
 } from "../../declarations/types";
-import {ActionMenu, Alert, Box, Button, Checkbox, Detail, Heading, HGrid, HStack, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
+import {ActionMenu, Alert, Box, Button, Checkbox, Detail, Dialog, Heading, HGrid, HStack, Label, Loader, Select, Spacer, TextField, VStack} from "@navikt/ds-react";
 import {HorizontalLineSeparator} from "../../components/StyledComponents";
 import {useTranslation} from "react-i18next";
 import {
@@ -32,7 +32,6 @@ import kvinne from 'assets/icons/Woman.png'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
 import styled from "styled-components";
-import Modal from "../../components/Modal/Modal";
 import {alertReset} from "../../actions/alert";
 import * as types from "../../constants/actionTypes";
 import {ChevronDownIcon, StarFillIcon, StarIcon} from "@navikt/aksel-icons";
@@ -265,7 +264,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
   }
   const closeModalAndGotoFrontpage = () => {
     onJournalfoerModalClose()
-    gotoFrontpage
+    gotoFrontpage()
   }
 
   const hasIkkeJournalfoert = journalfoeringLogg && journalfoeringLogg.ikkeJournalfoert && journalfoeringLogg.ikkeJournalfoert.length > 0
@@ -302,12 +301,12 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
 
   return (
     <>
-      <Modal
-        open={_journalfoerModal}
-        onModalClose={onJournalfoerModalClose}
-        modal={{
-          modalTitle: modalTitle,
-          modalContent: (
+      <Dialog open={_journalfoerModal} onOpenChange={onJournalfoerModalClose}>
+        <Dialog.Popup>
+          <Dialog.Header>
+            <Dialog.Title>{modalTitle}</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>
             <>
               {!alleSedJournalfoert &&
                 <>
@@ -330,18 +329,17 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
                 }
               </VStack>
             </>
-          ),
-          modalButtons: [
-            {
-              text: t('el:button-gaa-tilbake-til-saken'),
-              onClick: closeModalAndGotoSak
-            },
-            {
-              text: t('el:button-gaa-til-forsiden'),
-              onClick: closeModalAndGotoFrontpage
-            }]
-        }}
-      />
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Button variant="secondary" onClick={closeModalAndGotoSak}>
+              {t('el:button-gaa-tilbake-til-saken')}
+            </Button>
+            <Button variant="secondary" onClick={closeModalAndGotoFrontpage}>
+              {t('el:button-gaa-til-forsiden')}
+            </Button>
+          </Dialog.Footer>
+        </Dialog.Popup>
+      </Dialog>
       <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default" background="surface-default">
         <VStack gap="4">
           <Heading size='small'>
