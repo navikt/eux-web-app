@@ -1,6 +1,5 @@
 import classNames from 'classnames'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import { BodyLong, Loader } from '@navikt/ds-react'
+import {BodyLong, Box, Loader} from '@navikt/ds-react'
 import PT from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
@@ -38,13 +37,14 @@ const WaitingPanel: React.FC<WaitingPanelProps> = ({
     <Loader type={size} />
     {message && (
       <>
-        <HorizontalSeparatorDiv />
-        <BodyLong
-          className={classNames({ oneLine })}
-          data-testid='c-waitingpanel__text-id'
-        >
-          {message}
-        </BodyLong>
+        <Box paddingInline="2">
+          <BodyLong
+            className={classNames({ oneLine })}
+            data-testid='c-waitingpanel__text-id'
+          >
+            {message}
+          </BodyLong>
+        </Box>
       </>
     )}
   </WaitingPanelDiv>
