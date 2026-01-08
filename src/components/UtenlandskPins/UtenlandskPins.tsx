@@ -1,21 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HGrid, Label} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { Pin } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -35,7 +26,7 @@ export interface UtenlandskPinProps {
   onPinsChanged: (newPins: Array<Pin>) => void
   namespace: string
   personName?: string
-  loggingNamespace: string
+  loggingNamespace?: string
   limit?: number
   validation: Validation
 }
@@ -44,7 +35,6 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
   pins,
   onPinsChanged,
   namespace,
-  loggingNamespace,
   personName,
   limit = 99,
   validation
@@ -160,17 +150,17 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _pin = index < 0 ? _newPin : (inEditMode ? _editPin : pin)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(pin)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
+        <HGrid columns={3} gap="4" align="start">
+          <>
             {inEditMode
               ? (
                 <CountryDropdown
@@ -196,14 +186,14 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   {_pin?.landkode
                     ? <FlagPanel land={_pin?.landkode}/>
                     : (
-                      <FlexCenterDiv/>
+                      <></>
                       )
                   }
 
                 </FormText>
                 )}
-          </Column>
-          <Column>
+          </>
+          <>
             {inEditMode
               ? (
                 <Input
@@ -224,8 +214,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                   <BodyLong>{_pin?.identifikator}</BodyLong>
                 </FormText>
                 )}
-          </Column>
-          <AlignEndColumn>
+          </>
+          <>
             <AddRemovePanel<Pin>
               item={pin}
               marginTop={index < 0}
@@ -238,10 +228,9 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+          </>
+        </HGrid>
+      </RepeatableBox>
     )
   }
 
@@ -249,42 +238,37 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
     <>
       {_.isEmpty(pins)
         ? (
-          <PaddedHorizontallyDiv>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-utenlandskepin')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </Box>
           )
         : (
           <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:land')}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:pin')}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
+            <Box
+              marginInline="4"
+            >
+              <HGrid columns={3} gap="4">
+                <Label>
+                  {t('label:land')}
+                </Label>
+                <Label>
+                  {t('label:pin')}
+                </Label>
+              </HGrid>
+            </Box>
             {pins?.map(renderRow)}
           </>
           )}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
           <>
             {(pins?.length ?? 0) < limit && (
-              <PaddedDiv>
+              <Box>
                 <Button
                   variant='tertiary'
                   onClick={() => _setNewForm(true)}
@@ -292,7 +276,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 >
                   {t('el:button-add-new-x', { x: t('label:utenlandsk-pin')?.toLowerCase() })}
                 </Button>
-              </PaddedDiv>
+              </Box>
             )}
           </>
           )}

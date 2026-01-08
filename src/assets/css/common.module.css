@@ -1,0 +1,9 @@
+.radioPanel{
+  padding: 0 0.5rem;
+}
+.radioPanel:has(input[type=radio]:checked),
+.radioPanel:hover {
+  background-color: var(--a-surface-action-subtle-hover);
+  border-color: var(--a-surface-action-subtle-hover);
+  border-radius: 4px;
+}

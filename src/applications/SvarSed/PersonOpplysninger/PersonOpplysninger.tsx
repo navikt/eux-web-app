@@ -1,13 +1,4 @@
-import {Alert, Heading, TextField} from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Box, Heading, HGrid, Radio, RadioGroup, TextField, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
@@ -27,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import DateField from 'components/DateField/DateField'
+import commonStyles from 'assets/css/common.module.css'
 
 
 const mapState = (state: State): MainFormSelector => ({
@@ -198,36 +190,29 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {label}
-        </Heading>
-      </PaddedDiv>
-      <NorskPin
-        norwegianPin={norwegianPin}
-        error={validation[namespace + '-norskpin']?.feilmelding}
-        namespace={namespace}
-        onNorwegianPinSave={saveNorwegianPin}
-        onFillOutPerson={fillOutPerson}
-      />
-      <VerticalSeparatorDiv />
-      {gradering &&
-        <PaddedDiv>
-          <Alert size="small" variant='warning'>
-            {t('label:sensitivPerson', {gradering: gradering})}
-          </Alert>
-        </PaddedDiv>
-      }
-      {personInfo?.adressebeskyttelse && personInfo?.adressebeskyttelse !== "UGRADERT" && !gradering &&
-        <PaddedDiv>
-          <Alert size="small" variant='warning'>
-            {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
-          </Alert>
-        </PaddedDiv>
-      }
-      <PaddedDiv>
-        <AlignStartRow>
-          <Column>
+      <Box padding="4">
+        <VStack gap="4">
+          <Heading size='small'>
+            {label}
+          </Heading>
+          <NorskPin
+            norwegianPin={norwegianPin}
+            error={validation[namespace + '-norskpin']?.feilmelding}
+            namespace={namespace}
+            onNorwegianPinSave={saveNorwegianPin}
+            onFillOutPerson={fillOutPerson}
+          />
+          {gradering &&
+            <Alert size="small" variant='warning'>
+              {t('label:sensitivPerson', {gradering: gradering})}
+            </Alert>
+          }
+          {personInfo?.adressebeskyttelse && personInfo?.adressebeskyttelse !== "UGRADERT" && !gradering &&
+            <Alert size="small" variant='warning'>
+              {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
+            </Alert>
+          }
+          <HGrid columns={3} gap="4">
             <TextField
               error={validation[namespace + '-fornavn']?.feilmelding}
               id={namespace + '-' + "fornavn"}
@@ -237,8 +222,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               }}
               value={personInfo?.fornavn ?? ''}
             />
-          </Column>
-          <Column>
             <TextField
               error={validation[namespace + '-etternavn']?.feilmelding}
               id={namespace + '-' + 'etternavn'}
@@ -248,8 +231,6 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               }}
               value={personInfo?.etternavn ?? ''}
             />
-          </Column>
-          <Column>
             <DateField
               error={validation[namespace + '-foedselsdato']?.feilmelding}
               id='foedselsdato'
@@ -258,67 +239,62 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               onChanged={setFodselsdato}
               dateValue={personInfo?.foedselsdato}
             />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column>
-            <RadioPanelGroup
-              value={personInfo?.kjoenn}
-              data-no-border
-              data-testid={namespace + '-kjoenn'}
-              error={validation[namespace + '-kjoenn']?.feilmelding}
-              id={namespace + '-kjoenn'}
-              legend={t('label:kjønn') + ' *'}
-              name={namespace + '-kjoenn'}
-              onChange={setKjoenn}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='M'>
+          </HGrid>
+          <RadioGroup
+            value={personInfo?.kjoenn}
+            data-no-border
+            data-testid={namespace + '-kjoenn'}
+            error={validation[namespace + '-kjoenn']?.feilmelding}
+            id={namespace + '-kjoenn'}
+            legend={t('label:kjønn') + ' *'}
+            name={namespace + '-kjoenn'}
+            onChange={setKjoenn}
+          >
+            <HGrid columns={3} gap="4" align="center">
+              <Box className={commonStyles.radioPanel}>
+                <Radio value='M'>
                   {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                </RadioPanel>
-                <RadioPanel value='K'>
+                </Radio>
+              </Box>
+              <Box className={commonStyles.radioPanel}>
+                <Radio value='K'>
                   {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                </RadioPanel>
-                <RadioPanel value='U'>
+                </Radio>
+              </Box>
+              <Box className={commonStyles.radioPanel}>
+                <Radio value='U'>
                   {t('label:ukjent')}
-                </RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <Heading size='small'>
-          {t('label:utenlandske-pin')}
-        </Heading>
-      </PaddedDiv>
-      <UtenlandskPins
-        limit={99}
-        loggingNamespace='svarsed.editor.personopplysning'
-        pins={utenlandskPins}
-        onPinsChanged={setUtenlandskPin}
-        namespace={namespace + '-pin'}
-        validation={validation}
-        personName={personName}
-      />
-      {showFoedested &&
-        <>
-          <PaddedDiv>
-            <VerticalSeparatorDiv />
-            <Heading size='small'>
-              {t('label:fødested')}
-            </Heading>
-          </PaddedDiv>
-          <FoedestedFC
-            loggingNamespace='svarsed.editor.fodested'
-            foedested={personInfo?.pinMangler?.foedested}
-            onFoedestedChanged={setFoedsted}
-            namespace={namespace + '-foedested'}
-            personName={personName}
+                </Radio>
+              </Box>
+            </HGrid>
+          </RadioGroup>
+          <Heading size='small'>
+            {t('label:utenlandske-pin')}
+          </Heading>
+          <UtenlandskPins
+            limit={99}
+            pins={utenlandskPins}
+            onPinsChanged={setUtenlandskPin}
+            namespace={namespace + '-pin'}
             validation={validation}
+            personName={personName}
           />
-        </>
-      }
+          {showFoedested &&
+            <VStack>
+              <Heading size='small'>
+                {t('label:fødested')}
+              </Heading>
+              <FoedestedFC
+                foedested={personInfo?.pinMangler?.foedested}
+                onFoedestedChanged={setFoedsted}
+                namespace={namespace + '-foedested'}
+                personName={personName}
+                validation={validation}
+              />
+            </VStack>
+          }
+        </VStack>
+      </Box>
     </>
   )
 }

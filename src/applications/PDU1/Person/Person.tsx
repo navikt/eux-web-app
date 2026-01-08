@@ -1,4 +1,4 @@
-import {Alert, BodyLong, Heading} from '@navikt/ds-react'
+import {Alert, BodyLong, Box, Heading} from '@navikt/ds-react'
 import {
   AlignStartRow,
   Column,
@@ -215,15 +215,17 @@ const Person: React.FC<MainFormProps> = ({
           <VerticalSeparatorDiv />
         </PaddedDiv>
       )}
-      <UtenlandskPins
-        limit={1}
-        loggingNamespace='pdu1.editor.person'
-        pins={pdu1Person?.utenlandskePin}
-        onPinsChanged={onUtenlandskPinChange}
-        namespace={namespace + '-utenlandskePin'}
-        validation={validation}
-        personName={personName}
-      />
+      <Box paddingBlock="0 4">
+        <UtenlandskPins
+          limit={1}
+          loggingNamespace='pdu1.editor.person'
+          pins={pdu1Person?.utenlandskePin}
+          onPinsChanged={onUtenlandskPinChange}
+          namespace={namespace + '-utenlandskePin'}
+          validation={validation}
+          personName={personName}
+        />
+      </Box>
     </div>
   )
 }

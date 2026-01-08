@@ -1,19 +1,9 @@
 import {ArrowUndoIcon, PencilIcon, MagnifyingGlassIcon, CheckmarkIcon} from '@navikt/aksel-icons'
-import {Alert, BodyLong, Button, Label, Loader} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  FlexStartDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, BodyLong, Box, Button, HStack, Label, Loader, Spacer, VStack} from '@navikt/ds-react'
 import { resetPerson, searchPerson } from 'actions/person'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import Input from 'components/Forms/Input'
-import { RepRow, ShadowPanel } from 'components/StyledComponents'
+import { ShadowPanel } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Pin } from 'declarations/sed'
 import {PersonInfoPDL} from 'declarations/types'
@@ -109,100 +99,90 @@ const NorskPin: React.FC<NorskPinProps> = ({
 
   const { t } = useTranslation()
   return (
-    <RepRow>
-      <AlignStartRow>
+    <Box>
+      <HStack gap="4" align={!_seeNorskPinForm ? "start" : "end"}>
         {!_seeNorskPinForm
           ? (
             <>
-              <Column style={{ minHeight: '3rem' }}>
-                <PileDiv>
-                  <VerticalSeparatorDiv />
-                  <FlexCenterDiv>
-                    <Label>
-                      {t('label:fnr-eller-dnr')}
-                    </Label>
-                    <HorizontalSeparatorDiv />
-                    <BodyLong id={namespace + '-norskpin'}>
-                      {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
-                    </BodyLong>
-                  </FlexCenterDiv>
-                  <ErrorLabel error={error} />
-                </PileDiv>
-              </Column>
-              <AlignEndColumn className='control-buttons'>
-                <Button
-                  variant='secondary'
-                  onClick={() => {
-                    _setTempNorwegianPin(norwegianPin?.identifikator)
-                    _setSeeNorskPinForm(true)
-                  }}
-                  icon={<PencilIcon/>}
-                >
-                  {t('label:endre')}
-                </Button>
-              </AlignEndColumn>
+              <VStack>
+                <HStack gap="4">
+                  <Label>
+                    {t('label:fnr-eller-dnr')}
+                  </Label>
+                  <BodyLong id={namespace + '-norskpin'}>
+                    {norwegianPin?.identifikator ?? t('message:warning-no-fnr')}
+                  </BodyLong>
+                </HStack>
+                <ErrorLabel error={error} />
+              </VStack>
+              <Spacer/>
+              <Button
+                variant='secondary'
+                onClick={() => {
+                  _setTempNorwegianPin(norwegianPin?.identifikator)
+                  _setSeeNorskPinForm(true)
+                }}
+                icon={<PencilIcon/>}
+              >
+                {t('label:endre')}
+              </Button>
             </>
             )
           : (
             <>
-              <Column>
-                <Input
-                  error={error}
-                  id='norskpin'
-                  label={t('label:fnr-eller-dnr')}
-                  hideLabel={false}
-                  namespace={namespace}
-                  onChanged={setNorwegianPin}
-                  value={_tempNorwegianPin}
-                />
-              </Column>
-              <AlignEndColumn className='control-buttons'>
-                <FlexStartDiv className='nolabel'>
-                  <Button
-                    variant='secondary'
-                    disabled={_.isEmpty(_tempNorwegianPin?.trim())}
-                    onClick={saveNorwegianPin}
-                    icon={<CheckmarkIcon/>}
-                  >
-                    {t('el:button-save')}
-                  </Button>
-                  <HorizontalSeparatorDiv size='0.35' />
-                  <Button
-                    variant='secondary'
-                    disabled={searchingPerson}
-                    onClick={searchUser}
-                    icon={<MagnifyingGlassIcon/>}
-                  >
-                    {searchingPerson
-                      ? t('message:loading-searching')
-                      : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
-                    {searchingPerson && <Loader />}
-                  </Button>
-                  <HorizontalSeparatorDiv size='0.35' />
-                  <Button
-                    variant='tertiary'
-                    onClick={cleanUp}
-                    icon={<ArrowUndoIcon/>}
-                  >
-                    {t('el:button-cancel')}
-                  </Button>
-                </FlexStartDiv>
-              </AlignEndColumn>
+              <Input
+                error={error}
+                id='norskpin'
+                label={t('label:fnr-eller-dnr')}
+                hideLabel={false}
+                namespace={namespace}
+                onChanged={setNorwegianPin}
+                value={_tempNorwegianPin}
+              />
+              <Spacer/>
+              <HStack gap="1" wrap={false} align="center">
+                <Button
+                  variant='secondary'
+                  disabled={_.isEmpty(_tempNorwegianPin?.trim())}
+                  onClick={saveNorwegianPin}
+                  icon={<CheckmarkIcon/>}
+                >
+                  {t('el:button-save')}
+                </Button>
+
+                <Button
+                  variant='secondary'
+                  disabled={searchingPerson}
+                  onClick={searchUser}
+                  icon={<MagnifyingGlassIcon/>}
+                >
+                  {searchingPerson
+                    ? t('message:loading-searching')
+                    : t('el:button-search-for-x', { x: t('label:person').toLowerCase() })}
+                  {searchingPerson && <Loader />}
+                </Button>
+
+                <Button
+                  variant='tertiary'
+                  onClick={cleanUp}
+                  icon={<ArrowUndoIcon/>}
+                >
+                  {t('el:button-cancel')}
+                </Button>
+              </HStack>
             </>
-            )}
-      </AlignStartRow>
+          )}
+      </HStack>
       {_searchFailure &&
         <div className='nolabel'><Alert variant={"error"}>{alertMessage}</Alert></div>
       }
-      <VerticalSeparatorDiv />
       {searchedPerson
         ? (
           <ShadowPanel>
-            <FlexCenterDiv>
+            <HStack align="center" gap="4">
               <BodyLong>
                 {searchedPerson.fornavn + ' ' + searchedPerson.etternavn + ' (' + searchedPerson.kjoenn + ')'}
               </BodyLong>
-              <HorizontalSeparatorDiv />
               <Button
                 variant='secondary'
                 onClick={(e) => {
@@ -211,7 +191,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
               >
                 {t('label:fill-in-person-data')}
               </Button>
-            </FlexCenterDiv>
+            </HStack>
           </ShadowPanel>
           )
         : _.isEmpty(norwegianPin?.identifikator)
@@ -221,7 +201,7 @@ const NorskPin: React.FC<NorskPinProps> = ({
             </BodyLong>
             )
           : <div />}
-    </RepRow>
+    </Box>
   )
 }
 

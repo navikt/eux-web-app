@@ -1,20 +1,10 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Button, Label, VStack} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  PaddedRow,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HGrid, Label} from '@navikt/ds-react'
 import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { Foedested } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import _ from 'lodash'
@@ -34,12 +24,10 @@ export interface FoedestedProps {
   onFoedestedChanged: (newFoedested: Foedested) => void
   namespace: string,
   personName?: string
-  loggingNamespace: string,
   validation: Validation
 }
 
 const FoedestedFC: React.FC<FoedestedProps> = ({
-  loggingNamespace,
   foedested,
   onFoedestedChanged,
   namespace,
@@ -161,54 +149,60 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
     const _v: Validation = index < 0 ? _validation : validation
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + namespace}
         className={classNames({
           new: index < 0
         })}
+        padding="4"
+        marginBlock="0 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <Row>
-          <Column>
+        <HGrid columns={4} gap="4" align="start">
+          <>
             {inEditMode
               ? (
                 <Input
                   error={_v[namespace + '-by']?.feilmelding}
                   id='by'
                   label={t('label:by')}
-                  hideLabel={index >= 0}
                   namespace={namespace}
                   onChanged={(newBy: string) => setBy(newBy, index)}
                   value={_foedested?.by}
                 />
                 )
               : (
-                <VStack>
+                <Box>
+                  <Label>{t('label:by')}</Label>
                   <BodyLong id={namespace + '-by'}>
                     {_foedested?.by}
                   </BodyLong>
                   <ErrorLabel error={_v[namespace + '-by']?.feilmelding} />
-                </VStack>
+                </Box>
                 )}
-          </Column>
-          <Column>
+          </>
+          <>
             {inEditMode
               ? (
                 <Input
                   error={_v[namespace + '-region']?.feilmelding}
                   id='region'
                   label={t('label:region')}
-                  hideLabel={index >= 0}
                   namespace={namespace}
                   onChanged={(newRegion: string) => setRegion(newRegion, index)}
                   value={_foedested?.region}
                 />
                 )
               : (
-                <BodyLong id={namespace + '-region'}>{_foedested?.region}</BodyLong>
+                <Box>
+                  <Label>{t('label:region')}</Label>
+                  <BodyLong id={namespace + '-region'}>
+                    {_foedested?.region}
+                  </BodyLong>
+                  <ErrorLabel error={_v[namespace + '-by']?.feilmelding} />
+                </Box>
                 )}
-          </Column>
-          <Column>
+          </>
+          <>
             {inEditMode
               ? (
                 <CountryDropdown
@@ -216,23 +210,20 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                   error={_v[namespace + '-land']?.feilmelding}
                   id={namespace + '-land'}
                   label={t('label:land')}
-                  hideLabel={index >= 0}
                   onOptionSelected={(e: Country) => setLand(e.value3, index)}
                   values={_foedested?.landkode}
                   countryCodeListName="verdensLandHistorisk"
                 />
                 )
               :
-                <VStack>
+                <Box>
+                  <Label>{t('label:land')}</Label>
                   <FlagPanel land={_foedested?.landkode} id={namespace + '-land'}/>
                   <ErrorLabel error={_v[namespace + '-land']?.feilmelding} />
-                </VStack>
+                </Box>
             }
-          </Column>
-        </Row>
-        <PaddedRow size='0.5'>
-          <Column style={{ minHeight: '2.5rem' }} />
-          <AlignEndColumn>
+          </>
+          <>
             <AddRemovePanel<Foedested>
               item={foedested}
               inEditMode={inEditMode}
@@ -244,9 +235,9 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={onCloseEdit}
             />
-          </AlignEndColumn>
-        </PaddedRow>
-      </RepeatableRow>
+          </>
+        </HGrid>
+      </RepeatableBox>
     )
   }
 
@@ -255,47 +246,27 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
       {
         emptyFoedsted
           ? (
-            <PaddedHorizontallyDiv>
+            <Box>
               <SpacedHr />
               <BodyLong>
                 {t('message:warning-no-foedested')}
               </BodyLong>
               <SpacedHr />
-            </PaddedHorizontallyDiv>
+            </Box>
             )
           : (
             <>
-              <PaddedHorizontallyDiv>
-                <AlignStartRow>
-                  <Column>
-                    <Label>
-                      {t('label:by')}
-                    </Label>
-                  </Column>
-                  <Column>
-                    <Label>
-                      {t('label:region')}
-                    </Label>
-                  </Column>
-                  <Column>
-                    <Label>
-                      {t('label:land')}
-                    </Label>
-                  </Column>
-                </AlignStartRow>
-              </PaddedHorizontallyDiv>
-              <VerticalSeparatorDiv size='0.8' />
               {renderRow(foedested!, 0)}
             </>
             )
       }
-      <VerticalSeparatorDiv />
+
       {_newForm
         ? renderRow(null, -1)
         : (
           <>
             {emptyFoedsted && (
-              <PaddedDiv>
+              <Box>
                 <Button
                   variant='tertiary'
                   onClick={() => _setNewForm(true)}
@@ -303,7 +274,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 >
                   {t('el:button-add-x', { x: t('label:fødested')?.toLowerCase() })}
                 </Button>
-              </PaddedDiv>
+              </Box>
             )}
           </>
           )}
