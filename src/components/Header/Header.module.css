@@ -7,3 +7,25 @@
     left: 70px;
   }
 }
+
+.headerContent{
+  background-color: var(--a-bg-subtle);
+  color: var(--a-text-default);
+  display: flex;
+  flex-direction: row;
+  height: 3rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.internalHeader{
+  > button > div {
+    width: max-content;
+  }
+}
+
+.selectedEnhet {
+  background-color: var(--a-surface-selected)
+}

@@ -1,42 +1,14 @@
 import { ChevronLeftIcon, ExternalLinkIcon, MenuGridIcon, StarFillIcon, StarIcon, WrenchIcon } from '@navikt/aksel-icons'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
 import { State } from 'declarations/reducers'
 import {Enhet, Enheter, Saksbehandler} from 'declarations/types'
 import {ActionMenu, BodyShort, Button, Detail, Heading, HStack, InternalHeader, Spacer} from '@navikt/ds-react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
-import PT from 'prop-types'
 import {appReset, setFavouriteEnhet, setSelectedEnhet} from 'actions/app'
 import {NavLink} from "react-router-dom";
 import {FeatureToggles} from "../../declarations/app";
 import styles from './Header.module.css';
-
-
-const HeaderContent = styled.header`
-  background-color: var(--a-bg-subtle);
-  color: var(--a-text-default);
-  display: flex;
-  flex-direction: row;
-  height: 3rem;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 1rem;
-  padding-right: 1rem;
-`
-
-const MyInternalHeader = styled(InternalHeader)`
-  > button > div {
-    width: max-content;
-  }
-`
-
-const ActionMenuItem = styled(ActionMenu.Item)`
-  &.selectedEnhet {
-    background-color: var(--a-surface-selected);
-  }
-`
 
 export interface HeaderSelector {
   saksbehandler: Saksbehandler | undefined
@@ -82,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <MyInternalHeader>
+      <InternalHeader className={styles.internalHeader}>
         <InternalHeader.Title as={NavLink} to="/" onClick={resetApp}>
           nEESSI
         </InternalHeader.Title>
@@ -138,13 +110,13 @@ const Header: React.FC<HeaderProps> = ({
             <ActionMenu.Divider/>
             {enheter?.map((e) => {
               return(
-                <ActionMenuItem
+                <ActionMenu.Item
                   onSelect={() => setSelected(e)}
-                  className={e.enhetNr === selectedEnhet?.enhetNr ? "selectedEnhet" : ""}
+                  className={e.enhetNr === selectedEnhet?.enhetNr ? styles.selectedEnhet : ""}
                   icon={e.erFavoritt ? <StarFillIcon/> : <StarIcon/>}
                 >
                   {e.enhetNr + " - " + e.navn}
-                </ActionMenuItem>)
+                </ActionMenu.Item>)
             })}
           </ActionMenu.Content>
         </ActionMenu>
@@ -164,26 +136,21 @@ const Header: React.FC<HeaderProps> = ({
             />
           }
         </InternalHeader.Button>
-      </MyInternalHeader>
+      </InternalHeader>
       {backButton && (
-        <HeaderContent>
+        <header className={styles.headerContent}>
           <Button
             variant='secondary'
             onClick={onGoBackClick}
             icon={<ChevronLeftIcon/>}
             size="small"
           >
-            <HorizontalSeparatorDiv size='0.5'/>
             {t('label:tilbake')}
           </Button>
-        </HeaderContent>
+        </header>
       )}
     </>
   )
-}
-
-Header.propTypes = {
-  title: PT.string.isRequired
 }
 
 export default Header
