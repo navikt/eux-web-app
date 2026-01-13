@@ -393,64 +393,64 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
             </VStack>
             <Spacer/>
           </HStack>
-          <HGrid columns={3} gap="4">
-            <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
-              <option value=''>
-                {t('label:velg')}
-              </option>
-              )
-              {temaer && temaer.map((k: Kodeverk) => (
-                <option value={k.kode} key={k.kode} selected={k.kode === _tema}>
-                  {k.term}
-                </option>
-              ))}
-            </Select>
-            <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
-              {t("el:button-finn-x", {x: "fagsaker"})}
-            </FullWidthButton>
-            {showFagsaker &&
-              <Select
-                label={t('label:velg-fagsak')}
-                onChange={onFagsakChange}
-              >
+          <VStack gap="2">
+            <HGrid columns={3} gap="4">
+              <Select label={t('label:velg-tema')} onChange={onTemaChange} disabled={_.isEmpty(person)} id="mySelect">
                 <option value=''>
                   {t('label:velg')}
                 </option>
-                {fagsaker &&
-                  fagsaker.map((f: Fagsak) => (
-                    <option value={f._id} key={f._id} selected={f._id === fagsak?._id && _fagsakSelected}>
-                      {f.nr || "GENERELL SAK"}
-                    </option>
-                  ))}
+                )
+                {temaer && temaer.map((k: Kodeverk) => (
+                  <option value={k.kode} key={k.kode} selected={k.kode === _tema}>
+                    {k.term}
+                  </option>
+                ))}
               </Select>
-            }
-          </HGrid>
-          <HGrid columns={3} gap="4">
-            <Spacer/>
-            <Spacer/>
-            <div>
-              {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
-                <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak} className='nolabel'>
-                  {t("el:button-create-x", {x: "fagsak"})}
-                </Button>
+              <FullWidthButton variant="secondary" onClick={onGetFagsaker} loading={gettingFagsaker} className='nolabel' disabled={_.isEmpty(person) || !_tema}>
+                {t("el:button-finn-x", {x: "fagsaker"})}
+              </FullWidthButton>
+              {showFagsaker &&
+                <Select
+                  label={t('label:velg-fagsak')}
+                  onChange={onFagsakChange}
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>
+                  {fagsaker &&
+                    fagsaker.map((f: Fagsak) => (
+                      <option value={f._id} key={f._id} selected={f._id === fagsak?._id && _fagsakSelected}>
+                        {f.nr || "GENERELL SAK"}
+                      </option>
+                    ))}
+                </Select>
               }
-              {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
-                <VStack gap="2">
-                  <Spacer/>
-                  <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+            </HGrid>
+            <HGrid columns={3} gap="4">
+              <Spacer/>
+                {sektor !== "UB" && fagsaker && fagsaker.length === 0 &&
+                  <Button variant="secondary" onClick={onCreateFagsak} loading={creatingFagsak}>
                     {t("el:button-create-x", {x: "fagsak"})}
-                  </FullWidthButton>
-                  <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
-                    <option value={currentYear}>{currentYear}</option>
-                    <option value={currentYear - 1}>{currentYear - 1}</option>
-                    <option value={currentYear - 2}>{currentYear - 2}</option>
-                    <option value={currentYear - 3}>{currentYear - 3}</option>
-                    <option value={currentYear - 4}>{currentYear - 4}</option>
-                  </Select>
-                </VStack>
-              }
-            </div>
-          </HGrid>
+                  </Button>
+                }
+                {sektor === "UB" && fagsaker && fagsaker.length >= 0 &&
+                  <VStack gap="2">
+                    <Spacer/>
+                    <FullWidthButton variant="secondary" onClick={onCreateFagsakDagpenger} loading={creatingFagsak}>
+                      {t("el:button-create-x", {x: "fagsak"})}
+                    </FullWidthButton>
+                    <Select label="År" hideLabel={true} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFagsakDagpengerYear(e.currentTarget.value)}>
+                      <option value={currentYear}>{currentYear}</option>
+                      <option value={currentYear - 1}>{currentYear - 1}</option>
+                      <option value={currentYear - 2}>{currentYear - 2}</option>
+                      <option value={currentYear - 3}>{currentYear - 3}</option>
+                      <option value={currentYear - 4}>{currentYear - 4}</option>
+                    </Select>
+                  </VStack>
+                }
+                <Spacer/>
+            </HGrid>
+          </VStack>
           <HGrid columns={3} gap="4">
               <Checkbox
                 checked={_opprettOppgaveSelected !== undefined && _opprettOppgaveSelected }
@@ -460,7 +460,7 @@ export const JournalfoerPanel = ({ sak, gotoSak, gotoFrontpage }: JournalfoerPan
               </Checkbox>
           </HGrid>
           <HGrid columns={3} gap="4">
-            <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} className='nolabel' disabled={!(!journalfoeringLogg && fagsak && enhet)}>
+            <Button variant="primary" onClick={onJournalfoerClick} loading={isJournalfoering} disabled={!(!journalfoeringLogg && fagsak && enhet && fagsaker && fagsaker.length>0)}>
               {t("el:button-journalfoer")}
             </Button>
           </HGrid>
