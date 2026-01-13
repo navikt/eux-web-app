@@ -1,9 +1,7 @@
-import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Heading, VStack} from '@navikt/ds-react'
 import {resetValidation, setValidation} from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -50,28 +48,22 @@ const YtterligereInfo: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              namespace={namespace}
-              id='ytterligereInfo'
-              label=""
-              onChanged={setYtterligeInfo}
-              value={ytterligereInfo}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
-  )
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <TextArea
+          error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+          namespace={namespace}
+          id='ytterligereInfo'
+          label=""
+          onChanged={setYtterligeInfo}
+          value={ytterligereInfo}
+        />
+      </VStack>
+    </Box>
+  );
 }
 
 export default YtterligereInfo
