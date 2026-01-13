@@ -9,7 +9,6 @@ import {State} from "../../../declarations/reducers";
 import {useTranslation} from "react-i18next";
 import {Adresse, AdresseAnmodning} from "../../../declarations/sed";
 import useLocalValidation from "../../../hooks/useLocalValidation";
-import {validateAdresserH001, ValidationAdresserH001Props} from "./validationH001";
 import performValidation from "../../../utils/performValidation";
 import {validateAdresser, ValidationAdresserProps} from "./validation";
 
@@ -50,13 +49,6 @@ const AdresseH001: React.FC<MainFormProps> = ({
 
   useUnmount(() => {
     const clonedValidation = _.cloneDeep(validation)
-    const adresseTyper = adresseAnmodning?.adresseTyper
-    performValidation<ValidationAdresserH001Props>(
-      clonedValidation, namespace, validateAdresserH001, {
-        adresser,
-        adresseTyper
-      }, true
-    )
     dispatch(setValidation(clonedValidation))
 
   })
