@@ -94,7 +94,7 @@ const AttachmentsFromRinaTable: React.FC<AttachmentsFromRinaTableProps> = ({
   }
 
   const convertFilenameToTitle = (navn: string): string => {
-    return navn.replaceAll("_", " ").split(".")[0]
+    return navn?.replaceAll("_", " ").split(".")[0]
   }
 
   const renderTittel = ({ item, value, context }: RenderOptions<AttachmentTableItem, AttachmentContext, string>) => {
