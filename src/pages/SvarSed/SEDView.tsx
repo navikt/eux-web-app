@@ -1,14 +1,3 @@
-import {
-  AlignStartRow,
-  Column,
-  Container,
-  Content,
-  FullWidthDiv,
-  Margin,
-  PileDiv,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import { querySaks } from 'actions/svarsed'
 import SEDPanel from 'applications/SvarSed/Sak/SEDPanel'
 import Sakshandlinger from 'applications/SvarSed/Sakshandlinger/Sakshandlinger'
@@ -21,21 +10,12 @@ import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import SedUnderJournalfoeringEllerUkjentStatus from "../../applications/Journalfoering/SedUnderJournalfoeringEllerUkjentStatus/SedUnderJournalfoeringEllerUkjentStatus";
 import RelaterteRinaSaker from "../../applications/Journalfoering/RelaterteRinaSaker/RelaterteRinaSaker";
 import IkkeJournalfoerteSed from "../../applications/Journalfoering/IkkeJournalfoerteSed/IkkeJournalfoerteSed";
 import JournalfoeringsOpplysninger from "../../applications/SvarSed/JournalfoeringsOpplysninger/JornalfoeringsOpplysninger";
-
-export const PileStartDiv = styled(PileDiv)`
- align-items: flex-start;
-`
-export const MyRadioPanelGroup = styled(RadioPanelGroup)`
-  .navds-radio-buttons {
-    margin-top: 0rem !important;
-  }
-`
+import {Box, HGrid, Page, VStack} from "@navikt/ds-react";
 
 interface SEDViewSelector {
   currentSak: Sak | undefined
@@ -145,12 +125,13 @@ const SEDView = (): JSX.Element => {
       moment(a.sistEndretDato, 'YYYY-MM-DD').isAfter(moment(b.sistEndretDato, 'YYYY-MM-DD')) ? -1 : 1
     )).map((sed: Sed) => (
       <div key={'sed-' + sed.sedId} style={addMargin ? { marginLeft: '4rem' } : {}}>
-        <SEDPanel
-          currentSak={currentSak!}
-          sed={sed}
-        />
-        <VerticalSeparatorDiv />
-        {sed.children ? getSedPanels(sed.children, true) : undefined}
+        <VStack gap="4">
+          <SEDPanel
+            currentSak={currentSak!}
+            sed={sed}
+          />
+          {sed.children ? getSedPanels(sed.children, true) : undefined}
+        </VStack>
       </div>
     ))
   }
@@ -162,56 +143,33 @@ const SEDView = (): JSX.Element => {
   return (
     <>
       {queryingSaks && !refreshingSaks &&
-        <>
-          <VerticalSeparatorDiv/>
+        <Box padding="4">
           <WaitingPanel/>
-        </>
+        </Box>
       }
-      <Container>
-        <Margin />
-        <Content style={{ flex: 6}}>
-          <PileStartDiv>
-            <FullWidthDiv>
-              <AlignStartRow>
-                <Column style={{marginRight: "1.5rem"}}>
-                  <Sakshandlinger sak={currentSak} />
-                </Column>
-                <Column flex='2' style={{marginLeft: "1.5rem"}}>
-                  <MyRadioPanelGroup>
-                    {getSedPanels(arrayToTree(seds))}
-                  </MyRadioPanelGroup>
-                </Column>
-              </AlignStartRow>
-            </FullWidthDiv>
-          </PileStartDiv>
-        </Content>
-        <Content style={{ flex: 2 }}>
-          <Saksopplysninger sak={currentSak} />
-          <VerticalSeparatorDiv />
-          {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
-            <JournalfoeringsOpplysninger sak={currentSak} />
-          }
-          {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
-            <>
-              <VerticalSeparatorDiv />
+      <Page.Block width="2xl">
+        <HGrid columns="1fr 2fr 1fr" gap="12" paddingBlock="12" paddingInline="4">
+          <Sakshandlinger sak={currentSak} />
+          <VStack gap="4">
+            {getSedPanels(arrayToTree(seds))}
+          </VStack>
+          <VStack gap="4">
+            <Saksopplysninger sak={currentSak} />
+            {(!currentSak.ikkeJournalfoerteSed || currentSak.ikkeJournalfoerteSed.length === 0) &&
+              <JournalfoeringsOpplysninger sak={currentSak} />
+            }
+            {currentSak.ikkeJournalfoerteSed && currentSak.ikkeJournalfoerteSed.length > 0 &&
               <IkkeJournalfoerteSed sak={currentSak} bucer={bucer}/>
-            </>
-          }
-          {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
-            <>
-              <VerticalSeparatorDiv />
+            }
+            {!_.isEmpty(currentSak.sedUnderJournalfoeringEllerUkjentStatus) &&
               <SedUnderJournalfoeringEllerUkjentStatus sak={currentSak}/>
-            </>
-          }
-          {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
-            <>
-              <VerticalSeparatorDiv />
+            }
+            {currentSak.relaterteRinasakIder && currentSak.relaterteRinasakIder.length > 0 &&
               <RelaterteRinaSaker sak={currentSak} />
-            </>
-          }
-        </Content>
-        <Margin />
-      </Container>
+            }
+          </VStack>
+        </HGrid>
+      </Page.Block>
     </>
   )
 }
