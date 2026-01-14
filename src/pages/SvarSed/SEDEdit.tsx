@@ -1,5 +1,4 @@
-import { Alert, Button, Loader, Panel } from '@navikt/ds-react'
-import { Container, Content, FlexDiv, HorizontalSeparatorDiv, Margin, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Alert, Box, Button, HGrid, HStack, Loader, Page, VStack} from '@navikt/ds-react'
 import { alertReset } from 'actions/alert'
 import { finishPageStatistic, startPageStatistic } from 'actions/statistics'
 import {
@@ -207,8 +206,6 @@ const SEDEdit = (): JSX.Element => {
       const hasErrors = performValidation<ValidationSEDEditProps>(clonedValidation, '', validateSEDEdit, {
         replySed: newReplySed
       })
-      console.log(hasErrors)
-      console.log(clonedValidation)
       dispatch(setValidation(clonedValidation))
       if (!hasErrors) {
         setViewSendSedModal(true)
@@ -346,350 +343,333 @@ const SEDEdit = (): JSX.Element => {
   }
 
   return (
-    <Container>
-      <Margin />
-      <Content style={{ flex: 6 }}>
-        <SendSEDModal
-          fnr={fnr!}
-          open={_viewSendSedModal}
-          replySed={replySed}
-          onModalClose={() => {
-            dispatch(alertReset())
-            setViewSendSedModal(false)
-          }}
-          onSendSedClicked={() => {
-            onSendSedClick();
-            setViewSendSedModal(false)
-          }}
-        />
-        {(isF001Sed(replySed) || isF002Sed(replySed)) && (
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              namespace='formål1'
-              loggingNamespace='formalmanager'
-              forms={[
-                { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
-                { label: t('el:option-mainform-periode'), value: 'anmodningsperiode', component: AnmodningsPeriode }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {isF003Sed(replySed) && (
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              namespace='mottakavsoknad'
-              loggingNamespace='mottakavsoknadmanager'
-              forms={[
-                { label: t('el:option-mainform-mottak-av-soknad'), value: 'mottakavsoknad', component: MottakAvSoknad },
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {isF027Sed(replySed) && (
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              namespace='svarpaaanmodningominformasjon'
-              loggingNamespace='svarpaaanmodningominformasjonmanager'
-              forms={[
-                { label: t('el:option-mainform-svarpaaanmodningominformasjon'), value: 'svarpaaanmodningominformasjon', component: SvarPaaAnmodningOmInformasjon },
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {showMainForm() && (
-          <>
-            <MainForm<ReplySed>
-              CDM_VERSION={CDM_VERSJON}
-              type='twolevel'
-              namespace='svarsed'
-              loggingNamespace='personmanager'
-              firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
-              deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
-              forms={[
-                { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
-                { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
-                { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
-                { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
-                { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
-                { label: t('el:option-mainform-adresseH001'), value: 'adresseH001', component: AdresseH001, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
-                { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
-                { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
-                { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
-                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },
-                { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON >= 4.4 },
-                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
-                { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
-                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => CDM_VERSJON <= 4.3 },
-                { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => CDM_VERSJON >= 4.4 },
-                { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
-                { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
-                { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
-                { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
-                { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
-                { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
-                { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
-                { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: ['U002', 'U017'] },
-                { label: t('el:option-mainform-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
-                { label: t('el:option-mainform-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: ['U002', 'U017'] },
-                { label: t('el:option-mainform-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
-                { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
-                { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
-                { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
-                { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
-                { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
-                { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
-                { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
-                { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
-                { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
-                { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {(isF001Sed(replySed) || isF002Sed(replySed))&& (
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              namespace='formål2'
-              deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
-              forms={[
-                {
-                  label: t('el:option-mainform-vedtak'),
-                  value: 'vedtak',
-                  component: Vedtak,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0
-                },
-                {
-                  label: t('el:option-mainform-motregning'),
-                  value: 'motregninger',
-                  component: Motregninger,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
-                },
-                {
-                  label: t('el:option-mainform-prosedyre'),
-                  value: 'prosedyre_ved_uenighet',
-                  component: ProsedyreVedUenighet,
-                  condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0
-                },
-                {
-                  label: t('el:option-mainform-refusjon'),
-                  value: 'refusjon_ihht_artikkel_58_i_forordning',
-                  component: KravOmRefusjon,
-                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON <= 4.3)
-                },
-                {
-                  label: t('el:option-mainform-refusjon'),
-                  value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
-                  component: KravOmRefusjon,
-                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON <= 4.3)
-                },
-                {
-                  label: t('el:option-mainform-refusjon'),
-                  value: 'refusjon',
-                  component: RefusjonFC,
-                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON >= 4.4)
-                },
-                {
-                  label: t('el:option-mainform-refusjon'),
-                  value: 'refusjon',
-                  component: RefusjonFC,
-                  condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON >= 4.4)
-                },
-                {
-                  label: t('el:option-mainform-kontoopplysninger'),
-                  value: 'kontoopplysninger',
-                  component: Kontoopplysning
-                }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='formalmanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        )}
-        {isF003Sed(replySed) &&
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              menuDefaultClosed={true}
-              namespace='vedtak'
-              forms={[
-                {
-                  label: t('el:option-mainform-vedtak'),
-                  value: 'vedtak',
-                  component: VedtakForF003,
-                }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='vedtakmanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        }
-        {isF026Sed(replySed) &&
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              menuDefaultClosed={true}
-              namespace='etterspurtinformasjon'
-              forms={[
-                {
-                  label: t('el:option-mainform-etterspurtinformasjon'),
-                  value: 'etterspurtinformasjon',
-                  component: EtterspurtInformasjon,
-                }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='etterspurtinfomanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        }
-        {isF027Sed(replySed) &&
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='menuitems'
-              menuDefaultClosed={true}
-              namespace='svarpaaanmodningominformasjon'
-              deselectedMenu={deselectedMenu}
-              menuItems={[
-                {key: "adopsjon", label:t('label:svar-på-anmodning-om-adopsjon') , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
-                {key: "inntekt", label:t('label:svar-på-anmodning-om-inntekt'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
-                {key: "ytelsetilforeldreloese", label:t('label:svar-på-anmodning-om-barnepensjon'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
-                {key: "anneninformasjonbarnet", label:t('label:svar-på-anmodning-om-annen-informasjon-om-barnet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
-                {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
-              ]}
-              forms={[
-                {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'adopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
-                {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'inntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
-
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'barnet-aktivitet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'aktivitet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'barnet-skole', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'skole'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'barnet-opplaering', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'opplaering'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'barnet-ufoerhet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ufoerhet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'barnet-arbeidsledighet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'arbeidsledighet'}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'barnet-ytelser', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ytelser'}},
-
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'dagligOmsorg', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'dagligOmsorg'}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'foreldreansvar'}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
-                {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['anneninformasjonbarnet']},
-                {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'ytterligereInformasjon', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'ytterligereInformasjon'}},
-
-                {label: t('el:option-mainform-svaromfremmoeteutdanning'), value: 'utdanning', component: SvarOmFremmoeteUtdanning, type: ['utdanning']},
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='svarpaaetterspurtinformasjonmanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        }
-        {isS040Sed(replySed) &&
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              menuDefaultClosed={false}
-              namespace='forespoersel'
-              forms={[
-                {
-                  label: t('el:option-mainform-forespoersel'),
-                  value: 'forespoersel',
-                  component: Forespoersel,
-                }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='forespoerselmanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        }
-        {isS046Sed(replySed) &&
-          <>
-            <MainForm
-              CDM_VERSION={CDM_VERSJON}
-              type='onelevel'
-              menuDefaultClosed={false}
-              namespace='informasjonOmUtbetaling'
-              forms={[
-                {
-                  label: t('el:option-mainform-vedtak'),
-                  value: 'informasjonOmUtbetaling',
-                  component: InformasjonOmUtbetaling,
-                }
-              ]}
-              replySed={replySed}
-              updateReplySed={updateReplySed}
-              setReplySed={setReplySed}
-              loggingNamespace='informasjonomutbetalingmanager'
-            />
-            <VerticalSeparatorDiv size='2' />
-          </>
-        }
-        {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
-          <>
-            <VerticalSeparatorDiv />
-            <TextAreaDiv>
-              <TextArea
-                namespace={namespace}
-                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon-til-sed')}
-                onChanged={setComment}
-                value={(replySed as FSed).ytterligereInfo}
+    <Page.Block width="2xl">
+      <HGrid columns="80% 20%" gap="8" paddingBlock="12" paddingInline="4">
+        <VStack gap="8">
+          <SendSEDModal
+            fnr={fnr!}
+            open={_viewSendSedModal}
+            replySed={replySed}
+            onModalClose={() => {
+              dispatch(alertReset())
+              setViewSendSedModal(false)
+            }}
+            onSendSedClicked={() => {
+              onSendSedClick();
+              setViewSendSedModal(false)
+            }}
+          />
+          {(isF001Sed(replySed) || isF002Sed(replySed)) && (
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='formål1'
+                loggingNamespace='formalmanager'
+                forms={[
+                  { label: t('el:option-mainform-formål'), value: 'formål', component: Formål },
+                  { label: t('el:option-mainform-periode'), value: 'anmodningsperiode', component: AnmodningsPeriode }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
               />
-            </TextAreaDiv>
-          </>
-        )}
-        {showAttachments && (
-          <>
-            <VerticalSeparatorDiv />
+            </>
+          )}
+          {isF003Sed(replySed) && (
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='mottakavsoknad'
+                loggingNamespace='mottakavsoknadmanager'
+                forms={[
+                  { label: t('el:option-mainform-mottak-av-soknad'), value: 'mottakavsoknad', component: MottakAvSoknad },
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+              />
+            </>
+          )}
+          {isF027Sed(replySed) && (
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='svarpaaanmodningominformasjon'
+                loggingNamespace='svarpaaanmodningominformasjonmanager'
+                forms={[
+                  { label: t('el:option-mainform-svarpaaanmodningominformasjon'), value: 'svarpaaanmodningominformasjon', component: SvarPaaAnmodningOmInformasjon },
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+              />
+            </>
+          )}
+          {showMainForm() && (
+            <>
+              <MainForm<ReplySed>
+                CDM_VERSION={CDM_VERSJON}
+                type='twolevel'
+                namespace='svarsed'
+                loggingNamespace='personmanager'
+                firstForm={isXSed(replySed) ? 'personlight' : 'personopplysninger'}
+                deselectedMenuOption={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menuOption : undefined}
+                forms={[
+                  { label: t('el:option-mainform-personopplyninger'), value: 'personopplysninger', component: PersonOpplysninger, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
+                  { label: t('el:option-mainform-person'), value: 'personlight', component: PersonLight, type: 'X' },
+                  { label: t('el:option-mainform-nasjonaliteter'), value: 'nasjonaliteter', component: Nasjonaliteter, type: ['F', 'U', 'H', 'S'], adult: true, barn: true },
+                  { label: t('el:option-mainform-adresser'), value: 'adresser', component: Adresser, type: ['F', 'H'], adult: true, barn: true },
+                  { label: t('el:option-mainform-adresse'), value: 'adresse', component: Adresser, type: ['S'], options: {singleAdress: true}},
+                  { label: t('el:option-mainform-adresseH001'), value: 'adresseH001', component: AdresseH001, type: ['H001'], adult: true, barn: true, condition: () => CDM_VERSJON >= 4.4 },
+                  { label: t('el:option-mainform-kontakt'), value: 'kontaktinformasjon', component: Kontaktinformasjon, type: 'F', adult: true },
+                  { label: t('el:option-mainform-ytterligereinformasjon'), value: 'ytterligereInfo', component: YtterligereInfo, type: 'F003', spouse: true },
+                  { label: t('el:option-mainform-trygdeordninger'), value: 'trygdeordning', component: Trygdeordning, type: ['F026', 'F027'], adult: true },
+                  { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetogtrygdeperioder', component: AktivitetOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON <= 4.3 },
+                  { label: t('el:option-mainform-aktivitetogtrygdeperioder'), value: 'aktivitetstatusogtrygdeperioder', component: AktivitetStatusOgTrygdeperioder, type: ['F001', 'F002'], adult: true, condition: () => CDM_VERSJON >= 4.4 },
+                  { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjon', component: Familierelasjon, type: ['F001', 'F002'], adult: true },
+                  { label: t('el:option-mainform-familierelasjon'), value: 'familierelasjonf003', component: FamilieRelasjonF003, type: 'F003', other: true },
+                  { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelserfsed', component: RettTilYtelserFSED, type: ['F003'], user: true, condition: () => CDM_VERSJON <= 4.3 },
+                  { label: t('el:option-mainform-retttilytelser'), value: 'periodermedretttilytelser', component: PerioderMedRettTilYtelser, type: ['F003'], user: true, condition: () => CDM_VERSJON >= 4.4 },
+                  { label: t('el:option-mainform-relasjon'), value: 'relasjon', component: Relasjon, type: ['F001', 'F002'], adult: false, barn: true },
+                  { label: t('el:option-mainform-grunnlagforbosetting'), value: 'grunnlagforbosetting', component: GrunnlagForBosetting, type: ['F001', 'F002'], adult: true, barn: true },
+                  { label: t('el:option-mainform-beløpnavnogvaluta'), value: 'beløpnavnogvaluta', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, barn: true, condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0 },
+                  { label: t('el:option-mainform-familieytelser'), value: 'familieytelser', component: BeløpNavnOgValuta, type: ['F001', 'F002'], adult: false, family: true },
+                  { label: t('el:option-mainform-referanseperiode'), value: 'referanseperiode', component: Referanseperiode, type: 'U' },
+                  { label: t('el:option-mainform-inntekt'), value: 'inntekt', component: InntektForm, type: 'U004' },
+                  { label: t('el:option-mainform-retttilytelser'), value: 'retttilytelser', component: RettTilYtelser, type: ['U017'] },
+                  { label: t('el:option-mainform-arbeidsperioder'), value: 'arbeidsperioder', component: ArbeidsperioderOversikt, type: ['U002', 'U017'] },
+                  { label: t('el:option-mainform-forsikring'), value: 'forsikring', component: Forsikring, type: ['U002', 'U017'] },
+                  { label: t('el:option-mainform-sisteansettelseinfo'), value: 'sisteansettelseinfo', component: SisteAnsettelseInfo, type: ['U002', 'U017'] },
+                  { label: t('el:option-mainform-grunntilopphør'), value: 'grunntilopphør', component: GrunnTilOpphør, type: ['U002', 'U017'] },
+                  { label: t('el:option-mainform-periodefordagpenger'), value: 'periodefordagpenger', component: PeriodeForDagpenger, type: ['U002', 'U017'] },
+                  { label: t('el:option-mainform-svarpåforespørsel'), value: 'svarpåforespørsel', component: SvarPåForespørsel, type: 'H002' },
+                  { label: t('el:option-mainform-anmodning'), value: 'anmodning', component: Anmodning, type: 'H001' },
+                  { label: t('el:option-mainform-endredeforhold'), value: 'endredeforhold', component: EndredeForhold, type: 'H001' },
+                  { label: t('el:option-mainform-avslutning'), value: 'avslutning', component: Avslutning, type: 'X001' },
+                  { label: t('el:option-mainform-ugyldiggjøre'), value: 'ugyldiggjøre', component: Ugyldiggjøre, type: 'X008' },
+                  { label: t('el:option-mainform-påminnelse'), value: 'påminnelse', component: Påminnelse, type: 'X009' },
+                  { label: t('el:option-mainform-svarpåminnelse'), value: 'svarpåminnelse', component: SvarPåminnelse, type: 'X010' },
+                  { label: t('el:option-mainform-avvis'), value: 'avvis', component: Avvis, type: 'X011' },
+                  { label: t('el:option-mainform-klargjør'), value: 'klargjør', component: Klargjør, type: 'X012' }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+              />
+            </>
+          )}
+          {(isF001Sed(replySed) || isF002Sed(replySed))&& (
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                namespace='formål2'
+                deselectedMenu={deselectedMenu && formaalToMenuMap[deselectedMenu] ? formaalToMenuMap[deselectedMenu].menu : undefined}
+                forms={[
+                  {
+                    label: t('el:option-mainform-vedtak'),
+                    value: 'vedtak',
+                    component: Vedtak,
+                    condition: () => (replySed as FSed)?.formaal?.indexOf('vedtak') >= 0
+                  },
+                  {
+                    label: t('el:option-mainform-motregning'),
+                    value: 'motregninger',
+                    component: Motregninger,
+                    condition: () => (replySed as FSed)?.formaal?.indexOf('motregning') >= 0
+                  },
+                  {
+                    label: t('el:option-mainform-prosedyre'),
+                    value: 'prosedyre_ved_uenighet',
+                    component: ProsedyreVedUenighet,
+                    condition: () => (replySed as FSed)?.formaal?.indexOf('prosedyre_ved_uenighet') >= 0
+                  },
+                  {
+                    label: t('el:option-mainform-refusjon'),
+                    value: 'refusjon_ihht_artikkel_58_i_forordning',
+                    component: KravOmRefusjon,
+                    condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON <= 4.3)
+                  },
+                  {
+                    label: t('el:option-mainform-refusjon'),
+                    value: 'refusjon_i_henhold_til_artikkel_58_i_forordningen',
+                    component: KravOmRefusjon,
+                    condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON <= 4.3)
+                  },
+                  {
+                    label: t('el:option-mainform-refusjon'),
+                    value: 'refusjon',
+                    component: RefusjonFC,
+                    condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_ihht_artikkel_58_i_forordning') >= 0 && CDM_VERSJON >= 4.4)
+                  },
+                  {
+                    label: t('el:option-mainform-refusjon'),
+                    value: 'refusjon',
+                    component: RefusjonFC,
+                    condition: () => ((replySed as FSed)?.formaal?.indexOf('refusjon_i_henhold_til_artikkel_58_i_forordningen') >= 0 && CDM_VERSJON >= 4.4)
+                  },
+                  {
+                    label: t('el:option-mainform-kontoopplysninger'),
+                    value: 'kontoopplysninger',
+                    component: Kontoopplysning
+                  }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='formalmanager'
+              />
+            </>
+          )}
+          {isF003Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                menuDefaultClosed={true}
+                namespace='vedtak'
+                forms={[
+                  {
+                    label: t('el:option-mainform-vedtak'),
+                    value: 'vedtak',
+                    component: VedtakForF003,
+                  }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='vedtakmanager'
+              />
+            </>
+          }
+          {isF026Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                menuDefaultClosed={true}
+                namespace='etterspurtinformasjon'
+                forms={[
+                  {
+                    label: t('el:option-mainform-etterspurtinformasjon'),
+                    value: 'etterspurtinformasjon',
+                    component: EtterspurtInformasjon,
+                  }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='etterspurtinfomanager'
+              />
+            </>
+          }
+          {isF027Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='menuitems'
+                menuDefaultClosed={true}
+                namespace='svarpaaanmodningominformasjon'
+                deselectedMenu={deselectedMenu}
+                menuItems={[
+                  {key: "adopsjon", label:t('label:svar-på-anmodning-om-adopsjon') , condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.adopsjon},
+                  {key: "inntekt", label:t('label:svar-på-anmodning-om-inntekt'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.inntekt},
+                  {key: "ytelsetilforeldreloese", label:t('label:svar-på-anmodning-om-barnepensjon'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.ytelseTilForeldreloese},
+                  {key: "anneninformasjonbarnet", label:t('label:svar-på-anmodning-om-annen-informasjon-om-barnet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.annenInformasjonBarnet},
+                  {key: "utdanning", label:t('label:svar-om-fremmøte-skole-høyskole-opplæring-arbeidsledighet'), condition: () => (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.utdanning || (replySed as F027Sed).anmodningOmMerInformasjon?.svar?.deltakelsePaaUtdanning},
+                ]}
+                forms={[
+                  {label: t('el:option-mainform-svarpaaforespoerselomadopsjon'), value: 'adopsjon', component: SvarPaaForespoerselOmAdopsjon, type: ['adopsjon']},
+                  {label: t('el:option-mainform-svarpaaanmodningominntekt'), value: 'inntekt', component: SvarPaaAnmodningOmInntekt, type: ['inntekt']},
+
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-den-avdoede'), value: 'identifisering-av-den-avdoede', component: IdentifiseringAvDenAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifisering-av-de-beroerte-barna'), value: 'identifisering-av-de-beroerte-barna', component: IdentifiseringAvDeBeroerteBarna, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-identifikasjon-av-andre-personer'), value: 'identifikasjon-av-andre-personer', component: IdentifiseringAvAnnenPerson, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-bosted'), value: 'den-foreldreloeses-barnets-bosted', component: DenForeldreloesesBarnetsBosted, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjonen-mellom-den-foreldreloese-barnet-og-avdoede'), value: 'relasjonen-mellom-den-foreldreloese-barnet-og-avdoede', component: RelasjonForeldreloeseBarnetOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-relasjon-mellom-annen-person-og-avdoede'), value: 'relasjon-mellom-annen-person-og-avdoede', component: RelasjonAnnenPersonOgAvdoede, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-den-foreldreloeses-barnets-aktivitet'), value: 'barnet-aktivitet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'aktivitet'}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-skole'), value: 'barnet-skole', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'skole'}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-opplaering'), value: 'barnet-opplaering', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'opplaering'}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-ufoerhet'), value: 'barnet-ufoerhet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ufoerhet'}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-arbeidsledighet'), value: 'barnet-arbeidsledighet', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'arbeidsledighet'}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-inntekt-til-den-foreldreloese-barnet'), value: 'inntekt-til-den-foreldreloese-barnet', component: InntektForeldreloeseBarnet, type:['ytelsetilforeldreloese'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-ytelser-til-foreldreloese'), value: 'barnet-ytelser', component: BarnetFritekst, type:['ytelsetilforeldreloese'], options: {fieldname: 'ytelser'}},
+
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-daglig-omsorg'), value: 'dagligOmsorg', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'dagligOmsorg'}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-foreldreansvar'), value: 'foreldreansvar', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'foreldreansvar'}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-er-barnet-adoptert'), value: 'er-adoptert', component: ErBarnetAdoptert, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-forsoerges-av-det-offentlige'), value: 'forsoerges-av-det-offentlige', component: ForsoergesAvDetOffentlige, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-informasjon-om-barnehage'), value: 'informasjon-om-barnehage', component: InformasjonOmBarnehage, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-barnets-sivilstand'), value: 'barnets-sivilstand', component: BarnetsSivilstand, type:['anneninformasjonbarnet'], options: {cdmVersjon: CDM_VERSJON}},
+                  {label: t('el:option-mainform-svarpaaanmodningomanneninformasjonombarnet-dato-for-endrede-forhold'), value: 'dato-for-endrede-forhold', component: DatoEndredeForhold, type:['anneninformasjonbarnet']},
+                  {label: t('el:option-mainform-svarpaaanmodningombarnepensjon-svar-paa-anmodning-om-annen-informasjon-angaaende-barnet'), value: 'ytterligereInformasjon', component: AnnenInformasjonOmBarnetFritekst, type:['anneninformasjonbarnet'], options: {fieldname: 'ytterligereInformasjon'}},
+
+                  {label: t('el:option-mainform-svaromfremmoeteutdanning'), value: 'utdanning', component: SvarOmFremmoeteUtdanning, type: ['utdanning']},
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='svarpaaetterspurtinformasjonmanager'
+              />
+            </>
+          }
+          {isS040Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                menuDefaultClosed={false}
+                namespace='forespoersel'
+                forms={[
+                  {
+                    label: t('el:option-mainform-forespoersel'),
+                    value: 'forespoersel',
+                    component: Forespoersel,
+                  }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='forespoerselmanager'
+              />
+            </>
+          }
+          {isS046Sed(replySed) &&
+            <>
+              <MainForm
+                CDM_VERSION={CDM_VERSJON}
+                type='onelevel'
+                menuDefaultClosed={false}
+                namespace='informasjonOmUtbetaling'
+                forms={[
+                  {
+                    label: t('el:option-mainform-vedtak'),
+                    value: 'informasjonOmUtbetaling',
+                    component: InformasjonOmUtbetaling,
+                  }
+                ]}
+                replySed={replySed}
+                updateReplySed={updateReplySed}
+                setReplySed={setReplySed}
+                loggingNamespace='informasjonomutbetalingmanager'
+              />
+            </>
+          }
+          {(isF001Sed(replySed) || isF002Sed(replySed) || isF026Sed(replySed) || isF027Sed(replySed) || isH002Sed(replySed) || isS040Sed(replySed) || isS046Sed(replySed)) && (
+            <TextArea
+              namespace={namespace}
+              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-informasjon-til-sed')}
+              onChanged={setComment}
+              value={(replySed as FSed).ytterligereInfo}
+            />
+          )}
+          {showAttachments && (
             <Attachments
               replySed={replySed}
               attachmentsFromRina={replySed.sed?.vedlegg}
@@ -709,20 +689,16 @@ const SEDEdit = (): JSX.Element => {
                 }))
               }}
             />
-          </>
-        )}
-        <VerticalSeparatorDiv size='2' />
-        <Panel border>
-          {!!replySed && isPreviewableSed(replySed!.sedType) && (
-            <>
-              <PreviewSED replySed={replySed} />
-              <VerticalSeparatorDiv />
-            </>
           )}
-          <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
-          <VerticalSeparatorDiv />
-          <FlexDiv>
-            <div>
+          <Box padding="4" borderWidth="1" background="bg-default">
+            <VStack gap="4" width="100%">
+            {!!replySed && isPreviewableSed(replySed!.sedType) && (
+              <Box>
+                <PreviewSED replySed={replySed} />
+              </Box>
+            )}
+            <ValidationBox heading={t('validation:feiloppsummering')} validation={validation} />
+            <HStack gap="4">
               <Button
                 variant='primary'
                 onClick={saveReplySed}
@@ -735,10 +711,6 @@ const SEDEdit = (): JSX.Element => {
                     : t('label:lagre-sed')}
                 {(creatingSvarSed || updatingSvarSed) && <Loader />}
               </Button>
-              <VerticalSeparatorDiv size='0.5' />
-            </div>
-            <HorizontalSeparatorDiv />
-            <div>
               <Button
                 variant='primary'
                 title={t('message:help-send-sed')}
@@ -747,13 +719,9 @@ const SEDEdit = (): JSX.Element => {
               >
                 {sendingSed ? t('message:loading-sending-sed') : t('el:button-send-sed')}
               </Button>
-              <VerticalSeparatorDiv size='0.5' />
-            </div>
-          </FlexDiv>
-          {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
-            <>
-              <VerticalSeparatorDiv />
-              <FlexDiv>
+            </HStack>
+            {_sendButtonClicked && alertMessage && alertType === types.SVARSED_SED_SEND_FAILURE && (
+              <HStack gap="2">
                 <Alert variant='error'>
                   {alertMessage!}
                 </Alert>
@@ -765,16 +733,16 @@ const SEDEdit = (): JSX.Element => {
                 >
                   OK
                 </Button>
-              </FlexDiv>
-            </>
-          )}
-        </Panel>
-      </Content>
-      <Content style={{ flex: 2 }}>
-        <SEDDetails/>
-      </Content>
-      <Margin />
-    </Container>
+              </HStack>
+            )}
+            </VStack>
+          </Box>
+        </VStack>
+        <Box>
+          <SEDDetails/>
+        </Box>
+      </HGrid>
+    </Page.Block>
   )
 }
 
