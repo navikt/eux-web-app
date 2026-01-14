@@ -1,5 +1,4 @@
-import { Button } from '@navikt/ds-react'
-import { FlexDiv, HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import {Button, HStack} from '@navikt/ds-react'
 import {appReset, setStatusParam} from 'actions/app'
 import { cleanUpSvarSed, querySaks } from 'actions/svarsed'
 import SakBanner from 'applications/SvarSed/Sak/SakBanner'
@@ -116,7 +115,7 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
             modalTitle: t('message:warning-x-not-saved', { x: 'SED' }),
             modalContent: (
               <>
-                <FlexDiv>
+                <HStack gap="4">
                   <Button
                     variant='secondary' onClick={() => {
                       _setShowSaveModal(false)
@@ -125,11 +124,10 @@ export const SvarSedPage: React.FC<SvarSedPageProps> = ({
                   >
                     {t('el:button-discard-changes')}
                   </Button>
-                  <HorizontalSeparatorDiv />
                   <Button variant='tertiary' onClick={() => _setShowSaveModal(false)}>
                     {t('el:button-cancel')}
                   </Button>
-                </FlexDiv>
+                </HStack>
               </>
             )
           }}
