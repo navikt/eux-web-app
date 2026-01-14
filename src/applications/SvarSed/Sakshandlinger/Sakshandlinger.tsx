@@ -1,5 +1,4 @@
-import { BodyLong, Heading, Link, Panel, ReadMore, Tooltip } from '@navikt/ds-react'
-import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {BodyLong, Box, Heading, Link, ReadMore, Tooltip, VStack} from '@navikt/ds-react'
 import {createF002Sed, createFSed, createH001Sed, createXSed, deleteSak} from 'actions/svarsed'
 import { HorizontalLineSeparator } from 'components/StyledComponents'
 import {Sak, Sed} from 'declarations/types'
@@ -67,11 +66,12 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
     return(
       <>
         <Tooltip content={t('message:warning-rina')}>
-          <BodyLong>
-            {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
-          </BodyLong>
+          <Box paddingBlock="2">
+            <BodyLong>
+              {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
+            </BodyLong>
+          </Box>
         </Tooltip>
-        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -95,7 +95,6 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
         <Link href='#' onClick={() => onClickFunction()}>
           {t('sakshandlinger:' + sakshandling, t('sakshandlinger:opprett', {SED: sakshandling}))}
         </Link>
-        <VerticalSeparatorDiv />
       </>
     )
   }
@@ -119,18 +118,18 @@ const Sakshandlinger: React.FC<SakshandlingerProps> = ({sak}: SakshandlingerProp
 
   return (
     <>
-      <Panel border>
-        <Heading size='small'>Sakshandlinger</Heading>
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv />
-        {sakshandlinger}
-        {disabledSakshandlinger.length > 0 &&
-          <ReadMore header="Handlinger tilgjengelig i RINA">
-            {disabledSakshandlinger}
-          </ReadMore>
-        }
-      </Panel>
+      <Box padding="4" background="bg-default" borderWidth="1" borderColor="border-default" borderRadius="small">
+        <VStack gap="4">
+          <Heading size='small'>Sakshandlinger</Heading>
+          <HorizontalLineSeparator />
+          {sakshandlinger}
+          {disabledSakshandlinger.length > 0 &&
+            <ReadMore header="Handlinger tilgjengelig i RINA">
+              {disabledSakshandlinger}
+            </ReadMore>
+          }
+        </VStack>
+      </Box>
     </>
   )
 }

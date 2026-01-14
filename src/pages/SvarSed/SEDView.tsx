@@ -148,7 +148,7 @@ const SEDView = (): JSX.Element => {
         </Box>
       }
       <Page.Block width="2xl">
-        <HGrid columns="1fr 2fr 1fr" gap="12" paddingBlock="12" paddingInline="4">
+        <HGrid columns="1fr 2fr 1fr" gap="12" paddingBlock="12" paddingInline="4" align="start">
           <Sakshandlinger sak={currentSak} />
           <VStack gap="4">
             {getSedPanels(arrayToTree(seds))}
