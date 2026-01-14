@@ -264,13 +264,13 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       </Modal>
 
       <Box borderWidth="1" borderRadius="small" borderColor="border-default" padding="4" background="surface-default">
-        <VStack gap="4">
-          <Heading size='small'>
-            {t('label:journalfoeres-paa')}
-          </Heading>
-          <HorizontalLineSeparator />
-        </VStack>
-        <VStack gap="4">
+        <VStack>
+          <VStack gap="4">
+            <Heading size='small'>
+              {t('label:journalfoeres-paa')}
+            </Heading>
+            <HorizontalLineSeparator />
+          </VStack>
           <Dl>
             <Dt>
               {t('label:person')}:
