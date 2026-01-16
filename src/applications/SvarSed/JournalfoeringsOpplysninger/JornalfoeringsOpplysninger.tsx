@@ -1,18 +1,21 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Heading, HGrid, Loader, Modal, Select, VStack} from '@navikt/ds-react'
 import { Dd, Dl, Dt, HorizontalLineSeparator } from 'components/StyledComponents'
-import {Fagsak, Fagsaker, Kodemaps, Kodeverk, PersonInfoPDL, Sak, Tema} from 'declarations/types'
+import {Enhet, Enheter, Fagsak, Fagsaker, Kodemaps, Kodeverk, NavRinasak, PersonInfoPDL, Sak, Tema} from 'declarations/types'
 import { useTranslation } from 'react-i18next'
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {State} from "../../../declarations/reducers";
 import { useRef } from "react";
-import {createFagsakDagpenger, createFagsakGenerell, getFagsaker} from "../../../actions/sak";
+import {createFagsakDagpenger, createFagsakGenerell, getFagsaker, updateFagsakTema} from "../../../actions/sak";
 import * as types from "../../../constants/actionTypes";
 import PersonSearch from "../../OpprettSak/PersonSearch/PersonSearch";
 import PersonPanel from "../../OpprettSak/PersonPanel/PersonPanel";
 import {updateFagsak} from "../../../actions/svarsed";
 import * as sakActions from "../../../actions/sak";
+import {getAlleEnheter} from "../../../actions/app";
+import {getFagsakTema} from "../../../actions/sak";
 import {searchJournalfoeringPerson} from "../../../actions/journalfoering";
+import {FeatureToggles} from "../../../declarations/app";
 
 
 interface JournalfoeringsOpplysningerProps {
@@ -32,6 +35,9 @@ interface ChangeTemaFagsakModalSelector {
   searchingPerson: boolean
   alertMessage: JSX.Element | string | undefined
   alertType: string | undefined
+  alleEnheter: Enheter | undefined | null
+  currentFagsakTema: NavRinasak | undefined | null
+  featureToggles: FeatureToggles | null | undefined
 }
 
 const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
@@ -46,15 +52,17 @@ const mapState = (state: State): ChangeTemaFagsakModalSelector => ({
   person: state.journalfoering.person,
   searchingPerson: state.loading.searchingPerson,
   alertMessage: state.alert.stripeMessage,
-  alertType: state.alert.type
+  alertType: state.alert.type,
+  alleEnheter: state.app.alleEnheter,
+  currentFagsakTema: state.sak.fagsakTema,
+  featureToggles: state.app.featureToggles
 })
 
 const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null);
-  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
-
+  const { kodemaps, tema, fagsaker, createdFagsakId, fagsakUpdated, gettingFagsaker, creatingFagsak, alertMessage, alertType, searchingPerson, person, alleEnheter, currentFagsakTema, featureToggles }: ChangeTemaFagsakModalSelector = useAppSelector(mapState)
   const [currentFagsak, setCurrentFagsak] = useState<any>(sak.fagsak)
   const [validFnr, setValidFnr] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -78,7 +86,9 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     if(currentFagsak?.fnr){
       dispatch(getFagsaker(currentFagsak?.fnr, sektor, currentFagsak?.tema))
       dispatch(searchJournalfoeringPerson(currentFagsak?.fnr))
+      dispatch(getAlleEnheter())
     }
+    dispatch(getFagsakTema(sak.sakId))
   }, [])
 
   useEffect(() => {
@@ -86,8 +96,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
       ref.current?.close()
     }
   }, [fagsakUpdated])
-
-
 
   const setFagsakProp = (prop: string, value: string): void => {
     const fagsak = {
@@ -113,8 +121,20 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onFagsakChange = (value: string) => {
     if(!value || value === "") return
+    console.log("onFagsakChange")
+    const currentEnhet = currentFagsak?.overstyrtEnhetsnummer
     const fSak: Fagsak | undefined = fagsaker?.find((f) => f._id === value)
+    if (fSak)
+      fSak.overstyrtEnhetsnummer = currentEnhet
     setCurrentFagsak(fSak)
+  }
+
+  const onOverstyrtEnhetChange = (value: string) => {
+    const fagsak = {
+      ...currentFagsak,
+      overstyrtEnhetsnummer: value
+    }
+    setCurrentFagsak(fagsak)
   }
 
   const onCreateFagsak = () => {
@@ -129,7 +149,6 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
     }
   }
 
-
   const onModalClose = () => {
     setIsModalOpen(false)
     setCurrentFagsak(sak.fagsak)
@@ -142,6 +161,13 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
 
   const onUpdateButtonClick = () => {
     dispatch(updateFagsak(sak.sakId, currentFagsak))
+    console.log("onUpdateButtonClick")
+
+    const newFagsakTema = {
+      ...currentFagsakTema,
+      overstyrtEnhetsnummer: currentFagsak.overstyrtEnhetsnummer
+    }
+    dispatch(updateFagsakTema(newFagsakTema))
   }
 
   useEffect(() => {
@@ -251,6 +277,27 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
                 </Button>
               }
             </HGrid>
+            {featureToggles?.featureAdmin &&
+              <HGrid gap="4" align="center" columns={2}>
+                <Select
+                  id={namespace + '-overstyrt-enhet'}
+                  label={t('label:velg-overstyrt-enhet')}
+                  onChange={(e) => onOverstyrtEnhetChange(e.target.value)}
+                  value={ (currentFagsak == null || currentFagsak.overstyrtEnhetsnummer == null)
+                    ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
+                    : currentFagsak.overstyrtEnhetsnummer }
+                >
+                  <option value=''>
+                    {t('label:velg')}
+                  </option>)
+                  {alleEnheter && alleEnheter.map((e: Enhet) => (
+                    <option value={e.enhetNr} key={e.enhetNr}>
+                      {e.enhetNr + " - " + e.navn}
+                    </option>
+                  ))}
+                </Select>
+              </HGrid>
+            }
             <Button
               variant='primary'
               disabled={!person || !validFnr || searchingPerson || gettingFagsaker || !(currentFagsak?.tema && currentFagsak?._id && currentFagsak?.fnr)}
@@ -290,6 +337,18 @@ const JournalfoeringsOpplysninger = ({ sak }: JournalfoeringsOpplysningerProps) 
             <Dd>
               {sak.fagsak?.nr ? sak.fagsak?.nr : sak.fagsak?.type ? t('journalfoering:' + sak.fagsak?.type) : ""}
             </Dd>
+            {featureToggles?.featureAdmin && (currentFagsakTema?.overstyrtEnhetsnummer != null || currentFagsak?.overstyrtEnhetsnummer != null) &&
+            <>
+              <Dt>
+                {t('label:overstyrt-enhet')}:
+              </Dt>
+              <Dd>
+                { (currentFagsak == null || currentFagsak?.overstyrtEnhetsnummer == null)
+                  ? (currentFagsakTema?.overstyrtEnhetsnummer ?? '')
+                  : (currentFagsak?.overstyrtEnhetsnummer ?? '')}
+              </Dd>
+            </>
+            }
           </Dl>
           <Button
             variant='secondary'

@@ -3,6 +3,7 @@ import {
   Fagsaker,
   Institusjoner,
   Kodeverk,
+  NavRinasak,
   OpprettetSak,
   PersonInfoPDL
 } from 'declarations/types'
@@ -20,6 +21,8 @@ import mockFagsakDagpenger from "../mocks/fagsak";
 
 // @ts-ignore
 import { sprintf } from 'sprintf-js'
+import mockNavrinasak from "../mocks/app/navrinasak";
+import {SAK_FAGSAKTEMA_UPDATE} from "constants/actionTypes";
 
 export const sakReset: ActionCreator<Action> = (): Action => ({
   type: types.SAK_RESET
@@ -49,6 +52,18 @@ export const getFagsaker = (
       request: types.SAK_FAGSAKER_REQUEST,
       success: types.SAK_FAGSAKER_SUCCESS,
       failure: types.SAK_FAGSAKER_FAILURE
+    }
+  })
+}
+
+export const getFagsakTema = (rinaSakId: String): ActionWithPayload<NavRinasak> => {
+  return call({
+    url: sprintf(urls.API_GET_FAGSAKTEMA_URL, { rinaSakId }),
+    expectedPayload: mockNavrinasak,
+    type: {
+      request: types.SAK_GET_FAGSAKTEMA_REQUEST,
+      success: types.SAK_GET_FAGSAKTEMA_SUCCESS,
+      failure: types.SAK_GET_FAGSAKTEMA_FAILURE
     }
   })
 }
@@ -150,3 +165,11 @@ export const setProperty: ActionCreator<ActionWithPayload<ParamPayload>> = (
   type: types.SAK_PROPERTY_SET,
   payload: { key, value }
 })
+
+export const updateFagsakTema: ActionCreator<ActionWithPayload<NavRinasak>> = (
+  payload: NavRinasak
+): ActionWithPayload<NavRinasak> => ({
+  type: types.SAK_FAGSAKTEMA_UPDATE,
+  payload
+})
+
