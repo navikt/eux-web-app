@@ -119,9 +119,11 @@ const SakBanner = () => {
         </VStack>
         <Spacer/>
         <VStack>
-          <Box>
-            <Tag size="small" variant={cdmVariant}>CDM: {currentSak.cdmVersjon}</Tag>
-          </Box>
+          {currentSak && currentSak.cdmVersjon &&
+            <Box>
+              <Tag size="small" variant={cdmVariant}>CDM: {currentSak.cdmVersjon}</Tag>
+            </Box>
+          }
           <HStack gap="2">
             <HStack gap="4">
               <span>
