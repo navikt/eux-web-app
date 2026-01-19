@@ -1,8 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { ExternalLinkIcon, FilesIcon } from '@navikt/aksel-icons'
 import InformationIcon from 'assets/icons/InformationIconOld.svg?react'
-import {BodyLong, Label, Heading, Link, Popover, Alert, Button} from '@navikt/ds-react'
-import { FlexDiv, FullWidthDiv, HorizontalSeparatorDiv, PileDiv } from '@navikt/hoykontrast'
+import {BodyLong, Label, Heading, Link, Popover, Alert, Box, HStack, Spacer, VStack, Button, Tag} from '@navikt/ds-react'
 import { copyToClipboard } from 'actions/app'
 import mann from 'assets/icons/Man.png'
 import ukjent from 'assets/icons/Unknown.png'
@@ -13,27 +12,7 @@ import React, { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { toDateFormat } from 'components/DateField/DateField'
-import styled from 'styled-components'
-
-const Panel = styled(FullWidthDiv)`
-  background-color: var(--a-bg-default);
-  justify-content: space-between;
-  display: flex;
-  padding: 0.5rem 3rem;
-`
-
-const PopOverButton = styled(Button)`
-  color: black;
-  background-color: transparent;
-  padding: 0;
-  &:hover {
-    background-color: transparent;
-  }
-
-  > .navds-button__icon {
-    width: 20px
-  }
-`
+import styles from './SakBanner.module.css'
 
 const SakBanner = () => {
   const { t } = useTranslation()
@@ -61,136 +40,150 @@ const SakBanner = () => {
     return null
   }
 
+  let cdmVariant: any = ""
+  switch (currentSak.cdmVersjon){
+    case '4.2':
+      cdmVariant = "alt3-moderate"
+      break
+    case '4.3':
+      cdmVariant = "alt2-moderate"
+      break
+    case '4.4':
+      cdmVariant = "alt1-moderate"
+      break
+    default:
+      cdmVariant = "neutral-moderate"
+      break
+  }
+
   return (
-    <Panel>
-      <PileDiv>
-        <Heading size='small'>
-          {currentSak.sakType + ' - ' + currentSak.sakTittel}
-        </Heading>
-        <BodyLong>
-          {thisSektorName ? thisSektorName + ' ' + t('label:sektor').toLowerCase() : ''}
-        </BodyLong>
-      </PileDiv>
-      <PileDiv>
-        <FlexDiv>
-          <img
-            alt={kind}
-            width={24}
-            height={24}
-            src={src}
-          />
-          <HorizontalSeparatorDiv />
-          {!!currentSak.fornavn && currentSak.etternavn && (
-            <>
-              <Label>
-                {currentSak.etternavn + ', ' + currentSak.fornavn}
-              </Label>
-              <HorizontalSeparatorDiv size='0.5' />
-              <Link
-                title={t('label:kopiere')} onClick={(e: any) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
-                }}
-              >
-                <FilesIcon />
-              </Link>
-            </>
-          )}
-        </FlexDiv>
-        <FlexDiv>
-          {currentSak.fnr && (
-            <>
-              {t('label:fnr.') + ': '}
-              <HorizontalSeparatorDiv size='0.5' />
-              <Link
-                title={t('label:kopiere')} onClick={(e: any) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  dispatch(copyToClipboard(currentSak.fnr))
-                }}
-              >
-                {' ' + currentSak.fnr + ' '}
-                <FilesIcon />
-              </Link>
-            </>
-          )}
-          <HorizontalSeparatorDiv />
-          {toDateFormat(currentSak.foedselsdato, 'DD.MM.YYYY')}
-        </FlexDiv>
-        {currentSak.adressebeskyttelse && currentSak.adressebeskyttelse !== "UGRADERT" &&
-          <FlexDiv>
+    <Box background="bg-default" paddingBlock="4" paddingInline="16">
+      <HStack gap="4" align="start">
+        <VStack>
+          <Heading size='small'>
+            {currentSak.sakType + ' - ' + currentSak.sakTittel}
+          </Heading>
+          <BodyLong>
+            {thisSektorName ? thisSektorName + ' ' + t('label:sektor').toLowerCase() : ''}
+          </BodyLong>
+        </VStack>
+        <Spacer/>
+        <VStack>
+          <HStack gap="4">
+            <img
+              alt={kind}
+              width={24}
+              height={24}
+              src={src}
+            />
+            {!!currentSak.fornavn && currentSak.etternavn && (
+              <HStack gap="2">
+                <Label>
+                  {currentSak.etternavn + ', ' + currentSak.fornavn}
+                </Label>
+                <Link
+                  title={t('label:kopiere')} onClick={(e: any) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    dispatch(copyToClipboard(currentSak.etternavn + ', ' + currentSak.fornavn))
+                  }}
+                >
+                  <FilesIcon />
+                </Link>
+              </HStack>
+            )}
+          </HStack>
+          <HStack gap="2">
+            {currentSak.fnr && (
+              <>
+                {t('label:fnr.') + ': '}
+                <Link
+                  title={t('label:kopiere')} onClick={(e: any) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    dispatch(copyToClipboard(currentSak.fnr))
+                  }}
+                >
+                  {' ' + currentSak.fnr + ' '}
+                  <FilesIcon />
+                </Link>
+              </>
+            )}
+            {toDateFormat(currentSak.foedselsdato, 'DD.MM.YYYY')}
+          </HStack>
+          {currentSak.adressebeskyttelse && currentSak.adressebeskyttelse !== "UGRADERT" &&
             <Alert size="small" variant='warning'>
               <span>{t('label:sensitivPerson', {gradering: currentSak.adressebeskyttelse})}</span>
             </Alert>
-          </FlexDiv>
-        }
-      </PileDiv>
-      <PileDiv>
-        <FlexDiv>
-          <span>
-            {t('label:rina-saksnummer')}
-          </span>
-          <HorizontalSeparatorDiv />
-          <Link
-            title={t('label:kopiere')} onClick={(e: any) => {
-              e.preventDefault()
-              e.stopPropagation()
-              dispatch(copyToClipboard(currentSak.sakId))
-            }}
-          >
-            {currentSak.sakId + ' '}
-            <FilesIcon />
-          </Link>
-          {!!currentSak.internasjonalSakId && (
-            <>
-              <Popover
-                open={popoverOpen}
-                onClose={() => setPopoverOpen(false)}
-                arrow
-                anchorEl={iconRef.current}
+          }
+        </VStack>
+        <Spacer/>
+        <VStack>
+          <Box>
+            <Tag size="small" variant={cdmVariant}>CDM: {currentSak.cdmVersjon}</Tag>
+          </Box>
+          <HStack gap="2">
+            <HStack gap="4">
+              <span>
+                {t('label:rina-saksnummer')}
+              </span>
+              <Link
+                title={t('label:kopiere')} onClick={(e: any) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  dispatch(copyToClipboard(currentSak.sakId))
+                }}
               >
-                <Popover.Content style={{ maxWidth: '600px' }}>
-                  <Heading size='small'>
-                    {t('label:international-id')}:
-                    <HorizontalSeparatorDiv />
-                    <Link
-                      title={t('label:kopiere')} onClick={(e: any) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        dispatch(copyToClipboard(currentSak.internasjonalSakId!))
-                      }}
-                    >
-                      {currentSak.internasjonalSakId + ' '}
-                      <FilesIcon />
-                    </Link>
-                  </Heading>
-                  {t('message:help-international-id')}
-                </Popover.Content>
-              </Popover>
-              &nbsp;
-              <PopOverButton icon={<InformationIcon/>} ref={iconRef} onClick={() => setPopoverOpen(!popoverOpen)} />
-            </>
-          )}
-        </FlexDiv>
-        <FlexDiv>
-          <Link target='_blank' href={currentSak.sakUrl} rel='noreferrer'>
-            <span>
-              {t('label:åpne_sak_i_RINA')}
-            </span>
-            <HorizontalSeparatorDiv size='0.35' />
-            <ExternalLinkIcon />
-          </Link>
-        </FlexDiv>
-        {currentSak.sensitiv &&
-          <FlexDiv>
+                {currentSak.sakId + ' '}
+                <FilesIcon />
+              </Link>
+            </HStack>
+            {!!currentSak.internasjonalSakId && (
+              <>
+                <Popover
+                  open={popoverOpen}
+                  onClose={() => setPopoverOpen(false)}
+                  arrow
+                  anchorEl={iconRef.current}
+                >
+                  <Popover.Content style={{ maxWidth: '600px' }}>
+                    <Heading size='small'>
+                      {t('label:international-id')}:
+                      &nbsp;
+                      <Link
+                        title={t('label:kopiere')} onClick={(e: any) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          dispatch(copyToClipboard(currentSak.internasjonalSakId!))
+                        }}
+                      >
+                        {currentSak.internasjonalSakId + ' '}
+                        <FilesIcon />
+                      </Link>
+                    </Heading>
+                    {t('message:help-international-id')}
+                  </Popover.Content>
+                </Popover>
+                <Button icon={<InformationIcon/>} ref={iconRef} onClick={() => setPopoverOpen(!popoverOpen)} className={styles.popOverButton}/>
+              </>
+            )}
+          </HStack>
+          <HStack gap="2">
+            <Link target='_blank' href={currentSak.sakUrl} rel='noreferrer'>
+              <span>
+                {t('label:åpne_sak_i_RINA')}
+              </span>
+              <ExternalLinkIcon />
+            </Link>
+          </HStack>
+          {currentSak.sensitiv &&
             <Alert size="small" variant='warning'>
               <span>{t('label:sensitivSak')}</span>
             </Alert>
-          </FlexDiv>
-        }
-      </PileDiv>
-    </Panel>
+          }
+        </VStack>
+      </HStack>
+    </Box>
   )
 }
 

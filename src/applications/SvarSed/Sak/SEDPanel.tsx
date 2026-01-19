@@ -1,5 +1,5 @@
 import {XMarkIcon, PencilIcon, DownloadIcon, PaperplaneIcon, StarIcon, QuestionmarkDiamondIcon, PaperclipIcon} from '@navikt/aksel-icons'
-import {BodyLong, Box, Button, Detail, Heading, HelpText, HGrid, HStack, Loader, Spacer, Tag, VStack} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Detail, Heading, HelpText, HStack, Loader, Tag, VStack} from '@navikt/ds-react'
 import {
   clarifyingSed,
   deleteSed,

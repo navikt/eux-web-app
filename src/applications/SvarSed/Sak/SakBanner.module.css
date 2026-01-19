@@ -1,0 +1,12 @@
+.popOverButton {
+  color: black;
+  background-color: transparent;
+  padding: 0;
+  &:hover {
+    background-color: transparent;
+  }
+
+  > .navds-button__icon {
+    width: 20px
+  }
+}
