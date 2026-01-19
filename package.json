@@ -31,7 +31,7 @@
     "@navikt/ds-react": "7.38.0",
     "@navikt/eessi-kodeverk": "2.4.1",
     "@navikt/fetch": "6.0.1",
-    "@navikt/flagg-ikoner": "10.0.20",
+    "@navikt/flagg-ikoner": "10.0.22",
     "@navikt/fnrvalidator": "2.2.1",
     "@navikt/hoykontrast": "4.0.1",
     "@navikt/land-verktoy": "9.1.29",
