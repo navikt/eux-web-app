@@ -1,5 +1,4 @@
-import { Checkbox, Heading } from '@navikt/ds-react'
-import { PaddedDiv } from '@navikt/hoykontrast'
+import {Box, Checkbox, Heading, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateFormål, ValidationFormålProps } from 'applications/SvarSed/Formål/validation'
 import { MainFormProps } from 'applications/SvarSed/MainForm'
@@ -13,15 +12,9 @@ import _ from 'lodash'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
-import styled from 'styled-components'
 import performValidation from 'utils/performValidation'
 import { isF001Sed } from 'utils/sed'
 import {setDeselectedMenu} from "../../../actions/svarsed";
-
-const CheckboxDiv = styled.div`
- display: inline-block;
- width: 100%;
-`
 
 interface FormålSelector {
   validation: Validation
@@ -70,7 +63,7 @@ const Formål: React.FC<MainFormProps> = ({
     { label: t('el:option-formaal-anmodning-om-informasjon'), value: 'anmodning_om_informasjon' },
     { label: t('el:option-formaal-vedtak'), value: 'vedtak' },
     { label: t('el:option-formaal-motregning'), value: 'motregning' },
-    { label: t('el:option-formaal-refusjon'), value: 'refusjon_ihht_artikkel_58_i_forordning' }
+    { label: t('el:option-formaal-refusjon'), value: 'refusjon_ih ht_artikkel_58_i_forordning' }
   ]
 
   if (isF001Sed(replySed)) {
@@ -143,19 +136,17 @@ const Formål: React.FC<MainFormProps> = ({
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4" background="bg-default">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <PaddedDiv
-        tabIndex={0}
-        id={namespace + '-checkbox'}
-        style={{ columns: '2' }}
-      >
-        {formaalOptions.map(f => (
-          <CheckboxDiv key={f.value}>
+        <Box
+          tabIndex={0}
+          id={namespace + '-checkbox'}
+          style={{ columns: '2' }}
+        >
+          {formaalOptions.map(f => (
             <Checkbox
               error={validation[namespace + '-checkbox']?.feilmelding}
               checked={formaal?.indexOf(f.value) >= 0}
@@ -163,11 +154,11 @@ const Formål: React.FC<MainFormProps> = ({
             >
               {f.label}
             </Checkbox>
-          </CheckboxDiv>
-        ))}
+          ))}
+        </Box>
         <ErrorLabel error={validation[namespace + '-checkbox']?.feilmelding} />
-      </PaddedDiv>
-    </>
+      </VStack>
+    </Box>
   )
 }
 
