@@ -2,7 +2,6 @@ import JoarkBrowser from 'applications/Vedlegg/JoarkBrowser/JoarkBrowser'
 import Modal from 'components/Modal/Modal'
 import { JoarkBrowserItems } from 'declarations/attachments'
 import { setJoarkItemPreview } from 'actions/attachments'
-import PT from 'prop-types'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import {State} from "../../../declarations/reducers";
@@ -134,13 +133,6 @@ const SEDAttachmentModal: React.FC<SEDAttachmentModalProps> = ({
     />
 
   )
-}
-
-SEDAttachmentModal.propTypes = {
-  onFinishedSelection: PT.func.isRequired,
-  onModalClose: PT.func.isRequired,
-  // sedAttachments: JoarkBrowserItemsFileType.isRequired,
-  tableId: PT.string.isRequired
 }
 
 export default SEDAttachmentModal

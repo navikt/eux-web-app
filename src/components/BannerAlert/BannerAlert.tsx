@@ -6,8 +6,6 @@ import _ from 'lodash'
 import { Alert } from '@navikt/ds-react'
 import React from 'react'
 import styled from 'styled-components'
-import PT from 'prop-types'
-import { AlertErrorPropType } from 'declarations/components.pt'
 
 export const AlertDiv = styled(Alert)`
   opacity: 0;
@@ -93,14 +91,6 @@ export const BannerAlert: React.FC<BannerAlertProps> = ({
       )}
     </AlertDiv>
   )
-}
-
-BannerAlert.propTypes = {
-  className: PT.string,
-  error: PT.oneOfType([AlertErrorPropType, PT.string]),
-  message: PT.oneOfType([PT.string, PT.element]),
-  onClose: PT.func,
-  variant: PT.oneOf(['info', 'success', 'error', 'warning'])
 }
 
 export default BannerAlert

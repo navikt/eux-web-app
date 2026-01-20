@@ -1,8 +1,7 @@
 import * as urls from 'constants/urls'
-import { logMeAgain, reduceSessionTime, setExpirationTime, setSessionEndsAt } from 'actions/app'
+import { logMeAgain, setExpirationTime, setSessionEndsAt } from 'actions/app'
 import { PDU1 } from 'declarations/pd'
 import { ReplySed } from 'declarations/sed'
-import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -11,7 +10,7 @@ import Modal from 'components/Modal/Modal'
 import { BodyLong, Button } from '@navikt/ds-react'
 import { State } from 'declarations/reducers'
 import _ from 'lodash'
-import { IS_DEVELOPMENT, IS_Q, IS_Q1_EXPERIMENTAL } from 'constants/environment'
+import { IS_Q1_EXPERIMENTAL } from 'constants/environment'
 import { setInterval } from 'worker-timers';
 
 const SessionMonitorDiv = styled.div`
@@ -235,14 +234,4 @@ const SessionMonitor: React.FC<SessionMonitorProps> = ({
   }
 }
 
-SessionMonitor.propTypes = {
-  checkInterval: PT.number,
-  expirationTime: PT.number,
-  sessionEndsAt: PT.number,
-  millisecondsForWarning: PT.number,
-  sessionExpiredReload: PT.number,
-  sessionStatusWarning: PT.number,
-  tokenAutoRenew: PT.number,
-  now: PT.instanceOf(Date)
-}
 export default SessionMonitor

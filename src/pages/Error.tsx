@@ -3,8 +3,7 @@ import classNames from 'classnames'
 import TopContainer from 'components/TopContainer/TopContainer'
 import { Accordion, BodyLong } from '@navikt/ds-react'
 import { VerticalSeparatorDiv } from '@navikt/hoykontrast'
-import PT from 'prop-types'
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { useTranslation } from 'react-i18next'
 import StackTracey from 'stacktracey'
 import styled from 'styled-components'
@@ -78,10 +77,6 @@ export const Error = ({ error }: ErrorProps) => {
       </Content>
     </TopContainer>
   )
-}
-
-Error.propTypes = {
-  error: PT.any
 }
 
 export default Error

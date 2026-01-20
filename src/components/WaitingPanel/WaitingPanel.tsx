@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import {BodyLong, Box, Loader} from '@navikt/ds-react'
-import PT from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -50,12 +49,5 @@ const WaitingPanel: React.FC<WaitingPanelProps> = ({
   </WaitingPanelDiv>
 )
 
-WaitingPanel.propTypes = {
-  className: PT.string,
-  message: PT.string,
-  oneLine: PT.bool,
-  size: PT.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge', '2xlarge']),
-  style: PT.object
-}
 WaitingPanel.displayName = 'WaitingPanel'
 export default WaitingPanel

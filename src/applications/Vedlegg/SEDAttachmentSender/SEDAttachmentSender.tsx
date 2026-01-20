@@ -5,16 +5,12 @@ import {
   SEDAttachmentPayload,
   SEDAttachmentPayloadWithFile
 } from 'declarations/attachments.d'
-import {
-  SEDAttachmentPayloadPropType
-} from 'declarations/attachments.pt'
 import { State } from 'declarations/reducers'
 import ProgressBar, { ProgressBarStatus } from 'components/ProgressBar/ProgressBar'
 import _ from 'lodash'
 import md5 from 'md5'
 import { Button } from '@navikt/ds-react'
 import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
-import PT from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppSelector } from 'store'
@@ -167,17 +163,6 @@ const SEDAttachmentSender: React.FC<SEDAttachmentSenderProps> = ({
       )}
     </SEDAttachmentSenderDiv>
   )
-}
-
-SEDAttachmentSender.propTypes = {
-  attachmentsError: PT.bool,
-  className: PT.string,
-  initialStatus: PT.oneOf(['todo', 'inprogress', 'done', 'error']),
-  onCancel: PT.func,
-  onFinished: PT.func.isRequired,
-  onSaved: PT.func.isRequired,
-  payload: SEDAttachmentPayloadPropType.isRequired,
-  sendAttachmentToSed: PT.func.isRequired
 }
 
 export default SEDAttachmentSender

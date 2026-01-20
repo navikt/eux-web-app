@@ -1,5 +1,4 @@
 import React from 'react'
-import PT from 'prop-types'
 import classNames from 'classnames'
 import styled, { keyframes } from 'styled-components'
 
@@ -78,11 +77,5 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     </Bar>
   </ProgressBarDiv>
 )
-
-ProgressBar.propTypes = {
-  className: PT.string,
-  now: PT.number.isRequired,
-  status: PT.oneOf(['todo', 'inprogress', 'done', 'error'])
-}
 
 export default ProgressBar

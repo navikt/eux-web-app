@@ -15,7 +15,6 @@ import {
   VerticalSeparatorDiv
 } from '@navikt/hoykontrast'
 import Error from 'pages/Error'
-import PT from 'prop-types'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -192,13 +191,6 @@ export const TopContainer: React.FC<TopContainerProps> = ({
       </ErrorBoundary>
     </div>
   )
-}
-
-TopContainer.propTypes = {
-  className: PT.string,
-  children: PT.any,
-  fluid: PT.bool,
-  header: PT.any
 }
 
 export default TopContainer

@@ -17,7 +17,6 @@ import { State } from 'declarations/reducers'
 import _ from 'lodash'
 import md5 from 'md5'
 import moment from 'moment'
-import PT from 'prop-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
@@ -481,14 +480,6 @@ export const JoarkBrowser: React.FC<JoarkBrowserProps> = ({
       />
     </div>
   )
-}
-
-JoarkBrowser.propTypes = {
-  // existingItems: PT.arrayOf(JoarkBrowserItemFileType.isRequired).isRequired,
-  onRowSelectChange: PT.func,
-  onPreviewFile: PT.func,
-  mode: PT.oneOf<JoarkBrowserMode>(['select', 'view']).isRequired,
-  tableId: PT.string.isRequired
 }
 
 export default JoarkBrowser
