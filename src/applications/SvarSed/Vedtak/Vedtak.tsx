@@ -1,19 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Checkbox, Heading, Label, Tag } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Checkbox, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, Tag, VStack} from '@navikt/ds-react'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -33,7 +19,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { Option } from 'declarations/app.d'
 import { State } from 'declarations/reducers'
@@ -50,6 +36,7 @@ import { getIdx, getNSIdx, readNSIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { periodePeriodeSort, periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
+import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -428,32 +415,31 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getVedtakPeriodeId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HStack gap="4" align="start">
           {inEditMode
             ? (
-              <PeriodeInput
-                namespace={_namespace}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                }}
-                breakInTwo
-                hideLabel={index >= 0}
-                setPeriode={(p: Periode) => setVedtakPeriode(p, index)}
-                value={_periode}
-              />
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  breakInTwo
+                  hideLabel={index >= 0}
+                  setPeriode={(p: Periode) => setVedtakPeriode(p, index)}
+                  value={_periode}
+                />
               )
             : (
-              <Column>
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -462,25 +448,23 @@ const VedtakFC: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_periode}
                 />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Periode>
-              item={periode}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemoveVedtakPeriode}
-              onAddNew={onAddVedtakPeriodeNew}
-              onCancelNew={onCloseVedtakPeriodeNew}
-              onStartEdit={onStartVedtakPeriodeEdit}
-              onConfirmEdit={onSaveVedtakPeriodeEdit}
-              onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+              )
+          }
+          <Spacer/>
+          <AddRemovePanel<Periode>
+            item={periode}
+            marginTop={index < 0}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemoveVedtakPeriode}
+            onAddNew={onAddVedtakPeriodeNew}
+            onCancelNew={onCloseVedtakPeriodeNew}
+            onStartEdit={onStartVedtakPeriodeEdit}
+            onConfirmEdit={onSaveVedtakPeriodeEdit}
+            onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
@@ -499,32 +483,82 @@ const VedtakFC: React.FC<MainFormProps> = ({
     const _periode = index < 0 ? _newKompetansePeriode : (inEditMode ? _editKompetansePeriode : periode)
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getKompetansePeriodeId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <VStack gap="1">
           {inEditMode
             ? (
-              <PeriodeInput
-                namespace={_namespace + '-periode'}
-                error={{
-                  startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
-                }}
-                hideLabel={index >= 0}
-                setPeriode={(p: Periode) => setKompetansePeriode(p, index)}
-                value={_periode?.periode}
-              />
-              )
+                <>
+                  <HGrid columns={2} gap="4" align="start">
+                    <PeriodeInput
+                      namespace={_namespace + '-periode'}
+                      error={{
+                        startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                        sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                      }}
+                      hideLabel={index >= 0}
+                      setPeriode={(p: Periode) => setKompetansePeriode(p, index)}
+                      value={_periode?.periode}
+                    />
+                    <HStack align="start">
+                      <Spacer/>
+                      <AddRemovePanel<KompetansePeriode>
+                        item={periode}
+                        marginTop={index < 0}
+                        index={index}
+                        inEditMode={inEditMode}
+                        onRemove={onRemoveKompetansePeriode}
+                        onAddNew={onAddKompetansePeriodeNew}
+                        onCancelNew={onCloseKompetansePeriodeNew}
+                        onStartEdit={onStartKompetansePeriodeEdit}
+                        onConfirmEdit={onSaveKompetansePeriodeEdit}
+                        onCancelEdit={() => onCloseKompetansePeriodeEdit(_namespace)}
+                      />
+                    </HStack>
+                  </HGrid>
+                  <HGrid columns={2} gap="4">
+                    <Select
+                      closeMenuOnSelect
+                      data-testid={_namespace + '-type'}
+                      error={_v[_namespace + '-type']?.feilmelding}
+                      id={_namespace + '-type'}
+                      label={t('label:vedtak-type')}
+                      menuPortalTarget={document.body}
+                      onChange={(o: unknown) => setKompetansePeriodeType((o as Option).value, index)}
+                      options={kompetanseTypeOptions}
+                      defaultValue={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
+                      value={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
+                    />
+                    {(_showSkalYtelseUtbetales || _periode?.skalYtelseUtbetales) &&
+                      <RadioGroup
+                        value={_periode?.skalYtelseUtbetales}
+                        data-testid={_namespace + '-skalYtelseUtbetales'}
+                        data-no-border
+                        error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
+                        id={_namespace + '-skalYtelseUtbetales'}
+                        legend={t('label:skal-ytelse-utbetales') + ' *'}
+                        name={_namespace + '-borSammen'}
+                        onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
+                      >
+                        <HStack gap="4" align="center">
+                          <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+                          <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+                        </HStack>
+                      </RadioGroup>
+                    }
+                  </HGrid>
+                </>
+            )
             : (
-              <>
-                <Column>
+              <VStack gap="2">
+                <HGrid columns={3} gap="4" align="center">
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
@@ -533,302 +567,223 @@ const VedtakFC: React.FC<MainFormProps> = ({
                     namespace={_namespace + '-periode'}
                     periode={_periode?.periode}
                   />
-                </Column>
-                <Column>
                   {_periode?.skalYtelseUtbetales &&
                     <FormText
                       error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
                       id={_namespace + '-skalYtelseUtbetales'}
                     >
-                      <FlexDiv>
+                      <HStack gap="2">
                         <Label>{t('label:skal-ytelse-utbetales') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
                         {t('label:' + _periode?.skalYtelseUtbetales)}
-                      </FlexDiv>
+                      </HStack>
                     </FormText>
                   }
-                </Column>
-              </>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<KompetansePeriode>
-              item={periode}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemoveKompetansePeriode}
-              onAddNew={onAddKompetansePeriodeNew}
-              onCancelNew={onCloseKompetansePeriodeNew}
-              onStartEdit={onStartKompetansePeriodeEdit}
-              onConfirmEdit={onSaveKompetansePeriodeEdit}
-              onCancelEdit={() => onCloseKompetansePeriodeEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          {inEditMode
-            ? (
-              <>
-                <Column>
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={_namespace + '-type'}
-                    error={_v[_namespace + '-type']?.feilmelding}
-                    id={_namespace + '-type'}
-                    label={t('label:vedtak-type')}
-                    menuPortalTarget={document.body}
-                    onChange={(o: unknown) => setKompetansePeriodeType((o as Option).value, index)}
-                    options={kompetanseTypeOptions}
-                    defaultValue={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
-                    value={_.find(kompetanseTypeOptions, v => v.value === _periode?.periode?.__type)}
-                  />
-                </Column>
-                <Column>
-                  {(_showSkalYtelseUtbetales || _periode?.skalYtelseUtbetales) &&
-                    <RadioPanelGroup
-                      value={_periode?.skalYtelseUtbetales}
-                      data-testid={_namespace + '-skalYtelseUtbetales'}
-                      data-no-border
-                      error={_v[_namespace + '-skalYtelseUtbetales']?.feilmelding}
-                      id={_namespace + '-skalYtelseUtbetales'}
-                      legend={t('label:skal-ytelse-utbetales') + ' *'}
-                      name={_namespace + '-borSammen'}
-                      onChange={(e: string) => setKompetansePeriodeSkalYtelseUtbetales(e as JaNei, index)}
-                    >
-                      <FlexRadioPanels>
-                        <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                        <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-                      </FlexRadioPanels>
-                    </RadioPanelGroup>
-                  }
-                </Column>
-              </>
-              )
-            : (
-              <>
-                <Column flex='2'>
-                  {_sort === 'time' && getTag(_periode?.periode.__type!)}
-                </Column>
-              </>
-              )}
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                  <HStack>
+                    <Spacer/>
+                    <AddRemovePanel<KompetansePeriode>
+                      item={periode}
+                      marginTop={index < 0}
+                      index={index}
+                      inEditMode={inEditMode}
+                      onRemove={onRemoveKompetansePeriode}
+                      onAddNew={onAddKompetansePeriodeNew}
+                      onCancelNew={onCloseKompetansePeriodeNew}
+                      onStartEdit={onStartKompetansePeriodeEdit}
+                      onConfirmEdit={onSaveKompetansePeriodeEdit}
+                      onCancelEdit={() => onCloseKompetansePeriodeEdit(_namespace)}
+                    />
+                  </HStack>
+                </HGrid>
+                <Box>
+                  {(_sort === 'time' && getTag(_periode?.periode.__type!))}
+                </Box>
+              </VStack>
+            )
+          }
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
     <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {label}
-        </Heading>
-        <VerticalSeparatorDiv size='2' />
-        <Row>
-          <Column flex='2'>
-            <RadioPanelGroup
-              value={vedtak?.gjelderAlleBarn}
-              data-no-border
-              data-testid={namespace + '-gjelderAlleBarn'}
-              error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
-              id={namespace + '-gjelderAlleBarn'}
-              legend={t('label:vedtak-angående-alle-barn') + ' *'}
-              name={namespace + '-gjelderAlleBarn'}
-              onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </Row>
-        <VerticalSeparatorDiv />
-        {vedtak?.gjelderAlleBarn === 'nei' && (
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
-            <VerticalSeparatorDiv />
-            {(replySed as F002Sed)?.barn?.map((b) => {
-              const vedtakBarn: VedtakBarn = {
-                fornavn: b.personInfo.fornavn,
-                etternavn: b.personInfo.etternavn,
-                foedselsdato: b.personInfo.foedselsdato
-              }
-              const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
-              return (
-                <div
-                  key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
-                >
-                  <Checkbox
-                    checked={checked}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, e.target.checked)}
-                  >
-                    {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
-                  </Checkbox>
-                  <VerticalSeparatorDiv size='0.5' />
-                </div>
-              )
-            })}
-          </div>
-        )}
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <Select
-              data-testid={namespace + '-vedtakstype'}
-              error={validation[namespace + '-vedtakstype']?.feilmelding}
-              id={namespace + '-vedtakstype'}
-              label={t('label:vedtak-type')}
-              menuPortalTarget={document.body}
-              onChange={(e: unknown) => setVedtakstype((e as Option).value)}
-              options={vedtaksTypeOptions}
-              required
-              defaultValue={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
-              value={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
-            />
-          </Column>
-          <Column>
-            <DateField
-              error={validation[namespace + '-vedtaksdato']?.feilmelding}
-              namespace={namespace}
-              id='vedtaksdato'
-              label={t('label:vedtaksdato')}
-              onChanged={setVedtaksdato}
-              required
-              dateValue={vedtak?.vedtaksdato}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-begrunnelse']?.feilmelding}
-                namespace={namespace}
-                id='grunnen'
-                label={t('label:begrunnelse')}
-                onChanged={setBegrunnelse}
-                value={vedtak?.begrunnelse}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                namespace={namespace}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon-til-sed')}
-                onChanged={setYtterligeInfo}
-                value={vedtak?.ytterligereInfo}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:vedtaksperioder')}
-        </Heading>
-      </PaddedDiv>
-      {_.isEmpty(vedtak?.vedtaksperioder)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
-      <VerticalSeparatorDiv />
-      {_newVedtakPeriodeForm
-        ? renderVedtakPeriodeRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewVedtakPeriodeForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <Heading size='small'>
-          {t('label:type-kompetanse')}
-        </Heading>
-      </PaddedDiv>
-      {!_.isEmpty(_allKompetansePeriods) && (
-        <>
-          <PaddedHorizontallyDiv>
-            <Checkbox
-              checked={_sort === 'group'}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
-            >
-              {t('label:group-by-periodetype')}
-            </Checkbox>
-          </PaddedHorizontallyDiv>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      <VerticalSeparatorDiv />
-      {_.isEmpty(_allKompetansePeriods)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : (_sort === 'time'
-            ? _allKompetansePeriods?.map(renderKompetansePeriodeRow)
-            : (
-              <>
-                {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(kompetanseType => {
-                  const perioder: Array<KompetansePeriode> | undefined | null = _.get(vedtak, kompetanseType)
+      <Box padding="4">
+        <VStack gap="4">
+          <Heading size='small'>
+            {label}
+          </Heading>
+          <RadioGroup
+            value={vedtak?.gjelderAlleBarn}
+            data-no-border
+            data-testid={namespace + '-gjelderAlleBarn'}
+            error={validation[namespace + '-gjelderAlleBarn']?.feilmelding}
+            id={namespace + '-gjelderAlleBarn'}
+            legend={t('label:vedtak-angående-alle-barn') + ' *'}
+            name={namespace + '-gjelderAlleBarn'}
+            onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
+          >
+            <HStack  gap="4" align="center">
+              <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+              <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+              <Spacer/>
+            </HStack>
+          </RadioGroup>
+            {vedtak?.gjelderAlleBarn === 'nei' && (
+              <div>
+                <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
+                {(replySed as F002Sed)?.barn?.map((b) => {
+                  const vedtakBarn: VedtakBarn = {
+                    fornavn: b.personInfo.fornavn,
+                    etternavn: b.personInfo.etternavn,
+                    foedselsdato: b.personInfo.foedselsdato
+                  }
+                  const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
                   return (
-                    <div key={kompetanseType}>
-                      {!_.isEmpty(perioder) && (
-                        <PaddedDiv>
-                          <Label>{_.find(kompetanseTypeOptions, v => v.value === kompetanseType)?.label}</Label>
-                        </PaddedDiv>
-                      )}
-                      {perioder?.map((p: KompetansePeriode, i: number) =>
-                        ({ ...p, periode: { ...p.periode, __type: kompetanseType, __index: i } })
-                      ).sort(periodePeriodeSort)
-                        .map(renderKompetansePeriodeRow)}
+                    <div
+                      key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
+                    >
+                      <Checkbox
+                        checked={checked}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, e.target.checked)}
+                      >
+                        {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
+                      </Checkbox>
                     </div>
                   )
                 })}
-              </>
-              ))}
-      <VerticalSeparatorDiv />
-      {_newKompetansePeriodeForm
-        ? renderKompetansePeriodeRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => {_setNewKompetansePeriodeForm(true); setShowSkalYtelseUtbetales(false)}}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
+              </div>
+            )}
+
+            <HGrid columns={"2fr 1fr"}>
+              <Select
+                data-testid={namespace + '-vedtakstype'}
+                error={validation[namespace + '-vedtakstype']?.feilmelding}
+                id={namespace + '-vedtakstype'}
+                label={t('label:vedtak-type')}
+                menuPortalTarget={document.body}
+                onChange={(e: unknown) => setVedtakstype((e as Option).value)}
+                options={vedtaksTypeOptions}
+                required
+                defaultValue={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
+                value={_.find(vedtaksTypeOptions, v => v.value === vedtak?.vedtakstype)}
+              />
+              <DateField
+                error={validation[namespace + '-vedtaksdato']?.feilmelding}
+                namespace={namespace}
+                id='vedtaksdato'
+                label={t('label:vedtaksdato')}
+                onChanged={setVedtaksdato}
+                required
+                dateValue={vedtak?.vedtaksdato}
+              />
+            </HGrid>
+            <TextArea
+              error={validation[namespace + '-begrunnelse']?.feilmelding}
+              namespace={namespace}
+              id='grunnen'
+              label={t('label:begrunnelse')}
+              onChanged={setBegrunnelse}
+              value={vedtak?.begrunnelse}
+            />
+            <TextArea
+              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+              namespace={namespace}
+              id='ytterligereInfo'
+              label={t('label:ytterligere-informasjon-til-sed')}
+              onChanged={setYtterligeInfo}
+              value={vedtak?.ytterligereInfo}
+            />
+            <Heading size='small'>
+              {t('label:vedtaksperioder')}
+            </Heading>
+            {_.isEmpty(vedtak?.vedtaksperioder)
+              ? (
+                <VStack>
+                  <SpacedHr />
+                  <BodyLong>
+                    {t('message:warning-no-periods')}
+                  </BodyLong>
+                  <SpacedHr />
+                </VStack>
+                )
+              : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)
+            }
+            {_newVedtakPeriodeForm
+              ? renderVedtakPeriodeRow(null, -1)
+              : (
+                <Box>
+                  <Button
+                    variant='tertiary'
+                    onClick={() => _setNewVedtakPeriodeForm(true)}
+                    icon={<PlusCircleIcon/>}
+                  >
+                    {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
+                  </Button>
+                </Box>
+                )
+            }
+
+            <Heading size='small'>
+              {t('label:type-kompetanse')}
+            </Heading>
+            {!_.isEmpty(_allKompetansePeriods) && (
+              <Box>
+                <Checkbox
+                  checked={_sort === 'group'}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => _setSort(e.target.checked ? 'group' : 'time')}
+                >
+                  {t('label:group-by-periodetype')}
+                </Checkbox>
+              </Box>
+            )}
+            {_.isEmpty(_allKompetansePeriods)
+              ? (
+                <VStack>
+                  <SpacedHr />
+                  <BodyLong>
+                    {t('message:warning-no-periods')}
+                  </BodyLong>
+                  <SpacedHr />
+                </VStack>
+                )
+              : (_sort === 'time'
+                  ? _allKompetansePeriods?.map(renderKompetansePeriodeRow)
+                  : (
+                    <>
+                      {['primaerkompetanseArt58', 'sekundaerkompetanseArt58', 'primaerkompetanseArt68', 'sekundaerkompetanseArt68'].map(kompetanseType => {
+                        const perioder: Array<KompetansePeriode> | undefined | null = _.get(vedtak, kompetanseType)
+                        return (
+                          <div key={kompetanseType}>
+                            {!_.isEmpty(perioder) && (
+                              <Label>{_.find(kompetanseTypeOptions, v => v.value === kompetanseType)?.label}</Label>
+                            )}
+                            {perioder?.map((p: KompetansePeriode, i: number) =>
+                              ({ ...p, periode: { ...p.periode, __type: kompetanseType, __index: i } })
+                            ).sort(periodePeriodeSort)
+                              .map(renderKompetansePeriodeRow)}
+                          </div>
+                        )
+                      })}
+                    </>
+                  )
+                )
+            }
+            {_newKompetansePeriodeForm
+              ? renderKompetansePeriodeRow(null, -1)
+              : (
+                <Box>
+                  <Button
+                    variant='tertiary'
+                    onClick={() => {_setNewKompetansePeriodeForm(true); setShowSkalYtelseUtbetales(false)}}
+                    icon={<PlusCircleIcon/>}
+                  >
+                    {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                  </Button>
+                </Box>
+                )
+            }
+        </VStack>
+      </Box>
     </>
   )
 }
