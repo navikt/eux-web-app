@@ -1,4 +1,4 @@
-import {Label, VStack} from '@navikt/ds-react'
+import {HStack, Label, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import React from "react";
 import {MainFormProps, MainFormSelector} from "../MainForm";
 import TextArea from "../../../components/Forms/TextArea";
@@ -6,10 +6,10 @@ import {useAppDispatch, useAppSelector} from "../../../store";
 import {useTranslation} from "react-i18next";
 import _ from "lodash";
 import {State} from "../../../declarations/reducers";
-import {FlexRadioPanels, RadioPanel, RadioPanelGroup} from "@navikt/hoykontrast";
 import Input from "../../../components/Forms/Input";
 import {resetValidation} from "../../../actions/validation";
 import {Utdanning as UtdanningDTO} from "../../../declarations/sed";
+import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -37,47 +37,47 @@ const Utdanning: React.FC<MainFormProps> = ({
 
   return (
     <VStack gap="4">
-      <RadioPanelGroup
+      <RadioGroup
         id={namespace + '-type'}
         value={utdanning?.type}
         legend="Type opplæringsinstitusjon"
         onChange={(v:string)=>setUtdanning("type", v)}
         error={validation[namespace + '-type']?.feilmelding}
       >
-        <FlexRadioPanels>
-          <RadioPanel value='skole'>Skole</RadioPanel>
-          <RadioPanel value='høyskole'>Høyskole</RadioPanel>
-          <RadioPanel value='universitet'>Universitet</RadioPanel>
-          <RadioPanel value='yrkesrettet_opplæring'>Yrkesrettet opplæring</RadioPanel>
-          <RadioPanel value='barnehage_daghjem'>Barnehage/Daghjem</RadioPanel>
-        </FlexRadioPanels>
-      </RadioPanelGroup>
-      <RadioPanelGroup
+        <HStack gap="2">
+          <Radio className={commonStyles.radioPanel} value='skole'>Skole</Radio>
+          <Radio className={commonStyles.radioPanel} value='høyskole'>Høyskole</Radio>
+          <Radio className={commonStyles.radioPanel} value='universitet'>Universitet</Radio>
+          <Radio className={commonStyles.radioPanel} value='yrkesrettet_opplæring'>Yrkesrettet opplæring</Radio>
+          <Radio className={commonStyles.radioPanel} value='barnehage_daghjem'>Barnehage/Daghjem</Radio>
+        </HStack>
+      </RadioGroup>
+      <RadioGroup
         id={namespace + '-typedeltakelse'}
         value={utdanning?.typeDeltakelse}
         legend="Type deltakelse"
         onChange={(v:string)=>setUtdanning("typeDeltakelse", v)}
         error={validation[namespace + '-typedeltakelse']?.feilmelding}
       >
-        <FlexRadioPanels>
-          <RadioPanel value='deltid'>Deltid</RadioPanel>
-          <RadioPanel value='heltid'>Heltid</RadioPanel>
-        </FlexRadioPanels>
-      </RadioPanelGroup>
+        <HStack gap="2">
+          <Radio className={commonStyles.radioPanel} value='deltid'>Deltid</Radio>
+          <Radio className={commonStyles.radioPanel} value='heltid'>Heltid</Radio>
+        </HStack>
+      </RadioGroup>
       <Label>Faktisk deltakelse</Label>
-      <RadioPanelGroup
+      <RadioGroup
         value={utdanning?.timerPr}
         legend="Timer pr"
         onChange={(v:string)=>setUtdanning("timerPr", v)}
         error={validation[namespace + '-timer-pr']?.feilmelding}
         id={namespace + '-timer-pr'}
       >
-        <FlexRadioPanels>
-          <RadioPanel value='dag'>Dag</RadioPanel>
-          <RadioPanel value='uke'>Uke</RadioPanel>
-          <RadioPanel value='maaned'>Måned</RadioPanel>
-        </FlexRadioPanels>
-      </RadioPanelGroup>
+        <HStack gap="2">
+          <Radio className={commonStyles.radioPanel} value='dag'>Dag</Radio>
+          <Radio className={commonStyles.radioPanel} value='uke'>Uke</Radio>
+          <Radio className={commonStyles.radioPanel} value='maaned'>Måned</Radio>
+        </HStack>
+      </RadioGroup>
       <Input
         error={validation[namespace + '-timer']?.feilmelding}
         namespace={namespace}

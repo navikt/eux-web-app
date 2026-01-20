@@ -1,5 +1,6 @@
 .radioPanel{
   flex: 1;
+  background-color: var(--a-surface-default);
   :global(.navds-radio__label) {
     border-radius: 4px;
     width: 100%;

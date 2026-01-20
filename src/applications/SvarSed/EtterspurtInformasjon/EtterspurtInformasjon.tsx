@@ -3,7 +3,6 @@ import {MainFormProps, MainFormSelector} from "../MainForm";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "store";
 import {Box, Checkbox, Heading, VStack} from "@navikt/ds-react";
-import {PaddedDiv} from "@navikt/hoykontrast";
 import useUnmount from "hooks/useUnmount";
 import _ from "lodash";
 import {AnmodningOmMerInformasjon} from "declarations/sed";
@@ -96,11 +95,11 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
 
   return (
     <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {label}
-        </Heading>
+      <Box padding="4">
         <VStack gap="4">
+          <Heading size='small'>
+            {label}
+          </Heading>
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <Checkbox
               value="adopsjon"
@@ -234,7 +233,7 @@ const EtterspurtInformasjon: React.FC<MainFormProps> = ({
             }
           </Box>
         </VStack>
-      </PaddedDiv>
+      </Box>
     </>
   )
 }
