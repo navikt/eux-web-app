@@ -1,4 +1,4 @@
-import {Alert, Box, Heading, HGrid, Radio, RadioGroup, TextField, VStack} from '@navikt/ds-react'
+import {Alert, Box, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, TextField, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
@@ -250,23 +250,17 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
             name={namespace + '-kjoenn'}
             onChange={setKjoenn}
           >
-            <HGrid columns={3} gap="4" align="center">
-              <Box className={commonStyles.radioPanel}>
-                <Radio value='M'>
-                  {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                </Radio>
-              </Box>
-              <Box className={commonStyles.radioPanel}>
-                <Radio value='K'>
-                  {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                </Radio>
-              </Box>
-              <Box className={commonStyles.radioPanel}>
-                <Radio value='U'>
-                  {t('label:ukjent')}
-                </Radio>
-              </Box>
-            </HGrid>
+            <HStack  gap="4" align="center">
+              <Radio className={commonStyles.radioPanel} value='M'>
+                {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+              </Radio>
+              <Radio className={commonStyles.radioPanel} value='K'>
+                {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+              </Radio>
+              <Radio className={commonStyles.radioPanel} value='U'>
+                {t('label:ukjent')}
+              </Radio>
+            </HStack>
           </RadioGroup>
           <Heading size='small'>
             {t('label:utenlandske-pin')}
