@@ -4,7 +4,7 @@
   :global(.navds-radio__label) {
     border-radius: 4px;
     width: 100%;
-    padding: 1rem 0.5rem;
+    padding: 0.8rem 0.5rem;
   }
 }
 

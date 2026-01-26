@@ -1,23 +1,11 @@
 import { PlusCircleIcon, ChildEyesIcon } from '@navikt/aksel-icons';
-import {BodyLong, Button, Heading, Modal as NavModal, TextField} from '@navikt/ds-react'
+import {BodyLong, Box, Button, Heading, HStack, Modal as NavModal, Radio, RadioGroup, Spacer, TextField, VStack} from '@navikt/ds-react'
 import { ActionWithPayload } from '@navikt/fetch'
-import {
-  AlignStartRow,
-  Column,
-  FlexBaseSpacedDiv,
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
 import { validateAddPersonModal, ValidationAddPersonModalProps } from 'applications/SvarSed/AddPersonModal/validation'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import DateField from 'components/DateField/DateField'
 import Select from 'components/Forms/Select'
-import { GrayPanel, HorizontalLineSeparator } from 'components/StyledComponents'
+import { HorizontalLineSeparator } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { F002Sed, Kjoenn, PersonInfo } from 'declarations/sed'
 import { StorageTypes } from 'declarations/types'
@@ -26,23 +14,8 @@ import _ from 'lodash'
 import React, {useEffect, useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch } from 'store'
-import styled from 'styled-components'
-
-const ModalButtons = styled.div`
-  text-align: left;
-`
-const CheckboxDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  .skjemaelement {
-     display: flex;
-  }
-  width: 100%;
-`
-const GreySpan = styled.span`
-  color: grey;
-  white-space: nowrap;
-`
+import styles from './AddPersonModal.module.css'
+import commonStyles from "../../../assets/css/common.module.css";
 
 interface AddPersonModalProps<T> {
   appElement?: any
@@ -274,33 +247,26 @@ const AddPersonModal = <T extends StorageTypes>({
     if (!p) return null
 
     return (
-      <FlexDiv key={personId}>
-        <CheckboxDiv>
-          <FlexCenterSpacedDiv>
-            <FlexBaseSpacedDiv>
-              <BodyLong>
-                {p?.fornavn + ' ' + (p?.etternavn ?? '')}
-              </BodyLong>
-              <HorizontalSeparatorDiv size='0.5' />
-              <GreySpan>
-                {'(' + getPersonLabel(personId) + ')'}
-              </GreySpan>
-            </FlexBaseSpacedDiv>
-            {personId.startsWith('barn[') && (
-              <>
-                <HorizontalSeparatorDiv size='0.5' />
-                <ChildEyesIcon />
-              </>
-            )}
-          </FlexCenterSpacedDiv>
-          <AddRemovePanel<PersonInfo>
-            item={p}
-            index={0}
-            allowEdit={false}
-            onRemove={() => onRemovePerson(personId)}
-          />
-        </CheckboxDiv>
-      </FlexDiv>
+      <HStack key={personId}>
+        <HStack gap="2">
+          <BodyLong>
+            {p?.fornavn + ' ' + (p?.etternavn ?? '')}
+          </BodyLong>
+          <span className={styles.greySpan}>
+            {'(' + getPersonLabel(personId) + ')'}
+          </span>
+          {personId.startsWith('barn[') && (
+            <ChildEyesIcon />
+          )}
+        </HStack>
+        <Spacer/>
+        <AddRemovePanel<PersonInfo>
+          item={p}
+          index={0}
+          allowEdit={false}
+          onRemove={() => onRemovePerson(personId)}
+        />
+      </HStack>
     )
   }
 
@@ -317,129 +283,111 @@ const AddPersonModal = <T extends StorageTypes>({
       width="1"
     >
       <NavModal.Body id='add-person-modal-id'>
-        {_replySed?.bruker && renderPerson('bruker')}
-        {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
-        {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
-        {(_replySed as F002Sed).andrePersoner?.map((_p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
-        {(_replySed as F002Sed).barn?.map((_b: any, i: number) => renderPerson(`barn[${i}]`))}
-        <VerticalSeparatorDiv />
-        <HorizontalLineSeparator />
-        <VerticalSeparatorDiv size='2' />
-        <GrayPanel>
-          <Heading size='small'>
-            {t('el:button-add-new-x', { x: t('label:person').toLowerCase() })}
-          </Heading>
-          <VerticalSeparatorDiv />
-          <HorizontalLineSeparator />
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <TextField
-                error={_validation[namespace + '-fornavn']?.feilmelding}
-                id={namespace + '-fornavn'}
-                label={t('label:fornavn')}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFornavn(e.target.value)}
-                value={_newPersonFornavn}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <TextField
-                error={_validation[namespace + '-etternavn']?.feilmelding}
-                id={namespace + '-etternavn'}
-                label={t('label:etternavn')}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEtternavn(e.target.value)}
-                value={_newPersonEtternavn}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <DateField
-                error={_validation[namespace + '-fdato']?.feilmelding}
-                id='fdato'
-                namespace={namespace}
-                label={t('label:fødselsdato')}
-                onChanged={setFoedselsdato}
-                dateValue={_newPersonFodselsdato}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column>
-              <TextField
-                error={_validation[namespace + '-fnr']?.feilmelding}
-                id={namespace + '-fnr'}
-                label={t('label:fnr-dnr')}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFnr(e.target.value)}
-                value={_newPersonFnr}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-          </AlignStartRow>
-          <AlignStartRow>
-            <Column flex='1.5'>
-              <RadioPanelGroup
-                value={_newPersonKjoenn}
-                data-no-border
-                data-testid={namespace + '-kjoenn'}
-                error={_validation[namespace + '-kjoenn']?.feilmelding}
-                id={namespace + '-kjoenn'}
-                legend={t('label:kjønn') + ' *'}
-                name={namespace + '-kjoenn'}
-                onChange={setKjoenn}
-              >
-                <FlexRadioPanels>
-                  <RadioPanel value='M'>
-                    {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                  </RadioPanel>
-                  <RadioPanel value='K'>
-                    {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                  </RadioPanel>
-                  <RadioPanel value='U'>
-                    {t('label:ukjent')}
-                  </RadioPanel>
-                </FlexRadioPanels>
-              </RadioPanelGroup>
-            </Column>
-            <Column flex='1'>
-              <Select
-                aria-label={t('label:familierelasjon')}
-                data-testid={namespace + '-relasjon'}
-                error={_validation[namespace + '-relasjon']?.feilmelding}
-                id={namespace + '-relasjon'}
-                label={t('label:familierelasjon')}
-                onChange={setRelation}
-                options={relationOptions}
-                value={_.find(relationOptions, o => o.value === _newPersonRelation)}
-                defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
-              />
-              <HorizontalSeparatorDiv />
-            </Column>
-            <Column flex='0.5'>
-              <div className='nolabel'>
-                <Button
-                  variant='secondary'
-                  onClick={onAdd}
-                  icon={<PlusCircleIcon/>}
+        <VStack gap="4">
+          <VStack>
+            {_replySed?.bruker && renderPerson('bruker')}
+            {(_replySed as F002Sed).ektefelle && renderPerson('ektefelle')}
+            {(_replySed as F002Sed).annenPerson && renderPerson('annenPerson')}
+            {(_replySed as F002Sed).andrePersoner?.map((_p: any, i: number) => renderPerson(`andrePersoner[${i}]`))}
+            {(_replySed as F002Sed).barn?.map((_b: any, i: number) => renderPerson(`barn[${i}]`))}
+          </VStack>
+          <HorizontalLineSeparator/>
+          <Box background="bg-subtle" padding="4">
+            <VStack gap="4">
+              <Heading size='small'>
+                {t('el:button-add-new-x', {x: t('label:person').toLowerCase()})}
+              </Heading>
+              <HorizontalLineSeparator/>
+              <HStack gap="2" justify="space-evenly">
+                <TextField
+                  error={_validation[namespace + '-fornavn']?.feilmelding}
+                  id={namespace + '-fornavn'}
+                  label={t('label:fornavn')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFornavn(e.target.value)}
+                  value={_newPersonFornavn}
+                />
+                <TextField
+                  error={_validation[namespace + '-etternavn']?.feilmelding}
+                  id={namespace + '-etternavn'}
+                  label={t('label:etternavn')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEtternavn(e.target.value)}
+                  value={_newPersonEtternavn}
+                />
+                <DateField
+                  error={_validation[namespace + '-fdato']?.feilmelding}
+                  id='fdato'
+                  namespace={namespace}
+                  label={t('label:fødselsdato')}
+                  onChanged={setFoedselsdato}
+                  dateValue={_newPersonFodselsdato}
+                />
+                <TextField
+                  error={_validation[namespace + '-fnr']?.feilmelding}
+                  id={namespace + '-fnr'}
+                  label={t('label:fnr-dnr')}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFnr(e.target.value)}
+                  value={_newPersonFnr}
+                />
+              </HStack>
+              <HStack gap="2" align="center" justify="space-evenly">
+                <RadioGroup
+                  value={_newPersonKjoenn}
+                  data-no-border
+                  data-testid={namespace + '-kjoenn'}
+                  error={_validation[namespace + '-kjoenn']?.feilmelding}
+                  id={namespace + '-kjoenn'}
+                  legend={t('label:kjønn') + ' *'}
+                  name={namespace + '-kjoenn'}
+                  onChange={setKjoenn}
                 >
-                  {t('el:button-add')}
-                </Button>
-              </div>
-            </Column>
-          </AlignStartRow>
-        </GrayPanel>
-        <VerticalSeparatorDiv />
-        <ModalButtons>
-          <Button
-            variant='primary'
-            onClick={() => {
-              onSavePersons()
-              resetForm()
-              onModalClose()
-            }}
-          >
-            {t('el:button-close-person-modal')}
-          </Button>
-        </ModalButtons>
+                  <HStack gap="2">
+                    <Radio value='M' className={commonStyles.radioPanel}>
+                      {t(_newPersonRelation?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+                    </Radio>
+                    <Radio value='K' className={commonStyles.radioPanel}>
+                      {t(_newPersonRelation?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+                    </Radio>
+                    <Radio value='U' className={commonStyles.radioPanel}>
+                      {t('label:ukjent')}
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
+                <Select
+                  aria-label={t('label:familierelasjon')}
+                  data-testid={namespace + '-relasjon'}
+                  error={_validation[namespace + '-relasjon']?.feilmelding}
+                  id={namespace + '-relasjon'}
+                  label={t('label:familierelasjon')}
+                  onChange={setRelation}
+                  options={relationOptions}
+                  value={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                  defaultValue={_.find(relationOptions, o => o.value === _newPersonRelation)}
+                />
+                <div className='nolabel'>
+                  <Button
+                    variant='secondary'
+                    onClick={onAdd}
+                    icon={<PlusCircleIcon/>}
+                  >
+                    {t('el:button-add')}
+                  </Button>
+                </div>
+              </HStack>
+            </VStack>
+          </Box>
+          <Box>
+            <Button
+              variant='primary'
+              onClick={() => {
+                onSavePersons()
+                resetForm()
+                onModalClose()
+              }}
+            >
+              {t('el:button-close-person-modal')}
+            </Button>
+          </Box>
+        </VStack>
       </NavModal.Body>
     </NavModal>
   )
