@@ -1,13 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -15,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { Option, Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { Epost, Telefon, TelefonType } from 'declarations/sed'
@@ -282,41 +274,38 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const _telefon = index < 0 ? _newTelefon : (inEditMode ? _editTelefon : telefon)
     const getTypeOption = (value: string | undefined | null) => _.find(telefonTypeOptions, s => s.value === value)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getTelefonId(telefon)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-nummer'] || _v[_namespace + '-type']
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
-            {inEditMode
-              ? (
-                <Input
-                  ariaLabel={t('label:telefonnummer')}
-                  error={_v[_namespace + '-nummer']?.feilmelding}
-                  id='nummer'
-                  label={t('label:telefonnummer')}
-                  hideLabel={index >= 0}
-                  namespace={_namespace}
-                  onChanged={(value: string) => setTelefonNummer(value, index)}
-                  required
-                  value={_telefon?.nummer}
-                />
-                )
-              : (
-                <FormText
-                  error={_v[_namespace + '-nummer']?.feilmelding}
-                  id={_namespace + '-nummer'}
-                >
-                  <BodyLong>{_telefon?.nummer}</BodyLong>
-                </FormText>
-                )}
-          </Column>
-          <Column>
+        <HGrid columns={3} gap="4">
+          {inEditMode
+            ? (
+              <Input
+                ariaLabel={t('label:telefonnummer')}
+                error={_v[_namespace + '-nummer']?.feilmelding}
+                id='nummer'
+                label={t('label:telefonnummer')}
+                hideLabel={index >= 0}
+                namespace={_namespace}
+                onChanged={(value: string) => setTelefonNummer(value, index)}
+                required
+                value={_telefon?.nummer}
+              />
+            ) : (
+              <FormText
+                error={_v[_namespace + '-nummer']?.feilmelding}
+                id={_namespace + '-nummer'}
+              >
+                <BodyLong>{_telefon?.nummer}</BodyLong>
+              </FormText>
+            )
+          }
             {inEditMode
               ? (
                 <Select
@@ -332,17 +321,15 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                   value={getTypeOption(_telefon?.type)}
                   defaultValue={getTypeOption(_telefon?.type)}
                 />
-                )
-              : (
+              ) : (
                 <FormText
                   error={_v[_namespace + '-type']?.feilmelding}
                   id={_namespace + '-type'}
                 >
                   <BodyLong>{_telefon?.type ? t('el:option-telefon-type-' + _telefon?.type) : ""}</BodyLong>
                 </FormText>
-                )}
-          </Column>
-          <Column>
+              )
+            }
             <AddRemovePanel<Telefon>
               item={telefon}
               marginTop={index < 0}
@@ -355,10 +342,8 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
               onConfirmEdit={onSaveTelefonEdit}
               onCancelEdit={() => onCloseEdit('telefon', _namespace)}
             />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+        </HGrid>
+      </RepeatableBox>
     )
   }
 
@@ -368,161 +353,138 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _epostEditIndex === index
     const _epost = index < 0 ? _newEpost : (inEditMode ? _editEpost : epost)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getEpostId(epost)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-adresse']
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column flex='2'>
-            {inEditMode
-              ? (
-                <Input
-                  label={t('label:epost')}
-                  ariaLabel={t('label:epost')}
-                  error={_v[_namespace + '-adresse']?.feilmelding}
-                  namespace={_namespace}
-                  id='adresse'
-                  hideLabel={index >= 0}
-                  onChanged={(value: string) => setEpostAdresse(value, index)}
-                  required
-                  value={_epost?.adresse}
-                />
-                )
-              : (
-                <FormText
-                  error={_v[_namespace + '-adresse']?.feilmelding}
-                  id={_namespace + '-adresse'}
-                >
-                  <BodyLong>{_epost?.adresse}</BodyLong>
-                </FormText>
-                )}
-          </Column>
-          <AlignEndColumn>
-            <AddRemovePanel<Epost>
-              item={epost}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onEpostRemove}
-              onAddNew={onEpostAddNew}
-              onCancelNew={() => onCloseNew('epost')}
-              onStartEdit={onStartEpostEdit}
-              onConfirmEdit={onSaveEpostEdit}
-              onCancelEdit={() => onCloseEdit('epost', _namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+        <HStack gap="4">
+          {inEditMode
+            ? (
+              <Input
+                label={t('label:epost')}
+                ariaLabel={t('label:epost')}
+                error={_v[_namespace + '-adresse']?.feilmelding}
+                namespace={_namespace}
+                id='adresse'
+                hideLabel={index >= 0}
+                onChanged={(value: string) => setEpostAdresse(value, index)}
+                required
+                value={_epost?.adresse}
+              />
+              )
+            : (
+              <FormText
+                error={_v[_namespace + '-adresse']?.feilmelding}
+                id={_namespace + '-adresse'}
+              >
+                <BodyLong>{_epost?.adresse}</BodyLong>
+              </FormText>
+            )
+          }
+          <Spacer/>
+          <AddRemovePanel<Epost>
+            item={epost}
+            marginTop={index < 0}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onEpostRemove}
+            onAddNew={onEpostAddNew}
+            onCancelNew={() => onCloseNew('epost')}
+            onStartEdit={onStartEpostEdit}
+            onConfirmEdit={onSaveEpostEdit}
+            onCancelEdit={() => onCloseEdit('epost', _namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(telefoner)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-telephone')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {_.isEmpty(telefoner)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-telephone')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+          )  : (
+            <>
+              <HGrid columns={3} gap="4" paddingInline="4">
+                <Label>
+                  {t('label:telefonnummer') + ' *'}
+                </Label>
+                <Label>
+                  {t('label:type') + ' *'}
+                </Label>
+                <Spacer/>
+              </HGrid>
+              {telefoner?.map(renderTelefonRow)}
+            </>
           )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:telefonnummer') + ' *'}
-                  </Label>
-                </Column>
-                <Column>
-                  <Label>
-                    {t('label:type') + ' *'}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {telefoner?.map(renderTelefonRow)}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      {_seeNewTelefonForm
-        ? renderTelefonRow(null, -1)
-        : (
-          <PaddedDiv>
-            <AlignStartRow>
-              <Column>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setSeeNewTelefonForm(true)}
-                  icon={<PlusCircleIcon/>}
-                >
-                  {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
-                </Button>
-              </Column>
-            </AlignStartRow>
-          </PaddedDiv>
-          )}
-
-      <VerticalSeparatorDiv size='3' />
-
-      {_.isEmpty(eposter)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-email')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        }
+        {_seeNewTelefonForm
+          ? renderTelefonRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setSeeNewTelefonForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:telefonnummer').toLowerCase() })}
+              </Button>
+            </Box>
           )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:epost') + ' *'}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {eposter?.map(renderEpostRow)}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      {_seeNewEpostForm
-        ? renderEpostRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setSeeNewEpostForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        }
+
+        {_.isEmpty(eposter)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-email')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+          ) : (
+            <>
+              <HStack gap="4" paddingInline="4">
+                <Label>
+                  {t('label:epost') + ' *'}
+                </Label>
+              </HStack>
+              {eposter?.map(renderEpostRow)}
+            </>
+          )
+        }
+        {_seeNewEpostForm
+          ? renderEpostRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setSeeNewEpostForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:epost').toLowerCase() })}
+              </Button>
+            </Box>
+          )
+        }
+      </VStack>
+    </Box>
   )
 }
 
