@@ -1,20 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Statsborgerskap } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -159,7 +151,8 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _statsborgerskap = index < 0 ? _newStatsborgerskap : (inEditMode ? _editStatsborgerskap : statsborgerskap)
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="1"
         id={'repeatablerow-' + _namespace}
         key={getId(statsborgerskap)}
         className={classNames({
@@ -167,9 +160,8 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
+        <VStack gap="4">
+          <HStack gap="4">
             {inEditMode
               ? (
                 <CountryDropdown
@@ -195,8 +187,7 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
                   <FlagPanel land={_statsborgerskap?.landkode}/>
                 </FormText>
                 )}
-          </Column>
-          <AlignEndColumn>
+            <Spacer/>
             <AddRemovePanel<Statsborgerskap>
               item={statsborgerskap}
               marginTop={index < 0}
@@ -209,62 +200,53 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+          </HStack>
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(statsborgerskaper)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-satsborgerskap')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : (
-          <>
-            <PaddedHorizontallyDiv>
-              <AlignStartRow>
-                <Column>
-                  <Label>
-                    {t('label:land') + ' *'}
-                  </Label>
-                </Column>
-                <Column />
-              </AlignStartRow>
-            </PaddedHorizontallyDiv>
-            <VerticalSeparatorDiv size='0.8' />
-            {statsborgerskaper?.map(renderRow)}
-          </>
-          )}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        {_.isEmpty(statsborgerskaper)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-satsborgerskap')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : (
+            <>
+              <Label>
+                {t('label:land') + ' *'}
+              </Label>
+              {statsborgerskaper?.map(renderRow)}
+            </>
+            )
+        }
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:nasjonalitet').toLowerCase() })}
+              </Button>
+            </Box>
+            )
+        }
+      </VStack>
+    </Box>
   )
 }
 
