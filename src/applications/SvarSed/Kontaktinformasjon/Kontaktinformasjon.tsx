@@ -330,18 +330,21 @@ const Kontaktinformasjon: React.FC<MainFormProps> = ({
                 </FormText>
               )
             }
-            <AddRemovePanel<Telefon>
-              item={telefon}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onTelefonRemove}
-              onAddNew={onTelefonAddNew}
-              onCancelNew={() => onCloseNew('telefon')}
-              onStartEdit={onStartTelefonEdit}
-              onConfirmEdit={onSaveTelefonEdit}
-              onCancelEdit={() => onCloseEdit('telefon', _namespace)}
-            />
+            <HStack>
+              <Spacer/>
+              <AddRemovePanel<Telefon>
+                item={telefon}
+                marginTop={index < 0}
+                index={index}
+                inEditMode={inEditMode}
+                onRemove={onTelefonRemove}
+                onAddNew={onTelefonAddNew}
+                onCancelNew={() => onCloseNew('telefon')}
+                onStartEdit={onStartTelefonEdit}
+                onConfirmEdit={onSaveTelefonEdit}
+                onCancelEdit={() => onCloseEdit('telefon', _namespace)}
+              />
+            </HStack>
         </HGrid>
       </RepeatableBox>
     )

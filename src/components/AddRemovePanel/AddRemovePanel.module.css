@@ -1,0 +1,10 @@
+.inlineFlex {
+  display: inline-flex;
+  align-items: center;
+  &.marginTop {
+    margin-top: 2.5rem;
+  }
+  &.noMargin {
+    margin-top: 0rem;
+  }
+}

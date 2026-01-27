@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, HGrid, Label} from '@navikt/ds-react'
+import {BodyLong, Box, Button, HGrid, HStack, Label, Spacer} from '@navikt/ds-react'
 import { Country } from '@navikt/land-verktoy'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
@@ -215,7 +215,8 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
                 </FormText>
                 )}
           </>
-          <>
+          <HStack>
+            <Spacer/>
             <AddRemovePanel<Pin>
               item={pin}
               marginTop={index < 0}
@@ -228,7 +229,7 @@ const UtenlandskPins: React.FC<UtenlandskPinProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </>
+          </HStack>
         </HGrid>
       </RepeatableBox>
     )

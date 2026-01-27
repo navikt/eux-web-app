@@ -137,8 +137,7 @@ export const RepeatableBox = styled(Box)`
     background-color: var(--a-gray-100);
   }
   &:not(:hover) .control-buttons {
-    position: absolute;
-    margin-left: -10000px;
+    visibility: hidden;
   }
 `
 

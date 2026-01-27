@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Box, Button, HGrid, Label} from '@navikt/ds-react'
+import {BodyLong, Box, Button, HStack, Label, Spacer} from '@navikt/ds-react'
 import {Country} from '@navikt/land-verktoy'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
@@ -156,8 +156,9 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
         })}
         padding="4"
         marginBlock="0 4"
+        width="100%"
       >
-        <HGrid columns={4} gap="4" align="start">
+        <HStack gap="8" align="center" justify={inEditMode ? "start" : "space-between"}>
           <>
             {inEditMode
               ? (
@@ -223,7 +224,7 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
                 </Box>
             }
           </>
-          <>
+          {!inEditMode &&
             <AddRemovePanel<Foedested>
               item={foedested}
               inEditMode={inEditMode}
@@ -235,8 +236,26 @@ const FoedestedFC: React.FC<FoedestedProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={onCloseEdit}
             />
-          </>
-        </HGrid>
+          }
+        </HStack>
+        {inEditMode &&
+          <Box padding="4">
+            <HStack>
+              <Spacer/>
+              <AddRemovePanel<Foedested>
+                item={foedested}
+                inEditMode={inEditMode}
+                index={index}
+                onRemove={onRemove}
+                onAddNew={onAddNew}
+                onCancelNew={onCloseNew}
+                onStartEdit={onStartEdit}
+                onConfirmEdit={onSaveEdit}
+                onCancelEdit={onCloseEdit}
+              />
+            </HStack>
+          </Box>
+        }
       </RepeatableBox>
     )
   }

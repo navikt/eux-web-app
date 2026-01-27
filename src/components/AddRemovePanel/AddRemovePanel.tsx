@@ -1,12 +1,11 @@
 import { PlusCircleIcon, ArrowUndoIcon, TrashIcon, PencilIcon, CheckmarkIcon, FilesIcon } from '@navikt/aksel-icons';
 import classNames from 'classnames'
 import { Labels } from 'declarations/app'
-import { Button, BodyLong } from '@navikt/ds-react'
-import { HorizontalSeparatorDiv } from '@navikt/hoykontrast'
+import {Button, BodyLong, HStack, Box} from '@navikt/ds-react'
 import _ from 'lodash'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
+import styles from './AddRemovePanel.module.css'
 
 export interface AddRemovePanelProps<T> {
   item: T | null
@@ -24,18 +23,6 @@ export interface AddRemovePanelProps<T> {
   onCancelNew?: () => void
   onRemove: (item: T) => void
 }
-
-const InlineFlexDiv = styled.div`
-  display: inline-flex;
-  align-items: flex-center;
-  margin-top: 0.5rem;
-  &.marginTop {
-    margin-top: 2.5rem;
-  }
-  &.noMargin {
-    margin-top: 0rem;
-  }
-`
 
 const AddRemovePanel = <T extends any>({
   labels = {},
@@ -63,124 +50,124 @@ const AddRemovePanel = <T extends any>({
 
   if (candidateForDeletion) {
     return (
-      <InlineFlexDiv className={classNames('slideInFromRight', { marginTop })}>
-        <BodyLong style={{ whiteSpace: 'nowrap' }}>
-          {labels?.areYouSure ?? t('label:er-du-sikker')}
-        </BodyLong>
-        <HorizontalSeparatorDiv size='0.5' />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => onRemove(item!)}
-        >
-          {labels?.yes ?? t('label:ja')}
-        </Button>
-        <HorizontalSeparatorDiv size='0.5' />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => setInDeleteMode(false)}
-        >
-          {labels?.no ?? t('label:nei')}
-        </Button>
-      </InlineFlexDiv>
+      <Box className={classNames('slideInFromRight', { marginTop }, styles.inlineFlex)}>
+        <HStack gap="4" align="center">
+          <BodyLong style={{ whiteSpace: 'nowrap' }}>
+            {labels?.areYouSure ?? t('label:er-du-sikker')}
+          </BodyLong>
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => onRemove(item!)}
+          >
+            {labels?.yes ?? t('label:ja')}
+          </Button>
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => setInDeleteMode(false)}
+          >
+            {labels?.no ?? t('label:nei')}
+          </Button>
+        </HStack>
+      </Box>
     )
   }
 
   if (candidateForEdition) {
     return (
-      <InlineFlexDiv className={classNames({ marginTop })}>
-        <HorizontalSeparatorDiv />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            onConfirmEdit!()
-          }}
-          icon={<CheckmarkIcon/>}
-        >
-          {labels?.ok ?? t('el:button-save')}
-        </Button>
-        <HorizontalSeparatorDiv />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            if (onCancelEdit) {
-              onCancelEdit()
-            }
-          }}
-          icon={<ArrowUndoIcon/>}
-        >
-          {labels?.cancel ?? t('el:button-cancel')}
-        </Button>
-      </InlineFlexDiv>
+      <Box className={classNames({ marginTop }, styles.inlineFlex)}>
+        <HStack gap="4" align="center">
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              onConfirmEdit!()
+            }}
+            icon={<CheckmarkIcon/>}
+          >
+            {labels?.ok ?? t('el:button-save')}
+          </Button>
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              if (onCancelEdit) {
+                onCancelEdit()
+              }
+            }}
+            icon={<ArrowUndoIcon/>}
+          >
+            {labels?.cancel ?? t('el:button-cancel')}
+          </Button>
+        </HStack>
+      </Box>
     )
   }
 
   if (isNew) {
     return (
-      <InlineFlexDiv className={classNames({ marginTop })}>
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            if (_.isFunction(onAddNew)) {
-              onAddNew()
-            }
-          }}
-          icon={<PlusCircleIcon/>}
-        >
-          {labels?.add ?? t('el:button-add')}
-        </Button>
-        <HorizontalSeparatorDiv />
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            if (_.isFunction(onCancelNew)) {
-              onCancelNew()
-            }
-          }}
-          icon={<ArrowUndoIcon/>}
-        >
-          {labels?.cancel ?? t('el:button-cancel')}
-        </Button>
-      </InlineFlexDiv>
+      <Box className={classNames({ marginTop }, styles.inlineFlex)}>
+        <HStack gap="4" align="center">
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              if (_.isFunction(onAddNew)) {
+                onAddNew()
+              }
+            }}
+            icon={<PlusCircleIcon/>}
+          >
+            {labels?.add ?? t('el:button-add')}
+          </Button>
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              if (_.isFunction(onCancelNew)) {
+                onCancelNew()
+              }
+            }}
+            icon={<ArrowUndoIcon/>}
+          >
+            {labels?.cancel ?? t('el:button-cancel')}
+          </Button>
+        </HStack>
+      </Box>
     )
   }
 
   return (
-    <InlineFlexDiv className={classNames('control-buttons', 'noMargin')}>
-      {allowEdit && (
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            if (onStartEdit) {
-              onStartEdit(item!, index)
-            }
-          }}
-          icon={<PencilIcon/>}
-        >
-          {labels?.edit ?? t('el:button-edit')}
-        </Button>
-      )}
-      {onCopy &&
-        <Button
-          size='small'
-          variant='tertiary'
-          onClick={() => {
-            onCopy(item!, index)
-          }}
-          icon={<FilesIcon/>}
-        >
-          {labels?.copy ?? t('el:button-copy')}
-        </Button>
-      }
-      {allowDelete && (
-        <>
-          <HorizontalSeparatorDiv />
+    <Box className={classNames('control-buttons', 'noMargin', styles.inlineFlex)}>
+      <HStack gap="4" align="center">
+        {allowEdit && (
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              if (onStartEdit) {
+                onStartEdit(item!, index)
+              }
+            }}
+            icon={<PencilIcon/>}
+          >
+            {labels?.edit ?? t('el:button-edit')}
+          </Button>
+        )}
+        {onCopy &&
+          <Button
+            size='small'
+            variant='tertiary'
+            onClick={() => {
+              onCopy(item!, index)
+            }}
+            icon={<FilesIcon/>}
+          >
+            {labels?.copy ?? t('el:button-copy')}
+          </Button>
+        }
+        {allowDelete && (
           <Button
             size='small'
             variant='tertiary'
@@ -189,9 +176,9 @@ const AddRemovePanel = <T extends any>({
           >
             {labels?.remove ?? t('el:button-remove')}
           </Button>
-        </>
-      )}
-    </InlineFlexDiv>
+        )}
+      </HStack>
+    </Box>
   )
 }
 
