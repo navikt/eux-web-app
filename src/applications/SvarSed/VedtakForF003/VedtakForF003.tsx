@@ -1,17 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Button, Checkbox, Heading, Label} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  PaddedVerticallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Checkbox, Heading, HStack, Label, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -26,7 +14,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import {RepeatablePeriodeRow, TextAreaDiv} from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import {F003Sed, JaNei, Periode, VedtakBarn, VedtakF003} from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -43,18 +31,9 @@ import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import BeløpNavnOgValuta from "../BeløpNavnOgValuta/BeløpNavnOgValuta";
 import {setReplySed} from "../../../actions/svarsed";
-import styled from "styled-components";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
-
-const GreyBoxWithBorder = styled.div`
-  background-color: var(--a-surface-subtle);
-  border: 1px solid var(--a-border-default);
-  padding: 0 1rem;
-
-  &.error {
-    background-color: rgba(255, 0, 0, 0.2);
-  };
-`
+import styles from "./VedtakForF003.module.css";
+import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -279,7 +258,8 @@ const VedtakForF003: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editVedtakPeriodeIndex === index
     const _periode = index < 0 ? _newVedtakPeriode : (inEditMode ? _editVedtakPeriode : periode)
     return (
-      <RepeatablePeriodeRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getVedtakPeriodeId(periode)}
         className={classNames({
@@ -287,23 +267,22 @@ const VedtakForF003: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <AlignStartRow>
+        <HStack gap="4">
           {inEditMode
             ? (
-              <PeriodeInput
-                namespace={_namespace}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                }}
-                breakInTwo
-                hideLabel={index >= 0}
-                setPeriode={(p: Periode) => setVedtakPeriode(p, index)}
-                value={_periode}
-              />
+                <PeriodeInput
+                  namespace={_namespace}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  breakInTwo
+                  hideLabel={index >= 0}
+                  setPeriode={(p: Periode) => setVedtakPeriode(p, index)}
+                  value={_periode}
+                />
               )
             : (
-              <Column>
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -312,37 +291,35 @@ const VedtakForF003: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_periode}
                 />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Periode>
-              item={periode}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemoveVedtakPeriode}
-              onAddNew={onAddVedtakPeriodeNew}
-              onCancelNew={onCloseVedtakPeriodeNew}
-              onStartEdit={onStartVedtakPeriodeEdit}
-              onConfirmEdit={onSaveVedtakPeriodeEdit}
-              onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-      </RepeatablePeriodeRow>
+              )
+          }
+          <Spacer/>
+          <AddRemovePanel<Periode>
+            item={periode}
+            marginTop={index < 0}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemoveVedtakPeriode}
+            onAddNew={onAddVedtakPeriodeNew}
+            onCancelNew={onCloseVedtakPeriodeNew}
+            onStartEdit={onStartVedtakPeriodeEdit}
+            onConfirmEdit={onSaveVedtakPeriodeEdit}
+            onCancelEdit={() => onCloseVedtakPeriodeEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
     <>
-      <PaddedDiv>
-        <Heading size='small'>
-          {label}
-        </Heading>
-        <VerticalSeparatorDiv size='2' />
-        <Row>
-          <Column flex='2'>
-            <RadioPanelGroup
+      <Box padding="4">
+        <VStack gap="4">
+          <Heading size='small'>
+            {label}
+          </Heading>
+          <HStack>
+            <RadioGroup
               value={vedtak?.gjelderAlleBarn}
               data-no-border
               data-testid={namespace + '-gjelderAlleBarn'}
@@ -352,191 +329,163 @@ const VedtakForF003: React.FC<MainFormProps> = ({
               name={namespace + '-gjelderAlleBarn'}
               onChange={(e: string) => setGjelderAlleBarn(e as JaNei)}
             >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </Row>
-        <VerticalSeparatorDiv />
-        <Label>
-          {t('label:vedtaksperioder')}
-        </Label>
-        <GreyBoxWithBorder
-          id={namespace + '-vedtaksperioder'}
-          className={classNames({
-            error: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
-          })}
-        >
-          {_.isEmpty(vedtak?.vedtaksperioder)
-            ? (
-              <PaddedVerticallyDiv>
-                <BodyLong>
-                  {t('message:warning-no-periods')}
-                </BodyLong>
-              </PaddedVerticallyDiv>
-            )
-            : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
-          {_newVedtakPeriodeForm
-            ? renderVedtakPeriodeRow(null, -1)
-            : (
-              <Button
-                variant='tertiary'
-                onClick={addVedtakPeriode}
-                icon={<PlusCircleIcon/>}
-              >
-                {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
-              </Button>
-            )}
-          <VerticalSeparatorDiv/>
-        </GreyBoxWithBorder>
-        {validation[namespace + '-vedtaksperioder']?.feilmelding &&
-          <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
-        }
-        <VerticalSeparatorDiv />
-        {vedtak?.gjelderAlleBarn === 'nei' && (
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: t('label:avhuk-de-barn-vedtaket') + ':' }} />
-            <VerticalSeparatorDiv />
-            {(replySed as F003Sed)?.barn?.map((b, index) => {
-              const vedtakBarn: VedtakBarn = {
-                fornavn: b.personInfo?.fornavn,
-                etternavn: b.personInfo?.etternavn,
-                foedselsdato: b.personInfo?.foedselsdato
-              }
-              const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
-              return (
-                <>
-                  <GreyBoxWithBorder
-                    key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
-                    className={classNames({
-                      error: hasNamespaceWithErrors(validation, namespace + "-barnVedtaketOmfatter")
-                    })}
-                  >
-                    <Checkbox
-                      checked={checked}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, index, e.target.checked)}
-                    >
-                      {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
-                    </Checkbox>
-                    {checked &&
-                      <BeløpNavnOgValuta
-                        replySed={replySed}
-                        parentNamespace="vedtak"
-                        setReplySed={setReplySed}
-                        updateReplySed={updateReplySed}
-                        personID={"barn[" + index + "]"}
-                        options={{showHeading: false}}
-                      />
-                    }
-                  </GreyBoxWithBorder>
-                  <VerticalSeparatorDiv/>
-                </>
-              )
+              <HStack gap="4">
+                <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+                <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+              </HStack>
+            </RadioGroup>
+          </HStack>
+          <Label>
+            {t('label:vedtaksperioder')}
+          </Label>
+          <Box
+            borderWidth="1"
+            padding="4"
+            background="surface-subtle"
+            id={namespace + '-vedtaksperioder'}
+            className={classNames({
+              [styles.error]: hasNamespaceWithErrors(validation, namespace + "-vedtaksperioder")
             })}
-            {validation[namespace + '-barnVedtaketOmfatter']?.feilmelding &&
-              <ErrorLabel error={validation[namespace + '-barnVedtaketOmfatter']?.feilmelding}/>
-            }
-            <VerticalSeparatorDiv/>
-          </div>
-        )}
-        {vedtak?.gjelderAlleBarn === 'nei' &&
-          <>
-            <Row>
-              <Column flex='2'>
-                <RadioPanelGroup
-                  value={_utvidetBarneTrygd}
-                  data-no-border
-                  data-testid={namespace + '-utvidet-barnetrygd'}
-                  error={validation[namespace + '-utvidet-barnetrygd']?.feilmelding}
-                  id={namespace + '-utvidet-barnetrygd'}
-                  legend={t('label:utbetales-det-utvidet-barnetrygd')}
-                  name={namespace + '-utvidet-barnetrygd'}
-                  onChange={setUtvidetBarnetrygd}
+          >
+            {_.isEmpty(vedtak?.vedtaksperioder)
+              ? (
+                <Box padding="4">
+                  <BodyLong>
+                    {t('message:warning-no-periods')}
+                  </BodyLong>
+                </Box>
+              )
+              : vedtak?.vedtaksperioder?.map(renderVedtakPeriodeRow)}
+            {_newVedtakPeriodeForm
+              ? renderVedtakPeriodeRow(null, -1)
+              : (
+                <Button
+                  variant='tertiary'
+                  onClick={addVedtakPeriode}
+                  icon={<PlusCircleIcon/>}
                 >
-                  <FlexRadioPanels>
-                    <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                    <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-                  </FlexRadioPanels>
-                </RadioPanelGroup>
-              </Column>
-              <Column />
-            </Row>
-          </>
-        }
-        {_utvidetBarneTrygd === "ja" && vedtak?.gjelderAlleBarn === 'nei' &&
-          <GreyBoxWithBorder>
-            <BeløpNavnOgValuta
-              replySed={replySed}
-              parentNamespace="vedtak"
-              setReplySed={setReplySed}
-              updateReplySed={updateReplySed}
-              personID="familie"
-              options={{showHeading: false, utvidetBarneTrygd: true}}
-            />
-          </GreyBoxWithBorder>
-        }
-        {vedtak?.gjelderAlleBarn === 'ja' &&
-          <GreyBoxWithBorder>
-            <BeløpNavnOgValuta
-              replySed={replySed}
-              parentNamespace="vedtak"
-              setReplySed={setReplySed}
-              updateReplySed={updateReplySed}
-              personID="familie"
-              options={{showHeading: false}}
-            />
-          </GreyBoxWithBorder>
-        }
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-begrunnelse']?.feilmelding}
-                namespace={namespace}
-                id='begrunnelse'
-                label={t('label:begrunnelse')}
-                onChanged={setBegrunnelse}
-                value={vedtak?.begrunnelse}
+                  {t('el:button-add-new-x', { x: t('label:vedtaksperiode').toLowerCase() })}
+                </Button>
+              )}
+          </Box>
+          {validation[namespace + '-vedtaksperioder']?.feilmelding &&
+            <ErrorLabel error={validation[namespace + '-vedtaksperioder']?.feilmelding}/>
+          }
+          {vedtak?.gjelderAlleBarn === 'nei' && (
+            <VStack gap="4">
+              <span>{t('label:avhuk-de-barn-vedtaket') + ':' } </span>
+              <VStack gap="4">
+                {(replySed as F003Sed)?.barn?.map((b, index) => {
+                  const vedtakBarn: VedtakBarn = {
+                    fornavn: b.personInfo?.fornavn,
+                    etternavn: b.personInfo?.etternavn,
+                    foedselsdato: b.personInfo?.foedselsdato
+                  }
+                  const checked: boolean = _.find(vedtak?.barnVedtaketOmfatter, vb => _.isEqual(vb, vedtakBarn)) !== undefined
+                  return (
+                      <Box
+                        borderWidth="1"
+                        padding="4"
+                        background="surface-subtle"
+                        key={`${vedtakBarn.fornavn}-${vedtakBarn.etternavn}-${vedtakBarn.foedselsdato}`}
+                        className={classNames({
+                          [styles.error]: hasNamespaceWithErrors(validation, namespace + "-barnVedtaketOmfatter")
+                        })}
+                      >
+                        <Checkbox
+                          checked={checked}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onCheckBarn(vedtakBarn, index, e.target.checked)}
+                        >
+                          {vedtakBarn.fornavn + ' ' + (vedtakBarn.etternavn ?? '') + ' (' + vedtakBarn.foedselsdato + ')'}
+                        </Checkbox>
+                        {checked &&
+                          <BeløpNavnOgValuta
+                            replySed={replySed}
+                            parentNamespace="vedtak"
+                            setReplySed={setReplySed}
+                            updateReplySed={updateReplySed}
+                            personID={"barn[" + index + "]"}
+                            options={{showHeading: false}}
+                          />
+                        }
+                      </Box>
+                  )
+                })}
+              </VStack>
+              {validation[namespace + '-barnVedtaketOmfatter']?.feilmelding &&
+                <ErrorLabel error={validation[namespace + '-barnVedtaketOmfatter']?.feilmelding}/>
+              }
+            </VStack>
+          )}
+          {vedtak?.gjelderAlleBarn === 'nei' &&
+            <HStack>
+              <RadioGroup
+                value={_utvidetBarneTrygd}
+                data-no-border
+                data-testid={namespace + '-utvidet-barnetrygd'}
+                error={validation[namespace + '-utvidet-barnetrygd']?.feilmelding}
+                id={namespace + '-utvidet-barnetrygd'}
+                legend={t('label:utbetales-det-utvidet-barnetrygd')}
+                name={namespace + '-utvidet-barnetrygd'}
+                onChange={setUtvidetBarnetrygd}
+              >
+                <HStack gap="4">
+                  <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+                  <Radio className={commonStyles.radioPanel}value='nei'>{t('label:nei')}</Radio>
+                </HStack>
+              </RadioGroup>
+            </HStack>
+          }
+          {_utvidetBarneTrygd === "ja" && vedtak?.gjelderAlleBarn === 'nei' &&
+            <Box borderWidth="1" padding="4" background="surface-subtle">
+              <BeløpNavnOgValuta
+                replySed={replySed}
+                parentNamespace="vedtak"
+                setReplySed={setReplySed}
+                updateReplySed={updateReplySed}
+                personID="familie"
+                options={{showHeading: false, utvidetBarneTrygd: true}}
               />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-kompetanse']?.feilmelding}
-                namespace={namespace}
-                id='kompetanse'
-                label={t('label:vedtak-om-kompetanse-angaaende-prioritet')}
-                onChanged={setKompetanse}
-                value={vedtak?.kompetanse}
+            </Box>
+          }
+          {vedtak?.gjelderAlleBarn === 'ja' &&
+            <Box borderWidth="1" padding="4" background="surface-subtle">
+              <BeløpNavnOgValuta
+                replySed={replySed}
+                parentNamespace="vedtak"
+                setReplySed={setReplySed}
+                updateReplySed={updateReplySed}
+                personID="familie"
+                options={{showHeading: false}}
               />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-                namespace={namespace}
-                id='ytterligereInfo'
-                label={t('label:ytterligere-informasjon-til-sed')}
-                onChanged={setYtterligeInfo}
-                value={vedtak?.ytterligereInfo}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
+            </Box>
+          }
+          <TextArea
+            error={validation[namespace + '-begrunnelse']?.feilmelding}
+            namespace={namespace}
+            id='begrunnelse'
+            label={t('label:begrunnelse')}
+            onChanged={setBegrunnelse}
+            value={vedtak?.begrunnelse}
+          />
+          <TextArea
+            error={validation[namespace + '-kompetanse']?.feilmelding}
+            namespace={namespace}
+            id='kompetanse'
+            label={t('label:vedtak-om-kompetanse-angaaende-prioritet')}
+            onChanged={setKompetanse}
+            value={vedtak?.kompetanse}
+          />
+          <TextArea
+            error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+            namespace={namespace}
+            id='ytterligereInfo'
+            label={t('label:ytterligere-informasjon-til-sed')}
+            onChanged={setYtterligeInfo}
+            value={vedtak?.ytterligereInfo}
+          />
+        </VStack>
+      </Box>
     </>
   )
 }
