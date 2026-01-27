@@ -1,5 +1,4 @@
-import { Heading, Radio, RadioGroup, Button } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Heading, Radio, RadioGroup, Button, Box, VStack, HGrid} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
 import {
@@ -9,7 +8,6 @@ import {
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import { Adresse as IAdresse, F002Sed, KontoType, UtbetalingTilInstitusjon } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
@@ -56,7 +54,7 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
     dispatch(setValidation(clonedValidation))
   })
 
-  // caches konto information while switching from konto ordinær to sepa, so that we do not
+  // caches konto information while switching from konto ordinaer to sepa, so that we do not
   // throw away completely all information added
   const [_cacheKonto, _setCacheKonto] = useState<any>({
     ordinaer: utbetalingTilInstitusjon?.kontoOrdinaer,
@@ -186,31 +184,22 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
 
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              error={validation[namespace + '-begrunnelse']?.feilmelding}
-              id='begrunnelse'
-              label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
-              namespace={namespace}
-              onChanged={setBegrunnelse}
-              required
-              value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
-              maxLength={255}
-            />
-          </TextAreaDiv>
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <TextArea
+          error={validation[namespace + '-begrunnelse']?.feilmelding}
+          id='begrunnelse'
+          label={t('label:begrunnelse-for-myndighetens-krav') + '*'}
+          namespace={namespace}
+          onChanged={setBegrunnelse}
+          required
+          value={utbetalingTilInstitusjon?.begrunnelse ?? ''}
+          maxLength={255}
+        />
+        <HGrid columns={2} gap="4" align="start">
           <Input
             error={validation[namespace + '-id']?.feilmelding}
             id='id'
@@ -220,8 +209,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             required
             value={utbetalingTilInstitusjon?.id ?? ''}
           />
-        </Column>
-        <Column>
           <Input
             error={validation[namespace + '-navn']?.feilmelding}
             id='navn'
@@ -231,36 +218,28 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
             required
             value={utbetalingTilInstitusjon?.navn ?? ''}
           />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <RadioGroup
-            value={_kontoType ?? ""}
-            data-testid={namespace + '-kontotype'}
-            error={validation[namespace + '-kontotype']?.feilmelding}
-            id={namespace + '-kontotype'}
-            legend={t('label:konto-type') + ' *'}
-            name={namespace + '-kontotype'}
-            onChange={(e: string | number | boolean) => setKontoType(e as KontoType)}
-          >
-            <Radio
-              value='ordinaer'
-            >{t('label:ordinær-konto')}
-            </Radio>
-            <Radio
-              value='sepa'
-            >{t('label:sepa-konto')}
-            </Radio>
-          </RadioGroup>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      {_kontoType === 'ordinaer' && (
-        <>
-          <AlignStartRow>
-            <Column>
+        </HGrid>
+        <RadioGroup
+          value={_kontoType ?? ""}
+          data-testid={namespace + '-kontotype'}
+          error={validation[namespace + '-kontotype']?.feilmelding}
+          id={namespace + '-kontotype'}
+          legend={t('label:konto-type') + ' *'}
+          name={namespace + '-kontotype'}
+          onChange={(e: string | number | boolean) => setKontoType(e as KontoType)}
+        >
+          <Radio
+            value='ordinaer'
+          >{t('label:ordinær-konto')}
+          </Radio>
+          <Radio
+            value='sepa'
+          >{t('label:sepa-konto')}
+          </Radio>
+        </RadioGroup>
+        {_kontoType === 'ordinaer' && (
+          <VStack>
+            <HGrid columns={3} gap="4" align="start">
               <Input
                 error={validation[namespace + '-kontoOrdinaer-bankensNavn']?.feilmelding}
                 id='kontoOrdinaer-bankensNavn'
@@ -270,8 +249,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 required
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.bankensNavn ?? ''}
               />
-            </Column>
-            <Column>
               <Input
                 error={validation[namespace + '-kontoOrdinaer-kontonummer']?.feilmelding}
                 id='kontoOrdinaer-kontonummer'
@@ -281,8 +258,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 required
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.kontonummer ?? ''}
               />
-            </Column>
-            <Column>
               <Input
                 error={validation[namespace + '-kontoOrdinaer-swift']?.feilmelding}
                 id='kontoOrdinaer-swift'
@@ -291,22 +266,19 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 onChanged={setOrdinaerSwift}
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
               />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AdresseForm
-            adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
-            onAdressChanged={setOrdinaerAdresse}
-            namespace={namespace + '-kontoOrdinaer'}
-            validation={validation}
-            type={false}
-          />
-        </>
-      )}
-      {_kontoType === 'sepa' && (
-        <>
-          <AlignStartRow>
-            <Column flex='2'>
+            </HGrid>
+            <AdresseForm
+              adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
+              onAdressChanged={setOrdinaerAdresse}
+              namespace={namespace + '-kontoOrdinaer'}
+              validation={validation}
+              type={false}
+            />
+          </VStack>
+        )}
+        {_kontoType === 'sepa' && (
+          <>
+            <HGrid columns={2} gap="4" align="start">
               <Input
                 error={validation[namespace + '-kontoSepa-iban']?.feilmelding}
                 id='kontoSepa-iban'
@@ -316,8 +288,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 required
                 value={utbetalingTilInstitusjon?.kontoSepa?.iban ?? ''}
               />
-            </Column>
-            <Column flex='2'>
               <Input
                 error={validation[namespace + '-kontoSepa-swift']?.feilmelding}
                 id='kontoSepa-swift'
@@ -326,13 +296,10 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 onChanged={setSepaSwift}
                 value={utbetalingTilInstitusjon?.kontoSepa?.swift ?? ''}
               />
-            </Column>
-          </AlignStartRow>
-          {parseFloat((replySed as F002Sed).sak?.cdmVersjon!) >= 4.4 &&
-            <>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
+            </HGrid>
+            {parseFloat((replySed as F002Sed).sak?.cdmVersjon!) >= 4.4 &&
+              <VStack gap="4">
+                <HGrid columns={2} gap="4" align="start">
                   <Input
                     error={validation[namespace + '-kontoSepa-banknavn']?.feilmelding}
                     id='kontoSepa-banknavn'
@@ -341,8 +308,6 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     onChanged={setSepaBanknavn}
                     value={utbetalingTilInstitusjon?.kontoSepa?.banknavn ?? ''}
                   />
-                </Column>
-                <Column flex='2'>
                   <Input
                     error={validation[namespace + '-kontoSepa-betalingsreferanse']?.feilmelding}
                     id='kontoSepa-swift'
@@ -351,11 +316,8 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     onChanged={setSepaBetalingreferanse}
                     value={utbetalingTilInstitusjon?.kontoSepa?.betalingsreferanse ?? ''}
                   />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
+                </HGrid>
+                <HGrid columns={2} gap="4" align="start">
                   <Input
                     error={validation[namespace + '-kontoSepa-kontoeier']?.feilmelding}
                     id='kontoSepa-kontoeier'
@@ -364,24 +326,18 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                     onChanged={setSepaKontoeier}
                     value={utbetalingTilInstitusjon?.kontoSepa?.kontoeier ?? ''}
                   />
-                </Column>
-                <Column flex="2"/>
-              </AlignStartRow>
-            </>
-          }
-        </>
-      )}
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column flex='2'>
+                </HGrid>
+              </VStack>
+            }
+          </>
+        )}
+        <Box>
           <Button variant='secondary' size='small' onClick={() => emptyKontoopplysninger()} >
             {t('el:button-remove-account-info')}
           </Button>
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
+        </Box>
+      </VStack>
+    </Box>
   )
 }
 
