@@ -1,6 +1,6 @@
-import { PileDiv } from '@navikt/hoykontrast'
 import ErrorLabel from 'components/Forms/ErrorLabel'
 import React from 'react'
+import {VStack} from "@navikt/ds-react";
 
 export interface FormTextProps {
   error: string | undefined
@@ -13,10 +13,10 @@ const FormText = ({
   error,
   id
 }: FormTextProps) => (
-  <PileDiv tabIndex={0} id={id}>
+  <VStack gap="4" tabIndex={0} id={id}>
     {children}
     <ErrorLabel error={error} />
-  </PileDiv>
+  </VStack>
 )
 
 export default FormText
