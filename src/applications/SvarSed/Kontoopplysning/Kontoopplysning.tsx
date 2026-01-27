@@ -267,13 +267,15 @@ const Kontoopplysning: React.FC<MainFormProps> = ({
                 value={utbetalingTilInstitusjon?.kontoOrdinaer?.swift ?? ''}
               />
             </HGrid>
-            <AdresseForm
-              adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
-              onAdressChanged={setOrdinaerAdresse}
-              namespace={namespace + '-kontoOrdinaer'}
-              validation={validation}
-              type={false}
-            />
+            <Box paddingBlock="4">
+              <AdresseForm
+                adresse={utbetalingTilInstitusjon?.kontoOrdinaer?.adresse ?? {}}
+                onAdressChanged={setOrdinaerAdresse}
+                namespace={namespace + '-kontoOrdinaer'}
+                validation={validation}
+                type={false}
+              />
+            </Box>
           </VStack>
         )}
         {_kontoType === 'sepa' && (

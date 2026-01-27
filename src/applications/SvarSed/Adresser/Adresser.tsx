@@ -188,37 +188,38 @@ const Adresser: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-
-        {inEditMode
-          ? (
-            <AdresseForm
-              required={checkAdresseType ? ['type', 'by', 'land'] : ['by', 'land']}
-              namespace={_namespace}
-              adresse={_adresse}
-              onAdressChanged={(a: Adresse) => setAdresse(a, index)}
-              validation={_v}
-              type={!isS040Sed(replySed) && !isS046Sed(replySed)}
-            />
-            )
-          : (
+        <VStack gap="4">
+          {inEditMode
+            ? (
+              <AdresseForm
+                required={checkAdresseType ? ['type', 'by', 'land'] : ['by', 'land']}
+                namespace={_namespace}
+                adresse={_adresse}
+                onAdressChanged={(a: Adresse) => setAdresse(a, index)}
+                validation={_v}
+                type={!isS040Sed(replySed) && !isS046Sed(replySed)}
+              />
+              )
+            : (
+              <HStack gap="4">
+                <Box width="65%">
+                  <AdresseBox adresse={_adresse} seeType={false} />
+                </Box>
+                <Spacer/>
+                <Box>
+                  {addremovepanel}
+                </Box>
+              </HStack>
+              )}
+          {inEditMode && (
             <HStack gap="4">
-              <Box width="65%">
-                <AdresseBox adresse={_adresse} seeType={false} />
-              </Box>
               <Spacer/>
               <Box>
                 {addremovepanel}
               </Box>
             </HStack>
-            )}
-        {inEditMode && (
-          <HStack gap="4">
-            <Spacer/>
-            <Box>
-              {addremovepanel}
-            </Box>
-          </HStack>
-        )}
+          )}
+        </VStack>
       </RepeatableBox>
     )
   }
