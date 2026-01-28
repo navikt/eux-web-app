@@ -1,18 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -20,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { BesvarelseUmulig, BesvarelseKommer, X010Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -42,6 +29,7 @@ import {
   ValidationSvarPåminnelseProps
 } from './validation'
 import {Options} from "../../../declarations/app";
+import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -404,7 +392,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseKommerId(BesvarelseKommer)}
         className={classNames({
@@ -412,13 +401,11 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
-              <AlignStartRow>
-                <Column flex='2'>
-                  <RadioPanelGroup
+              <VStack gap="4">
+                <HStack gap="4" align="start">
+                  <RadioGroup
                     value={_BesvarelseKommer?.gjelder}
                     data-no-border
                     data-testid={_namespace + '-gjelder'}
@@ -428,39 +415,31 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseKommerType(type, index)}
                   >
-                    <FlexRadioPanels>
-                      <RadioPanel value='dokument'>
+                    <HStack gap="4" width="100%">
+                      <Radio className={commonStyles.radioPanel} value='dokument'>
                         {t('label:dokument')}
-                      </RadioPanel>
-                      <RadioPanel value='informasjon'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='informasjon'>
                         {t('label:informasjon')}
-                      </RadioPanel>
-                      <RadioPanel value='sed'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='sed'>
                         {t('label:sed')}
-                      </RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <AlignEndColumn>
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <Spacer/>
                   {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
-                  <TextAreaDiv>
-                    <TextArea
-                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                      id='beskrivelse'
-                      maxLength={65}
-                      label={t('label:opplysninger')}
-                      namespace={_namespace}
-                      onChanged={(info: string) => setBesvarelseKommerInfo(info, index)}
-                      value={_BesvarelseKommer?.beskrivelse}
-                    />
-                  </TextAreaDiv>
-                </Column>
-                <Column>
+                </HStack>
+                <HGrid columns={"2fr 1fr"} gap="4" align="start" width="100%">
+                  <TextArea
+                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                    id='beskrivelse'
+                    maxLength={65}
+                    label={t('label:opplysninger')}
+                    namespace={_namespace}
+                    onChanged={(info: string) => setBesvarelseKommerInfo(info, index)}
+                    value={_BesvarelseKommer?.beskrivelse}
+                  />
                   <DateField
                     error={_v[_namespace + '-dato']?.feilmelding}
                     id='dato'
@@ -470,68 +449,54 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     required
                     dateValue={_BesvarelseKommer?.innenDato ?? ''}
                   />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              {(CDM_VERSJON !== '4.1' && CDM_VERSJON !== '4.2' && CDM_VERSJON !== '4.3') &&
-                <AlignStartRow>
-                  <Column flex='2'>
-                    <TextAreaDiv>
-                      <TextArea
-                        error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
-                        id='ytterligereinformasjon'
-                        maxLength={500}
-                        label={t('label:ytterligere-informasjon')}
-                        namespace={_namespace}
-                        onChanged={(ytterligereInfo: string) => setBesvarelseKommerYtterligereInfo(ytterligereInfo, index)}
-                        value={_BesvarelseKommer?.ytterligereinformasjon}
-                      />
-                    </TextAreaDiv>
-                  </Column>
-                </AlignStartRow>
-              }
-            </>
+                </HGrid>
+                {(CDM_VERSJON !== '4.1' && CDM_VERSJON !== '4.2' && CDM_VERSJON !== '4.3') &&
+                  <TextArea
+                    error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
+                    id='ytterligereinformasjon'
+                    maxLength={500}
+                    label={t('label:ytterligere-informasjon')}
+                    namespace={_namespace}
+                    onChanged={(ytterligereInfo: string) => setBesvarelseKommerYtterligereInfo(ytterligereInfo, index)}
+                    value={_BesvarelseKommer?.ytterligereinformasjon}
+                  />
+                }
+              </VStack>
             )
           : (
-            <AlignStartRow>
-              <Column flex='2'>
-                <FlexDiv>
-                  <FormText
-                    error={_v[_namespace + '-gjelder']?.feilmelding}
-                    id={_namespace + '-gjelder'}
-                  >
-                    {t('label:' + _BesvarelseKommer?.gjelder)}
-                  </FormText>
-                  <HorizontalSeparatorDiv />
-                  <FormText
-                    error={_v[_namespace + '-innenDato']?.feilmelding}
-                    id={_namespace + '-innenDato'}
-                  >
-                    {_BesvarelseKommer?.innenDato}
-                  </FormText>
-                  <HorizontalSeparatorDiv />
-                  <FormText
-                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                    id={_namespace + '-beskrivelse'}
-                  >
-                    {_BesvarelseKommer?.beskrivelse}
-                  </FormText>
-                  <HorizontalSeparatorDiv />
-                  <FormText
-                    error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
-                    id={_namespace + '-ytterligereinformasjon'}
-                  >
-                    {_BesvarelseKommer?.ytterligereinformasjon}
-                  </FormText>
-                </FlexDiv>
-              </Column>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+            <HStack gap="4" align="center" width="100%">
+              <HStack gap="4">
+                <FormText
+                  error={_v[_namespace + '-gjelder']?.feilmelding}
+                  id={_namespace + '-gjelder'}
+                >
+                  {t('label:' + _BesvarelseKommer?.gjelder)}
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-innenDato']?.feilmelding}
+                  id={_namespace + '-innenDato'}
+                >
+                  {_BesvarelseKommer?.innenDato}
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                  id={_namespace + '-beskrivelse'}
+                >
+                  {_BesvarelseKommer?.beskrivelse}
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-ytterligereinformasjon']?.feilmelding}
+                  id={_namespace + '-ytterligereinformasjon'}
+                >
+                  {_BesvarelseKommer?.ytterligereinformasjon}
+                </FormText>
+              </HStack>
+              <Spacer/>
+              {addremovepanel}
+            </HStack>
+            )
+        }
+      </RepeatableBox>
     )
   }
 
@@ -564,7 +529,8 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
     ]
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getBesvarelseUmuligId(BesvarelseUmulig)}
         className={classNames({
@@ -572,13 +538,11 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
-              <AlignStartRow>
-                <Column flex='2'>
-                  <RadioPanelGroup
+              <VStack gap="4">
+                <HStack gap="4" align="start">
+                  <RadioGroup
                     value={_BesvarelseUmulig?.gjelder}
                     data-no-border
                     data-testid={_namespace + '-gjelder'}
@@ -588,212 +552,171 @@ const SvarPåminnelse: React.FC<MainFormProps> = ({
                     name={_namespace + '-gjelder'}
                     onChange={(type: string) => setBesvarelseUmuligType(type, index)}
                   >
-                    <FlexRadioPanels>
-                      <RadioPanel value='dokument'>
+                    <HStack gap="4" width="100%">
+                      <Radio className={commonStyles.radioPanel} value='dokument'>
                         {t('label:dokument')}
-                      </RadioPanel>
-                      <RadioPanel value='informasjon'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='informasjon'>
                         {t('label:informasjon')}
-                      </RadioPanel>
-                      <RadioPanel value='sed'>
+                      </Radio>
+                      <Radio className={commonStyles.radioPanel} value='sed'>
                         {t('label:sed')}
-                      </RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <AlignEndColumn>
+                      </Radio>
+                    </HStack>
+                  </RadioGroup>
+                  <Spacer/>
                   {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
-                  <TextAreaDiv>
-                    <TextArea
-                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                      id='beskrivelse'
-                      maxLength={65}
-                      label={t('label:opplysninger')}
-                      namespace={_namespace}
-                      onChanged={(info: string) => setBesvarelseUmuligInfo(info, index)}
-                      value={_BesvarelseUmulig?.beskrivelse}
-                    />
-                  </TextAreaDiv>
-                </Column>
-                <Column />
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
-                  <RadioPanelGroup
-                    value={_BesvarelseUmulig?.begrunnelseType}
-                    data-no-border
-                    data-testid={_namespace + '-begrunnelseType'}
-                    error={_v[_namespace + '-begrunnelseType']?.feilmelding}
-                    id={_namespace + '-begrunnelseType'}
-                    legend={t('label:begrunnelse')}
-                    hideLabel={false}
-                    required
-                    name={_namespace + '-begrunnelseType'}
-                    onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
-                  >
-                    {begrunnelsetypeOptions.map((option) => {
-                      return <RadioPanel value={option.value}>{option.label}</RadioPanel>
-                    })}
-                  </RadioPanelGroup>
-                </Column>
-                <Column />
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
-                <AlignStartRow>
-                  <Column>
-                    <TextAreaDiv>
-                      <TextArea
-                        error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
-                        id='begrunnelseAnnen'
-                        maxLength={begrunnelseAnnenMaxLength}
-                        label={t('label:begrunnelseAnnen')}
-                        hideLabel
-                        namespace={_namespace}
-                        onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
-                        value={_BesvarelseUmulig?.begrunnelseAnnen}
-                      />
-                    </TextAreaDiv>
-                  </Column>
-                </AlignStartRow>
-              )}
-            </>
+                </HStack>
+                <HGrid columns={"2fr 1fr"} gap="4" align="start" width="100%">
+                  <TextArea
+                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                    id='beskrivelse'
+                    maxLength={65}
+                    label={t('label:opplysninger')}
+                    namespace={_namespace}
+                    onChanged={(info: string) => setBesvarelseUmuligInfo(info, index)}
+                    value={_BesvarelseUmulig?.beskrivelse}
+                  />
+                  <Spacer/>
+                </HGrid>
+                <RadioGroup
+                  value={_BesvarelseUmulig?.begrunnelseType}
+                  data-no-border
+                  data-testid={_namespace + '-begrunnelseType'}
+                  error={_v[_namespace + '-begrunnelseType']?.feilmelding}
+                  id={_namespace + '-begrunnelseType'}
+                  legend={t('label:begrunnelse')}
+                  required
+                  name={_namespace + '-begrunnelseType'}
+                  onChange={(begrunnelseType: string) => setBegrunnelseType(begrunnelseType, index)}
+                >
+                  {begrunnelsetypeOptions.map((option) => {
+                    return <Radio className={commonStyles.radioPanel} value={option.value}>{option.label}</Radio>
+                  })}
+                </RadioGroup>
+                {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
+                  <TextArea
+                    error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
+                    id='begrunnelseAnnen'
+                    maxLength={begrunnelseAnnenMaxLength}
+                    label={t('label:begrunnelseAnnen')}
+                    hideLabel
+                    namespace={_namespace}
+                    onChanged={(annen: string) => setBegrunnelseAnnen(annen, index)}
+                    value={_BesvarelseUmulig?.begrunnelseAnnen}
+                  />
+                )}
+              </VStack>
             )
           : (
-            <>
-              <AlignStartRow style={{ minHeight: '2.2rem' }}>
-                <Column flex='2'>
-                  <FlexDiv>
+            <VStack gap="4">
+              <HStack gap="4" align="start">
+                <HStack gap="4">
+                  <FormText
+                    error={_v[_namespace + '-gjelder']?.feilmelding}
+                    id={_namespace + '-gjelder'}
+                  >
+                    {t('label:' + _BesvarelseUmulig?.gjelder)}
+                  </FormText>
+                  <FormText
+                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                    id={_namespace + '-beskrivelse'}
+                  >
+                    {_BesvarelseUmulig?.beskrivelse}
+                  </FormText>
+                </HStack>
+                <Spacer/>
+                {addremovepanel}
+              </HStack>
+              <HStack gap="4" align="start">
+                <FormText
+                  error={_v[_namespace + '-begrunnelse']?.feilmelding}
+                  id={_namespace + '-begrunnelse'}
+                >
+                  {begrunnelsetypeOptions.filter((option) => {
+                    return option.value === _BesvarelseUmulig?.begrunnelseType
+                  })[0].label}
+                </FormText>
+                {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
                     <FormText
-                      error={_v[_namespace + '-gjelder']?.feilmelding}
-                      id={_namespace + '-gjelder'}
+                      error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
+                      id={_namespace + '-begrunnelseAnnen'}
                     >
-                      {t('label:' + _BesvarelseUmulig?.gjelder)}
+                      {_BesvarelseUmulig?.begrunnelseAnnen}
                     </FormText>
-                    <HorizontalSeparatorDiv />
-                    <FormText
-                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                      id={_namespace + '-beskrivelse'}
-                    >
-                      {_BesvarelseUmulig?.beskrivelse}
-                    </FormText>
-                  </FlexDiv>
-                </Column>
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column flex='2'>
-                  <FlexDiv>
-                    <FormText
-                      error={_v[_namespace + '-begrunnelse']?.feilmelding}
-                      id={_namespace + '-begrunnelse'}
-                    >
-                      {begrunnelsetypeOptions.filter((option) => {
-                        return option.value === _BesvarelseUmulig?.begrunnelseType
-                      })[0].label}
-                    </FormText>
-                    {_BesvarelseUmulig?.begrunnelseType === 'annet' && (
-                      <>
-                        <HorizontalSeparatorDiv />
-                        <FormText
-                          error={_v[_namespace + '-begrunnelseAnnen']?.feilmelding}
-                          id={_namespace + '-begrunnelseAnnen'}
-                        >
-                          {_BesvarelseUmulig?.begrunnelseAnnen}
-                        </FormText>
-                      </>
-                    )}
-                  </FlexDiv>
-                </Column>
-              </AlignStartRow>
-            </>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                )}
+              </HStack>
+            </VStack>
+          )
+        }
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <Heading size='small'>
+        <Heading size='xsmall'>
           {t('label:følgende-dokumenter-sendes-senere')}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(besvarelseKommer)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-dokument')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : besvarelseKommer?.map(renderBesvarelseKommerRow)}
-      <VerticalSeparatorDiv />
-      {_newBesvarelseKommerForm
-        ? renderBesvarelseKommerRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewBesvarelseKommerForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:dokument-til-send').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <Heading size='small'>
+        {_.isEmpty(besvarelseKommer)
+          ? (
+            <VStack gap="1">
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-dokument')}
+              </BodyLong>
+              <SpacedHr />
+            </VStack>
+            )
+          : besvarelseKommer?.map(renderBesvarelseKommerRow)}
+        {_newBesvarelseKommerForm
+          ? renderBesvarelseKommerRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewBesvarelseKommerForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:dokument-til-send').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+        <Heading size='xsmall'>
           {t('label:følgende-dokument-er-ikke-tilgjengelige')}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(besvarelseUmulig)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-dokument')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
+        {_.isEmpty(besvarelseUmulig)
+          ? (
+            <VStack gap="1">
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-dokument')}
+              </BodyLong>
+              <SpacedHr />
+            </VStack>
+            )
+          : besvarelseUmulig?.map(renderBesvarelseUmuligRow)
+        }
+        {_newBesvarelseUmuligForm
+          ? renderBesvarelseUmuligRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewBesvarelseUmuligForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:dokument-ikke-tilgjengelige').toLowerCase() })}
+              </Button>
+            </Box>
           )
-        : besvarelseUmulig?.map(renderBesvarelseUmuligRow)}
-      <VerticalSeparatorDiv />
-      {_newBesvarelseUmuligForm
-        ? renderBesvarelseUmuligRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewBesvarelseUmuligForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:dokument-ikke-tilgjengelige').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        }
+      </VStack>
+    </Box>
   )
 }
 
