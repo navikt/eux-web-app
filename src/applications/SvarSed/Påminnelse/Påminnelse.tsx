@@ -1,25 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Purring, X009Sed } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -33,6 +20,7 @@ import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validatePurring, validatePurringer, ValidationPurringerProps, ValidationPurringProps } from './validation'
+import commonStyles from "assets/css/common.module.css"
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -194,7 +182,8 @@ const Påminnelse: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(purring)}
         className={classNames({
@@ -202,125 +191,107 @@ const Påminnelse: React.FC<MainFormProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
-              <AlignStartRow>
-                <Column flex='2'>
-                  <RadioPanelGroup
-                    value={_purring?.gjelder}
-                    data-no-border
-                    data-testid={_namespace + '-gjelder'}
-                    error={_v[_namespace + '-gjelder']?.feilmelding}
-                    id={_namespace + '-gjelder'}
-                    legend={t('label:type') + ' *'}
-                    name={_namespace + '-gjelder'}
-                    onChange={(gjelder: string) => setPurringGjelder(gjelder, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='dokument'>
-                        {t('label:dokument')}
-                      </RadioPanel>
-                      <RadioPanel value='informasjon'>
-                        {t('label:informasjon')}
-                      </RadioPanel>
-                      <RadioPanel value='sed'>
-                        {t('label:sed')}
-                      </RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-                <AlignEndColumn>
-                  {addremovepanel}
-                </AlignEndColumn>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
-                  <TextAreaDiv>
-                    <TextArea
-                      error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                      id='beskrivelse'
-                      maxLength={65}
-                      label={t('label:opplysninger') + ' *'}
-                      namespace={_namespace}
-                      onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}
-                      value={_purring?.beskrivelse}
-                    />
-                  </TextAreaDiv>
-                </Column>
-              </AlignStartRow>
-            </>
+            <VStack gap="4">
+              <HStack gap="4" align="start">
+                <RadioGroup
+                  value={_purring?.gjelder}
+                  data-no-border
+                  data-testid={_namespace + '-gjelder'}
+                  error={_v[_namespace + '-gjelder']?.feilmelding}
+                  id={_namespace + '-gjelder'}
+                  legend={t('label:type') + ' *'}
+                  name={_namespace + '-gjelder'}
+                  onChange={(gjelder: string) => setPurringGjelder(gjelder, index)}
+                >
+                  <HStack gap="4">
+                    <Radio className={commonStyles.radioPanel} value='dokument'>
+                      {t('label:dokument')}
+                    </Radio>
+                    <Radio className={commonStyles.radioPanel} value='informasjon'>
+                      {t('label:informasjon')}
+                    </Radio>
+                    <Radio className={commonStyles.radioPanel} value='sed'>
+                      {t('label:sed')}
+                    </Radio>
+                  </HStack>
+                </RadioGroup>
+                <Spacer/>
+                {addremovepanel}
+              </HStack>
+              <TextArea
+                error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                id='beskrivelse'
+                maxLength={65}
+                label={t('label:opplysninger') + ' *'}
+                namespace={_namespace}
+                onChanged={(beskrivelse: string) => setPurringBeskrivelse(beskrivelse, index)}
+                value={_purring?.beskrivelse}
+              />
+            </VStack>
             )
           : (
-            <AlignStartRow>
-              <Column flex='2'>
-                <FlexDiv>
-                  <FormText
-                    error={_v[_namespace + '-gjelder']?.feilmelding}
-                    id={_namespace + '-gjelder'}
-                  >
-                    {t('label:' + _purring?.gjelder)}
-                  </FormText>
-                  <HorizontalSeparatorDiv />
-                  <FormText
-                    error={_v[_namespace + '-beskrivelse']?.feilmelding}
-                    id={_namespace + '-beskrivelse'}
-                  >
-                    {_purring?.beskrivelse}
-                  </FormText>
-                </FlexDiv>
-              </Column>
-              <AlignEndColumn>
-                {addremovepanel}
-              </AlignEndColumn>
-            </AlignStartRow>
+            <HStack gap="4" align="center">
+              <HStack gap="4">
+                <FormText
+                  error={_v[_namespace + '-gjelder']?.feilmelding}
+                  id={_namespace + '-gjelder'}
+                >
+                  {t('label:' + _purring?.gjelder)}
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-beskrivelse']?.feilmelding}
+                  id={_namespace + '-beskrivelse'}
+                >
+                  {_purring?.beskrivelse}
+                </FormText>
+              </HStack>
+              <Spacer/>
+              {addremovepanel}
+            </HStack>
             )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {t('label:påminnelse-til-å-sende-oss')}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(purringer)
-        ? (
-          <PaddedHorizontallyDiv>
-            <FormText
-              error={validation[namespace + '-purringer']?.feilmelding}
-              id={namespace + '-purringer'}
-            >
-              <SpacedHr />
-              <BodyLong>
-                {t('message:warning-no-påminnelse')}
-              </BodyLong>
-              <SpacedHr />
-            </FormText>
-          </PaddedHorizontallyDiv>
-          )
-        : purringer?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:purring').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        {_.isEmpty(purringer)
+          ? (
+              <FormText
+                error={validation[namespace + '-purringer']?.feilmelding}
+                id={namespace + '-purringer'}
+              >
+                <SpacedHr />
+                <BodyLong>
+                  {t('message:warning-no-påminnelse')}
+                </BodyLong>
+                <SpacedHr />
+              </FormText>
+            )
+          : purringer?.map(renderRow)
+        }
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:purring').toLowerCase() })}
+              </Button>
+            </Box>
+            )
+        }
+      </VStack>
+    </Box>
   )
 }
 
