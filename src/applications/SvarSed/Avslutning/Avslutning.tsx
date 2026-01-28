@@ -1,13 +1,4 @@
-import { Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Box, Heading, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAvslutning, ValidationAvslutningProps } from 'applications/SvarSed/Avslutning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -23,6 +14,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import commonStyles from "assets/css/common.module.css"
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -101,87 +93,70 @@ const Avslutning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <DateField
-            error={validation[namespace + '-avslutningDato']?.feilmelding}
-            id='avslutningDato'
-            namespace={namespace}
-            label={t('label:avslutningdato')}
-            onChanged={setAvslutningDato}
-            required
-            dateValue={(replySed as X001Sed).avslutningDato}
-          />
-        </Column>
-        <Column flex='1.5' />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column flex='2'>
-          <RadioPanelGroup
-            value={(replySed as X001Sed).avslutningType}
-            data-no-border
-            data-testid={namespace + '-avslutningType'}
-            error={validation[namespace + '-avslutningType']?.feilmelding}
-            id={namespace + '-avslutningType'}
-            legend={t('label:avslutningtype')}
-            hideLabel={false}
-            required
-            name={namespace + '-avslutningType'}
-            onChange={setAvslutningType}
-          >
-            <FlexRadioPanels>
-              <RadioPanel value='manuell'>
-                {t('label:manuell')}
-              </RadioPanel>
-              <RadioPanel value='automatisk'>
-                {t('label:automatisk')}
-              </RadioPanel>
-            </FlexRadioPanels>
-          </RadioPanelGroup>
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Select
-            data-testid={namespace + '-begrunnelse'}
-            error={validation[namespace + '-begrunnelse']?.feilmelding}
-            id={namespace + '-begrunnelse'}
-            label={t('label:begrunnelse')}
-            menuPortalTarget={document.body}
-            onChange={(o: unknown) => setBegrunnelse((o as Option).value)}
-            options={begrunnelseOptions}
-            required
-            value={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
-            defaultValue={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      {(replySed as X001Sed).begrunnelseType === 'annet' && (
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-begrunnelseAnnen']?.feilmelding}
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <HStack>
+            <DateField
+              error={validation[namespace + '-avslutningDato']?.feilmelding}
+              id='avslutningDato'
               namespace={namespace}
-              id='begrunnelseAnnen'
-              label={t('label:begrunnelseAnnen')}
-              hideLabel
-              onChanged={setBegrunnelseAnnen}
+              label={t('label:avslutningdato')}
+              onChanged={setAvslutningDato}
               required
-              value={(replySed as X001Sed).begrunnelseAnnen}
+              dateValue={(replySed as X001Sed).avslutningDato}
             />
-          </Column>
-        </AlignStartRow>
-      )}
-    </PaddedDiv>
+        </HStack>
+        <RadioGroup
+          value={(replySed as X001Sed).avslutningType}
+          data-no-border
+          data-testid={namespace + '-avslutningType'}
+          error={validation[namespace + '-avslutningType']?.feilmelding}
+          id={namespace + '-avslutningType'}
+          legend={t('label:avslutningtype')}
+          required
+          name={namespace + '-avslutningType'}
+          onChange={setAvslutningType}
+        >
+          <HStack gap="4">
+            <Radio className={commonStyles.radioPanel} value='manuell'>
+              {t('label:manuell')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel} value='automatisk'>
+              {t('label:automatisk')}
+            </Radio>
+            <Spacer/>
+            <Spacer/>
+          </HStack>
+        </RadioGroup>
+        <Select
+          data-testid={namespace + '-begrunnelse'}
+          error={validation[namespace + '-begrunnelse']?.feilmelding}
+          id={namespace + '-begrunnelse'}
+          label={t('label:begrunnelse')}
+          menuPortalTarget={document.body}
+          onChange={(o: unknown) => setBegrunnelse((o as Option).value)}
+          options={begrunnelseOptions}
+          required
+          value={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
+          defaultValue={_.find(begrunnelseOptions, b => b.value === (replySed as X001Sed).begrunnelseType)}
+        />
+        {(replySed as X001Sed).begrunnelseType === 'annet' && (
+          <Input
+            error={validation[namespace + '-begrunnelseAnnen']?.feilmelding}
+            namespace={namespace}
+            id='begrunnelseAnnen'
+            label={t('label:begrunnelseAnnen')}
+            hideLabel
+            onChanged={setBegrunnelseAnnen}
+            required
+            value={(replySed as X001Sed).begrunnelseAnnen}
+          />
+        )}
+      </VStack>
+    </Box>
   )
 }
 
