@@ -1,12 +1,4 @@
-import { Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Box, Heading, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import Input from 'components/Forms/Input'
@@ -19,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validateKlargjør, ValidationKlargjørProps } from './validation'
+import commonStyles from "assets/css/common.module.css"
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -82,80 +75,61 @@ const Klargjør: React.FC<MainFormProps> = ({
   const klargjoerInfoItem = (replySed as X012Sed).klargjoerInfo && (replySed as X012Sed).klargjoerInfo[0];
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <Input
+          error={validation[namespace + '-del']?.feilmelding}
+          namespace={namespace}
+          id='del'
+          label={t('label:del')}
+          onChanged={setDel}
+          required
+          value={klargjoerInfoItem?.del}
+        />
+        <Input
+          error={validation[namespace + '-punkt']?.feilmelding}
+          namespace={namespace}
+          id='punkt'
+          label={t('label:punkt')}
+          onChanged={setPunkt}
+          required
+          value={klargjoerInfoItem?.punkt}
+        />
+        <RadioGroup
+          defaultValue={klargjoerInfoItem?.begrunnelseType}
+          data-no-border
+          data-testid={namespace + '-grunn'}
+          error={validation[namespace + '-grunn']?.feilmelding}
+          id={namespace + '-grunn'}
+          legend={t('label:grunn')}
+          required
+          name={namespace + '-grunn'}
+          onChange={setGrunn}
+        >
+          <Radio className={commonStyles.radioPanel} value='informasjon_påkrevd_for_vår_nasjonale_undersøkelse'>{t('el:option-klargjør-01')}</Radio>
+          <Radio className={commonStyles.radioPanel} value='informasjon_påkrevd_for_beregning_av_ytelse'>{t('el:option-klargjør-02')}</Radio>
+          <Radio className={commonStyles.radioPanel} value='motstridende_informasjon_mottatt'>{t('el:option-klargjør-03')}</Radio>
+          <Radio className={commonStyles.radioPanel} value='det_må_vedlegges_støttedokumentasjon_belegg'>{t('el:option-klargjør-04')}</Radio>
+          <Radio className={commonStyles.radioPanel} value='annet'>{t('el:option-klargjør-99')}</Radio>
+        </RadioGroup>
+        {klargjoerInfoItem?.begrunnelseType === 'annet' && (
           <Input
-            error={validation[namespace + '-del']?.feilmelding}
+            error={validation[namespace + '-grunnAnnet']?.feilmelding}
             namespace={namespace}
-            id='del'
-            label={t('label:del')}
-            onChanged={setDel}
+            id='grunnAnnet'
+            label={t('label:annet')}
+            hideLabel
+            onChanged={setGrunnAnnet}
             required
-            value={klargjoerInfoItem?.del}
+            value={klargjoerInfoItem?.begrunnelseAnnen}
           />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <Input
-            error={validation[namespace + '-punkt']?.feilmelding}
-            namespace={namespace}
-            id='punkt'
-            label={t('label:punkt')}
-            onChanged={setPunkt}
-            required
-            value={klargjoerInfoItem?.punkt}
-          />
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column flex='2'>
-          <RadioPanelGroup
-            defaultValue={klargjoerInfoItem?.begrunnelseType}
-            data-no-border
-            data-testid={namespace + '-grunn'}
-            error={validation[namespace + '-grunn']?.feilmelding}
-            id={namespace + '-grunn'}
-            legend={t('label:grunn')}
-            hideLabel={false}
-            required
-            name={namespace + '-grunn'}
-            onChange={setGrunn}
-          >
-            <RadioPanel value='informasjon_påkrevd_for_vår_nasjonale_undersøkelse'>{t('el:option-klargjør-01')}</RadioPanel>
-            <RadioPanel value='informasjon_påkrevd_for_beregning_av_ytelse'>{t('el:option-klargjør-02')}</RadioPanel>
-            <RadioPanel value='motstridende_informasjon_mottatt'>{t('el:option-klargjør-03')}</RadioPanel>
-            <RadioPanel value='det_må_vedlegges_støttedokumentasjon_belegg'>{t('el:option-klargjør-04')}</RadioPanel>
-            <RadioPanel value='annet'>{t('el:option-klargjør-99')}</RadioPanel>
-          </RadioPanelGroup>
-        </Column>
-        <Column />
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      {klargjoerInfoItem?.begrunnelseType === 'annet' && (
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-grunnAnnet']?.feilmelding}
-              namespace={namespace}
-              id='grunnAnnet'
-              label={t('label:annet')}
-              hideLabel
-              onChanged={setGrunnAnnet}
-              required
-              value={klargjoerInfoItem?.begrunnelseAnnen}
-            />
-          </Column>
-        </AlignStartRow>
-      )}
-    </PaddedDiv>
+         )
+        }
+      </VStack>
+    </Box>
   )
 }
 

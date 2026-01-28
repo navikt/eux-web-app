@@ -161,23 +161,25 @@ const Nasjonaliteter: React.FC<MainFormProps> = ({
         })}
       >
         <VStack gap="4">
-          <HStack gap="4">
+          <HStack gap="4" align="end">
             {inEditMode
               ? (
-                <CountryDropdown
-                  ariaLabel={t('label:land')}
-                  label={t('label:land')}
-                  hideLabel={index >= 0}
-                  closeMenuOnSelect
-                  data-testid={_namespace + '-land'}
-                  error={_v[_namespace + '-land']?.feilmelding}
-                  flagWave
-                  id={_namespace + '-land'}
-                  countryCodeListName="statsborgerskap"
-                  onOptionSelected={(e: Country) => setLand(e.value3, index)}
-                  required
-                  values={_statsborgerskap?.landkode}
-                />
+                <Box width="50%">
+                  <CountryDropdown
+                    ariaLabel={t('label:land')}
+                    label={t('label:land')}
+                    hideLabel={index >= 0}
+                    closeMenuOnSelect
+                    data-testid={_namespace + '-land'}
+                    error={_v[_namespace + '-land']?.feilmelding}
+                    flagWave
+                    id={_namespace + '-land'}
+                    countryCodeListName="statsborgerskap"
+                    onOptionSelected={(e: Country) => setLand(e.value3, index)}
+                    required
+                    values={_statsborgerskap?.landkode}
+                  />
+                </Box>
                 )
               : (
                 <FormText
