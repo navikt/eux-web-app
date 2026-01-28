@@ -1,10 +1,8 @@
-import { Heading } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Heading, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateAnmodning, ValidationAnmodningProps } from 'applications/SvarSed/Anmodning/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Svar, ReplySed } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
@@ -66,60 +64,40 @@ const Anmodning: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              maxLength={255}
-              error={validation[namespace + '-dokument']?.feilmelding}
-              namespace={namespace}
-              id='dokument'
-              label={t('label:vennligst-send-oss-folgende-dokumenter')}
-              onChanged={setDokument}
-              value={anmodning?.dokumentasjon?.dokument ?? ''}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              maxLength={(replySed as ReplySed)?.sedType === 'H001' ? 255 : 500}
-              error={validation[namespace + '-informasjon']?.feilmelding}
-              namespace={namespace}
-              id='informasjon'
-              label={t('label:vennligst-send-oss-folgende-informasjon')}
-              onChanged={setInformasjon}
-              value={anmodning?.dokumentasjon?.informasjon ?? ''}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              maxLength={65}
-              error={validation[namespace + '-sed']?.feilmelding}
-              namespace={namespace}
-              id='sed'
-              label={t('label:vennligst-send-oss-folgende-sed-er')}
-              onChanged={setSed}
-              value={anmodning?.dokumentasjon?.sed ?? ''}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <TextArea
+          maxLength={255}
+          error={validation[namespace + '-dokument']?.feilmelding}
+          namespace={namespace}
+          id='dokument'
+          label={t('label:vennligst-send-oss-folgende-dokumenter')}
+          onChanged={setDokument}
+          value={anmodning?.dokumentasjon?.dokument ?? ''}
+        />
+        <TextArea
+          maxLength={(replySed as ReplySed)?.sedType === 'H001' ? 255 : 500}
+          error={validation[namespace + '-informasjon']?.feilmelding}
+          namespace={namespace}
+          id='informasjon'
+          label={t('label:vennligst-send-oss-folgende-informasjon')}
+          onChanged={setInformasjon}
+          value={anmodning?.dokumentasjon?.informasjon ?? ''}
+        />
+        <TextArea
+          maxLength={65}
+          error={validation[namespace + '-sed']?.feilmelding}
+          namespace={namespace}
+          id='sed'
+          label={t('label:vennligst-send-oss-folgende-sed-er')}
+          onChanged={setSed}
+          value={anmodning?.dokumentasjon?.sed ?? ''}
+        />
+      </VStack>
+    </Box>
   )
 }
 
