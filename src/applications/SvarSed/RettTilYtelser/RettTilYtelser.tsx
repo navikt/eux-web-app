@@ -137,10 +137,10 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
               error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
               onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
             >
-              <Radio value='artikkel_64_i_forordningen_EF_nr._883/2004'>
+              <Radio value='artikkel_64_i_forordning_EF_nr_883_2004'>
                 {t('label:artikkel-64')}
               </Radio>
-              <Radio value='artikkel_65_1_i_forordningen_EF_nr._883/2004'>
+              <Radio value='artikkel_65_1_i_forordning_EF_nr_883_2004'>
                 {t('label:artikkel-65')}
               </Radio>
             </RadioGroup>
