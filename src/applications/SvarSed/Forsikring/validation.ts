@@ -82,8 +82,8 @@ export const validateForsikringPerioder = (
       personName
     }))
 
-    delete periode.__type
-    delete periode.__index
+    //delete periode.__type
+    //delete periode.__index
   })
   return hasErrors.find(value => value) !== undefined
 }
