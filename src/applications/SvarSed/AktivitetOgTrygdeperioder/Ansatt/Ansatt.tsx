@@ -287,7 +287,7 @@ const Ansatt: React.FC<AnsattProps> = ({
           errorBorder: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <HStack gap="4" wrap={false}>
+        <HStack gap="4" wrap={false} align="start">
           {inEditMode
             ? (
               <PeriodeInput
@@ -314,7 +314,6 @@ const Ansatt: React.FC<AnsattProps> = ({
               )
           }
           <Spacer/>
-          <div className="navds-button--small"/> {/* Prevent height flicker on hover */}
           <AddRemovePanel<Periode>
             item={p}
             marginTop={inEditMode}

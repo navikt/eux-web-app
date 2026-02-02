@@ -1,14 +1,4 @@
-import {Accordion, BodyLong, Box, Checkbox, Heading, Label} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Accordion, BodyLong, Box, Checkbox, Heading, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import AdresseForm from 'applications/SvarSed/Adresser/AdresseForm'
@@ -66,11 +56,6 @@ const ForsikringPeriodePanel = styled(Box)`
   }
 `
 
-const AdresseAccordion = styled(Accordion)`
-  .navds-accordion__header{
-    padding-left: 0px;
-  }
-`
 export type Editable = 'only_period' | 'full'
 
 export interface ArbeidsgiverBoxProps<T> {
@@ -437,27 +422,27 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
         error: hasNamespaceWithErrors(_v, namespace)
       })}
     >
+      <VStack gap="4">
       {(newMode || (_inEditMode && allowEdit)) && (
-        <AlignStartRow>
-          <AlignEndColumn>
-            <AddRemovePanel
-              item={newMode ? null : forsikringPeriode}
-              index={newMode ? -1 : 0}
-              marginTop={false}
-              allowDelete={allowDelete}
-              inEditMode={_inEditMode}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onAddNew={onAddNew}
-              onCopy={setCopiedPeriod ? onCopy : undefined}
-              onCancelEdit={() => onCloseEdit(namespace)}
-              onCancelNew={onCloseNew}
-              onRemove={onRemove}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
+        <HStack>
+          <Spacer/>
+          <AddRemovePanel
+            item={newMode ? null : forsikringPeriode}
+            index={newMode ? -1 : 0}
+            marginTop={false}
+            allowDelete={allowDelete}
+            inEditMode={_inEditMode}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onAddNew={onAddNew}
+            onCopy={setCopiedPeriod ? onCopy : undefined}
+            onCancelEdit={() => onCloseEdit(namespace)}
+            onCancelNew={onCloseNew}
+            onRemove={onRemove}
+          />
+        </HStack>
       )}
-      <AlignStartRow>
+      <HStack gap="4" align="center">
         {newMode || (_inEditMode && allowEdit)
           ? (
             <PeriodeInput
@@ -472,15 +457,9 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             />
             )
           : (
-            <Column flex='2'>
-              <FlexCenterDiv style={{ padding: '0.5rem 0' }}>
-                {icon &&
-                  <>
-                    {icon}
-                    <HorizontalSeparatorDiv />
-                  </>
-                }
-                <PileDiv>
+              <>
+                {icon && <>{icon}</>}
+                <VStack>
                   <Label id={_v[namespace + '-startdato']?.skjemaelementId}>
                     {toDateFormat(_forsikringPeriode?.startdato, 'DD.MM.YYYY')}
                   </Label>
@@ -489,11 +468,11 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                       {_v[namespace + '-startdato']?.feilmelding}
                     </Label>
                   )}
-                </PileDiv>
-                <HorizontalSeparatorDiv size='0.5' />-<HorizontalSeparatorDiv size='0.5' />
+                </VStack>
+                -
                 {_forsikringPeriode?.sluttdato
                   ? (
-                    <PileDiv>
+                    <VStack>
                       <Label id={namespace + '-sluttdato'}>
                         {toDateFormat(_forsikringPeriode?.sluttdato, 'DD.MM.YYYY')}
                       </Label>
@@ -502,10 +481,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           {_v[namespace + '-sluttdato']?.feilmelding}
                         </Label>
                       )}
-                    </PileDiv>
+                    </VStack>
                     )
                   : (
-                    <PileDiv>
+                    <VStack>
                       <Label id={_v[namespace + '-aapenPeriodeType']?.skjemaelementId}>
                         {' (' + _forsikringPeriode?.aapenPeriodeType + ')'}
                       </Label>
@@ -514,91 +493,79 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                           {_v[namespace + '-aapenPeriodeType']?.feilmelding}
                         </Label>
                       )}
-                    </PileDiv>
-                    )}
-              </FlexCenterDiv>
-            </Column>
-            )}
-        <AlignEndColumn>
-          <FlexDiv style={{ flexDirection: 'row-reverse' }}>
-            {!(_inEditMode || newMode) && selectable && (
-              <Checkbox
-                checked={selected}
-                onChange={onSelectCheckboxClicked}
-              >{t('label:velg')}
-              </Checkbox>
-            )}
-            {allowEdit && !newMode && !_inEditMode && (
-              <FlexDiv>
-                <AddRemovePanel
-                  item={newMode ? null : forsikringPeriode}
-                  index={newMode ? -1 : 0}
-                  marginTop={_inEditMode}
-                  allowDelete={allowDelete}
-                  inEditMode={_inEditMode}
-                  onStartEdit={onStartEdit}
-                  onConfirmEdit={onSaveEdit}
-                  onAddNew={onAddNew}
-                  onCopy={setCopiedPeriod ? onCopy : undefined}
-                  onCancelEdit={() => onCloseEdit(namespace)}
-                  onCancelNew={onCloseNew}
-                  onRemove={onRemove}
-                />
-                <HorizontalSeparatorDiv />
-              </FlexDiv>
-            )}
-          </FlexDiv>
-        </AlignEndColumn>
-      </AlignStartRow>
+                    </VStack>
+                  )
+                }
+              </>
+          )
+        }
+        <Spacer/>
+        {allowEdit && !newMode && !_inEditMode && (
+          <AddRemovePanel
+            item={newMode ? null : forsikringPeriode}
+            index={newMode ? -1 : 0}
+            marginTop={_inEditMode}
+            allowDelete={allowDelete}
+            inEditMode={_inEditMode}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onAddNew={onAddNew}
+            onCopy={setCopiedPeriod ? onCopy : undefined}
+            onCancelEdit={() => onCloseEdit(namespace)}
+            onCancelNew={onCloseNew}
+            onRemove={onRemove}
+          />
+        )}
+        {!(_inEditMode || newMode) && selectable && (
+          <Checkbox
+            checked={selected}
+            onChange={onSelectCheckboxClicked}
+          >{t('label:velg')}
+          </Checkbox>
+        )}
+      </HStack>
       {!_inEditMode && (showArbeidsgiver || showAnnen || showAddress || showInntekt) && (
         <HorizontalLineSeparator />
       )}
-      <VerticalSeparatorDiv />
       {newMode || (_inEditMode && editable === 'full')
         ? (
           <>
             {showArbeidsgiver && (
               <>
-                <AlignStartRow>
-                  <Column>
-                    <Input
-                      namespace={namespace + '-arbeidsgiver'}
-                      error={_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
-                      id='navn'
-                      label={t('label:navn')}
-                      onChanged={setNavn}
-                      value={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
-                    />
-                  </Column>
-                </AlignStartRow>
-                <VerticalSeparatorDiv />
+                <Input
+                  namespace={namespace + '-arbeidsgiver'}
+                  error={_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
+                  id='navn'
+                  label={t('label:navn')}
+                  onChanged={setNavn}
+                  value={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
+                />
                 <Heading size='small'>
                   {t('label:institusjonens-id')}
                 </Heading>
-                <IdentifikatorFC
-                  identifikatorer={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
-                  onIdentifikatorerChanged={setIdentifikatorer}
-                  namespace={namespace + '-arbeidsgiver-identifikatorer'}
-                  validation={_v}
-                />
+                <Box>
+                  <IdentifikatorFC
+                    identifikatorer={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer}
+                    onIdentifikatorerChanged={setIdentifikatorer}
+                    namespace={namespace + '-arbeidsgiver-identifikatorer'}
+                    validation={_v}
+                  />
+                </Box>
                 {showAddress && (
-                  <>
-                    <AdresseAccordion>
-                      <Accordion.Item>
-                      <Accordion.Header>{t('label:forsikringsperiode-adresse')}</Accordion.Header>
-                      <Accordion.Content>
-                        <AdresseForm
-                          adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
-                          onAdressChanged={setAdresse}
-                          type={false}
-                          namespace={namespace + '-arbeidsgiver-adresse'}
-                          validation={_v}
-                        />
-                      </Accordion.Content>
-                      </Accordion.Item>
-                    </AdresseAccordion>
-                    <VerticalSeparatorDiv />
-                  </>
+                  <Accordion>
+                    <Accordion.Item>
+                    <Accordion.Header>{t('label:forsikringsperiode-adresse')}</Accordion.Header>
+                    <Accordion.Content>
+                      <AdresseForm
+                        adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
+                        onAdressChanged={setAdresse}
+                        type={false}
+                        namespace={namespace + '-arbeidsgiver-adresse'}
+                        validation={_v}
+                      />
+                    </Accordion.Content>
+                    </Accordion.Item>
+                  </Accordion>
                 )}
               </>
             )}
@@ -613,20 +580,15 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                   inntektOgTimer={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer}
                   onInntektOgTimeChanged={setInntektOgTimer}
                 />
-                <VerticalSeparatorDiv />
-                <AlignStartRow>
-                  <Column>
-                    <Input
-                      error={_v[namespace + '-inntektOgTimerInfo']?.feilmelding}
-                      namespace={namespace}
-                      id='inntektOgTimerInfo'
-                      label={t('label:inntekt-og-time-info')}
-                      onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo)}
-                      value={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
-                      required={true}
-                    />
-                  </Column>
-                </AlignStartRow>
+                <Input
+                  error={_v[namespace + '-inntektOgTimerInfo']?.feilmelding}
+                  namespace={namespace}
+                  id='inntektOgTimerInfo'
+                  label={t('label:inntekt-og-time-info')}
+                  onChanged={(newInntektOgTimerInfo: string) => setInntektOgTimerInfo(newInntektOgTimerInfo)}
+                  value={(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
+                  required={true}
+                />
               </>
             )}
             {showAnnen && (
@@ -642,86 +604,78 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
             )}
 
             {showBeløp && (
-              <AlignStartRow>
-                <Column>
-                  <Input
-                    error={_v[namespace + '-beloep']?.feilmelding}
-                    namespace={namespace}
-                    id='beloep'
-                    label={t('label:beløp')}
-                    onChanged={setBeløp}
-                    required
-                    value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep?.replace('.', ',') : undefined}
-                  />
-                </Column>
-                <Column>
-                  <CountrySelect
-                    closeMenuOnSelect
-                    ariaLabel={t('label:valuta')}
-                    data-testid={namespace + '-valuta'}
-                    error={_v[namespace + '-valuta']?.feilmelding}
-                    id={namespace + '-valuta'}
-                    label={t('label:valuta') + ' *'}
-                    locale='nb'
-                    menuPortalTarget={document.body}
-                    onOptionSelected={setValuta}
-                    type='currency'
-                    values={(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
-                  />
-                </Column>
-              </AlignStartRow>
+              <HGrid gap="4" align="start" columns={2}>
+                <Input
+                  error={_v[namespace + '-beloep']?.feilmelding}
+                  namespace={namespace}
+                  id='beloep'
+                  label={t('label:beløp')}
+                  onChanged={setBeløp}
+                  required
+                  value={(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep?.replace('.', ',') : undefined}
+                />
+                <CountrySelect
+                  closeMenuOnSelect
+                  ariaLabel={t('label:valuta')}
+                  data-testid={namespace + '-valuta'}
+                  error={_v[namespace + '-valuta']?.feilmelding}
+                  id={namespace + '-valuta'}
+                  label={t('label:valuta') + ' *'}
+                  locale='nb'
+                  menuPortalTarget={document.body}
+                  onOptionSelected={setValuta}
+                  type='currency'
+                  values={(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
+                />
+              </HGrid>
             )}
           </>
           )
         : (
           <>
-            <AlignStartRow>
+            <HStack gap="4">
               {showArbeidsgiver && (
                 <>
-                  <Column>
-                    <FlexDiv>
-                      <PileDiv>
-                        <PileDiv>
-                          <Label id={namespace + '-arbeidsgiver-navn'}>
-                            {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
-                          </Label>
-                          {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
+                  <VStack gap="4">
+                    <VStack>
+                      <Label id={namespace + '-arbeidsgiver-navn'}>
+                        {(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.navn}
+                      </Label>
+                      {_v[namespace+ '-arbeidsgiver-navn']?.feilmelding && (
+                        <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
+                          {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
+                        </Label>
+                      )}
+                    </VStack>
+                    {showAddress && showAddressInListView  && (
+                      <>
+                        <HorizontalLineSeparator />
+                        <VStack>
+                          {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse) || !adresseHasProps((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
+                            ? (
+                              <BodyLong>
+                                {t('message:warning-unknown-address')}
+                              </BodyLong>
+                              )
+                            : (
+                              <AdresseBox
+                                border={false}
+                                adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
+                                padding='0'
+                                seeType={false}
+                              />
+                              )}
+                          {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (
                             <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
-                              {_v[namespace + '-arbeidsgiver-navn']?.feilmelding}
+                              {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding}
                             </Label>
                           )}
-                        </PileDiv>
-                        {showAddress && showAddressInListView && (
-                          <>
-                            <HorizontalLineSeparator />
-                            <VerticalSeparatorDiv size='0.5' />
-                            <PileDiv>
-                              {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse) || !adresseHasProps((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse)
-                                ? (
-                                  <BodyLong>
-                                    {t('message:warning-unknown-address')}
-                                  </BodyLong>
-                                  )
-                                : (
-                                  <AdresseBox
-                                    border={false}
-                                    adresse={(_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.adresse}
-                                    padding='0'
-                                    seeType={false}
-                                  />
-                                  )}
-                              {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding && (
-                                <Label role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium'>
-                                  {_v[namespace + '-arbeidsgiver-adresse']?.feilmelding}
-                                </Label>
-                              )}
-                            </PileDiv>
-                          </>
-                        )}
-                      </PileDiv>
-                    </FlexDiv>
-                  </Column>
-                  <Column>
+                        </VStack>
+                      </>
+                    )}
+                  </VStack>
+                  <Spacer/>
+                  <VStack>
                     {_.isEmpty((_forsikringPeriode as PeriodeMedForsikring)?.arbeidsgiver?.identifikatorer)
                       ? (
                         <BodyLong>{t('message:warning-no-ids')}</BodyLong>
@@ -734,11 +688,10 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                               error={_validation[_namespace + '-identifikatorer']?.feilmelding}
                               id={_namespace + '-identifikatorer'}
                             >
-                              <FlexDiv>
+                              <HStack gap="2">
                                 <Label>{t('label:' + id.type) + ':'}</Label>
-                                <HorizontalSeparatorDiv size='0.5' />
                                 {id?.id}
-                              </FlexDiv>
+                              </HStack>
                             </FormText>
                           )
                         })}
@@ -747,79 +700,55 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
                         {_v[namespace + '-arbeidsgiver-identifikatorer']?.feilmelding}
                       </Label>
                     )}
-                  </Column>
+                  </VStack>
+                  <Spacer/>
                 </>
               )}
-            </AlignStartRow>
+            </HStack>
             {showInntekt && (
-              <>
-                <VerticalSeparatorDiv />
-                <AlignStartRow>
-                  <Column>
-                    <Label>
-                      {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
-                    </Label>
-                    {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer?.map((inntektOgTime: InntektOgTime) => (
-                      <AlignStartRow key={inntektOgTime?.inntektsperiode.startdato}>
-                        <Column>
-                          <PeriodeText
-                            error={{
-                              startdato: _v[namespace + '-inntektOgTimer-startdato']?.feilmelding,
-                              sluttdato: _v[namespace + '-inntektOgTimer-sluttdato']?.feilmelding
-                            }}
-                            namespace={namespace}
-                            periode={inntektOgTime?.inntektsperiode}
-                          />
-                        </Column>
-                        <Column>
-                          {inntektOgTime?.bruttoinntekt?.replace('.', ',')}  {inntektOgTime?.valuta}
-                        </Column>
-                        <Column>
-                          {inntektOgTime?.arbeidstimer?.replace('.', ',')} {t('label:arbeidstimer')}
-                        </Column>
-                      </AlignStartRow>
-                    ))}
-                  </Column>
-                </AlignStartRow>
-              </>
+              <Box>
+                <VStack width="100%">
+                  <Label>
+                    {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimerInfo}
+                  </Label>
+                  {(_forsikringPeriode as PeriodeUtenForsikring)?.inntektOgTimer?.map((inntektOgTime: InntektOgTime) => (
+                    <HGrid columns={3} gap="4" align="center" key={inntektOgTime?.inntektsperiode.startdato} width="100%">
+                      <PeriodeText
+                        error={{
+                          startdato: _v[namespace + '-inntektOgTimer-startdato']?.feilmelding,
+                          sluttdato: _v[namespace + '-inntektOgTimer-sluttdato']?.feilmelding
+                        }}
+                        namespace={namespace}
+                        periode={inntektOgTime?.inntektsperiode}
+                      />
+                      <span>{inntektOgTime?.bruttoinntekt?.replace('.', ',')}  {inntektOgTime?.valuta}</span>
+                      <span>{inntektOgTime?.arbeidstimer?.replace('.', ',')} {t('label:arbeidstimer')}</span>
+                    </HGrid>
+                  ))}
+                </VStack>
+              </Box>
             )}
             {showAnnen && (
-              <>
-                <VerticalSeparatorDiv />
-                <AlignStartRow>
-                  <Column>
-                    <BodyLong>
-                      {(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
-                    </BodyLong>
-                  </Column>
-                </AlignStartRow>
-              </>
+              <BodyLong>
+                {(_forsikringPeriode as PeriodeAnnenForsikring).annenTypeForsikringsperiode}
+              </BodyLong>
             )}
             {showBeløp && (
-              <>
-                <VerticalSeparatorDiv />
-                <AlignStartRow>
-                  <Column>
-                    <FlexDiv>
-                      <Label>{t('label:beløp') + ':'} </Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FormText
-                        error={_v[namespace + '-beloep']?.feilmelding}
-                        id={namespace + '-beloep'}
-                      >
-                        {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep?.replace('.', ',') : '-'}
-                      </FormText>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FormText
-                        error={_v[namespace + '-valuta']?.feilmelding}
-                        id={namespace + '-valuta'}
-                      >
-                        {(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
-                      </FormText>
-                    </FlexDiv>
-                  </Column>
-                </AlignStartRow>
-              </>
+              <HStack gap="2">
+                <Label>{t('label:beløp') + ':'} </Label>
+                <FormText
+                  error={_v[namespace + '-beloep']?.feilmelding}
+                  id={namespace + '-beloep'}
+                >
+                  {(_forsikringPeriode as PeriodeFerieForsikring)?.beloep ? (_forsikringPeriode as PeriodeFerieForsikring)?.beloep?.replace('.', ',') : '-'}
+                </FormText>
+                <FormText
+                  error={_v[namespace + '-valuta']?.feilmelding}
+                  id={namespace + '-valuta'}
+                >
+                  {(_forsikringPeriode as PeriodeFerieForsikring)?.valuta}
+                </FormText>
+              </HStack>
             )}
           </>
           )}
@@ -828,6 +757,7 @@ const ForsikringPeriodeBox = <T extends ForsikringPeriode>({
           duplicate warning
         </BodyLong>
       )}
+      </VStack>
     </ForsikringPeriodePanel>
   )
 }

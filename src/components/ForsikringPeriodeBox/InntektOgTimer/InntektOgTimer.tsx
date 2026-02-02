@@ -1,12 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column, FlexDiv, HorizontalSeparatorDiv,
-  PaddedDiv, PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, HGrid, HStack, Label, Spacer, VStack} from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -16,7 +9,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { InntektOgTime, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -191,7 +184,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
     const _inntektOgTime = index < 0 ? _newInntektOgTime : (inEditMode ? _editInntektOgTime : inntektOgTime)
 
     return (
-      <RepeatableRow
+      <RepeatableBox
+        padding="4"
         id={'repeatablerow-' + _namespace}
         key={getId(inntektOgTime)}
         className={classNames({
@@ -199,8 +193,8 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow style={{ minHeight: '2.2rem' }}>
+        <VStack gap="4">
+        <HStack align="start" gap="4">
           {inEditMode
             ? (
               <PeriodeInput
@@ -215,133 +209,116 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
               />
               )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-inntektsperiode-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-inntektsperiode-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_inntektOgTime?.inntektsperiode}
-                />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<InntektOgTime>
-              item={inntektOgTime}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-inntektsperiode-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-inntektsperiode-sluttdato']?.feilmelding
+                }}
+                namespace={_namespace}
+                periode={_inntektOgTime?.inntektsperiode}
+              />
+
+            )
+          }
+          <Spacer/>
+          <AddRemovePanel<InntektOgTime>
+            item={inntektOgTime}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={onAddNew}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
         {inEditMode
           ? (
-            <AlignStartRow>
-              <Column>
-                <Input
-                  error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
-                  namespace={_namespace}
-                  id='bruttoinntekt'
-                  label={t('label:brutto-inntekt')}
-                  onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
-                  required
-                  value={_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : undefined}
-                />
-              </Column>
-              <Column>
-                <CountrySelect
-                  closeMenuOnSelect
-                  ariaLabel={t('label:valuta')}
-                  data-testid={_namespace + '-valuta'}
-                  error={_v[_namespace + '-valuta']?.feilmelding}
-                  id={_namespace + '-valuta'}
-                  label={t('label:valuta') + ' *'}
-                  locale='nb'
-                  menuPortalTarget={document.body}
-                  onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
-                  type='currency'
-                  values={_inntektOgTime?.valuta}
-                />
-              </Column>
-              <Column>
-                <Input
-                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                  namespace={_namespace}
-                  id='arbeidstimer'
-                  label={t('label:arbeidstimer')}
-                  onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
-                  value={_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : undefined}
-                />
-              </Column>
-            </AlignStartRow>
+            <HStack gap="4">
+              <Input
+                error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
+                namespace={_namespace}
+                id='bruttoinntekt'
+                label={t('label:brutto-inntekt')}
+                onChanged={(bruttoinntekt: string) => setBruttoinntekt(bruttoinntekt, index)}
+                required
+                value={_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : undefined}
+              />
+              <CountrySelect
+                closeMenuOnSelect
+                ariaLabel={t('label:valuta')}
+                data-testid={_namespace + '-valuta'}
+                error={_v[_namespace + '-valuta']?.feilmelding}
+                id={_namespace + '-valuta'}
+                label={t('label:valuta') + ' *'}
+                locale='nb'
+                menuPortalTarget={document.body}
+                onOptionSelected={(valuta: Currency) => setValuta(valuta, index)}
+                type='currency'
+                values={_inntektOgTime?.valuta}
+              />
+              <Input
+                error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                namespace={_namespace}
+                id='arbeidstimer'
+                label={t('label:arbeidstimer')}
+                onChanged={(arbeidstimer: string) => setArbeidstimer(arbeidstimer, index)}
+                value={_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : undefined}
+              />
+            </HStack>
             )
           : (
-            <AlignStartRow>
-              <Column>
-                <FlexDiv>
-                  <Label>{t('label:beløp') + ':'}</Label>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <FormText
-                    error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
-                    id={_namespace + '-bruttoinntekt'}
-                  >
-                    {_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : '-'}
-                  </FormText>
-                  <HorizontalSeparatorDiv size='0.5' />
-                  <FormText
-                    error={_v[_namespace + '-valuta']?.feilmelding}
-                    id={_namespace + '-valuta'}
-                  >
-                    {_inntektOgTime?.valuta}
-                  </FormText>
-                </FlexDiv>
-              </Column>
-              <Column>
+            <HGrid columns={2}>
+              <HStack gap="2">
+                <Label>{t('label:beløp') + ':'}</Label>
                 <FormText
-                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                  id={_namespace + '-arbeidstimer'}
+                  error={_v[_namespace + '-bruttoinntekt']?.feilmelding}
+                  id={_namespace + '-bruttoinntekt'}
                 >
-                  <FlexDiv>
-                    {t('label:arbeidstimer')}:
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : '-'}
-                  </FlexDiv>
+                  {_inntektOgTime?.bruttoinntekt ? _inntektOgTime?.bruttoinntekt.replace('.', ',') : '-'}
                 </FormText>
-              </Column>
-            </AlignStartRow>
+                <FormText
+                  error={_v[_namespace + '-valuta']?.feilmelding}
+                  id={_namespace + '-valuta'}
+                >
+                  {_inntektOgTime?.valuta}
+                </FormText>
+              </HStack>
+              <FormText
+                error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                id={_namespace + '-arbeidstimer'}
+              >
+                <HStack gap="2">
+                  {t('label:arbeidstimer')}:
+                  {_inntektOgTime?.arbeidstimer ? _inntektOgTime?.arbeidstimer.replace('.', ',') : '-'}
+                </HStack>
+              </FormText>
+            </HGrid>
             )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
     <>
-      <VerticalSeparatorDiv />
       {_.isEmpty(inntektOgTimer)
         ? (
-          <PaddedHorizontallyDiv>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-inntekt')}
             </BodyLong>
             <SpacedHr />
-          </PaddedHorizontallyDiv>
+          </Box>
           )
         : inntektOgTimer?.map(renderRow)}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <Box>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
@@ -349,7 +326,7 @@ const InntektOgTimerFC: React.FC<InntektOgTimerProps> = ({
             >
               {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
             </Button>
-          </PaddedDiv>
+          </Box>
           )}
     </>
   )

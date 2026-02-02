@@ -12,16 +12,7 @@ import {
   StrollerIcon,
   ParasolBeachIcon
 } from '@navikt/aksel-icons'
-import { BodyLong, Button, Checkbox, Heading, Label, Tooltip } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexCenterDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Checkbox, Heading, HStack, Label, Tooltip, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateForsikring, ValidateForsikringProps } from 'applications/SvarSed/Forsikring/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -29,7 +20,7 @@ import Military from 'assets/icons/Military'
 import classNames from 'classnames'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import {RepeatableBox, SpacedHr} from 'components/StyledComponents'
 import { Options } from 'declarations/app'
 import { State } from 'declarations/reducers'
 import { ForsikringPeriode, Periode, PeriodeSort, ReplySed, U002Sed } from 'declarations/sed'
@@ -287,9 +278,8 @@ const Forsikring: React.FC<MainFormProps> = ({
     namespace = _type ? namespace + '[' + _type + ']' + idx : namespace + idx*/
 
     return (
-      <>
-        <VerticalSeparatorDiv size='0.5' />
-        <RepeatableRow
+
+        <RepeatableBox
           id={'repeatablerow-' + namespace}
           key={getId(periode)}
           className={classNames({
@@ -297,132 +287,154 @@ const Forsikring: React.FC<MainFormProps> = ({
             error: hasNamespaceWithErrors(validation, namespace + '[' + _type + ']' + '[' + index + ']')
           })}
         >
-          {copyMode && <div ref={ref}></div>}
-          {newMode && (
-            <AlignStartRow>
-              <Column>
-                <Select
-                  closeMenuOnSelect
-                  data-testid={namespace + '-type'}
-                  error={_newTypeError}
-                  id={namespace + '-type'}
-                  label={t('label:type')}
-                  menuPortalTarget={document.body}
-                  onChange={(type: any) => setType(type.value)}
-                  options={periodeOptions}
-                  value={_.find(periodeOptions, o => o.value === _type)}
-                  defaultValue={_.find(periodeOptions, o => o.value === _type)}
+
+            <VStack gap="4">
+              {copyMode && <div ref={ref}></div>}
+              {newMode && (
+                <Box padding="4">
+                  <Select
+                    closeMenuOnSelect
+                    data-testid={namespace + '-type'}
+                    error={_newTypeError}
+                    id={namespace + '-type'}
+                    label={t('label:type')}
+                    menuPortalTarget={document.body}
+                    onChange={(type: any) => setType(type.value)}
+                    options={periodeOptions}
+                    value={_.find(periodeOptions, o => o.value === _type)}
+                    defaultValue={_.find(periodeOptions, o => o.value === _type)}
+                  />
+                </Box>
+              )}
+              {_type && newMode && (
+                <Box padding="4">
+                  <ForsikringPeriodeBox
+                    key={(_periode as ForsikringPeriode).__type}
+                    allowDelete
+                    allowEdit
+                    forsikringPeriode={_periode as ForsikringPeriode}
+                    newMode={newMode || copyMode}
+                    editable='full'
+                    showAddress={showAddress}
+                    showArbeidsgiver={showArbeidsgiver}
+                    showInntekt={showInntekt}
+                    showAnnen={showAnnen}
+                    showBeløp={showBeløp}
+                    icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
+                    onForsikringPeriodeEdit={onSaveEdit}
+                    onForsikringPeriodeDelete={onRemove}
+                    onForsikringPeriodeNew={onAddNew}
+                    onForsikringPeriodeNewClose={onCloseNew}
+                    namespace={namespace}
+                    validation={validation}
+                    resetValidation={doResetValidation}
+                    setValidation={doSetValidation}
+                    setCopiedPeriod={_setCopiedPeriod}
+                    index={index}
+                    type={_type}
+                  />
+                </Box>
+              )}
+              {_type && !newMode && (
+                <ForsikringPeriodeBox
+                  key={(_periode as ForsikringPeriode).__type}
+                  allowDelete
+                  allowEdit
+                  forsikringPeriode={_periode as ForsikringPeriode}
+                  newMode={newMode || copyMode}
+                  editable='full'
+                  showAddress={showAddress}
+                  showArbeidsgiver={showArbeidsgiver}
+                  showInntekt={showInntekt}
+                  showAnnen={showAnnen}
+                  showBeløp={showBeløp}
+                  icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
+                  onForsikringPeriodeEdit={onSaveEdit}
+                  onForsikringPeriodeDelete={onRemove}
+                  onForsikringPeriodeNew={onAddNew}
+                  onForsikringPeriodeNewClose={onCloseNew}
+                  namespace={namespace}
+                  validation={validation}
+                  resetValidation={doResetValidation}
+                  setValidation={doSetValidation}
+                  setCopiedPeriod={_setCopiedPeriod}
+                  index={index}
+                  type={_type}
                 />
-              </Column>
-            </AlignStartRow>
-          )}
-          <VerticalSeparatorDiv />
-          {_type && (
-            <ForsikringPeriodeBox
-              key={(_periode as ForsikringPeriode).__type}
-              allowDelete
-              allowEdit
-              forsikringPeriode={_periode as ForsikringPeriode}
-              newMode={newMode || copyMode}
-              editable='full'
-              showAddress={showAddress}
-              showArbeidsgiver={showArbeidsgiver}
-              showInntekt={showInntekt}
-              showAnnen={showAnnen}
-              showBeløp={showBeløp}
-              icon={!!periode && _sort === 'time' ? getIcon(periode!.__type!, '24') : null}
-              onForsikringPeriodeEdit={onSaveEdit}
-              onForsikringPeriodeDelete={onRemove}
-              onForsikringPeriodeNew={onAddNew}
-              onForsikringPeriodeNewClose={onCloseNew}
-              namespace={namespace}
-              validation={validation}
-              resetValidation={doResetValidation}
-              setValidation={doSetValidation}
-              setCopiedPeriod={_setCopiedPeriod}
-              index={index}
-              type={_type}
-            />
-          )}
-          <VerticalSeparatorDiv />
-        </RepeatableRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </>
+              )}
+            </VStack>
+        </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
         {!_.isEmpty(_allPeriods) && (
-          <>
-            <VerticalSeparatorDiv/>
-            <Checkbox
-              checked={_sort === 'group'}
-              onChange={onSort}
-            >
-              {t('label:group-by-periodetype')}
-            </Checkbox>
-          </>
+          <Checkbox
+            checked={_sort === 'group'}
+            onChange={onSort}
+          >
+            {t('label:group-by-periodetype')}
+          </Checkbox>
         )}
-      </PaddedDiv>
-      <VerticalSeparatorDiv/>
-      {_.isEmpty(_allPeriods)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : _sort === 'time'
-          ? _allPeriods.map(renderRow)
+        {_.isEmpty(_allPeriods)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : _sort === 'time'
+            ? _allPeriods.map(renderRow)
+            : (
+              <>
+                {periodeOptions.map(o => {
+                  const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
+                  if (_.isEmpty(periods)) {
+                    return null
+                  }
+                  return (
+                    <div key={o.value}>
+                      <VStack gap="8">
+                        <Box/>
+                        <HStack gap="2">
+                          {getIcon(o.value, '20')}
+                          <Label>
+                            {o.label}
+                          </Label>
+                        </HStack>
+                        {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
+                      </VStack>
+                    </div>
+                  )
+                })}
+              </>
+            )
+        }
+        {_copiedPeriod && renderRow(_copiedPeriod, -1)}
+        {_newForm
+          ? renderRow(null, -1)
           : (
-            <>
-              {periodeOptions.map(o => {
-                const periods: Array<ForsikringPeriode> | undefined = _.get(replySed, o.value) as Array<ForsikringPeriode> | undefined
-                if (_.isEmpty(periods)) {
-                  return null
-                }
-                return (
-                  <div key={o.value}>
-                    <PaddedDiv>
-                      <FlexCenterDiv>
-                        {getIcon(o.value, '20')}
-                        <HorizontalSeparatorDiv size='0.35' />
-                        <Label>
-                          {o.label}
-                        </Label>
-                      </FlexCenterDiv>
-                    </PaddedDiv>
-                    {periods!.map((p, i) => ({ ...p, __type: o.value, __index: i })).sort(periodeSort).map(renderRow)}
-                  </div>
-                )
-              })}
-            </>
-            )}
-      <VerticalSeparatorDiv />
-      {_copiedPeriod && renderRow(_copiedPeriod, -1)}
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )
-      }
-    </>
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
+            )
+        }
+      </VStack>
+    </Box>
   )
 }
 
