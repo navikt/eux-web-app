@@ -1,13 +1,4 @@
-import {Alert, Heading} from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {Alert, Box, Heading, HGrid, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import DateField from 'components/DateField/DateField'
@@ -24,6 +15,7 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import { validatePersonLight, ValidationPersonLightProps } from './validation'
 import {isXSed} from "../../../utils/sed";
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -140,102 +132,83 @@ const PersonLightFC: React.FC<MainFormProps> = ({
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      {!isXSed(replySed) &&
-        <NorskPin
-          norwegianPin={norwegianPin}
-          error={validation[namespace + '-norskpin']?.feilmelding}
-          namespace={namespace}
-          onNorwegianPinSave={saveNorwegianPin}
-          onFillOutPerson={fillOutPerson}
-        />
-      }
-      <VerticalSeparatorDiv />
-      {gradering &&
-        <PaddedDiv>
+        {!isXSed(replySed) &&
+          <NorskPin
+            norwegianPin={norwegianPin}
+            error={validation[namespace + '-norskpin']?.feilmelding}
+            namespace={namespace}
+            onNorwegianPinSave={saveNorwegianPin}
+            onFillOutPerson={fillOutPerson}
+          />
+        }
+        {gradering &&
           <Alert size="small" variant='warning'>
             {t('label:sensitivPerson', {gradering: gradering})}
           </Alert>
-        </PaddedDiv>
-      }
-      {personLight?.adressebeskyttelse && personLight?.adressebeskyttelse !== "UGRADERT" && !gradering &&
-        <PaddedDiv>
+        }
+        {personLight?.adressebeskyttelse && personLight?.adressebeskyttelse !== "UGRADERT" && !gradering &&
           <Alert size="small" variant='warning'>
             {t('label:sensitivPerson', {gradering: personLight?.adressebeskyttelse})}
           </Alert>
-        </PaddedDiv>
-      }
-      <PaddedDiv>
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-fornavn']?.feilmelding}
-              id='fornavn'
-              label={t('label:fornavn')}
-              namespace={namespace}
-              onChanged={setFornavn}
-              required
-              value={personLight?.fornavn ?? ''}
-            />
-          </Column>
-          <Column>
-            <Input
-              error={validation[namespace + '-etternavn']?.feilmelding}
-              id='etternavn'
-              label={t('label:etternavn')}
-              namespace={namespace}
-              onChanged={setEtternavn}
-              required
-              value={personLight?.etternavn ?? ''}
-            />
-          </Column>
-          <Column>
-            <DateField
-              error={validation[namespace + '-foedselsdato']?.feilmelding}
-              id='foedselsdato'
-              label={t('label:fødselsdato')}
-              namespace={namespace}
-              onChanged={setFodselsdato}
-              required
-              dateValue={personLight?.foedselsdato ?? ''}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='2' />
-        <AlignStartRow>
-          <Column>
-            <RadioPanelGroup
-              value={personLight?.kjoenn}
-              data-no-border
-              data-testid={namespace + '-kjoenn'}
-              error={validation[namespace + '-kjoenn']?.feilmelding}
-              id={namespace + '-kjoenn'}
-              legend={t('label:kjønn') + ' *'}
-              name={namespace + '-kjoenn'}
-              onChange={setKjoenn}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='M'>
-                  {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
-                </RadioPanel>
-                <RadioPanel value='K'>
-                  {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
-                </RadioPanel>
-                <RadioPanel value='U'>
-                  {t('label:ukjent')}
-                </RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-      </PaddedDiv>
-    </>
+        }
+        <HGrid columns={3} gap="4">
+          <Input
+            error={validation[namespace + '-fornavn']?.feilmelding}
+            id='fornavn'
+            label={t('label:fornavn')}
+            namespace={namespace}
+            onChanged={setFornavn}
+            required
+            value={personLight?.fornavn ?? ''}
+          />
+          <Input
+            error={validation[namespace + '-etternavn']?.feilmelding}
+            id='etternavn'
+            label={t('label:etternavn')}
+            namespace={namespace}
+            onChanged={setEtternavn}
+            required
+            value={personLight?.etternavn ?? ''}
+          />
+          <DateField
+            error={validation[namespace + '-foedselsdato']?.feilmelding}
+            id='foedselsdato'
+            label={t('label:fødselsdato')}
+            namespace={namespace}
+            onChanged={setFodselsdato}
+            required
+            dateValue={personLight?.foedselsdato ?? ''}
+          />
+        </HGrid>
+        <RadioGroup
+          value={personLight?.kjoenn}
+          data-no-border
+          data-testid={namespace + '-kjoenn'}
+          error={validation[namespace + '-kjoenn']?.feilmelding}
+          id={namespace + '-kjoenn'}
+          legend={t('label:kjønn') + ' *'}
+          name={namespace + '-kjoenn'}
+          onChange={setKjoenn}
+        >
+          <HGrid columns={3} gap="4">
+            <Radio className={commonStyles.radioPanel} value='M'>
+              {t(personID?.startsWith('barn') ? 'label:gutt' : 'label:mann')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel} value='K'>
+              {t(personID?.startsWith('barn') ? 'label:jente' : 'label:kvinne')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel}value='U'>
+              {t('label:ukjent')}
+            </Radio>
+          </HGrid>
+        </RadioGroup>
+      </VStack>
+    </Box>
   )
 }
 
