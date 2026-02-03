@@ -1,18 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import {BodyLong, Button, Heading, Label} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  AlignEndRow,
-  Column,
-  FlexDiv,
-  FlexRadioPanels,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -23,7 +10,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow } from 'components/StyledComponents'
+import {RepeatableBox} from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, Utbetalingshyppighet, Ytelse, YtelseNavn } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -37,27 +24,8 @@ import performValidation from 'utils/performValidation'
 import { periodeSort } from 'utils/sort'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import { validateBeløpNavnOgValuta, ValidationBeløpNavnOgValutaProps } from './validation'
-import styled from "styled-components";
+import commonStyles from 'assets/css/common.module.css'
 
-const PanelDiv = styled.div`
-  .navds-radio{
-    margin: 0.2rem 0;
-  }
-`
-
-const RepeatableRowWithMargin = styled(RepeatableRow)`
-    background-color: var(--a-bg-default);
-    margin: 0.2rem 0;
-`
-
-const DivWithHorizontalPadding = styled.div<{padded:boolean}>`
-  padding-left: ${props => (props.padded ? 1 : 0)}rem;
-  padding-right: ${props => (props.padded ? 1 : 0)}rem;
-`
-
-const PaddedFlexDiv = styled(FlexDiv)`
-  padding-top: 0.7rem;
-`
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -314,39 +282,37 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
     )
 
     return (
-      <RepeatableRowWithMargin
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(ytelse)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
         {inEditMode
           ? (
-            <>
+            <VStack gap="4">
               {!utvidetBarneTrygd &&
-                <AlignStartRow>
-                  <Column>
-                    <RadioPanelGroup
-                      defaultValue={ytelse?.ytelseNavn}
-                      data-no-border
-                      data-testid={_namespace + '-ytelseNavn'}
-                      error={_v[_namespace + '-ytelseNavn']?.feilmelding}
-                      id={_namespace + '-ytelseNavn'}
-                      legend={t('label:betegnelse-på-ytelse') + ' *'}
-                      name={_namespace + '-ytelseNavn'}
-                      onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
-                    >
-                      <PanelDiv>
-                        <RadioPanel value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</RadioPanel>
-                        <RadioPanel value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</RadioPanel>
-                        {personID === 'familie' && <RadioPanel value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</RadioPanel>}
-                      </PanelDiv>
-                    </RadioPanelGroup>
-                  </Column>
-                  <Column>
+                <HGrid columns={2} gap="4">
+                  <RadioGroup
+                    defaultValue={ytelse?.ytelseNavn}
+                    data-no-border
+                    data-testid={_namespace + '-ytelseNavn'}
+                    error={_v[_namespace + '-ytelseNavn']?.feilmelding}
+                    id={_namespace + '-ytelseNavn'}
+                    legend={t('label:betegnelse-på-ytelse') + ' *'}
+                    name={_namespace + '-ytelseNavn'}
+                    onChange={(e: string) => setYtelseNavn(e as YtelseNavn, index)}
+                  >
+                    <VStack gap="1">
+                      <Radio className={commonStyles.radioPanel} value='Barnetrygd'>{t('el:option-familieytelser-barnetrygd')}</Radio>
+                      <Radio className={commonStyles.radioPanel} value='Kontantstøtte'>{t('el:option-familieytelser-kontantstøtte')}</Radio>
+                      {personID === 'familie' && <Radio className={commonStyles.radioPanel} value='Utvidet barnetrygd'>{t('el:option-familieytelser-utvidet-barnetrygd')}</Radio>}
+                    </VStack>
+                  </RadioGroup>
+                  <Box>
                     {personID === 'familie' && (
                       <Input
                         type='number'
@@ -360,45 +326,39 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                         value={_ytelse?.antallPersoner}
                       />
                     )}
-                  </Column>
-                </AlignStartRow>
+                  </Box>
+                </HGrid>
               }
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-beloep']?.feilmelding}
-                    namespace={_namespace}
-                    id='beloep'
-                    description={personID === 'familie' && showHeading ? t('message:help-familieytelser-beløp') : undefined}
-                    label={t('label:beløp')}
-                    onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
-                    required
-                    value={_ytelse?.beloep}
-                  />
-                </Column>
-                <Column style={{ marginTop: personID === 'familie' && showHeading  ? '3rem' : '0rem' }}>
-                  <CountrySelect
-                    closeMenuOnSelect
-                    ariaLabel={t('label:valuta')}
-                    data-testid={_namespace + '-valuta'}
-                    error={_v[_namespace + '-valuta']?.feilmelding}
-                    id={_namespace + '-valuta'}
-                    label={t('label:valuta') + ' *'}
-                    locale='nb'
-                    menuPortalTarget={document.body}
-                    onOptionSelected={(e: any) => setValuta(e, index)}
-                    type='currency'
-                    values={_ytelse?.valuta}
-                  />
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
+              <HGrid columns={2} gap="4">
+                <Input
+                  error={_v[_namespace + '-beloep']?.feilmelding}
+                  namespace={_namespace}
+                  id='beloep'
+                  description={personID === 'familie' && showHeading ? t('message:help-familieytelser-beløp') : undefined}
+                  label={t('label:beløp')}
+                  onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+                  required
+                  value={_ytelse?.beloep}
+                />
+
+                <CountrySelect
+                  closeMenuOnSelect
+                  ariaLabel={t('label:valuta')}
+                  data-testid={_namespace + '-valuta'}
+                  error={_v[_namespace + '-valuta']?.feilmelding}
+                  id={_namespace + '-valuta'}
+                  label={t('label:valuta') + ' *'}
+                  locale='nb'
+                  menuPortalTarget={document.body}
+                  onOptionSelected={(e: any) => setValuta(e, index)}
+                  type='currency'
+                  values={_ytelse?.valuta}
+                />
+              </HGrid>
               <Heading size='small'>
                 {t('label:grant-date')}
               </Heading>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
+              <HGrid columns={2} gap="4">
                 <PeriodeInput
                   namespace={namespace}
                   error={{
@@ -416,104 +376,85 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                   requiredStartDato={false}
                   requiredSluttDato={false}
                 />
-                <Column flex='2'>
-                  <RadioPanelGroup
-                    value={_ytelse?.utbetalingshyppighet}
-                    data-no-border
-                    data-testid={_namespace + '-utbetalingshyppighet'}
-                    id={_namespace + '-utbetalingshyppighet'}
-                    error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
-                    name={_namespace + '-utbetalingshyppighet'}
-                    legend={t('label:periode-avgrensing') + ' *'}
-                    onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
-                  >
-                    <FlexRadioPanels>
-                      <RadioPanel value='Månedlig'>{t('label:månedlig')}</RadioPanel>
-                      <RadioPanel value='Årlig'>{t('label:årlig')}</RadioPanel>
-                    </FlexRadioPanels>
-                  </RadioPanelGroup>
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignEndRow>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-mottakersNavn']?.feilmelding}
-                    namespace={_namespace}
-                    id='mottakersNavn'
-                    label={t('label:mottakers-navn-naar-annen-enn-soker')}
-                    onChanged={(newNavn: string) => setMottakersNavn(newNavn, index)}
-                    value={_ytelse?.mottakersNavn}
-                  />
-                </Column>
-                <AlignEndColumn>
+                <RadioGroup
+                  value={_ytelse?.utbetalingshyppighet}
+                  data-no-border
+                  data-testid={_namespace + '-utbetalingshyppighet'}
+                  id={_namespace + '-utbetalingshyppighet'}
+                  error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
+                  name={_namespace + '-utbetalingshyppighet'}
+                  legend={t('label:periode-avgrensing') + ' *'}
+                  onChange={(e: string) => setUtbetalingshyppighet(e as Utbetalingshyppighet, index)}
+                >
+                  <HStack gap="4">
+                    <Radio className={commonStyles.radioPanel} value='Månedlig'>{t('label:månedlig')}</Radio>
+                    <Radio className={commonStyles.radioPanel} value='Årlig'>{t('label:årlig')}</Radio>
+                  </HStack>
+                </RadioGroup>
+              </HGrid>
+              <HGrid columns={2} gap="4">
+                <Input
+                  error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+                  namespace={_namespace}
+                  id='mottakersNavn'
+                  label={t('label:mottakers-navn-naar-annen-enn-soker')}
+                  onChanged={(newNavn: string) => setMottakersNavn(newNavn, index)}
+                  value={_ytelse?.mottakersNavn}
+                />
+                <HStack align={"end"}>
+                  <Spacer/>
                   {addremovepanel}
-                </AlignEndColumn>
-              </AlignEndRow>
-            </>
+                </HStack>
+              </HGrid>
+            </VStack>
             )
           : (
-            <>
-              <AlignStartRow>
-                {!utvidetBarneTrygd &&
-                  <Column>
+            <VStack gap="4">
+              <VStack>
+                <HGrid columns={2} gap="4">
+                  {!utvidetBarneTrygd &&
                     <FormText
                       error={_v[_namespace + '-ytelseNavn']?.feilmelding}
                       id={_namespace + '-ytelseNavn'}
                     >
-                      <FlexDiv>
+                      <HStack gap="2">
                         <Label>{t('label:betegnelse-på-ytelse') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
                         {_ytelse?.ytelseNavn}
-                      </FlexDiv>
+                      </HStack>
                     </FormText>
-                  </Column>
-                }
-                <Column>
-                  <FlexDiv>
-                    {personID === 'familie' && !utvidetBarneTrygd && (
-                      <>
-                        <FormText
-                          error={_v[_namespace + '-antallPersoner']?.feilmelding}
-                          id={_namespace + '-antallPersoner'}
-                        >
-                          <FlexDiv>
-                            <Label>{t('label:antall-innvilges') + ':'}</Label>
-                            <HorizontalSeparatorDiv size='0.5' />
-                            {_ytelse?.antallPersoner}
-                          </FlexDiv>
-                        </FormText>
-                        <HorizontalSeparatorDiv size='0.5' />
-                      </>
-                    )}
-                  </FlexDiv>
-                </Column>
-              </AlignStartRow>
-              <AlignStartRow>
-                <Column>
-                  <FlexDiv>
+                  }
+                  {personID === 'familie' && !utvidetBarneTrygd && (
+                    <>
+                      <FormText
+                        error={_v[_namespace + '-antallPersoner']?.feilmelding}
+                        id={_namespace + '-antallPersoner'}
+                      >
+                        <HStack gap="2">
+                          <Label>{t('label:antall-innvilges') + ':'}</Label>
+                          {_ytelse?.antallPersoner}
+                        </HStack>
+                      </FormText>
+                    </>
+                  )}
+                </HGrid>
+                <HGrid columns={2} gap="4">
+                  <HStack gap="2">
                     <Label>{t('label:beløp') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
                     <FormText
                       error={_v[_namespace + '-beloep']?.feilmelding}
                       id={_namespace + '-beloep'}
                     >
                       {_ytelse?.beloep}
                     </FormText>
-                    <HorizontalSeparatorDiv size='0.5' />
                     <FormText
                       error={_v[_namespace + '-valuta']?.feilmelding}
                       id={_namespace + '-valuta'}
                     >
                       {_ytelse?.valuta}
                     </FormText>
-                  </FlexDiv>
-                </Column>
-                <Column/>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
+                  </HStack>
+                </HGrid>
+                <HGrid columns={2} gap="4">
                   <PeriodeText
                     error={{
                       startdato: _v[_namespace + '-startdato']?.feilmelding,
@@ -522,82 +463,72 @@ const BeløpNavnOgValuta: React.FC<MainFormProps> = ({
                     namespace={_namespace}
                     periode={_ytelse}
                   />
-                </Column>
-                <Column>
                   <FormText
                     error={_v[_namespace + '-utbetalingshyppighet']?.feilmelding}
                     id={_namespace + '-utbetalingshyppighet'}
                   >
-                    <FlexDiv>
+                    <HStack gap="2">
                       <Label>{t('label:periode-avgrensing') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
                       {_ytelse?.utbetalingshyppighet}
-                    </FlexDiv>
+                    </HStack>
                   </FormText>
-                </Column>
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-              <AlignEndRow>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-mottakersNavn']?.feilmelding}
-                    id={_namespace + '-mottakersNavn'}
-                  >
-                    <PaddedFlexDiv>
-                      <Label>{t('label:mottakers-navn') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_ytelse?.mottakersNavn}
-                    </PaddedFlexDiv>
-                  </FormText>
-                </Column>
-                <AlignEndColumn>
+                </HGrid>
+              </VStack>
+              <HGrid columns={2} gap="4">
+                <FormText
+                  error={_v[_namespace + '-mottakersNavn']?.feilmelding}
+                  id={_namespace + '-mottakersNavn'}
+                >
+                  <HStack gap="2">
+                    <Label>{t('label:mottakers-navn') + ':'}</Label>
+                    {_ytelse?.mottakersNavn}
+                  </HStack>
+                </FormText>
+                <HStack>
+                  <Spacer/>
                   {addremovepanel}
-                </AlignEndColumn>
-              </AlignEndRow>
-            </>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRowWithMargin>
+                </HStack>
+              </HGrid>
+            </VStack>
+          )
+        }
+      </RepeatableBox>
     )
   }
 
 
 
   return (
-    <>
-      {showHeading &&
-        <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
+        {showHeading &&
           <Heading size='small'>
             {personID === 'familie' ? t('label:beløp-for-hele-familien') : t('label:beløp-navn-valuta-barn')}
           </Heading>
-        </PaddedDiv>
-      }
-      <VerticalSeparatorDiv />
-      {_.isEmpty(ytelser)
-        ? (
-          <DivWithHorizontalPadding padded={showHeading}>
-            <BodyLong>
-              {t('message:warning-no-ytelse')}
-            </BodyLong>
-          </DivWithHorizontalPadding>
-          )
-        : ytelser?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <DivWithHorizontalPadding padded={showHeading}>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
-            </Button>
-            {!showHeading && <VerticalSeparatorDiv/>}
-          </DivWithHorizontalPadding>
-          )}
-    </>
+        }
+        {_.isEmpty(ytelser)
+          ? (
+              <BodyLong>
+                {t('message:warning-no-ytelse')}
+              </BodyLong>
+            )
+          : ytelser?.map(renderRow)
+        }
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:ytelse').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+      </VStack>
+    </Box>
   )
 }
 
