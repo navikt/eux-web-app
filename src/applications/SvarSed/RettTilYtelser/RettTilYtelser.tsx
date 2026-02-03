@@ -1,5 +1,4 @@
-import { Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {Box, Heading, Radio, RadioGroup, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { validateRettTilYtelse, ValidationRettTilYtelseProps } from 'applications/SvarSed/RettTilYtelser/validation'
@@ -101,55 +100,44 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <RadioGroup
+          defaultValue={_rettTilStonad}
+          id={namespace + '-retttilstønad'}
+          data-testid={namespace + '-retttilstønad'}
+          legend={t('label:rett-til-stønad') + ' *'}
+          error={validation[namespace + '-retttilstønad']?.feilmelding}
+          onChange={(e: string | number | boolean) => setRettTilStonad(e as JaNei)}
+        >
+          <Radio value='ja'>
+            {t('label:ja')}
+          </Radio>
+          <Radio value='nei'>
+            {t('label:nei')}
+          </Radio>
+        </RadioGroup>
+        {_rettTilStonad === 'ja' && (
           <RadioGroup
-            defaultValue={_rettTilStonad}
-            id={namespace + '-retttilstønad'}
-            data-testid={namespace + '-retttilstønad'}
-            legend={t('label:rett-til-stønad') + ' *'}
-            error={validation[namespace + '-retttilstønad']?.feilmelding}
-            onChange={(e: string | number | boolean) => setRettTilStonad(e as JaNei)}
+            id={namespace + '-bekreftelsesgrunn'}
+            value={rettTilYtelse?.bekreftelsesgrunn}
+            data-testid={namespace + '-bekreftelsesgrunn'}
+            legend={t('label:artikkelnummer') + ' *'}
+            error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
+            onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
           >
-            <Radio value='ja'>
-              {t('label:ja')}
+            <Radio value='artikkel_64_i_forordning_EF_nr_883_2004'>
+              {t('label:artikkel-64')}
             </Radio>
-            <Radio value='nei'>
-              {t('label:nei')}
+            <Radio value='artikkel_65_1_i_forordning_EF_nr_883_2004'>
+              {t('label:artikkel-65')}
             </Radio>
           </RadioGroup>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      {_rettTilStonad === 'ja' && (
-        <AlignStartRow>
-          <Column>
-            <RadioGroup
-              id={namespace + '-bekreftelsesgrunn'}
-              value={rettTilYtelse?.bekreftelsesgrunn}
-              data-testid={namespace + '-bekreftelsesgrunn'}
-              legend={t('label:artikkelnummer') + ' *'}
-              error={validation[namespace + '-bekreftelsesgrunn']?.feilmelding}
-              onChange={(e: string | number | boolean) => setBekreftelsesgrunn(e as string)}
-            >
-              <Radio value='artikkel_64_i_forordning_EF_nr_883_2004'>
-                {t('label:artikkel-64')}
-              </Radio>
-              <Radio value='artikkel_65_1_i_forordning_EF_nr_883_2004'>
-                {t('label:artikkel-65')}
-              </Radio>
-            </RadioGroup>
-          </Column>
-        </AlignStartRow>
-      )}
-      {_rettTilStonad === 'nei' && (
-        <AlignStartRow>
-          <Column>
+        )}
+        {_rettTilStonad === 'nei' && (
             <RadioGroup
               id={namespace + '-avvisningsgrunn'}
               data-testid={namespace + '-avvisningsgrunn'}
@@ -165,12 +153,8 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
                 {t('label:grunn-personen')}
               </Radio>
             </RadioGroup>
-          </Column>
-        </AlignStartRow>
-      )}
-      <VerticalSeparatorDiv />
-      {_rettTilStonad === 'ja' && (
-        <AlignStartRow>
+        )}
+        {_rettTilStonad === 'ja' && (
           <PeriodeInput
             namespace={namespace}
             error={{
@@ -181,11 +165,9 @@ const RettTilYtelser: React.FC<MainFormProps> = ({
             setPeriode={setPeriode}
             value={rettTilYtelse?.periode}
           />
-          <Column />
-        </AlignStartRow>
-      )}
-      <VerticalSeparatorDiv size='2' />
-    </PaddedDiv>
+        )}
+      </VStack>
+    </Box>
   )
 }
 
