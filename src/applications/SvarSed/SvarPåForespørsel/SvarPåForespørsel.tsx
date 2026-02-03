@@ -1,21 +1,12 @@
-import { Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { Box, Heading, HGrid, Label, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
   validateSvarPåForespørsel,
   ValidationSvarPåForespørselProps
 } from 'applications/SvarSed/SvarPåForespørsel/validation'
+import commonStyles from 'assets/css/common.module.css'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H002Sed, H002Svar, HSvarType } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
@@ -151,113 +142,84 @@ const SvarPåForespørsel: React.FC<MainFormProps> = ({
   const data = _svar === 'positivt' ? (replySed as H002Sed)?.positivtSvar : (replySed as H002Sed)?.negativtSvar
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <label className='navds-text-field__label navds-label'>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <div>
+          <Label>
             {t('label:choose')}
-          </label>
-
-          <RadioPanelGroup
+          </Label>
+          <RadioGroup
             value={_svar}
-            data-multiple-line
-            data-no-border
             data-testid={namespace + '-svar'}
             error={validation[namespace + '-svar']?.feilmelding}
             id={namespace + '-svar'}
-            name={namespace + '-svar'}
+            legend={t('label:choose')}
+            hideLegend
             onChange={(e: string) => {
               if (e !== _svar) {
                 setSvar(e as HSvarType)
               }
             }}
           >
-            <FlexRadioPanels>
-              <RadioPanel description={t('message:help-jeg-kan-sende')} value='positivt'>
+            <HGrid columns={2} gap="4" align="start">
+              <Radio className={commonStyles.radioPanel} description={t('message:help-jeg-kan-sende')} value='positivt'>
                 {t('el:option-svar-1')}
-              </RadioPanel>
-              <RadioPanel description={t('message:help-jeg-kan-ikke-sende')} value='negativt'>
+              </Radio>
+              <Radio className={commonStyles.radioPanel} description={t('message:help-jeg-kan-ikke-sende')} value='negativt'>
                 {t('el:option-svar-2')}
-              </RadioPanel>
-            </FlexRadioPanels>
-          </RadioPanelGroup>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      {!_.isNil(_svar) && (
-        <>
-          <AlignStartRow>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  maxLength={255}
-                  error={validation[namespace + '-dokument']?.feilmelding}
-                  namespace={namespace}
-                  id='dokument'
-                  label={t('label:vi-vedlegger-dokumenter')}
-                  onChanged={setDokument}
-                  value={data?.dokument ?? ''}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  maxLength={500}
-                  error={validation[namespace + '-informasjon']?.feilmelding}
-                  namespace={namespace}
-                  id='informasjon'
-                  label={t('label:vi-sender-informasjon')}
-                  onChanged={setInformasjon}
-                  value={data?.informasjon ?? ''}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <TextAreaDiv>
-                <TextArea
-                  maxLength={65}
-                  error={validation[namespace + '-sed']?.feilmelding}
-                  namespace={namespace}
-                  id='sed'
-                  label={t('label:sed')}
-                  onChanged={setSed}
-                  value={data?.sed ?? ''}
-                />
-              </TextAreaDiv>
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      {_svar === 'negativt' && (
-        <AlignStartRow>
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                maxLength={500}
-                error={validation[namespace + '-grunn']?.feilmelding}
-                namespace={namespace}
-                id='grunn'
-                label={t('label:grunn')}
-                onChanged={setGrunn}
-                value={data?.grunn ?? ''}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-      )}
-    </PaddedDiv>
+              </Radio>
+            </HGrid>
+          </RadioGroup>
+        </div>
+
+        {!_.isNil(_svar) && (
+          <>
+            <TextArea
+              maxLength={255}
+              error={validation[namespace + '-dokument']?.feilmelding}
+              namespace={namespace}
+              id='dokument'
+              label={t('label:vi-vedlegger-dokumenter')}
+              onChanged={setDokument}
+              value={data?.dokument ?? ''}
+            />
+            <TextArea
+              maxLength={500}
+              error={validation[namespace + '-informasjon']?.feilmelding}
+              namespace={namespace}
+              id='informasjon'
+              label={t('label:vi-sender-informasjon')}
+              onChanged={setInformasjon}
+              value={data?.informasjon ?? ''}
+            />
+           <TextArea
+              maxLength={65}
+              error={validation[namespace + '-sed']?.feilmelding}
+              namespace={namespace}
+              id='sed'
+              label={t('label:sed')}
+              onChanged={setSed}
+              value={data?.sed ?? ''}
+            />
+          </>
+        )}
+
+        {_svar === 'negativt' && (
+          <TextArea
+            maxLength={500}
+            error={validation[namespace + '-grunn']?.feilmelding}
+            namespace={namespace}
+            id='grunn'
+            label={t('label:grunn')}
+            onChanged={setGrunn}
+            value={data?.grunn ?? ''}
+          />
+        )}
+      </VStack>
+    </Box>
   )
 }
 
