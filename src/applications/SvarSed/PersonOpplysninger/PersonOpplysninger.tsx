@@ -212,7 +212,7 @@ const PersonOpplysninger: React.FC<MainFormProps> = ({
               {t('label:sensitivPerson', {gradering: personInfo?.adressebeskyttelse})}
             </Alert>
           }
-          <HGrid columns={3} gap="4">
+          <HGrid columns={3} gap="4" align="start">
             <TextField
               error={validation[namespace + '-fornavn']?.feilmelding}
               id={namespace + '-' + "fornavn"}
