@@ -1,6 +1,5 @@
 import { TrashIcon } from '@navikt/aksel-icons';
-import {BodyLong, Button, Heading} from '@navikt/ds-react'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateGrunnTilOpphor, ValidateGrunnTilOpphørProps } from 'applications/SvarSed/GrunnTilOpphør/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -98,73 +97,58 @@ const GrunnTilOpphør: React.FC<MainFormProps> = ({
   const value = _.find(årsakOptions, b => b.value === sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt) || null
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column flex='3'>
-          <Select
-            data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
-            error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
-            id={namespace + '-typeGrunnOpphoerAnsatt'}
-            label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
-            menuPortalTarget={document.body}
-            onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value as TypeGrunn)}
-            options={årsakOptions}
-            value={value}
-            defaultValue={value}
-          />
-        </Column>
-        <Column>
-          <div style={{ paddingTop: '2rem' }}>
-            <Button
-              variant='tertiary'
-              onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}
-              icon={<TrashIcon/>}
-            >
-              {t('el:button-clear')}
-            </Button>
-          </div>
-        </Column>
-
-      </AlignStartRow>
-      <VerticalSeparatorDiv size='2' />
-      {sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet' && (
-        <>
-          <BodyLong>
-            * {t('label:du-må-fylle-ut-enten')} <b>{t('label:annet-opphør')}</b> {t('label:eller')} <b>{t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}</b>
-          </BodyLong>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <Input
-                error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
-                namespace={namespace}
-                id='annenGrunnOpphoerAnsatt'
-                label={t('label:annet-opphør')}
-                onChanged={setAnnenGrunnOpphoerAnsatt}
-                value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-          <VerticalSeparatorDiv />
-          <AlignStartRow>
-            <Column>
-              <Input
-                error={validation[namespace + '-grunnOpphoerSelvstendig']?.feilmelding}
-                namespace={namespace}
-                id='grunnOpphoerSelvstendig'
-                label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
-                onChanged={setGrunnOpphoerSelvstendig}
-                value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
-              />
-            </Column>
-          </AlignStartRow>
-        </>
-      )}
-    </PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <HGrid columns={"2fr 1fr"} gap="4" align="end">
+            <Select
+              data-testid={namespace + '-typeGrunnOpphoerAnsatt'}
+              error={validation[namespace + '-typeGrunnOpphoerAnsatt']?.feilmelding}
+              id={namespace + '-typeGrunnOpphoerAnsatt'}
+              label={t('label:årsak-til-avslutning-av-arbeidsforhold')}
+              menuPortalTarget={document.body}
+              onChange={(o: unknown) => setTypeGrunnOpphoerAnsatt((o as Option).value as TypeGrunn)}
+              options={årsakOptions}
+              value={value}
+              defaultValue={value}
+            />
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => setTypeGrunnOpphoerAnsatt(undefined)}
+                icon={<TrashIcon/>}
+              >
+                {t('el:button-clear')}
+              </Button>
+            </Box>
+        </HGrid>
+        {sisteAnsettelseInfo?.typeGrunnOpphoerAnsatt === 'annet' && (
+          <>
+            <BodyLong>
+              * {t('label:du-må-fylle-ut-enten')} <b>{t('label:annet-opphør')}</b> {t('label:eller')} <b>{t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}</b>
+            </BodyLong>
+            <Input
+              error={validation[namespace + '-annenGrunnOpphoerAnsatt']?.feilmelding}
+              namespace={namespace}
+              id='annenGrunnOpphoerAnsatt'
+              label={t('label:annet-opphør')}
+              onChanged={setAnnenGrunnOpphoerAnsatt}
+              value={sisteAnsettelseInfo?.annenGrunnOpphoerAnsatt ?? ''}
+            />
+            <Input
+              error={validation[namespace + '-grunnOpphoerSelvstendig']?.feilmelding}
+              namespace={namespace}
+              id='grunnOpphoerSelvstendig'
+              label={t('label:årsak-til-avslutning-av-selvstendig-næringsvirksomhet')}
+              onChanged={setGrunnOpphoerSelvstendig}
+              value={sisteAnsettelseInfo?.grunnOpphoerSelvstendig ?? ''}
+            />
+          </>
+        )}
+      </VStack>
+    </Box>
   )
 }
 
