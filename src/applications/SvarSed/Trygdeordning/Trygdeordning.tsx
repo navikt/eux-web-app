@@ -11,7 +11,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
-import {F001Sed, F027Sed, ReplySed} from 'declarations/sed'
+import {F027Sed, ReplySed} from 'declarations/sed'
 import RettTilYtelserFSED from '../RettTilYtelserFSED/RettTilYtelserFSED'
 import PerioderMedRettTilYtelser from "../PerioderMedRettTilYtelser/PerioderMedRettTilYtelser";
 

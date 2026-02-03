@@ -1,15 +1,4 @@
-import {BodyLong, Button, Heading} from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv, PaddedVerticallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import {resetValidation, setValidation} from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import { State } from 'declarations/reducers'
@@ -21,16 +10,17 @@ import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
 import {JaNei, Periode} from 'declarations/sed'
 import {PlusCircleIcon} from "@navikt/aksel-icons";
-import styled from "styled-components";
 import {getIdx} from "../../../utils/namespace";
 import {Validation} from "../../../declarations/types";
-import {RepeatablePeriodeRow, TextAreaDiv} from "../../../components/StyledComponents";
+import {RepeatableBox} from "../../../components/StyledComponents";
 import classNames from "classnames";
 import {hasNamespaceWithErrors} from "../../../utils/validation";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import PeriodeText from "../../../components/Forms/PeriodeText";
 import AddRemovePanel from "../../../components/AddRemovePanel/AddRemovePanel";
 import useLocalValidation from "../../../hooks/useLocalValidation";
+import styles from "./RettTilYtelserFSED.module.css"
+import commonStyles from "../../../assets/css/common.module.css";
 
 import {
   validateFamilieYtelsePeriode, validateTrygdeOrdninger,
@@ -41,16 +31,6 @@ import {periodeSort} from "../../../utils/sort";
 import ErrorLabel from "../../../components/Forms/ErrorLabel";
 import TextArea from "../../../components/Forms/TextArea";
 import {isF026Sed} from "../../../utils/sed";
-
-const GreyBoxWithBorder = styled.div`
-  background-color: var(--a-surface-subtle);
-  border: 1px solid var(--a-border-default);
-  padding: 0 1rem;
-
-  &.error {
-    background-color: rgba(255, 0, 0, 0.2);
-  };
-`
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -213,15 +193,16 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editPeriodeIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatablePeriodeRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getPeriodeId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <AlignStartRow>
+        <HStack gap="4" align="start">
           {inEditMode
             ? (
               <PeriodeInput
@@ -237,104 +218,102 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
               />
             )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_periode}
-                />
-              </Column>
-            )}
-          <AlignEndColumn>
-            <AddRemovePanel<Periode>
-              item={periode}
-              marginTop={index < 0}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemovePeriode}
-              onAddNew={onAddPeriodeNew}
-              onCancelNew={onClosePeriodeNew}
-              onStartEdit={onStartPeriodeEdit}
-              onConfirmEdit={onSavePeriodeEdit}
-              onCancelEdit={() => onClosePeriodeEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-      </RepeatablePeriodeRow>
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                namespace={_namespace}
+                periode={_periode}
+              />
+            )
+          }
+          <Spacer/>
+          <AddRemovePanel<Periode>
+            item={periode}
+            marginTop={index < 0}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemovePeriode}
+            onAddNew={onAddPeriodeNew}
+            onCancelNew={onClosePeriodeNew}
+            onStartEdit={onStartPeriodeEdit}
+            onConfirmEdit={onSavePeriodeEdit}
+            onCancelEdit={() => onClosePeriodeEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {t('label:rett-til-ytelser')}
         </Heading>
-        <VerticalSeparatorDiv size='2' />
-        <Row>
-          <Column flex='2'>
-            <RadioPanelGroup
-              value={_rettTilFamilieYtelser}
-              data-no-border
-              data-testid={namespace + '-rettTilFamilieYtelser'}
-              error={validation[namespace + '-rettTilFamilieYtelser']?.feilmelding}
-              id={namespace + '-rettTilFamilieYtelser'}
-              legend={t('label:har-personen-rett-til-familieytelser')}
-              name={namespace + '-rettTilFamilieYtelser'}
-              onChange={(e: string) => setRettTilFamilieYtelser(e as JaNei)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-          <Column />
-        </Row>
-        <VerticalSeparatorDiv />
+        <HGrid columns={2} gap="2">
+          <RadioGroup
+            value={_rettTilFamilieYtelser}
+            data-no-border
+            data-testid={namespace + '-rettTilFamilieYtelser'}
+            error={validation[namespace + '-rettTilFamilieYtelser']?.feilmelding}
+            id={namespace + '-rettTilFamilieYtelser'}
+            legend={t('label:har-personen-rett-til-familieytelser')}
+            name={namespace + '-rettTilFamilieYtelser'}
+            onChange={(e: string) => setRettTilFamilieYtelser(e as JaNei)}
+          >
+            <HStack gap="4">
+              <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+              <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+            </HStack>
+          </RadioGroup>
+          <Spacer />
+        </HGrid>
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "ja" &&
           <>
-          <GreyBoxWithBorder
-            id={namespace + '-perioderMedYtelser'}
-            className={classNames({
-              error: hasNamespaceWithErrors(validation, namespace + "-perioderMedYtelser")
-            })}
-          >
-            {_.isEmpty(perioderMedYtelser)
-              ? (
-                <PaddedVerticallyDiv>
-                  <BodyLong>
-                    {t('message:warning-no-periods')}
-                  </BodyLong>
-                </PaddedVerticallyDiv>
-              )
-              : perioderMedYtelser?.map(renderPeriodeRow)}
-            {_newPeriodeForm
-              ? renderPeriodeRow(null, -1)
-              : (
-                <Button
-                  variant='tertiary'
-                  onClick={addTrygdeordningPeriode}
-                  icon={<PlusCircleIcon/>}
-                >
-                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                </Button>
-              )}
-            <VerticalSeparatorDiv/>
-          </GreyBoxWithBorder>
-          {validation[namespace + '-perioderMedYtelser']?.feilmelding &&
-            <ErrorLabel error={validation[namespace + '-perioderMedYtelser']?.feilmelding}/>
-          }
+            <Box
+              id={namespace + '-perioderMedYtelser'}
+              className={classNames(styles.greyBox, {
+                [styles.error]: hasNamespaceWithErrors(validation, namespace + "-perioderMedYtelser")
+              })}
+              borderWidth="1"
+              padding="4"
+            >
+              <VStack gap="4">
+                {_.isEmpty(perioderMedYtelser)
+                  ? (
+                    <BodyLong>
+                      {t('message:warning-no-periods')}
+                    </BodyLong>
+                  )
+                  : perioderMedYtelser?.map(renderPeriodeRow)}
+                {_newPeriodeForm
+                  ? renderPeriodeRow(null, -1)
+                  : (
+                    <Box>
+                      <Button
+                        variant='tertiary'
+                        onClick={addTrygdeordningPeriode}
+                        icon={<PlusCircleIcon/>}
+                      >
+                        {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+                      </Button>
+                    </Box>
+                  )
+                }
+              </VStack>
+            </Box>
+            {validation[namespace + '-perioderMedYtelser']?.feilmelding &&
+              <ErrorLabel error={validation[namespace + '-perioderMedYtelser']?.feilmelding}/>
+            }
           </>
         }
         {_rettTilFamilieYtelser && _rettTilFamilieYtelser === "nei" &&
-          <>
-          <Row>
-            <Column flex='2'>
-              <RadioPanelGroup
+          <VStack gap="4">
+
+            <HGrid columns={2}>
+              <RadioGroup
                 value={ikkeRettTilYtelser?.typeGrunnForVedtak}
                 data-no-border
                 data-testid={namespace + '-ikkeRettTilYtelser'}
@@ -344,35 +323,28 @@ const RettTilYtelserFSED: React.FC<MainFormProps> = ({
                 name={namespace + '-ikkeRettTilYtelser'}
                 onChange={setIkkeRettTilFamilieYtelser}
               >
-                <FlexRadioPanels>
-                  {isF026Sed(replySed) && <RadioPanel value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</RadioPanel>}
-                  <RadioPanel value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</RadioPanel>
-                  <RadioPanel value='annen_grunn'>{t('label:annet')}</RadioPanel>
-                </FlexRadioPanels>
-              </RadioPanelGroup>
-            </Column>
-            <Column/>
-          </Row>
-          <Row>
-            <Column>
-              {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen_grunn" &&
-                <TextAreaDiv>
-                  <TextArea
-                    id={"ikkeRettTilYtelser-typeGrunnAnnen"}
-                    error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
-                    namespace={namespace}
-                    label={t("label:begrunnelse")}
-                    onChanged={setTypeGrunnAnnen}
-                    value={ikkeRettTilYtelser?.typeGrunnAnnen ?? ''}
-                  />
-                </TextAreaDiv>
-              }
-            </Column>
-          </Row>
-          </>
+                <HStack gap="4">
+                  {isF026Sed(replySed) && <Radio className={commonStyles.radioPanel} value='krav_ikke_framsatt'>{t('label:krav-ikke-framsatt')}</Radio>}
+                  <Radio className={commonStyles.radioPanel} value='for_høy_inntekt'>{t('label:for-hoy-inntekt')}</Radio>
+                  <Radio className={commonStyles.radioPanel} value='annen_grunn'>{t('label:annet')}</Radio>
+                </HStack>
+              </RadioGroup>
+              <Spacer/>
+            </HGrid>
+            {ikkeRettTilYtelser?.typeGrunnForVedtak === "annen_grunn" &&
+              <TextArea
+                id={"ikkeRettTilYtelser-typeGrunnAnnen"}
+                error={validation[namespace + '-ikkeRettTilYtelser-typeGrunnAnnen']?.feilmelding}
+                namespace={namespace}
+                label={t("label:begrunnelse")}
+                onChanged={setTypeGrunnAnnen}
+                value={ikkeRettTilYtelser?.typeGrunnAnnen ?? ''}
+              />
+            }
+          </VStack>
         }
-      </PaddedDiv>
-    </>
+      </VStack>
+    </Box>
   )
 }
 

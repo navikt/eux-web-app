@@ -1,0 +1,6 @@
+.greyBox{
+  background-color: var(--a-surface-subtle);
+  &.error {
+    background-color: rgba(255, 0, 0, 0.2);
+  };
+}
