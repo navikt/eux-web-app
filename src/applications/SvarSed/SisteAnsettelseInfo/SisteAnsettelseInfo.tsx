@@ -1,17 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Label, Radio, RadioGroup, Spacer, VStack } from '@navikt/ds-react'
 import CountryData, { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -22,7 +10,7 @@ import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { HorizontalLineSeparator, RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { SisteAnsettelseInfo, Utbetaling } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -40,6 +28,7 @@ import {
   validateUtbetaling,
   ValidationUtbetalingProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -264,7 +253,8 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
     const _utbetaling = index < 0 ? _newUtbetaling : (inEditMode ? _editUtbetaling : utbetaling)
 
     const addremovepanel = (
-      <AlignEndColumn>
+      <HStack>
+        <Spacer/>
         <AddRemovePanel<Utbetaling>
           item={utbetaling}
           marginTop={inEditMode}
@@ -277,102 +267,87 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
           onConfirmEdit={onSaveEdit}
           onCancelEdit={() => onCloseEdit(_namespace)}
         />
-      </AlignEndColumn>
+      </HStack>
     )
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(utbetaling)}
         className={classNames({
           new: index < 0,
           error: _v[_namespace + '-land'] || _v[_namespace + '-fraDato']
         })}
+        padding="4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
+        <VStack gap="4">
+          <HGrid columns="1fr auto" gap="4" align="start">
             {inEditMode
               ? (
-                <>
-                  <Label>
-                    {t('label:utbetaling-type')}
-                  </Label>
-                  <RadioPanelGroup
-                    value={_utbetaling?.utbetalingType}
-                    data-multiple-line
-                    data-no-border
-                    data-testid={_namespace + '-utbetalingType'}
-                    error={_v[_namespace + 'utbetalingType']?.skjemaelementId}
-                    id={_namespace + '-utbetalingType'}
-                    name={_namespace + '-utbetalingType'}
-                    onChange={(e: string) => setUtbetalingType(e, index)}
-                  >
-                    <RadioPanel value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
+                <RadioGroup
+                  legend={t('label:utbetaling-type')}
+                  value={_utbetaling?.utbetalingType}
+                  data-testid={_namespace + '-utbetalingType'}
+                  error={_v[_namespace + 'utbetalingType']?.skjemaelementId}
+                  id={_namespace + '-utbetalingType'}
+                  onChange={(e: string) => setUtbetalingType(e, index)}
+                >
+                  <VStack gap="2">
+                    <Radio className={commonStyles.radioPanel} value='inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet'>
                       {t('el:option-typebeløp-inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet')}
-                    </RadioPanel>
-                    <VerticalSeparatorDiv size='0.5' />
-                    <RadioPanel value='vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'>
+                    </Radio>
+                    <Radio className={commonStyles.radioPanel} value='vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie'>
                       {t('el:option-typebeløp-vederlag_for_ferie_som_ikke_er_tatt_ut_årlig_ferie')}
-                    </RadioPanel>
-                    <VerticalSeparatorDiv size='0.5' />
-                    <RadioPanel value='annet_vederlag_eller_tilsvarende_utbetalinger'>
+                    </Radio>
+                    <Radio className={commonStyles.radioPanel} value='annet_vederlag_eller_tilsvarende_utbetalinger'>
                       {t('el:option-typebeløp-annet_vederlag_eller_tilsvarende_utbetalinger')}
-                    </RadioPanel>
-                  </RadioPanelGroup>
-                </>
+                    </Radio>
+                  </VStack>
+                </RadioGroup>
                 )
               : (
                 <FormText
                   error={_v[_namespace + '-utbetalingType']?.feilmelding}
                   id={_namespace + '-utbetalingType'}
                 >
-                  <FlexDiv>
+                  <HStack gap="2">
                     <Label>{t('label:utbetaling-type') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
                     {t('el:option-typebeløp-' + _utbetaling?.utbetalingType)}
-                  </FlexDiv>
+                  </HStack>
                 </FormText>
                 )}
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        {inEditMode
-          ? (
+            {!inEditMode && addremovepanel}
+          </HGrid>
+          {inEditMode && (
             <>
               <Heading size='small'>
                 {t('label:utbetaling')}
               </Heading>
-              <VerticalSeparatorDiv />
-              <AlignStartRow>
-                <Column>
-                  <Input
-                    type='number'
-                    error={_v[_namespace + '-beloep']?.feilmelding}
-                    namespace={_namespace}
-                    id='beloep'
-                    label={t('label:beløp')}
-                    onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
-                    required
-                    value={_utbetaling?.beloep}
-                  />
-                </Column>
-                <Column>
-                  <CountrySelect
-                    closeMenuOnSelect
-                    ariaLabel={t('label:valuta')}
-                    data-testid={_namespace + '-valuta'}
-                    error={_v[_namespace + '-valuta']?.feilmelding}
-                    id={_namespace + '-valuta'}
-                    label={t('label:valuta') + ' *'}
-                    locale='nb'
-                    menuPortalTarget={document.body}
-                    onOptionSelected={(c: Currency) => setValuta(c, index)}
-                    type='currency'
-                    values={_currencyData.findByValue(_utbetaling?.valuta)}
-                  />
-                </Column>
-                <Column>
+              <HGrid columns="1fr 1fr 1fr" gap="4" align="start">
+                <Input
+                  type='number'
+                  error={_v[_namespace + '-beloep']?.feilmelding}
+                  namespace={_namespace}
+                  id='beloep'
+                  label={t('label:beløp')}
+                  onChanged={(newBeløp: string) => setBeløp(newBeløp, index)}
+                  required
+                  value={_utbetaling?.beloep}
+                />
+                <CountrySelect
+                  closeMenuOnSelect
+                  ariaLabel={t('label:valuta')}
+                  data-testid={_namespace + '-valuta'}
+                  error={_v[_namespace + '-valuta']?.feilmelding}
+                  id={_namespace + '-valuta'}
+                  label={t('label:valuta') + ' *'}
+                  locale='nb'
+                  menuPortalTarget={document.body}
+                  onOptionSelected={(c: Currency) => setValuta(c, index)}
+                  type='currency'
+                  values={_currencyData.findByValue(_utbetaling?.valuta)}
+                />
+                <Box>
                   {_utbetaling?.utbetalingType === 'inntekter_for_periode_etter_avslutning_av_arbeidsforhold_eller_opphør_i_selvstendig_næringsvirksomhet' && (
                     <DateField
                       error={_v[_namespace + '-loennTilDato']?.feilmelding}
@@ -393,46 +368,41 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                       value={_utbetaling?.feriedagerTilGode}
                     />
                   )}
-                </Column>
-                {addremovepanel}
-              </AlignStartRow>
+                </Box>
+              </HGrid>
+              {addremovepanel}
             </>
-            )
-          : (
+            )}
+          {!inEditMode && (
             <>
-              <AlignStartRow style={{ minHeight: '2.2rem' }}>
-                <Column>
-                  <FlexDiv>
-                    <Label>{t('label:beløp') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    <FlexDiv>
-                      <FormText
-                        error={_v[_namespace + '-beloep']?.feilmelding}
-                        id={_namespace + '-beloep'}
-                      >
-                        {_utbetaling?.beloep}
-                      </FormText>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FormText
-                        error={_v[_namespace + '-valuta']?.feilmelding}
-                        id={_namespace + '-valuta'}
-                      >
-                        {_utbetaling?.valuta}
-                      </FormText>
-                    </FlexDiv>
-                  </FlexDiv>
-                </Column>
-                <Column>
+              <HGrid columns="1fr 1fr" gap="4">
+                <HStack gap="2">
+                  <Label>{t('label:beløp') + ':'}</Label>
+                  <HStack gap="2">
+                    <FormText
+                      error={_v[_namespace + '-beloep']?.feilmelding}
+                      id={_namespace + '-beloep'}
+                    >
+                      {_utbetaling?.beloep}
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-valuta']?.feilmelding}
+                      id={_namespace + '-valuta'}
+                    >
+                      {_utbetaling?.valuta}
+                    </FormText>
+                  </HStack>
+                </HStack>
+                <Box>
                   {!!_utbetaling?.feriedagerTilGode && (
                     <FormText
                       error={_v[_namespace + '-feriedagerTilGode']?.feilmelding}
                       id={_namespace + '-feriedagerTilGode'}
                     >
-                      <FlexDiv>
+                      <HStack gap="2">
                         <Label>{t('label:feriedager-til-gode') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
                         {_utbetaling?.feriedagerTilGode}
-                      </FlexDiv>
+                      </HStack>
                     </FormText>
                   )}
                   {!!_utbetaling?.loennTilDato && (
@@ -440,112 +410,84 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
                       error={_v[_namespace + '-loennTilDato']?.feilmelding}
                       id={_namespace + '-loennTilDato'}
                     >
-                      <FlexDiv>
+                      <HStack gap="2">
                         <Label>{t('label:loenn-til-dato') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
                         {_utbetaling?.loennTilDato}
-                      </FlexDiv>
+                      </HStack>
                     </FormText>
                   )}
-                </Column>
-                {addremovepanel}
-              </AlignStartRow>
+                </Box>
+              </HGrid>
               <HorizontalLineSeparator />
             </>
             )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(sisteAnsettelseInfo?.utbetalinger)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-utbetaling')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : sisteAnsettelseInfo?.utbetalinger?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:utbetaling').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
+        {_.isEmpty(sisteAnsettelseInfo?.utbetalinger)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-utbetaling')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : sisteAnsettelseInfo?.utbetalinger?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:utbetaling').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
         <Heading size='small'>
           {t('label:opphoer')}
         </Heading>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                maxLength={255}
-                error={validation[namespace + '-opphoerRettighet']?.feilmelding}
-                namespace={namespace}
-                id='avkall'
-                label={t('label:opphoer-rettighet')}
-                onChanged={setOpphoerRettighet}
-                value={sisteAnsettelseInfo?.opphoerRettighet}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                maxLength={255}
-                error={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
-                namespace={namespace}
-                id='opphoerRettighetGrunn'
-                label={t('label:opphoer-rettighet-grunn')}
-                onChanged={setOpphoerRettighetGrunn}
-                value={sisteAnsettelseInfo?.opphoerRettighetGrunn}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <TextAreaDiv>
-              <TextArea
-                maxLength={255}
-                error={validation[namespace + '-opphoerYtelse']?.feilmelding}
-                namespace={namespace}
-                id='opphoerYtelse'
-                label={t('label:opphoer-ytelse')}
-                onChanged={setOpphoerYtelse}
-                value={sisteAnsettelseInfo?.opphoerYtelse}
-              />
-            </TextAreaDiv>
-          </Column>
-        </AlignStartRow>
-      </PaddedDiv>
-    </>
+        <TextArea
+          maxLength={255}
+          error={validation[namespace + '-opphoerRettighet']?.feilmelding}
+          namespace={namespace}
+          id='avkall'
+          label={t('label:opphoer-rettighet')}
+          onChanged={setOpphoerRettighet}
+          value={sisteAnsettelseInfo?.opphoerRettighet}
+        />
+        <TextArea
+          maxLength={255}
+          error={validation[namespace + '-opphoerRettighetGrunn']?.feilmelding}
+          namespace={namespace}
+          id='opphoerRettighetGrunn'
+          label={t('label:opphoer-rettighet-grunn')}
+          onChanged={setOpphoerRettighetGrunn}
+          value={sisteAnsettelseInfo?.opphoerRettighetGrunn}
+        />
+        <TextArea
+          maxLength={255}
+          error={validation[namespace + '-opphoerYtelse']?.feilmelding}
+          namespace={namespace}
+          id='opphoerYtelse'
+          label={t('label:opphoer-ytelse')}
+          onChanged={setOpphoerYtelse}
+          value={sisteAnsettelseInfo?.opphoerYtelse}
+        />
+      </VStack>
+    </Box>
   )
 }
 
