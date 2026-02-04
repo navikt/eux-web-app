@@ -1,14 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignEndRow,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Spacer, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -16,7 +7,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import Input from 'components/Forms/Input'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Periode, PeriodeDagpenger } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -214,31 +205,31 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
     }
 
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(periodeDagpenger)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignEndRow style={{ minHeight: '2.2rem' }}>
-          {inEditMode
-            ? (
-              <PeriodeInput
-                namespace={_namespace + '-periode'}
-                hideLabel={false}
-                error={{
-                  startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
-                }}
-                setPeriode={(p: Periode) => setPeriode(p, index)}
-                value={_periodeDagpenger?.periode}
-              />
-              )
-            : (
-              <Column>
+        <VStack gap="4">
+          <HGrid columns={"2fr 1fr"} align="start" gap="4">
+            {inEditMode
+              ? (
+                <PeriodeInput
+                  namespace={_namespace + '-periode'}
+                  hideLabel={false}
+                  error={{
+                    startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-periode-sluttdato']?.feilmelding
+                  }}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
+                  value={_periodeDagpenger?.periode}
+                />
+                )
+              : (
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
@@ -247,95 +238,80 @@ const PeriodeForDagpenger: React.FC<MainFormProps> = ({
                   namespace={_namespace}
                   periode={_periodeDagpenger?.periode}
                 />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<PeriodeDagpenger>
-              item={periodeDagpenger}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignEndRow>
-        <VerticalSeparatorDiv />
-        {inEditMode
-          ? (
-            <>
-              <AlignStartRow>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-institusjon-id']?.feilmelding}
-                    namespace={_namespace}
-                    id='institusjon-id'
-                    label={t('label:institusjonens-id')}
-                    onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
-                    value={_periodeDagpenger?.institusjon?.id ? _periodeDagpenger?.institusjon?.id : defaultInstitusjonId}
-                  />
-                </Column>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-institusjon-navn']?.feilmelding}
-                    namespace={_namespace}
-                    id='institusjon-navn'
-                    label={t('label:institusjonens-navn')}
-                    onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
-                    value={_periodeDagpenger?.institusjon?.navn ? _periodeDagpenger?.institusjon?.navn : defaultInstitusjonNavn}
-                  />
-                </Column>
-                <Column />
-              </AlignStartRow>
-              <VerticalSeparatorDiv />
-            </>
-            )
-          : (
-            <></>
-            )}
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                )}
+            <HStack>
+              <Spacer/>
+              <AddRemovePanel<PeriodeDagpenger>
+                item={periodeDagpenger}
+                marginTop={inEditMode}
+                index={index}
+                inEditMode={inEditMode}
+                onRemove={onRemove}
+                onAddNew={onAddNew}
+                onCancelNew={onCloseNew}
+                onStartEdit={onStartEdit}
+                onConfirmEdit={onSaveEdit}
+                onCancelEdit={() => onCloseEdit(_namespace)}
+              />
+            </HStack>
+          </HGrid>
+          {inEditMode && (
+            <HGrid columns={2} gap="4">
+              <Input
+                error={_v[_namespace + '-institusjon-id']?.feilmelding}
+                namespace={_namespace}
+                id='institusjon-id'
+                label={t('label:institusjonens-id')}
+                onChanged={(institusjonsid: string) => setInstitutionId(institusjonsid, index)}
+                value={_periodeDagpenger?.institusjon?.id ? _periodeDagpenger?.institusjon?.id : defaultInstitusjonId}
+              />
+              <Input
+                error={_v[_namespace + '-institusjon-navn']?.feilmelding}
+                namespace={_namespace}
+                id='institusjon-navn'
+                label={t('label:institusjonens-navn')}
+                onChanged={(institusjonsnavn: string) => setInstitutionNavn(institusjonsnavn, index)}
+                value={_periodeDagpenger?.institusjon?.navn ? _periodeDagpenger?.institusjon?.navn : defaultInstitusjonNavn}
+              />
+            </HGrid>
+          )}
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(perioder)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : perioder?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-    </>
+        {_.isEmpty(perioder)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : perioder?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+      </VStack>
+    </Box>
   )
 }
 
