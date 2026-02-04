@@ -323,7 +323,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
               <Heading size='small'>
                 {t('label:utbetaling')}
               </Heading>
-              <HGrid columns="1fr 1fr 1fr" gap="4" align="start">
+              <HGrid columns={3} gap="4" align="start">
                 <Input
                   type='number'
                   error={_v[_namespace + '-beloep']?.feilmelding}
@@ -375,7 +375,7 @@ const SisteAnsettelseInfoFC: React.FC<MainFormProps> = ({
             )}
           {!inEditMode && (
             <>
-              <HGrid columns="1fr 1fr" gap="4">
+              <HGrid columns={2} gap="4">
                 <HStack gap="2">
                   <Label>{t('label:beløp') + ':'}</Label>
                   <HStack gap="2">
