@@ -1,18 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Ingress, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexCenterSpacedDiv,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  PileDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, Heading, HGrid, HStack, Ingress, Label, Spacer, VStack } from '@navikt/ds-react'
 import { fetchInntekt } from 'actions/inntekt'
 import { resetValidation, setValidation } from 'actions/validation'
 import Inntekter from 'applications/SvarSed/Inntekter/Inntekter'
@@ -28,7 +15,7 @@ import PeriodeText from 'components/Forms/PeriodeText'
 import Select from 'components/Forms/Select'
 import ForsikringPeriodeBox from 'components/ForsikringPeriodeBox/ForsikringPeriodeBox'
 import InntektFC from 'components/Inntekt/Inntekt'
-import { HorizontalLineSeparator, RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { HorizontalLineSeparator, RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import WaitingPanel from 'components/WaitingPanel/WaitingPanel'
 import { State } from 'declarations/reducers'
 import {Loennsopplysning, Periode, PeriodeMedForsikring, AnsettelsesType, USed} from 'declarations/sed'
@@ -262,35 +249,35 @@ const InntektForm: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _loennsopplysning = index < 0 ? _newLoennsopplysning : (inEditMode ? _editLoennsopplysning : loennsopplysning)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(loennsopplysning)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow style={{ minHeight: '2.2rem' }}>
-          {inEditMode
-            ? (
-              <PeriodeInput
-                namespace={_namespace + '-periode'}
-                error={{
-                  startdato: _v[_namespace + '-startdato']?.feilmelding,
-                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                }}
-                hideLabel={false}
-                label={{
-                  startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
-                  sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
-                }}
-                setPeriode={(p: Periode) => setPeriode(p, index)}
-                value={_loennsopplysning?.periode}
-              />
-              )
-            : (
-              <Column>
+        <VStack gap="4">
+          <HGrid columns={"2fr 1fr"} gap="4" align="start">
+            {inEditMode
+              ? (
+                <PeriodeInput
+                  namespace={_namespace + '-periode'}
+                  error={{
+                    startdato: _v[_namespace + '-startdato']?.feilmelding,
+                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                  }}
+                  hideLabel={false}
+                  label={{
+                    startdato: t('label:fra') + ' (DD.MM.ÅÅÅÅ)',
+                    sluttdato: t('label:til') + ' (DD.MM.ÅÅÅÅ)'
+                  }}
+                  setPeriode={(p: Periode) => setPeriode(p, index)}
+                  value={_loennsopplysning?.periode}
+                />
+                )
+              : (
                 <PeriodeText
                   error={{
                     startdato: _v[_namespace + '-periode-startdato']?.feilmelding,
@@ -299,179 +286,158 @@ const InntektForm: React.FC<MainFormProps> = ({
                   namespace={_namespace + '-periode'}
                   periode={_loennsopplysning?.periode}
                 />
-              </Column>
-              )}
-          <AlignEndColumn>
-            <AddRemovePanel<Loennsopplysning>
-              item={loennsopplysning}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
+              )
+            }
+            <HStack>
+              <Spacer/>
+              <AddRemovePanel<Loennsopplysning>
+                item={loennsopplysning}
+                marginTop={inEditMode}
+                index={index}
+                inEditMode={inEditMode}
+                onRemove={onRemove}
+                onAddNew={onAddNew}
+                onCancelNew={onCloseNew}
+                onStartEdit={onStartEdit}
+                onConfirmEdit={onSaveEdit}
+                onCancelEdit={() => onCloseEdit(_namespace)}
+              />
+            </HStack>
+          </HGrid>
           {inEditMode
             ? (
-              <>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
-                    namespace={namespace}
-                    id='arbeidsdager'
-                    label={t('label:arbeidsdager')}
-                    onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
-                    value={_loennsopplysning?.arbeidsdager}
-                  />
-                </Column>
-                <Column>
-                  <Input
-                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                    namespace={namespace}
-                    id='arbeidstimer'
-                    label={t('label:arbeidstimer')}
-                    onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
-                    value={_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
-                  />
-                </Column>
-                <Column>
-                  <Select
-                    closeMenuOnSelect
-                    data-testid={_namespace + '-ansettelsestype'}
-                    error={_v[_namespace + '-ansettelsestype']?.feilmelding}
-                    id={_namespace + '-ansettelsestype'}
-                    label={t('label:type-periode')}
-                    menuPortalTarget={document.body}
-                    onChange={(e: any) => setAnsettelsesType(e.value, index)}
-                    options={ansettelsesTypeOptions}
-                    required
-                    value={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
-                    defaultValue={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
-                  />
-                </Column>
-              </>
+              <HGrid columns={3} gap="4" align="start">
+                <Input
+                  error={_v[_namespace + '-arbeidsdager']?.feilmelding}
+                  namespace={namespace}
+                  id='arbeidsdager'
+                  label={t('label:arbeidsdager')}
+                  onChanged={(arbeidsdager: string) => setArbeidsDager(arbeidsdager, index)}
+                  value={_loennsopplysning?.arbeidsdager}
+                />
+                <Input
+                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                  namespace={namespace}
+                  id='arbeidstimer'
+                  label={t('label:arbeidstimer')}
+                  onChanged={(arbeidstimer: string) => setArbeidsTimer(arbeidstimer, index)}
+                  value={_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
+                />
+                <Select
+                  closeMenuOnSelect
+                  data-testid={_namespace + '-ansettelsestype'}
+                  error={_v[_namespace + '-ansettelsestype']?.feilmelding}
+                  id={_namespace + '-ansettelsestype'}
+                  label={t('label:type-periode')}
+                  menuPortalTarget={document.body}
+                  onChange={(e: any) => setAnsettelsesType(e.value, index)}
+                  options={ansettelsesTypeOptions}
+                  required
+                  value={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
+                  defaultValue={_.find(ansettelsesTypeOptions, b => b.value === _loennsopplysning?.ansettelsestype)}
+                />
+              </HGrid>
               )
             : (
-              <>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-arbeidsdager']?.feilmelding}
-                    id={_namespace + '-arbeidsdager'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:arbeidsdager') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_loennsopplysning?.arbeidsdager}
-                    </FlexDiv>
-                  </FormText>
-                </Column>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-arbeidstimer']?.feilmelding}
-                    id={_namespace + '-arbeidstimer'}
-                  >
-                    <FlexDiv>
-                      <Label>{t('label:arbeidstimer') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      {_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
-                    </FlexDiv>
-                  </FormText>
-                </Column>
-                <Column>
-                  <FormText
-                    error={_v[_namespace + '-ansettelsestype']?.feilmelding}
-                    id={_namespace + '-ansettelsestype'}
-                  >
-                    <Label>{t('label:type-periode') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_loennsopplysning?.ansettelsestype}
-                  </FormText>
-                </Column>
-              </>
-              )}
-          <VerticalSeparatorDiv />
-        </AlignStartRow>
-        {inEditMode
-          ? (
-            <>
-              <Heading size='small'>
-                {t('label:inntekter')}
-              </Heading>
-              {_.isEmpty(_loennsopplysning?.inntekter) &&
+              <HGrid columns={3} gap="4">
                 <FormText
-                  error={_v[_namespace + '-inntekter']?.feilmelding}
-                  id={_namespace + '-inntekter'}
+                  error={_v[_namespace + '-arbeidsdager']?.feilmelding}
+                  id={_namespace + '-arbeidsdager'}
                 >
-                  Ingen inntekter registrert
+                  <HStack gap="2">
+                    <Label>{t('label:arbeidsdager') + ':'}</Label>
+                    {_loennsopplysning?.arbeidsdager}
+                  </HStack>
                 </FormText>
-              }
-              <VerticalSeparatorDiv />
-              <Inntekter
-                inntekter={_loennsopplysning?.inntekter}
-                onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
-                parentNamespace={namespace + '-inntekter'}
-                validation={_v}
-                personName={personName}
-                CDM_VERSJON={CDM_VERSJON}
-              />
-            </>
-            )
-          : (
-            <>
-              {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => {
-                let inntektTypeLabel = ""
-                if(CDM_VERSJON >= 4.3 && inntekt?.type === "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
-                  inntektTypeLabel = t('el:option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
-                } else if (CDM_VERSJON >= 4.3 && inntekt?.type === "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
-                  inntektTypeLabel = t('el:option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
-                } else {
-                  inntektTypeLabel = t('el:option-inntekttype-' + inntekt?.type)
+                <FormText
+                  error={_v[_namespace + '-arbeidstimer']?.feilmelding}
+                  id={_namespace + '-arbeidstimer'}
+                >
+                  <HStack gap="2">
+                    <Label>{t('label:arbeidstimer') + ':'}</Label>
+                    {_loennsopplysning?.arbeidstimer ? parseFloat(_loennsopplysning?.arbeidstimer).toLocaleString('nb-NO') : undefined}
+                  </HStack>
+                </FormText>
+                <FormText
+                  error={_v[_namespace + '-ansettelsestype']?.feilmelding}
+                  id={_namespace + '-ansettelsestype'}
+                >
+                  <HStack gap="2">
+                    <Label>{t('label:type-periode') + ':'}</Label>
+                    {_loennsopplysning?.ansettelsestype}
+                  </HStack>
+                </FormText>
+              </HGrid>
+              )}
+          {inEditMode
+            ? (
+              <VStack gap="2">
+                <Heading size='small'>
+                  {t('label:inntekter')}
+                </Heading>
+                {_.isEmpty(_loennsopplysning?.inntekter) &&
+                  <FormText
+                    error={_v[_namespace + '-inntekter']?.feilmelding}
+                    id={_namespace + '-inntekter'}
+                  >
+                    Ingen inntekter registrert
+                  </FormText>
                 }
+                <Inntekter
+                  inntekter={_loennsopplysning?.inntekter}
+                  onInntekterChanged={(inntekter: Array<Inntekt>) => setInntekter(inntekter, index)}
+                  parentNamespace={namespace + '-inntekter'}
+                  validation={_v}
+                  personName={personName}
+                  CDM_VERSJON={CDM_VERSJON}
+                />
+              </VStack>
+              )
+            : (
+              <VStack gap="2">
+                {_loennsopplysning?.inntekter?.map((inntekt: Inntekt, index: number) => {
+                  let inntektTypeLabel = ""
+                  if(CDM_VERSJON >= 4.3 && inntekt?.type === "nettoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+                    inntektTypeLabel = t('el:option-inntekttype-netto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+                  } else if (CDM_VERSJON >= 4.3 && inntekt?.type === "bruttoinntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet") {
+                    inntektTypeLabel = t('el:option-inntekttype-brutto_gjennomsnittlig_inntekt_under_ansettelsesforhold_eller_selvstendig_næringsvirksomhet')
+                  } else {
+                    inntektTypeLabel = t('el:option-inntekttype-' + inntekt?.type)
+                  }
 
-                return (
-                  <PileDiv key={getIdInntekt(inntekt)}>
-                    <FlexCenterSpacedDiv>
-                      <BodyLong>
-                        {inntektTypeLabel + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
-                      </BodyLong>
-                    </FlexCenterSpacedDiv>
-                    <FlexDiv>
-                      <FlexDiv>
-                        <Label>{t('label:beløp') + ':'}</Label>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        <FlexDiv>
-                          <FormText
-                            error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
-                            id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
-                          >
-                            {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
-                          </FormText>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          <FormText
-                            error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
-                            id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
-                          >
-                            {inntekt?.valuta}
-                          </FormText>
-                        </FlexDiv>
-                      </FlexDiv>
-                    </FlexDiv>
-                    <HorizontalLineSeparator size='0.5' />
-                  </PileDiv>
-                )
-              })}
-            </>
-          )
-        }
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+                  return (
+                    <Box key={getIdInntekt(inntekt)}>
+                      <VStack gap="2">
+                        <BodyLong>
+                          {inntektTypeLabel + (inntekt.typeAnnen ? ': ' + inntekt.typeAnnen : '')}
+                        </BodyLong>
+                        <HStack gap="2">
+                          <Label>{t('label:beløp') + ':'}</Label>
+                          <HStack gap="2">
+                            <FormText
+                              error={_v[_namespace + '-inntekter' + getIdx(index) + '-beloep']?.feilmelding}
+                              id={_namespace + '-inntekter' + getIdx(index) + '-beloep'}
+                            >
+                              {inntekt?.beloep ? inntekt?.beloep.replace('.', ',') : '-'}
+                            </FormText>
+                            <FormText
+                              error={_v[_namespace + '-inntekter' + getIdx(index) + '-valuta']?.feilmelding}
+                              id={_namespace + '-inntekter' + getIdx(index) + '-valuta'}
+                            >
+                              {inntekt?.valuta}
+                            </FormText>
+                          </HStack>
+                        </HStack>
+                      </VStack>
+                      <HorizontalLineSeparator size='0.5' />
+                    </Box>
+                  )
+                })}
+              </VStack>
+            )
+          }
+        </VStack>
+      </RepeatableBox>
     )
   }
 
@@ -480,31 +446,29 @@ const InntektForm: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      {_.isEmpty(loennsopplysninger)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <FormText
-              error={validation[namespace + '-ingen-loennsopplysninger']?.feilmelding}
-              id={namespace + '-ingen-loennsopplysninger'}
-            >
-              {t('message:warning-no-inntekt')}
-            </FormText>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : loennsopplysninger?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <Row>
-            <Column>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        {_.isEmpty(loennsopplysninger)
+          ? (
+            <Box>
+              <SpacedHr />
+              <FormText
+                error={validation[namespace + '-ingen-loennsopplysninger']?.feilmelding}
+                id={namespace + '-ingen-loennsopplysninger'}
+              >
+                {t('message:warning-no-inntekt')}
+              </FormText>
+              <SpacedHr />
+            </Box>
+            )
+          : loennsopplysninger?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
               <Button
                 variant='tertiary'
                 onClick={() => _setNewForm(true)}
@@ -512,60 +476,50 @@ const InntektForm: React.FC<MainFormProps> = ({
               >
                 {t('el:button-add-new-xs', { x: t('label:loennsopplysninger').toLowerCase() })}
               </Button>
-            </Column>
-          </Row>
-          )}
-      <VerticalSeparatorDiv size='2' />
+            </Box>
+            )}
 
-      <Heading size='small'>
-        {t('label:inntekt-fra-komponent')}
-      </Heading>
-      <VerticalSeparatorDiv />
-      <InntektSearch
-        fnr={fnr!}
-        onInntektSearch={onInntektSearch}
-        gettingInntekter={gettingInntekter}
-      />
-      <VerticalSeparatorDiv />
-      {gettingInntekter && <WaitingPanel />}
-      {inntekter && (
-        <InntektFC inntekter={inntekter} />
-      )}
-      <VerticalSeparatorDiv size='2' />
-      <HorizontalLineSeparator />
-      <VerticalSeparatorDiv size='2' />
-      <Ingress>
-        {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
-      </Ingress>
-      <VerticalSeparatorDiv />
-      <ArbeidsperioderSøk
-        fnr={fnr}
-        namespace={namespace}
-        type={arbeidsperioderSøkType}
-      />
-      <VerticalSeparatorDiv size='2' />
-      {arbeidsperioder?.arbeidsperioder && (
-        <>
-          <Heading size='small'>
-            {t('label:arbeidsperioder')}
-          </Heading>
-          <VerticalSeparatorDiv size='2' />
-          {arbeidsperioder?.arbeidsperioder?.map((a, index) => {
-            const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
-            return (
-              <div key={getOrgnr(period, 'organisasjonsnummer') + '_' + index}>
+        <Heading size='small'>
+          {t('label:inntekt-fra-komponent')}
+        </Heading>
+        <InntektSearch
+          fnr={fnr!}
+          onInntektSearch={onInntektSearch}
+          gettingInntekter={gettingInntekter}
+        />
+        {gettingInntekter && <WaitingPanel />}
+        {inntekter && (
+          <InntektFC inntekter={inntekter} />
+        )}
+        <HorizontalLineSeparator />
+        <BodyLong size="large">
+          {t('label:hent-perioder-fra-aa-registeret-og-a-inntekt')}
+        </BodyLong>
+        <ArbeidsperioderSøk
+          fnr={fnr}
+          namespace={namespace}
+          type={arbeidsperioderSøkType}
+        />
+        {arbeidsperioder?.arbeidsperioder && (
+          <VStack gap="4">
+            <Heading size='small'>
+              {t('label:arbeidsperioder')}
+            </Heading>
+            {arbeidsperioder?.arbeidsperioder?.map((a, index) => {
+              const period: PeriodeMedForsikring = arbeidsperioderFraAAToForsikringPeriode(a)
+              return (
                 <ForsikringPeriodeBox
+                  key={getOrgnr(period, 'organisasjonsnummer') + '_' + index}
                   forsikringPeriode={period}
                   showArbeidsgiver
                   namespace={namespace}
                 />
-                <VerticalSeparatorDiv />
-              </div>
-            )
-          })}
-        </>
-      )}
-    </PaddedDiv>
+              )
+            })}
+          </VStack>
+        )}
+      </VStack>
+    </Box>
   )
 }
 

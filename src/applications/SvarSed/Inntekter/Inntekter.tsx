@@ -1,15 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  PaddedDiv,
-  PileDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, HGrid, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
 import { Currency } from '@navikt/land-verktoy'
 import CountrySelect from '@navikt/landvelger'
 import { resetValidation, setValidation } from 'actions/validation'
@@ -18,7 +8,7 @@ import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableRow } from 'components/StyledComponents'
+import { RepeatableBox } from 'components/StyledComponents'
 import { Inntekt } from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -207,38 +197,23 @@ const Inntekter: React.FC<any> = ({
       inntektTypeLabel = t('el:option-inntekttype-' + _inntekt?.type)
     }
 
-    const addremovepanel = (
-      <AlignEndColumn>
-        <AddRemovePanel<Inntekt>
-          item={inntekt}
-          marginTop={inEditMode}
-          index={index}
-          inEditMode={inEditMode}
-          onRemove={onRemove}
-          onAddNew={onAddNew}
-          onCancelNew={onCloseNew}
-          onStartEdit={onStartEdit}
-          onConfirmEdit={onSaveEdit}
-          onCancelEdit={() => onCloseEdit(_namespace)}
-        />
-      </AlignEndColumn>
-    )
-
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(inntekt)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
+        borderWidth="1"
+        borderColor="border-default"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <VStack gap="4">
           {inEditMode
             ? (
               <>
-                <Column>
+                <HGrid columns={3} gap="4" align="start">
                   <Select
                     closeMenuOnSelect
                     data-testid={_namespace + '-type'}
@@ -252,8 +227,6 @@ const Inntekter: React.FC<any> = ({
                     value={_.find(inntektTypeOptions, b => b.value === _inntekt?.type)}
                     defaultValue={_.find(inntektTypeOptions, b => b.value === _inntekt?.type)}
                   />
-                </Column>
-                <Column>
                   <Input
                     error={_v[_namespace + '-beloep']?.feilmelding}
                     namespace={_namespace}
@@ -263,8 +236,6 @@ const Inntekter: React.FC<any> = ({
                     required
                     value={_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : undefined}
                   />
-                </Column>
-                <Column>
                   <CountrySelect
                     closeMenuOnSelect
                     ariaLabel={t('label:valuta')}
@@ -278,82 +249,77 @@ const Inntekter: React.FC<any> = ({
                     type='currency'
                     values={_inntekt?.valuta}
                   />
-                </Column>
-                {addremovepanel}
+                </HGrid>
+                <Input
+                  ariaLabel={t('label:informasjon-om-vederlag')}
+                  error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                  id='informasjonOmVederlag'
+                  label={t('label:informasjon-om-vederlag')}
+                  namespace={_namespace}
+                  onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
+                  value={_inntekt?.typeAnnen}
+                />
               </>
               )
             : (
-              <>
-                <Column flex='2'>
-                  <PileDiv>
-                    <FlexDiv>
-                      {inntektTypeLabel}
-                      {_inntekt?.type === 'annet_vederlag' && (
-                        <>
-                          <HorizontalSeparatorDiv size='0.5' />
-                          <FormText
-                            error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                            id={_namespace + '-typeAnnen'}
-                          >
-                            <BodyLong>{_inntekt?.typeAnnen ? "(" + _inntekt?.typeAnnen + ")" : ""}</BodyLong>
-                          </FormText>
-                        </>
-                      )}
-                    </FlexDiv>
-                    <FlexDiv>
-                      <Label>{t('label:beløp') + ':'}</Label>
-                      <HorizontalSeparatorDiv size='0.5' />
-                      <FlexDiv>
-                        <FormText
-                          error={_v[_namespace + '-beloep']?.feilmelding}
-                          id={_namespace + '-beloep'}
-                        >
-                          {_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : '-'}
-                        </FormText>
-                        <HorizontalSeparatorDiv size='0.5' />
-                        <FormText
-                          error={_v[_namespace + '-valuta']?.feilmelding}
-                          id={_namespace + '-valuta'}
-                        >
-                          {_inntekt?.valuta}
-                        </FormText>
-                      </FlexDiv>
-                    </FlexDiv>
-                  </PileDiv>
-                </Column>
-                {addremovepanel}
-              </>
+              <VStack gap="2">
+                <HStack gap="2">
+                  {inntektTypeLabel}
+                  {_inntekt?.type === 'annet_vederlag' && (
+                    <FormText
+                      error={_v[_namespace + '-typeAnnen']?.feilmelding}
+                      id={_namespace + '-typeAnnen'}
+                    >
+                      <BodyLong>{_inntekt?.typeAnnen ? "(" + _inntekt?.typeAnnen + ")" : ""}</BodyLong>
+                    </FormText>
+                  )}
+                </HStack>
+                <HStack gap="2">
+                  <Label>{t('label:beløp') + ':'}</Label>
+                  <HStack gap="2">
+                    <FormText
+                      error={_v[_namespace + '-beloep']?.feilmelding}
+                      id={_namespace + '-beloep'}
+                    >
+                      {_inntekt?.beloep ? _inntekt?.beloep.replace('.', ',') : '-'}
+                    </FormText>
+                    <FormText
+                      error={_v[_namespace + '-valuta']?.feilmelding}
+                      id={_namespace + '-valuta'}
+                    >
+                      {_inntekt?.valuta}
+                    </FormText>
+                  </HStack>
+                </HStack>
+              </VStack>
               )}
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
-          <Column>
-            {inEditMode && (
-              <Input
-                ariaLabel={t('label:informasjon-om-vederlag')}
-                error={_v[_namespace + '-typeAnnen']?.feilmelding}
-                id='informasjonOmVederlag'
-                label={t('label:informasjon-om-vederlag')}
-                namespace={_namespace}
-                onChanged={(typeAnnen: string) => onTypeAnnenChanged(typeAnnen, index)}
-                value={_inntekt?.typeAnnen}
-              />
-            )}
-          </Column>
-          <Column />
-        </AlignStartRow>
-      </RepeatableRow>
+          <HStack>
+            <Spacer/>
+            <AddRemovePanel<Inntekt>
+              item={inntekt}
+              marginTop={inEditMode}
+              index={index}
+              inEditMode={inEditMode}
+              onRemove={onRemove}
+              onAddNew={onAddNew}
+              onCancelNew={onCloseNew}
+              onStartEdit={onStartEdit}
+              onConfirmEdit={onSaveEdit}
+              onCancelEdit={() => onCloseEdit(_namespace)}
+            />
+          </HStack>
+        </VStack>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
+    <VStack gap="4">
       {inntekter?.map(renderRow)}
-      <VerticalSeparatorDiv />
       {_newForm
         ? renderRow(null, -1)
         : (
-          <PaddedDiv>
+          <Box>
             <Button
               variant='tertiary'
               onClick={() => _setNewForm(true)}
@@ -361,9 +327,9 @@ const Inntekter: React.FC<any> = ({
             >
               {t('el:button-add-new-x', { x: t('label:inntekt').toLowerCase() })}
             </Button>
-          </PaddedDiv>
+          </Box>
           )}
-    </>
+    </VStack>
   )
 }
 
