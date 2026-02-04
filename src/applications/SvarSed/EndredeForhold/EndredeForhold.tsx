@@ -1,18 +1,8 @@
-import { Heading } from '@navikt/ds-react'
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv,
-  RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { Box, Heading, HStack, Radio, RadioGroup, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { validateEndredeForhold, ValidationEndredeForholdProps } from 'applications/SvarSed/EndredeForhold/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import TextArea from 'components/Forms/TextArea'
-import { TextAreaDiv } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { H001Sed, ReplySed, YtterligereInfoType } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
@@ -21,6 +11,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
+import commonStyles from 'assets/css/common.module.css'
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
@@ -65,45 +56,38 @@ const EndredeForhold: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <RadioPanelGroup
-        legend=''
-        data-testid={namespace + '-ytterligereInfoType'}
-        id={namespace + '-ytterligereInfoType'}
-        error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
-        value={(replySed as H001Sed).ytterligereInfoType}
-        onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
-      >
-        <FlexRadioPanels>
-          <RadioPanel value='melding_om_mer_informasjon'>
-            {t('el:option-ytterligere-1')}
-          </RadioPanel>
-          <RadioPanel value='anmodning_om_mer_informasjon'>
-            {t('el:option-ytterligere-2')}
-          </RadioPanel>
-        </FlexRadioPanels>
-      </RadioPanelGroup>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
-        <Column>
-          <TextAreaDiv>
-            <TextArea
-              namespace={namespace}
-              error={validation[namespace + '-ytterligereInfo']?.feilmelding}
-              id='ytterligereInfo'
-              label={t('label:ytterligere-informasjon-til-sed')}
-              onChanged={setYtterligereInfo}
-              value={(replySed as H001Sed).ytterligereInfo ?? ''}
-            />
-          </TextAreaDiv>
-        </Column>
-      </AlignStartRow>
-      <VerticalSeparatorDiv />
-    </PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
+        <RadioGroup
+          legend=''
+          data-testid={namespace + '-ytterligereInfoType'}
+          id={namespace + '-ytterligereInfoType'}
+          error={validation[namespace + '-ytterligereInfoType']?.feilmelding}
+          value={(replySed as H001Sed).ytterligereInfoType}
+          onChange={(e: string | number | boolean) => setYtterligereInfoType(e as YtterligereInfoType)}
+        >
+          <HStack gap="4">
+            <Radio className={commonStyles.radioPanel} value='melding_om_mer_informasjon'>
+              {t('el:option-ytterligere-1')}
+            </Radio>
+            <Radio className={commonStyles.radioPanel} value='anmodning_om_mer_informasjon'>
+              {t('el:option-ytterligere-2')}
+            </Radio>
+          </HStack>
+        </RadioGroup>
+        <TextArea
+          namespace={namespace}
+          error={validation[namespace + '-ytterligereInfo']?.feilmelding}
+          id='ytterligereInfo'
+          label={t('label:ytterligere-informasjon-til-sed')}
+          onChanged={setYtterligereInfo}
+          value={(replySed as H001Sed).ytterligereInfo ?? ''}
+        />
+      </VStack>
+    </Box>
   )
 }
 
