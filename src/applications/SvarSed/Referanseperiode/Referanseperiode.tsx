@@ -1,4 +1,4 @@
-import { Heading } from '@navikt/ds-react'
+import { Box, Heading, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
 import {
@@ -10,7 +10,6 @@ import { State } from 'declarations/reducers'
 import { Periode } from 'declarations/sed'
 import useUnmount from 'hooks/useUnmount'
 import _ from 'lodash'
-import { AlignStartRow, Column, PaddedDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'store'
 import performValidation from 'utils/performValidation'
@@ -55,12 +54,11 @@ const Referanseperiode: React.FC<MainFormProps> = ({
   }
 
   return (
-    <PaddedDiv>
-      <Heading size='small'>
-        {label}
-      </Heading>
-      <VerticalSeparatorDiv size='2' />
-      <AlignStartRow>
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {label}
+        </Heading>
         <PeriodeInput
           namespace={namespace}
           error={{
@@ -71,9 +69,8 @@ const Referanseperiode: React.FC<MainFormProps> = ({
           setPeriode={setPeriode}
           value={anmodningsperiode}
         />
-        <Column />
-      </AlignStartRow>
-    </PaddedDiv>
+      </VStack>
+    </Box>
   )
 }
 
