@@ -5,15 +5,7 @@ import {useTranslation} from "react-i18next";
 import {useAppDispatch, useAppSelector} from "../../../store";
 import {FamilieRelasjon, JaNei, Periode, ForelderType} from "../../../declarations/sed";
 import _ from "lodash";
-import {
-  AlignStartRow,
-  Column,
-  FlexRadioPanels,
-  PaddedDiv, RadioPanel,
-  RadioPanelGroup,
-  VerticalSeparatorDiv
-} from "@navikt/hoykontrast";
-import {Heading} from "@navikt/ds-react";
+import {Box, Heading, HGrid, Radio, RadioGroup, VStack} from "@navikt/ds-react";
 import PeriodeInput from "../../../components/Forms/PeriodeInput";
 import Select from "../../../components/Forms/Select";
 import {Option, Options} from "../../../declarations/app";
@@ -22,12 +14,13 @@ import {resetValidation, setValidation} from "../../../actions/validation";
 import useUnmount from "../../../hooks/useUnmount";
 import performValidation from "../../../utils/performValidation";
 import {validateFamilierelasjon, ValidationFamilierelasjonProps} from "./validation";
+import commonStyles from "../../../assets/css/common.module.css";
 
 const mapState = (state: State): MainFormSelector => ({
   validation: state.validation.status
 })
 
-const familieRelasjonF003: React.FC<MainFormProps> = ({
+const FamilieRelasjonF003: React.FC<MainFormProps> = ({
   label,
   parentNamespace,
   personID,
@@ -96,94 +89,74 @@ const familieRelasjonF003: React.FC<MainFormProps> = ({
   }
 
   return(
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-      </PaddedDiv>
-      <PaddedDiv>
-        <AlignStartRow>
-          <PeriodeInput
-            namespace={namespace + '-periode'}
-            error={{
-              startdato: validation[namespace + '-periode-startdato']?.feilmelding,
-              sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
-            }}
-            hideLabel={false}
-            requiredStartDato={true}
-            setPeriode={(p: Periode) => setPeriode(p)}
-            value={familieRelasjon?.periode}
+        <PeriodeInput
+          namespace={namespace + '-periode'}
+          error={{
+            startdato: validation[namespace + '-periode-startdato']?.feilmelding,
+            sluttdato: validation[namespace + '-periode-sluttdato']?.feilmelding
+          }}
+          hideLabel={false}
+          requiredStartDato={true}
+          setPeriode={(p: Periode) => setPeriode(p)}
+          value={familieRelasjon?.periode}
+          asGrid={true}
+        />
+        <HGrid columns={2} gap="4">
+          <Select
+            data-testid={namespace + '-forelderType'}
+            error={validation[namespace + '-forelderType']?.feilmelding}
+            id={namespace + '-forelderType'}
+            label={t('label:type')}
+            menuPortalTarget={document.body}
+            onChange={(e: unknown) => setForelderType((e as Option).value as ForelderType)}
+            options={forelderTypeOptions}
+            required
+            defaultValue={_.find(forelderTypeOptions, r => r.value === familieRelasjon?.forelderType)}
+            value={_.find(forelderTypeOptions, r => r.value === familieRelasjon?.forelderType)}
           />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <Select
-              data-testid={namespace + '-forelderType'}
-              error={validation[namespace + '-forelderType']?.feilmelding}
-              id={namespace + '-forelderType'}
-              label={t('label:type')}
-              menuPortalTarget={document.body}
-              onChange={(e: unknown) => setForelderType((e as Option).value as ForelderType)}
-              options={forelderTypeOptions}
-              required
-              defaultValue={_.find(forelderTypeOptions, r => r.value === familieRelasjon?.forelderType)}
-              value={_.find(forelderTypeOptions, r => r.value === familieRelasjon?.forelderType)}
-            />
-          </Column>
           {familieRelasjon?.forelderType === 'annet'
             ? (
-              <Column>
-                <Input
-                  error={validation[namespace + '-annenRelasjonType']?.feilmelding}
-                  namespace={namespace}
-                  id='annenRelasjonType'
-                  label={t('label:annen-relasjon')}
-                  onChanged={(value: string) => setAnnenRelasjonType(value)}
-                  value={familieRelasjon?.annenRelasjonType}
-                />
-              </Column>
+              <Input
+                error={validation[namespace + '-annenRelasjonType']?.feilmelding}
+                namespace={namespace}
+                id='annenRelasjonType'
+                label={t('label:annen-relasjon')}
+                onChanged={(value: string) => setAnnenRelasjonType(value)}
+                value={familieRelasjon?.annenRelasjonType}
+              />
             )
-            : (<Column />)}
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <Input
-              error={validation[namespace + '-annenRelasjonPersonNavn']?.feilmelding}
-              namespace={namespace}
-              id='annenRelasjonPersonNavn'
-              label={t('label:person-navn')}
-              onChanged={(value: string) => setAnnenRelasjonPersonNavn(value)}
-              value={familieRelasjon?.annenRelasjonPersonNavn}
-            />
-          </Column>
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column>
-            <RadioPanelGroup
-              value={familieRelasjon?.borSammen}
-              data-testid={namespace + '-borSammen'}
-              data-no-border
-              id={namespace + '-borSammen'}
-              error={validation[namespace + '-borSammen']?.feilmelding}
-              legend={t('label:bor-sammen')}
-              name={namespace + '-borSammen'}
-              onChange={(e: string) => setBorSammen(e as JaNei)}
-            >
-              <FlexRadioPanels>
-                <RadioPanel value='ja'>{t('label:ja')}</RadioPanel>
-                <RadioPanel value='nei'>{t('label:nei')}</RadioPanel>
-              </FlexRadioPanels>
-            </RadioPanelGroup>
-          </Column>
-        </AlignStartRow>
-      </PaddedDiv>
-    </>
+            : (<div />)}
+        </HGrid>
+        <Input
+          error={validation[namespace + '-annenRelasjonPersonNavn']?.feilmelding}
+          namespace={namespace}
+          id='annenRelasjonPersonNavn'
+          label={t('label:person-navn')}
+          onChanged={(value: string) => setAnnenRelasjonPersonNavn(value)}
+          value={familieRelasjon?.annenRelasjonPersonNavn}
+        />
+        <RadioGroup
+          value={familieRelasjon?.borSammen}
+          data-testid={namespace + '-borSammen'}
+          id={namespace + '-borSammen'}
+          error={validation[namespace + '-borSammen']?.feilmelding}
+          legend={t('label:bor-sammen')}
+          onChange={(e: string) => setBorSammen(e as JaNei)}
+        >
+          <HGrid columns={2} gap="4">
+            <Radio className={commonStyles.radioPanel} value='ja'>{t('label:ja')}</Radio>
+            <Radio className={commonStyles.radioPanel} value='nei'>{t('label:nei')}</Radio>
+          </HGrid>
+        </RadioGroup>
+      </VStack>
+    </Box>
   )
 }
 
-export default familieRelasjonF003
+export default FamilieRelasjonF003
 
