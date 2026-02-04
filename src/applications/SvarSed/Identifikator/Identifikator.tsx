@@ -1,20 +1,12 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Label } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  FlexDiv,
-  HorizontalSeparatorDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Box, Button, HStack, Label, Spacer, VStack } from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import classNames from 'classnames'
 import AddRemovePanel from 'components/AddRemovePanel/AddRemovePanel'
 import FormText from 'components/Forms/FormText'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
-import { RepeatableRow, SpacedHr } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { Option } from 'declarations/app'
 import { ArbeidsgiverIdentifikator, ArbeidsgiverIdentifikatorType } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -160,19 +152,19 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _identifikator = index < 0 ? _newIdentifikator : (inEditMode ? _editIdentifikator : identifikator)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(identifikator)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="4"
       >
-        <AlignStartRow>
-          <VerticalSeparatorDiv size='0.5' />
-          <Column>
-            {inEditMode
-              ? (
+        <HStack  gap="4" align={inEditMode ? "start" : "center"}>
+          {inEditMode
+            ? (
+              <Box width="30%">
                 <Select
                   closeMenuOnSelect
                   data-testid={_namespace + '-type'}
@@ -186,23 +178,22 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                   value={_.find(allTypeOptions, b => b.value === _identifikator?.type)}
                   defaultValue={_.find(allTypeOptions, b => b.value === _identifikator?.type)}
                 />
-                )
-              : (
-                <FormText
-                  error={_v[_namespace + '-type']?.feilmelding}
-                  id={_namespace + '-type'}
-                >
-                  <FlexDiv>
-                    <Label>{t('label:type') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_identifikator?.type}
-                  </FlexDiv>
-                </FormText>
-                )}
-          </Column>
-          <Column>
-            {inEditMode
-              ? (
+              </Box>
+              )
+            : (
+              <FormText
+                error={_v[_namespace + '-type']?.feilmelding}
+                id={_namespace + '-type'}
+              >
+                <HStack gap="2" align="start">
+                  <Label>{t('label:type') + ':'}</Label>
+                  {_identifikator?.type}
+                </HStack>
+              </FormText>
+              )}
+          {inEditMode
+            ? (
+              <Box width="30%">
                 <Input
                   error={_v[_namespace + '-id']?.feilmelding}
                   id='id'
@@ -212,67 +203,62 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
                   required
                   value={_identifikator?.id}
                 />
-                )
-              : (
-                <FormText
-                  error={_v[_namespace + '-id']?.feilmelding}
-                  id={_namespace + '-id'}
-                >
-                  <FlexDiv>
-                    <Label>{t('label:inst-id') + ':'}</Label>
-                    <HorizontalSeparatorDiv size='0.5' />
-                    {_identifikator?.id}
-                  </FlexDiv>
-                </FormText>
-                )}
-          </Column>
-          <AlignEndColumn>
-            <AddRemovePanel<ArbeidsgiverIdentifikator>
-              item={identifikator}
-              marginTop={inEditMode}
-              index={index}
-              inEditMode={inEditMode}
-              onRemove={onRemove}
-              onAddNew={onAddNew}
-              onCancelNew={onCloseNew}
-              onStartEdit={onStartEdit}
-              onConfirmEdit={onSaveEdit}
-              onCancelEdit={() => onCloseEdit(_namespace)}
-            />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+              </Box>
+              )
+            : (
+              <FormText
+                error={_v[_namespace + '-id']?.feilmelding}
+                id={_namespace + '-id'}
+              >
+                <HStack gap="2" align="start">
+                  <Label>{t('label:inst-id') + ':'}</Label>
+                  {_identifikator?.id}
+                </HStack>
+              </FormText>
+              )
+          }
+          <Spacer/>
+          <AddRemovePanel<ArbeidsgiverIdentifikator>
+            item={identifikator}
+            marginTop={inEditMode}
+            index={index}
+            inEditMode={inEditMode}
+            onRemove={onRemove}
+            onAddNew={onAddNew}
+            onCancelNew={onCloseNew}
+            onStartEdit={onStartEdit}
+            onConfirmEdit={onSaveEdit}
+            onCancelEdit={() => onCloseEdit(_namespace)}
+          />
+        </HStack>
+      </RepeatableBox>
     )
   }
 
   const hasError = validation[namespace]?.feilmelding
 
   return (
-    <>
+    <VStack>
       {_.isEmpty(identifikatorer)
         ? (
-          <>
+          <Box>
             <SpacedHr />
             <BodyLong>
               {t('message:warning-no-ids')}
             </BodyLong>
             <SpacedHr />
-          </>
+          </Box>
           )
         : identifikatorer?.map(renderRow)}
       {hasError && (
-        <>
-          <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
-            {hasError}
-          </div>
-          <VerticalSeparatorDiv />
-        </>
+        <div role='alert' aria-live='assertive' className='navds-error-message navds-error-message--medium navds-label'>
+          {hasError}
+        </div>
       )}
       {_newForm
         ? renderRow(null, -1)
         : (
-          <>
+          <Box>
             <Button
               variant='tertiary'
               data-testid={namespace + '-new'}
@@ -281,9 +267,9 @@ const IdentifikatorFC: React.FC<IdentifikatorProps> = ({
             >
               {t('el:button-add-new-x', { x: t('label:identifikator').toLowerCase() })}
             </Button>
-          </>
+          </Box>
           )}
-    </>
+    </VStack>
   )
 }
 
