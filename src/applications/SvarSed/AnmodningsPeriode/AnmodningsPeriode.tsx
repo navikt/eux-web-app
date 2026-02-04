@@ -1,14 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  Row,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import {BodyLong, Box, Button, Heading, HGrid, HStack, Radio, RadioGroup, Spacer, VStack} from '@navikt/ds-react'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector, mapState } from 'applications/SvarSed/MainForm'
 import classNames from 'classnames'
@@ -17,7 +8,7 @@ import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
 import DateField from "components/DateField/DateField";
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import {F001Sed, F002Sed, FSed, Periode} from 'declarations/sed'
 import { Validation } from 'declarations/types'
 import useLocalValidation from 'hooks/useLocalValidation'
@@ -28,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import { useAppDispatch, useAppSelector } from 'store'
 import { getIdx } from 'utils/namespace'
 import performValidation from 'utils/performValidation'
-import { isFSed } from 'utils/sed'
 import { hasNamespaceWithErrors } from 'utils/validation'
 import {
   validateAnmodningsPeriode,
@@ -36,8 +26,9 @@ import {
   ValidationAnmodningsPeriodeProps,
   ValidationAnmodningsPerioderProps, ValidationKravProps
 } from './validation'
+import commonStyles from 'assets/css/common.module.css'
 
-const PeriodeFC: React.FC<MainFormProps> = ({
+const AnmodningsPeriode: React.FC<MainFormProps> = ({
   parentNamespace,
   replySed,
   updateReplySed
@@ -175,16 +166,16 @@ const PeriodeFC: React.FC<MainFormProps> = ({
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newAnmodningsperiode : (inEditMode ? _editAnmodningsperiode : periode)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HGrid columns={"2fr 1fr"} align="start" gap="4">
           {inEditMode
             ? (
               <PeriodeInput
@@ -200,18 +191,17 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               />
               )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_periode}
-                />
-              </Column>
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                namespace={_namespace}
+                periode={_periode}
+              />
               )}
-          <AlignEndColumn>
+            <HStack>
+            <Spacer/>
             <AddRemovePanel<Periode>
               item={periode}
               marginTop={index < 0}
@@ -224,85 +214,71 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               onConfirmEdit={onSaveEdit}
               onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+            </HStack>
+
+        </HGrid>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <VerticalSeparatorDiv />
-      {isFSed(replySed) && (
-        <>
-          <PaddedHorizontallyDiv>
-            <Heading size='small'>
-              {t('label:anmodningsperioder')}
-            </Heading>
-          </PaddedHorizontallyDiv>
-          <VerticalSeparatorDiv />
-          {_.isEmpty((replySed as FSed)?.anmodningsperioder)
-            ? (
-              <PaddedHorizontallyDiv>
-                <SpacedHr />
-                <BodyLong>
-                  {t('message:warning-no-periods')}
-                </BodyLong>
-                <SpacedHr />
-              </PaddedHorizontallyDiv>
-              )
-            : (replySed as FSed)?.anmodningsperioder?.map(renderRow)}
-          <VerticalSeparatorDiv />
-          {_newForm
-            ? renderRow(null, -1)
-            : (
-              <PaddedDiv>
-                <Button
-                  variant='tertiary'
-                  onClick={() => _setNewForm(true)}
-                  icon={<PlusCircleIcon/>}
-                >
-                  {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-                </Button>
-              </PaddedDiv>
-              )}
-          <VerticalSeparatorDiv />
-        </>
-      )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <Row>
-          <Column>
-            <div>
-              <RadioGroup
-                legend={t('label:type-krav')}
-                data-testid={namespace + '-typeKrav'}
-                error={validation[namespace + '-typeKrav']?.feilmelding}
-                id={namespace + '-kravType'}
-                onChange={(e: string | number | boolean) => setKravType(e as string)}
-                value={(replySed as F002Sed).krav?.kravType}
+    <Box padding="4">
+      <VStack gap="4">
+        <Heading size='small'>
+          {t('label:anmodningsperioder')}
+        </Heading>
+        {_.isEmpty((replySed as FSed)?.anmodningsperioder)
+          ? (
+            <Box>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </Box>
+            )
+          : (replySed as FSed)?.anmodningsperioder?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
               >
-                <Radio value='nytt_krav'>
-                  {t('label:kravType-nytt_krav')}
-                </Radio>
-                <Radio value='endrede_omstendigheter'>
-                  {t('label:kravType-endrede_omstendigheter')}
-                </Radio>
-              </RadioGroup>
-              <VerticalSeparatorDiv />
-              <DateField
-                error={validation[namespace + '-kravMottattDato']?.feilmelding}
-                namespace={namespace}
-                id='kravMottattDato'
-                label={t('label:krav-mottatt-dato')}
-                onChanged={setKravMottattDato}
-                dateValue={(replySed as F002Sed).krav?.kravMottattDato}
-              />
-              <VerticalSeparatorDiv />
-            </div>
-          </Column>
-          <Column>
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
+          )
+        }
+        <HGrid columns={2} gap="4">
+          <VStack gap="4">
+            <RadioGroup
+              legend={t('label:type-krav')}
+              data-testid={namespace + '-typeKrav'}
+              error={validation[namespace + '-typeKrav']?.feilmelding}
+              id={namespace + '-kravType'}
+              onChange={(e: string | number | boolean) => setKravType(e as string)}
+              value={(replySed as F002Sed).krav?.kravType}
+            >
+              <Radio className={commonStyles.radioPanel} value='nytt_krav'>
+                {t('label:kravType-nytt_krav')}
+              </Radio>
+              <Radio className={commonStyles.radioPanel} value='endrede_omstendigheter'>
+                {t('label:kravType-endrede_omstendigheter')}
+              </Radio>
+            </RadioGroup>
+            <DateField
+              error={validation[namespace + '-kravMottattDato']?.feilmelding}
+              namespace={namespace}
+              id='kravMottattDato'
+              label={t('label:krav-mottatt-dato')}
+              onChanged={setKravMottattDato}
+              dateValue={(replySed as F002Sed).krav?.kravMottattDato}
+            />
+          </VStack>
+          <VStack gap="4">
             <RadioGroup
               legend={t('label:informasjon-om-søknaden')}
               data-testid={namespace + '-informasjon'}
@@ -311,34 +287,29 @@ const PeriodeFC: React.FC<MainFormProps> = ({
               value={(replySed as F002Sed).krav?.infoType}
               onChange={(e: string | number | boolean) => setInfoType(e as string)}
             >
-              <Radio value='bekrefter_opplysninger'>
+              <Radio className={commonStyles.radioPanel} value='bekrefter_opplysninger'>
                 {t('label:info-confirm-information')}
               </Radio>
-              <Radio value='gi_oss_opplysninger'>
+              <Radio className={commonStyles.radioPanel} value='gi_oss_opplysninger'>
                 {t('label:info-point-information')}
               </Radio>
-              {(replySed as F002Sed).krav?.infoType === 'gi_oss_opplysninger' && (
-                <div>
-                  <VerticalSeparatorDiv />
-                  <TextAreaDiv>
-                    <TextArea
-                      error={validation[namespace + '-opplysninger']?.feilmelding}
-                      id='opplysninger'
-                      namespace={namespace}
-                      label={t('label:hvilke-opplysninger')}
-                      maxLength={255}
-                      onChanged={setInfoPresisering}
-                      value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
-                    />
-                  </TextAreaDiv>
-                </div>
-              )}
             </RadioGroup>
-          </Column>
-        </Row>
-      </PaddedDiv>
-    </>
+            {(replySed as F002Sed).krav?.infoType === 'gi_oss_opplysninger' && (
+              <TextArea
+                error={validation[namespace + '-opplysninger']?.feilmelding}
+                id='opplysninger'
+                namespace={namespace}
+                label={t('label:hvilke-opplysninger')}
+                maxLength={255}
+                onChanged={setInfoPresisering}
+                value={(replySed as F002Sed).krav?.infoPresisering ?? ''}
+              />
+            )}
+          </VStack>
+        </HGrid>
+      </VStack>
+    </Box>
   )
 }
 
-export default PeriodeFC
+export default AnmodningsPeriode
