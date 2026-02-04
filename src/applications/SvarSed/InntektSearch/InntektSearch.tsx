@@ -1,6 +1,5 @@
 import { MagnifyingGlassIcon } from '@navikt/aksel-icons'
-import { Button, Loader } from '@navikt/ds-react'
-import { AlignEndColumn, AlignStartRow, Column, HorizontalSeparatorDiv, VerticalSeparatorDiv } from '@navikt/hoykontrast'
+import { Button, HGrid, Loader } from '@navikt/ds-react'
 import Input from 'components/Forms/Input'
 import Select from 'components/Forms/Select'
 import { Options } from 'declarations/app'
@@ -73,56 +72,46 @@ const InntektSearch = ({
   }
 
   return (
-    <AlignStartRow>
-      <Column>
-        <Input
-          namespace={namespace}
-          error={_validation[namespace + '-startdato']?.feilmelding}
-          id='startdato'
-          label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
-          onChanged={setSearchPeriodeStartdato}
-          value={_searchPeriode.startdato}
-        />
-      </Column>
-      <Column>
-        <Input
-          namespace={namespace}
-          error={_validation[namespace + '-sluttdato']?.feilmelding}
-          id='sluttdato'
-          label={t('label:til') + ' (ÅÅÅÅ-MM)'}
-          onChanged={setSearchPeriodeSluttdato}
-          value={_searchPeriode.sluttdato}
-        />
-      </Column>
-      <Column>
-        <Select
-          data-testid={namespace + '-inntektsliste'}
-          error={_validation[namespace + '-inntektsliste']?.feilmelding}
-          id={namespace + '-inntektsliste'}
-          label={t('label:inntektsfilter')}
-          menuPortalTarget={document.body}
-          onChange={(o: unknown) => setFilter((o as Option).value)}
-          options={filterOptions}
-          value={_.find(filterOptions, b => b.value === _filter)}
-          defaultValue={_.find(filterOptions, b => b.value === _filter)}
-        />
-      </Column>
-      <AlignEndColumn>
-        <VerticalSeparatorDiv size='2' />
-        <Button
-          variant='secondary'
-          disabled={gettingInntekter}
-          onClick={onInntektSearchClicked}
-          icon={<MagnifyingGlassIcon/>}
-        >
-          <HorizontalSeparatorDiv />
-          {gettingInntekter
-            ? t('message:loading-searching')
-            : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
-          {gettingInntekter && <Loader />}
-        </Button>
-      </AlignEndColumn>
-    </AlignStartRow>
+    <HGrid columns={4} gap="4" align="end">
+      <Input
+        namespace={namespace}
+        error={_validation[namespace + '-startdato']?.feilmelding}
+        id='startdato'
+        label={t('label:fra') + ' (ÅÅÅÅ-MM)'}
+        onChanged={setSearchPeriodeStartdato}
+        value={_searchPeriode.startdato}
+      />
+      <Input
+        namespace={namespace}
+        error={_validation[namespace + '-sluttdato']?.feilmelding}
+        id='sluttdato'
+        label={t('label:til') + ' (ÅÅÅÅ-MM)'}
+        onChanged={setSearchPeriodeSluttdato}
+        value={_searchPeriode.sluttdato}
+      />
+      <Select
+        data-testid={namespace + '-inntektsliste'}
+        error={_validation[namespace + '-inntektsliste']?.feilmelding}
+        id={namespace + '-inntektsliste'}
+        label={t('label:inntektsfilter')}
+        menuPortalTarget={document.body}
+        onChange={(o: unknown) => setFilter((o as Option).value)}
+        options={filterOptions}
+        value={_.find(filterOptions, b => b.value === _filter)}
+        defaultValue={_.find(filterOptions, b => b.value === _filter)}
+      />
+      <Button
+        variant='secondary'
+        disabled={gettingInntekter}
+        onClick={onInntektSearchClicked}
+        icon={<MagnifyingGlassIcon/>}
+      >
+        {gettingInntekter
+          ? t('message:loading-searching')
+          : t('el:button-search-i-x', { x: t('label:a-inntekt') })}
+        {gettingInntekter && <Loader />}
+      </Button>
+    </HGrid>
   )
 }
 
