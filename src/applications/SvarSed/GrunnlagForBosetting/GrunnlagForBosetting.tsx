@@ -1,13 +1,5 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { BodyLong, Button, Detail, Heading } from '@navikt/ds-react'
-import {
-  AlignEndColumn,
-  AlignStartRow,
-  Column,
-  PaddedDiv,
-  PaddedHorizontallyDiv,
-  VerticalSeparatorDiv
-} from '@navikt/hoykontrast'
+import { BodyLong, Button, Detail, Heading, Box, VStack, HGrid, HStack, Spacer } from '@navikt/ds-react'
 import { resetAdresse } from 'actions/adresse'
 import { resetValidation, setValidation } from 'actions/validation'
 import { MainFormProps, MainFormSelector } from 'applications/SvarSed/MainForm'
@@ -17,7 +9,7 @@ import DateField from 'components/DateField/DateField'
 import PeriodeInput from 'components/Forms/PeriodeInput'
 import PeriodeText from 'components/Forms/PeriodeText'
 import TextArea from 'components/Forms/TextArea'
-import { RepeatableRow, SpacedHr, TextAreaDiv } from 'components/StyledComponents'
+import { RepeatableBox, SpacedHr } from 'components/StyledComponents'
 import { State } from 'declarations/reducers'
 import { Flyttegrunn, Periode } from 'declarations/sed'
 import { Validation } from 'declarations/types'
@@ -175,16 +167,16 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
     const inEditMode = index < 0 || _editIndex === index
     const _periode = index < 0 ? _newPeriode : (inEditMode ? _editPeriode : periode)
     return (
-      <RepeatableRow
+      <RepeatableBox
         id={'repeatablerow-' + _namespace}
         key={getId(periode)}
         className={classNames({
           new: index < 0,
           error: hasNamespaceWithErrors(_v, _namespace)
         })}
+        padding="2 4"
       >
-        <VerticalSeparatorDiv size='0.5' />
-        <AlignStartRow>
+        <HGrid columns={"2fr 1fr"} align="center" gap="4">
           {inEditMode
             ? (
               <PeriodeInput
@@ -194,24 +186,23 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
                   sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
                 }}
                 breakInTwo
-                hideLabel={false}
+                hideLabel={index >= 0}
                 setPeriode={(p: Periode) => setPeriode(p, index)}
                 value={_periode}
               />
               )
             : (
-              <Column>
-                <PeriodeText
-                  error={{
-                    startdato: _v[_namespace + '-startdato']?.feilmelding,
-                    sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
-                  }}
-                  namespace={_namespace}
-                  periode={_periode}
-                />
-              </Column>
+              <PeriodeText
+                error={{
+                  startdato: _v[_namespace + '-startdato']?.feilmelding,
+                  sluttdato: _v[_namespace + '-sluttdato']?.feilmelding
+                }}
+                namespace={_namespace}
+                periode={_periode}
+              />
               )}
-          <AlignEndColumn>
+          <HStack>
+            <Spacer/>
             <AddRemovePanel<Periode>
               item={periode}
               marginTop={inEditMode}
@@ -224,94 +215,74 @@ const GrunnlagforBosetting: React.FC<MainFormProps & {standalone?: boolean}> = (
               onConfirmEdit={onSaveEdit}
               onCancelEdit={() => onCloseEdit(_namespace)}
             />
-          </AlignEndColumn>
-        </AlignStartRow>
-        <VerticalSeparatorDiv size='0.5' />
-      </RepeatableRow>
+          </HStack>
+        </HGrid>
+      </RepeatableBox>
     )
   }
 
   return (
-    <>
-      <PaddedDiv>
+    <Box padding="4">
+      <VStack gap="4">
         <Heading size='small'>
           {label}
         </Heading>
-        <VerticalSeparatorDiv />
         <Detail>
           {t('label:oppholdets-varighet')}
         </Detail>
-      </PaddedDiv>
-      <VerticalSeparatorDiv />
-      {_.isEmpty(flyttegrunn?.perioder)
-        ? (
-          <PaddedHorizontallyDiv>
-            <SpacedHr />
-            <BodyLong>
-              {t('message:warning-no-periods')}
-            </BodyLong>
-            <SpacedHr />
-          </PaddedHorizontallyDiv>
-          )
-        : flyttegrunn?.perioder?.map(renderRow)}
-      <VerticalSeparatorDiv />
-      {_newForm
-        ? renderRow(null, -1)
-        : (
-          <PaddedDiv>
-            <Button
-              variant='tertiary'
-              onClick={() => _setNewForm(true)}
-              icon={<PlusCircleIcon/>}
-            >
-              {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
-            </Button>
-          </PaddedDiv>
-          )}
-      <VerticalSeparatorDiv />
-      <PaddedDiv>
-        <AlignStartRow>
-          <Column>
-            <DateField
-              error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
-              namespace={namespace}
-              id='datoFlyttetTilAvsenderlandet'
-              label={t('label:flyttedato-til-avsenderlandet')}
-              onChanged={setAvsenderDato}
-              dateValue={flyttegrunn?.datoFlyttetTilAvsenderlandet}
-            />
-          </Column>
-          <Column>
-            <DateField
-              error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
-              namespace={namespace}
-              id='datoFlyttetTilMottakerlandet'
-              label={t('label:flyttedato-til-mottakerslandet')}
-              onChanged={setMottakerDato}
-              dateValue={flyttegrunn?.datoFlyttetTilMottakerlandet}
-            />
-          </Column>
-          <Column />
-        </AlignStartRow>
-        <VerticalSeparatorDiv />
-        <AlignStartRow>
-          <Column flex='2'>
-            <TextAreaDiv>
-              <TextArea
-                error={validation[namespace + '-personligSituasjon']?.feilmelding}
-                namespace={namespace}
-                id='personligSituasjon'
-                maxLength={255}
-                label={t('label:elementter-i-personlig-situasjon')}
-                onChanged={setPersonligSituasjon}
-                value={flyttegrunn?.personligSituasjon ?? ''}
-              />
-            </TextAreaDiv>
-          </Column>
-          <Column />
-        </AlignStartRow>
-      </PaddedDiv>
-    </>
+        {_.isEmpty(flyttegrunn?.perioder)
+          ? (
+            <>
+              <SpacedHr />
+              <BodyLong>
+                {t('message:warning-no-periods')}
+              </BodyLong>
+              <SpacedHr />
+            </>
+            )
+          : flyttegrunn?.perioder?.map(renderRow)}
+        {_newForm
+          ? renderRow(null, -1)
+          : (
+            <Box>
+              <Button
+                variant='tertiary'
+                onClick={() => _setNewForm(true)}
+                icon={<PlusCircleIcon/>}
+              >
+                {t('el:button-add-new-x', { x: t('label:periode').toLowerCase() })}
+              </Button>
+            </Box>
+            )}
+        <HGrid columns={{ xs: 1, sm: 2 }} gap="4">
+          <DateField
+            error={validation[namespace + '-datoFlyttetTilAvsenderlandet']?.feilmelding}
+            namespace={namespace}
+            id='datoFlyttetTilAvsenderlandet'
+            label={t('label:flyttedato-til-avsenderlandet')}
+            onChanged={setAvsenderDato}
+            dateValue={flyttegrunn?.datoFlyttetTilAvsenderlandet}
+          />
+          <DateField
+            error={validation[namespace + '-datoFlyttetTilMottakerlandet']?.feilmelding}
+            namespace={namespace}
+            id='datoFlyttetTilMottakerlandet'
+            label={t('label:flyttedato-til-mottakerslandet')}
+            onChanged={setMottakerDato}
+            dateValue={flyttegrunn?.datoFlyttetTilMottakerlandet}
+          />
+        </HGrid>
+        <TextArea
+          error={validation[namespace + '-personligSituasjon']?.feilmelding}
+          namespace={namespace}
+          id='personligSituasjon'
+          maxLength={255}
+          label={t('label:elementter-i-personlig-situasjon')}
+          onChanged={setPersonligSituasjon}
+          value={flyttegrunn?.personligSituasjon ?? ''}
+        />
+      </VStack>
+    </Box>
   )
 }
 

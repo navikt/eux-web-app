@@ -175,7 +175,7 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
         })}
         padding="2 4"
       >
-        <HGrid columns={"2fr 1fr"} align="start" gap="4">
+        <HGrid columns={"2fr 1fr"} align="center" gap="4">
           {inEditMode
             ? (
               <PeriodeInput
@@ -204,7 +204,7 @@ const AnmodningsPeriode: React.FC<MainFormProps> = ({
             <Spacer/>
             <AddRemovePanel<Periode>
               item={periode}
-              marginTop={index < 0}
+              marginTop={inEditMode}
               index={index}
               inEditMode={inEditMode}
               onRemove={onRemove}
