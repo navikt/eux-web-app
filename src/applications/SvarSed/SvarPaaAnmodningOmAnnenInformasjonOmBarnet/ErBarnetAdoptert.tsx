@@ -72,6 +72,8 @@ const ErBarnetAdoptert: React.FC<MainFormProps> = ({
         {(parseFloat(CDM_VERSJON) >= 4.3) &&
           <Box padding="4" background="surface-subtle" borderWidth="1" borderColor="border-subtle">
             <RadioGroup
+              legend={t('label:er-barnet-adoptert')}
+              hideLegend={true}
               value={(annenInformasjonBarnet as AnnenInformasjonBarnet_V43)?.erAdoptert ?? ''}
               data-testid={namespace}
               error={validation[namespace + '-er-adoptert']?.feilmelding}
